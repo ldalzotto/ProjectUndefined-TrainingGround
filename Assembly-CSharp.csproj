@@ -63,6 +63,8 @@
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\_Collision\CollisionTag.cs" />
+    <Compile Include="Assets\ContextAction\Script\Actions\DummyContextAction.cs" />
+    <Compile Include="Assets\ContextAction\Script\ContextActionManager.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />

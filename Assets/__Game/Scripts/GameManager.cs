@@ -5,16 +5,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
+    private ContextActionManager ContextActionManager;
     private PlayerManager PlayerManager;
 
     void Start()
     {
+        ContextActionManager = FindObjectOfType<ContextActionManager>();
         PlayerManager = FindObjectOfType<PlayerManager>();
     }
 
     void Update()
     {
         var d = Time.deltaTime;
+        ContextActionManager.Tick(d);
         PlayerManager.Tick(d);
     }
 

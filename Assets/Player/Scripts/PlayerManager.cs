@@ -22,6 +22,8 @@ public class PlayerManager : MonoBehaviour
     private PlayerPOITrackerManager PlayerPOITrackerManager;
     private PlayerPOIVisualHeadMovementManager PlayerPOIVisualHeadMovementManager;
 
+    private PlayerContextActionManager PlayerContextActionManager;
+
     private PlayerAnimationDataManager PlayerAnimationDataManager;
 
     private void Start()
@@ -34,11 +36,15 @@ public class PlayerManager : MonoBehaviour
 
         SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
 
+        ContextActionManager ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
+
+
         this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
         this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
+        this.PlayerContextActionManager = new PlayerContextActionManager(ContextActionManager);
         this.PlayerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
     }
 
@@ -46,7 +52,16 @@ public class PlayerManager : MonoBehaviour
     {
         CameraFollowManager.Tick(d, DampTime);
         CameraOrientationManager.Tick(d, CameraRotationSpeed);
-        PlayerMoveManager.Tick(d);
+
+        if (PlayerContextActionManager.IsActionExecuting)
+        {
+            PlayerMoveManager.ResetSpeed();
+        }
+        else
+        {
+            PlayerMoveManager.Tick(d);
+        }
+
         PlayerPOITrackerManager.Tick(d);
         PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
     }
@@ -58,7 +73,11 @@ public class PlayerManager : MonoBehaviour
 
     public void LateTick(float d)
     {
-        PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.GetNearestPOI());
+        if (!PlayerContextActionManager.IsActionExecuting)
+        {
+            PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.GetNearestPOI());
+        }
+
     }
 
     public void OnGizmoTick()
@@ -67,6 +86,7 @@ public class PlayerManager : MonoBehaviour
         PlayerPOIVisualHeadMovementManager.GizmoTick();
     }
 
+    #region External Events
     public void TriggerEnter(Collider collider, CollisionTag source)
     {
         switch (source)
@@ -85,7 +105,11 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-
+    public void OnContextAction(AContextAction contextAction)
+    {
+        PlayerContextActionManager.OnContextAction(contextAction);
+    }
+    #endregion
 }
 
 #region Camera
@@ -180,7 +204,6 @@ class PlayerMoveManager
 
         //move rigid body
         PlayerRigidBody.velocity = playerMovementOrientation * playerSpeedMagnitude * SpeedMultiplicationFactor;
-
     }
 
 }
@@ -369,4 +392,36 @@ class PlayerAnimationDataManager
     }
 
 }
+#endregion
+
+#region Context Actions Handler
+class PlayerContextActionManager
+{
+
+    private ContextActionManager ContextActionManager;
+
+    public PlayerContextActionManager(ContextActionManager contextActionManager)
+    {
+        ContextActionManager = contextActionManager;
+    }
+
+    private bool isActionExecuting;
+
+    public bool IsActionExecuting { get => isActionExecuting; }
+
+    public void OnContextAction(AContextAction contextAction)
+    {
+        if (contextAction.GetType() == typeof(DummyContextAction))
+        {
+            var dummyInput = new DummyContextActionInput("THIS IS A TEST");
+            contextAction.OnFinished += () =>
+            {
+                isActionExecuting = false;
+            };
+            isActionExecuting = true;
+            ContextActionManager.AddAction(contextAction, dummyInput);
+        }
+    }
+}
+
 #endregion
