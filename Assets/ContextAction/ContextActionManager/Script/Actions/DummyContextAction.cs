@@ -12,6 +12,7 @@ public class DummyContextAction : AContextAction
     public override void ExecuteAction(AContextActionInput ContextActionInput)
     {
         var actionInput = ContextActionInput as DummyContextActionInput;
+        Debug.Log(Time.frameCount + actionInput.Text);
     }
 
     public override void Tick(float d)

@@ -50,13 +50,16 @@ public abstract class AContextAction : MonoBehaviour
 
     public void OnTick(float d)
     {
-        Tick(d);
-
-        if (ComputeFinishedConditions())
+        if (!isFinished)
         {
-            isFinished = true;
-            OnFinished.Invoke();
-            OnFinished = null;
+            Tick(d);
+
+            if (ComputeFinishedConditions())
+            {
+                isFinished = true;
+                OnFinished.Invoke();
+                OnFinished = null;
+            }
         }
     }
 

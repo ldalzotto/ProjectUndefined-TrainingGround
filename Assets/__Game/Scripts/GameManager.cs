@@ -6,17 +6,20 @@ public class GameManager : MonoBehaviour
 {
 
     private ContextActionManager ContextActionManager;
+    private ContextActionWheelManager ContextActionWheelManager;
     private PlayerManager PlayerManager;
 
     void Start()
     {
         ContextActionManager = FindObjectOfType<ContextActionManager>();
+        ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
         PlayerManager = FindObjectOfType<PlayerManager>();
     }
 
     void Update()
     {
         var d = Time.deltaTime;
+        ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);
     }

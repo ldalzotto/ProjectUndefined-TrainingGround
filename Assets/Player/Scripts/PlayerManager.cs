@@ -36,15 +36,12 @@ public class PlayerManager : MonoBehaviour
 
         SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
 
-        ContextActionManager ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
-
-
         this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
         this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
-        this.PlayerContextActionManager = new PlayerContextActionManager(ContextActionManager);
+        this.PlayerContextActionManager = new PlayerContextActionManager();
         this.PlayerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
     }
 
@@ -105,9 +102,9 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-    public void OnContextAction(AContextAction contextAction)
+    public void OnContextActionAdded(AContextAction contextAction)
     {
-        PlayerContextActionManager.OnContextAction(contextAction);
+        PlayerContextActionManager.OnContextActionAdded(contextAction);
     }
     #endregion
 }
@@ -397,30 +394,17 @@ class PlayerAnimationDataManager
 #region Context Actions Handler
 class PlayerContextActionManager
 {
-
-    private ContextActionManager ContextActionManager;
-
-    public PlayerContextActionManager(ContextActionManager contextActionManager)
-    {
-        ContextActionManager = contextActionManager;
-    }
-
     private bool isActionExecuting;
 
     public bool IsActionExecuting { get => isActionExecuting; }
 
-    public void OnContextAction(AContextAction contextAction)
+    public void OnContextActionAdded(AContextAction contextAction)
     {
-        if (contextAction.GetType() == typeof(DummyContextAction))
+        contextAction.OnFinished += () =>
         {
-            var dummyInput = new DummyContextActionInput("THIS IS A TEST");
-            contextAction.OnFinished += () =>
-            {
-                isActionExecuting = false;
-            };
-            isActionExecuting = true;
-            ContextActionManager.AddAction(contextAction, dummyInput);
-        }
+            isActionExecuting = false;
+        };
+        isActionExecuting = true;
     }
 }
 
