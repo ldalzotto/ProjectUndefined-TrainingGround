@@ -26,11 +26,12 @@ public class ContextActionWheelManager : MonoBehaviour
         #endregion
     }
 
+    //TODO, the triggered POI must be passed here
     private void TriggerContextAction(AContextAction contextAction)
     {
         if (contextAction.GetType() == typeof(DummyContextAction))
         {
-            var dummyInput = new DummyContextActionInput("THIS IS A TEST");
+            var dummyInput = new DummyContextActionInput("TEST");
             PlayerManager.OnContextActionAdded(contextAction);
             ContextActionManager.AddAction(contextAction, dummyInput);
         }

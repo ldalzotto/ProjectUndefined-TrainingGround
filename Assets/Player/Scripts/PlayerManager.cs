@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -267,6 +268,10 @@ class PlayerPOITrackerManager
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(TrackerCollider.transform.position, PlayerPOITrackerManagerComponent.SphereDetectionRadius);
+            var labelStyle = GUI.skin.GetStyle("Label");
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.normal.textColor = Color.blue;
+            Handles.Label(TrackerCollider.transform.position + new Vector3(0, PlayerPOITrackerManagerComponent.SphereDetectionRadius, 0), "POI Trigger Sphere Detection", labelStyle);
         }
     }
 }
@@ -384,6 +389,7 @@ class PlayerPOIVisualHeadMovementManager
             for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
             {
                 Gizmos.DrawLine(playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i].position, LastNearestPOI.transform.position);
+                Handles.Label(LastNearestPOI.transform.position, "Targeted POI");
             }
         }
     }
