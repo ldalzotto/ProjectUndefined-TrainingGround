@@ -1,9 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ContextActionManager : MonoBehaviour
 {
+
+    private PlayerManager PlayerManager;
+
+    private void Start()
+    {
+        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+    }
 
     private List<AContextAction> ExecutedContextActions = new List<AContextAction>();
 
@@ -26,16 +34,28 @@ public class ContextActionManager : MonoBehaviour
 
     public void AddAction(AContextAction contextAction, AContextActionInput contextActionInput)
     {
-        contextAction.ExecuteAction(contextActionInput);
-        ExecutedContextActions.Add(contextAction);
-        //first tick for removing at the same frame if necessary
-        ProcessTick(0f, contextAction);
+        try
+        {
+            contextAction.ExecuteAction(contextActionInput);
+            PlayerManager.OnContextActionAdded(contextAction);
+            ExecutedContextActions.Add(contextAction);
+            //first tick for removing at the same frame if necessary
+            ProcessTick(0f, contextAction);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("An error occured while trying to execute ActionContext : " + contextAction.GetType() + " : " + e.Message, this);
+            Debug.LogError(e.GetBaseException().StackTrace);
+        }
+
+
     }
 
     IEnumerator RemoveContextAction(AContextAction contextAction)
     {
         yield return new WaitForEndOfFrame();
         ExecutedContextActions.Remove(contextAction);
+        contextAction.ResetState();
     }
 
 }
@@ -73,6 +93,11 @@ public abstract class AContextAction : MonoBehaviour
         return isFinished;
     }
 
+    internal void ResetState()
+    {
+        isFinished = false;
+        OnFinished = null;
+    }
 }
 
 [System.Serializable]

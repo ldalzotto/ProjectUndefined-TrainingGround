@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         var d = Time.deltaTime;
+
         ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);

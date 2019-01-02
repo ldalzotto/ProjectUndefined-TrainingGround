@@ -1,25 +1,26 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ContextActionWheelManager : MonoBehaviour
 {
-
-    [Header("TO REMOVE TEST")]
-    public bool SimulateContextAction;
-
-    private PlayerManager PlayerManager;
     private ContextActionManager ContextActionManager;
 
+    #region External dependecies
+    private ContextActionWheel ContextActionWheel;
+    #endregion
     private WheelActivityManager WheelActivityManager;
+    private WheelActionActivationManager WheelActionActivationManager;
 
     private void Start()
     {
         #region External Dependencies
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
+        ContextActionWheel = GameObject.FindObjectOfType<ContextActionWheel>();
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
         WheelActivityManager = new WheelActivityManager(GameInputManager);
+        WheelActionActivationManager = new WheelActionActivationManager(GameInputManager, ContextActionWheel);
     }
 
     public void Tick(float d)
@@ -33,26 +34,30 @@ public class ContextActionWheelManager : MonoBehaviour
             }
             else
             {
-                #region TO DELETE FOR TEST
-                if (SimulateContextAction)
+                var triggeredContextAction = WheelActionActivationManager.Tick();
+                if (triggeredContextAction != null)
                 {
-                    SleepWheel();
-                    SimulateContextAction = false;
-                    TriggerContextAction(GameObject.FindObjectOfType<DummyContextAction>());
+                    StartCoroutine(TriggerContextAction(triggeredContextAction));
                 }
-                #endregion
             }
+
+            ContextActionWheel.Tick(d);
         }
     }
 
-    //TODO, the triggered POI must be passed here
-    private void TriggerContextAction(AContextAction contextAction)
+    //TODO getting the POI for data valuate
+    private IEnumerator TriggerContextAction(AContextAction contextAction)
     {
+        yield return new WaitForEndOfFrame();
+        SleepWheel();
         if (contextAction.GetType() == typeof(DummyContextAction))
         {
             var dummyInput = new DummyContextActionInput("TEST");
-            PlayerManager.OnContextActionAdded(contextAction);
             ContextActionManager.AddAction(contextAction, dummyInput);
+        }
+        else if (contextAction.GetType() == typeof(DummyGrabAction))
+        {
+            ContextActionManager.AddAction(contextAction, null);
         }
 
     }
@@ -61,6 +66,7 @@ public class ContextActionWheelManager : MonoBehaviour
     public void AwakeWheel(WheelDisabled onWheelDisabledCallback, PointOfInterestType triggeredPOI)
     {
         Debug.Log(triggeredPOI.name);
+        ContextActionWheel.Init(triggeredPOI.ContextActions);
         WheelActivityManager.AwakeWheel();
         OnWheelDisabled += onWheelDisabledCallback;
     }
@@ -69,6 +75,7 @@ public class ContextActionWheelManager : MonoBehaviour
     #region Internal Events
     public void SleepWheel()
     {
+        ContextActionWheel.Exit();
         WheelActivityManager.SleepWheel();
         OnWheelDisabled.Invoke();
         OnWheelDisabled = null;
@@ -80,6 +87,27 @@ public class ContextActionWheelManager : MonoBehaviour
 
 }
 
+
+class WheelActionActivationManager
+{
+    private GameInputManager GameInputManager;
+    private ContextActionWheel ContextActionWheel;
+
+    public WheelActionActivationManager(GameInputManager gameInputManager, ContextActionWheel contextActionWheel)
+    {
+        GameInputManager = gameInputManager;
+        ContextActionWheel = contextActionWheel;
+    }
+
+    public AContextAction Tick()
+    {
+        if (GameInputManager.CurrentInput.ActionButtonD())
+        {
+            return ContextActionWheel.GetSelectedAction();
+        }
+        return null;
+    }
+}
 
 #region wheel activity
 class WheelActivityManager
@@ -98,13 +126,13 @@ class WheelActivityManager
     public void AwakeWheel()
     {
         isEnabled = true;
-        Debug.Log("Wheel enabled");
+        Debug.Log(Time.frameCount + " Wheel enabled");
     }
 
     public void SleepWheel()
     {
         isEnabled = false;
-        Debug.Log("Wheel disabled");
+        Debug.Log(Time.frameCount + " Wheel disabled");
     }
 
     public bool TickCancelInput()

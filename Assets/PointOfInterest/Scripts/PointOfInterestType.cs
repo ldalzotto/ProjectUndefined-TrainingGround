@@ -5,18 +5,19 @@ public class PointOfInterestType : MonoBehaviour
     [SerializeField]
     private float maxDistanceToInteractWithPlayer;
 
-    private AContextAction[] ContextActions;
+    private AContextAction[] contextActions;
 
     public float MaxDistanceToInteractWithPlayer { get => maxDistanceToInteractWithPlayer; }
+    public AContextAction[] ContextActions { get => contextActions; }
 
     private void Start()
     {
         var childActions = GetComponentsInChildren(typeof(AContextAction));
-        ContextActions = new AContextAction[childActions.Length];
+        contextActions = new AContextAction[childActions.Length];
 
-        for (var i = 0; i < ContextActions.Length; i++)
+        for (var i = 0; i < contextActions.Length; i++)
         {
-            ContextActions[i] = (AContextAction)childActions[i];
+            contextActions[i] = (AContextAction)childActions[i];
         }
 
     }

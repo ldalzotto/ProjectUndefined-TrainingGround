@@ -457,7 +457,7 @@ class PlayerPOIWheelTriggerManager
     {
         if (nearestPOI != null)
         {
-            if (GameInputManager.CurrentInput.ActionButtonDH())
+            if (GameInputManager.CurrentInput.ActionButtonD())
             {
                 if (Vector3.Distance(PlayerTransform.position, nearestPOI.transform.position) <= nearestPOI.MaxDistanceToInteractWithPlayer)
                 {
