@@ -9,21 +9,40 @@ public class ContextActionWheelManager : MonoBehaviour
     private PlayerManager PlayerManager;
     private ContextActionManager ContextActionManager;
 
+    private WheelActivityManager WheelActivityManager;
+
     private void Start()
     {
+        #region External Dependencies
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
+        GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        #endregion
+
+        WheelActivityManager = new WheelActivityManager(GameInputManager);
     }
 
     public void Tick(float d)
     {
-        #region TO DELETE FOR TEST
-        if (SimulateContextAction)
+        if (WheelActivityManager.IsEnabled)
         {
-            SimulateContextAction = false;
-            TriggerContextAction(GameObject.FindObjectOfType<DummyContextAction>());
+
+            if (WheelActivityManager.TickCancelInput())
+            {
+                SleepWheel();
+            }
+            else
+            {
+                #region TO DELETE FOR TEST
+                if (SimulateContextAction)
+                {
+                    SleepWheel();
+                    SimulateContextAction = false;
+                    TriggerContextAction(GameObject.FindObjectOfType<DummyContextAction>());
+                }
+                #endregion
+            }
         }
-        #endregion
     }
 
     //TODO, the triggered POI must be passed here
@@ -38,4 +57,60 @@ public class ContextActionWheelManager : MonoBehaviour
 
     }
 
+    #region External Events
+    public void AwakeWheel(WheelDisabled onWheelDisabledCallback, PointOfInterestType triggeredPOI)
+    {
+        Debug.Log(triggeredPOI.name);
+        WheelActivityManager.AwakeWheel();
+        OnWheelDisabled += onWheelDisabledCallback;
+    }
+    #endregion
+
+    #region Internal Events
+    public void SleepWheel()
+    {
+        WheelActivityManager.SleepWheel();
+        OnWheelDisabled.Invoke();
+        OnWheelDisabled = null;
+    }
+
+    public delegate void WheelDisabled();
+    private event WheelDisabled OnWheelDisabled;
+    #endregion
+
 }
+
+
+#region wheel activity
+class WheelActivityManager
+{
+    private bool isEnabled;
+
+    private GameInputManager GameInputManager;
+
+    public WheelActivityManager(GameInputManager gameInputManager)
+    {
+        GameInputManager = gameInputManager;
+    }
+
+    public bool IsEnabled { get => isEnabled; }
+
+    public void AwakeWheel()
+    {
+        isEnabled = true;
+        Debug.Log("Wheel enabled");
+    }
+
+    public void SleepWheel()
+    {
+        isEnabled = false;
+        Debug.Log("Wheel disabled");
+    }
+
+    public bool TickCancelInput()
+    {
+        return GameInputManager.CurrentInput.CancelButtonDH();
+    }
+
+}
+#endregion

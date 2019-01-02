@@ -17,10 +17,22 @@ public class GameInputManager : MonoBehaviour
         Vector3 LocomotionAxis();
         int LeftRotationCameraDH();
         int RightRotationCameraDH();
+        bool ActionButtonDH();
+        bool CancelButtonDH();
     }
 
     private class JoystickInput : XInput
     {
+        public bool ActionButtonDH()
+        {
+            return Input.GetButton("Action") || Input.GetButtonDown("Action");
+        }
+
+        public bool CancelButtonDH()
+        {
+            return Input.GetButton("Cancel") || Input.GetButtonDown("Cancel");
+        }
+
         public int LeftRotationCameraDH()
         {
             return Convert.ToInt32(Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKey(KeyCode.Joystick1Button4));
@@ -39,6 +51,16 @@ public class GameInputManager : MonoBehaviour
 
     private class KeyboardInput : XInput
     {
+        public bool ActionButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CancelButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
         public int LeftRotationCameraDH()
         {
             throw new NotImplementedException();
@@ -57,6 +79,16 @@ public class GameInputManager : MonoBehaviour
 
     private class MobileInput : XInput
     {
+        public bool ActionButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CancelButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
         public int LeftRotationCameraDH()
         {
             throw new NotImplementedException();

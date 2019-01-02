@@ -3,20 +3,24 @@
 [System.Serializable]
 public class DummyContextAction : AContextAction
 {
+
+    private float elapsedTime;
+
     public override bool ComputeFinishedConditions()
     {
-        return true;
+        return elapsedTime >= 2f;
     }
 
     public override void ExecuteAction(AContextActionInput ContextActionInput)
     {
         var actionInput = ContextActionInput as DummyContextActionInput;
+        elapsedTime = 0f;
         Debug.Log(Time.frameCount + actionInput.Text);
     }
 
     public override void Tick(float d)
     {
-
+        elapsedTime += d;
     }
 }
 

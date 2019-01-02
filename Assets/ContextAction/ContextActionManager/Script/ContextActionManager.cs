@@ -55,6 +55,7 @@ public abstract class AContextAction : MonoBehaviour
 
             if (ComputeFinishedConditions())
             {
+                Debug.Log("Action : " + this.name + " finished.");
                 isFinished = true;
                 OnFinished.Invoke();
                 OnFinished = null;

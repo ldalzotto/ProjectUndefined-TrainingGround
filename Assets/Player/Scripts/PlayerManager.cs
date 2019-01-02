@@ -20,6 +20,8 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerMoveManager PlayerMoveManager;
     private PlayerPOITrackerManager PlayerPOITrackerManager;
+    private PlayerPOIWheelTriggerManager PlayerPOIWheelTriggerManager;
+
     private PlayerPOIVisualHeadMovementManager PlayerPOIVisualHeadMovementManager;
 
     private PlayerContextActionManager PlayerContextActionManager;
@@ -28,8 +30,12 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
+        #region External dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         GameObject CameraPivotPoint = GameObject.FindGameObjectWithTag("CameraPivotPoint");
+        ContextActionWheelManager ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();
+        #endregion
+
         GameObject PlayerObject = GameObject.FindGameObjectWithTag("Player");
         Animator PlayerAnimator = GetComponentInChildren<Animator>();
         Rigidbody PlayerRigidBody = GetComponent<Rigidbody>();
@@ -40,6 +46,7 @@ public class PlayerManager : MonoBehaviour
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
         this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider);
+        this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
         this.PlayerContextActionManager = new PlayerContextActionManager();
         this.PlayerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
@@ -50,7 +57,7 @@ public class PlayerManager : MonoBehaviour
         CameraFollowManager.Tick(d, DampTime);
         CameraOrientationManager.Tick(d, CameraRotationSpeed);
 
-        if (PlayerContextActionManager.IsActionExecuting)
+        if (!IsAllowedToMove())
         {
             PlayerMoveManager.ResetSpeed();
         }
@@ -59,7 +66,12 @@ public class PlayerManager : MonoBehaviour
             PlayerMoveManager.Tick(d);
         }
 
-        PlayerPOITrackerManager.Tick(d);
+        if (IsAllowedToDoAnyInteractions())
+        {
+            PlayerPOITrackerManager.Tick(d);
+            PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.GetNearestPOI());
+        }
+
         PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
     }
 
@@ -70,18 +82,31 @@ public class PlayerManager : MonoBehaviour
 
     public void LateTick(float d)
     {
-        if (!PlayerContextActionManager.IsActionExecuting)
-        {
-            PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.GetNearestPOI());
-        }
-
+        PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.GetNearestPOI());
     }
 
     public void OnGizmoTick()
     {
-        PlayerPOITrackerManager.OnGizmoTick();
+        if (IsAllowedToDoAnyInteractions())
+        {
+            PlayerPOITrackerManager.OnGizmoTick();
+            PlayerPOIWheelTriggerManager.GizmoTick(PlayerPOITrackerManager.GetNearestPOI());
+        }
         PlayerPOIVisualHeadMovementManager.GizmoTick();
     }
+
+    #region Logical Conditions
+    private bool IsAllowedToMove()
+    {
+        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled;
+    }
+
+    private bool IsAllowedToDoAnyInteractions()
+    {
+        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled;
+    }
+
+    #endregion
 
     #region External Events
     public void TriggerEnter(Collider collider, CollisionTag source)
@@ -409,6 +434,51 @@ public class PlayerPOIVisualHeadMovementComponent
     [Tooltip("When head exits POI interest, indicates the minimum dot product from current head rotation and target to smooth out." +
         "If calculated dot < SmoothOutMaxDotProductLimit -> no smooth out, head is instantly rotating towards animation rotation.")]
     public float SmoothOutMaxDotProductLimit = 0.4f;
+}
+
+class PlayerPOIWheelTriggerManager
+{
+    private Transform PlayerTransform;
+    private GameInputManager GameInputManager;
+    private ContextActionWheelManager ContextActionWheelManager;
+
+    private bool wheelEnabled;
+
+    public bool WheelEnabled { get => wheelEnabled; }
+
+    public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelManager contextActionWheelManager)
+    {
+        PlayerTransform = playerTransform;
+        GameInputManager = gameInputManager;
+        ContextActionWheelManager = contextActionWheelManager;
+    }
+
+    public void Tick(float d, PointOfInterestType nearestPOI)
+    {
+        if (nearestPOI != null)
+        {
+            if (GameInputManager.CurrentInput.ActionButtonDH())
+            {
+                if (Vector3.Distance(PlayerTransform.position, nearestPOI.transform.position) <= nearestPOI.MaxDistanceToInteractWithPlayer)
+                {
+                    wheelEnabled = true;
+                    ContextActionWheelManager.AwakeWheel(() =>
+                    {
+                        wheelEnabled = false;
+                    }, nearestPOI);
+                }
+            }
+        }
+    }
+
+    public void GizmoTick(PointOfInterestType nearestPOI)
+    {
+        if (PlayerTransform != null && nearestPOI != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(nearestPOI.transform.position, (PlayerTransform.position - nearestPOI.transform.position).normalized * nearestPOI.MaxDistanceToInteractWithPlayer);
+        }
+    }
 }
 
 #endregion

@@ -2,8 +2,12 @@
 
 public class PointOfInterestType : MonoBehaviour
 {
+    [SerializeField]
+    private float maxDistanceToInteractWithPlayer;
 
     private AContextAction[] ContextActions;
+
+    public float MaxDistanceToInteractWithPlayer { get => maxDistanceToInteractWithPlayer; }
 
     private void Start()
     {
