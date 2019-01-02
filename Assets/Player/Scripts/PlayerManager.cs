@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -286,6 +285,7 @@ class PlayerPOIVisualHeadMovementManager
     private List<Quaternion> InterpolatedBoneRotations = new List<Quaternion>();
 
     private bool IsLookingToPOI;
+    private bool hasEndedSmoothingOut;
 
     public PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent playerPOIVisualHeadMovementComponent)
     {
@@ -313,6 +313,7 @@ class PlayerPOIVisualHeadMovementManager
                 }
 
                 IsLookingToPOI = true;
+                hasEndedSmoothingOut = false;
                 for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
                 {
                     var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
@@ -324,11 +325,43 @@ class PlayerPOIVisualHeadMovementManager
             else
             {
                 IsLookingToPOI = false;
+                if (!hasEndedSmoothingOut)
+                {
+                    SmoothSwitchToNoLooking(d);
+                }
             }
         }
         else
         {
             IsLookingToPOI = false;
+            if (!hasEndedSmoothingOut)
+            {
+                SmoothSwitchToNoLooking(d);
+            }
+        }
+    }
+
+    private void SmoothSwitchToNoLooking(float d)
+    {
+        for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
+        {
+            var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
+            var dotProductToTarget = Mathf.Abs(Quaternion.Dot(InterpolatedBoneRotations[i], affectedBone.rotation));
+
+            //too much angle to smooth -> direct transition
+            if (dotProductToTarget <= playerPOIVisualHeadMovementComponent.SmoothOutMaxDotProductLimit)
+            {
+                hasEndedSmoothingOut = true;
+            }
+            else if (dotProductToTarget <= 0.9999f)
+            {
+                affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], affectedBone.rotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
+                InterpolatedBoneRotations[i] = affectedBone.rotation;
+            }
+            else
+            {
+                hasEndedSmoothingOut = true;
+            }
         }
     }
 
@@ -366,6 +399,10 @@ public class PlayerPOIVisualHeadMovementComponent
     public float HeadMoveAngleLimit;
 
     public float SmoothMovementSpeed;
+    [Range(0.0f, 1.0f)]
+    [Tooltip("When head exits POI interest, indicates the minimum dot product from current head rotation and target to smooth out." +
+        "If calculated dot < SmoothOutMaxDotProductLimit -> no smooth out, head is instantly rotating towards animation rotation.")]
+    public float SmoothOutMaxDotProductLimit = 0.4f;
 }
 
 #endregion
