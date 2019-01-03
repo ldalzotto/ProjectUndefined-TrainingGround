@@ -56,7 +56,10 @@ public class ContextActionWheel : MonoBehaviour
         {
             for (var i = 0; i < transformToDestroy.Length; i++)
             {
-                Destroy(transformToDestroy[i].gameObject);
+                if (transformToDestroy[i] != null)
+                {
+                    Destroy(transformToDestroy[i].gameObject);
+                }
             }
         }));
 
