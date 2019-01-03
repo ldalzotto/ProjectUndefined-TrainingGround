@@ -9,6 +9,7 @@ public class AnimationConstants
 
     public class PlayerAnimationConstantsData
     {
+
         private string animationName;
         private int layerIndex;
 

@@ -67,6 +67,13 @@ public abstract class AContextAction : MonoBehaviour
     public abstract bool ComputeFinishedConditions();
     public abstract void Tick(float d);
 
+    private PointOfInterestType attachedPointOfInterest;
+
+    private void Start()
+    {
+        attachedPointOfInterest = GetComponentInParent<PointOfInterestType>();
+    }
+
     public void OnTick(float d)
     {
         if (!isFinished)
@@ -75,7 +82,6 @@ public abstract class AContextAction : MonoBehaviour
 
             if (ComputeFinishedConditions())
             {
-                Debug.Log("Action : " + this.name + " finished.");
                 isFinished = true;
                 OnFinished.Invoke();
                 OnFinished = null;
@@ -87,6 +93,8 @@ public abstract class AContextAction : MonoBehaviour
     public event ContextActionFinished OnFinished;
 
     private bool isFinished;
+
+    public PointOfInterestType AttachedPointOfInterest { get => attachedPointOfInterest; }
 
     public bool IsFinished()
     {

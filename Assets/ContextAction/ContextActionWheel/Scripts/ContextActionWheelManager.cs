@@ -54,7 +54,6 @@ public class ContextActionWheelManager : MonoBehaviour
         }
     }
 
-    //TODO getting the POI for data valuate
     private IEnumerator TriggerContextAction(AContextAction contextAction)
     {
         yield return new WaitForEndOfFrame();
@@ -68,7 +67,8 @@ public class ContextActionWheelManager : MonoBehaviour
         {
             var grabInput = new GrabActionInput(PlayerManager.GetPlayerAnimator(),
                 AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].AnimationName,
-                AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex);
+                AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex,
+                contextAction.AttachedPointOfInterest.Item);
             ContextActionManager.AddAction(contextAction, grabInput);
         }
 
