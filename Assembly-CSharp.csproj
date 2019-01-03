@@ -70,6 +70,7 @@
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionInputBuilder.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionResolver.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />

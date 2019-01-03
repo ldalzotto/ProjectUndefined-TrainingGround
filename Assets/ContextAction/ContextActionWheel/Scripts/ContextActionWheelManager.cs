@@ -58,20 +58,11 @@ public class ContextActionWheelManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         SleepWheel();
-        if (contextAction.GetType() == typeof(DummyContextAction))
+        var actionInput = ContextActionInputBuilder.Build(contextAction, PlayerManager);
+        if (actionInput != null)
         {
-            var dummyInput = new DummyContextActionInput("TEST");
-            ContextActionManager.AddAction(contextAction, dummyInput);
+            ContextActionManager.AddAction(contextAction, actionInput);
         }
-        else if (contextAction.GetType() == typeof(GrabAction))
-        {
-            var grabInput = new GrabActionInput(PlayerManager.GetPlayerAnimator(),
-                AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].AnimationName,
-                AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex,
-                contextAction.AttachedPointOfInterest.Item);
-            ContextActionManager.AddAction(contextAction, grabInput);
-        }
-
     }
 
     #region External Events
