@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
         ContextActionWheelManager ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();
         #endregion
 
-        GameObject PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        GameObject PlayerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
         Animator PlayerAnimator = GetComponentInChildren<Animator>();
         Rigidbody PlayerRigidBody = GetComponent<Rigidbody>();
 
@@ -132,6 +132,12 @@ public class PlayerManager : MonoBehaviour
         PlayerContextActionManager.OnContextActionAdded(contextAction);
     }
     #endregion
+
+    public Animator GetPlayerAnimator()
+    {
+        return PlayerAnimationDataManager.Animator;
+    }
+
 }
 
 #region Camera
@@ -489,16 +495,18 @@ class PlayerAnimationDataManager
 
     public const string SpeedMagnitude = "Speed";
 
-    private Animator Animator;
+    private Animator animator;
 
     public PlayerAnimationDataManager(Animator animator)
     {
-        Animator = animator;
+        this.animator = animator;
     }
+
+    public Animator Animator { get => animator; }
 
     public void Tick(float unscaledSpeedMagnitude)
     {
-        Animator.SetFloat(SpeedMagnitude, unscaledSpeedMagnitude);
+        animator.SetFloat(SpeedMagnitude, unscaledSpeedMagnitude);
     }
 
 }

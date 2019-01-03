@@ -65,9 +65,11 @@
     <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\_Collision\CollisionTag.cs" />
     <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
+    <Compile Include="Assets\_Constants\AnimationConstants.cs" />
+    <Compile Include="Assets\_Constants\TagConstants.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyGrabAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionResolver.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />

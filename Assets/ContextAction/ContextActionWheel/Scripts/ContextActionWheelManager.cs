@@ -3,30 +3,39 @@ using UnityEngine;
 
 public class ContextActionWheelManager : MonoBehaviour
 {
+
+    public WheelPositionManagerComponent WheelPositionManagerComponent;
+
     private ContextActionManager ContextActionManager;
 
     #region External dependecies
     private ContextActionWheel ContextActionWheel;
+    private PlayerManager PlayerManager;
     #endregion
     private WheelActivityManager WheelActivityManager;
     private WheelActionActivationManager WheelActionActivationManager;
+    private WheelPositionManager WheelPositionManager;
 
     private void Start()
     {
         #region External Dependencies
         ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
         ContextActionWheel = GameObject.FindObjectOfType<ContextActionWheel>();
+        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
         WheelActivityManager = new WheelActivityManager(GameInputManager);
         WheelActionActivationManager = new WheelActionActivationManager(GameInputManager, ContextActionWheel);
+        WheelPositionManager = new WheelPositionManager(GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform, WheelPositionManagerComponent, ContextActionWheel.transform);
     }
 
     public void Tick(float d)
     {
         if (WheelActivityManager.IsEnabled)
         {
+
+            WheelPositionManager.Tick();
 
             if (WheelActivityManager.TickCancelInput())
             {
@@ -55,9 +64,12 @@ public class ContextActionWheelManager : MonoBehaviour
             var dummyInput = new DummyContextActionInput("TEST");
             ContextActionManager.AddAction(contextAction, dummyInput);
         }
-        else if (contextAction.GetType() == typeof(DummyGrabAction))
+        else if (contextAction.GetType() == typeof(GrabAction))
         {
-            ContextActionManager.AddAction(contextAction, null);
+            var grabInput = new GrabActionInput(PlayerManager.GetPlayerAnimator(),
+                AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].AnimationName,
+                AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex);
+            ContextActionManager.AddAction(contextAction, grabInput);
         }
 
     }
@@ -106,6 +118,31 @@ class WheelActionActivationManager
         }
         return null;
     }
+}
+
+class WheelPositionManager
+{
+    private Transform PlayerTransform;
+    private WheelPositionManagerComponent WheelPositionManagerComponent;
+    private Transform ContextActionWheelTransform;
+
+    public WheelPositionManager(Transform playerTransform, WheelPositionManagerComponent wheelPositionManagerComponent, Transform contextActionWheelTransform)
+    {
+        PlayerTransform = playerTransform;
+        WheelPositionManagerComponent = wheelPositionManagerComponent;
+        ContextActionWheelTransform = contextActionWheelTransform;
+    }
+
+    public void Tick()
+    {
+        ContextActionWheelTransform.position = Camera.main.WorldToScreenPoint(PlayerTransform.position + new Vector3(0, WheelPositionManagerComponent.UpDistanceFromPlayer, 0));
+    }
+}
+
+[System.Serializable]
+public class WheelPositionManagerComponent
+{
+    public float UpDistanceFromPlayer;
 }
 
 #region wheel activity
