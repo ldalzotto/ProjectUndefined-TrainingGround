@@ -11,13 +11,16 @@ public class DummyContextAction : AContextAction
         return elapsedTime >= 2f;
     }
 
+    public override void OnStart()
+    {
+    }
+
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
         var actionInput = ContextActionInput as DummyContextActionInput;
         elapsedTime = 0f;
         Debug.Log(Time.frameCount + actionInput.Text);
     }
-
     public override void Tick(float d)
     {
         elapsedTime += d;

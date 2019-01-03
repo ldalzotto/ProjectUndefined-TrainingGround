@@ -8,7 +8,7 @@ public class ContextActionManager : MonoBehaviour
 
     private PlayerManager PlayerManager;
 
-    private void Start()
+    protected void Start()
     {
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
     }
@@ -63,6 +63,7 @@ public class ContextActionManager : MonoBehaviour
 [System.Serializable]
 public abstract class AContextAction : MonoBehaviour
 {
+    public abstract void OnStart();
     public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
     public abstract bool ComputeFinishedConditions();
     public abstract void Tick(float d);
@@ -72,6 +73,7 @@ public abstract class AContextAction : MonoBehaviour
     private void Start()
     {
         attachedPointOfInterest = GetComponentInParent<PointOfInterestType>();
+        OnStart();
     }
 
     public void OnTick(float d)

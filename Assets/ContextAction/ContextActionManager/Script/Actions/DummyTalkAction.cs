@@ -11,6 +11,10 @@ public class DummyTalkAction : AContextAction
         throw new System.NotImplementedException();
     }
 
+    public override void OnStart()
+    {
+    }
+
     public override void Tick(float d)
     {
         throw new System.NotImplementedException();

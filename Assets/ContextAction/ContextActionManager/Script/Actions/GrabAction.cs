@@ -5,8 +5,21 @@ public class GrabAction : AContextAction
 {
     private GrabActionInput grabActionInput;
     private bool animationEnded;
+
+    private InventoryManager InventoryManager;
+
+    public override void OnStart()
+    {
+        InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+    }
+
+
     public override bool ComputeFinishedConditions()
     {
+        if (animationEnded)
+        {
+            StartCoroutine(DostroyPOICoroutine());
+        }
         return animationEnded;
     }
 
@@ -27,9 +40,16 @@ public class GrabAction : AContextAction
         grabActionInput.PlayerAnimator.Play(grabActionInput.AnimationName);
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfAnimation(grabActionInput.PlayerAnimator, grabActionInput.AnimationName, grabActionInput.LayerIndex);
-        Debug.Log("//TODO -> Add : " + grabActionInput.GrabbedItem.name + " to inventory.");
+        InventoryManager.AddItem(grabActionInput.GrabbedItem);
         animationEnded = true;
     }
+
+    private IEnumerator DostroyPOICoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        Destroy(transform.parent.gameObject);
+    }
+
 }
 
 public class GrabActionInput : AContextActionInput
