@@ -65,7 +65,6 @@ public class ContextActionWheelManager : MonoBehaviour
     #region External Events
     public void AwakeWheel(WheelDisabled onWheelDisabledCallback, PointOfInterestType triggeredPOI)
     {
-        Debug.Log(triggeredPOI.name);
         ContextActionWheel.Init(triggeredPOI.ContextActions);
         WheelActivityManager.AwakeWheel();
         OnWheelDisabled += onWheelDisabledCallback;
@@ -126,13 +125,11 @@ class WheelActivityManager
     public void AwakeWheel()
     {
         isEnabled = true;
-        Debug.Log(Time.frameCount + " Wheel enabled");
     }
 
     public void SleepWheel()
     {
         isEnabled = false;
-        Debug.Log(Time.frameCount + " Wheel disabled");
     }
 
     public bool TickCancelInput()

@@ -6,7 +6,7 @@ public class DummyTalkAction : AContextAction
         throw new System.NotImplementedException();
     }
 
-    public override void ExecuteAction(AContextActionInput ContextActionInput)
+    public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
         throw new System.NotImplementedException();
     }

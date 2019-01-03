@@ -36,7 +36,7 @@ public class ContextActionManager : MonoBehaviour
     {
         try
         {
-            contextAction.ExecuteAction(contextActionInput);
+            contextAction.FirstExecutionAction(contextActionInput);
             PlayerManager.OnContextActionAdded(contextAction);
             ExecutedContextActions.Add(contextAction);
             //first tick for removing at the same frame if necessary
@@ -63,7 +63,7 @@ public class ContextActionManager : MonoBehaviour
 [System.Serializable]
 public abstract class AContextAction : MonoBehaviour
 {
-    public abstract void ExecuteAction(AContextActionInput ContextActionInput);
+    public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
     public abstract bool ComputeFinishedConditions();
     public abstract void Tick(float d);
 

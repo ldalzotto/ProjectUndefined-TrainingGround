@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ContextActionWheel : MonoBehaviour
 {
 
     private const string ACTION_NODE_CONTAINER_OBJECT_NAME = "ActionNodesContainer";
 
-    public Material ImageMaterial;
+    public Material NonSelectedMaterial;
+    public Material SelectedMaterial;
+
     public ActionWheelNodePositionManagerComponent ActionWheelNodePositionManagerComponent;
 
     private ActionWheelNodePositionManager ActionWheelNodePositionManager;
+    private ActionWheelActiveNodeManager ActionWheelActiveNodeManager;
     private ContextActionWhelleEnterExitAnimationManager ContextActionWhelleEnterExitAnimationManager;
     private WheelActionNode[] wheelActionNodes;
 
     private void Start()
     {
         ContextActionWhelleEnterExitAnimationManager = new ContextActionWhelleEnterExitAnimationManager(GetComponent<Animator>());
+        ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(NonSelectedMaterial, SelectedMaterial);
     }
 
     public void Init(AContextAction[] wheelContextActions)
@@ -26,17 +29,18 @@ public class ContextActionWheel : MonoBehaviour
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
-        ActionWheelNodePositionManager = new ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent, GameInputManager);
+        ActionWheelNodePositionManager = new ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
         wheelActionNodes = new WheelActionNode[wheelContextActions.Length];
         var actionNodeContainerObject = transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
         for (var i = 0; i < wheelContextActions.Length; i++)
         {
-            var actionNode = WheelActionNode.Instantiate(wheelContextActions[i], ImageMaterial);
+            var actionNode = WheelActionNode.Instantiate(wheelContextActions[i]);
             actionNode.transform.SetParent(actionNodeContainerObject, false);
             wheelActionNodes[i] = actionNode;
         }
         ActionWheelNodePositionManager.InitNodes(wheelActionNodes);
         ContextActionWhelleEnterExitAnimationManager.Init();
+        ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
     }
 
     public void Exit()
@@ -65,16 +69,10 @@ public class ContextActionWheel : MonoBehaviour
         ActionWheelNodePositionManager.Tick(d, wheelActionNodes);
     }
 
+
     public AContextAction GetSelectedAction()
     {
-        for (var i = 0; i < wheelActionNodes.Length; i++)
-        {
-            if (wheelActionNodes[i].TargetWheelAngleDeg % 360 == 0)
-            {
-                return wheelActionNodes[i].AssociatedContextAction;
-            }
-        }
-        return null;
+        return ActionWheelActiveNodeManager.ActiveNode.AssociatedContextAction;
     }
 }
 
@@ -83,13 +81,15 @@ class ActionWheelNodePositionManager
 {
     private ActionWheelNodePositionManagerComponent ActionWheelNodePositionManagerComponent;
     private GameInputManager GameInputManager;
+    private ActionWheelActiveNodeManager ActionWheelActiveNodeManager;
 
     private bool isRotating = false;
 
-    public ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent actionWheelNodePositionManagerComponent, GameInputManager gameInputManager)
+    public ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent actionWheelNodePositionManagerComponent, GameInputManager gameInputManager, ActionWheelActiveNodeManager actionWheelActiveNodeManager)
     {
         ActionWheelNodePositionManagerComponent = actionWheelNodePositionManagerComponent;
         GameInputManager = gameInputManager;
+        ActionWheelActiveNodeManager = actionWheelActiveNodeManager;
     }
 
     public void Tick(float d, WheelActionNode[] wheelActionNodes)
@@ -104,6 +104,7 @@ class ActionWheelNodePositionManager
                 {
                     wheelActionNodes[i].TargetWheelAngleDeg += (360 / wheelActionNodes.Length);
                 }
+                ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
             }
             else if (joystickAxis.x <= -0.5)
             {
@@ -112,6 +113,7 @@ class ActionWheelNodePositionManager
                 {
                     wheelActionNodes[i].TargetWheelAngleDeg -= (360 / wheelActionNodes.Length);
                 }
+                ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
             }
         }
 
@@ -164,31 +166,42 @@ public class ActionWheelNodePositionManagerComponent
     public float DistanceFromCenter;
     public float RotationSpeed;
 }
-#endregion
 
-class WheelActionNode : MonoBehaviour
+class ActionWheelActiveNodeManager
 {
+    private WheelActionNode activeNode;
 
-    private float targetWheelAngleDeg;
-    private float currentAngleDeg;
+    public WheelActionNode ActiveNode { get => activeNode; }
 
-    private AContextAction associatedContextAction;
+    private Material nonSelectedMaterial;
+    private Material selectedMaterial;
 
-    public float TargetWheelAngleDeg { get => targetWheelAngleDeg; set => targetWheelAngleDeg = value; }
-    public float CurrentAngleDeg { get => currentAngleDeg; set => currentAngleDeg = value; }
-    public AContextAction AssociatedContextAction { get => associatedContextAction; set => associatedContextAction = value; }
-
-    public static WheelActionNode Instantiate(AContextAction contextAction, Material imageMaterial)
+    public ActionWheelActiveNodeManager(Material nonSelectedMaterial, Material selectedMaterial)
     {
-        var obj = new GameObject(contextAction.name + "_node_wheel");
-        var wheelActionNode = obj.AddComponent<WheelActionNode>();
-        var imageComponent = obj.AddComponent<Image>();
-        imageComponent.sprite = ContextActionIconResolver.ResolveIcon(contextAction.GetType());
-        imageComponent.material = imageMaterial;
-        wheelActionNode.AssociatedContextAction = contextAction;
-        return wheelActionNode;
+        this.nonSelectedMaterial = nonSelectedMaterial;
+        this.selectedMaterial = selectedMaterial;
+    }
+
+    public void SelectedNodeChanged(WheelActionNode[] wheelActionNodes)
+    {
+        if (activeNode != null)
+        {
+            activeNode.SetMaterial(nonSelectedMaterial);
+        }
+
+        for (var i = 0; i < wheelActionNodes.Length; i++)
+        {
+            if (wheelActionNodes[i].TargetWheelAngleDeg % 360 == 0)
+            {
+                activeNode = wheelActionNodes[i];
+                activeNode.SetMaterial(selectedMaterial);
+                return;
+            }
+        }
+
     }
 }
+#endregion
 
 #region Wheel Enter/Exit animations
 class ContextActionWhelleEnterExitAnimationManager

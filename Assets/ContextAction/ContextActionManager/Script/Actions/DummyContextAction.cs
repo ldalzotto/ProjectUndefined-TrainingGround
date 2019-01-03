@@ -11,7 +11,7 @@ public class DummyContextAction : AContextAction
         return elapsedTime >= 2f;
     }
 
-    public override void ExecuteAction(AContextActionInput ContextActionInput)
+    public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
         var actionInput = ContextActionInput as DummyContextActionInput;
         elapsedTime = 0f;

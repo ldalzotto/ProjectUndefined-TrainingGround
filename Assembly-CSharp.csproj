@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
+    <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\_Collision\CollisionTag.cs" />
     <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
@@ -71,11 +72,13 @@
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionResolver.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Test\CAT.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <None Include="Assets\ContextAction\ContextActionWheel\Shader\ContextActionWheelNodeShader.shader" />
+    <None Include="Assets\ContextAction\ContextActionWheel\Shader\ContextActionWheelSelectedNodeShader.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
