@@ -131,6 +131,10 @@ public class PlayerManager : MonoBehaviour
     {
         PlayerContextActionManager.OnContextActionAdded(contextAction);
     }
+    public void OnPOIDestroyed(PointOfInterestType pointOfInterestType)
+    {
+        PlayerPOITrackerManager.POIDeleted(pointOfInterestType);
+    }
     #endregion
 
     public Animator GetPlayerAnimator()
@@ -291,6 +295,14 @@ class PlayerPOITrackerManager
             }
         }
         return nearestPoi;
+    }
+
+    public void POIDeleted(PointOfInterestType deletedPOI)
+    {
+        if (InRangePointOfInterests.Contains(deletedPOI))
+        {
+            InRangePointOfInterests.Remove(deletedPOI);
+        }
     }
 
     public void OnGizmoTick()

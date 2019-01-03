@@ -7,10 +7,12 @@ public class GrabAction : AContextAction
     private bool animationEnded;
 
     private InventoryManager InventoryManager;
+    private PointOfInterestEventManager PointOfInterestEventManager;
 
     public override void OnStart()
     {
         InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+        PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
     }
 
 
@@ -18,7 +20,7 @@ public class GrabAction : AContextAction
     {
         if (animationEnded)
         {
-            StartCoroutine(DostroyPOICoroutine());
+            PointOfInterestEventManager.DestroyPOI(GetComponentInParent<PointOfInterestType>());
         }
         return animationEnded;
     }
@@ -42,12 +44,6 @@ public class GrabAction : AContextAction
         yield return new WaitForEndOfAnimation(grabActionInput.PlayerAnimator, grabActionInput.AnimationName, grabActionInput.LayerIndex);
         InventoryManager.AddItem(grabActionInput.GrabbedItem);
         animationEnded = true;
-    }
-
-    private IEnumerator DostroyPOICoroutine()
-    {
-        yield return new WaitForEndOfFrame();
-        Destroy(transform.parent.gameObject);
     }
 
 }

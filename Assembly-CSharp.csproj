@@ -81,6 +81,7 @@
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <None Include="Assets\ContextAction\ContextActionWheel\Shader\ContextActionWheelNodeShader.shader" />
     <None Include="Assets\ContextAction\ContextActionWheel\Shader\ContextActionWheelSelectedNodeShader.shader" />

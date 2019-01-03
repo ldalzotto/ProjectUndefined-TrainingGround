@@ -22,7 +22,6 @@ public class PointOfInterestType : MonoBehaviour
         {
             contextActions[i] = (AContextAction)childActions[i];
         }
-
     }
 
 }
