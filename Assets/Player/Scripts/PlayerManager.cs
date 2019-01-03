@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerPOIVisualHeadMovementManager PlayerPOIVisualHeadMovementManager;
 
     private PlayerContextActionManager PlayerContextActionManager;
+    private PlayerInventoryTriggerManager PlayerInventoryTriggerManager;
 
     private PlayerAnimationDataManager PlayerAnimationDataManager;
 
@@ -34,6 +35,7 @@ public class PlayerManager : MonoBehaviour
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         GameObject CameraPivotPoint = GameObject.FindGameObjectWithTag("CameraPivotPoint");
         ContextActionWheelManager ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();
+        InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         #endregion
 
         GameObject PlayerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
@@ -49,6 +51,7 @@ public class PlayerManager : MonoBehaviour
         this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
         this.PlayerContextActionManager = new PlayerContextActionManager();
+        this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
         this.PlayerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
     }
 
@@ -69,9 +72,13 @@ public class PlayerManager : MonoBehaviour
         if (IsAllowedToDoAnyInteractions())
         {
             PlayerPOITrackerManager.Tick(d);
-            PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.GetNearestPOI());
-        }
 
+            //if statement to avoid processing inpout at the same frame
+            if (!PlayerInventoryTriggerManager.Tick())
+            {
+                PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.GetNearestPOI());
+            }
+        }
         PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
     }
 
@@ -98,12 +105,12 @@ public class PlayerManager : MonoBehaviour
     #region Logical Conditions
     private bool IsAllowedToMove()
     {
-        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled;
+        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed;
     }
 
     private bool IsAllowedToDoAnyInteractions()
     {
-        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled;
+        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed;
     }
 
     #endregion
@@ -134,6 +141,14 @@ public class PlayerManager : MonoBehaviour
     public void OnPOIDestroyed(PointOfInterestType pointOfInterestType)
     {
         PlayerPOITrackerManager.POIDeleted(pointOfInterestType);
+    }
+    public void OnInventoryEnabled()
+    {
+        PlayerInventoryTriggerManager.OnInventoryEnabled();
+    }
+    public void OnInventoryDisabled()
+    {
+        PlayerInventoryTriggerManager.OnInventoryDisabled();
     }
     #endregion
 
@@ -541,4 +556,45 @@ class PlayerContextActionManager
     }
 }
 
+#endregion
+
+#region Inventory Trigger
+class PlayerInventoryTriggerManager
+{
+    private GameInputManager GameInputManager;
+    private InventoryEventManager InventoryEventManager;
+
+    private bool isInventoryDisplayed;
+
+    public bool IsInventoryDisplayed { get => isInventoryDisplayed; }
+
+    public PlayerInventoryTriggerManager(GameInputManager gameInputManager, InventoryEventManager inventoryEventManager)
+    {
+        GameInputManager = gameInputManager;
+        InventoryEventManager = inventoryEventManager;
+    }
+
+    public bool Tick()
+    {
+        if (!isInventoryDisplayed)
+        {
+            if (GameInputManager.CurrentInput.InventoryButtonD())
+            {
+                InventoryEventManager.OnInventoryEnabled();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void OnInventoryEnabled()
+    {
+        isInventoryDisplayed = true;
+    }
+
+    public void OnInventoryDisabled()
+    {
+        isInventoryDisplayed = false;
+    }
+}
 #endregion

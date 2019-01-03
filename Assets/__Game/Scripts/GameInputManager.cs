@@ -19,6 +19,7 @@ public class GameInputManager : MonoBehaviour
         int RightRotationCameraDH();
         bool ActionButtonDH();
         bool ActionButtonD();
+        bool InventoryButtonD();
         bool CancelButtonDH();
     }
 
@@ -37,6 +38,11 @@ public class GameInputManager : MonoBehaviour
         public bool CancelButtonDH()
         {
             return Input.GetButton("Cancel") || Input.GetButtonDown("Cancel");
+        }
+
+        public bool InventoryButtonD()
+        {
+            return Input.GetButtonDown("Inventory");
         }
 
         public int LeftRotationCameraDH()
@@ -72,6 +78,11 @@ public class GameInputManager : MonoBehaviour
             throw new NotImplementedException();
         }
 
+        public bool InventoryButtonD()
+        {
+            throw new NotImplementedException();
+        }
+
         public int LeftRotationCameraDH()
         {
             throw new NotImplementedException();
@@ -101,6 +112,11 @@ public class GameInputManager : MonoBehaviour
         }
 
         public bool CancelButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool InventoryButtonD()
         {
             throw new NotImplementedException();
         }
