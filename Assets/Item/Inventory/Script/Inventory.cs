@@ -67,9 +67,16 @@ public class Inventory : MonoBehaviour
 
     }
 
+    public void TickAnimation(float d)
+    {
+        if (IsAnimating())
+        {
+            InventoryAnimationManager.Tick(d);
+        }
+    }
+
     public void Tick(float d)
     {
-        InventoryAnimationManager.Tick(d);
     }
 
     #region External Events
@@ -80,6 +87,13 @@ public class Inventory : MonoBehaviour
     public void OnInventoryDisabled()
     {
         InventoryAnimationManager.OnInventoryDisabled();
+    }
+    #endregion
+
+    #region Functional conditions
+    public bool IsAnimating()
+    {
+        return InventoryAnimationManager.IsAnimating;
     }
     #endregion
 }
@@ -125,6 +139,10 @@ class InventoryAnimationManager
     private InventoryAnimationManagerComponent InventoryAnimationManagerComponent;
     private RectTransform inventoryTransform;
 
+    private bool isAnimating;
+
+    public bool IsAnimating { get => isAnimating; }
+
     public InventoryAnimationManager(InventoryAnimationManagerComponent inventoryAnimationManagerComponent, RectTransform inventoryTransform)
     {
         InventoryAnimationManagerComponent = inventoryAnimationManagerComponent;
@@ -140,17 +158,25 @@ class InventoryAnimationManager
 
     public void OnInventoryEnabled()
     {
+        isAnimating = true;
         currentTargetLocalY = finalLocalY;
     }
 
     public void OnInventoryDisabled()
     {
+        isAnimating = true;
         currentTargetLocalY = initialLocalY;
     }
 
     public void Tick(float d)
     {
         this.inventoryTransform.anchoredPosition = new Vector2(inventoryTransform.anchoredPosition.x, Mathf.Lerp(inventoryTransform.anchoredPosition.y, currentTargetLocalY, d * InventoryAnimationManagerComponent.TransitionSpeed));
+
+        if (Mathf.Abs(inventoryTransform.anchoredPosition.y - currentTargetLocalY) <= 0.001f)
+        {
+            this.isAnimating = false;
+            this.inventoryTransform.anchoredPosition = new Vector2(inventoryTransform.anchoredPosition.x, currentTargetLocalY);
+        }
     }
 
 }

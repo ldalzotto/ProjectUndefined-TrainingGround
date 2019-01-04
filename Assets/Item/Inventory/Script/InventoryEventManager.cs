@@ -21,7 +21,6 @@ public class InventoryEventManager : MonoBehaviour
 
     public void OnInventoryEnabled()
     {
-        Debug.Log("Inventory enabled");
         PlayerManager.OnInventoryEnabled();
         StartCoroutine(InventoryManager.OnInventoryEnabled());
         Inventory.OnInventoryEnabled();
@@ -29,7 +28,6 @@ public class InventoryEventManager : MonoBehaviour
 
     public void OnInventoryDisabled()
     {
-        Debug.Log("Inventory disabled");
         PlayerManager.OnInventoryDisabled();
         InventoryManager.OnInventoryDisabled();
         Inventory.OnInventoryDisabled();

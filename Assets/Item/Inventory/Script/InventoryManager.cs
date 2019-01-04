@@ -32,6 +32,8 @@ public class InventoryManager : MonoBehaviour
             Inventory.Tick(d);
             InventoryExitTriggerManager.Tick();
         }
+
+        Inventory.TickAnimation(d);
     }
 
     #region Logical Conditions
