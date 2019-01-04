@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ContextActionManager : MonoBehaviour
 {
-
-    private PlayerManager PlayerManager;
-
-    protected void Start()
-    {
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-    }
 
     private List<AContextAction> ExecutedContextActions = new List<AContextAction>();
 
@@ -32,32 +24,24 @@ public class ContextActionManager : MonoBehaviour
         }
     }
 
-    public void AddAction(AContextAction contextAction, AContextActionInput contextActionInput)
-    {
-        try
-        {
-            contextAction.FirstExecutionAction(contextActionInput);
-            PlayerManager.OnContextActionAdded(contextAction);
-            ExecutedContextActions.Add(contextAction);
-            //first tick for removing at the same frame if necessary
-            ProcessTick(0f, contextAction);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("An error occured while trying to execute ActionContext : " + contextAction.GetType() + " : " + e.Message, this);
-            Debug.LogError(e.GetBaseException().StackTrace);
-        }
-
-
-    }
-
+    #region Internal Events
     IEnumerator RemoveContextAction(AContextAction contextAction)
     {
         yield return new WaitForEndOfFrame();
         ExecutedContextActions.Remove(contextAction);
         contextAction.ResetState();
     }
+    #endregion
 
+    #region External Events
+    public void OnAddAction(AContextAction contextAction, AContextActionInput contextActionInput)
+    {
+        contextAction.FirstExecutionAction(contextActionInput);
+        ExecutedContextActions.Add(contextAction);
+        //first tick for removing at the same frame if necessary
+        ProcessTick(0f, contextAction);
+    }
+    #endregion
 }
 
 [System.Serializable]
@@ -69,10 +53,12 @@ public abstract class AContextAction : MonoBehaviour
     public abstract void Tick(float d);
 
     private PointOfInterestType attachedPointOfInterest;
+    private ContextActionEventManager ContextActionEventManager;
 
     private void Start()
     {
         attachedPointOfInterest = GetComponentInParent<PointOfInterestType>();
+        ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
         OnStart();
     }
 
@@ -85,14 +71,10 @@ public abstract class AContextAction : MonoBehaviour
             if (ComputeFinishedConditions())
             {
                 isFinished = true;
-                OnFinished.Invoke();
-                OnFinished = null;
+                ContextActionEventManager.OnContextActionFinished();
             }
         }
     }
-
-    public delegate void ContextActionFinished();
-    public event ContextActionFinished OnFinished;
 
     private bool isFinished;
 
@@ -106,7 +88,6 @@ public abstract class AContextAction : MonoBehaviour
     internal void ResetState()
     {
         isFinished = false;
-        OnFinished = null;
     }
 }
 

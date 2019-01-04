@@ -6,11 +6,12 @@ public class ContextActionWheelManager : MonoBehaviour
 
     public WheelPositionManagerComponent WheelPositionManagerComponent;
 
-    private ContextActionManager ContextActionManager;
+    private ContextActionEventManager ContextActionEventManager;
 
     #region External dependecies
     private ContextActionWheel ContextActionWheel;
     private PlayerManager PlayerManager;
+    private ContextActionWheelEventManager ContextActionWheelEventManager;
     #endregion
     private WheelActivityManager WheelActivityManager;
     private WheelActionActivationManager WheelActionActivationManager;
@@ -19,9 +20,10 @@ public class ContextActionWheelManager : MonoBehaviour
     private void Start()
     {
         #region External Dependencies
-        ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
+        ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
         ContextActionWheel = GameObject.FindObjectOfType<ContextActionWheel>();
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
@@ -61,32 +63,23 @@ public class ContextActionWheelManager : MonoBehaviour
         var actionInput = ContextActionInputBuilder.Build(contextAction, PlayerManager);
         if (actionInput != null)
         {
-            ContextActionManager.AddAction(contextAction, actionInput);
+            ContextActionEventManager.OnContextActionAdded(contextAction, actionInput);
         }
     }
 
     #region External Events
-    public void AwakeWheel(WheelDisabled onWheelDisabledCallback, PointOfInterestType triggeredPOI)
+    public void OnAwakeWheel(PointOfInterestType triggeredPOI)
     {
         ContextActionWheel.Init(triggeredPOI.ContextActions);
         WheelActivityManager.AwakeWheel();
-        OnWheelDisabled += onWheelDisabledCallback;
     }
-    #endregion
-
-    #region Internal Events
     public void SleepWheel()
     {
         ContextActionWheel.Exit();
         WheelActivityManager.SleepWheel();
-        OnWheelDisabled.Invoke();
-        OnWheelDisabled = null;
+        ContextActionWheelEventManager.OnWheelDisabled();
     }
-
-    public delegate void WheelDisabled();
-    private event WheelDisabled OnWheelDisabled;
     #endregion
-
 }
 
 

@@ -70,13 +70,16 @@
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionInputBuilder.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionResolver.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Test\CAT.cs" />
+    <Compile Include="Assets\Item\Inventory\Script\Inventory.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />

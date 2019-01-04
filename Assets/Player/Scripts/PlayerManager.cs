@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
         #region External dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         GameObject CameraPivotPoint = GameObject.FindGameObjectWithTag("CameraPivotPoint");
-        ContextActionWheelManager ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();
+        ContextActionWheelEventManager ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
         InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         #endregion
 
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
         this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider);
-        this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelManager);
+        this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
         this.PlayerContextActionManager = new PlayerContextActionManager();
         this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
@@ -137,6 +137,14 @@ public class PlayerManager : MonoBehaviour
     public void OnContextActionAdded(AContextAction contextAction)
     {
         PlayerContextActionManager.OnContextActionAdded(contextAction);
+    }
+    public void OnContextActionFinished()
+    {
+        PlayerContextActionManager.OnContextActionFinished();
+    }
+    public void OnWheelDisabled()
+    {
+        PlayerPOIWheelTriggerManager.OnWheelDisabled();
     }
     public void OnPOIDestroyed(PointOfInterestType pointOfInterestType)
     {
@@ -473,17 +481,17 @@ class PlayerPOIWheelTriggerManager
 {
     private Transform PlayerTransform;
     private GameInputManager GameInputManager;
-    private ContextActionWheelManager ContextActionWheelManager;
+    private ContextActionWheelEventManager ContextActionWheelEventManager;
 
     private bool wheelEnabled;
 
     public bool WheelEnabled { get => wheelEnabled; }
 
-    public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelManager contextActionWheelManager)
+    public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelEventManager contextActionWheelEventManager)
     {
         PlayerTransform = playerTransform;
         GameInputManager = gameInputManager;
-        ContextActionWheelManager = contextActionWheelManager;
+        ContextActionWheelEventManager = contextActionWheelEventManager;
     }
 
     public void Tick(float d, PointOfInterestType nearestPOI)
@@ -495,13 +503,15 @@ class PlayerPOIWheelTriggerManager
                 if (Vector3.Distance(PlayerTransform.position, nearestPOI.transform.position) <= nearestPOI.MaxDistanceToInteractWithPlayer)
                 {
                     wheelEnabled = true;
-                    ContextActionWheelManager.AwakeWheel(() =>
-                    {
-                        wheelEnabled = false;
-                    }, nearestPOI);
+                    ContextActionWheelEventManager.OnWheelEnabled(nearestPOI);
                 }
             }
         }
+    }
+
+    public void OnWheelDisabled()
+    {
+        wheelEnabled = false;
     }
 
     public void GizmoTick(PointOfInterestType nearestPOI)
@@ -548,11 +558,12 @@ class PlayerContextActionManager
 
     public void OnContextActionAdded(AContextAction contextAction)
     {
-        contextAction.OnFinished += () =>
-        {
-            isActionExecuting = false;
-        };
         isActionExecuting = true;
+    }
+
+    public void OnContextActionFinished()
+    {
+        isActionExecuting = false;
     }
 }
 
