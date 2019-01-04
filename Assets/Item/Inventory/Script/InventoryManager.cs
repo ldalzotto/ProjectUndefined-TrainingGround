@@ -6,13 +6,10 @@ public class InventoryManager : MonoBehaviour
 {
     private HashSet<Item> holdItems = new HashSet<Item>();
 
-    public void AddItem(Item item)
-    {
-        holdItems.Add(item);
-    }
 
     private InventoryExitTriggerManager InventoryExitTriggerManager;
     private InventoryStateWorkflowManager InventoryStateWorkflowManager;
+    private Inventory Inventory;
 
     private void Start()
     {
@@ -21,6 +18,7 @@ public class InventoryManager : MonoBehaviour
         var InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         #endregion
 
+        Inventory = GameObject.FindObjectOfType<Inventory>();
         InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
         InventoryStateWorkflowManager = new InventoryStateWorkflowManager();
     }
@@ -31,6 +29,7 @@ public class InventoryManager : MonoBehaviour
         if (IsInventoryEnabled())
         {
             //TODO logic
+            Inventory.Tick(d);
             InventoryExitTriggerManager.Tick();
         }
     }
@@ -43,6 +42,10 @@ public class InventoryManager : MonoBehaviour
     #endregion
 
     #region External Events
+    public void OnAddItem(Item item)
+    {
+        holdItems.Add(item);
+    }
     public IEnumerator OnInventoryEnabled()
     {
         yield return new WaitForEndOfFrame();

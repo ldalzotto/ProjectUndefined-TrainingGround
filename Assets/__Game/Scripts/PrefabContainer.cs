@@ -6,6 +6,7 @@ public class PrefabContainer : MonoBehaviour
     private static PrefabContainer instance;
 
     public GameObject ActionWheelNodePrefab;
+    public GameObject InventoryMenuCellPrefab;
 
     public static PrefabContainer Instance
     {

@@ -6,12 +6,12 @@ public class GrabAction : AContextAction
     private GrabActionInput grabActionInput;
     private bool animationEnded;
 
-    private InventoryManager InventoryManager;
+    private InventoryEventManager InventoryEventManager;
     private PointOfInterestEventManager PointOfInterestEventManager;
 
     public override void OnStart()
     {
-        InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+        InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
     }
 
@@ -42,7 +42,7 @@ public class GrabAction : AContextAction
         grabActionInput.PlayerAnimator.Play(grabActionInput.AnimationName);
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfAnimation(grabActionInput.PlayerAnimator, grabActionInput.AnimationName, grabActionInput.LayerIndex);
-        InventoryManager.AddItem(grabActionInput.GrabbedItem);
+        InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
         animationEnded = true;
     }
 
