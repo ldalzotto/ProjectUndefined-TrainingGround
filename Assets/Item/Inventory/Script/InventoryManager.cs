@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    private HashSet<Item> holdItems = new HashSet<Item>();
+    private const string INVENTORY_ITEMS_CONTAINER_NAME = "InventoryItems";
 
+    private HashSet<Item> holdItems = new HashSet<Item>();
 
     private InventoryExitTriggerManager InventoryExitTriggerManager;
     private InventoryStateWorkflowManager InventoryStateWorkflowManager;
-    private Inventory Inventory;
+    private InventoryMenu InventoryMenu;
+    private InventoryItemManager InventoryItemManager;
+
+    private GameObject InventoryItemsContainer;
 
     private void Start()
     {
@@ -18,7 +22,10 @@ public class InventoryManager : MonoBehaviour
         var InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         #endregion
 
-        Inventory = GameObject.FindObjectOfType<Inventory>();
+        InventoryItemsContainer = transform.Find(INVENTORY_ITEMS_CONTAINER_NAME).gameObject;
+
+        InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
+        InventoryItemManager = new InventoryItemManager(InventoryItemsContainer);
         InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
         InventoryStateWorkflowManager = new InventoryStateWorkflowManager();
     }
@@ -26,18 +33,18 @@ public class InventoryManager : MonoBehaviour
 
     public void Tick(float d)
     {
-        if (IsInventoryEnabled())
+        if (IsInventoryMenuEnabled())
         {
             //TODO logic
-            Inventory.Tick(d);
+            InventoryMenu.Tick(d);
             InventoryExitTriggerManager.Tick();
         }
 
-        Inventory.TickAnimation(d);
+        InventoryMenu.TickAnimation(d);
     }
 
     #region Logical Conditions
-    private bool IsInventoryEnabled()
+    private bool IsInventoryMenuEnabled()
     {
         return InventoryStateWorkflowManager.IsInventoryDisplayed;
     }
@@ -48,7 +55,8 @@ public class InventoryManager : MonoBehaviour
     {
         if (holdItems.Add(item))
         {
-            Inventory.OnItemAdd(item);
+            var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
+            InventoryMenu.OnItemAdd(itemGameObject);
         }
     }
     public IEnumerator OnInventoryEnabled()
@@ -99,5 +107,25 @@ class InventoryStateWorkflowManager
         isInventoryDisplayed = false;
     }
 
+}
+#endregion
+
+#region Inventory Item
+class InventoryItemManager
+{
+
+    private GameObject InventoryItemsContainer;
+
+    public InventoryItemManager(GameObject inventoryItemsContainer)
+    {
+        InventoryItemsContainer = inventoryItemsContainer;
+    }
+
+    public Item OnItemAddInstanciatePrefab(Item item)
+    {
+        var itemGameObject = MonoBehaviour.Instantiate(item, InventoryItemsContainer.transform);
+        itemGameObject.name = item.name;
+        return itemGameObject;
+    }
 }
 #endregion

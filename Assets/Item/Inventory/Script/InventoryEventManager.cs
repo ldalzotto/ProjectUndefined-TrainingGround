@@ -4,14 +4,14 @@ public class InventoryEventManager : MonoBehaviour
 {
 
     private InventoryManager InventoryManager;
-    private Inventory Inventory;
+    private InventoryMenu InventoryMenu;
     private PlayerManager PlayerManager;
 
     private void Start()
     {
         InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-        Inventory = GameObject.FindObjectOfType<Inventory>();
+        InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
     }
 
     public void OnAddItem(Item item)
@@ -23,14 +23,14 @@ public class InventoryEventManager : MonoBehaviour
     {
         PlayerManager.OnInventoryEnabled();
         StartCoroutine(InventoryManager.OnInventoryEnabled());
-        Inventory.OnInventoryEnabled();
+        InventoryMenu.OnInventoryEnabled();
     }
 
     public void OnInventoryDisabled()
     {
         PlayerManager.OnInventoryDisabled();
         InventoryManager.OnInventoryDisabled();
-        Inventory.OnInventoryDisabled();
+        InventoryMenu.OnInventoryDisabled();
     }
 
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class InventoryMenu : MonoBehaviour
 {
     private const string INVENTORY_MENU_BODY_NAME = "InventoryMenu_Body";
     private const string INVENTORY_MENU_BODY_SELECTION_NAME = "InventoryMenu_ItemSelectionArea";

@@ -79,10 +79,10 @@
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Test\CAT.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\Inventory.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
+    <Compile Include="Assets\Item\Inventory\Script\InventoryMenu.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
