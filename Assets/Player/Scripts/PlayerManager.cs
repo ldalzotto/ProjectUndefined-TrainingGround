@@ -47,8 +47,8 @@ public class PlayerManager : MonoBehaviour
         this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
         this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager);
-        this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider);
-        this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager);
+        this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, PlayerObject.transform);
+        this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
         this.PlayerContextActionManager = new PlayerContextActionManager();
         this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
@@ -76,7 +76,7 @@ public class PlayerManager : MonoBehaviour
             //if statement to avoid processing inpout at the same frame
             if (!PlayerInventoryTriggerManager.Tick())
             {
-                PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.GetNearestPOI());
+                PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
             }
         }
         PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
@@ -89,7 +89,7 @@ public class PlayerManager : MonoBehaviour
 
     public void LateTick(float d)
     {
-        PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.GetNearestPOI());
+        PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
     }
 
     public void OnGizmoTick()
@@ -97,7 +97,7 @@ public class PlayerManager : MonoBehaviour
         if (IsAllowedToDoAnyInteractions())
         {
             PlayerPOITrackerManager.OnGizmoTick();
-            PlayerPOIWheelTriggerManager.GizmoTick(PlayerPOITrackerManager.GetNearestPOI());
+            PlayerPOIWheelTriggerManager.GizmoTick(PlayerPOITrackerManager.NearestInRangePointOfInterest);
         }
         PlayerPOIVisualHeadMovementManager.GizmoTick();
     }
@@ -269,18 +269,33 @@ class PlayerPOITrackerManager
 {
     private PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
     private SphereCollider TrackerCollider;
+    private Transform PlayerTransform;
     private List<PointOfInterestType> InRangePointOfInterests = new List<PointOfInterestType>();
+    private PointOfInterestType nearestInRangePointOfInterest;
+    private PointOfInterestType nearestInRangeInteractabledPointOfInterest;
 
-    public PlayerPOITrackerManager(PlayerPOITrackerManagerComponent playerPOITrackerManagerComponent, SphereCollider TrackerCollider)
+    public PointOfInterestType NearestInRangePointOfInterest { get => nearestInRangePointOfInterest; }
+    public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
+
+    public PlayerPOITrackerManager(PlayerPOITrackerManagerComponent playerPOITrackerManagerComponent, SphereCollider TrackerCollider, Transform PlayerTransform)
     {
         PlayerPOITrackerManagerComponent = playerPOITrackerManagerComponent;
         this.TrackerCollider = TrackerCollider;
         this.TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
+        this.PlayerTransform = PlayerTransform;
     }
 
     public void Tick(float d)
     {
         TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
+        nearestInRangePointOfInterest = GetNearestPOI();
+        if (nearestInRangePointOfInterest != null)
+        {
+            if (Vector3.Distance(PlayerTransform.position, nearestInRangePointOfInterest.transform.position) <= nearestInRangePointOfInterest.MaxDistanceToInteractWithPlayer)
+            {
+                nearestInRangeInteractabledPointOfInterest = nearestInRangePointOfInterest;
+            }
+        }
     }
 
     public void OnObjectEnter(GameObject obj)
@@ -300,7 +315,7 @@ class PlayerPOITrackerManager
         }
     }
 
-    public PointOfInterestType GetNearestPOI()
+    private PointOfInterestType GetNearestPOI()
     {
         PointOfInterestType nearestPoi = null;
         foreach (var POI in InRangePointOfInterests)
@@ -482,16 +497,18 @@ class PlayerPOIWheelTriggerManager
     private Transform PlayerTransform;
     private GameInputManager GameInputManager;
     private ContextActionWheelEventManager ContextActionWheelEventManager;
+    private PlayerPOITrackerManager PlayerPOITrackerManager;
 
     private bool wheelEnabled;
 
     public bool WheelEnabled { get => wheelEnabled; }
 
-    public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelEventManager contextActionWheelEventManager)
+    public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelEventManager contextActionWheelEventManager, PlayerPOITrackerManager PlayerPOITrackerManager)
     {
         PlayerTransform = playerTransform;
         GameInputManager = gameInputManager;
         ContextActionWheelEventManager = contextActionWheelEventManager;
+        this.PlayerPOITrackerManager = PlayerPOITrackerManager;
     }
 
     public void Tick(float d, PointOfInterestType nearestPOI)
@@ -500,7 +517,7 @@ class PlayerPOIWheelTriggerManager
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
-                if (Vector3.Distance(PlayerTransform.position, nearestPOI.transform.position) <= nearestPOI.MaxDistanceToInteractWithPlayer)
+                if (PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest != null)
                 {
                     wheelEnabled = true;
                     ContextActionWheelEventManager.OnWheelEnabled(nearestPOI);
