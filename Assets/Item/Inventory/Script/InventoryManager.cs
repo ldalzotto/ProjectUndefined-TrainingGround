@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour
     private HashSet<Item> holdItems = new HashSet<Item>();
 
     private InventoryExitTriggerManager InventoryExitTriggerManager;
+    private InventoryActionWheelTriggerManager InventoryActionWheelTriggerManager;
     private InventoryStateWorkflowManager InventoryStateWorkflowManager;
     private InventoryMenu InventoryMenu;
     private InventoryItemManager InventoryItemManager;
@@ -20,6 +21,7 @@ public class InventoryManager : MonoBehaviour
         #region External dependencies
         var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         var InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+        var ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
         #endregion
 
         InventoryItemsContainer = transform.Find(INVENTORY_ITEMS_CONTAINER_NAME).gameObject;
@@ -28,6 +30,7 @@ public class InventoryManager : MonoBehaviour
         InventoryItemManager = new InventoryItemManager(InventoryItemsContainer);
         InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
         InventoryStateWorkflowManager = new InventoryStateWorkflowManager();
+        InventoryActionWheelTriggerManager = new InventoryActionWheelTriggerManager(GameInputManager, ContextActionWheelEventManager, InventoryStateWorkflowManager);
     }
 
 
@@ -35,9 +38,16 @@ public class InventoryManager : MonoBehaviour
     {
         if (IsInventoryMenuEnabled())
         {
-            //TODO logic
-            InventoryMenu.Tick(d);
-            InventoryExitTriggerManager.Tick();
+            if (!IsInventoryActionWheelEnabled())
+            {
+                //If exit button is not pressed
+                if (!InventoryExitTriggerManager.Tick())
+                {
+                    InventoryMenu.Tick(d);
+                    InventoryActionWheelTriggerManager.Tick(InventoryMenu.GetCurrentSelectedItem());
+                }
+            }
+
         }
 
         InventoryMenu.TickAnimation(d);
@@ -47,6 +57,10 @@ public class InventoryManager : MonoBehaviour
     private bool IsInventoryMenuEnabled()
     {
         return InventoryStateWorkflowManager.IsInventoryDisplayed;
+    }
+    private bool IsInventoryActionWheelEnabled()
+    {
+        return InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed;
     }
     #endregion
 
@@ -68,6 +82,11 @@ public class InventoryManager : MonoBehaviour
     {
         InventoryStateWorkflowManager.OnInventoryDisabled();
     }
+    public IEnumerator OnContextActionWheelDisabled()
+    {
+        yield return new WaitForEndOfFrame();
+        InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed = false;
+    }
     #endregion
 }
 
@@ -83,20 +102,53 @@ class InventoryExitTriggerManager
         InventoryEventManager = inventoryEventManager;
     }
 
-    public void Tick()
+    public bool Tick()
     {
         if (GameInputManager.CurrentInput.CancelButtonD())
         {
             InventoryEventManager.OnInventoryDisabled();
+            return true;
         }
+        return false;
+    }
+}
+
+class InventoryActionWheelTriggerManager
+{
+    private GameInputManager GameInputManager;
+    private ContextActionWheelEventManager ContextActionWheelEventManager;
+    private InventoryStateWorkflowManager InventoryStateWorkflowManager;
+
+    public InventoryActionWheelTriggerManager(GameInputManager gameInputManager, ContextActionWheelEventManager contextActionWheelEventManager, InventoryStateWorkflowManager InventoryStateWorkflowManager)
+    {
+        GameInputManager = gameInputManager;
+        ContextActionWheelEventManager = contextActionWheelEventManager;
+        this.InventoryStateWorkflowManager = InventoryStateWorkflowManager;
+    }
+
+    public bool Tick(Item currentSelectedItem)
+    {
+        if (currentSelectedItem != null)
+        {
+            if (GameInputManager.CurrentInput.ActionButtonD())
+            {
+                ContextActionWheelEventManager.OnWheelEnabled(currentSelectedItem.ContextActions, WheelTriggerSource.INVENTORY_MENU);
+                InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed = true;
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
 class InventoryStateWorkflowManager
 {
     private bool isInventoryDisplayed;
+    private bool isInventoryActionWheelDisplayed;
 
     public bool IsInventoryDisplayed { get => isInventoryDisplayed; }
+    public bool IsInventoryActionWheelDisplayed { get => isInventoryActionWheelDisplayed; set => isInventoryActionWheelDisplayed = value; }
 
     public void OnInventoryEnabled()
     {

@@ -103,6 +103,10 @@ public class InventoryMenu : MonoBehaviour
     {
         InventoryCellContainer.AddItemToFreeCell(item);
     }
+    public Item GetCurrentSelectedItem()
+    {
+        return InventoryItemSelectedTrackerManager.GetCurrentItemSelected();
+    }
     #endregion
 
     #region Functional conditions
@@ -222,6 +226,11 @@ class InventoryItemSelectedTrackerManager
             timeElapsedFromLastSwitch += d;
         }
 
+    }
+
+    public Item GetCurrentItemSelected()
+    {
+        return currentlySelectedCell.AssociatedItem;
     }
 }
 

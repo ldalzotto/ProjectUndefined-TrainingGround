@@ -8,6 +8,8 @@ public class Item : MonoBehaviour
 
     private AContextAction[] contextActions;
 
+    public AContextAction[] ContextActions { get => contextActions; }
+
     private void OnValidate()
     {
         itemID = (ItemID)Enum.Parse(typeof(ItemID), ItemID);

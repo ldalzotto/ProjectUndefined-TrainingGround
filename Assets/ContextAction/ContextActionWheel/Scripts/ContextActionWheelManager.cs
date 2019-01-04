@@ -68,10 +68,10 @@ public class ContextActionWheelManager : MonoBehaviour
     }
 
     #region External Events
-    public void OnAwakeWheel(PointOfInterestType triggeredPOI)
+    public void OnAwakeWheel(AContextAction[] contextActions, WheelTriggerSource wheelTriggerSource)
     {
-        ContextActionWheel.Init(triggeredPOI.ContextActions);
-        WheelActivityManager.AwakeWheel();
+        ContextActionWheel.Init(contextActions);
+        WheelActivityManager.AwakeWheel(wheelTriggerSource);
     }
     public void SleepWheel()
     {
@@ -133,6 +133,7 @@ public class WheelPositionManagerComponent
 class WheelActivityManager
 {
     private bool isEnabled;
+    private WheelTriggerSource currentWheelTriggerSource;
 
     private GameInputManager GameInputManager;
 
@@ -143,9 +144,10 @@ class WheelActivityManager
 
     public bool IsEnabled { get => isEnabled; }
 
-    public void AwakeWheel()
+    public void AwakeWheel(WheelTriggerSource wheelTriggerSource)
     {
         isEnabled = true;
+        currentWheelTriggerSource = wheelTriggerSource;
     }
 
     public void SleepWheel()
@@ -158,5 +160,10 @@ class WheelActivityManager
         return GameInputManager.CurrentInput.CancelButtonDH();
     }
 
+}
+
+public enum WheelTriggerSource
+{
+    PLAYER, INVENTORY_MENU
 }
 #endregion
