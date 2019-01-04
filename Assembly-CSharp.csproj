@@ -84,6 +84,7 @@
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
+    <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />

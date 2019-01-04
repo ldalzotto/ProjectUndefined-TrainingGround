@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour
         var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
-        InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform);
+        InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform, InventoryDimensionsComponent);
         InventoryCellContainer = new InventoryCellContainer(InventoryDimensionsComponent.MaxNumberOfItemPerRow, InventoryDimensionsComponent.DisplayedRowNb);
         InventoryItemSelectedTrackerManager = new InventoryItemSelectedTrackerManager(GameInputManager, InventoryCellContainer, InventoryItemSelectedTrackerManagerComponent);
 
@@ -99,6 +99,10 @@ public class Inventory : MonoBehaviour
     {
         InventoryAnimationManager.OnInventoryDisabled();
     }
+    public void OnItemAdd(Item item)
+    {
+        InventoryCellContainer.AddItemToFreeCell(item);
+    }
     #endregion
 
     #region Functional conditions
@@ -117,6 +121,7 @@ public class InventoryDimensionsComponent
     public float ItemIconWidth;
     public float BetweenItemSpace;
     public float ItemSelectionAreaBorder;
+    public float DeltaDistanceFromBottomScreenWhenEnabled;
 
     public float ComputeInventoryWindowFullWidth()
     {
@@ -140,6 +145,7 @@ public class InventoryDimensionsComponent
 
 }
 
+#region Item Selected Tracker
 class InventoryItemSelectedTrackerManager
 {
     private GameInputManager GameInputManager;
@@ -226,6 +232,7 @@ public class InventoryItemSelectedTrackerManagerComponent
     public Material InventoryItemNonSelectedMaterial;
     public float TimeBewteenCellSelectionSwitchThreshold;
 }
+#endregion
 
 #region Cell Container
 class InventoryCellContainer
@@ -256,6 +263,22 @@ class InventoryCellContainer
     {
         return (x >= 0 && x < width) && (y >= 0 && y < height);
     }
+
+    public void AddItemToFreeCell(Item item)
+    {
+        for (var h = 0; h < height; h++)
+        {
+            for (var w = 0; w < width; w++)
+            {
+                var inventoryCell = GetCell(w, h);
+                if (inventoryCell.AssociatedItem == null)
+                {
+                    inventoryCell.SetItem(item);
+                    return;
+                }
+            }
+        }
+    }
 }
 #endregion
 
@@ -269,21 +292,23 @@ class InventoryAnimationManager
 
     private InventoryAnimationManagerComponent InventoryAnimationManagerComponent;
     private RectTransform inventoryTransform;
+    private InventoryDimensionsComponent InventoryDimensionsComponent;
 
     private bool isAnimating;
 
     public bool IsAnimating { get => isAnimating; }
 
-    public InventoryAnimationManager(InventoryAnimationManagerComponent inventoryAnimationManagerComponent, RectTransform inventoryTransform)
+    public InventoryAnimationManager(InventoryAnimationManagerComponent inventoryAnimationManagerComponent, RectTransform inventoryTransform, InventoryDimensionsComponent inventoryDimensionsComponent)
     {
         InventoryAnimationManagerComponent = inventoryAnimationManagerComponent;
         this.inventoryTransform = inventoryTransform;
+        InventoryDimensionsComponent = inventoryDimensionsComponent;
     }
 
     public void InitializeAnimations(RectTransform inventoryTransform)
     {
         initialLocalY = inventoryTransform.anchoredPosition.y;
-        finalLocalY = -initialLocalY;
+        finalLocalY = -initialLocalY - InventoryDimensionsComponent.DeltaDistanceFromBottomScreenWhenEnabled;
         currentTargetLocalY = initialLocalY;
     }
 

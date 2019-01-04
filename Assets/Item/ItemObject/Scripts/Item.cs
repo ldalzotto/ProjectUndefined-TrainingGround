@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     {
         itemID = (ItemID)Enum.Parse(typeof(ItemID), ItemID);
     }
+
 }
 
 [System.Serializable]

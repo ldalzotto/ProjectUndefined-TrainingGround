@@ -46,7 +46,10 @@ public class InventoryManager : MonoBehaviour
     #region External Events
     public void OnAddItem(Item item)
     {
-        holdItems.Add(item);
+        if (holdItems.Add(item))
+        {
+            Inventory.OnItemAdd(item);
+        }
     }
     public IEnumerator OnInventoryEnabled()
     {
@@ -74,7 +77,7 @@ class InventoryExitTriggerManager
 
     public void Tick()
     {
-        if (GameInputManager.CurrentInput.InventoryButtonD())
+        if (GameInputManager.CurrentInput.CancelButtonD())
         {
             InventoryEventManager.OnInventoryDisabled();
         }

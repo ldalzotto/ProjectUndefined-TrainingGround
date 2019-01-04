@@ -20,6 +20,7 @@ public class GameInputManager : MonoBehaviour
         bool ActionButtonDH();
         bool ActionButtonD();
         bool InventoryButtonD();
+        bool CancelButtonD();
         bool CancelButtonDH();
     }
 
@@ -33,6 +34,11 @@ public class GameInputManager : MonoBehaviour
         public bool ActionButtonDH()
         {
             return Input.GetButton("Action") || Input.GetButtonDown("Action");
+        }
+
+        public bool CancelButtonD()
+        {
+            return Input.GetButtonDown("Cancel");
         }
 
         public bool CancelButtonDH()
@@ -73,6 +79,11 @@ public class GameInputManager : MonoBehaviour
             throw new NotImplementedException();
         }
 
+        public bool CancelButtonD()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CancelButtonDH()
         {
             throw new NotImplementedException();
@@ -107,6 +118,11 @@ public class GameInputManager : MonoBehaviour
         }
 
         public bool ActionButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CancelButtonD()
         {
             throw new NotImplementedException();
         }
