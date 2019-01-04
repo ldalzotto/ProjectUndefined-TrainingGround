@@ -88,8 +88,8 @@
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
-    <None Include="Assets\ContextAction\ContextActionWheel\Shader\ContextActionWheelNodeShader.shader" />
-    <None Include="Assets\ContextAction\ContextActionWheel\Shader\ContextActionWheelSelectedNodeShader.shader" />
+    <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
+    <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>

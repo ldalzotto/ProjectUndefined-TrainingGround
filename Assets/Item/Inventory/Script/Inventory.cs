@@ -9,7 +9,10 @@ public class Inventory : MonoBehaviour
 
     public InventoryDimensionsComponent InventoryDimensionsComponent;
     public InventoryAnimationManagerComponent InventoryAnimationManagerComponent;
+    public InventoryItemSelectedTrackerManagerComponent InventoryItemSelectedTrackerManagerComponent;
 
+    private InventoryCellContainer InventoryCellContainer;
+    private InventoryItemSelectedTrackerManager InventoryItemSelectedTrackerManager;
     private InventoryAnimationManager InventoryAnimationManager;
 
     private RectTransform InventoryMenuBody;
@@ -17,11 +20,16 @@ public class Inventory : MonoBehaviour
     private RectTransform InventoryMenuBodyCellContainer;
     private RectTransform InventoryMenuHead;
 
-    private InventoryCell[] inventoryCells;
 
     private void Start()
     {
+        #region External Dependencies
+        var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        #endregion
+
         InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform);
+        InventoryCellContainer = new InventoryCellContainer(InventoryDimensionsComponent.MaxNumberOfItemPerRow, InventoryDimensionsComponent.DisplayedRowNb);
+        InventoryItemSelectedTrackerManager = new InventoryItemSelectedTrackerManager(GameInputManager, InventoryCellContainer, InventoryItemSelectedTrackerManagerComponent);
 
         InventoryMenuBody = (RectTransform)transform.Find(INVENTORY_MENU_BODY_NAME);
         InventoryMenuBodySelectionArea = (RectTransform)InventoryMenuBody.Find(INVENTORY_MENU_BODY_SELECTION_NAME);
@@ -40,10 +48,10 @@ public class Inventory : MonoBehaviour
 
         //initialize cells
         InventoryMenuBodyCellContainer.localPosition = new Vector3(InventoryMenuBodySelectionArea.rect.xMin + InventoryDimensionsComponent.ItemIconWidth / 2, InventoryMenuBodySelectionArea.rect.yMax - (InventoryDimensionsComponent.ItemIconWidth / 2) - InventoryDimensionsComponent.ItemSelectionAreaBorder, 0);
-        inventoryCells = new InventoryCell[InventoryDimensionsComponent.DisplayedRowNb * InventoryDimensionsComponent.MaxNumberOfItemPerRow];
         for (var i = 0; i < InventoryDimensionsComponent.DisplayedRowNb * InventoryDimensionsComponent.MaxNumberOfItemPerRow; i++)
         {
             var inventoryCell = Instantiate(PrefabContainer.Instance.InventoryMenuCellPrefab, InventoryMenuBodyCellContainer, false).GetComponent<InventoryCell>();
+            inventoryCell.Init();
             ((RectTransform)inventoryCell.transform).sizeDelta = new Vector2(InventoryDimensionsComponent.ItemIconWidth, InventoryDimensionsComponent.ItemIconWidth);
 
             var repeatedIndices = Mathf.Repeat(i, InventoryDimensionsComponent.MaxNumberOfItemPerRow);
@@ -52,8 +60,10 @@ public class Inventory : MonoBehaviour
              InventoryDimensionsComponent.ItemSelectionAreaBorder + (repeatedIndices * InventoryDimensionsComponent.ItemIconWidth) + Mathf.Max(0f, (repeatedIndices) * InventoryDimensionsComponent.BetweenItemSpace),
               -lineNb * (InventoryDimensionsComponent.ItemIconWidth + InventoryDimensionsComponent.BetweenItemSpace),
                 0);
-            inventoryCells[i] = inventoryCell;
+            InventoryCellContainer.Set(i, inventoryCell);
         }
+
+        InventoryItemSelectedTrackerManager.Init();
 
         //position inventory at the bottom of the screen
         var mainCanvasTransform = (RectTransform)transform.parent;
@@ -77,6 +87,7 @@ public class Inventory : MonoBehaviour
 
     public void Tick(float d)
     {
+        InventoryItemSelectedTrackerManager.Tick(d);
     }
 
     #region External Events
@@ -129,6 +140,126 @@ public class InventoryDimensionsComponent
 
 }
 
+class InventoryItemSelectedTrackerManager
+{
+    private GameInputManager GameInputManager;
+    private InventoryCellContainer InventoryCellContainer;
+    private InventoryItemSelectedTrackerManagerComponent InventoryItemSelectedTrackerManagerComponent;
+
+    private InventoryCell currentlySelectedCell;
+    private int selectedCellX;
+    private int selectedCellY;
+
+    private float timeElapsedFromLastSwitch;
+
+    public InventoryItemSelectedTrackerManager(GameInputManager gameInputManager, InventoryCellContainer inventoryCellContainer, InventoryItemSelectedTrackerManagerComponent inventoryItemSelectedTrackerManagerComponent)
+    {
+        GameInputManager = gameInputManager;
+        InventoryCellContainer = inventoryCellContainer;
+        InventoryItemSelectedTrackerManagerComponent = inventoryItemSelectedTrackerManagerComponent;
+    }
+
+    public void Init()
+    {
+        ChangeCurrentlySelectedCell(0, 0);
+    }
+
+    private void ChangeCurrentlySelectedCell(int x, int y)
+    {
+        if (currentlySelectedCell != null)
+        {
+            currentlySelectedCell.InventoryCellImage.material = InventoryItemSelectedTrackerManagerComponent.InventoryItemNonSelectedMaterial;
+        }
+        currentlySelectedCell = InventoryCellContainer.GetCell(x, y);
+        selectedCellX = x;
+        selectedCellY = y;
+        currentlySelectedCell.InventoryCellImage.material = InventoryItemSelectedTrackerManagerComponent.InventoryItemSelectedMaterial;
+    }
+
+    private void ChangeCurrentlySelectedIfExists(int x, int y)
+    {
+        if (InventoryCellContainer.CellExists(x, y))
+        {
+            ChangeCurrentlySelectedCell(x, y);
+        }
+    }
+
+    public void Tick(float d)
+    {
+        if (timeElapsedFromLastSwitch >= InventoryItemSelectedTrackerManagerComponent.TimeBewteenCellSelectionSwitchThreshold)
+        {
+            timeElapsedFromLastSwitch = 0f;
+            var locomotionAxis = GameInputManager.CurrentInput.LocomotionAxis();
+            if (locomotionAxis.x >= 0.5)
+            {
+                ChangeCurrentlySelectedIfExists(selectedCellX + 1, selectedCellY);
+            }
+            else if (locomotionAxis.x <= -0.5)
+            {
+                ChangeCurrentlySelectedIfExists(selectedCellX - 1, selectedCellY);
+            }
+            else if (locomotionAxis.z >= 0.5)
+            {
+                ChangeCurrentlySelectedIfExists(selectedCellX, selectedCellY - 1);
+            }
+            else if (locomotionAxis.z <= -0.5)
+            {
+                ChangeCurrentlySelectedIfExists(selectedCellX, selectedCellY + 1);
+            }
+            else
+            {
+                timeElapsedFromLastSwitch = InventoryItemSelectedTrackerManagerComponent.TimeBewteenCellSelectionSwitchThreshold * 2;
+            }
+        }
+        else
+        {
+            timeElapsedFromLastSwitch += d;
+        }
+
+    }
+}
+
+[System.Serializable]
+public class InventoryItemSelectedTrackerManagerComponent
+{
+    public Material InventoryItemSelectedMaterial;
+    public Material InventoryItemNonSelectedMaterial;
+    public float TimeBewteenCellSelectionSwitchThreshold;
+}
+
+#region Cell Container
+class InventoryCellContainer
+{
+    private InventoryCell[] cells;
+
+    private int width;
+    private int height;
+
+    public InventoryCellContainer(int width, int height)
+    {
+        this.cells = new InventoryCell[width * height];
+        this.width = width;
+        this.height = height;
+    }
+
+    public void Set(int i, InventoryCell inventoryCell)
+    {
+        cells[i] = inventoryCell;
+    }
+
+    public InventoryCell GetCell(int x, int y)
+    {
+        return cells[y * width + x];
+    }
+
+    public bool CellExists(int x, int y)
+    {
+        return (x >= 0 && x < width) && (y >= 0 && y < height);
+    }
+}
+#endregion
+
+#region Inventory Animation
 class InventoryAnimationManager
 {
     private float initialLocalY;
@@ -186,4 +317,4 @@ public class InventoryAnimationManagerComponent
 {
     public float TransitionSpeed;
 }
-
+#endregion

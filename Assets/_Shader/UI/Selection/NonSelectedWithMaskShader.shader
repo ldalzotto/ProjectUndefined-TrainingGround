@@ -1,11 +1,10 @@
-﻿Shader "Custom/UI/ContextActionWheel/ContextActionWheelSelectedNodeShader"
+﻿Shader "Custom/UI/Selection/NonSelectedWithMaskShader"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		_MaskTexture("Mask Texture", 2D) = "white" {}
-		_AuraMaskTexture("Aura Texture", 2D) = "white" {}
-		_AuraAlphaFactor("Aura Alpha Factor", Float) = 1
+		_AlphaFactor("Alpha Factor", Float) = 1
 		_StencilComp("Stencil Comparison", Float) = 8
 		_Stencil("Stencil ID", Float) = 0
 		_StencilOp("Stencil Operation", Float) = 0
@@ -84,6 +83,7 @@
 				float4 _ClipRect;
 				float4 _MainTex_ST;
 				float4 _MaskTexture_ST;
+				float _AlphaFactor;
 
 				v2f vert(appdata_t v)
 				{
@@ -91,13 +91,10 @@
 					UNITY_SETUP_INSTANCE_ID(v);
 					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 					OUT.worldPosition = v.vertex;
-					//OUT.worldPosition /= 1.2;
 
 					OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
-
 					OUT.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
 					OUT.masktextcoord = TRANSFORM_TEX(v.texcoord, _MaskTexture);
-
 					OUT.color = v.color;
 					return OUT;
 				}
@@ -118,80 +115,7 @@
 					clip(color.a - 0.001);
 					#endif
 
-					color.a = (1 - maskImageColor.r) * 1000;
-
-					return color;
-				}
-			ENDCG
-			}
-			Pass
-			{
-				Name "Aura P"
-			CGPROGRAM
-				#pragma vertex vert
-				#pragma fragment frag
-				#pragma target 2.0
-
-				#include "UnityCG.cginc"
-				#include "UnityUI.cginc"
-
-				#pragma multi_compile __ UNITY_UI_CLIP_RECT
-				#pragma multi_compile __ UNITY_UI_ALPHACLIP
-
-				struct appdata_t
-				{
-					float4 vertex   : POSITION;
-					float4 color    : COLOR;
-					float2 texcoord : TEXCOORD0;
-					UNITY_VERTEX_INPUT_INSTANCE_ID
-				};
-
-				struct v2f
-				{
-					float4 vertex   : SV_POSITION;
-					fixed4 color : COLOR;
-					float2 auramasktextcoord : TEXCOORD2;
-					float4 worldPosition : TEXCOORD1;
-					UNITY_VERTEX_OUTPUT_STEREO
-				};
-
-				sampler2D _AuraMaskTexture;
-				fixed4 _Color;
-				fixed4 _GlowColor;
-				fixed4 _TextureSampleAdd;
-				float4 _ClipRect;
-				float4 _AuraMaskTexture_ST;
-				float _AuraAlphaFactor;
-
-				v2f vert(appdata_t v)
-				{
-					v2f OUT;
-					UNITY_SETUP_INSTANCE_ID(v);
-					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
-					OUT.worldPosition = v.vertex;
-					OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
-					OUT.auramasktextcoord = TRANSFORM_TEX(v.texcoord, _AuraMaskTexture);
-					OUT.color = v.color;
-					return OUT;
-				}
-
-				fixed4 frag(v2f IN) : SV_Target
-				{
-
-					half4 auraMaskImageColor = (tex2D(_AuraMaskTexture, IN.auramasktextcoord));
-
-					half4 color = auraMaskImageColor;
-					color.rgb = IN.color.rgb;
-
-					#ifdef UNITY_UI_CLIP_RECT
-					color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-					#endif
-
-					#ifdef UNITY_UI_ALPHACLIP
-					clip(color.a - 0.001);
-					#endif
-
-					color.a = (1 - auraMaskImageColor.r) * abs(sin(_Time * 50)) * _AuraAlphaFactor;
+					color.a *= (1 - maskImageColor.r) * _AlphaFactor;
 
 					return color;
 				}
