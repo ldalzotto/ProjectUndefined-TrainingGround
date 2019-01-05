@@ -5,9 +5,6 @@ public class PointOfInterestType : MonoBehaviour
     [SerializeField]
     private float maxDistanceToInteractWithPlayer;
 
-    [Header("Item definition")]
-    public Item Item;
-
     private AContextAction[] contextActions;
 
     public float MaxDistanceToInteractWithPlayer { get => maxDistanceToInteractWithPlayer; }

@@ -12,7 +12,7 @@
             return new GrabActionInput(playerManager.GetPlayerAnimator(),
                   AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].AnimationName,
                   AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex,
-                  contextAction.AttachedPointOfInterest.Item);
+                  ((GrabAction)contextAction).Item);
         }
         else
         {

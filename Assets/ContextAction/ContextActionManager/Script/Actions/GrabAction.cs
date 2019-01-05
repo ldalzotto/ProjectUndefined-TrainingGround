@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GrabAction : AContextAction
 {
+    [Header("Item definition")]
+    public Item Item;
+
     private GrabActionInput grabActionInput;
     private bool animationEnded;
 
