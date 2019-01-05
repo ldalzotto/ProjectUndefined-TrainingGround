@@ -289,6 +289,7 @@ class PlayerPOITrackerManager
     {
         TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
         nearestInRangePointOfInterest = GetNearestPOI();
+        nearestInRangeInteractabledPointOfInterest = null;
         if (nearestInRangePointOfInterest != null)
         {
             if (Vector3.Distance(PlayerTransform.position, nearestInRangePointOfInterest.transform.position) <= nearestInRangePointOfInterest.MaxDistanceToInteractWithPlayer)
@@ -519,6 +520,7 @@ class PlayerPOIWheelTriggerManager
             {
                 if (PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest != null)
                 {
+                    Debug.Log(PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest.name);
                     wheelEnabled = true;
                     ContextActionWheelEventManager.OnWheelEnabled(nearestPOI.ContextActions, WheelTriggerSource.PLAYER);
                 }
