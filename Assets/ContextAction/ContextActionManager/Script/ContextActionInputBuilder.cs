@@ -18,7 +18,7 @@ public class ContextActionInputBuilder
         }
         else if (contextAction.GetType() == typeof(GiveAction))
         {
-            return new GiveActionInput(playerManager.GetCurrentTargetedPOI());
+            return new GiveActionInput(playerManager.GetCurrentTargetedPOI(), playerManager.GetPlayerAnimator());
         }
         else
         {

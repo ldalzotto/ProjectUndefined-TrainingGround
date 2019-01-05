@@ -56,19 +56,19 @@ public class GrabActionInput : AContextActionInput
 
     private Animator playerAnimator;
     private string animationName;
-    private int layerIndex;
+    private int animationLayerIndex;
     private Item grabbedItem;
 
-    public GrabActionInput(Animator playerAnimator, string animationName, int layerIndex, Item grabbedItem)
+    public GrabActionInput(Animator playerAnimator, string animationName, int animationLayerIndex, Item grabbedItem)
     {
         this.playerAnimator = playerAnimator;
         this.animationName = animationName;
-        this.layerIndex = layerIndex;
+        this.animationLayerIndex = animationLayerIndex;
         this.grabbedItem = grabbedItem;
     }
 
     public Animator PlayerAnimator { get => playerAnimator; }
     public string AnimationName { get => animationName; }
-    public int LayerIndex { get => layerIndex; }
+    public int LayerIndex { get => animationLayerIndex; }
     public Item GrabbedItem { get => grabbedItem; }
 }

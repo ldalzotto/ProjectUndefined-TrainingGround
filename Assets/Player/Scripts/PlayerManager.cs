@@ -89,7 +89,14 @@ public class PlayerManager : MonoBehaviour
 
     public void LateTick(float d)
     {
-        PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
+        if (IsHeadRotatingTowardsPOI())
+        {
+            PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
+        }
+        else
+        {
+            PlayerPOIVisualHeadMovementManager.LateTickSmoothNoLooking(d);
+        }
     }
 
     public void OnGizmoTick()
@@ -111,6 +118,11 @@ public class PlayerManager : MonoBehaviour
     private bool IsAllowedToDoAnyInteractions()
     {
         return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed;
+    }
+
+    private bool IsHeadRotatingTowardsPOI()
+    {
+        return !PlayerContextActionManager.IsActionExecuting;
     }
 
     #endregion
@@ -419,7 +431,7 @@ class PlayerPOIVisualHeadMovementManager
                 IsLookingToPOI = false;
                 if (!hasEndedSmoothingOut)
                 {
-                    SmoothSwitchToNoLooking(d);
+                    LateTickSmoothNoLooking(d);
                 }
             }
         }
@@ -428,12 +440,12 @@ class PlayerPOIVisualHeadMovementManager
             IsLookingToPOI = false;
             if (!hasEndedSmoothingOut)
             {
-                SmoothSwitchToNoLooking(d);
+                LateTickSmoothNoLooking(d);
             }
         }
     }
 
-    private void SmoothSwitchToNoLooking(float d)
+    public void LateTickSmoothNoLooking(float d)
     {
         for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
         {
