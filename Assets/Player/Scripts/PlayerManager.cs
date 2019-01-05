@@ -95,7 +95,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            PlayerPOIVisualHeadMovementManager.LateTickSmoothNoLooking(d);
+            PlayerPOIVisualHeadMovementManager.LateTickNoFollowing();
         }
     }
 
@@ -149,6 +149,7 @@ public class PlayerManager : MonoBehaviour
     public void OnContextActionAdded(AContextAction contextAction)
     {
         PlayerContextActionManager.OnContextActionAdded(contextAction);
+        PlayerPOIVisualHeadMovementManager.OnContextActionAdded();
     }
     public void OnContextActionFinished()
     {
@@ -429,45 +430,48 @@ class PlayerPOIVisualHeadMovementManager
             else
             {
                 IsLookingToPOI = false;
-                if (!hasEndedSmoothingOut)
-                {
-                    LateTickSmoothNoLooking(d);
-                }
+                SmoothNoLookingTransition(d);
             }
         }
         else
         {
             IsLookingToPOI = false;
-            if (!hasEndedSmoothingOut)
-            {
-                LateTickSmoothNoLooking(d);
-            }
+            SmoothNoLookingTransition(d);
         }
     }
 
-    public void LateTickSmoothNoLooking(float d)
+    private void SmoothNoLookingTransition(float d)
     {
-        for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
+        if (!hasEndedSmoothingOut)
         {
-            var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
-            var dotProductToTarget = Mathf.Abs(Quaternion.Dot(InterpolatedBoneRotations[i], affectedBone.rotation));
+            for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
+            {
+                var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
+                var dotProductToTarget = Mathf.Abs(Quaternion.Dot(InterpolatedBoneRotations[i], affectedBone.rotation));
 
-            //too much angle to smooth -> direct transition
-            if (dotProductToTarget <= playerPOIVisualHeadMovementComponent.SmoothOutMaxDotProductLimit)
-            {
-                hasEndedSmoothingOut = true;
-            }
-            else if (dotProductToTarget <= 0.9999f)
-            {
-                affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], affectedBone.rotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
-                InterpolatedBoneRotations[i] = affectedBone.rotation;
-            }
-            else
-            {
-                hasEndedSmoothingOut = true;
+                //too much angle to smooth -> direct transition
+                if (dotProductToTarget <= playerPOIVisualHeadMovementComponent.SmoothOutMaxDotProductLimit)
+                {
+                    hasEndedSmoothingOut = true;
+                }
+                else if (dotProductToTarget <= 0.9999f)
+                {
+                    affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], affectedBone.rotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
+                    InterpolatedBoneRotations[i] = affectedBone.rotation;
+                }
+                else
+                {
+                    hasEndedSmoothingOut = true;
+                }
             }
         }
     }
+
+    public void LateTickNoFollowing()
+    {
+        ResetInterpolatedBoneRotationToActual();
+    }
+
 
     private void ResetInterpolatedBoneRotationToActual()
     {
@@ -476,6 +480,11 @@ class PlayerPOIVisualHeadMovementManager
             var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
             InterpolatedBoneRotations[i] = affectedBone.rotation;
         }
+    }
+
+    public void OnContextActionAdded()
+    {
+        hasEndedSmoothingOut = false;
     }
 
     public void GizmoTick()

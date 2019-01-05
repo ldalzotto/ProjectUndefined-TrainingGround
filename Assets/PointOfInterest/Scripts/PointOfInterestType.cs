@@ -26,6 +26,6 @@ public class PointOfInterestType : MonoBehaviour
 
     public bool IsElligibleToGiveItem(Item itemToGive)
     {
-        return PointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
+        return PointOfInterestScenarioState != null && PointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
     }
 }
