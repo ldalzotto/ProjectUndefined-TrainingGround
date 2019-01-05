@@ -22,6 +22,6 @@ public class ContextActionWheelEventManager : MonoBehaviour
 
     public void OnWheelEnabled(AContextAction[] contextActions, WheelTriggerSource wheelTriggerSource)
     {
-        ContextActionWheelManager.OnAwakeWheel(contextActions, wheelTriggerSource);
+        ContextActionWheelManager.OnAwakeWheel(contextActions, wheelTriggerSource, PlayerManager.GetCurrentTargetedPOI());
     }
 }

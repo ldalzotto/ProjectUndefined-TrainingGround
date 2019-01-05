@@ -24,8 +24,23 @@ public class PointOfInterestType : MonoBehaviour
         PointOfInterestScenarioState = GetComponent<PointOfInterestScenarioState>();
     }
 
+    #region Logical Conditions
     public bool IsElligibleToGiveItem(Item itemToGive)
     {
         return PointOfInterestScenarioState != null && PointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
     }
+    #endregion
+
+    #region Prefab Data Retrieval
+    public Renderer[] GetRenderers()
+    {
+        var parentObject = transform.parent;
+        return parentObject.GetComponentsInChildren<Renderer>();
+    }
+    public GameObject GetRootObject()
+    {
+        return transform.parent.gameObject;
+    }
+    #endregion
+
 }

@@ -92,6 +92,7 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
+    <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">

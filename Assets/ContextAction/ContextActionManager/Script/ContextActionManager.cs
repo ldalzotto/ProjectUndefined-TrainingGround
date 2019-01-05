@@ -52,12 +52,10 @@ public abstract class AContextAction : MonoBehaviour
     public abstract bool ComputeFinishedConditions();
     public abstract void Tick(float d);
 
-    private PointOfInterestType attachedPointOfInterest;
     private ContextActionEventManager ContextActionEventManager;
 
     private void Start()
     {
-        attachedPointOfInterest = GetComponentInParent<PointOfInterestType>();
         ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
         OnStart();
     }
@@ -77,8 +75,6 @@ public abstract class AContextAction : MonoBehaviour
     }
 
     private bool isFinished;
-
-    public PointOfInterestType AttachedPointOfInterest { get => attachedPointOfInterest; }
 
     public bool IsFinished()
     {

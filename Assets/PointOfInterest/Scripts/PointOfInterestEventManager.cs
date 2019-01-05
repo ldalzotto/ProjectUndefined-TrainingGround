@@ -20,7 +20,7 @@ public class PointOfInterestEventManager : MonoBehaviour
     private IEnumerator DestroyPOICoroutine(PointOfInterestType POITobeDestroyed)
     {
         yield return new WaitForEndOfFrame();
-        Destroy(POITobeDestroyed.gameObject);
+        Destroy(POITobeDestroyed.GetRootObject());
     }
 
 }
