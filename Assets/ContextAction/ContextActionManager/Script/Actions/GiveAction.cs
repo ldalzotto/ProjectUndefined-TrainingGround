@@ -19,8 +19,11 @@ public class GiveAction : AContextAction
         {
             //TODO process to give
             //TODO animation
-            Debug.Log("Elligible");
-            isActionEnded = true;
+            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
+            {
+                Debug.Log("Rotate Object");
+                isActionEnded = true;
+            }));
         }
         else
         {

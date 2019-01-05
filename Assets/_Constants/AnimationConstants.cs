@@ -5,7 +5,8 @@ public class AnimationConstants
     public static Dictionary<PlayerAnimatioNnamesEnum, PlayerAnimationConstantsData> PlayerAnimationConstants = new Dictionary<PlayerAnimatioNnamesEnum, PlayerAnimationConstantsData>()
     {
         {PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN, new PlayerAnimationConstantsData("Armature|Grab_Down", 1) },
-        {PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, new PlayerAnimationConstantsData("Armature|ActionForbidden", 1) }
+        {PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, new PlayerAnimationConstantsData("Armature|ActionForbidden", 1) },
+        {PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, new PlayerAnimationConstantsData("Armature|ItemGiven", 1) }
     };
 
     public class PlayerAnimationConstantsData
@@ -28,5 +29,6 @@ public class AnimationConstants
 public enum PlayerAnimatioNnamesEnum
 {
     PLAYER_ACTION_GRAB_DOWN,
-    PLAYER_ACTION_FORBIDDEN
+    PLAYER_ACTION_FORBIDDEN,
+    PLAYER_ACTION_GIVE_OBJECT
 }
