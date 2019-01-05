@@ -165,6 +165,11 @@ public class PlayerManager : MonoBehaviour
         return PlayerAnimationDataManager.Animator;
     }
 
+    public PointOfInterestType GetCurrentTargetedPOI()
+    {
+        return PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest;
+    }
+
 }
 
 #region Camera

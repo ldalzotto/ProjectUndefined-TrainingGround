@@ -6,6 +6,7 @@ public class PointOfInterestType : MonoBehaviour
     private float maxDistanceToInteractWithPlayer;
 
     private AContextAction[] contextActions;
+    private PointOfInterestScenarioState PointOfInterestScenarioState;
 
     public float MaxDistanceToInteractWithPlayer { get => maxDistanceToInteractWithPlayer; }
     public AContextAction[] ContextActions { get => contextActions; }
@@ -19,6 +20,12 @@ public class PointOfInterestType : MonoBehaviour
         {
             contextActions[i] = (AContextAction)childActions[i];
         }
+
+        PointOfInterestScenarioState = GetComponent<PointOfInterestScenarioState>();
     }
 
+    public bool IsElligibleToGiveItem(Item itemToGive)
+    {
+        return PointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
+    }
 }

@@ -1,4 +1,6 @@
-﻿public class ContextActionInputBuilder
+﻿using UnityEngine;
+
+public class ContextActionInputBuilder
 {
 
     public static AContextActionInput Build(AContextAction contextAction, PlayerManager playerManager)
@@ -14,8 +16,13 @@
                   AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex,
                   ((GrabAction)contextAction).Item);
         }
+        else if (contextAction.GetType() == typeof(GiveAction))
+        {
+            return new GiveActionInput(playerManager.GetCurrentTargetedPOI());
+        }
         else
         {
+            Debug.LogError("The context action : " + contextAction.GetType() + " has no builder implemented.");
             return null;
         }
 

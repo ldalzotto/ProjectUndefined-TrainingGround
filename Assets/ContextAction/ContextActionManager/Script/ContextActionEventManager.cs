@@ -16,8 +16,9 @@ public class ContextActionEventManager : MonoBehaviour
     {
         try
         {
-            ContextActionManager.OnAddAction(contextAction, contextActionInput);
             PlayerManager.OnContextActionAdded(contextAction);
+            ContextActionManager.OnAddAction(contextAction, contextActionInput);
+
             //TODO send event to inventory to close if necessary
         }
         catch (System.Exception e)
