@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GrabAction : AContextAction
 {
@@ -32,7 +31,11 @@ public class GrabAction : AContextAction
     {
         animationEnded = false;
         grabActionInput = (GrabActionInput)ContextActionInput;
-        StartCoroutine(GrabActionCoroutine());
+        StartCoroutine(AnimationPlayerHelper.Play(grabActionInput.PlayerAnimator, grabActionInput.PlayerAnimationEnum, 0f, () =>
+        {
+            InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
+            animationEnded = true;
+        }));
     }
 
     public override void Tick(float d)
@@ -40,14 +43,6 @@ public class GrabAction : AContextAction
 
     }
 
-    private IEnumerator GrabActionCoroutine()
-    {
-        grabActionInput.PlayerAnimator.Play(grabActionInput.AnimationName);
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfAnimation(grabActionInput.PlayerAnimator, grabActionInput.AnimationName, grabActionInput.LayerIndex);
-        InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
-        animationEnded = true;
-    }
 
 }
 
@@ -55,20 +50,17 @@ public class GrabActionInput : AContextActionInput
 {
 
     private Animator playerAnimator;
-    private string animationName;
-    private int animationLayerIndex;
+    private PlayerAnimatioNnamesEnum playerAnimationEnum;
     private Item grabbedItem;
 
-    public GrabActionInput(Animator playerAnimator, string animationName, int animationLayerIndex, Item grabbedItem)
+    public GrabActionInput(Animator playerAnimator, PlayerAnimatioNnamesEnum playerAnimationEnum, Item grabbedItem)
     {
         this.playerAnimator = playerAnimator;
-        this.animationName = animationName;
-        this.animationLayerIndex = animationLayerIndex;
+        this.playerAnimationEnum = playerAnimationEnum;
         this.grabbedItem = grabbedItem;
     }
 
     public Animator PlayerAnimator { get => playerAnimator; }
-    public string AnimationName { get => animationName; }
-    public int LayerIndex { get => animationLayerIndex; }
     public Item GrabbedItem { get => grabbedItem; }
+    public PlayerAnimatioNnamesEnum PlayerAnimationEnum { get => playerAnimationEnum; }
 }

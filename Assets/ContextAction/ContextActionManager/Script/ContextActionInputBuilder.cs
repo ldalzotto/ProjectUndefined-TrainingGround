@@ -11,9 +11,7 @@ public class ContextActionInputBuilder
         }
         else if (contextAction.GetType() == typeof(GrabAction))
         {
-            return new GrabActionInput(playerManager.GetPlayerAnimator(),
-                  AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].AnimationName,
-                  AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN].LayerIndex,
+            return new GrabActionInput(playerManager.GetPlayerAnimator(), PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN,
                   ((GrabAction)contextAction).Item);
         }
         else if (contextAction.GetType() == typeof(GiveAction))

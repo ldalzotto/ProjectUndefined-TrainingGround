@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GiveAction : AContextAction
 {
@@ -14,6 +13,7 @@ public class GiveAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
+        isActionEnded = false;
         var giveActionInput = (GiveActionInput)ContextActionInput;
         if (giveActionInput.TargetPOI != null && giveActionInput.TargetPOI.IsElligibleToGiveItem(itemGiven))
         {
@@ -24,24 +24,16 @@ public class GiveAction : AContextAction
         }
         else
         {
-            StartCoroutine(NonElligibleAnimationCoroutine(giveActionInput.PlayerAnimator));
+            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
+            {
+                isActionEnded = true;
+            }));
         }
     }
 
-    private IEnumerator NonElligibleAnimationCoroutine(Animator playerAnimator)
-    {
-        var animationName = AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTIOn_FORBIDDEN].AnimationName;
-        var animationlayer = AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_ACTIOn_FORBIDDEN].LayerIndex;
-        playerAnimator.CrossFade(animationName, 0.2f);
-        //  playerAnimator.Play(animationName);
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfAnimation(playerAnimator, animationName, animationlayer);
-        isActionEnded = true;
-    }
 
     public override void OnStart()
     {
-        isActionEnded = false;
         itemGiven = GetComponentInParent<Item>();
     }
 
