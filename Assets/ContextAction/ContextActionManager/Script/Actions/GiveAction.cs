@@ -1,10 +1,40 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 public class GiveAction : AContextAction
 {
     private Item itemGiven;
-
     private bool isActionEnded;
+
+    #region Internal Managers
+    private GiveActionAnimationManager GiveActionAnimationManager;
+    #endregion
+
+    #region Logical Conditions
+    private bool IsIemGivenElligibleToGive(GiveActionInput giveActionInput)
+    {
+
+        return (giveActionInput != null && giveActionInput.TargetPOI != null && giveActionInput.TargetPOI.IsElligibleToGiveItem(itemGiven));
+    }
+    #endregion
+
+    #region Internal Events
+    private void OnAnimationEnd()
+    {
+        isActionEnded = true;
+    }
+    #endregion
+
+    public override void OnStart()
+    {
+        #region External Dependencies
+        var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
+        #endregion
+
+        itemGiven = GetComponentInParent<Item>();
+        GiveActionAnimationManager = new GiveActionAnimationManager(PlayerGlobalAnimationEventHandler, itemGiven);
+    }
 
     public override bool ComputeFinishedConditions()
     {
@@ -15,37 +45,24 @@ public class GiveAction : AContextAction
     {
         isActionEnded = false;
         var giveActionInput = (GiveActionInput)ContextActionInput;
-        if (giveActionInput.TargetPOI != null && giveActionInput.TargetPOI.IsElligibleToGiveItem(itemGiven))
+
+        if (IsIemGivenElligibleToGive(giveActionInput))
         {
-            //TODO process to give
-            //TODO animation
-            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
-            {
-                Debug.Log("Rotate Object");
-                isActionEnded = true;
-            }));
+            StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, OnAnimationEnd));
         }
         else
         {
-            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
-            {
-                isActionEnded = true;
-            }));
+            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnAnimationEnd));
         }
-    }
-
-
-    public override void OnStart()
-    {
-        itemGiven = GetComponentInParent<Item>();
     }
 
     public override void Tick(float d)
     {
+
     }
 }
 
-
+#region Action Input
 public class GiveActionInput : AContextActionInput
 {
     private PointOfInterestType targetPOI;
@@ -60,3 +77,49 @@ public class GiveActionInput : AContextActionInput
     public PointOfInterestType TargetPOI { get => targetPOI; }
     public Animator PlayerAnimator { get => playerAnimator; }
 }
+#endregion
+
+#region Give Action Animation
+class GiveActionAnimationManager
+{
+
+    private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
+    private Item ItemGiven;
+
+    public GiveActionAnimationManager(PlayerGlobalAnimationEventHandler playerGlobalAnimationEventHandler, Item itemGiven)
+    {
+        PlayerGlobalAnimationEventHandler = playerGlobalAnimationEventHandler;
+        ItemGiven = itemGiven;
+    }
+
+    private Animator PlayerAnimator;
+    private GameObject DisplayedItemModel;
+
+    public IEnumerator Start(GiveActionInput giveActionInput, Action onAnimationEndCallback)
+    {
+        this.PlayerAnimator = giveActionInput.PlayerAnimator;
+        //TODO process to give
+        //TODO animation
+        PlayerGlobalAnimationEventHandler.OnShowGivenItem += InstanciateDisplayedItem;
+        PlayerAnimator = giveActionInput.PlayerAnimator;
+        return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
+         {
+             Debug.Log("Rotate Object");
+             MonoBehaviour.Destroy(DisplayedItemModel);
+             PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
+             onAnimationEndCallback.Invoke();
+         });
+
+    }
+
+    private void InstanciateDisplayedItem()
+    {
+        if (PlayerAnimator != null)
+        {
+            DisplayedItemModel = MonoBehaviour.Instantiate(ItemGiven.ItemModel, PlayerAnimator.transform.Find("Armature/Root/ContextualRootBone/HoldItem.R/HoldItem.R_end"), false);
+            Debug.Log("DISPLAY ITEM");
+        }
+    }
+
+}
+#endregion

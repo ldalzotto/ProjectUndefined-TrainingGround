@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
+    <Compile Include="Assets\Player\Scripts\PlayerAnimationEventHandler.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />

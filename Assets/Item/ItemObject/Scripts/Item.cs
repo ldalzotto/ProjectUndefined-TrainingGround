@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    public GameObject ItemModel;
     public string ItemID;
     private ItemID itemID;
 
@@ -30,5 +31,6 @@ public class Item : MonoBehaviour
 [System.Serializable]
 public enum ItemID
 {
-    DUMMY_ITEM
+    DUMMY_ITEM,
+    ID_CARD
 }

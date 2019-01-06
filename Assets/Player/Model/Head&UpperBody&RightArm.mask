@@ -38,7 +38,7 @@ AvatarMask:
   - m_Path: Armature/Root/ContextualRootBone/HoldItem.R/HoldItem.R_end
     m_Weight: 1
   - m_Path: Armature/Root/Hair 1
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Hair 1/Hair_end
     m_Weight: 0
   - m_Path: Armature/Root/Leg Control.L
