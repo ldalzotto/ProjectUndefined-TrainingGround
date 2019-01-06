@@ -58,7 +58,7 @@ public class GiveAction : AContextAction
 
     public override void Tick(float d)
     {
-
+        GiveActionAnimationManager.Tick(d);
     }
 }
 
@@ -104,7 +104,6 @@ class GiveActionAnimationManager
         PlayerAnimator = giveActionInput.PlayerAnimator;
         return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
          {
-             Debug.Log("Rotate Object");
              MonoBehaviour.Destroy(DisplayedItemModel);
              PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
              onAnimationEndCallback.Invoke();
@@ -125,6 +124,15 @@ class GiveActionAnimationManager
                 DisplayedItemModel.transform.localScale.y / scaleFactor.y,
                 DisplayedItemModel.transform.localScale.z / scaleFactor.z);
         }
+    }
+
+    public void Tick(float d)
+    {
+        if (DisplayedItemModel != null)
+        {
+            DisplayedItemModel.transform.Rotate(Vector3.up * 180f * d, Space.World);
+        }
+
     }
 
 }
