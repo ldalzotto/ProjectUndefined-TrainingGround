@@ -116,7 +116,7 @@ class GiveActionAnimationManager
     {
         if (PlayerAnimator != null)
         {
-            DisplayedItemModel = MonoBehaviour.Instantiate(ItemGiven.ItemModel, PlayerAnimator.transform.Find("Armature/Root/ContextualRootBone/HoldItem.R/HoldItem.R_end"), false);
+            DisplayedItemModel = MonoBehaviour.Instantiate(ItemGiven.ItemModel, PlayerAnimator.gameObject.FindChildObjectRecursively(AnimationConstants.RIGHT_HAND_PLAYER_BONE_NAME).transform, false);
             Debug.Log("DISPLAY ITEM");
         }
     }
