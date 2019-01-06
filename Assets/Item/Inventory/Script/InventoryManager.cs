@@ -38,7 +38,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (IsInventoryMenuEnabled())
         {
-            if (!IsInventoryActionWheelEnabled())
+            if (IsInventoryInteractable())
             {
                 //If exit button is not pressed
                 if (!InventoryExitTriggerManager.Tick())
@@ -58,9 +58,9 @@ public class InventoryManager : MonoBehaviour
     {
         return InventoryStateWorkflowManager.IsInventoryDisplayed;
     }
-    private bool IsInventoryActionWheelEnabled()
+    private bool IsInventoryInteractable()
     {
-        return InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed;
+        return !InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed && !InventoryStateWorkflowManager.IsWontextActionRuning;
     }
     #endregion
 
@@ -86,6 +86,14 @@ public class InventoryManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed = false;
+    }
+    public void OnContextActionAdded()
+    {
+        InventoryStateWorkflowManager.OnContextActionAdded();
+    }
+    public void OnContextActionFinished()
+    {
+        InventoryStateWorkflowManager.OnContextActionFinished();
     }
     #endregion
 }
@@ -146,9 +154,11 @@ class InventoryStateWorkflowManager
 {
     private bool isInventoryDisplayed;
     private bool isInventoryActionWheelDisplayed;
+    private bool isWontextActionRuning;
 
     public bool IsInventoryDisplayed { get => isInventoryDisplayed; }
     public bool IsInventoryActionWheelDisplayed { get => isInventoryActionWheelDisplayed; set => isInventoryActionWheelDisplayed = value; }
+    public bool IsWontextActionRuning { get => isWontextActionRuning; }
 
     public void OnInventoryEnabled()
     {
@@ -157,6 +167,14 @@ class InventoryStateWorkflowManager
     public void OnInventoryDisabled()
     {
         isInventoryDisplayed = false;
+    }
+    public void OnContextActionAdded()
+    {
+        isWontextActionRuning = true;
+    }
+    public void OnContextActionFinished()
+    {
+        isWontextActionRuning = false;
     }
 
 }
