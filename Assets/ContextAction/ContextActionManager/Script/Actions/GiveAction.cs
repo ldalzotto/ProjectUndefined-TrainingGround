@@ -116,8 +116,14 @@ class GiveActionAnimationManager
     {
         if (PlayerAnimator != null)
         {
-            DisplayedItemModel = MonoBehaviour.Instantiate(ItemGiven.ItemModel, PlayerAnimator.gameObject.FindChildObjectRecursively(AnimationConstants.RIGHT_HAND_PLAYER_BONE_NAME).transform, false);
-            Debug.Log("DISPLAY ITEM");
+            var rightHandBoneTransform = PlayerAnimator.gameObject.FindChildObjectRecursively(AnimationConstants.RIGHT_HAND_PLAYER_BONE_NAME).transform;
+            DisplayedItemModel = MonoBehaviour.Instantiate(ItemGiven.ItemModel, rightHandBoneTransform, false);
+            var scaleFactor = Vector3.one;
+            ComponentSearchHelper.ComputeScaleFactorRecursively(rightHandBoneTransform, PlayerAnimator.transform, ref scaleFactor);
+            DisplayedItemModel.transform.localScale = new Vector3(
+                DisplayedItemModel.transform.localScale.x / scaleFactor.x,
+                DisplayedItemModel.transform.localScale.y / scaleFactor.y,
+                DisplayedItemModel.transform.localScale.z / scaleFactor.z);
         }
     }
 

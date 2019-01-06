@@ -67,6 +67,7 @@
     <Compile Include="Assets\_Collision\CollisionTag.cs" />
     <Compile Include="Assets\_Common\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\_Common\Component\ComponentSearchExtensions.cs" />
+    <Compile Include="Assets\_Common\Component\ComponentSearchHelper.cs" />
     <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\_Constants\TagConstants.cs" />
