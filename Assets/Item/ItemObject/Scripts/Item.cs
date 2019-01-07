@@ -1,20 +1,13 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Item : MonoBehaviour
 {
     public GameObject ItemModel;
-    public string ItemID;
-    private ItemID itemID;
+    public ItemID ItemID;
 
     private AContextAction[] contextActions;
 
     public AContextAction[] ContextActions { get => contextActions; }
-
-    private void OnValidate()
-    {
-        itemID = (ItemID)Enum.Parse(typeof(ItemID), ItemID);
-    }
 
     private void Start()
     {
@@ -31,6 +24,6 @@ public class Item : MonoBehaviour
 [System.Serializable]
 public enum ItemID
 {
-    DUMMY_ITEM,
-    ID_CARD
+    DUMMY_ITEM = 0,
+    ID_CARD = 1
 }
