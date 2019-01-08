@@ -6,19 +6,21 @@ public class ContextActionEventManager : MonoBehaviour
     private ContextActionManager ContextActionManager;
     private PlayerManager PlayerManager;
     private InventoryManager InventoryManager;
+    private ScenarioTimelineManager ScenarioTimelineManager;
 
     private void Start()
     {
         ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+        ScenarioTimelineManager = GameObject.FindObjectOfType<ScenarioTimelineManager>();
     }
 
     public void OnContextActionAdded(AContextAction contextAction, AContextActionInput contextActionInput)
     {
         try
         {
-            PlayerManager.OnContextActionAdded(contextAction);
+            PlayerManager.OnContextActionAdded();
             InventoryManager.OnContextActionAdded();
             ContextActionManager.OnAddAction(contextAction, contextActionInput);
 
@@ -32,10 +34,11 @@ public class ContextActionEventManager : MonoBehaviour
 
     }
 
-    public void OnContextActionFinished()
+    public void OnContextActionFinished(AContextAction finishedContextAction)
     {
         PlayerManager.OnContextActionFinished();
         InventoryManager.OnContextActionFinished();
+        ScenarioTimelineManager.OnScenarioActionExecuted(ContextActionBuilder.BuilScenarioAction(finishedContextAction));
     }
 
 }

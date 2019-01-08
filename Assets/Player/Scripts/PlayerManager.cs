@@ -146,9 +146,9 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-    public void OnContextActionAdded(AContextAction contextAction)
+    public void OnContextActionAdded()
     {
-        PlayerContextActionManager.OnContextActionAdded(contextAction);
+        PlayerContextActionManager.OnContextActionAdded();
         PlayerPOIVisualHeadMovementManager.OnContextActionAdded();
     }
     public void OnContextActionFinished()
@@ -601,7 +601,7 @@ class PlayerContextActionManager
 
     public bool IsActionExecuting { get => isActionExecuting; }
 
-    public void OnContextActionAdded(AContextAction contextAction)
+    public void OnContextActionAdded()
     {
         isActionExecuting = true;
     }

@@ -24,6 +24,7 @@ public class Item : MonoBehaviour
 [System.Serializable]
 public enum ItemID
 {
-    DUMMY_ITEM = 0,
-    ID_CARD = 1
+    NONE = 0,
+    DUMMY_ITEM = 1,
+    ID_CARD = 2
 }

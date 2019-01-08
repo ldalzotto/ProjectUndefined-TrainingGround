@@ -46,6 +46,7 @@ public class PointOfInterestType : MonoBehaviour
 
 public enum PointOfInterestId
 {
+    NONE = 0,
     BOUNCER = 1,
     ID_CARD = 2
 }

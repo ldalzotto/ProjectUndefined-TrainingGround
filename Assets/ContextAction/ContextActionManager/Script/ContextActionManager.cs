@@ -20,11 +20,16 @@ public class ContextActionManager : MonoBehaviour
         contextAction.OnTick(d);
         if (contextAction.IsFinished())
         {
-            StartCoroutine(RemoveContextAction(contextAction));
+            OnContextActionFinished(contextAction);
         }
     }
 
     #region Internal Events
+    private void OnContextActionFinished(AContextAction contextAction)
+    {
+        StartCoroutine(RemoveContextAction(contextAction));
+    }
+
     IEnumerator RemoveContextAction(AContextAction contextAction)
     {
         yield return new WaitForEndOfFrame();
@@ -36,6 +41,7 @@ public class ContextActionManager : MonoBehaviour
     #region External Events
     public void OnAddAction(AContextAction contextAction, AContextActionInput contextActionInput)
     {
+        contextAction.ContextActionInput = contextActionInput;
         contextAction.FirstExecutionAction(contextActionInput);
         ExecutedContextActions.Add(contextAction);
         //first tick for removing at the same frame if necessary
@@ -54,6 +60,9 @@ public abstract class AContextAction : MonoBehaviour
 
     private ContextActionEventManager ContextActionEventManager;
 
+    #region Internal Dependencies
+    private AContextActionInput contextActionInput;
+    #endregion
     private void Start()
     {
         ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
@@ -69,12 +78,14 @@ public abstract class AContextAction : MonoBehaviour
             if (ComputeFinishedConditions())
             {
                 isFinished = true;
-                ContextActionEventManager.OnContextActionFinished();
+                ContextActionEventManager.OnContextActionFinished(this);
             }
         }
     }
 
     private bool isFinished;
+
+    public AContextActionInput ContextActionInput { get => contextActionInput; set => contextActionInput = value; }
 
     public bool IsFinished()
     {

@@ -64,7 +64,7 @@ public class ContextActionWheelManager : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         SleepWheel();
-        var actionInput = ContextActionInputBuilder.Build(contextAction, PlayerManager);
+        var actionInput = ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager);
         if (actionInput != null)
         {
             ContextActionEventManager.OnContextActionAdded(contextAction, actionInput);

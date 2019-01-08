@@ -7,6 +7,8 @@ public class GiveAction : AContextAction
     private Item itemGiven;
     private bool isActionEnded;
 
+    public Item ItemGiven { get => itemGiven; }
+
     #region Internal Managers
     private GiveActionAnimationManager GiveActionAnimationManager;
     #endregion

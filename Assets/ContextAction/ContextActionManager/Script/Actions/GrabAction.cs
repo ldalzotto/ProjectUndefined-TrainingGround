@@ -11,10 +11,18 @@ public class GrabAction : AContextAction
     private InventoryEventManager InventoryEventManager;
     private PointOfInterestEventManager PointOfInterestEventManager;
 
+    #region Internal Dependencies
+    private PointOfInterestType associatedPOI;
+
+    public PointOfInterestType AssociatedPOI { get => associatedPOI; set => associatedPOI = value; }
+
+    #endregion
+
     public override void OnStart()
     {
         InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+        associatedPOI = transform.parent.GetComponent<PointOfInterestType>();
     }
 
 
