@@ -2,13 +2,12 @@
 
 public class PointOfInterestType : MonoBehaviour
 {
-    [SerializeField]
-    private float maxDistanceToInteractWithPlayer;
+    public PointOfInterestId PointOfInterestId;
+    public float MaxDistanceToInteractWithPlayer;
 
     private AContextAction[] contextActions;
     private PointOfInterestScenarioState PointOfInterestScenarioState;
 
-    public float MaxDistanceToInteractWithPlayer { get => maxDistanceToInteractWithPlayer; }
     public AContextAction[] ContextActions { get => contextActions; }
 
     private void Start()
@@ -43,4 +42,10 @@ public class PointOfInterestType : MonoBehaviour
     }
     #endregion
 
+}
+
+public enum PointOfInterestId
+{
+    BOUNCER = 1,
+    ID_CARD = 2
 }
