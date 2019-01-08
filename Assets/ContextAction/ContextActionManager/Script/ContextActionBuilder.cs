@@ -36,7 +36,15 @@ public class ContextActionBuilder
         {
             var giveAction = (GiveAction)contextAction;
             var giveActionInput = (GiveActionInput)contextActionInput;
-            return new ScenarioAction(contextAction.GetType(), giveAction.ItemGiven.ItemID, giveActionInput.TargetPOI.PointOfInterestId);
+            if (giveAction.ItemGiven != null && giveActionInput.TargetPOI != null)
+            {
+                return new ScenarioAction(contextAction.GetType(), giveAction.ItemGiven.ItemID, giveActionInput.TargetPOI.PointOfInterestId);
+            }
+            else
+            {
+                return null;
+            }
+
         }
         else
         {

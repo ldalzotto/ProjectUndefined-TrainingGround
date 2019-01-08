@@ -9,18 +9,28 @@ public class PointOfInterestScenarioState : MonoBehaviour
 [System.Serializable]
 public class ReceivableItemsComponent
 {
-    public List<Item> receivableItems;
+    public List<ItemID> receivableItems = new List<ItemID>();
 
     public bool IsElligibleToGiveItem(Item itemToGive)
     {
         foreach (var receivableItem in receivableItems)
         {
-            if (receivableItem.name == itemToGive.name)
+            if (receivableItem == itemToGive.ItemID)
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public void AddItemID(ItemID itemID)
+    {
+        receivableItems.Add(itemID);
+    }
+
+    public void RemoveItemID(ItemID itemID)
+    {
+        receivableItems.Remove(itemID);
     }
 
 }

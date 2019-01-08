@@ -144,6 +144,8 @@ public abstract class ScenarioNode
 {
     private Dictionary<ScenarioAction, ScenarioNode> transitionRequirements;
 
+    public Dictionary<ScenarioAction, ScenarioNode> TransitionRequirements { get => transitionRequirements; }
+
     protected abstract Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements();
     protected ScenarioNode()
     {

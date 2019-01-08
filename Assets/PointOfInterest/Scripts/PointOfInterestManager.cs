@@ -23,6 +23,11 @@ public class PointOfInterestManager : MonoBehaviour
         PointOfInterestContainerManager.OnPOIDestroyed(POITobeDestroyed);
     }
     #endregion
+
+    public PointOfInterestType GetActivePointOfInterest(PointOfInterestId pointOfInterestId)
+    {
+        return PointOfInterestContainerManager.GetActivePointOfInterest(pointOfInterestId);
+    }
 }
 
 class PointOfInterestContainerManager
@@ -38,5 +43,15 @@ class PointOfInterestContainerManager
     {
         activePointOfInterests.Remove(POITobeDestroyed);
     }
-
+    public PointOfInterestType GetActivePointOfInterest(PointOfInterestId pointOfInterestId)
+    {
+        foreach (var activePOI in activePointOfInterests)
+        {
+            if (activePOI.PointOfInterestId == pointOfInterestId)
+            {
+                return activePOI;
+            }
+        }
+        return null;
+    }
 }

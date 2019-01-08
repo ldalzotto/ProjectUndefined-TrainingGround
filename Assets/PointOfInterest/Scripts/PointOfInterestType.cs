@@ -7,18 +7,20 @@ public class PointOfInterestType : MonoBehaviour
     private AContextAction[] contextActions;
 
     #region Internal Depencies
-    private PointOfInterestScenarioState PointOfInterestScenarioState;
+    private PointOfInterestScenarioState pointOfInterestScenarioState;
     #endregion
 
 
 
     public AContextAction[] ContextActions { get => contextActions; }
+    public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
 
     private void Start()
     {
         #region External Dependencies
         var PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
         #endregion
+        this.pointOfInterestScenarioState = gameObject.AddComponent<PointOfInterestScenarioState>();
         PointOfInterestEventManager.OnPOICreated(this);
 
         var childActions = GetComponentsInChildren(typeof(AContextAction));
@@ -33,7 +35,7 @@ public class PointOfInterestType : MonoBehaviour
     #region Logical Conditions
     public bool IsElligibleToGiveItem(Item itemToGive)
     {
-        return PointOfInterestScenarioState != null && PointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
+        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
     }
     #endregion
 
