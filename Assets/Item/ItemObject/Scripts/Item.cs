@@ -27,5 +27,6 @@ public enum ItemID
     NONE = 0,
     DUMMY_ITEM = 1,
     ID_CARD = 2,
-    ID_CARD_V2 = 3
+    ID_CARD_V2 = 3,
+    ID_CARD_V3 = 4
 }

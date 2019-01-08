@@ -103,6 +103,10 @@ public class InventoryMenu : MonoBehaviour
     {
         InventoryCellContainer.AddItemToFreeCell(item);
     }
+    public void OnItemDeleted(Item item)
+    {
+        InventoryCellContainer.DeleteItemFromMenu(item);
+    }
     public Item GetCurrentSelectedItem()
     {
         return InventoryItemSelectedTrackerManager.GetCurrentItemSelected();
@@ -273,7 +277,7 @@ class InventoryCellContainer
         return (x >= 0 && x < width) && (y >= 0 && y < height);
     }
 
-    public void AddItemToFreeCell(Item item)
+    public void AddItemToFreeCell(Item itemToAdd)
     {
         for (var h = 0; h < height; h++)
         {
@@ -282,7 +286,23 @@ class InventoryCellContainer
                 var inventoryCell = GetCell(w, h);
                 if (inventoryCell.AssociatedItem == null)
                 {
-                    inventoryCell.SetItem(item);
+                    inventoryCell.SetItem(itemToAdd);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void DeleteItemFromMenu(Item deletedItem)
+    {
+        for (var h = 0; h < height; h++)
+        {
+            for (var w = 0; w < width; w++)
+            {
+                var inventoryCell = GetCell(w, h);
+                if (inventoryCell.AssociatedItem != null && inventoryCell.AssociatedItem.ItemID == deletedItem.ItemID)
+                {
+                    inventoryCell.ClearCell();
                     return;
                 }
             }

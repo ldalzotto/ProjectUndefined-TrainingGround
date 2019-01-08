@@ -1,6 +1,11 @@
 ﻿[System.Serializable]
 public class DummyTalkAction : AContextAction
 {
+    public override void AfterFinishedEventProcessed()
+    {
+
+    }
+
     public override bool ComputeFinishedConditions()
     {
         throw new System.NotImplementedException();

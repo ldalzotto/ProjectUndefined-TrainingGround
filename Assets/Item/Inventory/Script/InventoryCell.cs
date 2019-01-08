@@ -21,8 +21,22 @@ public class InventoryCell : MonoBehaviour
         this.RefreshItemSprite();
     }
 
+    public void ClearCell()
+    {
+        associatedItem = null;
+        this.RefreshItemSprite();
+    }
+
     public void RefreshItemSprite()
     {
-        inventoryCellImage.sprite = ItemResourceResolver.ResolveItemInventoryIcon(associatedItem);
+        if (associatedItem != null)
+        {
+            inventoryCellImage.sprite = ItemResourceResolver.ResolveItemInventoryIcon(associatedItem);
+        }
+        else
+        {
+            inventoryCellImage.sprite = null;
+        }
+
     }
 }

@@ -51,7 +51,10 @@ public class GrabAction : AContextAction
 
     }
 
+    public override void AfterFinishedEventProcessed()
+    {
 
+    }
 }
 
 public class GrabActionInput : AContextActionInput

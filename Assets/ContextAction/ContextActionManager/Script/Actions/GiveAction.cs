@@ -6,8 +6,13 @@ public class GiveAction : AContextAction
 {
     private Item itemGiven;
     private bool isActionEnded;
+    private bool itemSuccesfullyGiven;
 
     public Item ItemGiven { get => itemGiven; }
+
+    #region External Dependencies
+    private InventoryEventManager InventoryEventManager;
+    #endregion
 
     #region Internal Managers
     private GiveActionAnimationManager GiveActionAnimationManager;
@@ -21,7 +26,7 @@ public class GiveAction : AContextAction
     #endregion
 
     #region Internal Events
-    private void OnAnimationEnd()
+    private void OnGiveAnimationEnd()
     {
         isActionEnded = true;
     }
@@ -31,6 +36,7 @@ public class GiveAction : AContextAction
     {
         #region External Dependencies
         var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
+        this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         #endregion
 
         itemGiven = GetComponentInParent<Item>();
@@ -45,22 +51,32 @@ public class GiveAction : AContextAction
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
         isActionEnded = false;
+        itemSuccesfullyGiven = false;
         var giveActionInput = (GiveActionInput)ContextActionInput;
 
         if (IsIemGivenElligibleToGive(giveActionInput))
         {
-            StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, OnAnimationEnd));
+            StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, OnGiveAnimationEnd));
+            itemSuccesfullyGiven = true;
         }
         else
         {
-            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnAnimationEnd));
+            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnGiveAnimationEnd));
         }
     }
 
+    public override void AfterFinishedEventProcessed()
+    {
+        if (itemSuccesfullyGiven)
+        {
+            InventoryEventManager.OnItemGiven(itemGiven);
+        }
+    }
     public override void Tick(float d)
     {
         GiveActionAnimationManager.Tick(d);
     }
+
 }
 
 #region Action Input
@@ -99,7 +115,6 @@ class GiveActionAnimationManager
     public IEnumerator Start(GiveActionInput giveActionInput, Action onAnimationEndCallback)
     {
         this.PlayerAnimator = giveActionInput.PlayerAnimator;
-        //TODO process to give
         PlayerGlobalAnimationEventHandler.OnShowGivenItem += InstanciateDisplayedItem;
         PlayerAnimator = giveActionInput.PlayerAnimator;
         return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
@@ -108,7 +123,6 @@ class GiveActionAnimationManager
              PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
              onAnimationEndCallback.Invoke();
          });
-
     }
 
     private void InstanciateDisplayedItem()

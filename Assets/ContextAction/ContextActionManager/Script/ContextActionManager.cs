@@ -56,6 +56,7 @@ public abstract class AContextAction : MonoBehaviour
     public abstract void OnStart();
     public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
     public abstract bool ComputeFinishedConditions();
+    public abstract void AfterFinishedEventProcessed();
     public abstract void Tick(float d);
 
     private ContextActionEventManager ContextActionEventManager;
@@ -79,6 +80,7 @@ public abstract class AContextAction : MonoBehaviour
             {
                 isFinished = true;
                 ContextActionEventManager.OnContextActionFinished(this, contextActionInput);
+                AfterFinishedEventProcessed();
             }
         }
     }

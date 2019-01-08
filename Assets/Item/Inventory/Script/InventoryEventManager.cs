@@ -33,4 +33,10 @@ public class InventoryEventManager : MonoBehaviour
         InventoryMenu.OnInventoryDisabled();
     }
 
+    public void OnItemGiven(Item givenItem)
+    {
+        InventoryManager.OnItemGiven(givenItem);
+        InventoryMenu.OnItemDeleted(givenItem);
+    }
+
 }

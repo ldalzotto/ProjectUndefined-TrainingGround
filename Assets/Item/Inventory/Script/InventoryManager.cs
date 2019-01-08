@@ -33,7 +33,6 @@ public class InventoryManager : MonoBehaviour
         InventoryActionWheelTriggerManager = new InventoryActionWheelTriggerManager(GameInputManager, ContextActionWheelEventManager, InventoryStateWorkflowManager);
     }
 
-
     public void Tick(float d)
     {
         if (IsInventoryMenuEnabled())
@@ -94,6 +93,10 @@ public class InventoryManager : MonoBehaviour
     public void OnContextActionFinished()
     {
         InventoryStateWorkflowManager.OnContextActionFinished();
+    }
+    public void OnItemGiven(Item item)
+    {
+        StartCoroutine(InventoryItemManager.OnItemDelete(item));
     }
     #endregion
 }
@@ -196,6 +199,19 @@ class InventoryItemManager
         var itemGameObject = MonoBehaviour.Instantiate(item, InventoryItemsContainer.transform);
         itemGameObject.name = item.name;
         return itemGameObject;
+    }
+
+    public IEnumerator OnItemDelete(Item itemToDelete)
+    {
+        foreach (Transform possessedItemTransform in InventoryItemsContainer.transform)
+        {
+            Item possessedItem = possessedItemTransform.GetComponent<Item>();
+            if (possessedItem.ItemID == itemToDelete.ItemID)
+            {
+                yield return new WaitForEndOfFrame();
+                MonoBehaviour.Destroy(itemToDelete.gameObject);
+            }
+        }
     }
 }
 #endregion

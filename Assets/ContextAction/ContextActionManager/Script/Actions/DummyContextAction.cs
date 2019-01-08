@@ -25,6 +25,11 @@ public class DummyContextAction : AContextAction
     {
         elapsedTime += d;
     }
+
+    public override void AfterFinishedEventProcessed()
+    {
+
+    }
 }
 
 [System.Serializable]
