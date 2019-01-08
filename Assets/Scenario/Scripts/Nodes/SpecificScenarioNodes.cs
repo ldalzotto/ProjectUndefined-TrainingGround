@@ -16,6 +16,9 @@ public class IdCardGiveScenarioNode : ScenarioNode
 {
     protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
     {
-        return null;
+        return new Dictionary<ScenarioAction, ScenarioNode>()
+        {
+            {new ScenarioAction(typeof(GiveAction), ItemID.ID_CARD, PointOfInterestId.BOUNCER), null }
+        };
     }
 }

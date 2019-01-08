@@ -16,7 +16,6 @@ public class GiveAction : AContextAction
     #region Logical Conditions
     private bool IsIemGivenElligibleToGive(GiveActionInput giveActionInput)
     {
-
         return (giveActionInput != null && giveActionInput.TargetPOI != null && giveActionInput.TargetPOI.IsElligibleToGiveItem(itemGiven));
     }
     #endregion
@@ -101,7 +100,6 @@ class GiveActionAnimationManager
     {
         this.PlayerAnimator = giveActionInput.PlayerAnimator;
         //TODO process to give
-        //TODO animation
         PlayerGlobalAnimationEventHandler.OnShowGivenItem += InstanciateDisplayedItem;
         PlayerAnimator = giveActionInput.PlayerAnimator;
         return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>

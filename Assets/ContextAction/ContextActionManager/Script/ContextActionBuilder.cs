@@ -25,7 +25,7 @@ public class ContextActionBuilder
         }
     }
 
-    public static ScenarioAction BuilScenarioAction(AContextAction contextAction)
+    public static ScenarioAction BuildScenarioAction(AContextAction contextAction, AContextActionInput contextActionInput)
     {
         if (contextAction.GetType() == typeof(GrabAction))
         {
@@ -35,7 +35,8 @@ public class ContextActionBuilder
         else if (contextAction.GetType() == typeof(GiveAction))
         {
             var giveAction = (GiveAction)contextAction;
-            return new ScenarioAction(contextAction.GetType(), giveAction.ItemGiven.ItemID, PointOfInterestId.NONE);
+            var giveActionInput = (GiveActionInput)contextActionInput;
+            return new ScenarioAction(contextAction.GetType(), giveAction.ItemGiven.ItemID, giveActionInput.TargetPOI.PointOfInterestId);
         }
         else
         {

@@ -78,7 +78,7 @@ public abstract class AContextAction : MonoBehaviour
             if (ComputeFinishedConditions())
             {
                 isFinished = true;
-                ContextActionEventManager.OnContextActionFinished(this);
+                ContextActionEventManager.OnContextActionFinished(this, contextActionInput);
             }
         }
     }

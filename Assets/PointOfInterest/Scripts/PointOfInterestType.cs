@@ -28,8 +28,6 @@ public class PointOfInterestType : MonoBehaviour
         {
             contextActions[i] = (AContextAction)childActions[i];
         }
-
-        PointOfInterestScenarioState = GetComponent<PointOfInterestScenarioState>();
     }
 
     #region Logical Conditions

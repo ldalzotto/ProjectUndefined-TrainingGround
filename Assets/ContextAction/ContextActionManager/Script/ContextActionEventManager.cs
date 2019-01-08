@@ -34,11 +34,11 @@ public class ContextActionEventManager : MonoBehaviour
 
     }
 
-    public void OnContextActionFinished(AContextAction finishedContextAction)
+    public void OnContextActionFinished(AContextAction finishedContextAction, AContextActionInput contextActionInput)
     {
         PlayerManager.OnContextActionFinished();
         InventoryManager.OnContextActionFinished();
-        ScenarioTimelineManager.OnScenarioActionExecuted(ContextActionBuilder.BuilScenarioAction(finishedContextAction));
+        ScenarioTimelineManager.OnScenarioActionExecuted(ContextActionBuilder.BuildScenarioAction(finishedContextAction, contextActionInput));
     }
 
 }

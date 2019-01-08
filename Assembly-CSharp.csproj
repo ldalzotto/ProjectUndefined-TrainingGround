@@ -98,6 +98,7 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\Scenario\Scripts\Nodes\SpecificScenarioNodes.cs" />
+    <Compile Include="Assets\Scenario\Scripts\PointOfInterestScenarioStateBuilder.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineEventManager.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineManager.cs" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
