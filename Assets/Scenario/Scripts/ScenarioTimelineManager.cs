@@ -10,7 +10,8 @@ public class ScenarioTimelineManager : MonoBehaviour
 
     private void Start()
     {
-        ScenarioNodesManager = new ScenarioNodesManager(new ScenarioNodesManagerComponent());
+        var ScenarioTimelineEventManager = GameObject.FindObjectOfType<ScenarioTimelineEventManager>();
+        ScenarioNodesManager = new ScenarioNodesManager(new ScenarioNodesManagerComponent(), ScenarioTimelineEventManager);
     }
 
     #region External Events
@@ -32,23 +33,26 @@ public class ScenarioTimelineManager : MonoBehaviour
 class ScenarioNodesManager
 {
     private ScenarioNodesManagerComponent ScenarioNodesManagerComponent;
+    private ScenarioTimelineEventManager ScenarioTimelineEventManager;
 
     private List<ScenarioNode> scenarioNodes = new List<ScenarioNode>();
 
-    public ScenarioNodesManager(ScenarioNodesManagerComponent scenarioNodesManagerComponent)
+    public ScenarioNodesManager(ScenarioNodesManagerComponent scenarioNodesManagerComponent, ScenarioTimelineEventManager ScenarioTimelineEventManager)
     {
+        this.ScenarioTimelineEventManager = ScenarioTimelineEventManager;
         ScenarioNodesManagerComponent = scenarioNodesManagerComponent;
-        scenarioNodes.AddRange(scenarioNodesManagerComponent.initialScenarioNodes);
+        AddToNodes(scenarioNodesManagerComponent.initialScenarioNodes);
     }
 
     public IEnumerator IncrementScenarioGraph(ScenarioAction executedScenarioAction)
     {
         var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedScenarioAction);
-        scenarioNodes.AddRange(scenarioNodesIncrementation.nextScenarioNodes);
+        AddToNodes(scenarioNodesIncrementation.nextScenarioNodes);
         yield return new WaitForEndOfFrame();
         foreach (var oldnode in scenarioNodesIncrementation.oldScenarioNodes)
         {
             scenarioNodes.Remove(oldnode);
+            this.ScenarioTimelineEventManager.OnScenarioNodeEnded(oldnode);
         }
     }
 
@@ -66,6 +70,15 @@ class ScenarioNodesManager
             }
         }
         return new ScenarioNodesIncrementation(nextScenarioNodes, oldScenarioNodes);
+    }
+
+    private void AddToNodes(List<ScenarioNode> scenarioNodesToAdd)
+    {
+        scenarioNodes.AddRange(scenarioNodesToAdd);
+        foreach (var newScenarioNode in scenarioNodesToAdd)
+        {
+            ScenarioTimelineEventManager.OnScenarioNodeStarted(newScenarioNode);
+        }
     }
 
     private class ScenarioNodesIncrementation

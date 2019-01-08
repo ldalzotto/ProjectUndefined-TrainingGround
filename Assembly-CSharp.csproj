@@ -94,9 +94,11 @@
     <Compile Include="Assets\Player\Scripts\PlayerAnimationEventHandler.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
+    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\Scenario\Scripts\Nodes\SpecificScenarioNodes.cs" />
+    <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineEventManager.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineManager.cs" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />

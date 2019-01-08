@@ -4,14 +4,23 @@ public class PointOfInterestType : MonoBehaviour
 {
     public PointOfInterestId PointOfInterestId;
     public float MaxDistanceToInteractWithPlayer;
-
     private AContextAction[] contextActions;
+
+    #region Internal Depencies
     private PointOfInterestScenarioState PointOfInterestScenarioState;
+    #endregion
+
+
 
     public AContextAction[] ContextActions { get => contextActions; }
 
     private void Start()
     {
+        #region External Dependencies
+        var PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+        #endregion
+        PointOfInterestEventManager.OnPOICreated(this);
+
         var childActions = GetComponentsInChildren(typeof(AContextAction));
         contextActions = new AContextAction[childActions.Length];
 
