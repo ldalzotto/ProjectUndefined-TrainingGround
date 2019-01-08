@@ -5,12 +5,23 @@ public class PointOfInterestEventManager : MonoBehaviour
 {
 
     private PlayerManager PlayerManager;
-    private PointOfInterestManager PointOfInterestManager;
+    private PointOfInterestManager pointOfInterestManager;
+
+    private PointOfInterestManager PointOfInterestManager
+    {
+        get
+        {
+            if (pointOfInterestManager == null)
+            {
+                pointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>(); ;
+            }
+            return pointOfInterestManager;
+        }
+    }
 
     private void Start()
     {
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-        PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
     }
 
     public void OnPOICreated(PointOfInterestType POICreated)

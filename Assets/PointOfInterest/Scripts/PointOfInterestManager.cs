@@ -4,13 +4,19 @@ using UnityEngine;
 public class PointOfInterestManager : MonoBehaviour
 {
 
-    private PointOfInterestContainerManager PointOfInterestContainerManager;
+    private PointOfInterestContainerManager pointOfInterestContainerManager;
 
-    private void Start()
+    private PointOfInterestContainerManager PointOfInterestContainerManager
     {
-        PointOfInterestContainerManager = new PointOfInterestContainerManager();
+        get
+        {
+            if (pointOfInterestContainerManager == null)
+            {
+                pointOfInterestContainerManager = new PointOfInterestContainerManager();
+            }
+            return pointOfInterestContainerManager;
+        }
     }
-
 
     #region External Events
     public void OnPOICreated(PointOfInterestType POICreated)

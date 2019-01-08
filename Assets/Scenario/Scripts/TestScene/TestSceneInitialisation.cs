@@ -6,7 +6,7 @@ public class TestSceneInitialisation : ScenarioInitialisation
     {
         return new List<ScenarioNode>()
         {
-            new IdCardGrabScenarioNode()
-        };
+            new IdCardGrabScenarioNode(), new IdCardGrabScenarioNodeV2()
+    };
     }
 }

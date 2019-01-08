@@ -65,11 +65,17 @@ class ScenarioNodesManager
         List<ScenarioNode> oldScenarioNodes = new List<ScenarioNode>();
         foreach (var scenarioNode in scenarioNodes)
         {
-            var computeNodes = scenarioNode.ComputeTransitions(executedScenarioAction);
-            if (computeNodes != null)
+            var computedNodes = scenarioNode.ComputeTransitions(executedScenarioAction);
+            if (computedNodes != null && computedNodes.Count > 0)
             {
-                nextScenarioNodes.AddRange(computeNodes);
-                oldScenarioNodes.Add(scenarioNode);
+                foreach (var computedNode in computedNodes)
+                {
+                    if (computedNode != null)
+                    {
+                        nextScenarioNodes.Add(computedNode);
+                    }
+                    oldScenarioNodes.Add(scenarioNode);
+                }
             }
         }
         return new ScenarioNodesIncrementation(nextScenarioNodes, oldScenarioNodes);
@@ -153,15 +159,12 @@ public abstract class ScenarioNode
             return null;
         }
 
-        List<ScenarioNode> nextScenarioNodes = null;
+        List<ScenarioNode> nextScenarioNodes = new List<ScenarioNode>();
         foreach (var transitionRequirement in transitionRequirements)
         {
+            //transitionRequirement.Value == null means the end of a branch
             if (transitionRequirement.Key.Equals(executedScenarioAction))
             {
-                if (nextScenarioNodes == null)
-                {
-                    nextScenarioNodes = new List<ScenarioNode>();
-                }
                 nextScenarioNodes.Add(transitionRequirement.Value);
             }
         }

@@ -57,5 +57,6 @@ public enum PointOfInterestId
 {
     NONE = 0,
     BOUNCER = 1,
-    ID_CARD = 2
+    ID_CARD = 2,
+    ID_CARD_V2 = 3
 }
