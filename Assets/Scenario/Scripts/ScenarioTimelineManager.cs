@@ -11,8 +11,12 @@ public class ScenarioTimelineManager : MonoBehaviour
 
     private void Start()
     {
+        #region External Dependencies
         var ScenarioTimelineEventManager = GameObject.FindObjectOfType<ScenarioTimelineEventManager>();
-        ScenarioNodesManager = new ScenarioNodesManager(new ScenarioNodesManagerComponent(), ScenarioTimelineEventManager);
+        #endregion
+        var scenarioInitialization = GetComponent<ScenarioInitialisation>();
+
+        ScenarioNodesManager = new ScenarioNodesManager(ScenarioTimelineEventManager, scenarioInitialization);
     }
 
     #region External Events
@@ -33,16 +37,14 @@ public class ScenarioTimelineManager : MonoBehaviour
 #region Scenario Nodes Manager
 class ScenarioNodesManager
 {
-    private ScenarioNodesManagerComponent ScenarioNodesManagerComponent;
     private ScenarioTimelineEventManager ScenarioTimelineEventManager;
 
     private List<ScenarioNode> scenarioNodes = new List<ScenarioNode>();
 
-    public ScenarioNodesManager(ScenarioNodesManagerComponent scenarioNodesManagerComponent, ScenarioTimelineEventManager ScenarioTimelineEventManager)
+    public ScenarioNodesManager(ScenarioTimelineEventManager ScenarioTimelineEventManager, ScenarioInitialisation scenarioInitialization)
     {
         this.ScenarioTimelineEventManager = ScenarioTimelineEventManager;
-        ScenarioNodesManagerComponent = scenarioNodesManagerComponent;
-        AddToNodes(scenarioNodesManagerComponent.initialScenarioNodes);
+        AddToNodes(scenarioInitialization.InitialScenarioNodes());
     }
 
     public IEnumerator IncrementScenarioGraph(ScenarioAction executedScenarioAction)
@@ -93,14 +95,6 @@ class ScenarioNodesManager
             this.oldScenarioNodes = oldScenarioNodes;
         }
     }
-}
-[System.Serializable]
-public class ScenarioNodesManagerComponent
-{
-    //TODO not hard coded
-    public List<ScenarioNode> initialScenarioNodes = new List<ScenarioNode>() {
-        new IdCardGrabScenarioNode()
-    };
 }
 #endregion
 

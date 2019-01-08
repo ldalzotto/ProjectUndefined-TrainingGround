@@ -97,10 +97,12 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Nodes\SpecificScenarioNodes.cs" />
+    <Compile Include="Assets\Scenario\Scripts\ScenarioInitialisation.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioStateMerger.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineEventManager.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineManager.cs" />
+    <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneScenarioNodes.cs" />
+    <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneInitialisation.cs" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
