@@ -88,6 +88,7 @@
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryMenu.cs" />
+    <Compile Include="Assets\Item\ItemObject\GiveActionMiniature\Scripts\GiveActionMiniatureInstanciate.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />

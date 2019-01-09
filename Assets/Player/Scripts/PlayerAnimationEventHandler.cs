@@ -15,4 +15,9 @@ public class PlayerAnimationEventHandler : MonoBehaviour
         PlayerGlobalAnimationEventHandler.ShowGivenItem();
     }
 
+    public void OnHideGivenItem()
+    {
+        PlayerGlobalAnimationEventHandler.HideGivenItem();
+    }
+
 }

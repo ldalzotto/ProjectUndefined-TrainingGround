@@ -115,12 +115,15 @@ class GiveActionAnimationManager
     public IEnumerator Start(GiveActionInput giveActionInput, Action onAnimationEndCallback)
     {
         this.PlayerAnimator = giveActionInput.PlayerAnimator;
+
         PlayerGlobalAnimationEventHandler.OnShowGivenItem += InstanciateDisplayedItem;
+        PlayerGlobalAnimationEventHandler.OnHideGivenItem += HideDisplayedItem;
+
         PlayerAnimator = giveActionInput.PlayerAnimator;
         return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
          {
-             MonoBehaviour.Destroy(DisplayedItemModel);
              PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
+             PlayerGlobalAnimationEventHandler.OnHideGivenItem -= HideDisplayedItem;
              onAnimationEndCallback.Invoke();
          });
     }
@@ -130,22 +133,24 @@ class GiveActionAnimationManager
         if (PlayerAnimator != null)
         {
             var rightHandBoneTransform = PlayerAnimator.gameObject.FindChildObjectRecursively(AnimationConstants.RIGHT_HAND_PLAYER_BONE_NAME).transform;
-            DisplayedItemModel = MonoBehaviour.Instantiate(ItemGiven.ItemModel, rightHandBoneTransform, false);
             var scaleFactor = Vector3.one;
             ComponentSearchHelper.ComputeScaleFactorRecursively(rightHandBoneTransform, PlayerAnimator.transform, ref scaleFactor);
-            DisplayedItemModel.transform.localScale = new Vector3(
-                DisplayedItemModel.transform.localScale.x / scaleFactor.x,
-                DisplayedItemModel.transform.localScale.y / scaleFactor.y,
-                DisplayedItemModel.transform.localScale.z / scaleFactor.z);
+            DisplayedItemModel = GiveActionMiniatureInstanciate.Instance(ItemGiven.ItemModel, rightHandBoneTransform, scaleFactor);
         }
+    }
+
+    private void HideDisplayedItem()
+    {
+        MonoBehaviour.Destroy(DisplayedItemModel);
     }
 
     public void Tick(float d)
     {
+        /**
         if (DisplayedItemModel != null)
         {
             DisplayedItemModel.transform.Rotate(Vector3.up * 180f * d, Space.World);
-        }
+        }**/
 
     }
 
