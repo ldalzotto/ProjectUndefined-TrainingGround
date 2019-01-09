@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 //TODO -> Adding custom inspector to visualize ScenarioNodesManager
@@ -22,16 +20,10 @@ public class ScenarioTimelineManager : MonoBehaviour
     #region External Events
     public void OnScenarioActionExecuted(ScenarioAction scenarioAction)
     {
-        UpdateScenarioGraph(scenarioAction);
+        //  Debug.Log("Scenario graph update. ItemId : " + executedScenarioAction.ItemInvolved + " POIId : " + executedScenarioAction.PoiInvolved + " Action : " + executedScenarioAction.ActionType.ToString());
+        ScenarioNodesManager.IncrementScenarioGraph(scenarioAction);
     }
     #endregion
-
-    private void UpdateScenarioGraph(ScenarioAction executedScenarioAction)
-    {
-        Debug.Log("Scenario graph update. ItemId : " + executedScenarioAction.ItemInvolved + " POIId : " + executedScenarioAction.PoiInvolved + " Action : " + executedScenarioAction.ActionType.ToString());
-        StartCoroutine(ScenarioNodesManager.IncrementScenarioGraph(executedScenarioAction));
-    }
-
 }
 
 #region Scenario Nodes Manager
@@ -47,11 +39,10 @@ class ScenarioNodesManager
         AddToNodes(scenarioInitialization.InitialScenarioNodes());
     }
 
-    public IEnumerator IncrementScenarioGraph(ScenarioAction executedScenarioAction)
+    public void IncrementScenarioGraph(ScenarioAction executedScenarioAction)
     {
         var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedScenarioAction);
         AddToNodes(scenarioNodesIncrementation.nextScenarioNodes);
-        yield return new WaitForEndOfFrame();
         foreach (var oldnode in scenarioNodesIncrementation.oldScenarioNodes)
         {
             scenarioNodes.Remove(oldnode);
@@ -104,41 +95,6 @@ class ScenarioNodesManager
 }
 #endregion
 
-public class ScenarioAction
-{
-    private Type actionType;
-    private ItemID itemInvolved;
-    private PointOfInterestId poiInvolved;
-
-    public ScenarioAction(Type actionType, ItemID itemInvolved, PointOfInterestId poiInvolved)
-    {
-        this.actionType = actionType;
-        this.itemInvolved = itemInvolved;
-        this.poiInvolved = poiInvolved;
-    }
-
-    public ItemID ItemInvolved { get => itemInvolved; }
-    public PointOfInterestId PoiInvolved { get => poiInvolved; }
-    public Type ActionType { get => actionType; }
-
-    public override bool Equals(object obj)
-    {
-        var action = obj as ScenarioAction;
-        return action != null &&
-               EqualityComparer<Type>.Default.Equals(actionType, action.actionType) &&
-               itemInvolved == action.itemInvolved &&
-               poiInvolved == action.poiInvolved;
-    }
-
-    public override int GetHashCode()
-    {
-        var hashCode = 272091116;
-        hashCode = hashCode * -1521134295 + EqualityComparer<Type>.Default.GetHashCode(actionType);
-        hashCode = hashCode * -1521134295 + itemInvolved.GetHashCode();
-        hashCode = hashCode * -1521134295 + poiInvolved.GetHashCode();
-        return hashCode;
-    }
-}
 
 public abstract class ScenarioNode
 {

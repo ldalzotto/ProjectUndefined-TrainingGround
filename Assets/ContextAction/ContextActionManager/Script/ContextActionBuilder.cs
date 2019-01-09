@@ -30,7 +30,7 @@ public class ContextActionBuilder
         if (contextAction.GetType() == typeof(GrabAction))
         {
             var grabAction = (GrabAction)contextAction;
-            return new ScenarioAction(contextAction.GetType(), grabAction.Item.ItemID, grabAction.AssociatedPOI.PointOfInterestId);
+            return new GrabScenarioAction(grabAction.Item.ItemID, grabAction.AssociatedPOI.PointOfInterestId);
         }
         else if (contextAction.GetType() == typeof(GiveAction))
         {
@@ -38,7 +38,7 @@ public class ContextActionBuilder
             var giveActionInput = (GiveActionInput)contextActionInput;
             if (giveAction.ItemGiven != null && giveActionInput.TargetPOI != null)
             {
-                return new ScenarioAction(contextAction.GetType(), giveAction.ItemGiven.ItemID, giveActionInput.TargetPOI.PointOfInterestId);
+                return new GiveScenarioAction(giveAction.ItemGiven.ItemID, giveActionInput.TargetPOI.PointOfInterestId);
             }
             else
             {

@@ -98,6 +98,7 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
+    <Compile Include="Assets\Scenario\Scripts\Action\ScenarioAction.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioInitialisation.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioStateMerger.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineEventManager.cs" />

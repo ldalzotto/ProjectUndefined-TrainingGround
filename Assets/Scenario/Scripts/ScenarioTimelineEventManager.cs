@@ -16,7 +16,7 @@ public class ScenarioTimelineEventManager : MonoBehaviour
     {
         if (scenarioNode != null)
         {
-            PointOfInterestScenarioStateMerger.AddPointOfInterestScenarioState(scenarioNode, PointOfInterestManager, ScenarioStateMergerAction.DELETE);
+            PointOfInterestScenarioStateMerger.MergePointOfInterestScenarioState(scenarioNode, PointOfInterestManager, ScenarioStateMergerAction.DELETE);
         }
     }
 
@@ -24,7 +24,7 @@ public class ScenarioTimelineEventManager : MonoBehaviour
     {
         if (scenarioNode != null)
         {
-            PointOfInterestScenarioStateMerger.AddPointOfInterestScenarioState(scenarioNode, PointOfInterestManager, ScenarioStateMergerAction.ADD);
+            PointOfInterestScenarioStateMerger.MergePointOfInterestScenarioState(scenarioNode, PointOfInterestManager, ScenarioStateMergerAction.ADD);
         }
     }
 

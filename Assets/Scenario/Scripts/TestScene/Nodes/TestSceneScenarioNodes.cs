@@ -6,7 +6,7 @@ public class IdCardGrabScenarioNode : ScenarioNode
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
         {
-            {new ScenarioAction(typeof(GrabAction), ItemID.ID_CARD, PointOfInterestId.ID_CARD), new IdCardGiveScenarioNode() }
+            {new GrabScenarioAction(ItemID.ID_CARD, PointOfInterestId.ID_CARD), new IdCardGiveScenarioNode() }
         };
     }
 }
@@ -17,7 +17,7 @@ public class IdCardGrabScenarioNodeV2 : ScenarioNode
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
         {
-            {new ScenarioAction(typeof(GrabAction), ItemID.ID_CARD_V2, PointOfInterestId.ID_CARD_V2), new IdCardGiveScenarioNode() }
+            {new GrabScenarioAction(ItemID.ID_CARD_V2, PointOfInterestId.ID_CARD_V2), new IdCardGiveScenarioNodeV2() }
         };
     }
 }
@@ -28,7 +28,7 @@ public class IdCardGiveScenarioNode : ScenarioNode
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
         {
-            {new ScenarioAction(typeof(GiveAction), ItemID.ID_CARD, PointOfInterestId.BOUNCER), null }
+            {new GiveScenarioAction(ItemID.ID_CARD, PointOfInterestId.BOUNCER), null }
         };
     }
 }
@@ -39,7 +39,7 @@ public class IdCardGiveScenarioNodeV2 : ScenarioNode
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
         {
-            {new ScenarioAction(typeof(GiveAction), ItemID.ID_CARD_V2, PointOfInterestId.BOUNCER), null }
+            {new GiveScenarioAction(ItemID.ID_CARD_V2, PointOfInterestId.BOUNCER), null }
         };
     }
 }

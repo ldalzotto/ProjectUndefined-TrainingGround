@@ -28,10 +28,6 @@ public class GrabAction : AContextAction
 
     public override bool ComputeFinishedConditions()
     {
-        if (animationEnded)
-        {
-            PointOfInterestEventManager.DestroyPOI(GetComponentInParent<PointOfInterestType>());
-        }
         return animationEnded;
     }
 
@@ -53,7 +49,7 @@ public class GrabAction : AContextAction
 
     public override void AfterFinishedEventProcessed()
     {
-
+        PointOfInterestEventManager.DestroyPOI(GetComponentInParent<PointOfInterestType>());
     }
 }
 
