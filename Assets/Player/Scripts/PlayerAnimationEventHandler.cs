@@ -20,4 +20,9 @@ public class PlayerAnimationEventHandler : MonoBehaviour
         PlayerGlobalAnimationEventHandler.HideGivenItem();
     }
 
+    public void OnIdleOverideTriggerSmokeEffect()
+    {
+        PlayerGlobalAnimationEventHandler.IdleOverideTriggerSmokeEffect();
+    }
+
 }

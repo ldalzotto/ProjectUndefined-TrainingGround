@@ -1,4 +1,6 @@
-﻿public class PointOfInterestScenarioStateMerger
+﻿using UnityEngine;
+
+public class PointOfInterestScenarioStateMerger
 {
     public static void MergePointOfInterestScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager, ScenarioStateMergerAction scenarioStateMergerAction)
     {
@@ -19,6 +21,10 @@
                 var associatedPOI = PointOfInterestManager.GetActivePointOfInterest(grabScenarioAction.PoiInvolved);
 
                 PoiScenarioStateReceivableItemsUpdate(scenarioStateMergerAction, grabScenarioAction.ItemInvolved, associatedPOI);
+            }
+            else
+            {
+                Debug.LogError("The scenario type : " + scenarioAction.GetType() + " has not been recognized by the scenario state merger.");
             }
         }
     }

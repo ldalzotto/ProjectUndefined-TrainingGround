@@ -15,6 +15,10 @@ public class PlayerManager : MonoBehaviour
     public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
     public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
+    #region Sub Managers
+    private PlayerAnimationManager PlayerAnimationManager;
+    #endregion
+
     private CameraFollowManager CameraFollowManager;
     private CameraOrientationManager CameraOrientationManager;
 
@@ -26,8 +30,6 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerContextActionManager PlayerContextActionManager;
     private PlayerInventoryTriggerManager PlayerInventoryTriggerManager;
-
-    private PlayerAnimationDataManager PlayerAnimationDataManager;
 
     private void Start()
     {
@@ -52,7 +54,7 @@ public class PlayerManager : MonoBehaviour
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
         this.PlayerContextActionManager = new PlayerContextActionManager();
         this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
-        this.PlayerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
+        this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
     }
 
     public void Tick(float d)
@@ -79,7 +81,8 @@ public class PlayerManager : MonoBehaviour
                 PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
             }
         }
-        PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
+
+        PlayerAnimationManager.Tick(d, PlayerMoveManager.PlayerSpeedMagnitude);
     }
 
     public void FixedTick(float d)
@@ -122,7 +125,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsHeadRotatingTowardsPOI()
     {
-        return !PlayerContextActionManager.IsActionExecuting;
+        return !PlayerContextActionManager.IsActionExecuting && !PlayerAnimationManager.IsIdleAnimationRunnig();
     }
 
     #endregion
@@ -175,7 +178,7 @@ public class PlayerManager : MonoBehaviour
 
     public Animator GetPlayerAnimator()
     {
-        return PlayerAnimationDataManager.Animator;
+        return PlayerAnimationManager.GetPlayerAnimator();
     }
 
     public PointOfInterestType GetCurrentTargetedPOI()
@@ -567,30 +570,6 @@ class PlayerPOIWheelTriggerManager
             Gizmos.DrawRay(nearestPOI.transform.position, (PlayerTransform.position - nearestPOI.transform.position).normalized * nearestPOI.MaxDistanceToInteractWithPlayer);
         }
     }
-}
-
-#endregion
-
-#region Animation
-class PlayerAnimationDataManager
-{
-
-    public const string SpeedMagnitude = "Speed";
-
-    private Animator animator;
-
-    public PlayerAnimationDataManager(Animator animator)
-    {
-        this.animator = animator;
-    }
-
-    public Animator Animator { get => animator; }
-
-    public void Tick(float unscaledSpeedMagnitude)
-    {
-        animator.SetFloat(SpeedMagnitude, unscaledSpeedMagnitude);
-    }
-
 }
 #endregion
 

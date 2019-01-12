@@ -174,7 +174,7 @@ public enum WheelTriggerSource
 }
 #endregion
 
-#region 
+#region  POISelection Effect
 class PointOnInteresetSelectedEffectManager
 {
     private PointOnInteresetSelectedEffectComponent PointOnInteresetSelectedEffectComponent;

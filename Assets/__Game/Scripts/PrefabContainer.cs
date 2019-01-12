@@ -9,6 +9,9 @@ public class PrefabContainer : MonoBehaviour
     public GameObject InventoryMenuCellPrefab;
     public GameObject GiveActionMiniaturePrefab;
 
+    [Header("Player FX")]
+    public TriggerableEffect PlayerSmokeEffectPrefab;
+
     public static PrefabContainer Instance
     {
         get
