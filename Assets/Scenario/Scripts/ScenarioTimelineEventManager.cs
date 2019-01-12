@@ -7,7 +7,7 @@ public class ScenarioTimelineEventManager : MonoBehaviour
     private PointOfInterestManager PointOfInterestManager;
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
     }
