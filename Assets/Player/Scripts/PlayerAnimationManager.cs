@@ -6,39 +6,37 @@ public class PlayerAnimationManager : MonoBehaviour
     [Header("Animation")]
     public PlayerIdleAnimationManagerComponent PlayerIdleAnimationManagerComponent;
 
-    private PlayerAnimationDataManager PlayerAnimationDataManager;
-    private PlayerIdleAnimationManager PlayerIdleAnimationManager;
+    private PlayerAnimationDataManager playerAnimationDataManager;
+    private PlayerIdleAnimationManager playerIdleAnimationManager;
 
     #region FX Instanciation handler
     private PlayerAnimationFXHandler PlayerAnimationFXHandler;
+
+    internal PlayerAnimationDataManager PlayerAnimationDataManager { get => playerAnimationDataManager; }
+    internal PlayerIdleAnimationManager PlayerIdleAnimationManager { get => playerIdleAnimationManager; }
     #endregion
 
     private void Start()
     {
         var PlayerAnimator = GetComponentInChildren<Animator>();
 
-        this.PlayerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
-        this.PlayerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this);
+        this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
+        this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this);
 
         this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<PlayerGlobalAnimationEventHandler>(), FindObjectOfType<FXContainerManager>());
     }
 
-    public void Tick(float d, float PlayerSpeedMagnitude)
-    {
-        PlayerAnimationDataManager.Tick(PlayerSpeedMagnitude);
-        PlayerIdleAnimationManager.Tick(d, PlayerSpeedMagnitude);
-    }
 
     #region Logical Conditions
     public bool IsIdleAnimationRunnig()
     {
-        return PlayerIdleAnimationManager.IsIdlingAnimationRuning;
+        return playerIdleAnimationManager.IsIdlingAnimationRuning;
     }
     #endregion
 
     public Animator GetPlayerAnimator()
     {
-        return PlayerAnimationDataManager.Animator;
+        return playerAnimationDataManager.Animator;
     }
 
 }
@@ -104,9 +102,14 @@ class PlayerIdleAnimationManager
             {
                 PlayerManagerReference.StopCoroutine(animationCoroutine);
                 ResetIdleTimer();
-                PlayerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
+                SwitchToListeningAnimation();
             }
         }
+    }
+
+    private void SwitchToListeningAnimation()
+    {
+        PlayerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
     }
 
     private IEnumerator PlayIdleAnimation(PlayerAnimatioNnamesEnum playerAnimatioNnamesEnum)
@@ -120,9 +123,14 @@ class PlayerIdleAnimationManager
         ResetIdleTimer();
     }
 
-    private void ResetIdleTimer()
+    public void ResetIdleTimer()
     {
         elapsedTime = 0f;
+
+        if (isIdlingAnimationRuning)
+        {
+            SwitchToListeningAnimation();
+        }
         isIdlingAnimationRuning = false;
     }
 

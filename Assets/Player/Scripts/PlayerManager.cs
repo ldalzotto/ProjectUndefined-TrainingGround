@@ -82,7 +82,16 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        PlayerAnimationManager.Tick(d, PlayerMoveManager.PlayerSpeedMagnitude);
+        PlayerAnimationManager.PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
+
+        if (!PlayerContextActionManager.IsActionExecuting)
+        {
+            PlayerAnimationManager.PlayerIdleAnimationManager.Tick(d, PlayerMoveManager.PlayerSpeedMagnitude);
+        }
+        else
+        {
+            PlayerAnimationManager.PlayerIdleAnimationManager.ResetIdleTimer();
+        }
     }
 
     public void FixedTick(float d)
