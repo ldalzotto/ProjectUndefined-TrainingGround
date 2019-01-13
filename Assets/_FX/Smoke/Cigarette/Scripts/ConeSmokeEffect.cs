@@ -41,7 +41,8 @@ public class ConeSmokeEffect : TriggerableEffect
 
     public override void TriggerEffect(Action onEffectEnd)
     {
-        EffectAnimator.Play("EffectTriggered");
+        GetComponent<Animator>().Play("EffectTriggered");
+        // EffectAnimator.Play("EffectTriggered");
         this.OnEffectEnd = onEffectEnd;
     }
 }

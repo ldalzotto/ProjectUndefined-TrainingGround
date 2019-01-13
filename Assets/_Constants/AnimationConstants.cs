@@ -26,8 +26,6 @@ public class AnimationConstants
         public string AnimationName { get => animationName; }
         public int LayerIndex { get => layerIndex; }
     }
-
-    public const string RIGHT_HAND_PLAYER_BONE_NAME = "HoldItem.R";
 }
 
 public enum PlayerAnimatioNnamesEnum

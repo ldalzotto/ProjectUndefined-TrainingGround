@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
@@ -23,7 +24,7 @@ public class PlayerAnimationManager : MonoBehaviour
         this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
         this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this);
 
-        this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<PlayerGlobalAnimationEventHandler>(), FindObjectOfType<FXContainerManager>());
+        this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<PlayerGlobalAnimationEventHandler>(), FindObjectOfType<FXContainerManager>(), PlayerAnimator);
     }
 
 
@@ -31,6 +32,14 @@ public class PlayerAnimationManager : MonoBehaviour
     public bool IsIdleAnimationRunnig()
     {
         return playerIdleAnimationManager.IsIdlingAnimationRuning;
+    }
+    #endregion
+
+    #region External Events
+    public void OnIdleAnimationReset()
+    {
+        PlayerIdleAnimationManager.ResetIdleTimer();
+        PlayerAnimationFXHandler.OnAnimationKilled();
     }
     #endregion
 
@@ -151,19 +160,53 @@ public class PlayerIdleAnimationManagerComponent
 class PlayerAnimationFXHandler
 {
     private FXContainerManager FXContainerManager;
+    private Animator PlayerAnimator;
 
-    public PlayerAnimationFXHandler(PlayerGlobalAnimationEventHandler playerGlobalAnimationEventHandler, FXContainerManager fXContainerManager)
+    private TriggerableEffect CurrentEffectPlaying;
+
+    public PlayerAnimationFXHandler(PlayerGlobalAnimationEventHandler playerGlobalAnimationEventHandler, FXContainerManager fXContainerManager, Animator playerAnimator)
     {
         FXContainerManager = fXContainerManager;
+        this.PlayerAnimator = playerAnimator;
         playerGlobalAnimationEventHandler.OnIdleOverideTriggerSmokeEffect += SpawnFireSmoke;
     }
 
     #region Idle animations
     private void SpawnFireSmoke()
     {
-        //TODO wrong transform
-        FXContainerManager.TriggerFX(PrefabContainer.Instance.PlayerSmokeEffectPrefab, FXContainerManager.transform);
+        CurrentEffectPlaying = FXContainerManager.TriggerFX(PrefabContainer.Instance.PlayerSmokeEffectPrefab, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HEAD, PlayerAnimator).transform);
     }
     #endregion
+
+    #region External Events
+    public void OnAnimationKilled()
+    {
+        if (CurrentEffectPlaying != null)
+        {
+            MonoBehaviour.Destroy(CurrentEffectPlaying.gameObject);
+        }
+    }
+    #endregion
+}
+#endregion
+
+#region Bone Retriever
+class PlayerBoneRetriever
+{
+    private static Dictionary<PlayerBone, string> BoneNames = new Dictionary<PlayerBone, string>()
+    {
+        {PlayerBone.HEAD, "Head"},
+        {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem.R" }
+    };
+
+    public static GameObject GetPlayerBone(PlayerBone playerBone, Animator playerAnimator)
+    {
+        return playerAnimator.gameObject.FindChildObjectRecursively(BoneNames[playerBone]);
+    }
+}
+
+public enum PlayerBone
+{
+    HEAD, RIGHT_HAND_CONTEXT
 }
 #endregion

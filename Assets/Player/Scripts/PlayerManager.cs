@@ -84,13 +84,13 @@ public class PlayerManager : MonoBehaviour
 
         PlayerAnimationManager.PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
 
-        if (!PlayerContextActionManager.IsActionExecuting)
+        if (PlayerContextActionManager.IsActionExecuting || PlayerMoveManager.PlayerSpeedMagnitude > float.Epsilon)
         {
-            PlayerAnimationManager.PlayerIdleAnimationManager.Tick(d, PlayerMoveManager.PlayerSpeedMagnitude);
+            PlayerAnimationManager.OnIdleAnimationReset();
         }
         else
         {
-            PlayerAnimationManager.PlayerIdleAnimationManager.ResetIdleTimer();
+            PlayerAnimationManager.PlayerIdleAnimationManager.Tick(d, PlayerMoveManager.PlayerSpeedMagnitude);
         }
     }
 
