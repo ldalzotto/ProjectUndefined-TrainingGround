@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ContextActionWheel : MonoBehaviour
@@ -23,16 +24,16 @@ public class ContextActionWheel : MonoBehaviour
         ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(NonSelectedMaterial, SelectedMaterial);
     }
 
-    public void Init(AContextAction[] wheelContextActions)
+    public void Init(List<AContextAction> wheelContextActions)
     {
         #region External Dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
         ActionWheelNodePositionManager = new ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
-        wheelActionNodes = new WheelActionNode[wheelContextActions.Length];
+        wheelActionNodes = new WheelActionNode[wheelContextActions.Count];
         var actionNodeContainerObject = transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
-        for (var i = 0; i < wheelContextActions.Length; i++)
+        for (var i = 0; i < wheelContextActions.Count; i++)
         {
             var actionNode = WheelActionNode.Instantiate(wheelContextActions[i]);
             actionNode.transform.SetParent(actionNodeContainerObject, false);
@@ -75,7 +76,12 @@ public class ContextActionWheel : MonoBehaviour
 
     public AContextAction GetSelectedAction()
     {
-        return ActionWheelActiveNodeManager.ActiveNode.AssociatedContextAction;
+        if (ActionWheelActiveNodeManager.ActiveNode != null)
+        {
+            return ActionWheelActiveNodeManager.ActiveNode.AssociatedContextAction;
+        }
+        return null;
+
     }
 }
 
@@ -97,33 +103,37 @@ class ActionWheelNodePositionManager
 
     public void Tick(float d, WheelActionNode[] wheelActionNodes)
     {
-        if (!isRotating && wheelActionNodes.Length > 1)
+        if (wheelActionNodes.Length > 1)
         {
-            var joystickAxis = GameInputManager.CurrentInput.LocomotionAxis();
-            if (joystickAxis.x >= 0.5)
+            if (!isRotating)
             {
-                isRotating = true;
-                for (var i = 0; i < wheelActionNodes.Length; i++)
+                var joystickAxis = GameInputManager.CurrentInput.LocomotionAxis();
+                if (joystickAxis.x >= 0.5)
                 {
-                    wheelActionNodes[i].TargetWheelAngleDeg += (360 / wheelActionNodes.Length);
+                    isRotating = true;
+                    for (var i = 0; i < wheelActionNodes.Length; i++)
+                    {
+                        wheelActionNodes[i].TargetWheelAngleDeg += (360 / wheelActionNodes.Length);
+                    }
+                    ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
                 }
-                ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
+                else if (joystickAxis.x <= -0.5)
+                {
+                    isRotating = true;
+                    for (var i = 0; i < wheelActionNodes.Length; i++)
+                    {
+                        wheelActionNodes[i].TargetWheelAngleDeg -= (360 / wheelActionNodes.Length);
+                    }
+                    ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
+                }
             }
-            else if (joystickAxis.x <= -0.5)
+
+            if (RepositionNodesSmooth(wheelActionNodes, d))
             {
-                isRotating = true;
-                for (var i = 0; i < wheelActionNodes.Length; i++)
-                {
-                    wheelActionNodes[i].TargetWheelAngleDeg -= (360 / wheelActionNodes.Length);
-                }
-                ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
+                isRotating = false;
             }
         }
 
-        if (RepositionNodesSmooth(wheelActionNodes, d))
-        {
-            isRotating = false;
-        }
 
     }
 

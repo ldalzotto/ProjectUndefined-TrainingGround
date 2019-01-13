@@ -72,7 +72,7 @@ public class ContextActionWheelManager : MonoBehaviour
     }
 
     #region External Events
-    public void OnAwakeWheel(AContextAction[] contextActions, WheelTriggerSource wheelTriggerSource, PointOfInterestType currentTargetedPOI)
+    public void OnAwakeWheel(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource, PointOfInterestType currentTargetedPOI)
     {
         ContextActionWheel.Init(contextActions);
         PointOnInteresetSelectedEffectManager.OnWheelEnabled(currentTargetedPOI);

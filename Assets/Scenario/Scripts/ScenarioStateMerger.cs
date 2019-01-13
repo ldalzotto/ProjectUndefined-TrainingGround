@@ -1,57 +1,87 @@
-﻿using UnityEngine;
-
-public class PointOfInterestScenarioStateMerger
+﻿public class ReceivableItemScenarioStateMerger
 {
-    public static void MergePointOfInterestScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager, ScenarioStateMergerAction scenarioStateMergerAction)
+    public static void MergeReceivableItemScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager, ScenarioNodeLifecycle scenarioNodeLifecycle)
     {
         foreach (var transitionRequirement in scenarioNode.TransitionRequirements)
         {
-            var scenarioAction = transitionRequirement.Key;
+            var awaitedScenarioAction = transitionRequirement.Key;
 
-            if (scenarioAction.GetType() == typeof(GiveScenarioAction))
+            if (awaitedScenarioAction.GetType() == typeof(GiveScenarioAction))
             {
-                var giveScenarioAction = (GiveScenarioAction)scenarioAction;
-                var associatedPOI = PointOfInterestManager.GetActivePointOfInterest(giveScenarioAction.PoiInvolved);
+                var giveScenarioAction = (GiveScenarioAction)awaitedScenarioAction;
 
-                PoiScenarioStateReceivableItemsUpdate(scenarioStateMergerAction, giveScenarioAction.ItemInvolved, associatedPOI);
-            }
-            else if (scenarioAction.GetType() == typeof(GrabScenarioAction))
-            {
-                var grabScenarioAction = (GrabScenarioAction)scenarioAction;
-                var associatedPOI = PointOfInterestManager.GetActivePointOfInterest(grabScenarioAction.PoiInvolved);
+                if (giveScenarioAction.ItemInvolved != ItemID.NONE)
+                {
+                    var associatedPOI = PointOfInterestManager.GetActivePointOfInterest(giveScenarioAction.PoiInvolved);
+                    if (scenarioNodeLifecycle == ScenarioNodeLifecycle.ON_END)
+                    {
+                        associatedPOI.OnReceivableItemRemove(giveScenarioAction.ItemInvolved);
+                    }
+                    else
+                    {
+                        associatedPOI.OnReceivableItemAdd(giveScenarioAction.ItemInvolved);
+                    }
 
-                PoiScenarioStateReceivableItemsUpdate(scenarioStateMergerAction, grabScenarioAction.ItemInvolved, associatedPOI);
-            }
-            else
-            {
-                Debug.LogError("The scenario type : " + scenarioAction.GetType() + " has not been recognized by the scenario state merger.");
-            }
-        }
-    }
+                }
 
-    private static void PoiScenarioStateReceivableItemsUpdate(ScenarioStateMergerAction scenarioStateMergerAction, ItemID itemInvolved, PointOfInterestType associatedPOI)
-    {
-        if (itemInvolved != ItemID.NONE)
-        {
-            if (associatedPOI.PointOfInterestScenarioState.ReceivableItemsComponent == null)
-            {
-                associatedPOI.PointOfInterestScenarioState.ReceivableItemsComponent = new ReceivableItemsComponent();
-            }
-            switch (scenarioStateMergerAction)
-            {
-                case ScenarioStateMergerAction.ADD:
-                    associatedPOI.PointOfInterestScenarioState.ReceivableItemsComponent.AddItemID(itemInvolved);
-                    break;
-
-                case ScenarioStateMergerAction.DELETE:
-                    associatedPOI.PointOfInterestScenarioState.ReceivableItemsComponent.RemoveItemID(itemInvolved);
-                    break;
             }
         }
     }
 }
 
-public enum ScenarioStateMergerAction
+public class GrabbableItemScenarioStateMerger
 {
-    ADD, DELETE
+    public static void MergeGrabbableItemScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager, ScenarioNodeLifecycle scenarioNodeLifecycle)
+    {
+        foreach (var transitionRequirement in scenarioNode.TransitionRequirements)
+        {
+            var awaitedScenarioAction = transitionRequirement.Key;
+
+            if (awaitedScenarioAction.GetType() == typeof(GrabScenarioAction))
+            {
+                var grabScenarioAction = (GrabScenarioAction)awaitedScenarioAction;
+
+                var associatedPOI = PointOfInterestManager.GetActivePointOfInterest(grabScenarioAction.PoiInvolved);
+                if (grabScenarioAction.ItemInvolved != ItemID.NONE)
+                {
+                    if (scenarioNodeLifecycle == ScenarioNodeLifecycle.ON_START)
+                    {
+                        associatedPOI.OnGrabbableItemAdd(grabScenarioAction.ItemInvolved);
+                    }
+                    else
+                    {
+                        associatedPOI.OnGrabbableItemRemove(grabScenarioAction.ItemInvolved);
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+public class DiscussionTreeScenarioStateMerger
+{
+    public static void MergePointOfInterestScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager)
+    {
+        if (scenarioNode.DiscussionTrees != null)
+        {
+            foreach (var discussionTree in scenarioNode.DiscussionTrees)
+            {
+                var poiId = discussionTree.Key;
+                var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(poiId);
+                if (selectedPOI != null)
+                {
+                    /**
+                    var poiScenarioState = selectedPOI.PointOfInterestScenarioState;
+                    if (poiScenarioState != null)
+                    {
+                        poiScenarioState.DiscussionTree = discussionTree.Value;
+                    }
+    **/
+
+                }
+            }
+        }
+
+    }
 }

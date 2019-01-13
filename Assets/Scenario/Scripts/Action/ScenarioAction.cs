@@ -61,8 +61,3 @@ public class GiveScenarioAction : ScenarioAction
         return hashCode;
     }
 }
-
-public class DiscussionScenarioAction : ScenarioAction
-{
-    private PointOfInterestId sourcePOI;
-}

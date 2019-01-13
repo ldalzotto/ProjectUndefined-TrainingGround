@@ -16,7 +16,8 @@ public class ScenarioTimelineEventManager : MonoBehaviour
     {
         if (scenarioNode != null)
         {
-            PointOfInterestScenarioStateMerger.MergePointOfInterestScenarioState(scenarioNode, PointOfInterestManager, ScenarioStateMergerAction.DELETE);
+            GrabbableItemScenarioStateMerger.MergeGrabbableItemScenarioState(scenarioNode, PointOfInterestManager, ScenarioNodeLifecycle.ON_END);
+            ReceivableItemScenarioStateMerger.MergeReceivableItemScenarioState(scenarioNode, PointOfInterestManager, ScenarioNodeLifecycle.ON_END);
         }
     }
 
@@ -24,8 +25,11 @@ public class ScenarioTimelineEventManager : MonoBehaviour
     {
         if (scenarioNode != null)
         {
-            PointOfInterestScenarioStateMerger.MergePointOfInterestScenarioState(scenarioNode, PointOfInterestManager, ScenarioStateMergerAction.ADD);
+            GrabbableItemScenarioStateMerger.MergeGrabbableItemScenarioState(scenarioNode, PointOfInterestManager, ScenarioNodeLifecycle.ON_START);
+            ReceivableItemScenarioStateMerger.MergeReceivableItemScenarioState(scenarioNode, PointOfInterestManager, ScenarioNodeLifecycle.ON_START);
+            DiscussionTreeScenarioStateMerger.MergePointOfInterestScenarioState(scenarioNode, PointOfInterestManager);
         }
     }
 
 }
+

@@ -1,23 +1,25 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Item : MonoBehaviour
 {
     public GameObject ItemModel;
     public ItemID ItemID;
 
-    private AContextAction[] contextActions;
+    private List<AContextAction> contextActions;
 
-    public AContextAction[] ContextActions { get => contextActions; }
+    public List<AContextAction> ContextActions { get => contextActions; }
 
     private void Start()
     {
-        var childActions = GetComponentsInChildren(typeof(AContextAction));
-        contextActions = new AContextAction[childActions.Length];
+        contextActions = BuildItemContextActions();
+    }
 
-        for (var i = 0; i < contextActions.Length; i++)
-        {
-            contextActions[i] = (AContextAction)childActions[i];
-        }
+    private List<AContextAction> BuildItemContextActions()
+    {
+        return new List<AContextAction>() {
+            new GiveAction(this)
+        };
     }
 }
 

@@ -2,7 +2,6 @@
 
 public class GrabAction : AContextAction
 {
-    [Header("Item definition")]
     public Item Item;
 
     private GrabActionInput grabActionInput;
@@ -18,13 +17,13 @@ public class GrabAction : AContextAction
 
     #endregion
 
-    public override void OnStart()
+    public GrabAction(ItemID itemId, PointOfInterestType associatedPOI) : base()
     {
+        Item = PrefabContainer.InventoryItemsPrefabs[itemId];
         InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
-        associatedPOI = transform.parent.GetComponent<PointOfInterestType>();
+        this.associatedPOI = associatedPOI;
     }
-
 
     public override bool ComputeFinishedConditions()
     {
@@ -35,11 +34,11 @@ public class GrabAction : AContextAction
     {
         animationEnded = false;
         grabActionInput = (GrabActionInput)ContextActionInput;
-        StartCoroutine(AnimationPlayerHelper.Play(grabActionInput.PlayerAnimator, grabActionInput.PlayerAnimationEnum, 0f, () =>
-        {
-            InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
-            animationEnded = true;
-        }));
+        this.associatedPOI.StartCoroutine(AnimationPlayerHelper.Play(grabActionInput.PlayerAnimator, grabActionInput.PlayerAnimationEnum, 0f, () =>
+         {
+             InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
+             animationEnded = true;
+         }));
     }
 
     public override void Tick(float d)
@@ -49,7 +48,7 @@ public class GrabAction : AContextAction
 
     public override void AfterFinishedEventProcessed()
     {
-        PointOfInterestEventManager.DestroyPOI(GetComponentInParent<PointOfInterestType>());
+        PointOfInterestEventManager.DestroyPOI(this.associatedPOI);
     }
 }
 

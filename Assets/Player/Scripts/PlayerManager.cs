@@ -560,7 +560,7 @@ class PlayerPOIWheelTriggerManager
                 {
                     Debug.Log(PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest.name);
                     wheelEnabled = true;
-                    ContextActionWheelEventManager.OnWheelEnabled(nearestPOI.ContextActions, WheelTriggerSource.PLAYER);
+                    ContextActionWheelEventManager.OnWheelEnabled(nearestPOI.GetContextActions(), WheelTriggerSource.PLAYER);
                 }
             }
         }

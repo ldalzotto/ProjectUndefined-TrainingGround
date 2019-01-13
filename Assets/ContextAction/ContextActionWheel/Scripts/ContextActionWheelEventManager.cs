@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ContextActionWheelEventManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class ContextActionWheelEventManager : MonoBehaviour
         StartCoroutine(InventoryManager.OnContextActionWheelDisabled());
     }
 
-    public void OnWheelEnabled(AContextAction[] contextActions, WheelTriggerSource wheelTriggerSource)
+    public void OnWheelEnabled(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource)
     {
         ContextActionWheelManager.OnAwakeWheel(contextActions, wheelTriggerSource, PlayerManager.GetCurrentTargetedPOI());
     }

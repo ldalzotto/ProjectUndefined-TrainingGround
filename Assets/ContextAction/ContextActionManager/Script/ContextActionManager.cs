@@ -51,9 +51,8 @@ public class ContextActionManager : MonoBehaviour
 }
 
 [System.Serializable]
-public abstract class AContextAction : MonoBehaviour
+public abstract class AContextAction
 {
-    public abstract void OnStart();
     public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
     public abstract bool ComputeFinishedConditions();
     public abstract void AfterFinishedEventProcessed();
@@ -64,10 +63,10 @@ public abstract class AContextAction : MonoBehaviour
     #region Internal Dependencies
     private AContextActionInput contextActionInput;
     #endregion
-    private void Start()
+
+    public AContextAction()
     {
         ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
-        OnStart();
     }
 
     public void OnTick(float d)

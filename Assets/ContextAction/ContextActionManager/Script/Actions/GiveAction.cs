@@ -32,14 +32,14 @@ public class GiveAction : AContextAction
     }
     #endregion
 
-    public override void OnStart()
+    public GiveAction(Item itemGiven) : base()
     {
         #region External Dependencies
         var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
         this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         #endregion
 
-        itemGiven = GetComponentInParent<Item>();
+        this.itemGiven = itemGiven;
         GiveActionAnimationManager = new GiveActionAnimationManager(PlayerGlobalAnimationEventHandler, itemGiven);
     }
 
@@ -56,12 +56,12 @@ public class GiveAction : AContextAction
 
         if (IsIemGivenElligibleToGive(giveActionInput))
         {
-            StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, OnGiveAnimationEnd));
+            this.itemGiven.StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, OnGiveAnimationEnd));
             itemSuccesfullyGiven = true;
         }
         else
         {
-            StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnGiveAnimationEnd));
+            this.itemGiven.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnGiveAnimationEnd));
         }
     }
 

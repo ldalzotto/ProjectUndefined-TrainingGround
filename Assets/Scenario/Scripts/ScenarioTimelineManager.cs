@@ -99,13 +99,18 @@ class ScenarioNodesManager
 public abstract class ScenarioNode
 {
     private Dictionary<ScenarioAction, ScenarioNode> transitionRequirements;
+    private Dictionary<PointOfInterestId, DiscussionTree> discussionTrees;
 
     public Dictionary<ScenarioAction, ScenarioNode> TransitionRequirements { get => transitionRequirements; }
+    public Dictionary<PointOfInterestId, DiscussionTree> DiscussionTrees { get => discussionTrees; }
 
     protected abstract Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements();
+    protected abstract Dictionary<PointOfInterestId, DiscussionTree> BuildDiscussionTrees();
+
     protected ScenarioNode()
     {
         transitionRequirements = BuildTransitionRequiremements();
+        discussionTrees = BuildDiscussionTrees();
     }
 
     public List<ScenarioNode> ComputeTransitions(ScenarioAction executedScenarioAction)
@@ -126,4 +131,9 @@ public abstract class ScenarioNode
         }
         return nextScenarioNodes;
     }
+}
+
+public enum ScenarioNodeLifecycle
+{
+    ON_START, ON_END
 }

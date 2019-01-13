@@ -3,9 +3,32 @@ using UnityEngine;
 
 public class PointOfInterestScenarioState : MonoBehaviour
 {
+    public GabbableItemsComponent GabbableItemsComponent;
     public ReceivableItemsComponent ReceivableItemsComponent;
+    public DiscussionTree DiscussionTree;
 }
 
+#region Grabbable Items
+[System.Serializable]
+public class GabbableItemsComponent
+{
+    public List<ItemID> grabbableItems = new List<ItemID>();
+
+    public void AddItemID(ItemID itemID)
+    {
+        grabbableItems.Add(itemID);
+    }
+
+    public void RemoveItemID(ItemID itemID)
+    {
+        grabbableItems.Remove(itemID);
+    }
+
+}
+
+#endregion
+
+#region Receive Items
 [System.Serializable]
 public class ReceivableItemsComponent
 {
@@ -34,3 +57,4 @@ public class ReceivableItemsComponent
     }
 
 }
+#endregion
