@@ -10,9 +10,9 @@ public class DiscussionEventHandler : MonoBehaviour
         DiscussionWindowManager = GameObject.FindObjectOfType<DiscussionWindowManager>();
     }
 
-    public void OnDiscussionWindowAwake()
+    public void OnDiscussionWindowAwake(Vector3 discussionUIPosition)
     {
-        DiscussionWindowManager.OnDiscussionWindowAwake();
+        DiscussionWindowManager.OnDiscussionWindowAwake(discussionUIPosition);
     }
     public void OnDiscussionWindowSleep()
     {

@@ -19,7 +19,7 @@ public class Discussion : MonoBehaviour
     private DiscussionWorkflowManager DiscussionWorkflowManager;
     private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
-    private void Start()
+    public void InitializeDependencies()
     {
         var discussionAnimator = GetComponent<Animator>();
         var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
@@ -34,6 +34,7 @@ public class Discussion : MonoBehaviour
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
     }
+
     public void Tick(float d)
     {
         DiscussionWindowDimensionsManager.Tick(d);

@@ -6,17 +6,21 @@ public class DiscussionWindowManager : MonoBehaviour
     public string TextToWrite;
     #endregion
 
+    #region External Dependencies
+    private Canvas GameCanvas;
+    #endregion
+
     private DicussionInputManager DicussionInputManager;
-    private Discussion Discussion;
+    private Discussion OpenedDiscussion;
     private DiscussionEventHandler DiscussionEventHandler;
 
     private void Start()
     {
         #region External Dependencies
+        GameCanvas = GameObject.FindObjectOfType<Canvas>();
         var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
-        Discussion = GameObject.FindObjectOfType<Discussion>();
         DicussionInputManager = new DicussionInputManager(GameInputManager);
         DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
     }
@@ -24,45 +28,52 @@ public class DiscussionWindowManager : MonoBehaviour
     private void Update()
     {
         var d = Time.deltaTime;
-        Discussion.Tick(d);
 
-        if (!Discussion.IsWriting())
+        if (OpenedDiscussion != null)
         {
-            if (DicussionInputManager.Tick())
+            OpenedDiscussion.Tick(d);
+            if (!OpenedDiscussion.IsWriting())
             {
-                if (Discussion.IsWaitingForCloseInput())
+                if (DicussionInputManager.Tick())
                 {
-                    Discussion.ProcessDiscussionEnd();
-                }
-                else if (Discussion.IsWaitingForContinueInput())
-                {
-                    Discussion.ProcessDiscussionContinue();
-                }
-                else
-                {
-                    DiscussionEventHandler.OnDiscussionWindowAwake();
+                    if (OpenedDiscussion.IsWaitingForCloseInput())
+                    {
+                        OpenedDiscussion.ProcessDiscussionEnd();
+                    }
+                    else if (OpenedDiscussion.IsWaitingForContinueInput())
+                    {
+                        OpenedDiscussion.ProcessDiscussionContinue();
+                    }
                 }
             }
         }
-
-
+        else if (DicussionInputManager.Tick())
+        {
+            DiscussionEventHandler.OnDiscussionWindowAwake(Vector3.zero);
+        }
     }
 
     private void OnGUI()
     {
-        Discussion.OnGUIDraw();
+        if (OpenedDiscussion != null)
+        {
+            OpenedDiscussion.OnGUIDraw();
+        }
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake()
+    public void OnDiscussionWindowAwake(Vector3 uiPosition)
     {
-        Discussion.gameObject.SetActive(true);
-        Discussion.OnDiscussionWindowAwake(TextToWrite);
+        OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
+        OpenedDiscussion.transform.position = uiPosition;
+        OpenedDiscussion.transform.localScale = Vector3.zero;
+        OpenedDiscussion.InitializeDependencies();
+        OpenedDiscussion.OnDiscussionWindowAwake(TextToWrite);
     }
     public void OnDiscussionWindowSleep()
     {
-        Discussion.OnDiscussionWindowSleep();
-        Discussion.gameObject.SetActive(false);
+        OpenedDiscussion.OnDiscussionWindowSleep();
+        Destroy(OpenedDiscussion.gameObject);
     }
     #endregion
 
