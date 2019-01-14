@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,10 +24,15 @@ public class Discussion : MonoBehaviour
         var discussionAnimator = GetComponent<Animator>();
         var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
         var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
+
+        #region External Event hanlder
+        var DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+        #endregion
+
         DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, DiscussionWindowDimensionsComponent);
         DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
-        DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
+        DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
     }
     public void Tick(float d)
     {
@@ -46,6 +52,11 @@ public class Discussion : MonoBehaviour
         InitializeDiscussionWindow(fullTextContent);
     }
 
+    public void OnDiscussionWindowSleep()
+    {
+        DiscussionWorkflowManager.OnDiscussionWindowSleep();
+    }
+
     private void InitializeDiscussionWindow(string fullTextContent)
     {
         DiscussionWorkflowManager.OnDiscussionWindowAwake();
@@ -61,7 +72,7 @@ public class Discussion : MonoBehaviour
 
     public void ProcessDiscussionEnd()
     {
-        DiscussionWindowAnimationManager.PlayExitAnimation();
+        StartCoroutine(DiscussionWindowAnimationManager.PlayExitAnimation());
     }
     #endregion
 
@@ -72,6 +83,20 @@ public class Discussion : MonoBehaviour
     }
     #endregion
 
+    #region Functional Counditions
+    public bool IsWaitingForCloseInput()
+    {
+        return DiscussionWorkflowManager.IsWaitningForEnd;
+    }
+    public bool IsWaitingForContinueInput()
+    {
+        return DiscussionWorkflowManager.IsWaitingForContinue;
+    }
+    public bool IsWriting()
+    {
+        return DiscussionWriterManager.IsTextWriting;
+    }
+    #endregion
 }
 
 #region Discussion Window Dimensions
@@ -278,14 +303,11 @@ class DiscussionWorkflowManager
     private bool isWaitingForContinue;
     private bool isWaitningForEnd;
 
-    public bool IsWaitingForUserInput()
-    {
-        return isWaitingForContinue || isWaitningForEnd;
-    }
+    public bool IsWaitingForContinue { get => isWaitingForContinue; }
+    public bool IsWaitningForEnd { get => isWaitningForEnd; }
 
     public void OnTextFinishedWriting(string overlappedOnlyText)
     {
-        Debug.Log(overlappedOnlyText);
         if (overlappedOnlyText != null)
         {
             if (overlappedOnlyText != "")
@@ -307,10 +329,20 @@ class DiscussionWorkflowManager
 
     public void OnDiscussionWindowAwake()
     {
+        ResetState();
+    }
+
+    private void ResetState()
+    {
         ContinueIcon.SetActive(false);
         EndIcon.SetActive(false);
         isWaitingForContinue = false;
         isWaitningForEnd = false;
+    }
+
+    internal void OnDiscussionWindowSleep()
+    {
+        ResetState();
     }
 }
 #endregion
@@ -322,10 +354,12 @@ class DiscussionWindowAnimationManager
     private const string EXIT_ANIMATION_NAME = "DiscussionWindowExitAnimation";
 
     private Animator DiscussionAnimator;
+    private DiscussionEventHandler DiscussionEventHandler;
 
-    public DiscussionWindowAnimationManager(Animator discussionAnimator)
+    public DiscussionWindowAnimationManager(Animator discussionAnimator, DiscussionEventHandler discussionEventHandler)
     {
         DiscussionAnimator = discussionAnimator;
+        DiscussionEventHandler = discussionEventHandler;
     }
 
     public void PlayEnterAnimation()
@@ -333,9 +367,12 @@ class DiscussionWindowAnimationManager
         DiscussionAnimator.Play(ENTER_ANIMATION_NAME);
     }
 
-    public void PlayExitAnimation()
+    public IEnumerator PlayExitAnimation()
     {
         DiscussionAnimator.Play(EXIT_ANIMATION_NAME);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfAnimation(DiscussionAnimator, EXIT_ANIMATION_NAME, 0);
+        DiscussionEventHandler.OnDiscussionWindowSleep();
     }
 }
 #endregion

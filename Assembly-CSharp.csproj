@@ -88,6 +88,7 @@
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
     <Compile Include="Assets\Discussion\Scripts\Discussion.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />

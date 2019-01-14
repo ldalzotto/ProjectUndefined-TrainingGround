@@ -3,17 +3,22 @@
 public class DiscussionWindowManager : MonoBehaviour
 {
     #region For TEST, TO REMOVE
-    public bool UpdateText;
     public string TextToWrite;
-
-    public bool ContinueEvent;
-    public bool EndEvent;
     #endregion
+
+    private DicussionInputManager DicussionInputManager;
     private Discussion Discussion;
+    private DiscussionEventHandler DiscussionEventHandler;
 
     private void Start()
     {
+        #region External Dependencies
+        var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        #endregion
+
         Discussion = GameObject.FindObjectOfType<Discussion>();
+        DicussionInputManager = new DicussionInputManager(GameInputManager);
+        DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
     }
 
     private void Update()
@@ -21,23 +26,26 @@ public class DiscussionWindowManager : MonoBehaviour
         var d = Time.deltaTime;
         Discussion.Tick(d);
 
-        #region For TEST, TO REMOVE
-        if (UpdateText)
+        if (!Discussion.IsWriting())
         {
-            UpdateText = false;
-            Discussion.OnDiscussionWindowAwake(TextToWrite);
+            if (DicussionInputManager.Tick())
+            {
+                if (Discussion.IsWaitingForCloseInput())
+                {
+                    Discussion.ProcessDiscussionEnd();
+                }
+                else if (Discussion.IsWaitingForContinueInput())
+                {
+                    Discussion.ProcessDiscussionContinue();
+                }
+                else
+                {
+                    DiscussionEventHandler.OnDiscussionWindowAwake();
+                }
+            }
         }
-        if (ContinueEvent)
-        {
-            ContinueEvent = false;
-            Discussion.ProcessDiscussionContinue();
-        }
-        if (EndEvent)
-        {
-            EndEvent = false;
-            Discussion.ProcessDiscussionEnd();
-        }
-        #endregion
+
+
     }
 
     private void OnGUI()
@@ -48,13 +56,31 @@ public class DiscussionWindowManager : MonoBehaviour
     #region External Events
     public void OnDiscussionWindowAwake()
     {
-
+        Discussion.gameObject.SetActive(true);
+        Discussion.OnDiscussionWindowAwake(TextToWrite);
     }
     public void OnDiscussionWindowSleep()
     {
-
+        Discussion.OnDiscussionWindowSleep();
+        Discussion.gameObject.SetActive(false);
     }
     #endregion
 
 }
 
+#region Discussion Input Handling
+class DicussionInputManager
+{
+    private GameInputManager GameInputManager;
+
+    public DicussionInputManager(GameInputManager gameInputManager)
+    {
+        GameInputManager = gameInputManager;
+    }
+
+    public bool Tick()
+    {
+        return GameInputManager.CurrentInput.ActionButtonD();
+    }
+}
+#endregion
