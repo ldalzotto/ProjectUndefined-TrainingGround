@@ -63,6 +63,11 @@ public class PointOfInterestType : MonoBehaviour
             pointOfInterestScenarioState.ReceivableItemsComponent.RemoveItemID(itemID);
         }
     }
+    public void OnDiscussionTreeAdd(DiscussionTree discussionTree)
+    {
+        pointOfInterestScenarioState.DiscussionTree = discussionTree;
+        ContextActionSynchronizerManager.OnDiscussionTreeAdd();
+    }
     #endregion
 
     #region Prefab Data Retrieval
@@ -139,6 +144,19 @@ class ContextActionSynchronizerManager
             grabContextActions.Remove(contextActionToRemove);
         }
         return (grabContextActions.Count == 0);
+    }
+
+    public void OnDiscussionTreeAdd()
+    {
+        if (!contextActions.ContainsKey(typeof(TalkAction).ToString()))
+        {
+            contextActions[typeof(TalkAction).ToString()] = new List<AContextAction>() { new TalkAction() };
+        }
+        else
+        {
+            contextActions[typeof(TalkAction).ToString()].Add(new TalkAction());
+        }
+
     }
 
 }

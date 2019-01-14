@@ -78,6 +78,7 @@
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GiveAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\TalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
@@ -86,6 +87,9 @@
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
+    <Compile Include="Assets\Discussion\Scripts\Discussion.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
@@ -102,7 +106,6 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\Scenario\Scripts\Action\ScenarioAction.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Discussion\DiscussionTree.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioInitialisation.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioStateMerger.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineEventManager.cs" />

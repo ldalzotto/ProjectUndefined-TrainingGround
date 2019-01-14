@@ -9,6 +9,7 @@ public class PrefabContainer : MonoBehaviour
     public GameObject ActionWheelNodePrefab;
     public GameObject InventoryMenuCellPrefab;
     public GameObject GiveActionMiniaturePrefab;
+    public Discussion DiscussionUIPrefab;
 
     [Header("Player FX")]
     public TriggerableEffect PlayerSmokeEffectPrefab;

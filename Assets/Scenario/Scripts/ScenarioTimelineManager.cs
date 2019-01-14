@@ -20,7 +20,7 @@ public class ScenarioTimelineManager : MonoBehaviour
     #region External Events
     public void OnScenarioActionExecuted(ScenarioAction scenarioAction)
     {
-        //  Debug.Log("Scenario graph update. ItemId : " + executedScenarioAction.ItemInvolved + " POIId : " + executedScenarioAction.PoiInvolved + " Action : " + executedScenarioAction.ActionType.ToString());
+        Debug.Log("Scenario graph update. ItemId : " + scenarioAction.ToString());
         ScenarioNodesManager.IncrementScenarioGraph(scenarioAction);
     }
     #endregion

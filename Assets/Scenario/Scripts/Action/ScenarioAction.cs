@@ -29,6 +29,11 @@ public class GrabScenarioAction : ScenarioAction
         hashCode = hashCode * -1521134295 + poiInvolved.GetHashCode();
         return hashCode;
     }
+
+    public override string ToString()
+    {
+        return "GrabScenarioAction. " + " Item involved : " + itemInvolved.ToString() + ", POIInvolved : " + poiInvolved.ToString();
+    }
 }
 
 public class GiveScenarioAction : ScenarioAction
@@ -59,5 +64,11 @@ public class GiveScenarioAction : ScenarioAction
         hashCode = hashCode * -1521134295 + itemInvolved.GetHashCode();
         hashCode = hashCode * -1521134295 + poiInvolved.GetHashCode();
         return hashCode;
+    }
+
+
+    public override string ToString()
+    {
+        return "GiveScenarioAction. " + " Item involved : " + itemInvolved.ToString() + ", POIInvolved : " + poiInvolved.ToString();
     }
 }

@@ -71,14 +71,7 @@ public class DiscussionTreeScenarioStateMerger
                 var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(poiId);
                 if (selectedPOI != null)
                 {
-                    /**
-                    var poiScenarioState = selectedPOI.PointOfInterestScenarioState;
-                    if (poiScenarioState != null)
-                    {
-                        poiScenarioState.DiscussionTree = discussionTree.Value;
-                    }
-    **/
-
+                    selectedPOI.OnDiscussionTreeAdd(discussionTree.Value);
                 }
             }
         }
