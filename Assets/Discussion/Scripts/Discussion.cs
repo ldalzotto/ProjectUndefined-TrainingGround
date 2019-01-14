@@ -7,12 +7,15 @@ public class Discussion : MonoBehaviour
 
     private const string TEXT_AREA_OBJECT_NAME = "TextArea";
     private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
+    private const string CONTINUE_ICON_OBJECT_NAME = "ContinueIcon";
+    private const string END_ICON_OBJECT_NAME = "EndIcon";
 
     public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
     public DiscussionWriterComponent DiscussionWriterComponent;
 
     private DiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
     private DiscussionWriterManager DiscussionWriterManager;
+    private DiscussionWorkflowManager DiscussionWorkflowManager;
     private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
     private void Start()
@@ -21,17 +24,14 @@ public class Discussion : MonoBehaviour
         var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
         var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
         DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, DiscussionWindowDimensionsComponent);
-        DiscussionWriterManager = new DiscussionWriterManager(DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
+        DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
+        DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
     }
     public void Tick(float d)
     {
-
         DiscussionWindowDimensionsManager.Tick(d);
-
         DiscussionWriterManager.Tick(d);
-
-
     }
 
     public void OnGUIDraw()
@@ -43,13 +43,33 @@ public class Discussion : MonoBehaviour
     public void OnDiscussionWindowAwake(string fullTextContent)
     {
         DiscussionWindowAnimationManager.PlayEnterAnimation();
+        InitializeDiscussionWindow(fullTextContent);
+    }
+
+    private void InitializeDiscussionWindow(string fullTextContent)
+    {
+        DiscussionWorkflowManager.OnDiscussionWindowAwake();
         DiscussionWindowDimensionsManager.InitializeDiscussionWindow(fullTextContent);
         var truncatedText = DiscussionWindowDimensionsManager.ComputeTrucatedText(fullTextContent);
         DiscussionWriterManager.OnDiscussionTextStartWriting(truncatedText);
     }
+
+    public void ProcessDiscussionContinue()
+    {
+        InitializeDiscussionWindow(DiscussionWindowDimensionsManager.OverlappedOnlyText);
+    }
+
+    public void ProcessDiscussionEnd()
+    {
+        DiscussionWindowAnimationManager.PlayExitAnimation();
+    }
     #endregion
 
     #region Internal Events
+    public void OnTextFinishedWriting()
+    {
+        DiscussionWorkflowManager.OnTextFinishedWriting(DiscussionWindowDimensionsManager.OverlappedOnlyText);
+    }
     #endregion
 
 }
@@ -78,6 +98,8 @@ class DiscussionWindowDimensionsManager
     private bool heightUpdating;
 
     private string overlappedOnlyText;
+
+    public string OverlappedOnlyText { get => overlappedOnlyText; }
 
     public DiscussionWindowDimensionsManager(Discussion DiscussionReference, GameObject textAreaObject, GameObject discussionWindowObject, DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent)
     {
@@ -108,7 +130,7 @@ class DiscussionWindowDimensionsManager
         {
             this.displayedLineNB = Mathf.Min(this.displayedLineNB + 1, DiscussionWindowDimensionsComponent.MaxLineDisplayed);
             heightUpdating = true;
-            targetWindowheight = CalculateTargetWindwHeight();
+            targetWindowheight = CalculateWindowHeight(this.displayedLineNB);
         }
 
         if (heightUpdating)
@@ -122,14 +144,14 @@ class DiscussionWindowDimensionsManager
         }
     }
 
-    private float CalculateTargetWindwHeight()
+    private float CalculateWindowHeight(int lineNb)
     {
-        return ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * this.displayedLineNB) + (DiscussionWindowDimensionsComponent.Margin * 2);
+        return ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 
     private bool IsCurrentTextOverlaps()
     {
-        return (textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2) > CalculateTargetWindwHeight());
+        return (textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2) > CalculateWindowHeight(this.displayedLineNB));
     }
 
     public void InitializeDiscussionWindow(string fullTextContent)
@@ -138,7 +160,7 @@ class DiscussionWindowDimensionsManager
         textAreaText.text = fullTextContent;
         Canvas.ForceUpdateCanvases();
         heightUpdating = true;
-        targetWindowheight = CalculateTargetWindwHeight();
+        targetWindowheight = CalculateWindowHeight(this.displayedLineNB);
         CalculateNonOverlappedLineNb();
         textAreaText.text = "";
         Canvas.ForceUpdateCanvases();
@@ -146,36 +168,34 @@ class DiscussionWindowDimensionsManager
 
     public string ComputeTrucatedText(string fullTextContent)
     {
+        var initialSizeDelta = discussionWindowTransform.sizeDelta;
+
         textAreaText.text = fullTextContent;
+        discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, CalculateWindowHeight(DiscussionWindowDimensionsComponent.MaxLineDisplayed));
         Canvas.ForceUpdateCanvases();
 
-        var lines = new List<UILineInfo>();
-        textAreaText.cachedTextGenerator.GetLines(lines);
-        var truncatedText = "";
-        overlappedOnlyText = "";
-
-        for (var i = 0; i < DiscussionWindowDimensionsComponent.MaxLineDisplayed; i++)
-        {
-            if (i < lines.Count)
-            {
-                var beginIndex = lines[i].startCharIdx;
-                int endIndex = 0;
-                if (i == lines.Count - 1)
-                {
-                    endIndex = textAreaText.text.Length;
-                }
-                else
-                {
-                    endIndex = lines[i + 1].startCharIdx;
-                }
-                truncatedText += textAreaText.text.Substring(beginIndex, (endIndex - beginIndex));
-            }
-        }
+        var truncatedText = textAreaText.text.Substring(0, textAreaText.cachedTextGenerator.characterCountVisible);
+        overlappedOnlyText = textAreaText.text.Substring(textAreaText.cachedTextGenerator.characterCountVisible, textAreaText.text.Length - textAreaText.cachedTextGenerator.characterCountVisible);
 
         textAreaText.text = "";
+        discussionWindowTransform.sizeDelta = initialSizeDelta;
         Canvas.ForceUpdateCanvases();
 
         return truncatedText;
+    }
+
+    private void SliceTextLine(List<UILineInfo> lines, int i, out int beginIndex, out int endIndex)
+    {
+        beginIndex = lines[i].startCharIdx;
+        endIndex = 0;
+        if (i == lines.Count - 1)
+        {
+            endIndex = textAreaText.text.Length;
+        }
+        else
+        {
+            endIndex = lines[i + 1].startCharIdx;
+        }
     }
 }
 
@@ -190,6 +210,7 @@ public class DiscussionWriterComponent
 
 class DiscussionWriterManager
 {
+    private Discussion DiscussionReference;
     private DiscussionWriterComponent DiscussionWriterComponent;
     private Text textAreaText;
 
@@ -198,8 +219,9 @@ class DiscussionWriterManager
     private float timeElapsed;
     private bool isTextWriting;
 
-    public DiscussionWriterManager(DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
+    public DiscussionWriterManager(Discussion DiscussionReference, DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
     {
+        this.DiscussionReference = DiscussionReference;
         DiscussionWriterComponent = discussionWriterComponent;
         this.textAreaText = textAreaText;
     }
@@ -224,6 +246,7 @@ class DiscussionWriterManager
             else
             {
                 isTextWriting = false;
+                DiscussionReference.OnTextFinishedWriting();
             }
         }
 
@@ -231,7 +254,6 @@ class DiscussionWriterManager
 
     public void OnDiscussionTextStartWriting(string truncatedTargetText)
     {
-        Debug.Log(truncatedTargetText);
         isTextWriting = true;
         timeElapsed = 0f;
         currentDisplayedText = "";
@@ -240,10 +262,64 @@ class DiscussionWriterManager
 }
 #endregion
 
+#region Discussion Window Workflow
+class DiscussionWorkflowManager
+{
+    private GameObject ContinueIcon;
+    private GameObject EndIcon;
+
+    public DiscussionWorkflowManager(GameObject continueIcon, GameObject endIcon)
+    {
+        ContinueIcon = continueIcon;
+        EndIcon = endIcon;
+        OnDiscussionWindowAwake();
+    }
+
+    private bool isWaitingForContinue;
+    private bool isWaitningForEnd;
+
+    public bool IsWaitingForUserInput()
+    {
+        return isWaitingForContinue || isWaitningForEnd;
+    }
+
+    public void OnTextFinishedWriting(string overlappedOnlyText)
+    {
+        Debug.Log(overlappedOnlyText);
+        if (overlappedOnlyText != null)
+        {
+            if (overlappedOnlyText != "")
+            {
+                isWaitingForContinue = true;
+                ContinueIcon.SetActive(true);
+                isWaitningForEnd = false;
+                EndIcon.SetActive(false);
+            }
+            else
+            {
+                isWaitingForContinue = false;
+                ContinueIcon.SetActive(false);
+                isWaitningForEnd = true;
+                EndIcon.SetActive(true);
+            }
+        }
+    }
+
+    public void OnDiscussionWindowAwake()
+    {
+        ContinueIcon.SetActive(false);
+        EndIcon.SetActive(false);
+        isWaitingForContinue = false;
+        isWaitningForEnd = false;
+    }
+}
+#endregion
+
 #region Discussion Window Animation
 class DiscussionWindowAnimationManager
 {
     private const string ENTER_ANIMATION_NAME = "DiscussionWindowEnterAnimation";
+    private const string EXIT_ANIMATION_NAME = "DiscussionWindowExitAnimation";
 
     private Animator DiscussionAnimator;
 
@@ -255,6 +331,11 @@ class DiscussionWindowAnimationManager
     public void PlayEnterAnimation()
     {
         DiscussionAnimator.Play(ENTER_ANIMATION_NAME);
+    }
+
+    public void PlayExitAnimation()
+    {
+        DiscussionAnimator.Play(EXIT_ANIMATION_NAME);
     }
 }
 #endregion

@@ -5,6 +5,9 @@ public class DiscussionWindowManager : MonoBehaviour
     #region For TEST, TO REMOVE
     public bool UpdateText;
     public string TextToWrite;
+
+    public bool ContinueEvent;
+    public bool EndEvent;
     #endregion
     private Discussion Discussion;
 
@@ -23,6 +26,16 @@ public class DiscussionWindowManager : MonoBehaviour
         {
             UpdateText = false;
             Discussion.OnDiscussionWindowAwake(TextToWrite);
+        }
+        if (ContinueEvent)
+        {
+            ContinueEvent = false;
+            Discussion.ProcessDiscussionContinue();
+        }
+        if (EndEvent)
+        {
+            EndEvent = false;
+            Discussion.ProcessDiscussionEnd();
         }
         #endregion
     }
