@@ -73,7 +73,7 @@
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\_Constants\TagConstants.cs" />
     <Compile Include="Assets\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
-    <Compile Include="Assets\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffect.cs" />
+    <Compile Include="Assets\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GiveAction.cs" />
