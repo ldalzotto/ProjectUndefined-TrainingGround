@@ -15,6 +15,7 @@ public class Discussion : MonoBehaviour
     public DiscussionWriterComponent DiscussionWriterComponent;
 
     private DiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
+    private DiscussionWindowPositioner DiscussionWindowPositioner;
     private DiscussionWriterManager DiscussionWriterManager;
     private DiscussionWorkflowManager DiscussionWorkflowManager;
     private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
@@ -30,6 +31,7 @@ public class Discussion : MonoBehaviour
         #endregion
 
         DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, DiscussionWindowDimensionsComponent);
+        DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
         DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
@@ -37,6 +39,7 @@ public class Discussion : MonoBehaviour
 
     public void Tick(float d)
     {
+        DiscussionWindowPositioner.Tick();
         DiscussionWindowDimensionsManager.Tick(d);
         DiscussionWriterManager.Tick(d);
     }
@@ -47,8 +50,9 @@ public class Discussion : MonoBehaviour
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake(string fullTextContent)
+    public void OnDiscussionWindowAwake(string fullTextContent, Transform anchoredDiscussionWorldTransform)
     {
+        DiscussionWindowPositioner.SetTransformToFollow(anchoredDiscussionWorldTransform);
         DiscussionWindowAnimationManager.PlayEnterAnimation();
         InitializeDiscussionWindow(fullTextContent);
     }
@@ -225,6 +229,34 @@ class DiscussionWindowDimensionsManager
     }
 }
 
+#endregion
+
+#region
+class DiscussionWindowPositioner
+{
+    private Camera camera;
+    private Transform discussionTransform;
+    private Transform worldTransformToFollow;
+
+    public DiscussionWindowPositioner(Camera camera, Transform discussionTransform)
+    {
+        this.camera = camera;
+        this.discussionTransform = discussionTransform;
+    }
+
+    public void SetTransformToFollow(Transform worldTransformToFollow)
+    {
+        this.worldTransformToFollow = worldTransformToFollow;
+    }
+
+    public void Tick()
+    {
+        if (worldTransformToFollow != null)
+        {
+            this.discussionTransform.position = camera.WorldToScreenPoint(worldTransformToFollow.position);
+        }
+    }
+}
 #endregion
 
 #region Discussion Window Text Writer

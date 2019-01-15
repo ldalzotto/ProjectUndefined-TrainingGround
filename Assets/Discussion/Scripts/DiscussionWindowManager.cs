@@ -52,13 +52,13 @@ public class DiscussionWindowManager : MonoBehaviour
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake(Vector3 uiPosition, string textToWrite)
+    public void OnDiscussionWindowAwake(Transform anchoredDiscussionWorldTransform, string textToWrite)
     {
         OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
-        OpenedDiscussion.transform.position = uiPosition;
+        //OpenedDiscussion.transform.position = uiPosition;
         OpenedDiscussion.transform.localScale = Vector3.zero;
         OpenedDiscussion.InitializeDependencies();
-        OpenedDiscussion.OnDiscussionWindowAwake(textToWrite);
+        OpenedDiscussion.OnDiscussionWindowAwake(textToWrite, anchoredDiscussionWorldTransform);
     }
     public void OnDiscussionWindowSleep()
     {

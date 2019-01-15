@@ -13,9 +13,9 @@ public class DiscussionEventHandler : MonoBehaviour
         DiscussionWindowManager = GameObject.FindObjectOfType<DiscussionWindowManager>();
     }
 
-    public void OnDiscussionWindowAwake(Vector3 discussionUIPosition, string textToWrite)
+    public void OnDiscussionWindowAwake(Transform anchoredDiscussionWorldTransform, string textToWrite)
     {
-        DiscussionWindowManager.OnDiscussionWindowAwake(discussionUIPosition, textToWrite);
+        DiscussionWindowManager.OnDiscussionWindowAwake(anchoredDiscussionWorldTransform, textToWrite);
     }
     public void OnDiscussionWindowSleep()
     {

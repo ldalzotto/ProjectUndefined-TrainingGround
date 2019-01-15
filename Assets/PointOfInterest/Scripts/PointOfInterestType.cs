@@ -5,6 +5,7 @@ using UnityEngine;
 public class PointOfInterestType : MonoBehaviour
 {
     public PointOfInterestId PointOfInterestId;
+    public bool InteractionWithPlayerAllowed = true;
     public float MaxDistanceToInteractWithPlayer;
 
     #region Internal Depencies
@@ -99,7 +100,8 @@ public enum PointOfInterestId
     NONE = 0,
     BOUNCER = 1,
     ID_CARD = 2,
-    ID_CARD_V2 = 3
+    ID_CARD_V2 = 3,
+    PLAYER = 4
 }
 
 #region Context Action Synchronizer

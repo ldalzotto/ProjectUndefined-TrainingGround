@@ -32,22 +32,47 @@ public class PointOfInterestManager : MonoBehaviour
 
     public PointOfInterestType GetActivePointOfInterest(PointOfInterestId pointOfInterestId)
     {
-        return PointOfInterestContainerManager.GetActivePointOfInterest(pointOfInterestId);
+        var activePOI = PointOfInterestContainerManager.GetActivePointOfInterest(pointOfInterestId);
+        if (activePOI != null)
+        {
+            return activePOI;
+        }
+        else
+        {
+            return PointOfInterestContainerManager.GetInactivePointOfInterest(pointOfInterestId);
+        }
     }
 }
 
 class PointOfInterestContainerManager
 {
     private List<PointOfInterestType> activePointOfInterests = new List<PointOfInterestType>();
+    private List<PointOfInterestType> inactivePointOfInterest = new List<PointOfInterestType>();
 
     public void OnPOICreated(PointOfInterestType POICreated)
     {
-        activePointOfInterests.Add(POICreated);
+        if (POICreated.InteractionWithPlayerAllowed)
+        {
+            activePointOfInterests.Add(POICreated);
+        }
+        else
+        {
+            inactivePointOfInterest.Add(POICreated);
+        }
+
     }
 
     public void OnPOIDestroyed(PointOfInterestType POITobeDestroyed)
     {
-        activePointOfInterests.Remove(POITobeDestroyed);
+        if (POITobeDestroyed.InteractionWithPlayerAllowed)
+        {
+            activePointOfInterests.Remove(POITobeDestroyed);
+        }
+        else
+        {
+            inactivePointOfInterest.Remove(POITobeDestroyed);
+        }
+
     }
     public PointOfInterestType GetActivePointOfInterest(PointOfInterestId pointOfInterestId)
     {
@@ -56,6 +81,18 @@ class PointOfInterestContainerManager
             if (activePOI.PointOfInterestId == pointOfInterestId)
             {
                 return activePOI;
+            }
+        }
+        return null;
+    }
+
+    public PointOfInterestType GetInactivePointOfInterest(PointOfInterestId pointOfInterestId)
+    {
+        foreach (var inactivePOI in inactivePointOfInterest)
+        {
+            if (inactivePOI.PointOfInterestId == pointOfInterestId)
+            {
+                return inactivePOI;
             }
         }
         return null;
