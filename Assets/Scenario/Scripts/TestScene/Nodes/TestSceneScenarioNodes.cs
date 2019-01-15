@@ -6,7 +6,7 @@ public class IdCardGrabScenarioNode : ScenarioNode
     {
         return new Dictionary<PointOfInterestId, DiscussionTree>()
         {
-            {PointOfInterestId.BOUNCER, new DiscussionTree(new List<DisucssionSentenceId>(){DisucssionSentenceId.BOUNCER_SENTENCE_1}) }
+            {PointOfInterestId.BOUNCER, new DiscussionTree(DisucssionSentenceId.BOUNCER_SENTENCE_1) }
         };
     }
 

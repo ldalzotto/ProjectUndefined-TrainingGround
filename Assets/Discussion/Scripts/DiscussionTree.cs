@@ -5,12 +5,14 @@ using UnityEngine;
 public class DiscussionTree
 {
     [SerializeField]
-    private List<DisucssionSentenceId> possibleChoices;
+    private DisucssionSentenceId displayedText;
 
-    public DiscussionTree(List<DisucssionSentenceId> possibleChoices)
+    public DiscussionTree(DisucssionSentenceId displayedText)
     {
-        this.possibleChoices = possibleChoices;
+        this.displayedText = displayedText;
     }
+
+    public DisucssionSentenceId DisplayedText { get => displayedText; }
 }
 
 public enum DisucssionSentenceId
@@ -22,22 +24,6 @@ public class DiscussionSentencesConstants
 {
     public static Dictionary<DisucssionSentenceId, string> Sentences = new Dictionary<DisucssionSentenceId, string>()
     {
-        {DisucssionSentenceId.BOUNCER_SENTENCE_1, "This is a test." }
+        {DisucssionSentenceId.BOUNCER_SENTENCE_1, "This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test." }
     };
 }
-
-/**
-
-public abstract class DiscussionTreeAction { }
-public class DiscussionTreeActionPOI : DiscussionTreeAction
-{
-    private PointOfInterestId discussionPOIId;
-
-    protected DiscussionTreeActionPOI(PointOfInterestId discussionPOIId)
-    {
-        this.discussionPOIId = discussionPOIId;
-    }
-
-    public PointOfInterestId DiscussionPOIId { get => discussionPOIId; }
-}
-**/

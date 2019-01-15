@@ -157,11 +157,11 @@ class InventoryStateWorkflowManager
 {
     private bool isInventoryDisplayed;
     private bool isInventoryActionWheelDisplayed;
-    private bool isWontextActionRuning;
+    private bool isContextActionRuning;
 
     public bool IsInventoryDisplayed { get => isInventoryDisplayed; }
     public bool IsInventoryActionWheelDisplayed { get => isInventoryActionWheelDisplayed; set => isInventoryActionWheelDisplayed = value; }
-    public bool IsWontextActionRuning { get => isWontextActionRuning; }
+    public bool IsWontextActionRuning { get => isContextActionRuning; }
 
     public void OnInventoryEnabled()
     {
@@ -173,11 +173,11 @@ class InventoryStateWorkflowManager
     }
     public void OnContextActionAdded()
     {
-        isWontextActionRuning = true;
+        isContextActionRuning = true;
     }
     public void OnContextActionFinished()
     {
-        isWontextActionRuning = false;
+        isContextActionRuning = false;
     }
 
 }

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     private ContextActionWheelManager ContextActionWheelManager;
     private PlayerManager PlayerManager;
     private InventoryManager InventoryManager;
+    private DiscussionWindowManager DiscussionWindowManager;
 
     void Start()
     {
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
         ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
         PlayerManager = FindObjectOfType<PlayerManager>();
         InventoryManager = FindObjectOfType<InventoryManager>();
+        DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
     }
 
     void Update()
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);
         InventoryManager.Tick(d);
+        DiscussionWindowManager.Tick(d);
     }
 
     private void FixedUpdate()
@@ -36,6 +39,11 @@ public class GameManager : MonoBehaviour
     {
         var d = Time.deltaTime;
         PlayerManager.LateTick(d);
+    }
+
+    private void OnGUI()
+    {
+        DiscussionWindowManager.GUITick();
     }
 
     private void OnDrawGizmos()

@@ -87,6 +87,11 @@ public class PointOfInterestType : MonoBehaviour
         return ContextActionSynchronizerManager.ContextActions;
     }
 
+    public DiscussionTree GetAssociatedDiscussionTree()
+    {
+        return pointOfInterestScenarioState.DiscussionTree;
+    }
+
 }
 
 public enum PointOfInterestId

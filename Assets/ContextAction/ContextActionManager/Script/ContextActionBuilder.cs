@@ -18,6 +18,10 @@ public class ContextActionBuilder
         {
             return new GiveActionInput(playerManager.GetCurrentTargetedPOI(), playerManager.GetPlayerAnimator());
         }
+        else if (contextAction.GetType() == typeof(TalkAction))
+        {
+            return new TalkActionInput(playerManager.GetCurrentTargetedPOI().GetAssociatedDiscussionTree());
+        }
         else
         {
             Debug.LogError("The context action : " + contextAction.GetType() + " has no context action input builder implemented.");
@@ -44,7 +48,11 @@ public class ContextActionBuilder
             {
                 return null;
             }
-
+        }
+        else if (contextAction.GetType() == typeof(TalkAction))
+        {
+            Debug.Log("TalkAction completed. //TODO -> Populate scenario action according to disucssion choice.");
+            return null;
         }
         else
         {

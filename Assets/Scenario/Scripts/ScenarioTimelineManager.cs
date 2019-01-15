@@ -20,8 +20,16 @@ public class ScenarioTimelineManager : MonoBehaviour
     #region External Events
     public void OnScenarioActionExecuted(ScenarioAction scenarioAction)
     {
-        Debug.Log("Scenario graph update. ItemId : " + scenarioAction.ToString());
-        ScenarioNodesManager.IncrementScenarioGraph(scenarioAction);
+        if (scenarioAction != null)
+        {
+            Debug.Log("Scenario graph update. ItemId : " + scenarioAction.ToString());
+            ScenarioNodesManager.IncrementScenarioGraph(scenarioAction);
+        }
+        else
+        {
+            Debug.Log("Scenario graph not updated.");
+        }
+
     }
     #endregion
 }

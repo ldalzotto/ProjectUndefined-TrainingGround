@@ -2,10 +2,6 @@
 
 public class DiscussionWindowManager : MonoBehaviour
 {
-    #region For TEST, TO REMOVE
-    public string TextToWrite;
-    #endregion
-
     #region External Dependencies
     private Canvas GameCanvas;
     #endregion
@@ -25,10 +21,8 @@ public class DiscussionWindowManager : MonoBehaviour
         DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
     }
 
-    private void Update()
+    public void Tick(float d)
     {
-        var d = Time.deltaTime;
-
         if (OpenedDiscussion != null)
         {
             OpenedDiscussion.Tick(d);
@@ -47,13 +41,9 @@ public class DiscussionWindowManager : MonoBehaviour
                 }
             }
         }
-        else if (DicussionInputManager.Tick())
-        {
-            DiscussionEventHandler.OnDiscussionWindowAwake(Vector3.zero);
-        }
     }
 
-    private void OnGUI()
+    public void GUITick()
     {
         if (OpenedDiscussion != null)
         {
@@ -62,13 +52,13 @@ public class DiscussionWindowManager : MonoBehaviour
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake(Vector3 uiPosition)
+    public void OnDiscussionWindowAwake(Vector3 uiPosition, string textToWrite)
     {
         OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
         OpenedDiscussion.transform.position = uiPosition;
         OpenedDiscussion.transform.localScale = Vector3.zero;
         OpenedDiscussion.InitializeDependencies();
-        OpenedDiscussion.OnDiscussionWindowAwake(TextToWrite);
+        OpenedDiscussion.OnDiscussionWindowAwake(textToWrite);
     }
     public void OnDiscussionWindowSleep()
     {
