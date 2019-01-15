@@ -10,7 +10,7 @@ public class TalkAction : AContextAction
     #endregion
 
     private bool isConversationFinished;
-    private DiscussionSentence currentDiscussionSentence;
+    private DiscussionTreeNode currentDiscussionTreeNode;
 
     public TalkAction() : base()
     {
@@ -34,21 +34,31 @@ public class TalkAction : AContextAction
         isConversationFinished = false;
         DiscussionEventHandler.AddOnSleepExternalHanlder(OnSentenceFinished);
 
-        SetupSentence(talkActionInput.DiscussionTree.DiscussionSentence);
+        SetupSentence(talkActionInput.DiscussionTree.DiscussionRootNode);
     }
 
-    private void SetupSentence(DiscussionSentence discussionSentence)
+    private void SetupSentence(DiscussionTreeNode discussionTreeNode)
     {
-        currentDiscussionSentence = discussionSentence;
-        var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentDiscussionSentence.Talker);
-        DiscussionEventHandler.OnDiscussionWindowAwake(sentenceTalkerPOI.transform, DiscussionSentencesConstants.Sentences[currentDiscussionSentence.DisplayedText]);
+        currentDiscussionTreeNode = discussionTreeNode;
+
+        if (discussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+        {
+            var currentTextOnlyDiscussionNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
+            var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentTextOnlyDiscussionNode.Talker);
+            DiscussionEventHandler.OnDiscussionWindowAwake(sentenceTalkerPOI.transform, DiscussionSentencesTextConstants.SentencesText[currentTextOnlyDiscussionNode.DisplayedText]);
+        }
+        else if (discussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
+        {
+
+        }
     }
 
     private void OnSentenceFinished()
     {
-        if (currentDiscussionSentence.NextSentence != null)
+        var nextNodes = currentDiscussionTreeNode.GetNextNodes();
+        if (nextNodes.Count > 0)
         {
-            SetupSentence(currentDiscussionSentence.NextSentence);
+            SetupSentence(nextNodes[0]);
         }
         else
         {

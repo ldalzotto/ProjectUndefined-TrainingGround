@@ -1,53 +1,121 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 public class DiscussionTree
 {
-    [SerializeField]
-    private DiscussionSentence discussionSentence;
+    private DiscussionTreeNode discussionRootNode;
 
-    public DiscussionTree(DiscussionSentence discussionSentence)
+    public DiscussionTree(DiscussionTreeNode discussionRootNode)
     {
-        this.discussionSentence = discussionSentence;
+        this.discussionRootNode = discussionRootNode;
     }
 
-    public DiscussionSentence DiscussionSentence { get => discussionSentence; }
+    public DiscussionTreeNode DiscussionRootNode { get => discussionRootNode; }
 }
 
-[System.Serializable]
-public class DiscussionSentence
+public interface DiscussionTreeNode
 {
-    private DisucssionSentenceId displayedText;
+    List<DiscussionTreeNode> GetNextNodes();
+}
+
+public class DiscussionTextOnlyNode : DiscussionTreeNode
+{
+    private DisucssionSentenceTextId displayedText;
     private PointOfInterestId talker;
 
-    private DiscussionSentence nextSentence;
+    private DiscussionTreeNode nextNode;
 
-    public DiscussionSentence(DisucssionSentenceId displayedText, PointOfInterestId talker, DiscussionSentence nextSentence)
+    public DiscussionTextOnlyNode(DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)
     {
         this.displayedText = displayedText;
         this.talker = talker;
-        this.nextSentence = nextSentence;
+        this.nextNode = nextNode;
     }
 
-    public DisucssionSentenceId DisplayedText { get => displayedText; }
+    public DisucssionSentenceTextId DisplayedText { get => displayedText; }
     public PointOfInterestId Talker { get => talker; }
-    public DiscussionSentence NextSentence { get => nextSentence; }
+    public DiscussionTreeNode NextNode { get => nextNode; }
+
+    public List<DiscussionTreeNode> GetNextNodes()
+    {
+        if (nextNode == null)
+        {
+            return new List<DiscussionTreeNode>();
+        }
+        else
+        {
+            return new List<DiscussionTreeNode>() { nextNode };
+        }
+    }
 }
 
-public enum DisucssionSentenceId
+
+public class DiscussionChoiceNode : DiscussionTreeNode
 {
-    BOUNCER_SENTENCE_1,
-    BOUNCER_SENTENCE_2,
-    PLAYER_SENTENCE_1
+    private string introText;
+    private List<DiscussionChoice> discussionChoices;
+
+    public DiscussionChoiceNode(string introText, List<DiscussionChoice> discussionChoices)
+    {
+        this.introText = introText;
+        this.discussionChoices = discussionChoices;
+    }
+
+    public List<DiscussionTreeNode> GetNextNodes()
+    {
+        return null;
+    }
+}
+
+public class DiscussionChoice
+{
+    private string text;
+    private DiscussionTreeNode nextNode;
+
+    public DiscussionChoice(string text, DiscussionTreeNode nextNode)
+    {
+        this.text = text;
+        this.nextNode = nextNode;
+    }
+}
+
+#region Discussion Sentence Workflow
+public enum DiscussionSentenceId
+{
+    BOUNCER_SENTENCE
 }
 
 public class DiscussionSentencesConstants
 {
-    public static Dictionary<DisucssionSentenceId, string> Sentences = new Dictionary<DisucssionSentenceId, string>()
+    public static Dictionary<DiscussionSentenceId, DiscussionTextOnlyNode> Sentenses = new Dictionary<DiscussionSentenceId, DiscussionTextOnlyNode>()
     {
-        {DisucssionSentenceId.BOUNCER_SENTENCE_1, "This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test." },
-            {DisucssionSentenceId.BOUNCER_SENTENCE_2, "Bouncer never stops talking." },
-         {DisucssionSentenceId.PLAYER_SENTENCE_1, "The Player is talking." }
+        {DiscussionSentenceId.BOUNCER_SENTENCE,
+                            new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER,
+                            new DiscussionTextOnlyNode(DisucssionSentenceTextId.PLAYER_SENTENCE_TEXT_1, PointOfInterestId.PLAYER,
+                            new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_2, PointOfInterestId.BOUNCER, null)
+                        )) }
     };
 }
+
+#endregion
+
+#region Discussion Sentence Text
+public enum DisucssionSentenceTextId
+{
+    BOUNCER_SENTENCE_TEXT_1,
+    BOUNCER_SENTENCE_TEXT_2,
+    PLAYER_SENTENCE_TEXT_1
+}
+
+public class DiscussionSentencesTextConstants
+{
+
+    public static Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>()
+    {
+        {DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, "This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test." },
+         {DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_2, "Bouncer never stops talking." },
+         {DisucssionSentenceTextId.PLAYER_SENTENCE_TEXT_1, "The Player is talking." }
+    };
+}
+#endregion
+

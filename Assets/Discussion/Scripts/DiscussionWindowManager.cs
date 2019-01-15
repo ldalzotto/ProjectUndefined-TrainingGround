@@ -55,7 +55,6 @@ public class DiscussionWindowManager : MonoBehaviour
     public void OnDiscussionWindowAwake(Transform anchoredDiscussionWorldTransform, string textToWrite)
     {
         OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
-        //OpenedDiscussion.transform.position = uiPosition;
         OpenedDiscussion.transform.localScale = Vector3.zero;
         OpenedDiscussion.InitializeDependencies();
         OpenedDiscussion.OnDiscussionWindowAwake(textToWrite, anchoredDiscussionWorldTransform);

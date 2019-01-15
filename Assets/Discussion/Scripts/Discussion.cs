@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,35 +10,31 @@ public class Discussion : MonoBehaviour
     private const string CONTINUE_ICON_OBJECT_NAME = "ContinueIcon";
     private const string END_ICON_OBJECT_NAME = "EndIcon";
 
+    private DiscussionBase DiscussionBase;
+
     public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
     public DiscussionWriterComponent DiscussionWriterComponent;
 
     private DiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
-    private DiscussionWindowPositioner DiscussionWindowPositioner;
     private DiscussionWriterManager DiscussionWriterManager;
     private DiscussionWorkflowManager DiscussionWorkflowManager;
-    private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
     public void InitializeDependencies()
     {
-        var discussionAnimator = GetComponent<Animator>();
+        DiscussionBase = GetComponent<DiscussionBase>();
+
+        DiscussionBase.InitializeDependencies();
         var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
         var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
 
-        #region External Event hanlder
-        var DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
-        #endregion
-
         DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, DiscussionWindowDimensionsComponent);
-        DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
         DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
-        DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
     }
 
     public void Tick(float d)
     {
-        DiscussionWindowPositioner.Tick();
+        DiscussionBase.Tick(d);
         DiscussionWindowDimensionsManager.Tick(d);
         DiscussionWriterManager.Tick(d);
     }
@@ -52,8 +47,7 @@ public class Discussion : MonoBehaviour
     #region External Events
     public void OnDiscussionWindowAwake(string fullTextContent, Transform anchoredDiscussionWorldTransform)
     {
-        DiscussionWindowPositioner.SetTransformToFollow(anchoredDiscussionWorldTransform);
-        DiscussionWindowAnimationManager.PlayEnterAnimation();
+        DiscussionBase.OnDiscussionWindowAwake(fullTextContent, anchoredDiscussionWorldTransform);
         InitializeDiscussionWindow(fullTextContent);
     }
 
@@ -77,8 +71,9 @@ public class Discussion : MonoBehaviour
 
     public void ProcessDiscussionEnd()
     {
-        StartCoroutine(DiscussionWindowAnimationManager.PlayExitAnimation());
+        DiscussionBase.ProcessDiscussionEnd();
     }
+
     #endregion
 
     #region Internal Events
@@ -228,35 +223,6 @@ class DiscussionWindowDimensionsManager
         }
     }
 }
-
-#endregion
-
-#region
-class DiscussionWindowPositioner
-{
-    private Camera camera;
-    private Transform discussionTransform;
-    private Transform worldTransformToFollow;
-
-    public DiscussionWindowPositioner(Camera camera, Transform discussionTransform)
-    {
-        this.camera = camera;
-        this.discussionTransform = discussionTransform;
-    }
-
-    public void SetTransformToFollow(Transform worldTransformToFollow)
-    {
-        this.worldTransformToFollow = worldTransformToFollow;
-    }
-
-    public void Tick()
-    {
-        if (worldTransformToFollow != null)
-        {
-            this.discussionTransform.position = camera.WorldToScreenPoint(worldTransformToFollow.position);
-        }
-    }
-}
 #endregion
 
 #region Discussion Window Text Writer
@@ -380,32 +346,3 @@ class DiscussionWorkflowManager
 }
 #endregion
 
-#region Discussion Window Animation
-class DiscussionWindowAnimationManager
-{
-    private const string ENTER_ANIMATION_NAME = "DiscussionWindowEnterAnimation";
-    private const string EXIT_ANIMATION_NAME = "DiscussionWindowExitAnimation";
-
-    private Animator DiscussionAnimator;
-    private DiscussionEventHandler DiscussionEventHandler;
-
-    public DiscussionWindowAnimationManager(Animator discussionAnimator, DiscussionEventHandler discussionEventHandler)
-    {
-        DiscussionAnimator = discussionAnimator;
-        DiscussionEventHandler = discussionEventHandler;
-    }
-
-    public void PlayEnterAnimation()
-    {
-        DiscussionAnimator.Play(ENTER_ANIMATION_NAME);
-    }
-
-    public IEnumerator PlayExitAnimation()
-    {
-        DiscussionAnimator.Play(EXIT_ANIMATION_NAME);
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfAnimation(DiscussionAnimator, EXIT_ANIMATION_NAME, 0);
-        DiscussionEventHandler.OnDiscussionWindowSleep();
-    }
-}
-#endregion
