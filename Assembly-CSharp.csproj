@@ -87,10 +87,10 @@
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
-    <Compile Include="Assets\Discussion\Scripts\Discussion.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionBase.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\DiscussionBase.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\TextOnlyDiscussion.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />

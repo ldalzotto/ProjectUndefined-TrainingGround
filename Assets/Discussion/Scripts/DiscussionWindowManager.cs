@@ -7,7 +7,7 @@ public class DiscussionWindowManager : MonoBehaviour
     #endregion
 
     private DicussionInputManager DicussionInputManager;
-    private Discussion OpenedDiscussion;
+    private DiscussionBase OpenedDiscussion;
     private DiscussionEventHandler DiscussionEventHandler;
 
     private void Start()
@@ -26,17 +26,21 @@ public class DiscussionWindowManager : MonoBehaviour
         if (OpenedDiscussion != null)
         {
             OpenedDiscussion.Tick(d);
-            if (!OpenedDiscussion.IsWriting())
+            if (OpenedDiscussion.GetDiscussionType() == DiscussionWindowType.TEXT_ONLY)
             {
-                if (DicussionInputManager.Tick())
+                var textOnlyDiscussion = OpenedDiscussion.GetTextOnlyDiscussion();
+                if (!textOnlyDiscussion.IsWriting())
                 {
-                    if (OpenedDiscussion.IsWaitingForCloseInput())
+                    if (DicussionInputManager.Tick())
                     {
-                        OpenedDiscussion.ProcessDiscussionEnd();
-                    }
-                    else if (OpenedDiscussion.IsWaitingForContinueInput())
-                    {
-                        OpenedDiscussion.ProcessDiscussionContinue();
+                        if (textOnlyDiscussion.IsWaitingForCloseInput())
+                        {
+                            OpenedDiscussion.ProcessDiscussionEnd();
+                        }
+                        else if (textOnlyDiscussion.IsWaitingForContinueInput())
+                        {
+                            textOnlyDiscussion.ProcessDiscussionContinue();
+                        }
                     }
                 }
             }
@@ -52,12 +56,12 @@ public class DiscussionWindowManager : MonoBehaviour
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake(Transform anchoredDiscussionWorldTransform, string textToWrite)
+    public void OnDiscussionWindowAwake(DiscussionWindowInput discussionWindowInput)
     {
         OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
         OpenedDiscussion.transform.localScale = Vector3.zero;
         OpenedDiscussion.InitializeDependencies();
-        OpenedDiscussion.OnDiscussionWindowAwake(textToWrite, anchoredDiscussionWorldTransform);
+        OpenedDiscussion.OnDiscussionWindowAwake(discussionWindowInput);
     }
     public void OnDiscussionWindowSleep()
     {

@@ -45,7 +45,8 @@ public class TalkAction : AContextAction
         {
             var currentTextOnlyDiscussionNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
             var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentTextOnlyDiscussionNode.Talker);
-            DiscussionEventHandler.OnDiscussionWindowAwake(sentenceTalkerPOI.transform, DiscussionSentencesTextConstants.SentencesText[currentTextOnlyDiscussionNode.DisplayedText]);
+            var discussionTextOnlyInput = new DiscussionTextOnlyInput(sentenceTalkerPOI.transform, DiscussionSentencesTextConstants.SentencesText[currentTextOnlyDiscussionNode.DisplayedText]);
+            DiscussionEventHandler.OnDiscussionWindowAwake((DiscussionWindowInput)discussionTextOnlyInput);
         }
         else if (discussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
         {
