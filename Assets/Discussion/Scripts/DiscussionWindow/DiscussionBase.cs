@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DiscussionBase : MonoBehaviour
@@ -10,6 +11,7 @@ public class DiscussionBase : MonoBehaviour
     public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
 
     private TextOnlyDiscussion TextOnlyDiscussion;
+    private ChoiceDiscussion ChoiceDiscussion;
 
     private DiscussionWindowPositioner DiscussionWindowPositioner;
     private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
@@ -27,23 +29,43 @@ public class DiscussionBase : MonoBehaviour
         var discussionAnimator = GetComponent<Animator>();
 
         TextOnlyDiscussion = GetComponent<TextOnlyDiscussion>();
+        ChoiceDiscussion = GetComponent<ChoiceDiscussion>();
+
         DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
         DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, discussionEventHandler);
 
         TextOnlyDiscussion.InitializeDependencies();
+        ChoiceDiscussion.InitializeDependencies();
     }
 
     public void Tick(float d)
     {
         DiscussionWindowDimensionsTransitionManager.Tick(d);
         DiscussionWindowPositioner.Tick();
-        TextOnlyDiscussion.Tick(d);
+
+        if (DiscussionWindowType == DiscussionWindowType.TEXT_ONLY)
+        {
+            TextOnlyDiscussion.Tick(d);
+        }
+        else if (DiscussionWindowType == DiscussionWindowType.CHOICE)
+        {
+            ChoiceDiscussion.Tick(d);
+        }
+
     }
 
     public void OnGUIDraw()
     {
-        TextOnlyDiscussion.OnGUIDraw();
+        if (DiscussionWindowType == DiscussionWindowType.TEXT_ONLY)
+        {
+            TextOnlyDiscussion.OnGUIDraw();
+        }
+        else if (DiscussionWindowType == DiscussionWindowType.CHOICE)
+        {
+            ChoiceDiscussion.OnGUIDraw();
+        }
+
     }
 
     #region External Events
@@ -60,7 +82,14 @@ public class DiscussionBase : MonoBehaviour
     }
     public void OnDiscussionWindowSleep()
     {
-        TextOnlyDiscussion.OnDiscussionWindowSleep();
+        if (DiscussionWindowType == DiscussionWindowType.TEXT_ONLY)
+        {
+            TextOnlyDiscussion.OnDiscussionWindowSleep();
+        }
+        else if (DiscussionWindowType == DiscussionWindowType.CHOICE)
+        {
+            ChoiceDiscussion.OnDiscussionWindowSleep();
+        }
     }
 
     public void ProcessDiscussionEnd()
@@ -209,5 +238,22 @@ public class DiscussionTextOnlyInput : DiscussionWindowInput
 
     public Transform AnchoredDiscussionWorldTransform { get => anchoredDiscussionWorldTransform; }
     public string TextToWrite { get => textToWrite; }
+}
+public class DiscussionWindowChoiceInput : DiscussionWindowInput
+{
+    private Transform anchoredDiscussionWorldTransform;
+    private DiscussionChoiceIntroductionTextId introductionDiscussionId;
+    private List<DiscussionChoiceTextId> choicesTextId;
+
+    public DiscussionWindowChoiceInput(Transform anchoredDiscussionWorldTransform, DiscussionChoiceIntroductionTextId introductionDiscussionId, List<DiscussionChoiceTextId> choicesTextId)
+    {
+        this.anchoredDiscussionWorldTransform = anchoredDiscussionWorldTransform;
+        this.introductionDiscussionId = introductionDiscussionId;
+        this.choicesTextId = choicesTextId;
+    }
+
+    public Transform AnchoredDiscussionWorldTransform { get => anchoredDiscussionWorldTransform; }
+    public DiscussionChoiceIntroductionTextId IntroductionDiscussionId { get => introductionDiscussionId; }
+    public List<DiscussionChoiceTextId> ChoicesTextId { get => choicesTextId; }
 }
 #endregion

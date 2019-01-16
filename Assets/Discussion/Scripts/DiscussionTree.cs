@@ -52,14 +52,20 @@ public class DiscussionTextOnlyNode : DiscussionTreeNode
 
 public class DiscussionChoiceNode : DiscussionTreeNode
 {
-    private string introText;
+    private PointOfInterestId talker;
+    private DiscussionChoiceIntroductionTextId introText;
     private List<DiscussionChoice> discussionChoices;
 
-    public DiscussionChoiceNode(string introText, List<DiscussionChoice> discussionChoices)
+    public DiscussionChoiceNode(PointOfInterestId talker, DiscussionChoiceIntroductionTextId introText, List<DiscussionChoice> discussionChoices)
     {
+        this.talker = talker;
         this.introText = introText;
         this.discussionChoices = discussionChoices;
     }
+
+    public PointOfInterestId Talker { get => talker; }
+    public DiscussionChoiceIntroductionTextId IntroText { get => introText; }
+    public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
 
     public List<DiscussionTreeNode> GetNextNodes()
     {
@@ -69,14 +75,16 @@ public class DiscussionChoiceNode : DiscussionTreeNode
 
 public class DiscussionChoice
 {
-    private string text;
+    private DiscussionChoiceTextId text;
     private DiscussionTreeNode nextNode;
 
-    public DiscussionChoice(string text, DiscussionTreeNode nextNode)
+    public DiscussionChoice(DiscussionChoiceTextId text, DiscussionTreeNode nextNode)
     {
         this.text = text;
         this.nextNode = nextNode;
     }
+
+    public DiscussionChoiceTextId Text { get => text; }
 }
 
 #region Discussion Sentence Workflow
@@ -91,9 +99,13 @@ public class DiscussionSentencesConstants
     {
         {DiscussionSentenceId.BOUNCER_SENTENCE,
                             new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER,
-                            new DiscussionTextOnlyNode(DisucssionSentenceTextId.PLAYER_SENTENCE_TEXT_1, PointOfInterestId.PLAYER,
-                            new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_2, PointOfInterestId.BOUNCER, null)
-                        )) }
+                                    new DiscussionChoiceNode(PointOfInterestId.BOUNCER ,DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1,
+                                             new List<DiscussionChoice>(){
+                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, null),
+                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null)
+                                             }
+                                        )
+                                )}
     };
 }
 
@@ -119,3 +131,29 @@ public class DiscussionSentencesTextConstants
 }
 #endregion
 
+#region Discussion Choice Text
+public enum DiscussionChoiceIntroductionTextId
+{
+    BOUNCER_CHOICE_INTRO_1
+}
+
+public enum DiscussionChoiceTextId
+{
+    BOUNCER_CHOICE_1,
+    BOUNCER_CHOICE_2
+}
+
+public class DiscussionChoiceTextConstants
+{
+    public static Dictionary<DiscussionChoiceIntroductionTextId, string> ChoiceIntroductionTexts = new Dictionary<DiscussionChoiceIntroductionTextId, string>()
+    {
+        {DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1, "What to do ?" }
+    };
+
+    public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
+    {
+        {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1" },
+        {DiscussionChoiceTextId.BOUNCER_CHOICE_2, "Choice 2" }
+    };
+}
+#endregion

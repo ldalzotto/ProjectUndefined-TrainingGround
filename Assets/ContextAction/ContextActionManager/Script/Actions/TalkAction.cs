@@ -46,11 +46,14 @@ public class TalkAction : AContextAction
             var currentTextOnlyDiscussionNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
             var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentTextOnlyDiscussionNode.Talker);
             var discussionTextOnlyInput = new DiscussionTextOnlyInput(sentenceTalkerPOI.transform, DiscussionSentencesTextConstants.SentencesText[currentTextOnlyDiscussionNode.DisplayedText]);
-            DiscussionEventHandler.OnDiscussionWindowAwake((DiscussionWindowInput)discussionTextOnlyInput);
+            DiscussionEventHandler.OnDiscussionWindowAwake(discussionTextOnlyInput);
         }
         else if (discussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
         {
-
+            var currentChoiceDiscussionNode = (DiscussionChoiceNode)currentDiscussionTreeNode;
+            var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentChoiceDiscussionNode.Talker);
+            var discussionChoiceWindowInput = new DiscussionWindowChoiceInput(sentenceTalkerPOI.transform, currentChoiceDiscussionNode.IntroText, currentChoiceDiscussionNode.DiscussionChoices.ConvertAll((choice) => choice.Text));
+            DiscussionEventHandler.OnDiscussionWindowAwake(discussionChoiceWindowInput);
         }
     }
 
