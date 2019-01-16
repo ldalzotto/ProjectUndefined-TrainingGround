@@ -9,11 +9,13 @@ public class DiscussionBase : MonoBehaviour
     public const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
 
     public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
+    public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
 
     private TextOnlyDiscussion TextOnlyDiscussion;
     private ChoiceDiscussion ChoiceDiscussion;
 
     private DiscussionWindowPositioner DiscussionWindowPositioner;
+    private DiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
     private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
     private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
@@ -25,17 +27,20 @@ public class DiscussionBase : MonoBehaviour
         var discussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
         #endregion
 
+        var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
         var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
+
         var discussionAnimator = GetComponent<Animator>();
 
         TextOnlyDiscussion = GetComponent<TextOnlyDiscussion>();
         ChoiceDiscussion = GetComponent<ChoiceDiscussion>();
 
         DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
+        DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject);
         DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, discussionEventHandler);
 
-        TextOnlyDiscussion.InitializeDependencies();
+        TextOnlyDiscussion.InitializeDependencies(DiscussionWindowDimensionsComponent.Margin);
         ChoiceDiscussion.InitializeDependencies();
     }
 
@@ -147,6 +152,30 @@ class DiscussionWindowPositioner
         }
     }
 }
+#endregion
+
+#region DiscussionWindow Dimensions
+[System.Serializable]
+public class DiscussionWindowDimensionsComponent
+{
+    public float Margin;
+}
+
+class DiscussionWindowDimensionsManager
+{
+    private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
+
+    public DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject)
+    {
+        DiscussionWindowDimensionsComponent = discussionWindowDimensionsComponent;
+
+        var textAreaTransform = (RectTransform)textAreaObject.transform;
+        var margin = discussionWindowDimensionsComponent.Margin;
+        textAreaTransform.offsetMin = new Vector2(margin, margin);
+        textAreaTransform.offsetMax = new Vector2(-margin, -margin);
+    }
+}
+
 #endregion
 
 #region Dimensions Transitions
