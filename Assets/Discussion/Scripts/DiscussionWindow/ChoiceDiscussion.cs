@@ -30,7 +30,7 @@ public class ChoiceDiscussion : MonoBehaviour
         FullChoiceTextParserManager = new FullChoiceTextParserManager(textAreaText, (RectTransform)textAreaObject.transform);
         ChoiceDiscussionTextWriterManager = new ChoiceDiscussionTextWriterManager(textAreaText);
         ChoiceDiscussionDimensionManager = new ChoiceDiscussionDimensionManager(DiscussionBaseReference, this, ChoiceDiscussionDimensionManagerComponent, textAreaText);
-        ChoiceVisualFeedbackManager = new ChoiceVisualFeedbackManager(ChoiceVisualFeedbackManagerComponent, gameObject.FindChildObjectRecursively(SELECTION_AREA_EFFECT_OBJECT_NAME), (RectTransform)discussionWindow.transform);
+        ChoiceVisualFeedbackManager = new ChoiceVisualFeedbackManager(ChoiceVisualFeedbackManagerComponent, gameObject.FindChildObjectRecursively(SELECTION_AREA_EFFECT_OBJECT_NAME), (RectTransform)discussionWindow.transform, DiscussionBaseReference.GetDiscussionWindowDimensionsComputation());
         DiscussionChoiceSelectionInputManager = new DiscussionChoiceSelectionInputManager(this, gameInputManager);
     }
 
@@ -50,17 +50,18 @@ public class ChoiceDiscussion : MonoBehaviour
     {
         FullChoiceTextParserManager.ParseFullChoiceText(discussionWindowChoiceInput);
         ChoiceDiscussionDimensionManager.InitializeDisplay(FullChoiceTextParserManager.ParsedChoiceDiscussion);
+        ChoiceVisualFeedbackManager.OnDiscussionWindowAwake();
     }
     public void OnDiscussionWindowSleep()
     {
-
+        ChoiceVisualFeedbackManager.OnDiscussionWindowSleep();
     }
     #endregion
 
     #region Internal Events
-    public void OnDisaplyedTextChange(string newDisplayedText)
+    public void OnDisplayedTextChange(string newDisplayedText)
     {
-        ChoiceDiscussionTextWriterManager.SetDisaplyedText(newDisplayedText);
+        ChoiceDiscussionTextWriterManager.SetDisplayedText(newDisplayedText);
     }
     public void OnSelectionChange(int selectedChoiceIndex, Vector2 anchoredPosition, float height)
     {
@@ -247,14 +248,44 @@ class ChoiceDiscussionDimensionManager
             }
         }
 
-        OnDisplayedCHoicesChange(ParsedChoiceDiscussion, displayedChoicesTotalLineNB);
+        OnDisplayedChoicesChange(ParsedChoiceDiscussion, displayedChoicesTotalLineNB);
 
         ChoiceDiscussionReference.OnSelectionChange(0, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Introduction.NbLines),
             DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Choices[0].NbLines);
 
     }
 
-    private void OnDisplayedCHoicesChange(ParsedChoiceDiscussion ParsedChoiceDiscussion, int displayedChoicesTotalLineNB)
+    private void PocessSelectionChange(ParsedChoiceDiscussion ParsedChoiceDiscussion, int newSelectedChoice, int oldSelectedChoice)
+    {
+        if (displayedChoices.Contains(newSelectedChoice))
+        {
+            OnSelectionChange(ParsedChoiceDiscussion, newSelectedChoice);
+        }
+        else if (ParsedChoiceDiscussion.Choices.ConvertAll(choice => ParsedChoiceDiscussion.Choices.IndexOf(choice)).Contains(newSelectedChoice))
+        {
+            var disaplyedChoiceTotalLineNB = 0;
+            var deltaIndex = newSelectedChoice - oldSelectedChoice;
+            var updateDisplayedChoices = new List<int>();
+            foreach (var displayedChoice in displayedChoices)
+            {
+                var newChoiceIndex = displayedChoice + deltaIndex;
+                var nbLinesOfChoiceToAdd = ParsedChoiceDiscussion.Choices[newChoiceIndex].NbLines;
+
+                if (disaplyedChoiceTotalLineNB + nbLinesOfChoiceToAdd <= ChoiceDiscussionDimensionManagerComponent.MaxLineNb - ParsedChoiceDiscussion.Introduction.NbLines)
+                {
+                    updateDisplayedChoices.Add(newChoiceIndex);
+                    disaplyedChoiceTotalLineNB += nbLinesOfChoiceToAdd;
+                }
+            }
+            displayedChoices = updateDisplayedChoices;
+
+            OnDisplayedChoicesChange(ParsedChoiceDiscussion, disaplyedChoiceTotalLineNB);
+            OnSelectionChange(ParsedChoiceDiscussion, newSelectedChoice);
+        }
+    }
+
+    #region Choice Dimensions Events
+    private void OnDisplayedChoicesChange(ParsedChoiceDiscussion ParsedChoiceDiscussion, int displayedChoicesTotalLineNB)
     {
         DiscussionBaseReference.OnHeightChange(DiscussionWindowDimensionsComputation.GetWindowHeight(displayedChoicesTotalLineNB + ParsedChoiceDiscussion.Introduction.NbLines));
 
@@ -263,7 +294,7 @@ class ChoiceDiscussionDimensionManager
         {
             textToDisplay += ParsedChoiceDiscussion.Choices[displayedChoice].Text;
         }
-        ChoiceDiscussionReference.OnDisaplyedTextChange(textToDisplay);
+        ChoiceDiscussionReference.OnDisplayedTextChange(textToDisplay);
     }
 
     public void OnSelectChoiceUp(int oldSelectedChoice, ParsedChoiceDiscussion ParsedChoiceDiscussion)
@@ -278,42 +309,24 @@ class ChoiceDiscussionDimensionManager
         PocessSelectionChange(ParsedChoiceDiscussion, newSelectedChoice, oldSelectedChoice);
     }
 
-    private void PocessSelectionChange(ParsedChoiceDiscussion ParsedChoiceDiscussion, int newSelectedChoice, int oldSelectedChoice)
+    private void OnSelectionChange(ParsedChoiceDiscussion ParsedChoiceDiscussion, int newSelectedChoice)
     {
-        if (displayedChoices.Contains(newSelectedChoice))
+        var upLineNBDelta = 0;
+        foreach (var displayedChoice in displayedChoices)
         {
-            var upLineNBDelta = 0;
-            foreach (var displayedChoice in displayedChoices)
+            if (displayedChoice != newSelectedChoice)
             {
-                if (displayedChoice != newSelectedChoice)
-                {
-                    upLineNBDelta += ParsedChoiceDiscussion.Choices[displayedChoice].NbLines;
-                }
-                else
-                {
-                    break;
-                }
+                upLineNBDelta += ParsedChoiceDiscussion.Choices[displayedChoice].NbLines;
             }
-            ChoiceDiscussionReference.OnSelectionChange(newSelectedChoice, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * (ParsedChoiceDiscussion.Introduction.NbLines + upLineNBDelta)),
-                DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Choices[newSelectedChoice].NbLines);
-        }
-        else if (ParsedChoiceDiscussion.Choices.ConvertAll(choice => ParsedChoiceDiscussion.Choices.IndexOf(choice)).Contains(newSelectedChoice))
-        {
-            var disaplyedChoiceTotalLineNB = ParsedChoiceDiscussion.Introduction.NbLines;
-            var deltaIndex = newSelectedChoice - oldSelectedChoice;
-            var updateDisplayedChoices = new List<int>();
-            foreach (var displayedChoice in displayedChoices)
+            else
             {
-                updateDisplayedChoices.Add(displayedChoice + deltaIndex);
-                disaplyedChoiceTotalLineNB += ParsedChoiceDiscussion.Choices[displayedChoice + deltaIndex].NbLines;
+                break;
             }
-            displayedChoices = updateDisplayedChoices;
-
-            OnDisplayedCHoicesChange(ParsedChoiceDiscussion, disaplyedChoiceTotalLineNB);
         }
+        ChoiceDiscussionReference.OnSelectionChange(newSelectedChoice, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * (ParsedChoiceDiscussion.Introduction.NbLines + upLineNBDelta)),
+            DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Choices[newSelectedChoice].NbLines);
     }
-
-
+    #endregion
 }
 #endregion
 
@@ -327,7 +340,7 @@ class ChoiceDiscussionTextWriterManager
         this.textArea = textArea;
     }
 
-    public void SetDisaplyedText(string textToDisplay)
+    public void SetDisplayedText(string textToDisplay)
     {
         textArea.text = textToDisplay;
     }
@@ -348,13 +361,27 @@ class ChoiceVisualFeedbackManager
     private GameObject selectedAreaEffect;
     private RectTransform selectedAreaEffectTransform;
     private RectTransform discussionWindowTransform;
+    private DiscussionWindowDimensionsComputation DiscussionWindowDimensionsComputation;
 
-    public ChoiceVisualFeedbackManager(ChoiceVisualFeedbackManagerComponent ChoiceVisualFeedbackManagerComponent, GameObject selectedAreaEffect, RectTransform discussionWindowTransform)
+    public ChoiceVisualFeedbackManager(ChoiceVisualFeedbackManagerComponent ChoiceVisualFeedbackManagerComponent, GameObject selectedAreaEffect, RectTransform discussionWindowTransform, DiscussionWindowDimensionsComputation DiscussionWindowDimensionsComputation)
     {
         this.ChoiceVisualFeedbackManagerComponent = ChoiceVisualFeedbackManagerComponent;
         this.selectedAreaEffect = selectedAreaEffect;
         this.discussionWindowTransform = discussionWindowTransform;
         this.selectedAreaEffectTransform = (RectTransform)this.selectedAreaEffect.transform;
+        this.DiscussionWindowDimensionsComputation = DiscussionWindowDimensionsComputation;
+
+        this.selectedAreaEffect.SetActive(false);
+    }
+
+    public void OnDiscussionWindowAwake()
+    {
+        selectedAreaEffect.SetActive(true);
+    }
+
+    public void OnDiscussionWindowSleep()
+    {
+        selectedAreaEffect.SetActive(false);
     }
 
     //TODO -> Identify with choice ID instead of index
@@ -380,7 +407,7 @@ class ChoiceVisualFeedbackManager
         if (isMoving)
         {
             selectedAreaEffectTransform.anchoredPosition = Vector2.Lerp(selectedAreaEffectTransform.anchoredPosition, targetAnchoredPosition, d * ChoiceVisualFeedbackManagerComponent.TransitionSpeed);
-            selectedAreaEffectTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, targetHeight);
+            selectedAreaEffectTransform.sizeDelta = new Vector2(DiscussionWindowDimensionsComputation.GetTextAreaWidth(), targetHeight);
 
             if (Vector2.Distance(targetAnchoredPosition, selectedAreaEffectTransform.anchoredPosition) <= 0.05)
             {

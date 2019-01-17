@@ -38,7 +38,7 @@ public class DiscussionBase : MonoBehaviour
         ChoiceDiscussion = GetComponent<ChoiceDiscussion>();
 
         DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
-        DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject);
+        DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject, (RectTransform)discussionWindowObject.transform);
         DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, discussionEventHandler);
 
@@ -182,6 +182,7 @@ public interface DiscussionWindowDimensionsComputation
     float GetSingleLineHeightWithLineSpace();
     float GetLineSpace();
     float GetWindowHeight(int lineNB);
+    float GetTextAreaWidth();
 }
 
 class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
@@ -189,13 +190,15 @@ class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
     private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
 
     private Text textAreaText;
+    private RectTransform discussionWindowTransform;
 
-    public DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject)
+    public DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject, RectTransform discussionWindowTransform)
     {
         DiscussionWindowDimensionsComponent = discussionWindowDimensionsComponent;
 
         var textAreaTransform = (RectTransform)textAreaObject.transform;
         this.textAreaText = textAreaObject.GetComponent<Text>();
+        this.discussionWindowTransform = discussionWindowTransform;
         var margin = discussionWindowDimensionsComponent.Margin;
         textAreaTransform.offsetMin = new Vector2(margin, margin);
         textAreaTransform.offsetMax = new Vector2(-margin, -margin);
@@ -219,6 +222,11 @@ class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
     public float GetSingleLineHeightWithLineSpace()
     {
         return (textAreaText.font.lineHeight + textAreaText.lineSpacing);
+    }
+
+    public float GetTextAreaWidth()
+    {
+        return discussionWindowTransform.sizeDelta.x - (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 
     public float GetWindowHeight(int lineNb)
