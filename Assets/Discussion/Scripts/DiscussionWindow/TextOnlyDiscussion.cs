@@ -129,7 +129,7 @@ class TextOnlyDiscussionWindowDimensionsManager
 
     private void CalculateNonOverlappedLineNb()
     {
-        this.nonOverlappedLineNb = Mathf.FloorToInt((textAreaText.preferredHeight) / discussionWindowDimensionsComputation.GetSingleLineHeight());
+        this.nonOverlappedLineNb = Mathf.FloorToInt((textAreaText.preferredHeight) / discussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace());
     }
 
     public void Tick(float d)

@@ -22,8 +22,6 @@ public class DiscussionBase : MonoBehaviour
 
     private DiscussionWindowType DiscussionWindowType;
 
-    //   private Canvas zanvas;
-
     public void InitializeDependencies()
     {
 
@@ -181,7 +179,7 @@ public interface DiscussionWindowDimensionsComputation
 {
     float GetCurrentWindowHeight();
     float GetMargin();
-    float GetSingleLineHeight();
+    float GetSingleLineHeightWithLineSpace();
     float GetLineSpace();
     float GetWindowHeight(int lineNB);
 }
@@ -210,7 +208,7 @@ class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
 
     public float GetLineSpace()
     {
-        return textAreaText.font.lineHeight;
+        return textAreaText.lineSpacing;
     }
 
     public float GetMargin()
@@ -218,7 +216,7 @@ class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
         return DiscussionWindowDimensionsComponent.Margin;
     }
 
-    public float GetSingleLineHeight()
+    public float GetSingleLineHeightWithLineSpace()
     {
         return (textAreaText.font.lineHeight + textAreaText.lineSpacing);
     }

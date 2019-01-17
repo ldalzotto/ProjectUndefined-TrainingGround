@@ -99,7 +99,7 @@ public class DiscussionSentencesConstants
     {
         {DiscussionSentenceId.BOUNCER_SENTENCE,
                             new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER,
-                                    new DiscussionChoiceNode(PointOfInterestId.BOUNCER ,DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1,
+                                    new DiscussionChoiceNode(PointOfInterestId.PLAYER ,DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1,
                                              new List<DiscussionChoice>(){
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, null),
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null),
@@ -154,7 +154,7 @@ public class DiscussionChoiceTextConstants
 
     public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
     {
-        {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1" },
+        {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1\nReturn line." },
         {DiscussionChoiceTextId.BOUNCER_CHOICE_2, "Choice 2" },
         {DiscussionChoiceTextId.BOUNCER_CHOICE_3, "Choice 3" }
     };

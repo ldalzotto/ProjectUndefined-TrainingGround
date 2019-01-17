@@ -145,7 +145,7 @@ class FullChoiceTextParserManager
         var oldText = textArea.text;
         Vector2 oldWindowDimensions = discussionWindowTransform.sizeDelta;
 
-        discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, float.MaxValue);
+        discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, 15000);
         textArea.text = parsedFullText;
         Canvas.ForceUpdateCanvases();
 
@@ -249,8 +249,8 @@ class ChoiceDiscussionDimensionManager
 
         OnDisplayedCHoicesChange(ParsedChoiceDiscussion, displayedChoicesTotalLineNB);
 
-        ChoiceDiscussionReference.OnSelectionChange(0, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeight() * ParsedChoiceDiscussion.Introduction.NbLines),
-            DiscussionWindowDimensionsComputation.GetSingleLineHeight() * ParsedChoiceDiscussion.Choices[0].NbLines);
+        ChoiceDiscussionReference.OnSelectionChange(0, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Introduction.NbLines),
+            DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Choices[0].NbLines);
 
     }
 
@@ -259,9 +259,9 @@ class ChoiceDiscussionDimensionManager
         DiscussionBaseReference.OnHeightChange(DiscussionWindowDimensionsComputation.GetWindowHeight(displayedChoicesTotalLineNB + ParsedChoiceDiscussion.Introduction.NbLines));
 
         var textToDisplay = ParsedChoiceDiscussion.Introduction.Text;
-        foreach (var parsedChoice in ParsedChoiceDiscussion.Choices)
+        foreach (var displayedChoice in displayedChoices)
         {
-            textToDisplay += parsedChoice.Text;
+            textToDisplay += ParsedChoiceDiscussion.Choices[displayedChoice].Text;
         }
         ChoiceDiscussionReference.OnDisaplyedTextChange(textToDisplay);
     }
@@ -294,10 +294,9 @@ class ChoiceDiscussionDimensionManager
                     break;
                 }
             }
-            ChoiceDiscussionReference.OnSelectionChange(newSelectedChoice, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeight() * (ParsedChoiceDiscussion.Introduction.NbLines + upLineNBDelta)),
-                DiscussionWindowDimensionsComputation.GetSingleLineHeight() * ParsedChoiceDiscussion.Choices[newSelectedChoice].NbLines);
+            ChoiceDiscussionReference.OnSelectionChange(newSelectedChoice, new Vector2(0, -DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * (ParsedChoiceDiscussion.Introduction.NbLines + upLineNBDelta)),
+                DiscussionWindowDimensionsComputation.GetSingleLineHeightWithLineSpace() * ParsedChoiceDiscussion.Choices[newSelectedChoice].NbLines);
         }
-        /**
         else if (ParsedChoiceDiscussion.Choices.ConvertAll(choice => ParsedChoiceDiscussion.Choices.IndexOf(choice)).Contains(newSelectedChoice))
         {
             var disaplyedChoiceTotalLineNB = ParsedChoiceDiscussion.Introduction.NbLines;
@@ -312,7 +311,6 @@ class ChoiceDiscussionDimensionManager
 
             OnDisplayedCHoicesChange(ParsedChoiceDiscussion, disaplyedChoiceTotalLineNB);
         }
-    **/
     }
 
 
@@ -387,7 +385,7 @@ class ChoiceVisualFeedbackManager
             if (Vector2.Distance(targetAnchoredPosition, selectedAreaEffectTransform.anchoredPosition) <= 0.05)
             {
                 isMoving = false;
-                selectedAreaEffectTransform.anchoredPosition = selectedAreaEffectTransform.anchoredPosition;
+                selectedAreaEffectTransform.anchoredPosition = targetAnchoredPosition;
             }
         }
 
