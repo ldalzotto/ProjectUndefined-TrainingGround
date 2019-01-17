@@ -72,3 +72,31 @@ public class GiveScenarioAction : ScenarioAction
         return "GiveScenarioAction. " + " Item involved : " + itemInvolved.ToString() + ", POIInvolved : " + poiInvolved.ToString();
     }
 }
+
+public class DiscussionChoiceScenarioAction : ScenarioAction
+{
+    private DiscussionChoiceTextId choiceId;
+
+    public DiscussionChoiceScenarioAction(DiscussionChoiceTextId choiceId)
+    {
+        this.choiceId = choiceId;
+    }
+
+    public override bool Equals(object obj)
+    {
+        var action = obj as DiscussionChoiceScenarioAction;
+        return action != null &&
+               choiceId == action.choiceId;
+    }
+
+    public override int GetHashCode()
+    {
+        return -1877750589 + choiceId.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return "DiscussionChoiceScenarioAction. " + " Choice made : " + choiceId.ToString();
+    }
+
+}

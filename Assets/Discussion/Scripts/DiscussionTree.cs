@@ -77,6 +77,11 @@ public class DiscussionChoice
     public DiscussionChoiceTextId Text { get => text; }
 }
 
+public class DiscussionChoiceEvent
+{
+    private DiscussionChoiceTextId text;
+}
+
 #region Discussion Sentence Workflow
 public enum DiscussionSentenceId
 {

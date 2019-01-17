@@ -11,6 +11,9 @@ public class DiscussionWindowManager : MonoBehaviour
     private ChoicePopup OpenedChoicePopup;
     private DiscussionEventHandler DiscussionEventHandler;
 
+    //scenario timeline update
+    private ScenarioTimelineManager ScenarioTimelineManager;
+
     private void Start()
     {
         #region External Dependencies
@@ -20,6 +23,7 @@ public class DiscussionWindowManager : MonoBehaviour
 
         DicussionInputManager = new DicussionInputManager(GameInputManager);
         DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+        ScenarioTimelineManager = GameObject.FindObjectOfType<ScenarioTimelineManager>();
     }
 
     public void Tick(float d)
@@ -33,6 +37,7 @@ public class DiscussionWindowManager : MonoBehaviour
                 {
                     var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
                     OpenedDiscussion.ProcessDiscussionNodeTextEnd();
+                    ScenarioTimelineManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(selectedChoice.Text));
                     //  OpenedDiscussion.ProcessDiscussionClose();
                 }
             }
