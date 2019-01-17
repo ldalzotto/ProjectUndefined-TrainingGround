@@ -90,8 +90,8 @@
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoiceDiscussion.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\DiscussionBase.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\TextOnlyDiscussion.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
@@ -116,6 +116,7 @@
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineManager.cs" />
     <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneScenarioNodes.cs" />
     <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneInitialisation.cs" />
+    <Compile Include="Assets\Test\DiscussionTestScript.cs" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeConeShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />

@@ -1,46 +1,71 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TextOnlyDiscussion : MonoBehaviour
 {
 
+    private const string TEXT_AREA_OBJECT_NAME = "TextArea";
+    private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
     private const string CONTINUE_ICON_OBJECT_NAME = "ContinueIcon";
     private const string END_ICON_OBJECT_NAME = "EndIcon";
 
     public TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
     public DiscussionWriterComponent DiscussionWriterComponent;
+    public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
+    public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
 
-    private TextOnlyDiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
+    private TextOnlyDiscussionWindowDimensionsManager TextDiscussionWindowDimensionsManager;
+    private DiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
     private DiscussionWriterManager DiscussionWriterManager;
     private DiscussionWorkflowManager DiscussionWorkflowManager;
 
-    public void InitializeDependencies(float textAreaMargin)
+    private DiscussionWindowPositioner DiscussionWindowPositioner;
+    private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
+    private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
+
+    private DiscussionEventHandler DiscussionEventHandler;
+
+    public void InitializeDependencies()
     {
-        var DiscussionBase = GetComponent<DiscussionBase>();
+        #region External Event hanlder
+        DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+        #endregion
 
-        var textAreaObject = gameObject.FindChildObjectRecursively(DiscussionBase.TEXT_AREA_OBJECT_NAME);
-        var discussionWindowObject = gameObject.FindChildObjectRecursively(DiscussionBase.DISCUSSION_WINDOW_OBJECT_NAME);
+        var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
+        var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
 
-        DiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(DiscussionBase, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionBase.GetDiscussionWindowDimensionsComputation());
+        var discussionAnimator = GetComponent<Animator>();
+
+        DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject, (RectTransform)discussionWindowObject.transform);
+        DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
+        DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
+        DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
+
+        TextDiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionWindowDimensionsManager);
         DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
     }
 
     public void Tick(float d)
     {
-        DiscussionWindowDimensionsManager.Tick(d);
+        DiscussionWindowDimensionsTransitionManager.Tick(d);
+        DiscussionWindowPositioner.Tick();
+        TextDiscussionWindowDimensionsManager.Tick(d);
         DiscussionWriterManager.Tick(d);
     }
 
     public void OnGUIDraw()
     {
-        DiscussionWindowDimensionsManager.OnGUIDraw();
+        TextDiscussionWindowDimensionsManager.OnGUIDraw();
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake(string fullTextContent, Transform anchoredDiscussionWorldTransform)
+    public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
     {
-        InitializeDiscussionWindow(fullTextContent);
+        DiscussionWindowAnimationManager.PlayEnterAnimation();
+        DiscussionWindowPositioner.SetTransformToFollow(position);
+        InitializeDiscussionWindow(DiscussionSentencesTextConstants.SentencesText[discussionNode.DisplayedText]);
     }
 
     public void OnDiscussionWindowSleep()
@@ -51,22 +76,38 @@ public class TextOnlyDiscussion : MonoBehaviour
     private void InitializeDiscussionWindow(string fullTextContent)
     {
         DiscussionWorkflowManager.OnDiscussionWindowAwake();
-        DiscussionWindowDimensionsManager.InitializeDiscussionWindow(fullTextContent);
-        var truncatedText = DiscussionWindowDimensionsManager.ComputeTrucatedText(fullTextContent);
+        TextDiscussionWindowDimensionsManager.InitializeDiscussionWindow(fullTextContent);
+        var truncatedText = TextDiscussionWindowDimensionsManager.ComputeTrucatedText(fullTextContent);
         DiscussionWriterManager.OnDiscussionTextStartWriting(truncatedText);
     }
 
     public void ProcessDiscussionContinue()
     {
-        InitializeDiscussionWindow(DiscussionWindowDimensionsManager.OverlappedOnlyText);
+        InitializeDiscussionWindow(TextDiscussionWindowDimensionsManager.OverlappedOnlyText);
     }
+
+    public void ProcessDiscussionNodeTextEnd()
+    {
+        DiscussionEventHandler.OnDiscussionTextNodeEnd();
+    }
+
+    public void ProcessDiscussionClose()
+    {
+        StartCoroutine(DiscussionWindowAnimationManager.PlayExitAnimation());
+    }
+
+    public void OnHeightChange(float newHeight)
+    {
+        DiscussionWindowDimensionsTransitionManager.OnHeightChange(newHeight);
+    }
+
 
     #endregion
 
     #region Internal Events
     public void OnTextFinishedWriting()
     {
-        DiscussionWorkflowManager.OnTextFinishedWriting(DiscussionWindowDimensionsManager.OverlappedOnlyText);
+        DiscussionWorkflowManager.OnTextFinishedWriting(TextDiscussionWindowDimensionsManager.OverlappedOnlyText);
     }
 
     #endregion
@@ -96,7 +137,7 @@ public class TextOnlyDiscussionWindowDimensionsComponent
 
 class TextOnlyDiscussionWindowDimensionsManager
 {
-    private DiscussionBase DiscussionBaseReference;
+    private TextOnlyDiscussion DiscussionBaseReference;
     private TextOnlyDiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
     private Text textAreaText;
     private RectTransform discussionWindowTransform;
@@ -110,7 +151,7 @@ class TextOnlyDiscussionWindowDimensionsManager
 
     public string OverlappedOnlyText { get => overlappedOnlyText; }
 
-    public TextOnlyDiscussionWindowDimensionsManager(DiscussionBase DiscussionBaseReference, GameObject textAreaObject,
+    public TextOnlyDiscussionWindowDimensionsManager(TextOnlyDiscussion DiscussionBaseReference, GameObject textAreaObject,
                     GameObject discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent textOnlyDiscussionWindowDimensionsComponent,
                     DiscussionWindowDimensionsComputation discussionWindowDimensionsComputation)
     {
@@ -302,3 +343,198 @@ class DiscussionWorkflowManager
 }
 #endregion
 
+
+#region Discussion Window Position
+class DiscussionWindowPositioner
+{
+    private Camera camera;
+    private Transform discussionTransform;
+    private Transform worldTransformToFollow;
+
+    public DiscussionWindowPositioner(Camera camera, Transform discussionTransform)
+    {
+        this.camera = camera;
+        this.discussionTransform = discussionTransform;
+    }
+
+    public void SetTransformToFollow(Transform worldTransformToFollow)
+    {
+        this.worldTransformToFollow = worldTransformToFollow;
+    }
+
+    public void Tick()
+    {
+        if (worldTransformToFollow != null)
+        {
+            this.discussionTransform.position = camera.WorldToScreenPoint(worldTransformToFollow.position);
+        }
+    }
+}
+#endregion
+
+#region DiscussionWindow Dimensions
+[System.Serializable]
+public class DiscussionWindowDimensionsComponent
+{
+    public float Margin;
+}
+
+public interface DiscussionWindowDimensionsComputation
+{
+    float GetCurrentWindowHeight();
+    float GetMargin();
+    float GetSingleLineHeightWithLineSpace();
+    float GetLineSpace();
+    float GetWindowHeight(int lineNB);
+    float GetTextAreaWidth();
+}
+
+class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
+{
+    private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
+
+    private Text textAreaText;
+    private RectTransform discussionWindowTransform;
+
+    public DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject, RectTransform discussionWindowTransform)
+    {
+        DiscussionWindowDimensionsComponent = discussionWindowDimensionsComponent;
+
+        var textAreaTransform = (RectTransform)textAreaObject.transform;
+        this.textAreaText = textAreaObject.GetComponent<Text>();
+        this.discussionWindowTransform = discussionWindowTransform;
+        var margin = discussionWindowDimensionsComponent.Margin;
+        textAreaTransform.offsetMin = new Vector2(margin, margin);
+        textAreaTransform.offsetMax = new Vector2(-margin, -margin);
+    }
+
+    public float GetCurrentWindowHeight()
+    {
+        return textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2);
+    }
+
+    public float GetLineSpace()
+    {
+        return textAreaText.lineSpacing;
+    }
+
+    public float GetMargin()
+    {
+        return DiscussionWindowDimensionsComponent.Margin;
+    }
+
+    public float GetSingleLineHeightWithLineSpace()
+    {
+        return (textAreaText.font.lineHeight + textAreaText.lineSpacing);
+    }
+
+    public float GetTextAreaWidth()
+    {
+        return discussionWindowTransform.sizeDelta.x - (DiscussionWindowDimensionsComponent.Margin * 2);
+    }
+
+    public float GetWindowHeight(int lineNb)
+    {
+        return ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.Margin * 2);
+    }
+}
+
+#endregion
+
+#region Dimensions Transitions
+[System.Serializable]
+public class DiscussionWindowDimensionsTransitionComponent
+{
+    public float HeightTransitionsSpeed;
+}
+
+class DiscussionWindowDimensionsTransitionManager
+{
+
+    private DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
+    private RectTransform discussionWindowTransform;
+
+    public DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent discussionWindowDimensionsTransitionComponent, RectTransform discussionWindowTransform)
+    {
+        DiscussionWindowDimensionsTransitionComponent = discussionWindowDimensionsTransitionComponent;
+        this.discussionWindowTransform = discussionWindowTransform;
+    }
+
+    private float targetWindowheight;
+    private bool heightUpdating;
+
+    public void Tick(float d)
+    {
+        if (heightUpdating)
+        {
+            discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, Mathf.Lerp(discussionWindowTransform.sizeDelta.y, targetWindowheight, d * DiscussionWindowDimensionsTransitionComponent.HeightTransitionsSpeed));
+            if (Mathf.Abs(targetWindowheight - discussionWindowTransform.sizeDelta.y) <= 0.05)
+            {
+                discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, targetWindowheight);
+                heightUpdating = false;
+            }
+        }
+    }
+
+    public void OnHeightChange(float newHeight)
+    {
+        heightUpdating = true;
+        targetWindowheight = newHeight;
+    }
+}
+#endregion
+
+#region Discussion Window Animation
+class DiscussionWindowAnimationManager
+{
+    private const string ENTER_ANIMATION_NAME = "DiscussionWindowEnterAnimation";
+    private const string EXIT_ANIMATION_NAME = "DiscussionWindowExitAnimation";
+
+    private Animator DiscussionAnimator;
+    private DiscussionEventHandler DiscussionEventHandler;
+
+    public DiscussionWindowAnimationManager(Animator discussionAnimator, DiscussionEventHandler discussionEventHandler)
+    {
+        DiscussionAnimator = discussionAnimator;
+        DiscussionEventHandler = discussionEventHandler;
+    }
+
+    public void PlayEnterAnimation()
+    {
+        DiscussionAnimator.Play(ENTER_ANIMATION_NAME);
+    }
+
+    public IEnumerator PlayExitAnimation()
+    {
+        DiscussionAnimator.Play(EXIT_ANIMATION_NAME);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfAnimation(DiscussionAnimator, EXIT_ANIMATION_NAME, 0);
+        DiscussionEventHandler.OnDiscussionWindowSleep();
+    }
+}
+#endregion
+
+#region Disucssion Workflow
+class DiscussionWorkflow
+{
+    private GameObject discussionWindowObject;
+
+    private bool choicePopupEnabled;
+
+    public DiscussionWorkflow(GameObject discussionWindowObject)
+    {
+        this.discussionWindowObject = discussionWindowObject;
+    }
+
+    public ChoicePopup OnChoicePopupAwake()
+    {
+        choicePopupEnabled = true;
+        return GameObject.Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, discussionWindowObject.transform);
+    }
+
+    public void OnChoicePopupSleep()
+    {
+        choicePopupEnabled = false;
+    }
+}
+#endregion

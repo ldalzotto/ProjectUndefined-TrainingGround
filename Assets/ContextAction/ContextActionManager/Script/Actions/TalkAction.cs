@@ -33,6 +33,7 @@ public class TalkAction : AContextAction
         var talkActionInput = (TalkActionInput)ContextActionInput;
         isConversationFinished = false;
         DiscussionEventHandler.AddOnSleepExternalHanlder(OnSentenceFinished);
+        DiscussionEventHandler.AddOnDiscussionTextNodeEndEventHandler(OnDiscussionNodeEnd);
 
         SetupSentence(talkActionInput.DiscussionTree.DiscussionRootNode);
     }
@@ -45,36 +46,42 @@ public class TalkAction : AContextAction
         {
             var currentTextOnlyDiscussionNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
             var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentTextOnlyDiscussionNode.Talker);
-            var discussionTextOnlyInput = new DiscussionTextOnlyInput(sentenceTalkerPOI.transform, DiscussionSentencesTextConstants.SentencesText[currentTextOnlyDiscussionNode.DisplayedText]);
-            DiscussionEventHandler.OnDiscussionWindowAwake(discussionTextOnlyInput);
-        }
-        else if (discussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
-        {
-            var currentChoiceDiscussionNode = (DiscussionChoiceNode)currentDiscussionTreeNode;
-            var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentChoiceDiscussionNode.Talker);
-            var discussionChoiceWindowInput = new DiscussionWindowChoiceInput(sentenceTalkerPOI.transform, currentChoiceDiscussionNode.IntroText, currentChoiceDiscussionNode.DiscussionChoices.ConvertAll((choice) => choice.Text));
-            DiscussionEventHandler.OnDiscussionWindowAwake(discussionChoiceWindowInput);
+            DiscussionEventHandler.OnDiscussionWindowAwake(currentTextOnlyDiscussionNode, sentenceTalkerPOI.transform);
         }
     }
 
     private void OnSentenceFinished()
     {
-        var nextNodes = currentDiscussionTreeNode.GetNextNodes();
-        if (nextNodes.Count > 0)
+        var nextNodes = currentDiscussionTreeNode.GetNextNode();
+        if (nextNodes != null)
         {
-            SetupSentence(nextNodes[0]);
+            SetupSentence(nextNodes);
         }
         else
         {
             isConversationFinished = true;
             DiscussionEventHandler.RemoveOnSleepExternalHanlder(OnSentenceFinished);
+            DiscussionEventHandler.RemoveOnDiscussionTextNodeEndEventHandler(OnDiscussionNodeEnd);
         }
     }
 
-    public override void Tick(float d)
+    private DiscussionChoiceNode OnDiscussionNodeEnd()
     {
-
+        if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+        {
+            var nextNode = ((DiscussionTextOnlyNode)currentDiscussionTreeNode).GetNextNode();
+            if (nextNode != null && nextNode.GetType() == typeof(DiscussionChoiceNode))
+            {
+                var nextChoiceNode = (DiscussionChoiceNode)nextNode;
+                currentDiscussionTreeNode = nextChoiceNode;
+                return nextChoiceNode;
+            }
+        }
+        return null;
     }
+
+    public override void Tick(float d)
+    { }
 }
 
 

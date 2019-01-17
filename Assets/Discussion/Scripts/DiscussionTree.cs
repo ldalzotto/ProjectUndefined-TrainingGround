@@ -15,7 +15,7 @@ public class DiscussionTree
 
 public interface DiscussionTreeNode
 {
-    List<DiscussionTreeNode> GetNextNodes();
+    DiscussionTreeNode GetNextNode();
 }
 
 public class DiscussionTextOnlyNode : DiscussionTreeNode
@@ -36,16 +36,9 @@ public class DiscussionTextOnlyNode : DiscussionTreeNode
     public PointOfInterestId Talker { get => talker; }
     public DiscussionTreeNode NextNode { get => nextNode; }
 
-    public List<DiscussionTreeNode> GetNextNodes()
+    public DiscussionTreeNode GetNextNode()
     {
-        if (nextNode == null)
-        {
-            return new List<DiscussionTreeNode>();
-        }
-        else
-        {
-            return new List<DiscussionTreeNode>() { nextNode };
-        }
+        return nextNode;
     }
 }
 
@@ -53,21 +46,18 @@ public class DiscussionTextOnlyNode : DiscussionTreeNode
 public class DiscussionChoiceNode : DiscussionTreeNode
 {
     private PointOfInterestId talker;
-    private DiscussionChoiceIntroductionTextId introText;
     private List<DiscussionChoice> discussionChoices;
 
-    public DiscussionChoiceNode(PointOfInterestId talker, DiscussionChoiceIntroductionTextId introText, List<DiscussionChoice> discussionChoices)
+    public DiscussionChoiceNode(PointOfInterestId talker, List<DiscussionChoice> discussionChoices)
     {
         this.talker = talker;
-        this.introText = introText;
         this.discussionChoices = discussionChoices;
     }
 
     public PointOfInterestId Talker { get => talker; }
-    public DiscussionChoiceIntroductionTextId IntroText { get => introText; }
     public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
 
-    public List<DiscussionTreeNode> GetNextNodes()
+    public DiscussionTreeNode GetNextNode()
     {
         return null;
     }
@@ -99,7 +89,7 @@ public class DiscussionSentencesConstants
     {
         {DiscussionSentenceId.BOUNCER_SENTENCE,
                             new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER,
-                                    new DiscussionChoiceNode(PointOfInterestId.PLAYER ,DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1,
+                                    new DiscussionChoiceNode(PointOfInterestId.PLAYER,
                                              new List<DiscussionChoice>(){
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, null),
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null),
@@ -147,14 +137,9 @@ public enum DiscussionChoiceTextId
 
 public class DiscussionChoiceTextConstants
 {
-    public static Dictionary<DiscussionChoiceIntroductionTextId, string> ChoiceIntroductionTexts = new Dictionary<DiscussionChoiceIntroductionTextId, string>()
-    {
-        {DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1, "What to do ? This is a very hard hard hard hard hard hard hard hard decision." }
-    };
-
     public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
     {
-        {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1\nReturn line." },
+        {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1" },
         {DiscussionChoiceTextId.BOUNCER_CHOICE_2, "Choice 2" },
         {DiscussionChoiceTextId.BOUNCER_CHOICE_3, "Choice 3" }
     };

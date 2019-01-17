@@ -7,7 +7,8 @@ public class DiscussionWindowManager : MonoBehaviour
     #endregion
 
     private DicussionInputManager DicussionInputManager;
-    private DiscussionBase OpenedDiscussion;
+    private TextOnlyDiscussion OpenedDiscussion;
+    private ChoicePopup OpenedChoicePopup;
     private DiscussionEventHandler DiscussionEventHandler;
 
     private void Start()
@@ -25,25 +26,36 @@ public class DiscussionWindowManager : MonoBehaviour
     {
         if (OpenedDiscussion != null)
         {
-            OpenedDiscussion.Tick(d);
-            if (OpenedDiscussion.GetDiscussionType() == DiscussionWindowType.TEXT_ONLY)
+            if (OpenedChoicePopup != null)
             {
-                var textOnlyDiscussion = OpenedDiscussion.GetTextOnlyDiscussion();
-                if (!textOnlyDiscussion.IsWriting())
+                OpenedChoicePopup.Tick(d);
+                if (DicussionInputManager.Tick())
+                {
+                    var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
+                    OpenedDiscussion.ProcessDiscussionNodeTextEnd();
+                    //  OpenedDiscussion.ProcessDiscussionClose();
+                }
+            }
+            else
+            {
+                OpenedDiscussion.Tick(d);
+                if (!OpenedDiscussion.IsWriting())
                 {
                     if (DicussionInputManager.Tick())
                     {
-                        if (textOnlyDiscussion.IsWaitingForCloseInput())
+                        if (OpenedDiscussion.IsWaitingForCloseInput())
                         {
-                            OpenedDiscussion.ProcessDiscussionEnd();
+                            OpenedDiscussion.ProcessDiscussionNodeTextEnd();
                         }
-                        else if (textOnlyDiscussion.IsWaitingForContinueInput())
+                        else if (OpenedDiscussion.IsWaitingForContinueInput())
                         {
-                            textOnlyDiscussion.ProcessDiscussionContinue();
+                            OpenedDiscussion.ProcessDiscussionContinue();
                         }
                     }
                 }
             }
+
+
         }
     }
 
@@ -56,17 +68,37 @@ public class DiscussionWindowManager : MonoBehaviour
     }
 
     #region External Events
-    public void OnDiscussionWindowAwake(DiscussionWindowInput discussionWindowInput)
+    public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
     {
         OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
         OpenedDiscussion.transform.localScale = Vector3.zero;
         OpenedDiscussion.InitializeDependencies();
-        OpenedDiscussion.OnDiscussionWindowAwake(discussionWindowInput);
+        OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position);
     }
+
+    public void OnDiscussionEnd()
+    {
+        OpenedDiscussion.ProcessDiscussionClose();
+    }
+
+    public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
+    {
+        OpenedChoicePopup = Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
+        OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero);
+    }
+
     public void OnDiscussionWindowSleep()
     {
         OpenedDiscussion.OnDiscussionWindowSleep();
         Destroy(OpenedDiscussion.gameObject);
+        OpenedDiscussion = null;
+
+        if (OpenedChoicePopup != null)
+        {
+            Destroy(OpenedChoicePopup.gameObject);
+            OpenedChoicePopup = null;
+        }
+
     }
     #endregion
 

@@ -8,15 +8,32 @@ public class DiscussionEventHandler : MonoBehaviour
     public delegate void DiscussionWindowSleepExternalHandler();
     private event DiscussionWindowSleepExternalHandler OnDiscussionWindowSleepExternal;
 
+    public delegate DiscussionChoiceNode DiscussionTextNodeHandler();
+    private event DiscussionTextNodeHandler OnDiscussionTextNodeEndEvent;
+
     private void Start()
     {
         DiscussionWindowManager = GameObject.FindObjectOfType<DiscussionWindowManager>();
     }
 
-    public void OnDiscussionWindowAwake(DiscussionWindowInput discussionWindowInput)
+    public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
     {
-        DiscussionWindowManager.OnDiscussionWindowAwake(discussionWindowInput);
+        DiscussionWindowManager.OnDiscussionWindowAwake(discussionNode, position);
     }
+
+    public void OnDiscussionTextNodeEnd()
+    {
+        var nextDisucssionChoiceNode = OnDiscussionTextNodeEndEvent.Invoke();
+        if (nextDisucssionChoiceNode != null)
+        {
+            DiscussionWindowManager.OnChoicePopupAwake(nextDisucssionChoiceNode);
+        }
+        else
+        {
+            DiscussionWindowManager.OnDiscussionEnd();
+        }
+    }
+
     public void OnDiscussionWindowSleep()
     {
         DiscussionWindowManager.OnDiscussionWindowSleep();
@@ -31,4 +48,14 @@ public class DiscussionEventHandler : MonoBehaviour
     {
         OnDiscussionWindowSleepExternal -= DiscussionWindowSleepExternalHandler;
     }
+
+    public void AddOnDiscussionTextNodeEndEventHandler(DiscussionTextNodeHandler DiscussionTextNodeHandler)
+    {
+        OnDiscussionTextNodeEndEvent += DiscussionTextNodeHandler;
+    }
+    public void RemoveOnDiscussionTextNodeEndEventHandler(DiscussionTextNodeHandler DiscussionTextNodeHandler)
+    {
+        OnDiscussionTextNodeEndEvent -= DiscussionTextNodeHandler;
+    }
+
 }
