@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DiscussionBase : MonoBehaviour
 {
@@ -21,8 +22,11 @@ public class DiscussionBase : MonoBehaviour
 
     private DiscussionWindowType DiscussionWindowType;
 
+    //   private Canvas zanvas;
+
     public void InitializeDependencies()
     {
+
         #region External Event hanlder
         var discussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
         #endregion
@@ -84,6 +88,13 @@ public class DiscussionBase : MonoBehaviour
             DiscussionWindowPositioner.SetTransformToFollow(textOnlyDiscussionInput.AnchoredDiscussionWorldTransform);
             TextOnlyDiscussion.OnDiscussionWindowAwake(textOnlyDiscussionInput.TextToWrite, textOnlyDiscussionInput.AnchoredDiscussionWorldTransform);
         }
+        else if (discussionWindowInput.GetType() == typeof(DiscussionWindowChoiceInput))
+        {
+            var choiceDiscussionInput = (DiscussionWindowChoiceInput)discussionWindowInput;
+            DiscussionWindowType = DiscussionWindowType.CHOICE;
+            DiscussionWindowPositioner.SetTransformToFollow(choiceDiscussionInput.AnchoredDiscussionWorldTransform);
+            ChoiceDiscussion.OnDiscussionWindowAwake(choiceDiscussionInput);
+        }
     }
     public void OnDiscussionWindowSleep()
     {
@@ -116,6 +127,11 @@ public class DiscussionBase : MonoBehaviour
     public TextOnlyDiscussion GetTextOnlyDiscussion()
     {
         return TextOnlyDiscussion;
+    }
+
+    public DiscussionWindowDimensionsComputation GetDiscussionWindowDimensionsComputation()
+    {
+        return DiscussionWindowDimensionsManager;
     }
 }
 
@@ -161,18 +177,55 @@ public class DiscussionWindowDimensionsComponent
     public float Margin;
 }
 
-class DiscussionWindowDimensionsManager
+public interface DiscussionWindowDimensionsComputation
+{
+    float GetCurrentWindowHeight();
+    float GetMargin();
+    float GetSingleLineHeight();
+    float GetLineSpace();
+    float GetWindowHeight(int lineNB);
+}
+
+class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
 {
     private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
+
+    private Text textAreaText;
 
     public DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject)
     {
         DiscussionWindowDimensionsComponent = discussionWindowDimensionsComponent;
 
         var textAreaTransform = (RectTransform)textAreaObject.transform;
+        this.textAreaText = textAreaObject.GetComponent<Text>();
         var margin = discussionWindowDimensionsComponent.Margin;
         textAreaTransform.offsetMin = new Vector2(margin, margin);
         textAreaTransform.offsetMax = new Vector2(-margin, -margin);
+    }
+
+    public float GetCurrentWindowHeight()
+    {
+        return textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2);
+    }
+
+    public float GetLineSpace()
+    {
+        return textAreaText.font.lineHeight;
+    }
+
+    public float GetMargin()
+    {
+        return DiscussionWindowDimensionsComponent.Margin;
+    }
+
+    public float GetSingleLineHeight()
+    {
+        return (textAreaText.font.lineHeight + textAreaText.lineSpacing);
+    }
+
+    public float GetWindowHeight(int lineNb)
+    {
+        return ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 }
 
@@ -218,7 +271,6 @@ class DiscussionWindowDimensionsTransitionManager
         heightUpdating = true;
         targetWindowheight = newHeight;
     }
-
 }
 #endregion
 

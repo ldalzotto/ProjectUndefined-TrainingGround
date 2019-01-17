@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TextOnlyDiscussion : MonoBehaviour
@@ -22,7 +21,7 @@ public class TextOnlyDiscussion : MonoBehaviour
         var textAreaObject = gameObject.FindChildObjectRecursively(DiscussionBase.TEXT_AREA_OBJECT_NAME);
         var discussionWindowObject = gameObject.FindChildObjectRecursively(DiscussionBase.DISCUSSION_WINDOW_OBJECT_NAME);
 
-        DiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(DiscussionBase, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, textAreaMargin);
+        DiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(DiscussionBase, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionBase.GetDiscussionWindowDimensionsComputation());
         DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
     }
@@ -102,7 +101,7 @@ class TextOnlyDiscussionWindowDimensionsManager
     private Text textAreaText;
     private RectTransform discussionWindowTransform;
 
-    private float textAreaMargin;
+    private DiscussionWindowDimensionsComputation discussionWindowDimensionsComputation;
     private int displayedLineNB;
     private int nonOverlappedLineNb;
     private TextGenerator cachedTextGenerator;
@@ -113,14 +112,14 @@ class TextOnlyDiscussionWindowDimensionsManager
 
     public TextOnlyDiscussionWindowDimensionsManager(DiscussionBase DiscussionBaseReference, GameObject textAreaObject,
                     GameObject discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent textOnlyDiscussionWindowDimensionsComponent,
-                    float textAreaMargin)
+                    DiscussionWindowDimensionsComputation discussionWindowDimensionsComputation)
     {
         this.displayedLineNB = 1;
         this.DiscussionBaseReference = DiscussionBaseReference;
         this.textAreaText = textAreaObject.GetComponent<Text>();
         this.discussionWindowTransform = (RectTransform)discussionWindowObject.transform;
         this.DiscussionWindowDimensionsComponent = textOnlyDiscussionWindowDimensionsComponent;
-        this.textAreaMargin = textAreaMargin;
+        this.discussionWindowDimensionsComputation = discussionWindowDimensionsComputation;
     }
 
     public void OnGUIDraw()
@@ -130,7 +129,7 @@ class TextOnlyDiscussionWindowDimensionsManager
 
     private void CalculateNonOverlappedLineNb()
     {
-        this.nonOverlappedLineNb = Mathf.FloorToInt((textAreaText.preferredHeight) / (textAreaText.font.lineHeight + textAreaText.lineSpacing));
+        this.nonOverlappedLineNb = Mathf.FloorToInt((textAreaText.preferredHeight) / discussionWindowDimensionsComputation.GetSingleLineHeight());
     }
 
     public void Tick(float d)
@@ -138,18 +137,13 @@ class TextOnlyDiscussionWindowDimensionsManager
         if (IsCurrentTextOverlaps())
         {
             this.displayedLineNB = Mathf.Min(this.displayedLineNB + 1, DiscussionWindowDimensionsComponent.MaxLineDisplayed);
-            DiscussionBaseReference.OnHeightChange(CalculateWindowHeight(this.displayedLineNB));
+            DiscussionBaseReference.OnHeightChange(discussionWindowDimensionsComputation.GetWindowHeight(this.displayedLineNB));
         }
-    }
-
-    private float CalculateWindowHeight(int lineNb)
-    {
-        return ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * lineNb) + (textAreaMargin * 2);
     }
 
     private bool IsCurrentTextOverlaps()
     {
-        return (textAreaText.preferredHeight + (textAreaMargin * 2) > CalculateWindowHeight(this.displayedLineNB));
+        return (discussionWindowDimensionsComputation.GetCurrentWindowHeight() > discussionWindowDimensionsComputation.GetWindowHeight(this.displayedLineNB));
     }
 
     public void InitializeDiscussionWindow(string fullTextContent)
@@ -157,7 +151,7 @@ class TextOnlyDiscussionWindowDimensionsManager
         this.displayedLineNB = 1;
         textAreaText.text = fullTextContent;
         Canvas.ForceUpdateCanvases();
-        DiscussionBaseReference.OnHeightChange(CalculateWindowHeight(this.displayedLineNB));
+        DiscussionBaseReference.OnHeightChange(discussionWindowDimensionsComputation.GetWindowHeight(this.displayedLineNB));
         CalculateNonOverlappedLineNb();
         textAreaText.text = "";
         Canvas.ForceUpdateCanvases();
@@ -168,7 +162,7 @@ class TextOnlyDiscussionWindowDimensionsManager
         var initialSizeDelta = discussionWindowTransform.sizeDelta;
 
         textAreaText.text = fullTextContent;
-        discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, CalculateWindowHeight(DiscussionWindowDimensionsComponent.MaxLineDisplayed));
+        discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, discussionWindowDimensionsComputation.GetWindowHeight(DiscussionWindowDimensionsComponent.MaxLineDisplayed));
         Canvas.ForceUpdateCanvases();
 
         var truncatedText = textAreaText.text.Substring(0, textAreaText.cachedTextGenerator.characterCountVisible);
@@ -179,20 +173,6 @@ class TextOnlyDiscussionWindowDimensionsManager
         Canvas.ForceUpdateCanvases();
 
         return truncatedText;
-    }
-
-    private void SliceTextLine(List<UILineInfo> lines, int i, out int beginIndex, out int endIndex)
-    {
-        beginIndex = lines[i].startCharIdx;
-        endIndex = 0;
-        if (i == lines.Count - 1)
-        {
-            endIndex = textAreaText.text.Length;
-        }
-        else
-        {
-            endIndex = lines[i + 1].startCharIdx;
-        }
     }
 }
 

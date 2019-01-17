@@ -71,6 +71,7 @@
     <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\_Common\FX\TriggerableEffect.cs" />
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
+    <Compile Include="Assets\_Constants\StringConstants.cs" />
     <Compile Include="Assets\_Constants\TagConstants.cs" />
     <Compile Include="Assets\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
     <Compile Include="Assets\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />

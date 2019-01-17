@@ -102,7 +102,8 @@ public class DiscussionSentencesConstants
                                     new DiscussionChoiceNode(PointOfInterestId.BOUNCER ,DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1,
                                              new List<DiscussionChoice>(){
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, null),
-                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null)
+                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null),
+                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_3, null)
                                              }
                                         )
                                 )}
@@ -140,20 +141,22 @@ public enum DiscussionChoiceIntroductionTextId
 public enum DiscussionChoiceTextId
 {
     BOUNCER_CHOICE_1,
-    BOUNCER_CHOICE_2
+    BOUNCER_CHOICE_2,
+    BOUNCER_CHOICE_3
 }
 
 public class DiscussionChoiceTextConstants
 {
     public static Dictionary<DiscussionChoiceIntroductionTextId, string> ChoiceIntroductionTexts = new Dictionary<DiscussionChoiceIntroductionTextId, string>()
     {
-        {DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1, "What to do ?" }
+        {DiscussionChoiceIntroductionTextId.BOUNCER_CHOICE_INTRO_1, "What to do ? This is a very hard hard hard hard hard hard hard hard decision." }
     };
 
     public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
     {
         {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1" },
-        {DiscussionChoiceTextId.BOUNCER_CHOICE_2, "Choice 2" }
+        {DiscussionChoiceTextId.BOUNCER_CHOICE_2, "Choice 2" },
+        {DiscussionChoiceTextId.BOUNCER_CHOICE_3, "Choice 3" }
     };
 }
 #endregion
