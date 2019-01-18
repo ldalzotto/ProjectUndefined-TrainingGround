@@ -4,6 +4,7 @@ public class DiscussionEventHandler : MonoBehaviour
 {
 
     private DiscussionWindowManager DiscussionWindowManager;
+    private ScenarioTimelineManager ScenarioTimelineManager;
 
     public delegate void DiscussionWindowSleepExternalHandler();
     private event DiscussionWindowSleepExternalHandler OnDiscussionWindowSleepExternal;
@@ -14,8 +15,10 @@ public class DiscussionEventHandler : MonoBehaviour
     private void Start()
     {
         DiscussionWindowManager = GameObject.FindObjectOfType<DiscussionWindowManager>();
+        ScenarioTimelineManager = GameObject.FindObjectOfType<ScenarioTimelineManager>();
     }
 
+    #region Discussion Window Events
     public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
     {
         DiscussionWindowManager.OnDiscussionWindowAwake(discussionNode, position);
@@ -39,6 +42,14 @@ public class DiscussionEventHandler : MonoBehaviour
         DiscussionWindowManager.OnDiscussionWindowSleep();
         OnDiscussionWindowSleepExternal.Invoke();
     }
+    #endregion
+
+    #region Discusion Choices Event
+    public void OnDiscussionChoiceMade(DiscussionChoiceTextId selectedChoice)
+    {
+        ScenarioTimelineManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(selectedChoice));
+    }
+    #endregion
 
     public void AddOnSleepExternalHanlder(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler)
     {
