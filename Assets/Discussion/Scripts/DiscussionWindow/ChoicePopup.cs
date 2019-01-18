@@ -202,12 +202,12 @@ class ChoicePopupSelectionManager
         if (isTransitioning)
         {
             var selectionRectangleObjectTransform = (RectTransform)SelectionRectangleObject.transform;
-            selectionRectangleObjectTransform.localPosition = Vector2.Lerp(selectionRectangleObjectTransform.localPosition, Vector2.zero, d * ChoicePopupSelectionManagerComponent.TransitionSpeed);
+            selectionRectangleObjectTransform.anchoredPosition = Vector2.Lerp(selectionRectangleObjectTransform.anchoredPosition, Vector2.zero, d * ChoicePopupSelectionManagerComponent.TransitionSpeed);
 
-            if (Vector2.Distance(selectionRectangleObjectTransform.localPosition, Vector2.zero) <= 0.05)
+            if (Vector2.Distance(selectionRectangleObjectTransform.anchoredPosition, Vector2.zero) <= 0.05)
             {
                 isTransitioning = false;
-                selectionRectangleObjectTransform.localPosition = Vector2.zero;
+                selectionRectangleObjectTransform.anchoredPosition = Vector2.zero;
             }
         }
     }
