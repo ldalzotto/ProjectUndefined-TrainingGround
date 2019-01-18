@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class DiscussionEventHandler : MonoBehaviour
 {
@@ -9,8 +10,11 @@ public class DiscussionEventHandler : MonoBehaviour
     public delegate void DiscussionWindowSleepExternalHandler();
     private event DiscussionWindowSleepExternalHandler OnDiscussionWindowSleepExternal;
 
-    public delegate DiscussionChoiceNode DiscussionTextNodeHandler();
+    public delegate void DiscussionTextNodeHandler();
     private event DiscussionTextNodeHandler OnDiscussionTextNodeEndEvent;
+
+    public delegate void DiscussionChoiceNodeHandler(DiscussionChoiceTextId selectedChoice);
+    private event DiscussionChoiceNodeHandler OnDiscussionChoiceNodeEndEvent;
 
     private void Start()
     {
@@ -24,49 +28,46 @@ public class DiscussionEventHandler : MonoBehaviour
         DiscussionWindowManager.OnDiscussionWindowAwake(discussionNode, position);
     }
 
-    public void OnDiscussionTextNodeEnd()
+    public IEnumerator OnDiscussionWindowSleep()
     {
-        var nextDisucssionChoiceNode = OnDiscussionTextNodeEndEvent.Invoke();
-        if (nextDisucssionChoiceNode != null)
-        {
-            DiscussionWindowManager.OnChoicePopupAwake(nextDisucssionChoiceNode);
-        }
-        else
-        {
-            DiscussionWindowManager.OnDiscussionEnd();
-        }
-    }
-
-    public void OnDiscussionWindowSleep()
-    {
+        yield return StartCoroutine(DiscussionWindowManager.PlayDiscussionCloseAnimation());
         DiscussionWindowManager.OnDiscussionWindowSleep();
         OnDiscussionWindowSleepExternal.Invoke();
     }
     #endregion
 
-    #region Discusion Choices Event
-    public void OnDiscussionChoiceMade(DiscussionChoiceTextId selectedChoice)
+    #region Discussion Text Event
+    public void OnDiscussionTextNodeEnd()
     {
-        ScenarioTimelineManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(selectedChoice));
+        OnDiscussionTextNodeEndEvent.Invoke();
     }
     #endregion
 
-    public void AddOnSleepExternalHanlder(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler)
+    #region Discusion Choices Event
+    public void OnDiscussionChoiceStart(DiscussionChoiceNode discussionChoice)
     {
-        OnDiscussionWindowSleepExternal += DiscussionWindowSleepExternalHandler;
-    }
-    public void RemoveOnSleepExternalHanlder(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler)
-    {
-        OnDiscussionWindowSleepExternal -= DiscussionWindowSleepExternalHandler;
+        DiscussionWindowManager.OnChoicePopupAwake(discussionChoice);
     }
 
-    public void AddOnDiscussionTextNodeEndEventHandler(DiscussionTextNodeHandler DiscussionTextNodeHandler)
+    public void OnDiscussionChoiceEnd(DiscussionChoiceTextId selectedChoice)
     {
-        OnDiscussionTextNodeEndEvent += DiscussionTextNodeHandler;
+        ScenarioTimelineManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(selectedChoice));
+        OnDiscussionChoiceNodeEndEvent.Invoke(selectedChoice);
     }
-    public void RemoveOnDiscussionTextNodeEndEventHandler(DiscussionTextNodeHandler DiscussionTextNodeHandler)
+    #endregion
+
+    public void InitializeEventHanlders(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler, DiscussionTextNodeHandler DiscussionTextNodeHandler, DiscussionChoiceNodeHandler DiscussionChoiceNodeHandler)
     {
+        OnDiscussionWindowSleepExternal += DiscussionWindowSleepExternalHandler;
+        OnDiscussionTextNodeEndEvent += DiscussionTextNodeHandler;
+        OnDiscussionChoiceNodeEndEvent += DiscussionChoiceNodeHandler;
+    }
+
+    public void DeleteEventHanlders(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler, DiscussionTextNodeHandler DiscussionTextNodeHandler, DiscussionChoiceNodeHandler DiscussionChoiceNodeHandler)
+    {
+        OnDiscussionWindowSleepExternal -= DiscussionWindowSleepExternalHandler;
         OnDiscussionTextNodeEndEvent -= DiscussionTextNodeHandler;
+        OnDiscussionChoiceNodeEndEvent -= DiscussionChoiceNodeHandler;
     }
 
 }

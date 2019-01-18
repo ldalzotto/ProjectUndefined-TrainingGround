@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TextOnlyDiscussion : MonoBehaviour
+public class DiscussionWindow : MonoBehaviour
 {
 
     private const string TEXT_AREA_OBJECT_NAME = "TextArea";
@@ -86,14 +86,9 @@ public class TextOnlyDiscussion : MonoBehaviour
         InitializeDiscussionWindow(TextDiscussionWindowDimensionsManager.OverlappedOnlyText);
     }
 
-    public void ProcessDiscussionNodeTextEnd()
+    public IEnumerator PlayDiscussionCloseAnimation()
     {
-        DiscussionEventHandler.OnDiscussionTextNodeEnd();
-    }
-
-    public void ProcessDiscussionClose()
-    {
-        StartCoroutine(DiscussionWindowAnimationManager.PlayExitAnimation());
+        return DiscussionWindowAnimationManager.PlayExitAnimation();
     }
 
     public void OnHeightChange(float newHeight)
@@ -125,6 +120,10 @@ public class TextOnlyDiscussion : MonoBehaviour
     {
         return DiscussionWriterManager.IsTextWriting;
     }
+    public bool IsExitAnimationPlaying()
+    {
+        return DiscussionWindowAnimationManager.IsAnimationExitingPlaying;
+    }
     #endregion
 }
 
@@ -137,7 +136,7 @@ public class TextOnlyDiscussionWindowDimensionsComponent
 
 class TextOnlyDiscussionWindowDimensionsManager
 {
-    private TextOnlyDiscussion DiscussionBaseReference;
+    private DiscussionWindow DiscussionBaseReference;
     private TextOnlyDiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
     private Text textAreaText;
     private RectTransform discussionWindowTransform;
@@ -151,7 +150,7 @@ class TextOnlyDiscussionWindowDimensionsManager
 
     public string OverlappedOnlyText { get => overlappedOnlyText; }
 
-    public TextOnlyDiscussionWindowDimensionsManager(TextOnlyDiscussion DiscussionBaseReference, GameObject textAreaObject,
+    public TextOnlyDiscussionWindowDimensionsManager(DiscussionWindow DiscussionBaseReference, GameObject textAreaObject,
                     GameObject discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent textOnlyDiscussionWindowDimensionsComponent,
                     DiscussionWindowDimensionsComputation discussionWindowDimensionsComputation)
     {
@@ -228,7 +227,7 @@ public class DiscussionWriterComponent
 
 class DiscussionWriterManager
 {
-    private TextOnlyDiscussion DiscussionReference;
+    private DiscussionWindow DiscussionReference;
     private DiscussionWriterComponent DiscussionWriterComponent;
     private Text textAreaText;
 
@@ -237,7 +236,7 @@ class DiscussionWriterManager
     private float timeElapsed;
     private bool isTextWriting;
 
-    public DiscussionWriterManager(TextOnlyDiscussion DiscussionReference, DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
+    public DiscussionWriterManager(DiscussionWindow DiscussionReference, DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
     {
         this.DiscussionReference = DiscussionReference;
         DiscussionWriterComponent = discussionWriterComponent;
@@ -493,11 +492,15 @@ class DiscussionWindowAnimationManager
     private Animator DiscussionAnimator;
     private DiscussionEventHandler DiscussionEventHandler;
 
+    private bool isAnimationExitingPlaying;
+
     public DiscussionWindowAnimationManager(Animator discussionAnimator, DiscussionEventHandler discussionEventHandler)
     {
         DiscussionAnimator = discussionAnimator;
         DiscussionEventHandler = discussionEventHandler;
     }
+
+    public bool IsAnimationExitingPlaying { get => isAnimationExitingPlaying; }
 
     public void PlayEnterAnimation()
     {
@@ -507,34 +510,10 @@ class DiscussionWindowAnimationManager
     public IEnumerator PlayExitAnimation()
     {
         DiscussionAnimator.Play(EXIT_ANIMATION_NAME);
+        isAnimationExitingPlaying = true;
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfAnimation(DiscussionAnimator, EXIT_ANIMATION_NAME, 0);
-        DiscussionEventHandler.OnDiscussionWindowSleep();
-    }
-}
-#endregion
-
-#region Disucssion Workflow
-class DiscussionWorkflow
-{
-    private GameObject discussionWindowObject;
-
-    private bool choicePopupEnabled;
-
-    public DiscussionWorkflow(GameObject discussionWindowObject)
-    {
-        this.discussionWindowObject = discussionWindowObject;
-    }
-
-    public ChoicePopup OnChoicePopupAwake()
-    {
-        choicePopupEnabled = true;
-        return GameObject.Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, discussionWindowObject.transform);
-    }
-
-    public void OnChoicePopupSleep()
-    {
-        choicePopupEnabled = false;
+        isAnimationExitingPlaying = false;
     }
 }
 #endregion

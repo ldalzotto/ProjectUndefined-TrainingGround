@@ -92,7 +92,7 @@
     <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\TextOnlyDiscussion.cs" />
+    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />

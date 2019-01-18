@@ -15,7 +15,6 @@ public class DiscussionTree
 
 public interface DiscussionTreeNode
 {
-    DiscussionTreeNode GetNextNode();
 }
 
 public class DiscussionTextOnlyNode : DiscussionTreeNode
@@ -57,8 +56,15 @@ public class DiscussionChoiceNode : DiscussionTreeNode
     public PointOfInterestId Talker { get => talker; }
     public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
 
-    public DiscussionTreeNode GetNextNode()
+    public DiscussionTreeNode GetNextNode(DiscussionChoiceTextId selectedChoice)
     {
+        foreach (var discussionChoice in discussionChoices)
+        {
+            if (discussionChoice.Text == selectedChoice)
+            {
+                return discussionChoice.NextNode;
+            }
+        }
         return null;
     }
 }
@@ -75,6 +81,7 @@ public class DiscussionChoice
     }
 
     public DiscussionChoiceTextId Text { get => text; }
+    public DiscussionTreeNode NextNode { get => nextNode; }
 }
 
 public class DiscussionChoiceEvent
@@ -94,13 +101,15 @@ public class DiscussionSentencesConstants
     {
         {DiscussionSentenceId.BOUNCER_SENTENCE,
                             new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER,
+                                new DiscussionTextOnlyNode(DisucssionSentenceTextId.PLAYER_SENTENCE_TEXT_1, PointOfInterestId.PLAYER,
                                     new DiscussionChoiceNode(PointOfInterestId.PLAYER,
                                              new List<DiscussionChoice>(){
-                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, null),
+                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER, null)),
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null),
                                                  new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_3, null)
                                              }
                                         )
+                                    )
                                 )}
     };
 }

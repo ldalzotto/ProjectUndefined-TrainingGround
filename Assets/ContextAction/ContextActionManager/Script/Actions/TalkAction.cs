@@ -11,6 +11,7 @@ public class TalkAction : AContextAction
 
     private bool isConversationFinished;
     private DiscussionTreeNode currentDiscussionTreeNode;
+    private DiscussionChoiceTextId discussionChoiceMade;
 
     public TalkAction() : base()
     {
@@ -32,53 +33,101 @@ public class TalkAction : AContextAction
     {
         var talkActionInput = (TalkActionInput)ContextActionInput;
         isConversationFinished = false;
-        DiscussionEventHandler.AddOnSleepExternalHanlder(OnSentenceFinished);
-        DiscussionEventHandler.AddOnDiscussionTextNodeEndEventHandler(OnDiscussionNodeEnd);
+        DiscussionEventHandler.InitializeEventHanlders(OnDiscussionNodeFinished, OnDiscussionTextNodeEnd, OnDiscussionChoiceNodeEnd);
 
-        SetupSentence(talkActionInput.DiscussionTree.DiscussionRootNode);
+        OnNewCurrentNode((DiscussionTextOnlyNode)talkActionInput.DiscussionTree.DiscussionRootNode);
     }
 
-    private void SetupSentence(DiscussionTreeNode discussionTreeNode)
+    private void OnNewCurrentNode(DiscussionTreeNode newDiscussionNode)
     {
-        currentDiscussionTreeNode = discussionTreeNode;
+        var oldDiscussionNode = currentDiscussionTreeNode;
+        currentDiscussionTreeNode = newDiscussionNode;
 
-        if (discussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+        if (currentDiscussionTreeNode == null)
         {
-            var currentTextOnlyDiscussionNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
-            var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(currentTextOnlyDiscussionNode.Talker);
-            DiscussionEventHandler.OnDiscussionWindowAwake(currentTextOnlyDiscussionNode, sentenceTalkerPOI.transform);
+            DiscussionEventHandler.StartCoroutine(DiscussionEventHandler.OnDiscussionWindowSleep());
         }
+        else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+        {
+            AwakeDiscussionWindow((DiscussionTextOnlyNode)newDiscussionNode);
+        }
+        else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
+        {
+            DiscussionEventHandler.OnDiscussionChoiceStart((DiscussionChoiceNode)currentDiscussionTreeNode);
+        }
+
     }
 
-    private void OnSentenceFinished()
+    private void AwakeDiscussionWindow(DiscussionTextOnlyNode discussionTreeNode)
     {
-        var nextNodes = currentDiscussionTreeNode.GetNextNode();
-        if (nextNodes != null)
-        {
-            SetupSentence(nextNodes);
-        }
-        else
-        {
-            isConversationFinished = true;
-            DiscussionEventHandler.RemoveOnSleepExternalHanlder(OnSentenceFinished);
-            DiscussionEventHandler.RemoveOnDiscussionTextNodeEndEventHandler(OnDiscussionNodeEnd);
-        }
+        var sentenceTalkerPOI = PointOfInterestManager.GetActivePointOfInterest(discussionTreeNode.Talker);
+        DiscussionEventHandler.OnDiscussionWindowAwake(discussionTreeNode, sentenceTalkerPOI.transform);
     }
 
-    private DiscussionChoiceNode OnDiscussionNodeEnd()
+    private void OnDiscussionTextNodeEnd()
     {
         if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
         {
-            var nextNode = ((DiscussionTextOnlyNode)currentDiscussionTreeNode).GetNextNode();
+            var currentTextNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
+            var nextNode = currentTextNode.GetNextNode();
             if (nextNode != null && nextNode.GetType() == typeof(DiscussionChoiceNode))
             {
-                var nextChoiceNode = (DiscussionChoiceNode)nextNode;
-                currentDiscussionTreeNode = nextChoiceNode;
-                return nextChoiceNode;
+                //choice node disaply
+                OnNewCurrentNode(nextNode);
+            }
+            else
+            {
+                //finish discussion node
+                DiscussionEventHandler.StartCoroutine(DiscussionEventHandler.OnDiscussionWindowSleep());
             }
         }
-        return null;
     }
+
+    private void OnDiscussionChoiceNodeEnd(DiscussionChoiceTextId choiceMade)
+    {
+        discussionChoiceMade = choiceMade;
+        DiscussionEventHandler.StartCoroutine(DiscussionEventHandler.OnDiscussionWindowSleep());
+    }
+
+    //This method is called when any discussion done is about to sleep
+    private void OnDiscussionNodeFinished()
+    {
+        if (currentDiscussionTreeNode == null)
+        {
+            isConversationFinished = true;
+            DiscussionEventHandler.DeleteEventHanlders(OnDiscussionNodeFinished, OnDiscussionTextNodeEnd, OnDiscussionChoiceNodeEnd);
+        }
+        else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+        {
+            var currentTextNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
+            var nextNode = currentTextNode.GetNextNode();
+            if (nextNode != null)
+            {
+                OnNewCurrentNode(nextNode);
+            }
+            else
+            {
+                isConversationFinished = true;
+                DiscussionEventHandler.DeleteEventHanlders(OnDiscussionNodeFinished, OnDiscussionTextNodeEnd, OnDiscussionChoiceNodeEnd);
+            }
+        }
+        else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
+        {
+            var currentChoiceNode = (DiscussionChoiceNode)currentDiscussionTreeNode;
+            var nextNode = currentChoiceNode.GetNextNode(discussionChoiceMade);
+            if (nextNode != null)
+            {
+                OnNewCurrentNode(nextNode);
+            }
+            else
+            {
+                isConversationFinished = true;
+                DiscussionEventHandler.DeleteEventHanlders(OnDiscussionNodeFinished, OnDiscussionTextNodeEnd, OnDiscussionChoiceNodeEnd);
+            }
+        }
+    }
+
+
 
     public override void Tick(float d)
     { }

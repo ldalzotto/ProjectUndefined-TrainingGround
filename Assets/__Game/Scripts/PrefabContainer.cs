@@ -11,7 +11,7 @@ public class PrefabContainer : MonoBehaviour
     public GameObject GiveActionMiniaturePrefab;
 
     [Header("Discussion UI Prefabs")]
-    public TextOnlyDiscussion DiscussionUIPrefab;
+    public DiscussionWindow DiscussionUIPrefab;
     public ChoicePopup ChoicePopupPrefab;
     public ChoicePopupText ChoicePopupTextPrefab;
 

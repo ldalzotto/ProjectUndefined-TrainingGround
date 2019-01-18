@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class DiscussionWindowManager : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class DiscussionWindowManager : MonoBehaviour
     #endregion
 
     private DicussionInputManager DicussionInputManager;
-    private TextOnlyDiscussion OpenedDiscussion;
+    private DiscussionWindow OpenedDiscussion;
     private ChoicePopup OpenedChoicePopup;
     private DiscussionEventHandler DiscussionEventHandler;
 
@@ -24,7 +25,7 @@ public class DiscussionWindowManager : MonoBehaviour
 
     public void Tick(float d)
     {
-        if (OpenedDiscussion != null)
+        if (OpenedDiscussion != null && !OpenedDiscussion.IsExitAnimationPlaying())
         {
             if (OpenedChoicePopup != null)
             {
@@ -32,8 +33,7 @@ public class DiscussionWindowManager : MonoBehaviour
                 if (DicussionInputManager.Tick())
                 {
                     var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
-                    OpenedDiscussion.ProcessDiscussionNodeTextEnd();
-                    DiscussionEventHandler.OnDiscussionChoiceMade(selectedChoice.Text);
+                    DiscussionEventHandler.OnDiscussionChoiceEnd(selectedChoice.Text);
                 }
             }
             else
@@ -45,7 +45,7 @@ public class DiscussionWindowManager : MonoBehaviour
                     {
                         if (OpenedDiscussion.IsWaitingForCloseInput())
                         {
-                            OpenedDiscussion.ProcessDiscussionNodeTextEnd();
+                            DiscussionEventHandler.OnDiscussionTextNodeEnd();
                         }
                         else if (OpenedDiscussion.IsWaitingForContinueInput())
                         {
@@ -54,8 +54,6 @@ public class DiscussionWindowManager : MonoBehaviour
                     }
                 }
             }
-
-
         }
     }
 
@@ -76,9 +74,9 @@ public class DiscussionWindowManager : MonoBehaviour
         OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position);
     }
 
-    public void OnDiscussionEnd()
+    public IEnumerator PlayDiscussionCloseAnimation()
     {
-        OpenedDiscussion.ProcessDiscussionClose();
+        return OpenedDiscussion.PlayDiscussionCloseAnimation();
     }
 
     public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
@@ -90,15 +88,13 @@ public class DiscussionWindowManager : MonoBehaviour
     public void OnDiscussionWindowSleep()
     {
         OpenedDiscussion.OnDiscussionWindowSleep();
-        Destroy(OpenedDiscussion.gameObject);
-        OpenedDiscussion = null;
 
         if (OpenedChoicePopup != null)
         {
-            Destroy(OpenedChoicePopup.gameObject);
             OpenedChoicePopup = null;
         }
-
+        Destroy(OpenedDiscussion.gameObject);
+        OpenedDiscussion = null;
     }
     #endregion
 

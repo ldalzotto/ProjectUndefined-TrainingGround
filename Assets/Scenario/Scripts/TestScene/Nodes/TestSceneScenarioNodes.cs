@@ -14,7 +14,8 @@ public class IdCardGrabScenarioNode : ScenarioNode
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
         {
-            {new GrabScenarioAction(ItemID.ID_CARD, PointOfInterestId.ID_CARD), new IdCardGiveScenarioNode() }
+            {new GrabScenarioAction(ItemID.ID_CARD, PointOfInterestId.ID_CARD), new IdCardGiveScenarioNode() },
+            {new DiscussionChoiceScenarioAction(DiscussionChoiceTextId.BOUNCER_CHOICE_3), null }
         };
     }
 }
