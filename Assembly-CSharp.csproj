@@ -114,7 +114,12 @@
     <Compile Include="Assets\Scenario\Scripts\ScenarioStateMerger.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineEventManager.cs" />
     <Compile Include="Assets\Scenario\Scripts\ScenarioTimelineManager.cs" />
+    <Compile Include="Assets\Scenario\Scripts\SubTimelines\Discussion\DiscussionTimelineEventManager.cs" />
+    <Compile Include="Assets\Scenario\Scripts\SubTimelines\Discussion\DiscussionTimelineManager.cs" />
+    <Compile Include="Assets\Scenario\Scripts\SubTimelines\Discussion\DiscussionTimelineModifierActions.cs" />
+    <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneDiscussionTimelineNodes.cs" />
     <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneScenarioNodes.cs" />
+    <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneDiscussionTimelineInitialisation.cs" />
     <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneInitialisation.cs" />
     <Compile Include="Assets\Test\DiscussionTestScript.cs" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeConeShader.shader" />

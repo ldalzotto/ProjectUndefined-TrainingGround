@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class GameManager : MonoBehaviour
     private InventoryManager InventoryManager;
     private DiscussionWindowManager DiscussionWindowManager;
 
+    //timelines
+    private ScenarioTimelineManager ScenarioTimelineManager;
+    private DiscussionTimelineManager DiscussionTimelineManager;
+
     void Start()
     {
         ContextActionManager = FindObjectOfType<ContextActionManager>();
@@ -16,6 +21,10 @@ public class GameManager : MonoBehaviour
         PlayerManager = FindObjectOfType<PlayerManager>();
         InventoryManager = FindObjectOfType<InventoryManager>();
         DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
+
+        ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManager>();
+        DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManager>();
+        StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
     }
 
     void Update()
@@ -52,5 +61,13 @@ public class GameManager : MonoBehaviour
         {
             PlayerManager.OnGizmoTick();
         }
+    }
+
+    private IEnumerator ScenarioTimelinesInitialisationAtEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        ScenarioTimelineManager.Init();
+        DiscussionTimelineManager.Init();
+
     }
 }

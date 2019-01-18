@@ -17,6 +17,7 @@ public interface DiscussionTreeNode
 {
 }
 
+[System.Serializable]
 public class DiscussionTextOnlyNode : DiscussionTreeNode
 {
     private DisucssionSentenceTextId displayedText;
@@ -41,7 +42,7 @@ public class DiscussionTextOnlyNode : DiscussionTreeNode
     }
 }
 
-
+[System.Serializable]
 public class DiscussionChoiceNode : DiscussionTreeNode
 {
     private PointOfInterestId talker;
@@ -69,6 +70,7 @@ public class DiscussionChoiceNode : DiscussionTreeNode
     }
 }
 
+[System.Serializable]
 public class DiscussionChoice
 {
     private DiscussionChoiceTextId text;

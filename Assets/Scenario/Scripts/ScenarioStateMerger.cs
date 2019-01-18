@@ -58,23 +58,3 @@ public class GrabbableItemScenarioStateMerger
         }
     }
 }
-
-public class DiscussionTreeScenarioStateMerger
-{
-    public static void MergePointOfInterestScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager)
-    {
-        if (scenarioNode.DiscussionTrees != null)
-        {
-            foreach (var discussionTree in scenarioNode.DiscussionTrees)
-            {
-                var poiId = discussionTree.Key;
-                var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(poiId);
-                if (selectedPOI != null)
-                {
-                    selectedPOI.OnDiscussionTreeAdd(discussionTree.Value);
-                }
-            }
-        }
-
-    }
-}

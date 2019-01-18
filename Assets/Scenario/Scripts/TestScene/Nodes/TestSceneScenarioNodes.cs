@@ -2,14 +2,6 @@
 
 public class IdCardGrabScenarioNode : ScenarioNode
 {
-    protected override Dictionary<PointOfInterestId, DiscussionTree> BuildDiscussionTrees()
-    {
-        return new Dictionary<PointOfInterestId, DiscussionTree>()
-        {
-            {PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.Sentenses[DiscussionSentenceId.BOUNCER_SENTENCE]) }
-        };
-    }
-
     protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
@@ -22,10 +14,6 @@ public class IdCardGrabScenarioNode : ScenarioNode
 
 public class IdCardGrabScenarioNodeV2 : ScenarioNode
 {
-    protected override Dictionary<PointOfInterestId, DiscussionTree> BuildDiscussionTrees()
-    {
-        return null;
-    }
 
     protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
     {
@@ -38,10 +26,6 @@ public class IdCardGrabScenarioNodeV2 : ScenarioNode
 
 public class IdCardGiveScenarioNode : ScenarioNode
 {
-    protected override Dictionary<PointOfInterestId, DiscussionTree> BuildDiscussionTrees()
-    {
-        return null;
-    }
 
     protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
     {
@@ -54,11 +38,6 @@ public class IdCardGiveScenarioNode : ScenarioNode
 
 public class IdCardGiveScenarioNodeV2 : ScenarioNode
 {
-    protected override Dictionary<PointOfInterestId, DiscussionTree> BuildDiscussionTrees()
-    {
-        return null;
-    }
-
     protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
     {
         return new Dictionary<ScenarioAction, ScenarioNode>()
