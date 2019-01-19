@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-public class TestSceneDiscussionTimelineInitialisation : TimelineInitilizer
+public class TestSceneDiscussionTimelineInitialisation : TimelineInitializer
 {
-    protected override List<TimelineNode> BuildInitialDiscussionTimelineNodes()
-    {
-        return new List<TimelineNode>()
-        {
-            new BouncerKODiscussionNode()
-        };
-    }
+    public override List<TimelineNode> InitialNodes => new List<TimelineNode>() { new BouncerKODiscussionNode() };
+    public override Enum TimelineId => TimelineIDs.DISCUSSION_TIMELINE;
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class ATimelineNodeManager : MonoBehaviour
@@ -9,11 +10,12 @@ public abstract class ATimelineNodeManager : MonoBehaviour
 
     private List<TimelineNode> nodes = new List<TimelineNode>();
 
+    public List<TimelineNode> Nodes { get => nodes; }
 
     public void Init()
     {
         PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-        var TimelineInitilizer = GetComponent<TimelineInitilizer>();
+        var TimelineInitilizer = GetComponent<TimelineInitializer>();
         AddToNodes(TimelineInitilizer.InitialNodes);
     }
 
@@ -78,18 +80,10 @@ public abstract class ATimelineNodeManager : MonoBehaviour
     }
 }
 
-public abstract class TimelineInitilizer : MonoBehaviour
+public abstract class TimelineInitializer : MonoBehaviour
 {
-    private List<TimelineNode> initialNodes;
-
-    protected TimelineInitilizer()
-    {
-        this.initialNodes = BuildInitialDiscussionTimelineNodes();
-    }
-
-    public List<TimelineNode> InitialNodes { get => initialNodes; }
-
-    protected abstract List<TimelineNode> BuildInitialDiscussionTimelineNodes();
+    public abstract List<TimelineNode> InitialNodes { get; }
+    public abstract Enum TimelineId { get; }
 }
 
 public abstract class TimelineNode
@@ -118,7 +112,14 @@ public abstract class TimelineNode
     }
 }
 
-public interface TimelineNodeWorkflowAction
+public abstract class TimelineNodeWorkflowAction
 {
-    void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence);
+    public string timelineWorkflowActionId { get; }
+
+    public TimelineNodeWorkflowAction() : base()
+    {
+        timelineWorkflowActionId = GetType().Name;
+    }
+
+    public abstract void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence);
 }

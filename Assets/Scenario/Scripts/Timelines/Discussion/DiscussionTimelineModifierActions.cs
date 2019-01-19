@@ -10,13 +10,13 @@ public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
     private PointOfInterestId PointOfInterestId;
     private DiscussionTree DiscussionTree;
 
-    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree)
+    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree) : base()
     {
         PointOfInterestId = pointOfInterestId;
         this.DiscussionTree = DiscussionTree;
     }
 
-    public void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
     {
         var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
         if (selectedPOI != null)
@@ -32,14 +32,14 @@ public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowActi
     private DiscussionChoiceTextId DiscussionIdToDelete;
     private Stack<DiscussionNodeId> nodeIdsWalk;
 
-    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk)
+    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk) : base()
     {
         PointOfInterestId = pointOfInterestId;
         DiscussionIdToDelete = discussionIdToDelete;
         this.nodeIdsWalk = nodeIdsWalk;
     }
 
-    public void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
     {
         var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
         if (selectedPOI != null)

@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-public class TestSceneInitialisation : TimelineInitilizer
+public class TestSceneInitialisation : TimelineInitializer
 {
-    protected override List<TimelineNode> BuildInitialDiscussionTimelineNodes()
-    {
-        return new List<TimelineNode>()
-        {
-            new IdCardGrabScenarioNode(), new IdCardGrabScenarioNodeV2()
-         };
-    }
+    public override List<TimelineNode> InitialNodes => new List<TimelineNode>() { new IdCardGrabScenarioNode(), new IdCardGrabScenarioNodeV2() };
+    public override Enum TimelineId => TimelineIDs.SCENARIO_TIMELINE;
 }
