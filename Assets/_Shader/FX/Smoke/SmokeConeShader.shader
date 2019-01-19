@@ -5,7 +5,6 @@
 		_MinimumNdotL("Minimum absolute NdotL", Range(0,1)) = 0.0
 
 		_MinimumNdotLFacingColor("Minimum NdotL facing color", Range(0,1)) = 0.5
-		_LightFacingColor("Light Facing Color", Color) = (0,0,0,0)
 		_FacingColorLerp("Facing Color Lerp", Range(0,1)) = 0.5
 	}
 		SubShader
@@ -24,7 +23,6 @@
 		half _MinimumNdotL;
 
 		half _MinimumNdotLFacingColor;
-		half4 _LightFacingColor;
 		half _FacingColorLerp;
 
 		half _AlphaCutSmooth;
@@ -34,7 +32,7 @@
 			half4 wrappedLightColor = LightingWrappedCalculation(s.Normal, s.Alpha, lightDir, _LightColor0, _MinimumNdotL, atten);
 
 			if (dot(lightDir, s.Normal) > _MinimumNdotLFacingColor) {
-				wrappedLightColor.rgb = lerp(wrappedLightColor, dot(lightDir, s.Normal) *_LightFacingColor*atten, _FacingColorLerp).rgb;
+				wrappedLightColor.rgb = lerp(wrappedLightColor, dot(lightDir, s.Normal) *_LightColor0*atten, _FacingColorLerp).rgb;
 			}
 			return wrappedLightColor;
 		}
