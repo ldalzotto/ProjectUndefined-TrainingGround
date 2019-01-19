@@ -383,7 +383,9 @@ class PlayerPOITrackerManager
             var labelStyle = GUI.skin.GetStyle("Label");
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.normal.textColor = Color.blue;
+#if UNITY_EDITOR
             Handles.Label(TrackerCollider.transform.position + new Vector3(0, PlayerPOITrackerManagerComponent.SphereDetectionRadius, 0), "POI Trigger Sphere Detection", labelStyle);
+#endif
         }
     }
 }
@@ -509,7 +511,9 @@ class PlayerPOIVisualHeadMovementManager
             for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
             {
                 Gizmos.DrawLine(playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i].position, LastNearestPOI.transform.position);
+#if UNITY_EDITOR
                 Handles.Label(LastNearestPOI.transform.position, "Targeted POI");
+#endif
             }
         }
     }

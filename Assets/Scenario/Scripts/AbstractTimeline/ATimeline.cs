@@ -94,27 +94,19 @@ public abstract class TimelineInitilizer : MonoBehaviour
 
 public abstract class TimelineNode
 {
-    private Dictionary<ScenarioAction, TimelineNode> transitionRequirements;
-    private List<TimelineNodeWorkflowAction> onStartNodeAction;
-    private List<TimelineNodeWorkflowAction> onExitNodeAction;
-
-    public List<TimelineNodeWorkflowAction> OnStartNodeAction { get => onStartNodeAction; }
-    public Dictionary<ScenarioAction, TimelineNode> TransitionRequirements { get => transitionRequirements; }
-    public List<TimelineNodeWorkflowAction> OnExitNodeAction { get => onExitNodeAction; }
-
-    protected abstract Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements();
-    protected abstract List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions();
-    protected abstract List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions();
+    public abstract Dictionary<ScenarioAction, TimelineNode> TransitionRequirements { get; }
+    public abstract List<TimelineNodeWorkflowAction> OnStartNodeAction { get; }
+    public abstract List<TimelineNodeWorkflowAction> OnExitNodeAction { get; }
 
     public List<TimelineNode> ComputeTransitions(ScenarioAction executedScenarioAction)
     {
-        if (transitionRequirements == null)
+        if (TransitionRequirements == null)
         {
             return null;
         }
 
         List<TimelineNode> nextNodes = new List<TimelineNode>();
-        foreach (var transitionRequirement in transitionRequirements)
+        foreach (var transitionRequirement in TransitionRequirements)
         {
             //transitionRequirement.Value == null means the end of a branch
             if (transitionRequirement.Key.Equals(executedScenarioAction))
@@ -123,13 +115,6 @@ public abstract class TimelineNode
             }
         }
         return nextNodes;
-    }
-
-    protected TimelineNode()
-    {
-        this.transitionRequirements = BuildTransitionRequirements();
-        this.onStartNodeAction = BuildStartDiscussionTreeActions();
-        this.onExitNodeAction = BuildExitDiscussionTreeActions();
     }
 }
 
