@@ -5,7 +5,7 @@ public class DiscussionEventHandler : MonoBehaviour
 {
 
     private DiscussionWindowManager DiscussionWindowManager;
-    private ScenarioTimelineEventManager ScenarioTimelineEventManager;
+    private TimelinesEventManager ScenarioTimelineEventManager;
 
     public delegate void DiscussionWindowSleepExternalHandler();
     private event DiscussionWindowSleepExternalHandler OnDiscussionWindowSleepExternal;
@@ -19,7 +19,7 @@ public class DiscussionEventHandler : MonoBehaviour
     private void Start()
     {
         DiscussionWindowManager = GameObject.FindObjectOfType<DiscussionWindowManager>();
-        ScenarioTimelineEventManager = GameObject.FindObjectOfType<ScenarioTimelineEventManager>();
+        ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
     }
 
     #region Discussion Window Events

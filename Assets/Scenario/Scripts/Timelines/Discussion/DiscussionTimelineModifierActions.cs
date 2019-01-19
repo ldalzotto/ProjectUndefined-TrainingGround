@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 public interface DiscussionTimelineModifierAction
 {
     void Execute(PointOfInterestManager PointOfInterestManager);
 }
 
-public class DiscussionTimelineTreeCreationAction : DiscussionTimelineModifierAction
+public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
 {
     private PointOfInterestId PointOfInterestId;
     private DiscussionTree DiscussionTree;
@@ -16,7 +16,7 @@ public class DiscussionTimelineTreeCreationAction : DiscussionTimelineModifierAc
         this.DiscussionTree = DiscussionTree;
     }
 
-    public void Execute(PointOfInterestManager PointOfInterestManager)
+    public void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
     {
         var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
         if (selectedPOI != null)
@@ -26,24 +26,25 @@ public class DiscussionTimelineTreeCreationAction : DiscussionTimelineModifierAc
     }
 }
 
-public class DiscussionTimelineTreeChoiceDeleteAction : DiscussionTimelineModifierAction
+public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowAction
 {
     private PointOfInterestId PointOfInterestId;
     private DiscussionChoiceTextId DiscussionIdToDelete;
+    private Stack<DiscussionNodeId> nodeIdsWalk;
 
-    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete)
+    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk)
     {
         PointOfInterestId = pointOfInterestId;
         DiscussionIdToDelete = discussionIdToDelete;
+        this.nodeIdsWalk = nodeIdsWalk;
     }
 
-    public void Execute(PointOfInterestManager PointOfInterestManager)
+    public void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
     {
         var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
         if (selectedPOI != null)
         {
-            var discussionTree = selectedPOI.GetAssociatedDiscussionTree();
-            Debug.Log("//TODO -> DELETE");
+            selectedPOI.GetAssociatedDiscussionTree().BreakConnectionAtEndOfStack(nodeIdsWalk);
         }
     }
 }

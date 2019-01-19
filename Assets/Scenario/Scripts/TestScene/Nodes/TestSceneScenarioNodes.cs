@@ -1,46 +1,107 @@
 ﻿using System.Collections.Generic;
 
-public class IdCardGrabScenarioNode : ScenarioNode
+public class IdCardGrabScenarioNode : TimelineNode
 {
-    protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
+    protected override List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions()
     {
-        return new Dictionary<ScenarioAction, ScenarioNode>()
+        return new List<TimelineNodeWorkflowAction>()
         {
-            {new GrabScenarioAction(ItemID.ID_CARD, PointOfInterestId.ID_CARD), new IdCardGiveScenarioNode() },
-            {new DiscussionChoiceScenarioAction(DiscussionChoiceTextId.BOUNCER_CHOICE_3), null }
+            new ScenarioTimelineEndAction()
+        };
+    }
+
+    protected override List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions()
+    {
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEnterAction()
+        };
+    }
+
+    protected override Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements()
+    {
+        return new Dictionary<ScenarioAction, TimelineNode>()
+        {
+            {new GrabScenarioAction(ItemID.ID_CARD, PointOfInterestId.ID_CARD), new IdCardGiveScenarioNode() }
         };
     }
 }
 
-public class IdCardGrabScenarioNodeV2 : ScenarioNode
+public class IdCardGrabScenarioNodeV2 : TimelineNode
 {
-
-    protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
+    protected override List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions()
     {
-        return new Dictionary<ScenarioAction, ScenarioNode>()
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEndAction()
+        };
+    }
+
+    protected override List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions()
+    {
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEnterAction()
+        };
+    }
+
+    protected override Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements()
+    {
+        return new Dictionary<ScenarioAction, TimelineNode>()
         {
             {new GrabScenarioAction(ItemID.ID_CARD_V2, PointOfInterestId.ID_CARD_V2), new IdCardGiveScenarioNodeV2() }
         };
     }
 }
 
-public class IdCardGiveScenarioNode : ScenarioNode
+public class IdCardGiveScenarioNode : TimelineNode
 {
-
-    protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
+    protected override List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions()
     {
-        return new Dictionary<ScenarioAction, ScenarioNode>()
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEndAction()
+        };
+    }
+
+    protected override List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions()
+    {
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEnterAction()
+        };
+    }
+
+    protected override Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements()
+    {
+        return new Dictionary<ScenarioAction, TimelineNode>()
         {
             {new GiveScenarioAction(ItemID.ID_CARD, PointOfInterestId.BOUNCER), null }
         };
     }
 }
 
-public class IdCardGiveScenarioNodeV2 : ScenarioNode
+public class IdCardGiveScenarioNodeV2 : TimelineNode
 {
-    protected override Dictionary<ScenarioAction, ScenarioNode> BuildTransitionRequiremements()
+    protected override List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions()
     {
-        return new Dictionary<ScenarioAction, ScenarioNode>()
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEndAction()
+        };
+    }
+
+    protected override List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions()
+    {
+        return new List<TimelineNodeWorkflowAction>()
+        {
+            new ScenarioTimelineEnterAction()
+        };
+    }
+
+    protected override Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements()
+    {
+        return new Dictionary<ScenarioAction, TimelineNode>()
         {
             {new GiveScenarioAction(ItemID.ID_CARD_V2, PointOfInterestId.BOUNCER), null }
         };

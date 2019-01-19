@@ -1,8 +1,8 @@
 ﻿public class ReceivableItemScenarioStateMerger
 {
-    public static void MergeReceivableItemScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager, ScenarioNodeLifecycle scenarioNodeLifecycle)
+    public static void MergeReceivableItemScenarioState(TimelineNode timelineNode, PointOfInterestManager PointOfInterestManager, ScenarioNodeLifecycle scenarioNodeLifecycle)
     {
-        foreach (var transitionRequirement in scenarioNode.TransitionRequirements)
+        foreach (var transitionRequirement in timelineNode.TransitionRequirements)
         {
             var awaitedScenarioAction = transitionRequirement.Key;
 
@@ -31,9 +31,9 @@
 
 public class GrabbableItemScenarioStateMerger
 {
-    public static void MergeGrabbableItemScenarioState(ScenarioNode scenarioNode, PointOfInterestManager PointOfInterestManager, ScenarioNodeLifecycle scenarioNodeLifecycle)
+    public static void MergeGrabbableItemScenarioState(TimelineNode timelineNode, PointOfInterestManager PointOfInterestManager, ScenarioNodeLifecycle scenarioNodeLifecycle)
     {
-        foreach (var transitionRequirement in scenarioNode.TransitionRequirements)
+        foreach (var transitionRequirement in timelineNode.TransitionRequirements)
         {
             var awaitedScenarioAction = transitionRequirement.Key;
 
@@ -57,4 +57,9 @@ public class GrabbableItemScenarioStateMerger
             }
         }
     }
+}
+
+public enum ScenarioNodeLifecycle
+{
+    ON_END, ON_START
 }

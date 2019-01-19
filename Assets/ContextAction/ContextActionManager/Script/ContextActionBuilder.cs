@@ -51,7 +51,6 @@ public class ContextActionBuilder
         }
         else if (contextAction.GetType() == typeof(TalkAction))
         {
-            Debug.Log("TalkAction completed. //TODO -> Populate scenario action according to disucssion choice.");
             return null;
         }
         else

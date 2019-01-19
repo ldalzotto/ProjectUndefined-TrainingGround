@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     private DiscussionWindowManager DiscussionWindowManager;
 
     //timelines
-    private ScenarioTimelineManager ScenarioTimelineManager;
-    private DiscussionTimelineManager DiscussionTimelineManager;
+    private ScenarioTimelineManagerV2 ScenarioTimelineManager;
+    private DiscussionTimelineManagerV2 DiscussionTimelineManager;
 
     void Start()
     {
@@ -22,8 +22,8 @@ public class GameManager : MonoBehaviour
         InventoryManager = FindObjectOfType<InventoryManager>();
         DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
 
-        ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManager>();
-        DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManager>();
+        ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
+        DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
     }
 
@@ -68,6 +68,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         ScenarioTimelineManager.Init();
         DiscussionTimelineManager.Init();
-
     }
 }

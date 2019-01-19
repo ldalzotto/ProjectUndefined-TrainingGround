@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-public class TestSceneInitialisation : ScenarioInitialisation
+public class TestSceneInitialisation : TimelineInitilizer
 {
-    public override List<ScenarioNode> InitialScenarioNodes()
+    protected override List<TimelineNode> BuildInitialDiscussionTimelineNodes()
     {
-        return new List<ScenarioNode>()
+        return new List<TimelineNode>()
         {
             new IdCardGrabScenarioNode(), new IdCardGrabScenarioNodeV2()
-    };
+         };
     }
 }

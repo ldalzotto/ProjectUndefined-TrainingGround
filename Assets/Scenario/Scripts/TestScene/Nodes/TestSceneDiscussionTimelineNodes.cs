@@ -1,93 +1,49 @@
 ﻿
 using System.Collections.Generic;
 
-public class BouncerDiscussionNode : DiscussionTimelineNode
+public class BouncerKODiscussionNode : TimelineNode
 {
-    protected override List<DiscussionTimelineModifierAction> BuildExitDiscussionTreeActions()
+    protected override List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions()
     {
-        return null;
+        return new List<TimelineNodeWorkflowAction>();
     }
 
-    protected override List<DiscussionTimelineModifierAction> BuildStartDiscussionTreeActions()
+    protected override List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions()
     {
-        return new List<DiscussionTimelineModifierAction>()
-        {
-            new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.Sentenses[DiscussionSentenceId.BOUNCER_SENTENCE]) )
+        return new List<TimelineNodeWorkflowAction>() {
+             new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.Sentenses[DiscussionTreeId.BOUNCER_DISCUSSION_TREE]) )
         };
     }
 
-    protected override Dictionary<ScenarioAction, DiscussionTimelineNode> BuildTransitionRequirements()
+    protected override Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements()
     {
-        return new Dictionary<ScenarioAction, DiscussionTimelineNode>()
+        return new Dictionary<ScenarioAction, TimelineNode>()
         {
-            {new DiscussionChoiceScenarioAction(DiscussionChoiceTextId.BOUNCER_CHOICE_1), new BouncerDeleteNode1() },
-            {new DiscussionChoiceScenarioAction(DiscussionChoiceTextId.BOUNCER_CHOICE_2), new BouncerDeleteNode2() },
-            {new DiscussionChoiceScenarioAction(DiscussionChoiceTextId.BOUNCER_CHOICE_3), new BouncerDeleteNode3() },
+              {new GiveScenarioAction(ItemID.ID_CARD, PointOfInterestId.BOUNCER), new BouncerOKDiscussioNode() }
         };
     }
 }
 
-public class BouncerDeleteNode1 : DiscussionTimelineNode
+public class BouncerOKDiscussioNode : TimelineNode
 {
-    protected override List<DiscussionTimelineModifierAction> BuildExitDiscussionTreeActions()
+    protected override List<TimelineNodeWorkflowAction> BuildExitDiscussionTreeActions()
     {
-        return null;
+        return new List<TimelineNodeWorkflowAction>();
     }
 
-    protected override List<DiscussionTimelineModifierAction> BuildStartDiscussionTreeActions()
+    protected override List<TimelineNodeWorkflowAction> BuildStartDiscussionTreeActions()
     {
-        return new List<DiscussionTimelineModifierAction>()
+        return new List<TimelineNodeWorkflowAction>()
         {
-            new DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId.BOUNCER, DiscussionChoiceTextId.BOUNCER_CHOICE_1)
+              new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.Sentenses[DiscussionTreeId.BOUNCER_OK_DISCUSSION]) )
         };
     }
 
-    protected override Dictionary<ScenarioAction, DiscussionTimelineNode> BuildTransitionRequirements()
+    protected override Dictionary<ScenarioAction, TimelineNode> BuildTransitionRequirements()
     {
-        return null;
-    }
-}
-
-
-public class BouncerDeleteNode2 : DiscussionTimelineNode
-{
-    protected override List<DiscussionTimelineModifierAction> BuildExitDiscussionTreeActions()
-    {
-        return null;
-    }
-
-    protected override List<DiscussionTimelineModifierAction> BuildStartDiscussionTreeActions()
-    {
-        return new List<DiscussionTimelineModifierAction>()
+        return new Dictionary<ScenarioAction, TimelineNode>()
         {
-            new DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId.BOUNCER, DiscussionChoiceTextId.BOUNCER_CHOICE_2)
+
         };
-    }
-
-    protected override Dictionary<ScenarioAction, DiscussionTimelineNode> BuildTransitionRequirements()
-    {
-        return null;
-    }
-}
-
-
-public class BouncerDeleteNode3 : DiscussionTimelineNode
-{
-    protected override List<DiscussionTimelineModifierAction> BuildExitDiscussionTreeActions()
-    {
-        return null;
-    }
-
-    protected override List<DiscussionTimelineModifierAction> BuildStartDiscussionTreeActions()
-    {
-        return new List<DiscussionTimelineModifierAction>()
-        {
-            new DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId.BOUNCER, DiscussionChoiceTextId.BOUNCER_CHOICE_3)
-        };
-    }
-
-    protected override Dictionary<ScenarioAction, DiscussionTimelineNode> BuildTransitionRequirements()
-    {
-        return null;
     }
 }

@@ -11,22 +11,30 @@ public class DiscussionTree
     }
 
     public DiscussionTreeNode DiscussionRootNode { get => discussionRootNode; }
+
+    public void BreakConnectionAtEndOfStack(Stack<DiscussionNodeId> nodeIdsStack)
+    {
+        discussionRootNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+    }
 }
 
 public interface DiscussionTreeNode
 {
+    void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack);
 }
 
 [System.Serializable]
 public class DiscussionTextOnlyNode : DiscussionTreeNode
 {
+    private DiscussionNodeId discussionNodeId;
     private DisucssionSentenceTextId displayedText;
     private PointOfInterestId talker;
 
     private DiscussionTreeNode nextNode;
 
-    public DiscussionTextOnlyNode(DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)
+    public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)
     {
+        this.discussionNodeId = DiscussionNodeId;
         this.displayedText = displayedText;
         this.talker = talker;
         this.nextNode = nextNode;
@@ -35,6 +43,23 @@ public class DiscussionTextOnlyNode : DiscussionTreeNode
     public DisucssionSentenceTextId DisplayedText { get => displayedText; }
     public PointOfInterestId Talker { get => talker; }
     public DiscussionTreeNode NextNode { get => nextNode; }
+
+    public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
+    {
+        var idToSeek = nodeIdsStack.Pop();
+        if (discussionNodeId == idToSeek)
+        {
+            if (nodeIdsStack.Count > 0)
+            {
+                nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+            }
+            else
+            {
+                //break connection
+                nextNode = null;
+            }
+        }
+    }
 
     public DiscussionTreeNode GetNextNode()
     {
@@ -45,17 +70,58 @@ public class DiscussionTextOnlyNode : DiscussionTreeNode
 [System.Serializable]
 public class DiscussionChoiceNode : DiscussionTreeNode
 {
+    private DiscussionNodeId discussionTreeNodeId;
+
     private PointOfInterestId talker;
     private List<DiscussionChoice> discussionChoices;
 
-    public DiscussionChoiceNode(PointOfInterestId talker, List<DiscussionChoice> discussionChoices)
+    public DiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, PointOfInterestId talker, List<DiscussionChoice> discussionChoices)
     {
+        this.discussionTreeNodeId = DiscussionTreeNodeId;
         this.talker = talker;
         this.discussionChoices = discussionChoices;
     }
 
     public PointOfInterestId Talker { get => talker; }
     public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
+
+    public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
+    {
+        var idToSeek = nodeIdsStack.Pop();
+        DiscussionChoice choiceToRemove = null;
+
+        if (idToSeek == discussionTreeNodeId)
+        {
+            if (nodeIdsStack.Count > 0)
+            {
+                var choiceIdSeek = nodeIdsStack.Pop();
+                foreach (var discussionChoice in discussionChoices)
+                {
+                    if (discussionChoice.DiscussionNodeId == choiceIdSeek)
+                    {
+                        if (nodeIdsStack.Count > 0)
+                        {
+                            discussionChoice.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+                        }
+                        else
+                        {
+                            choiceToRemove = discussionChoice;
+                        }
+                    }
+                }
+
+                if (choiceToRemove != null)
+                {
+                    discussionChoices.Remove(choiceToRemove);
+                }
+            }
+            else
+            {
+                discussionChoices = new List<DiscussionChoice>();
+            }
+
+        }
+    }
 
     public DiscussionTreeNode GetNextNode(DiscussionChoiceTextId selectedChoice)
     {
@@ -73,17 +139,37 @@ public class DiscussionChoiceNode : DiscussionTreeNode
 [System.Serializable]
 public class DiscussionChoice
 {
+    private DiscussionNodeId discussionNodeId;
     private DiscussionChoiceTextId text;
     private DiscussionTreeNode nextNode;
 
-    public DiscussionChoice(DiscussionChoiceTextId text, DiscussionTreeNode nextNode)
+    public DiscussionChoice(DiscussionNodeId discussionNodeId, DiscussionChoiceTextId text, DiscussionTreeNode nextNode)
     {
+        this.discussionNodeId = discussionNodeId;
         this.text = text;
         this.nextNode = nextNode;
     }
 
     public DiscussionChoiceTextId Text { get => text; }
     public DiscussionTreeNode NextNode { get => nextNode; }
+    public DiscussionNodeId DiscussionNodeId { get => discussionNodeId; }
+
+    internal void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
+    {
+        var idToSeek = nodeIdsStack.Pop();
+        if (discussionNodeId == idToSeek)
+        {
+            if (nodeIdsStack.Count > 0)
+            {
+                nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+            }
+            else
+            {
+                //break connection
+                nextNode = null;
+            }
+        }
+    }
 }
 
 public class DiscussionChoiceEvent
@@ -91,28 +177,35 @@ public class DiscussionChoiceEvent
     private DiscussionChoiceTextId text;
 }
 
-#region Discussion Sentence Workflow
-public enum DiscussionSentenceId
+#region Discussion Tree Workflow
+public enum DiscussionTreeId
 {
-    BOUNCER_SENTENCE
+    BOUNCER_DISCUSSION_TREE,
+    BOUNCER_OK_DISCUSSION
+}
+
+public enum DiscussionNodeId
+{
+    BOUNCER_FORBIDDEN_INTRODUCTION,
+    BOUNCER_OK_INTRODUCTION
 }
 
 public class DiscussionSentencesConstants
 {
-    public static Dictionary<DiscussionSentenceId, DiscussionTextOnlyNode> Sentenses = new Dictionary<DiscussionSentenceId, DiscussionTextOnlyNode>()
+    public static Dictionary<DiscussionTreeId, DiscussionTextOnlyNode> Sentenses = new Dictionary<DiscussionTreeId, DiscussionTextOnlyNode>()
     {
-        {DiscussionSentenceId.BOUNCER_SENTENCE,
-                            new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER,
-                                new DiscussionTextOnlyNode(DisucssionSentenceTextId.PLAYER_SENTENCE_TEXT_1, PointOfInterestId.PLAYER,
-                                    new DiscussionChoiceNode(PointOfInterestId.PLAYER,
-                                             new List<DiscussionChoice>(){
-                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_1, new DiscussionTextOnlyNode(DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, PointOfInterestId.BOUNCER, null)),
-                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_2, null),
-                                                 new DiscussionChoice(DiscussionChoiceTextId.BOUNCER_CHOICE_3, null)
-                                             }
-                                        )
-                                    )
-                                )}
+        {DiscussionTreeId.BOUNCER_DISCUSSION_TREE, new DiscussionTextOnlyNode(
+                DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, PointOfInterestId.BOUNCER, new DiscussionTextOnlyNode(
+                       DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ASK_AGE, PointOfInterestId.BOUNCER, new DiscussionTextOnlyNode(
+                           DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.PLAYER_TELL_AGE, PointOfInterestId.PLAYER, new DiscussionTextOnlyNode(
+                               DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_GET_OUT, PointOfInterestId.BOUNCER, null
+                            )
+                        )
+                    )
+            )},
+        { DiscussionTreeId.BOUNCER_OK_DISCUSSION, new DiscussionTextOnlyNode(
+                   DiscussionNodeId.BOUNCER_OK_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ALLOWED, PointOfInterestId.BOUNCER, null
+            )}
     };
 }
 
@@ -121,9 +214,11 @@ public class DiscussionSentencesConstants
 #region Discussion Sentence Text
 public enum DisucssionSentenceTextId
 {
-    BOUNCER_SENTENCE_TEXT_1,
-    BOUNCER_SENTENCE_TEXT_2,
-    PLAYER_SENTENCE_TEXT_1
+    BOUNCER_FORBIDDEN_INTRODUCTION,
+    BOUNCER_ASK_AGE,
+    BOUNCER_GET_OUT,
+    BOUNCER_ALLOWED,
+    PLAYER_TELL_AGE
 }
 
 public class DiscussionSentencesTextConstants
@@ -131,9 +226,11 @@ public class DiscussionSentencesTextConstants
 
     public static Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>()
     {
-        {DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_1, "This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test. This is a test." },
-         {DisucssionSentenceTextId.BOUNCER_SENTENCE_TEXT_2, "Bouncer never stops talking." },
-         {DisucssionSentenceTextId.PLAYER_SENTENCE_TEXT_1, "The Player is talking." }
+        {DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, "I don't like your haircut." },
+        {DisucssionSentenceTextId.BOUNCER_ASK_AGE, "How old are you?"},
+        {DisucssionSentenceTextId.BOUNCER_GET_OUT, "Ridiculous.\nGet out!" },
+        {DisucssionSentenceTextId.BOUNCER_ALLOWED, "You have the right to pass."},
+        {DisucssionSentenceTextId.PLAYER_TELL_AGE, "18 yreas old." }
     };
 }
 #endregion
@@ -146,18 +243,12 @@ public enum DiscussionChoiceIntroductionTextId
 
 public enum DiscussionChoiceTextId
 {
-    BOUNCER_CHOICE_1,
-    BOUNCER_CHOICE_2,
-    BOUNCER_CHOICE_3
 }
 
 public class DiscussionChoiceTextConstants
 {
     public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
     {
-        {DiscussionChoiceTextId.BOUNCER_CHOICE_1, "Choice 1" },
-        {DiscussionChoiceTextId.BOUNCER_CHOICE_2, "Choice 2" },
-        {DiscussionChoiceTextId.BOUNCER_CHOICE_3, "Choice 3" }
     };
 }
 #endregion

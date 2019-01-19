@@ -6,14 +6,14 @@ public class ContextActionEventManager : MonoBehaviour
     private ContextActionManager ContextActionManager;
     private PlayerManager PlayerManager;
     private InventoryManager InventoryManager;
-    private ScenarioTimelineEventManager ScenarioTimelineEventManager;
+    private TimelinesEventManager ScenarioTimelineEventManager;
 
     private void Start()
     {
         ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-        ScenarioTimelineEventManager = GameObject.FindObjectOfType<ScenarioTimelineEventManager>();
+        ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
     }
 
     public void OnContextActionAdded(AContextAction contextAction, AContextActionInput contextActionInput)

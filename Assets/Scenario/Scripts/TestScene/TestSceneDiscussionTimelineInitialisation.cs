@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-public class TestSceneDiscussionTimelineInitialisation : DiscussionTimelineInitilizer
+public class TestSceneDiscussionTimelineInitialisation : TimelineInitilizer
 {
-    protected override List<DiscussionTimelineNode> BuildInitialDiscussionTimelineNodes()
+    protected override List<TimelineNode> BuildInitialDiscussionTimelineNodes()
     {
-        return new List<DiscussionTimelineNode>()
+        return new List<TimelineNode>()
         {
-            new BouncerDiscussionNode()
+            new BouncerKODiscussionNode()
         };
     }
 }
