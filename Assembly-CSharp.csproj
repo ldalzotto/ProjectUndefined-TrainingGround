@@ -110,6 +110,7 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\ATimeline.cs" />
+    <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\TimelineGraphJSONModel.cs" />
     <Compile Include="Assets\Scenario\Scripts\Action\ScenarioAction.cs" />
     <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneDiscussionTimelineNodes.cs" />
     <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneScenarioNodes.cs" />
@@ -127,11 +128,15 @@
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
+    <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
     <None Include="Assets\_Shader\FX\Smoke\wrappedLight.cginc" />
     <None Include="Assets\_Shader\FX\Smoke\NewSurfaceShader.shader" />
     <None Include="Assets\_Shader\FX\Smoke\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeShader.shader" />
     <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
+    <Reference Include="Unity.PackageManagerUI.Editor">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

@@ -10,7 +10,7 @@ public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
     private PointOfInterestId PointOfInterestId;
     private DiscussionTree DiscussionTree;
 
-    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree) : base()
+    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree)
     {
         PointOfInterestId = pointOfInterestId;
         this.DiscussionTree = DiscussionTree;
@@ -32,7 +32,7 @@ public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowActi
     private DiscussionChoiceTextId DiscussionIdToDelete;
     private Stack<DiscussionNodeId> nodeIdsWalk;
 
-    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk) : base()
+    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk)
     {
         PointOfInterestId = pointOfInterestId;
         DiscussionIdToDelete = discussionIdToDelete;

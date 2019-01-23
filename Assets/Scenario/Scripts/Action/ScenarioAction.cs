@@ -1,102 +1,104 @@
-﻿public interface ScenarioAction { }
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+public interface ScenarioAction { }
 
 public class GrabScenarioAction : ScenarioAction
 {
-    private ItemID itemInvolved;
-    private PointOfInterestId poiInvolved;
+    [JsonConverter(typeof(StringEnumConverter))]
+    public ItemID ItemInvolved { get; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public PointOfInterestId PoiInvolved { get; }
 
     public GrabScenarioAction(ItemID itemInvolved, PointOfInterestId poiInvolved)
     {
-        this.itemInvolved = itemInvolved;
-        this.poiInvolved = poiInvolved;
+        this.ItemInvolved = itemInvolved;
+        this.PoiInvolved = poiInvolved;
     }
-
-    public ItemID ItemInvolved { get => itemInvolved; }
-    public PointOfInterestId PoiInvolved { get => poiInvolved; }
 
     public override bool Equals(object obj)
     {
         var action = obj as GrabScenarioAction;
         return action != null &&
-               itemInvolved == action.itemInvolved &&
-               poiInvolved == action.poiInvolved;
+               ItemInvolved == action.ItemInvolved &&
+               PoiInvolved == action.PoiInvolved;
     }
 
     public override int GetHashCode()
     {
         var hashCode = 1300380373;
-        hashCode = hashCode * -1521134295 + itemInvolved.GetHashCode();
-        hashCode = hashCode * -1521134295 + poiInvolved.GetHashCode();
+        hashCode = hashCode * -1521134295 + ItemInvolved.GetHashCode();
+        hashCode = hashCode * -1521134295 + PoiInvolved.GetHashCode();
         return hashCode;
     }
 
     public override string ToString()
     {
-        return "GrabScenarioAction. " + " Item involved : " + itemInvolved.ToString() + ", POIInvolved : " + poiInvolved.ToString();
+        return "GrabScenarioAction. " + " Item involved : " + ItemInvolved.ToString() + ", POIInvolved : " + PoiInvolved.ToString();
     }
 }
 
 public class GiveScenarioAction : ScenarioAction
 {
-    private ItemID itemInvolved;
-    private PointOfInterestId poiInvolved;
+    [JsonConverter(typeof(StringEnumConverter))]
+    public ItemID ItemInvolved { get; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public PointOfInterestId PoiInvolved { get; }
 
     public GiveScenarioAction(ItemID itemInvolved, PointOfInterestId poiInvolved)
     {
-        this.itemInvolved = itemInvolved;
-        this.poiInvolved = poiInvolved;
+        ItemInvolved = itemInvolved;
+        this.PoiInvolved = poiInvolved;
     }
-
-    public ItemID ItemInvolved { get => itemInvolved; }
-    public PointOfInterestId PoiInvolved { get => poiInvolved; }
 
     public override bool Equals(object obj)
     {
         var action = obj as GiveScenarioAction;
         return action != null &&
-               itemInvolved == action.itemInvolved &&
-               poiInvolved == action.poiInvolved;
+               ItemInvolved == action.ItemInvolved &&
+               PoiInvolved == action.PoiInvolved;
     }
 
     public override int GetHashCode()
     {
         var hashCode = 1300380373;
-        hashCode = hashCode * -1521134295 + itemInvolved.GetHashCode();
-        hashCode = hashCode * -1521134295 + poiInvolved.GetHashCode();
+        hashCode = hashCode * -1521134295 + ItemInvolved.GetHashCode();
+        hashCode = hashCode * -1521134295 + PoiInvolved.GetHashCode();
         return hashCode;
     }
 
 
     public override string ToString()
     {
-        return "GiveScenarioAction. " + " Item involved : " + itemInvolved.ToString() + ", POIInvolved : " + poiInvolved.ToString();
+        return "GiveScenarioAction. " + " Item involved : " + ItemInvolved.ToString() + ", POIInvolved : " + PoiInvolved.ToString();
     }
 }
 
 public class DiscussionChoiceScenarioAction : ScenarioAction
 {
-    private DiscussionChoiceTextId choiceId;
+    [JsonConverter(typeof(StringEnumConverter))]
+    public DiscussionChoiceTextId ChoiceId { get; }
 
     public DiscussionChoiceScenarioAction(DiscussionChoiceTextId choiceId)
     {
-        this.choiceId = choiceId;
+        this.ChoiceId = choiceId;
     }
 
     public override bool Equals(object obj)
     {
         var action = obj as DiscussionChoiceScenarioAction;
         return action != null &&
-               choiceId == action.choiceId;
+               ChoiceId == action.ChoiceId;
     }
 
     public override int GetHashCode()
     {
-        return -1877750589 + choiceId.GetHashCode();
+        return -1877750589 + ChoiceId.GetHashCode();
     }
 
     public override string ToString()
     {
-        return "DiscussionChoiceScenarioAction. " + " Choice made : " + choiceId.ToString();
+        return "DiscussionChoiceScenarioAction. " + " Choice made : " + ChoiceId.ToString();
     }
 
 }

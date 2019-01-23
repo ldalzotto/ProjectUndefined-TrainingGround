@@ -1,15 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using timeline.serialized;
 using UnityEditor;
 using UnityEngine;
 
-public class TimelineGraphsYamlSerialization : EditorWindow
+public class TimelineGraphsJSONSerialization : EditorWindow
 {
-    [MenuItem("Timeline/YAML Serialization")]
+    [MenuItem("Timeline/JSON Serialization")]
     public static void ShowWindow()
     {
-        EditorWindow.GetWindow(typeof(TimelineGraphsYamlSerialization));
+        EditorWindow.GetWindow(typeof(TimelineGraphsJSONSerialization));
     }
 
     private void OnGUI()
@@ -25,24 +26,13 @@ public class TimelineGraphsYamlSerialization : EditorWindow
                 if (type.IsSubclassOf(typeof(TimelineInitializer)))
                 {
                     var timelineInitializerInstance = (TimelineInitializer)Activator.CreateInstance(type);
-                    initialzers.Add(new TimelineSerialized(timelineInitializerInstance.InitialNodes, timelineInitializerInstance.TimelineId.ToString()));
+                    var serailizedNodes = timelineInitializerInstance.InitialNodes.ConvertAll(n => n.Map2Serialized());
+                    initialzers.Add(new TimelineSerialized(timelineInitializerInstance.TimelineId.ToString(), serailizedNodes));
                 }
             }
             var json = JsonConvert.SerializeObject(initialzers);
             Debug.Log(json);
         }
         EditorGUILayout.EndVertical();
-    }
-
-    class TimelineSerialized
-    {
-        public List<TimelineNode> nodes { get; }
-        public string timelineId { get; }
-
-        public TimelineSerialized(List<TimelineNode> nodes, string timelineId)
-        {
-            this.nodes = nodes;
-            this.timelineId = timelineId;
-        }
     }
 }

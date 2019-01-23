@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using timeline.serialized;
 using UnityEngine;
 
 public abstract class ATimelineNodeManager : MonoBehaviour
@@ -110,16 +111,28 @@ public abstract class TimelineNode
         }
         return nextNodes;
     }
+
+    public TimelineNodeSerialized Map2Serialized()
+    {
+        var serializedTransitions = new List<TimelineNodeTransitionSerialized>();
+        if (TransitionRequirements != null)
+        {
+            foreach (var transition in TransitionRequirements)
+            {
+                TimelineNodeSerialized nexSerializedNode = null;
+                if (transition.Value != null)
+                {
+                    nexSerializedNode = transition.Value.Map2Serialized();
+                }
+                serializedTransitions.Add(new TimelineNodeTransitionSerialized(transition.Key, nexSerializedNode, transition.Key.GetType().Name));
+            }
+        }
+
+        return new TimelineNodeSerialized(serializedTransitions, GetType().Name);
+    }
 }
 
 public abstract class TimelineNodeWorkflowAction
 {
-    public string timelineWorkflowActionId { get; }
-
-    public TimelineNodeWorkflowAction() : base()
-    {
-        timelineWorkflowActionId = GetType().Name;
-    }
-
     public abstract void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence);
 }
