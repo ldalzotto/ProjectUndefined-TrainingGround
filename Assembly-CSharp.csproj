@@ -128,7 +128,6 @@
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
-    <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
     <None Include="Assets\_Shader\FX\Smoke\wrappedLight.cginc" />
     <None Include="Assets\_Shader\FX\Smoke\NewSurfaceShader.shader" />
     <None Include="Assets\_Shader\FX\Smoke\noiseSimplex.cginc" />
