@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 
-public class POITrackerCollider : MonoBehaviour
+public class CameraObstructCollisionHandler : MonoBehaviour
 {
-    private PlayerManager PlayerManager;
+    private CameraObstructManager CameraObstructManager;
 
-    private void Start()
+    // Use this for initialization
+    void Start()
     {
-        this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        CameraObstructManager = GameObject.FindObjectOfType<CameraObstructManager>();
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
         var collisionType = other.GetComponent<CollisionType>();
         if (collisionType != null)
         {
-            PlayerManager.TriggerEnter(other, collisionType);
+            CameraObstructManager.TriggerEnter(other, collisionType);
         }
         else
         {
@@ -28,12 +28,11 @@ public class POITrackerCollider : MonoBehaviour
         var collisionType = other.GetComponent<CollisionType>();
         if (collisionType != null)
         {
-            PlayerManager.TriggerExit(other, collisionType);
+            CameraObstructManager.TriggerExit(other, collisionType);
         }
         else
         {
             Debug.LogError("The collider : " + other.name + " has no CollisionType.");
         }
     }
-
 }

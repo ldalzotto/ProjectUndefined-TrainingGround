@@ -15,6 +15,10 @@ public class PlayerManager : MonoBehaviour
     public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
     public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
+    #region Internal Dependencies
+    private CameraObstructTrackerType CameraObstructTrackerType;
+    #endregion
+
     #region Sub Managers
     private PlayerAnimationManager PlayerAnimationManager;
     #endregion
@@ -31,13 +35,17 @@ public class PlayerManager : MonoBehaviour
     private PlayerContextActionManager PlayerContextActionManager;
     private PlayerInventoryTriggerManager PlayerInventoryTriggerManager;
 
-    private void Start()
+    public void Init()
     {
         #region External dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         GameObject CameraPivotPoint = GameObject.FindGameObjectWithTag("CameraPivotPoint");
         ContextActionWheelEventManager ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
         InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+        #endregion
+
+        #region Internal Dependencies
+        this.CameraObstructTrackerType = GetComponentInChildren<CameraObstructTrackerType>();
         #endregion
 
         GameObject PlayerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
@@ -140,22 +148,18 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     #region External Events
-    public void TriggerEnter(Collider collider, CollisionTag source)
+    public void TriggerEnter(Collider collider, CollisionType source)
     {
-        switch (source)
+        if (source.IsPoi)
         {
-            case CollisionTag.POITracker:
-                PlayerPOITrackerManager.OnObjectEnter(collider.gameObject);
-                break;
+            PlayerPOITrackerManager.OnObjectEnter(collider.gameObject);
         }
     }
-    public void TriggerExit(Collider collider, CollisionTag source)
+    public void TriggerExit(Collider collider, CollisionType source)
     {
-        switch (source)
+        if (source.IsPoi)
         {
-            case CollisionTag.POITracker:
-                PlayerPOITrackerManager.OnObjectExit(collider.gameObject);
-                break;
+            PlayerPOITrackerManager.OnObjectExit(collider.gameObject);
         }
     }
     public void OnContextActionAdded()
@@ -193,6 +197,11 @@ public class PlayerManager : MonoBehaviour
     public PointOfInterestType GetCurrentTargetedPOI()
     {
         return PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest;
+    }
+
+    public CameraObstructTrackerType GetCameraObstructTrackerType()
+    {
+        return this.CameraObstructTrackerType;
     }
 
 }

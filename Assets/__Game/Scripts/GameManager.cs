@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private PlayerManager PlayerManager;
     private InventoryManager InventoryManager;
     private DiscussionWindowManager DiscussionWindowManager;
+    private CameraObstructManager CameraObstructManager;
 
     //timelines
     private ScenarioTimelineManagerV2 ScenarioTimelineManager;
@@ -21,9 +22,14 @@ public class GameManager : MonoBehaviour
         PlayerManager = FindObjectOfType<PlayerManager>();
         InventoryManager = FindObjectOfType<InventoryManager>();
         DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
+        CameraObstructManager = FindObjectOfType<CameraObstructManager>();
 
         ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
         DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
+
+
+        PlayerManager.Init();
+        CameraObstructManager.Init();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
     }
 
@@ -34,6 +40,7 @@ public class GameManager : MonoBehaviour
         ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);
+        CameraObstructManager.Tick(d);
         InventoryManager.Tick(d);
         DiscussionWindowManager.Tick(d);
     }
