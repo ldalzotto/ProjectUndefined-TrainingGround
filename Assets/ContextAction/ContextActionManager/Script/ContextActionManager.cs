@@ -118,6 +118,12 @@ public abstract class AContextAction
         ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
     }
 
+    public AContextAction(AContextAction nextAction)
+    {
+        ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
+        nextContextAction = nextAction;
+    }
+
     public void OnTick(float d)
     {
         if (!isFinished)

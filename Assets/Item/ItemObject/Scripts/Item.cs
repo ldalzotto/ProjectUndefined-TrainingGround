@@ -12,14 +12,7 @@ public class Item : MonoBehaviour
 
     private void Start()
     {
-        contextActions = BuildItemContextActions();
-    }
-
-    private List<AContextAction> BuildItemContextActions()
-    {
-        return new List<AContextAction>() {
-            new GiveAction(this)
-        };
+        contextActions = ItemContextActionBuilder.BuilItemContextActions(this);
     }
 }
 
@@ -31,4 +24,21 @@ public enum ItemID
     ID_CARD = 2,
     ID_CARD_V2 = 3,
     ID_CARD_V3 = 4
+}
+
+
+
+public class ItemContextActionBuilder
+{
+    public static List<AContextAction> BuilItemContextActions(Item item)
+    {
+        switch (item.ItemID)
+        {
+            case ItemID.ID_CARD:
+                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction()) };
+            case ItemID.ID_CARD_V2:
+                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction()) };
+        }
+        return new List<AContextAction>();
+    }
 }

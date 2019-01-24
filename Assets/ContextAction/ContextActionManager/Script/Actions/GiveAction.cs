@@ -32,7 +32,7 @@ public class GiveAction : AContextAction
     }
     #endregion
 
-    public GiveAction(Item itemGiven) : base()
+    public GiveAction(Item itemGiven, AContextAction nextAction) : base(nextAction)
     {
         #region External Dependencies
         var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
