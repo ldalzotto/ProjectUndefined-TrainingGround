@@ -118,7 +118,6 @@
     <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneInitialisation.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioStateMerger.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\TimelineIDs.cs" />

@@ -58,12 +58,15 @@ public abstract class AContextAction
     public abstract void AfterFinishedEventProcessed();
     public abstract void Tick(float d);
 
+    //TODO => next Context action
+
     private ContextActionEventManager ContextActionEventManager;
 
     #region Internal Dependencies
     private AContextActionInput contextActionInput;
     #endregion
 
+    //TOSO => next Context action in constructor
     public AContextAction()
     {
         ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
@@ -80,6 +83,8 @@ public abstract class AContextAction
                 isFinished = true;
                 ContextActionEventManager.OnContextActionFinished(this, contextActionInput);
                 AfterFinishedEventProcessed();
+
+                //TODO -> context action chaining
             }
         }
     }
