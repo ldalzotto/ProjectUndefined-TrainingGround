@@ -34,20 +34,11 @@ public class PointOfInterestType : MonoBehaviour
     #region External Events
     public void OnGrabbableItemAdd(ItemID itemId)
     {
-        if (pointOfInterestScenarioState.GabbableItemsComponent == null)
-        {
-            pointOfInterestScenarioState.GabbableItemsComponent = new GabbableItemsComponent();
-        }
-        pointOfInterestScenarioState.GabbableItemsComponent.AddItemID(itemId);
         ContextActionSynchronizerManager.OnGrabbableItemAdded(this, itemId);
     }
     public void OnGrabbableItemRemove(ItemID itemId)
     {
-        pointOfInterestScenarioState.GabbableItemsComponent.RemoveItemID(itemId);
-        if (ContextActionSynchronizerManager.OnGrabbableItemRemoved(itemId))
-        {
-            pointOfInterestScenarioState.GabbableItemsComponent = null;
-        }
+        ContextActionSynchronizerManager.OnGrabbableItemRemoved(itemId);
     }
     public void OnReceivableItemAdd(ItemID itemID)
     {
@@ -101,7 +92,8 @@ public enum PointOfInterestId
     BOUNCER = 1,
     ID_CARD = 2,
     ID_CARD_V2 = 3,
-    PLAYER = 4
+    PLAYER = 4,
+    DUMBSTER = 5
 }
 
 #region Context Action Synchronizer

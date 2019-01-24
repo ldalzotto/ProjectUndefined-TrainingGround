@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PointOfInterestScenarioState : MonoBehaviour
 {
-    public GabbableItemsComponent GabbableItemsComponent;
     public ReceivableItemsComponent ReceivableItemsComponent;
     public DiscussionTree DiscussionTree;
 }
