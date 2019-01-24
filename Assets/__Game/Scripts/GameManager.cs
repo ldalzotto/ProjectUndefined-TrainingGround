@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
 
         ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
         DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
+
+
+        PlayerManager.Init();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
     }
 

@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerContextActionManager PlayerContextActionManager;
     private PlayerInventoryTriggerManager PlayerInventoryTriggerManager;
 
-    private void Start()
+    public void Init()
     {
         #region External dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
@@ -140,22 +140,18 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     #region External Events
-    public void TriggerEnter(Collider collider, CollisionTag source)
+    public void TriggerEnter(Collider collider, CollisionType source)
     {
-        switch (source)
+        if (source.IsPoi)
         {
-            case CollisionTag.POITracker:
-                PlayerPOITrackerManager.OnObjectEnter(collider.gameObject);
-                break;
+            PlayerPOITrackerManager.OnObjectEnter(collider.gameObject);
         }
     }
-    public void TriggerExit(Collider collider, CollisionTag source)
+    public void TriggerExit(Collider collider, CollisionType source)
     {
-        switch (source)
+        if (source.IsPoi)
         {
-            case CollisionTag.POITracker:
-                PlayerPOITrackerManager.OnObjectExit(collider.gameObject);
-                break;
+            PlayerPOITrackerManager.OnObjectExit(collider.gameObject);
         }
     }
     public void OnContextActionAdded()
@@ -234,9 +230,9 @@ public class CameraOrientationManager
         var deltaRotation = gameInputManager.CurrentInput.RightRotationCameraDH() * d * rotationSpeed;
         deltaRotation += gameInputManager.CurrentInput.LeftRotationCameraDH() * d * -rotationSpeed;
         cameraPivotPoint.eulerAngles += new Vector3(0, deltaRotation, 0);
-
     }
 }
+
 #endregion
 
 #region Player

@@ -2,22 +2,38 @@
 
 public class POITrackerCollider : MonoBehaviour
 {
-
     private PlayerManager PlayerManager;
 
     private void Start()
     {
-        this.PlayerManager = FindObjectOfType<PlayerManager>();
+        this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerManager.TriggerEnter(other, CollisionTag.POITracker);
+        var collisionType = other.GetComponent<CollisionType>();
+        if (collisionType != null)
+        {
+            PlayerManager.TriggerEnter(other, collisionType);
+        }
+        else
+        {
+            Debug.LogError("The collider : " + other.name + " has no CollisionType.");
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerManager.TriggerExit(other, CollisionTag.POITracker);
+        var collisionType = other.GetComponent<CollisionType>();
+        if (collisionType != null)
+        {
+            PlayerManager.TriggerExit(other, collisionType);
+        }
+        else
+        {
+            Debug.LogError("The collider : " + other.name + " has no CollisionType.");
+        }
     }
 
 }

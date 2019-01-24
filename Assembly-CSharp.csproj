@@ -64,7 +64,7 @@
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
-    <Compile Include="Assets\_Collision\CollisionTag.cs" />
+    <Compile Include="Assets\_Collision\CollisionType.cs" />
     <Compile Include="Assets\_Common\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\_Common\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\_Common\Component\ComponentSearchHelper.cs" />
@@ -128,11 +128,13 @@
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
+    <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
     <None Include="Assets\_Shader\FX\Smoke\wrappedLight.cginc" />
     <None Include="Assets\_Shader\FX\Smoke\NewSurfaceShader.shader" />
     <None Include="Assets\_Shader\FX\Smoke\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeShader.shader" />
     <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
+    <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
