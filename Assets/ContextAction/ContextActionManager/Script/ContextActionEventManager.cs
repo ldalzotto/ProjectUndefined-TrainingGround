@@ -16,14 +16,16 @@ public class ContextActionEventManager : MonoBehaviour
         ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
     }
 
-    public void OnContextActionAdded(AContextAction contextAction, AContextActionInput contextActionInput)
+    public void OnContextActionAdd(AContextAction contextAction)
     {
         try
         {
-            PlayerManager.OnContextActionAdded();
-            InventoryManager.OnContextActionAdded();
-            ContextActionManager.OnAddAction(contextAction, contextActionInput);
-
+            if (contextAction != null)
+            {
+                PlayerManager.OnContextActionAdded();
+                InventoryManager.OnContextActionAdded();
+                ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager));
+            }
             //TODO send event to inventory to close if necessary
         }
         catch (System.Exception e)

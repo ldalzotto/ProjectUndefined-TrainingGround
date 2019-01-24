@@ -32,9 +32,9 @@ public class PointOfInterestType : MonoBehaviour
     #endregion
 
     #region External Events
-    public void OnGrabbableItemAdd(ItemID itemId)
+    public void OnGrabbableItemAdd(AContextActionPOIBuilder aContextActionPOIBuilder)
     {
-        ContextActionSynchronizerManager.OnGrabbableItemAdded(this, itemId);
+        ContextActionSynchronizerManager.OnGrabbableItemAdded(this, aContextActionPOIBuilder);
     }
     public void OnGrabbableItemRemove(ItemID itemId)
     {
@@ -114,15 +114,15 @@ class ContextActionSynchronizerManager
         }
     }
 
-    public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, ItemID itemID)
+    public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, AContextActionPOIBuilder aContextActionPOIBuilder)
     {
         if (!contextActions.ContainsKey(typeof(GrabAction).ToString()))
         {
-            contextActions.Add(typeof(GrabAction).ToString(), new List<AContextAction>() { new GrabAction(itemID, pointOfInterestType) });
+            contextActions.Add(typeof(GrabAction).ToString(), new List<AContextAction>() { aContextActionPOIBuilder.Build(pointOfInterestType) });
         }
         else
         {
-            contextActions[typeof(GrabAction).ToString()].Add(new GrabAction(itemID, pointOfInterestType));
+            contextActions[typeof(GrabAction).ToString()].Add(aContextActionPOIBuilder.Build(pointOfInterestType));
         }
 
     }

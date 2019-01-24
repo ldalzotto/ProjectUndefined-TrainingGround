@@ -1,12 +1,12 @@
 ﻿public class AddGrabbableItem : TimelineNodeWorkflowAction
 {
-    private ItemID itemInvolved;
     private PointOfInterestId poiInvolved;
+    private AContextActionPOIBuilder contextActionBuilder;
 
-    public AddGrabbableItem(ItemID itemInvolved, PointOfInterestId poiInvolved)
+    public AddGrabbableItem(PointOfInterestId poiInvolved, AContextActionPOIBuilder contextActionBuilder)
     {
-        this.itemInvolved = itemInvolved;
         this.poiInvolved = poiInvolved;
+        this.contextActionBuilder = contextActionBuilder;
     }
 
     public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
@@ -14,7 +14,7 @@
         var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
         if (foundedPoi != null)
         {
-            foundedPoi.OnGrabbableItemAdd(itemInvolved);
+            foundedPoi.OnGrabbableItemAdd(contextActionBuilder);
         }
     }
 }

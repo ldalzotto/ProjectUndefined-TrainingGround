@@ -13,6 +13,7 @@ public class DummyContextAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
+        Debug.Log("DUMMY");
         var actionInput = ContextActionInput as DummyContextActionInput;
         elapsedTime = 0f;
         Debug.Log(Time.frameCount + actionInput.Text);
