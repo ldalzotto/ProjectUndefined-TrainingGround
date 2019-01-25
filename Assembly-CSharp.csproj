@@ -75,6 +75,10 @@
     <Compile Include="Assets\_Constants\TagConstants.cs" />
     <Compile Include="Assets\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
     <Compile Include="Assets\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
+    <Compile Include="Assets\Configuration\GlobalConfiguration.cs" />
+    <Compile Include="Assets\Configuration\Level1\Level1Configuration.cs" />
+    <Compile Include="Assets\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />
+    <Compile Include="Assets\Configuration\Level1\TestSceneInitialisation.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GiveAction.cs" />
@@ -112,10 +116,6 @@
     <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\ATimeline.cs" />
     <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\TimelineGraphJSONModel.cs" />
     <Compile Include="Assets\Scenario\Scripts\Action\ScenarioAction.cs" />
-    <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneDiscussionTimelineNodes.cs" />
-    <Compile Include="Assets\Scenario\Scripts\TestScene\Nodes\TestSceneScenarioNodes.cs" />
-    <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneDiscussionTimelineInitialisation.cs" />
-    <Compile Include="Assets\Scenario\Scripts\TestScene\TestSceneInitialisation.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />

@@ -86,16 +86,6 @@ public class PointOfInterestType : MonoBehaviour
 
 }
 
-public enum PointOfInterestId
-{
-    NONE = 0,
-    BOUNCER = 1,
-    ID_CARD = 2,
-    ID_CARD_V2 = 3,
-    PLAYER = 4,
-    DUMBSTER = 5
-}
-
 #region Context Action Synchronizer
 
 [System.Serializable]
