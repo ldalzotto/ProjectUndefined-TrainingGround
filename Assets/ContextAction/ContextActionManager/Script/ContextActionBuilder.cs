@@ -11,7 +11,7 @@ public class ContextActionBuilder
         }
         else if (contextAction.GetType() == typeof(GrabAction))
         {
-            return new GrabActionInput(playerManager.GetPlayerAnimator(), PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN,
+            return new GrabActionInput(playerManager.GetCurrentTargetedPOI(), playerManager.GetPlayerAnimator(), PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN,
                   ((GrabAction)contextAction).Item);
         }
         else if (contextAction.GetType() == typeof(GiveAction))
@@ -21,6 +21,10 @@ public class ContextActionBuilder
         else if (contextAction.GetType() == typeof(TalkAction))
         {
             return new TalkActionInput(playerManager.GetCurrentTargetedPOI().GetAssociatedDiscussionTree());
+        }
+        else if (contextAction.GetType() == typeof(CutsceneTimelineAction))
+        {
+            return new CutsceneTimelineActionInput(playerManager.GetCurrentTargetedPOI().GetContextData(), playerManager.transform);
         }
         else
         {
@@ -55,7 +59,7 @@ public class ContextActionBuilder
         }
         else
         {
-            Debug.LogError("The context action : " + contextAction.GetType() + " has no scenario action builder implemented.");
+            Debug.LogWarning("The context action : " + contextAction.GetType() + " has no scenario action builder implemented.");
             return null;
         }
     }

@@ -5,9 +5,9 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1E2F1D21-5D34-93C1-BC6D-23703043576C}</ProjectGuid>
+    <ProjectGuid>{49FCAFB7-7D0A-B3F6-2171-B4248A94EC21}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Unity.Postprocessing.Runtime</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
@@ -236,17 +236,47 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Timeline">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/Timeline/RuntimeEditor/UnityEngine.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Timeline">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/Timeline/Editor/UnityEditor.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.Networking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.GoogleAudioSpatializer">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/Editor/UnityEditor.GoogleAudioSpatializer.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.GoogleAudioSpatializer">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.SpatialTracking">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/Editor/UnityEditor.SpatialTracking.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.VR">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.0f2/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets/packages/Newtonsoft.Json.12.0.1/lib/net40/Newtonsoft.Json.dll</HintPath>
@@ -598,83 +628,62 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Unity.PackageManagerUI.Editor.csproj">
-      <Project>{6877705C-FBD9-0C4F-5AFB-6FB431E5D39D}</Project>
-      <Name>Unity.PackageManagerUI.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Postprocessing.Editor.csproj">
-      <Project>{CBEC4DCB-1B2B-E03B-0387-393C59967E8B}</Project>
-      <Name>Unity.Postprocessing.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.Postprocessing.Runtime.csproj">
-      <Project>{49FCAFB7-7D0A-B3F6-2171-B4248A94EC21}</Project>
-      <Name>Unity.Postprocessing.Runtime</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
-    <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
-    <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
-    <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
-    <Compile Include="Assets\_Collision\CollisionType.cs" />
-    <Compile Include="Assets\_Common\Animation\AnimationPlayerHelper.cs" />
-    <Compile Include="Assets\_Common\Component\ComponentSearchExtensions.cs" />
-    <Compile Include="Assets\_Common\Component\ComponentSearchHelper.cs" />
-    <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
-    <Compile Include="Assets\_Common\FX\TriggerableEffect.cs" />
-    <Compile Include="Assets\_Constants\AnimationConstants.cs" />
-    <Compile Include="Assets\_Constants\StringConstants.cs" />
-    <Compile Include="Assets\_Constants\TagConstants.cs" />
-    <Compile Include="Assets\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
-    <Compile Include="Assets\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
-    <Compile Include="Assets\Configuration\GlobalConfiguration.cs" />
-    <Compile Include="Assets\Configuration\Level1\Level1Configuration.cs" />
-    <Compile Include="Assets\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />
-    <Compile Include="Assets\Configuration\Level1\TestSceneInitialisation.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GiveAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\TalkAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionResolver.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionEventHandler.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryMenu.cs" />
-    <Compile Include="Assets\Item\ItemObject\GiveActionMiniature\Scripts\GiveActionMiniatureInstanciate.cs" />
-    <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
-    <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
-    <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerAnimationEventHandler.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerAnimationManager.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestManager.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
-    <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\ATimeline.cs" />
-    <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\TimelineGraphJSONModel.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Action\ScenarioAction.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\TimelineIDs.cs" />
-    <Compile Include="Assets\Scenario\Scripts\TimelinesEventManager.cs" />
-    <Compile Include="Assets\Test\DiscussionTestScript.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Attributes\DisplayNameAttribute.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Attributes\MaxAttribute.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Attributes\MinAttribute.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Attributes\MinMaxAttribute.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Attributes\PostProcessAttribute.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Attributes\TrackballAttribute.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\AmbientOcclusion.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\AutoExposure.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\Bloom.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\ChromaticAberration.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\ColorGrading.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\DepthOfField.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\Dithering.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\FastApproximateAntialiasing.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\Fog.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\Grain.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\LensDistortion.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\MotionBlur.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\MultiScaleVO.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\ScalableAO.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\ScreenSpaceReflections.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\SubpixelMorphologicalAntialiasing.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\TemporalAntialiasing.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Effects\Vignette.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Monitors\HistogramMonitor.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Monitors\LightMeterMonitor.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Monitors\Monitor.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Monitors\VectorscopeMonitor.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Monitors\WaveformMonitor.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\ParameterOverride.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessBundle.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessDebug.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessDebugLayer.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessEffectRenderer.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessEffectSettings.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessEvent.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessLayer.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessManager.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessProfile.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessRenderContext.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessResources.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\PostProcessVolume.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\ColorUtilities.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\HableCurve.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\HaltonSeq.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\LogHistogram.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\MeshUtilities.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\PropertySheet.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\PropertySheetFactory.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\RuntimeUtilities.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\ShaderIDs.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\Spline.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\TargetPool.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\TextureFormatUtilities.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\TextureLerper.cs" />
+    <Compile Include="Packages\com.unity.postprocessing\PostProcessing\Runtime\Utils\XRSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />

@@ -10,6 +10,7 @@ public class PointOfInterestType : MonoBehaviour
 
     #region Internal Depencies
     private PointOfInterestScenarioState pointOfInterestScenarioState;
+    private PointOfInterestContextDataContainer PointOfInterestContextData;
     #endregion
 
     private ContextActionSynchronizerManager ContextActionSynchronizerManager;
@@ -21,6 +22,7 @@ public class PointOfInterestType : MonoBehaviour
         #endregion
         this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
         this.pointOfInterestScenarioState = gameObject.AddComponent<PointOfInterestScenarioState>();
+        this.PointOfInterestContextData = GetComponentInChildren<PointOfInterestContextDataContainer>();
         PointOfInterestEventManager.OnPOICreated(this);
     }
 
@@ -84,6 +86,11 @@ public class PointOfInterestType : MonoBehaviour
         return pointOfInterestScenarioState.DiscussionTree;
     }
 
+    public PointOfInterestContextDataContainer GetContextData()
+    {
+        return PointOfInterestContextData;
+    }
+
 }
 
 #region Context Action Synchronizer
@@ -106,10 +113,7 @@ class ContextActionSynchronizerManager
 
     public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, AContextAction contextActionToAdd)
     {
-        if (contextActionToAdd.GetType() == typeof(GrabAction))
-        {
-            ((GrabAction)contextActionToAdd).InitializeInternalDependencies(pointOfInterestType);
-        }
+
         if (!contextActions.ContainsKey(typeof(GrabAction).ToString()))
         {
 

@@ -24,11 +24,6 @@ public class GrabAction : AContextAction
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
     }
 
-    public void InitializeInternalDependencies(PointOfInterestType associatedPOI)
-    {
-        this.associatedPOI = associatedPOI;
-    }
-
     public override bool ComputeFinishedConditions()
     {
         return animationEnded;
@@ -38,6 +33,7 @@ public class GrabAction : AContextAction
     {
         animationEnded = false;
         grabActionInput = (GrabActionInput)ContextActionInput;
+        this.associatedPOI = grabActionInput.TargetedPOI;
         this.associatedPOI.StartCoroutine(AnimationPlayerHelper.Play(grabActionInput.PlayerAnimator, grabActionInput.PlayerAnimationEnum, 0f, () =>
          {
              InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
@@ -58,13 +54,14 @@ public class GrabAction : AContextAction
 
 public class GrabActionInput : AContextActionInput
 {
-
+    private PointOfInterestType targetedPOI;
     private Animator playerAnimator;
     private PlayerAnimatioNnamesEnum playerAnimationEnum;
     private Item grabbedItem;
 
-    public GrabActionInput(Animator playerAnimator, PlayerAnimatioNnamesEnum playerAnimationEnum, Item grabbedItem)
+    public GrabActionInput(PointOfInterestType targetedPOI, Animator playerAnimator, PlayerAnimatioNnamesEnum playerAnimationEnum, Item grabbedItem)
     {
+        this.targetedPOI = targetedPOI;
         this.playerAnimator = playerAnimator;
         this.playerAnimationEnum = playerAnimationEnum;
         this.grabbedItem = grabbedItem;
@@ -73,4 +70,5 @@ public class GrabActionInput : AContextActionInput
     public Animator PlayerAnimator { get => playerAnimator; }
     public Item GrabbedItem { get => grabbedItem; }
     public PlayerAnimatioNnamesEnum PlayerAnimationEnum { get => playerAnimationEnum; }
+    public PointOfInterestType TargetedPOI { get => targetedPOI; }
 }
