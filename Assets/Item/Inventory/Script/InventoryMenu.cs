@@ -119,6 +119,11 @@ public class InventoryMenu : MonoBehaviour
         return InventoryAnimationManager.IsAnimating;
     }
     #endregion
+
+    public RectTransform GetInventoryHead()
+    {
+        return InventoryMenuHead;
+    }
 }
 
 [System.Serializable]

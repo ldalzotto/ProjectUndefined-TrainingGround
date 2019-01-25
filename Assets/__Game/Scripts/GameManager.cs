@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    //mobile input
+    private MobileInputJoystickManager MobileInputJoystickManager;
 
     private ContextActionManager ContextActionManager;
     private ContextActionWheelManager ContextActionWheelManager;
@@ -16,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        MobileInputJoystickManager = FindObjectOfType<MobileInputJoystickManager>();
+
         ContextActionManager = FindObjectOfType<ContextActionManager>();
         ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
         PlayerManager = FindObjectOfType<PlayerManager>();
@@ -33,6 +37,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         var d = Time.deltaTime;
+
+        MobileInputJoystickManager.Tick(d);
 
         ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);

@@ -9,14 +9,20 @@ public class GameInputManager : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_STANDALONE
         currentInput = new JoystickInput();
+#endif
+#if UNITY_IOS
+        var modileInputJoystickManager = GameObject.FindObjectOfType<MobileInputJoystickManager>();
+        currentInput = new MobileInput(modileInputJoystickManager);
+#endif
     }
 
     public interface XInput
     {
         Vector3 LocomotionAxis();
-        int LeftRotationCameraDH();
-        int RightRotationCameraDH();
+        float LeftRotationCameraDH();
+        float RightRotationCameraDH();
         bool ActionButtonDH();
         bool ActionButtonD();
         bool InventoryButtonD();
@@ -51,7 +57,7 @@ public class GameInputManager : MonoBehaviour
             return Input.GetButtonDown("Inventory");
         }
 
-        public int LeftRotationCameraDH()
+        public float LeftRotationCameraDH()
         {
             return Convert.ToInt32(Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKey(KeyCode.Joystick1Button4));
         }
@@ -61,7 +67,7 @@ public class GameInputManager : MonoBehaviour
             return new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         }
 
-        public int RightRotationCameraDH()
+        public float RightRotationCameraDH()
         {
             return Convert.ToInt32(Input.GetKeyDown(KeyCode.Joystick1Button5) || Input.GetKey(KeyCode.Joystick1Button5));
         }
@@ -94,7 +100,7 @@ public class GameInputManager : MonoBehaviour
             throw new NotImplementedException();
         }
 
-        public int LeftRotationCameraDH()
+        public float LeftRotationCameraDH()
         {
             throw new NotImplementedException();
         }
@@ -104,7 +110,7 @@ public class GameInputManager : MonoBehaviour
             throw new System.NotImplementedException();
         }
 
-        public int RightRotationCameraDH()
+        public float RightRotationCameraDH()
         {
             throw new NotImplementedException();
         }
@@ -112,44 +118,69 @@ public class GameInputManager : MonoBehaviour
 
     private class MobileInput : XInput
     {
+        private MobileInputJoystickManager modileInputJoystickManager;
+
+        public MobileInput(MobileInputJoystickManager modileInputJoystickManager)
+        {
+            this.modileInputJoystickManager = modileInputJoystickManager;
+        }
+
         public bool ActionButtonD()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool ActionButtonDH()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool CancelButtonD()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool CancelButtonDH()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool InventoryButtonD()
         {
-            throw new NotImplementedException();
+            return modileInputJoystickManager.InventoryHeadPressed();
         }
 
-        public int LeftRotationCameraDH()
+        public float LeftRotationCameraDH()
         {
-            throw new NotImplementedException();
+            var currentDeltaDrag = modileInputJoystickManager.GetOuterJoystickDragDelta();
+            if (currentDeltaDrag.x >= 0)
+            {
+                return currentDeltaDrag.x / (Screen.width / 2);
+            }
+            else
+            {
+                return 0f;
+            }
+
         }
 
         public Vector3 LocomotionAxis()
         {
-            throw new System.NotImplementedException();
+            var currentJoystickValues = modileInputJoystickManager.GetCurrentJoystickValue();
+            return new Vector3(currentJoystickValues.x, 0f, currentJoystickValues.y);
         }
 
-        public int RightRotationCameraDH()
+        public float RightRotationCameraDH()
         {
-            throw new NotImplementedException();
+            var currentDeltaDrag = modileInputJoystickManager.GetOuterJoystickDragDelta();
+            if (currentDeltaDrag.x <= 0)
+            {
+                return currentDeltaDrag.x / (Screen.width / 2);
+            }
+            else
+            {
+                return 0f;
+            }
         }
     }
 
