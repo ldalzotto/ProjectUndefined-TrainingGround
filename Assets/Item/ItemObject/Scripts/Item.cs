@@ -35,9 +35,9 @@ public class ItemContextActionBuilder
         switch (item.ItemID)
         {
             case ItemID.ID_CARD:
-                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction()) };
+                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction(null)) };
             case ItemID.ID_CARD_V2:
-                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction()) };
+                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction(null)) };
         }
         return new List<AContextAction>();
     }

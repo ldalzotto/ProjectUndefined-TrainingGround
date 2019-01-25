@@ -1,6 +1,9 @@
 ﻿[System.Serializable]
 public class DummyTalkAction : AContextAction
 {
+
+    public DummyTalkAction(AContextAction nextContextAction) : base(nextContextAction) { }
+
     public override void AfterFinishedEventProcessed()
     {
 

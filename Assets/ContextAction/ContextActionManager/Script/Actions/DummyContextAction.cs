@@ -6,6 +6,8 @@ public class DummyContextAction : AContextAction
 
     private float elapsedTime;
 
+    public DummyContextAction(AContextAction nextContextAction) : base(nextContextAction) { }
+
     public override bool ComputeFinishedConditions()
     {
         return elapsedTime >= 2f;

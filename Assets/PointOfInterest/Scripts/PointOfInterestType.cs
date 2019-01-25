@@ -32,9 +32,9 @@ public class PointOfInterestType : MonoBehaviour
     #endregion
 
     #region External Events
-    public void OnGrabbableItemAdd(AContextActionPOIBuilder aContextActionPOIBuilder)
+    public void OnGrabbableItemAdd(AContextAction contextActionToAdd)
     {
-        ContextActionSynchronizerManager.OnGrabbableItemAdded(this, aContextActionPOIBuilder);
+        ContextActionSynchronizerManager.OnGrabbableItemAdded(this, contextActionToAdd);
     }
     public void OnGrabbableItemRemove(ItemID itemId)
     {
@@ -55,10 +55,10 @@ public class PointOfInterestType : MonoBehaviour
             pointOfInterestScenarioState.ReceivableItemsComponent.RemoveItemID(itemID);
         }
     }
-    public void OnDiscussionTreeAdd(DiscussionTree discussionTree)
+    public void OnDiscussionTreeAdd(DiscussionTree discussionTree, AContextAction contextActionToAdd)
     {
         pointOfInterestScenarioState.DiscussionTree = discussionTree;
-        ContextActionSynchronizerManager.OnDiscussionTreeAdd();
+        ContextActionSynchronizerManager.OnDiscussionTreeAdd(contextActionToAdd);
     }
     #endregion
 
@@ -114,15 +114,20 @@ class ContextActionSynchronizerManager
         }
     }
 
-    public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, AContextActionPOIBuilder aContextActionPOIBuilder)
+    public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, AContextAction contextActionToAdd)
     {
+        if (contextActionToAdd.GetType() == typeof(GrabAction))
+        {
+            ((GrabAction)contextActionToAdd).InitializeInternalDependencies(pointOfInterestType);
+        }
         if (!contextActions.ContainsKey(typeof(GrabAction).ToString()))
         {
-            contextActions.Add(typeof(GrabAction).ToString(), new List<AContextAction>() { aContextActionPOIBuilder.Build(pointOfInterestType) });
+
+            contextActions.Add(typeof(GrabAction).ToString(), new List<AContextAction>() { contextActionToAdd });
         }
         else
         {
-            contextActions[typeof(GrabAction).ToString()].Add(aContextActionPOIBuilder.Build(pointOfInterestType));
+            contextActions[typeof(GrabAction).ToString()].Add(contextActionToAdd);
         }
 
     }
@@ -145,15 +150,15 @@ class ContextActionSynchronizerManager
         return (grabContextActions.Count == 0);
     }
 
-    public void OnDiscussionTreeAdd()
+    public void OnDiscussionTreeAdd(AContextAction contextActionToAdd)
     {
         if (!contextActions.ContainsKey(typeof(TalkAction).ToString()))
         {
-            contextActions[typeof(TalkAction).ToString()] = new List<AContextAction>() { new TalkAction() };
+            contextActions[typeof(TalkAction).ToString()] = new List<AContextAction>() { contextActionToAdd };
         }
         else
         {
-            contextActions[typeof(TalkAction).ToString()].Add(new TalkAction());
+            contextActions[typeof(TalkAction).ToString()].Add(contextActionToAdd);
         }
 
     }

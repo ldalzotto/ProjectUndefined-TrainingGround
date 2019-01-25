@@ -13,15 +13,19 @@ public class GrabAction : AContextAction
     #region Internal Dependencies
     private PointOfInterestType associatedPOI;
 
-    public PointOfInterestType AssociatedPOI { get => associatedPOI; set => associatedPOI = value; }
+    public PointOfInterestType AssociatedPOI { get => associatedPOI; }
 
     #endregion
 
-    public GrabAction(ItemID itemId, PointOfInterestType associatedPOI) : base()
+    public GrabAction(ItemID itemId, AContextAction nextAction) : base(nextAction)
     {
         Item = PrefabContainer.InventoryItemsPrefabs[itemId];
         InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+    }
+
+    public void InitializeInternalDependencies(PointOfInterestType associatedPOI)
+    {
         this.associatedPOI = associatedPOI;
     }
 

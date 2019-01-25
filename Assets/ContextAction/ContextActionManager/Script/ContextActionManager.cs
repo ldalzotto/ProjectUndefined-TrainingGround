@@ -73,29 +73,6 @@ public class ContextActionManager : MonoBehaviour
     #endregion
 }
 
-public delegate AContextAction BuildContextAction(PointOfInterestType pointOfInterestType);
-public class AContextActionPOIBuilder
-{
-    private BuildContextAction BuildContextAction;
-    private AContextActionPOIBuilder nextContextActionBuilder;
-
-    public AContextActionPOIBuilder(BuildContextAction buildContextAction, AContextActionPOIBuilder nextContextActionBuilder)
-    {
-        BuildContextAction = buildContextAction;
-        this.nextContextActionBuilder = nextContextActionBuilder;
-    }
-
-    public AContextAction Build(PointOfInterestType pointOfInterestType)
-    {
-        var buildedAction = BuildContextAction(pointOfInterestType);
-        if (nextContextActionBuilder != null)
-        {
-            buildedAction.NextContextAction = nextContextActionBuilder.Build(pointOfInterestType);
-        }
-        return buildedAction;
-    }
-}
-
 [System.Serializable]
 public abstract class AContextAction
 {
@@ -112,11 +89,6 @@ public abstract class AContextAction
     #region Internal Dependencies
     private AContextActionInput contextActionInput;
     #endregion
-
-    public AContextAction()
-    {
-        ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
-    }
 
     public AContextAction(AContextAction nextAction)
     {

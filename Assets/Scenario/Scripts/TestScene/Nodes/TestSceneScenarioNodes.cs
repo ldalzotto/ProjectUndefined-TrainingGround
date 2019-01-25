@@ -7,8 +7,9 @@ public class IdCardGrabScenarioNode : TimelineNode
     };
 
     public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() { new AddGrabbableItem(PointOfInterestId.ID_CARD,
-        new AContextActionPOIBuilder((poi) => { return new GrabAction(ItemID.ID_CARD, poi); },
-            new AContextActionPOIBuilder((poi) => { return new DummyContextAction(); }, null)))
+        new GrabAction(ItemID.ID_CARD,
+            new DummyContextAction(null)
+            ))
     };
 
     public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>()
@@ -21,7 +22,8 @@ public class IdCardGrabScenarioNodeV2 : TimelineNode
 {
     public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>() { new RemoveGrabbableItem(ItemID.ID_CARD_V2, PointOfInterestId.ID_CARD_V2) };
 
-    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() { new AddGrabbableItem(PointOfInterestId.ID_CARD_V2, new AContextActionPOIBuilder((poi) => { return new GrabAction(ItemID.ID_CARD_V2, poi); }, null)) };
+    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() { new AddGrabbableItem(PointOfInterestId.ID_CARD_V2,
+       new GrabAction(ItemID.ID_CARD_V2, null))};
 
     public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>()
         {

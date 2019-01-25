@@ -9,11 +9,13 @@ public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
 {
     private PointOfInterestId PointOfInterestId;
     private DiscussionTree DiscussionTree;
+    private AContextAction contextActionToAdd;
 
-    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree)
+    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree, AContextAction contextActionToAdd)
     {
         PointOfInterestId = pointOfInterestId;
         this.DiscussionTree = DiscussionTree;
+        this.contextActionToAdd = contextActionToAdd;
     }
 
     public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
@@ -21,7 +23,7 @@ public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
         var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
         if (selectedPOI != null)
         {
-            selectedPOI.OnDiscussionTreeAdd(DiscussionTree);
+            selectedPOI.OnDiscussionTreeAdd(DiscussionTree, contextActionToAdd);
         }
     }
 }

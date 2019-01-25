@@ -13,7 +13,7 @@ public class TalkAction : AContextAction
     private DiscussionTreeNode currentDiscussionTreeNode;
     private DiscussionChoiceTextId discussionChoiceMade;
 
-    public TalkAction() : base()
+    public TalkAction(AContextAction nextContextAction) : base(nextContextAction)
     {
         DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
         PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
