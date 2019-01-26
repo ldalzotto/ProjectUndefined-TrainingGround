@@ -93,16 +93,17 @@ public class PlayerInitialPositionerManager
     public void Tick(float d)
     {
         playerTransform.position = targetTransform.position;
-        playerTransform.rotation *= Quaternion.LookRotation(targetTransform.forward);
+        playerTransform.rotation = Quaternion.LookRotation(targetTransform.forward);
 
         bool positionReached = false;
         bool rotationReached = false;
-        if (Vector3.Distance(targetTransform.position, playerTransform.position) <= 0.1)
+        if (Vector3.Distance(targetTransform.position, playerTransform.position) < 0.1)
         {
             positionReached = true;
             playerTransform.position = targetTransform.position;
         }
-        if (Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward) <= 0.1)
+        // Debug.Log(Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward));
+        if (Mathf.Abs(Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward)) >= 0.99)
         {
             rotationReached = true;
             playerTransform.rotation = targetTransform.rotation;

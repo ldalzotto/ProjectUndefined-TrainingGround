@@ -33,6 +33,6 @@ public class CutsceneTimelinePOIData : MonoBehaviour
 #endif
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(playerStartingTransform.position, 1f);
-        Gizmos.DrawLine(playerStartingTransform.position, playerStartingTransform.position + DirectionLineLenght * playerStartingTransform.forward);
+        Gizmos.DrawLine(playerStartingTransform.position, playerStartingTransform.position + (DirectionLineLenght * playerStartingTransform.forward));
     }
 }
