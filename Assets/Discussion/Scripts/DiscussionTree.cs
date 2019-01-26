@@ -230,7 +230,7 @@ public class DiscussionSentencesTextConstants
         {DisucssionSentenceTextId.BOUNCER_ASK_AGE, "How old are you?"},
         {DisucssionSentenceTextId.BOUNCER_GET_OUT, "Ridiculous.\nGet out!" },
         {DisucssionSentenceTextId.BOUNCER_ALLOWED, "You have the right to pass."},
-        {DisucssionSentenceTextId.PLAYER_TELL_AGE, "18 yreas old." }
+        {DisucssionSentenceTextId.PLAYER_TELL_AGE, "18 years old." }
     };
 }
 #endregion

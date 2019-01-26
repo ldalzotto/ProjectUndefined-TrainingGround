@@ -139,6 +139,7 @@
     <None Include="Assets\_Shader\FX\Smoke\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeShader.shader" />
     <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
+    <None Include="Assets\Discussion\Font\LICENSE.txt" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
