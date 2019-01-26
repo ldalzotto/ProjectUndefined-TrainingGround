@@ -196,11 +196,11 @@ public class DiscussionSentencesConstants
     {
         {DiscussionTreeId.BOUNCER_DISCUSSION_TREE, new DiscussionTextOnlyNode(
                 DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, PointOfInterestId.BOUNCER, new DiscussionTextOnlyNode(
-                       DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ASK_AGE, PointOfInterestId.BOUNCER, new DiscussionTextOnlyNode(
-                           DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.PLAYER_TELL_AGE, PointOfInterestId.PLAYER, new DiscussionTextOnlyNode(
-                               DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_GET_OUT, PointOfInterestId.BOUNCER, null
-                            )
-                        )
+                       DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ASK_AGE, PointOfInterestId.BOUNCER,
+                       new DiscussionChoiceNode(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, PointOfInterestId.PLAYER, new List<DiscussionChoice>(){
+                           new DiscussionChoice(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DiscussionChoiceTextId.PLAYER_AGE_CHOICE_17, null),
+                           new DiscussionChoice(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DiscussionChoiceTextId.PLAYER_AGE_CHOICE_18, null)
+                       })
                     )
             )},
         { DiscussionTreeId.BOUNCER_OK_DISCUSSION, new DiscussionTextOnlyNode(
@@ -226,7 +226,7 @@ public class DiscussionSentencesTextConstants
 
     public static Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>()
     {
-        {DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, "I don't like your haircut." },
+        {DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, "I don't like your haircut.\nAge below 18 = NO ENTRY." },
         {DisucssionSentenceTextId.BOUNCER_ASK_AGE, "How old are you?"},
         {DisucssionSentenceTextId.BOUNCER_GET_OUT, "Ridiculous.\nGet out!" },
         {DisucssionSentenceTextId.BOUNCER_ALLOWED, "You have the right to pass."},
@@ -243,12 +243,16 @@ public enum DiscussionChoiceIntroductionTextId
 
 public enum DiscussionChoiceTextId
 {
+    PLAYER_AGE_CHOICE_17,
+    PLAYER_AGE_CHOICE_18
 }
 
 public class DiscussionChoiceTextConstants
 {
     public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
     {
+        { DiscussionChoiceTextId.PLAYER_AGE_CHOICE_17, "17"},
+        { DiscussionChoiceTextId.PLAYER_AGE_CHOICE_18, "18"}
     };
 }
 #endregion

@@ -197,7 +197,7 @@ class TextOnlyDiscussionWindowDimensionsManager
         textAreaText.text = fullTextContent;
         Canvas.ForceUpdateCanvases();
         DiscussionBaseReference.OnHeightChange(discussionWindowDimensionsComputation.GetWindowHeight(this.displayedLineNB));
-        DiscussionBaseReference.OnWidthChange(discussionWindowDimensionsComputation.GetCurrentWindowWidth());
+        DiscussionBaseReference.OnWidthChange(discussionWindowDimensionsComputation.GetPreferredWindowWidthClamped());
         CalculateNonOverlappedLineNb();
         textAreaText.text = "";
         Canvas.ForceUpdateCanvases();
@@ -382,11 +382,12 @@ class DiscussionWindowPositioner
 public class DiscussionWindowDimensionsComponent
 {
     public float Margin;
+    public float MaxWindowWidth;
 }
 
 public interface DiscussionWindowDimensionsComputation
 {
-    float GetCurrentWindowWidth();
+    float GetPreferredWindowWidthClamped();
     float GetCurrentWindowHeight();
     float GetSingleLineHeightWithLineSpace();
     float GetWindowHeight(int lineNB);
@@ -416,9 +417,9 @@ class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
         return textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 
-    public float GetCurrentWindowWidth()
+    public float GetPreferredWindowWidthClamped()
     {
-        return textAreaText.preferredWidth + (DiscussionWindowDimensionsComponent.Margin * 2);
+        return Mathf.Min(textAreaText.preferredWidth + (DiscussionWindowDimensionsComponent.Margin * 2), DiscussionWindowDimensionsComponent.MaxWindowWidth);
     }
 
     public float GetSingleLineHeightWithLineSpace()
