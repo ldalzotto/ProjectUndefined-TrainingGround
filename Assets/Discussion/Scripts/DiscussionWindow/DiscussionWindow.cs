@@ -96,6 +96,11 @@ public class DiscussionWindow : MonoBehaviour
         DiscussionWindowDimensionsTransitionManager.OnHeightChange(newHeight);
     }
 
+    public void OnWidthChange(float newWidth)
+    {
+        DiscussionWindowDimensionsTransitionManager.OnWidthChange(newWidth);
+    }
+
 
     #endregion
 
@@ -192,6 +197,7 @@ class TextOnlyDiscussionWindowDimensionsManager
         textAreaText.text = fullTextContent;
         Canvas.ForceUpdateCanvases();
         DiscussionBaseReference.OnHeightChange(discussionWindowDimensionsComputation.GetWindowHeight(this.displayedLineNB));
+        DiscussionBaseReference.OnWidthChange(discussionWindowDimensionsComputation.GetCurrentWindowWidth());
         CalculateNonOverlappedLineNb();
         textAreaText.text = "";
         Canvas.ForceUpdateCanvases();
@@ -380,12 +386,10 @@ public class DiscussionWindowDimensionsComponent
 
 public interface DiscussionWindowDimensionsComputation
 {
+    float GetCurrentWindowWidth();
     float GetCurrentWindowHeight();
-    float GetMargin();
     float GetSingleLineHeightWithLineSpace();
-    float GetLineSpace();
     float GetWindowHeight(int lineNB);
-    float GetTextAreaWidth();
 }
 
 class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
@@ -412,24 +416,14 @@ class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
         return textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 
-    public float GetLineSpace()
+    public float GetCurrentWindowWidth()
     {
-        return textAreaText.lineSpacing;
-    }
-
-    public float GetMargin()
-    {
-        return DiscussionWindowDimensionsComponent.Margin;
+        return textAreaText.preferredWidth + (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 
     public float GetSingleLineHeightWithLineSpace()
     {
         return (textAreaText.font.lineHeight + textAreaText.lineSpacing);
-    }
-
-    public float GetTextAreaWidth()
-    {
-        return discussionWindowTransform.sizeDelta.x - (DiscussionWindowDimensionsComponent.Margin * 2);
     }
 
     public float GetWindowHeight(int lineNb)
@@ -479,6 +473,11 @@ class DiscussionWindowDimensionsTransitionManager
     {
         heightUpdating = true;
         targetWindowheight = newHeight;
+    }
+
+    public void OnWidthChange(float newWidth)
+    {
+        discussionWindowTransform.sizeDelta = new Vector2(newWidth, discussionWindowTransform.sizeDelta.y);
     }
 }
 #endregion
