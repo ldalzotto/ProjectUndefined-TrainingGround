@@ -8,11 +8,13 @@
 		_Metallic("Metallic", Range(0,1)) = 0.0
 
 		_MinimumNdotL("Minimum absolute NdotL", Range(0,1)) = 0.0
-
+				_FacingColorLerp("Facing Color Lerp", Range(0,1)) = 0.5
+			_MinimumNdotLFacingColor("Minimum NdotL facing color", Range(0,1)) = 0.5
 		_RimIntensity("Rim Intensity", float) = 1.0
 
 		_AlphaCutout("Alpha Cutout", Range(0.0,1.0)) = 0.0
 			_AlphaCutSmooth("Alpha Cut Smooth", Range(0.0,1.0)) = 0.05
+
 
 	}
 		SubShader
@@ -32,6 +34,8 @@
 			sampler2D _MainTex;
 
 			half _MinimumNdotL;
+			half _FacingColorLerp;
+			half _MinimumNdotLFacingColor;
 
 			//rim effect
 			half _RimIntensity;
@@ -45,7 +49,11 @@
 			//light model
 			half4 LightingWrapped(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
 			{
-				return LightingWrappedCalculation(s.Normal, s.Alpha, lightDir, _LightColor0, _MinimumNdotL, atten);
+				half4 wrappedLightColor = LightingWrappedCalculation(s.Normal, s.Alpha, lightDir, _LightColor0, _MinimumNdotL, atten);
+				if (dot(lightDir, s.Normal) > _MinimumNdotLFacingColor) {
+					wrappedLightColor.rgb = lerp(wrappedLightColor, dot(lightDir, s.Normal) *_LightColor0*atten, _FacingColorLerp).rgb;
+				}
+				return wrappedLightColor;
 			}
 
 			struct appdata
