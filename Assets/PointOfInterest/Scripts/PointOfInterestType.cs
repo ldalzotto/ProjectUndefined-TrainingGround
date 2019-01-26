@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class PointOfInterestType : MonoBehaviour
@@ -24,6 +25,18 @@ public class PointOfInterestType : MonoBehaviour
         this.pointOfInterestScenarioState = gameObject.AddComponent<PointOfInterestScenarioState>();
         this.PointOfInterestContextData = GetComponentInChildren<PointOfInterestContextDataContainer>();
         PointOfInterestEventManager.OnPOICreated(this);
+    }
+
+    private void OnDrawGizmos()
+    {
+        var labelStyle = GUI.skin.GetStyle("Label");
+        labelStyle.alignment = TextAnchor.MiddleCenter;
+        labelStyle.normal.textColor = Color.red;
+#if UNITY_EDITOR
+        Handles.Label(transform.position, PointOfInterestId.ToString(), labelStyle);
+#endif
+
+        Gizmos.DrawIcon(transform.position + new Vector3(0, 1.5f, 0), "Gizmo_POI", true);
     }
 
     #region Logical Conditions
