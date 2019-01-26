@@ -1,10 +1,12 @@
 ﻿public class AddGrabbableItem : TimelineNodeWorkflowAction
 {
     private PointOfInterestId poiInvolved;
+    private ItemID itemID;
     private AContextAction contextAction;
 
-    public AddGrabbableItem(PointOfInterestId poiInvolved, AContextAction contextAction)
+    public AddGrabbableItem(ItemID itemID, PointOfInterestId poiInvolved, AContextAction contextAction)
     {
+        this.itemID = itemID;
         this.poiInvolved = poiInvolved;
         this.contextAction = contextAction;
     }
@@ -14,7 +16,7 @@
         var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
         if (foundedPoi != null)
         {
-            foundedPoi.OnGrabbableItemAdd(contextAction);
+            foundedPoi.OnGrabbableItemAdd(itemID, contextAction);
         }
     }
 }

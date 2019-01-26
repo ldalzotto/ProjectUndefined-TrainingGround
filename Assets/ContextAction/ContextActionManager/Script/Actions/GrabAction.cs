@@ -3,9 +3,9 @@
 public class GrabAction : AContextAction
 {
     public Item Item;
+    private bool deletePOIOnGrab;
 
     private GrabActionInput grabActionInput;
-    private bool animationEnded;
 
     private InventoryEventManager InventoryEventManager;
     private PointOfInterestEventManager PointOfInterestEventManager;
@@ -17,28 +17,25 @@ public class GrabAction : AContextAction
 
     #endregion
 
-    public GrabAction(ItemID itemId, AContextAction nextAction) : base(nextAction)
+    public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
     {
         Item = PrefabContainer.InventoryItemsPrefabs[itemId];
         InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+
+        this.deletePOIOnGrab = deletePOIOnGrab;
     }
 
     public override bool ComputeFinishedConditions()
     {
-        return animationEnded;
+        return true;
     }
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
-        animationEnded = false;
         grabActionInput = (GrabActionInput)ContextActionInput;
         this.associatedPOI = grabActionInput.TargetedPOI;
-        this.associatedPOI.StartCoroutine(AnimationPlayerHelper.Play(grabActionInput.PlayerAnimator, grabActionInput.PlayerAnimationEnum, 0f, () =>
-         {
-             InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
-             animationEnded = true;
-         }));
+        InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
     }
 
     public override void Tick(float d)
@@ -48,27 +45,24 @@ public class GrabAction : AContextAction
 
     public override void AfterFinishedEventProcessed()
     {
-        PointOfInterestEventManager.DestroyPOI(this.associatedPOI);
+        if (deletePOIOnGrab)
+        {
+            PointOfInterestEventManager.DestroyPOI(this.associatedPOI);
+        }
     }
 }
 
 public class GrabActionInput : AContextActionInput
 {
     private PointOfInterestType targetedPOI;
-    private Animator playerAnimator;
-    private PlayerAnimatioNnamesEnum playerAnimationEnum;
     private Item grabbedItem;
 
-    public GrabActionInput(PointOfInterestType targetedPOI, Animator playerAnimator, PlayerAnimatioNnamesEnum playerAnimationEnum, Item grabbedItem)
+    public GrabActionInput(PointOfInterestType targetedPOI, Item grabbedItem)
     {
         this.targetedPOI = targetedPOI;
-        this.playerAnimator = playerAnimator;
-        this.playerAnimationEnum = playerAnimationEnum;
         this.grabbedItem = grabbedItem;
     }
 
-    public Animator PlayerAnimator { get => playerAnimator; }
     public Item GrabbedItem { get => grabbedItem; }
-    public PlayerAnimatioNnamesEnum PlayerAnimationEnum { get => playerAnimationEnum; }
     public PointOfInterestType TargetedPOI { get => targetedPOI; }
 }

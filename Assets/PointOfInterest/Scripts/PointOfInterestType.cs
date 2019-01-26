@@ -34,9 +34,9 @@ public class PointOfInterestType : MonoBehaviour
     #endregion
 
     #region External Events
-    public void OnGrabbableItemAdd(AContextAction contextActionToAdd)
+    public void OnGrabbableItemAdd(ItemID itemID, AContextAction contextActionToAdd)
     {
-        ContextActionSynchronizerManager.OnGrabbableItemAdded(this, contextActionToAdd);
+        ContextActionSynchronizerManager.OnGrabbableItemAdded(this, itemID, contextActionToAdd);
     }
     public void OnGrabbableItemRemove(ItemID itemId)
     {
@@ -100,61 +100,44 @@ class ContextActionSynchronizerManager
 {
     private GameObject contextActionContainer;
 
-    private Dictionary<string, List<AContextAction>> contextActions = new Dictionary<string, List<AContextAction>>();
+    private Dictionary<string, AContextAction> contextActions = new Dictionary<string, AContextAction>();
 
 
     public List<AContextAction> ContextActions
     {
         get
         {
-            return contextActions.Values.SelectMany(d => d).ToList();
+            return contextActions.Values.ToList();
         }
     }
 
-    public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, AContextAction contextActionToAdd)
+    public void OnGrabbableItemAdded(PointOfInterestType pointOfInterestType, ItemID itemId, AContextAction contextActionToAdd)
     {
-
-        if (!contextActions.ContainsKey(typeof(GrabAction).ToString()))
-        {
-
-            contextActions.Add(typeof(GrabAction).ToString(), new List<AContextAction>() { contextActionToAdd });
-        }
-        else
-        {
-            contextActions[typeof(GrabAction).ToString()].Add(contextActionToAdd);
-        }
-
+        var key = itemId.ToString();
+        ContextActionAddSilently(contextActionToAdd, key);
     }
 
-    public bool OnGrabbableItemRemoved(ItemID itemID)
+    public void OnGrabbableItemRemoved(ItemID itemID)
     {
-        GrabAction contextActionToRemove = null;
-        var grabContextActions = contextActions[typeof(GrabAction).ToString()];
-        foreach (GrabAction grabContextAction in grabContextActions)
-        {
-            if (grabContextAction.Item.ItemID == itemID)
-            {
-                contextActionToRemove = grabContextAction;
-            }
-        }
-        if (contextActionToRemove != null)
-        {
-            grabContextActions.Remove(contextActionToRemove);
-        }
-        return (grabContextActions.Count == 0);
+        contextActions.Remove(itemID.ToString());
     }
 
     public void OnDiscussionTreeAdd(AContextAction contextActionToAdd)
     {
-        if (!contextActions.ContainsKey(typeof(TalkAction).ToString()))
+        var key = typeof(TalkAction).ToString();
+        ContextActionAddSilently(contextActionToAdd, key);
+    }
+
+    private void ContextActionAddSilently(AContextAction contextActionToAdd, string key)
+    {
+        if (contextActions.ContainsKey(key))
         {
-            contextActions[typeof(TalkAction).ToString()] = new List<AContextAction>() { contextActionToAdd };
+            contextActions[key] = contextActionToAdd;
         }
         else
         {
-            contextActions[typeof(TalkAction).ToString()].Add(contextActionToAdd);
+            contextActions.Add(key, contextActionToAdd);
         }
-
     }
 
 }

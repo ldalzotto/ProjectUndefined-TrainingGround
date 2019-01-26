@@ -11,8 +11,11 @@ public class ContextActionBuilder
         }
         else if (contextAction.GetType() == typeof(GrabAction))
         {
-            return new GrabActionInput(playerManager.GetCurrentTargetedPOI(), playerManager.GetPlayerAnimator(), PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN,
-                  ((GrabAction)contextAction).Item);
+            return new GrabActionInput(playerManager.GetCurrentTargetedPOI(), ((GrabAction)contextAction).Item);
+        }
+        else if (contextAction.GetType() == typeof(AnimatorAction))
+        {
+            return new AnimatorActionInput(playerManager.GetPlayerAnimator(), PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN, playerManager);
         }
         else if (contextAction.GetType() == typeof(GiveAction))
         {

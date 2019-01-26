@@ -80,6 +80,7 @@
     <Compile Include="Assets\Configuration\Level1\Level1Configuration.cs" />
     <Compile Include="Assets\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />
     <Compile Include="Assets\Configuration\Level1\TestSceneInitialisation.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\AnimatorAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\CutsceneTimelineAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
