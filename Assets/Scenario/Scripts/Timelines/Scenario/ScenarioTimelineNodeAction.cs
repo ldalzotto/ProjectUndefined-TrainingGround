@@ -9,6 +9,7 @@
         this.itemID = itemID;
         this.poiInvolved = poiInvolved;
         this.contextAction = contextAction;
+        this.contextAction.ContextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
     public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)

@@ -81,7 +81,7 @@ public abstract class AContextAction
     public abstract void AfterFinishedEventProcessed();
     public abstract void Tick(float d);
 
-    //TODO => next Context action
+    protected ContextActionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
     private AContextAction nextContextAction;
 
     private ContextActionEventManager ContextActionEventManager;
@@ -115,6 +115,7 @@ public abstract class AContextAction
 
     public AContextActionInput ContextActionInput { get => contextActionInput; set => contextActionInput = value; }
     public AContextAction NextContextAction { get => nextContextAction; set => nextContextAction = value; }
+    public ContextActionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId { get => contextActionWheelNodeConfigurationId; set => contextActionWheelNodeConfigurationId = value; }
 
     public bool IsFinished()
     {

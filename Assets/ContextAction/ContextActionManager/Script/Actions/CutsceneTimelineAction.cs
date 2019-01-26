@@ -102,7 +102,7 @@ public class PlayerInitialPositionerManager
             positionReached = true;
             playerTransform.position = targetTransform.position;
         }
-        // Debug.Log(Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward));
+
         if (Mathf.Abs(Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward)) >= 0.99)
         {
             rotationReached = true;

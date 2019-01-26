@@ -90,7 +90,6 @@
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionResolver.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />

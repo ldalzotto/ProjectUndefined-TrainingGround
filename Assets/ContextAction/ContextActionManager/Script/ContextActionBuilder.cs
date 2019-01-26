@@ -15,7 +15,7 @@ public class ContextActionBuilder
         }
         else if (contextAction.GetType() == typeof(AnimatorAction))
         {
-            return new AnimatorActionInput(playerManager.GetPlayerAnimator(), PlayerAnimatioNnamesEnum.PLAYER_ACTION_GRAB_DOWN, playerManager);
+            return new AnimatorActionInput(playerManager.GetPlayerAnimator(), playerManager);
         }
         else if (contextAction.GetType() == typeof(GiveAction))
         {

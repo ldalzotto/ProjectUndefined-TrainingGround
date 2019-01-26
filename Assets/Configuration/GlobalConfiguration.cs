@@ -1,5 +1,7 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 #region Point Of Interest Configuraiton
 public enum PointOfInterestId
@@ -37,5 +39,38 @@ public class ItemContextActionBuilder
         }
         return new List<AContextAction>();
     }
+}
+#endregion
+
+#region Context Action Wheel Configuration
+public class ContextActionWheelNodeConfigurationData
+{
+    public static string ICONS_BASE_PATH = "ContextAction/Icons/";
+    private Sprite contextActionWheelIcon;
+
+    public ContextActionWheelNodeConfigurationData(Type contextActionType)
+    {
+        contextActionWheelIcon = Resources.Load<Sprite>(ICONS_BASE_PATH + contextActionType.Name + "_icon");
+    }
+
+    public Sprite ContextActionWheelIcon { get => contextActionWheelIcon; }
+}
+
+public static class ContextActionWheelNodeConfiguration
+{
+    public static Dictionary<ContextActionWheelNodeConfigurationId, ContextActionWheelNodeConfigurationData> contextActionWheelNodeConfiguration =
+        new Dictionary<ContextActionWheelNodeConfigurationId, ContextActionWheelNodeConfigurationData>()
+        {
+            {ContextActionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, new ContextActionWheelNodeConfigurationData(typeof(GrabAction)) },
+            {ContextActionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG, new ContextActionWheelNodeConfigurationData(typeof(GiveAction)) },
+            {ContextActionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG, new ContextActionWheelNodeConfigurationData(typeof(TalkAction)) }
+        };
+}
+
+public enum ContextActionWheelNodeConfigurationId
+{
+    GRAB_CONTEXT_ACTION_WHEEL_CONFIG = 0,
+    GIVE_CONTEXT_ACTION_WHEEL_CONFIG = 1,
+    TALK_CONTEXT_ACTION_WHEEL_CONFIG = 2
 }
 #endregion

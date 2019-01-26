@@ -41,6 +41,7 @@ public class GiveAction : AContextAction
 
         this.itemGiven = itemGiven;
         GiveActionAnimationManager = new GiveActionAnimationManager(PlayerGlobalAnimationEventHandler, itemGiven);
+        contextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
     public override bool ComputeFinishedConditions()
@@ -61,7 +62,7 @@ public class GiveAction : AContextAction
         }
         else
         {
-            this.itemGiven.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnGiveAnimationEnd));
+            this.itemGiven.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnGiveAnimationEnd));
         }
     }
 
@@ -120,7 +121,7 @@ class GiveActionAnimationManager
         PlayerGlobalAnimationEventHandler.OnHideGivenItem += HideDisplayedItem;
 
         PlayerAnimator = giveActionInput.PlayerAnimator;
-        return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNnamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
+        return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
          {
              PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
              PlayerGlobalAnimationEventHandler.OnHideGivenItem -= HideDisplayedItem;

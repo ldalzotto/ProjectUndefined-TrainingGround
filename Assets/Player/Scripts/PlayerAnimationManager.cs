@@ -101,7 +101,7 @@ class PlayerIdleAnimationManager
                 elapsedTime += delta;
                 if (elapsedTime >= PlayerIdleAnimationManagerComponent.TimeThresholdTriggerIdleAnimation)
                 {
-                    animationCoroutine = PlayerManagerReference.StartCoroutine(PlayIdleAnimation(PlayerAnimatioNnamesEnum.PLAYER_IDLE_SMOKE));
+                    animationCoroutine = PlayerManagerReference.StartCoroutine(PlayIdleAnimation(PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE));
                 }
             }
         }
@@ -118,10 +118,10 @@ class PlayerIdleAnimationManager
 
     private void SwitchToListeningAnimation()
     {
-        PlayerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNnamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
+        PlayerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
     }
 
-    private IEnumerator PlayIdleAnimation(PlayerAnimatioNnamesEnum playerAnimatioNnamesEnum)
+    private IEnumerator PlayIdleAnimation(PlayerAnimatioNamesEnum playerAnimatioNnamesEnum)
     {
         isIdlingAnimationRuning = true;
         var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;

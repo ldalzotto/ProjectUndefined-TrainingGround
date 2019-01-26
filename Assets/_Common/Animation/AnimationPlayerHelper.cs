@@ -13,7 +13,7 @@ public class AnimationPlayerHelper
         animationEndCallback.Invoke();
     }
 
-    public static IEnumerator Play(Animator animator, PlayerAnimatioNnamesEnum playerAnimatioNnamesEnum, float crossFadeDuration, Action animationEndCallback)
+    public static IEnumerator Play(Animator animator, PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration, Action animationEndCallback)
     {
         var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
         var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].LayerIndex;

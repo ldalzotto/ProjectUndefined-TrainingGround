@@ -21,7 +21,8 @@ public class WheelActionNode : MonoBehaviour
         var obj = Instantiate(PrefabContainer.Instance.ActionWheelNodePrefab);
         var wheelActionNode = obj.GetComponent<WheelActionNode>();
         wheelActionNode.imageComponent = obj.GetComponent<Image>();
-        wheelActionNode.imageComponent.sprite = ContextActionIconResolver.ResolveIcon(contextAction.GetType());
+
+        wheelActionNode.imageComponent.sprite = ContextActionWheelNodeConfiguration.contextActionWheelNodeConfiguration[contextAction.ContextActionWheelNodeConfigurationId].ContextActionWheelIcon;
 
         wheelActionNode.AssociatedContextAction = contextAction;
         return wheelActionNode;

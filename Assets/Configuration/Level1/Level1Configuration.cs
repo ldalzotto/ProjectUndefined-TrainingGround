@@ -8,13 +8,14 @@ public class IdCardGrabScenarioNode : TimelineNode
         new RemoveGrabbableItem(ItemID.ID_CARD, PointOfInterestId.ID_CARD)
     };
 
-    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() { new AddGrabbableItem(ItemID.ID_CARD, PointOfInterestId.ID_CARD,
-        new AnimatorAction(
-            new GrabAction(ItemID.ID_CARD, true,
-            new DummyContextAction(null)
+    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() {
+        new AddGrabbableItem(ItemID.ID_CARD, PointOfInterestId.ID_CARD,
+            new AnimatorAction( PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN,
+                new GrabAction(ItemID.ID_CARD, true,
+                   new DummyContextAction(null)
+                )
             )
-           )
-       )
+        )
     };
 
     public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>()
@@ -28,7 +29,7 @@ public class IdCardGrabScenarioNodeV2 : TimelineNode
     public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>() { new RemoveGrabbableItem(ItemID.ID_CARD_V2, PointOfInterestId.ID_CARD_V2) };
 
     public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() { new AddGrabbableItem(ItemID.ID_CARD_V2, PointOfInterestId.ID_CARD_V2,
-        new AnimatorAction(new GrabAction(ItemID.ID_CARD_V2, true, null))
+        new AnimatorAction(PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN, new GrabAction(ItemID.ID_CARD_V2, true, null))
        )};
 
     public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>()

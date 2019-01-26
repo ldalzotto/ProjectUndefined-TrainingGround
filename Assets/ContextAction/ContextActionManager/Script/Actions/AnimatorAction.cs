@@ -2,12 +2,12 @@
 
 public class AnimatorAction : AContextAction
 {
-
+    private PlayerAnimatioNamesEnum playerAnimationEnum;
     private bool animationEnded;
 
-    public AnimatorAction(AContextAction nextContextAction) : base(nextContextAction)
+    public AnimatorAction(PlayerAnimatioNamesEnum playerAnimationEnum, AContextAction nextContextAction) : base(nextContextAction)
     {
-
+        this.playerAnimationEnum = playerAnimationEnum;
     }
 
     public override void AfterFinishedEventProcessed()
@@ -24,7 +24,7 @@ public class AnimatorAction : AContextAction
         animationEnded = false;
         var animatorActionInput = (AnimatorActionInput)ContextActionInput;
 
-        animatorActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.Play(animatorActionInput.PlayerAnimator, animatorActionInput.PlayerAnimationEnum, 0f, () =>
+        animatorActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.Play(animatorActionInput.PlayerAnimator, playerAnimationEnum, 0f, () =>
         {
             animationEnded = true;
         }));
@@ -40,17 +40,14 @@ public class AnimatorAction : AContextAction
 public class AnimatorActionInput : AContextActionInput
 {
     private Animator playerAnimator;
-    private PlayerAnimatioNnamesEnum playerAnimationEnum;
     private PlayerManager playerManager;
 
-    public AnimatorActionInput(Animator playerAnimator, PlayerAnimatioNnamesEnum playerAnimationEnum, PlayerManager playerManager)
+    public AnimatorActionInput(Animator playerAnimator, PlayerManager playerManager)
     {
         this.playerAnimator = playerAnimator;
-        this.playerAnimationEnum = playerAnimationEnum;
         this.playerManager = playerManager;
     }
 
     public Animator PlayerAnimator { get => playerAnimator; }
-    public PlayerAnimatioNnamesEnum PlayerAnimationEnum { get => playerAnimationEnum; }
     public PlayerManager PlayerManager { get => playerManager; }
 }
