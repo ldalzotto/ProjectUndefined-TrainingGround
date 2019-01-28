@@ -128,7 +128,6 @@
     <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\TimelineIDs.cs" />
     <Compile Include="Assets\Scenario\Scripts\TimelinesEventManager.cs" />
-    <Compile Include="Assets\Test\DiscussionTestScript.cs" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeConeShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
