@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{E0761879-1116-AA60-DD31-6A20A1A4CFE3}</ProjectGuid>
+    <ProjectGuid>{4A8999B9-7C81-2B54-6603-CD8C46C12AEC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -47,7 +47,7 @@
   <PropertyGroup>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2018.3.0f2</UnityVersion>
   </PropertyGroup>
@@ -60,89 +60,54 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
-    <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
-    <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
-    <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
-    <Compile Include="Assets\_Collision\CollisionType.cs" />
-    <Compile Include="Assets\_Common\Animation\AnimationPlayerHelper.cs" />
-    <Compile Include="Assets\_Common\Component\ComponentSearchExtensions.cs" />
-    <Compile Include="Assets\_Common\Component\ComponentSearchHelper.cs" />
-    <Compile Include="Assets\_Common\CustomYields\WaitEndOfCutscene.cs" />
-    <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
-    <Compile Include="Assets\_Common\CustomYields\WaitForNavAgentDestinationReached.cs" />
-    <Compile Include="Assets\_Common\FX\TriggerableEffect.cs" />
-    <Compile Include="Assets\_Constants\AnimationConstants.cs" />
-    <Compile Include="Assets\_Constants\StringConstants.cs" />
-    <Compile Include="Assets\_Constants\TagConstants.cs" />
-    <Compile Include="Assets\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
-    <Compile Include="Assets\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
-    <Compile Include="Assets\Configuration\GlobalConfiguration.cs" />
-    <Compile Include="Assets\Configuration\Level1\Level1Configuration.cs" />
-    <Compile Include="Assets\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />
-    <Compile Include="Assets\Configuration\Level1\TestSceneInitialisation.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\AnimatorAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\CutsceneTimelineAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GiveAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\TalkAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
-    <Compile Include="Assets\Cutscenes\Scripts\Cutscene.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionEventHandler.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
-    <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
-    <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryCell.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryEventManager.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryManager.cs" />
-    <Compile Include="Assets\Item\Inventory\Script\InventoryMenu.cs" />
-    <Compile Include="Assets\Item\ItemObject\GiveActionMiniature\Scripts\GiveActionMiniatureInstanciate.cs" />
-    <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
-    <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
-    <Compile Include="Assets\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
-    <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerAnimationEventHandler.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerAnimationManager.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\Player\Scripts\PlayerManagerEventHandler.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestContextData\DataTypes\CutsceneTimelinePOIData.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestContextData\PointOfInterestContextDataContainer.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestManager.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
-    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
-    <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\ATimeline.cs" />
-    <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\TimelineGraphJSONModel.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Action\ScenarioAction.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
-    <Compile Include="Assets\Scenario\Scripts\Timelines\TimelineIDs.cs" />
-    <Compile Include="Assets\Scenario\Scripts\TimelinesEventManager.cs" />
-    <None Include="Assets\_Shader\FX\Smoke\SmokeConeShader.shader" />
-    <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
-    <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
-    <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
-    <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
-    <None Include="Assets\_Shader\FX\Smoke\wrappedLight.cginc" />
-    <None Include="Assets\_Shader\FX\Smoke\NewSurfaceShader.shader" />
-    <None Include="Assets\_Shader\FX\Smoke\noiseSimplex.cginc" />
-    <None Include="Assets\_Shader\FX\Smoke\SmokeShader.shader" />
-    <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
-    <None Include="Assets\Discussion\Font\LICENSE.txt" />
-    <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Calculation Base\CalculationCanvasType.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Calculation Base\CanvasCalculator.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Calculation Base\FloatCalculation.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Graph Example\GraphCanvasType.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Graph Example\GraphTraversal.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\IO Formats\XMLImportExport.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Runtime Examples\RTCanvasCalculator.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Default\Runtime Examples\RTNodeEditor.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\ConnectionKnob.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\ConnectionPort.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\ConnectionPortManager.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\Node.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\NodeCanvas.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\NodeCanvasTraversal.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\NodeEditorState.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\NodeGroup.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Core\ValueConnectionKnob.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\CoreExtensions\ConnectionPortStyles.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\CoreExtensions\NodeCanvasTypes.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\CoreExtensions\NodeTypes.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Interface\NodeEditorCallbackReceiver.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Interface\NodeEditorGUI.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Interface\NodeEditorInputControls.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Interface\NodeEditorInputSystem.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\Interface\NodeEditorInterface.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\NodeEditor.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\SaveSystem\ImportExportFormat.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\SaveSystem\ImportExportManager.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\SaveSystem\ImportExportStructure.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\SaveSystem\NodeCanvasSceneSave.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\SaveSystem\NodeEditorSaveManager.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Framework\SaveSystem\NodeEditorUserCache.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\Example\AllAroundNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\Example\ExampleNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\Example\FlowNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\Example\ResizingNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\Example\RootGraphNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\FloatCalc\CalcNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\FloatCalc\DisplayNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Nodes\FloatCalc\InputNode.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Utilities\EditorLoadingControl.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Utilities\GUI\GUIScaleUtility.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Utilities\GUI\OverlayGUI.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Utilities\GUI\RTEditorGUI.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Utilities\ReflectionUtility.cs" />
+    <Compile Include="Assets\Plugins\Node_Editor\Utilities\ResourceManager.cs" />
+    <None Include="Assets\Plugins\Node_Editor\Resources\Shader\LineShader.shader" />
+    <None Include="Assets\Plugins\Node_Editor\Utilities\link.xml" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>

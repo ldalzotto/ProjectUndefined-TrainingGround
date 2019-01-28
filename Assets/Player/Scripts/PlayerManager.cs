@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerManager : MonoBehaviour
 {
     [Header("Player Movement")]
     public float SpeedMultiplicationFactor;
+    public float AIRotationSpeed;
 
     [Header("Camera Rotation")]
     public float CameraRotationSpeed;
@@ -43,12 +46,15 @@ public class PlayerManager : MonoBehaviour
         GameObject PlayerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
         Animator PlayerAnimator = GetComponentInChildren<Animator>();
         Rigidbody PlayerRigidBody = GetComponent<Rigidbody>();
+        NavMeshAgent PlayerAgent = GetComponent<NavMeshAgent>();
+        PlayerAgent.updatePosition = false;
+        PlayerAgent.updateRotation = false;
 
         SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
 
         this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
-        this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager);
+        this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager, PlayerAgent, transform);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, PlayerObject.transform);
         this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
@@ -68,7 +74,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            PlayerMoveManager.Tick(d);
+            PlayerMoveManager.Tick(d, SpeedMultiplicationFactor, AIRotationSpeed);
         }
 
         if (IsAllowedToDoAnyInteractions())
@@ -124,7 +130,8 @@ public class PlayerManager : MonoBehaviour
     #region Logical Conditions
     private bool IsAllowedToMove()
     {
-        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed;
+        return (!PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed)
+            || PlayerMoveManager.IsDirectedByAi;
     }
 
     private bool IsAllowedToDoAnyInteractions()
@@ -178,6 +185,14 @@ public class PlayerManager : MonoBehaviour
     public void OnInventoryDisabled()
     {
         PlayerInventoryTriggerManager.OnInventoryDisabled();
+    }
+    public void SetDestination(Vector3 destination)
+    {
+        StartCoroutine(PlayerMoveManager.SetDestination(destination));
+    }
+    public IEnumerator SetDestinationCoRoutine(Vector3 destination)
+    {
+        return PlayerMoveManager.SetDestination(destination);
     }
     #endregion
 
@@ -241,33 +256,56 @@ class PlayerMoveManager
     private Transform CameraPivotPoint;
     private Rigidbody PlayerRigidBody;
     private GameInputManager GameInputManager;
+    private NavMeshAgent playerAgent;
+    private Transform playerTransform;
 
+    private bool isDirectedByAi;
     private Vector3 playerMovementOrientation;
     private float playerSpeedMagnitude;
 
     public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; }
+    public bool IsDirectedByAi { get => isDirectedByAi; }
 
-    public PlayerMoveManager(Transform cameraPivotPoint, Rigidbody playerRigidBody, GameInputManager gameInputManager)
+    public PlayerMoveManager(Transform cameraPivotPoint, Rigidbody playerRigidBody, GameInputManager gameInputManager, NavMeshAgent playerAgent, Transform playerTransform)
     {
         CameraPivotPoint = cameraPivotPoint;
         PlayerRigidBody = playerRigidBody;
         GameInputManager = gameInputManager;
+        this.playerAgent = playerAgent;
+        this.playerTransform = playerTransform;
     }
 
-    public void Tick(float d)
+    public void Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
     {
-        var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
+        if (!isDirectedByAi)
+        {
+            var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
 
-        var inputDisplacementVector = GameInputManager.CurrentInput.LocomotionAxis();
-        var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
+            var inputDisplacementVector = GameInputManager.CurrentInput.LocomotionAxis();
+            var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
 
-        playerMovementOrientation = projectedDisplacement.normalized;
+            playerMovementOrientation = projectedDisplacement.normalized;
 
-        #region Calculate magnitude attenuation
-        float magnitudeAttenuationDiagonal = 1f;
+            #region Calculate magnitude attenuation
+            float magnitudeAttenuationDiagonal = 1f;
 
-        playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
-        #endregion
+            playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
+            #endregion
+        }
+        else
+        {
+            playerSpeedMagnitude = 1;
+            if (playerAgent.velocity.normalized != Vector3.zero)
+            {
+                playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, Quaternion.LookRotation(playerAgent.velocity.normalized), d * AIRotationSpeed);
+            }
+
+            playerMovementOrientation = (playerAgent.nextPosition - playerTransform.position).normalized;
+            //    playerAgent.velocity = playerMovementOrientation * playerSpeedMagnitude * SpeedMultiplicationFactor;
+            playerAgent.speed = SpeedMultiplicationFactor;
+            PlayerRigidBody.transform.position = playerAgent.nextPosition;
+        }
+
     }
 
     public void ResetSpeed()
@@ -277,14 +315,28 @@ class PlayerMoveManager
 
     public void FixedTick(float d, float SpeedMultiplicationFactor)
     {
-        //move rigid body rotation
-        if (playerMovementOrientation.sqrMagnitude > .05)
+        if (!isDirectedByAi)
         {
-            PlayerRigidBody.MoveRotation(Quaternion.LookRotation(playerMovementOrientation));
-        }
+            //move rigid body rotation
+            if (playerMovementOrientation.sqrMagnitude > .05)
+            {
+                PlayerRigidBody.MoveRotation(Quaternion.LookRotation(playerMovementOrientation));
+            }
 
-        //move rigid body
-        PlayerRigidBody.velocity = playerMovementOrientation * playerSpeedMagnitude * SpeedMultiplicationFactor;
+            //move rigid body
+            PlayerRigidBody.velocity = playerMovementOrientation * playerSpeedMagnitude * SpeedMultiplicationFactor;
+        }
+    }
+
+    public IEnumerator SetDestination(Vector3 destination)
+    {
+        isDirectedByAi = true;
+        playerAgent.nextPosition = playerTransform.position;
+        playerAgent.SetDestination(destination);
+        PlayerRigidBody.isKinematic = true;
+        yield return GameInputManager.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
+        isDirectedByAi = false;
+        PlayerRigidBody.isKinematic = false;
     }
 
 }

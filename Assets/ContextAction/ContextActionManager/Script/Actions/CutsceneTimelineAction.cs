@@ -8,7 +8,11 @@ public class CutsceneTimelineAction : AContextAction
     private CutsceneTimelineActionInput CutsceneTimelineActionInput;
     private CutsceneTimelinePOIData CutsceneTimelinePOIData;
     private bool isActionEnded;
+    private bool isAgentDestinationReached;
 
+    #region External Dependencies
+    private PlayerManagerEventHandler PlayerManagerEventHandler;
+    #endregion
 
     #region Internal Dependecnies
     private PlayerInitialPositionerManager PlayerInitialPositionerManager;
@@ -22,6 +26,7 @@ public class CutsceneTimelineAction : AContextAction
     public override void AfterFinishedEventProcessed()
     {
         isActionEnded = false;
+        isAgentDestinationReached = false;
         PlayerInitialPositionerManager = null;
     }
 
@@ -32,6 +37,7 @@ public class CutsceneTimelineAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
+        PlayerManagerEventHandler = GameObject.FindObjectOfType<PlayerManagerEventHandler>();
         var cutsceneTimelineContextActionInput = (CutsceneTimelineActionInput)ContextActionInput;
         this.CutsceneTimelineActionInput = cutsceneTimelineContextActionInput;
         if (cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer != null && cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer.CutsceneTimelinePOIDatas != null)
@@ -42,26 +48,42 @@ public class CutsceneTimelineAction : AContextAction
                 if (cutscenePOIDatas[i].CutsceneId == CutsceneId)
                 {
                     this.CutsceneTimelinePOIData = cutscenePOIDatas[i];
+                    PlayerManagerEventHandler.StartCoroutine(SetAgentDestination(CutsceneTimelinePOIData.PlayerStartingTransform.position));
                     this.PlayerInitialPositionerManager = new PlayerInitialPositionerManager(cutsceneTimelineContextActionInput.PlayerTransform, CutsceneTimelinePOIData.PlayerStartingTransform);
                     break;
                 }
             }
-
-
+        }
+        else
+        {
+            //exit directly
+            isActionEnded = true;
         }
 
     }
 
+
+
     public override void Tick(float d)
     {
-        if (!this.PlayerInitialPositionerManager.IsTargetReached)
+        if (isAgentDestinationReached)
         {
-            this.PlayerInitialPositionerManager.Tick(d);
-            if (this.PlayerInitialPositionerManager.IsTargetReached)
+            if (!this.PlayerInitialPositionerManager.IsTargetReached)
             {
-                this.CutsceneTimelinePOIData.StartCoroutine(PlayCutscene(CutsceneTimelinePOIData.PlayableDirector));
+                this.PlayerInitialPositionerManager.Tick(d);
+                if (this.PlayerInitialPositionerManager.IsTargetReached)
+                {
+                    this.CutsceneTimelinePOIData.StartCoroutine(PlayCutscene(CutsceneTimelinePOIData.PlayableDirector));
+                }
             }
         }
+
+    }
+
+    private IEnumerator SetAgentDestination(Vector3 destination)
+    {
+        yield return PlayerManagerEventHandler.StartCoroutine(PlayerManagerEventHandler.OnSetDestinationCoRoutine(destination));
+        isAgentDestinationReached = true;
     }
 
     private IEnumerator PlayCutscene(PlayableDirector playableDirector)
