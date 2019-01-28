@@ -109,6 +109,7 @@
     <Compile Include="Assets\Item\ItemObject\GiveActionMiniature\Scripts\GiveActionMiniatureInstanciate.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
+    <Compile Include="Assets\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerAnimationEventHandler.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerAnimationManager.cs" />

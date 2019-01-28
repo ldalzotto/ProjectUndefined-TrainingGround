@@ -43,7 +43,7 @@ public class DiscussionWindow : MonoBehaviour
         DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
 
         TextDiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionWindowDimensionsManager);
-        DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
+        DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
         DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
     }
 
@@ -228,12 +228,13 @@ class TextOnlyDiscussionWindowDimensionsManager
 [System.Serializable]
 public class DiscussionWriterComponent
 {
-    public float letterDisplayIntervalTime;
+    private float letterDisplayIntervalTime = 0.01f;
+
+    public float LetterDisplayIntervalTime { get => letterDisplayIntervalTime; }
 }
 
 class DiscussionWriterManager
 {
-    private DiscussionWindow DiscussionReference;
     private DiscussionWriterComponent DiscussionWriterComponent;
     private Text textAreaText;
 
@@ -242,9 +243,12 @@ class DiscussionWriterManager
     private float timeElapsed;
     private bool isTextWriting;
 
-    public DiscussionWriterManager(DiscussionWindow DiscussionReference, DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
+    public delegate void TextFinishedWritingHanlder();
+    public event TextFinishedWritingHanlder OnTextFinishedWriting;
+
+    public DiscussionWriterManager(TextFinishedWritingHanlder TextFinishedWritingHanlder, DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
     {
-        this.DiscussionReference = DiscussionReference;
+        OnTextFinishedWriting += TextFinishedWritingHanlder;
         DiscussionWriterComponent = discussionWriterComponent;
         this.textAreaText = textAreaText;
     }
@@ -260,9 +264,9 @@ class DiscussionWriterManager
 
             if (currentDisplayedText.Length != truncatedTargetText.Length)
             {
-                while (timeElapsed >= DiscussionWriterComponent.letterDisplayIntervalTime)
+                while (timeElapsed >= DiscussionWriterComponent.LetterDisplayIntervalTime)
                 {
-                    timeElapsed -= DiscussionWriterComponent.letterDisplayIntervalTime;
+                    timeElapsed -= DiscussionWriterComponent.LetterDisplayIntervalTime;
                     if (currentDisplayedText.Length < truncatedTargetText.Length)
                     {
                         currentDisplayedText += truncatedTargetText[currentDisplayedText.Length];
@@ -272,7 +276,10 @@ class DiscussionWriterManager
             else
             {
                 isTextWriting = false;
-                DiscussionReference.OnTextFinishedWriting();
+                if (OnTextFinishedWriting != null)
+                {
+                    OnTextFinishedWriting.Invoke();
+                }
             }
         }
 

@@ -40,6 +40,15 @@ public class ItemContextActionBuilder
         return new List<AContextAction>();
     }
 }
+
+public class ItemReceivedDescriptionTextConstants
+{
+    public static Dictionary<ItemID, string> ItemReceivedDescriptionText = new Dictionary<ItemID, string>()
+    {
+        { ItemID.ID_CARD, "A dummy id card."},
+        {ItemID.ID_CARD_V2, "A dummy id card. V2." }
+    };
+}
 #endregion
 
 #region Context Action Wheel Configuration

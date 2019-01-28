@@ -22,6 +22,9 @@ public class PrefabContainer : MonoBehaviour
     public Item IdCardItem;
     public Item IdCardV2Item;
 
+    [Header("Item Grab Popup")]
+    public ItemReceivedPopup ItemReceivedPopup;
+
     public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
 
     public static PrefabContainer Instance

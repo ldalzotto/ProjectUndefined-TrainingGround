@@ -5,6 +5,13 @@ using UnityEngine;
 public class AnimationPlayerHelper
 {
 
+    public static IEnumerator Play(Animator animator, string animationName, int animationlayerIndex, float crossFadeDuration)
+    {
+        animator.CrossFade(animationName, crossFadeDuration);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfAnimation(animator, animationName, animationlayerIndex);
+    }
+
     public static IEnumerator Play(Animator animator, string animationName, int animationlayerIndex, float crossFadeDuration, Action animationEndCallback)
     {
         animator.CrossFade(animationName, crossFadeDuration);
