@@ -62,8 +62,6 @@ public class CutsceneTimelineAction : AContextAction
 
     }
 
-
-
     public override void Tick(float d)
     {
         if (isAgentDestinationReached)
@@ -114,18 +112,18 @@ public class PlayerInitialPositionerManager
 
     public void Tick(float d)
     {
-        playerTransform.position = targetTransform.position;
         playerTransform.rotation = Quaternion.LookRotation(targetTransform.forward);
 
         bool positionReached = false;
         bool rotationReached = false;
+
         if (Vector3.Distance(targetTransform.position, playerTransform.position) < 0.1)
         {
             positionReached = true;
             playerTransform.position = targetTransform.position;
         }
 
-        if (Mathf.Abs(Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward)) >= 0.99)
+        if (Vector3.Dot(playerTransform.transform.forward, targetTransform.transform.forward) >= 0.99)
         {
             rotationReached = true;
             playerTransform.rotation = targetTransform.rotation;

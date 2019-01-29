@@ -320,6 +320,7 @@ class PlayerInputMoveManager
     public void ResetSpeed()
     {
         playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
+        playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
     }
 }
 
