@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class PlayerManager : MonoBehaviour
 {
+    private const string ObstacelOvercomeObjectName = "ObstacleOvercomeTrigger";
+
     [Header("Player Movement")]
     public float SpeedMultiplicationFactor;
     public float AIRotationSpeed;
@@ -27,6 +29,8 @@ public class PlayerManager : MonoBehaviour
 
     private PlayerInputMoveManager PlayerInputMoveManager;
     private PlayerAIMoveManager PlayerAIMoveManager;
+    private PlayerObstacleOvercomeManager PlayerObstacleOvercomeManager;
+
     private PlayerPOITrackerManager PlayerPOITrackerManager;
     private PlayerPOIWheelTriggerManager PlayerPOIWheelTriggerManager;
 
@@ -45,6 +49,7 @@ public class PlayerManager : MonoBehaviour
         #endregion
 
         GameObject PlayerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
+        BoxCollider ObstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
         Animator PlayerAnimator = GetComponentInChildren<Animator>();
         Rigidbody PlayerRigidBody = GetComponent<Rigidbody>();
         NavMeshAgent PlayerAgent = GetComponent<NavMeshAgent>();
@@ -57,6 +62,7 @@ public class PlayerManager : MonoBehaviour
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
         this.PlayerInputMoveManager = new PlayerInputMoveManager(CameraPivotPoint.transform, GameInputManager, PlayerRigidBody);
         this.PlayerAIMoveManager = new PlayerAIMoveManager(PlayerRigidBody, PlayerAgent, transform, this);
+        this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(PlayerRigidBody, ObstacleOvercomeCollider);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, PlayerObject.transform);
         this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
@@ -174,6 +180,13 @@ public class PlayerManager : MonoBehaviour
         if (source.IsPoi)
         {
             PlayerPOITrackerManager.OnObjectExit(collider.gameObject);
+        }
+    }
+    public void ObstacleOvercomeTriggerEnter(Collider collider)
+    {
+        if (IsAllowedToMove())
+        {
+            PlayerObstacleOvercomeManager.ObstacleOvercomeTriggerEnter(collider);
         }
     }
     public void OnContextActionAdded()
@@ -384,6 +397,27 @@ class PlayerSpeedProcessingInput
 
     public Vector3 PlayerMovementOrientation { get => playerMovementOrientation; set => playerMovementOrientation = value; }
     public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; set => playerSpeedMagnitude = value; }
+}
+
+class PlayerObstacleOvercomeManager
+{
+    private Rigidbody playerRigidBody;
+    private BoxCollider obstacleOvercomeCollider;
+
+    public PlayerObstacleOvercomeManager(Rigidbody playerRigidBody, BoxCollider ObstacleOvercomeCollider)
+    {
+        this.playerRigidBody = playerRigidBody;
+        this.obstacleOvercomeCollider = ObstacleOvercomeCollider;
+    }
+
+    public void ObstacleOvercomeTriggerEnter(Collider collider)
+    {
+        if (obstacleOvercomeCollider.bounds.max.y >= collider.bounds.max.y)
+        {
+            var nexPosition = new Vector3(playerRigidBody.position.x, collider.bounds.max.y, playerRigidBody.position.z);
+            this.playerRigidBody.MovePosition(nexPosition);
+        }
+    }
 }
 #endregion
 

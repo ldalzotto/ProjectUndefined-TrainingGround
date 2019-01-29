@@ -116,6 +116,7 @@
     <Compile Include="Assets\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerManagerEventHandler.cs" />
+    <Compile Include="Assets\Player\Scripts\PlayerObstacleOvercomeTriggerTracker.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestContextData\DataTypes\CutsceneTimelinePOIData.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestContextData\PointOfInterestContextDataContainer.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />

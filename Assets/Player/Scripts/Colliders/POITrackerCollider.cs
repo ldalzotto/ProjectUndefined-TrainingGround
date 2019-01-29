@@ -19,7 +19,7 @@ public class POITrackerCollider : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
+            // Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
         }
     }
 
@@ -32,7 +32,7 @@ public class POITrackerCollider : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
+            //   Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
         }
     }
 
