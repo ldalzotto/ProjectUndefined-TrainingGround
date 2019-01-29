@@ -15,7 +15,7 @@ public class PlayerManagerEventHandler : MonoBehaviour
 
     public IEnumerator OnSetDestinationCoRoutine(Vector3 destination)
     {
-        return PlayerManager.SetDestinationCoRoutine(destination);
+        return PlayerManager.SetAIDestinationCoRoutine(destination);
     }
 
 }

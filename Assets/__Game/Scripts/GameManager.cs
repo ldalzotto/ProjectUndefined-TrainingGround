@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //TODO remove
-    [Header("TEST")]
-    public Transform target;
-    public bool go;
 
     //mobile input
     private MobileInputJoystickManager MobileInputJoystickManager;
@@ -41,12 +37,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (go)
-        {
-            go = false;
-            PlayerManager.SetDestination(target.position);
-        }
-
         var d = Time.deltaTime;
 
         MobileInputJoystickManager.Tick(d);

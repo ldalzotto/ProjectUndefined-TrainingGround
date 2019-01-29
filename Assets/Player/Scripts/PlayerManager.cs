@@ -25,7 +25,8 @@ public class PlayerManager : MonoBehaviour
     private CameraFollowManager CameraFollowManager;
     private CameraOrientationManager CameraOrientationManager;
 
-    private PlayerMoveManager PlayerMoveManager;
+    private PlayerInputMoveManager PlayerInputMoveManager;
+    private PlayerAIMoveManager PlayerAIMoveManager;
     private PlayerPOITrackerManager PlayerPOITrackerManager;
     private PlayerPOIWheelTriggerManager PlayerPOIWheelTriggerManager;
 
@@ -54,7 +55,8 @@ public class PlayerManager : MonoBehaviour
 
         this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
-        this.PlayerMoveManager = new PlayerMoveManager(CameraPivotPoint.transform, PlayerRigidBody, GameInputManager, PlayerAgent, transform);
+        this.PlayerInputMoveManager = new PlayerInputMoveManager(CameraPivotPoint.transform, GameInputManager, PlayerRigidBody);
+        this.PlayerAIMoveManager = new PlayerAIMoveManager(PlayerRigidBody, PlayerAgent, transform, this);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, PlayerObject.transform);
         this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
         this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
@@ -68,14 +70,25 @@ public class PlayerManager : MonoBehaviour
         CameraFollowManager.Tick(d, DampTime);
         CameraOrientationManager.Tick(d, CameraRotationSpeed);
 
-        if (!IsAllowedToMove())
+        var playerSpeedMagnitude = 0f;
+        if (!PlayerAIMoveManager.IsDirectedByAi)
         {
-            PlayerMoveManager.ResetSpeed();
+            if (!IsAllowedToMove())
+            {
+                PlayerInputMoveManager.ResetSpeed();
+            }
+            else
+            {
+                PlayerInputMoveManager.Tick(d, SpeedMultiplicationFactor);
+            }
+            playerSpeedMagnitude = PlayerInputMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
         }
         else
         {
-            PlayerMoveManager.Tick(d, SpeedMultiplicationFactor, AIRotationSpeed);
+            PlayerAIMoveManager.Tick(d, SpeedMultiplicationFactor, AIRotationSpeed);
+            playerSpeedMagnitude = PlayerAIMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
         }
+
 
         if (IsAllowedToDoAnyInteractions())
         {
@@ -88,21 +101,24 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        PlayerAnimationManager.PlayerAnimationDataManager.Tick(PlayerMoveManager.PlayerSpeedMagnitude);
+        PlayerAnimationManager.PlayerAnimationDataManager.Tick(playerSpeedMagnitude);
 
-        if (PlayerContextActionManager.IsActionExecuting || PlayerMoveManager.PlayerSpeedMagnitude > float.Epsilon)
+        if (PlayerContextActionManager.IsActionExecuting || playerSpeedMagnitude > float.Epsilon)
         {
             PlayerAnimationManager.OnIdleAnimationReset();
         }
         else
         {
-            PlayerAnimationManager.PlayerIdleAnimationManager.Tick(d, PlayerMoveManager.PlayerSpeedMagnitude);
+            PlayerAnimationManager.PlayerIdleAnimationManager.Tick(d, playerSpeedMagnitude);
         }
     }
 
     public void FixedTick(float d)
     {
-        PlayerMoveManager.FixedTick(d, SpeedMultiplicationFactor);
+        if (!PlayerAIMoveManager.IsDirectedByAi)
+        {
+            PlayerInputMoveManager.FixedTick(d, SpeedMultiplicationFactor);
+        }
     }
 
     public void LateTick(float d)
@@ -130,8 +146,7 @@ public class PlayerManager : MonoBehaviour
     #region Logical Conditions
     private bool IsAllowedToMove()
     {
-        return (!PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed)
-            || PlayerMoveManager.IsDirectedByAi;
+        return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed;
     }
 
     private bool IsAllowedToDoAnyInteractions()
@@ -186,13 +201,13 @@ public class PlayerManager : MonoBehaviour
     {
         PlayerInventoryTriggerManager.OnInventoryDisabled();
     }
-    public void SetDestination(Vector3 destination)
+    public void SetAIDestination(Vector3 destination)
     {
-        StartCoroutine(PlayerMoveManager.SetDestination(destination));
+        StartCoroutine(PlayerAIMoveManager.SetDestination(destination));
     }
-    public IEnumerator SetDestinationCoRoutine(Vector3 destination)
+    public IEnumerator SetAIDestinationCoRoutine(Vector3 destination)
     {
-        return PlayerMoveManager.SetDestination(destination);
+        return PlayerAIMoveManager.SetDestination(destination);
     }
     #endregion
 
@@ -250,82 +265,97 @@ public class CameraOrientationManager
 
 #endregion
 
-#region Player
-class PlayerMoveManager
+#region Player Movement
+class PlayerInputMoveManager
 {
+
     private Transform CameraPivotPoint;
-    private Rigidbody PlayerRigidBody;
     private GameInputManager GameInputManager;
-    private NavMeshAgent playerAgent;
-    private Transform playerTransform;
+    private Rigidbody PlayerRigidBody;
 
-    private bool isDirectedByAi;
-    private Vector3 playerMovementOrientation;
-    private float playerSpeedMagnitude;
-
-    public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; }
-    public bool IsDirectedByAi { get => isDirectedByAi; }
-
-    public PlayerMoveManager(Transform cameraPivotPoint, Rigidbody playerRigidBody, GameInputManager gameInputManager, NavMeshAgent playerAgent, Transform playerTransform)
+    public PlayerInputMoveManager(Transform cameraPivotPoint, GameInputManager gameInputManager, Rigidbody playerRigidBody)
     {
         CameraPivotPoint = cameraPivotPoint;
-        PlayerRigidBody = playerRigidBody;
         GameInputManager = gameInputManager;
-        this.playerAgent = playerAgent;
-        this.playerTransform = playerTransform;
+        PlayerRigidBody = playerRigidBody;
     }
 
-    public void Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
+    private PlayerSpeedProcessingInput playerSpeedProcessingInput;
+
+    public PlayerSpeedProcessingInput PlayerSpeedProcessingInput { get => playerSpeedProcessingInput; }
+
+    public void Tick(float d, float SpeedMultiplicationFactor)
     {
-        if (!isDirectedByAi)
+        var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
+
+        var inputDisplacementVector = GameInputManager.CurrentInput.LocomotionAxis();
+        var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
+
+        var playerMovementOrientation = projectedDisplacement.normalized;
+
+        #region Calculate magnitude attenuation
+        float magnitudeAttenuationDiagonal = 1f;
+
+        var playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
+        #endregion
+        playerSpeedProcessingInput = new PlayerSpeedProcessingInput(playerMovementOrientation, playerSpeedMagnitude);
+    }
+
+    public void FixedTick(float d, float SpeedMultiplicationFactor)
+    {
+        if (playerSpeedProcessingInput != null)
         {
-            var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
-
-            var inputDisplacementVector = GameInputManager.CurrentInput.LocomotionAxis();
-            var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
-
-            playerMovementOrientation = projectedDisplacement.normalized;
-
-            #region Calculate magnitude attenuation
-            float magnitudeAttenuationDiagonal = 1f;
-
-            playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
-            #endregion
-        }
-        else
-        {
-            playerSpeedMagnitude = 1;
-            if (playerAgent.velocity.normalized != Vector3.zero)
+            //move rigid body rotation
+            if (playerSpeedProcessingInput.PlayerMovementOrientation.sqrMagnitude > .05)
             {
-                playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, Quaternion.LookRotation(playerAgent.velocity.normalized), d * AIRotationSpeed);
+                PlayerRigidBody.MoveRotation(Quaternion.LookRotation(playerSpeedProcessingInput.PlayerMovementOrientation));
             }
 
-            playerMovementOrientation = (playerAgent.nextPosition - playerTransform.position).normalized;
-            //    playerAgent.velocity = playerMovementOrientation * playerSpeedMagnitude * SpeedMultiplicationFactor;
-            playerAgent.speed = SpeedMultiplicationFactor;
-            PlayerRigidBody.transform.position = playerAgent.nextPosition;
+            //move rigid body
+            PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * SpeedMultiplicationFactor;
         }
 
     }
 
     public void ResetSpeed()
     {
-        playerSpeedMagnitude = 0;
+        playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
+    }
+}
+
+class PlayerAIMoveManager
+{
+    private Rigidbody PlayerRigidBody;
+    private NavMeshAgent playerAgent;
+    private Transform playerTransform;
+    private PlayerManager PlayerManagerRef;
+
+    public PlayerAIMoveManager(Rigidbody playerRigidBody, NavMeshAgent playerAgent, Transform playerTransform, PlayerManager playerManagerRef)
+    {
+        PlayerRigidBody = playerRigidBody;
+        this.playerAgent = playerAgent;
+        this.playerTransform = playerTransform;
+        PlayerManagerRef = playerManagerRef;
     }
 
-    public void FixedTick(float d, float SpeedMultiplicationFactor)
-    {
-        if (!isDirectedByAi)
-        {
-            //move rigid body rotation
-            if (playerMovementOrientation.sqrMagnitude > .05)
-            {
-                PlayerRigidBody.MoveRotation(Quaternion.LookRotation(playerMovementOrientation));
-            }
+    private bool isDirectedByAi;
+    private PlayerSpeedProcessingInput playerSpeedProcessingInput;
 
-            //move rigid body
-            PlayerRigidBody.velocity = playerMovementOrientation * playerSpeedMagnitude * SpeedMultiplicationFactor;
+    public bool IsDirectedByAi { get => isDirectedByAi; }
+    public PlayerSpeedProcessingInput PlayerSpeedProcessingInput { get => playerSpeedProcessingInput; }
+
+    public void Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
+    {
+        var playerSpeedMagnitude = 1;
+        if (playerAgent.velocity.normalized != Vector3.zero)
+        {
+            playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, Quaternion.LookRotation(playerAgent.velocity.normalized), d * AIRotationSpeed);
         }
+
+        var playerMovementOrientation = (playerAgent.nextPosition - playerTransform.position).normalized;
+        playerSpeedProcessingInput = new PlayerSpeedProcessingInput(playerMovementOrientation, playerSpeedMagnitude);
+        playerAgent.speed = SpeedMultiplicationFactor;
+        PlayerRigidBody.transform.position = playerAgent.nextPosition;
     }
 
     public IEnumerator SetDestination(Vector3 destination)
@@ -334,11 +364,25 @@ class PlayerMoveManager
         playerAgent.nextPosition = playerTransform.position;
         playerAgent.SetDestination(destination);
         PlayerRigidBody.isKinematic = true;
-        yield return GameInputManager.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
+        yield return PlayerManagerRef.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
         isDirectedByAi = false;
         PlayerRigidBody.isKinematic = false;
     }
+}
 
+class PlayerSpeedProcessingInput
+{
+    private Vector3 playerMovementOrientation;
+    private float playerSpeedMagnitude;
+
+    public PlayerSpeedProcessingInput(Vector3 playerMovementOrientation, float playerSpeedMagnitude)
+    {
+        this.playerMovementOrientation = playerMovementOrientation;
+        this.playerSpeedMagnitude = playerSpeedMagnitude;
+    }
+
+    public Vector3 PlayerMovementOrientation { get => playerMovementOrientation; set => playerMovementOrientation = value; }
+    public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; set => playerSpeedMagnitude = value; }
 }
 #endregion
 
