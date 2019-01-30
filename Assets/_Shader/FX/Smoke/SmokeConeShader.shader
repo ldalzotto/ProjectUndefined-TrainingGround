@@ -13,7 +13,7 @@
 
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Wrapped vertex:vert fullforwardshadows alpha:blend
+		#pragma surface surf Wrapped vertex:vert fullforwardshadows alpha:fade
 
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
@@ -34,7 +34,7 @@
 			if (dot(lightDir, s.Normal) > _MinimumNdotLFacingColor) {
 				wrappedLightColor.rgb = lerp(wrappedLightColor, dot(lightDir, s.Normal) *_LightColor0*atten, _FacingColorLerp).rgb;
 			}
-			return wrappedLightColor;
+			return wrappedLightColor * atten;
 		}
 
 		struct appdata
