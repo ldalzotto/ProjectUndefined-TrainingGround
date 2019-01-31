@@ -111,6 +111,8 @@
     <Compile Include="Assets\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
+    <Compile Include="Assets\NPC\Car\Scripts\CarManager.cs" />
+    <Compile Include="Assets\NPC\Scripts\NPCManager.cs" />
     <Compile Include="Assets\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerAnimationEventHandler.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerAnimationManager.cs" />
@@ -132,6 +134,10 @@
     <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\TimelineIDs.cs" />
     <Compile Include="Assets\Scenario\Scripts\TimelinesEventManager.cs" />
+    <Compile Include="Assets\WayPoint\Scripts\CommonManagers\LinearWayPointFollow.cs" />
+    <Compile Include="Assets\WayPoint\Scripts\WayPoint.cs" />
+    <Compile Include="Assets\WayPoint\Scripts\WayPointPath.cs" />
+    <Compile Include="Assets\WayPoint\Scripts\WayPointPathContainer.cs" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeConeShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />

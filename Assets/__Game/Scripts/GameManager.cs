@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private ContextActionManager ContextActionManager;
     private ContextActionWheelManager ContextActionWheelManager;
     private PlayerManager PlayerManager;
+    private NPCManager NPCManager;
     private InventoryManager InventoryManager;
     private DiscussionWindowManager DiscussionWindowManager;
 
@@ -24,15 +25,17 @@ public class GameManager : MonoBehaviour
         ContextActionManager = FindObjectOfType<ContextActionManager>();
         ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
         PlayerManager = FindObjectOfType<PlayerManager>();
+        NPCManager = FindObjectOfType<NPCManager>();
         InventoryManager = FindObjectOfType<InventoryManager>();
         DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
 
         ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
         DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
-
+        //initialization
         PlayerManager.Init();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
+        FindObjectOfType<WayPointPathContainer>().Init();
     }
 
     void Update()
@@ -44,6 +47,7 @@ public class GameManager : MonoBehaviour
         ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);
+        NPCManager.Tick(d);
         InventoryManager.Tick(d);
         DiscussionWindowManager.Tick(d);
     }
@@ -52,6 +56,7 @@ public class GameManager : MonoBehaviour
     {
         var d = Time.fixedDeltaTime;
         PlayerManager.FixedTick(d);
+        NPCManager.FixedTick(d);
     }
 
     private void LateUpdate()
