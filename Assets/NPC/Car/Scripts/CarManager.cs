@@ -1,9 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class CarManager : MonoBehaviour
 {
     private const string CarModelName = "CarModel";
     private const string CarHeadPhysicsName = "CarHead_Physics";
+
+    #region External Dependnceis
+    private CarSpawnerManager CarSpawnerManager;
+    #endregion
 
     public WayPointLinearFollowManagerComponent WayPointLinearFollowManagerComponent;
     public WaypointPathId WayPointIdToFollow;
@@ -11,17 +16,19 @@ public class CarManager : MonoBehaviour
     private LinearWayPointFollow LinearWayPointFollow;
     private CarPositionManager CarPositionManager;
 
-    private void Start()
+    public void PrefabInit(WaypointPathId WayPointIdToFollow)
     {
+        this.WayPointIdToFollow = WayPointIdToFollow;
+
         #region External Dependencies
         var wayPointCOntainer = GameObject.FindObjectOfType<WayPointPathContainer>();
+        CarSpawnerManager = GameObject.FindObjectOfType<CarSpawnerManager>();
         #endregion
 
-        GameObject.FindObjectOfType<NPCManager>().AddCar(this);
         var carModelObject = gameObject.FindChildObjectRecursively(CarModelName);
         var carHeadPhysics = gameObject.FindChildObjectRecursively(CarHeadPhysicsName);
 
-        LinearWayPointFollow = new LinearWayPointFollow(WayPointLinearFollowManagerComponent, carHeadPhysics.GetComponent<Rigidbody>(), wayPointCOntainer.GetWayPointPath(WayPointIdToFollow));
+        LinearWayPointFollow = new LinearWayPointFollow(WayPointLinearFollowManagerComponent, carHeadPhysics.GetComponent<Rigidbody>(), wayPointCOntainer.GetWayPointPath(WayPointIdToFollow), OnWayPointPathEnd);
         CarPositionManager = new CarPositionManager(carModelObject.transform, carHeadPhysics.transform);
     }
 
@@ -35,6 +42,22 @@ public class CarManager : MonoBehaviour
     {
         LinearWayPointFollow.FixedTick(d);
     }
+
+    #region Internal Events
+    private void OnWayPointPathEnd()
+    {
+        StartCoroutine(DestroyCarAtEndOfFrame());
+    }
+    #endregion
+
+    private IEnumerator DestroyCarAtEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        CarSpawnerManager.DestroyCar(this);
+        CarSpawnerManager.Spawn();
+        Destroy(gameObject);
+    }
+
 }
 
 class CarPositionManager

@@ -32,5 +32,6 @@ public class WayPointPath : MonoBehaviour
 
 public enum WaypointPathId
 {
-    ROAD_PATH = 0
+    ROAD_PATH_IN = 0,
+    ROAD_PATH_OUT = 1
 }

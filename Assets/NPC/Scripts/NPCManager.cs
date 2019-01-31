@@ -3,12 +3,16 @@ using UnityEngine;
 
 public class NPCManager : MonoBehaviour
 {
-    private List<CarManager> Cars = new List<CarManager>();
+    private Dictionary<int, CarManager> Cars = new Dictionary<int, CarManager>();
 
     #region External Events
     public void AddCar(CarManager carManager)
     {
-        Cars.Add(carManager);
+        Cars.Add(carManager.GetInstanceID(), carManager);
+    }
+    public void RemoveCar(CarManager carManager)
+    {
+        Cars.Remove(carManager.GetInstanceID());
     }
     #endregion
 
@@ -16,7 +20,7 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var car in Cars)
         {
-            car.Tick(d);
+            car.Value.Tick(d);
         }
     }
 
@@ -24,7 +28,7 @@ public class NPCManager : MonoBehaviour
     {
         foreach (var car in Cars)
         {
-            car.FixedTick(d);
+            car.Value.FixedTick(d);
         }
     }
 }

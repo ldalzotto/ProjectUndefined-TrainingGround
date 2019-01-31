@@ -25,6 +25,9 @@ public class PrefabContainer : MonoBehaviour
     [Header("Item Grab Popup")]
     public ItemReceivedPopup ItemReceivedPopup;
 
+    [Header("Car Prefab")]
+    public CarManager CarManagerPrefab;
+
     public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
 
     public static PrefabContainer Instance

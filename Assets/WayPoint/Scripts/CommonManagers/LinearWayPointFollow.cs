@@ -3,9 +3,12 @@
 public class LinearWayPointFollow
 {
 
-    public LinearWayPointFollow(WayPointLinearFollowManagerComponent wayPointLinearFollowManagerComponent, Rigidbody bodyToMove, WayPointPath pathToFollow)
+
+    public LinearWayPointFollow(WayPointLinearFollowManagerComponent wayPointLinearFollowManagerComponent,
+             Rigidbody bodyToMove,
+             WayPointPath pathToFollow, WaypointCompletedHandler WaypointCompletedHandler)
     {
-        WayPointLinearFollowManager = new WayPointLinearFollowManager(pathToFollow, bodyToMove, wayPointLinearFollowManagerComponent);
+        WayPointLinearFollowManager = new WayPointLinearFollowManager(pathToFollow, bodyToMove, wayPointLinearFollowManagerComponent, WaypointCompletedHandler);
         OnWaypointFollowStart();
     }
 
@@ -32,6 +35,8 @@ public class LinearWayPointFollow
 
 }
 
+public delegate void WaypointCompletedHandler();
+
 [System.Serializable]
 public class WayPointLinearFollowManagerComponent
 {
@@ -43,12 +48,15 @@ class WayPointLinearFollowManager
     private WayPointPath WayPointPath;
     private Rigidbody bodyToMove;
     private WayPointLinearFollowManagerComponent WayPointLinearFollowManagerComponent;
+    private WaypointCompletedHandler WaypointCompletedHandler;
+    private bool isDeleting;
 
-    public WayPointLinearFollowManager(WayPointPath wayPointPath, Rigidbody bodyToMove, WayPointLinearFollowManagerComponent WayPointLinearFollowManagerComponent)
+    public WayPointLinearFollowManager(WayPointPath wayPointPath, Rigidbody bodyToMove, WayPointLinearFollowManagerComponent WayPointLinearFollowManagerComponent, WaypointCompletedHandler WaypointCompletedHandler)
     {
         WayPointPath = wayPointPath;
         this.bodyToMove = bodyToMove;
         this.WayPointLinearFollowManagerComponent = WayPointLinearFollowManagerComponent;
+        this.WaypointCompletedHandler = WaypointCompletedHandler;
     }
 
     private WayPoint activeWayPoint;
@@ -87,6 +95,14 @@ class WayPointLinearFollowManager
             if (WayPointPath.Loop)
             {
                 this.activeWayPoint = WayPointPath.WayPointsToFollow[0];
+            }
+            else
+            {
+                if (!isDeleting)
+                {
+                    isDeleting = true;
+                    WaypointCompletedHandler.Invoke();
+                }
             }
         }
 
