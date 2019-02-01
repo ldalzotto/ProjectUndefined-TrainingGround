@@ -21,6 +21,7 @@ public class PrefabContainer : MonoBehaviour
     [Header("Inventory Items Prefabs")]
     public Item IdCardItem;
     public Item IdCardV2Item;
+    public Item CrowBarItem;
 
     [Header("Item Grab Popup")]
     public ItemReceivedPopup ItemReceivedPopup;
@@ -47,7 +48,8 @@ public class PrefabContainer : MonoBehaviour
         InventoryItemsPrefabs = new Dictionary<ItemID, Item>()
         {
             {ItemID.ID_CARD,  IdCardItem},
-            {ItemID.ID_CARD_V2, IdCardV2Item}
+            {ItemID.ID_CARD_V2, IdCardV2Item},
+            {ItemID.CROWBAR,  CrowBarItem}
         };
     }
 

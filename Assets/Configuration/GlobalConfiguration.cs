@@ -11,7 +11,8 @@ public enum PointOfInterestId
     ID_CARD = 2,
     ID_CARD_V2 = 3,
     PLAYER = 4,
-    DUMBSTER = 5
+    DUMBSTER = 5,
+    CROWBAR = 6
 }
 #endregion
 
@@ -23,7 +24,8 @@ public enum ItemID
     DUMMY_ITEM = 1,
     ID_CARD = 2,
     ID_CARD_V2 = 3,
-    ID_CARD_V3 = 4
+    ID_CARD_V3 = 4,
+    CROWBAR = 5
 }
 
 public class ItemContextActionBuilder
@@ -46,7 +48,8 @@ public class ItemReceivedDescriptionTextConstants
     public static Dictionary<ItemID, string> ItemReceivedDescriptionText = new Dictionary<ItemID, string>()
     {
         { ItemID.ID_CARD, "A dummy id card."},
-        {ItemID.ID_CARD_V2, "A dummy id card. V2." }
+        {ItemID.ID_CARD_V2, "A dummy id card. V2." },
+        {ItemID.CROWBAR, "A bar." }
     };
 }
 #endregion
