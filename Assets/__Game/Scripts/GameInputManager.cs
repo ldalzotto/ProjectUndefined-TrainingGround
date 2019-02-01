@@ -21,8 +21,7 @@ public class GameInputManager : MonoBehaviour
     public interface XInput
     {
         Vector3 LocomotionAxis();
-        float LeftRotationCameraDH();
-        float RightRotationCameraDH();
+        Vector3 CameraRotationAxis();
         bool ActionButtonDH();
         bool ActionButtonD();
         bool InventoryButtonD();
@@ -57,19 +56,14 @@ public class GameInputManager : MonoBehaviour
             return Input.GetButtonDown("Inventory");
         }
 
-        public float LeftRotationCameraDH()
-        {
-            return Convert.ToInt32(Input.GetKeyDown(KeyCode.Joystick1Button4) || Input.GetKey(KeyCode.Joystick1Button4));
-        }
-
         public Vector3 LocomotionAxis()
         {
             return new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         }
 
-        public float RightRotationCameraDH()
+        public Vector3 CameraRotationAxis()
         {
-            return Convert.ToInt32(Input.GetKeyDown(KeyCode.Joystick1Button5) || Input.GetKey(KeyCode.Joystick1Button5));
+            return new Vector3(Input.GetAxis("Camera_Vertical"), Input.GetAxis("Camera_Horizontal"), 0f);
         }
     }
 
@@ -81,6 +75,11 @@ public class GameInputManager : MonoBehaviour
         }
 
         public bool ActionButtonDH()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Vector3 CameraRotationAxis()
         {
             throw new NotImplementedException();
         }
@@ -100,20 +99,12 @@ public class GameInputManager : MonoBehaviour
             throw new NotImplementedException();
         }
 
-        public float LeftRotationCameraDH()
-        {
-            throw new NotImplementedException();
-        }
-
         public Vector3 LocomotionAxis()
         {
             throw new System.NotImplementedException();
         }
 
-        public float RightRotationCameraDH()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 
     private class MobileInput : XInput
@@ -135,6 +126,11 @@ public class GameInputManager : MonoBehaviour
             return false;
         }
 
+        public Vector3 CameraRotationAxis()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CancelButtonD()
         {
             return false;
@@ -150,19 +146,7 @@ public class GameInputManager : MonoBehaviour
             return modileInputJoystickManager.InventoryHeadPressed();
         }
 
-        public float LeftRotationCameraDH()
-        {
-            var currentDeltaDrag = modileInputJoystickManager.GetOuterJoystickDragDelta();
-            if (currentDeltaDrag.x >= 0)
-            {
-                return currentDeltaDrag.x / (Screen.width / 2);
-            }
-            else
-            {
-                return 0f;
-            }
 
-        }
 
         public Vector3 LocomotionAxis()
         {
@@ -170,18 +154,6 @@ public class GameInputManager : MonoBehaviour
             return new Vector3(currentJoystickValues.x, 0f, currentJoystickValues.y);
         }
 
-        public float RightRotationCameraDH()
-        {
-            var currentDeltaDrag = modileInputJoystickManager.GetOuterJoystickDragDelta();
-            if (currentDeltaDrag.x <= 0)
-            {
-                return currentDeltaDrag.x / (Screen.width / 2);
-            }
-            else
-            {
-                return 0f;
-            }
-        }
     }
 
 }

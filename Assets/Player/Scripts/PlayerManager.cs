@@ -270,9 +270,7 @@ public class CameraOrientationManager
 
     public void Tick(float d, float rotationSpeed)
     {
-        var deltaRotation = gameInputManager.CurrentInput.RightRotationCameraDH() * d * rotationSpeed;
-        deltaRotation += gameInputManager.CurrentInput.LeftRotationCameraDH() * d * -rotationSpeed;
-        cameraPivotPoint.eulerAngles += new Vector3(0, deltaRotation, 0);
+        cameraPivotPoint.eulerAngles += (gameInputManager.CurrentInput.CameraRotationAxis() * d * rotationSpeed);
     }
 }
 
