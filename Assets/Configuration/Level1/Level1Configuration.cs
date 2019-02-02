@@ -4,11 +4,25 @@ using System.Collections.Generic;
 #region ScenarioNode
 public class CrowbarScenarioNode : TimelineNode
 {
-    public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>();
+    public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>() {
+        { new GrabScenarioAction(ItemID.CROWBAR, PointOfInterestId.CROWBAR), new SewerEntranceScenarioNode()}
+    };
 
     public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>()
     {
         new AddGrabbableItem(ItemID.CROWBAR, PointOfInterestId.CROWBAR, new AnimatorAction(PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN,  new GrabAction(ItemID.CROWBAR, true, null)))
+    };
+
+    public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>();
+}
+
+public class SewerEntranceScenarioNode : TimelineNode
+{
+    public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>();
+
+    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>()
+    {
+        new AddPOIInteractableItem(ItemID.CROWBAR, PointOfInterestId.SEWER_ENTRANCE)
     };
 
     public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>();

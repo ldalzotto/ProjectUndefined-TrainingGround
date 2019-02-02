@@ -44,6 +44,10 @@ public class PointOfInterestType : MonoBehaviour
     {
         return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
     }
+    public bool IsInteractableWithItem(Item involvedItem)
+    {
+        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligibleToInteractWithItem(involvedItem);
+    }
     #endregion
 
     #region External Events
@@ -74,6 +78,22 @@ public class PointOfInterestType : MonoBehaviour
     {
         pointOfInterestScenarioState.DiscussionTree = discussionTree;
         ContextActionSynchronizerManager.OnDiscussionTreeAdd(contextActionToAdd);
+    }
+    public void OnInteractableItemAdd(ItemID itemID)
+    {
+        if (pointOfInterestScenarioState.InteractableItemsComponent == null)
+        {
+            pointOfInterestScenarioState.InteractableItemsComponent = new InteractableItemsComponent();
+        }
+        pointOfInterestScenarioState.InteractableItemsComponent.AddItemID(itemID);
+    }
+    public void OnInteractableItemRemove(ItemID itemID)
+    {
+        if (pointOfInterestScenarioState.InteractableItemsComponent != null)
+        {
+            pointOfInterestScenarioState.InteractableItemsComponent.RemoveItemID(itemID);
+        }
+
     }
     #endregion
 

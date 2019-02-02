@@ -5,27 +5,8 @@ public class PointOfInterestScenarioState : MonoBehaviour
 {
     public ReceivableItemsComponent ReceivableItemsComponent;
     public DiscussionTree DiscussionTree;
+    public InteractableItemsComponent InteractableItemsComponent;
 }
-
-#region Grabbable Items
-[System.Serializable]
-public class GabbableItemsComponent
-{
-    public List<ItemID> grabbableItems = new List<ItemID>();
-
-    public void AddItemID(ItemID itemID)
-    {
-        grabbableItems.Add(itemID);
-    }
-
-    public void RemoveItemID(ItemID itemID)
-    {
-        grabbableItems.Remove(itemID);
-    }
-
-}
-
-#endregion
 
 #region Receive Items
 [System.Serializable]
@@ -55,5 +36,35 @@ public class ReceivableItemsComponent
         receivableItems.Remove(itemID);
     }
 
+}
+#endregion
+
+#region Interactable Items
+[System.Serializable]
+public class InteractableItemsComponent
+{
+    public List<ItemID> interactableItems = new List<ItemID>();
+
+    public bool IsElligibleToInteractWithItem(Item itemToGive)
+    {
+        foreach (var interactableItem in interactableItems)
+        {
+            if (interactableItem == itemToGive.ItemID)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void AddItemID(ItemID itemID)
+    {
+        interactableItems.Add(itemID);
+    }
+
+    public void RemoveItemID(ItemID itemID)
+    {
+        interactableItems.Remove(itemID);
+    }
 }
 #endregion

@@ -28,8 +28,6 @@ public class AnimatorAction : AContextAction
         {
             animationEnded = true;
         }));
-
-
     }
 
     public override void Tick(float d)

@@ -147,12 +147,6 @@ class GiveActionAnimationManager
 
     public void Tick(float d)
     {
-        /**
-        if (DisplayedItemModel != null)
-        {
-            DisplayedItemModel.transform.Rotate(Vector3.up * 180f * d, Space.World);
-        }**/
-
     }
 
 }

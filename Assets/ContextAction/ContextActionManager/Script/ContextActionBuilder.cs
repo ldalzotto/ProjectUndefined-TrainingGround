@@ -29,6 +29,10 @@ public class ContextActionBuilder
         {
             return new CutsceneTimelineActionInput(playerManager.GetCurrentTargetedPOI().GetContextData(), playerManager.transform);
         }
+        else if (contextAction.GetType() == typeof(InteractAction))
+        {
+            return new InteractActionInput(playerManager.GetCurrentTargetedPOI(), playerManager);
+        }
         else
         {
             Debug.LogError("The context action : " + contextAction.GetType() + " has no context action input builder implemented.");

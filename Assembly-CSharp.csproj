@@ -82,12 +82,13 @@
     <Compile Include="Assets\Configuration\Level1\Level1Configuration.cs" />
     <Compile Include="Assets\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />
     <Compile Include="Assets\Configuration\Level1\TestSceneInitialisation.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\AnimatorAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\CutsceneTimelineAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\AnimationActions\AnimatorAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\AnimationActions\CutsceneTimelineAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\DummyTalkAction.cs" />
-    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GiveAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\ItemBasedActions\GiveAction.cs" />
+    <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\ItemBasedActions\InteractAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\Actions\TalkAction.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
     <Compile Include="Assets\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Assets\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
     <Compile Include="Assets\Scenario\Scripts\Timelines\TimelineIDs.cs" />
     <Compile Include="Assets\Scenario\Scripts\TimelinesEventManager.cs" />
+    <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
     <Compile Include="Assets\WayPoint\Scripts\CommonManagers\LinearWayPointFollow.cs" />
     <Compile Include="Assets\WayPoint\Scripts\WayPoint.cs" />
     <Compile Include="Assets\WayPoint\Scripts\WayPointPath.cs" />

@@ -12,7 +12,8 @@ public enum PointOfInterestId
     ID_CARD_V2 = 3,
     PLAYER = 4,
     DUMBSTER = 5,
-    CROWBAR = 6
+    CROWBAR = 6,
+    SEWER_ENTRANCE = 7
 }
 #endregion
 
@@ -35,9 +36,11 @@ public class ItemContextActionBuilder
         switch (item.ItemID)
         {
             case ItemID.ID_CARD:
-                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction(null)) };
+                return new List<AContextAction>() { new GiveAction(item, null) };
             case ItemID.ID_CARD_V2:
-                return new List<AContextAction>() { new GiveAction(item, new DummyContextAction(null)) };
+                return new List<AContextAction>() { new GiveAction(item, null) };
+            case ItemID.CROWBAR:
+                return new List<AContextAction>() { new InteractAction(item, null) };
         }
         return new List<AContextAction>();
     }
