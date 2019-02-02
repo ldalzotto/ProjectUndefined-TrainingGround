@@ -27,7 +27,8 @@ public class ContextActionBuilder
         }
         else if (contextAction.GetType() == typeof(CutsceneTimelineAction))
         {
-            return new CutsceneTimelineActionInput(playerManager.GetCurrentTargetedPOI().GetContextData(), playerManager.transform);
+            var targetedPOI = playerManager.GetCurrentTargetedPOI();
+            return new CutsceneTimelineActionInput(targetedPOI, targetedPOI.GetContextData(), playerManager.transform);
         }
         else if (contextAction.GetType() == typeof(InteractAction))
         {

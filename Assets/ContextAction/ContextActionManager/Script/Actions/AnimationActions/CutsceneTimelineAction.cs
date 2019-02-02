@@ -5,10 +5,13 @@ using UnityEngine.Playables;
 public class CutsceneTimelineAction : AContextAction
 {
     private CutsceneId CutsceneId;
+    private bool DestroyPOIAtEnd;
+
     private CutsceneTimelineActionInput CutsceneTimelineActionInput;
     private CutsceneTimelinePOIData CutsceneTimelinePOIData;
     private bool isActionEnded;
     private bool isAgentDestinationReached;
+
 
     #region External Dependencies
     private PlayerManagerEventHandler PlayerManagerEventHandler;
@@ -18,9 +21,10 @@ public class CutsceneTimelineAction : AContextAction
     private PlayerInitialPositionerManager PlayerInitialPositionerManager;
     #endregion
 
-    public CutsceneTimelineAction(CutsceneId cutsceneId, AContextAction nextContextAction) : base(nextContextAction)
+    public CutsceneTimelineAction(CutsceneId cutsceneId, AContextAction nextContextAction, bool destroyPOIAtEnd = false) : base(nextContextAction)
     {
         this.CutsceneId = cutsceneId;
+        this.DestroyPOIAtEnd = destroyPOIAtEnd;
     }
 
     public override void AfterFinishedEventProcessed()
@@ -28,6 +32,11 @@ public class CutsceneTimelineAction : AContextAction
         isActionEnded = false;
         isAgentDestinationReached = false;
         PlayerInitialPositionerManager = null;
+
+        if (DestroyPOIAtEnd)
+        {
+            MonoBehaviour.Destroy(CutsceneTimelineActionInput.TargetedPOI.gameObject);
+        }
     }
 
     public override bool ComputeFinishedConditions()
@@ -140,15 +149,18 @@ public class PlayerInitialPositionerManager
 
 public class CutsceneTimelineActionInput : AContextActionInput
 {
+    private PointOfInterestType targetedPOI;
     private PointOfInterestContextDataContainer pointOfInterestContextDataContainer;
     private Transform playerTransform;
 
-    public CutsceneTimelineActionInput(PointOfInterestContextDataContainer pointOfInterestContextDataContainer, Transform playerTransform)
+    public CutsceneTimelineActionInput(PointOfInterestType targetedPOI, PointOfInterestContextDataContainer pointOfInterestContextDataContainer, Transform playerTransform)
     {
+        this.targetedPOI = targetedPOI;
         this.pointOfInterestContextDataContainer = pointOfInterestContextDataContainer;
         this.playerTransform = playerTransform;
     }
 
     public Transform PlayerTransform { get => playerTransform; }
     public PointOfInterestContextDataContainer PointOfInterestContextDataContainer { get => pointOfInterestContextDataContainer; }
+    public PointOfInterestType TargetedPOI { get => targetedPOI; }
 }
