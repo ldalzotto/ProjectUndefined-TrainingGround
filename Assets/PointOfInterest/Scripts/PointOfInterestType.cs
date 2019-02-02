@@ -42,11 +42,11 @@ public class PointOfInterestType : MonoBehaviour
     #region Logical Conditions
     public bool IsElligibleToGiveItem(Item itemToGive)
     {
-        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
+        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
     }
     public bool IsInteractableWithItem(Item involvedItem)
     {
-        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligibleToInteractWithItem(involvedItem);
+        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligibleToInteractWithItem(involvedItem);
     }
     #endregion
 

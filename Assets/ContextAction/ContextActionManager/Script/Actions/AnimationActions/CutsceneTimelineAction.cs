@@ -112,6 +112,7 @@ public class PlayerInitialPositionerManager
 
     public void Tick(float d)
     {
+        playerTransform.position = targetTransform.position;
         playerTransform.rotation = Quaternion.LookRotation(targetTransform.forward);
 
         bool positionReached = false;

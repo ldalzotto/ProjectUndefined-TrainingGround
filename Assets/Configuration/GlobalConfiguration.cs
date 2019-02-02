@@ -40,7 +40,7 @@ public class ItemContextActionBuilder
             case ItemID.ID_CARD_V2:
                 return new List<AContextAction>() { new GiveAction(item, null) };
             case ItemID.CROWBAR:
-                return new List<AContextAction>() { new InteractAction(item, null) };
+                return new List<AContextAction>() { new InteractAction(item, new CutsceneTimelineAction(CutsceneId.PLAYER_OPEN_SEWER, null)) };
         }
         return new List<AContextAction>();
     }
