@@ -226,7 +226,11 @@ public class PlayerManager : MonoBehaviour
 
     public Animator GetPlayerAnimator()
     {
-        return PlayerAnimationManager.GetPlayerAnimator();
+        if (PlayerAnimationManager != null)
+        {
+            return PlayerAnimationManager.GetPlayerAnimator();
+        }
+        return null;
     }
 
     public PointOfInterestType GetCurrentTargetedPOI()

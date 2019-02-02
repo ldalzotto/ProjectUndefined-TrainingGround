@@ -196,17 +196,23 @@ class PlayerBoneRetriever
     private static Dictionary<PlayerBone, string> BoneNames = new Dictionary<PlayerBone, string>()
     {
         {PlayerBone.HEAD, "Head"},
-        {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem.R" }
+        {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem.R" },
+        {PlayerBone.RIGH_FINGERS, "Figers.R" }
     };
 
     public static GameObject GetPlayerBone(PlayerBone playerBone, Animator playerAnimator)
     {
-        return playerAnimator.gameObject.FindChildObjectRecursively(BoneNames[playerBone]);
+        if (playerAnimator != null)
+        {
+            return playerAnimator.gameObject.FindChildObjectRecursively(BoneNames[playerBone]);
+        }
+        return null;
+
     }
 }
 
 public enum PlayerBone
 {
-    HEAD, RIGHT_HAND_CONTEXT
+    HEAD, RIGHT_HAND_CONTEXT, RIGH_FINGERS
 }
 #endregion
