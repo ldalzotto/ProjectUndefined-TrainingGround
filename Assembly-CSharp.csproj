@@ -66,8 +66,8 @@
     <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\_Collision\CollisionType.cs" />
     <Compile Include="Assets\_Common\Animation\AnimationPlayerHelper.cs" />
-    <Compile Include="Assets\_Common\Animation\TimelineClips\PlayerItemHolderBehavior.cs" />
-    <Compile Include="Assets\_Common\Animation\TimelineClips\PlayerItemHolderClip.cs" />
+    <Compile Include="Assets\_Common\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderBehavior.cs" />
+    <Compile Include="Assets\_Common\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderClip.cs" />
     <Compile Include="Assets\_Common\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\_Common\Component\ComponentSearchHelper.cs" />
     <Compile Include="Assets\_Common\CustomYields\WaitEndOfCutscene.cs" />

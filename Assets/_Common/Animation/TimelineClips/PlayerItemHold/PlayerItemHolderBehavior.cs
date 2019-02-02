@@ -17,7 +17,8 @@ public class PlayerItemHolderBehavior : PlayableBehaviour
             #region External Dependencies
             var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             #endregion
-            var boneObj = PlayerBoneRetriever.GetPlayerBone(PlayerBone, PlayerManager.GetPlayerAnimator());
+            var playerAnimator = PlayerManager.GetPlayerAnimator();
+            var boneObj = PlayerBoneRetriever.GetPlayerBone(PlayerBone, playerAnimator);
             if (boneObj != null)
             {
                 BoneTransformResolved = boneObj.transform;
@@ -25,8 +26,15 @@ public class PlayerItemHolderBehavior : PlayableBehaviour
 
             if (PrefabContainer.InventoryItemsPrefabs != null)
             {
-                var AniamtionObjectContainer = GameObject.FindGameObjectWithTag(TagConstants.ANIMATION_OBJECT_CONTAINER_TAG);
-                InstanciatedObject = MonoBehaviour.Instantiate(PrefabContainer.InventoryItemsPrefabs[HoldedItem].ItemModel, AniamtionObjectContainer.transform);
+                var scaleFactor = Vector3.one;
+                ComponentSearchHelper.ComputeScaleFactorRecursively(BoneTransformResolved, playerAnimator.transform, ref scaleFactor);
+
+                InstanciatedObject = MonoBehaviour.Instantiate(PrefabContainer.InventoryItemsPrefabs[HoldedItem].ItemModel, BoneTransformResolved.transform);
+                InstanciatedObject.transform.localScale = new Vector3(
+                        InstanciatedObject.transform.localScale.x / scaleFactor.x,
+                        InstanciatedObject.transform.localScale.y / scaleFactor.y,
+                        InstanciatedObject.transform.localScale.z / scaleFactor.z
+                    );
             }
 
             base.OnBehaviourPlay(playable, info);
@@ -41,15 +49,5 @@ public class PlayerItemHolderBehavior : PlayableBehaviour
             MonoBehaviour.Destroy(InstanciatedObject);
         }
         base.OnBehaviourPause(playable, info);
-    }
-
-    public override void ProcessFrame(Playable playable, FrameData info, object playerData)
-    {
-        if (BoneTransformResolved != null)
-        {
-            InstanciatedObject.transform.position = BoneTransformResolved.position;
-            InstanciatedObject.transform.rotation = BoneTransformResolved.rotation;
-        }
-        base.ProcessFrame(playable, info, playerData);
     }
 }
