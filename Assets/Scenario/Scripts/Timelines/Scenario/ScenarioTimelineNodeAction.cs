@@ -126,3 +126,27 @@ public class RemovePOIInteractableItem : TimelineNodeWorkflowAction
         }
     }
 }
+
+public class AddTransitionLevel : TimelineNodeWorkflowAction
+{
+
+    private LevelZonesID nextLevelZone;
+    private PointOfInterestId poiInvolved;
+    private AContextAction contextAction;
+
+    public AddTransitionLevel(LevelZonesID nextLevelZone, PointOfInterestId poiInvolved, AContextAction contextAction)
+    {
+        this.nextLevelZone = nextLevelZone;
+        this.poiInvolved = poiInvolved;
+        this.contextAction = contextAction;
+    }
+
+    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    {
+        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        if (foundedPoi != null)
+        {
+            foundedPoi.OnLevelZoneTransitionAdd(nextLevelZone, contextAction);
+        }
+    }
+}

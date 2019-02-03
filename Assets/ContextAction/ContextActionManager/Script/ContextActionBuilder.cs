@@ -34,6 +34,10 @@ public class ContextActionBuilder
         {
             return new InteractActionInput(playerManager.GetCurrentTargetedPOI(), playerManager);
         }
+        else if (contextAction.GetType() == typeof(LevelZoneTransitionAction))
+        {
+            return null;
+        }
         else
         {
             Debug.LogError("The context action : " + contextAction.GetType() + " has no context action input builder implemented.");

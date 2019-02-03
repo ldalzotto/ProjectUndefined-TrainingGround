@@ -42,11 +42,11 @@ public class PointOfInterestType : MonoBehaviour
     #region Logical Conditions
     public bool IsElligibleToGiveItem(Item itemToGive)
     {
-        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligibleToGiveItem(itemToGive);
+        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligible(itemToGive.ItemID);
     }
     public bool IsInteractableWithItem(Item involvedItem)
     {
-        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligibleToInteractWithItem(involvedItem);
+        return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligible(involvedItem.ItemID);
     }
     #endregion
 
@@ -65,13 +65,13 @@ public class PointOfInterestType : MonoBehaviour
         {
             pointOfInterestScenarioState.ReceivableItemsComponent = new ReceivableItemsComponent();
         }
-        pointOfInterestScenarioState.ReceivableItemsComponent.AddItemID(itemID);
+        pointOfInterestScenarioState.ReceivableItemsComponent.Add(itemID);
     }
     public void OnReceivableItemRemove(ItemID itemID)
     {
         if (pointOfInterestScenarioState.ReceivableItemsComponent != null)
         {
-            pointOfInterestScenarioState.ReceivableItemsComponent.RemoveItemID(itemID);
+            pointOfInterestScenarioState.ReceivableItemsComponent.Remove(itemID);
         }
     }
     public void OnDiscussionTreeAdd(DiscussionTree discussionTree, AContextAction contextActionToAdd)
@@ -85,15 +85,18 @@ public class PointOfInterestType : MonoBehaviour
         {
             pointOfInterestScenarioState.InteractableItemsComponent = new InteractableItemsComponent();
         }
-        pointOfInterestScenarioState.InteractableItemsComponent.AddItemID(itemID);
+        pointOfInterestScenarioState.InteractableItemsComponent.Add(itemID);
     }
     public void OnInteractableItemRemove(ItemID itemID)
     {
         if (pointOfInterestScenarioState.InteractableItemsComponent != null)
         {
-            pointOfInterestScenarioState.InteractableItemsComponent.RemoveItemID(itemID);
+            pointOfInterestScenarioState.InteractableItemsComponent.Remove(itemID);
         }
-
+    }
+    public void OnLevelZoneTransitionAdd(LevelZonesID levelZonesID, AContextAction contextActionToAdd)
+    {
+        ContextActionSynchronizerManager.OnLevelTransitionAdd(contextActionToAdd);
     }
     #endregion
 
@@ -158,6 +161,12 @@ class ContextActionSynchronizerManager
     public void OnDiscussionTreeAdd(AContextAction contextActionToAdd)
     {
         var key = typeof(TalkAction).ToString();
+        ContextActionAddSilently(contextActionToAdd, key);
+    }
+
+    public void OnLevelTransitionAdd(AContextAction contextActionToAdd)
+    {
+        var key = typeof(LevelZoneTransitionAction).ToString();
         ContextActionAddSilently(contextActionToAdd, key);
     }
 

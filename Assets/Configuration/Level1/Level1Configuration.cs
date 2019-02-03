@@ -38,7 +38,9 @@ public class SewerTransitionNode : TimelineNode
     {
     };
 
-    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>();
+    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>() {
+        new AddTransitionLevel(LevelZonesID.SEWER, PointOfInterestId.SEWER_ENTRANCE, new LevelZoneTransitionAction(LevelZonesID.SEWER))
+    };
 
     public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>();
 }

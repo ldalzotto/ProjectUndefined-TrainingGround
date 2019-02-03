@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PointOfInterestScenarioState : MonoBehaviour
@@ -8,63 +9,30 @@ public class PointOfInterestScenarioState : MonoBehaviour
     public InteractableItemsComponent InteractableItemsComponent;
 }
 
+
+public abstract class POIIdContainer<E> where E : Enum
+{
+    public List<E> containedIDs = new List<E>();
+    public bool IsElligible(E ID)
+    {
+        return containedIDs.Contains(ID);
+    }
+    public void Add(E ID)
+    {
+        containedIDs.Add(ID);
+    }
+    public void Remove(E ID)
+    {
+        containedIDs.Remove(ID);
+    }
+}
+
 #region Receive Items
 [System.Serializable]
-public class ReceivableItemsComponent
-{
-    public List<ItemID> receivableItems = new List<ItemID>();
-
-    public bool IsElligibleToGiveItem(Item itemToGive)
-    {
-        foreach (var receivableItem in receivableItems)
-        {
-            if (receivableItem == itemToGive.ItemID)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void AddItemID(ItemID itemID)
-    {
-        receivableItems.Add(itemID);
-    }
-
-    public void RemoveItemID(ItemID itemID)
-    {
-        receivableItems.Remove(itemID);
-    }
-
-}
+public class ReceivableItemsComponent : POIIdContainer<ItemID> { }
 #endregion
 
 #region Interactable Items
 [System.Serializable]
-public class InteractableItemsComponent
-{
-    public List<ItemID> interactableItems = new List<ItemID>();
-
-    public bool IsElligibleToInteractWithItem(Item itemToGive)
-    {
-        foreach (var interactableItem in interactableItems)
-        {
-            if (interactableItem == itemToGive.ItemID)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void AddItemID(ItemID itemID)
-    {
-        interactableItems.Add(itemID);
-    }
-
-    public void RemoveItemID(ItemID itemID)
-    {
-        interactableItems.Remove(itemID);
-    }
-}
+public class InteractableItemsComponent : POIIdContainer<ItemID> { }
 #endregion
