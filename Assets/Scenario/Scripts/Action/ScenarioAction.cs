@@ -102,3 +102,38 @@ public class DiscussionChoiceScenarioAction : ScenarioAction
     }
 
 }
+
+public class CutsceneTimelineScenarioAction : ScenarioAction
+{
+    [JsonConverter(typeof(StringEnumConverter))]
+    public CutsceneId CutsceneId;
+    [JsonConverter(typeof(StringEnumConverter))]
+    public PointOfInterestId TargetedPOI;
+
+    public CutsceneTimelineScenarioAction(CutsceneId cutsceneId, PointOfInterestId targetedPOI)
+    {
+        CutsceneId = cutsceneId;
+        TargetedPOI = targetedPOI;
+    }
+
+    public override bool Equals(object obj)
+    {
+        var action = obj as CutsceneTimelineScenarioAction;
+        return action != null &&
+               CutsceneId == action.CutsceneId &&
+               TargetedPOI == action.TargetedPOI;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -827486109;
+        hashCode = hashCode * -1521134295 + CutsceneId.GetHashCode();
+        hashCode = hashCode * -1521134295 + TargetedPOI.GetHashCode();
+        return hashCode;
+    }
+
+    public override string ToString()
+    {
+        return "CutsceneTimelineScenarioAction. " + " Cutscene executed : " + CutsceneId.ToString() + " to POI : " + TargetedPOI.ToString();
+    }
+}

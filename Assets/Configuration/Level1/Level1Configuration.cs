@@ -18,12 +18,27 @@ public class CrowbarScenarioNode : TimelineNode
 
 public class SewerEntranceScenarioNode : TimelineNode
 {
-    public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>();
+    public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>() {
+        {new CutsceneTimelineScenarioAction(CutsceneId.PLAYER_OPEN_SEWER, PointOfInterestId.SEWER_ENTRANCE), new SewerTransitionNode() }
+    };
 
     public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>()
     {
         new AddPOIInteractableItem(ItemID.CROWBAR, PointOfInterestId.SEWER_ENTRANCE)
     };
+
+    public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>() {
+        new RemovePOIInteractableItem(ItemID.CROWBAR, PointOfInterestId.SEWER_ENTRANCE)
+    };
+}
+
+public class SewerTransitionNode : TimelineNode
+{
+    public override Dictionary<ScenarioAction, TimelineNode> TransitionRequirements => new Dictionary<ScenarioAction, TimelineNode>()
+    {
+    };
+
+    public override List<TimelineNodeWorkflowAction> OnStartNodeAction => new List<TimelineNodeWorkflowAction>();
 
     public override List<TimelineNodeWorkflowAction> OnExitNodeAction => new List<TimelineNodeWorkflowAction>();
 }

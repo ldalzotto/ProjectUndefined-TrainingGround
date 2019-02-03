@@ -65,6 +65,12 @@ public class ContextActionBuilder
         {
             return null;
         }
+        else if (contextAction.GetType() == typeof(CutsceneTimelineAction))
+        {
+            var cutsceneTimelineAction = (CutsceneTimelineAction)contextAction;
+            var cutsceneTimelineActionInput = (CutsceneTimelineActionInput)contextActionInput;
+            return new CutsceneTimelineScenarioAction(cutsceneTimelineAction.CutsceneId, cutsceneTimelineActionInput.TargetedPOI.PointOfInterestId);
+        }
         else
         {
             Debug.LogWarning("The context action : " + contextAction.GetType() + " has no scenario action builder implemented.");

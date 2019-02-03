@@ -4,7 +4,7 @@ using UnityEngine.Playables;
 
 public class CutsceneTimelineAction : AContextAction
 {
-    private CutsceneId CutsceneId;
+    private CutsceneId cutsceneId;
     private bool DestroyPOIAtEnd;
 
     private CutsceneTimelineActionInput CutsceneTimelineActionInput;
@@ -19,11 +19,13 @@ public class CutsceneTimelineAction : AContextAction
 
     #region Internal Dependecnies
     private PlayerInitialPositionerManager PlayerInitialPositionerManager;
+
+    public CutsceneId CutsceneId { get => cutsceneId; }
     #endregion
 
     public CutsceneTimelineAction(CutsceneId cutsceneId, AContextAction nextContextAction, bool destroyPOIAtEnd = false) : base(nextContextAction)
     {
-        this.CutsceneId = cutsceneId;
+        this.cutsceneId = cutsceneId;
         this.DestroyPOIAtEnd = destroyPOIAtEnd;
     }
 
@@ -54,7 +56,7 @@ public class CutsceneTimelineAction : AContextAction
             var cutscenePOIDatas = cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer.CutsceneTimelinePOIDatas;
             for (var i = 0; i < cutscenePOIDatas.Length; i++)
             {
-                if (cutscenePOIDatas[i].CutsceneId == CutsceneId)
+                if (cutscenePOIDatas[i].CutsceneId == cutsceneId)
                 {
                     this.CutsceneTimelinePOIData = cutscenePOIDatas[i];
                     PlayerManagerEventHandler.StartCoroutine(SetAgentDestination(CutsceneTimelinePOIData.PlayerStartingTransform.position));

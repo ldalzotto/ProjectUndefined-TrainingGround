@@ -105,3 +105,24 @@ public class AddPOIInteractableItem : TimelineNodeWorkflowAction
         }
     }
 }
+
+public class RemovePOIInteractableItem : TimelineNodeWorkflowAction
+{
+    private ItemID itemInvolved;
+    private PointOfInterestId poiInvolved;
+
+    public RemovePOIInteractableItem(ItemID itemInvolved, PointOfInterestId poiInvolved)
+    {
+        this.itemInvolved = itemInvolved;
+        this.poiInvolved = poiInvolved;
+    }
+
+    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    {
+        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        if (foundedPoi != null)
+        {
+            foundedPoi.OnInteractableItemRemove(itemInvolved);
+        }
+    }
+}
