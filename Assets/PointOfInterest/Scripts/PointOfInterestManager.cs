@@ -42,6 +42,11 @@ public class PointOfInterestManager : MonoBehaviour
             return PointOfInterestContainerManager.GetInactivePointOfInterest(pointOfInterestId);
         }
     }
+
+    public List<PointOfInterestType> GetAllPointOfInterests()
+    {
+        return PointOfInterestContainerManager.GetAllPointOfInterests();
+    }
 }
 
 class PointOfInterestContainerManager
@@ -96,5 +101,19 @@ class PointOfInterestContainerManager
             }
         }
         return null;
+    }
+
+    public List<PointOfInterestType> GetAllPointOfInterests()
+    {
+        var returnList = new List<PointOfInterestType>();
+        foreach (var poi in activePointOfInterests)
+        {
+            returnList.Add(poi);
+        }
+        foreach (var poi in inactivePointOfInterest)
+        {
+            returnList.Add(poi);
+        }
+        return returnList;
     }
 }

@@ -5,6 +5,7 @@ public class PointOfInterestEventManager : MonoBehaviour
 {
 
     private PlayerManager PlayerManager;
+    private PointOfInterestPersistanceManager pointOfInterestPersistanceManager;
     private PointOfInterestManager pointOfInterestManager;
 
     private PointOfInterestManager PointOfInterestManager
@@ -19,14 +20,28 @@ public class PointOfInterestEventManager : MonoBehaviour
         }
     }
 
+    public PointOfInterestPersistanceManager PointOfInterestPersistanceManager
+    {
+        get
+        {
+            if (pointOfInterestPersistanceManager == null)
+            {
+                pointOfInterestPersistanceManager = GameObject.FindObjectOfType<PointOfInterestPersistanceManager>(); ;
+            }
+            return pointOfInterestPersistanceManager;
+        }
+    }
+
     private void Start()
     {
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        pointOfInterestPersistanceManager = GameObject.FindObjectOfType<PointOfInterestPersistanceManager>();
     }
 
     public void OnPOICreated(PointOfInterestType POICreated)
     {
         PointOfInterestManager.OnPOICreated(POICreated);
+        PointOfInterestPersistanceManager.LoadStateToPOI(ref POICreated);
     }
 
     public void DestroyPOI(PointOfInterestType POITobeDestroyed)
@@ -34,6 +49,11 @@ public class PointOfInterestEventManager : MonoBehaviour
         PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
         PlayerManager.OnPOIDestroyed(POITobeDestroyed);
         StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));
+    }
+
+    public void OnPersistAllPOIStates()
+    {
+        PointOfInterestPersistanceManager.OnSavePOI();
     }
 
     private IEnumerator DestroyPOICoroutine(PointOfInterestType POITobeDestroyed)

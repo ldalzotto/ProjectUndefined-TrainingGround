@@ -15,6 +15,11 @@ public class TalkAction : AContextAction
 
     public TalkAction(AContextAction nextContextAction) : base(nextContextAction)
     {
+        InitExternalDependencies();
+    }
+
+    public override void InitExternalDependencies()
+    {
         DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
         PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
     }
@@ -131,6 +136,8 @@ public class TalkAction : AContextAction
 
     public override void Tick(float d)
     { }
+
+
 }
 
 

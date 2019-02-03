@@ -16,13 +16,15 @@ public class PointOfInterestType : MonoBehaviour
 
     private ContextActionSynchronizerManager ContextActionSynchronizerManager;
 
+    public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
+
     private void Start()
     {
         #region External Dependencies
         var PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
         #endregion
         this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
-        this.pointOfInterestScenarioState = gameObject.AddComponent<PointOfInterestScenarioState>();
+        this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
         this.PointOfInterestContextData = GetComponentInChildren<PointOfInterestContextDataContainer>();
         PointOfInterestEventManager.OnPOICreated(this);
     }
@@ -127,6 +129,20 @@ public class PointOfInterestType : MonoBehaviour
         return PointOfInterestContextData;
     }
 
+    public void ReplacePointOfInterestState(PointOfInterestScenarioState newState)
+    {
+        this.pointOfInterestScenarioState = newState;
+    }
+
+    public Dictionary<string, AContextAction> GetRawContextActions()
+    {
+        return ContextActionSynchronizerManager.GetRawContextActions();
+    }
+
+    public void ReplaceContextActions(Dictionary<string, AContextAction> contextActions)
+    {
+        ContextActionSynchronizerManager.ReplaceContextActions(contextActions);
+    }
 }
 
 #region Context Action Synchronizer
@@ -134,10 +150,7 @@ public class PointOfInterestType : MonoBehaviour
 [System.Serializable]
 class ContextActionSynchronizerManager
 {
-    private GameObject contextActionContainer;
-
     private Dictionary<string, AContextAction> contextActions = new Dictionary<string, AContextAction>();
-
 
     public List<AContextAction> ContextActions
     {
@@ -180,6 +193,16 @@ class ContextActionSynchronizerManager
         {
             contextActions.Add(key, contextActionToAdd);
         }
+    }
+
+    public Dictionary<string, AContextAction> GetRawContextActions()
+    {
+        return contextActions;
+    }
+
+    public void ReplaceContextActions(Dictionary<string, AContextAction> contextActions)
+    {
+        this.contextActions = contextActions;
     }
 
 }

@@ -16,7 +16,7 @@ public class InventoryManager : MonoBehaviour
 
     private GameObject InventoryItemsContainer;
 
-    private void Start()
+    public void Init()
     {
         #region External dependencies
         var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
@@ -31,6 +31,12 @@ public class InventoryManager : MonoBehaviour
         InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
         InventoryStateWorkflowManager = new InventoryStateWorkflowManager();
         InventoryActionWheelTriggerManager = new InventoryActionWheelTriggerManager(GameInputManager, ContextActionWheelEventManager, InventoryStateWorkflowManager);
+
+        //initialize items to menu
+        foreach (var holdItem in holdItems)
+        {
+            AddItemToInventoryMenu(holdItem);
+        }
     }
 
     public void Tick(float d)
@@ -68,10 +74,16 @@ public class InventoryManager : MonoBehaviour
     {
         if (holdItems.Add(item))
         {
-            var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
-            InventoryMenu.OnItemAdd(itemGameObject);
+            AddItemToInventoryMenu(item);
         }
     }
+
+    private void AddItemToInventoryMenu(Item item)
+    {
+        var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
+        InventoryMenu.OnItemAdd(itemGameObject);
+    }
+
     public IEnumerator OnInventoryEnabled()
     {
         yield return new WaitForEndOfFrame();
@@ -98,6 +110,7 @@ public class InventoryManager : MonoBehaviour
     {
         StartCoroutine(InventoryItemManager.OnItemDelete(item));
     }
+
     #endregion
 }
 

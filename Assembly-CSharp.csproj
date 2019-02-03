@@ -63,6 +63,7 @@
     <Compile Include="Assets\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
+    <Compile Include="Assets\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\_Collision\CollisionType.cs" />
     <Compile Include="Assets\_Common\Animation\AnimationPlayerHelper.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestContextData\PointOfInterestContextDataContainer.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestEventManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestManager.cs" />
+    <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestPersistanceManager.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\PointOfInterest\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\Scenario\Scripts\AbstractTimeline\ATimeline.cs" />

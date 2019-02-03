@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Start GameManager : " + name);
+        // Debug.Break();
         MobileInputJoystickManager = FindObjectOfType<MobileInputJoystickManager>();
 
         ContextActionManager = FindObjectOfType<ContextActionManager>();
@@ -34,8 +36,17 @@ public class GameManager : MonoBehaviour
 
         //initialization
         PlayerManager.Init();
+        FindObjectOfType<PointOfInterestPersistanceManager>().Init();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
-        FindObjectOfType<WayPointPathContainer>().Init();
+        InventoryManager.Init();
+        FindObjectOfType<InventoryEventManager>().Init();
+
+        var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
+        if (WayPointPathContainer != null)
+        {
+            WayPointPathContainer.Init();
+        }
+
     }
 
     void Update()

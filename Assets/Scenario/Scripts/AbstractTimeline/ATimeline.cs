@@ -17,7 +17,12 @@ public abstract class ATimelineNodeManager : MonoBehaviour
     {
         PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
         var TimelineInitilizer = GetComponent<TimelineInitializer>();
-        AddToNodes(TimelineInitilizer.InitialNodes);
+        if (!TimelineInitilizer.HasBeenInit)
+        {
+            AddToNodes(TimelineInitilizer.InitialNodes);
+            TimelineInitilizer.HasBeenInit = true;
+        }
+
     }
 
     public void IncrementGraph(ScenarioAction executedScenarioAction)
@@ -83,6 +88,8 @@ public abstract class ATimelineNodeManager : MonoBehaviour
 
 public abstract class TimelineInitializer : MonoBehaviour
 {
+    private bool hasBeenInit;
+    public bool HasBeenInit { get => hasBeenInit; set => hasBeenInit = value; }
     public abstract List<TimelineNode> InitialNodes { get; }
     public abstract Enum TimelineId { get; }
 }

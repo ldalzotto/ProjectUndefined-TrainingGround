@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class PointOfInterestScenarioState : MonoBehaviour
+public class PointOfInterestScenarioState
 {
     public ReceivableItemsComponent ReceivableItemsComponent;
     public DiscussionTree DiscussionTree;

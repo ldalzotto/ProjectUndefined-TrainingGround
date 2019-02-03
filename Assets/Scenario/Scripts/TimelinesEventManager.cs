@@ -16,11 +16,13 @@ public class TimelinesEventManager : MonoBehaviour
         DiscussionTimelineManager = GameObject.FindObjectOfType<DiscussionTimelineManagerV2>();
     }
 
+
     public void OnScenarioActionExecuted(ScenarioAction scenarioAction)
     {
         ScenarioTimelineManager.IncrementGraph(scenarioAction);
         DiscussionTimelineManager.IncrementGraph(scenarioAction);
     }
+
 
 }
 

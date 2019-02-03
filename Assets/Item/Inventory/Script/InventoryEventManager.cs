@@ -7,11 +7,11 @@ public class InventoryEventManager : MonoBehaviour
     private InventoryMenu InventoryMenu;
     private PlayerManager PlayerManager;
 
-    private void Start()
+    public void Init()
     {
         InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
+        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
     }
 
     public void OnAddItem(Item item)
