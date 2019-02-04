@@ -24,8 +24,6 @@ public enum ItemID
     NONE = 0,
     DUMMY_ITEM = 1,
     ID_CARD = 2,
-    ID_CARD_V2 = 3,
-    ID_CARD_V3 = 4,
     CROWBAR = 5
 }
 
@@ -36,8 +34,6 @@ public class ItemContextActionBuilder
         switch (item.ItemID)
         {
             case ItemID.ID_CARD:
-                return new List<AContextAction>() { new GiveAction(item, null) };
-            case ItemID.ID_CARD_V2:
                 return new List<AContextAction>() { new GiveAction(item, null) };
             case ItemID.CROWBAR:
                 return new List<AContextAction>() { new InteractAction(item, new CutsceneTimelineAction(CutsceneId.PLAYER_OPEN_SEWER, null)) };
@@ -51,7 +47,6 @@ public class ItemReceivedDescriptionTextConstants
     public static Dictionary<ItemID, string> ItemReceivedDescriptionText = new Dictionary<ItemID, string>()
     {
         { ItemID.ID_CARD, "A dummy id card."},
-        {ItemID.ID_CARD_V2, "A dummy id card. V2." },
         {ItemID.CROWBAR, "A bar." }
     };
 }
