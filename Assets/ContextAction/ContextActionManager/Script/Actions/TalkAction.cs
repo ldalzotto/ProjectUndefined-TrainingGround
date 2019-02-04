@@ -15,13 +15,7 @@ public class TalkAction : AContextAction
 
     public TalkAction(AContextAction nextContextAction) : base(nextContextAction)
     {
-        InitExternalDependencies();
-    }
 
-    public override void InitExternalDependencies()
-    {
-        DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
-        PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
     }
 
     public override void AfterFinishedEventProcessed()
@@ -36,6 +30,8 @@ public class TalkAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
+        DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+        PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
         var talkActionInput = (TalkActionInput)ContextActionInput;
         isConversationFinished = false;
         DiscussionEventHandler.InitializeEventHanlders(OnDiscussionNodeFinished, OnDiscussionTextNodeEnd, OnDiscussionChoiceNodeEnd);

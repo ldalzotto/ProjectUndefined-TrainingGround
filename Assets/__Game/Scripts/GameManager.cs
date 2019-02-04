@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
         //initialization
         PlayerManager.Init();
-        FindObjectOfType<PointOfInterestPersistanceManager>().Init();
+        FindObjectOfType<PersistanceEventManager>().Init();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
         InventoryManager.Init();
         FindObjectOfType<InventoryEventManager>().Init();

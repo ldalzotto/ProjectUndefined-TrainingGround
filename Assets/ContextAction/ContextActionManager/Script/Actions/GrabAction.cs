@@ -24,16 +24,6 @@ public class GrabAction : AContextAction
     public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
     {
         Item = PrefabContainer.InventoryItemsPrefabs[itemId];
-
-        #region External Dependencies
-        InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-        PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
-        var GameCanvas = GameObject.FindObjectOfType<Canvas>();
-        var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-        #endregion
-
-        ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, Item);
-
         this.deletePOIOnGrab = deletePOIOnGrab;
     }
 
@@ -44,6 +34,17 @@ public class GrabAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
+
+        #region External Dependencies
+        InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+        PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+        var GameCanvas = GameObject.FindObjectOfType<Canvas>();
+        var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        #endregion
+
+        ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, Item);
+
+
         ItemReceivedPopupManager.ResetState();
         grabActionInput = (GrabActionInput)ContextActionInput;
         this.associatedPOI = grabActionInput.TargetedPOI;

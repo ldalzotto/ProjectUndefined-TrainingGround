@@ -34,13 +34,7 @@ public class GiveAction : AContextAction
 
     public GiveAction(Item itemGiven, AContextAction nextAction) : base(nextAction)
     {
-        #region External Dependencies
-        var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
-        this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-        #endregion
-
         this.itemGiven = itemGiven;
-        GiveActionAnimationManager = new GiveActionAnimationManager(PlayerGlobalAnimationEventHandler, itemGiven);
         contextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
@@ -51,6 +45,14 @@ public class GiveAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
+
+        #region External Dependencies
+        var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
+        this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+        #endregion
+        GiveActionAnimationManager = new GiveActionAnimationManager(PlayerGlobalAnimationEventHandler, itemGiven);
+
+        //reset
         isActionEnded = false;
         itemSuccesfullyGiven = false;
         var giveActionInput = (GiveActionInput)ContextActionInput;

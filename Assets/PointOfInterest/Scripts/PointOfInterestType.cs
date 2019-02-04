@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class PointOfInterestType : MonoBehaviour
+public class PointOfInterestType : MonoBehaviour, IPersistantable
 {
     public PointOfInterestId PointOfInterestId;
     public bool InteractionWithPlayerAllowed = true;
@@ -114,6 +114,28 @@ public class PointOfInterestType : MonoBehaviour
     }
     #endregion
 
+    #region Persistance Behavior
+    public PersistanceData PersistanceData()
+    {
+        return new PersistedPOIData(pointOfInterestScenarioState, ContextActionSynchronizerManager.GetRawContextActions());
+    }
+
+    public void Load(PersistanceData persistanceData)
+    {
+        var poiPersistanceData = (PersistedPOIData)persistanceData;
+        if (poiPersistanceData != null)
+        {
+            pointOfInterestScenarioState = poiPersistanceData.PointOfInterestScenarioState;
+            ContextActionSynchronizerManager.ReplaceContextActions(poiPersistanceData.ContextActions);
+        }
+    }
+
+    public string PersistanceID()
+    {
+        return PointOfInterestId.ToString();
+    }
+    #endregion
+
     public List<AContextAction> GetContextActions()
     {
         return ContextActionSynchronizerManager.ContextActions;
@@ -127,21 +149,6 @@ public class PointOfInterestType : MonoBehaviour
     public PointOfInterestContextDataContainer GetContextData()
     {
         return PointOfInterestContextData;
-    }
-
-    public void ReplacePointOfInterestState(PointOfInterestScenarioState newState)
-    {
-        this.pointOfInterestScenarioState = newState;
-    }
-
-    public Dictionary<string, AContextAction> GetRawContextActions()
-    {
-        return ContextActionSynchronizerManager.GetRawContextActions();
-    }
-
-    public void ReplaceContextActions(Dictionary<string, AContextAction> contextActions)
-    {
-        ContextActionSynchronizerManager.ReplaceContextActions(contextActions);
     }
 }
 

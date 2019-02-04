@@ -76,7 +76,6 @@ public class ContextActionManager : MonoBehaviour
 [System.Serializable]
 public abstract class AContextAction
 {
-    public virtual void InitExternalDependencies() { }
     public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
     public abstract bool ComputeFinishedConditions();
     public abstract void AfterFinishedEventProcessed();

@@ -35,7 +35,7 @@ public class InventoryManager : MonoBehaviour
         //initialize items to menu
         foreach (var holdItem in holdItems)
         {
-            AddItemToInventoryMenu(holdItem);
+            InventoryMenu.OnItemAdd(holdItem);
         }
     }
 
@@ -74,14 +74,9 @@ public class InventoryManager : MonoBehaviour
     {
         if (holdItems.Add(item))
         {
-            AddItemToInventoryMenu(item);
+            var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
+            InventoryMenu.OnItemAdd(itemGameObject);
         }
-    }
-
-    private void AddItemToInventoryMenu(Item item)
-    {
-        var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
-        InventoryMenu.OnItemAdd(itemGameObject);
     }
 
     public IEnumerator OnInventoryEnabled()
