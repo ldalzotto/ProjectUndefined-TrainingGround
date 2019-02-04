@@ -6,7 +6,7 @@ public class InventoryManager : MonoBehaviour
 {
     private const string INVENTORY_ITEMS_CONTAINER_NAME = "InventoryItems";
 
-    private HashSet<Item> holdItems = new HashSet<Item>();
+    private Dictionary<ItemID, Item> holdItems = new Dictionary<ItemID, Item>();
 
     private InventoryExitTriggerManager InventoryExitTriggerManager;
     private InventoryActionWheelTriggerManager InventoryActionWheelTriggerManager;
@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
         InventoryActionWheelTriggerManager = new InventoryActionWheelTriggerManager(GameInputManager, ContextActionWheelEventManager, InventoryStateWorkflowManager);
 
         //initialize items to menu
-        foreach (var holdItem in holdItems)
+        foreach (var holdItem in holdItems.Values)
         {
             InventoryMenu.OnItemAdd(holdItem);
         }
@@ -72,9 +72,10 @@ public class InventoryManager : MonoBehaviour
     #region External Events
     public void OnAddItem(Item item)
     {
-        if (holdItems.Add(item))
+        if (!holdItems.ContainsKey(item.ItemID))
         {
             var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
+            holdItems[item.ItemID] = itemGameObject;
             InventoryMenu.OnItemAdd(itemGameObject);
         }
     }
