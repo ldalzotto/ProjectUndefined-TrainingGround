@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
 public class LevelZoneTransitionAction : AContextAction
 {
@@ -25,7 +24,6 @@ public class LevelZoneTransitionAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
-        GameObject.FindObjectOfType<PersistanceEventManager>().SaveAll();
         SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone]);
     }
 

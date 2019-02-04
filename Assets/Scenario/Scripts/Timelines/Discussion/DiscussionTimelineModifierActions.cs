@@ -19,9 +19,9 @@ public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
         this.contextActionToAdd.ContextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
+        var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
         if (selectedPOI != null)
         {
             selectedPOI.OnDiscussionTreeAdd(DiscussionTree, contextActionToAdd);
@@ -42,9 +42,9 @@ public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowActi
         this.nodeIdsWalk = nodeIdsWalk;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var selectedPOI = PointOfInterestManager.GetActivePointOfInterest(PointOfInterestId);
+        var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
         if (selectedPOI != null)
         {
             selectedPOI.GetAssociatedDiscussionTree().BreakConnectionAtEndOfStack(nodeIdsWalk);

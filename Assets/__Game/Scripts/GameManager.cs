@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private NPCManager NPCManager;
     private InventoryManager InventoryManager;
     private DiscussionWindowManager DiscussionWindowManager;
+    private GhostsPOIManager GhostsPOIManager;
 
     //timelines
     private ScenarioTimelineManagerV2 ScenarioTimelineManager;
@@ -30,13 +31,13 @@ public class GameManager : MonoBehaviour
         NPCManager = FindObjectOfType<NPCManager>();
         InventoryManager = FindObjectOfType<InventoryManager>();
         DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
+        GhostsPOIManager = FindObjectOfType<GhostsPOIManager>();
 
         ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
         DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
         //initialization
         PlayerManager.Init();
-        FindObjectOfType<PersistanceEventManager>().Init();
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
         InventoryManager.Init();
         FindObjectOfType<InventoryEventManager>().Init();
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
 
         MobileInputJoystickManager.Tick(d);
 
+        GhostsPOIManager.Tick(d);
         ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);

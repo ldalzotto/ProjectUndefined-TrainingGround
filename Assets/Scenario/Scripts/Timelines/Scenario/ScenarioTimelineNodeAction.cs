@@ -12,9 +12,9 @@
         this.contextAction.ContextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnGrabbableItemAdd(itemID, contextAction);
@@ -33,9 +33,9 @@ public class RemoveGrabbableItem : TimelineNodeWorkflowAction
         this.poiInvolved = poiInvolved;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnGrabbableItemRemove(itemInvolved);
@@ -54,9 +54,9 @@ public class AddReceivableItem : TimelineNodeWorkflowAction
         this.poiInvolved = poiInvolved;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnReceivableItemAdd(itemInvolved);
@@ -75,9 +75,9 @@ public class RemoveReceivableItem : TimelineNodeWorkflowAction
         this.poiInvolved = poiInvolved;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnReceivableItemRemove(itemInvolved);
@@ -96,9 +96,9 @@ public class AddPOIInteractableItem : TimelineNodeWorkflowAction
         this.poiInvolved = poiInvolved;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnInteractableItemAdd(itemInvolved);
@@ -117,9 +117,9 @@ public class RemovePOIInteractableItem : TimelineNodeWorkflowAction
         this.poiInvolved = poiInvolved;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnInteractableItemRemove(itemInvolved);
@@ -141,9 +141,9 @@ public class AddTransitionLevel : TimelineNodeWorkflowAction
         this.contextAction = contextAction;
     }
 
-    public override void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence)
+    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
     {
-        var foundedPoi = PointOfInterestManager.GetActivePointOfInterest(poiInvolved);
+        var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
         if (foundedPoi != null)
         {
             foundedPoi.OnLevelZoneTransitionAdd(nextLevelZone, contextAction);

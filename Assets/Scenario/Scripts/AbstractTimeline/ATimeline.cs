@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class ATimelineNodeManager : MonoBehaviour
 {
     #region External Dependencies
-    private PointOfInterestManager PointOfInterestManager;
+    private GhostsPOIManager GhostsPOIManager;
     #endregion
 
     private List<TimelineNode> nodes = new List<TimelineNode>();
@@ -15,7 +15,7 @@ public abstract class ATimelineNodeManager : MonoBehaviour
 
     public void Init()
     {
-        PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+        GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
         var TimelineInitilizer = GetComponent<TimelineInitializer>();
         if (!TimelineInitilizer.HasBeenInit)
         {
@@ -34,7 +34,7 @@ public abstract class ATimelineNodeManager : MonoBehaviour
             nodes.Remove(oldnode);
             foreach (var endAction in oldnode.OnExitNodeAction)
             {
-                endAction.Execute(PointOfInterestManager, oldnode);
+                endAction.Execute(GhostsPOIManager, oldnode);
             }
         }
     }
@@ -46,7 +46,7 @@ public abstract class ATimelineNodeManager : MonoBehaviour
         {
             foreach (var startAction in newNode.OnStartNodeAction)
             {
-                startAction.Execute(PointOfInterestManager, newNode);
+                startAction.Execute(GhostsPOIManager, newNode);
             }
         }
     }
@@ -141,5 +141,5 @@ public abstract class TimelineNode
 
 public abstract class TimelineNodeWorkflowAction
 {
-    public abstract void Execute(PointOfInterestManager PointOfInterestManager, TimelineNode timelineNodeRefence);
+    public abstract void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence);
 }

@@ -31,12 +31,6 @@ public class InventoryManager : MonoBehaviour
         InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
         InventoryStateWorkflowManager = new InventoryStateWorkflowManager();
         InventoryActionWheelTriggerManager = new InventoryActionWheelTriggerManager(GameInputManager, ContextActionWheelEventManager, InventoryStateWorkflowManager);
-
-        //initialize items to menu
-        foreach (var holdItem in holdItems.Values)
-        {
-            InventoryMenu.OnItemAdd(holdItem);
-        }
     }
 
     public void Tick(float d)
