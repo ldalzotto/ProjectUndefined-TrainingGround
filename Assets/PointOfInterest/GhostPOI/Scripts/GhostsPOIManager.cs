@@ -6,34 +6,28 @@ using UnityEngine;
 public class GhostsPOIManager : MonoBehaviour
 {
 
-    private Dictionary<PointOfInterestId, GhostPOI> GhostPOIs = new Dictionary<PointOfInterestId, GhostPOI>() { };
-    private Dictionary<PointOfInterestId, Action<GhostPOI>> POISyncEvents = new Dictionary<PointOfInterestId, Action<GhostPOI>>();
+    private Dictionary<PointOfInterestId, GhostPOI> ghostPOIs = null;
 
-    private bool hasInit;
-    private void Start()
+    public Dictionary<PointOfInterestId, GhostPOI> GhostPOIs
     {
+        get
+        {
+            if (ghostPOIs == null)
+            {
+                Init();
+            }
+            return ghostPOIs;
+        }
+    }
+
+    private void Init()
+    {
+        ghostPOIs = new Dictionary<PointOfInterestId, GhostPOI>();
         var poiIds = Enum.GetValues(typeof(PointOfInterestId)).Cast<PointOfInterestId>();
         foreach (var poiId in poiIds)
         {
-            GhostPOIs.Add(poiId, new GhostPOI(poiId));
+            ghostPOIs.Add(poiId, new GhostPOI(poiId));
         }
-        hasInit = true;
-        Debug.Log(GhostPOIs.Count);
-    }
-
-    public void Tick(float d)
-    {
-        if (hasInit)
-        {
-            foreach (var POISyncEvent in POISyncEvents)
-            {
-                if (POISyncEvent.Value != null)
-                {
-                    POISyncEvent.Value.Invoke(GhostPOIs[POISyncEvent.Key]);
-                }
-            }
-        }
-
     }
 
     public GhostPOI GetGhostPOI(PointOfInterestId pointOfInterestId)
@@ -44,11 +38,7 @@ public class GhostsPOIManager : MonoBehaviour
     #region External Events
     public void OnScenePOICreated(PointOfInterestType pointOfInterestType)
     {
-        POISyncEvents[pointOfInterestType.PointOfInterestId] = pointOfInterestType.SyncFromGhostPOI;
-    }
-    public void OnScenePOIDestroyed(PointOfInterestType pointOfInterestType)
-    {
-        POISyncEvents[pointOfInterestType.PointOfInterestId] = null;
+        pointOfInterestType.SyncFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
     }
     #endregion
 }

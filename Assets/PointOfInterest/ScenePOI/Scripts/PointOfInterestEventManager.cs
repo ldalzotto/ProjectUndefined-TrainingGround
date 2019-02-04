@@ -46,7 +46,6 @@ public class PointOfInterestEventManager : MonoBehaviour
 
     public void DestroyPOI(PointOfInterestType POITobeDestroyed)
     {
-        GhostsPOIManager.OnScenePOIDestroyed(POITobeDestroyed);
         PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
         PlayerManager.OnPOIDestroyed(POITobeDestroyed);
         StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));

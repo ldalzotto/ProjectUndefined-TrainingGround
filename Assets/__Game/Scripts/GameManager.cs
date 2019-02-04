@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
 
         MobileInputJoystickManager.Tick(d);
 
-        GhostsPOIManager.Tick(d);
         ContextActionWheelManager.Tick(d);
         ContextActionManager.Tick(d);
         PlayerManager.Tick(d);
