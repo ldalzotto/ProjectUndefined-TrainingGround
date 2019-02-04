@@ -44,7 +44,7 @@ public class ContextActionManager : MonoBehaviour
 
     private void ProcessTick(float d, AContextAction contextAction)
     {
-        contextAction.OnTick(d);
+        contextAction.OnTick(d, ContextActionEventManager);
     }
 
     #region Internal Events
@@ -84,19 +84,16 @@ public abstract class AContextAction
     protected ContextActionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
     private AContextAction nextContextAction;
 
-    private ContextActionEventManager ContextActionEventManager;
-
     #region Internal Dependencies
     private AContextActionInput contextActionInput;
     #endregion
 
     public AContextAction(AContextAction nextAction)
     {
-        ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
         nextContextAction = nextAction;
     }
 
-    public void OnTick(float d)
+    public void OnTick(float d, ContextActionEventManager contextActionEventManager)
     {
         if (!isFinished)
         {
@@ -105,7 +102,7 @@ public abstract class AContextAction
             if (ComputeFinishedConditions())
             {
                 isFinished = true;
-                ContextActionEventManager.OnContextActionFinished(this, contextActionInput);
+                contextActionEventManager.OnContextActionFinished(this, contextActionInput);
                 AfterFinishedEventProcessed();
             }
         }
