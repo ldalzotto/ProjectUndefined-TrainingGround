@@ -13,7 +13,8 @@ public enum PointOfInterestId
     PLAYER = 4,
     DUMBSTER = 5,
     CROWBAR = 6,
-    SEWER_ENTRANCE = 7
+    SEWER_ENTRANCE = 7,
+    SEWER_EXIT = 8
 }
 #endregion
 

@@ -22,7 +22,10 @@ public class PersistanceManager : MonoBehaviour
 
     public void Load(IPersistantable persistantableLoad)
     {
-        persistantableLoad.Load(persistedData[persistantableLoad.PersistanceID()]);
+        if (persistedData.ContainsKey(persistantableLoad.PersistanceID()))
+        {
+            persistantableLoad.Load(persistedData[persistantableLoad.PersistanceID()]);
+        }
     }
 
     public void LoadAll(List<IPersistantable> persistantablesLoad)
