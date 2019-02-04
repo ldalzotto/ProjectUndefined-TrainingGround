@@ -123,6 +123,13 @@ public abstract class AContextAction
     {
         isFinished = false;
     }
+
+    #region Logical Conditions
+    public bool IsTalkAction()
+    {
+        return GetType() == typeof(TalkAction);
+    }
+    #endregion
 }
 
 [System.Serializable]

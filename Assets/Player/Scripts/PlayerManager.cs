@@ -162,7 +162,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsHeadRotatingTowardsPOI()
     {
-        return !PlayerContextActionManager.IsActionExecuting && !PlayerAnimationManager.IsIdleAnimationRunnig();
+        return (!PlayerContextActionManager.IsActionExecuting || PlayerContextActionManager.IsTalkActionExecuting) && !PlayerAnimationManager.IsIdleAnimationRunnig();
     }
 
     #endregion
@@ -189,9 +189,9 @@ public class PlayerManager : MonoBehaviour
             PlayerObstacleOvercomeManager.ObstacleOvercomeTriggerEnter(collider);
         }
     }
-    public void OnContextActionAdded()
+    public void OnContextActionAdded(AContextAction contextActionAdded)
     {
-        PlayerContextActionManager.OnContextActionAdded();
+        PlayerContextActionManager.OnContextActionAdded(contextActionAdded);
         PlayerPOIVisualHeadMovementManager.OnContextActionAdded();
     }
     public void OnContextActionFinished()
@@ -719,17 +719,25 @@ class PlayerPOIWheelTriggerManager
 class PlayerContextActionManager
 {
     private bool isActionExecuting;
+    private bool isTalkActionExecuting;
 
     public bool IsActionExecuting { get => isActionExecuting; }
+    public bool IsTalkActionExecuting { get => isTalkActionExecuting; }
 
-    public void OnContextActionAdded()
+    public void OnContextActionAdded(AContextAction contextActionAdded)
     {
         isActionExecuting = true;
+        isTalkActionExecuting = false;
+        if (contextActionAdded.IsTalkAction())
+        {
+            isTalkActionExecuting = true;
+        }
     }
 
     public void OnContextActionFinished()
     {
         isActionExecuting = false;
+        isTalkActionExecuting = false;
     }
 }
 

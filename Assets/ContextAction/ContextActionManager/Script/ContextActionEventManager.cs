@@ -22,7 +22,7 @@ public class ContextActionEventManager : MonoBehaviour
         {
             if (contextAction != null)
             {
-                PlayerManager.OnContextActionAdded();
+                PlayerManager.OnContextActionAdded(contextAction);
                 InventoryManager.OnContextActionAdded();
                 ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager));
             }
