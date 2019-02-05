@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PointOfInterestEventManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class PointOfInterestEventManager : MonoBehaviour
     private PlayerManager PlayerManager;
     private PointOfInterestManager pointOfInterestManager;
     private GhostsPOIManager ghostsPOIManager;
+    private LevelZonesEventManager levelZonesEventManager;
 
     private PointOfInterestManager PointOfInterestManager
     {
@@ -31,6 +33,17 @@ public class PointOfInterestEventManager : MonoBehaviour
             return ghostsPOIManager;
         }
     }
+    private LevelZonesEventManager LevelZonesEventManager
+    {
+        get
+        {
+            if (levelZonesEventManager == null)
+            {
+                levelZonesEventManager = GameObject.FindObjectOfType<LevelZonesEventManager>(); ;
+            }
+            return levelZonesEventManager;
+        }
+    }
 
 
     private void Start()
@@ -46,9 +59,22 @@ public class PointOfInterestEventManager : MonoBehaviour
 
     public void DestroyPOI(PointOfInterestType POITobeDestroyed)
     {
+        if (!LevelZonesEventManager.IsNewZoneLoading())
+        {
+            POITobeDestroyed.OnPOIDestroyedFromPlayerAction();
+        }
         PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
+        GhostsPOIManager.OnScenePOIDestroyed(POITobeDestroyed);
         PlayerManager.OnPOIDestroyed(POITobeDestroyed);
         StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));
+    }
+
+    public void DetroyPOIs(List<PointOfInterestType> POIsTobeDestroyed)
+    {
+        foreach (var POITobeDestroyed in POIsTobeDestroyed)
+        {
+            DestroyPOI(POITobeDestroyed);
+        }
     }
 
     private IEnumerator DestroyPOICoroutine(PointOfInterestType POITobeDestroyed)

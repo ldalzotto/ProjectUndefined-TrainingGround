@@ -38,7 +38,11 @@ public class GhostsPOIManager : MonoBehaviour
     #region External Events
     public void OnScenePOICreated(PointOfInterestType pointOfInterestType)
     {
-        pointOfInterestType.SyncFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+        pointOfInterestType.SyncCreateFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+    }
+    public void OnScenePOIDestroyed(PointOfInterestType pointOfInterestType)
+    {
+        pointOfInterestType.SyncDestroyedFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
     }
     #endregion
 }
@@ -48,9 +52,11 @@ public class GhostPOI
     public PointOfInterestId PointOfInterestId;
     private PointOfInterestScenarioState PointOfInterestScenarioState;
     private ContextActionSynchronizerManager contextActionSynchronizerManager;
+    private PointOfInterestModelState pointOfInterestModelState;
 
     public PointOfInterestScenarioState PointOfInterestScenarioState1 { get => PointOfInterestScenarioState; }
     internal ContextActionSynchronizerManager ContextActionSynchronizerManager { get => contextActionSynchronizerManager; }
+    public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; set => pointOfInterestModelState = value; }
 
     public GhostPOI(PointOfInterestId PointOfInterestId)
     {

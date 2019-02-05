@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PointOfInterestManager : MonoBehaviour
@@ -12,9 +13,25 @@ public class PointOfInterestManager : MonoBehaviour
         {
             if (pointOfInterestContainerManager == null)
             {
-                pointOfInterestContainerManager = new PointOfInterestContainerManager();
+                pointOfInterestContainerManager = new PointOfInterestContainerManager(PointOfInterestEventManager);
             }
             return pointOfInterestContainerManager;
+        }
+    }
+
+    #region External Dependencies
+    private PointOfInterestEventManager pointOfInterestEventManager;
+    #endregion
+
+    private PointOfInterestEventManager PointOfInterestEventManager
+    {
+        get
+        {
+            if (pointOfInterestEventManager == null)
+            {
+                pointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            }
+            return pointOfInterestEventManager;
         }
     }
 
@@ -27,6 +44,11 @@ public class PointOfInterestManager : MonoBehaviour
     public void OnPOIDestroyed(PointOfInterestType POITobeDestroyed)
     {
         PointOfInterestContainerManager.OnPOIDestroyed(POITobeDestroyed);
+    }
+
+    public void OnActualZoneSwitched()
+    {
+        PointOfInterestContainerManager.DestroyAllPOI();
     }
     #endregion
 
@@ -51,6 +73,14 @@ public class PointOfInterestManager : MonoBehaviour
 
 class PointOfInterestContainerManager
 {
+
+    private PointOfInterestEventManager PointOfInterestEventManager;
+
+    public PointOfInterestContainerManager(PointOfInterestEventManager pointOfInterestEventManager)
+    {
+        PointOfInterestEventManager = pointOfInterestEventManager;
+    }
+
     private List<PointOfInterestType> activePointOfInterests = new List<PointOfInterestType>();
     private List<PointOfInterestType> inactivePointOfInterest = new List<PointOfInterestType>();
 
@@ -115,5 +145,12 @@ class PointOfInterestContainerManager
             returnList.Add(poi);
         }
         return returnList;
+    }
+
+    internal void DestroyAllPOI()
+    {
+        var allPois = activePointOfInterests.Concat(inactivePointOfInterest).ToList();
+        allPois.RemoveAll(e => e == null);
+        PointOfInterestEventManager.DetroyPOIs(allPois);
     }
 }

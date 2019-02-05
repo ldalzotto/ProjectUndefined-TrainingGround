@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PointOfInterestScenarioState
 {
@@ -34,4 +35,36 @@ public class ReceivableItemsComponent : POIIdContainer<ItemID> { }
 #region Interactable Items
 [System.Serializable]
 public class InteractableItemsComponent : POIIdContainer<ItemID> { }
+#endregion
+
+#region Model State
+public class PointOfInterestModelState
+{
+    private bool isDestroyed;
+    private Dictionary<string, bool> MeshRendererStates = new Dictionary<string, bool>();
+
+    public bool IsDestroyed { get => isDestroyed; set => isDestroyed = value; }
+
+    public PointOfInterestModelState(Renderer[] renderers)
+    {
+        SynchGhostPOIRenderers(renderers);
+    }
+
+    public void SyncScenePOIRenderers(Renderer[] scenePOIRenderers)
+    {
+        for (var i = 0; i < scenePOIRenderers.Length; i++)
+        {
+            scenePOIRenderers[i].enabled = MeshRendererStates[scenePOIRenderers[i].name];
+        }
+    }
+
+    public void SynchGhostPOIRenderers(Renderer[] scenePOIRenderers)
+    {
+        MeshRendererStates = new Dictionary<string, bool>();
+        for (var i = 0; i < scenePOIRenderers.Length; i++)
+        {
+            MeshRendererStates[scenePOIRenderers[i].name] = scenePOIRenderers[i].enabled;
+        }
+    }
+}
 #endregion

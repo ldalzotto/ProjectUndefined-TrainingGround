@@ -1,4 +1,4 @@
-﻿using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 public class LevelZoneTransitionAction : AContextAction
 {
@@ -24,7 +24,8 @@ public class LevelZoneTransitionAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
-        SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone]);
+        var LevelZonesEventManager = GameObject.FindObjectOfType<LevelZonesEventManager>();
+        LevelZonesEventManager.OnLevelZoneChange(nextZone);
     }
 
     public override void Tick(float d)
