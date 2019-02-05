@@ -102,6 +102,7 @@
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
     <Compile Include="Assets\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
     <Compile Include="Assets\Cutscenes\Scripts\Cutscene.cs" />
+    <Compile Include="Assets\Debug\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionTree.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
