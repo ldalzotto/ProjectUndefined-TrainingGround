@@ -63,6 +63,7 @@
     <Compile Include="Assets\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\GameManager.cs" />
+    <Compile Include="Assets\__Game\Scripts\MaterialContainer.cs" />
     <Compile Include="Assets\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\_Collision\CollisionType.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Assets\_Common\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\_Common\CustomYields\WaitForNavAgentDestinationReached.cs" />
     <Compile Include="Assets\_Common\FX\TriggerableEffect.cs" />
+    <Compile Include="Assets\_Common\MaterialDynamicInstances\POISelectedMaterial.cs" />
     <Compile Include="Assets\_Common\Random\RandomHelper.cs" />
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\_Constants\StringConstants.cs" />

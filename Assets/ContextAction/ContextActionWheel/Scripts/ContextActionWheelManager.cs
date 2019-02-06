@@ -6,7 +6,6 @@ public class ContextActionWheelManager : MonoBehaviour
 {
 
     public WheelPositionManagerComponent WheelPositionManagerComponent;
-    public PointOnInteresetSelectedEffectComponent PointOnInteresetSelectedEffectComponent;
 
     private ContextActionEventManager ContextActionEventManager;
 
@@ -33,7 +32,7 @@ public class ContextActionWheelManager : MonoBehaviour
         WheelActivityManager = new WheelActivityManager(GameInputManager);
         WheelActionActivationManager = new WheelActionActivationManager(GameInputManager, ContextActionWheel);
         WheelPositionManager = new WheelPositionManager(GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform, WheelPositionManagerComponent, ContextActionWheel.transform);
-        PointOnInteresetSelectedEffectManager = new PointOnInteresetSelectedEffectManager(PointOnInteresetSelectedEffectComponent);
+        PointOnInteresetSelectedEffectManager = new PointOnInteresetSelectedEffectManager();
     }
 
     public void Tick(float d)
@@ -174,15 +173,9 @@ public enum WheelTriggerSource
 #region  POISelection Effect
 class PointOnInteresetSelectedEffectManager
 {
-    private PointOnInteresetSelectedEffectComponent PointOnInteresetSelectedEffectComponent;
 
     private Dictionary<int, Material> originalMaterials = new Dictionary<int, Material>();
     private PointOfInterestType cachedSelectedPointOfInterest;
-
-    public PointOnInteresetSelectedEffectManager(PointOnInteresetSelectedEffectComponent pointOnInteresetSelectedEffectComponent)
-    {
-        PointOnInteresetSelectedEffectComponent = pointOnInteresetSelectedEffectComponent;
-    }
 
     public void OnWheelEnabled(PointOfInterestType selectedPointOfInterest)
     {
@@ -193,10 +186,7 @@ class PointOnInteresetSelectedEffectManager
             for (var i = 0; i < poiMeshRenderers.Length; i++)
             {
                 originalMaterials[poiMeshRenderers[i].GetInstanceID()] = poiMeshRenderers[i].material;
-                var selectedMaterial = new Material(PointOnInteresetSelectedEffectComponent.POISelectedGenericMaterial);
-                selectedMaterial.CopyPropertiesFromMaterial(poiMeshRenderers[i].material);
-                selectedMaterial.SetFloat("_RimMaxInfluenceFactor", PointOnInteresetSelectedEffectComponent.RimMaxInfluenceFactor);
-                selectedMaterial.SetFloat("_RimInfluenceSpeed", PointOnInteresetSelectedEffectComponent.RimInfluenceSpeed);
+                var selectedMaterial = POISelectedMaterial.Build(poiMeshRenderers[i].material);
                 poiMeshRenderers[i].material = selectedMaterial;
             }
         }
@@ -218,17 +208,4 @@ class PointOnInteresetSelectedEffectManager
     }
 
 }
-
-[System.Serializable]
-public class PointOnInteresetSelectedEffectComponent
-{
-    public Material POISelectedGenericMaterial;
-
-    private float _RimMaxInfluenceFactor = 0.5f;
-    private float _RimInfluenceSpeed = 50f;
-
-    public float RimMaxInfluenceFactor { get => _RimMaxInfluenceFactor; }
-    public float RimInfluenceSpeed { get => _RimInfluenceSpeed; }
-}
-
 #endregion
