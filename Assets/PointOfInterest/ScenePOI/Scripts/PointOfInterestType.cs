@@ -23,7 +23,7 @@ public class PointOfInterestType : MonoBehaviour
 
     public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
 
-    private void Start()
+    public void Init()
     {
         #region External Dependencies
         PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();

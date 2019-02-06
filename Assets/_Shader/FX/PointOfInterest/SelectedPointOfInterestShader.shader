@@ -8,6 +8,7 @@
 		_Metallic("Metallic", Range(0,1)) = 0.0
 		_RimMaxInfluenceFactor("Rim Max Influence Factor", Float) = 1.0
 		_RimInfluenceSpeed("Rim Influence Speed", Float) = 1.0
+			_RimColor("Rim Color", Color) = (1,1,1,1)
 	}
 		SubShader
 		{
@@ -35,13 +36,8 @@
 			fixed4 _Color;
 			half _RimMaxInfluenceFactor;
 			half _RimInfluenceSpeed;
+			half4 _RimColor;
 
-			// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-			// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-			// #pragma instancing_options assumeuniformscaling
-			UNITY_INSTANCING_BUFFER_START(Props)
-				// put more per-instance properties here
-			UNITY_INSTANCING_BUFFER_END(Props)
 
 			void surf(Input IN, inout SurfaceOutputStandard o)
 			{
@@ -51,7 +47,7 @@
 
 				rim *= abs(sin(_Time * _RimInfluenceSpeed)*_RimMaxInfluenceFactor);
 
-				o.Albedo = c.rgb + rim;
+				o.Albedo = c.rgb + (rim * _RimColor);
 				// Metallic and smoothness come from slider variables
 				o.Metallic = _Metallic;
 				o.Smoothness = _Glossiness;

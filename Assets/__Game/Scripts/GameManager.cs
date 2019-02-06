@@ -38,9 +38,11 @@ public class GameManager : MonoBehaviour
 
         //initialization
         PlayerManager.Init();
+        StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
         StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
         InventoryManager.Init();
         FindObjectOfType<InventoryEventManager>().Init();
+        FindObjectOfType<PointOfInterestEventManager>().Init();
 
         var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
         if (WayPointPathContainer != null)
@@ -95,5 +97,18 @@ public class GameManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         ScenarioTimelineManager.Init();
         DiscussionTimelineManager.Init();
+    }
+
+    private IEnumerator PointIsInterestInitialisationAtEndOfFrame()
+    {
+        yield return new WaitForEndOfFrame();
+        var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
+        if (allActivePOI != null)
+        {
+            for (var i = 0; i < allActivePOI.Length; i++)
+            {
+                allActivePOI[i].Init();
+            }
+        }
     }
 }

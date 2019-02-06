@@ -1,17 +1,23 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PointOfInterestEventManager : MonoBehaviour
 {
 
-    private Lazy<PlayerManager> PlayerManager => new Lazy<PlayerManager>(() => GameObject.FindObjectOfType<PlayerManager>());
-    private Lazy<PointOfInterestManager> PointOfInterestManager => new Lazy<PointOfInterestManager>(() => GameObject.FindObjectOfType<PointOfInterestManager>());
-    private Lazy<GhostsPOIManager> GhostsPOIManager => new Lazy<GhostsPOIManager>(() => GameObject.FindObjectOfType<GhostsPOIManager>());
+    private PlayerManager PlayerManager;
+    private PointOfInterestManager PointOfInterestManager;
+    private GhostsPOIManager GhostsPOIManager;
     private LevelZonesEventManager levelZonesEventManager;
 
 
+    public void Init()
+    {
+        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+        GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
+        levelZonesEventManager = GameObject.FindObjectOfType<LevelZonesEventManager>();
+    }
 
     private LevelZonesEventManager LevelZonesEventManager
     {
@@ -27,8 +33,8 @@ public class PointOfInterestEventManager : MonoBehaviour
 
     public void OnPOICreated(PointOfInterestType POICreated)
     {
-        GhostsPOIManager.Value.OnScenePOICreated(POICreated);
-        PointOfInterestManager.Value.OnPOICreated(POICreated);
+        GhostsPOIManager.OnScenePOICreated(POICreated);
+        PointOfInterestManager.OnPOICreated(POICreated);
     }
 
     public void DestroyPOI(PointOfInterestType POITobeDestroyed)
@@ -37,9 +43,9 @@ public class PointOfInterestEventManager : MonoBehaviour
         {
             POITobeDestroyed.OnPOIDestroyedFromPlayerAction();
         }
-        PointOfInterestManager.Value.OnPOIDestroyed(POITobeDestroyed);
-        GhostsPOIManager.Value.OnScenePOIDestroyed(POITobeDestroyed);
-        PlayerManager.Value.OnPOIDestroyed(POITobeDestroyed);
+        PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
+        GhostsPOIManager.OnScenePOIDestroyed(POITobeDestroyed);
+        PlayerManager.OnPOIDestroyed(POITobeDestroyed);
         StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));
     }
 
