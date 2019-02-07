@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 public class RTPlayerManager : MonoBehaviour
 {
 
-    private CoreGame.PlayerInputMoveManager PlayerInputMoveManager;
+    public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
+
+    private PlayerInputMoveManager PlayerInputMoveManager;
 
     public void Init()
     {
@@ -11,18 +14,29 @@ public class RTPlayerManager : MonoBehaviour
         var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
 
         var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
-        PlayerInputMoveManager = new CoreGame.PlayerInputMoveManager(cameraPivotPoint.transform, gameInputManager, playerRigidBody);
+        PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
     }
 
     public void Tick(float d)
     {
-        PlayerInputMoveManager.Tick(d, 1);
+        PlayerInputMoveManager.Tick(d);
     }
 
     public void FixedTick(float d)
     {
-        PlayerInputMoveManager.FixedTick(d, 1);
+        PlayerInputMoveManager.FixedTick(d);
     }
 
+    #region Logical Conditions
+    public bool HasPlayerMovedThisFrame()
+    {
+        return PlayerInputMoveManager.HasMoved;
+    }
+    #endregion
+
+    public float GetPlayerSpeedMagnitude()
+    {
+        return PlayerInputMoveManager.PlayerSpeedMagnitude;
+    }
 
 }

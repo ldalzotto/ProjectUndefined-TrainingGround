@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
+    <Compile Include="Assets\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\__Game\Scripts\MaterialContainer.cs" />
     <Compile Include="Assets\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
@@ -137,9 +138,15 @@
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPoint.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPathContainer.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\CorePlayerManagers.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\RTPuzzleGameManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\Behaviors\MouseAIBehavior.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\RTPuzzleAIBehavior.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\RTP_NPCManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\RTPlayerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\RTPlayerManagerDataRetriever.cs" />
+    <Compile Include="Assets\AI\Scripts\AIComponents\AIRandomPatrolComponent.cs" />
+    <Compile Include="Assets\AI\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\Configuration\Level1\Level1Configuration.cs" />
     <Compile Include="Assets\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />

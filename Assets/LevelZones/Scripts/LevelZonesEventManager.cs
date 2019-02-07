@@ -6,6 +6,7 @@ public class LevelZonesEventManager : MonoBehaviour
 
     #region External Dependencies
     private PointOfInterestManager PointOfInterestManager;
+    private Coroutiner Coroutiner;
     #endregion
 
     private bool isNewZoneLoading;
@@ -14,6 +15,7 @@ public class LevelZonesEventManager : MonoBehaviour
     void Start()
     {
         PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+        Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
     }
 
     #region External Events
@@ -21,6 +23,7 @@ public class LevelZonesEventManager : MonoBehaviour
     {
         isNewZoneLoading = true;
         PointOfInterestManager.OnActualZoneSwitched();
+        Coroutiner.StopAllCoroutines();
         SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone]);
         isNewZoneLoading = false;
     }

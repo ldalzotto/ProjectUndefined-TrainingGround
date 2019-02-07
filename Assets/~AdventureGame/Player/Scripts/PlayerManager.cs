@@ -10,7 +10,6 @@ public class PlayerManager : MonoBehaviour
     private const string ObstacelOvercomeObjectName = "ObstacleOvercomeTrigger";
 
     [Header("Player Movement")]
-    public float SpeedMultiplicationFactor;
     public float AIRotationSpeed;
 
     [Header("Camera Rotation")]
@@ -18,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Camera Follow")]
     public float DampTime;
 
+    public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
     public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
     public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
@@ -61,7 +61,7 @@ public class PlayerManager : MonoBehaviour
 
         this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
         this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
-        this.PlayerInputMoveManager = new PlayerInputMoveManager(CameraPivotPoint.transform, GameInputManager, PlayerRigidBody);
+        this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, PlayerRigidBody);
         this.PlayerAIMoveManager = new PlayerAIMoveManager(PlayerRigidBody, PlayerAgent, transform, this);
         this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(PlayerRigidBody, ObstacleOvercomeCollider);
         this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, PlayerObject.transform);
@@ -86,13 +86,13 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                PlayerInputMoveManager.Tick(d, SpeedMultiplicationFactor);
+                PlayerInputMoveManager.Tick(d);
             }
             playerSpeedMagnitude = PlayerInputMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
         }
         else
         {
-            PlayerAIMoveManager.Tick(d, SpeedMultiplicationFactor, AIRotationSpeed);
+            PlayerAIMoveManager.Tick(d, PlayerInputMoveManagerComponent.SpeedMultiplicationFactor, AIRotationSpeed);
             playerSpeedMagnitude = PlayerAIMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
         }
 
@@ -124,7 +124,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (!PlayerAIMoveManager.IsDirectedByAi)
         {
-            PlayerInputMoveManager.FixedTick(d, SpeedMultiplicationFactor);
+            PlayerInputMoveManager.FixedTick(d);
         }
     }
 

@@ -6,12 +6,18 @@ namespace CoreGame
     class PlayerInputMoveManager
     {
 
+        private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
+
         private Transform CameraPivotPoint;
         private GameInputManager GameInputManager;
         private Rigidbody PlayerRigidBody;
 
-        public PlayerInputMoveManager(Transform cameraPivotPoint, GameInputManager gameInputManager, Rigidbody playerRigidBody)
+        private bool hasMoved;
+        private float playerSpeedMagnitude;
+
+        public PlayerInputMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Transform cameraPivotPoint, GameInputManager gameInputManager, Rigidbody playerRigidBody)
         {
+            this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
             CameraPivotPoint = cameraPivotPoint;
             GameInputManager = gameInputManager;
             PlayerRigidBody = playerRigidBody;
@@ -20,8 +26,10 @@ namespace CoreGame
         private PlayerSpeedProcessingInput playerSpeedProcessingInput;
 
         public PlayerSpeedProcessingInput PlayerSpeedProcessingInput { get => playerSpeedProcessingInput; }
+        public bool HasMoved { get => hasMoved; }
+        public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; }
 
-        public void Tick(float d, float SpeedMultiplicationFactor)
+        public void Tick(float d)
         {
             var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
 
@@ -33,12 +41,16 @@ namespace CoreGame
             #region Calculate magnitude attenuation
             float magnitudeAttenuationDiagonal = 1f;
 
-            var playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
+            playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
             #endregion
+            if (playerSpeedMagnitude > float.Epsilon)
+            {
+                hasMoved = true;
+            }
             playerSpeedProcessingInput = new PlayerSpeedProcessingInput(playerMovementOrientation, playerSpeedMagnitude);
         }
 
-        public void FixedTick(float d, float SpeedMultiplicationFactor)
+        public void FixedTick(float d)
         {
             if (playerSpeedProcessingInput != null)
             {
@@ -49,7 +61,11 @@ namespace CoreGame
                 }
 
                 //move rigid body
-                PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * SpeedMultiplicationFactor;
+                PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * PlayerInputMoveManagerComponent.SpeedMultiplicationFactor;
+                if (playerSpeedProcessingInput.PlayerSpeedMagnitude <= float.Epsilon)
+                {
+                    hasMoved = false;
+                }
             }
 
         }
@@ -59,6 +75,12 @@ namespace CoreGame
             playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
             playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
         }
+    }
+
+    [System.Serializable]
+    public class PlayerInputMoveManagerComponent
+    {
+        public float SpeedMultiplicationFactor;
     }
 
     class PlayerSpeedProcessingInput
