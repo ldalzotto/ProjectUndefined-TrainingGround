@@ -29,10 +29,16 @@ public abstract class RTPuzzleAIBehavior
     }
     protected abstract void TickAI();
     public abstract void TickGizmo();
+    public abstract void OnTriggerEnter(Collider collider);
+    public abstract void OnTriggerStay(Collider collider);
 
     protected void SetDestination(Vector3 destination)
     {
+        Debug.Log(Time.frameCount + " Set destination : " + destination);
         newDestinationDefined = true;
         newDestination = destination;
     }
+
+    public abstract void OnDestinationReached();
+
 }

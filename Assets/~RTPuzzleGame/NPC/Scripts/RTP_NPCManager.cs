@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class RTP_NPCManager : MonoBehaviour
@@ -6,6 +7,10 @@ public class RTP_NPCManager : MonoBehaviour
 
     #region External Dependencies
     private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
+    #endregion
+
+    #region Internal Dependencies
+    private NavMeshAgent agent;
     #endregion
 
     #region AI Behavior Components
@@ -25,7 +30,7 @@ public class RTP_NPCManager : MonoBehaviour
         RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
         #endregion
 
-        var agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
         agent.updateRotation = false;
 
@@ -46,6 +51,16 @@ public class RTP_NPCManager : MonoBehaviour
         NPCSpeedAdjusterManager.Tick(d, RTPlayerManagerDataRetriever.GetPlayerSpeedMagnitude());
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        RTPuzzleAIBehavior.OnTriggerEnter(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        RTPuzzleAIBehavior.OnTriggerStay(other);
+    }
+
     public void GizmoTick()
     {
         RTPuzzleAIBehavior.TickGizmo();
@@ -55,6 +70,7 @@ public class RTP_NPCManager : MonoBehaviour
     private void SetDestination(Vector3 destination)
     {
         AIDestinationMoveManager.SetDestination(destination);
+        StartCoroutine(OnDestinationReached());
     }
     public void EnableAgent()
     {
@@ -66,6 +82,13 @@ public class RTP_NPCManager : MonoBehaviour
     }
     #endregion
 
+    #region Internal Events
+    private IEnumerator OnDestinationReached()
+    {
+        yield return new WaitForNavAgentDestinationReached(agent);
+        RTPuzzleAIBehavior.OnDestinationReached();
+    }
+    #endregion
 }
 
 class NPCSpeedAdjusterManager

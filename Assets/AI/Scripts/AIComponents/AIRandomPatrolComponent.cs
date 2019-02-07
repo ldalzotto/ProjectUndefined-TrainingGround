@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,21 +23,24 @@ public class AIRandomPatrolComponentMananger
     private AIRandomPatrolComponent AIRandomPatrolComponent;
 
     private Vector3 destination;
-    private bool destinationSet;
+    private bool isMovingTowardsDestination;
+    private Action<Vector3> WhenMovingTowardsDestination;
 
-    public bool DestinationSet { get => destinationSet; }
-    public Vector3 Destination { get => destination; }
-
-    public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIRandomPatrolComponent AIRandomPatrolComponent)
+    public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIRandomPatrolComponent AIRandomPatrolComponent, Action<Vector3> WhenMovingTowardsDestination)
     {
         this.patrollingAgent = patrollingAgent;
         this.AIRandomPatrolComponent = AIRandomPatrolComponent;
         destination = Vector3.zero;
+        this.WhenMovingTowardsDestination = WhenMovingTowardsDestination;
     }
 
     public void TickComponent()
     {
-        if (!destinationSet)
+        if (isMovingTowardsDestination)
+        {
+            WhenMovingTowardsDestination(destination);
+        }
+        else
         {
             SetRandomDestination();
         }
@@ -45,24 +48,21 @@ public class AIRandomPatrolComponentMananger
 
     private void SetRandomDestination()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * AIRandomPatrolComponent.MaxDistance;
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * AIRandomPatrolComponent.MaxDistance;
         randomDirection += AIRandomPatrolComponent.transform.position;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, AIRandomPatrolComponent.MaxDistance, NavMesh.AllAreas))
         {
             Debug.Log(hit.position);
-            destinationSet = true;
+            isMovingTowardsDestination = true;
             destination = hit.position;
-            Coroutiner.Instance.StartCoroutine(OnDestinationReached());
         }
     }
 
-    private IEnumerator OnDestinationReached()
+    #region External Events
+    public void OnDestinationReached()
     {
-        Debug.Log(Time.frameCount + " Destination reached start.");
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForNavAgentDestinationReached(patrollingAgent);
-        Debug.Log(Time.frameCount + " Destination reached end.");
-        destinationSet = false;
+        isMovingTowardsDestination = false;
     }
+    #endregion
 }
