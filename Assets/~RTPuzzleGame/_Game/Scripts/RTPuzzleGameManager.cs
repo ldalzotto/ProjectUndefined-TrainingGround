@@ -9,6 +9,7 @@ public class RTPuzzleGameManager : MonoBehaviour
 
     private RTPlayerManager RTPlayerManager;
     private RTP_NPCManager RTP_NPCManager;
+    private RTPPlayerActionManager RTPPlayerActionManager;
 
     private void Start()
     {
@@ -17,17 +18,23 @@ public class RTPuzzleGameManager : MonoBehaviour
 
         RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
         RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
+        RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
 
         //Initialisations
         GameObject.FindObjectOfType<AIComponentsManager>().Init();
         GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>().Init();
         RTPlayerManager.Init();
         RTP_NPCManager.Init();
+
+        GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
+        RTPPlayerActionManager.Init();
+
     }
 
     private void Update()
     {
         var d = Time.deltaTime;
+        RTPPlayerActionManager.Tick(d);
         RTPlayerManager.Tick(d);
         if (RTPlayerManager.HasPlayerMovedThisFrame())
         {

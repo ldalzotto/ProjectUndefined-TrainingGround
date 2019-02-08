@@ -4,12 +4,18 @@ using UnityEngine;
 public class RTPlayerManager : MonoBehaviour
 {
 
+    #region External Dependencies
+    private RTPPlayerActionManager RTPPlayerActionManager;
+    #endregion
+
     public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
 
     private PlayerInputMoveManager PlayerInputMoveManager;
 
     public void Init()
     {
+        RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
+
         var playerRigidBody = GetComponent<Rigidbody>();
         var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
 
@@ -19,7 +25,10 @@ public class RTPlayerManager : MonoBehaviour
 
     public void Tick(float d)
     {
-        PlayerInputMoveManager.Tick(d);
+        if (!RTPPlayerActionManager.IsActionExecuting())
+        {
+            PlayerInputMoveManager.Tick(d);
+        }
     }
 
     public void FixedTick(float d)
