@@ -15,8 +15,7 @@ public class RTP_NPCManager : MonoBehaviour
 
     #region AI Behavior Components
     [Header("AI Behavior Components")]
-    public AIRandomPatrolComponent AIRandomPatrolComponent;
-    public AIProjectileEscapeComponent AIProjectileEscapeComponent;
+    public AiID AiID;
     #endregion
 
     public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
@@ -37,9 +36,11 @@ public class RTP_NPCManager : MonoBehaviour
         agent.updatePosition = false;
         agent.updateRotation = false;
 
+        var aiComponent = GameObject.FindObjectOfType<AIComponentsManager>().Get(AiID);
+
         AIDestinationMoveManager = new AIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
         NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-        RTPuzzleAIBehavior = new MouseAIBehavior(agent, AIRandomPatrolComponent, AIProjectileEscapeComponent);
+        RTPuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent);
     }
 
     public void Tick(float d)

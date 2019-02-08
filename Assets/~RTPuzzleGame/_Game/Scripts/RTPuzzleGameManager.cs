@@ -19,6 +19,7 @@ public class RTPuzzleGameManager : MonoBehaviour
         RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
 
         //Initialisations
+        GameObject.FindObjectOfType<AIComponentsManager>().Init();
         GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>().Init();
         RTPlayerManager.Init();
         RTP_NPCManager.Init();

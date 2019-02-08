@@ -3,9 +3,14 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [System.Serializable]
-public class AIProjectileEscapeComponent : MonoBehaviour
+public class AIProjectileEscapeComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
 {
     public float SamplePositionPrecision;
+
+    public void InitializeContainer(AIComponents aIComponents)
+    {
+        aIComponents.AIProjectileEscapeComponent = this;
+    }
 }
 
 public class AIProjectileEscapeManager

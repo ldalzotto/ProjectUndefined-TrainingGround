@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [System.Serializable]
-public class AIRandomPatrolComponent : MonoBehaviour
+public class AIRandomPatrolComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
 {
     public float MaxDistance;
 
@@ -11,6 +11,11 @@ public class AIRandomPatrolComponent : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, MaxDistance);
+    }
+
+    public void InitializeContainer(AIComponents aIComponents)
+    {
+        aIComponents.AIRandomPatrolComponent = this;
     }
 }
 
