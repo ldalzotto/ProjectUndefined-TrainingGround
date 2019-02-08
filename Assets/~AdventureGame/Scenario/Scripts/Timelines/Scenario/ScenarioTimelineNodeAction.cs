@@ -9,7 +9,7 @@
         this.itemID = itemID;
         this.poiInvolved = poiInvolved;
         this.contextAction = contextAction;
-        this.contextAction.ContextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
+        this.contextAction.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
     public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)

@@ -21,4 +21,13 @@ public class RTPPlayerActionEventManager : MonoBehaviour
         RTPPlayerActionManager.StopAction();
     }
 
+    public void OnWheelAwake()
+    {
+        RTPPlayerActionManager.OnWheelAwake();
+    }
+    public void OnWheelSleep()
+    {
+        RTPPlayerActionManager.OnWheelSleep();
+    }
+
 }

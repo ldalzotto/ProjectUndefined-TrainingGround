@@ -3,6 +3,8 @@
 public class RTPuzzleGameManager : MonoBehaviour
 {
 
+    public LevelZonesID PuzzleId;
+
     #region Persistance Dependencies
     private InventoryMenu InventoryMenu;
     #endregion
@@ -27,7 +29,7 @@ public class RTPuzzleGameManager : MonoBehaviour
         RTP_NPCManager.Init();
 
         GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
-        RTPPlayerActionManager.Init();
+        RTPPlayerActionManager.Init(PuzzleId);
 
     }
 

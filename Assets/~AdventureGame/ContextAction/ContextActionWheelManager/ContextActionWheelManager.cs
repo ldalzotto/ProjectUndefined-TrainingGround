@@ -85,7 +85,7 @@ public class ContextActionWheelManager : MonoBehaviour
 
     private Sprite ResolveWheelNodeSpriteFromNodeData(SelectionWheelNodeData selectionWheelNodeData)
     {
-        return ContextActionWheelNodeConfiguration.contextActionWheelNodeConfiguration[(selectionWheelNodeData.Data as AContextAction).ContextActionWheelNodeConfigurationId].ContextActionWheelIcon;
+        return SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[(selectionWheelNodeData.Data as AContextAction).ContextActionWheelNodeConfigurationId].ContextActionWheelIcon;
     }
 }
 

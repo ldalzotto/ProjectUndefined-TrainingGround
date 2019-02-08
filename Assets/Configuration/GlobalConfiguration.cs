@@ -54,12 +54,12 @@ public class ItemReceivedDescriptionTextConstants
 #endregion
 
 #region Context Action Wheel Configuration
-public class ContextActionWheelNodeConfigurationData
+public class SelectionWheelNodeConfigurationData
 {
     public static string ICONS_BASE_PATH = "ContextAction/Icons/";
     private Sprite contextActionWheelIcon;
 
-    public ContextActionWheelNodeConfigurationData(Type contextActionType)
+    public SelectionWheelNodeConfigurationData(Type contextActionType)
     {
         contextActionWheelIcon = Resources.Load<Sprite>(ICONS_BASE_PATH + contextActionType.Name + "_icon");
     }
@@ -67,21 +67,23 @@ public class ContextActionWheelNodeConfigurationData
     public Sprite ContextActionWheelIcon { get => contextActionWheelIcon; }
 }
 
-public static class ContextActionWheelNodeConfiguration
+public static class SelectionWheelNodeConfiguration
 {
-    public static Dictionary<ContextActionWheelNodeConfigurationId, ContextActionWheelNodeConfigurationData> contextActionWheelNodeConfiguration =
-        new Dictionary<ContextActionWheelNodeConfigurationId, ContextActionWheelNodeConfigurationData>()
+    public static Dictionary<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData> selectionWheelNodeConfiguration =
+        new Dictionary<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData>()
         {
-            {ContextActionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, new ContextActionWheelNodeConfigurationData(typeof(GrabAction)) },
-            {ContextActionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG, new ContextActionWheelNodeConfigurationData(typeof(GiveAction)) },
-            {ContextActionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG, new ContextActionWheelNodeConfigurationData(typeof(TalkAction)) }
+            {SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, new SelectionWheelNodeConfigurationData(typeof(GrabAction)) },
+            {SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG, new SelectionWheelNodeConfigurationData(typeof(GiveAction)) },
+            {SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG, new SelectionWheelNodeConfigurationData(typeof(TalkAction)) },
+            {SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG, new SelectionWheelNodeConfigurationData(typeof(LaunchProjectileRTPAction)) }
         };
 }
 
-public enum ContextActionWheelNodeConfigurationId
+public enum SelectionWheelNodeConfigurationId
 {
     GRAB_CONTEXT_ACTION_WHEEL_CONFIG = 0,
     GIVE_CONTEXT_ACTION_WHEEL_CONFIG = 1,
-    TALK_CONTEXT_ACTION_WHEEL_CONFIG = 2
+    TALK_CONTEXT_ACTION_WHEEL_CONFIG = 2,
+    THROW_PLAYER_PUZZLE_WHEEL_CONFIG = 3
 }
 #endregion

@@ -35,7 +35,7 @@ public class GiveAction : AContextAction
     public GiveAction(Item itemGiven, AContextAction nextAction) : base(nextAction)
     {
         this.itemGiven = itemGiven;
-        contextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
+        contextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
     public override bool ComputeFinishedConditions()

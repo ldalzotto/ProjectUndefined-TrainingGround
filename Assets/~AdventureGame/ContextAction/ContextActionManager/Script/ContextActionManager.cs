@@ -81,7 +81,7 @@ public abstract class AContextAction
     public abstract void AfterFinishedEventProcessed();
     public abstract void Tick(float d);
 
-    protected ContextActionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+    protected SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
     private AContextAction nextContextAction;
 
     #region Internal Dependencies
@@ -112,7 +112,7 @@ public abstract class AContextAction
 
     public AContextActionInput ContextActionInput { get => contextActionInput; set => contextActionInput = value; }
     public AContextAction NextContextAction { get => nextContextAction; set => nextContextAction = value; }
-    public ContextActionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId { get => contextActionWheelNodeConfigurationId; set => contextActionWheelNodeConfigurationId = value; }
+    public SelectionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId { get => contextActionWheelNodeConfigurationId; set => contextActionWheelNodeConfigurationId = value; }
 
     public bool IsFinished()
     {

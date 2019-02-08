@@ -15,5 +15,9 @@ public class RTPlayerManagerDataRetriever : MonoBehaviour
     {
         return RTPlayerManager.GetPlayerSpeedMagnitude();
     }
+    public Transform GetPlayerTransform()
+    {
+        return RTPlayerManager.transform;
+    }
     #endregion
 }

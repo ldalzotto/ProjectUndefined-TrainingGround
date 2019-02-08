@@ -16,7 +16,7 @@ public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
         PointOfInterestId = pointOfInterestId;
         this.DiscussionTree = DiscussionTree;
         this.contextActionToAdd = contextActionToAdd;
-        this.contextActionToAdd.ContextActionWheelNodeConfigurationId = ContextActionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
+        this.contextActionToAdd.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
     }
 
     public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)

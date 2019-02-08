@@ -11,23 +11,36 @@ public class RTPlayerManager : MonoBehaviour
     public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
 
     private PlayerInputMoveManager PlayerInputMoveManager;
+    private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
     public void Init()
     {
+        #region External Dependencies
         RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
+        var RTPPlayerActionEventManager = GameObject.FindObjectOfType<RTPPlayerActionEventManager>();
+        #endregion
 
         var playerRigidBody = GetComponent<Rigidbody>();
         var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
 
         var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
         PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
+        PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, RTPPlayerActionEventManager, RTPPlayerActionManager);
     }
 
     public void Tick(float d)
     {
         if (!RTPPlayerActionManager.IsActionExecuting())
         {
-            PlayerInputMoveManager.Tick(d);
+            if (!RTPPlayerActionManager.IsWheelEnabled())
+            {
+                PlayerInputMoveManager.Tick(d);
+            }
+            else
+            {
+                PlayerInputMoveManager.ResetSpeed();
+            }
+            PlayerSelectionWheelManager.Tick(d);
         }
     }
 
@@ -49,3 +62,35 @@ public class RTPlayerManager : MonoBehaviour
     }
 
 }
+
+#region Player Action Selection Manager
+class PlayerSelectionWheelManager
+{
+    private GameInputManager GameInputManager;
+    private RTPPlayerActionEventManager RTPPlayerActionEventManager;
+    private RTPPlayerActionManager RTPPlayerActionManager;
+
+    public PlayerSelectionWheelManager(GameInputManager gameInputManager, RTPPlayerActionEventManager rTPPlayerActionEventManager, RTPPlayerActionManager RTPPlayerActionManager)
+    {
+        GameInputManager = gameInputManager;
+        RTPPlayerActionEventManager = rTPPlayerActionEventManager;
+        this.RTPPlayerActionManager = RTPPlayerActionManager;
+    }
+
+    public void Tick(float d)
+    {
+        if (!RTPPlayerActionManager.IsWheelEnabled())
+        {
+            if (GameInputManager.CurrentInput.ActionButtonD())
+            {
+                RTPPlayerActionEventManager.OnWheelAwake();
+            }
+        }
+        else if (GameInputManager.CurrentInput.CancelButtonD())
+        {
+            RTPPlayerActionEventManager.OnWheelSleep();
+        }
+    }
+
+}
+#endregion

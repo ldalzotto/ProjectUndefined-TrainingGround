@@ -2,6 +2,8 @@
 
 public class LaunchProjectileRTPAction : RTPPlayerAction
 {
+    public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
+
     public override bool FinishedCondition()
     {
         return true;
