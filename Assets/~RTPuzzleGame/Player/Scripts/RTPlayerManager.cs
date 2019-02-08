@@ -32,15 +32,18 @@ public class RTPlayerManager : MonoBehaviour
     {
         if (!RTPPlayerActionManager.IsActionExecuting())
         {
-            if (!RTPPlayerActionManager.IsWheelEnabled())
+            if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
             {
-                PlayerInputMoveManager.Tick(d);
+                if (!RTPPlayerActionManager.IsWheelEnabled())
+                {
+                    PlayerInputMoveManager.Tick(d);
+                }
+                else
+                {
+                    PlayerInputMoveManager.ResetSpeed();
+                    PlayerSelectionWheelManager.TriggerActionOnInput();
+                }
             }
-            else
-            {
-                PlayerInputMoveManager.ResetSpeed();
-            }
-            PlayerSelectionWheelManager.Tick(d);
         }
     }
 
@@ -77,18 +80,29 @@ class PlayerSelectionWheelManager
         this.RTPPlayerActionManager = RTPPlayerActionManager;
     }
 
-    public void Tick(float d)
+    public bool AwakeOrSleepWheel()
     {
         if (!RTPPlayerActionManager.IsWheelEnabled())
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
                 RTPPlayerActionEventManager.OnWheelAwake();
+                return true;
             }
         }
         else if (GameInputManager.CurrentInput.CancelButtonD())
         {
             RTPPlayerActionEventManager.OnWheelSleep();
+            return true;
+        }
+        return false;
+    }
+
+    public void TriggerActionOnInput()
+    {
+        if (GameInputManager.CurrentInput.ActionButtonD())
+        {
+            RTPPlayerActionEventManager.OnCurrentNodeSelected();
         }
     }
 

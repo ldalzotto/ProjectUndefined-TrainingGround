@@ -10,6 +10,7 @@ public class RTPPlayerActionManager : MonoBehaviour
     private RTPPLayerSelectionWheelManager RTPPLayerSelectionWheelManager;
     private RTPPlayerSelectioNWheelPositioner RTPPlayerSelectioNWheelPositioner;
 
+    private SelectionWheel SelectionWheel;
 
     public void Init(LevelZonesID puzzleId)
     {
@@ -18,7 +19,7 @@ public class RTPPlayerActionManager : MonoBehaviour
         var RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
         #endregion
 
-        var SelectionWheel = GameObject.FindObjectOfType<SelectionWheel>();
+        SelectionWheel = GameObject.FindObjectOfType<SelectionWheel>();
 
         RTPPlayerActionExecutionManager = new RTPPlayerActionExecutionManager(RTPPlayerActionEventManager);
         RTPPlayerActionsAvailableManager = new RTPPlayerActionsAvailableManager(puzzleId);
@@ -34,6 +35,11 @@ public class RTPPlayerActionManager : MonoBehaviour
             RTPPLayerSelectionWheelManager.Tick(d);
             RTPPlayerSelectioNWheelPositioner.Tick(d);
         }
+    }
+
+    public void GizmoTick()
+    {
+        RTPPlayerActionExecutionManager.GizmoTick();
     }
 
     #region External Events
@@ -65,6 +71,12 @@ public class RTPPlayerActionManager : MonoBehaviour
         return RTPPLayerSelectionWheelManager.WheelEnabled;
     }
     #endregion
+
+    internal RTPPlayerAction GetCurrentSelectedAction()
+    {
+        return (SelectionWheel.GetSelectedNodeData() as RTPPlayerSelectionWheelNodeData).Data as RTPPlayerAction;
+    }
+
 
 
 }
@@ -99,6 +111,12 @@ class RTPPlayerActionExecutionManager
                 currentAction.Tick(d);
             }
         }
+    }
+
+    public void GizmoTick()
+    {
+        if (currentAction != null)
+        { currentAction.GizmoTick(); }
     }
 
     public void ExecuteAction(RTPPlayerAction rTPPlayerAction)

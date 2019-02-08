@@ -11,11 +11,6 @@ public class RTPPlayerActionEventManager : MonoBehaviour
         RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
     }
 
-    public void OnRTPPlayerActionStart(RTPPlayerAction rTPPlayerAction)
-    {
-        RTPPlayerActionManager.ExecuteAction(rTPPlayerAction);
-    }
-
     public void OnRTPPlayerActionStop(RTPPlayerAction stoppedAction)
     {
         RTPPlayerActionManager.StopAction();
@@ -28,6 +23,15 @@ public class RTPPlayerActionEventManager : MonoBehaviour
     public void OnWheelSleep()
     {
         RTPPlayerActionManager.OnWheelSleep();
+    }
+    public void OnCurrentNodeSelected()
+    {
+        OnRTPPlayerActionStart(RTPPlayerActionManager.GetCurrentSelectedAction());
+    }
+    private void OnRTPPlayerActionStart(RTPPlayerAction rTPPlayerAction)
+    {
+        OnWheelSleep();
+        RTPPlayerActionManager.ExecuteAction(rTPPlayerAction);
     }
 
 }
