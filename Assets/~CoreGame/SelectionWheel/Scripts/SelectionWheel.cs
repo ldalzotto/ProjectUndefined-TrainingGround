@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContextActionWheel : MonoBehaviour
+public class SelectionWheel : MonoBehaviour
 {
 
     private const string ACTION_NODE_CONTAINER_OBJECT_NAME = "ActionNodesContainer";
@@ -16,7 +16,7 @@ public class ContextActionWheel : MonoBehaviour
     private ActionWheelNodePositionManager ActionWheelNodePositionManager;
     private ActionWheelActiveNodeManager ActionWheelActiveNodeManager;
     private ContextActionWhelleEnterExitAnimationManager ContextActionWhelleEnterExitAnimationManager;
-    private WheelActionNode[] wheelActionNodes;
+    private SelectionWheelNode[] wheelNodes;
 
     private void Start()
     {
@@ -24,24 +24,24 @@ public class ContextActionWheel : MonoBehaviour
         ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(NonSelectedMaterial, SelectedMaterial);
     }
 
-    public void Init(List<AContextAction> wheelContextActions)
+    public void Init(List<SelectionWheelNodeData> whellNodeDatas, WheelNodeSpriteResolver NodeSpriteResolver)
     {
         #region External Dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
         ActionWheelNodePositionManager = new ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
-        wheelActionNodes = new WheelActionNode[wheelContextActions.Count];
+        wheelNodes = new SelectionWheelNode[whellNodeDatas.Count];
         var actionNodeContainerObject = transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
-        for (var i = 0; i < wheelContextActions.Count; i++)
+        for (var i = 0; i < whellNodeDatas.Count; i++)
         {
-            var actionNode = WheelActionNode.Instantiate(wheelContextActions[i]);
-            actionNode.transform.SetParent(actionNodeContainerObject, false);
-            wheelActionNodes[i] = actionNode;
+            var wheelNode = SelectionWheelNode.Instantiate(whellNodeDatas[i], NodeSpriteResolver);
+            wheelNode.transform.SetParent(actionNodeContainerObject, false);
+            wheelNodes[i] = wheelNode;
         }
-        ActionWheelNodePositionManager.InitNodes(wheelActionNodes);
+        ActionWheelNodePositionManager.InitNodes(wheelNodes);
         ContextActionWhelleEnterExitAnimationManager.Init();
-        ActionWheelActiveNodeManager.SelectedNodeChanged(wheelActionNodes);
+        ActionWheelActiveNodeManager.SelectedNodeChanged(wheelNodes);
     }
 
     public void Exit()
@@ -70,15 +70,15 @@ public class ContextActionWheel : MonoBehaviour
 
     public void Tick(float d)
     {
-        ActionWheelNodePositionManager.Tick(d, wheelActionNodes);
+        ActionWheelNodePositionManager.Tick(d, wheelNodes);
     }
 
 
-    public AContextAction GetSelectedAction()
+    public SelectionWheelNodeData GetSelectedNodeData()
     {
         if (ActionWheelActiveNodeManager.ActiveNode != null)
         {
-            return ActionWheelActiveNodeManager.ActiveNode.AssociatedContextAction;
+            return ActionWheelActiveNodeManager.ActiveNode.WheelNodeData;
         }
         return null;
 
@@ -101,7 +101,7 @@ class ActionWheelNodePositionManager
         ActionWheelActiveNodeManager = actionWheelActiveNodeManager;
     }
 
-    public void Tick(float d, WheelActionNode[] wheelActionNodes)
+    public void Tick(float d, SelectionWheelNode[] wheelActionNodes)
     {
         if (wheelActionNodes.Length > 1)
         {
@@ -137,7 +137,7 @@ class ActionWheelNodePositionManager
 
     }
 
-    private bool RepositionNodesSmooth(WheelActionNode[] wheelActionNodes, float d)
+    private bool RepositionNodesSmooth(SelectionWheelNode[] wheelActionNodes, float d)
     {
         for (var i = 0; i < wheelActionNodes.Length; i++)
         {
@@ -158,7 +158,7 @@ class ActionWheelNodePositionManager
         }
     }
 
-    public void InitNodes(WheelActionNode[] wheelActionNodes)
+    public void InitNodes(SelectionWheelNode[] wheelActionNodes)
     {
         for (var i = 0; i < wheelActionNodes.Length; i++)
         {
@@ -182,9 +182,9 @@ public class ActionWheelNodePositionManagerComponent
 
 class ActionWheelActiveNodeManager
 {
-    private WheelActionNode activeNode;
+    private SelectionWheelNode activeNode;
 
-    public WheelActionNode ActiveNode { get => activeNode; }
+    public SelectionWheelNode ActiveNode { get => activeNode; }
 
     private Material nonSelectedMaterial;
     private Material selectedMaterial;
@@ -195,7 +195,7 @@ class ActionWheelActiveNodeManager
         this.selectedMaterial = selectedMaterial;
     }
 
-    public void SelectedNodeChanged(WheelActionNode[] wheelActionNodes)
+    public void SelectedNodeChanged(SelectionWheelNode[] wheelActionNodes)
     {
         if (activeNode != null)
         {

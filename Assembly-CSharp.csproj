@@ -96,10 +96,8 @@
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\ContextActionEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
-    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheel\Scripts\ContextActionWheel.cs" />
-    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheel\Scripts\ContextActionWheelEventManager.cs" />
-    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheel\Scripts\ContextActionWheelManager.cs" />
-    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheel\Scripts\WheelActionNode.cs" />
+    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelEventManager.cs" />
+    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Cutscene.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />
@@ -139,6 +137,8 @@
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPathContainer.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
+    <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
+    <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\RTPuzzleGameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\RTPuzzleAIBehavior.cs" />

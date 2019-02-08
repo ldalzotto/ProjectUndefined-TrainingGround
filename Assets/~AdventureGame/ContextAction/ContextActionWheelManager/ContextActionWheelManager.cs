@@ -10,10 +10,11 @@ public class ContextActionWheelManager : MonoBehaviour
     private ContextActionEventManager ContextActionEventManager;
 
     #region External dependecies
-    private ContextActionWheel ContextActionWheel;
+    private SelectionWheel ContextActionWheel;
     private PlayerManager PlayerManager;
     private ContextActionWheelEventManager ContextActionWheelEventManager;
     #endregion
+
     private WheelActivityManager WheelActivityManager;
     private WheelActionActivationManager WheelActionActivationManager;
     private PointOnInteresetSelectedEffectManager PointOnInteresetSelectedEffectManager;
@@ -23,7 +24,7 @@ public class ContextActionWheelManager : MonoBehaviour
     {
         #region External Dependencies
         ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
-        ContextActionWheel = GameObject.FindObjectOfType<ContextActionWheel>();
+        ContextActionWheel = GameObject.FindObjectOfType<SelectionWheel>();
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
@@ -64,13 +65,12 @@ public class ContextActionWheelManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         SleepWheel();
         ContextActionEventManager.OnContextActionAdd(contextAction);
-
     }
 
     #region External Events
     public void OnAwakeWheel(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource, PointOfInterestType currentTargetedPOI)
     {
-        ContextActionWheel.Init(contextActions);
+        ContextActionWheel.Init(contextActions.ConvertAll(contextAction => new ContextActionSelectionWheelNodeData(contextAction) as SelectionWheelNodeData), ResolveWheelNodeSpriteFromNodeData);
         PointOnInteresetSelectedEffectManager.OnWheelEnabled(currentTargetedPOI);
         WheelActivityManager.AwakeWheel(wheelTriggerSource);
     }
@@ -82,15 +82,20 @@ public class ContextActionWheelManager : MonoBehaviour
         PointOnInteresetSelectedEffectManager.OnWheelDisabled();
     }
     #endregion
+
+    private Sprite ResolveWheelNodeSpriteFromNodeData(SelectionWheelNodeData selectionWheelNodeData)
+    {
+        return ContextActionWheelNodeConfiguration.contextActionWheelNodeConfiguration[(selectionWheelNodeData.Data as AContextAction).ContextActionWheelNodeConfigurationId].ContextActionWheelIcon;
+    }
 }
 
 
 class WheelActionActivationManager
 {
     private GameInputManager GameInputManager;
-    private ContextActionWheel ContextActionWheel;
+    private SelectionWheel ContextActionWheel;
 
-    public WheelActionActivationManager(GameInputManager gameInputManager, ContextActionWheel contextActionWheel)
+    public WheelActionActivationManager(GameInputManager gameInputManager, SelectionWheel contextActionWheel)
     {
         GameInputManager = gameInputManager;
         ContextActionWheel = contextActionWheel;
@@ -100,7 +105,7 @@ class WheelActionActivationManager
     {
         if (GameInputManager.CurrentInput.ActionButtonD())
         {
-            return ContextActionWheel.GetSelectedAction();
+            return ContextActionWheel.GetSelectedNodeData().Data as AContextAction;
         }
         return null;
     }
@@ -207,5 +212,19 @@ class PointOnInteresetSelectedEffectManager
 
     }
 
+}
+#endregion
+
+#region Wheel node Context Action data
+public class ContextActionSelectionWheelNodeData : SelectionWheelNodeData
+{
+    private AContextAction nodeContextAction;
+
+    public ContextActionSelectionWheelNodeData(AContextAction nodeContextAction)
+    {
+        this.nodeContextAction = nodeContextAction;
+    }
+
+    public override object Data { get => nodeContextAction; }
 }
 #endregion
