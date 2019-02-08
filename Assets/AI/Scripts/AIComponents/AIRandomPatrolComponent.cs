@@ -22,47 +22,44 @@ public class AIRandomPatrolComponentMananger
 
     private AIRandomPatrolComponent AIRandomPatrolComponent;
 
-    private Vector3 destination;
     private bool isMovingTowardsDestination;
-    private Action<Vector3> WhenMovingTowardsDestination;
 
-    public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIRandomPatrolComponent AIRandomPatrolComponent, Action<Vector3> WhenMovingTowardsDestination)
+    public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIRandomPatrolComponent AIRandomPatrolComponent)
     {
         this.patrollingAgent = patrollingAgent;
         this.AIRandomPatrolComponent = AIRandomPatrolComponent;
-        destination = Vector3.zero;
-        this.WhenMovingTowardsDestination = WhenMovingTowardsDestination;
     }
 
-    public void TickComponent()
+    public Nullable<Vector3> TickComponent()
     {
-        if (isMovingTowardsDestination)
+        if (!isMovingTowardsDestination)
         {
-            WhenMovingTowardsDestination(destination);
+            return SetRandomDestination();
         }
-        else
-        {
-            SetRandomDestination();
-        }
+        return null;
     }
 
-    private void SetRandomDestination()
+    private Nullable<Vector3> SetRandomDestination()
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * AIRandomPatrolComponent.MaxDistance;
         randomDirection += AIRandomPatrolComponent.transform.position;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, AIRandomPatrolComponent.MaxDistance, NavMesh.AllAreas))
         {
-            Debug.Log(hit.position);
             isMovingTowardsDestination = true;
-            destination = hit.position;
+            return hit.position;
         }
+        return null;
     }
 
     #region External Events
     public void OnDestinationReached()
     {
         isMovingTowardsDestination = false;
+    }
+    public void SetPosition(Vector3 worldPosition)
+    {
+        AIRandomPatrolComponent.transform.position = worldPosition;
     }
     #endregion
 }

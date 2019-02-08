@@ -16,6 +16,7 @@ public class RTP_NPCManager : MonoBehaviour
     #region AI Behavior Components
     [Header("AI Behavior Components")]
     public AIRandomPatrolComponent AIRandomPatrolComponent;
+    public AIProjectileEscapeComponent AIProjectileEscapeComponent;
     #endregion
 
     public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
@@ -23,6 +24,8 @@ public class RTP_NPCManager : MonoBehaviour
     private AIDestinationMoveManager AIDestinationMoveManager;
     private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
     private RTPuzzleAIBehavior RTPuzzleAIBehavior;
+
+    private Coroutine destinatioNReachedCoroutine;
 
     public void Init()
     {
@@ -36,15 +39,15 @@ public class RTP_NPCManager : MonoBehaviour
 
         AIDestinationMoveManager = new AIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
         NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-        RTPuzzleAIBehavior = new MouseAIBehavior(agent, AIRandomPatrolComponent);
+        RTPuzzleAIBehavior = new MouseAIBehavior(agent, AIRandomPatrolComponent, AIProjectileEscapeComponent);
     }
 
     public void Tick(float d)
     {
-        RTPuzzleAIBehavior.Tick();
-        if (RTPuzzleAIBehavior.NewDestinationDefined)
+        var newDestination = RTPuzzleAIBehavior.TickAI();
+        if (newDestination.HasValue)
         {
-            SetDestination(RTPuzzleAIBehavior.NewDestination);
+            SetDestinationWithCoroutineReached(newDestination.Value);
         }
 
         AIDestinationMoveManager.Tick(d);
@@ -61,16 +64,31 @@ public class RTP_NPCManager : MonoBehaviour
         RTPuzzleAIBehavior.OnTriggerStay(other);
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        RTPuzzleAIBehavior.OnTriggerExit(other);
+    }
+
     public void GizmoTick()
     {
         RTPuzzleAIBehavior.TickGizmo();
     }
 
     #region External Events
-    private void SetDestination(Vector3 destination)
+    private void SetDestinationWithCoroutineReached(Vector3 destination)
     {
         AIDestinationMoveManager.SetDestination(destination);
-        StartCoroutine(OnDestinationReached());
+
+        if (destinatioNReachedCoroutine != null)
+        {
+            StopCoroutine(destinatioNReachedCoroutine);
+        }
+
+        destinatioNReachedCoroutine = StartCoroutine(OnDestinationReached());
+    }
+    private void SetDestinationSilent(Vector3 destination)
+    {
+        AIDestinationMoveManager.SetDestination(destination);
     }
     public void EnableAgent()
     {
