@@ -10,8 +10,10 @@ public class RTPuzzleGameManager : MonoBehaviour
     #endregion
 
     private RTPlayerManager RTPlayerManager;
+    private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
     private RTP_NPCManager RTP_NPCManager;
     private RTPPlayerActionManager RTPPlayerActionManager;
+    private TimeFlowManager TimeFlowManager;
 
     private void Start()
     {
@@ -21,12 +23,15 @@ public class RTPuzzleGameManager : MonoBehaviour
         RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
         RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
         RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
+        RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
+        TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
 
         //Initialisations
         GameObject.FindObjectOfType<AIComponentsManager>().Init();
-        GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>().Init();
+        RTPlayerManagerDataRetriever.Init();
         RTPlayerManager.Init();
         RTP_NPCManager.Init();
+        TimeFlowManager.Init();
 
         GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
         RTPPlayerActionManager.Init(PuzzleId);
@@ -38,10 +43,11 @@ public class RTPuzzleGameManager : MonoBehaviour
         var d = Time.deltaTime;
         RTPPlayerActionManager.Tick(d);
         RTPlayerManager.Tick(d);
-        if (RTPlayerManager.HasPlayerMovedThisFrame())
+        TimeFlowManager.Tick();
+        if (TimeFlowManager.IsAbleToFlowTime())
         {
             RTP_NPCManager.EnableAgent();
-            RTP_NPCManager.Tick(d);
+            RTP_NPCManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
         }
         else
         {

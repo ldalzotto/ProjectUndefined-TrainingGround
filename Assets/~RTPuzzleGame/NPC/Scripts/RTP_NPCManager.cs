@@ -5,10 +5,6 @@ using UnityEngine.AI;
 public class RTP_NPCManager : MonoBehaviour
 {
 
-    #region External Dependencies
-    private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
-    #endregion
-
     #region Internal Dependencies
     private NavMeshAgent agent;
     #endregion
@@ -28,9 +24,6 @@ public class RTP_NPCManager : MonoBehaviour
 
     public void Init()
     {
-        #region External Dependencies
-        RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
-        #endregion
 
         agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
@@ -43,7 +36,7 @@ public class RTP_NPCManager : MonoBehaviour
         RTPuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent);
     }
 
-    public void Tick(float d)
+    public void Tick(float d, float timeAttenuationFactor)
     {
         var newDestination = RTPuzzleAIBehavior.TickAI();
         if (newDestination.HasValue)
@@ -52,7 +45,7 @@ public class RTP_NPCManager : MonoBehaviour
         }
 
         AIDestinationMoveManager.Tick(d);
-        NPCSpeedAdjusterManager.Tick(d, RTPlayerManagerDataRetriever.GetPlayerSpeedMagnitude());
+        NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
     }
 
     private void OnTriggerEnter(Collider other)

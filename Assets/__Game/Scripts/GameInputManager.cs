@@ -27,6 +27,7 @@ public class GameInputManager : MonoBehaviour
         bool InventoryButtonD();
         bool CancelButtonD();
         bool CancelButtonDH();
+        bool TimeForwardButtonDH();
     }
 
     private class JoystickInput : XInput
@@ -64,6 +65,11 @@ public class GameInputManager : MonoBehaviour
         public Vector3 CameraRotationAxis()
         {
             return new Vector3(Input.GetAxis("Camera_Vertical"), Input.GetAxis("Camera_Horizontal"), 0f);
+        }
+
+        public bool TimeForwardButtonDH()
+        {
+            return Input.GetButton("TimeForward") || Input.GetButtonDown("TimeForward");
         }
     }
 
@@ -104,7 +110,10 @@ public class GameInputManager : MonoBehaviour
             throw new System.NotImplementedException();
         }
 
-
+        public bool TimeForwardButtonDH()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     private class MobileInput : XInput
@@ -154,6 +163,10 @@ public class GameInputManager : MonoBehaviour
             return new Vector3(currentJoystickValues.x, 0f, currentJoystickValues.y);
         }
 
+        public bool TimeForwardButtonDH()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
