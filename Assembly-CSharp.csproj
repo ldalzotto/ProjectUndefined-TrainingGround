@@ -146,7 +146,8 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\RTP_NPCManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\RTPlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\RTPlayerManagerDataRetriever.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\Actions\LaunchProjectileRTPAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileRTPAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPlayerActionConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerActionManager.cs" />

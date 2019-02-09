@@ -68,4 +68,12 @@ public class RTPuzzleGameManager : MonoBehaviour
             RTPPlayerActionManager.GizmoTick();
         }
     }
+
+    private void OnGUI()
+    {
+        if (RTPPlayerActionManager != null)
+        {
+            RTPPlayerActionManager.GUITick();
+        }
+    }
 }

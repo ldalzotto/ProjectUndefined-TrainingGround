@@ -42,6 +42,11 @@ public class RTPPlayerActionManager : MonoBehaviour
         RTPPlayerActionExecutionManager.GizmoTick();
     }
 
+    public void GUITick()
+    {
+        RTPPlayerActionExecutionManager.GUITick();
+    }
+
     #region External Events
     public void ExecuteAction(RTPPlayerAction rTPPlayerAction)
     {
@@ -117,6 +122,14 @@ class RTPPlayerActionExecutionManager
     {
         if (currentAction != null)
         { currentAction.GizmoTick(); }
+    }
+
+    public void GUITick()
+    {
+        if (currentAction != null)
+        {
+            currentAction.GUITick();
+        }
     }
 
     public void ExecuteAction(RTPPlayerAction rTPPlayerAction)

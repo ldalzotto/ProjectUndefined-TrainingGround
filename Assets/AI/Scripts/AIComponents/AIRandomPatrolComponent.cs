@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,10 +8,26 @@ public class AIRandomPatrolComponent : MonoBehaviour, AIComponentInitializerMess
 {
     public float MaxDistance;
 
+    #region Internal Reference
+    private AIComponentsContainer AIComponentsContainer;
+    #endregion
+
+    public void Start()
+    {
+        AIComponentsContainer = GetComponentInParent<AIComponentsContainer>();
+    }
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        var col = Color.yellow;
+        Gizmos.color = col;
         Gizmos.DrawWireSphere(transform.position, MaxDistance);
+        if (AIComponentsContainer != null)
+        {
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = col;
+            Handles.Label(transform.position + (transform.up * MaxDistance), new GUIContent(AIComponentsContainer.AiID.ToString() + " random patrol."), style);
+        }
     }
 
     public void InitializeContainer(AIComponents aIComponents)
