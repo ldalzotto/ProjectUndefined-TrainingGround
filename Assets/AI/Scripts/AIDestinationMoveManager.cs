@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 class AIDestinationMoveManager
@@ -39,6 +40,11 @@ class AIDestinationMoveManager
     {
         objectAgent.isStopped = true;
         objectAgent.nextPosition = objectAgent.transform.position;
+    }
+
+    internal void OnDestinationReached()
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }

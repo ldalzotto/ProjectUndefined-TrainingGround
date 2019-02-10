@@ -5,6 +5,9 @@ using UnityEngine.AI;
 public class RTP_NPCManager : MonoBehaviour
 {
 
+    [Header("Debug")]
+    public bool DebugEabled;
+
     #region Internal Dependencies
     private NavMeshAgent agent;
     #endregion
@@ -68,9 +71,22 @@ public class RTP_NPCManager : MonoBehaviour
         RTPuzzleAIBehavior.TickGizmo();
     }
 
+    public void GUITick()
+    {
+        if (DebugEabled)
+        {
+            var mouseAIBehavior = RTPuzzleAIBehavior as MouseAIBehavior;
+            GUILayout.BeginVertical("box");
+            GUILayout.Label("Position : " + transform.position.ToString());
+            mouseAIBehavior.DebugGUITick();
+            GUILayout.EndVertical();
+        }
+    }
+
     #region External Events
     private void SetDestinationWithCoroutineReached(Vector3 destination)
     {
+        Debug.Log("Set Destination");
         AIDestinationMoveManager.SetDestination(destination);
 
         if (destinatioNReachedCoroutine != null)
@@ -78,7 +94,7 @@ public class RTP_NPCManager : MonoBehaviour
             StopCoroutine(destinatioNReachedCoroutine);
         }
 
-        destinatioNReachedCoroutine = StartCoroutine(OnDestinationReached());
+        destinatioNReachedCoroutine = Coroutiner.Instance.StartCoroutine(OnDestinationReached());
     }
     private void SetDestinationSilent(Vector3 destination)
     {
@@ -92,12 +108,17 @@ public class RTP_NPCManager : MonoBehaviour
     {
         AIDestinationMoveManager.DisableAgent();
     }
+    public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+    {
+        RTPuzzleAIBehavior.OnExternalEvent(new OnLaunchProjectileDestroyed(launchProjectile));
+    }
     #endregion
 
     #region Internal Events
     private IEnumerator OnDestinationReached()
     {
         yield return new WaitForNavAgentDestinationReached(agent);
+        Debug.Log("Destination Reached");
         RTPuzzleAIBehavior.OnDestinationReached();
     }
     #endregion

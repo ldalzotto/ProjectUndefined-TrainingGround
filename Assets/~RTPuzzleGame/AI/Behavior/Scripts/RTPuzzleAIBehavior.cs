@@ -22,4 +22,5 @@ public abstract class RTPuzzleAIBehavior
 
     public abstract void OnDestinationReached();
 
+    public abstract void OnExternalEvent(AIBehaviorAbstractExternalEvent aIBehaviorAbstractExternalEvent);
 }

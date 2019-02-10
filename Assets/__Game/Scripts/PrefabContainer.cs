@@ -28,6 +28,9 @@ public class PrefabContainer : MonoBehaviour
     [Header("Car Prefab")]
     public CarManager CarManagerPrefab;
 
+    [Header("RT Puzzle Prefabs")]
+    public LaunchProjectile ProjectilePrefab;
+
     public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
 
     public static PrefabContainer Instance

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class AIProjectileEscapeComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
 {
     public float SamplePositionPrecision;
+    public float EscapeDistance;
 
     public void InitializeContainer(AIComponents aIComponents)
     {
@@ -39,6 +40,11 @@ public class AIProjectileEscapeManager
         this.escapingAgent = escapingAgent;
     }
 
+    public void ClearEscapeDestination()
+    {
+        escapeDestination = null;
+    }
+
     public void GizmoTick()
     {
         if (EscapeDestination.HasValue)
@@ -58,12 +64,11 @@ public class AIProjectileEscapeManager
 
     private Nullable<Vector3> ComputeEscapePoint(Collider collider)
     {
-        var distanceFromCenterOfProjectile = Vector3.Distance(escapingAgent.transform.position, collider.bounds.center);
         var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
         var escapeDirectionProjected = Vector3.ProjectOnPlane(escapeDirection, escapingAgent.transform.up);
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(escapingAgent.transform.position + (escapeDirectionProjected * distanceFromCenterOfProjectile), out hit, AIProjectileEscapeComponent.SamplePositionPrecision, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(escapingAgent.transform.position + (escapeDirectionProjected * AIProjectileEscapeComponent.EscapeDistance), out hit, AIProjectileEscapeComponent.SamplePositionPrecision, NavMesh.AllAreas))
         {
             return hit.position;
         }
@@ -71,13 +76,13 @@ public class AIProjectileEscapeManager
 
     }
 
-    public void OnTriggerStay(Collider collider, CollisionType collisionType)
+    internal void OnDestinationReached()
     {
-        if (collisionType.IsRTPProjectile)
-        {
-            isEscaping = true;
-            escapeDestination = ComputeEscapePoint(collider);
-        }
+        isEscaping = false;
+    }
+
+    public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+    {
     }
 
     public void OnTriggerExit(Collider collider, CollisionType collisionType)

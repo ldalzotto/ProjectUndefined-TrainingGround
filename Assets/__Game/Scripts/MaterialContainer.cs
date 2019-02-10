@@ -17,4 +17,7 @@ public class MaterialContainer : MonoBehaviour
 
     public Material POISelectedMaterial;
 
+    [Header("RT Puzzle Game")]
+    public Material LaunchProjectileUnavailableMaterial;
+
 }

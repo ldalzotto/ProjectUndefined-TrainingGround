@@ -21,14 +21,18 @@ public class MouseAIBehavior : RTPuzzleAIBehavior
         if (AIProjectileEscapeManager.IsEscaping)
         {
             AIRandomPatrolComponentManager.OnDestinationReached();
+            Nullable<Vector3> escapeDestination = null;
             if (AIProjectileEscapeManager.EscapeDestination.HasValue)
             {
                 AIRandomPatrolComponentManager.SetPosition(AIProjectileEscapeManager.EscapeDestination.Value);
+                escapeDestination = AIProjectileEscapeManager.EscapeDestination.Value;
+                AIProjectileEscapeManager.ClearEscapeDestination();
             }
-            return AIProjectileEscapeManager.EscapeDestination;
+            return escapeDestination;
         }
         else
         {
+            AIProjectileEscapeManager.ClearEscapeDestination();
             return AIRandomPatrolComponentManager.TickComponent();
         }
 
@@ -51,11 +55,6 @@ public class MouseAIBehavior : RTPuzzleAIBehavior
 
     public override void OnTriggerStay(Collider collider)
     {
-        var collisionType = collider.GetComponent<CollisionType>();
-        if (collisionType != null)
-        {
-            AIProjectileEscapeManager.OnTriggerStay(collider, collisionType);
-        }
     }
 
     public override void OnTriggerExit(Collider collider)
@@ -70,7 +69,20 @@ public class MouseAIBehavior : RTPuzzleAIBehavior
     public override void OnDestinationReached()
     {
         AIRandomPatrolComponentManager.OnDestinationReached();
+        AIProjectileEscapeManager.OnDestinationReached();
     }
 
+    public override void OnExternalEvent(AIBehaviorAbstractExternalEvent aIBehaviorAbstractExternalEvent)
+    {
+        if (aIBehaviorAbstractExternalEvent.GetType() == typeof(OnLaunchProjectileDestroyed))
+        {
+            var eventData = aIBehaviorAbstractExternalEvent.GetEventData() as LaunchProjectile;
+            AIProjectileEscapeManager.OnLaunchProjectileDestroyed(eventData);
+        }
+    }
 
+    public void DebugGUITick()
+    {
+        GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping);
+    }
 }

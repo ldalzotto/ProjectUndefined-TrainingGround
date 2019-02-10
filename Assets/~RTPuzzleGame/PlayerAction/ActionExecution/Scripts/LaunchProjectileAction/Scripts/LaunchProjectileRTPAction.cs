@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class LaunchProjectileRTPAction : RTPPlayerAction
 {
@@ -6,6 +7,8 @@ public class LaunchProjectileRTPAction : RTPPlayerAction
 
     private LaunchProjectileScreenPositionManager LaunchProjectileScreenPositionManager;
     private LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager;
+    private ThrowProjectileManager ThrowProjectileManager;
+    private LauncheProjectileActionExitManager LauncheProjectileActionExitManager;
 
     private bool isActionFinished = false;
 
@@ -19,19 +22,45 @@ public class LaunchProjectileRTPAction : RTPPlayerAction
         isActionFinished = false;
 
         #region External Dependencies
-        var gameInputMaganer = GameObject.FindObjectOfType<GameInputManager>();
+        var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        var rTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
+        var camera = Camera.main;
+        var launchProjectileContainer = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
         #endregion
 
         var configuration = GameObject.FindObjectOfType<RTPlayerActionConfigurationManager>();
-        LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent, Vector2.zero, gameInputMaganer);
-        LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(Camera.main, configuration.LaunchProjectileRayPositionerManagerComponent);
+
+
+        LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
+            camera.WorldToScreenPoint(rTPlayerManagerDataRetriever.GetPlayerTransform().position), gameInputManager);
+        LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, rTPlayerManagerDataRetriever);
+        ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileContainer);
+        LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
     }
 
     public override void Tick(float d)
     {
-        LaunchProjectileScreenPositionManager.Tick(d);
-        LaunchProjectileRayPositionerManager.Tick(d, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
+        if (!LauncheProjectileActionExitManager.Tick())
+        {
+            LaunchProjectileScreenPositionManager.Tick(d);
+            LaunchProjectileRayPositionerManager.Tick(d, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
+
+            var currentCursorPosition = LaunchProjectileRayPositionerManager.GetCurrentCursorPosition();
+            if (currentCursorPosition.HasValue)
+            {
+                ThrowProjectileManager.Tick(d, currentCursorPosition.Value);
+            }
+        }
+
     }
+
+    #region Internal Events
+    public void OnExit()
+    {
+        LaunchProjectileRayPositionerManager.OnExit();
+        isActionFinished = true;
+    }
+    #endregion
 
     public override void GizmoTick()
     {
@@ -48,6 +77,7 @@ class LaunchProjectileScreenPositionManager
 {
     private LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
     private GameInputManager GameInputManager;
+
     private Vector2 currentCursorScreenPosition;
 
     public LaunchProjectileScreenPositionManager(LaunchProjectileScreenPositionManagerComponent launchProjectileScreenPositionManagerComponent,
@@ -56,7 +86,7 @@ class LaunchProjectileScreenPositionManager
         LaunchProjectileScreenPositionManagerComponent = launchProjectileScreenPositionManagerComponent;
         this.currentCursorScreenPosition = currentCursorScreenPosition;
         this.GameInputManager = GameInputManager;
-        Debug.Log(currentCursorScreenPosition);
+
     }
 
     public Vector2 CurrentCursorScreenPosition { get => currentCursorScreenPosition; }
@@ -71,6 +101,7 @@ class LaunchProjectileScreenPositionManager
     {
         GUI.DrawTexture(new Rect(currentCursorScreenPosition - new Vector2(10, 10), new Vector2(20, 20)), LaunchProjectileScreenPositionManagerComponent.DebugTexture);
     }
+
 
 }
 
@@ -87,12 +118,17 @@ class LaunchProjectileRayPositionerManager
 {
     private Camera camera;
     private LaunchProjectileRayPositionerManagerComponent LaunchProjectileRayPositionerManagerComponent;
-    private GameObject currentCursor;
+    private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
 
-    public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent)
+    private GameObject currentCursor;
+    private MeshRenderer currentCursorMeshRenderer;
+    private Material currentCursorInitialMaterial;
+
+    public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent, RTPlayerManagerDataRetriever rTPlayerManagerDataRetriever)
     {
         this.camera = camera;
         LaunchProjectileRayPositionerManagerComponent = launchProjectileRayPositionerManagerComponent;
+        RTPlayerManagerDataRetriever = rTPlayerManagerDataRetriever;
     }
 
     public void Tick(float d, Vector2 currentScreenPositionPoint)
@@ -105,10 +141,22 @@ class LaunchProjectileRayPositionerManager
             if (currentCursor == null)
             {
                 currentCursor = MonoBehaviour.Instantiate(LaunchProjectileRayPositionerManagerComponent.ProjectileCursor);
+                currentCursorMeshRenderer = currentCursor.GetComponent<MeshRenderer>();
+                currentCursorInitialMaterial = currentCursorMeshRenderer.material;
             }
 
             currentCursor.transform.position = hit.point;
             currentCursor.transform.up = hit.normal;
+
+            if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursor.transform.position) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
+            {
+                currentCursorMeshRenderer.material = MaterialContainer.Instance.LaunchProjectileUnavailableMaterial;
+            }
+            else
+            {
+                currentCursorMeshRenderer.material = currentCursorInitialMaterial;
+            }
+
         }
         else
         {
@@ -120,11 +168,86 @@ class LaunchProjectileRayPositionerManager
         }
     }
 
+    public void OnExit()
+    {
+        if (currentCursor != null)
+        {
+            MonoBehaviour.Destroy(currentCursor);
+        }
+    }
+
+    public Nullable<Vector3> GetCurrentCursorPosition()
+    {
+        if (currentCursor == null)
+        {
+            return null;
+        }
+        return currentCursor.transform.position;
+    }
+
 }
 
 [System.Serializable]
 public class LaunchProjectileRayPositionerManagerComponent
 {
     public GameObject ProjectileCursor;
+    public float ProjectileThrowRange;
+}
+#endregion
+
+#region Throw Projectile Manager
+class ThrowProjectileManager
+{
+    private LaunchProjectileRTPAction LaunchProjectileRTPActionRef;
+    private GameInputManager GameInputManager;
+    private LaunchProjectileContainerManager LaunchProjectileContainerManager;
+
+    public ThrowProjectileManager(LaunchProjectileRTPAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileContainerManager LaunchProjectileContainerManager)
+    {
+        LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
+        GameInputManager = gameInputManager;
+        this.LaunchProjectileContainerManager = LaunchProjectileContainerManager;
+    }
+
+    private LaunchProjectile currentProjectile;
+
+    public void Tick(float d, Vector3 cursorPosition)
+    {
+        if (GameInputManager.CurrentInput.ActionButtonD())
+        {
+            currentProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, cursorPosition, Quaternion.identity);
+            LaunchProjectileContainerManager.OnLaunchProjectileSpawn(currentProjectile);
+        }
+    }
+
+}
+#endregion
+
+#region Launch Projectile Exit Action
+class LauncheProjectileActionExitManager
+{
+
+    private GameInputManager GameInputManager;
+    private LaunchProjectileRTPAction LaunchProjectileRTPAction;
+    public LauncheProjectileActionExitManager(GameInputManager gameInputManager, LaunchProjectileRTPAction LaunchProjectileRTPActionRef)
+    {
+        GameInputManager = gameInputManager;
+        this.LaunchProjectileRTPAction = LaunchProjectileRTPActionRef;
+    }
+
+    public bool Tick()
+    {
+        if (IsExitRequested())
+        {
+            LaunchProjectileRTPAction.OnExit();
+            return true;
+        }
+        return false;
+    }
+
+    private bool IsExitRequested()
+    {
+        return GameInputManager.CurrentInput.CancelButtonD();
+    }
 }
 #endregion

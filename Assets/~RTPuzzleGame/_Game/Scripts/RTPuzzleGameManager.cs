@@ -32,9 +32,10 @@ public class RTPuzzleGameManager : MonoBehaviour
         RTPlayerManager.Init();
         RTP_NPCManager.Init();
         TimeFlowManager.Init();
-
         GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
         RTPPlayerActionManager.Init(PuzzleId);
+        GameObject.FindObjectOfType<LaunchProjectileContainerManager>().Init();
+        GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
 
     }
 
@@ -77,6 +78,11 @@ public class RTPuzzleGameManager : MonoBehaviour
 
     private void OnGUI()
     {
+        if (RTP_NPCManager != null)
+        {
+            RTP_NPCManager.GUITick();
+        }
+
         if (RTPPlayerActionManager != null)
         {
             RTPPlayerActionManager.GUITick();
