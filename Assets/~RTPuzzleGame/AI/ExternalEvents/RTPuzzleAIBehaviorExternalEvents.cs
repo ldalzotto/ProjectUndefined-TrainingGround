@@ -1,15 +1,19 @@
-﻿public class OnLaunchProjectileDestroyed : AIBehaviorAbstractExternalEvent
+﻿
+namespace RTPuzzle
 {
-
-    private LaunchProjectile launchProjectile;
-
-    public OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+    public class OnLaunchProjectileDestroyed : AIBehaviorAbstractExternalEvent
     {
-        this.launchProjectile = launchProjectile;
-    }
 
-    public override AIBehaviorAbstractExternalEventData GetEventData()
-    {
-        return launchProjectile;
+        private LaunchProjectile launchProjectile;
+
+        public OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+        {
+            this.launchProjectile = launchProjectile;
+        }
+
+        public override AIBehaviorAbstractExternalEventData GetEventData()
+        {
+            return launchProjectile;
+        }
     }
 }

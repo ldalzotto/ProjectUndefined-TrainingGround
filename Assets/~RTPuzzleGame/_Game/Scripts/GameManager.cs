@@ -3,7 +3,7 @@
 namespace RTPuzzle
 {
 
-    public class RTPuzzleGameManager : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
 
         public LevelZonesID PuzzleId;
@@ -12,10 +12,10 @@ namespace RTPuzzle
         private InventoryMenu InventoryMenu;
         #endregion
 
-        private RTPlayerManager RTPlayerManager;
-        private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
-        private RTP_NPCManager RTP_NPCManager;
-        private RTPPlayerActionManager RTPPlayerActionManager;
+        private PlayerManager PlayerManager;
+        private PlayerManagerDataRetriever PlayerManagerDataRetriever;
+        private NpcAiManager NpcAiManager;
+        private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManager GroundEffectsManager;
 
@@ -24,21 +24,21 @@ namespace RTPuzzle
             InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
             InventoryMenu.gameObject.SetActive(false);
 
-            RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
-            RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
-            RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
-            RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
+            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            NpcAiManager = GameObject.FindObjectOfType<NpcAiManager>();
+            PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
             GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
 
             //Initialisations
             GameObject.FindObjectOfType<AIComponentsManager>().Init();
-            RTPlayerManagerDataRetriever.Init();
-            RTPlayerManager.Init();
-            RTP_NPCManager.Init();
+            PlayerManagerDataRetriever.Init();
+            PlayerManager.Init();
+            NpcAiManager.Init();
             TimeFlowManager.Init();
-            GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
-            RTPPlayerActionManager.Init(PuzzleId);
+            GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
+            PlayerActionManager.Init(PuzzleId);
             GameObject.FindObjectOfType<LaunchProjectileContainerManager>().Init();
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
             GameObject.FindObjectOfType<GroundEffectsEventManager>().Init();
@@ -49,18 +49,18 @@ namespace RTPuzzle
         private void Update()
         {
             var d = Time.deltaTime;
-            RTPPlayerActionManager.Tick(d);
-            RTPlayerManager.Tick(d);
+            PlayerActionManager.Tick(d);
+            PlayerManager.Tick(d);
             TimeFlowManager.Tick();
             GroundEffectsManager.Tick(d);
             if (TimeFlowManager.IsAbleToFlowTime())
             {
-                RTP_NPCManager.EnableAgent();
-                RTP_NPCManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                NpcAiManager.EnableAgent();
+                NpcAiManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
             }
             else
             {
-                RTP_NPCManager.DisableAgent();
+                NpcAiManager.DisableAgent();
             }
 
         }
@@ -68,32 +68,32 @@ namespace RTPuzzle
         private void FixedUpdate()
         {
             var d = Time.fixedDeltaTime;
-            RTPlayerManager.FixedTick(d);
+            PlayerManager.FixedTick(d);
         }
 
         private void OnDrawGizmos()
         {
-            if (RTP_NPCManager != null)
+            if (NpcAiManager != null)
             {
-                RTP_NPCManager.GizmoTick();
+                NpcAiManager.GizmoTick();
             }
 
-            if (RTPPlayerActionManager != null)
+            if (PlayerActionManager != null)
             {
-                RTPPlayerActionManager.GizmoTick();
+                PlayerActionManager.GizmoTick();
             }
         }
 
         private void OnGUI()
         {
-            if (RTP_NPCManager != null)
+            if (NpcAiManager != null)
             {
-                RTP_NPCManager.GUITick();
+                NpcAiManager.GUITick();
             }
 
-            if (RTPPlayerActionManager != null)
+            if (PlayerActionManager != null)
             {
-                RTPPlayerActionManager.GUITick();
+                PlayerActionManager.GUITick();
             }
         }
     }

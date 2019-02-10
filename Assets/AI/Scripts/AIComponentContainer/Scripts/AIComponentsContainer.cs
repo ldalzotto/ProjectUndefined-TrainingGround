@@ -18,5 +18,5 @@ public class AIComponentsContainer : MonoBehaviour
 public class AIComponents
 {
     public AIRandomPatrolComponent AIRandomPatrolComponent;
-    public AIProjectileEscapeComponent AIProjectileEscapeComponent;
+    public RTPuzzle.AIProjectileEscapeComponent AIProjectileEscapeComponent;
 }

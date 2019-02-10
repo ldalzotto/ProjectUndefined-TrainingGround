@@ -29,7 +29,7 @@ public class PrefabContainer : MonoBehaviour
     public CarManager CarManagerPrefab;
 
     [Header("RT Puzzle Prefabs")]
-    public LaunchProjectile ProjectilePrefab;
+    public RTPuzzle.LaunchProjectile ProjectilePrefab;
 
     public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
 

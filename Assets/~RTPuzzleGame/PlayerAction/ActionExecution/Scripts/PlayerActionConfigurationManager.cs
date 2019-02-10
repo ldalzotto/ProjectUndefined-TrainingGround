@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class RTPlayerActionConfigurationManager : MonoBehaviour
+    public class PlayerActionConfigurationManager : MonoBehaviour
     {
 
         [Header("Launch Projectile Configuration")]

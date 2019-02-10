@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class LaunchProjectileRTPAction : RTPPlayerAction
+    public class LaunchProjectileAction : RTPPlayerAction
     {
         public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
 
@@ -29,20 +29,20 @@ namespace RTPuzzle
 
             #region External Dependencies
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            var rTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
+            var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var camera = Camera.main;
             var launchProjectileContainer = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             GroundEffectsEventManager = GameObject.FindObjectOfType<GroundEffectsManager>();
             #endregion
 
-            var playerTransform = rTPlayerManagerDataRetriever.GetPlayerTransform();
-            var configuration = GameObject.FindObjectOfType<RTPlayerActionConfigurationManager>();
+            var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
+            var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
             GroundEffectsEventManager.OnThrowProjectileActionStart(playerTransform, configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange);
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                 camera.WorldToScreenPoint(playerTransform.position), gameInputManager);
-            LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, rTPlayerManagerDataRetriever);
+            LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileContainer);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
         }
@@ -128,13 +128,13 @@ namespace RTPuzzle
     {
         private Camera camera;
         private LaunchProjectileRayPositionerManagerComponent LaunchProjectileRayPositionerManagerComponent;
-        private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
+        private PlayerManagerDataRetriever RTPlayerManagerDataRetriever;
 
         private GameObject currentCursor;
         private MeshRenderer currentCursorMeshRenderer;
         private Material currentCursorInitialMaterial;
 
-        public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent, RTPlayerManagerDataRetriever rTPlayerManagerDataRetriever)
+        public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever rTPlayerManagerDataRetriever)
         {
             this.camera = camera;
             LaunchProjectileRayPositionerManagerComponent = launchProjectileRayPositionerManagerComponent;
@@ -208,11 +208,11 @@ namespace RTPuzzle
     #region Throw Projectile Manager
     class ThrowProjectileManager
     {
-        private LaunchProjectileRTPAction LaunchProjectileRTPActionRef;
+        private LaunchProjectileAction LaunchProjectileRTPActionRef;
         private GameInputManager GameInputManager;
         private LaunchProjectileContainerManager LaunchProjectileContainerManager;
 
-        public ThrowProjectileManager(LaunchProjectileRTPAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileContainerManager LaunchProjectileContainerManager)
+        public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileContainerManager LaunchProjectileContainerManager)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
@@ -238,18 +238,18 @@ namespace RTPuzzle
     {
 
         private GameInputManager GameInputManager;
-        private LaunchProjectileRTPAction LaunchProjectileRTPAction;
-        public LauncheProjectileActionExitManager(GameInputManager gameInputManager, LaunchProjectileRTPAction LaunchProjectileRTPActionRef)
+        private LaunchProjectileAction LaunchProjectileAction;
+        public LauncheProjectileActionExitManager(GameInputManager gameInputManager, LaunchProjectileAction LaunchProjectileActionRef)
         {
             GameInputManager = gameInputManager;
-            this.LaunchProjectileRTPAction = LaunchProjectileRTPActionRef;
+            this.LaunchProjectileAction = LaunchProjectileActionRef;
         }
 
         public bool Tick()
         {
             if (IsExitRequested())
             {
-                LaunchProjectileRTPAction.OnExit();
+                LaunchProjectileAction.OnExit();
                 return true;
             }
             return false;

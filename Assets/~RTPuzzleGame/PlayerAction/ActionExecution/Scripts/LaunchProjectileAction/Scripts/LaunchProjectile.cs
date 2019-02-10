@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-public class LaunchProjectile : MonoBehaviour, AIBehaviorAbstractExternalEventData
+namespace RTPuzzle
 {
+    public class LaunchProjectile : MonoBehaviour, AIBehaviorAbstractExternalEventData
+    {
+
+    }
 
 }

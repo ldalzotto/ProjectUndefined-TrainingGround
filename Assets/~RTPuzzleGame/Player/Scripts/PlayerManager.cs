@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class RTPlayerManager : MonoBehaviour
+    public class PlayerManager : MonoBehaviour
     {
 
         #region External Dependencies
-        private RTPPlayerActionManager RTPPlayerActionManager;
+        private PlayerActionManager PlayerActionManager;
         #endregion
 
         public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
@@ -18,8 +18,8 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
-            var RTPPlayerActionEventManager = GameObject.FindObjectOfType<RTPPlayerActionEventManager>();
+            PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             #endregion
 
             var playerRigidBody = GetComponent<Rigidbody>();
@@ -27,16 +27,16 @@ namespace RTPuzzle
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, RTPPlayerActionEventManager, RTPPlayerActionManager);
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
         }
 
         public void Tick(float d)
         {
-            if (!RTPPlayerActionManager.IsActionExecuting())
+            if (!PlayerActionManager.IsActionExecuting())
             {
                 if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
                 {
-                    if (!RTPPlayerActionManager.IsWheelEnabled())
+                    if (!PlayerActionManager.IsWheelEnabled())
                     {
                         PlayerInputMoveManager.Tick(d);
                     }
@@ -72,29 +72,29 @@ namespace RTPuzzle
     class PlayerSelectionWheelManager
     {
         private GameInputManager GameInputManager;
-        private RTPPlayerActionEventManager RTPPlayerActionEventManager;
-        private RTPPlayerActionManager RTPPlayerActionManager;
+        private PlayerActionEventManager PlayerActionEventManager;
+        private PlayerActionManager PlayerActionManager;
 
-        public PlayerSelectionWheelManager(GameInputManager gameInputManager, RTPPlayerActionEventManager rTPPlayerActionEventManager, RTPPlayerActionManager RTPPlayerActionManager)
+        public PlayerSelectionWheelManager(GameInputManager gameInputManager, PlayerActionEventManager PlayerActionEventManager, PlayerActionManager PlayerActionManager)
         {
             GameInputManager = gameInputManager;
-            RTPPlayerActionEventManager = rTPPlayerActionEventManager;
-            this.RTPPlayerActionManager = RTPPlayerActionManager;
+            this.PlayerActionEventManager = PlayerActionEventManager;
+            this.PlayerActionManager = PlayerActionManager;
         }
 
         public bool AwakeOrSleepWheel()
         {
-            if (!RTPPlayerActionManager.IsWheelEnabled())
+            if (!PlayerActionManager.IsWheelEnabled())
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
-                    RTPPlayerActionEventManager.OnWheelAwake();
+                    PlayerActionEventManager.OnWheelAwake();
                     return true;
                 }
             }
             else if (GameInputManager.CurrentInput.CancelButtonD())
             {
-                RTPPlayerActionEventManager.OnWheelSleep();
+                PlayerActionEventManager.OnWheelSleep();
                 return true;
             }
             return false;
@@ -104,7 +104,7 @@ namespace RTPuzzle
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
-                RTPPlayerActionEventManager.OnCurrentNodeSelected();
+                PlayerActionEventManager.OnCurrentNodeSelected();
             }
         }
 

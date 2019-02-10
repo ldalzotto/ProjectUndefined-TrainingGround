@@ -10,8 +10,8 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            var RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
-            var RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
+            var RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            var RTPlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
 
@@ -39,10 +39,10 @@ namespace RTPuzzle
     class TimeFlowInputManager
     {
         private GameInputManager GameInputManager;
-        private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
-        private RTPlayerManager RTPlayerManager;
+        private PlayerManagerDataRetriever RTPlayerManagerDataRetriever;
+        private PlayerManager RTPlayerManager;
 
-        public TimeFlowInputManager(GameInputManager gameInputManager, RTPlayerManagerDataRetriever rTPlayerManagerDataRetriever, RTPlayerManager rTPlayerManager)
+        public TimeFlowInputManager(GameInputManager gameInputManager, PlayerManagerDataRetriever rTPlayerManagerDataRetriever, PlayerManager rTPlayerManager)
         {
             GameInputManager = gameInputManager;
             RTPlayerManagerDataRetriever = rTPlayerManagerDataRetriever;

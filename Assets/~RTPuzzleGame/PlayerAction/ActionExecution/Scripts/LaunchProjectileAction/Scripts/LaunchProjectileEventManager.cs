@@ -1,25 +1,29 @@
 ﻿using UnityEngine;
 
-public class LaunchProjectileEventManager : MonoBehaviour
+namespace RTPuzzle
 {
-
-    private LaunchProjectileContainerManager LaunchProjectileContainerManager;
-    private RTP_NPCManager RTP_NPCManager;
-
-    public void Init()
+    public class LaunchProjectileEventManager : MonoBehaviour
     {
-        LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
-        RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
+
+        private LaunchProjectileContainerManager LaunchProjectileContainerManager;
+        private NpcAiManager NpcAiManager;
+
+        public void Init()
+        {
+            LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            NpcAiManager = GameObject.FindObjectOfType<NpcAiManager>();
+        }
+
+        public void OnLaunchProjectileSpawn(LaunchProjectile launchProjectile)
+        {
+            LaunchProjectileContainerManager.OnLaunchProjectileSpawn(launchProjectile);
+        }
+
+        public void OnLaunchProjectileDestroy(LaunchProjectile launchProjectile)
+        {
+            LaunchProjectileContainerManager.OnLaunchProjectileDestroy(launchProjectile);
+            NpcAiManager.OnLaunchProjectileDestroyed(launchProjectile);
+        }
     }
 
-    public void OnLaunchProjectileSpawn(LaunchProjectile launchProjectile)
-    {
-        LaunchProjectileContainerManager.OnLaunchProjectileSpawn(launchProjectile);
-    }
-
-    public void OnLaunchProjectileDestroy(LaunchProjectile launchProjectile)
-    {
-        LaunchProjectileContainerManager.OnLaunchProjectileDestroy(launchProjectile);
-        RTP_NPCManager.OnLaunchProjectileDestroyed(launchProjectile);
-    }
 }

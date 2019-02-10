@@ -2,97 +2,101 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Serializable]
-public class AIProjectileEscapeComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
+namespace RTPuzzle
 {
-    public float SamplePositionPrecision;
-    public float EscapeDistance;
-
-    public void InitializeContainer(AIComponents aIComponents)
+    [System.Serializable]
+    public class AIProjectileEscapeComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
     {
-        aIComponents.AIProjectileEscapeComponent = this;
-    }
-}
+        public float SamplePositionPrecision;
+        public float EscapeDistance;
 
-public class AIProjectileEscapeManager
-{
-    #region External Dependencies
-    private NavMeshAgent escapingAgent;
-    #endregion
-
-    #region Internal Dependencies
-    private AIProjectileEscapeComponent AIProjectileEscapeComponent;
-    #endregion
-
-    #region State
-    private bool isEscaping;
-    private Nullable<Vector3> escapeDestination;
-    #endregion
-
-    private Action<Vector3> SetAgentPosition;
-
-    public bool IsEscaping { get => isEscaping; }
-    public Vector3? EscapeDestination { get => escapeDestination; }
-
-    public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent)
-    {
-        this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
-        this.escapingAgent = escapingAgent;
-    }
-
-    public void ClearEscapeDestination()
-    {
-        escapeDestination = null;
-    }
-
-    public void GizmoTick()
-    {
-        if (EscapeDestination.HasValue)
+        public void InitializeContainer(AIComponents aIComponents)
         {
-            Gizmos.DrawWireSphere(EscapeDestination.Value, 2f);
+            aIComponents.AIProjectileEscapeComponent = this;
         }
     }
 
-    public void OnTriggerEnter(Collider collider, CollisionType collisionType)
+    public class AIProjectileEscapeManager
     {
-        if (collisionType.IsRTPProjectile)
+        #region External Dependencies
+        private NavMeshAgent escapingAgent;
+        #endregion
+
+        #region Internal Dependencies
+        private AIProjectileEscapeComponent AIProjectileEscapeComponent;
+        #endregion
+
+        #region State
+        private bool isEscaping;
+        private Nullable<Vector3> escapeDestination;
+        #endregion
+
+        private Action<Vector3> SetAgentPosition;
+
+        public bool IsEscaping { get => isEscaping; }
+        public Vector3? EscapeDestination { get => escapeDestination; }
+
+        public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent)
         {
-            isEscaping = true;
-            escapeDestination = ComputeEscapePoint(collider);
+            this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
+            this.escapingAgent = escapingAgent;
         }
-    }
 
-    private Nullable<Vector3> ComputeEscapePoint(Collider collider)
-    {
-        var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
-        var escapeDirectionProjected = Vector3.ProjectOnPlane(escapeDirection, escapingAgent.transform.up);
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(escapingAgent.transform.position + (escapeDirectionProjected * AIProjectileEscapeComponent.EscapeDistance), out hit, AIProjectileEscapeComponent.SamplePositionPrecision, NavMesh.AllAreas))
+        public void ClearEscapeDestination()
         {
-            return hit.position;
+            escapeDestination = null;
         }
-        return null;
 
-    }
+        public void GizmoTick()
+        {
+            if (EscapeDestination.HasValue)
+            {
+                Gizmos.DrawWireSphere(EscapeDestination.Value, 2f);
+            }
+        }
 
-    internal void OnDestinationReached()
-    {
-        isEscaping = false;
-    }
+        public void OnTriggerEnter(Collider collider, CollisionType collisionType)
+        {
+            if (collisionType.IsRTPProjectile)
+            {
+                isEscaping = true;
+                escapeDestination = ComputeEscapePoint(collider);
+            }
+        }
 
-    public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
-    {
-    }
+        private Nullable<Vector3> ComputeEscapePoint(Collider collider)
+        {
+            var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
+            var escapeDirectionProjected = Vector3.ProjectOnPlane(escapeDirection, escapingAgent.transform.up);
 
-    public void OnTriggerExit(Collider collider, CollisionType collisionType)
-    {
-        if (collisionType.IsRTPProjectile)
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(escapingAgent.transform.position + (escapeDirectionProjected * AIProjectileEscapeComponent.EscapeDistance), out hit, AIProjectileEscapeComponent.SamplePositionPrecision, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+            return null;
+
+        }
+
+        internal void OnDestinationReached()
         {
             isEscaping = false;
         }
+
+        public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+        {
+        }
+
+        public void OnTriggerExit(Collider collider, CollisionType collisionType)
+        {
+            if (collisionType.IsRTPProjectile)
+            {
+                isEscaping = false;
+            }
+        }
+
+
+
     }
-
-
 
 }
