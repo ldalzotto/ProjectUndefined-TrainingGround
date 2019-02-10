@@ -1,23 +1,27 @@
 ﻿using UnityEngine;
 
-public class RTPlayerManagerDataRetriever : MonoBehaviour
+namespace RTPuzzle
 {
-
-    private RTPlayerManager RTPlayerManager;
-
-    public void Init()
+    public class RTPlayerManagerDataRetriever : MonoBehaviour
     {
-        RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
+
+        private RTPlayerManager RTPlayerManager;
+
+        public void Init()
+        {
+            RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
+        }
+
+        #region Data Retrieval
+        public float GetPlayerSpeedMagnitude()
+        {
+            return RTPlayerManager.GetPlayerSpeedMagnitude();
+        }
+        public Transform GetPlayerTransform()
+        {
+            return RTPlayerManager.transform;
+        }
+        #endregion
     }
 
-    #region Data Retrieval
-    public float GetPlayerSpeedMagnitude()
-    {
-        return RTPlayerManager.GetPlayerSpeedMagnitude();
-    }
-    public Transform GetPlayerTransform()
-    {
-        return RTPlayerManager.transform;
-    }
-    #endregion
 }

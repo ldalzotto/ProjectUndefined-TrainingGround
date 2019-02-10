@@ -144,17 +144,19 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\RTPuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\ExternalEvents\RTPuzzleAIBehaviorExternalEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\RTPuzzleGlobalConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsEventManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\RTP_NPCManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\RTPlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\RTPlayerManagerDataRetriever.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectile.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileContainerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileRTPAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPlayerActionConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerActionManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\LaunchProjectile\Scripts\LaunchProjectile.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\LaunchProjectile\Scripts\LaunchProjectileContainerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\LaunchProjectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIBehaviorAbstractExternalEvent.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
@@ -190,6 +192,7 @@
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
     <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
     <None Include="Assets\Discussion\Font\LICENSE.txt" />
+    <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_Pass.shader" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>

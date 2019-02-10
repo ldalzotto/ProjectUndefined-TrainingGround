@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 
-public class RTPlayerActionConfigurationManager : MonoBehaviour
+namespace RTPuzzle
 {
+    public class RTPlayerActionConfigurationManager : MonoBehaviour
+    {
 
-    [Header("Launch Projectile Configuration")]
-    public LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
-    public LaunchProjectileRayPositionerManagerComponent LaunchProjectileRayPositionerManagerComponent;
+        [Header("Launch Projectile Configuration")]
+        public LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
+        public LaunchProjectileRayPositionerManagerComponent LaunchProjectileRayPositionerManagerComponent;
+
+    }
 
 }

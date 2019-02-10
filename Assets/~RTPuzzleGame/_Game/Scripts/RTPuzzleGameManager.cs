@@ -1,91 +1,101 @@
 ﻿using UnityEngine;
 
-public class RTPuzzleGameManager : MonoBehaviour
+namespace RTPuzzle
 {
 
-    public LevelZonesID PuzzleId;
-
-    #region Persistance Dependencies
-    private InventoryMenu InventoryMenu;
-    #endregion
-
-    private RTPlayerManager RTPlayerManager;
-    private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
-    private RTP_NPCManager RTP_NPCManager;
-    private RTPPlayerActionManager RTPPlayerActionManager;
-    private TimeFlowManager TimeFlowManager;
-
-    private void Start()
+    public class RTPuzzleGameManager : MonoBehaviour
     {
-        InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
-        InventoryMenu.gameObject.SetActive(false);
 
-        RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
-        RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
-        RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
-        RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
-        TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
+        public LevelZonesID PuzzleId;
 
-        //Initialisations
-        GameObject.FindObjectOfType<AIComponentsManager>().Init();
-        RTPlayerManagerDataRetriever.Init();
-        RTPlayerManager.Init();
-        RTP_NPCManager.Init();
-        TimeFlowManager.Init();
-        GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
-        RTPPlayerActionManager.Init(PuzzleId);
-        GameObject.FindObjectOfType<LaunchProjectileContainerManager>().Init();
-        GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
+        #region Persistance Dependencies
+        private InventoryMenu InventoryMenu;
+        #endregion
 
+        private RTPlayerManager RTPlayerManager;
+        private RTPlayerManagerDataRetriever RTPlayerManagerDataRetriever;
+        private RTP_NPCManager RTP_NPCManager;
+        private RTPPlayerActionManager RTPPlayerActionManager;
+        private TimeFlowManager TimeFlowManager;
+        private GroundEffectsManager GroundEffectsManager;
+
+        private void Start()
+        {
+            InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
+            InventoryMenu.gameObject.SetActive(false);
+
+            RTPlayerManager = GameObject.FindObjectOfType<RTPlayerManager>();
+            RTP_NPCManager = GameObject.FindObjectOfType<RTP_NPCManager>();
+            RTPPlayerActionManager = GameObject.FindObjectOfType<RTPPlayerActionManager>();
+            RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<RTPlayerManagerDataRetriever>();
+            TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
+            GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
+
+            //Initialisations
+            GameObject.FindObjectOfType<AIComponentsManager>().Init();
+            RTPlayerManagerDataRetriever.Init();
+            RTPlayerManager.Init();
+            RTP_NPCManager.Init();
+            TimeFlowManager.Init();
+            GameObject.FindObjectOfType<RTPPlayerActionEventManager>().Init();
+            RTPPlayerActionManager.Init(PuzzleId);
+            GameObject.FindObjectOfType<LaunchProjectileContainerManager>().Init();
+            GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
+            GameObject.FindObjectOfType<GroundEffectsEventManager>().Init();
+            GroundEffectsManager.Init();
+
+        }
+
+        private void Update()
+        {
+            var d = Time.deltaTime;
+            RTPPlayerActionManager.Tick(d);
+            RTPlayerManager.Tick(d);
+            TimeFlowManager.Tick();
+            GroundEffectsManager.Tick(d);
+            if (TimeFlowManager.IsAbleToFlowTime())
+            {
+                RTP_NPCManager.EnableAgent();
+                RTP_NPCManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
+            }
+            else
+            {
+                RTP_NPCManager.DisableAgent();
+            }
+
+        }
+
+        private void FixedUpdate()
+        {
+            var d = Time.fixedDeltaTime;
+            RTPlayerManager.FixedTick(d);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (RTP_NPCManager != null)
+            {
+                RTP_NPCManager.GizmoTick();
+            }
+
+            if (RTPPlayerActionManager != null)
+            {
+                RTPPlayerActionManager.GizmoTick();
+            }
+        }
+
+        private void OnGUI()
+        {
+            if (RTP_NPCManager != null)
+            {
+                RTP_NPCManager.GUITick();
+            }
+
+            if (RTPPlayerActionManager != null)
+            {
+                RTPPlayerActionManager.GUITick();
+            }
+        }
     }
 
-    private void Update()
-    {
-        var d = Time.deltaTime;
-        RTPPlayerActionManager.Tick(d);
-        RTPlayerManager.Tick(d);
-        TimeFlowManager.Tick();
-        if (TimeFlowManager.IsAbleToFlowTime())
-        {
-            RTP_NPCManager.EnableAgent();
-            RTP_NPCManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
-        }
-        else
-        {
-            RTP_NPCManager.DisableAgent();
-        }
-
-    }
-
-    private void FixedUpdate()
-    {
-        var d = Time.fixedDeltaTime;
-        RTPlayerManager.FixedTick(d);
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (RTP_NPCManager != null)
-        {
-            RTP_NPCManager.GizmoTick();
-        }
-
-        if (RTPPlayerActionManager != null)
-        {
-            RTPPlayerActionManager.GizmoTick();
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (RTP_NPCManager != null)
-        {
-            RTP_NPCManager.GUITick();
-        }
-
-        if (RTPPlayerActionManager != null)
-        {
-            RTPPlayerActionManager.GUITick();
-        }
-    }
 }
