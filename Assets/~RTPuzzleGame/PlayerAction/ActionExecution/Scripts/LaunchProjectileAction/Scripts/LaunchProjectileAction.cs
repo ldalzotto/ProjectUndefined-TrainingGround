@@ -44,10 +44,12 @@ namespace RTPuzzle
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
+            var playerTransformScreen = camera.WorldToScreenPoint(playerTransform.position);
+            playerTransformScreen.y = camera.pixelHeight - playerTransformScreen.y;
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
-                camera.WorldToScreenPoint(playerTransform.position), gameInputManager);
+               playerTransformScreen, gameInputManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileContainer);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
