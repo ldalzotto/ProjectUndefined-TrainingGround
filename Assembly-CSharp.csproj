@@ -142,9 +142,7 @@
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\ExternalEvents\AIBehaviorExternalEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NpcAiManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
@@ -157,8 +155,9 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\Events\PuzzleEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
-    <Compile Include="Assets\AI\Scripts\AIBehaviorAbstractExternalEvent.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentsContainer.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentsManager.cs" />

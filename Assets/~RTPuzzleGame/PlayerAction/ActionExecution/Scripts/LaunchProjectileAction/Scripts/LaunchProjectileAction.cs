@@ -8,7 +8,7 @@ namespace RTPuzzle
         public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
 
         #region External Dependencies
-        private GroundEffectsManager GroundEffectsEventManager;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         private LaunchProjectileScreenPositionManager LaunchProjectileScreenPositionManager;
@@ -32,13 +32,13 @@ namespace RTPuzzle
             var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var camera = Camera.main;
             var launchProjectileContainer = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
-            GroundEffectsEventManager = GameObject.FindObjectOfType<GroundEffectsManager>();
+            PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
-            GroundEffectsEventManager.OnThrowProjectileActionStart(playerTransform, configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange);
+            PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform, configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange));
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                 camera.WorldToScreenPoint(playerTransform.position), gameInputManager);
@@ -66,7 +66,7 @@ namespace RTPuzzle
         #region Internal Events
         public void OnExit()
         {
-            GroundEffectsEventManager.OnThrowProjectileThrowed();
+            PuzzleEventsManager.SendEvent(new ProjectileThrowedEvent());
             LaunchProjectileRayPositionerManager.OnExit();
             isActionFinished = true;
         }

@@ -22,7 +22,6 @@ namespace RTPuzzle
         public void OnLaunchProjectileDestroy(LaunchProjectile launchProjectile)
         {
             LaunchProjectileContainerManager.OnLaunchProjectileDestroy(launchProjectile);
-            NpcAiManager.OnLaunchProjectileDestroyed(launchProjectile);
         }
     }
 

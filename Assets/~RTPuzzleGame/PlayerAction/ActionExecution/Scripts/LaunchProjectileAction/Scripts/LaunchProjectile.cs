@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class LaunchProjectile : MonoBehaviour, AIBehaviorAbstractExternalEventData
+    public class LaunchProjectile : MonoBehaviour
     {
 
     }

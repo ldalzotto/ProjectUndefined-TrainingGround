@@ -157,7 +157,7 @@ namespace RTPuzzle
 
         public PlayerActionsAvailableManager(LevelZonesID puzzleId)
         {
-            currentAvailableActions = RTPPlayerActionConfiguration.conf[puzzleId];
+            currentAvailableActions = PlayerActionConfiguration.conf[puzzleId];
         }
 
         public List<RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }

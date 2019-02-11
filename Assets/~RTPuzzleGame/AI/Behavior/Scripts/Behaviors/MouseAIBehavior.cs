@@ -75,15 +75,6 @@ namespace RTPuzzle
             AIProjectileEscapeManager.OnDestinationReached();
         }
 
-        public override void OnExternalEvent(AIBehaviorAbstractExternalEvent aIBehaviorAbstractExternalEvent)
-        {
-            if (aIBehaviorAbstractExternalEvent.GetType() == typeof(OnLaunchProjectileDestroyed))
-            {
-                var eventData = aIBehaviorAbstractExternalEvent.GetEventData() as LaunchProjectile;
-                AIProjectileEscapeManager.OnLaunchProjectileDestroyed(eventData);
-            }
-        }
-
         public void DebugGUITick()
         {
             GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping);

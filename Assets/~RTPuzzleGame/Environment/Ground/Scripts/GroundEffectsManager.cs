@@ -2,8 +2,12 @@
 
 namespace RTPuzzle
 {
-    public class GroundEffectsManager : MonoBehaviour
+    public class GroundEffectsManager : MonoBehaviour, PuzzleEventsListener
     {
+        #region External Dependencies
+        private PuzzleEventsManager PuzzleEventsManager;
+        #endregion
+
         public GroundEffectsManagerComponent GroundEffectsManagerComponent;
 
         private ThrowRangeEffectManager ThrowRangeEffectManager;
@@ -11,6 +15,8 @@ namespace RTPuzzle
         public void Init()
         {
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
+            PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            PuzzleEventsManager.AddListener(this);
         }
 
         private void OnRenderObject()
@@ -24,17 +30,29 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnThrowProjectileActionStart(Transform throwerTransform, float maxRange)
+        private void OnThrowProjectileActionStart(Transform throwerTransform, float maxRange)
         {
             ThrowRangeEffectManager.OnThrowProjectileActionStart(throwerTransform, maxRange);
         }
 
-        public void OnThrowProjectileThrowed()
+        private void OnThrowProjectileThrowed()
         {
             ThrowRangeEffectManager.OnThrowProjectileThrowed();
         }
-        #endregion
 
+        public void ReceivedEvend(PuzzleEvent puzzleEvent)
+        {
+            if (puzzleEvent.IsEventOfType<ThrowProjectileActionStartEvent>())
+            {
+                var puzzEv = puzzleEvent as ThrowProjectileActionStartEvent;
+                OnThrowProjectileActionStart(puzzEv.ThrowerTransform, puzzEv.MaxRange);
+            }
+            else if (puzzleEvent.IsEventOfType<ProjectileThrowedEvent>())
+            {
+                OnThrowProjectileThrowed();
+            }
+        }
+        #endregion
     }
 
     class ThrowRangeEffectManager
@@ -96,7 +114,6 @@ namespace RTPuzzle
         public Material GroundMaterial;
         public MeshRenderer GroundMeshRenderer;
         public float RangeExpandSpeed;
-
     }
 }
 

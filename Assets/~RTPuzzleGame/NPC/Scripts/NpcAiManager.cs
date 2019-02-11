@@ -111,10 +111,6 @@ namespace RTPuzzle
         {
             AIDestinationMoveManager.DisableAgent();
         }
-        public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
-        {
-            PuzzleAIBehavior.OnExternalEvent(new OnLaunchProjectileDestroyed(launchProjectile));
-        }
         #endregion
 
         #region Internal Events

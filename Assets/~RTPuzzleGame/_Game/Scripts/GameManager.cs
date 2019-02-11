@@ -41,7 +41,6 @@ namespace RTPuzzle
             PlayerActionManager.Init(PuzzleId);
             GameObject.FindObjectOfType<LaunchProjectileContainerManager>().Init();
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
-            GameObject.FindObjectOfType<GroundEffectsEventManager>().Init();
             GroundEffectsManager.Init();
 
         }

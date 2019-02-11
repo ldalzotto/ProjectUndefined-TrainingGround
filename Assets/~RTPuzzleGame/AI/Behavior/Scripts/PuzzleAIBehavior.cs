@@ -24,7 +24,6 @@ namespace RTPuzzle
 
         public abstract void OnDestinationReached();
 
-        public abstract void OnExternalEvent(AIBehaviorAbstractExternalEvent aIBehaviorAbstractExternalEvent);
     }
 
 }
