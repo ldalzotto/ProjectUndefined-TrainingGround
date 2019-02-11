@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -9,14 +10,17 @@ namespace RTPuzzle
         #endregion
 
         public GroundEffectsManagerComponent GroundEffectsManagerComponent;
+        public ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
 
         private ThrowRangeEffectManager ThrowRangeEffectManager;
+        private ThrowCursorRangeEffectManager ThrowCursorRangeEffectManager;
 
         private GroundEffectType[] AffectedGroundEffectsType;
 
         public void Init()
         {
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
+            ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent);
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
             for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
@@ -29,6 +33,7 @@ namespace RTPuzzle
         private void OnRenderObject()
         {
             ThrowRangeEffectManager.RenderObjectTick(AffectedGroundEffectsType);
+            ThrowCursorRangeEffectManager.RenderObjectTick(AffectedGroundEffectsType);
         }
 
         public void Tick(float d)
@@ -37,31 +42,25 @@ namespace RTPuzzle
         }
 
         #region External Events
-        private void OnThrowProjectileActionStart(Transform throwerTransform, float maxRange)
-        {
-            ThrowRangeEffectManager.OnThrowProjectileActionStart(throwerTransform, maxRange);
-        }
-
-        private void OnThrowProjectileThrowed()
-        {
-            ThrowRangeEffectManager.OnThrowProjectileThrowed();
-        }
 
         public void ReceivedEvend(PuzzleEvent puzzleEvent)
         {
             if (puzzleEvent.IsEventOfType<ThrowProjectileActionStartEvent>())
             {
                 var puzzEv = puzzleEvent as ThrowProjectileActionStartEvent;
-                OnThrowProjectileActionStart(puzzEv.ThrowerTransform, puzzEv.MaxRange);
+                ThrowRangeEffectManager.OnThrowProjectileActionStart(puzzEv.ThrowerTransform, puzzEv.MaxRange);
+                ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(puzzEv.CurrentCursorPositionRetriever, LaunchProjectileInherentDataConfiguration.conf[puzzEv.ProjectileInvolved].EffectRange);
             }
             else if (puzzleEvent.IsEventOfType<ProjectileThrowedEvent>())
             {
-                OnThrowProjectileThrowed();
+                ThrowRangeEffectManager.OnThrowProjectileThrowed();
+                ThrowCursorRangeEffectManager.OnThrowProjectileThrowed();
             }
         }
         #endregion
     }
 
+    #region Throw range effect manager
     class ThrowRangeEffectManager
     {
         private GroundEffectsManagerComponent GroundEffectsManagerComponent;
@@ -121,5 +120,62 @@ namespace RTPuzzle
         public Material RangeEffectMaterial;
         public float RangeExpandSpeed;
     }
+
+    #endregion
+
+    #region Throw cursor range effect manager
+    class ThrowCursorRangeEffectManager
+    {
+
+        private ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
+
+        public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent)
+        {
+            ThrowCursorRangeEffectManagerComponent = throwCursorRangeEffectManagerComponent;
+        }
+
+        private Func<Nullable<Vector3>> cursorPositionRetriever;
+        private float projectileRange;
+
+        private bool throwRangeEnabled;
+
+        public void RenderObjectTick(GroundEffectType[] affectedGroundEffectsType)
+        {
+            if (throwRangeEnabled)
+            {
+                var currentCursorPosition = cursorPositionRetriever.Invoke();
+                if (currentCursorPosition.HasValue)
+                {
+                    for (var i = 0; i < affectedGroundEffectsType.Length; i++)
+                    {
+                        ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat("_Radius", projectileRange);
+                        ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetVector("_CenterWorldPosition", currentCursorPosition.Value);
+                        ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetPass(0);
+                        Graphics.DrawMeshNow(affectedGroundEffectsType[i].MeshFilter.mesh, affectedGroundEffectsType[i].transform.position, affectedGroundEffectsType[i].transform.rotation);
+                    }
+                }
+            }
+
+        }
+
+        public void OnThrowProjectileActionStart(Func<Nullable<Vector3>> cursorPositionRetriever, float projectileRange)
+        {
+            this.cursorPositionRetriever = cursorPositionRetriever;
+            this.projectileRange = projectileRange;
+            throwRangeEnabled = true;
+        }
+
+        public void OnThrowProjectileThrowed()
+        {
+            throwRangeEnabled = false;
+        }
+    }
+
+    [System.Serializable]
+    public class ThrowCursorRangeEffectManagerComponent
+    {
+        public Material ProjectileEffectRangeMaterial;
+    }
+    #endregion
 }
 

@@ -34,7 +34,6 @@ namespace RTPuzzle
         private Action<Vector3> SetAgentPosition;
 
         public bool IsEscaping { get => isEscaping; }
-        public Vector3? EscapeDestination { get => escapeDestination; }
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent)
         {
@@ -49,10 +48,15 @@ namespace RTPuzzle
 
         public void GizmoTick()
         {
-            if (EscapeDestination.HasValue)
+            if (escapeDestination.HasValue)
             {
-                Gizmos.DrawWireSphere(EscapeDestination.Value, 2f);
+                Gizmos.DrawWireSphere(escapeDestination.Value, 2f);
             }
+        }
+
+        public Nullable<Vector3> TickComponent()
+        {
+            return escapeDestination;
         }
 
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)

@@ -6,6 +6,13 @@ namespace RTPuzzle
     public class LaunchProjectileAction : RTPPlayerAction
     {
         public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
+        private LaunchProjectileId LaunchProjectileId;
+
+        public LaunchProjectileAction(LaunchProjectileId launchProjectileId)
+        {
+            LaunchProjectileId = launchProjectileId;
+        }
+
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -38,13 +45,15 @@ namespace RTPuzzle
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
-            PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform, configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange));
-
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                 camera.WorldToScreenPoint(playerTransform.position), gameInputManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileContainer);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
+
+            PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform,
+                 configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
+                LaunchProjectileId));
         }
 
         public override void Tick(float d)
@@ -57,7 +66,7 @@ namespace RTPuzzle
                 var currentCursorPosition = LaunchProjectileRayPositionerManager.GetCurrentCursorPosition();
                 if (currentCursorPosition.HasValue)
                 {
-                    ThrowProjectileManager.Tick(d, currentCursorPosition.Value);
+                    ThrowProjectileManager.Tick(d, currentCursorPosition.Value, LaunchProjectileId);
                 }
             }
 
@@ -221,11 +230,12 @@ namespace RTPuzzle
 
         private LaunchProjectile currentProjectile;
 
-        public void Tick(float d, Vector3 cursorPosition)
+        public void Tick(float d, Vector3 cursorPosition, LaunchProjectileId launchProjectileId)
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
                 currentProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, cursorPosition, Quaternion.identity);
+                currentProjectile.Init(LaunchProjectileInherentDataConfiguration.conf[launchProjectileId]);
                 LaunchProjectileContainerManager.OnLaunchProjectileSpawn(currentProjectile);
             }
         }

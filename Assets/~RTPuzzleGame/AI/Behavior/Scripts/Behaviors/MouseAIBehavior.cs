@@ -24,11 +24,11 @@ namespace RTPuzzle
             if (AIProjectileEscapeManager.IsEscaping)
             {
                 AIRandomPatrolComponentManager.OnDestinationReached();
-                Nullable<Vector3> escapeDestination = null;
-                if (AIProjectileEscapeManager.EscapeDestination.HasValue)
+                var escapeDestination = AIProjectileEscapeManager.TickComponent();
+                if (escapeDestination.HasValue)
                 {
-                    AIRandomPatrolComponentManager.SetPosition(AIProjectileEscapeManager.EscapeDestination.Value);
-                    escapeDestination = AIProjectileEscapeManager.EscapeDestination.Value;
+                    AIRandomPatrolComponentManager.SetPosition(escapeDestination.Value);
+                    escapeDestination = escapeDestination.Value;
                     AIProjectileEscapeManager.ClearEscapeDestination();
                 }
                 return escapeDestination;
