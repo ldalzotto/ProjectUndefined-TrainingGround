@@ -12,16 +12,23 @@ namespace RTPuzzle
 
         private ThrowRangeEffectManager ThrowRangeEffectManager;
 
+        private GroundEffectType[] AffectedGroundEffectsType;
+
         public void Init()
         {
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
+            for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
+            {
+                AffectedGroundEffectsType[i].Init();
+            }
             PuzzleEventsManager.AddListener(this);
         }
 
         private void OnRenderObject()
         {
-            ThrowRangeEffectManager.RenderObjectTick();
+            ThrowRangeEffectManager.RenderObjectTick(AffectedGroundEffectsType);
         }
 
         public void Tick(float d)
@@ -58,29 +65,29 @@ namespace RTPuzzle
     class ThrowRangeEffectManager
     {
         private GroundEffectsManagerComponent GroundEffectsManagerComponent;
-        private Transform ModelRootTransform;
 
         private bool throwRangeEnabled;
         private float currentRange;
         private float maxRange;
         private Transform throwerTransformRef;
-        private MeshFilter meshFilter;
 
         public ThrowRangeEffectManager(GroundEffectsManagerComponent rTPuzzleGroundEffectsManagerComponent)
         {
             GroundEffectsManagerComponent = rTPuzzleGroundEffectsManagerComponent;
-            ModelRootTransform = rTPuzzleGroundEffectsManagerComponent.GroundMeshRenderer.transform;
-            meshFilter = rTPuzzleGroundEffectsManagerComponent.GroundMeshRenderer.GetComponent<MeshFilter>();
         }
 
-        public void RenderObjectTick()
+        public void RenderObjectTick(GroundEffectType[] affectedGroundEffectsType)
         {
             if (throwRangeEnabled)
             {
-                GroundEffectsManagerComponent.GroundMaterial.SetFloat("_Radius", currentRange);
-                GroundEffectsManagerComponent.GroundMaterial.SetVector("_CenterWorldPosition", throwerTransformRef.position);
-                GroundEffectsManagerComponent.GroundMaterial.SetPass(0);
-                Graphics.DrawMeshNow(meshFilter.mesh, ModelRootTransform.position, ModelRootTransform.rotation);
+                for (var i = 0; i < affectedGroundEffectsType.Length; i++)
+                {
+                    GroundEffectsManagerComponent.RangeEffectMaterial.SetFloat("_Radius", currentRange);
+                    GroundEffectsManagerComponent.RangeEffectMaterial.SetVector("_CenterWorldPosition", throwerTransformRef.position);
+                    GroundEffectsManagerComponent.RangeEffectMaterial.SetPass(0);
+                    Graphics.DrawMeshNow(affectedGroundEffectsType[i].MeshFilter.mesh, affectedGroundEffectsType[i].transform.position, affectedGroundEffectsType[i].transform.rotation);
+                }
+
             }
         }
 
@@ -111,8 +118,7 @@ namespace RTPuzzle
     [System.Serializable]
     public class GroundEffectsManagerComponent
     {
-        public Material GroundMaterial;
-        public MeshRenderer GroundMeshRenderer;
+        public Material RangeEffectMaterial;
         public float RangeExpandSpeed;
     }
 }
