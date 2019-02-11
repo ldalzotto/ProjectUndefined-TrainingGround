@@ -4,7 +4,7 @@
 	{
 		_CenterWorldPosition("Center World Position", Vector) = (0,0,0,0)
 		_Radius("Radius", float) = 0
-		_AuraColor("Aura Color", Color) = (1,1,1,1)
+		[HDR] _AuraColor("Aura Color", Color) = (1,1,1,1)
 		_AlphaAnimationSpeed("Alpha animation speed", float) = 10
 	}
 		SubShader

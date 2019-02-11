@@ -22,6 +22,7 @@ namespace RTPuzzle
         private LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager;
         private ThrowProjectileManager ThrowProjectileManager;
         private LauncheProjectileActionExitManager LauncheProjectileActionExitManager;
+        private LaunchProjectilePathAnimationmanager LaunchProjectilePathAnimationmanager;
 
         private bool isActionFinished = false;
 
@@ -50,6 +51,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileContainer);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
+            LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(playerTransform);
 
             PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform,
                  configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
@@ -67,6 +69,7 @@ namespace RTPuzzle
                 if (currentCursorPosition.HasValue)
                 {
                     ThrowProjectileManager.Tick(d, currentCursorPosition.Value, LaunchProjectileId);
+                    LaunchProjectilePathAnimationmanager.Tick(d, currentCursorPosition.Value);
                 }
             }
 
@@ -77,12 +80,17 @@ namespace RTPuzzle
         {
             PuzzleEventsManager.SendEvent(new ProjectileThrowedEvent());
             LaunchProjectileRayPositionerManager.OnExit();
+            LaunchProjectilePathAnimationmanager.OnExit();
             isActionFinished = true;
         }
         #endregion
 
         public override void GizmoTick()
         {
+            if (LaunchProjectilePathAnimationmanager != null)
+            {
+                LaunchProjectilePathAnimationmanager.GizmoSelectedTick();
+            }
         }
 
         public override void GUITick()
@@ -268,6 +276,35 @@ namespace RTPuzzle
         private bool IsExitRequested()
         {
             return GameInputManager.CurrentInput.CancelButtonD();
+        }
+    }
+    #endregion
+
+
+    #region Launch Projectile Path Animation Manager 
+    class LaunchProjectilePathAnimationmanager
+    {
+        private ThrowProjectilePath ThrowProjectilePath;
+
+        public LaunchProjectilePathAnimationmanager(Transform throwerTransform)
+        {
+            ThrowProjectilePath = MonoBehaviour.Instantiate(PrefabContainer.Instance.ThrowProjectilePathPrefab, Vector3.zero, Quaternion.identity);
+            ThrowProjectilePath.Init(throwerTransform);
+        }
+
+        public void Tick(float d, Vector3 currentCursorPosition)
+        {
+            ThrowProjectilePath.Tick(d, currentCursorPosition);
+        }
+
+        public void GizmoSelectedTick()
+        {
+            ThrowProjectilePath.GizmoSelectedTick();
+        }
+
+        public void OnExit()
+        {
+            MonoBehaviour.Destroy(ThrowProjectilePath.gameObject);
         }
     }
     #endregion

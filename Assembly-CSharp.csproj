@@ -77,6 +77,7 @@
     <Compile Include="Assets\_Common\CustomYields\WaitForNavAgentDestinationReached.cs" />
     <Compile Include="Assets\_Common\FX\TriggerableEffect.cs" />
     <Compile Include="Assets\_Common\MaterialDynamicInstances\POISelectedMaterial.cs" />
+    <Compile Include="Assets\_Common\Path\BeziersControlPoints.cs" />
     <Compile Include="Assets\_Common\Random\RandomHelper.cs" />
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\_Constants\StringConstants.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\ThrowProjectilePath.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionManager.cs" />
@@ -181,6 +183,7 @@
     <Compile Include="Assets\LevelZones\Scripts\LevelZones.cs" />
     <Compile Include="Assets\LevelZones\Scripts\LevelZonesEventManager.cs" />
     <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
+    <Compile Include="Assets\Test\TargetRibbon\RibbonTestManager.cs" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\FX\Particle_Ambiant_Shader.shader" />
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />

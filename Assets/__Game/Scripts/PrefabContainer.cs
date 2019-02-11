@@ -30,6 +30,7 @@ public class PrefabContainer : MonoBehaviour
 
     [Header("RT Puzzle Prefabs")]
     public RTPuzzle.LaunchProjectile ProjectilePrefab;
+    public RTPuzzle.ThrowProjectilePath ThrowProjectilePathPrefab;
 
     public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
 
