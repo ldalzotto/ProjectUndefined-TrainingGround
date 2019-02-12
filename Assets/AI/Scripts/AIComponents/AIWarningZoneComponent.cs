@@ -7,6 +7,11 @@ namespace RTPuzzle
     {
         public Transform WarningPoint;
         public float WarningZoneMinDistance;
+        public Collider WarningZoneCollider;
+
+        #region State
+        public bool IsInWarningZone;
+        #endregion
 
         public void InitializeContainer(AIComponents aIComponents)
         {
@@ -24,14 +29,12 @@ namespace RTPuzzle
         private AIWarningZoneComponent AIWarningZoneComponent;
         #endregion
 
-        #region State
-        private bool isInWarningZone;
-        #endregion
+
 
         #region Logical Conditions
         public bool IsInWarningZone()
         {
-            return isInWarningZone;
+            return AIWarningZoneComponent.IsInWarningZone;
         }
         #endregion
 
@@ -43,12 +46,7 @@ namespace RTPuzzle
 
         public void TickComponent()
         {
-            isInWarningZone = Vector3.Distance(agent.transform.position, AIWarningZoneComponent.WarningPoint.position) <= AIWarningZoneComponent.WarningZoneMinDistance;
-        }
-
-        public Transform GetWarningPoint()
-        {
-            return AIWarningZoneComponent.WarningPoint;
+            AIWarningZoneComponent.IsInWarningZone = Vector3.Distance(agent.transform.position, AIWarningZoneComponent.WarningPoint.position) <= AIWarningZoneComponent.WarningZoneMinDistance;
         }
 
     }

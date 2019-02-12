@@ -18,35 +18,35 @@ namespace RTPuzzle
         {
             AIWarningZoneComponentManager = new AIWarningZoneComponentManager(selfAgent, AIWarningZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, AIRandomPatrolComponent);
-            AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent);
+            AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent, AIWarningZoneComponent);
         }
+
+        #region Internal Events
+        private void OnProjectileEscapeManagerUpdated(Vector3? escapeDestination)
+        {
+            AIRandomPatrolComponentManager.OnDestinationReached();
+            if (escapeDestination.HasValue)
+            {
+                AIProjectileEscapeManager.ClearEscapeDestination();
+            }
+        }
+        #endregion
 
         public override Nullable<Vector3> TickAI()
         {
             AIWarningZoneComponentManager.TickComponent();
             if (AIProjectileEscapeManager.IsEscaping)
             {
-                AIRandomPatrolComponentManager.OnDestinationReached();
-                var escapeDestination = AIProjectileEscapeManager.TickComponent();
-                if (escapeDestination.HasValue)
-                {
-                    escapeDestination = escapeDestination.Value;
-                    AIProjectileEscapeManager.ClearEscapeDestination();
-                }
+                var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
+                OnProjectileEscapeManagerUpdated(escapeDestination);
                 return escapeDestination;
             }
             else
             {
                 if (AIWarningZoneComponentManager.IsInWarningZone())
                 {
-                    Debug.Log("force escape");
-                    AIRandomPatrolComponentManager.OnDestinationReached();
-                    var escapeDestination = AIProjectileEscapeManager.TickComponent(true);
-                    if (escapeDestination.HasValue)
-                    {
-                        escapeDestination = escapeDestination.Value;
-                        AIProjectileEscapeManager.ClearEscapeDestination();
-                    }
+                    var escapeDestination = AIProjectileEscapeManager.ForceComputeEscapePoint();
+                    OnProjectileEscapeManagerUpdated(escapeDestination);
                     return escapeDestination;
                 }
                 else

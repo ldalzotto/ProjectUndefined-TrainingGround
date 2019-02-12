@@ -8,9 +8,6 @@ namespace RTPuzzle
     public class AIProjectileEscapeComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
     {
         public float EscapeDistance;
-        public Transform AvoidPoint;
-        public float EscapeZoneMinDistance;
-        public Collider AvoidCollider;
 
         public void InitializeContainer(AIComponents aIComponents)
         {
@@ -22,6 +19,7 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NavMeshAgent escapingAgent;
+        private AIWarningZoneComponent AIWarningZoneComponent;
         #endregion
 
         #region Internal Dependencies
@@ -39,10 +37,11 @@ namespace RTPuzzle
 
         public bool IsEscaping { get => isEscaping; }
 
-        public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent)
+        public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AIWarningZoneComponent AIWarningZoneComponent)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
+            this.AIWarningZoneComponent = AIWarningZoneComponent;
         }
 
         public void ClearEscapeDestination()
@@ -75,16 +74,16 @@ namespace RTPuzzle
             }
         }
 
-        public Nullable<Vector3> TickComponent(bool forceCompusteEscapePoint = false)
+        public Nullable<Vector3> ForceComputeEscapePoint()
         {
-            if (forceCompusteEscapePoint)
-            {
-                isEscaping = true;
-                escapeDestination = ComputeEscapePoint((AIProjectileEscapeComponent.AvoidPoint.position - escapingAgent.transform.position).normalized);
-            }
-
+            isEscaping = true;
+            escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.WarningPoint.position - escapingAgent.transform.position).normalized);
             return escapeDestination;
+        }
 
+        public Nullable<Vector3> GetCurrentEscapeDirection()
+        {
+            return escapeDestination;
         }
 
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)
@@ -103,67 +102,52 @@ namespace RTPuzzle
             Debug.DrawRay(escapingAgent.transform.position, escapeDirectionProjected * 10, Color.red);
 
 
-            bool isInWarningZone = Vector3.Distance(escapingAgent.transform.position, AIProjectileEscapeComponent.AvoidPoint.position) < AIProjectileEscapeComponent.EscapeZoneMinDistance;
-
-            if (isInWarningZone)
+            if (AIWarningZoneComponent.IsInWarningZone)
             {
-                hits = new NavMeshHit[7];
-                physicsRay = new Ray[7];
-
-                //in warning -> angle of escape detection is greater
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[5]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[6]);
-
-                for (var i = 0; i < hits.Length; i++)
-                {
-                    physicsRay[i] = new Ray(escapingAgent.transform.position, hits[i].position - escapingAgent.transform.position);
-                }
-                return EscapeFromExitZone();
+                return EscapeFromExitZone(escapeDirectionProjected);
             }
             else
             {
-                hits = new NavMeshHit[5];
-                physicsRay = new Ray[5];
-
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
-                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
-
-                for (var i = 0; i < hits.Length; i++)
-                {
-                    physicsRay[i] = new Ray(escapingAgent.transform.position, hits[i].position - escapingAgent.transform.position);
-                }
-                return EscapeToFarestNotInExitZone();
+                return EscapeToFarestNotInExitZone(escapeDirectionProjected);
             }
 
         }
 
-        private Vector3? EscapeFromExitZone()
+        private Vector3? EscapeFromExitZone(Vector3 escapeDirectionProjected)
         {
+            hits = new NavMeshHit[7];
+            physicsRay = new Ray[7];
+
+            //in warning -> angle of escape detection is greater
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[5]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[6]);
+
+            for (var i = 0; i < hits.Length; i++)
+            {
+                physicsRay[i] = new Ray(escapingAgent.transform.position, hits[i].position - escapingAgent.transform.position);
+            }
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToForbidden = 0;
             for (var i = 0; i < hits.Length; i++)
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIProjectileEscapeComponent.AvoidCollider))
+                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
-                        currentDistanceToForbidden = Vector3.Distance(hits[i].position, AIProjectileEscapeComponent.AvoidPoint.position);
+                        currentDistanceToForbidden = Vector3.Distance(hits[i].position, AIWarningZoneComponent.WarningPoint.position);
                         selectedPosition = hits[i].position;
                     }
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIProjectileEscapeComponent.AvoidCollider))
+                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
-                        var computedDistance = Vector3.Distance(hits[i].position, AIProjectileEscapeComponent.AvoidPoint.position);
+                        var computedDistance = Vector3.Distance(hits[i].position, AIWarningZoneComponent.WarningPoint.position);
                         if (currentDistanceToForbidden < computedDistance)
                         {
                             selectedPosition = hits[i].position;
@@ -177,15 +161,28 @@ namespace RTPuzzle
             return selectedPosition;
         }
 
-        private Vector3? EscapeToFarestNotInExitZone()
+        private Vector3? EscapeToFarestNotInExitZone(Vector3 escapeDirectionProjected)
         {
+            hits = new NavMeshHit[5];
+            physicsRay = new Ray[5];
+
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
+            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
+
+            for (var i = 0; i < hits.Length; i++)
+            {
+                physicsRay[i] = new Ray(escapingAgent.transform.position, hits[i].position - escapingAgent.transform.position);
+            }
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToRaycastTarget = 0f;
             for (var i = 0; i < hits.Length; i++)
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIProjectileEscapeComponent.AvoidCollider))
+                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
                         currentDistanceToRaycastTarget = Vector3.Distance(hits[i].position, escapingAgent.transform.position);
                         selectedPosition = hits[i].position;
@@ -193,7 +190,7 @@ namespace RTPuzzle
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIProjectileEscapeComponent.AvoidCollider))
+                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
                         var computedDistance = Vector3.Distance(hits[i].position, escapingAgent.transform.position);
                         if (currentDistanceToRaycastTarget < computedDistance)
