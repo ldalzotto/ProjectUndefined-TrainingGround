@@ -29,8 +29,6 @@ namespace RTPuzzle
         private AIWarningZoneComponent AIWarningZoneComponent;
         #endregion
 
-
-
         #region Logical Conditions
         public bool IsInWarningZone()
         {

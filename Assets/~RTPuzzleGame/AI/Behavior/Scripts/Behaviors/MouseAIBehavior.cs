@@ -14,8 +14,13 @@ namespace RTPuzzle
         private AIWarningZoneComponentManager AIWarningZoneComponentManager;
         #endregion
 
+        #region AI Managers
+        private AIFOVManager AIFOVManager;
+        #endregion
+
         public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AIWarningZoneComponent AIWarningZoneComponent) : base(selfAgent)
         {
+            AIFOVManager = new AIFOVManager();
             AIWarningZoneComponentManager = new AIWarningZoneComponentManager(selfAgent, AIWarningZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent, AIWarningZoneComponent);
@@ -52,7 +57,7 @@ namespace RTPuzzle
                 else
                 {
                     AIProjectileEscapeManager.ClearEscapeDestination();
-                    return AIRandomPatrolComponentManager.TickComponent();
+                    return AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
                 }
             }
 
@@ -61,6 +66,7 @@ namespace RTPuzzle
         public override void TickGizmo()
         {
             // Gizmos.DrawWireSphere(NewDestination, 2f);
+            AIRandomPatrolComponentManager.GizmoTick();
             AIProjectileEscapeManager.GizmoTick();
         }
 

@@ -40,19 +40,21 @@ public class AIRandomPatrolComponentMananger
         this.AIRandomPatrolComponent = AIRandomPatrolComponent;
     }
 
-    public Nullable<Vector3> TickComponent()
+    public Nullable<Vector3> TickComponent(RTPuzzle.AIFOVManager aIFOVManager)
     {
         if (!isMovingTowardsDestination)
         {
-            return SetRandomDestination();
+            return SetRandomDestination(aIFOVManager);
         }
         return null;
     }
 
-    private Nullable<Vector3> SetRandomDestination()
+    private Nullable<Vector3> SetRandomDestination(RTPuzzle.AIFOVManager aIFOVManager)
     {
         Vector3 randomDirection = UnityEngine.Random.insideUnitSphere;
 
+        navMeshHits = aIFOVManager.NavMeshRaycastSample(8, patrollingAgent.transform, randomDirection, AIRandomPatrolComponent.MaxDistance);
+        /**
         NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.identity, AIRandomPatrolComponent.MaxDistance, out navMeshHits[0]);
         NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 45, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[1]);
         NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 90, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[2]);
@@ -61,7 +63,7 @@ public class AIRandomPatrolComponentMananger
         NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 225, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[5]);
         NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 270, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[6]);
         NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 315, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[7]);
-
+    **/
         var maxDistance = 0f;
         Nullable<NavMeshHit> selectedHit = null; ;
         for (var i = 0; i < navMeshHits.Length; i++)
@@ -92,13 +94,20 @@ public class AIRandomPatrolComponentMananger
         }
     }
 
+    public void GizmoTick()
+    {
+        for (var i = 0; i < navMeshHits.Length; i++)
+        {
+            Gizmos.DrawWireSphere(navMeshHits[i].position, 1f);
+        }
+    }
+
     #region External Events
     public void OnDestinationReached()
     {
         isMovingTowardsDestination = false;
     }
     #endregion
-
 
     #region Logical Conditions
     public bool IsPatrolling()
