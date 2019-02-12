@@ -11,23 +11,25 @@ namespace RTPuzzle
         #region AI Components
         private AIRandomPatrolComponentMananger AIRandomPatrolComponentManager;
         private AIProjectileEscapeManager AIProjectileEscapeManager;
+        private AIWarningZoneComponentManager AIWarningZoneComponentManager;
         #endregion
 
-        public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent, AIProjectileEscapeComponent AIProjectileEscapeComponent) : base(selfAgent)
+        public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AIWarningZoneComponent AIWarningZoneComponent) : base(selfAgent)
         {
+            AIWarningZoneComponentManager = new AIWarningZoneComponentManager(selfAgent, AIWarningZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent);
         }
 
         public override Nullable<Vector3> TickAI()
         {
+            AIWarningZoneComponentManager.TickComponent();
             if (AIProjectileEscapeManager.IsEscaping)
             {
                 AIRandomPatrolComponentManager.OnDestinationReached();
                 var escapeDestination = AIProjectileEscapeManager.TickComponent();
                 if (escapeDestination.HasValue)
                 {
-                    AIRandomPatrolComponentManager.SetPosition(escapeDestination.Value);
                     escapeDestination = escapeDestination.Value;
                     AIProjectileEscapeManager.ClearEscapeDestination();
                 }
@@ -35,8 +37,23 @@ namespace RTPuzzle
             }
             else
             {
-                AIProjectileEscapeManager.ClearEscapeDestination();
-                return AIRandomPatrolComponentManager.TickComponent();
+                if (AIWarningZoneComponentManager.IsInWarningZone())
+                {
+                    Debug.Log("force escape");
+                    AIRandomPatrolComponentManager.OnDestinationReached();
+                    var escapeDestination = AIProjectileEscapeManager.TickComponent(true);
+                    if (escapeDestination.HasValue)
+                    {
+                        escapeDestination = escapeDestination.Value;
+                        AIProjectileEscapeManager.ClearEscapeDestination();
+                    }
+                    return escapeDestination;
+                }
+                else
+                {
+                    AIProjectileEscapeManager.ClearEscapeDestination();
+                    return AIRandomPatrolComponentManager.TickComponent();
+                }
             }
 
         }
@@ -79,6 +96,7 @@ namespace RTPuzzle
         {
             GUILayout.Label("IsPatrolling : " + AIRandomPatrolComponentManager.IsPatrolling());
             GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping);
+            GUILayout.Label("IsInWarningZone : " + AIWarningZoneComponentManager.IsInWarningZone());
         }
     }
 

@@ -97,10 +97,6 @@ public class AIRandomPatrolComponentMananger
     {
         isMovingTowardsDestination = false;
     }
-    public void SetPosition(Vector3 worldPosition)
-    {
-        AIRandomPatrolComponent.transform.position = worldPosition;
-    }
     #endregion
 
 

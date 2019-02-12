@@ -167,6 +167,7 @@
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentsManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponents\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponents\AIRandomPatrolComponent.cs" />
+    <Compile Include="Assets\AI\Scripts\AIComponents\AIWarningZoneComponent.cs" />
     <Compile Include="Assets\AI\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIType\Scripts\AIType.cs" />
     <Compile Include="Assets\Configuration\GlobalConfiguration.cs" />

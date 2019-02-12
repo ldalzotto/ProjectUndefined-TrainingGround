@@ -30,13 +30,12 @@ namespace RTPuzzle
 
         #region State
         private bool isEscaping;
+        private bool isInWarningZone;
         private Nullable<Vector3> escapeDestination;
         #endregion
 
         private NavMeshHit[] hits = new NavMeshHit[7];
         private Ray[] physicsRay = new Ray[7];
-
-        private Action<Vector3> SetAgentPosition;
 
         public bool IsEscaping { get => isEscaping; }
 
@@ -76,9 +75,16 @@ namespace RTPuzzle
             }
         }
 
-        public Nullable<Vector3> TickComponent()
+        public Nullable<Vector3> TickComponent(bool forceCompusteEscapePoint = false)
         {
+            if (forceCompusteEscapePoint)
+            {
+                isEscaping = true;
+                escapeDestination = ComputeEscapePoint((AIProjectileEscapeComponent.AvoidPoint.position - escapingAgent.transform.position).normalized);
+            }
+
             return escapeDestination;
+
         }
 
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)
@@ -86,13 +92,13 @@ namespace RTPuzzle
             if (collisionType.IsRTPProjectile)
             {
                 isEscaping = true;
-                escapeDestination = ComputeEscapePoint(collider);
+                var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
+                escapeDestination = ComputeEscapePoint(escapeDirection);
             }
         }
 
-        private Nullable<Vector3> ComputeEscapePoint(Collider collider)
+        private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection)
         {
-            var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
             var escapeDirectionProjected = Vector3.ProjectOnPlane(escapeDirection, escapingAgent.transform.up);
             Debug.DrawRay(escapingAgent.transform.position, escapeDirectionProjected * 10, Color.red);
 
