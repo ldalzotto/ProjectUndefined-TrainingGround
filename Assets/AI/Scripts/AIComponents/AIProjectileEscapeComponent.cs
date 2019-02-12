@@ -105,13 +105,13 @@ namespace RTPuzzle
                 physicsRay = new Ray[7];
 
                 //in warning -> angle of escape detection is greater
-                CastRay(escapeDirectionProjected, Quaternion.identity, out hits[0]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, -45, 0), out hits[1]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, -90, 0), out hits[2]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, -110, 0), out hits[3]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, 45, 0), out hits[4]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, 90, 0), out hits[5]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, 110, 0), out hits[6]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[5]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[6]);
 
                 for (var i = 0; i < hits.Length; i++)
                 {
@@ -124,11 +124,11 @@ namespace RTPuzzle
                 hits = new NavMeshHit[5];
                 physicsRay = new Ray[5];
 
-                CastRay(escapeDirectionProjected, Quaternion.identity, out hits[0]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, -45, 0), out hits[1]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, -90, 0), out hits[2]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, 45, 0), out hits[3]);
-                CastRay(escapeDirectionProjected, Quaternion.Euler(0, 90, 0), out hits[4]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
+                NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
 
                 for (var i = 0; i < hits.Length; i++)
                 {
@@ -202,12 +202,6 @@ namespace RTPuzzle
 
 
             return selectedPosition;
-        }
-
-        private void CastRay(Vector3 escapeDirectionProjected, Quaternion rotation, out NavMeshHit hit)
-        {
-            var rayTargetPosition = escapingAgent.transform.position + (rotation * (escapeDirectionProjected * AIProjectileEscapeComponent.EscapeDistance));
-            NavMesh.Raycast(escapingAgent.transform.position, rayTargetPosition, out hit, NavMesh.AllAreas);
         }
 
         private bool PhysicsRayInContactWithCollider(Ray ray, Vector3 targetPoint, Collider collider)

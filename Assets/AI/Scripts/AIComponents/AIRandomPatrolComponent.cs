@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,19 +14,6 @@ public class AIRandomPatrolComponent : MonoBehaviour, AIComponentInitializerMess
     public void Start()
     {
         AIComponentsContainer = GetComponentInParent<AIComponentsContainer>();
-    }
-
-    private void OnDrawGizmos()
-    {
-        var col = Color.yellow;
-        Gizmos.color = col;
-        Gizmos.DrawWireSphere(transform.position, MaxDistance);
-        if (AIComponentsContainer != null)
-        {
-            GUIStyle style = new GUIStyle();
-            style.normal.textColor = col;
-            Handles.Label(transform.position + (transform.up * MaxDistance), new GUIContent(AIComponentsContainer.AiID.ToString() + " random patrol."), style);
-        }
     }
 
     public void InitializeContainer(AIComponents aIComponents)
@@ -46,6 +32,7 @@ public class AIRandomPatrolComponentMananger
     private AIRandomPatrolComponent AIRandomPatrolComponent;
 
     private bool isMovingTowardsDestination;
+    private NavMeshHit[] navMeshHits = new NavMeshHit[8];
 
     public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIRandomPatrolComponent AIRandomPatrolComponent)
     {
@@ -64,15 +51,45 @@ public class AIRandomPatrolComponentMananger
 
     private Nullable<Vector3> SetRandomDestination()
     {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * AIRandomPatrolComponent.MaxDistance;
-        randomDirection += AIRandomPatrolComponent.transform.position;
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, AIRandomPatrolComponent.MaxDistance, NavMesh.AllAreas))
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere;
+
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.identity, AIRandomPatrolComponent.MaxDistance, out navMeshHits[0]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 45, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[1]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 90, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[2]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 135, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[3]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 180, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[4]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 225, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[5]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 270, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[6]);
+        NavMeshRayCaster.CastNavMeshRay(patrollingAgent.transform.position, randomDirection, Quaternion.Euler(0, 315, 0), AIRandomPatrolComponent.MaxDistance, out navMeshHits[7]);
+
+        var maxDistance = 0f;
+        Nullable<NavMeshHit> selectedHit = null; ;
+        for (var i = 0; i < navMeshHits.Length; i++)
+        {
+            if (i == 0)
+            {
+                maxDistance = navMeshHits[i].distance;
+                selectedHit = navMeshHits[i];
+            }
+            else
+            {
+                if (navMeshHits[i].distance > maxDistance)
+                {
+                    maxDistance = navMeshHits[i].distance;
+                    selectedHit = navMeshHits[i];
+                }
+            }
+        }
+
+        if (selectedHit == null)
+        {
+            return null;
+        }
+        else
         {
             isMovingTowardsDestination = true;
-            return hit.position;
+            return selectedHit.Value.position;
         }
-        return null;
     }
 
     #region External Events
