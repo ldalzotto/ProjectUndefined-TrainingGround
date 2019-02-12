@@ -79,17 +79,20 @@ namespace RTPuzzle
             if (DebugEabled)
             {
                 var mouseAIBehavior = PuzzleAIBehavior as MouseAIBehavior;
+                var screenPos = Camera.main.WorldToScreenPoint(transform.position);
+                screenPos.y = Camera.main.pixelHeight - screenPos.y;
+                GUILayout.BeginArea(new Rect(screenPos, new Vector2(200, 300)));
                 GUILayout.BeginVertical("box");
                 GUILayout.Label("Position : " + transform.position.ToString());
                 mouseAIBehavior.DebugGUITick();
                 GUILayout.EndVertical();
+                GUILayout.EndArea();
             }
         }
 
         #region External Events
         private void SetDestinationWithCoroutineReached(Vector3 destination)
         {
-            Debug.Log("Set Destination");
             AIDestinationMoveManager.SetDestination(destination);
 
             if (destinatioNReachedCoroutine != null)
@@ -117,7 +120,6 @@ namespace RTPuzzle
         private IEnumerator OnDestinationReached()
         {
             yield return new WaitForNavAgentDestinationReached(agent);
-            Debug.Log("Destination Reached");
             PuzzleAIBehavior.OnDestinationReached();
         }
         #endregion

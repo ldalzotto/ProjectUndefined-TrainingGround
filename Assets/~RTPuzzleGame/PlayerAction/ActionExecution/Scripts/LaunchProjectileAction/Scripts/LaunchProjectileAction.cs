@@ -13,7 +13,6 @@ namespace RTPuzzle
             LaunchProjectileId = launchProjectileId;
         }
 
-
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
@@ -53,7 +52,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileContainer);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
-            LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(playerTransform);
+            LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
 
             PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform,
                  configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
@@ -164,7 +163,8 @@ namespace RTPuzzle
         {
             Ray ray = camera.ScreenPointToRay(new Vector2(currentScreenPositionPoint.x, camera.pixelHeight - currentScreenPositionPoint.y));
             RaycastHit hit;
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
+            LayerMask mask = -1;
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, mask.value, QueryTriggerInteraction.Ignore))
             {
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
                 if (currentCursor == null)
@@ -288,10 +288,10 @@ namespace RTPuzzle
     {
         private ThrowProjectilePath ThrowProjectilePath;
 
-        public LaunchProjectilePathAnimationmanager(Transform throwerTransform)
+        public LaunchProjectilePathAnimationmanager(Collider throwerCollider)
         {
             ThrowProjectilePath = MonoBehaviour.Instantiate(PrefabContainer.Instance.ThrowProjectilePathPrefab, Vector3.zero, Quaternion.identity);
-            ThrowProjectilePath.Init(throwerTransform);
+            ThrowProjectilePath.Init(throwerCollider);
         }
 
         public void Tick(float d, Vector3 currentCursorPosition)

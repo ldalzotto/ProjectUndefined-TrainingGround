@@ -6,6 +6,7 @@
 		_Radius("Radius", float) = 0
 		[HDR] _AuraColor("Aura Color", Color) = (1,1,1,1)
 		_AlphaAnimationSpeed("Alpha animation speed", float) = 10
+		_SmoothedRadius("Smoothed Radius Factor", Range(0.0,1.0)) = 0.8
 	}
 		SubShader
 	{
@@ -37,6 +38,7 @@
 			float4 _CenterWorldPosition;
 			float _Radius;
 			float4 _AuraColor;
+			float _SmoothedRadius;
 			half _AlphaAnimationSpeed;
 
 			v2f vert(appdata v)
@@ -53,7 +55,7 @@
 				float calcDistance = abs(distance(i.worldPos,_CenterWorldPosition));
 
 			//float computedRadius = _Radius * min(abs(sin(frac(_Time.x * _AlphaAnimationSpeed)) * 2), 1);
-			fixed4 col = smoothstep(0, _Radius *0.8, calcDistance) *_AuraColor * (1 - step(_Radius, calcDistance));
+			fixed4 col = smoothstep(0, _Radius *_SmoothedRadius, calcDistance) *_AuraColor * (1 - step(_Radius, calcDistance));
 			return col;
 		}
 	ENDCG

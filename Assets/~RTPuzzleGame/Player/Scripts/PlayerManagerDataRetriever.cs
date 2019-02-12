@@ -21,6 +21,10 @@ namespace RTPuzzle
         {
             return PlayerManager.transform;
         }
+        public Collider GetPlayerCollider()
+        {
+            return PlayerManager.GetPlayerCollider();
+        }
         #endregion
     }
 

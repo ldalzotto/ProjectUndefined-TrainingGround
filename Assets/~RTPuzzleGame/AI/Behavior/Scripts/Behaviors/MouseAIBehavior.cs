@@ -77,6 +77,7 @@ namespace RTPuzzle
 
         public void DebugGUITick()
         {
+            GUILayout.Label("IsPatrolling : " + AIRandomPatrolComponentManager.IsPatrolling());
             GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping);
         }
     }

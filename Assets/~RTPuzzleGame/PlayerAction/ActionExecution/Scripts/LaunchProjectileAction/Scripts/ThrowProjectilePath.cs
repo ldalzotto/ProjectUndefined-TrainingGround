@@ -9,30 +9,30 @@ namespace RTPuzzle
         private ParticleSystem throwProjectileparticleSystem;
         private BeziersControlPoints BeziersControlPoints;
 
-        private Transform initialPoint;
+        private Collider throwerCollider;
 
         private float elapsedTime;
 
-        public void Init(Transform initialPoint)
+        public void Init(Collider throwerCollider)
         {
             throwProjectileparticleSystem = GetComponent<ParticleSystem>();
             var psMain = throwProjectileparticleSystem.main;
             psMain.startLifetime = 1 / AnimationSpeed;
-            this.initialPoint = initialPoint;
+            this.throwerCollider = throwerCollider;
             BeziersControlPoints = new BeziersControlPoints();
         }
 
         public void Tick(float d, Vector3 targetPosition)
         {
-            transform.position = initialPoint.position;
+            transform.position = throwerCollider.bounds.center;
 
-            BeziersControlPoints.P0 = initialPoint.transform.position;
+            BeziersControlPoints.P0 = throwerCollider.bounds.center;
             BeziersControlPoints.P3 = targetPosition;
 
-            var upProjectedPath = Vector3.ProjectOnPlane(targetPosition - initialPoint.transform.position, Vector3.up);
+            var upProjectedPath = Vector3.ProjectOnPlane(targetPosition - BeziersControlPoints.P0, Vector3.up);
             var upProjectedPathLength = upProjectedPath.magnitude;
 
-            BeziersControlPoints.P1 = initialPoint.position + (upProjectedPath.normalized + Vector3.up) * upProjectedPathLength / 3;
+            BeziersControlPoints.P1 = BeziersControlPoints.P0 + (upProjectedPath.normalized + Vector3.up) * upProjectedPathLength / 3;
             BeziersControlPoints.P2 = BeziersControlPoints.P1 + (upProjectedPath.normalized) * upProjectedPathLength / 3;
 
 

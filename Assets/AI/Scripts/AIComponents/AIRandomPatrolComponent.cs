@@ -34,6 +34,7 @@ public class AIRandomPatrolComponent : MonoBehaviour, AIComponentInitializerMess
     {
         aIComponents.AIRandomPatrolComponent = this;
     }
+
 }
 
 public class AIRandomPatrolComponentMananger
@@ -82,6 +83,14 @@ public class AIRandomPatrolComponentMananger
     public void SetPosition(Vector3 worldPosition)
     {
         AIRandomPatrolComponent.transform.position = worldPosition;
+    }
+    #endregion
+
+
+    #region Logical Conditions
+    public bool IsPatrolling()
+    {
+        return isMovingTowardsDestination;
     }
     #endregion
 }

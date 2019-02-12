@@ -65,6 +65,10 @@ namespace RTPuzzle
         {
             return PlayerInputMoveManager.PlayerSpeedMagnitude;
         }
+        public Collider GetPlayerCollider()
+        {
+            return GetComponentInChildren<Collider>();
+        }
 
     }
 
