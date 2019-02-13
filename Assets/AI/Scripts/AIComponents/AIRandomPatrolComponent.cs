@@ -98,7 +98,9 @@ public class AIRandomPatrolComponentMananger
     {
         for (var i = 0; i < navMeshHits.Length; i++)
         {
+            Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(navMeshHits[i].position, 1f);
+            Gizmos.color = Color.white;
         }
     }
 
