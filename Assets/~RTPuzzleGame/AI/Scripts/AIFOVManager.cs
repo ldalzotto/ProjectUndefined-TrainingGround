@@ -20,23 +20,107 @@ namespace RTPuzzle
         public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, Vector3 inputRandomDirection, float raySampleDistance)
         {
             var navMeshHits = new NavMeshHit[sampleNB];
-            var deltaAngle = (aiFov.FovSlices[0].EndAngleExcluded - aiFov.FovSlices[0].BeginAngleIncluded) / sampleNB;
+            /**
+            var fovSlice = aiFov.FovSlices[0];
+
+            var deltaAngle = 0f;
+
+            deltaAngle = (fovSlice.EndAngleExcluded - aiFov.FovSlices[0].BeginAngleIncluded) / sampleNB;
+
+
             for (var i = 0; i < sampleNB; i++)
             {
                 NavMeshRayCaster.CastNavMeshRayFOVAgentWorld(agent, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, raySampleDistance, out navMeshHits[i]);
-            }
+            }**/
 
             return navMeshHits;
         }
 
         public void SetAvailableFROVRange(float beginAngle, float endAngle)
         {
-            Debug.Log("Setting Slices : ");
-            foreach (var fovSclice in aiFov.FovSlices)
+
+            aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
+        }
+
+        private static List<FOVSlice> CutInputAnglesToSlice(float beginAngle, float endAngle)
+        {
+            List<FOVSlice> cuttendSlices = new List<FOVSlice>();
+            if (beginAngle < 0)
             {
-                Debug.Log("b : " + beginAngle + " e : " + endAngle);
+                if (endAngle > 0)
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, 0f));
+                    cuttendSlices.Add(new FOVSlice(0f, endAngle));
+                }
+                else
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, endAngle + 360f));
+                }
             }
-            aiFov.ReplaceFovSlices(new FOVSlice(beginAngle, endAngle));
+            else if (beginAngle == 0f)
+            {
+                if (endAngle < 0)
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle + 360f));
+                }
+                else
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
+                }
+
+            }
+            else
+            {
+                if (endAngle < 0f)
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, 0f));
+                    cuttendSlices.Add(new FOVSlice(0f, endAngle + 360f));
+                }
+                else
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
+                }
+            }
+            return cuttendSlices;
+        }
+
+        private static void ClampAnglesFrom0To360(ref float beginAngle, ref float endAngle)
+        {
+
+            if (Mathf.Sign(beginAngle) != Mathf.Sign(endAngle))
+            {
+                while ((beginAngle < 0 || beginAngle > 360) || (endAngle < 0 || endAngle > 360))
+                {
+                    if (beginAngle < 0 || endAngle < 0)
+                    {
+                        beginAngle += 180f;
+                        endAngle += 180f;
+                        var tmpBegin = beginAngle;
+                    }
+                    else if (beginAngle > 360 || endAngle > 360)
+                    {
+                        beginAngle -= 180f;
+                        endAngle -= 180f;
+                        var tmpBegin = beginAngle;
+                    }
+                }
+            }
+            else
+            {
+                while ((beginAngle < 0 || beginAngle > 360) || (endAngle < 0 || endAngle > 360))
+                {
+                    if (beginAngle < 0 || endAngle < 0)
+                    {
+                        beginAngle += 360f;
+                        endAngle += 360f;
+                    }
+                    else if (beginAngle > 360 || endAngle > 360)
+                    {
+                        beginAngle -= 360f;
+                        endAngle -= 360f;
+                    }
+                }
+            }
         }
 
         public void ResetFOV()
@@ -46,7 +130,102 @@ namespace RTPuzzle
 
         public void IntersectFOV(float beginAngle, float endAngle)
         {
+            Debug.Log("Intersect called b : " + beginAngle + " e : " + endAngle);
+            var inputSlices = CutInputAnglesToSlice(beginAngle, endAngle);
 
+            var newSlices = new List<FOVSlice>();
+            foreach (var fovSlice in aiFov.FovSlices)
+            {
+                foreach (var inputSlice in inputSlices)
+                {
+                    var intersectSlice = IntersectSlice(fovSlice, inputSlice);
+                    if (intersectSlice != null)
+                    {
+                        newSlices.Add(intersectSlice);
+                    }
+
+                }
+            }
+
+            aiFov.ReplaceFovSlices(newSlices);
+        }
+
+        public static FOVSlice IntersectSlice(FOVSlice sourceSlice, FOVSlice newSlice)
+        {
+            if (sourceSlice.Up())
+            {
+                if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
+                {
+                    if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                    {
+                        return newSlice;
+                    }
+                    else
+                    {
+                        if (newSlice.Up())
+                        {
+                            return new FOVSlice(newSlice.BeginAngleIncluded, sourceSlice.EndAngleExcluded);
+                        }
+                        else
+                        {
+                            return new FOVSlice(sourceSlice.EndAngleExcluded, newSlice.BeginAngleIncluded);
+                        }
+
+                    }
+                }
+                else if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                {
+                    if (newSlice.Up())
+                    {
+                        return new FOVSlice(sourceSlice.BeginAngleIncluded, newSlice.EndAngleExcluded);
+                    }
+                    else
+                    {
+                        return new FOVSlice(newSlice.EndAngleExcluded, sourceSlice.BeginAngleIncluded);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
+                {
+                    if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                    {
+                        return newSlice;
+                    }
+                    else
+                    {
+                        if (newSlice.Up())
+                        {
+                            return new FOVSlice(newSlice.BeginAngleIncluded, sourceSlice.BeginAngleIncluded);
+                        }
+                        else
+                        {
+                            return new FOVSlice(sourceSlice.BeginAngleIncluded, newSlice.BeginAngleIncluded);
+                        }
+
+                    }
+                }
+                else if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                {
+                    if (newSlice.Up())
+                    {
+                        return new FOVSlice(sourceSlice.EndAngleExcluded, newSlice.EndAngleExcluded);
+                    }
+                    else
+                    {
+                        return new FOVSlice(newSlice.EndAngleExcluded, sourceSlice.EndAngleExcluded);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         public void GizmoTick()
@@ -86,10 +265,24 @@ namespace RTPuzzle
 
         internal List<FOVSlice> FovSlices { get => fovSlices; }
 
-        public void ReplaceFovSlices(FOVSlice fovSclice)
+        public void ReplaceFovSlices(List<FOVSlice> fovSclices)
         {
-            fovSlices.Clear();
-            fovSlices.Add(fovSclice);
+            this.fovSlices = fovSclices;
+        }
+
+        public bool Is360()
+        {
+            return fovSlices.Count == 1 && Mathf.Abs(fovSlices[0].EndAngleExcluded - fovSlices[0].BeginAngleIncluded) == 360f;
+        }
+
+        public override string ToString()
+        {
+            var str = "FOVSlices : ";
+            foreach (var fovSlice in fovSlices)
+            {
+                str += fovSlice.ToString();
+            }
+            return str;
         }
     }
 
@@ -107,14 +300,32 @@ namespace RTPuzzle
         public float BeginAngleIncluded { get => beginAngleIncluded; }
         public float EndAngleExcluded { get => endAngleExcluded; }
 
-        public float GetNormalizedSliceAngleFactor()
+        public bool Up()
         {
-            return (endAngleExcluded - beginAngleIncluded) / 360f;
+            return beginAngleIncluded <= endAngleExcluded;
+        }
+
+        public bool Down()
+        {
+            return beginAngleIncluded >= endAngleExcluded;
         }
 
         public bool Contains(float a)
         {
-            return a >= beginAngleIncluded && a < endAngleExcluded;
+            if (Up())
+            {
+                return a >= beginAngleIncluded && a < endAngleExcluded;
+            }
+            else
+            {
+                return a <= beginAngleIncluded && a > endAngleExcluded;
+            }
+
+        }
+
+        public override string ToString()
+        {
+            return "b : " + beginAngleIncluded + " e : " + endAngleExcluded;
         }
     }
 
