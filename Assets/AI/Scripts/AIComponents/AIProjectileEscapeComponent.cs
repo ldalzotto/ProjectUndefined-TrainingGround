@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,6 +21,7 @@ namespace RTPuzzle
         #region External Dependencies
         private NavMeshAgent escapingAgent;
         private AIWarningZoneComponent AIWarningZoneComponent;
+        private AIFOVManager AIFOVManager;
         #endregion
 
         #region Internal Dependencies
@@ -32,46 +34,25 @@ namespace RTPuzzle
         private Nullable<Vector3> escapeDestination;
         #endregion
 
-        private NavMeshHit[] hits = new NavMeshHit[7];
-        private Ray[] physicsRay = new Ray[7];
+        private NavMeshHit[] noWarningZonehits;
+        private Ray[] noWarningZonePhysicsRay;
+        private NavMeshHit[] warningZonehits;
+        private Ray[] warningZonePhysicsRay;
 
         public bool IsEscaping { get => isEscaping; }
 
-        public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AIWarningZoneComponent AIWarningZoneComponent)
+        public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
+                AIWarningZoneComponent AIWarningZoneComponent, AIFOVManager AIFOVManager)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
             this.AIWarningZoneComponent = AIWarningZoneComponent;
+            this.AIFOVManager = AIFOVManager;
         }
 
         public void ClearEscapeDestination()
         {
             escapeDestination = null;
-        }
-
-        public void GizmoTick()
-        {
-            if (escapeDestination.HasValue)
-            {
-                Gizmos.DrawWireSphere(escapeDestination.Value, 2f);
-
-                for (var i = 0; i < hits.Length; i++)
-                {
-                    var hit = hits[i];
-                    Gizmos.color = Color.blue;
-                    Gizmos.DrawWireSphere(hit.position, 1f);
-                    Gizmos.color = Color.white;
-                }
-
-                for (var i = 0; i < physicsRay.Length; i++)
-                {
-                    var ray = physicsRay[i];
-
-                    Gizmos.color = Color.yellow;
-                    Gizmos.DrawRay(new Ray(ray.origin, ray.direction * 1000));
-                    Gizmos.color = Color.white;
-                }
-            }
         }
 
         public Nullable<Vector3> ForceComputeEscapePoint()
@@ -115,42 +96,37 @@ namespace RTPuzzle
 
         private Vector3? EscapeFromExitZone(Vector3 escapeDirectionProjected)
         {
-            hits = new NavMeshHit[7];
-            physicsRay = new Ray[7];
+            noWarningZonehits = new NavMeshHit[7];
+            noWarningZonePhysicsRay = new Ray[7];
 
-            //in warning -> angle of escape detection is greater
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[5]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 110, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[6]);
+            var escapeDirectionAngle = Vector3.SignedAngle(escapeDirectionProjected, escapingAgent.transform.forward, escapingAgent.transform.up);
+            AIFOVManager.SetAvailableFROVRange(new List<FOVSlice>() { new FOVSlice(escapeDirectionAngle - 110, escapeDirectionAngle + 110) });
+            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, Vector3.zero, AIProjectileEscapeComponent.EscapeDistance);
 
-            for (var i = 0; i < hits.Length; i++)
+            for (var i = 0; i < noWarningZonehits.Length; i++)
             {
-                physicsRay[i] = new Ray(escapingAgent.transform.position, hits[i].position - escapingAgent.transform.position);
+                noWarningZonePhysicsRay[i] = new Ray(escapingAgent.transform.position, noWarningZonehits[i].position - escapingAgent.transform.position);
             }
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToForbidden = 0;
-            for (var i = 0; i < hits.Length; i++)
+            for (var i = 0; i < noWarningZonehits.Length; i++)
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
-                        currentDistanceToForbidden = Vector3.Distance(hits[i].position, AIWarningZoneComponent.WarningPoint.position);
-                        selectedPosition = hits[i].position;
+                        currentDistanceToForbidden = Vector3.Distance(noWarningZonehits[i].position, AIWarningZoneComponent.WarningPoint.position);
+                        selectedPosition = noWarningZonehits[i].position;
                     }
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
-                        var computedDistance = Vector3.Distance(hits[i].position, AIWarningZoneComponent.WarningPoint.position);
+                        var computedDistance = Vector3.Distance(noWarningZonehits[i].position, AIWarningZoneComponent.WarningPoint.position);
                         if (currentDistanceToForbidden < computedDistance)
                         {
-                            selectedPosition = hits[i].position;
+                            selectedPosition = noWarningZonehits[i].position;
                             currentDistanceToForbidden = computedDistance;
                         }
 
@@ -163,39 +139,37 @@ namespace RTPuzzle
 
         private Vector3? EscapeToFarestNotInExitZone(Vector3 escapeDirectionProjected)
         {
-            hits = new NavMeshHit[5];
-            physicsRay = new Ray[5];
+            noWarningZonehits = new NavMeshHit[5];
+            noWarningZonePhysicsRay = new Ray[5];
 
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.identity, AIProjectileEscapeComponent.EscapeDistance, out hits[0]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[1]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, -90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[2]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 45, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[3]);
-            NavMeshRayCaster.CastNavMeshRay(escapingAgent.transform.position, escapeDirectionProjected, Quaternion.Euler(0, 90, 0), AIProjectileEscapeComponent.EscapeDistance, out hits[4]);
+            var escapeDirectionAngle = Vector3.SignedAngle(escapeDirectionProjected, escapingAgent.transform.forward, escapingAgent.transform.up);
+            AIFOVManager.SetAvailableFROVRange(new List<FOVSlice>() { new FOVSlice(escapeDirectionAngle - 90, escapeDirectionAngle + 90) });
+            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, Vector3.zero, AIProjectileEscapeComponent.EscapeDistance);
 
-            for (var i = 0; i < hits.Length; i++)
+            for (var i = 0; i < noWarningZonehits.Length; i++)
             {
-                physicsRay[i] = new Ray(escapingAgent.transform.position, hits[i].position - escapingAgent.transform.position);
+                noWarningZonePhysicsRay[i] = new Ray(escapingAgent.transform.position, noWarningZonehits[i].position - escapingAgent.transform.position);
             }
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToRaycastTarget = 0f;
-            for (var i = 0; i < hits.Length; i++)
+            for (var i = 0; i < noWarningZonehits.Length; i++)
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
-                        currentDistanceToRaycastTarget = Vector3.Distance(hits[i].position, escapingAgent.transform.position);
-                        selectedPosition = hits[i].position;
+                        currentDistanceToRaycastTarget = Vector3.Distance(noWarningZonehits[i].position, escapingAgent.transform.position);
+                        selectedPosition = noWarningZonehits[i].position;
                     }
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(physicsRay[i], hits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
                     {
-                        var computedDistance = Vector3.Distance(hits[i].position, escapingAgent.transform.position);
+                        var computedDistance = Vector3.Distance(noWarningZonehits[i].position, escapingAgent.transform.position);
                         if (currentDistanceToRaycastTarget < computedDistance)
                         {
-                            selectedPosition = hits[i].position;
+                            selectedPosition = noWarningZonehits[i].position;
                             currentDistanceToRaycastTarget = computedDistance;
                         }
 
@@ -222,6 +196,7 @@ namespace RTPuzzle
 
         internal void OnDestinationReached()
         {
+            AIFOVManager.ResetFOV();
             isEscaping = false;
         }
 
@@ -237,6 +212,47 @@ namespace RTPuzzle
             }
         }
 
+        #region Gizmo
+        public void GizmoTick()
+        {
+            if (escapeDestination.HasValue)
+            {
+                Gizmos.DrawWireSphere(escapeDestination.Value, 2f);
+            }
+            if (noWarningZonehits != null)
+            {
+                DrawHits(noWarningZonehits);
+            }
+            if (noWarningZonePhysicsRay != null)
+            {
+                DrawRays(noWarningZonePhysicsRay);
+            }
+
+        }
+
+        private void DrawRays(Ray[] rays)
+        {
+            for (var i = 0; i < rays.Length; i++)
+            {
+                var ray = rays[i];
+
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawRay(new Ray(ray.origin, ray.direction * 1000));
+                Gizmos.color = Color.white;
+            }
+        }
+
+        private void DrawHits(NavMeshHit[] hits)
+        {
+            for (var i = 0; i < hits.Length; i++)
+            {
+                var hit = hits[i];
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(hit.position, 1f);
+                Gizmos.color = Color.white;
+            }
+        }
+        #endregion
 
 
     }

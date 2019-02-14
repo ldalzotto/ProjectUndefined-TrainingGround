@@ -7,57 +7,86 @@ namespace RTPuzzle
     public class AIFOVManager
     {
 
+        private NavMeshAgent agent;
         private FOV aiFov;
 
 
-        public AIFOVManager()
+        public AIFOVManager(NavMeshAgent agent)
         {
+            this.agent = agent;
             aiFov = new FOV();
         }
 
         public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, Vector3 inputRandomDirection, float raySampleDistance)
         {
-            //TODO more generic
-            aiFov.FovSlices.Sort(delegate (FOVSlice x, FOVSlice y)
-            {
-                if (x.BeginAngleIncluded > y.BeginAngleIncluded)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return -1;
-                }
-            });
-
-            var cumulatorNormalizedAngleFOV = 0f;
-            foreach (var fovSlice in aiFov.FovSlices)
-            {
-                cumulatorNormalizedAngleFOV += fovSlice.GetNormalizedSliceAngleFactor();
-            }
-
-            NavMeshHit[] navMeshHits = new NavMeshHit[sampleNB];
-            var deltaAngleNormalized = cumulatorNormalizedAngleFOV / sampleNB;
-
-            var randomAngleNormalized = Vector3.SignedAngle(sourceTransform.forward, Vector3.ProjectOnPlane(inputRandomDirection, sourceTransform.up).normalized, sourceTransform.up) / 360f;
-            randomAngleNormalized = (randomAngleNormalized / 2) + 1;
-
+            //TODO more generi
+            var navMeshHits = new NavMeshHit[sampleNB];
+            var deltaAngle = (aiFov.FovSlices[0].EndAngleExcluded - aiFov.FovSlices[0].BeginAngleIncluded) / sampleNB;
             for (var i = 0; i < sampleNB; i++)
             {
-                var currentAngle = ((i * deltaAngleNormalized) + randomAngleNormalized) % (cumulatorNormalizedAngleFOV);
-                var deNormalizedCurrentAngle = DeNormalizeAngle(currentAngle, aiFov.FovSlices);
+                NavMeshRayCaster.CastNavMeshRayFOVAgent(agent, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, raySampleDistance, out navMeshHits[i]);
+                // NavMeshRayCaster.CastNavMeshRayWorldSpace(sourceTransform, Quaternion.Euler(0, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, 0), raySampleDistance, out navMeshHits[i]);
+            }
 
-                foreach (var fovSlice in aiFov.FovSlices)
+
+            return navMeshHits;
+        }
+
+        public void SetAvailableFROVRange(List<FOVSlice> fovSlices)
+        {
+            Debug.Log("Setting Slices : ");
+            foreach (var fovSclice in aiFov.FovSlices)
+            {
+                Debug.Log("b : " + fovSclice.BeginAngleIncluded + " e : " + fovSclice.EndAngleExcluded);
+            }
+            aiFov.ReplaceFovSlices(fovSlices);
+        }
+
+        /**
+        public void RemoveAnglesFromFOV(float begin, float end)
+        {
+            Debug.Log("REMOVE ANGLES " + "begin : " + begin + " end : " + end);
+
+            var beginAngle = Mathf.Repeat(begin, 360f);
+            var endAngle = Mathf.Repeat(end, 360f);
+
+            var minAngle = beginAngle;
+            var maxAngle = endAngle;
+
+            List<FOVSlice> cuttedFOVSlices = new List<FOVSlice>();
+            foreach (var fovSclice in aiFov.FovSlices)
+            {
+                if (fovSclice.Contains(minAngle))
                 {
-                    if (fovSlice.Contains(deNormalizedCurrentAngle))
+                    if (fovSclice.BeginAngleIncluded != minAngle)
                     {
-                        NavMeshRayCaster.CastNavMeshRayWorldSpace(sourceTransform, Quaternion.Euler(0, deNormalizedCurrentAngle, 0), raySampleDistance, out navMeshHits[i]);
-                        break;
+                        cuttedFOVSlices.Add(new FOVSlice(fovSclice.BeginAngleIncluded, minAngle));
+                        if (fovSclice.Contains(maxAngle))
+                        {
+                            cuttedFOVSlices.Add(new FOVSlice(maxAngle, fovSclice.EndAngleExcluded));
+                        }
                     }
                 }
-                //  NavMeshRayCaster.CastNavMeshRay(sourceTransform, Quaternion.Euler(0, currentAngle, 0), raySampleDistance, out navMeshHits[i]);
+                else if (fovSclice.Contains(maxAngle))
+                {
+                    cuttedFOVSlices.Add(new FOVSlice(maxAngle, fovSclice.EndAngleExcluded));
+                }
             }
-            return navMeshHits;
+
+            aiFov.ReplaceFovSlices(cuttedFOVSlices);
+            Debug.Log("After Slice : ");
+            foreach (var fovSclice in aiFov.FovSlices)
+            {
+                Debug.Log("b : " + fovSclice.BeginAngleIncluded + " e : " + fovSclice.EndAngleExcluded);
+            }
+            UpdateDisplayTexture();
+        }
+    **/
+
+        public void ResetFOV()
+        {
+            SetAvailableFROVRange(new List<FOVSlice>() { new FOVSlice(0f, 360f) });
+            //aiFov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(0f, 360f) });
         }
 
         private float DeNormalizeAngle(float normalizedAngle, List<FOVSlice> fovSlices)
@@ -112,9 +141,14 @@ namespace RTPuzzle
         }
 
         internal List<FOVSlice> FovSlices { get => fovSlices; }
+
+        public void ReplaceFovSlices(List<FOVSlice> newSlices)
+        {
+            fovSlices = newSlices;
+        }
     }
 
-    class FOVSlice
+    public class FOVSlice
     {
         private float beginAngleIncluded;
         private float endAngleExcluded;
