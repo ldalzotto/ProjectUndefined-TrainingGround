@@ -10,4 +10,12 @@ public class NavMeshRayCaster : MonoBehaviour
         var rayTargetPosition = agent.transform.position + (castDirection * rayDistance);
         NavMesh.Raycast(agent.transform.position, rayTargetPosition, out hit, NavMesh.AllAreas);
     }
+
+    public static void CastNavMeshRayFOVAgentWorld(NavMeshAgent agent, float localAngle, float rayDistance, out NavMeshHit hit)
+    {
+        var castDirection = Quaternion.AngleAxis(-localAngle, agent.transform.up) * Vector3.forward;
+        Debug.Log("Casting to " + castDirection);
+        var rayTargetPosition = agent.transform.position + (castDirection * rayDistance);
+        NavMesh.Raycast(agent.transform.position, rayTargetPosition, out hit, NavMesh.AllAreas);
+    }
 }

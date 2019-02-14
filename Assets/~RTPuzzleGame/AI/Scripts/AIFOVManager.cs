@@ -23,7 +23,7 @@ namespace RTPuzzle
             var deltaAngle = (aiFov.FovSlices[0].EndAngleExcluded - aiFov.FovSlices[0].BeginAngleIncluded) / sampleNB;
             for (var i = 0; i < sampleNB; i++)
             {
-                NavMeshRayCaster.CastNavMeshRayFOVAgent(agent, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, raySampleDistance, out navMeshHits[i]);
+                NavMeshRayCaster.CastNavMeshRayFOVAgentWorld(agent, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, raySampleDistance, out navMeshHits[i]);
             }
 
             return navMeshHits;
@@ -54,7 +54,7 @@ namespace RTPuzzle
             foreach (var fovSlice in aiFov.FovSlices)
             {
                 Gizmos.color = Color.blue;
-                var beginAxisDirection = Quaternion.AngleAxis(-fovSlice.BeginAngleIncluded, agent.transform.up) * (agent.transform.forward * 10);
+                var beginAxisDirection = Quaternion.AngleAxis(-fovSlice.BeginAngleIncluded, agent.transform.up) * (Vector3.forward * 10);
                 Gizmos.DrawRay(agent.transform.position, beginAxisDirection);
                 var style = new GUIStyle();
                 style.normal.textColor = Color.blue;
@@ -62,7 +62,7 @@ namespace RTPuzzle
 
                 Gizmos.color = Color.red;
                 style.normal.textColor = Color.red;
-                var endAxisDirection = Quaternion.AngleAxis(-fovSlice.EndAngleExcluded, agent.transform.up) * (agent.transform.forward * 10);
+                var endAxisDirection = Quaternion.AngleAxis(-fovSlice.EndAngleExcluded, agent.transform.up) * (Vector3.forward * 10);
                 Gizmos.DrawRay(agent.transform.position, endAxisDirection);
                 Handles.Label(agent.transform.position + endAxisDirection, "End (" + aiFov.FovSlices.IndexOf(fovSlice) + ")", style);
 
