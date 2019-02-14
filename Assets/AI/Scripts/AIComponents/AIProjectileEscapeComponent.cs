@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -100,7 +99,7 @@ namespace RTPuzzle
             noWarningZonePhysicsRay = new Ray[7];
 
             var escapeDirectionAngle = Vector3.SignedAngle(escapeDirectionProjected, escapingAgent.transform.forward, escapingAgent.transform.up);
-            AIFOVManager.SetAvailableFROVRange(new List<FOVSlice>() { new FOVSlice(escapeDirectionAngle - 110, escapeDirectionAngle + 110) });
+            AIFOVManager.SetAvailableFROVRange(escapeDirectionAngle - 110, escapeDirectionAngle + 110);
             noWarningZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, Vector3.zero, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noWarningZonehits.Length; i++)
@@ -142,8 +141,9 @@ namespace RTPuzzle
             noWarningZonehits = new NavMeshHit[5];
             noWarningZonePhysicsRay = new Ray[5];
 
-            var escapeDirectionAngle = Vector3.SignedAngle(escapeDirectionProjected, escapingAgent.transform.forward, escapingAgent.transform.up);
-            AIFOVManager.SetAvailableFROVRange(new List<FOVSlice>() { new FOVSlice(escapeDirectionAngle - 90, escapeDirectionAngle + 90) });
+            var localEscapeDirectionAngle = Vector3.SignedAngle(escapeDirectionProjected, escapingAgent.transform.forward, escapingAgent.transform.up);
+            //  var localToWorldForwardAngle = Vector3.SignedAngle(escapingAgent.transform.forward, Vector3.forward, escapingAgent.transform.up);
+            AIFOVManager.SetAvailableFROVRange(localEscapeDirectionAngle - 90, localEscapeDirectionAngle + 90);
             noWarningZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, Vector3.zero, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noWarningZonehits.Length; i++)

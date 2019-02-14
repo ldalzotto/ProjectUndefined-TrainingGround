@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +11,6 @@ namespace RTPuzzle
         private NavMeshAgent agent;
         private FOV aiFov;
 
-
         public AIFOVManager(NavMeshAgent agent)
         {
             this.agent = agent;
@@ -19,115 +19,59 @@ namespace RTPuzzle
 
         public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, Vector3 inputRandomDirection, float raySampleDistance)
         {
-            //TODO more generi
             var navMeshHits = new NavMeshHit[sampleNB];
             var deltaAngle = (aiFov.FovSlices[0].EndAngleExcluded - aiFov.FovSlices[0].BeginAngleIncluded) / sampleNB;
             for (var i = 0; i < sampleNB; i++)
             {
                 NavMeshRayCaster.CastNavMeshRayFOVAgent(agent, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, raySampleDistance, out navMeshHits[i]);
-                // NavMeshRayCaster.CastNavMeshRayWorldSpace(sourceTransform, Quaternion.Euler(0, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, 0), raySampleDistance, out navMeshHits[i]);
             }
-
 
             return navMeshHits;
         }
 
-        public void SetAvailableFROVRange(List<FOVSlice> fovSlices)
+        public void SetAvailableFROVRange(float beginAngle, float endAngle)
         {
             Debug.Log("Setting Slices : ");
             foreach (var fovSclice in aiFov.FovSlices)
             {
-                Debug.Log("b : " + fovSclice.BeginAngleIncluded + " e : " + fovSclice.EndAngleExcluded);
+                Debug.Log("b : " + beginAngle + " e : " + endAngle);
             }
-            aiFov.ReplaceFovSlices(fovSlices);
+            aiFov.ReplaceFovSlices(new FOVSlice(beginAngle, endAngle));
         }
-
-        /**
-        public void RemoveAnglesFromFOV(float begin, float end)
-        {
-            Debug.Log("REMOVE ANGLES " + "begin : " + begin + " end : " + end);
-
-            var beginAngle = Mathf.Repeat(begin, 360f);
-            var endAngle = Mathf.Repeat(end, 360f);
-
-            var minAngle = beginAngle;
-            var maxAngle = endAngle;
-
-            List<FOVSlice> cuttedFOVSlices = new List<FOVSlice>();
-            foreach (var fovSclice in aiFov.FovSlices)
-            {
-                if (fovSclice.Contains(minAngle))
-                {
-                    if (fovSclice.BeginAngleIncluded != minAngle)
-                    {
-                        cuttedFOVSlices.Add(new FOVSlice(fovSclice.BeginAngleIncluded, minAngle));
-                        if (fovSclice.Contains(maxAngle))
-                        {
-                            cuttedFOVSlices.Add(new FOVSlice(maxAngle, fovSclice.EndAngleExcluded));
-                        }
-                    }
-                }
-                else if (fovSclice.Contains(maxAngle))
-                {
-                    cuttedFOVSlices.Add(new FOVSlice(maxAngle, fovSclice.EndAngleExcluded));
-                }
-            }
-
-            aiFov.ReplaceFovSlices(cuttedFOVSlices);
-            Debug.Log("After Slice : ");
-            foreach (var fovSclice in aiFov.FovSlices)
-            {
-                Debug.Log("b : " + fovSclice.BeginAngleIncluded + " e : " + fovSclice.EndAngleExcluded);
-            }
-            UpdateDisplayTexture();
-        }
-    **/
 
         public void ResetFOV()
         {
-            SetAvailableFROVRange(new List<FOVSlice>() { new FOVSlice(0f, 360f) });
-            //aiFov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(0f, 360f) });
+            SetAvailableFROVRange(0f, 360f);
         }
 
-        private float DeNormalizeAngle(float normalizedAngle, List<FOVSlice> fovSlices)
+        public void IntersectFOV(float beginAngle, float endAngle)
         {
-            var normalizedAngleSum = 0f;
-            var currentDenormalizedAngle = 0f;
-            foreach (var fovSlice in fovSlices)
+
+        }
+
+        public void GizmoTick()
+        {
+            foreach (var fovSlice in aiFov.FovSlices)
             {
-                if (fovSlices.IndexOf(fovSlice) == 0 && fovSlice.BeginAngleIncluded > 0f)
-                {
-                    //first
-                    currentDenormalizedAngle += fovSlice.BeginAngleIncluded;
-                }
+                Gizmos.color = Color.blue;
+                var beginAxisDirection = Quaternion.AngleAxis(-fovSlice.BeginAngleIncluded, agent.transform.up) * (agent.transform.forward * 10);
+                Gizmos.DrawRay(agent.transform.position, beginAxisDirection);
+                var style = new GUIStyle();
+                style.normal.textColor = Color.blue;
+                Handles.Label(agent.transform.position + beginAxisDirection, "Begin (" + aiFov.FovSlices.IndexOf(fovSlice) + ")", style);
 
-                if (fovSlices.IndexOf(fovSlice) > 0)
-                {
-                    if (fovSlice.BeginAngleIncluded != fovSlices[fovSlices.IndexOf(fovSlice) - 1].EndAngleExcluded)
-                    {
-                        var delta = (fovSlice.BeginAngleIncluded - fovSlices[fovSlices.IndexOf(fovSlice) - 1].EndAngleExcluded);
-                        currentDenormalizedAngle += delta;
-                        normalizedAngleSum += (delta / 360);
-                    }
-                }
+                Gizmos.color = Color.red;
+                style.normal.textColor = Color.red;
+                var endAxisDirection = Quaternion.AngleAxis(-fovSlice.EndAngleExcluded, agent.transform.up) * (agent.transform.forward * 10);
+                Gizmos.DrawRay(agent.transform.position, endAxisDirection);
+                Handles.Label(agent.transform.position + endAxisDirection, "End (" + aiFov.FovSlices.IndexOf(fovSlice) + ")", style);
 
-                if (fovSlice.Contains((normalizedAngleSum + normalizedAngle) * 360))
-                {
-                    currentDenormalizedAngle += 360 * normalizedAngle;
-                    return currentDenormalizedAngle;
-                }
-                else
-                {
-                    normalizedAngle -= fovSlice.GetNormalizedSliceAngleFactor();
-                    currentDenormalizedAngle += (fovSlice.EndAngleExcluded - fovSlice.BeginAngleIncluded);
-                }
-
-                normalizedAngleSum += fovSlice.GetNormalizedSliceAngleFactor();
+                Gizmos.color = Color.white;
             }
-            return currentDenormalizedAngle;
         }
 
     }
+
 
     class FOV
     {
@@ -142,9 +86,10 @@ namespace RTPuzzle
 
         internal List<FOVSlice> FovSlices { get => fovSlices; }
 
-        public void ReplaceFovSlices(List<FOVSlice> newSlices)
+        public void ReplaceFovSlices(FOVSlice fovSclice)
         {
-            fovSlices = newSlices;
+            fovSlices.Clear();
+            fovSlices.Add(fovSclice);
         }
     }
 
@@ -171,21 +116,6 @@ namespace RTPuzzle
         {
             return a >= beginAngleIncluded && a < endAngleExcluded;
         }
-    }
-
-    class FOVCalculationRange
-    {
-        private float beginAngleIncluded;
-        private float endAngleExcluded;
-
-        public FOVCalculationRange(float beginAngleIncluded, float endAngleExcluded)
-        {
-            this.beginAngleIncluded = beginAngleIncluded;
-            this.endAngleExcluded = endAngleExcluded;
-        }
-
-        public float BeginAngleIncluded { get => beginAngleIncluded; }
-        public float EndAngleExcluded { get => endAngleExcluded; }
     }
 
 }

@@ -68,6 +68,7 @@ namespace RTPuzzle
             // Gizmos.DrawWireSphere(NewDestination, 2f);
             AIRandomPatrolComponentManager.GizmoTick();
             AIProjectileEscapeManager.GizmoTick();
+            AIFOVManager.GizmoTick();
         }
 
         public override void OnTriggerEnter(Collider collider)
