@@ -15,6 +15,7 @@ namespace RTPuzzle
         {
             this.agent = agent;
             aiFov = new FOV();
+            ResetFOV();
         }
 
         public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, Vector3 inputRandomDirection, float raySampleDistance)
@@ -36,9 +37,8 @@ namespace RTPuzzle
             return navMeshHits;
         }
 
-        public void SetAvailableFROVRange(float beginAngle, float endAngle)
+        public void SetAvailableFOVRange(float beginAngle, float endAngle)
         {
-
             aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
         }
 
@@ -49,7 +49,7 @@ namespace RTPuzzle
             {
                 if (endAngle > 0)
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, 0f));
+                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, 360f));
                     cuttendSlices.Add(new FOVSlice(0f, endAngle));
                 }
                 else
@@ -74,7 +74,7 @@ namespace RTPuzzle
                 if (endAngle < 0f)
                 {
                     cuttendSlices.Add(new FOVSlice(beginAngle, 0f));
-                    cuttendSlices.Add(new FOVSlice(0f, endAngle + 360f));
+                    cuttendSlices.Add(new FOVSlice(360f, endAngle + 360f));
                 }
                 else
                 {
@@ -84,51 +84,12 @@ namespace RTPuzzle
             return cuttendSlices;
         }
 
-        private static void ClampAnglesFrom0To360(ref float beginAngle, ref float endAngle)
-        {
-
-            if (Mathf.Sign(beginAngle) != Mathf.Sign(endAngle))
-            {
-                while ((beginAngle < 0 || beginAngle > 360) || (endAngle < 0 || endAngle > 360))
-                {
-                    if (beginAngle < 0 || endAngle < 0)
-                    {
-                        beginAngle += 180f;
-                        endAngle += 180f;
-                        var tmpBegin = beginAngle;
-                    }
-                    else if (beginAngle > 360 || endAngle > 360)
-                    {
-                        beginAngle -= 180f;
-                        endAngle -= 180f;
-                        var tmpBegin = beginAngle;
-                    }
-                }
-            }
-            else
-            {
-                while ((beginAngle < 0 || beginAngle > 360) || (endAngle < 0 || endAngle > 360))
-                {
-                    if (beginAngle < 0 || endAngle < 0)
-                    {
-                        beginAngle += 360f;
-                        endAngle += 360f;
-                    }
-                    else if (beginAngle > 360 || endAngle > 360)
-                    {
-                        beginAngle -= 360f;
-                        endAngle -= 360f;
-                    }
-                }
-            }
-        }
-
         public void ResetFOV()
         {
-            SetAvailableFROVRange(0f, 360f);
+            SetAvailableFOVRange(0f, 360f);
         }
 
-        public void IntersectFOV(float beginAngle, float endAngle)
+        public List<FOVSlice> IntersectFOV(float beginAngle, float endAngle)
         {
             Debug.Log("Intersect called b : " + beginAngle + " e : " + endAngle);
             var inputSlices = CutInputAnglesToSlice(beginAngle, endAngle);
@@ -148,10 +109,12 @@ namespace RTPuzzle
             }
 
             aiFov.ReplaceFovSlices(newSlices);
+            return newSlices;
         }
 
         public static FOVSlice IntersectSlice(FOVSlice sourceSlice, FOVSlice newSlice)
         {
+            Debug.Log("Calling intersect slice : " + sourceSlice.ToString() + "  " + newSlice.ToString());
             if (sourceSlice.Up())
             {
                 if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
@@ -326,6 +289,22 @@ namespace RTPuzzle
         public override string ToString()
         {
             return "b : " + beginAngleIncluded + " e : " + endAngleExcluded;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var slice = obj as FOVSlice;
+            return slice != null &&
+                   beginAngleIncluded == slice.beginAngleIncluded &&
+                   endAngleExcluded == slice.endAngleExcluded;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -8683044;
+            hashCode = hashCode * -1521134295 + beginAngleIncluded.GetHashCode();
+            hashCode = hashCode * -1521134295 + endAngleExcluded.GetHashCode();
+            return hashCode;
         }
     }
 
