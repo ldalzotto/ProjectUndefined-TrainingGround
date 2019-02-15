@@ -97,8 +97,7 @@ namespace RTPuzzle
 
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVWorld(localEscapeDirection, escapingAgent);
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - 110, worldEscapeDirectionAngle + 110);
-            //AIFOVManager.SetAvailableFROVRange(worldEscapeDirectionAngle - 110, worldEscapeDirectionAngle + 110);
-            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, Vector3.zero, AIProjectileEscapeComponent.EscapeDistance);
+            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noWarningZonehits.Length; i++)
             {
@@ -141,8 +140,7 @@ namespace RTPuzzle
 
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVWorld(localEscapeDirection, escapingAgent);
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - 90, worldEscapeDirectionAngle + 90);
-            //AIFOVManager.SetAvailableFROVRange(worldEscapeDirectionAngle - 90, worldEscapeDirectionAngle + 90);
-            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, Vector3.zero, AIProjectileEscapeComponent.EscapeDistance);
+            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noWarningZonehits.Length; i++)
             {

@@ -18,11 +18,11 @@ namespace RTPuzzle
             ResetFOV();
         }
 
-        public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, Vector3 inputRandomDirection, float raySampleDistance)
+        public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, float raySampleDistance)
         {
             var navMeshHits = new NavMeshHit[sampleNB];
 
-            float[] anglesRayCast = AIFOVManager.CalculateAnglesForRayCast(sampleNB, aiFov);
+            float[] anglesRayCast = AIFOVManager.CalculateAnglesForRayCast(sampleNB, aiFov, true);
 
             for (var i = 0; i < sampleNB; i++)
             {
@@ -186,7 +186,7 @@ namespace RTPuzzle
             }
         }
 
-        public static float[] CalculateAnglesForRayCast(int sampleNB, FOV aiFov)
+        public static float[] CalculateAnglesForRayCast(int sampleNB, FOV aiFov, bool withRandomness)
         {
 
             //(0) converting down slices
@@ -225,12 +225,22 @@ namespace RTPuzzle
             }
 
             var deltaAngle = deltaAngleRange / sampleNB;
-
+            var randomnessDeltaAngle = Random.Range(0, deltaAngleRange);
             //(3) Mapping from angle to raw range
             var anglesRayCast = new float[sampleNB];
             for (var i = 0; i < sampleNB; i++)
             {
-                var currentDeltaAngle = deltaAngle * i;
+                var currentDeltaAngle = 0f;
+                if (withRandomness)
+                {
+                    currentDeltaAngle = Mathf.Repeat((deltaAngle * i) + randomnessDeltaAngle, deltaAngleRange);
+                }
+                else
+                {
+                    currentDeltaAngle = deltaAngle * i;
+                }
+
+
                 foreach (var mappedFOVSlice in mappedFOVSlices)
                 {
                     if (mappedFOVSlice.Contains(currentDeltaAngle))

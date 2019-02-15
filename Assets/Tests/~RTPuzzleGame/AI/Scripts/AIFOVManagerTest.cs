@@ -52,7 +52,7 @@ namespace Tests
         {
             var fov = new FOV();
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(200, 250) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov);
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
         }
         [Test]
@@ -60,7 +60,7 @@ namespace Tests
         {
             var fov = new FOV();
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(250, 200) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov);
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
         }
 
@@ -69,11 +69,21 @@ namespace Tests
         {
             var fov = new FOV();
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(250, 200), new FOVSlice(50, 150) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov);
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 200f, 50f, 100f }, calculatedAngles);
         }
 
-
+        [Test]
+        public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices_WithAnotherOrder_WithRandomness()
+        {
+            var fov = new FOV();
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(250, 200), new FOVSlice(50, 150) });
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(30, fov, true);
+            for (var i = 0; i < calculatedAngles.Length; i++)
+            {
+                Assert.IsTrue((calculatedAngles[i] >= 50f && calculatedAngles[i] <= 150f) || (calculatedAngles[i] >= 200f && calculatedAngles[i] <= 250f));
+            }
+        }
 
     }
 }
