@@ -36,4 +36,14 @@ public class BeziersControlPoints
             Gizmos.DrawWireSphere(p3, 1f);
         }
     }
+
+    public BeziersControlPoints Clone()
+    {
+        var beziersClone = new BeziersControlPoints();
+        beziersClone.p0 = p0;
+        beziersClone.p1 = p1;
+        beziersClone.p2 = p2;
+        beziersClone.p3 = p3;
+        return beziersClone;
+    }
 }

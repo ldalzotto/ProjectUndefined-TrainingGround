@@ -15,11 +15,24 @@ namespace RTPuzzle
             LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
         }
 
+        public void Tick(float d, float timeAttenuationFactor)
+        {
+            foreach (var launchProjectile in currentProjectiles)
+            {
+                launchProjectile.Tick(d, timeAttenuationFactor);
+            }
+        }
+
         #region External Events
         public void OnLaunchProjectileSpawn(LaunchProjectile launchProjectile)
         {
             currentProjectiles.Add(launchProjectile);
             launchProjectile.transform.parent = transform;
+        }
+
+        internal void OnProjectileGroundTriggerEnter(LaunchProjectile launchProjectile)
+        {
+            launchProjectile.OnGroundTriggerEnter();
             StartCoroutine(DestroyLaunchProjectileAtEndOfFixedUpdate(launchProjectile));
         }
         #endregion

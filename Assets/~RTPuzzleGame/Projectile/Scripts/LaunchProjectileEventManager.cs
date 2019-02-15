@@ -23,6 +23,11 @@ namespace RTPuzzle
         {
             LaunchProjectileContainerManager.OnLaunchProjectileDestroy(launchProjectile);
         }
+
+        public void OnProjectileGroundTriggerEnter(LaunchProjectile launchProjectile)
+        {
+            LaunchProjectileContainerManager.OnProjectileGroundTriggerEnter(launchProjectile);
+        }
     }
 
 }

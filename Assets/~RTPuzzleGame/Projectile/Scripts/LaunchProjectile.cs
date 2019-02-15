@@ -1,27 +1,32 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
     public class LaunchProjectile : MonoBehaviour
     {
-        private LaunchProjectileInherentData LaunchProjectileInherentData;
+        private LaunchProjectileInherentData launchProjectileInherentData;
 
-        public void Init(LaunchProjectileInherentData LaunchProjectileInherentData)
+        public LaunchProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
+
+        private LaunchProjectileMovementManager LaunchProjectileMovementManager;
+        private SphereCollisionManager SphereCollisionManager;
+
+        public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
         {
-            this.LaunchProjectileInherentData = LaunchProjectileInherentData;
+            this.launchProjectileInherentData = LaunchProjectileInherentData;
             var sphereCollider = GetComponent<SphereCollider>();
-            sphereCollider.radius = this.LaunchProjectileInherentData.EffectRange;
+            //    sphereCollider.radius = 1f;// this.launchProjectileInherentData.EffectRange;
+            this.transform.position = ProjectilePath.ResolvePoint(0.1f);
+            var projectilePathDeepCopy = ProjectilePath.Clone();
+
+            this.SphereCollisionManager = new SphereCollisionManager(sphereCollider, this.launchProjectileInherentData);
+            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, transform, projectilePathDeepCopy);
+
         }
 
-        public float GetEffectRange()
+        public void Tick(float d, float timeAttenuationFactor)
         {
-            return LaunchProjectileInherentData.EffectRange;
-        }
-
-        public float GetEscapeSemiAngle()
-        {
-            return LaunchProjectileInherentData.EscapeSemiAngle;
+            LaunchProjectileMovementManager.Tick(d, timeAttenuationFactor);
         }
 
         public static LaunchProjectile GetFromCollisionType(CollisionType collisionType)
@@ -29,34 +34,56 @@ namespace RTPuzzle
             return collisionType.GetComponent<LaunchProjectile>();
         }
 
+        #region External Events
+        public void OnGroundTriggerEnter()
+        {
+            SphereCollisionManager.OnGroundTriggerEnter();
+        }
+        #endregion
+
     }
 
-    public class LaunchProjectileInherentData
+    #region Projectile movement manager
+    class LaunchProjectileMovementManager
     {
-        private float effectRange;
-        private float escapeSemiAngle;
+        private LaunchProjectileInherentData LaunchProjectileInherentData;
+        private Transform projectileTransform;
+        private BeziersControlPoints ProjectilePath;
 
-        public LaunchProjectileInherentData(float effectRange, float escapeSemiAngle)
+        public LaunchProjectileMovementManager(LaunchProjectileInherentData launchProjectileInherentData, Transform projectileTransform, BeziersControlPoints projectilePath)
         {
-            this.effectRange = effectRange;
-            this.escapeSemiAngle = escapeSemiAngle;
+            LaunchProjectileInherentData = launchProjectileInherentData;
+            this.projectileTransform = projectileTransform;
+            ProjectilePath = projectilePath;
+            currentProjectilePathBeziersPosition = 0.1f;
         }
 
-        public float EffectRange { get => effectRange; }
-        public float EscapeSemiAngle { get => escapeSemiAngle; }
-    }
+        private float currentProjectilePathBeziersPosition = 0f;
 
-    public enum LaunchProjectileId
-    {
-        STONE
-    }
-
-    public class LaunchProjectileInherentDataConfiguration
-    {
-        public static Dictionary<LaunchProjectileId, LaunchProjectileInherentData> conf = new Dictionary<LaunchProjectileId, LaunchProjectileInherentData>()
+        public void Tick(float d, float timeAttenuationFactor)
         {
-            {LaunchProjectileId.STONE, new LaunchProjectileInherentData(8.230255f, 90f) }
-        };
-    }
+            currentProjectilePathBeziersPosition += LaunchProjectileInherentData.TravelDistanceSpeed * d * timeAttenuationFactor;
+            projectileTransform.position = ProjectilePath.ResolvePoint(currentProjectilePathBeziersPosition);
+        }
 
+    }
+    #endregion
+
+    class SphereCollisionManager
+    {
+        private SphereCollider SphereCollider;
+        private LaunchProjectileInherentData LaunchProjectileInherentData;
+
+        public SphereCollisionManager(SphereCollider sphereCollider, LaunchProjectileInherentData LaunchProjectileInherentData)
+        {
+            SphereCollider = sphereCollider;
+            this.LaunchProjectileInherentData = LaunchProjectileInherentData;
+            SphereCollider.radius = 1f;
+        }
+
+        public void OnGroundTriggerEnter()
+        {
+            SphereCollider.radius = LaunchProjectileInherentData.EffectRange;
+        }
+    }
 }

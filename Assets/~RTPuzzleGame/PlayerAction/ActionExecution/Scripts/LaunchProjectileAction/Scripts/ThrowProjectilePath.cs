@@ -7,11 +7,13 @@ namespace RTPuzzle
         public float AnimationSpeed;
 
         private ParticleSystem throwProjectileparticleSystem;
-        private BeziersControlPoints BeziersControlPoints;
+        private BeziersControlPoints beziersControlPoints;
 
         private Collider throwerCollider;
 
         private float elapsedTime;
+
+        public BeziersControlPoints BeziersControlPoints { get => beziersControlPoints; }
 
         public void Init(Collider throwerCollider)
         {
@@ -19,21 +21,21 @@ namespace RTPuzzle
             var psMain = throwProjectileparticleSystem.main;
             psMain.startLifetime = 1 / AnimationSpeed;
             this.throwerCollider = throwerCollider;
-            BeziersControlPoints = new BeziersControlPoints();
+            beziersControlPoints = new BeziersControlPoints();
         }
 
         public void Tick(float d, Vector3 targetPosition)
         {
             transform.position = throwerCollider.bounds.center;
 
-            BeziersControlPoints.P0 = throwerCollider.bounds.center;
-            BeziersControlPoints.P3 = targetPosition;
+            beziersControlPoints.P0 = throwerCollider.bounds.center;
+            beziersControlPoints.P3 = targetPosition;
 
-            var upProjectedPath = Vector3.ProjectOnPlane(targetPosition - BeziersControlPoints.P0, Vector3.up);
+            var upProjectedPath = Vector3.ProjectOnPlane(targetPosition - beziersControlPoints.P0, Vector3.up);
             var upProjectedPathLength = upProjectedPath.magnitude;
 
-            BeziersControlPoints.P1 = BeziersControlPoints.P0 + (upProjectedPath.normalized + Vector3.up) * upProjectedPathLength / 3;
-            BeziersControlPoints.P2 = BeziersControlPoints.P1 + (upProjectedPath.normalized) * upProjectedPathLength / 3;
+            beziersControlPoints.P1 = beziersControlPoints.P0 + (upProjectedPath.normalized + Vector3.up) * upProjectedPathLength / 3;
+            beziersControlPoints.P2 = beziersControlPoints.P1 + (upProjectedPath.normalized) * upProjectedPathLength / 3;
 
 
             var particleCount = throwProjectileparticleSystem.particleCount;
@@ -43,7 +45,7 @@ namespace RTPuzzle
                 elapsedTime = Mathf.Clamp01(elapsedTime);
                 var particles = new ParticleSystem.Particle[particleCount];
                 throwProjectileparticleSystem.GetParticles(particles);
-                particles[0].position = BeziersControlPoints.ResolvePoint(elapsedTime);
+                particles[0].position = beziersControlPoints.ResolvePoint(elapsedTime);
                 throwProjectileparticleSystem.SetParticles(particles);
             }
             else
@@ -56,9 +58,9 @@ namespace RTPuzzle
 
         public void GizmoSelectedTick()
         {
-            if (BeziersControlPoints != null)
+            if (beziersControlPoints != null)
             {
-                BeziersControlPoints.GizmoSelectedTick();
+                beziersControlPoints.GizmoSelectedTick();
             }
         }
 

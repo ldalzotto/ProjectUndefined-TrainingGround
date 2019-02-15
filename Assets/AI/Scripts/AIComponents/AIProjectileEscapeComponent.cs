@@ -87,7 +87,7 @@ namespace RTPuzzle
             {
                 if (launchProjectile != null)
                 {
-                    return EscapeToFarestNotInExitZone(escapeDirection, launchProjectile.GetEscapeSemiAngle());
+                    return EscapeToFarestNotInExitZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                 }
                 else
                 {
