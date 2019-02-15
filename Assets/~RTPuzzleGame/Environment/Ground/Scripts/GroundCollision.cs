@@ -13,13 +13,11 @@ namespace RTPuzzle
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.name);
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
             {
                 if (collisionType.IsRTPProjectile)
                 {
-                    Debug.Log("COl");
                     var launchProjectile = collisionType.GetComponent<LaunchProjectile>();
                     if (launchProjectile != null)
                     {

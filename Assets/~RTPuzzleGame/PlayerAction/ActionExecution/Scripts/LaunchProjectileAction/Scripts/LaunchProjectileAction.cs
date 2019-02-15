@@ -266,6 +266,7 @@ namespace RTPuzzle
             currentProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab);
             currentProjectile.Init(LaunchProjectileInherentDataConfiguration.conf[launchProjectileId], throwProjectilePath.BeziersControlPoints);
             LaunchProjectileEventManager.OnLaunchProjectileSpawn(currentProjectile);
+            LaunchProjectileRTPActionRef.OnExit();
         }
 
     }
