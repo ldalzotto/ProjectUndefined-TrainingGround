@@ -21,18 +21,13 @@ namespace RTPuzzle
         public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, Vector3 inputRandomDirection, float raySampleDistance)
         {
             var navMeshHits = new NavMeshHit[sampleNB];
-            /**
-            var fovSlice = aiFov.FovSlices[0];
 
-            var deltaAngle = 0f;
-
-            deltaAngle = (fovSlice.EndAngleExcluded - aiFov.FovSlices[0].BeginAngleIncluded) / sampleNB;
-
+            float[] anglesRayCast = AIFOVManager.CalculateAnglesForRayCast(sampleNB, aiFov);
 
             for (var i = 0; i < sampleNB; i++)
             {
-                NavMeshRayCaster.CastNavMeshRayFOVAgentWorld(agent, deltaAngle * i + aiFov.FovSlices[0].BeginAngleIncluded, raySampleDistance, out navMeshHits[i]);
-            }**/
+                NavMeshRayCaster.CastNavMeshRayFOVAgentWorld(agent, anglesRayCast[i], raySampleDistance, out navMeshHits[i]);
+            }
 
             return navMeshHits;
         }
@@ -191,6 +186,67 @@ namespace RTPuzzle
             }
         }
 
+        public static float[] CalculateAnglesForRayCast(int sampleNB, FOV aiFov)
+        {
+
+            //(0) converting down slices
+            var rawFOV = new List<FOVSlice>();
+            foreach (var fovSlice in aiFov.FovSlices)
+            {
+                if (fovSlice.Down())
+                {
+                    rawFOV.Add(new FOVSlice(fovSlice.EndAngleExcluded, fovSlice.BeginAngleIncluded));
+                }
+                else
+                {
+                    rawFOV.Add(fovSlice);
+                }
+            }
+
+            //(1) mapping raw data
+            var mappedFOVSlices = new List<FOVSlice>();
+            for (var i = 0; i < rawFOV.Count; i++)
+            {
+                var currentFovSlice = rawFOV[i];
+                var deltaBetweenSlices = 0f;
+                if (i != 0)
+                {
+                    deltaBetweenSlices = mappedFOVSlices[i - 1].EndAngleExcluded;
+                }
+                var deltaForCurrentSlice = currentFovSlice.EndAngleExcluded - currentFovSlice.BeginAngleIncluded;
+                mappedFOVSlices.Add(new FOVSlice(deltaBetweenSlices, deltaForCurrentSlice + deltaBetweenSlices));
+            }
+
+            //(2) Total angle range
+            var deltaAngleRange = 0f;
+            foreach (var mappedFOVSlice in mappedFOVSlices)
+            {
+                deltaAngleRange += (mappedFOVSlice.EndAngleExcluded - mappedFOVSlice.BeginAngleIncluded);
+            }
+
+            var deltaAngle = deltaAngleRange / sampleNB;
+
+            //(3) Mapping from angle to raw range
+            var anglesRayCast = new float[sampleNB];
+            for (var i = 0; i < sampleNB; i++)
+            {
+                var currentDeltaAngle = deltaAngle * i;
+                foreach (var mappedFOVSlice in mappedFOVSlices)
+                {
+                    if (mappedFOVSlice.Contains(currentDeltaAngle))
+                    {
+                        var associatedRawFOV = rawFOV[mappedFOVSlices.IndexOf(mappedFOVSlice)];
+                        var mappedRatio = (currentDeltaAngle - mappedFOVSlice.BeginAngleIncluded) / (mappedFOVSlice.EndAngleExcluded - mappedFOVSlice.BeginAngleIncluded);
+                        var rawAngle = (mappedRatio * (associatedRawFOV.EndAngleExcluded - associatedRawFOV.BeginAngleIncluded)) + associatedRawFOV.BeginAngleIncluded;
+                        anglesRayCast[i] = rawAngle;
+                    }
+                }
+
+            }
+
+            return anglesRayCast;
+        }
+
         public void GizmoTick()
         {
             foreach (var fovSlice in aiFov.FovSlices)
@@ -215,7 +271,7 @@ namespace RTPuzzle
     }
 
 
-    class FOV
+    public class FOV
     {
         private List<FOVSlice> fovSlices;
 
@@ -231,11 +287,6 @@ namespace RTPuzzle
         public void ReplaceFovSlices(List<FOVSlice> fovSclices)
         {
             this.fovSlices = fovSclices;
-        }
-
-        public bool Is360()
-        {
-            return fovSlices.Count == 1 && Mathf.Abs(fovSlices[0].EndAngleExcluded - fovSlices[0].BeginAngleIncluded) == 360f;
         }
 
         public override string ToString()

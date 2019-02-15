@@ -47,5 +47,33 @@ namespace Tests
             Assert.AreEqual(new List<FOVSlice>() { new FOVSlice(236f, 317f) }, cuttedFOV2ndPass);
         }
 
+        [Test]
+        public void AIFOVManagerTest_RaycastAngleCalculation()
+        {
+            var fov = new FOV();
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(200, 250) });
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov);
+            Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
+        }
+        [Test]
+        public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices()
+        {
+            var fov = new FOV();
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(250, 200) });
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov);
+            Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
+        }
+
+        [Test]
+        public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices_WithAnotherOrder()
+        {
+            var fov = new FOV();
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(250, 200), new FOVSlice(50, 150) });
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov);
+            Assert.AreEqual(new float[3] { 200f, 50f, 100f }, calculatedAngles);
+        }
+
+
+
     }
 }
