@@ -57,7 +57,7 @@ namespace RTPuzzle
         public Nullable<Vector3> ForceComputeEscapePoint()
         {
             isEscaping = true;
-            escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.WarningPoint.position - escapingAgent.transform.position).normalized);
+            escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.WarningPoint.position - escapingAgent.transform.position).normalized, null);
             return escapeDestination;
         }
 
@@ -72,11 +72,11 @@ namespace RTPuzzle
             {
                 isEscaping = true;
                 var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
-                escapeDestination = ComputeEscapePoint(escapeDirection);
+                escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
             }
         }
 
-        private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection)
+        private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
         {
 
             if (AIWarningZoneComponent.IsInWarningZone)
@@ -85,7 +85,14 @@ namespace RTPuzzle
             }
             else
             {
-                return EscapeToFarestNotInExitZone(escapeDirection);
+                if (launchProjectile != null)
+                {
+                    return EscapeToFarestNotInExitZone(escapeDirection, launchProjectile.GetEscapeSemiAngle());
+                }
+                else
+                {
+                    return EscapeToFarestNotInExitZone(escapeDirection, 90f);
+                }
             }
 
         }
@@ -133,13 +140,13 @@ namespace RTPuzzle
             return selectedPosition;
         }
 
-        private Vector3? EscapeToFarestNotInExitZone(Vector3 localEscapeDirection)
+        private Vector3? EscapeToFarestNotInExitZone(Vector3 localEscapeDirection, float semiAngleEscape)
         {
             noWarningZonehits = new NavMeshHit[5];
             noWarningZonePhysicsRay = new Ray[5];
 
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVWorld(localEscapeDirection, escapingAgent);
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - 90, worldEscapeDirectionAngle + 90);
+            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
             noWarningZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noWarningZonehits.Length; i++)
