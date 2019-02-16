@@ -1,7 +1,4 @@
-﻿
-using UnityEngine;
-
-namespace RTPuzzle
+﻿namespace RTPuzzle
 {
     public abstract class RTPPlayerAction
     {
@@ -26,7 +23,6 @@ namespace RTPuzzle
         public void CoolDownTick(float d)
         {
             onCooldownTimeElapsed += d;
-            Debug.Log(GetType().ToString() + " " + onCooldownTimeElapsed);
         }
 
         protected void ResetCoolDown()

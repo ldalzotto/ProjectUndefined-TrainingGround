@@ -56,13 +56,15 @@ namespace RTPuzzle
             this.projectileTransform = projectileTransform;
             ProjectilePath = projectilePath;
             currentProjectilePathBeziersPosition = 0.1f;
+            computedProjectileSpeed = LaunchProjectileInherentData.TravelDistancePerSeconds / Vector3.Distance(projectilePath.P0, projectilePath.P3);
         }
 
+        private float computedProjectileSpeed;
         private float currentProjectilePathBeziersPosition = 0f;
 
         public void Tick(float d, float timeAttenuationFactor)
         {
-            currentProjectilePathBeziersPosition += LaunchProjectileInherentData.TravelDistanceSpeed * d * timeAttenuationFactor;
+            currentProjectilePathBeziersPosition += computedProjectileSpeed * d * timeAttenuationFactor;
             projectileTransform.position = ProjectilePath.ResolvePoint(currentProjectilePathBeziersPosition);
         }
 
