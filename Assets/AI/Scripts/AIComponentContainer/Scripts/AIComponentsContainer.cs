@@ -19,5 +19,5 @@ public class AIComponents
 {
     public AIRandomPatrolComponent AIRandomPatrolComponent;
     public RTPuzzle.AIProjectileEscapeComponent AIProjectileEscapeComponent;
-    public RTPuzzle.AIWarningZoneComponent AIWarningZoneComponent;
+    public RTPuzzle.AITargetZoneComponent AITargetZoneComponent;
 }

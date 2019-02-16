@@ -19,7 +19,7 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NavMeshAgent escapingAgent;
-        private AIWarningZoneComponent AIWarningZoneComponent;
+        private AITargetZoneComponent AIWarningZoneComponent;
         private AIFOVManager AIFOVManager;
         #endregion
 
@@ -47,7 +47,7 @@ namespace RTPuzzle
         #endregion
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AIWarningZoneComponent AIWarningZoneComponent, AIFOVManager AIFOVManager)
+                AITargetZoneComponent AIWarningZoneComponent, AIFOVManager AIFOVManager)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
@@ -63,7 +63,7 @@ namespace RTPuzzle
         public Nullable<Vector3> ForceComputeEscapePoint()
         {
             isEscapingFromWarningZone = true;
-            escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.WarningPoint.position - escapingAgent.transform.position).normalized, null);
+            escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.TargetZone.transform.position - escapingAgent.transform.position).normalized, null);
             return escapeDestination;
         }
 
@@ -85,7 +85,7 @@ namespace RTPuzzle
         private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
         {
 
-            if (AIWarningZoneComponent.IsInWarningZone && launchProjectile == null)
+            if (AIWarningZoneComponent.IsInTargetZone && launchProjectile == null)
             {
                 Debug.Log("EscapeFromExitZone");
                 return EscapeFromExitZone(escapeDirection);
@@ -132,17 +132,17 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.TargetZone.ZoneCollider))
                     {
-                        currentDistanceToForbidden = Vector3.Distance(noWarningZonehits[i].position, AIWarningZoneComponent.WarningPoint.position);
+                        currentDistanceToForbidden = Vector3.Distance(noWarningZonehits[i].position, AIWarningZoneComponent.TargetZone.transform.position);
                         selectedPosition = noWarningZonehits[i].position;
                     }
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.TargetZone.ZoneCollider))
                     {
-                        var computedDistance = Vector3.Distance(noWarningZonehits[i].position, AIWarningZoneComponent.WarningPoint.position);
+                        var computedDistance = Vector3.Distance(noWarningZonehits[i].position, AIWarningZoneComponent.TargetZone.transform.position);
                         if (currentDistanceToForbidden < computedDistance)
                         {
                             selectedPosition = noWarningZonehits[i].position;
@@ -175,7 +175,7 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.TargetZone.ZoneCollider))
                     {
                         currentDistanceToRaycastTarget = Vector3.Distance(noWarningZonehits[i].position, escapingAgent.transform.position);
                         selectedPosition = noWarningZonehits[i].position;
@@ -183,7 +183,7 @@ namespace RTPuzzle
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.WarningZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noWarningZonePhysicsRay[i], noWarningZonehits[i].position, AIWarningZoneComponent.TargetZone.ZoneCollider))
                     {
                         var computedDistance = Vector3.Distance(noWarningZonehits[i].position, escapingAgent.transform.position);
                         if (currentDistanceToRaycastTarget < computedDistance)

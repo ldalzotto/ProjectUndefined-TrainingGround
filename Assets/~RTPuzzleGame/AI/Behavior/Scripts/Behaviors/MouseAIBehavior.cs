@@ -11,17 +11,17 @@ namespace RTPuzzle
         #region AI Components
         private AIRandomPatrolComponentMananger AIRandomPatrolComponentManager;
         private AIProjectileEscapeManager AIProjectileEscapeManager;
-        private AIWarningZoneComponentManager AIWarningZoneComponentManager;
+        private AITargetZoneComponentManager AITargetZoneComponentManager;
         #endregion
 
         #region AI Managers
         private AIFOVManager AIFOVManager;
         #endregion
 
-        public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AIWarningZoneComponent AIWarningZoneComponent) : base(selfAgent)
+        public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AITargetZoneComponent AIWarningZoneComponent) : base(selfAgent)
         {
             AIFOVManager = new AIFOVManager(selfAgent);
-            AIWarningZoneComponentManager = new AIWarningZoneComponentManager(selfAgent, AIWarningZoneComponent);
+            AITargetZoneComponentManager = new AITargetZoneComponentManager(selfAgent, AIWarningZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent, AIWarningZoneComponent, AIFOVManager);
         }
@@ -39,7 +39,7 @@ namespace RTPuzzle
 
         public override Nullable<Vector3> TickAI()
         {
-            AIWarningZoneComponentManager.TickComponent();
+            AITargetZoneComponentManager.TickComponent();
             if (AIProjectileEscapeManager.IsEscaping())
             {
                 var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
@@ -48,7 +48,7 @@ namespace RTPuzzle
             }
             else
             {
-                if (AIWarningZoneComponentManager.IsInWarningZone())
+                if (AITargetZoneComponentManager.IsInTargetZone())
                 {
                     var escapeDestination = AIProjectileEscapeManager.ForceComputeEscapePoint();
                     OnProjectileEscapeManagerUpdated(escapeDestination);
@@ -103,7 +103,7 @@ namespace RTPuzzle
         {
             GUILayout.Label("IsPatrolling : " + AIRandomPatrolComponentManager.IsPatrolling());
             GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping());
-            GUILayout.Label("IsInWarningZone : " + AIWarningZoneComponentManager.IsInWarningZone());
+            GUILayout.Label("IsInTargetZone : " + AITargetZoneComponentManager.IsInTargetZone());
         }
     }
 

@@ -168,6 +168,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\Events\PuzzleEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentsManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponents\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponents\AIRandomPatrolComponent.cs" />
-    <Compile Include="Assets\AI\Scripts\AIComponents\AIWarningZoneComponent.cs" />
+    <Compile Include="Assets\AI\Scripts\AIComponents\AITargetZoneComponent.cs" />
     <Compile Include="Assets\AI\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIType\Scripts\AIType.cs" />
     <Compile Include="Assets\Configuration\GlobalConfiguration.cs" />

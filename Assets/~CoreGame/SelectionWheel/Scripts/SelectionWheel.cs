@@ -24,18 +24,18 @@ public class SelectionWheel : MonoBehaviour
         ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(NonSelectedMaterial, SelectedMaterial);
     }
 
-    public void Init(List<SelectionWheelNodeData> whellNodeDatas, WheelNodeSpriteResolver NodeSpriteResolver)
+    public void Init(List<SelectionWheelNodeData> wheelNodeDatas, WheelNodeSpriteResolver NodeSpriteResolver)
     {
         #region External Dependencies
         GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
         #endregion
 
         ActionWheelNodePositionManager = new ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);
-        wheelNodes = new SelectionWheelNode[whellNodeDatas.Count];
+        wheelNodes = new SelectionWheelNode[wheelNodeDatas.Count];
         var actionNodeContainerObject = transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
-        for (var i = 0; i < whellNodeDatas.Count; i++)
+        for (var i = 0; i < wheelNodeDatas.Count; i++)
         {
-            var wheelNode = SelectionWheelNode.Instantiate(whellNodeDatas[i], NodeSpriteResolver);
+            var wheelNode = SelectionWheelNode.Instantiate(wheelNodeDatas[i], NodeSpriteResolver);
             wheelNode.transform.SetParent(actionNodeContainerObject, false);
             wheelNodes[i] = wheelNode;
         }

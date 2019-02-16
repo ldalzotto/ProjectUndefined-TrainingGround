@@ -39,7 +39,7 @@ namespace RTPuzzle
 
             AIDestinationMoveManager = new AIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent, aiComponent.AIWarningZoneComponent);
+            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent, aiComponent.AITargetZoneComponent);
         }
 
         public void Tick(float d, float timeAttenuationFactor)
