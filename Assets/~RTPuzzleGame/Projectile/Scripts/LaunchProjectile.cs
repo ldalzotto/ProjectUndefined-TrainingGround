@@ -39,7 +39,6 @@ namespace RTPuzzle
         #region External Events
         public void OnGroundTriggerEnter()
         {
-            Debug.Log("Ground Trigger");
             SphereCollisionManager.OnGroundTriggerEnter();
         }
         #endregion

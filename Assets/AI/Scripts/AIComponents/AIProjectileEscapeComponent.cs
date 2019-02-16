@@ -28,7 +28,8 @@ namespace RTPuzzle
         #endregion
 
         #region State
-        private bool isEscaping;
+        private bool isEscapingFromWarningZone;
+        private bool isEscapingFromProjectile;
         private bool isInWarningZone;
         private Nullable<Vector3> escapeDestination;
         #endregion
@@ -38,7 +39,12 @@ namespace RTPuzzle
         private NavMeshHit[] warningZonehits;
         private Ray[] warningZonePhysicsRay;
 
-        public bool IsEscaping { get => isEscaping; }
+        #region Logical Conditions
+        public bool IsEscaping()
+        {
+            return isEscapingFromWarningZone || isEscapingFromProjectile;
+        }
+        #endregion
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
                 AIWarningZoneComponent AIWarningZoneComponent, AIFOVManager AIFOVManager)
@@ -56,7 +62,7 @@ namespace RTPuzzle
 
         public Nullable<Vector3> ForceComputeEscapePoint()
         {
-            isEscaping = true;
+            isEscapingFromWarningZone = true;
             escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.WarningPoint.position - escapingAgent.transform.position).normalized, null);
             return escapeDestination;
         }
@@ -70,30 +76,40 @@ namespace RTPuzzle
         {
             if (collisionType.IsRTPProjectile)
             {
-                isEscaping = true;
                 var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
                 escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
+                isEscapingFromProjectile = true;
             }
         }
 
         private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
         {
 
-            if (AIWarningZoneComponent.IsInWarningZone)
+            if (AIWarningZoneComponent.IsInWarningZone && launchProjectile == null)
             {
+                Debug.Log("EscapeFromExitZone");
                 return EscapeFromExitZone(escapeDirection);
             }
             else
             {
                 if (launchProjectile != null)
                 {
-                    return EscapeToFarestNotInExitZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
-                }
-                else
-                {
-                    return EscapeToFarestNotInExitZone(escapeDirection, 90f);
+                    if (isEscapingFromProjectile)
+                    {
+                        //if already escaping from projectile
+                        Debug.Log("EscapeToFarest");
+                        return EscapeToFarest(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                    }
+                    else
+                    {
+                        Debug.Log("EscapeToFarestWithWarningZone");
+                        return EscapeToFarestWithWarningZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                    }
+
                 }
             }
+
+            return null;
 
         }
 
@@ -140,7 +156,7 @@ namespace RTPuzzle
             return selectedPosition;
         }
 
-        private Vector3? EscapeToFarestNotInExitZone(Vector3 localEscapeDirection, float semiAngleEscape)
+        private Vector3? EscapeToFarestWithWarningZone(Vector3 localEscapeDirection, float semiAngleEscape)
         {
             noWarningZonehits = new NavMeshHit[5];
             noWarningZonePhysicsRay = new Ray[5];
@@ -183,6 +199,38 @@ namespace RTPuzzle
             return selectedPosition;
         }
 
+        private Vector3? EscapeToFarest(Vector3 localEscapeDirection, float semiAngleEscape)
+        {
+            noWarningZonehits = new NavMeshHit[5];
+
+            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVWorld(localEscapeDirection, escapingAgent);
+            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
+            noWarningZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
+
+
+            Nullable<Vector3> selectedPosition = null;
+            float currentDistanceToRaycastTarget = 0f;
+            for (var i = 0; i < noWarningZonehits.Length; i++)
+            {
+                if (i == 0)
+                {
+                    currentDistanceToRaycastTarget = Vector3.Distance(noWarningZonehits[i].position, escapingAgent.transform.position);
+                    selectedPosition = noWarningZonehits[i].position;
+                }
+                else
+                {
+                    var computedDistance = Vector3.Distance(noWarningZonehits[i].position, escapingAgent.transform.position);
+                    if (currentDistanceToRaycastTarget < computedDistance)
+                    {
+                        selectedPosition = noWarningZonehits[i].position;
+                        currentDistanceToRaycastTarget = computedDistance;
+                    }
+                }
+            }
+
+            return selectedPosition;
+        }
+
         private bool PhysicsRayInContactWithCollider(Ray ray, Vector3 targetPoint, Collider collider)
         {
             var raycastHits = Physics.RaycastAll(ray, Vector3.Distance(ray.origin, targetPoint));
@@ -199,7 +247,8 @@ namespace RTPuzzle
         internal void OnDestinationReached()
         {
             AIFOVManager.ResetFOV();
-            isEscaping = false;
+            isEscapingFromWarningZone = false;
+            isEscapingFromProjectile = false;
         }
 
         public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
@@ -210,7 +259,7 @@ namespace RTPuzzle
         {
             if (collisionType.IsRTPProjectile)
             {
-                isEscaping = false;
+                isEscapingFromProjectile = false;
             }
         }
 

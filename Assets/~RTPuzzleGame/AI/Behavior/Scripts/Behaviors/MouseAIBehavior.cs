@@ -40,7 +40,7 @@ namespace RTPuzzle
         public override Nullable<Vector3> TickAI()
         {
             AIWarningZoneComponentManager.TickComponent();
-            if (AIProjectileEscapeManager.IsEscaping)
+            if (AIProjectileEscapeManager.IsEscaping())
             {
                 var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
                 OnProjectileEscapeManagerUpdated(escapeDestination);
@@ -102,7 +102,7 @@ namespace RTPuzzle
         public void DebugGUITick()
         {
             GUILayout.Label("IsPatrolling : " + AIRandomPatrolComponentManager.IsPatrolling());
-            GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping);
+            GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping());
             GUILayout.Label("IsInWarningZone : " + AIWarningZoneComponentManager.IsInWarningZone());
         }
     }

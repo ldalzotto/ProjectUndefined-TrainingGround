@@ -86,7 +86,6 @@ namespace RTPuzzle
 
         public List<FOVSlice> IntersectFOV(float beginAngle, float endAngle)
         {
-            Debug.Log("Intersect called b : " + beginAngle + " e : " + endAngle);
             var inputSlices = CutInputAnglesToSlice(beginAngle, endAngle);
 
             var newSlices = new List<FOVSlice>();
@@ -109,7 +108,6 @@ namespace RTPuzzle
 
         public static FOVSlice IntersectSlice(FOVSlice sourceSlice, FOVSlice newSlice)
         {
-            Debug.Log("Calling intersect slice : " + sourceSlice.ToString() + "  " + newSlice.ToString());
             if (sourceSlice.Up())
             {
                 if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
