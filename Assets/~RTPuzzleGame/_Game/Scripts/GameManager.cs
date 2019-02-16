@@ -38,7 +38,7 @@ namespace RTPuzzle
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();
             NpcAiManager.Init();
-            TimeFlowManager.Init();
+            TimeFlowManager.Init(PuzzleId);
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
             PlayerActionManager.Init(PuzzleId);
             LaunchProjectileContainerManager.Init();
@@ -53,7 +53,7 @@ namespace RTPuzzle
             var d = Time.deltaTime;
             PlayerActionManager.Tick(d);
             PlayerManager.Tick(d);
-            TimeFlowManager.Tick();
+            TimeFlowManager.Tick(d);
             GroundEffectsManager.Tick(d);
             if (TimeFlowManager.IsAbleToFlowTime())
             {

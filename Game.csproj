@@ -145,6 +145,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\AIFOVManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\Events\PuzzleEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentsContainer.cs" />
     <Compile Include="Assets\AI\Scripts\AIComponentContainer\Scripts\AIComponentsManager.cs" />

@@ -6,21 +6,34 @@ namespace RTPuzzle
     {
 
         private TimeFlowInputManager TimeFlowInputManager;
+        private TimeFlowValueTracker TimeFlowValueTracker;
 
-        public void Init()
+        #region External Dependencies
+        private TimeFlowBarManager TimeFlowBarManager;
+        #endregion
+
+        public void Init(LevelZonesID puzzleId)
         {
             #region External Dependencies
             var RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var RTPlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
+            TimeFlowBarManager.Init(LevelConfiguration.conf[puzzleId].AvailableTimeAmount, this);
             #endregion
 
             TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
+            TimeFlowValueTracker = new TimeFlowValueTracker(LevelConfiguration.conf[puzzleId].AvailableTimeAmount);
         }
 
-        public void Tick()
+        public void Tick(float d)
         {
             TimeFlowInputManager.Tick();
+            if (TimeFlowInputManager.IsAbleToFlowTime())
+            {
+                TimeFlowValueTracker.Tick(d, TimeFlowInputManager.GetTimeAttenuation());
+                TimeFlowBarManager.Tick(TimeFlowValueTracker.CurrentAvailableTime);
+            }
         }
 
         #region Logical Conditions
@@ -33,6 +46,11 @@ namespace RTPuzzle
         public float GetTimeAttenuation()
         {
             return TimeFlowInputManager.GetTimeAttenuation();
+        }
+
+        public float GetCurrentAvailableTime()
+        {
+            return TimeFlowValueTracker.CurrentAvailableTime;
         }
     }
 
@@ -82,4 +100,22 @@ namespace RTPuzzle
             return currentTimeAttenuation;
         }
     }
+
+    class TimeFlowValueTracker
+    {
+        private float currentAvailableTime;
+
+        public TimeFlowValueTracker(float availableTimeAmount)
+        {
+            this.currentAvailableTime = availableTimeAmount;
+        }
+
+        public float CurrentAvailableTime { get => currentAvailableTime; }
+
+        public void Tick(float d, float currentTimeAttenuation)
+        {
+            currentAvailableTime -= (d * currentTimeAttenuation);
+        }
+    }
+
 }
