@@ -180,7 +180,6 @@ namespace RTPuzzle
                 }
             }
 
-
             return selectedPosition;
         }
 

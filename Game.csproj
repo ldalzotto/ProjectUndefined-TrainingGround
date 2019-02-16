@@ -147,6 +147,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundCollision.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />

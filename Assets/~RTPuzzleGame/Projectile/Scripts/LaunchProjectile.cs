@@ -11,6 +11,8 @@ namespace RTPuzzle
         private LaunchProjectileMovementManager LaunchProjectileMovementManager;
         private SphereCollisionManager SphereCollisionManager;
 
+        private PuzzleDebugModule PuzzleDebugModule;
+
         public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
         {
             this.launchProjectileInherentData = LaunchProjectileInherentData;
@@ -37,6 +39,7 @@ namespace RTPuzzle
         #region External Events
         public void OnGroundTriggerEnter()
         {
+            Debug.Log("Ground Trigger");
             SphereCollisionManager.OnGroundTriggerEnter();
         }
         #endregion
@@ -65,6 +68,7 @@ namespace RTPuzzle
         public void Tick(float d, float timeAttenuationFactor)
         {
             currentProjectilePathBeziersPosition += computedProjectileSpeed * d * timeAttenuationFactor;
+            currentProjectilePathBeziersPosition = Mathf.Clamp01(currentProjectilePathBeziersPosition);
             projectileTransform.position = ProjectilePath.ResolvePoint(currentProjectilePathBeziersPosition);
         }
 

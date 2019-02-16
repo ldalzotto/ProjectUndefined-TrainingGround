@@ -40,6 +40,7 @@ namespace RTPuzzle
         private IEnumerator DestroyLaunchProjectileAtEndOfFixedUpdate(LaunchProjectile launchProjectile)
         {
             yield return new WaitForFixedUpdate();
+            yield return new WaitForFixedUpdate();
             LaunchProjectileEventManager.OnLaunchProjectileDestroy(launchProjectile);
         }
 

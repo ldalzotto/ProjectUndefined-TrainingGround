@@ -18,6 +18,13 @@ namespace RTPuzzle
         public float EffectRange { get => effectRange; }
         public float EscapeSemiAngle { get => escapeSemiAngle; }
         public float TravelDistancePerSeconds { get => travelDistancePerSeconds; }
+
+        #region Debug purposes
+        public void SetTravelDistanceDebug(float value)
+        {
+            travelDistancePerSeconds = value;
+        }
+        #endregion
     }
 
     public enum LaunchProjectileId
