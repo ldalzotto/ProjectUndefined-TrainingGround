@@ -68,7 +68,7 @@ namespace RTPuzzle
 
                 if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
                 {
-                    ThrowProjectileManager.Tick(d);
+                    ThrowProjectileManager.Tick(d, ref LaunchProjectileRayPositionerManager);
                     LaunchProjectilePathAnimationmanager.Tick(d, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition().Value);
                 }
             }
@@ -162,8 +162,10 @@ namespace RTPuzzle
         private Material currentCursorInitialMaterial;
 
         private bool isCursorPositioned;
+        private bool isCursorInRange;
 
         public bool IsCursorPositioned { get => isCursorPositioned; }
+        public bool IsCursorInRange { get => isCursorInRange; }
 
         public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever rTPlayerManagerDataRetriever)
         {
@@ -192,10 +194,12 @@ namespace RTPuzzle
 
                 if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursor.transform.position) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
                 {
+                    isCursorInRange = false;
                     currentCursorMeshRenderer.material = MaterialContainer.Instance.LaunchProjectileUnavailableMaterial;
                 }
                 else
                 {
+                    isCursorInRange = true;
                     currentCursorMeshRenderer.material = currentCursorInitialMaterial;
                 }
 
@@ -203,6 +207,8 @@ namespace RTPuzzle
             else
             {
                 isCursorPositioned = false;
+                isCursorInRange = false;
+
                 Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.red);
                 if (currentCursor != null)
                 {
@@ -254,9 +260,9 @@ namespace RTPuzzle
 
         private LaunchProjectile currentProjectile;
 
-        public void Tick(float d)
+        public void Tick(float d, ref LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager)
         {
-            if (GameInputManager.CurrentInput.ActionButtonD())
+            if (GameInputManager.CurrentInput.ActionButtonD() && LaunchProjectileRayPositionerManager.IsCursorInRange)
             {
                 LaunchProjectileRTPActionRef.OnLaunchProjectileSpawn();
             }
@@ -301,7 +307,6 @@ namespace RTPuzzle
         }
     }
     #endregion
-
 
     #region Launch Projectile Path Animation Manager 
     class LaunchProjectilePathAnimationmanager
