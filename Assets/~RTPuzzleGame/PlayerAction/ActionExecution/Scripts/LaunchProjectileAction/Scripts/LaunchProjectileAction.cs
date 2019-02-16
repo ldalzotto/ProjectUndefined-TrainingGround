@@ -40,6 +40,7 @@ namespace RTPuzzle
             var camera = Camera.main;
             var launchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            var canvas = GameObject.FindObjectOfType<Canvas>();
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
@@ -48,11 +49,13 @@ namespace RTPuzzle
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
-               playerTransformScreen, gameInputManager);
-            LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever);
+               playerTransformScreen, gameInputManager, canvas);
+            LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever,
+                LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
+
 
             PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform,
                  configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
@@ -81,6 +84,7 @@ namespace RTPuzzle
             PuzzleEventsManager.SendEvent(new ProjectileThrowedEvent());
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectilePathAnimationmanager.OnExit();
+            LaunchProjectileScreenPositionManager.OnExit();
             isActionFinished = true;
         }
 
@@ -105,7 +109,6 @@ namespace RTPuzzle
 
         public override void GUITick()
         {
-            LaunchProjectileScreenPositionManager.GUITick();
         }
     }
 
@@ -115,15 +118,17 @@ namespace RTPuzzle
         private LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
         private GameInputManager GameInputManager;
 
+        private GameObject cursorObject;
         private Vector2 currentCursorScreenPosition;
 
         public LaunchProjectileScreenPositionManager(LaunchProjectileScreenPositionManagerComponent launchProjectileScreenPositionManagerComponent,
-            Vector2 currentCursorScreenPosition, GameInputManager GameInputManager)
+            Vector2 currentCursorScreenPosition, GameInputManager GameInputManager, Canvas gameCanvas)
         {
             LaunchProjectileScreenPositionManagerComponent = launchProjectileScreenPositionManagerComponent;
             this.currentCursorScreenPosition = currentCursorScreenPosition;
             this.GameInputManager = GameInputManager;
-
+            this.cursorObject = MonoBehaviour.Instantiate(launchProjectileScreenPositionManagerComponent.CursorObject, gameCanvas.transform);
+            UpdateCursorPosition();
         }
 
         public Vector2 CurrentCursorScreenPosition { get => currentCursorScreenPosition; }
@@ -132,13 +137,21 @@ namespace RTPuzzle
         {
             var locomotionAxis = GameInputManager.CurrentInput.LocomotionAxis();
             currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * LaunchProjectileScreenPositionManagerComponent.CursorSpeed * d);
+            UpdateCursorPosition();
         }
 
-        public void GUITick()
+        private void UpdateCursorPosition()
         {
-            GUI.DrawTexture(new Rect(currentCursorScreenPosition - new Vector2(10, 10), new Vector2(20, 20)), LaunchProjectileScreenPositionManagerComponent.DebugTexture);
+            if (this.cursorObject != null)
+            {
+                this.cursorObject.transform.position = new Vector3(currentCursorScreenPosition.x, Camera.main.pixelHeight - currentCursorScreenPosition.y, 0f);
+            }
         }
 
+        public void OnExit()
+        {
+            MonoBehaviour.Destroy(cursorObject);
+        }
 
     }
 
@@ -146,7 +159,7 @@ namespace RTPuzzle
     public class LaunchProjectileScreenPositionManagerComponent
     {
         public float CursorSpeed;
-        public Texture DebugTexture;
+        public GameObject CursorObject;
     }
     #endregion
 
@@ -157,9 +170,7 @@ namespace RTPuzzle
         private LaunchProjectileRayPositionerManagerComponent LaunchProjectileRayPositionerManagerComponent;
         private PlayerManagerDataRetriever RTPlayerManagerDataRetriever;
 
-        private GameObject currentCursor;
-        private MeshRenderer currentCursorMeshRenderer;
-        private Material currentCursorInitialMaterial;
+        private Vector3 currentCursorWorldPosition;
 
         private bool isCursorPositioned;
         private bool isCursorInRange;
@@ -167,11 +178,13 @@ namespace RTPuzzle
         public bool IsCursorPositioned { get => isCursorPositioned; }
         public bool IsCursorInRange { get => isCursorInRange; }
 
-        public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever rTPlayerManagerDataRetriever)
+        public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent,
+            PlayerManagerDataRetriever rTPlayerManagerDataRetriever, Vector2 cursorScreenPositionAtInit)
         {
             this.camera = camera;
             LaunchProjectileRayPositionerManagerComponent = launchProjectileRayPositionerManagerComponent;
             RTPlayerManagerDataRetriever = rTPlayerManagerDataRetriever;
+            Tick(0f, cursorScreenPositionAtInit);
         }
 
         public void Tick(float d, Vector2 currentScreenPositionPoint)
@@ -181,26 +194,16 @@ namespace RTPuzzle
             if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
                 isCursorPositioned = true;
+                currentCursorWorldPosition = hit.point;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
-                if (currentCursor == null)
-                {
-                    currentCursor = MonoBehaviour.Instantiate(LaunchProjectileRayPositionerManagerComponent.ProjectileCursor);
-                    currentCursorMeshRenderer = currentCursor.GetComponent<MeshRenderer>();
-                    currentCursorInitialMaterial = currentCursorMeshRenderer.material;
-                }
 
-                currentCursor.transform.position = hit.point;
-                currentCursor.transform.up = hit.normal;
-
-                if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursor.transform.position) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
+                if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursorWorldPosition) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
                 {
                     isCursorInRange = false;
-                    currentCursorMeshRenderer.material = MaterialContainer.Instance.LaunchProjectileUnavailableMaterial;
                 }
                 else
                 {
                     isCursorInRange = true;
-                    currentCursorMeshRenderer.material = currentCursorInitialMaterial;
                 }
 
             }
@@ -210,28 +213,18 @@ namespace RTPuzzle
                 isCursorInRange = false;
 
                 Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.red);
-                if (currentCursor != null)
-                {
-                    MonoBehaviour.Destroy(currentCursor);
-                }
+
             }
         }
 
         public void OnExit()
         {
-            if (currentCursor != null)
-            {
-                MonoBehaviour.Destroy(currentCursor);
-            }
+
         }
 
         public Nullable<Vector3> GetCurrentCursorPosition()
         {
-            if (currentCursor == null)
-            {
-                return null;
-            }
-            return currentCursor.transform.position;
+            return currentCursorWorldPosition;
         }
 
     }
@@ -239,7 +232,6 @@ namespace RTPuzzle
     [System.Serializable]
     public class LaunchProjectileRayPositionerManagerComponent
     {
-        public GameObject ProjectileCursor;
         public float ProjectileThrowRange;
     }
     #endregion
