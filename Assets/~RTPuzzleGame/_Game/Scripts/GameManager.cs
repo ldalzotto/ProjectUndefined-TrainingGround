@@ -60,6 +60,7 @@ namespace RTPuzzle
                 NpcAiManager.EnableAgent();
                 NpcAiManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                 LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                PlayerActionManager.TickFlowTime(d, TimeFlowManager.GetTimeAttenuation());
             }
             else
             {

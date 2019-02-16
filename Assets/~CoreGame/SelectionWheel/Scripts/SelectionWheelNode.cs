@@ -23,7 +23,6 @@ public class SelectionWheelNode : MonoBehaviour
         var wheelActionNode = obj.GetComponent<SelectionWheelNode>();
         wheelActionNode.imageComponent = obj.GetComponent<Image>();
 
-        //  wheelActionNode.imageComponent.sprite = ContextActionWheelNodeConfiguration.contextActionWheelNodeConfiguration[contextAction.ContextActionWheelNodeConfigurationId].ContextActionWheelIcon;
         wheelActionNode.imageComponent.sprite = NodeSpriteResolver.Invoke(wheelNodeData);
         wheelActionNode.WheelNodeData = wheelNodeData;
         return wheelActionNode;

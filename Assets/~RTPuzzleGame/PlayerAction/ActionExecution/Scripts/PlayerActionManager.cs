@@ -39,6 +39,11 @@ namespace RTPuzzle
             }
         }
 
+        public void TickFlowTime(float d, float timeAttenuation)
+        {
+            PlayerActionsAvailableManager.Tick(d, timeAttenuation);
+        }
+
         public void GizmoTick()
         {
             PlayerActionExecutionManager.GizmoTick();
@@ -79,12 +84,10 @@ namespace RTPuzzle
         }
         #endregion
 
-        internal RTPPlayerAction GetCurrentSelectedAction()
+        public RTPPlayerAction GetCurrentSelectedAction()
         {
             return (SelectionWheel.GetSelectedNodeData() as PlayerSelectionWheelNodeData).Data as RTPPlayerAction;
         }
-
-
 
     }
 
@@ -158,6 +161,17 @@ namespace RTPuzzle
         public PlayerActionsAvailableManager(LevelZonesID puzzleId)
         {
             currentAvailableActions = PlayerActionConfiguration.conf[puzzleId];
+        }
+
+        public void Tick(float d, float timeAttenuation)
+        {
+            foreach (var availableAction in currentAvailableActions)
+            {
+                if (availableAction.IsOnCoolDown())
+                {
+                    availableAction.CoolDownTick(d * timeAttenuation);
+                }
+            }
         }
 
         public List<RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }

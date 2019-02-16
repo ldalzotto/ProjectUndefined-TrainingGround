@@ -28,7 +28,11 @@ namespace RTPuzzle
         }
         public void OnCurrentNodeSelected()
         {
-            OnRTPPlayerActionStart(PlayerActionManager.GetCurrentSelectedAction());
+            var selectedAction = PlayerActionManager.GetCurrentSelectedAction();
+            if (!selectedAction.IsOnCoolDown())
+            {
+                OnRTPPlayerActionStart(selectedAction);
+            }
         }
         private void OnRTPPlayerActionStart(RTPPlayerAction PlayerAction)
         {

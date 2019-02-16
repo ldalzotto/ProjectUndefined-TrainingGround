@@ -8,7 +8,7 @@ namespace RTPuzzle
         public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
         private LaunchProjectileId LaunchProjectileId;
 
-        public LaunchProjectileAction(LaunchProjectileId launchProjectileId)
+        public LaunchProjectileAction(LaunchProjectileId launchProjectileId, float coolDownTime) : base(coolDownTime)
         {
             LaunchProjectileId = launchProjectileId;
         }
@@ -83,10 +83,12 @@ namespace RTPuzzle
             LaunchProjectilePathAnimationmanager.OnExit();
             isActionFinished = true;
         }
+
         public void OnLaunchProjectileSpawn()
         {
             if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
             {
+                ResetCoolDown();
                 var throwPorjectilePath = LaunchProjectilePathAnimationmanager.ThrowProjectilePath;
                 ThrowProjectileManager.OnLaunchProjectileSpawn(LaunchProjectileId, throwPorjectilePath);
             }

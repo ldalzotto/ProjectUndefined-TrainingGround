@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 namespace RTPuzzle
 {
     public abstract class RTPPlayerAction
@@ -11,6 +13,33 @@ namespace RTPuzzle
         public abstract void GUITick();
         public abstract void GizmoTick();
 
+        private float cooldownTime;
+        private float onCooldownTimeElapsed;
+
+        protected RTPPlayerAction(float cooldownTime)
+        {
+            this.cooldownTime = cooldownTime;
+            //on init, it it available
+            this.onCooldownTimeElapsed = this.cooldownTime * 2;
+        }
+
+        public void CoolDownTick(float d)
+        {
+            onCooldownTimeElapsed += d;
+            Debug.Log(GetType().ToString() + " " + onCooldownTimeElapsed);
+        }
+
+        protected void ResetCoolDown()
+        {
+            onCooldownTimeElapsed = 0f;
+        }
+
+        #region Logical Conditions
+        public bool IsOnCoolDown()
+        {
+            return onCooldownTimeElapsed < cooldownTime;
+        }
+        #endregion
     }
 }
 
