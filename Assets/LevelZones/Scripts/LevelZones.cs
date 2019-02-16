@@ -7,7 +7,7 @@ public class LevelZones
     {
         {LevelZonesID.LEVEL1, "Level1EnvironmentScene" },
         {LevelZonesID.SEWER, "SewerScene" },
-        {LevelZonesID.SEWER_RTP, "RTPuzzl_LV1" }
+        {LevelZonesID.SEWER_RTP, "RTPuzzle_LV1" }
     };
 
 }

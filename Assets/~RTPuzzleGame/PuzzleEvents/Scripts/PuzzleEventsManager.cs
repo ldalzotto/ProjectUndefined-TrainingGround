@@ -19,6 +19,11 @@ namespace RTPuzzle
                 listener.ReceivedEvend(PuzzleEvent);
             }
         }
+
+        public void OnGameOver(LevelZonesID nextZone)
+        {
+            SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
+        }
     }
 
     public interface PuzzleEventsListener

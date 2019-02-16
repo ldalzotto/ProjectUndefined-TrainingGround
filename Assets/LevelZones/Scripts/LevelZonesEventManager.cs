@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelZonesEventManager : MonoBehaviour
 {
@@ -23,8 +22,7 @@ public class LevelZonesEventManager : MonoBehaviour
     {
         isNewZoneLoading = true;
         PointOfInterestManager.OnActualZoneSwitched();
-        Coroutiner.StopAllCoroutines();
-        SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone]);
+        SceneLoadHelper.LoadScene(Coroutiner, nextZone);
         isNewZoneLoading = false;
     }
     #endregion

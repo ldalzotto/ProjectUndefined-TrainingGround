@@ -80,6 +80,7 @@
     <Compile Include="Assets\_Common\MaterialDynamicInstances\POISelectedMaterial.cs" />
     <Compile Include="Assets\_Common\Path\BeziersControlPoints.cs" />
     <Compile Include="Assets\_Common\Random\RandomHelper.cs" />
+    <Compile Include="Assets\_Common\Scene\SceneLoadHelper.cs" />
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\_Constants\StringConstants.cs" />
     <Compile Include="Assets\_Constants\TagConstants.cs" />

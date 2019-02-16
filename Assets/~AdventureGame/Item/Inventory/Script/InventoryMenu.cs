@@ -20,6 +20,10 @@ public class InventoryMenu : MonoBehaviour
     private RectTransform InventoryMenuBodyCellContainer;
     private RectTransform InventoryMenuHead;
 
+    public static InventoryMenu FindCurrentInstance()
+    {
+        return Resources.FindObjectsOfTypeAll<InventoryMenu>()[0];
+    }
 
     private void Start()
     {

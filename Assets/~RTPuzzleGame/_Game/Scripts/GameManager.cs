@@ -22,7 +22,7 @@ namespace RTPuzzle
 
         private void Start()
         {
-            InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
+            InventoryMenu = InventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();

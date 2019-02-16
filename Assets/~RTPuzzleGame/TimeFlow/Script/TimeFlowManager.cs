@@ -10,6 +10,7 @@ namespace RTPuzzle
 
         #region External Dependencies
         private TimeFlowBarManager TimeFlowBarManager;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         public void Init(LevelZonesID puzzleId)
@@ -20,6 +21,7 @@ namespace RTPuzzle
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
             TimeFlowBarManager.Init(LevelConfiguration.conf[puzzleId].AvailableTimeAmount, this);
+            PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
             TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
@@ -33,6 +35,11 @@ namespace RTPuzzle
             {
                 TimeFlowValueTracker.Tick(d, TimeFlowInputManager.GetTimeAttenuation());
                 TimeFlowBarManager.Tick(TimeFlowValueTracker.CurrentAvailableTime);
+            }
+
+            if (TimeFlowValueTracker.NoMoreTimeAvailable())
+            {
+                PuzzleEventsManager.OnGameOver(LevelZonesID.SEWER_RTP);
             }
         }
 
@@ -115,6 +122,12 @@ namespace RTPuzzle
         public void Tick(float d, float currentTimeAttenuation)
         {
             currentAvailableTime -= (d * currentTimeAttenuation);
+            currentAvailableTime = Mathf.Max(currentAvailableTime, 0f);
+        }
+
+        public bool NoMoreTimeAvailable()
+        {
+            return currentAvailableTime <= 0f;
         }
     }
 
