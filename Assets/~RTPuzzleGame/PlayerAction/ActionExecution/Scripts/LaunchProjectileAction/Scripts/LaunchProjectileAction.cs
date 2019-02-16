@@ -176,8 +176,7 @@ namespace RTPuzzle
         {
             Ray ray = camera.ScreenPointToRay(new Vector2(currentScreenPositionPoint.x, camera.pixelHeight - currentScreenPositionPoint.y));
             RaycastHit hit;
-            LayerMask mask = -1;
-            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, mask.value, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
                 isCursorPositioned = true;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
