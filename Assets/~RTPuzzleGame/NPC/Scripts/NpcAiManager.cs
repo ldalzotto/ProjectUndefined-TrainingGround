@@ -25,12 +25,13 @@ namespace RTPuzzle
         private AIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
         private PuzzleAIBehavior PuzzleAIBehavior;
+        private NPCAnimationDataManager NPCAnimationDataManager;
 
         private Coroutine destinatioNReachedCoroutine;
 
         public void Init()
         {
-
+            var animator = GetComponentInChildren<Animator>();
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
             agent.updateRotation = false;
@@ -40,6 +41,7 @@ namespace RTPuzzle
             AIDestinationMoveManager = new AIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
             PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent, aiComponent.AITargetZoneComponent);
+            NPCAnimationDataManager = new NPCAnimationDataManager(animator);
         }
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -52,6 +54,7 @@ namespace RTPuzzle
 
             AIDestinationMoveManager.Tick(d);
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
+            NPCAnimationDataManager.Tick(timeAttenuationFactor);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -138,5 +141,22 @@ namespace RTPuzzle
         {
             this.agent.speed = this.agent.speed * playerSpeedMagnitude;
         }
+    }
+
+    class NPCAnimationDataManager
+    {
+        private const string ANIM_SpeedParameter = "Speed";
+        private Animator NPCAnimator;
+
+        public NPCAnimationDataManager(Animator nPCAnimator)
+        {
+            NPCAnimator = nPCAnimator;
+        }
+
+        public void Tick(float timeAttenuation)
+        {
+            NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
+        }
+
     }
 }

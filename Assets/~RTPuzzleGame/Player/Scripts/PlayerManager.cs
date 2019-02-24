@@ -14,6 +14,7 @@ namespace RTPuzzle
 
         private PlayerInputMoveManager PlayerInputMoveManager;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
+        private PlayerAnimationDataManager PlayerAnimationDataManager;
 
         public void Init()
         {
@@ -24,10 +25,12 @@ namespace RTPuzzle
 
             var playerRigidBody = GetComponent<Rigidbody>();
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            var animator = GetComponentInChildren<Animator>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
+            PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
         }
 
         public void Tick(float d)
@@ -47,6 +50,11 @@ namespace RTPuzzle
                     }
                 }
             }
+            else
+            {
+                PlayerInputMoveManager.ResetSpeed();
+            }
+            PlayerAnimationDataManager.Tick(PlayerInputMoveManager.PlayerSpeedMagnitude);
         }
 
         public void FixedTick(float d)
