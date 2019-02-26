@@ -63,7 +63,7 @@ namespace RTPuzzle
         public Nullable<Vector3> ForceComputeEscapePoint()
         {
             isEscapingFromWarningZone = true;
-            escapeDestination = ComputeEscapePoint((AIWarningZoneComponent.TargetZone.transform.position - escapingAgent.transform.position).normalized, null);
+            escapeDestination = ComputeEscapePoint((escapingAgent.transform.position - AIWarningZoneComponent.TargetZone.transform.position).normalized, null);
             return escapeDestination;
         }
 
@@ -115,10 +115,12 @@ namespace RTPuzzle
 
         private Vector3? EscapeFromExitZone(Vector3 localEscapeDirection)
         {
+
             noWarningZonehits = new NavMeshHit[7];
             noWarningZonePhysicsRay = new Ray[7];
 
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
+           // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
 
             //TODO (Semi angle not hard coded)
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - 110, worldEscapeDirectionAngle + 110);
