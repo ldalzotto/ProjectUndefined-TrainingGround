@@ -36,7 +36,7 @@ namespace RTPuzzle
     {
         public static Dictionary<LaunchProjectileId, LaunchProjectileInherentData> conf = new Dictionary<LaunchProjectileId, LaunchProjectileInherentData>()
         {
-            {LaunchProjectileId.STONE, new LaunchProjectileInherentData(8.230255f, 90f, 30f) }
+            {LaunchProjectileId.STONE, new LaunchProjectileInherentData(8.230255f, 135f, 30f) }
         };
     }
 }

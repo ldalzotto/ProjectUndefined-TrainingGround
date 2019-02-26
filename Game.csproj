@@ -82,6 +82,7 @@
     <Compile Include="Assets\_Common\Random\RandomHelper.cs" />
     <Compile Include="Assets\_Common\Scene\SceneLoadHelper.cs" />
     <Compile Include="Assets\_Constants\AnimationConstants.cs" />
+    <Compile Include="Assets\_Constants\LayerConstants.cs" />
     <Compile Include="Assets\_Constants\StringConstants.cs" />
     <Compile Include="Assets\_Constants\TagConstants.cs" />
     <Compile Include="Assets\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPathContainer.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimationManager.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
@@ -210,6 +212,7 @@
     <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
     <None Include="Assets\_Shader\Water\WaterWaveMovement.cginc" />
     <None Include="Assets\_Shader\Common\VertexSurface.shader" />
+    <None Include="Assets\Test\WallSatter\WallShatterShader.shader" />
     <None Include="Assets\_Shader\Water\DepthColoring.cginc" />
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />
@@ -444,6 +447,9 @@
     </Reference>
     <Reference Include="UnityEditor.Graphs">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.6f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.6f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.6f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>

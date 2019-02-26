@@ -11,8 +11,10 @@ namespace RTPuzzle
         #endregion
 
         public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
+        public BodyGroundStickContactDistance BodyGroundStickContactDistance;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
+        private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
         private PlayerAnimationDataManager PlayerAnimationDataManager;
 
@@ -29,12 +31,15 @@ namespace RTPuzzle
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
         }
 
         public void Tick(float d)
         {
+            PlayerBodyPhysicsEnvironment.Tick(d);
+
             if (!PlayerActionManager.IsActionExecuting())
             {
                 if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
@@ -60,6 +65,7 @@ namespace RTPuzzle
         public void FixedTick(float d)
         {
             PlayerInputMoveManager.FixedTick(d);
+            PlayerBodyPhysicsEnvironment.FixedTick(d);
         }
 
         #region Logical Conditions
