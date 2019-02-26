@@ -11,7 +11,7 @@ namespace Tests
         private AIFOVManager InitializeFOVManager()
         {
             NavMeshAgent agent = new NavMeshAgent();
-            return new AIFOVManager(agent);
+            return new AIFOVManager(agent, null);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Tests
         [Test]
         public void AIFOVManagerTest_RaycastAngleCalculation()
         {
-            var fov = new FOV();
+            var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(200, 250) });
             var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
@@ -58,7 +58,7 @@ namespace Tests
         [Test]
         public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices()
         {
-            var fov = new FOV();
+            var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(250, 200) });
             var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
@@ -67,7 +67,7 @@ namespace Tests
         [Test]
         public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices_WithAnotherOrder()
         {
-            var fov = new FOV();
+            var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(250, 200), new FOVSlice(50, 150) });
             var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 200f, 50f, 100f }, calculatedAngles);
@@ -76,7 +76,7 @@ namespace Tests
         [Test]
         public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices_WithAnotherOrder_WithRandomness()
         {
-            var fov = new FOV();
+            var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(250, 200), new FOVSlice(50, 150) });
             var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(30, fov, true);
             for (var i = 0; i < calculatedAngles.Length; i++)

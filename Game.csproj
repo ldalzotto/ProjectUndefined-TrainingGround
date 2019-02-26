@@ -156,6 +156,9 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NpcAiManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
@@ -199,7 +202,6 @@
     <Compile Include="Assets\LevelZones\Scripts\LevelZones.cs" />
     <Compile Include="Assets\LevelZones\Scripts\LevelZonesEventManager.cs" />
     <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
-    <Compile Include="Assets\Test\TargetRibbon\RibbonTestManager.cs" />
     <None Include="Assets\_Shader\Water\MyUnityStandardShadow.cginc" />
     <None Include="Assets\_Shader\Water\WaterStandardCoreForward.cginc" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />

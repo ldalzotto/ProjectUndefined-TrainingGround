@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,10 +12,10 @@ namespace RTPuzzle
         private NavMeshAgent agent;
         private FOV aiFov;
 
-        public AIFOVManager(NavMeshAgent agent)
+        public AIFOVManager(NavMeshAgent agent, Action<FOV> onFOVChange)
         {
             this.agent = agent;
-            aiFov = new FOV();
+            aiFov = new FOV(onFOVChange);
             ResetFOV();
         }
 
@@ -37,52 +38,6 @@ namespace RTPuzzle
             aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
         }
 
-        private static List<FOVSlice> CutInputAnglesToSlice(float beginAngle, float endAngle)
-        {
-            List<FOVSlice> cuttendSlices = new List<FOVSlice>();
-            if (beginAngle < 0)
-            {
-                if (endAngle > 0)
-                {
-                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, 360f));
-                    cuttendSlices.Add(new FOVSlice(0f, endAngle));
-                }
-                else
-                {
-                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, endAngle + 360f));
-                }
-            }
-            else if (beginAngle == 0f)
-            {
-                if (endAngle < 0)
-                {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle + 360f));
-                }
-                else
-                {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
-                }
-
-            }
-            else
-            {
-                if (endAngle < 0f)
-                {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, 0f));
-                    cuttendSlices.Add(new FOVSlice(360f, endAngle + 360f));
-                }
-                else
-                {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
-                }
-            }
-            return cuttendSlices;
-        }
-
-        public void ResetFOV()
-        {
-            SetAvailableFOVRange(0f, 360f);
-        }
 
         public List<FOVSlice> IntersectFOV(float beginAngle, float endAngle)
         {
@@ -223,7 +178,8 @@ namespace RTPuzzle
             }
 
             var deltaAngle = deltaAngleRange / sampleNB;
-            var randomnessDeltaAngle = Random.Range(0, deltaAngleRange);
+            var randomnessDeltaAngle = UnityEngine.Random.Range(0, deltaAngleRange);
+
             //(3) Mapping from angle to raw range
             var anglesRayCast = new float[sampleNB];
             for (var i = 0; i < sampleNB; i++)
@@ -255,6 +211,54 @@ namespace RTPuzzle
             return anglesRayCast;
         }
 
+        private static List<FOVSlice> CutInputAnglesToSlice(float beginAngle, float endAngle)
+        {
+            List<FOVSlice> cuttendSlices = new List<FOVSlice>();
+            if (beginAngle < 0)
+            {
+                if (endAngle > 0)
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, 360f));
+                    cuttendSlices.Add(new FOVSlice(0f, endAngle));
+                }
+                else
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, endAngle + 360f));
+                }
+            }
+            else if (beginAngle == 0f)
+            {
+                if (endAngle < 0)
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle + 360f));
+                }
+                else
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
+                }
+
+            }
+            else
+            {
+                if (endAngle < 0f)
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, 0f));
+                    cuttendSlices.Add(new FOVSlice(360f, endAngle + 360f));
+                }
+                else
+                {
+                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
+                }
+            }
+            return cuttendSlices;
+        }
+
+        public void ResetFOV()
+        {
+            SetAvailableFOVRange(0f, 360f);
+        }
+
+
         public void GizmoTick()
         {
             foreach (var fovSlice in aiFov.FovSlices)
@@ -276,15 +280,24 @@ namespace RTPuzzle
             }
         }
 
+        #region Data Retrieval
+        public FOV GetFOV()
+        {
+            return aiFov;
+        }
+        #endregion
+
     }
 
 
     public class FOV
     {
         private List<FOVSlice> fovSlices;
+        private Action<FOV> onFOVChange;
 
-        public FOV()
+        public FOV(Action<FOV> onFovChange)
         {
+            this.onFOVChange = onFovChange;
             fovSlices = new List<FOVSlice>() {
               new FOVSlice(0f, 360f)
             };
@@ -295,6 +308,10 @@ namespace RTPuzzle
         public void ReplaceFovSlices(List<FOVSlice> fovSclices)
         {
             this.fovSlices = fovSclices;
+            if(this.onFOVChange != null)
+            {
+                this.onFOVChange.Invoke(this);
+            }
         }
 
         public override string ToString()

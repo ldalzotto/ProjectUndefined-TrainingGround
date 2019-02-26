@@ -18,9 +18,11 @@ namespace RTPuzzle
         private AIFOVManager AIFOVManager;
         #endregion
 
-        public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent, AIProjectileEscapeComponent AIProjectileEscapeComponent, AITargetZoneComponent AIWarningZoneComponent) : base(selfAgent)
+        public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent,
+                AIProjectileEscapeComponent AIProjectileEscapeComponent, AITargetZoneComponent AIWarningZoneComponent
+                    , Action<FOV> OnFOVChange) : base(selfAgent, OnFOVChange)
         {
-            AIFOVManager = new AIFOVManager(selfAgent);
+            AIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
             AITargetZoneComponentManager = new AITargetZoneComponentManager(selfAgent, AIWarningZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent, AIWarningZoneComponent, AIFOVManager);

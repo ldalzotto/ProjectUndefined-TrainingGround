@@ -26,6 +26,7 @@ namespace RTPuzzle
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
         private PuzzleAIBehavior PuzzleAIBehavior;
         private NPCAnimationDataManager NPCAnimationDataManager;
+        private NpcInteractionRingManager NpcFOVRingManager;
 
         private Coroutine destinatioNReachedCoroutine;
 
@@ -38,9 +39,11 @@ namespace RTPuzzle
 
             var aiComponent = GameObject.FindObjectOfType<AIComponentsManager>().Get(AiID);
 
+            NpcFOVRingManager = new NpcInteractionRingManager(this);
+
             AIDestinationMoveManager = new AIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent, aiComponent.AITargetZoneComponent);
+            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent, aiComponent.AITargetZoneComponent, OnFOVChange);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
         }
 
@@ -55,6 +58,7 @@ namespace RTPuzzle
             AIDestinationMoveManager.Tick(d);
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
+            NpcFOVRingManager.Tick(d);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -124,6 +128,19 @@ namespace RTPuzzle
         {
             yield return new WaitForNavAgentDestinationReached(agent);
             PuzzleAIBehavior.OnDestinationReached();
+        }
+
+        private void OnFOVChange(FOV currentFOV)
+        {
+            NpcFOVRingManager.OnFOVChanged(currentFOV);
+        }
+        #endregion
+
+        #region Data Retrieval
+        public Renderer[] GetRenderers()
+        {
+            return GetComponentsInChildren<Renderer>();
+
         }
         #endregion
     }

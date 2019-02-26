@@ -9,11 +9,13 @@ namespace RTPuzzle
 
         #region External Dependencies
         protected NavMeshAgent selfAgent;
+        protected Action<FOV> OnFOVChange;
         #endregion
 
-        public PuzzleAIBehavior(NavMeshAgent selfAgent)
+        public PuzzleAIBehavior(NavMeshAgent selfAgent, Action<FOV> OnFOVChange)
         {
             this.selfAgent = selfAgent;
+            this.OnFOVChange = OnFOVChange;
         }
 
         public abstract Nullable<Vector3> TickAI();
