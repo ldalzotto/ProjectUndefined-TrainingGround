@@ -47,6 +47,9 @@ Shader "Custom/Environment/Water"
 
 		_FlatWireFrameInfluence("Triangulation mess", Range(0,4)) = 0
 
+		_WaveDisplacementTexture("Wave displacement texture", 2D) = "white" {}
+		_DisplacementFactor("Displacement factor", Vector) = (0,0,0,0)
+
 		_DepthColor("Water depth color", Color) = (0,0,0,0)
 		_MinDepthDelta("Min depth delta", Range(0,0.1)) = 0
 		_MaxDepthDelta("Max depth delta", Range(0,0.1)) = 0
@@ -179,5 +182,5 @@ Shader "Custom/Environment/Water"
 		}
 	}
 		FallBack "VertexLit"
-		CustomEditor "WaterShaderGUI"
+		//CustomEditor "WaterShaderGUI"
 }

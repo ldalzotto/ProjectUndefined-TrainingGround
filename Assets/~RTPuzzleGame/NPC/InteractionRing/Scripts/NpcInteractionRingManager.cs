@@ -43,9 +43,10 @@ namespace RTPuzzle
             foreach (var fovSlice in newFOV.FovSlices)
             {
                 ComputeColorsPixel(fovSlice.BeginAngleIncluded, fovSlice.EndAngleExcluded, ref colors);
-                NpcInteractionRingType.RingTexture.SetPixels(colors);
-                NpcInteractionRingType.RingTexture.Apply(false);
+  
             }
+            NpcInteractionRingType.RingTexture.SetPixels(colors);
+            NpcInteractionRingType.RingTexture.Apply(false);
             Debug.Log("It has changed : " + newFOV.ToString());
         }
 
