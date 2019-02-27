@@ -36,6 +36,13 @@
             return onCooldownTimeElapsed < cooldownTime;
         }
         #endregion
+
+        #region Data Retrieval
+        public float GetCooldownRemainingTime()
+        {
+            return cooldownTime - onCooldownTimeElapsed;
+        }
+        #endregion
     }
 }
 

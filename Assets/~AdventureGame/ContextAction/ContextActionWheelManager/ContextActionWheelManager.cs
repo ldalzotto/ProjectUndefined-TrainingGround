@@ -226,5 +226,8 @@ public class ContextActionSelectionWheelNodeData : SelectionWheelNodeData
     }
 
     public override object Data { get => nodeContextAction; }
+
+    public override bool IsOnCoolDown => false;
+    public override float GetRemainingCooldownTime => 0f;
 }
 #endregion

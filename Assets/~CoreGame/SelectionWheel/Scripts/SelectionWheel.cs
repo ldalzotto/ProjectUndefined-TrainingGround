@@ -71,6 +71,12 @@ public class SelectionWheel : MonoBehaviour
     public void Tick(float d)
     {
         ActionWheelNodePositionManager.Tick(d, wheelNodes);
+
+        foreach(var wheelNode in wheelNodes)
+        {
+            wheelNode.Tick(d);
+        }
+
     }
 
 
