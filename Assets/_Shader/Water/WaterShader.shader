@@ -65,7 +65,6 @@ Shader "Custom/Environment/Water"
 		CGINCLUDE
 #define UNITY_SETUP_BRDF_INPUT SpecularSetup
 #define UNITY_STANDARD_SIMPLE 0
-		//#define _WAVE_DEPTH 1
 		ENDCG
 
 		SubShader
