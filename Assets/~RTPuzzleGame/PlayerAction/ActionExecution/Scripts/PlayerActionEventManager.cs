@@ -6,18 +6,15 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private PlayerActionManager PlayerActionManager;
+        private CooldownFeedManager CooldownFeedManager;
         #endregion
 
         public void Init()
         {
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
         }
-
-        public void OnRTPPlayerActionStop(RTPPlayerAction stoppedAction)
-        {
-            PlayerActionManager.StopAction();
-        }
-
+        
         public void OnWheelAwake()
         {
             PlayerActionManager.OnWheelAwake();
@@ -25,6 +22,11 @@ namespace RTPuzzle
         public void OnWheelSleep()
         {
             PlayerActionManager.OnWheelSleep();
+        }
+        public void OnRTPPlayerActionStop(RTPPlayerAction stoppedAction)
+        {
+            PlayerActionManager.StopAction();
+            CooldownFeedManager.OnRTPPlayerActionStop(stoppedAction);
         }
         public void OnCurrentNodeSelected()
         {
@@ -34,6 +36,11 @@ namespace RTPuzzle
                 OnRTPPlayerActionStart(selectedAction);
             }
         }
+        public void OnCooldownEnded(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId)
+        {
+            CooldownFeedManager.OnCooldownEnded(SelectionWheelNodeConfigurationId);
+        }
+        
         private void OnRTPPlayerActionStart(RTPPlayerAction PlayerAction)
         {
             OnWheelSleep();

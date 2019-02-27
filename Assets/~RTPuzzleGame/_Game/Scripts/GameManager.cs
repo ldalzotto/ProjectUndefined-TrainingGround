@@ -19,6 +19,7 @@ namespace RTPuzzle
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManager GroundEffectsManager;
         private LaunchProjectileContainerManager LaunchProjectileContainerManager;
+        private CooldownFeedManager CooldownFeedManager;
 
         private void Start()
         {
@@ -32,6 +33,7 @@ namespace RTPuzzle
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
             GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
             LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
 
             //Initialisations
             GameObject.FindObjectOfType<AIComponentsManager>().Init();
@@ -45,6 +47,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
             GameObject.FindObjectOfType<GroundCollision>().Init();
             GroundEffectsManager.Init();
+            CooldownFeedManager.Init();
 
         }
 
@@ -55,6 +58,8 @@ namespace RTPuzzle
             PlayerManager.Tick(d);
             TimeFlowManager.Tick(d);
             GroundEffectsManager.Tick(d);
+            CooldownFeedManager.Tick(d);
+
             if (TimeFlowManager.IsAbleToFlowTime())
             {
                 NpcAiManager.EnableAgent();

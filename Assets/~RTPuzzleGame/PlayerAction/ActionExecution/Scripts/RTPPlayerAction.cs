@@ -1,4 +1,6 @@
-﻿namespace RTPuzzle
+﻿using UnityEngine;
+
+namespace RTPuzzle
 {
     public abstract class RTPPlayerAction
     {
@@ -13,8 +15,13 @@
         private float cooldownTime;
         private float onCooldownTimeElapsed;
 
+        private CooldownEventTrackerManager CooldownEventTrackerManager;
+
         protected RTPPlayerAction(float cooldownTime)
         {
+            var playerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
+            this.CooldownEventTrackerManager = new CooldownEventTrackerManager(playerActionEventManager);
+
             this.cooldownTime = cooldownTime;
             //on init, it it available
             this.onCooldownTimeElapsed = this.cooldownTime * 2;
@@ -23,11 +30,16 @@
         public void CoolDownTick(float d)
         {
             onCooldownTimeElapsed += d;
+            if( !IsOnCoolDown())
+            {
+                this.CooldownEventTrackerManager.Tick(ActionWheelNodeConfigurationId);
+            }
         }
 
         protected void ResetCoolDown()
         {
             onCooldownTimeElapsed = 0f;
+            this.CooldownEventTrackerManager.ResetCoolDown();
         }
 
         #region Logical Conditions
@@ -44,5 +56,34 @@
         }
         #endregion
     }
+
+    #region Cooldown Tracking
+    class CooldownEventTrackerManager
+    {
+        private PlayerActionEventManager PlayerActionEventManager;
+
+        public CooldownEventTrackerManager(PlayerActionEventManager playerActionEventManager)
+        {
+            PlayerActionEventManager = playerActionEventManager;
+            this.endOfCooldownEventEmitted = false;
+        }
+
+        private bool endOfCooldownEventEmitted;
+        
+        public void Tick(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId)
+        {
+            if (!this.endOfCooldownEventEmitted)
+            {
+                this.endOfCooldownEventEmitted = true;
+                PlayerActionEventManager.OnCooldownEnded(SelectionWheelNodeConfigurationId);
+            }
+        }
+        public void ResetCoolDown()
+        {
+            this.endOfCooldownEventEmitted = false;
+        }
+
+    }
+    #endregion
 }
 

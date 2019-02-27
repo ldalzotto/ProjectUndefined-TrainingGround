@@ -151,6 +151,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundCollision.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
@@ -196,8 +198,8 @@
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\Discussion\Scripts\DiscussionWindowManager.cs" />
+    <Compile Include="Assets\Editor\Shader\WaterShaderGUI.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
-    <Compile Include="Assets\Editor\WaterShaderGUI.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\LevelZones\Scripts\LevelZones.cs" />
     <Compile Include="Assets\LevelZones\Scripts\LevelZonesEventManager.cs" />
