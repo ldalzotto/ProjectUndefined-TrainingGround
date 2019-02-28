@@ -42,7 +42,7 @@ public class ChoicePopup : MonoBehaviour
         var choicePopupTexts = new List<ChoicePopupText>();
         foreach (var choice in nextDisucssionChoiceNode.DiscussionChoices)
         {
-            var choicesPopupText = Instantiate(PrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
+            var choicesPopupText = Instantiate(AdventureGamePrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
             choicesPopupText.SetDiscussionChoice(choice);
             choicePopupTexts.Add(choicesPopupText);
         }

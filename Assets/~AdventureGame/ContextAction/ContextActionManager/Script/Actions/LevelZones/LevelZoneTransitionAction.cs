@@ -24,7 +24,7 @@ public class LevelZoneTransitionAction : AContextAction
 
     public override void FirstExecutionAction(AContextActionInput ContextActionInput)
     {
-        var LevelZonesEventManager = GameObject.FindObjectOfType<LevelZonesEventManager>();
+        var LevelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>();
         LevelZonesEventManager.OnLevelZoneChange(nextZone);
     }
 

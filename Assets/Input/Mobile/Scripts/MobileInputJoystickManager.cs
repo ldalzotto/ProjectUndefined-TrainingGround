@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+/*
 [ExecuteInEditMode]
 public class MobileInputJoystickManager : MonoBehaviour
 {
@@ -219,3 +220,4 @@ class MobileInventoryInputManager
     }
 }
 #endregion
+*/

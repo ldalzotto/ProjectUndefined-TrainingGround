@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class InventoryMenu : MonoBehaviour
+public class InventoryMenu : AInventoryMenu
 {
     private const string INVENTORY_MENU_BODY_NAME = "InventoryMenu_Body";
     private const string INVENTORY_MENU_BODY_SELECTION_NAME = "InventoryMenu_ItemSelectionArea";
@@ -19,11 +19,6 @@ public class InventoryMenu : MonoBehaviour
     private RectTransform InventoryMenuBodySelectionArea;
     private RectTransform InventoryMenuBodyCellContainer;
     private RectTransform InventoryMenuHead;
-
-    public static InventoryMenu FindCurrentInstance()
-    {
-        return Resources.FindObjectsOfTypeAll<InventoryMenu>()[0];
-    }
 
     private void Start()
     {
@@ -128,6 +123,7 @@ public class InventoryMenu : MonoBehaviour
     {
         return InventoryMenuHead;
     }
+  
 }
 
 [System.Serializable]

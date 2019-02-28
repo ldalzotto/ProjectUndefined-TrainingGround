@@ -3,7 +3,7 @@
 namespace CoreGame
 {
     #region Player Movement
-    class PlayerInputMoveManager
+    public class PlayerInputMoveManager
     {
 
         private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
@@ -83,7 +83,7 @@ namespace CoreGame
         public float SpeedMultiplicationFactor;
     }
 
-    class PlayerSpeedProcessingInput
+    public class PlayerSpeedProcessingInput
     {
         private Vector3 playerMovementOrientation;
         private float playerSpeedMagnitude;

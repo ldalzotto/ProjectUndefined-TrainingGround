@@ -8,7 +8,7 @@ public class PointOfInterestEventManager : MonoBehaviour
     private PlayerManager PlayerManager;
     private PointOfInterestManager PointOfInterestManager;
     private GhostsPOIManager GhostsPOIManager;
-    private LevelZonesEventManager levelZonesEventManager;
+    private AdventureLevelZonesEventManager levelZonesEventManager;
 
 
     public void Init()
@@ -16,16 +16,16 @@ public class PointOfInterestEventManager : MonoBehaviour
         PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
         GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-        levelZonesEventManager = GameObject.FindObjectOfType<LevelZonesEventManager>();
+        levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>();
     }
 
-    private LevelZonesEventManager LevelZonesEventManager
+    private AdventureLevelZonesEventManager LevelZonesEventManager
     {
         get
         {
             if (levelZonesEventManager == null)
             {
-                levelZonesEventManager = GameObject.FindObjectOfType<LevelZonesEventManager>(); ;
+                levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>(); ;
             }
             return levelZonesEventManager;
         }

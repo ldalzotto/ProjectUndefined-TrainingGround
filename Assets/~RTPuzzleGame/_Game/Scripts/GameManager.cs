@@ -9,7 +9,7 @@ namespace RTPuzzle
         public LevelZonesID PuzzleId;
 
         #region Persistance Dependencies
-        private InventoryMenu InventoryMenu;
+        private AInventoryMenu InventoryMenu;
         #endregion
 
         private PlayerManager PlayerManager;
@@ -23,7 +23,7 @@ namespace RTPuzzle
 
         private void Start()
         {
-            InventoryMenu = InventoryMenu.FindCurrentInstance();
+            InventoryMenu = GameObject.FindObjectOfType<AInventoryMenu>();
             InventoryMenu.gameObject.SetActive(false);
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();

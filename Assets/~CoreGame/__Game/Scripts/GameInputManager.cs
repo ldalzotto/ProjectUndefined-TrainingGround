@@ -118,21 +118,14 @@ public class GameInputManager : MonoBehaviour
 
     private class MobileInput : XInput
     {
-        private MobileInputJoystickManager modileInputJoystickManager;
-
-        public MobileInput(MobileInputJoystickManager modileInputJoystickManager)
-        {
-            this.modileInputJoystickManager = modileInputJoystickManager;
-        }
-
         public bool ActionButtonD()
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public bool ActionButtonDH()
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public Vector3 CameraRotationAxis()
@@ -142,25 +135,22 @@ public class GameInputManager : MonoBehaviour
 
         public bool CancelButtonD()
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public bool CancelButtonDH()
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         public bool InventoryButtonD()
         {
-            return modileInputJoystickManager.InventoryHeadPressed();
+            throw new NotImplementedException();
         }
-
-
 
         public Vector3 LocomotionAxis()
         {
-            var currentJoystickValues = modileInputJoystickManager.GetCurrentJoystickValue();
-            return new Vector3(currentJoystickValues.x, 0f, currentJoystickValues.y);
+            throw new System.NotImplementedException();
         }
 
         public bool TimeForwardButtonDH()

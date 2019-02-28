@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class LevelZonesEventManager : MonoBehaviour
+public class AdventureLevelZonesEventManager : MonoBehaviour
 {
-
     #region External Dependencies
     private PointOfInterestManager PointOfInterestManager;
     private Coroutiner Coroutiner;

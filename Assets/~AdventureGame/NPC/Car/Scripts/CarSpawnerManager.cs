@@ -16,7 +16,7 @@ public class CarSpawnerManager : MonoBehaviour
     #region External Events
     public void Spawn()
     {
-        var newCarManager = Instantiate(PrefabContainer.Instance.CarManagerPrefab, this.transform);
+        var newCarManager = Instantiate(AdventureGamePrefabContainer.Instance.CarManagerPrefab, this.transform);
         var randomPathId = RandomHelper.RandomBetweenEnumValue<WaypointPathId>();
         newCarManager.PrefabInit(randomPathId);
         NPCManager.AddCar(newCarManager);

@@ -24,12 +24,12 @@ public class PlayerItemHolderBehavior : PlayableBehaviour
                 BoneTransformResolved = boneObj.transform;
             }
 
-            if (PrefabContainer.InventoryItemsPrefabs != null)
+            if (AdventureGamePrefabContainer.InventoryItemsPrefabs != null)
             {
                 var scaleFactor = Vector3.one;
                 ComponentSearchHelper.ComputeScaleFactorRecursively(BoneTransformResolved, playerAnimator.transform, ref scaleFactor);
 
-                InstanciatedObject = MonoBehaviour.Instantiate(PrefabContainer.InventoryItemsPrefabs[HoldedItem].ItemModel, BoneTransformResolved.transform);
+                InstanciatedObject = MonoBehaviour.Instantiate(AdventureGamePrefabContainer.InventoryItemsPrefabs[HoldedItem].ItemModel, BoneTransformResolved.transform);
                 InstanciatedObject.transform.localScale = new Vector3(
                         InstanciatedObject.transform.localScale.x / scaleFactor.x,
                         InstanciatedObject.transform.localScale.y / scaleFactor.y,

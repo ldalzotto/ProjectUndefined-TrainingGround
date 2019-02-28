@@ -13,8 +13,8 @@ public class PlayerAnimationManager : MonoBehaviour
     #region FX Instanciation handler
     private PlayerAnimationFXHandler PlayerAnimationFXHandler;
 
-    internal PlayerAnimationDataManager PlayerAnimationDataManager { get => playerAnimationDataManager; }
-    internal PlayerIdleAnimationManager PlayerIdleAnimationManager { get => playerIdleAnimationManager; }
+    public PlayerAnimationDataManager PlayerAnimationDataManager { get => playerAnimationDataManager; }
+    public PlayerIdleAnimationManager PlayerIdleAnimationManager { get => playerIdleAnimationManager; }
     #endregion
 
     private void Start()
@@ -51,7 +51,7 @@ public class PlayerAnimationManager : MonoBehaviour
 }
 
 #region Animation
-class PlayerAnimationDataManager
+public class PlayerAnimationDataManager
 {
 
     public const string SpeedMagnitude = "Speed";
@@ -72,7 +72,7 @@ class PlayerAnimationDataManager
 
 }
 
-class PlayerIdleAnimationManager
+public class PlayerIdleAnimationManager
 {
     private PlayerIdleAnimationManagerComponent PlayerIdleAnimationManagerComponent;
     private Animator PlayerAnimator;
@@ -191,7 +191,7 @@ class PlayerAnimationFXHandler
 #endregion
 
 #region Bone Retriever
-class PlayerBoneRetriever
+public class PlayerBoneRetriever
 {
     private static Dictionary<PlayerBone, string> BoneNames = new Dictionary<PlayerBone, string>()
     {

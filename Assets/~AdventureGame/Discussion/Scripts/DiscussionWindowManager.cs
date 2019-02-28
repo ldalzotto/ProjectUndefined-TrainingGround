@@ -68,7 +68,7 @@ public class DiscussionWindowManager : MonoBehaviour
     #region External Events
     public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
     {
-        OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
+        OpenedDiscussion = Instantiate(AdventureGamePrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
         OpenedDiscussion.transform.localScale = Vector3.zero;
         OpenedDiscussion.InitializeDependencies();
         OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position);
@@ -81,7 +81,7 @@ public class DiscussionWindowManager : MonoBehaviour
 
     public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
     {
-        OpenedChoicePopup = Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
+        OpenedChoicePopup = Instantiate(AdventureGamePrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
         OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero);
     }
 

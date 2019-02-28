@@ -1,5 +1,5 @@
 ﻿#if UNITY_EDITOR
-
+/*
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -38,5 +38,5 @@ public class TimelineGraphsJSONSerialization : EditorWindow
         EditorGUILayout.EndVertical();
     }
 }
-
+*/
 #endif

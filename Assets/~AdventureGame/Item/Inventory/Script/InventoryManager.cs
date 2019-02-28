@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
 
         InventoryItemsContainer = transform.Find(INVENTORY_ITEMS_CONTAINER_NAME).gameObject;
 
-        InventoryMenu = InventoryMenu.FindCurrentInstance();
+        InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
         InventoryItemManager = new InventoryItemManager(InventoryItemsContainer);
         InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
         InventoryStateWorkflowManager = new InventoryStateWorkflowManager();

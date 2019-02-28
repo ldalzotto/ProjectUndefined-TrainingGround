@@ -10,23 +10,8 @@ public class PrefabContainer : MonoBehaviour
     public GameObject InventoryMenuCellPrefab;
     public GameObject GiveActionMiniaturePrefab;
 
-    [Header("Discussion UI Prefabs")]
-    public DiscussionWindow DiscussionUIPrefab;
-    public ChoicePopup ChoicePopupPrefab;
-    public ChoicePopupText ChoicePopupTextPrefab;
-
     [Header("Player FX")]
     public TriggerableEffect PlayerSmokeEffectPrefab;
-
-    [Header("Inventory Items Prefabs")]
-    public Item IdCardItem;
-    public Item CrowBarItem;
-
-    [Header("Item Grab Popup")]
-    public ItemReceivedPopup ItemReceivedPopup;
-
-    [Header("Car Prefab")]
-    public CarManager CarManagerPrefab;
 
     [Header("Projectile Prefabs")]
     [Space(20)]
@@ -42,8 +27,6 @@ public class PrefabContainer : MonoBehaviour
     public RTPuzzle.CooldownFeedManager CooldownFeedManager;
     public RTPuzzle.CooldownFeedLineType CooldownFeedLineType;
 
-    public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
-
     public static PrefabContainer Instance
     {
         get
@@ -54,15 +37,6 @@ public class PrefabContainer : MonoBehaviour
             }
             return instance;
         }
-    }
-
-    private void Awake()
-    {
-        InventoryItemsPrefabs = new Dictionary<ItemID, Item>()
-        {
-            {ItemID.ID_CARD,  IdCardItem},
-            {ItemID.CROWBAR,  CrowBarItem}
-        };
     }
 
 }

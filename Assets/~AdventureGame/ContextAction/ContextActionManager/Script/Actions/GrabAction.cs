@@ -23,7 +23,7 @@ public class GrabAction : AContextAction
 
     public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
     {
-        Item = PrefabContainer.InventoryItemsPrefabs[itemId];
+        Item = AdventureGamePrefabContainer.InventoryItemsPrefabs[itemId];
         this.deletePOIOnGrab = deletePOIOnGrab;
     }
 
@@ -115,7 +115,7 @@ class ItemReceivedPopupManager
 
     public void ResetState()
     {
-        ItemReceivedPopup = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, GameCanvas.transform);
+        ItemReceivedPopup = MonoBehaviour.Instantiate(AdventureGamePrefabContainer.Instance.ItemReceivedPopup, GameCanvas.transform);
         ItemReceivedPopup.Init(involvedItem);
         isOpened = true;
     }
