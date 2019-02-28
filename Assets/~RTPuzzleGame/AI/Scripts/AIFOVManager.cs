@@ -268,14 +268,16 @@ namespace RTPuzzle
                 Gizmos.DrawRay(agent.transform.position, beginAxisDirection);
                 var style = new GUIStyle();
                 style.normal.textColor = Color.blue;
+#if UNITY_EDITOR
                 Handles.Label(agent.transform.position + beginAxisDirection, "Begin (" + aiFov.FovSlices.IndexOf(fovSlice) + ")", style);
-
+#endif
                 Gizmos.color = Color.red;
                 style.normal.textColor = Color.red;
                 var endAxisDirection = Quaternion.AngleAxis(-fovSlice.EndAngleExcluded, agent.transform.up) * (Vector3.forward * 10);
+#if UNITY_EDITOR
                 Gizmos.DrawRay(agent.transform.position, endAxisDirection);
                 Handles.Label(agent.transform.position + endAxisDirection, "End (" + aiFov.FovSlices.IndexOf(fovSlice) + ")", style);
-
+#endif
                 Gizmos.color = Color.white;
             }
         }
