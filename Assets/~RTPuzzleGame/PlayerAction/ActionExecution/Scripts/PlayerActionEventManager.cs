@@ -36,9 +36,9 @@ namespace RTPuzzle
                 OnRTPPlayerActionStart(selectedAction);
             }
         }
-        public void OnCooldownEnded(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId)
+        public void OnCooldownEnded(RTPPlayerAction involvedAction)
         {
-            CooldownFeedManager.OnCooldownEnded(SelectionWheelNodeConfigurationId);
+            CooldownFeedManager.OnCooldownEnded(involvedAction);
         }
         
         private void OnRTPPlayerActionStart(RTPPlayerAction PlayerAction)

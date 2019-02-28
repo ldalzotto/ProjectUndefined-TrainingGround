@@ -32,7 +32,7 @@ namespace RTPuzzle
             onCooldownTimeElapsed += d;
             if( !IsOnCoolDown())
             {
-                this.CooldownEventTrackerManager.Tick(ActionWheelNodeConfigurationId);
+                this.CooldownEventTrackerManager.Tick(this);
             }
         }
 
@@ -70,12 +70,12 @@ namespace RTPuzzle
 
         private bool endOfCooldownEventEmitted;
         
-        public void Tick(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId)
+        public void Tick(RTPPlayerAction involvedAction)
         {
             if (!this.endOfCooldownEventEmitted)
             {
                 this.endOfCooldownEventEmitted = true;
-                PlayerActionEventManager.OnCooldownEnded(SelectionWheelNodeConfigurationId);
+                PlayerActionEventManager.OnCooldownEnded(involvedAction);
             }
         }
         public void ResetCoolDown()

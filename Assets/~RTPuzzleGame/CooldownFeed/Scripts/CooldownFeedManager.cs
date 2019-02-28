@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
 {
     public class CooldownFeedManager : MonoBehaviour
     {
-        private const string VERTICAL_FEED_OBJECT_NAME = "VerticalFeed";
-
         private CooldownFeedLineManager CooldownFeedLineManager;
-
-        #region Internal dependencies
-        private GameObject verticalFeedObject;
-        #endregion
+        private AnimatedLayout AnimatedLayout;
 
         public void Init()
         {
-            verticalFeedObject = gameObject.FindChildObjectRecursively(VERTICAL_FEED_OBJECT_NAME);
+            AnimatedLayout = GetComponent<AnimatedLayout>();
+            AnimatedLayout.Init();
+
             CooldownFeedLineManager = new CooldownFeedLineManager();
         }
 
         public void Tick(float d)
         {
-            CooldownFeedLineManager.Tick();
+            AnimatedLayout.Tick(d);
+            CooldownFeedLineManager.Tick(d);
         }
 
         #region External Events
@@ -33,16 +30,21 @@ namespace RTPuzzle
                 OnCooldownFeedLineAdd(playerAction);
             }
         }
-        public void OnCooldownEnded(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId)
+        public void OnCooldownEnded(RTPPlayerAction involvedAction)
         {
-            CooldownFeedLineManager.OnCooldownEnded(SelectionWheelNodeConfigurationId);
+            var deletedLine = CooldownFeedLineManager.OnCooldownEnded(involvedAction);
+            if(deletedLine != null)
+            {
+                AnimatedLayout.DeleteLayoutElement(deletedLine.AnimatedLayoutCell);
+            }
         }
         #endregion
 
         #region Internal Events
         private void OnCooldownFeedLineAdd(RTPPlayerAction playerAction)
         {
-            CooldownFeedLineManager.OnCooldownFeedLineAdd(playerAction, verticalFeedObject.transform);
+            var addedLine = CooldownFeedLineManager.OnCooldownFeedLineAdd(playerAction, transform);
+            AnimatedLayout.AddLayoutElement(addedLine.AnimatedLayoutCell, 0);
         }
         #endregion
     }
@@ -52,25 +54,29 @@ namespace RTPuzzle
 
         private List<CooldownFeedLineType> cooldownFeedLines = new List<CooldownFeedLineType>();
 
-        public void OnCooldownFeedLineAdd(RTPPlayerAction playerAction, Transform verticalFeedTransform)
+        public List<CooldownFeedLineType> CooldownFeedLines { get => cooldownFeedLines; }
+
+        public CooldownFeedLineType OnCooldownFeedLineAdd(RTPPlayerAction playerAction, Transform verticalFeedTransform)
         {
-            cooldownFeedLines.Add(CooldownFeedLineType.Instanciate(verticalFeedTransform, playerAction));
+            var addedLine = CooldownFeedLineType.Instanciate(verticalFeedTransform, playerAction);
+            cooldownFeedLines.Add(addedLine);
+            return addedLine;
         }
 
-        public void Tick()
+        public void Tick(float d)
         {
-            foreach(var cooldownFeedLine in cooldownFeedLines)
+            foreach (var cooldownFeedLine in cooldownFeedLines)
             {
-                cooldownFeedLine.Tick();
+                cooldownFeedLine.Tick(d);
             }
         }
 
-        public void OnCooldownEnded(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId)
+        public CooldownFeedLineType OnCooldownEnded(RTPPlayerAction involvedAction)
         {
             CooldownFeedLineType matchedCooldownFeedLine = null;
-            foreach(var cooldownFeedLine in cooldownFeedLines)
+            foreach (var cooldownFeedLine in cooldownFeedLines)
             {
-                if (cooldownFeedLine.AreActionEquals(SelectionWheelNodeConfigurationId))
+                if (cooldownFeedLine.AreActionEquals(involvedAction))
                 {
                     matchedCooldownFeedLine = cooldownFeedLine;
                     break;
@@ -79,8 +85,8 @@ namespace RTPuzzle
             if (matchedCooldownFeedLine != null)
             {
                 cooldownFeedLines.Remove(matchedCooldownFeedLine);
-                MonoBehaviour.Destroy(matchedCooldownFeedLine.gameObject);
             }
+            return matchedCooldownFeedLine;
         }
 
     }
