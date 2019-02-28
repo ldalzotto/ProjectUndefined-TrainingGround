@@ -1,0 +1,27 @@
+﻿using UnityEngine;
+
+namespace RTPuzzle
+{
+
+    public class AIComponentsContainer : MonoBehaviour
+    {
+        public AiID AiID;
+
+        public AIComponents InitAIComponents()
+        {
+            var aiComponents = new AIComponents();
+            var initializeMethodName = nameof(AIComponentInitializerMessageReceiver.InitializeContainer);
+            BroadcastMessage(initializeMethodName, aiComponents);
+            return aiComponents;
+        }
+
+    }
+
+
+    public class AIComponents
+    {
+        public AIRandomPatrolComponent AIRandomPatrolComponent;
+        public RTPuzzle.AIProjectileEscapeComponent AIProjectileEscapeComponent;
+        public RTPuzzle.AITargetZoneComponent AITargetZoneComponent;
+    }
+}
