@@ -1,118 +1,122 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class DiscussionWindowManager : MonoBehaviour
+namespace AdventureGame
 {
-    #region External Dependencies
-    private Canvas GameCanvas;
-    #endregion
 
-    private DicussionInputManager DicussionInputManager;
-    private DiscussionWindow OpenedDiscussion;
-    private ChoicePopup OpenedChoicePopup;
-    private DiscussionEventHandler DiscussionEventHandler;
-
-    private void Start()
+    public class DiscussionWindowManager : MonoBehaviour
     {
         #region External Dependencies
-        GameCanvas = GameObject.FindObjectOfType<Canvas>();
-        var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        private Canvas GameCanvas;
         #endregion
 
-        DicussionInputManager = new DicussionInputManager(GameInputManager);
-        DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
-    }
+        private DicussionInputManager DicussionInputManager;
+        private DiscussionWindow OpenedDiscussion;
+        private ChoicePopup OpenedChoicePopup;
+        private DiscussionEventHandler DiscussionEventHandler;
 
-    public void Tick(float d)
-    {
-        if (OpenedDiscussion != null && !OpenedDiscussion.IsExitAnimationPlaying())
+        private void Start()
         {
-            if (OpenedChoicePopup != null)
+            #region External Dependencies
+            GameCanvas = GameObject.FindObjectOfType<Canvas>();
+            var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            #endregion
+
+            DicussionInputManager = new DicussionInputManager(GameInputManager);
+            DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+        }
+
+        public void Tick(float d)
+        {
+            if (OpenedDiscussion != null && !OpenedDiscussion.IsExitAnimationPlaying())
             {
-                OpenedChoicePopup.Tick(d);
-                if (DicussionInputManager.Tick())
+                if (OpenedChoicePopup != null)
                 {
-                    var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
-                    DiscussionEventHandler.OnDiscussionChoiceEnd(selectedChoice.Text);
-                }
-            }
-            else
-            {
-                OpenedDiscussion.Tick(d);
-                if (!OpenedDiscussion.IsWriting())
-                {
+                    OpenedChoicePopup.Tick(d);
                     if (DicussionInputManager.Tick())
                     {
-                        if (OpenedDiscussion.IsWaitingForCloseInput())
+                        var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
+                        DiscussionEventHandler.OnDiscussionChoiceEnd(selectedChoice.Text);
+                    }
+                }
+                else
+                {
+                    OpenedDiscussion.Tick(d);
+                    if (!OpenedDiscussion.IsWriting())
+                    {
+                        if (DicussionInputManager.Tick())
                         {
-                            DiscussionEventHandler.OnDiscussionTextNodeEnd();
-                        }
-                        else if (OpenedDiscussion.IsWaitingForContinueInput())
-                        {
-                            OpenedDiscussion.ProcessDiscussionContinue();
+                            if (OpenedDiscussion.IsWaitingForCloseInput())
+                            {
+                                DiscussionEventHandler.OnDiscussionTextNodeEnd();
+                            }
+                            else if (OpenedDiscussion.IsWaitingForContinueInput())
+                            {
+                                OpenedDiscussion.ProcessDiscussionContinue();
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
-    public void GUITick()
-    {
-        if (OpenedDiscussion != null)
+        public void GUITick()
         {
-            OpenedDiscussion.OnGUIDraw();
+            if (OpenedDiscussion != null)
+            {
+                OpenedDiscussion.OnGUIDraw();
+            }
         }
-    }
 
-    #region External Events
-    public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
-    {
-        OpenedDiscussion = Instantiate(AdventureGamePrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
-        OpenedDiscussion.transform.localScale = Vector3.zero;
-        OpenedDiscussion.InitializeDependencies();
-        OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position);
-    }
-
-    public IEnumerator PlayDiscussionCloseAnimation()
-    {
-        return OpenedDiscussion.PlayDiscussionCloseAnimation();
-    }
-
-    public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
-    {
-        OpenedChoicePopup = Instantiate(AdventureGamePrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
-        OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero);
-    }
-
-    public void OnDiscussionWindowSleep()
-    {
-        OpenedDiscussion.OnDiscussionWindowSleep();
-
-        if (OpenedChoicePopup != null)
+        #region External Events
+        public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
         {
-            OpenedChoicePopup = null;
+            OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
+            OpenedDiscussion.transform.localScale = Vector3.zero;
+            OpenedDiscussion.InitializeDependencies();
+            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position);
         }
-        Destroy(OpenedDiscussion.gameObject);
-        OpenedDiscussion = null;
+
+        public IEnumerator PlayDiscussionCloseAnimation()
+        {
+            return OpenedDiscussion.PlayDiscussionCloseAnimation();
+        }
+
+        public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
+        {
+            OpenedChoicePopup = Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
+            OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero);
+        }
+
+        public void OnDiscussionWindowSleep()
+        {
+            OpenedDiscussion.OnDiscussionWindowSleep();
+
+            if (OpenedChoicePopup != null)
+            {
+                OpenedChoicePopup = null;
+            }
+            Destroy(OpenedDiscussion.gameObject);
+            OpenedDiscussion = null;
+        }
+        #endregion
+
+    }
+
+    #region Discussion Input Handling
+    class DicussionInputManager
+    {
+        private GameInputManager GameInputManager;
+
+        public DicussionInputManager(GameInputManager gameInputManager)
+        {
+            GameInputManager = gameInputManager;
+        }
+
+        public bool Tick()
+        {
+            return GameInputManager.CurrentInput.ActionButtonD();
+        }
     }
     #endregion
-
 }
-
-#region Discussion Input Handling
-class DicussionInputManager
-{
-    private GameInputManager GameInputManager;
-
-    public DicussionInputManager(GameInputManager gameInputManager)
-    {
-        GameInputManager = gameInputManager;
-    }
-
-    public bool Tick()
-    {
-        return GameInputManager.CurrentInput.ActionButtonD();
-    }
-}
-#endregion

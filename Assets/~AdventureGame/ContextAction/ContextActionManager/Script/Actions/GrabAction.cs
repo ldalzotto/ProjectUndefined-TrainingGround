@@ -1,137 +1,141 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class GrabAction : AContextAction
+namespace AdventureGame
 {
-    public Item Item;
-    private bool deletePOIOnGrab;
 
-    private GrabActionInput grabActionInput;
-
-    #region External Dependencies
-    private InventoryEventManager InventoryEventManager;
-    private PointOfInterestEventManager PointOfInterestEventManager;
-    #endregion
-
-    #region Internal Dependencies
-    private PointOfInterestType associatedPOI;
-    private ItemReceivedPopupManager ItemReceivedPopupManager;
-
-    public PointOfInterestType AssociatedPOI { get => associatedPOI; }
-
-    #endregion
-
-    public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
+    public class GrabAction : AContextAction
     {
-        Item = AdventureGamePrefabContainer.InventoryItemsPrefabs[itemId];
-        this.deletePOIOnGrab = deletePOIOnGrab;
-    }
+        public Item Item;
+        private bool deletePOIOnGrab;
 
-    public override bool ComputeFinishedConditions()
-    {
-        return !isItemPopupOpen();
-    }
-
-    public override void FirstExecutionAction(AContextActionInput ContextActionInput)
-    {
+        private GrabActionInput grabActionInput;
 
         #region External Dependencies
-        InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-        PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
-        var GameCanvas = GameObject.FindObjectOfType<Canvas>();
-        var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        private InventoryEventManager InventoryEventManager;
+        private PointOfInterestEventManager PointOfInterestEventManager;
         #endregion
 
-        ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, Item);
+        #region Internal Dependencies
+        private PointOfInterestType associatedPOI;
+        private ItemReceivedPopupManager ItemReceivedPopupManager;
 
+        public PointOfInterestType AssociatedPOI { get => associatedPOI; }
 
-        ItemReceivedPopupManager.ResetState();
-        grabActionInput = (GrabActionInput)ContextActionInput;
-        this.associatedPOI = grabActionInput.TargetedPOI;
-    }
+        #endregion
 
-    public override void Tick(float d)
-    {
-        if (isItemPopupOpen())
+        public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
         {
-            ItemReceivedPopupManager.Tick(d);
+            Item = PrefabContainer.InventoryItemsPrefabs[itemId];
+            this.deletePOIOnGrab = deletePOIOnGrab;
         }
-        else
+
+        public override bool ComputeFinishedConditions()
         {
-            InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
+            return !isItemPopupOpen();
         }
-    }
 
-    public override void AfterFinishedEventProcessed()
-    {
-        if (deletePOIOnGrab)
+        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
         {
-            PointOfInterestEventManager.DestroyPOI(this.associatedPOI);
+
+            #region External Dependencies
+            InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            var GameCanvas = GameObject.FindObjectOfType<Canvas>();
+            var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            #endregion
+
+            ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, Item);
+
+
+            ItemReceivedPopupManager.ResetState();
+            grabActionInput = (GrabActionInput)ContextActionInput;
+            this.associatedPOI = grabActionInput.TargetedPOI;
         }
-    }
 
-    #region Logical Conditions
-    private bool isItemPopupOpen()
-    {
-        return ItemReceivedPopupManager.IsOpened;
-    }
-    #endregion
-}
-
-class ItemReceivedPopupManager
-{
-    private Canvas GameCanvas;
-    private ItemReceivedPopup ItemReceivedPopup;
-    private GameInputManager gameInputManager;
-    private Item involvedItem;
-
-    public ItemReceivedPopupManager(Canvas gameCanvas, GameInputManager gameInputManager, Item involvedItem)
-    {
-        this.GameCanvas = gameCanvas;
-        this.gameInputManager = gameInputManager;
-        this.involvedItem = involvedItem;
-    }
-
-    private bool isOpened;
-
-    public bool IsOpened { get => isOpened; }
-
-    public void Tick(float d)
-    {
-        ItemReceivedPopup.Tick(d);
-        if (gameInputManager.CurrentInput.ActionButtonD())
+        public override void Tick(float d)
         {
-            ItemReceivedPopup.StartCoroutine(ExitPopup());
+            if (isItemPopupOpen())
+            {
+                ItemReceivedPopupManager.Tick(d);
+            }
+            else
+            {
+                InventoryEventManager.OnAddItem(grabActionInput.GrabbedItem);
+            }
+        }
+
+        public override void AfterFinishedEventProcessed()
+        {
+            if (deletePOIOnGrab)
+            {
+                PointOfInterestEventManager.DestroyPOI(this.associatedPOI);
+            }
+        }
+
+        #region Logical Conditions
+        private bool isItemPopupOpen()
+        {
+            return ItemReceivedPopupManager.IsOpened;
+        }
+        #endregion
+    }
+
+    class ItemReceivedPopupManager
+    {
+        private Canvas GameCanvas;
+        private ItemReceivedPopup ItemReceivedPopup;
+        private GameInputManager gameInputManager;
+        private Item involvedItem;
+
+        public ItemReceivedPopupManager(Canvas gameCanvas, GameInputManager gameInputManager, Item involvedItem)
+        {
+            this.GameCanvas = gameCanvas;
+            this.gameInputManager = gameInputManager;
+            this.involvedItem = involvedItem;
+        }
+
+        private bool isOpened;
+
+        public bool IsOpened { get => isOpened; }
+
+        public void Tick(float d)
+        {
+            ItemReceivedPopup.Tick(d);
+            if (gameInputManager.CurrentInput.ActionButtonD())
+            {
+                ItemReceivedPopup.StartCoroutine(ExitPopup());
+            }
+        }
+
+        private IEnumerator ExitPopup()
+        {
+            yield return ItemReceivedPopup.StartCoroutine(ItemReceivedPopup.OnClose());
+            isOpened = false;
+            Debug.Log("Destroy : " + ItemReceivedPopup.name);
+            MonoBehaviour.Destroy(ItemReceivedPopup.gameObject);
+        }
+
+        public void ResetState()
+        {
+            ItemReceivedPopup = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, GameCanvas.transform);
+            ItemReceivedPopup.Init(involvedItem);
+            isOpened = true;
         }
     }
 
-    private IEnumerator ExitPopup()
+    public class GrabActionInput : AContextActionInput
     {
-        yield return ItemReceivedPopup.StartCoroutine(ItemReceivedPopup.OnClose());
-        isOpened = false;
-        Debug.Log("Destroy : " + ItemReceivedPopup.name);
-        MonoBehaviour.Destroy(ItemReceivedPopup.gameObject);
+        private PointOfInterestType targetedPOI;
+        private Item grabbedItem;
+
+        public GrabActionInput(PointOfInterestType targetedPOI, Item grabbedItem)
+        {
+            this.targetedPOI = targetedPOI;
+            this.grabbedItem = grabbedItem;
+        }
+
+        public Item GrabbedItem { get => grabbedItem; }
+        public PointOfInterestType TargetedPOI { get => targetedPOI; }
     }
-
-    public void ResetState()
-    {
-        ItemReceivedPopup = MonoBehaviour.Instantiate(AdventureGamePrefabContainer.Instance.ItemReceivedPopup, GameCanvas.transform);
-        ItemReceivedPopup.Init(involvedItem);
-        isOpened = true;
-    }
-}
-
-public class GrabActionInput : AContextActionInput
-{
-    private PointOfInterestType targetedPOI;
-    private Item grabbedItem;
-
-    public GrabActionInput(PointOfInterestType targetedPOI, Item grabbedItem)
-    {
-        this.targetedPOI = targetedPOI;
-        this.grabbedItem = grabbedItem;
-    }
-
-    public Item GrabbedItem { get => grabbedItem; }
-    public PointOfInterestType TargetedPOI { get => targetedPOI; }
 }

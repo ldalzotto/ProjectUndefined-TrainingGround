@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 
-public class ItemResourceResolver
+namespace AdventureGame
 {
-
-    private const string ITEM_ICON_RESOURCE_BASE_PATH = "Item/ItemObject/Icon/";
-
-    public static Sprite ResolveItemInventoryIcon(Item item)
+    public class ItemResourceResolver
     {
-        return Resources.Load<Sprite>(ITEM_ICON_RESOURCE_BASE_PATH + item.name + "_icon");
+
+        private const string ITEM_ICON_RESOURCE_BASE_PATH = "Item/ItemObject/Icon/";
+
+        public static Sprite ResolveItemInventoryIcon(Item item)
+        {
+            return Resources.Load<Sprite>(ITEM_ICON_RESOURCE_BASE_PATH + item.name + "_icon");
+        }
     }
+
 }

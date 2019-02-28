@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 
-public class PointOfInterestContextDataContainer : MonoBehaviour
+namespace AdventureGame
 {
-    private CutsceneTimelinePOIData[] cutsceneTimelinePOIDatas;
-
-    public CutsceneTimelinePOIData[] CutsceneTimelinePOIDatas { get => cutsceneTimelinePOIDatas; }
-
-    private void Start()
+    public class PointOfInterestContextDataContainer : MonoBehaviour
     {
-        cutsceneTimelinePOIDatas = GetComponentsInChildren<CutsceneTimelinePOIData>();
-    }
-}
+        private CutsceneTimelinePOIData[] cutsceneTimelinePOIDatas;
 
+        public CutsceneTimelinePOIData[] CutsceneTimelinePOIDatas { get => cutsceneTimelinePOIDatas; }
+
+        private void Start()
+        {
+            cutsceneTimelinePOIDatas = GetComponentsInChildren<CutsceneTimelinePOIData>();
+        }
+    }
+
+}

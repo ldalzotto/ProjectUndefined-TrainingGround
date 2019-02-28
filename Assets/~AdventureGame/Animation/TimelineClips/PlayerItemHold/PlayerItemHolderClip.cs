@@ -2,16 +2,19 @@
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-public class PlayerItemHolderClip : PlayableAsset, ITimelineClipAsset
+namespace AdventureGame
 {
-
-    public PlayerItemHolderBehavior PlayerItemHolderBehavior = new PlayerItemHolderBehavior();
-
-    public ClipCaps clipCaps => ClipCaps.None;
-
-    public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+    public class PlayerItemHolderClip : PlayableAsset, ITimelineClipAsset
     {
-        return ScriptPlayable<PlayerItemHolderBehavior>.Create(graph, PlayerItemHolderBehavior);
-    }
 
+        public PlayerItemHolderBehavior PlayerItemHolderBehavior = new PlayerItemHolderBehavior();
+
+        public ClipCaps clipCaps => ClipCaps.None;
+
+        public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
+        {
+            return ScriptPlayable<PlayerItemHolderBehavior>.Create(graph, PlayerItemHolderBehavior);
+        }
+
+    }
 }

@@ -1,21 +1,26 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PlayerManagerEventHandler : MonoBehaviour
+namespace AdventureGame
 {
 
-    #region External Dependencies
-    private PlayerManager PlayerManager;
-    #endregion
-
-    void Start()
+    public class PlayerManagerEventHandler : MonoBehaviour
     {
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-    }
 
-    public IEnumerator OnSetDestinationCoRoutine(Vector3 destination)
-    {
-        return PlayerManager.SetAIDestinationCoRoutine(destination);
+        #region External Dependencies
+        private PlayerManager PlayerManager;
+        #endregion
+
+        void Start()
+        {
+            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        }
+
+        public IEnumerator OnSetDestinationCoRoutine(Vector3 destination)
+        {
+            return PlayerManager.SetAIDestinationCoRoutine(destination);
+        }
+
     }
 
 }

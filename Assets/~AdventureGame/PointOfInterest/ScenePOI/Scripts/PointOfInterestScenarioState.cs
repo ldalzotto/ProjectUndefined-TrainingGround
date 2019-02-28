@@ -2,69 +2,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointOfInterestScenarioState
+namespace AdventureGame
 {
-    public ReceivableItemsComponent ReceivableItemsComponent;
-    public DiscussionTree DiscussionTree;
-    public InteractableItemsComponent InteractableItemsComponent;
-}
 
-
-public abstract class POIIdContainer<E> where E : Enum
-{
-    public List<E> containedIDs = new List<E>();
-    public bool IsElligible(E ID)
+    public class PointOfInterestScenarioState
     {
-        return containedIDs.Contains(ID);
-    }
-    public void Add(E ID)
-    {
-        containedIDs.Add(ID);
-    }
-    public void Remove(E ID)
-    {
-        containedIDs.Remove(ID);
-    }
-}
-
-#region Receive Items
-[System.Serializable]
-public class ReceivableItemsComponent : POIIdContainer<ItemID> { }
-#endregion
-
-#region Interactable Items
-[System.Serializable]
-public class InteractableItemsComponent : POIIdContainer<ItemID> { }
-#endregion
-
-#region Model State
-public class PointOfInterestModelState
-{
-    private bool isDestroyed;
-    private Dictionary<string, bool> MeshRendererStates = new Dictionary<string, bool>();
-
-    public bool IsDestroyed { get => isDestroyed; set => isDestroyed = value; }
-
-    public PointOfInterestModelState(Renderer[] renderers)
-    {
-        SynchGhostPOIRenderers(renderers);
+        public ReceivableItemsComponent ReceivableItemsComponent;
+        public DiscussionTree DiscussionTree;
+        public InteractableItemsComponent InteractableItemsComponent;
     }
 
-    public void SyncScenePOIRenderers(Renderer[] scenePOIRenderers)
+
+    public abstract class POIIdContainer<E> where E : Enum
     {
-        for (var i = 0; i < scenePOIRenderers.Length; i++)
+        public List<E> containedIDs = new List<E>();
+        public bool IsElligible(E ID)
         {
-            scenePOIRenderers[i].enabled = MeshRendererStates[scenePOIRenderers[i].name];
+            return containedIDs.Contains(ID);
+        }
+        public void Add(E ID)
+        {
+            containedIDs.Add(ID);
+        }
+        public void Remove(E ID)
+        {
+            containedIDs.Remove(ID);
         }
     }
 
-    public void SynchGhostPOIRenderers(Renderer[] scenePOIRenderers)
+    #region Receive Items
+    [System.Serializable]
+    public class ReceivableItemsComponent : POIIdContainer<ItemID> { }
+    #endregion
+
+    #region Interactable Items
+    [System.Serializable]
+    public class InteractableItemsComponent : POIIdContainer<ItemID> { }
+    #endregion
+
+    #region Model State
+    public class PointOfInterestModelState
     {
-        MeshRendererStates = new Dictionary<string, bool>();
-        for (var i = 0; i < scenePOIRenderers.Length; i++)
+        private bool isDestroyed;
+        private Dictionary<string, bool> MeshRendererStates = new Dictionary<string, bool>();
+
+        public bool IsDestroyed { get => isDestroyed; set => isDestroyed = value; }
+
+        public PointOfInterestModelState(Renderer[] renderers)
         {
-            MeshRendererStates[scenePOIRenderers[i].name] = scenePOIRenderers[i].enabled;
+            SynchGhostPOIRenderers(renderers);
+        }
+
+        public void SyncScenePOIRenderers(Renderer[] scenePOIRenderers)
+        {
+            for (var i = 0; i < scenePOIRenderers.Length; i++)
+            {
+                scenePOIRenderers[i].enabled = MeshRendererStates[scenePOIRenderers[i].name];
+            }
+        }
+
+        public void SynchGhostPOIRenderers(Renderer[] scenePOIRenderers)
+        {
+            MeshRendererStates = new Dictionary<string, bool>();
+            for (var i = 0; i < scenePOIRenderers.Length; i++)
+            {
+                MeshRendererStates[scenePOIRenderers[i].name] = scenePOIRenderers[i].enabled;
+            }
         }
     }
+    #endregion
 }
-#endregion

@@ -1,42 +1,47 @@
 ﻿using UnityEngine;
 
-public class InventoryEventManager : MonoBehaviour
+namespace AdventureGame
 {
 
-    private InventoryManager InventoryManager;
-    private InventoryMenu InventoryMenu;
-    private PlayerManager PlayerManager;
-
-    public void Init()
+    public class InventoryEventManager : MonoBehaviour
     {
-        InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-        InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-    }
 
-    public void OnAddItem(Item item)
-    {
-        InventoryManager.OnAddItem(item);
-    }
+        private InventoryManager InventoryManager;
+        private InventoryMenu InventoryMenu;
+        private PlayerManager PlayerManager;
 
-    public void OnInventoryEnabled()
-    {
-        PlayerManager.OnInventoryEnabled();
-        StartCoroutine(InventoryManager.OnInventoryEnabled());
-        InventoryMenu.OnInventoryEnabled();
-    }
+        public void Init()
+        {
+            InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+            InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
+            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        }
 
-    public void OnInventoryDisabled()
-    {
-        PlayerManager.OnInventoryDisabled();
-        InventoryManager.OnInventoryDisabled();
-        InventoryMenu.OnInventoryDisabled();
-    }
+        public void OnAddItem(Item item)
+        {
+            InventoryManager.OnAddItem(item);
+        }
 
-    public void OnItemGiven(Item givenItem)
-    {
-        InventoryManager.OnItemGiven(givenItem);
-        InventoryMenu.OnItemDeleted(givenItem);
+        public void OnInventoryEnabled()
+        {
+            PlayerManager.OnInventoryEnabled();
+            StartCoroutine(InventoryManager.OnInventoryEnabled());
+            InventoryMenu.OnInventoryEnabled();
+        }
+
+        public void OnInventoryDisabled()
+        {
+            PlayerManager.OnInventoryDisabled();
+            InventoryManager.OnInventoryDisabled();
+            InventoryMenu.OnInventoryDisabled();
+        }
+
+        public void OnItemGiven(Item givenItem)
+        {
+            InventoryManager.OnItemGiven(givenItem);
+            InventoryMenu.OnItemDeleted(givenItem);
+        }
+
     }
 
 }

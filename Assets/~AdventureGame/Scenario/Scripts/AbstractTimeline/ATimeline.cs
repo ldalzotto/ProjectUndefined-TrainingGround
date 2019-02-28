@@ -3,143 +3,147 @@ using System.Collections.Generic;
 using timeline.serialized;
 using UnityEngine;
 
-public abstract class ATimelineNodeManager : MonoBehaviour
+namespace AdventureGame
 {
-    #region External Dependencies
-    private GhostsPOIManager GhostsPOIManager;
-    #endregion
 
-    private List<TimelineNode> nodes = new List<TimelineNode>();
-
-    public List<TimelineNode> Nodes { get => nodes; }
-
-    public void Init()
+    public abstract class ATimelineNodeManager : MonoBehaviour
     {
-        GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-        var TimelineInitilizer = GetComponent<TimelineInitializer>();
-        if (!TimelineInitilizer.HasBeenInit)
-        {
-            AddToNodes(TimelineInitilizer.InitialNodes);
-            TimelineInitilizer.HasBeenInit = true;
-        }
+        #region External Dependencies
+        private GhostsPOIManager GhostsPOIManager;
+        #endregion
 
-    }
+        private List<TimelineNode> nodes = new List<TimelineNode>();
 
-    public void IncrementGraph(ScenarioAction executedScenarioAction)
-    {
-        var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedScenarioAction);
-        AddToNodes(scenarioNodesIncrementation.nexNodes);
-        foreach (var oldnode in scenarioNodesIncrementation.oldNodes)
+        public List<TimelineNode> Nodes { get => nodes; }
+
+        public void Init()
         {
-            nodes.Remove(oldnode);
-            foreach (var endAction in oldnode.OnExitNodeAction)
+            GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
+            var TimelineInitilizer = GetComponent<TimelineInitializer>();
+            if (!TimelineInitilizer.HasBeenInit)
             {
-                endAction.Execute(GhostsPOIManager, oldnode);
+                AddToNodes(TimelineInitilizer.InitialNodes);
+                TimelineInitilizer.HasBeenInit = true;
             }
-        }
-    }
 
-    private void AddToNodes(List<TimelineNode> nodesToAdd)
-    {
-        nodes.AddRange(nodesToAdd);
-        foreach (var newNode in nodesToAdd)
-        {
-            foreach (var startAction in newNode.OnStartNodeAction)
-            {
-                startAction.Execute(GhostsPOIManager, newNode);
-            }
         }
-    }
 
-    private NodesIncrementation ComputeScenarioIncrementation(ScenarioAction executedScenarioAction)
-    {
-        List<TimelineNode> nextScenarioNodes = new List<TimelineNode>();
-        List<TimelineNode> oldScenarioNodes = new List<TimelineNode>();
-        foreach (var node in nodes)
+        public void IncrementGraph(ScenarioAction executedScenarioAction)
         {
-            var computedNodes = node.ComputeTransitions(executedScenarioAction);
-            if (computedNodes != null && computedNodes.Count > 0)
+            var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedScenarioAction);
+            AddToNodes(scenarioNodesIncrementation.nexNodes);
+            foreach (var oldnode in scenarioNodesIncrementation.oldNodes)
             {
-                foreach (var computedNode in computedNodes)
+                nodes.Remove(oldnode);
+                foreach (var endAction in oldnode.OnExitNodeAction)
                 {
-                    if (computedNode != null)
+                    endAction.Execute(GhostsPOIManager, oldnode);
+                }
+            }
+        }
+
+        private void AddToNodes(List<TimelineNode> nodesToAdd)
+        {
+            nodes.AddRange(nodesToAdd);
+            foreach (var newNode in nodesToAdd)
+            {
+                foreach (var startAction in newNode.OnStartNodeAction)
+                {
+                    startAction.Execute(GhostsPOIManager, newNode);
+                }
+            }
+        }
+
+        private NodesIncrementation ComputeScenarioIncrementation(ScenarioAction executedScenarioAction)
+        {
+            List<TimelineNode> nextScenarioNodes = new List<TimelineNode>();
+            List<TimelineNode> oldScenarioNodes = new List<TimelineNode>();
+            foreach (var node in nodes)
+            {
+                var computedNodes = node.ComputeTransitions(executedScenarioAction);
+                if (computedNodes != null && computedNodes.Count > 0)
+                {
+                    foreach (var computedNode in computedNodes)
                     {
-                        nextScenarioNodes.Add(computedNode);
+                        if (computedNode != null)
+                        {
+                            nextScenarioNodes.Add(computedNode);
+                        }
+                        oldScenarioNodes.Add(node);
                     }
-                    oldScenarioNodes.Add(node);
                 }
             }
-        }
-        return new NodesIncrementation(nextScenarioNodes, oldScenarioNodes);
-    }
-
-    private class NodesIncrementation
-    {
-        public List<TimelineNode> nexNodes;
-        public List<TimelineNode> oldNodes;
-
-        public NodesIncrementation(List<TimelineNode> nextNodes, List<TimelineNode> oldNodes)
-        {
-            this.nexNodes = nextNodes;
-            this.oldNodes = oldNodes;
-        }
-    }
-}
-
-public abstract class TimelineInitializer : MonoBehaviour
-{
-    private bool hasBeenInit;
-    public bool HasBeenInit { get => hasBeenInit; set => hasBeenInit = value; }
-    public abstract List<TimelineNode> InitialNodes { get; }
-    public abstract Enum TimelineId { get; }
-}
-
-public abstract class TimelineNode
-{
-    public abstract Dictionary<ScenarioAction, TimelineNode> TransitionRequirements { get; }
-    public abstract List<TimelineNodeWorkflowAction> OnStartNodeAction { get; }
-    public abstract List<TimelineNodeWorkflowAction> OnExitNodeAction { get; }
-
-    public List<TimelineNode> ComputeTransitions(ScenarioAction executedScenarioAction)
-    {
-        if (TransitionRequirements == null)
-        {
-            return null;
+            return new NodesIncrementation(nextScenarioNodes, oldScenarioNodes);
         }
 
-        List<TimelineNode> nextNodes = new List<TimelineNode>();
-        foreach (var transitionRequirement in TransitionRequirements)
+        private class NodesIncrementation
         {
-            //transitionRequirement.Value == null means the end of a branch
-            if (transitionRequirement.Key.Equals(executedScenarioAction))
+            public List<TimelineNode> nexNodes;
+            public List<TimelineNode> oldNodes;
+
+            public NodesIncrementation(List<TimelineNode> nextNodes, List<TimelineNode> oldNodes)
             {
-                nextNodes.Add(transitionRequirement.Value);
+                this.nexNodes = nextNodes;
+                this.oldNodes = oldNodes;
             }
         }
-        return nextNodes;
     }
 
-    public TimelineNodeSerialized Map2Serialized()
+    public abstract class TimelineInitializer : MonoBehaviour
     {
-        var serializedTransitions = new List<TimelineNodeTransitionSerialized>();
-        if (TransitionRequirements != null)
+        private bool hasBeenInit;
+        public bool HasBeenInit { get => hasBeenInit; set => hasBeenInit = value; }
+        public abstract List<TimelineNode> InitialNodes { get; }
+        public abstract Enum TimelineId { get; }
+    }
+
+    public abstract class TimelineNode
+    {
+        public abstract Dictionary<ScenarioAction, TimelineNode> TransitionRequirements { get; }
+        public abstract List<TimelineNodeWorkflowAction> OnStartNodeAction { get; }
+        public abstract List<TimelineNodeWorkflowAction> OnExitNodeAction { get; }
+
+        public List<TimelineNode> ComputeTransitions(ScenarioAction executedScenarioAction)
         {
-            foreach (var transition in TransitionRequirements)
+            if (TransitionRequirements == null)
             {
-                TimelineNodeSerialized nexSerializedNode = null;
-                if (transition.Value != null)
+                return null;
+            }
+
+            List<TimelineNode> nextNodes = new List<TimelineNode>();
+            foreach (var transitionRequirement in TransitionRequirements)
+            {
+                //transitionRequirement.Value == null means the end of a branch
+                if (transitionRequirement.Key.Equals(executedScenarioAction))
                 {
-                    nexSerializedNode = transition.Value.Map2Serialized();
+                    nextNodes.Add(transitionRequirement.Value);
                 }
-                serializedTransitions.Add(new TimelineNodeTransitionSerialized(transition.Key, nexSerializedNode, transition.Key.GetType().Name));
             }
+            return nextNodes;
         }
 
-        return new TimelineNodeSerialized(serializedTransitions, GetType().Name);
-    }
-}
+        public TimelineNodeSerialized Map2Serialized()
+        {
+            var serializedTransitions = new List<TimelineNodeTransitionSerialized>();
+            if (TransitionRequirements != null)
+            {
+                foreach (var transition in TransitionRequirements)
+                {
+                    TimelineNodeSerialized nexSerializedNode = null;
+                    if (transition.Value != null)
+                    {
+                        nexSerializedNode = transition.Value.Map2Serialized();
+                    }
+                    serializedTransitions.Add(new TimelineNodeTransitionSerialized(transition.Key, nexSerializedNode, transition.Key.GetType().Name));
+                }
+            }
 
-public abstract class TimelineNodeWorkflowAction
-{
-    public abstract void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence);
+            return new TimelineNodeSerialized(serializedTransitions, GetType().Name);
+        }
+    }
+
+    public abstract class TimelineNodeWorkflowAction
+    {
+        public abstract void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence);
+    }
 }

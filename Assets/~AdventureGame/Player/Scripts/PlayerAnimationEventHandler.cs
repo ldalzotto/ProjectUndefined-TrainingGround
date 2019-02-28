@@ -1,28 +1,33 @@
 ﻿using UnityEngine;
 
-public class PlayerAnimationEventHandler : MonoBehaviour
+namespace AdventureGame
 {
 
-    private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
-
-    private void Start()
+    public class PlayerAnimationEventHandler : MonoBehaviour
     {
-        PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
-    }
 
-    public void OnShowGivenItem()
-    {
-        PlayerGlobalAnimationEventHandler.ShowGivenItem();
-    }
+        private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
 
-    public void OnHideGivenItem()
-    {
-        PlayerGlobalAnimationEventHandler.HideGivenItem();
-    }
+        private void Start()
+        {
+            PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
+        }
 
-    public void OnIdleOverideTriggerSmokeEffect()
-    {
-        PlayerGlobalAnimationEventHandler.IdleOverideTriggerSmokeEffect();
+        public void OnShowGivenItem()
+        {
+            PlayerGlobalAnimationEventHandler.ShowGivenItem();
+        }
+
+        public void OnHideGivenItem()
+        {
+            PlayerGlobalAnimationEventHandler.HideGivenItem();
+        }
+
+        public void OnIdleOverideTriggerSmokeEffect()
+        {
+            PlayerGlobalAnimationEventHandler.IdleOverideTriggerSmokeEffect();
+        }
+
     }
 
 }

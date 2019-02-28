@@ -1,39 +1,44 @@
 ﻿using UnityEngine;
 
-public class POITrackerCollider : MonoBehaviour
+namespace AdventureGame
 {
-    private PlayerManager PlayerManager;
 
-    private void Start()
+    public class POITrackerCollider : MonoBehaviour
     {
-        this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-    }
+        private PlayerManager PlayerManager;
+
+        private void Start()
+        {
+            this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+        }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var collisionType = other.GetComponent<CollisionType>();
-        if (collisionType != null)
+        private void OnTriggerEnter(Collider other)
         {
-            PlayerManager.TriggerEnter(other, collisionType);
+            var collisionType = other.GetComponent<CollisionType>();
+            if (collisionType != null)
+            {
+                PlayerManager.TriggerEnter(other, collisionType);
+            }
+            else
+            {
+                // Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
+            }
         }
-        else
-        {
-            // Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
-        }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        var collisionType = other.GetComponent<CollisionType>();
-        if (collisionType != null)
+        private void OnTriggerExit(Collider other)
         {
-            PlayerManager.TriggerExit(other, collisionType);
+            var collisionType = other.GetComponent<CollisionType>();
+            if (collisionType != null)
+            {
+                PlayerManager.TriggerExit(other, collisionType);
+            }
+            else
+            {
+                //   Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
+            }
         }
-        else
-        {
-            //   Debug.LogWarning("The collider : " + other.name + " has no CollisionType.");
-        }
+
     }
 
 }

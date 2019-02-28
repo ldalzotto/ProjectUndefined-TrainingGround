@@ -1,198 +1,201 @@
 ﻿using System.Collections.Generic;
 
-[System.Serializable]
-public class DiscussionTree
+namespace AdventureGame
 {
-    private DiscussionTreeNode discussionRootNode;
 
-    public DiscussionTree(DiscussionTreeNode discussionRootNode)
+    [System.Serializable]
+    public class DiscussionTree
     {
-        this.discussionRootNode = discussionRootNode;
-    }
+        private DiscussionTreeNode discussionRootNode;
 
-    public DiscussionTreeNode DiscussionRootNode { get => discussionRootNode; }
-
-    public void BreakConnectionAtEndOfStack(Stack<DiscussionNodeId> nodeIdsStack)
-    {
-        discussionRootNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-    }
-}
-
-public interface DiscussionTreeNode
-{
-    void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack);
-}
-
-[System.Serializable]
-public class DiscussionTextOnlyNode : DiscussionTreeNode
-{
-    private DiscussionNodeId discussionNodeId;
-    private DisucssionSentenceTextId displayedText;
-    private PointOfInterestId talker;
-
-    private DiscussionTreeNode nextNode;
-
-    public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)
-    {
-        this.discussionNodeId = DiscussionNodeId;
-        this.displayedText = displayedText;
-        this.talker = talker;
-        this.nextNode = nextNode;
-    }
-
-    public DisucssionSentenceTextId DisplayedText { get => displayedText; }
-    public PointOfInterestId Talker { get => talker; }
-    public DiscussionTreeNode NextNode { get => nextNode; }
-
-    public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
-    {
-        var idToSeek = nodeIdsStack.Pop();
-        if (discussionNodeId == idToSeek)
+        public DiscussionTree(DiscussionTreeNode discussionRootNode)
         {
-            if (nodeIdsStack.Count > 0)
-            {
-                nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-            }
-            else
-            {
-                //break connection
-                nextNode = null;
-            }
+            this.discussionRootNode = discussionRootNode;
+        }
+
+        public DiscussionTreeNode DiscussionRootNode { get => discussionRootNode; }
+
+        public void BreakConnectionAtEndOfStack(Stack<DiscussionNodeId> nodeIdsStack)
+        {
+            discussionRootNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
         }
     }
 
-    public DiscussionTreeNode GetNextNode()
+    public interface DiscussionTreeNode
     {
-        return nextNode;
-    }
-}
-
-[System.Serializable]
-public class DiscussionChoiceNode : DiscussionTreeNode
-{
-    private DiscussionNodeId discussionTreeNodeId;
-
-    private PointOfInterestId talker;
-    private List<DiscussionChoice> discussionChoices;
-
-    public DiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, PointOfInterestId talker, List<DiscussionChoice> discussionChoices)
-    {
-        this.discussionTreeNodeId = DiscussionTreeNodeId;
-        this.talker = talker;
-        this.discussionChoices = discussionChoices;
+        void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack);
     }
 
-    public PointOfInterestId Talker { get => talker; }
-    public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
-
-    public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
+    [System.Serializable]
+    public class DiscussionTextOnlyNode : DiscussionTreeNode
     {
-        var idToSeek = nodeIdsStack.Pop();
-        DiscussionChoice choiceToRemove = null;
+        private DiscussionNodeId discussionNodeId;
+        private DisucssionSentenceTextId displayedText;
+        private PointOfInterestId talker;
 
-        if (idToSeek == discussionTreeNodeId)
+        private DiscussionTreeNode nextNode;
+
+        public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)
         {
-            if (nodeIdsStack.Count > 0)
+            this.discussionNodeId = DiscussionNodeId;
+            this.displayedText = displayedText;
+            this.talker = talker;
+            this.nextNode = nextNode;
+        }
+
+        public DisucssionSentenceTextId DisplayedText { get => displayedText; }
+        public PointOfInterestId Talker { get => talker; }
+        public DiscussionTreeNode NextNode { get => nextNode; }
+
+        public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
+        {
+            var idToSeek = nodeIdsStack.Pop();
+            if (discussionNodeId == idToSeek)
             {
-                var choiceIdSeek = nodeIdsStack.Pop();
-                foreach (var discussionChoice in discussionChoices)
+                if (nodeIdsStack.Count > 0)
                 {
-                    if (discussionChoice.DiscussionNodeId == choiceIdSeek)
+                    nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+                }
+                else
+                {
+                    //break connection
+                    nextNode = null;
+                }
+            }
+        }
+
+        public DiscussionTreeNode GetNextNode()
+        {
+            return nextNode;
+        }
+    }
+
+    [System.Serializable]
+    public class DiscussionChoiceNode : DiscussionTreeNode
+    {
+        private DiscussionNodeId discussionTreeNodeId;
+
+        private PointOfInterestId talker;
+        private List<DiscussionChoice> discussionChoices;
+
+        public DiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, PointOfInterestId talker, List<DiscussionChoice> discussionChoices)
+        {
+            this.discussionTreeNodeId = DiscussionTreeNodeId;
+            this.talker = talker;
+            this.discussionChoices = discussionChoices;
+        }
+
+        public PointOfInterestId Talker { get => talker; }
+        public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
+
+        public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
+        {
+            var idToSeek = nodeIdsStack.Pop();
+            DiscussionChoice choiceToRemove = null;
+
+            if (idToSeek == discussionTreeNodeId)
+            {
+                if (nodeIdsStack.Count > 0)
+                {
+                    var choiceIdSeek = nodeIdsStack.Pop();
+                    foreach (var discussionChoice in discussionChoices)
                     {
-                        if (nodeIdsStack.Count > 0)
+                        if (discussionChoice.DiscussionNodeId == choiceIdSeek)
                         {
-                            discussionChoice.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-                        }
-                        else
-                        {
-                            choiceToRemove = discussionChoice;
+                            if (nodeIdsStack.Count > 0)
+                            {
+                                discussionChoice.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+                            }
+                            else
+                            {
+                                choiceToRemove = discussionChoice;
+                            }
                         }
                     }
-                }
 
-                if (choiceToRemove != null)
+                    if (choiceToRemove != null)
+                    {
+                        discussionChoices.Remove(choiceToRemove);
+                    }
+                }
+                else
                 {
-                    discussionChoices.Remove(choiceToRemove);
+                    discussionChoices = new List<DiscussionChoice>();
+                }
+
+            }
+        }
+
+        public DiscussionTreeNode GetNextNode(DiscussionChoiceTextId selectedChoice)
+        {
+            foreach (var discussionChoice in discussionChoices)
+            {
+                if (discussionChoice.Text == selectedChoice)
+                {
+                    return discussionChoice.NextNode;
                 }
             }
-            else
-            {
-                discussionChoices = new List<DiscussionChoice>();
-            }
-
+            return null;
         }
     }
 
-    public DiscussionTreeNode GetNextNode(DiscussionChoiceTextId selectedChoice)
+    [System.Serializable]
+    public class DiscussionChoice
     {
-        foreach (var discussionChoice in discussionChoices)
+        private DiscussionNodeId discussionNodeId;
+        private DiscussionChoiceTextId text;
+        private DiscussionTreeNode nextNode;
+
+        public DiscussionChoice(DiscussionNodeId discussionNodeId, DiscussionChoiceTextId text, DiscussionTreeNode nextNode)
         {
-            if (discussionChoice.Text == selectedChoice)
-            {
-                return discussionChoice.NextNode;
-            }
+            this.discussionNodeId = discussionNodeId;
+            this.text = text;
+            this.nextNode = nextNode;
         }
-        return null;
-    }
-}
 
-[System.Serializable]
-public class DiscussionChoice
-{
-    private DiscussionNodeId discussionNodeId;
-    private DiscussionChoiceTextId text;
-    private DiscussionTreeNode nextNode;
+        public DiscussionChoiceTextId Text { get => text; }
+        public DiscussionTreeNode NextNode { get => nextNode; }
+        public DiscussionNodeId DiscussionNodeId { get => discussionNodeId; }
 
-    public DiscussionChoice(DiscussionNodeId discussionNodeId, DiscussionChoiceTextId text, DiscussionTreeNode nextNode)
-    {
-        this.discussionNodeId = discussionNodeId;
-        this.text = text;
-        this.nextNode = nextNode;
-    }
-
-    public DiscussionChoiceTextId Text { get => text; }
-    public DiscussionTreeNode NextNode { get => nextNode; }
-    public DiscussionNodeId DiscussionNodeId { get => discussionNodeId; }
-
-    internal void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
-    {
-        var idToSeek = nodeIdsStack.Pop();
-        if (discussionNodeId == idToSeek)
+        internal void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
         {
-            if (nodeIdsStack.Count > 0)
+            var idToSeek = nodeIdsStack.Pop();
+            if (discussionNodeId == idToSeek)
             {
-                nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-            }
-            else
-            {
-                //break connection
-                nextNode = null;
+                if (nodeIdsStack.Count > 0)
+                {
+                    nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
+                }
+                else
+                {
+                    //break connection
+                    nextNode = null;
+                }
             }
         }
     }
-}
 
-public class DiscussionChoiceEvent
-{
-    private DiscussionChoiceTextId text;
-}
+    public class DiscussionChoiceEvent
+    {
+        private DiscussionChoiceTextId text;
+    }
 
-#region Discussion Tree Workflow
-public enum DiscussionTreeId
-{
-    BOUNCER_DISCUSSION_TREE,
-    BOUNCER_OK_DISCUSSION
-}
+    #region Discussion Tree Workflow
+    public enum DiscussionTreeId
+    {
+        BOUNCER_DISCUSSION_TREE,
+        BOUNCER_OK_DISCUSSION
+    }
 
-public enum DiscussionNodeId
-{
-    BOUNCER_FORBIDDEN_INTRODUCTION,
-    BOUNCER_OK_INTRODUCTION
-}
+    public enum DiscussionNodeId
+    {
+        BOUNCER_FORBIDDEN_INTRODUCTION,
+        BOUNCER_OK_INTRODUCTION
+    }
 
-public class DiscussionSentencesConstants
-{
-    public static Dictionary<DiscussionTreeId, DiscussionTextOnlyNode> Sentenses = new Dictionary<DiscussionTreeId, DiscussionTextOnlyNode>()
+    public class DiscussionSentencesConstants
+    {
+        public static Dictionary<DiscussionTreeId, DiscussionTextOnlyNode> Sentenses = new Dictionary<DiscussionTreeId, DiscussionTextOnlyNode>()
     {
         {DiscussionTreeId.BOUNCER_DISCUSSION_TREE, new DiscussionTextOnlyNode(
                 DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, PointOfInterestId.BOUNCER, new DiscussionTextOnlyNode(
@@ -207,24 +210,24 @@ public class DiscussionSentencesConstants
                    DiscussionNodeId.BOUNCER_OK_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ALLOWED, PointOfInterestId.BOUNCER, null
             )}
     };
-}
+    }
 
-#endregion
+    #endregion
 
-#region Discussion Sentence Text
-public enum DisucssionSentenceTextId
-{
-    BOUNCER_FORBIDDEN_INTRODUCTION,
-    BOUNCER_ASK_AGE,
-    BOUNCER_GET_OUT,
-    BOUNCER_ALLOWED,
-    PLAYER_TELL_AGE
-}
+    #region Discussion Sentence Text
+    public enum DisucssionSentenceTextId
+    {
+        BOUNCER_FORBIDDEN_INTRODUCTION,
+        BOUNCER_ASK_AGE,
+        BOUNCER_GET_OUT,
+        BOUNCER_ALLOWED,
+        PLAYER_TELL_AGE
+    }
 
-public class DiscussionSentencesTextConstants
-{
+    public class DiscussionSentencesTextConstants
+    {
 
-    public static Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>()
+        public static Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>()
     {
         {DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, "I don't like your haircut.\nAge below 18 = NO ENTRY." },
         {DisucssionSentenceTextId.BOUNCER_ASK_AGE, "How old are you?"},
@@ -232,27 +235,28 @@ public class DiscussionSentencesTextConstants
         {DisucssionSentenceTextId.BOUNCER_ALLOWED, "You have the right to pass."},
         {DisucssionSentenceTextId.PLAYER_TELL_AGE, "18 years old." }
     };
-}
-#endregion
+    }
+    #endregion
 
-#region Discussion Choice Text
-public enum DiscussionChoiceIntroductionTextId
-{
-    BOUNCER_CHOICE_INTRO_1
-}
+    #region Discussion Choice Text
+    public enum DiscussionChoiceIntroductionTextId
+    {
+        BOUNCER_CHOICE_INTRO_1
+    }
 
-public enum DiscussionChoiceTextId
-{
-    PLAYER_AGE_CHOICE_17,
-    PLAYER_AGE_CHOICE_18
-}
+    public enum DiscussionChoiceTextId
+    {
+        PLAYER_AGE_CHOICE_17,
+        PLAYER_AGE_CHOICE_18
+    }
 
-public class DiscussionChoiceTextConstants
-{
-    public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
+    public class DiscussionChoiceTextConstants
+    {
+        public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
     {
         { DiscussionChoiceTextId.PLAYER_AGE_CHOICE_17, "17"},
         { DiscussionChoiceTextId.PLAYER_AGE_CHOICE_18, "18"}
     };
+    }
+    #endregion
 }
-#endregion

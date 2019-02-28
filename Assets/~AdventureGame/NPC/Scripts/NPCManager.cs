@@ -1,34 +1,39 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCManager : MonoBehaviour
+namespace AdventureGame
 {
-    private Dictionary<int, CarManager> Cars = new Dictionary<int, CarManager>();
 
-    #region External Events
-    public void AddCar(CarManager carManager)
+    public class NPCManager : MonoBehaviour
     {
-        Cars.Add(carManager.GetInstanceID(), carManager);
-    }
-    public void RemoveCar(CarManager carManager)
-    {
-        Cars.Remove(carManager.GetInstanceID());
-    }
-    #endregion
+        private Dictionary<int, CarManager> Cars = new Dictionary<int, CarManager>();
 
-    public void Tick(float d)
-    {
-        foreach (var car in Cars)
+        #region External Events
+        public void AddCar(CarManager carManager)
         {
-            car.Value.Tick(d);
+            Cars.Add(carManager.GetInstanceID(), carManager);
+        }
+        public void RemoveCar(CarManager carManager)
+        {
+            Cars.Remove(carManager.GetInstanceID());
+        }
+        #endregion
+
+        public void Tick(float d)
+        {
+            foreach (var car in Cars)
+            {
+                car.Value.Tick(d);
+            }
+        }
+
+        public void FixedTick(float d)
+        {
+            foreach (var car in Cars)
+            {
+                car.Value.FixedTick(d);
+            }
         }
     }
 
-    public void FixedTick(float d)
-    {
-        foreach (var car in Cars)
-        {
-            car.Value.FixedTick(d);
-        }
-    }
 }

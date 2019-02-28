@@ -1,30 +1,34 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class WayPointPathContainer : MonoBehaviour
+namespace AdventureGame
 {
-    private bool hasInit;
-    private Dictionary<WaypointPathId, WayPointPath> WayPointPaths = new Dictionary<WaypointPathId, WayPointPath>();
-
-    public void Init()
+    public class WayPointPathContainer : MonoBehaviour
     {
-        if (!hasInit)
+        private bool hasInit;
+        private Dictionary<WaypointPathId, WayPointPath> WayPointPaths = new Dictionary<WaypointPathId, WayPointPath>();
+
+        public void Init()
         {
-            var wayPointPaths = GetComponentsInChildren<WayPointPath>();
-            for (var i = 0; i < wayPointPaths.Length; i++)
+            if (!hasInit)
             {
-                WayPointPaths.Add(wayPointPaths[i].Id, wayPointPaths[i]);
+                var wayPointPaths = GetComponentsInChildren<WayPointPath>();
+                for (var i = 0; i < wayPointPaths.Length; i++)
+                {
+                    WayPointPaths.Add(wayPointPaths[i].Id, wayPointPaths[i]);
+                }
+                hasInit = true;
             }
-            hasInit = true;
+        }
+
+        public WayPointPath GetWayPointPath(WaypointPathId waypointPathId)
+        {
+            if (!hasInit)
+            {
+                Init();
+            }
+            return WayPointPaths[waypointPathId];
         }
     }
 
-    public WayPointPath GetWayPointPath(WaypointPathId waypointPathId)
-    {
-        if (!hasInit)
-        {
-            Init();
-        }
-        return WayPointPaths[waypointPathId];
-    }
 }

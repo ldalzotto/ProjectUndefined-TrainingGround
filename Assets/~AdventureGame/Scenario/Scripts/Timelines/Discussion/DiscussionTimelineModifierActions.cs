@@ -1,53 +1,57 @@
 ﻿using System.Collections.Generic;
 
-public interface DiscussionTimelineModifierAction
+namespace AdventureGame
 {
-    void Execute(PointOfInterestManager PointOfInterestManager);
-}
 
-public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
-{
-    private PointOfInterestId PointOfInterestId;
-    private DiscussionTree DiscussionTree;
-    private AContextAction contextActionToAdd;
-
-    public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree, AContextAction contextActionToAdd)
+    public interface DiscussionTimelineModifierAction
     {
-        PointOfInterestId = pointOfInterestId;
-        this.DiscussionTree = DiscussionTree;
-        this.contextActionToAdd = contextActionToAdd;
-        this.contextActionToAdd.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
+        void Execute(PointOfInterestManager PointOfInterestManager);
     }
 
-    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+    public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
     {
-        var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
-        if (selectedPOI != null)
+        private PointOfInterestId PointOfInterestId;
+        private DiscussionTree DiscussionTree;
+        private AContextAction contextActionToAdd;
+
+        public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree, AContextAction contextActionToAdd)
         {
-            selectedPOI.OnDiscussionTreeAdd(DiscussionTree, contextActionToAdd);
+            PointOfInterestId = pointOfInterestId;
+            this.DiscussionTree = DiscussionTree;
+            this.contextActionToAdd = contextActionToAdd;
+            this.contextActionToAdd.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
+        }
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        {
+            var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
+            if (selectedPOI != null)
+            {
+                selectedPOI.OnDiscussionTreeAdd(DiscussionTree, contextActionToAdd);
+            }
         }
     }
-}
 
-public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowAction
-{
-    private PointOfInterestId PointOfInterestId;
-    private DiscussionChoiceTextId DiscussionIdToDelete;
-    private Stack<DiscussionNodeId> nodeIdsWalk;
-
-    public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk)
+    public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowAction
     {
-        PointOfInterestId = pointOfInterestId;
-        DiscussionIdToDelete = discussionIdToDelete;
-        this.nodeIdsWalk = nodeIdsWalk;
-    }
+        private PointOfInterestId PointOfInterestId;
+        private DiscussionChoiceTextId DiscussionIdToDelete;
+        private Stack<DiscussionNodeId> nodeIdsWalk;
 
-    public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
-    {
-        var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
-        if (selectedPOI != null)
+        public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk)
         {
-            selectedPOI.GetAssociatedDiscussionTree().BreakConnectionAtEndOfStack(nodeIdsWalk);
+            PointOfInterestId = pointOfInterestId;
+            DiscussionIdToDelete = discussionIdToDelete;
+            this.nodeIdsWalk = nodeIdsWalk;
+        }
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        {
+            var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
+            if (selectedPOI != null)
+            {
+                selectedPOI.GetAssociatedDiscussionTree().BreakConnectionAtEndOfStack(nodeIdsWalk);
+            }
         }
     }
 }

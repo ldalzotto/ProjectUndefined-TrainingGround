@@ -1,107 +1,111 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace AdventureGame
 {
-   
-    private ContextActionManager ContextActionManager;
-    private ContextActionWheelManager ContextActionWheelManager;
-    private PlayerManager PlayerManager;
-    private NPCManager NPCManager;
-    private InventoryManager InventoryManager;
-    private DiscussionWindowManager DiscussionWindowManager;
-    private GhostsPOIManager GhostsPOIManager;
-
-    //timelines
-    private ScenarioTimelineManagerV2 ScenarioTimelineManager;
-    private DiscussionTimelineManagerV2 DiscussionTimelineManager;
-
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        Debug.Log("Start GameManager : " + name);
 
-        ContextActionManager = FindObjectOfType<ContextActionManager>();
-        ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
-        PlayerManager = FindObjectOfType<PlayerManager>();
-        NPCManager = FindObjectOfType<NPCManager>();
-        InventoryManager = FindObjectOfType<InventoryManager>();
-        DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
-        GhostsPOIManager = FindObjectOfType<GhostsPOIManager>();
+        private ContextActionManager ContextActionManager;
+        private ContextActionWheelManager ContextActionWheelManager;
+        private PlayerManager PlayerManager;
+        private NPCManager NPCManager;
+        private InventoryManager InventoryManager;
+        private DiscussionWindowManager DiscussionWindowManager;
+        private GhostsPOIManager GhostsPOIManager;
 
-        ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
-        DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
+        //timelines
+        private ScenarioTimelineManagerV2 ScenarioTimelineManager;
+        private DiscussionTimelineManagerV2 DiscussionTimelineManager;
 
-        //initialization
-        PlayerManager.Init();
-        StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
-        StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
-        InventoryManager.Init();
-        FindObjectOfType<InventoryEventManager>().Init();
-        FindObjectOfType<PointOfInterestEventManager>().Init();
-
-        var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
-        if (WayPointPathContainer != null)
+        void Start()
         {
-            WayPointPathContainer.Init();
-        }
+            Debug.Log("Start GameManager : " + name);
 
-    }
+            ContextActionManager = FindObjectOfType<ContextActionManager>();
+            ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
+            PlayerManager = FindObjectOfType<PlayerManager>();
+            NPCManager = FindObjectOfType<NPCManager>();
+            InventoryManager = FindObjectOfType<InventoryManager>();
+            DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
+            GhostsPOIManager = FindObjectOfType<GhostsPOIManager>();
 
-    void Update()
-    {
-        var d = Time.deltaTime;
-        
-        ContextActionWheelManager.Tick(d);
-        ContextActionManager.Tick(d);
-        PlayerManager.Tick(d);
-        NPCManager.Tick(d);
-        InventoryManager.Tick(d);
-        DiscussionWindowManager.Tick(d);
-    }
+            ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
+            DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
-    private void FixedUpdate()
-    {
-        var d = Time.fixedDeltaTime;
-        PlayerManager.FixedTick(d);
-        NPCManager.FixedTick(d);
-    }
+            //initialization
+            PlayerManager.Init();
+            StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
+            StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
+            InventoryManager.Init();
+            FindObjectOfType<InventoryEventManager>().Init();
+            FindObjectOfType<PointOfInterestEventManager>().Init();
 
-    private void LateUpdate()
-    {
-        var d = Time.deltaTime;
-        PlayerManager.LateTick(d);
-    }
-
-    private void OnGUI()
-    {
-        DiscussionWindowManager.GUITick();
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (PlayerManager != null)
-        {
-            PlayerManager.OnGizmoTick();
-        }
-    }
-
-    private IEnumerator ScenarioTimelinesInitialisationAtEndOfFrame()
-    {
-        yield return new WaitForEndOfFrame();
-        ScenarioTimelineManager.Init();
-        DiscussionTimelineManager.Init();
-    }
-
-    private IEnumerator PointIsInterestInitialisationAtEndOfFrame()
-    {
-        yield return new WaitForEndOfFrame();
-        var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
-        if (allActivePOI != null)
-        {
-            for (var i = 0; i < allActivePOI.Length; i++)
+            var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
+            if (WayPointPathContainer != null)
             {
-                allActivePOI[i].Init();
+                WayPointPathContainer.Init();
+            }
+
+        }
+
+        void Update()
+        {
+            var d = Time.deltaTime;
+
+            ContextActionWheelManager.Tick(d);
+            ContextActionManager.Tick(d);
+            PlayerManager.Tick(d);
+            NPCManager.Tick(d);
+            InventoryManager.Tick(d);
+            DiscussionWindowManager.Tick(d);
+        }
+
+        private void FixedUpdate()
+        {
+            var d = Time.fixedDeltaTime;
+            PlayerManager.FixedTick(d);
+            NPCManager.FixedTick(d);
+        }
+
+        private void LateUpdate()
+        {
+            var d = Time.deltaTime;
+            PlayerManager.LateTick(d);
+        }
+
+        private void OnGUI()
+        {
+            DiscussionWindowManager.GUITick();
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (PlayerManager != null)
+            {
+                PlayerManager.OnGizmoTick();
+            }
+        }
+
+        private IEnumerator ScenarioTimelinesInitialisationAtEndOfFrame()
+        {
+            yield return new WaitForEndOfFrame();
+            ScenarioTimelineManager.Init();
+            DiscussionTimelineManager.Init();
+        }
+
+        private IEnumerator PointIsInterestInitialisationAtEndOfFrame()
+        {
+            yield return new WaitForEndOfFrame();
+            var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
+            if (allActivePOI != null)
+            {
+                for (var i = 0; i < allActivePOI.Length; i++)
+                {
+                    allActivePOI[i].Init();
+                }
             }
         }
     }
+
 }

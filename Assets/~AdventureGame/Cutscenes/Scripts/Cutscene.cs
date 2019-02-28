@@ -1,5 +1,9 @@
-﻿public enum CutsceneId
+﻿
+namespace AdventureGame
 {
-    PLAYER_DUMPSTER_GRAB,
-    PLAYER_OPEN_SEWER
+    public enum CutsceneId
+    {
+        PLAYER_DUMPSTER_GRAB,
+        PLAYER_OPEN_SEWER
+    }
 }

@@ -1,17 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+namespace AdventureGame
 {
-    public GameObject ItemModel;
-    public ItemID ItemID;
-
-    private List<AContextAction> contextActions;
-
-    public List<AContextAction> ContextActions { get => contextActions; }
-
-    private void Start()
+    public class Item : MonoBehaviour
     {
-        contextActions = ItemContextActionBuilder.BuilItemContextActions(this);
+        public GameObject ItemModel;
+        public ItemID ItemID;
+
+        private List<AContextAction> contextActions;
+
+        public List<AContextAction> ContextActions { get => contextActions; }
+
+        private void Start()
+        {
+            contextActions = ItemContextActionBuilder.BuilItemContextActions(this);
+        }
     }
+
 }

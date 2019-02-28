@@ -1,53 +1,57 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
 
-[System.Serializable]
-public class PlayerItemHolderBehavior : PlayableBehaviour
+namespace AdventureGame
 {
-    public PlayerBone PlayerBone;
-    public ItemID HoldedItem;
 
-    private Transform BoneTransformResolved;
-    private GameObject InstanciatedObject;
-
-    public override void OnBehaviourPlay(Playable playable, FrameData info)
+    [System.Serializable]
+    public class PlayerItemHolderBehavior : PlayableBehaviour
     {
-        if (Application.isPlaying)
+        public PlayerBone PlayerBone;
+        public ItemID HoldedItem;
+
+        private Transform BoneTransformResolved;
+        private GameObject InstanciatedObject;
+
+        public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
-            #region External Dependencies
-            var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            #endregion
-            var playerAnimator = PlayerManager.GetPlayerAnimator();
-            var boneObj = PlayerBoneRetriever.GetPlayerBone(PlayerBone, playerAnimator);
-            if (boneObj != null)
+            if (Application.isPlaying)
             {
-                BoneTransformResolved = boneObj.transform;
+                #region External Dependencies
+                var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+                #endregion
+                var playerAnimator = PlayerManager.GetPlayerAnimator();
+                var boneObj = PlayerBoneRetriever.GetPlayerBone(PlayerBone, playerAnimator);
+                if (boneObj != null)
+                {
+                    BoneTransformResolved = boneObj.transform;
+                }
+
+                if (PrefabContainer.InventoryItemsPrefabs != null)
+                {
+                    var scaleFactor = Vector3.one;
+                    ComponentSearchHelper.ComputeScaleFactorRecursively(BoneTransformResolved, playerAnimator.transform, ref scaleFactor);
+
+                    InstanciatedObject = MonoBehaviour.Instantiate(PrefabContainer.InventoryItemsPrefabs[HoldedItem].ItemModel, BoneTransformResolved.transform);
+                    InstanciatedObject.transform.localScale = new Vector3(
+                            InstanciatedObject.transform.localScale.x / scaleFactor.x,
+                            InstanciatedObject.transform.localScale.y / scaleFactor.y,
+                            InstanciatedObject.transform.localScale.z / scaleFactor.z
+                        );
+                }
+
+                base.OnBehaviourPlay(playable, info);
             }
 
-            if (AdventureGamePrefabContainer.InventoryItemsPrefabs != null)
-            {
-                var scaleFactor = Vector3.one;
-                ComponentSearchHelper.ComputeScaleFactorRecursively(BoneTransformResolved, playerAnimator.transform, ref scaleFactor);
-
-                InstanciatedObject = MonoBehaviour.Instantiate(AdventureGamePrefabContainer.InventoryItemsPrefabs[HoldedItem].ItemModel, BoneTransformResolved.transform);
-                InstanciatedObject.transform.localScale = new Vector3(
-                        InstanciatedObject.transform.localScale.x / scaleFactor.x,
-                        InstanciatedObject.transform.localScale.y / scaleFactor.y,
-                        InstanciatedObject.transform.localScale.z / scaleFactor.z
-                    );
-            }
-
-            base.OnBehaviourPlay(playable, info);
         }
 
-    }
-
-    public override void OnBehaviourPause(Playable playable, FrameData info)
-    {
-        if (InstanciatedObject != null)
+        public override void OnBehaviourPause(Playable playable, FrameData info)
         {
-            MonoBehaviour.Destroy(InstanciatedObject);
+            if (InstanciatedObject != null)
+            {
+                MonoBehaviour.Destroy(InstanciatedObject);
+            }
+            base.OnBehaviourPause(playable, info);
         }
-        base.OnBehaviourPause(playable, info);
     }
 }

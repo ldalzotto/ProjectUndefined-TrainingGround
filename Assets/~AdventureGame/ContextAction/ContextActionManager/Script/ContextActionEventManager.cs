@@ -1,46 +1,51 @@
 ﻿using UnityEngine;
 
-public class ContextActionEventManager : MonoBehaviour
+namespace AdventureGame
 {
 
-    private ContextActionManager ContextActionManager;
-    private PlayerManager PlayerManager;
-    private InventoryManager InventoryManager;
-    private TimelinesEventManager ScenarioTimelineEventManager;
-
-    private void Start()
+    public class ContextActionEventManager : MonoBehaviour
     {
-        ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-        InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-        ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
-    }
 
-    public void OnContextActionAdd(AContextAction contextAction)
-    {
-        try
+        private ContextActionManager ContextActionManager;
+        private PlayerManager PlayerManager;
+        private InventoryManager InventoryManager;
+        private TimelinesEventManager ScenarioTimelineEventManager;
+
+        private void Start()
         {
-            if (contextAction != null)
+            ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
+            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+            ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
+        }
+
+        public void OnContextActionAdd(AContextAction contextAction)
+        {
+            try
             {
-                PlayerManager.OnContextActionAdded(contextAction);
-                InventoryManager.OnContextActionAdded();
-                ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager));
+                if (contextAction != null)
+                {
+                    PlayerManager.OnContextActionAdded(contextAction);
+                    InventoryManager.OnContextActionAdded();
+                    ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager));
+                }
+                //TODO send event to inventory to close if necessary
             }
-            //TODO send event to inventory to close if necessary
+            catch (System.Exception e)
+            {
+                Debug.LogError("An error occured while trying to execute ActionContext : " + contextAction.GetType() + " : " + e.Message, this);
+                Debug.LogError(e.GetBaseException().StackTrace);
+            }
+
         }
-        catch (System.Exception e)
+
+        public void OnContextActionFinished(AContextAction finishedContextAction, AContextActionInput contextActionInput)
         {
-            Debug.LogError("An error occured while trying to execute ActionContext : " + contextAction.GetType() + " : " + e.Message, this);
-            Debug.LogError(e.GetBaseException().StackTrace);
+            PlayerManager.OnContextActionFinished();
+            InventoryManager.OnContextActionFinished();
+            ScenarioTimelineEventManager.OnScenarioActionExecuted(ContextActionBuilder.BuildScenarioAction(finishedContextAction, contextActionInput));
         }
 
-    }
-
-    public void OnContextActionFinished(AContextAction finishedContextAction, AContextActionInput contextActionInput)
-    {
-        PlayerManager.OnContextActionFinished();
-        InventoryManager.OnContextActionFinished();
-        ScenarioTimelineEventManager.OnScenarioActionExecuted(ContextActionBuilder.BuildScenarioAction(finishedContextAction, contextActionInput));
     }
 
 }

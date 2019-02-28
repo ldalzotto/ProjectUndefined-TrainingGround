@@ -2,65 +2,69 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointOfInterestEventManager : MonoBehaviour
+namespace AdventureGame
 {
-
-    private PlayerManager PlayerManager;
-    private PointOfInterestManager PointOfInterestManager;
-    private GhostsPOIManager GhostsPOIManager;
-    private AdventureLevelZonesEventManager levelZonesEventManager;
-
-
-    public void Init()
+    public class PointOfInterestEventManager : MonoBehaviour
     {
-        PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-        PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-        GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-        levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>();
-    }
 
-    private AdventureLevelZonesEventManager LevelZonesEventManager
-    {
-        get
+        private PlayerManager PlayerManager;
+        private PointOfInterestManager PointOfInterestManager;
+        private GhostsPOIManager GhostsPOIManager;
+        private AdventureLevelZonesEventManager levelZonesEventManager;
+
+
+        public void Init()
         {
-            if (levelZonesEventManager == null)
+            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+            GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
+            levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>();
+        }
+
+        private AdventureLevelZonesEventManager LevelZonesEventManager
+        {
+            get
             {
-                levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>(); ;
+                if (levelZonesEventManager == null)
+                {
+                    levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>(); ;
+                }
+                return levelZonesEventManager;
             }
-            return levelZonesEventManager;
         }
-    }
 
-    public void OnPOICreated(PointOfInterestType POICreated)
-    {
-        GhostsPOIManager.OnScenePOICreated(POICreated);
-        PointOfInterestManager.OnPOICreated(POICreated);
-    }
-
-    public void DestroyPOI(PointOfInterestType POITobeDestroyed)
-    {
-        if (!LevelZonesEventManager.IsNewZoneLoading())
+        public void OnPOICreated(PointOfInterestType POICreated)
         {
-            POITobeDestroyed.OnPOIDestroyedFromPlayerAction();
+            GhostsPOIManager.OnScenePOICreated(POICreated);
+            PointOfInterestManager.OnPOICreated(POICreated);
         }
-        PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
-        GhostsPOIManager.OnScenePOIDestroyed(POITobeDestroyed);
-        PlayerManager.OnPOIDestroyed(POITobeDestroyed);
-        StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));
-    }
 
-    public void DetroyPOIs(List<PointOfInterestType> POIsTobeDestroyed)
-    {
-        foreach (var POITobeDestroyed in POIsTobeDestroyed)
+        public void DestroyPOI(PointOfInterestType POITobeDestroyed)
         {
-            DestroyPOI(POITobeDestroyed);
+            if (!LevelZonesEventManager.IsNewZoneLoading())
+            {
+                POITobeDestroyed.OnPOIDestroyedFromPlayerAction();
+            }
+            PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
+            GhostsPOIManager.OnScenePOIDestroyed(POITobeDestroyed);
+            PlayerManager.OnPOIDestroyed(POITobeDestroyed);
+            StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));
         }
-    }
 
-    private IEnumerator DestroyPOICoroutine(PointOfInterestType POITobeDestroyed)
-    {
-        yield return new WaitForEndOfFrame();
-        Destroy(POITobeDestroyed.GetRootObject());
+        public void DetroyPOIs(List<PointOfInterestType> POIsTobeDestroyed)
+        {
+            foreach (var POITobeDestroyed in POIsTobeDestroyed)
+            {
+                DestroyPOI(POITobeDestroyed);
+            }
+        }
+
+        private IEnumerator DestroyPOICoroutine(PointOfInterestType POITobeDestroyed)
+        {
+            yield return new WaitForEndOfFrame();
+            Destroy(POITobeDestroyed.GetRootObject());
+        }
+
     }
 
 }

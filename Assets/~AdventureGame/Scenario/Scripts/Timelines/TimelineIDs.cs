@@ -1,5 +1,9 @@
-﻿public enum TimelineIDs
+﻿namespace AdventureGame
 {
-    DISCUSSION_TIMELINE, SCENARIO_TIMELINE
+    public enum TimelineIDs
+    {
+        DISCUSSION_TIMELINE, SCENARIO_TIMELINE
+
+    }
 
 }

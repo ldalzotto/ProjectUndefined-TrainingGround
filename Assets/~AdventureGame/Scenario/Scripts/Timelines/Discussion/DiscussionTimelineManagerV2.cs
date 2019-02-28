@@ -1,4 +1,8 @@
-﻿public class DiscussionTimelineManagerV2 : ATimelineNodeManager
+﻿namespace AdventureGame
 {
+    public class DiscussionTimelineManagerV2 : ATimelineNodeManager
+    {
+
+    }
 
 }
