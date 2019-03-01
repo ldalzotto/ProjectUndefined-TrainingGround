@@ -57,7 +57,7 @@ namespace RTPuzzle
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
 
 
-            PuzzleEventsManager.SendEvent(new ThrowProjectileActionStartEvent(playerTransform,
+            PuzzleEventsManager.OnThrowProjectileActionStart(new ThrowProjectileActionStartEvent(playerTransform,
                  configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
                 LaunchProjectileId));
         }
@@ -81,7 +81,7 @@ namespace RTPuzzle
         #region Internal Events
         public void OnExit()
         {
-            PuzzleEventsManager.SendEvent(new ProjectileThrowedEvent());
+            PuzzleEventsManager.OnProjectileThrowedEvent();
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectilePathAnimationmanager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();

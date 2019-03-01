@@ -33,6 +33,5 @@ namespace RTPuzzle
     }
 
     public class ProjectileThrowedEvent : PuzzleEvent { }
-
-    public class GameOverEvent : PuzzleEvent { }
+    
 }

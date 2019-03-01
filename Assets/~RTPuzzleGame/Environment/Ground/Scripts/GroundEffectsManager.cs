@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class GroundEffectsManager : MonoBehaviour, PuzzleEventsListener
+    public class GroundEffectsManager : MonoBehaviour
     {
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -21,15 +21,13 @@ namespace RTPuzzle
         {
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
             ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent);
-            PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
             for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
             {
                 AffectedGroundEffectsType[i].Init();
             }
-            PuzzleEventsManager.AddListener(this);
         }
-
+        
         private void OnRenderObject()
         {
             ThrowRangeEffectManager.RenderObjectTick(AffectedGroundEffectsType);
@@ -42,20 +40,17 @@ namespace RTPuzzle
         }
 
         #region External Events
-
-        public void ReceivedEvend(PuzzleEvent puzzleEvent)
+        internal void OnProjectileThrowedEvent()
         {
-            if (puzzleEvent.IsEventOfType<ThrowProjectileActionStartEvent>())
-            {
-                var puzzEv = puzzleEvent as ThrowProjectileActionStartEvent;
-                ThrowRangeEffectManager.OnThrowProjectileActionStart(puzzEv.ThrowerTransform, puzzEv.MaxRange);
-                ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(puzzEv.CurrentCursorPositionRetriever, LaunchProjectileInherentDataConfiguration.conf[puzzEv.ProjectileInvolved].EffectRange);
-            }
-            else if (puzzleEvent.IsEventOfType<ProjectileThrowedEvent>())
-            {
-                ThrowRangeEffectManager.OnThrowProjectileThrowed();
-                ThrowCursorRangeEffectManager.OnThrowProjectileThrowed();
-            }
+            ThrowRangeEffectManager.OnThrowProjectileThrowed();
+            ThrowCursorRangeEffectManager.OnThrowProjectileThrowed();
+        }
+
+        internal void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
+        {
+            ThrowRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.ThrowerTransform, throwProjectileActionStartEvent.MaxRange);
+            ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.CurrentCursorPositionRetriever, LaunchProjectileInherentDataConfiguration.conf[throwProjectileActionStartEvent.ProjectileInvolved].EffectRange);
+
         }
         #endregion
     }
