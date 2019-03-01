@@ -9,6 +9,9 @@ namespace RTPuzzle
     public class NPCAIManager : MonoBehaviour
     {
 
+        public const string AnimationName_OnHittedByProjectileFirstTime = "OnHittedByProjectileFirstTime";
+        public const string AnimationName_OnHittedByProjectile2InARow = "OnHittedByProjectile2InARow";
+
         [Header("Debug")]
         public bool DebugEabled;
 
@@ -30,6 +33,7 @@ namespace RTPuzzle
         private NPCAnimationDataManager NPCAnimationDataManager;
         private NpcInteractionRingManager NpcFOVRingManager;
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
+        private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
 
         private Coroutine destinatioNReachedCoroutine;
 
@@ -57,6 +61,7 @@ namespace RTPuzzle
                                 aiComponent.AITargetZoneComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, camera, canvas);
+            AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
         }
 
         public void TickWhenTimeFlows(float d, float timeAttenuationFactor)
@@ -142,11 +147,13 @@ namespace RTPuzzle
         public void OnHittedByProjectileFirstTime()
         {
             this.ContextMarkVisualFeedbackManager.OnHittedByProjectileFirstTime();
+            this.AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime();
         }
 
         public void OnHittedByProjectile2InARow()
         {
             this.ContextMarkVisualFeedbackManager.OnHittedByProjectile2InARow();
+            this.AnimationVisualFeedbackManager.OnHittedByProjectile2InARow();
         }
 
         internal void OnGameOver()
@@ -279,6 +286,26 @@ namespace RTPuzzle
         internal void OnGameOver()
         {
             ReInitBeforeSpawningMark();
+        }
+    }
+
+    class AnimationVisualFeedbackManager
+    {
+        private Animator Animator;
+
+        public AnimationVisualFeedbackManager(Animator animator)
+        {
+            Animator = animator;
+        }
+
+        internal void OnHittedByProjectileFirstTime()
+        {
+            this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectileFirstTime);
+        }
+
+        internal void OnHittedByProjectile2InARow()
+        {
+            this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectile2InARow);
         }
     }
 }

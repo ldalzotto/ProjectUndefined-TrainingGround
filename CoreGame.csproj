@@ -90,7 +90,6 @@
     <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />
     <Compile Include="Assets\~CoreGame\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
     <Compile Include="Assets\~CoreGame\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
-    <Compile Include="Assets\~CoreGame\AI\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
