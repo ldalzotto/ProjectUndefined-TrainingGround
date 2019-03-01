@@ -19,13 +19,13 @@ namespace RTPuzzle
         #endregion
 
         public MouseAIBehavior(NavMeshAgent selfAgent, AIRandomPatrolComponent AIRandomPatrolComponent,
-                AIProjectileEscapeComponent AIProjectileEscapeComponent, AITargetZoneComponent AIWarningZoneComponent
+                AIProjectileEscapeComponent AIProjectileEscapeComponent, AITargetZoneComponent AITargetZoneComponent
                     , Action<FOV> OnFOVChange) : base(selfAgent, OnFOVChange)
         {
             AIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
-            AITargetZoneComponentManager = new AITargetZoneComponentManager(selfAgent, AIWarningZoneComponent);
+            AITargetZoneComponentManager = new AITargetZoneComponentManager(selfAgent, AITargetZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, AIRandomPatrolComponent);
-            AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent, AIWarningZoneComponent, AIFOVManager);
+            AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, AIProjectileEscapeComponent, AITargetZoneComponent, AIFOVManager);
         }
 
         #region Internal Events

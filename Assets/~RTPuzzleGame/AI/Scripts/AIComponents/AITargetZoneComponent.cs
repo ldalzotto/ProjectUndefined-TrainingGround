@@ -39,10 +39,10 @@ namespace RTPuzzle
         }
         #endregion
 
-        public AITargetZoneComponentManager(NavMeshAgent agent, AITargetZoneComponent aIWarningZoneComponent)
+        public AITargetZoneComponentManager(NavMeshAgent agent, AITargetZoneComponent aITargetZoneComponent)
         {
             this.agent = agent;
-            AITargetZoneComponent = aIWarningZoneComponent;
+            AITargetZoneComponent = aITargetZoneComponent;
         }
 
         public void TickComponent()

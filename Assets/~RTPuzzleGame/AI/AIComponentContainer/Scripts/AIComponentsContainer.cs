@@ -21,7 +21,7 @@ namespace RTPuzzle
     public class AIComponents
     {
         public AIRandomPatrolComponent AIRandomPatrolComponent;
-        public RTPuzzle.AIProjectileEscapeComponent AIProjectileEscapeComponent;
-        public RTPuzzle.AITargetZoneComponent AITargetZoneComponent;
+        public AIProjectileEscapeComponent AIProjectileEscapeComponent;
+        public AITargetZoneComponent AITargetZoneComponent;
     }
 }
