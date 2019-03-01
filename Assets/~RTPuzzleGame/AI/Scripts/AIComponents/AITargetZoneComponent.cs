@@ -6,7 +6,8 @@ namespace RTPuzzle
     public class AITargetZoneComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
     {
         public TargetZoneID TargetZoneID;
-        public float TargetZoneMinDistance;
+        
+        private TargetZoneConfigurationData targetZoneConfigurationData;
         private TargetZone targetZone;
 
         #region State
@@ -14,11 +15,14 @@ namespace RTPuzzle
         #endregion
 
         public TargetZone TargetZone { get => targetZone; }
+        public TargetZoneConfigurationData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
+
         public void InitializeContainer(AIComponents aIComponents)
         {
             aIComponents.AITargetZoneComponent = this;
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             this.targetZone = targetZoneContainer.TargetZones[TargetZoneID];
+            this.targetZoneConfigurationData = TargetZonesConfiguration.conf[this.targetZone.TargetZoneID];
         }
     }
 
@@ -47,7 +51,7 @@ namespace RTPuzzle
 
         public void TickComponent()
         {
-            AITargetZoneComponent.IsInTargetZone = Vector3.Distance(agent.transform.position, AITargetZoneComponent.TargetZone.transform.position) <= AITargetZoneComponent.TargetZoneMinDistance;
+            AITargetZoneComponent.IsInTargetZone = Vector3.Distance(agent.transform.position, AITargetZoneComponent.TargetZone.transform.position) <= AITargetZoneComponent.TargetZoneConfigurationData.EscapeMinDistance;
         }
 
     }

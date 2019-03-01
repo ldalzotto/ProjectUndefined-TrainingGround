@@ -76,6 +76,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SelectionNodeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\TargetZonesConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />

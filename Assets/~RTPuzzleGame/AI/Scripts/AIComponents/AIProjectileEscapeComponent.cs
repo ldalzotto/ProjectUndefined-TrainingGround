@@ -105,7 +105,6 @@ namespace RTPuzzle
                         Debug.Log("EscapeToFarestWithTargetZone");
                         return EscapeToFarestWithTargetZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                     }
-
                 }
             }
 
@@ -122,8 +121,8 @@ namespace RTPuzzle
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
            // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
 
-            //TODO (Semi angle not hard coded)
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - 110, worldEscapeDirectionAngle + 110);
+            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.AITargetZoneComponent.TargetZoneConfigurationData.EscapeFOVSemiAngle,
+                worldEscapeDirectionAngle + this.AITargetZoneComponent.TargetZoneConfigurationData.EscapeFOVSemiAngle);
             noTargetZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noTargetZonehits.Length; i++)
