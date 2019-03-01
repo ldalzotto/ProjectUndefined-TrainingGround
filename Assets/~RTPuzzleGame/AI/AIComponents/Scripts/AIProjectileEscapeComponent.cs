@@ -23,7 +23,7 @@ namespace RTPuzzle
         private NavMeshAgent escapingAgent;
         private AITargetZoneComponent AITargetZoneComponent;
         private AIFOVManager AIFOVManager;
-        private AIEventsManager AIEventsManager;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         #region Internal Dependencies
@@ -50,13 +50,13 @@ namespace RTPuzzle
         #endregion
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, AIEventsManager aIEventsManager, AiID aiID)
+                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
             this.AITargetZoneComponent = AITargetZoneComponent;
             this.AIFOVManager = AIFOVManager;
-            this.AIEventsManager = aIEventsManager;
+            this.PuzzleEventsManager = PuzzleEventsManager;
             this.aiID = aiID;
         }
 
@@ -103,13 +103,13 @@ namespace RTPuzzle
                     {
                         //if already escaping from projectile
                         Debug.Log("EscapeToFarest");
-                        this.AIEventsManager.OnHittedByProjectile2InARow(this.aiID);
+                        this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
                         return EscapeToFarest(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                     }
                     else
                     {
                         Debug.Log("EscapeToFarestWithTargetZone");
-                        this.AIEventsManager.OnHittedByProjectileFirstTime(this.aiID);
+                        this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
                         return EscapeToFarestWithTargetZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                     }
                 }
@@ -126,7 +126,7 @@ namespace RTPuzzle
             noTargetZonePhysicsRay = new Ray[7];
 
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
-           // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
+            // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
 
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.AITargetZoneComponent.TargetZoneConfigurationData.EscapeFOVSemiAngle,
                 worldEscapeDirectionAngle + this.AITargetZoneComponent.TargetZoneConfigurationData.EscapeFOVSemiAngle);

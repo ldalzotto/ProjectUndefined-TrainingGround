@@ -39,7 +39,7 @@ namespace RTPuzzle
             }
         }
 
-        public void TickFlowTime(float d, float timeAttenuation)
+        public void TickWhenTimeFlows(float d, float timeAttenuation)
         {
             PlayerActionsAvailableManager.Tick(d, timeAttenuation);
         }

@@ -47,19 +47,19 @@ namespace RTPuzzle
             agent.updateRotation = false;
 
             var aiComponent = GameObject.FindObjectOfType<AIComponentsManager>().Get(AiID);
-            var aiEventsmanager = GameObject.FindObjectOfType<AIEventsManager>();
+            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
             PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent,
-                                aiComponent.AITargetZoneComponent, OnFOVChange, aiEventsmanager, this.AiID);
+                                aiComponent.AITargetZoneComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, camera, canvas);
         }
 
-        public void Tick(float d, float timeAttenuationFactor)
+        public void TickWhenTimeFlows(float d, float timeAttenuationFactor)
         {
             var newDestination = PuzzleAIBehavior.TickAI();
             if (newDestination.HasValue)
@@ -69,6 +69,10 @@ namespace RTPuzzle
 
             AIDestinationMoveManager.Tick(d);
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
+        }
+
+        internal void TickAlways(float d, float timeAttenuationFactor)
+        {
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);

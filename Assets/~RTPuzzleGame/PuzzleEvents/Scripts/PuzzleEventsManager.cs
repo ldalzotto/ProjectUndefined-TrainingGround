@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -14,6 +13,17 @@ namespace RTPuzzle
         {
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
+        }
+
+        public void OnAiHittedByProjectile(AiID aiID, int timesInARow)
+        {
+            if(timesInARow == 1)
+            {
+                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
+            } else
+            {
+                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectile2InARow();
+            }
         }
 
         public void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)

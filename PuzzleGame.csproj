@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{0250D51F-1CD3-3671-88F3-42979529C21E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -68,7 +69,6 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIRandomPatrolComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AITargetZoneComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIEvents\Scripts\AIEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIType\Scripts\AIType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
