@@ -62,16 +62,17 @@
   <ItemGroup>
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PrefabContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponentContainer\Scripts\AIComponentsContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponentContainer\Scripts\AIComponentsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentsContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIProjectileEscapeComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIRandomPatrolComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AITargetZoneComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIEvents\Scripts\AIEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIType\Scripts\AIType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\AIComponents\AIProjectileEscapeComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\AIComponents\AIRandomPatrolComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\AIComponents\AITargetZoneComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\Scripts\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
@@ -87,8 +88,9 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIDestinationMoveManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NpcAiManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIDestinationMoveManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileAction.cs" />

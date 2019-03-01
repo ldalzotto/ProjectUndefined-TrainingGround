@@ -7,6 +7,15 @@ namespace RTPuzzle
     {
         private List<PuzzleEventsListener> registeredListeners = new List<PuzzleEventsListener>();
 
+        #region External Dependencies
+        private NPCAIManagerContainer NPCAIManagerContainer;
+        #endregion
+
+        public void Init()
+        {
+            this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+        }
+
         public void AddListener(PuzzleEventsListener PuzzleEventsListener)
         {
             registeredListeners.Add(PuzzleEventsListener);
@@ -22,6 +31,7 @@ namespace RTPuzzle
 
         public void OnGameOver(LevelZonesID nextZone)
         {
+            this.NPCAIManagerContainer.OnGameOver();
             SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
         }
     }

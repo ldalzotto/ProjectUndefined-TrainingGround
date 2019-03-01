@@ -8,13 +8,17 @@ namespace RTPuzzle
         private const string INTERACTION_RING_OBJECT_NAME = "InteractionRing";
 
         #region External Renferences
-        private NpcAiManager npcAiManagerRef;
+        private NPCAIManager npcAiManagerRef;
         #endregion
 
         private NpcInteractionRingType NpcInteractionRingType;
-        private Vector3 PositionOffset;
+        private Vector3 ringPositionOffset;
 
-        public NpcInteractionRingManager(NpcAiManager npcAiManagerRef)
+        #region Data Retrieval
+        public Vector3 RingPositionOffset { get => ringPositionOffset; }
+        #endregion
+
+        public NpcInteractionRingManager(NPCAIManager npcAiManagerRef)
         {
             ComputePositionOffset(npcAiManagerRef);
 
@@ -28,7 +32,7 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            NpcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + PositionOffset;
+            NpcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
         }
 
         public void OnFOVChanged(FOV newFOV)
@@ -61,7 +65,7 @@ namespace RTPuzzle
             }
         }
 
-        private void ComputePositionOffset(NpcAiManager npcAiManagerRef)
+        private void ComputePositionOffset(NPCAIManager npcAiManagerRef)
         {
             float maxYOffset = 0f;
 
@@ -81,7 +85,7 @@ namespace RTPuzzle
                     }
                 }
             }
-            PositionOffset = new Vector3(0, maxYOffset, 0);
+            ringPositionOffset = new Vector3(0, maxYOffset, 0);
         }
     }
 }

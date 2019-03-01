@@ -14,7 +14,7 @@ namespace RTPuzzle
 
         private PlayerManager PlayerManager;
         private PlayerManagerDataRetriever PlayerManagerDataRetriever;
-        private NpcAiManager NpcAiManager;
+        private NPCAIManager NpcAiManager;
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManager GroundEffectsManager;
@@ -27,7 +27,7 @@ namespace RTPuzzle
             InventoryMenu.gameObject.SetActive(false);
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            NpcAiManager = GameObject.FindObjectOfType<NpcAiManager>();
+            NpcAiManager = GameObject.FindObjectOfType<NPCAIManager>();
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
@@ -48,7 +48,8 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<GroundCollision>().Init();
             GroundEffectsManager.Init();
             CooldownFeedManager.Init();
-
+            GameObject.FindObjectOfType<AIEventsManager>().Init();
+            GameObject.FindObjectOfType<PuzzleEventsManager>().Init();
         }
 
         private void Update()

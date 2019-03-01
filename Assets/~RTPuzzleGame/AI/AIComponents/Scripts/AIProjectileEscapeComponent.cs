@@ -17,10 +17,13 @@ namespace RTPuzzle
 
     public class AIProjectileEscapeManager
     {
+        private AiID aiID;
+
         #region External Dependencies
         private NavMeshAgent escapingAgent;
         private AITargetZoneComponent AITargetZoneComponent;
         private AIFOVManager AIFOVManager;
+        private AIEventsManager AIEventsManager;
         #endregion
 
         #region Internal Dependencies
@@ -47,12 +50,14 @@ namespace RTPuzzle
         #endregion
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager)
+                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, AIEventsManager aIEventsManager, AiID aiID)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
             this.AITargetZoneComponent = AITargetZoneComponent;
             this.AIFOVManager = AIFOVManager;
+            this.AIEventsManager = aIEventsManager;
+            this.aiID = aiID;
         }
 
         public void ClearEscapeDestination()
@@ -98,11 +103,13 @@ namespace RTPuzzle
                     {
                         //if already escaping from projectile
                         Debug.Log("EscapeToFarest");
+                        this.AIEventsManager.OnHittedByProjectile2InARow(this.aiID);
                         return EscapeToFarest(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                     }
                     else
                     {
                         Debug.Log("EscapeToFarestWithTargetZone");
+                        this.AIEventsManager.OnHittedByProjectileFirstTime(this.aiID);
                         return EscapeToFarestWithTargetZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                     }
                 }

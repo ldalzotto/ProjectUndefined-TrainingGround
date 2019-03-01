@@ -6,12 +6,12 @@ namespace RTPuzzle
     {
 
         private LaunchProjectileContainerManager LaunchProjectileContainerManager;
-        private NpcAiManager NpcAiManager;
+        private NPCAIManager NpcAiManager;
 
         public void Init()
         {
             LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
-            NpcAiManager = GameObject.FindObjectOfType<NpcAiManager>();
+            NpcAiManager = GameObject.FindObjectOfType<NPCAIManager>();
         }
 
         public void OnLaunchProjectileSpawn(LaunchProjectile launchProjectile)

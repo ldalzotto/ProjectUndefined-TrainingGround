@@ -22,6 +22,10 @@ namespace RTPuzzle {
         public CooldownFeedManager CooldownFeedManager;
         public CooldownFeedLineType CooldownFeedLineType;
 
+        [Header("AI Mark Feedback Prefabs")]
+        public GameObject ExclamationMarkSimple;
+        public GameObject ExclamationMarkDouble;
+
         public static PrefabContainer Instance
         {
             get
