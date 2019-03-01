@@ -4,11 +4,21 @@ using UnityEngine;
 public abstract class AnimatedLayoutCell : MonoBehaviour
 {
 
+    private const string IN_ANIMATION_NAME = "IN";
+    private const string OUT_ANIMATION_NAME = "OUT";
+
+    private Animator Animator;
+
     private Vector3 oldPosition;
     private Vector3 targetPosition;
 
     protected abstract Func<Vector3, Vector3> inAnimation { get; }
     protected abstract Func<Vector3, Vector3> outAnimation { get; }
+
+    public void Init()
+    {
+        Animator = GetComponent<Animator>();
+    }
 
     public bool AnimationTick(float d, float speed)
     {
@@ -48,6 +58,10 @@ public abstract class AnimatedLayoutCell : MonoBehaviour
         {
             transform.position = inAnimation(transform.position);
         }
+        if(Animator != null)
+        {
+            Animator.Play(IN_ANIMATION_NAME);
+        }
         UpdateOldPosition();
     }
 
@@ -56,6 +70,10 @@ public abstract class AnimatedLayoutCell : MonoBehaviour
         if (outAnimation != null)
         {
             targetPosition = outAnimation(transform.position);
+        }
+        if (Animator != null)
+        {
+            Animator.Play(OUT_ANIMATION_NAME);
         }
     }
 }

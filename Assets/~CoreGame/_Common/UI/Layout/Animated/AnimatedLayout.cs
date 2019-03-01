@@ -18,6 +18,10 @@ public class AnimatedLayout : MonoBehaviour
     {
         controlledLayout = GetComponent<LayoutGroup>();
         layoutElements = GetComponentsInChildren<AnimatedLayoutCell>().ToList();
+        foreach(var layoutElement in layoutElements)
+        {
+            layoutElement.Init();
+        }
         destroyedElements = new List<AnimatedLayoutCell>();
         isAnimating = false;
     }
@@ -25,6 +29,7 @@ public class AnimatedLayout : MonoBehaviour
     #region External Events
     public void AddLayoutElement(AnimatedLayoutCell animatedLayoutCell, int siblingIndex)
     {
+        animatedLayoutCell.Init();
         animatedLayoutCell.transform.SetParent(transform);
         animatedLayoutCell.transform.SetSiblingIndex(siblingIndex);
         layoutElements.Add(animatedLayoutCell);
