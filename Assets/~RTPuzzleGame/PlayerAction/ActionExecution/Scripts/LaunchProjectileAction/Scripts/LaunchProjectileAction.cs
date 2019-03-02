@@ -32,6 +32,8 @@ namespace RTPuzzle
 
         public override void FirstExecution()
         {
+            base.FirstExecution();
+
             isActionFinished = false;
 
             #region External Dependencies

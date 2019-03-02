@@ -7,7 +7,6 @@ namespace RTPuzzle
         public abstract SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId { get; }
 
         public abstract bool FinishedCondition();
-        public abstract void FirstExecution();
         public abstract void Tick(float d);
         public abstract void GUITick();
         public abstract void GizmoTick();
@@ -19,12 +18,15 @@ namespace RTPuzzle
 
         protected RTPPlayerAction(float cooldownTime)
         {
-            var playerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
-            this.CooldownEventTrackerManager = new CooldownEventTrackerManager(playerActionEventManager);
-
             this.cooldownTime = cooldownTime;
             //on init, it it available
             this.onCooldownTimeElapsed = this.cooldownTime * 2;
+        }
+
+        public virtual void FirstExecution()
+        {
+            var playerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
+            this.CooldownEventTrackerManager = new CooldownEventTrackerManager(playerActionEventManager);
         }
 
         public void CoolDownTick(float d)
@@ -75,6 +77,7 @@ namespace RTPuzzle
             if (!this.endOfCooldownEventEmitted)
             {
                 this.endOfCooldownEventEmitted = true;
+                Debug.Log(PlayerActionEventManager);
                 PlayerActionEventManager.OnCooldownEnded(involvedAction);
             }
         }
