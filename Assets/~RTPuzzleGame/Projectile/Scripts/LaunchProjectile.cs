@@ -13,6 +13,13 @@ namespace RTPuzzle
 
         private PuzzleDebugModule PuzzleDebugModule;
 
+        public static LaunchProjectile Instantiate(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Canvas parentCanvas)
+        {
+            var launchProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, parentCanvas.transform);
+            launchProjectile.Init(LaunchProjectileInherentData, ProjectilePath);
+            return launchProjectile;
+        }
+
         public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
         {
             this.launchProjectileInherentData = LaunchProjectileInherentData;
