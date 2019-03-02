@@ -15,6 +15,8 @@ namespace RTPuzzle
             this.GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
         }
 
+        #region Projectile Events
+
         public void OnAiHittedByProjectile(AiID aiID, int timesInARow)
         {
             if(timesInARow == 1)
@@ -26,15 +28,30 @@ namespace RTPuzzle
             }
         }
 
+        #endregion
+
+        #region Projectile throw action events
+
         public void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
         {
             GroundEffectsManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent);
+        }
+
+        public void OnThrowProjectileCursorAvailable()
+        {
+            GroundEffectsManager.OnThrowProjectileCursorAvailable();
+        }
+        public void OnThrowProjectileCursorNotAvailable()
+        {
+            GroundEffectsManager.OnThrowProjectileCursorNotAvailable();
         }
 
         public void OnProjectileThrowedEvent()
         {
             GroundEffectsManager.OnProjectileThrowedEvent();
         }
+
+        #endregion
 
         public void OnGameOver(LevelZonesID nextZone)
         {

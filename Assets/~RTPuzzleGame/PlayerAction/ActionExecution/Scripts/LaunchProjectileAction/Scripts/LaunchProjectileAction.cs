@@ -51,7 +51,7 @@ namespace RTPuzzle
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever,
-                LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
+                LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, PuzzleEventsManager);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, canvas);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
@@ -169,8 +169,9 @@ namespace RTPuzzle
         private Camera camera;
         private LaunchProjectileRayPositionerManagerComponent LaunchProjectileRayPositionerManagerComponent;
         private PlayerManagerDataRetriever RTPlayerManagerDataRetriever;
+        private PuzzleEventsManager PuzzleEventsManager;
 
-        private Vector3 currentCursorWorldPosition;
+        private Nullable<Vector3> currentCursorWorldPosition;
 
         private bool isCursorPositioned;
         private bool isCursorInRange;
@@ -179,9 +180,10 @@ namespace RTPuzzle
         public bool IsCursorInRange { get => isCursorInRange; }
 
         public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent,
-            PlayerManagerDataRetriever rTPlayerManagerDataRetriever, Vector2 cursorScreenPositionAtInit)
+            PlayerManagerDataRetriever rTPlayerManagerDataRetriever, Vector2 cursorScreenPositionAtInit, PuzzleEventsManager PuzzleEventsManager)
         {
             this.camera = camera;
+            this.PuzzleEventsManager = PuzzleEventsManager;
             LaunchProjectileRayPositionerManagerComponent = launchProjectileRayPositionerManagerComponent;
             RTPlayerManagerDataRetriever = rTPlayerManagerDataRetriever;
             Tick(0f, cursorScreenPositionAtInit);
@@ -189,15 +191,20 @@ namespace RTPuzzle
 
         public void Tick(float d, Vector2 currentScreenPositionPoint)
         {
+            currentCursorWorldPosition = null;
             Ray ray = camera.ScreenPointToRay(new Vector2(currentScreenPositionPoint.x, camera.pixelHeight - currentScreenPositionPoint.y));
             RaycastHit hit;
             if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER)))
             {
+                if (!isCursorPositioned)
+                {
+                    PuzzleEventsManager.OnThrowProjectileCursorAvailable();
+                }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
-                if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursorWorldPosition) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
+                if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursorWorldPosition.Value) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
                 {
                     isCursorInRange = false;
                 }
@@ -209,9 +216,12 @@ namespace RTPuzzle
             }
             else
             {
+                if (isCursorPositioned)
+                {
+                    PuzzleEventsManager.OnThrowProjectileCursorNotAvailable();
+                }
                 isCursorPositioned = false;
                 isCursorInRange = false;
-
                 Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.red);
 
             }

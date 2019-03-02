@@ -54,6 +54,17 @@ namespace RTPuzzle
             ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.CurrentCursorPositionRetriever, LaunchProjectileInherentDataConfiguration.conf[throwProjectileActionStartEvent.ProjectileInvolved].EffectRange);
             OnCommandBufferUpdate();
         }
+        internal void OnThrowProjectileCursorAvailable()
+        {
+            ThrowCursorRangeEffectManager.OnThrowProjectileCursorAvailable();
+            OnCommandBufferUpdate();
+        }
+
+        internal void OnThrowProjectileCursorNotAvailable()
+        {
+            ThrowCursorRangeEffectManager.OnThrowProjectileCursorNotAvailable();
+            OnCommandBufferUpdate();
+        }
         #endregion
 
         #region Internal Events
@@ -182,6 +193,10 @@ namespace RTPuzzle
                     ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat("_Radius", projectileRange);
                     ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetVector("_CenterWorldPosition", currentCursorPosition.Value);
                     ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetPass(0);
+                }else
+                {
+                    //TODO set event to update the command buffer instead of setting a radius of 0f
+                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat("_Radius", 0f);
                 }
             }
         }
@@ -198,6 +213,16 @@ namespace RTPuzzle
             throwRangeEnabled = false;
         }
 
+        internal void OnThrowProjectileCursorAvailable()
+        {
+            throwRangeEnabled = true;
+        }
+
+        internal void OnThrowProjectileCursorNotAvailable()
+        {
+            throwRangeEnabled = false;
+        }
+
         internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
         {
             if (throwRangeEnabled)
@@ -208,6 +233,7 @@ namespace RTPuzzle
                 }
             }
         }
+
     }
 
     [System.Serializable]

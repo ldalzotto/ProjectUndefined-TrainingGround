@@ -3,15 +3,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public abstract class PuzzleEvent
-    {
-        public bool IsEventOfType<T>() where T : PuzzleEvent
-        {
-            return GetType() == typeof(T);
-        }
-    }
 
-    public class ThrowProjectileActionStartEvent : PuzzleEvent
+    public class ThrowProjectileActionStartEvent
     {
         private Transform throwerTransform;
         private float maxRange;
@@ -31,7 +24,5 @@ namespace RTPuzzle
         public Func<Vector3?> CurrentCursorPositionRetriever { get => currentCursorPositionRetriever; }
         public LaunchProjectileId ProjectileInvolved { get => projectileInvolved; }
     }
-
-    public class ProjectileThrowedEvent : PuzzleEvent { }
     
 }
