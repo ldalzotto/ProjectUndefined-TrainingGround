@@ -1,4 +1,4 @@
-﻿Shader "Custom/CameraBehinClipStand"
+﻿Shader "Custom/Test/CameraBehinClipStand"
 {
 	Properties
 	{

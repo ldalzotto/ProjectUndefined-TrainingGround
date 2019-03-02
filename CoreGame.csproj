@@ -102,6 +102,7 @@
     <Compile Include="Assets\Editor\Shader\WaterShaderGUI.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
+    <Compile Include="Assets\Test\CommandBufferTest\BufferWriter.cs" />
     <Compile Include="Assets\Test\LayoutAnimation\AnimatedLayoutTest.cs" />
     <Compile Include="Assets\Test\LayoutAnimation\LayoutAnimationTest.cs" />
     <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
@@ -125,6 +126,7 @@
     <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
     <None Include="Assets\_Shader\Water\GeometryFlatShade.cginc" />
     <None Include="Assets\_Shader\Water\WaterTrail\WaterTrailShader.shader" />
+    <None Include="Assets\Test\CommandBufferTest\CommandBufferTestShader.shader" />
     <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_Pass.shader" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <Reference Include="UnityEngine.AIModule">

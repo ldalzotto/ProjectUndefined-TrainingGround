@@ -1,4 +1,4 @@
-﻿Shader "Custom/WallShatterShader"
+﻿Shader "Custom/Test/WallShatterShader"
 {
 	Properties
 	{
