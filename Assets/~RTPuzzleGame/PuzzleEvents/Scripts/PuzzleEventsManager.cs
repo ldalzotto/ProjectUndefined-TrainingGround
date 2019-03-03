@@ -71,5 +71,16 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.OnGameOver();
             SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
         }
+
+        public void OnLevelCompleted(LevelZonesID nextZone)
+        {
+            this.NPCAIManagerContainer.OnGameOver();
+            //TODO -> not place particles here but in dedicated level completion condition module
+            var fxContainerManager = GameObject.FindObjectOfType<FXContainerManager>();
+            fxContainerManager.TriggerFX(PrefabContainer.Instance.LevelCompletedParticleEffect);
+            
+          //  SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
+        }
+
     }
 }

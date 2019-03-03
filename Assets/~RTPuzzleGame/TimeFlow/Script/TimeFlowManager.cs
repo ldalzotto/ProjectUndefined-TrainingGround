@@ -11,6 +11,7 @@ namespace RTPuzzle
         #region External Dependencies
         private TimeFlowBarManager TimeFlowBarManager;
         private PuzzleEventsManager PuzzleEventsManager;
+        private LevelManager LevelManager;
         #endregion
 
         public void Init(LevelZonesID puzzleId)
@@ -21,6 +22,7 @@ namespace RTPuzzle
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
             TimeFlowBarManager.Init(LevelConfiguration.conf[puzzleId].AvailableTimeAmount, this);
+            LevelManager = GameObject.FindObjectOfType<LevelManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
@@ -39,7 +41,7 @@ namespace RTPuzzle
 
             if (TimeFlowValueTracker.NoMoreTimeAvailable())
             {
-                PuzzleEventsManager.OnGameOver(LevelZonesID.SEWER_RTP);
+                PuzzleEventsManager.OnGameOver(LevelManager.GetCurrentLevel());
             }
         }
 

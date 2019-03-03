@@ -6,4 +6,5 @@ public class CollisionType : MonoBehaviour
 
     [Header("RT_Puzzle")]
     public bool IsRTPProjectile = false;
+    public bool IsAI = false;
 }

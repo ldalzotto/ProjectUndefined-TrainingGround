@@ -27,6 +27,9 @@ namespace RTPuzzle {
         public GameObject ExclamationMarkSimple;
         public GameObject ExclamationMarkDouble;
 
+        [Header("Visual Feedback")]
+        public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;
+
         public static PrefabContainer Instance
         {
             get

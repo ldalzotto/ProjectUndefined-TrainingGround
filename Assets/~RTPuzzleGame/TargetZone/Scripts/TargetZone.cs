@@ -10,16 +10,28 @@ namespace RTPuzzle
 
         public Collider ZoneCollider { get => zoneCollider; }
 
+        #region External Dependencies
+        private PuzzleEventsManager PuzzleEventsManager;
+        private LevelManager LevelManager;
+        #endregion
+
         void Start()
         {
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             zoneCollider = GetComponent<Collider>();
             targetZoneContainer.Add(this);
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(other.name);
+            var collisionType = other.gameObject.GetComponent<CollisionType>();
+            var collidedAIManager = CollisionTypeHelper.GetAIManager(collisionType);
+            if(collidedAIManager != null)
+            {
+                this.PuzzleEventsManager.OnLevelCompleted(this.LevelManager.GetCurrentLevel());
+            }
         }
 
     }

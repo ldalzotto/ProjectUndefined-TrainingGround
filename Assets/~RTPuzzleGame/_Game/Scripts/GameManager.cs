@@ -53,6 +53,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<PuzzleEventsManager>().Init();
             TimeFlowPlayPauseManager.Init();
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
+            GameObject.FindObjectOfType<LevelManager>().Init(PuzzleId);
         }
 
         private void Update()

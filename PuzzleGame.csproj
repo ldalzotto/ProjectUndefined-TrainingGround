@@ -60,6 +60,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\~RTPuzzleGame\_Collision\Scripts\CollisionTypeHelper.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundCollision.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\LevelManagement\Scripts\LevelManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingManager.cs" />
