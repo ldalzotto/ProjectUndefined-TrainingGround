@@ -75,6 +75,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIType\Scripts\AIType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
