@@ -34,7 +34,7 @@ namespace RTPuzzle
             this.AIRandomPatrolComponent = AIRandomPatrolComponent;
         }
 
-        public Nullable<Vector3> TickComponent(RTPuzzle.AIFOVManager aIFOVManager)
+        public Nullable<Vector3> TickComponent(AIFOVManager aIFOVManager)
         {
             if (!isMovingTowardsDestination)
             {

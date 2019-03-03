@@ -23,5 +23,6 @@ namespace RTPuzzle
         public AIRandomPatrolComponent AIRandomPatrolComponent;
         public AIProjectileEscapeComponent AIProjectileEscapeComponent;
         public AITargetZoneComponent AITargetZoneComponent;
+        public AIFearStunComponent AIFearStunComponent;
     }
 }

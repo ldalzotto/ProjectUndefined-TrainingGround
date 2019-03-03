@@ -67,6 +67,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentsContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIFearStunComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIRandomPatrolComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AITargetZoneComponent.cs" />

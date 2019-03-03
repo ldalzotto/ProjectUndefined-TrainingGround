@@ -18,7 +18,7 @@ namespace RTPuzzle
             this.OnFOVChange = OnFOVChange;
         }
 
-        public abstract Nullable<Vector3> TickAI();
+        public abstract Nullable<Vector3> TickAI(float d, float timeAttenuationFactor);
         public abstract void TickGizmo();
         public abstract void OnTriggerEnter(Collider collider);
         public abstract void OnTriggerStay(Collider collider);

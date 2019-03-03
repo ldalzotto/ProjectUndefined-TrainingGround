@@ -11,6 +11,9 @@ namespace RTPuzzle
 
         public const string AnimationName_OnHittedByProjectileFirstTime = "OnHittedByProjectileFirstTime";
         public const string AnimationName_OnHittedByProjectile2InARow = "OnHittedByProjectile2InARow";
+        public const string AnimationName_Fear = "Fear";
+        public const string AnimationName_FearListening = "FearListening";
+
 
         [Header("Debug")]
         public bool DebugEabled;
@@ -57,8 +60,7 @@ namespace RTPuzzle
 
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent.AIRandomPatrolComponent, aiComponent.AIProjectileEscapeComponent,
-                                aiComponent.AITargetZoneComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
+            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, camera, canvas);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
@@ -66,7 +68,7 @@ namespace RTPuzzle
 
         public void TickWhenTimeFlows(float d, float timeAttenuationFactor)
         {
-            var newDestination = PuzzleAIBehavior.TickAI();
+            var newDestination = PuzzleAIBehavior.TickAI(d, timeAttenuationFactor);
             if (newDestination.HasValue)
             {
                 SetDestinationWithCoroutineReached(newDestination.Value);
@@ -159,6 +161,17 @@ namespace RTPuzzle
         internal void OnGameOver()
         {
             this.ContextMarkVisualFeedbackManager.OnGameOver();
+        }
+
+
+        internal void OnAIFearedStunnedEnded()
+        {
+            this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
+        }
+
+        internal void OnAIFearedStunned()
+        {
+            this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
         #endregion
 
@@ -306,6 +319,16 @@ namespace RTPuzzle
         internal void OnHittedByProjectile2InARow()
         {
             this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectile2InARow);
+        }
+
+        internal void OnAIFearedStunnedEnded()
+        {
+            this.Animator.Play(NPCAIManager.AnimationName_FearListening);
+        }
+
+        internal void OnAIFearedStunned()
+        {
+            this.Animator.Play(NPCAIManager.AnimationName_Fear);
         }
     }
 }

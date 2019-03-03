@@ -287,6 +287,15 @@ namespace RTPuzzle
         {
             return aiFov;
         }
+        public float GetFOVAngleSum()
+        {
+            var angleSum = 0f;
+            foreach (var fovSlice in aiFov.FovSlices)
+            {
+                angleSum += fovSlice.AngleDiffNotSigned();
+            }
+            return angleSum;
+        }
         #endregion
 
     }
@@ -310,7 +319,7 @@ namespace RTPuzzle
         public void ReplaceFovSlices(List<FOVSlice> fovSclices)
         {
             this.fovSlices = fovSclices;
-            if(this.onFOVChange != null)
+            if (this.onFOVChange != null)
             {
                 this.onFOVChange.Invoke(this);
             }
@@ -362,6 +371,11 @@ namespace RTPuzzle
                 return a <= beginAngleIncluded && a > endAngleExcluded;
             }
 
+        }
+
+        public float AngleDiffNotSigned()
+        {
+            return Mathf.Abs(endAngleExcluded - beginAngleIncluded);
         }
 
         public override string ToString()

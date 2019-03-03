@@ -32,6 +32,17 @@ namespace RTPuzzle
 
         #endregion
 
+        #region Fear Events
+        public void OnAIFearedStunned(AiID aiID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunned();
+        }
+        public void OnAIFearedStunnedEnded(AiID aiID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
+        }
+        #endregion
+
         #region Projectile throw action events
 
         public void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
