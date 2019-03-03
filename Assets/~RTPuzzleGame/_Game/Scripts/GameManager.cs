@@ -52,6 +52,7 @@ namespace RTPuzzle
             CooldownFeedManager.Init();
             GameObject.FindObjectOfType<PuzzleEventsManager>().Init();
             TimeFlowPlayPauseManager.Init();
+            GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
         }
 
         private void Update()
@@ -63,6 +64,7 @@ namespace RTPuzzle
             GroundEffectsManager.Tick(d);
             CooldownFeedManager.Tick(d);
             TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
+
             NpcAiManager.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
 
             if (TimeFlowManager.IsAbleToFlowTime())

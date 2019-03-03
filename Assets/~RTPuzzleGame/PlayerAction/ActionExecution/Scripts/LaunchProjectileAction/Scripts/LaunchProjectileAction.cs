@@ -80,6 +80,17 @@ namespace RTPuzzle
 
         }
 
+        #region External Events
+        public void OnThrowProjectileCursorOnProjectileRange()
+        {
+            LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOnProjectileRange();
+        }
+        public void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOutOfProjectileRange();
+        }
+        #endregion
+
         #region Internal Events
         public void OnExit()
         {
@@ -120,7 +131,7 @@ namespace RTPuzzle
         private LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
         private GameInputManager GameInputManager;
 
-        private GameObject cursorObject;
+        private ThrowProjectileCursorType cursorObject;
         private Vector2 currentCursorScreenPosition;
 
         public LaunchProjectileScreenPositionManager(LaunchProjectileScreenPositionManagerComponent launchProjectileScreenPositionManagerComponent,
@@ -129,7 +140,7 @@ namespace RTPuzzle
             LaunchProjectileScreenPositionManagerComponent = launchProjectileScreenPositionManagerComponent;
             this.currentCursorScreenPosition = currentCursorScreenPosition;
             this.GameInputManager = GameInputManager;
-            this.cursorObject = MonoBehaviour.Instantiate(launchProjectileScreenPositionManagerComponent.CursorObject, gameCanvas.transform);
+            this.cursorObject = ThrowProjectileCursorType.Instanciate(gameCanvas.transform);
             UpdateCursorPosition();
         }
 
@@ -152,7 +163,17 @@ namespace RTPuzzle
 
         public void OnExit()
         {
-            MonoBehaviour.Destroy(cursorObject);
+            MonoBehaviour.Destroy(cursorObject.gameObject);
+        }
+
+        public void OnThrowProjectileCursorOnProjectileRange()
+        {
+            this.cursorObject.OnCursorOnProjectileRange();
+        }
+
+        public void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            this.cursorObject.OnCursorOutOfProjectileRange();
         }
 
     }
@@ -161,7 +182,6 @@ namespace RTPuzzle
     public class LaunchProjectileScreenPositionManagerComponent
     {
         public float CursorSpeed;
-        public GameObject CursorObject;
     }
     #endregion
 
@@ -182,7 +202,8 @@ namespace RTPuzzle
         public bool IsCursorInRange { get => isCursorInRange; }
 
         public LaunchProjectileRayPositionerManager(Camera camera, LaunchProjectileRayPositionerManagerComponent launchProjectileRayPositionerManagerComponent,
-            PlayerManagerDataRetriever rTPlayerManagerDataRetriever, Vector2 cursorScreenPositionAtInit, PuzzleEventsManager PuzzleEventsManager)
+            PlayerManagerDataRetriever rTPlayerManagerDataRetriever,
+            Vector2 cursorScreenPositionAtInit, PuzzleEventsManager PuzzleEventsManager)
         {
             this.camera = camera;
             this.PuzzleEventsManager = PuzzleEventsManager;
@@ -208,11 +229,11 @@ namespace RTPuzzle
 
                 if (Vector3.Distance(RTPlayerManagerDataRetriever.GetPlayerTransform().position, currentCursorWorldPosition.Value) > LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange)
                 {
-                    isCursorInRange = false;
+                    SetIsCursorInRange(false);
                 }
                 else
                 {
-                    isCursorInRange = true;
+                    SetIsCursorInRange(true);
                 }
 
             }
@@ -223,10 +244,30 @@ namespace RTPuzzle
                     PuzzleEventsManager.OnThrowProjectileCursorNotAvailable();
                 }
                 isCursorPositioned = false;
-                isCursorInRange = false;
+                SetIsCursorInRange(false);
                 Debug.DrawRay(ray.origin, ray.direction * Mathf.Infinity, Color.red);
 
             }
+        }
+
+        private void SetIsCursorInRange(bool currentFrameIsCursorInRange)
+        {
+            if (currentFrameIsCursorInRange)
+            {
+                if (!this.isCursorInRange)
+                {
+                    this.PuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
+                }
+            }
+            else
+            {
+                if (this.isCursorInRange)
+                {
+                    this.PuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
+                }
+            }
+
+            this.isCursorInRange = currentFrameIsCursorInRange;
         }
 
         public void OnExit()

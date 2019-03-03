@@ -7,12 +7,14 @@ namespace RTPuzzle
         #region External Dependencies
         private NPCAIManagerContainer NPCAIManagerContainer;
         private GroundEffectsManager GroundEffectsManager;
+        private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         #endregion
 
         public void Init()
         {
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
+            this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
         }
 
         #region Projectile Events
@@ -44,6 +46,17 @@ namespace RTPuzzle
         public void OnThrowProjectileCursorNotAvailable()
         {
             GroundEffectsManager.OnThrowProjectileCursorNotAvailable();
+        }
+
+        public void OnThrowProjectileCursorOnProjectileRange()
+        {
+            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
+            GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
+        }
+        public void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
+            GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
 
         public void OnProjectileThrowedEvent()

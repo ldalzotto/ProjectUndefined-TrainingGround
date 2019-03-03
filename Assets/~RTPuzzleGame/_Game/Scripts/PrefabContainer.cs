@@ -14,6 +14,7 @@ namespace RTPuzzle {
         [Space(20)]
         public LaunchProjectile ProjectilePrefab;
         public ThrowProjectilePath ThrowProjectilePathPrefab;
+        public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
 
         [Header("NPC prefabs")]
         public RTPuzzle.NpcInteractionRingType NpcInteractionRingPrefab;

@@ -99,8 +99,6 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
-    <Compile Include="Assets\Editor\Shader\WaterShaderGUI.cs" />
-    <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Test\CommandBufferTest\BufferWriter.cs" />
     <Compile Include="Assets\Test\LayoutAnimation\AnimatedLayoutTest.cs" />

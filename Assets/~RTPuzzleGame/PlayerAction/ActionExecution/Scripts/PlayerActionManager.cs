@@ -84,11 +84,24 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Data Retrieval
         public RTPPlayerAction GetCurrentSelectedAction()
         {
             return (SelectionWheel.GetSelectedNodeData() as PlayerSelectionWheelNodeData).Data as RTPPlayerAction;
         }
 
+        public RTPPlayerAction GetCurrentRunningAction()
+        {
+            if (!IsActionExecuting())
+            {
+                return null;
+            } else
+            {
+                return PlayerActionExecutionManager.CurrentAction;
+            }
+        }
+
+        #endregion
     }
 
 
@@ -107,6 +120,7 @@ namespace RTPuzzle
         private bool isActionExecuting;
 
         public bool IsActionExecuting { get => isActionExecuting; }
+        public RTPPlayerAction CurrentAction { get => currentAction; }
 
         public void Tick(float d)
         {

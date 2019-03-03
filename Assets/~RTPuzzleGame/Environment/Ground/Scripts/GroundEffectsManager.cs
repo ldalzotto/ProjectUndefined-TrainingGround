@@ -65,6 +65,14 @@ namespace RTPuzzle
             ThrowCursorRangeEffectManager.OnThrowProjectileCursorNotAvailable();
             OnCommandBufferUpdate();
         }
+        public void OnThrowProjectileCursorOnProjectileRange()
+        {
+            ThrowCursorRangeEffectManager.OnThrowProjectileCursorOnProjectileRange();
+        }
+        public void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            ThrowCursorRangeEffectManager.OnThrowProjectileCursorOutOfProjectileRange();
+        }
         #endregion
 
         #region Internal Events
@@ -169,6 +177,8 @@ namespace RTPuzzle
     class ThrowCursorRangeEffectManager
     {
 
+        private const string AURA_COLOR_MATERIAL_PROPERTY = "_AuraColor";
+
         private ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
 
         public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent)
@@ -223,6 +233,8 @@ namespace RTPuzzle
             throwRangeEnabled = false;
         }
 
+
+
         internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
         {
             if (throwRangeEnabled)
@@ -234,12 +246,25 @@ namespace RTPuzzle
             }
         }
 
+        internal void OnThrowProjectileCursorOnProjectileRange()
+        {
+            ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOnRangeAuraColor);
+        }
+
+        internal void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOutOfRangeAuraColor);
+        }
     }
 
     [System.Serializable]
     public class ThrowCursorRangeEffectManagerComponent
     {
         public Material ProjectileEffectRangeMaterial;
+        [ColorUsage(true, true)]
+        public Color CursorOnRangeAuraColor;
+        [ColorUsage(true, true)]
+        public Color CursorOutOfRangeAuraColor;
     }
     #endregion
 }

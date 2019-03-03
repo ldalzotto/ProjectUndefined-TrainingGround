@@ -20,8 +20,8 @@ namespace RTPuzzle
     public class TargetZonesConfiguration
     {
         public static Dictionary<TargetZoneID, TargetZoneConfigurationData> conf = new Dictionary<TargetZoneID, TargetZoneConfigurationData>()
-    {
-        {TargetZoneID.LEVEL1_TARGET_ZONE, new TargetZoneConfigurationData(10f, 110f) }
-    };
+        {
+             {TargetZoneID.LEVEL1_TARGET_ZONE, new TargetZoneConfigurationData(10f, 110f) }
+        };
     }
 }
