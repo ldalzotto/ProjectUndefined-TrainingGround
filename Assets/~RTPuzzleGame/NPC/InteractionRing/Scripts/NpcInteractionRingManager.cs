@@ -51,7 +51,7 @@ namespace RTPuzzle
             }
             NpcInteractionRingType.RingTexture.SetPixels(colors);
             NpcInteractionRingType.RingTexture.Apply(false);
-            Debug.Log("It has changed : " + newFOV.ToString());
+           // Debug.Log("It has changed : " + newFOV.ToString());
         }
 
         private void ComputeColorsPixel(float beginAngle, float endAngle, ref Color[] colors)

@@ -38,8 +38,6 @@ namespace RTPuzzle
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
 
-        private Coroutine destinatioNReachedCoroutine;
-
         public void Init()
         {
             var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
@@ -58,7 +56,7 @@ namespace RTPuzzle
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
-            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform);
+            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.OnDestinationReached);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
             PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
@@ -125,17 +123,6 @@ namespace RTPuzzle
         private void SetDestinationWithCoroutineReached(Vector3 destination)
         {
             AIDestinationMoveManager.SetDestination(destination);
-
-            if (destinatioNReachedCoroutine != null)
-            {
-                StopCoroutine(destinatioNReachedCoroutine);
-            }
-
-            destinatioNReachedCoroutine = Coroutiner.Instance.StartCoroutine(OnDestinationReached());
-        }
-        private void SetDestinationSilent(Vector3 destination)
-        {
-            AIDestinationMoveManager.SetDestination(destination);
         }
         public void EnableAgent()
         {
@@ -176,9 +163,9 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Events
-        private IEnumerator OnDestinationReached()
+        private void OnDestinationReached()
         {
-            yield return new WaitForNavAgentDestinationReached(agent);
+          //  yield return new WaitForNavAgentDestinationReached(agent);
             PuzzleAIBehavior.OnDestinationReached();
         }
 

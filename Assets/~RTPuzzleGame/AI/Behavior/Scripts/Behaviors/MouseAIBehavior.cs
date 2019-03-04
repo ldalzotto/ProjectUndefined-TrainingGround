@@ -13,6 +13,7 @@ namespace RTPuzzle
         private AIProjectileEscapeManager AIProjectileEscapeManager;
         private AITargetZoneComponentManager AITargetZoneComponentManager;
         private AIFearStunComponentManager AIFearStunComponentManager;
+        private AIAttractiveObjectComponent AIAttractiveObjectComponent;
         #endregion
 
         #region AI Managers
@@ -26,6 +27,7 @@ namespace RTPuzzle
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, aIComponents.AITargetZoneComponent, AIFOVManager, PuzzleEventsManager, aiID);
             AIFearStunComponentManager = new AIFearStunComponentManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID);
+            AIAttractiveObjectComponent = new AIAttractiveObjectComponent();
         }
 
         #region Internal Events
@@ -52,39 +54,49 @@ namespace RTPuzzle
 
             Vector3? newDirection = null;
 
-            if (!AIFearStunComponentManager.IsFeared)
+            if (AIFearStunComponentManager.IsFeared)
             {
-                if (AIProjectileEscapeManager.IsEscaping())
+                AIFearStunComponentManager.TickWhileFeared(d, timeAttenuationFactor);
+            }
+            else
+            {
+                var fearStunPosition = AIFearStunComponentManager.TickComponent(AIFOVManager);
+                if (AIFearStunComponentManager.IsFeared)
                 {
-                    var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
-                    OnProjectileEscapeManagerUpdated(escapeDestination);
-                    newDirection = escapeDestination;
+                    newDirection = fearStunPosition.Value; //position is the agent itself
                 }
                 else
                 {
-                    if (AITargetZoneComponentManager.IsInTargetZone())
+                    if (AIProjectileEscapeManager.IsEscaping())
                     {
-                        var escapeDestination = AIProjectileEscapeManager.ForceComputeEscapePoint();
+                        var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
                         OnProjectileEscapeManagerUpdated(escapeDestination);
                         newDirection = escapeDestination;
                     }
                     else
                     {
-                        AIProjectileEscapeManager.ClearEscapeDestination();
-                        newDirection = AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
+                        if (AITargetZoneComponentManager.IsInTargetZone())
+                        {
+                            var escapeDestination = AIProjectileEscapeManager.ForceComputeEscapePoint();
+                            OnProjectileEscapeManagerUpdated(escapeDestination);
+                            newDirection = escapeDestination;
+                        }
+                        else
+                        {
+                            AIProjectileEscapeManager.ClearEscapeDestination();
+                            if (AIAttractiveObjectComponent.IsAttracted)
+                            {
+                                newDirection = AIAttractiveObjectComponent.TickComponent();
+                            }
+                            else
+                            {
+                                newDirection = AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
+                            }
+                        }
                     }
                 }
-
-                var fearStunPosition = AIFearStunComponentManager.TickComponent(AIFOVManager);
-                if (fearStunPosition.HasValue) //if is feared
-                {
-                    newDirection = fearStunPosition.Value; //position is the agent itself
-                }
-            } else
-            {
-                AIFearStunComponentManager.TickWhileFeared(d, timeAttenuationFactor);
             }
-            
+
             return newDirection;
         }
 
@@ -105,11 +117,17 @@ namespace RTPuzzle
                 {
                     AIProjectileEscapeManager.OnTriggerEnter(collider, collisionType);
                 }
+                AIAttractiveObjectComponent.OnTriggerEnter(collider, collisionType);
             }
         }
 
         public override void OnTriggerStay(Collider collider)
         {
+            var collisionType = collider.GetComponent<CollisionType>();
+            if (collisionType != null)
+            {
+                AIAttractiveObjectComponent.OnTriggerStay(collider, collisionType);
+            }
         }
 
         public override void OnTriggerExit(Collider collider)
@@ -118,6 +136,7 @@ namespace RTPuzzle
             if (collisionType != null)
             {
                 AIProjectileEscapeManager.OnTriggerExit(collider, collisionType);
+                AIAttractiveObjectComponent.OnTriggerExit(collider, collisionType);
             }
         }
 
@@ -125,6 +144,7 @@ namespace RTPuzzle
         {
             AIRandomPatrolComponentManager.OnDestinationReached();
             AIProjectileEscapeManager.OnDestinationReached();
+            AIAttractiveObjectComponent.OnDestinationReached();
         }
 
         public void DebugGUITick()
@@ -133,6 +153,7 @@ namespace RTPuzzle
             GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping());
             GUILayout.Label("IsInTargetZone : " + AITargetZoneComponentManager.IsInTargetZone());
             GUILayout.Label("IsStunFeared : " + AIFearStunComponentManager.IsFeared);
+            GUILayout.Label("IsAttrancted : " + AIAttractiveObjectComponent.IsAttracted);
         }
     }
 

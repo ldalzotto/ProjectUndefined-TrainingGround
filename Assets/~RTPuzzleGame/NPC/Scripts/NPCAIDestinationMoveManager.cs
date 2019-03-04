@@ -2,56 +2,71 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-class NPCAIDestinationMoveManager
+namespace RTPuzzle
 {
-    private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
-    private NavMeshAgent objectAgent;
-    private Transform objectTransform;
-
-    public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Transform objectTransform)
+    class NPCAIDestinationMoveManager
     {
-        AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
-        this.objectAgent = objectAgent;
-        this.objectTransform = objectTransform;
-    }
+        private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
+        private NavMeshAgent objectAgent;
+        private Transform objectTransform;
+        private Action OnDestinationReachedEvent;
 
-    public void Tick(float d)
-    {
-        if (objectAgent.velocity.normalized != Vector3.zero)
+    public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Transform objectTransform, Action OnDestinationReachedEvent)
         {
-            objectTransform.rotation = Quaternion.Slerp(objectTransform.rotation, Quaternion.LookRotation(objectAgent.velocity.normalized), d * AIDestimationMoveManagerComponent.AIRotationSpeed);
+            AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
+            this.objectAgent = objectAgent;
+            this.objectTransform = objectTransform;
+            this.OnDestinationReachedEvent = OnDestinationReachedEvent;
         }
 
-        var playerMovementOrientation = (objectAgent.nextPosition - objectTransform.position).normalized;
-        objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
-        objectTransform.position = objectAgent.nextPosition;
+        private Vector3? currentDestination;
+
+        public void Tick(float d)
+        {
+            if (objectAgent.velocity.normalized != Vector3.zero)
+            {
+                objectTransform.rotation = Quaternion.Slerp(objectTransform.rotation, Quaternion.LookRotation(objectAgent.velocity.normalized), d * AIDestimationMoveManagerComponent.AIRotationSpeed);
+            }
+
+            var playerMovementOrientation = (objectAgent.nextPosition - objectTransform.position).normalized;
+            objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
+            objectTransform.position = objectAgent.nextPosition;
+
+            //is destination reached
+            if (this.currentDestination.HasValue)
+            {
+                if ((!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f)))
+                {
+                    this.currentDestination = null;
+                    this.OnDestinationReachedEvent.Invoke();
+                }
+            }
+
+        }
+
+        #region External Events
+        public void SetDestination(Vector3 destination)
+        {
+            this.currentDestination = destination;
+            objectAgent.SetDestination(destination);
+        }
+        public void EnableAgent()
+        {
+            objectAgent.isStopped = false;
+        }
+        public void DisableAgent()
+        {
+            objectAgent.isStopped = true;
+            objectAgent.nextPosition = objectAgent.transform.position;
+        }
+
+        #endregion
     }
 
-    #region External Events
-    public void SetDestination(Vector3 destination)
+    [System.Serializable]
+    public class AIDestimationMoveManagerComponent
     {
-        objectAgent.SetDestination(destination);
+        public float AIRotationSpeed;
+        public float SpeedMultiplicationFactor;
     }
-    public void EnableAgent()
-    {
-        objectAgent.isStopped = false;
-    }
-    public void DisableAgent()
-    {
-        objectAgent.isStopped = true;
-        objectAgent.nextPosition = objectAgent.transform.position;
-    }
-
-    internal void OnDestinationReached()
-    {
-        throw new NotImplementedException();
-    }
-    #endregion
-}
-
-[System.Serializable]
-public class AIDestimationMoveManagerComponent
-{
-    public float AIRotationSpeed;
-    public float SpeedMultiplicationFactor;
 }
