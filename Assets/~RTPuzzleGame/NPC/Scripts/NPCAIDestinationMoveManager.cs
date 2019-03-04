@@ -11,7 +11,7 @@ namespace RTPuzzle
         private Transform objectTransform;
         private Action OnDestinationReachedEvent;
 
-    public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Transform objectTransform, Action OnDestinationReachedEvent)
+        public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Transform objectTransform, Action OnDestinationReachedEvent)
         {
             AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
             this.objectAgent = objectAgent;

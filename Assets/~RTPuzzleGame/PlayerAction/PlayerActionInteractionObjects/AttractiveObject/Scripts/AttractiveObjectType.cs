@@ -15,6 +15,11 @@ namespace RTPuzzle
             return attractiveObject;
         }
 
+        public static AttractiveObjectType GetAttractiveObjectFromCollisionType(CollisionType collisionType)
+        {
+            return collisionType.GetComponent<AttractiveObjectType>();
+        }
+
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
         public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)

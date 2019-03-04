@@ -160,6 +160,11 @@ namespace RTPuzzle
         {
             this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
+
+        public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        {
+            this.PuzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
+        }
         #endregion
 
         #region Internal Events

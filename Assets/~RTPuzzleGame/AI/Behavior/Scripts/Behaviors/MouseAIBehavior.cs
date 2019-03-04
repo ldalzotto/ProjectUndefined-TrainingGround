@@ -41,6 +41,17 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region External Events
+        public override void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        {
+            if(AIAttractiveObjectComponent.IsDestructedAttractiveObjectEqualsToCurrent(attractiveObjectToDestroy))
+            {
+                AIAttractiveObjectComponent.ClearAttractedObject();
+                this.OnDestinationReached();
+            }
+        }
+        #endregion
+
         #region Logical Conditions
         private bool IsReactingToProjectile()
         {

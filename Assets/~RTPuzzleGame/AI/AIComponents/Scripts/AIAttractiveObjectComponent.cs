@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -8,7 +7,7 @@ namespace RTPuzzle
         #region State
         private bool isAttracted;
         #endregion
-
+        private AttractiveObjectType involvedAttractiveObject;
         private Vector3? attractionPosition;
 
         public bool IsAttracted { get => isAttracted; }
@@ -26,8 +25,7 @@ namespace RTPuzzle
         {
             if (collisionType.IsRTAttractiveObject)
             {
-                this.isAttracted = true;
-                this.attractionPosition = collisionType.transform.position;
+                SetAttractedObject(collisionType);
             }
         }
 
@@ -35,9 +33,15 @@ namespace RTPuzzle
         {
             if (collisionType.IsRTAttractiveObject)
             {
-                this.isAttracted = true;
-                this.attractionPosition = collisionType.transform.position;
+                SetAttractedObject(collisionType);
             }
+        }
+
+        private void SetAttractedObject(CollisionType collisionType)
+        {
+            this.isAttracted = true;
+            this.attractionPosition = collisionType.transform.position;
+            this.involvedAttractiveObject = AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType);
         }
 
         internal void OnTriggerExit(Collider collider, CollisionType collisionType)
@@ -53,5 +57,19 @@ namespace RTPuzzle
             this.isAttracted = false;
             attractionPosition = null;
         }
+
+        public void ClearAttractedObject()
+        {
+            this.involvedAttractiveObject = null;
+        }
+
+        #region Logical Conditions
+        public bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectType attractiveObjectToDestroy)
+        {
+            return (this.involvedAttractiveObject != null &&
+                attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());
+        }
+        #endregion
+
     }
 }

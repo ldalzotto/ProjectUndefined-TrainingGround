@@ -14,7 +14,8 @@ namespace RTPuzzle
 
         private PlayerManager PlayerManager;
         private PlayerManagerDataRetriever PlayerManagerDataRetriever;
-        private NPCAIManager NpcAiManager;
+        //  private NPCAIManager NpcAiManager;
+        private NPCAIManagerContainer NPCAIManagerContainer;
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManager GroundEffectsManager;
@@ -29,7 +30,8 @@ namespace RTPuzzle
             InventoryMenu.gameObject.SetActive(false);
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            NpcAiManager = GameObject.FindObjectOfType<NPCAIManager>();
+            //  NpcAiManager = GameObject.FindObjectOfType<NPCAIManager>();
+            NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
@@ -43,7 +45,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<AIComponentsManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();
-            NpcAiManager.Init();
+            // NpcAiManager.Init();
             TimeFlowManager.Init(PuzzleId);
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
             PlayerActionManager.Init(PuzzleId);
@@ -57,6 +59,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
             GameObject.FindObjectOfType<LevelManager>().Init(PuzzleId);
             AttractiveObjectsContainerManager.Init();
+            GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
         }
 
         private void Update()
@@ -69,19 +72,23 @@ namespace RTPuzzle
             CooldownFeedManager.Tick(d);
             TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
 
-            NpcAiManager.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
+            NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
+            //NpcAiManager.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
 
             if (TimeFlowManager.IsAbleToFlowTime())
             {
-                NpcAiManager.EnableAgent();
-                NpcAiManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                NPCAIManagerContainer.EnableAgents();
+                NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                //  NpcAiManager.EnableAgent();
+                //   NpcAiManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                 LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                 PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                 AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
             }
             else
             {
-                NpcAiManager.DisableAgent();
+                NPCAIManagerContainer.DisableAgents();
+                //   NpcAiManager.DisableAgent();
             }
 
         }
@@ -94,10 +101,16 @@ namespace RTPuzzle
 
         private void OnDrawGizmos()
         {
+            if (NPCAIManagerContainer != null)
+            {
+                NPCAIManagerContainer.GizmoTick();
+            }
+            /*
             if (NpcAiManager != null)
             {
                 NpcAiManager.GizmoTick();
             }
+            */
 
             if (PlayerActionManager != null)
             {
@@ -107,10 +120,17 @@ namespace RTPuzzle
 
         private void OnGUI()
         {
+            if (NPCAIManagerContainer != null)
+            {
+                NPCAIManagerContainer.GUITick();
+            }
+
+            /*
             if (NpcAiManager != null)
             {
                 NpcAiManager.GUITick();
             }
+            */
 
             if (PlayerActionManager != null)
             {

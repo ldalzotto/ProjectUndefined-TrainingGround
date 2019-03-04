@@ -5,10 +5,15 @@ namespace RTPuzzle
 {
     public class AttractiveObjectsContainerManager : MonoBehaviour
     {
+        #region External Dependencies
+        private NPCAIManagerContainer NPCAIManagerContainer;
+        #endregion
+
         private AttractiveObjectsContainer AttractiveObjectsContainer;
 
         public void Init()
         {
+            this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             AttractiveObjectsContainer = new AttractiveObjectsContainer(this);
         }
 
@@ -29,7 +34,7 @@ namespace RTPuzzle
         public void OnAttractiveObjectDestroy(AttractiveObjectType attractiveObjectToDestroy)
         {
             AttractiveObjectsContainer.OnAttractiveObjectDestroy(attractiveObjectToDestroy);
-            //TODO, notify all AI managers
+            this.NPCAIManagerContainer.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
             MonoBehaviour.Destroy(attractiveObjectToDestroy.gameObject);
         }
         #endregion

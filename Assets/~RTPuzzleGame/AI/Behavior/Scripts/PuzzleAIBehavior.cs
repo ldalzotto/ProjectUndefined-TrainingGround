@@ -25,7 +25,7 @@ namespace RTPuzzle
         public abstract void OnTriggerExit(Collider collider);
 
         public abstract void OnDestinationReached();
-
+        public virtual void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy) { }
     }
 
 }
