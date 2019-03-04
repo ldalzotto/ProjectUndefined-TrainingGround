@@ -21,6 +21,7 @@ namespace RTPuzzle
         private LaunchProjectileContainerManager LaunchProjectileContainerManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
+        private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
 
         private void Start()
         {
@@ -36,6 +37,7 @@ namespace RTPuzzle
             LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
+            AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
 
             //Initialisations
             GameObject.FindObjectOfType<AIComponentsManager>().Init();
@@ -54,6 +56,7 @@ namespace RTPuzzle
             TimeFlowPlayPauseManager.Init();
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
             GameObject.FindObjectOfType<LevelManager>().Init(PuzzleId);
+            AttractiveObjectsContainerManager.Init();
         }
 
         private void Update()
@@ -74,6 +77,7 @@ namespace RTPuzzle
                 NpcAiManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                 LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                 PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
             }
             else
             {

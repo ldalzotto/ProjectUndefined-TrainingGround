@@ -6,16 +6,23 @@ namespace RTPuzzle
 {
     public class GroundEffectsManager : MonoBehaviour
     {
+
+        public const string AURA_RADIUS_MATERIAL_PROPERTY = "_Radius";
+        public const string AURA_CENTER_MATERIAL_PROPERTY = "_CenterWorldPosition";
+        public const string AURA_COLOR_MATERIAL_PROPERTY = "_AuraColor";
+
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         public GroundEffectsManagerComponent GroundEffectsManagerComponent;
         public ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
+        public AttractiveObjectRangeManagerComponent AttractiveObjectRangeManagerComponent;
 
         private GroundEffectsCommandBufferManager GroundEffectsCommandBufferManager;
         private ThrowRangeEffectManager ThrowRangeEffectManager;
         private ThrowCursorRangeEffectManager ThrowCursorRangeEffectManager;
+        private AttractiveObjectRangeManager AttractiveObjectRangeManager;
 
         private GroundEffectType[] AffectedGroundEffectsType;
 
@@ -27,6 +34,8 @@ namespace RTPuzzle
 
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
             ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent);
+            AttractiveObjectRangeManager = new AttractiveObjectRangeManager(AttractiveObjectRangeManagerComponent);
+
             AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
             for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
             {
@@ -39,6 +48,7 @@ namespace RTPuzzle
             ThrowRangeEffectManager.Tick(d);
             ThrowCursorRangeEffectManager.Tick(d);
         }
+        
 
         #region External Events
         internal void OnProjectileThrowedEvent()
@@ -73,6 +83,16 @@ namespace RTPuzzle
         {
             ThrowCursorRangeEffectManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
+        internal void OnAttractiveObjectActionStart(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
+        {
+            AttractiveObjectRangeManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
+            OnCommandBufferUpdate();
+        }
+        internal void OnAttractiveObjectActionEnd()
+        {
+            AttractiveObjectRangeManager.OnAttractiveObjectActionEnd();
+            OnCommandBufferUpdate();
+        }
         #endregion
 
         #region Internal Events
@@ -81,6 +101,7 @@ namespace RTPuzzle
             GroundEffectsCommandBufferManager.ClearCommandBuffer();
             ThrowRangeEffectManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
             ThrowCursorRangeEffectManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
+            AttractiveObjectRangeManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
         }
         #endregion
     }
@@ -133,9 +154,8 @@ namespace RTPuzzle
             {
                 currentRange += (d * GroundEffectsManagerComponent.RangeExpandSpeed);
                 currentRange = Mathf.Min(currentRange, maxRange);
-                GroundEffectsManagerComponent.RangeEffectMaterial.SetFloat("_Radius", currentRange);
-                GroundEffectsManagerComponent.RangeEffectMaterial.SetVector("_CenterWorldPosition", throwerTransformRef.position);
-                GroundEffectsManagerComponent.RangeEffectMaterial.SetPass(0);
+                GroundEffectsManagerComponent.RangeEffectMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, currentRange);
+                GroundEffectsManagerComponent.RangeEffectMaterial.SetVector(GroundEffectsManager.AURA_CENTER_MATERIAL_PROPERTY, throwerTransformRef.position);
             }
         }
 
@@ -177,8 +197,6 @@ namespace RTPuzzle
     class ThrowCursorRangeEffectManager
     {
 
-        private const string AURA_COLOR_MATERIAL_PROPERTY = "_AuraColor";
-
         private ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
 
         public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent)
@@ -200,13 +218,13 @@ namespace RTPuzzle
                 var currentCursorPosition = cursorPositionRetriever.Invoke();
                 if (currentCursorPosition.HasValue)
                 {
-                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat("_Radius", projectileRange);
+                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, projectileRange);
                     ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetVector("_CenterWorldPosition", currentCursorPosition.Value);
-                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetPass(0);
-                }else
+                }
+                else
                 {
                     //TODO set event to update the command buffer instead of setting a radius of 0f
-                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat("_Radius", 0f);
+                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, 0f);
                 }
             }
         }
@@ -233,8 +251,6 @@ namespace RTPuzzle
             throwRangeEnabled = false;
         }
 
-
-
         internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
         {
             if (throwRangeEnabled)
@@ -248,12 +264,12 @@ namespace RTPuzzle
 
         internal void OnThrowProjectileCursorOnProjectileRange()
         {
-            ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOnRangeAuraColor);
+            ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOnRangeAuraColor);
         }
 
         internal void OnThrowProjectileCursorOutOfProjectileRange()
         {
-            ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOutOfRangeAuraColor);
+            ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOutOfRangeAuraColor);
         }
     }
 
@@ -265,6 +281,51 @@ namespace RTPuzzle
         public Color CursorOnRangeAuraColor;
         [ColorUsage(true, true)]
         public Color CursorOutOfRangeAuraColor;
+    }
+    #endregion
+
+
+    #region Attractive Object Range
+    class AttractiveObjectRangeManager
+    {
+        private AttractiveObjectRangeManagerComponent attractiveObjectRangeManagerComponent;
+
+        public AttractiveObjectRangeManager(AttractiveObjectRangeManagerComponent attractiveObjectRangeManagerComponent)
+        {
+            this.attractiveObjectRangeManagerComponent = attractiveObjectRangeManagerComponent;
+            this.isAttractiveObjectRangeEnabled = false;
+        }
+
+        private bool isAttractiveObjectRangeEnabled;
+
+        internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
+        {
+            if (isAttractiveObjectRangeEnabled)
+            {
+                foreach (var affectedGroundEffectType in affectedGroundEffectsType)
+                {
+                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial, 0, 0);
+                }
+            }
+        }
+
+        internal void OnAttractiveObjectActionStart(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
+        {
+            this.isAttractiveObjectRangeEnabled = true;
+            this.attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial.SetVector(GroundEffectsManager.AURA_CENTER_MATERIAL_PROPERTY, playerTransform.transform.position);
+            this.attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, attractiveObjectConfigurationData.EffectRange);
+        }
+
+        internal void OnAttractiveObjectActionEnd()
+        {
+            this.isAttractiveObjectRangeEnabled = false;
+        }
+    }
+
+    [System.Serializable]
+    public class AttractiveObjectRangeManagerComponent
+    {
+        public Material AttractiveObjectRangeMaterial;
     }
     #endregion
 }

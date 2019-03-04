@@ -7,7 +7,6 @@ namespace RTPuzzle {
     {
         private static PrefabContainer instance;
 
-
         [Header("Projectile Prefabs")]
         [Space(20)]
         [Header("RT Puzzle Prefabs")]
@@ -15,6 +14,9 @@ namespace RTPuzzle {
         public LaunchProjectile ProjectilePrefab;
         public ThrowProjectilePath ThrowProjectilePathPrefab;
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
+
+        [Header("Puzzle attracitve objects prefabs")]
+        public AttractiveObjectType AttractiveObjectPrefab;
 
         [Header("NPC prefabs")]
         public RTPuzzle.NpcInteractionRingType NpcInteractionRingPrefab;

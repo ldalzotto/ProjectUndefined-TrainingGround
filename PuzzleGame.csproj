@@ -76,6 +76,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\MouseAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\ProjectileConfiguration.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\AttractiveObjectAction\Scripts\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionPuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileAction.cs" />
@@ -105,9 +107,11 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Projectile\Scripts\LaunchProjectile.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Projectile\Scripts\LaunchProjectileEventManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsContainerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectile.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\Events\PuzzleEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />

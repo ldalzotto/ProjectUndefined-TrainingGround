@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -40,6 +41,17 @@ namespace RTPuzzle
         public void OnAIFearedStunnedEnded(AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
+        }
+        #endregion
+
+        #region Attractive Object Events
+        internal void OnAttractiveObjectActionStart(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
+        {
+            this.GroundEffectsManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
+        }
+        internal void OnAttractiveObjectActionEnd()
+        {
+            this.GroundEffectsManager.OnAttractiveObjectActionEnd();
         }
         #endregion
 
