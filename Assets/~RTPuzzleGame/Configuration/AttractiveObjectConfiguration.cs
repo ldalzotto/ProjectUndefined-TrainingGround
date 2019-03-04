@@ -6,7 +6,7 @@ namespace RTPuzzle
     {
         public static Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData> conf = new Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData>()
         {
-            {AttractiveObjectId.CHEESE, new AttractiveObjectInherentConfigurationData(30f,1f) }
+            {AttractiveObjectId.CHEESE, new AttractiveObjectInherentConfigurationData(30f, 1f) }
         };
     }
 

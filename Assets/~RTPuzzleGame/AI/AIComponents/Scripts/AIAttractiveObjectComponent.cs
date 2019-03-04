@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
     public class AIAttractiveObjectComponent
     {
+
+        private NavMeshAgent selfAgent;
+
+        public AIAttractiveObjectComponent(NavMeshAgent selfAgent)
+        {
+            this.selfAgent = selfAgent;
+        }
+
         #region State
         private bool isAttracted;
         #endregion
         private AttractiveObjectType involvedAttractiveObject;
         private Vector3? attractionPosition;
-
-        public bool IsAttracted { get => isAttracted; }
-
+        
         public Vector3? TickComponent()
         {
             if (isAttracted)
@@ -23,10 +30,7 @@ namespace RTPuzzle
 
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
-            if (collisionType.IsRTAttractiveObject)
-            {
-                SetAttractedObject(collisionType);
-            }
+            SetAttractedObject(collisionType);
         }
 
         public void OnTriggerStay(Collider collider, CollisionType collisionType)
@@ -46,16 +50,12 @@ namespace RTPuzzle
 
         internal void OnTriggerExit(Collider collider, CollisionType collisionType)
         {
-            if (collisionType.IsRTAttractiveObject)
-            {
-                OnDestinationReached();
-            }
+            OnDestinationReached();
         }
 
         public void OnDestinationReached()
         {
             this.isAttracted = false;
-            attractionPosition = null;
         }
 
         public void ClearAttractedObject()
@@ -68,6 +68,10 @@ namespace RTPuzzle
         {
             return (this.involvedAttractiveObject != null &&
                 attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());
+        }
+        public bool IsInfluencedByAttractiveObject()
+        {
+            return this.isAttracted || (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
         }
         #endregion
 

@@ -79,12 +79,9 @@ namespace RTPuzzle
 
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
-            if (collisionType.IsRTPProjectile)
-            {
-                var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
-                escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
-                isEscapingFromProjectile = true;
-            }
+            var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
+            escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
+            isEscapingFromProjectile = true;
         }
 
         private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
@@ -267,10 +264,7 @@ namespace RTPuzzle
 
         public void OnTriggerExit(Collider collider, CollisionType collisionType)
         {
-            if (collisionType.IsRTPProjectile)
-            {
-                isEscapingFromProjectile = false;
-            }
+            isEscapingFromProjectile = false;
         }
 
         #region Gizmo

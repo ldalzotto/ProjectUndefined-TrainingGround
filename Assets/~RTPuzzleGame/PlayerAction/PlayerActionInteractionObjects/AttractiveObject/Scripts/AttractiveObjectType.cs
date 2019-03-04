@@ -7,11 +7,11 @@ namespace RTPuzzle
     public class AttractiveObjectType : MonoBehaviour
     {
 
-        public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
+        public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectId attractiveObjectId)
         {
             var attractiveObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectPrefab, parent);
             attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init(attractiveObjectInherentConfigurationData);
+            attractiveObject.Init(attractiveObjectId);
             return attractiveObject;
         }
 
@@ -22,18 +22,29 @@ namespace RTPuzzle
 
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
+        public void Init(AttractiveObjectId attractiveObjectId)
         {
+            this.attractiveObjectId = attractiveObjectId;
             var sphereCollider = GetComponent<SphereCollider>();
+            var attractiveObjectInherentConfigurationData = AttractiveObjectConfiguration.conf[attractiveObjectId];
             sphereCollider.radius = attractiveObjectInherentConfigurationData.EffectRange;
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
         }
+
+        private AttractiveObjectId attractiveObjectId;
 
         public bool Tick(float d, float timeAttenuationFactor)
         {
             this.AttractiveObjectLifetimeTimer.Tick(d, timeAttenuationFactor);
             return this.AttractiveObjectLifetimeTimer.IsTimeOver();
         }
+
+        #region 
+        public bool IsInRangeOf(Vector3 compareWorldPosition)
+        {
+            return Vector3.Distance(transform.position, compareWorldPosition) < AttractiveObjectConfiguration.conf[attractiveObjectId].EffectRange;
+        }
+        #endregion
 
     }
 

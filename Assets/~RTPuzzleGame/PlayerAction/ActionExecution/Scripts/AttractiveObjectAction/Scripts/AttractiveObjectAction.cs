@@ -69,7 +69,7 @@ namespace RTPuzzle
                 var objectSpawnPosition = this.AttractiveObjectGroundPositioner.GetAttractiveObjectSpawnPosition();
                 if (objectSpawnPosition.HasValue)
                 {
-                    this.AttractiveObjectsContainerManager.OnAttractiveObjectActionExecuted(objectSpawnPosition.Value, AttractiveObjectConfiguration.conf[AttractiveObjectId]);
+                    this.AttractiveObjectsContainerManager.OnAttractiveObjectActionExecuted(objectSpawnPosition.Value, AttractiveObjectId);
                 }
                
                 ResetCoolDown();

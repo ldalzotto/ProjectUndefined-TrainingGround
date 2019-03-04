@@ -23,9 +23,9 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnAttractiveObjectActionExecuted(Vector3 attractiveObjectWorldPosition, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
+        public void OnAttractiveObjectActionExecuted(Vector3 attractiveObjectWorldPosition, AttractiveObjectId attractiveObjectId)
         {
-            var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPosition, transform, attractiveObjectInherentConfigurationData);
+            var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPosition, transform, attractiveObjectId);
             AttractiveObjectsContainer.AddAttractiveObject(instanciatedAttractiveObject);
         }
         #endregion
