@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RTPuzzle
 {
@@ -8,17 +6,19 @@ namespace RTPuzzle
     {
         public static Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData> conf = new Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData>()
         {
-            {AttractiveObjectId.CHEESE, new AttractiveObjectInherentConfigurationData(30f) }
+            {AttractiveObjectId.CHEESE, new AttractiveObjectInherentConfigurationData(30f,1f) }
         };
     }
 
     public class AttractiveObjectInherentConfigurationData
     {
         public float EffectRange;
+        public float EffectiveTime;
 
-        public AttractiveObjectInherentConfigurationData(float effectRange)
+        public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime)
         {
             EffectRange = effectRange;
+            EffectiveTime = effectiveTime;
         }
     }
 
