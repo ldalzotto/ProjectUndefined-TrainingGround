@@ -12,7 +12,7 @@ namespace RTPuzzle
         public const string AURA_COLOR_MATERIAL_PROPERTY = "_AuraColor";
 
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
         public GroundEffectsManagerComponent GroundEffectsManagerComponent;
@@ -24,10 +24,16 @@ namespace RTPuzzle
         private ThrowCursorRangeEffectManager ThrowCursorRangeEffectManager;
         private AttractiveObjectRangeManager AttractiveObjectRangeManager;
 
+
         private GroundEffectType[] AffectedGroundEffectsType;
 
         public void Init()
         {
+
+            #region External Dependencies
+            PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            #endregion
+
             var camera = Camera.main;
 
             this.GroundEffectsCommandBufferManager = new GroundEffectsCommandBufferManager(camera);
@@ -61,7 +67,7 @@ namespace RTPuzzle
         internal void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
         {
             ThrowRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.ThrowerTransform, throwProjectileActionStartEvent.MaxRange);
-            ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.CurrentCursorPositionRetriever, LaunchProjectileInherentDataConfiguration.conf[throwProjectileActionStartEvent.ProjectileInvolved].EffectRange);
+            ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.CurrentCursorPositionRetriever, PuzzleGameConfigurationManager.ProjectileConf()[throwProjectileActionStartEvent.ProjectileInvolved].EffectRange);
             OnCommandBufferUpdate();
         }
         internal void OnThrowProjectileCursorAvailable()

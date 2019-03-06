@@ -15,6 +15,7 @@ namespace RTPuzzle
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
         private LaunchProjectileScreenPositionManager LaunchProjectileScreenPositionManager;
@@ -42,6 +43,7 @@ namespace RTPuzzle
             var camera = Camera.main;
             var launchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
             #endregion
 
@@ -54,7 +56,7 @@ namespace RTPuzzle
                playerTransformScreen, gameInputManager, canvas);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, configuration.LaunchProjectileRayPositionerManagerComponent, PlayerManagerDataRetriever,
                 LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, PuzzleEventsManager);
-            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, canvas);
+            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, canvas, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
 
@@ -296,14 +298,16 @@ namespace RTPuzzle
         private GameInputManager GameInputManager;
         private LaunchProjectileEventManager LaunchProjectileEventManager;
         private Canvas gameCanvas;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
 
         public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileEventManager LaunchProjectileEventManager,
-            Canvas gameCanvas)
+            Canvas gameCanvas, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
             this.LaunchProjectileEventManager = LaunchProjectileEventManager;
             this.gameCanvas = gameCanvas;
+            this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
         }
 
         private LaunchProjectile currentProjectile;
@@ -318,7 +322,7 @@ namespace RTPuzzle
 
         public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, ThrowProjectilePath throwProjectilePath)
         {
-            currentProjectile = LaunchProjectile.Instantiate(LaunchProjectileInherentDataConfiguration.conf[launchProjectileId], throwProjectilePath.BeziersControlPoints, this.gameCanvas);
+            currentProjectile = LaunchProjectile.Instantiate(PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId], throwProjectilePath.BeziersControlPoints, this.gameCanvas);
             LaunchProjectileEventManager.OnLaunchProjectileSpawn(currentProjectile);
             LaunchProjectileRTPActionRef.OnExit();
         }

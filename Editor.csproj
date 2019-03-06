@@ -61,7 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\Color\FX\FXColorConfigurationEditor.cs" />
+    <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
+    <Compile Include="Assets\Editor\Helper\DictionaryEnumGUI.cs" />
+    <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
     <Compile Include="Assets\Editor\Shader\WaterShaderGUI.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />

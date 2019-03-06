@@ -4,23 +4,23 @@ namespace RTPuzzle
 {
     public class LaunchProjectile : MonoBehaviour
     {
-        private LaunchProjectileInherentData launchProjectileInherentData;
+        private ProjectileInherentData launchProjectileInherentData;
 
-        public LaunchProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
+        public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
 
         private LaunchProjectileMovementManager LaunchProjectileMovementManager;
         private SphereCollisionManager SphereCollisionManager;
 
         private PuzzleDebugModule PuzzleDebugModule;
 
-        public static LaunchProjectile Instantiate(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Canvas parentCanvas)
+        public static LaunchProjectile Instantiate(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Canvas parentCanvas)
         {
             var launchProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, parentCanvas.transform);
             launchProjectile.Init(LaunchProjectileInherentData, ProjectilePath);
             return launchProjectile;
         }
 
-        public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
+        public void Init(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
         {
             this.launchProjectileInherentData = LaunchProjectileInherentData;
             var sphereCollider = GetComponent<SphereCollider>();
@@ -55,11 +55,11 @@ namespace RTPuzzle
     #region Projectile movement manager
     class LaunchProjectileMovementManager
     {
-        private LaunchProjectileInherentData LaunchProjectileInherentData;
+        private ProjectileInherentData LaunchProjectileInherentData;
         private Transform projectileTransform;
         private BeziersControlPoints ProjectilePath;
 
-        public LaunchProjectileMovementManager(LaunchProjectileInherentData launchProjectileInherentData, Transform projectileTransform, BeziersControlPoints projectilePath)
+        public LaunchProjectileMovementManager(ProjectileInherentData launchProjectileInherentData, Transform projectileTransform, BeziersControlPoints projectilePath)
         {
             LaunchProjectileInherentData = launchProjectileInherentData;
             this.projectileTransform = projectileTransform;
@@ -84,9 +84,9 @@ namespace RTPuzzle
     class SphereCollisionManager
     {
         private SphereCollider SphereCollider;
-        private LaunchProjectileInherentData LaunchProjectileInherentData;
+        private ProjectileInherentData LaunchProjectileInherentData;
 
-        public SphereCollisionManager(SphereCollider sphereCollider, LaunchProjectileInherentData LaunchProjectileInherentData)
+        public SphereCollisionManager(SphereCollider sphereCollider, ProjectileInherentData LaunchProjectileInherentData)
         {
             SphereCollider = sphereCollider;
             this.LaunchProjectileInherentData = LaunchProjectileInherentData;

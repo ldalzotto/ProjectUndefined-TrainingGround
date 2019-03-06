@@ -19,10 +19,10 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             if (InstantProjectileHit)
             {
-                foreach (var launchProjectileConfiguration in LaunchProjectileInherentDataConfiguration.conf)
-                {
-                    launchProjectileConfiguration.Value.SetTravelDistanceDebug(99999f);
-                }
+              //  foreach (var launchProjectileConfiguration in puzzleConfigurationmanager.PuzzleGameConfiguration.ProjectileConfiguration.LaunchProjectileInherentDatas)
+                //{
+                  //  launchProjectileConfiguration.Value.SetTravelDistanceDebug(99999f);
+                //}
             }
         }
 
