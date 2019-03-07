@@ -22,6 +22,8 @@ namespace RTPuzzle
         private ProjectileConfigurationEditor ProjectileConfiguration;
         [SerializeField]
         private TargetZoneConfigurationEditor TargetZoneConfigurationEditor;
+        [SerializeField]
+        private PlayerActionConfigurationEditor PlayerActionConfigurationEditor;
 
         [SerializeField] private Vector2 scrollPosition;
 
@@ -58,6 +60,10 @@ namespace RTPuzzle
             if (ConfigurationSelection.targetZoneSelected)
             {
                 TargetZoneConfigurationEditor.GUITick();
+            }
+            if (ConfigurationSelection.playerActionSelected)
+            {
+                PlayerActionConfigurationEditor.GUITick();
             }
             EditorGUILayout.EndScrollView();
         }
@@ -186,6 +192,40 @@ namespace RTPuzzle
             if (TargetZonesConfiguration != null)
             {
                 this.targetZonesConf.GUITick(ref this.TargetZonesConfiguration.conf);
+            }
+
+        }
+    }
+
+    [System.Serializable]
+    class PlayerActionConfigurationEditor
+    {
+        [SerializeField]
+        private PlayerActionConfiguration PlayerActionConfiguration;
+
+        #region Projectile dictionary configuration
+        [SerializeField]
+        private DictionaryEnumGUI<LevelZonesID, PlayerActionsInherentData> playerActionsConf;
+        #endregion
+
+        public void GUITick()
+        {
+            if (this.playerActionsConf == null)
+            {
+                this.playerActionsConf = new DictionaryEnumGUI<LevelZonesID, PlayerActionsInherentData>();
+            }
+
+            if (PlayerActionConfiguration == null)
+            {
+                PlayerActionConfiguration = AssetFinder.SafeSingeAssetFind<PlayerActionConfiguration>("t:PlayerActionConfiguration");
+            }
+
+            PlayerActionConfiguration =
+                EditorGUILayout.ObjectField(this.PlayerActionConfiguration, typeof(PlayerActionConfiguration), false) as PlayerActionConfiguration;
+
+            if (PlayerActionConfiguration != null)
+            {
+                this.playerActionsConf.GUITick(ref this.PlayerActionConfiguration.conf);
             }
 
         }

@@ -1,12 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
     public class AttractiveObjectAction : RTPPlayerAction
     {
-        public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG;
+        //public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG;
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -19,11 +18,11 @@ namespace RTPuzzle
         #endregion
 
         private bool isActionOver;
-        private AttractiveObjectId AttractiveObjectId;
+        // private AttractiveObjectId AttractiveObjectId;
 
-        public AttractiveObjectAction(AttractiveObjectId AttractiveObjectId, float coolDownTime) : base(coolDownTime)
+        public AttractiveObjectAction(AttractiveObjectActionInherentData attractiveObjectActionInherentData) : base(attractiveObjectActionInherentData)
         {
-            this.AttractiveObjectId = AttractiveObjectId;
+            // this.AttractiveObjectId = AttractiveObjectId;
         }
 
         public override bool FinishedCondition()
@@ -46,18 +45,18 @@ namespace RTPuzzle
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerTransform());
 
-            this.PuzzleEventsManager.OnAttractiveObjectActionStart(AttractiveObjectConfiguration.conf[AttractiveObjectId], playerDataRetriever.GetPlayerTransform());
+            this.PuzzleEventsManager.OnAttractiveObjectActionStart(AttractiveObjectConfiguration.conf[((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId], playerDataRetriever.GetPlayerTransform());
 
         }
 
         public override void GizmoTick()
         {
-            
+
         }
 
         public override void GUITick()
         {
-        
+
         }
 
         public override void Tick(float d)
@@ -69,9 +68,9 @@ namespace RTPuzzle
                 var objectSpawnPosition = this.AttractiveObjectGroundPositioner.GetAttractiveObjectSpawnPosition();
                 if (objectSpawnPosition.HasValue)
                 {
-                    this.AttractiveObjectsContainerManager.OnAttractiveObjectActionExecuted(objectSpawnPosition.Value, AttractiveObjectId);
+                    this.AttractiveObjectsContainerManager.OnAttractiveObjectActionExecuted(objectSpawnPosition.Value, ((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId);
                 }
-               
+
                 ResetCoolDown();
             }
             if (this.AttractiveObjectInputManager.ReturnButtonPressed)
@@ -100,7 +99,7 @@ namespace RTPuzzle
             GameInputManager = gameInputManager;
         }
 
-        public bool ActionButtonPressed { get => actionButtonPressed;  }
+        public bool ActionButtonPressed { get => actionButtonPressed; }
         public bool ReturnButtonPressed { get => returnButtonPressed; }
 
         public void Tick()
@@ -124,15 +123,16 @@ namespace RTPuzzle
         {
             int groundLayerMask = 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER);
             RaycastHit hit;
-            if(Physics.Raycast(playerTransform.position, Vector3.down, out hit, Mathf.Infinity, groundLayerMask))
+            if (Physics.Raycast(playerTransform.position, Vector3.down, out hit, Mathf.Infinity, groundLayerMask))
             {
                 return hit.point;
-            }else
+            }
+            else
             {
                 return null;
             }
         }
-        
+
     }
 
 }

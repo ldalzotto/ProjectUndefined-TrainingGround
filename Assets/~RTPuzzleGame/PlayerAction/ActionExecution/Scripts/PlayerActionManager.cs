@@ -19,12 +19,13 @@ namespace RTPuzzle
             #region External Dependencies
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
             SelectionWheel = GameObject.FindObjectOfType<SelectionWheel>();
 
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
-            PlayerActionsAvailableManager = new PlayerActionsAvailableManager(puzzleId);
+            PlayerActionsAvailableManager = new PlayerActionsAvailableManager(puzzleId, puzzleGameConfigurationManager);
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel);
             PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerManagerDataRetriever.GetPlayerTransform(), Camera.main);
         }
@@ -172,9 +173,10 @@ namespace RTPuzzle
 
         private List<RTPPlayerAction> currentAvailableActions;
 
-        public PlayerActionsAvailableManager(LevelZonesID puzzleId)
+        public PlayerActionsAvailableManager(LevelZonesID puzzleId, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
-            currentAvailableActions = PlayerActionConfiguration.conf[puzzleId];
+            var e = puzzleGameConfigurationManager.PlayerActionsConfiguration();
+            currentAvailableActions = puzzleGameConfigurationManager.PlayerActionsConfiguration()[puzzleId].PlayerActions;
         }
 
         public void Tick(float d, float timeAttenuation)
@@ -227,7 +229,7 @@ namespace RTPuzzle
 
         private Sprite ResolveWheelNodeSpriteFromNodeData(SelectionWheelNodeData selectionWheelNodeData)
         {
-            return SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[(selectionWheelNodeData.Data as RTPPlayerAction).ActionWheelNodeConfigurationId].ContextActionWheelIcon;
+            return SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[(selectionWheelNodeData.Data as RTPPlayerAction).GetSelectionWheelConfigurationId()].ContextActionWheelIcon;
         }
     }
 

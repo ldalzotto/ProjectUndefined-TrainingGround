@@ -42,6 +42,7 @@ namespace RTPuzzle
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
 
             //Initialisations
+            GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             GameObject.FindObjectOfType<AIComponentsManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();

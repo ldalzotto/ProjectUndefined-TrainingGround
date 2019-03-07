@@ -5,12 +5,12 @@ namespace RTPuzzle
 {
     public class LaunchProjectileAction : RTPPlayerAction
     {
-        public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
-        private LaunchProjectileId LaunchProjectileId;
+        //public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
+        //  private LaunchProjectileId LaunchProjectileId;
 
-        public LaunchProjectileAction(LaunchProjectileId launchProjectileId, float coolDownTime) : base(coolDownTime)
+        public LaunchProjectileAction(LaunchProjectileActionInherentData launchProjectileActionInherentData) : base(launchProjectileActionInherentData)
         {
-            LaunchProjectileId = launchProjectileId;
+            //   LaunchProjectileId = launchProjectileId;
         }
 
         #region External Dependencies
@@ -63,7 +63,7 @@ namespace RTPuzzle
 
             PuzzleEventsManager.OnThrowProjectileActionStart(new ThrowProjectileActionStartEvent(playerTransform,
                  configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
-                LaunchProjectileId));
+               ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId));
         }
 
         public override void Tick(float d)
@@ -109,7 +109,7 @@ namespace RTPuzzle
             {
                 ResetCoolDown();
                 var throwPorjectilePath = LaunchProjectilePathAnimationmanager.ThrowProjectilePath;
-                ThrowProjectileManager.OnLaunchProjectileSpawn(LaunchProjectileId, throwPorjectilePath);
+                ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
             }
         }
         #endregion

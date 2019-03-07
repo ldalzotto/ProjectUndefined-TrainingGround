@@ -27,7 +27,7 @@ namespace RTPuzzle
             cooldownFeedLine.AssociatedAction = associatedAction;
 
             var iconImage = cooldownFeedLine.GetComponentInChildren<Image>();
-            iconImage.sprite = SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[associatedAction.ActionWheelNodeConfigurationId].ContextActionWheelIcon;
+            iconImage.sprite = SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[associatedAction.GetSelectionWheelConfigurationId()].ContextActionWheelIcon;
 
             cooldownFeedLine.CooldownFeedLineAnimationManager = new CooldownFeedLineAnimationManager((RectTransform)cooldownFeedLine.transform);
 

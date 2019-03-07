@@ -4,23 +4,25 @@ namespace RTPuzzle
 {
     public abstract class RTPPlayerAction
     {
-        public abstract SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId { get; }
+      //  public abstract SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId { get; }
 
         public abstract bool FinishedCondition();
         public abstract void Tick(float d);
         public abstract void GUITick();
         public abstract void GizmoTick();
 
-        private float cooldownTime;
+        protected PlayerActionInherentData playerActionInherentData;
+      //  private float cooldownTime;
         private float onCooldownTimeElapsed;
 
         private CooldownEventTrackerManager CooldownEventTrackerManager;
 
-        protected RTPPlayerAction(float cooldownTime)
+        protected RTPPlayerAction(PlayerActionInherentData playerActionInherentData)
         {
-            this.cooldownTime = cooldownTime;
+            this.playerActionInherentData = playerActionInherentData;
+           // this.cooldownTime = cooldownTime;
             //on init, it it available
-            this.onCooldownTimeElapsed = this.cooldownTime * 2;
+            this.onCooldownTimeElapsed = this.playerActionInherentData.CoolDownTime * 2;
         }
 
         public virtual void FirstExecution()
@@ -47,14 +49,18 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsOnCoolDown()
         {
-            return onCooldownTimeElapsed < cooldownTime;
+            return onCooldownTimeElapsed < this.playerActionInherentData.CoolDownTime;
         }
         #endregion
 
         #region Data Retrieval
         public float GetCooldownRemainingTime()
         {
-            return cooldownTime - onCooldownTimeElapsed;
+            return this.playerActionInherentData.CoolDownTime - onCooldownTimeElapsed;
+        }
+        public SelectionWheelNodeConfigurationId GetSelectionWheelConfigurationId()
+        {
+            return this.playerActionInherentData.ActionWheelNodeConfigurationId;
         }
         #endregion
     }

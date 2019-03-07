@@ -9,6 +9,11 @@ namespace RTPuzzle
     {
         public PuzzleGameConfiguration PuzzleGameConfiguration;
 
+        public void Init()
+        {
+            PuzzleGameConfiguration.PlayerActionConfiguration.Init();
+        }
+
         public Dictionary<LaunchProjectileId, ProjectileInherentData> ProjectileConf()
         {
             return PuzzleGameConfiguration.ProjectileConfiguration.LaunchProjectileInherentDatas;
@@ -18,6 +23,11 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.TargetZonesConfiguration.conf;
         }
+
+        public Dictionary<LevelZonesID, PlayerActionsInherentData> PlayerActionsConfiguration()
+        {
+            return PuzzleGameConfiguration.PlayerActionConfiguration.conf;
+        }
     }
 
     [System.Serializable]
@@ -26,6 +36,7 @@ namespace RTPuzzle
     {
         public ProjectileConfiguration ProjectileConfiguration;
         public TargetZonesConfiguration TargetZonesConfiguration;
+        public PlayerActionConfiguration PlayerActionConfiguration;
     }
 
 }

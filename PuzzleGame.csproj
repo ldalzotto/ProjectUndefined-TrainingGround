@@ -80,8 +80,11 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\LevelConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\AttractiveObjectActionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\LaunchProjectileActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionsInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration.cs" />
