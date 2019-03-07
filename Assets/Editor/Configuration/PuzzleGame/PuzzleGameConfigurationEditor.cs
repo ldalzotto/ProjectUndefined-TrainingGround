@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using CoreGame;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace RTPuzzle
         [MenuItem("Configuration/PuzzleGame/GlobalPuzzleGameConfiguration")]
         static void Init()
         {
+            Debug.Log("INIT");
             var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditor>();
             window.Show();
         }
@@ -19,15 +21,16 @@ namespace RTPuzzle
         private ConfigurationSelection ConfigurationSelection;
 
         [SerializeField]
-        private ProjectileConfigurationEditor ProjectileConfiguration;
+        private GenericConfigurationEditor<LaunchProjectileId, ProjectileInherentData> ProjectileConfiguration;
         [SerializeField]
-        private TargetZoneConfigurationEditor TargetZoneConfigurationEditor;
+        private GenericConfigurationEditor<TargetZoneID, TargetZoneInherentData> TargetZoneConfigurationEditor;
         [SerializeField]
-        private PlayerActionConfigurationEditor PlayerActionConfigurationEditor;
+        private GenericConfigurationEditor<LevelZonesID, PlayerActionsInherentData> PlayerActionConfigurationEditor;
 
         [SerializeField] private Vector2 scrollPosition;
 
-        private void OnEnable()
+
+        public void OnEnable()
         {
             var data = EditorPrefs.GetString(typeof(PuzzleGameConfigurationEditor).ToString(), JsonUtility.ToJson(this, false));
             JsonUtility.FromJsonOverwrite(data, this);
@@ -37,12 +40,20 @@ namespace RTPuzzle
             }
             if (this.ProjectileConfiguration == null)
             {
-                this.ProjectileConfiguration = new ProjectileConfigurationEditor();
+                this.ProjectileConfiguration = new GenericConfigurationEditor<LaunchProjectileId, ProjectileInherentData>("t:ProjectileConfiguration");
+            }
+            if(this.TargetZoneConfigurationEditor == null)
+            {
+                this.TargetZoneConfigurationEditor = new GenericConfigurationEditor<TargetZoneID, TargetZoneInherentData>("t:TargetZonesConfiguration");
+            }
+            if(this.PlayerActionConfigurationEditor == null)
+            {
+                this.PlayerActionConfigurationEditor = new GenericConfigurationEditor<LevelZonesID, PlayerActionsInherentData>("t:PlayerActionConfiguration");
             }
         }
 
 
-        private void OnDisable()
+        public void OnDisable()
         {
             var data = JsonUtility.ToJson(this, false);
             EditorPrefs.SetString(typeof(PuzzleGameConfigurationEditor).ToString(), data);
@@ -128,118 +139,49 @@ namespace RTPuzzle
 
     }
 
-    /*
     [System.Serializable]
-    class GenericConfigurationEditor<CONF,K,DATA> where CONF : ScriptableObject where K : struct, IConvertible where DATA : ScriptableObject
+    class GenericConfigurationEditor<K, DATA> where K : struct, IConvertible where DATA : ScriptableObject
     {
         [SerializeField]
-        private CONF LaunchProjectileInherentDataConfiguration;
+        private DictionarySerialization<K, DATA> LaunchProjectileInherentDataConfiguration;
+
+        [SerializeField]
+        private string assetSearchFilter;
+
+        public GenericConfigurationEditor(string assetSearchFilter)
+        {
+            this.assetSearchFilter = assetSearchFilter;
+        }
 
         #region Projectile dictionary configuration
         [SerializeField]
-        private DictionaryEnumGUI<LaunchProjectileId, ProjectileInherentData> projectilesConf;
-        #endregion
-    }
-    */
-
-    [System.Serializable]
-    class ProjectileConfigurationEditor
-    {
-        [SerializeField]
-        private ProjectileConfiguration LaunchProjectileInherentDataConfiguration;
-
-        #region Projectile dictionary configuration
-        [SerializeField]
-        private DictionaryEnumGUI<LaunchProjectileId, ProjectileInherentData> projectilesConf;
+        private DictionaryEnumGUI<K, DATA> projectilesConf;
         #endregion
 
         public void GUITick()
         {
+            EditorGUI.BeginChangeCheck();
             if (this.projectilesConf == null)
             {
                 Debug.Log("new");
-                this.projectilesConf = new DictionaryEnumGUI<LaunchProjectileId, ProjectileInherentData>();
+                this.projectilesConf = new DictionaryEnumGUI<K, DATA>();
             }
 
             if (LaunchProjectileInherentDataConfiguration == null)
             {
-                LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingeAssetFind<ProjectileConfiguration>("t:ProjectileConfiguration");
+                LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingeAssetFind<DictionarySerialization<K, DATA>>(this.assetSearchFilter);
             }
 
             LaunchProjectileInherentDataConfiguration =
-                EditorGUILayout.ObjectField(this.LaunchProjectileInherentDataConfiguration, typeof(ProjectileConfiguration), false) as ProjectileConfiguration;
+                EditorGUILayout.ObjectField(this.LaunchProjectileInherentDataConfiguration, typeof(DictionarySerialization<K, DATA>), false) as DictionarySerialization<K, DATA>;
 
             if (LaunchProjectileInherentDataConfiguration != null)
             {
                 this.projectilesConf.GUITick(ref this.LaunchProjectileInherentDataConfiguration.LaunchProjectileInherentDatas);
             }
-
-        }
-    }
-
-    [System.Serializable]
-    class TargetZoneConfigurationEditor
-    {
-        [SerializeField]
-        private TargetZonesConfiguration TargetZonesConfiguration;
-
-        #region Projectile dictionary configuration
-        [SerializeField]
-        private DictionaryEnumGUI<TargetZoneID, TargetZoneInherentData> targetZonesConf;
-        #endregion
-
-        public void GUITick()
-        {
-            if (this.targetZonesConf == null)
+            if (EditorGUI.EndChangeCheck())
             {
-                this.targetZonesConf = new DictionaryEnumGUI<TargetZoneID, TargetZoneInherentData>();
-            }
-
-            if (TargetZonesConfiguration == null)
-            {
-                TargetZonesConfiguration = AssetFinder.SafeSingeAssetFind<TargetZonesConfiguration>("t:TargetZonesConfiguration");
-            }
-
-            TargetZonesConfiguration =
-                EditorGUILayout.ObjectField(this.TargetZonesConfiguration, typeof(TargetZonesConfiguration), false) as TargetZonesConfiguration;
-
-            if (TargetZonesConfiguration != null)
-            {
-                this.targetZonesConf.GUITick(ref this.TargetZonesConfiguration.LaunchProjectileInherentDatas);
-            }
-
-        }
-    }
-
-    [System.Serializable]
-    class PlayerActionConfigurationEditor
-    {
-        [SerializeField]
-        private PlayerActionConfiguration PlayerActionConfiguration;
-
-        #region Projectile dictionary configuration
-        [SerializeField]
-        private DictionaryEnumGUI<LevelZonesID, PlayerActionsInherentData> playerActionsConf;
-        #endregion
-
-        public void GUITick()
-        {
-            if (this.playerActionsConf == null)
-            {
-                this.playerActionsConf = new DictionaryEnumGUI<LevelZonesID, PlayerActionsInherentData>();
-            }
-
-            if (PlayerActionConfiguration == null)
-            {
-                PlayerActionConfiguration = AssetFinder.SafeSingeAssetFind<PlayerActionConfiguration>("t:PlayerActionConfiguration");
-            }
-
-            PlayerActionConfiguration =
-                EditorGUILayout.ObjectField(this.PlayerActionConfiguration, typeof(PlayerActionConfiguration), false) as PlayerActionConfiguration;
-
-            if (PlayerActionConfiguration != null)
-            {
-                this.playerActionsConf.GUITick(ref this.PlayerActionConfiguration.LaunchProjectileInherentDatas);
+                EditorUtility.SetDirty(this.LaunchProjectileInherentDataConfiguration);
             }
 
         }

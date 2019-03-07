@@ -7,10 +7,8 @@ using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-
-
 [System.Serializable]
-public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
+public class DictionaryEnumGUI<K, V> where K : struct, IConvertible where V : ScriptableObject
 {
 
     #region Add Entry
@@ -165,7 +163,8 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
                 dictionaryEditorValues.Add(this.idToAdd, null);
             }
         }
-        this.idToAdd = (K)EditorGUILayout.EnumPopup(idToAdd);
+        var parsedIdToAdd = (Enum)Enum.Parse(typeof(K), idToAdd.ToString());
+        this.idToAdd = (K)Enum.Parse(typeof(K), EditorGUILayout.EnumPopup(parsedIdToAdd).ToString());
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Separator();
     }
@@ -217,7 +216,8 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
         EditorGUILayout.BeginHorizontal();
 
         EditorGUI.BeginChangeCheck();
-        var selectedNewKey = (K)EditorGUILayout.EnumPopup(dictionaryEditorEntry.Key);
+        var parsedEntry= (Enum)Enum.Parse(typeof(K), dictionaryEditorEntry.Key.ToString());
+        var selectedNewKey = (K)Enum.Parse(typeof(K), EditorGUILayout.EnumPopup(parsedEntry).ToString());
         if (EditorGUI.EndChangeCheck())
         {
             if (!dictionaryEditorValues.ContainsKey(selectedNewKey))
