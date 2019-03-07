@@ -5,15 +5,14 @@ namespace RTPuzzle
 {
 
     [System.Serializable]
-    [CreateAssetMenu(fileName = "LaunchProjectileInherentDataConfiguration", menuName = "Configuration/PuzzleGame/LaunchProjectileInherentDataConfiguration", order = 1)]
-    public class LaunchProjectileInherentDataConfiguration : ScriptableObject, ISerializationCallbackReceiver
+    [CreateAssetMenu(fileName = "ProjectileConfiguration", menuName = "Configuration/PuzzleGame/ProjectileConfiguration", order = 1)]
+    public class ProjectileConfiguration : ScriptableObject, ISerializationCallbackReceiver
     {
 
         public Dictionary<LaunchProjectileId, ProjectileInherentData> LaunchProjectileInherentDatas = new Dictionary<LaunchProjectileId, ProjectileInherentData>() { };
 
         [SerializeField]
         private List<LaunchProjectileInherentDataWithProjectileId> LaunchProjectileInherentSerializableDatas;
-
 
 
         public void OnBeforeSerialize()

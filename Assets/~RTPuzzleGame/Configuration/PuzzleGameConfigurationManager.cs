@@ -13,13 +13,19 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.ProjectileConfiguration.LaunchProjectileInherentDatas;
         }
+
+        public Dictionary<TargetZoneID, TargetZoneInherentData> TargetZonesConfiguration()
+        {
+            return PuzzleGameConfiguration.TargetZonesConfiguration.conf;
+        }
     }
 
     [System.Serializable]
     [CreateAssetMenu(fileName = "PuzzleGameConfiguration", menuName = "Configuration/PuzzleGame/PuzzleGameConfiguration", order = 1)]
     public class PuzzleGameConfiguration : ScriptableObject
     {
-        public LaunchProjectileInherentDataConfiguration ProjectileConfiguration;
+        public ProjectileConfiguration ProjectileConfiguration;
+        public TargetZonesConfiguration TargetZonesConfiguration;
     }
 
 }

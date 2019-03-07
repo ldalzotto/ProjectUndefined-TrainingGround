@@ -6,8 +6,8 @@ namespace RTPuzzle
     public class AITargetZoneComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
     {
         public TargetZoneID TargetZoneID;
-        
-        private TargetZoneConfigurationData targetZoneConfigurationData;
+
+        private TargetZoneInherentData targetZoneConfigurationData;
         private TargetZone targetZone;
 
         #region State
@@ -15,14 +15,14 @@ namespace RTPuzzle
         #endregion
 
         public TargetZone TargetZone { get => targetZone; }
-        public TargetZoneConfigurationData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
+        public TargetZoneInherentData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
 
         public void InitializeContainer(AIComponents aIComponents)
         {
             aIComponents.AITargetZoneComponent = this;
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             this.targetZone = targetZoneContainer.TargetZones[TargetZoneID];
-            this.targetZoneConfigurationData = TargetZonesConfiguration.conf[this.targetZone.TargetZoneID];
+            this.targetZoneConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().TargetZonesConfiguration()[this.targetZone.TargetZoneID];
         }
     }
 

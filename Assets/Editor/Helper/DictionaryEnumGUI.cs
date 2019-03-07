@@ -12,7 +12,7 @@ using UnityEngine;
 [System.Serializable]
 public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
 {
-    
+
     #region Add Entry
     private K idToAdd;
     #endregion
@@ -43,6 +43,7 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
     #region Entry Look
     [SerializeField]
     private List<K> valuesToLook;
+    private bool forceLookOfAll;
     private GUIStyle removeButtonDeactivatedStyle;
     #endregion
 
@@ -53,7 +54,7 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
 
         EditorGUILayout.LabelField(typeof(V).Name + " : ", EditorStyles.boldLabel);
 
-        DoSearchFilter();
+        DoSearchFilter(ref dictionaryEditorValues);
 
         var dictionaryEditorEntryValues = dictionaryEditorValues.ToList();
         if (this.alphabeticalOrder)
@@ -154,7 +155,7 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
         EditorGUILayout.Separator();
     }
 
-    private void DoSearchFilter()
+    private void DoSearchFilter(ref Dictionary<K, V> dictionaryEditorValues)
     {
         EditorGUILayout.BeginVertical(this.keySearchFieldStyle);
 
@@ -165,7 +166,19 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
 
         EditorGUILayout.BeginHorizontal(GUILayout.Width(30f));
         this.sensitiveOperationsEnabled = GUILayout.Toggle(this.sensitiveOperationsEnabled, new GUIContent("!", "Authorize sensitive operations."), EditorStyles.miniButtonLeft);
-        this.alphabeticalOrder = GUILayout.Toggle(this.alphabeticalOrder, new GUIContent("A↑", "Alphabetical order."), EditorStyles.miniButtonRight);
+        this.alphabeticalOrder = GUILayout.Toggle(this.alphabeticalOrder, new GUIContent("A↑", "Alphabetical order."), EditorStyles.miniButtonMid);
+        EditorGUI.BeginChangeCheck();
+        this.forceLookOfAll = GUILayout.Toggle(this.forceLookOfAll, new GUIContent("L*", "Show all elements detail."), EditorStyles.miniButtonRight);
+        if (EditorGUI.EndChangeCheck()) {
+            if (this.forceLookOfAll)
+            {
+                this.valuesToLook = dictionaryEditorValues.Keys.ToList();
+            } else
+            {
+                this.valuesToLook.Clear();
+            }
+         
+        } 
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginVertical(EditorStyles.textField);
         EditorGUILayout.BeginHorizontal();
@@ -206,18 +219,22 @@ public class DictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
 
         var lookPressed = (this.valuesToLook.Contains(dictionaryEditorEntry.Key));
         lookPressed = GUILayout.Toggle(lookPressed, new GUIContent("L", "View element details."), EditorStyles.miniButtonLeft);
-        if (lookPressed)
+
+        if (!this.forceLookOfAll)
         {
-            if (!this.valuesToLook.Contains(dictionaryEditorEntry.Key))
+            if (lookPressed)
             {
-                this.valuesToLook.Add(dictionaryEditorEntry.Key);
+                if (!this.valuesToLook.Contains(dictionaryEditorEntry.Key))
+                {
+                    this.valuesToLook.Add(dictionaryEditorEntry.Key);
+                }
             }
-        }
-        else
-        {
-            if (this.valuesToLook.Contains(dictionaryEditorEntry.Key))
+            else
             {
-                this.valuesToLook.Remove(dictionaryEditorEntry.Key);
+                if (this.valuesToLook.Contains(dictionaryEditorEntry.Key))
+                {
+                    this.valuesToLook.Remove(dictionaryEditorEntry.Key);
+                }
             }
         }
 

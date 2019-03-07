@@ -19,7 +19,9 @@ namespace RTPuzzle
         private ConfigurationSelection ConfigurationSelection;
 
         [SerializeField]
-        private ProjectileConfiguration ProjectileConfiguration;
+        private ProjectileConfigurationEditor ProjectileConfiguration;
+        [SerializeField]
+        private TargetZoneConfigurationEditor TargetZoneConfigurationEditor;
 
         [SerializeField] private Vector2 scrollPosition;
 
@@ -33,7 +35,7 @@ namespace RTPuzzle
             }
             if (this.ProjectileConfiguration == null)
             {
-                this.ProjectileConfiguration = new ProjectileConfiguration();
+                this.ProjectileConfiguration = new ProjectileConfigurationEditor();
             }
         }
 
@@ -53,6 +55,10 @@ namespace RTPuzzle
             {
                 ProjectileConfiguration.GUITick();
             }
+            if (ConfigurationSelection.targetZoneSelected)
+            {
+                TargetZoneConfigurationEditor.GUITick();
+            }
             EditorGUILayout.EndScrollView();
         }
     }
@@ -62,9 +68,13 @@ namespace RTPuzzle
     {
         public bool projectileSelected;
         public bool targetZoneSelected;
+        public bool attractiveSelected;
+        public bool playerActionSelected;
 
         private GUIStyle projectileButtonStyle;
         private GUIStyle targetZoneButtonStyle;
+        private GUIStyle attractiveButtonStyle;
+        private GUIStyle playerActionButtonStyle;
 
         public void GUITick()
         {
@@ -74,13 +84,23 @@ namespace RTPuzzle
             }
             if (targetZoneButtonStyle == null)
             {
-                targetZoneButtonStyle = new GUIStyle(EditorStyles.miniButtonRight);
+                targetZoneButtonStyle = new GUIStyle(EditorStyles.miniButtonMid);
+            }
+            if (attractiveButtonStyle == null)
+            {
+                attractiveButtonStyle = new GUIStyle(EditorStyles.miniButtonMid);
+            }
+            if (playerActionButtonStyle == null)
+            {
+                playerActionButtonStyle = new GUIStyle(EditorStyles.miniButtonRight);
             }
 
             EditorGUILayout.BeginHorizontal();
 
-            OnToggleDisableOthers(ref projectileSelected, "PRO", projectileButtonStyle, () => { targetZoneSelected = false; });
-            OnToggleDisableOthers(ref targetZoneSelected, "TAR", targetZoneButtonStyle, () => { projectileSelected = false; });
+            OnToggleDisableOthers(ref projectileSelected, "PROJ", projectileButtonStyle, () => { targetZoneSelected = false; attractiveSelected = false; playerActionSelected = false; });
+            OnToggleDisableOthers(ref targetZoneSelected, "TARG", targetZoneButtonStyle, () => { projectileSelected = false; attractiveSelected = false; playerActionSelected = false; });
+            OnToggleDisableOthers(ref attractiveSelected, "ATTR", attractiveButtonStyle, () => { targetZoneSelected = false; projectileSelected = false; playerActionSelected = false; });
+            OnToggleDisableOthers(ref playerActionSelected, "ACTI", playerActionButtonStyle, () => { targetZoneSelected = false; projectileSelected = false; attractiveSelected = false; });
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Separator();
@@ -103,11 +123,10 @@ namespace RTPuzzle
     }
 
     [System.Serializable]
-    class ProjectileConfiguration
+    class ProjectileConfigurationEditor
     {
-
         [SerializeField]
-        private LaunchProjectileInherentDataConfiguration LaunchProjectileInherentDataConfiguration;
+        private ProjectileConfiguration LaunchProjectileInherentDataConfiguration;
 
         #region Projectile dictionary configuration
         [SerializeField]
@@ -124,15 +143,49 @@ namespace RTPuzzle
 
             if (LaunchProjectileInherentDataConfiguration == null)
             {
-                LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingeAssetFind<LaunchProjectileInherentDataConfiguration>("t:LaunchProjectileInherentDataConfiguration");
+                LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingeAssetFind<ProjectileConfiguration>("t:ProjectileConfiguration");
             }
 
             LaunchProjectileInherentDataConfiguration =
-                EditorGUILayout.ObjectField(this.LaunchProjectileInherentDataConfiguration, typeof(LaunchProjectileInherentDataConfiguration), false) as LaunchProjectileInherentDataConfiguration;
+                EditorGUILayout.ObjectField(this.LaunchProjectileInherentDataConfiguration, typeof(ProjectileConfiguration), false) as ProjectileConfiguration;
 
             if (LaunchProjectileInherentDataConfiguration != null)
             {
                 this.projectilesConf.GUITick(ref this.LaunchProjectileInherentDataConfiguration.LaunchProjectileInherentDatas);
+            }
+
+        }
+    }
+
+    [System.Serializable]
+    class TargetZoneConfigurationEditor
+    {
+        [SerializeField]
+        private TargetZonesConfiguration TargetZonesConfiguration;
+
+        #region Projectile dictionary configuration
+        [SerializeField]
+        private DictionaryEnumGUI<TargetZoneID, TargetZoneInherentData> targetZonesConf;
+        #endregion
+
+        public void GUITick()
+        {
+            if (this.targetZonesConf == null)
+            {
+                this.targetZonesConf = new DictionaryEnumGUI<TargetZoneID, TargetZoneInherentData>();
+            }
+
+            if (TargetZonesConfiguration == null)
+            {
+                TargetZonesConfiguration = AssetFinder.SafeSingeAssetFind<TargetZonesConfiguration>("t:TargetZonesConfiguration");
+            }
+
+            TargetZonesConfiguration =
+                EditorGUILayout.ObjectField(this.TargetZonesConfiguration, typeof(TargetZonesConfiguration), false) as TargetZonesConfiguration;
+
+            if (TargetZonesConfiguration != null)
+            {
+                this.targetZonesConf.GUITick(ref this.TargetZonesConfiguration.conf);
             }
 
         }
