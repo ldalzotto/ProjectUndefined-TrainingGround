@@ -97,6 +97,7 @@
     <Compile Include="Assets\~CoreGame\Scene\SceneLoadHelper.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
+    <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />

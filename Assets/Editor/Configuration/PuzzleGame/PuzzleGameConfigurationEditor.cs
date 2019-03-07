@@ -128,6 +128,20 @@ namespace RTPuzzle
 
     }
 
+    /*
+    [System.Serializable]
+    class GenericConfigurationEditor<CONF,K,DATA> where CONF : ScriptableObject where K : struct, IConvertible where DATA : ScriptableObject
+    {
+        [SerializeField]
+        private CONF LaunchProjectileInherentDataConfiguration;
+
+        #region Projectile dictionary configuration
+        [SerializeField]
+        private DictionaryEnumGUI<LaunchProjectileId, ProjectileInherentData> projectilesConf;
+        #endregion
+    }
+    */
+
     [System.Serializable]
     class ProjectileConfigurationEditor
     {
@@ -191,7 +205,7 @@ namespace RTPuzzle
 
             if (TargetZonesConfiguration != null)
             {
-                this.targetZonesConf.GUITick(ref this.TargetZonesConfiguration.conf);
+                this.targetZonesConf.GUITick(ref this.TargetZonesConfiguration.LaunchProjectileInherentDatas);
             }
 
         }
@@ -225,7 +239,7 @@ namespace RTPuzzle
 
             if (PlayerActionConfiguration != null)
             {
-                this.playerActionsConf.GUITick(ref this.PlayerActionConfiguration.conf);
+                this.playerActionsConf.GUITick(ref this.PlayerActionConfiguration.LaunchProjectileInherentDatas);
             }
 
         }

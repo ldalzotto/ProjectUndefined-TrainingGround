@@ -21,12 +21,12 @@ namespace RTPuzzle
 
         public Dictionary<TargetZoneID, TargetZoneInherentData> TargetZonesConfiguration()
         {
-            return PuzzleGameConfiguration.TargetZonesConfiguration.conf;
+            return PuzzleGameConfiguration.TargetZonesConfiguration.LaunchProjectileInherentDatas;
         }
 
         public Dictionary<LevelZonesID, PlayerActionsInherentData> PlayerActionsConfiguration()
         {
-            return PuzzleGameConfiguration.PlayerActionConfiguration.conf;
+            return PuzzleGameConfiguration.PlayerActionConfiguration.LaunchProjectileInherentDatas;
         }
     }
 
