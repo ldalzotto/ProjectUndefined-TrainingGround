@@ -15,20 +15,34 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         #endregion
 
+        #region State
+        private bool hasInit;
+        #endregion
+
+        /*
         void Start()
         {
-            var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
-            zoneCollider = GetComponent<Collider>();
-            targetZoneContainer.Add(this);
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            Init();
+        }
+        */
+        public void Init()
+        {
+            if (!this.hasInit)
+            {
+                var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+                zoneCollider = GetComponent<Collider>();
+                targetZoneContainer.Add(this);
+                this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+                this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+                this.hasInit = true;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
             var collisionType = other.gameObject.GetComponent<CollisionType>();
             var collidedAIManager = CollisionTypeHelper.GetAIManager(collisionType);
-            if(collidedAIManager != null)
+            if (collidedAIManager != null)
             {
                 this.PuzzleEventsManager.OnLevelCompleted(this.LevelManager.GetCurrentLevel());
             }

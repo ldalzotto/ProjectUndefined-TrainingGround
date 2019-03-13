@@ -42,6 +42,15 @@ namespace RTPuzzle
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
 
             //Initialisations
+            var targetZones = GameObject.FindObjectsOfType<TargetZone>();
+            if (targetZones != null)
+            {
+                foreach(var targetZone in targetZones)
+                {
+                    targetZone.Init();
+                }
+            }
+
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();
@@ -60,6 +69,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<LevelManager>().Init(PuzzleId);
             AttractiveObjectsContainerManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
+            
         }
 
         private void Update()
