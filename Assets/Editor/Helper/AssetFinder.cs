@@ -1,10 +1,11 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿#if UNITY_EDITOR
+
+using UnityEditor;
 
 public class AssetFinder
 {
 
-    public static T SafeSingeAssetFind<T>(string filter) where T: UnityEngine.Object
+    public static T SafeSingeAssetFind<T>(string filter) where T : UnityEngine.Object
     {
         var foundAssets = AssetDatabase.FindAssets(filter);
         if (foundAssets != null && foundAssets.Length > 0 && foundAssets[0] != null)
@@ -19,3 +20,5 @@ public class AssetFinder
         return null;
     }
 }
+
+#endif //UNITY_EDITOR

@@ -20,14 +20,15 @@ namespace RTPuzzle
             var RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var RTPlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
-            TimeFlowBarManager.Init(LevelConfiguration.conf[puzzleId].AvailableTimeAmount, this);
+            TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[puzzleId].AvailableTimeAmount, this);
             LevelManager = GameObject.FindObjectOfType<LevelManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
             TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
-            TimeFlowValueTracker = new TimeFlowValueTracker(LevelConfiguration.conf[puzzleId].AvailableTimeAmount);
+            TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[puzzleId].AvailableTimeAmount);
         }
 
         public void Tick(float d)

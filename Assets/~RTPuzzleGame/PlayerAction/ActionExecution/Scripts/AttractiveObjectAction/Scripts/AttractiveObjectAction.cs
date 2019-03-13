@@ -40,12 +40,13 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             var playerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerTransform());
 
-            this.PuzzleEventsManager.OnAttractiveObjectActionStart(AttractiveObjectConfiguration.conf[((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId], playerDataRetriever.GetPlayerTransform());
+            this.PuzzleEventsManager.OnAttractiveObjectActionStart(puzzleConfigurationManager.AttractiveObjectsConfiguration()[((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId], playerDataRetriever.GetPlayerTransform());
 
         }
 

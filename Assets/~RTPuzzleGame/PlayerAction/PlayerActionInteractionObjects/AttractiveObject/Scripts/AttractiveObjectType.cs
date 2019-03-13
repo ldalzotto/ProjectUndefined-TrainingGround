@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
     public class AttractiveObjectType : MonoBehaviour
     {
+
+        #region External Dependencies
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        #endregion
 
         public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectId attractiveObjectId)
         {
@@ -24,9 +26,13 @@ namespace RTPuzzle
 
         public void Init(AttractiveObjectId attractiveObjectId)
         {
+            #region External Dependencies
+            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            #endregion
+
             this.attractiveObjectId = attractiveObjectId;
             var sphereCollider = GetComponent<SphereCollider>();
-            var attractiveObjectInherentConfigurationData = AttractiveObjectConfiguration.conf[attractiveObjectId];
+            var attractiveObjectInherentConfigurationData = this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId];
             sphereCollider.radius = attractiveObjectInherentConfigurationData.EffectRange;
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
         }
@@ -42,7 +48,7 @@ namespace RTPuzzle
         #region 
         public bool IsInRangeOf(Vector3 compareWorldPosition)
         {
-            return Vector3.Distance(transform.position, compareWorldPosition) < AttractiveObjectConfiguration.conf[attractiveObjectId].EffectRange;
+            return Vector3.Distance(transform.position, compareWorldPosition) < this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId].EffectRange;
         }
         #endregion
 

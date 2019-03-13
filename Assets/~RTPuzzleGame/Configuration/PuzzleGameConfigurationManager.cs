@@ -16,17 +16,30 @@ namespace RTPuzzle
 
         public Dictionary<LaunchProjectileId, ProjectileInherentData> ProjectileConf()
         {
-            return PuzzleGameConfiguration.ProjectileConfiguration.LaunchProjectileInherentDatas;
+            return PuzzleGameConfiguration.ProjectileConfiguration.ConfigurationInherentData;
         }
 
         public Dictionary<TargetZoneID, TargetZoneInherentData> TargetZonesConfiguration()
         {
-            return PuzzleGameConfiguration.TargetZonesConfiguration.LaunchProjectileInherentDatas;
+            return PuzzleGameConfiguration.TargetZonesConfiguration.ConfigurationInherentData;
         }
 
         public Dictionary<LevelZonesID, PlayerActionsInherentData> PlayerActionsConfiguration()
         {
-            return PuzzleGameConfiguration.PlayerActionConfiguration.LaunchProjectileInherentDatas;
+            return PuzzleGameConfiguration.PlayerActionConfiguration.ConfigurationInherentData;
+        }
+
+        public Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData> AttractiveObjectsConfiguration()
+        {
+            return PuzzleGameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData;
+        }
+        public Dictionary<LevelZonesID, LevelConfigurationData> LevelConfiguration()
+        {
+            return PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData;
+        }
+        public Dictionary<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData> SelectionWheelNodeConfiguration()
+        {
+            return PuzzleGameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData;
         }
     }
 
@@ -37,6 +50,9 @@ namespace RTPuzzle
         public ProjectileConfiguration ProjectileConfiguration;
         public TargetZonesConfiguration TargetZonesConfiguration;
         public PlayerActionConfiguration PlayerActionConfiguration;
+        public AttractiveObjectConfiguration AttractiveObjectConfiguration;
+        public LevelConfiguration LevelConfiguration;
+        public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
     }
 
 }

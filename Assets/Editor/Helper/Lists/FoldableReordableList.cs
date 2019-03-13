@@ -1,95 +1,123 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-[System.Serializable]
-public class FoldableReordableList<T> : ReorderableList
+namespace ConfigurationEditor
 {
-
-    [SerializeField]
-    protected bool displayed;
-
-    public FoldableReordableList(List<T> list, bool draggable, bool displayHeader, bool displayAddButton, bool displayRemovebutton, string listTitle, float elementHeightFactor, ElementCallbackDelegate elementCallbackDelegate)
-             : base(list, typeof(T), draggable, displayHeader, displayAddButton, displayRemovebutton)
+    [System.Serializable]
+    public class FoldableReordableList<T> : ReorderableList
     {
-        this.drawHeaderCallback = (Rect rect) =>
+
+        [SerializeField]
+        private bool displayed;
+
+        public FoldableReordableList(List<T> list, bool draggable, bool displayHeader, bool displayAddButton, bool displayRemovebutton, string listTitle, float elementHeightFactor, ElementCallbackDelegate elementCallbackDelegate)
+                 : base(list, typeof(T), draggable, displayHeader, displayAddButton, displayRemovebutton)
         {
-            rect.x += 15;
-            displayed = EditorGUI.Foldout(rect, displayed, listTitle, true, EditorStyles.foldout);
-            if (displayed)
+            this.drawHeaderCallback = (Rect rect) =>
             {
-                this.draggable = true;
-                this.displayAdd = true;
-                this.displayRemove = true;
-            }
-            else
+                rect.x += 15;
+                displayed = EditorGUI.Foldout(rect, displayed, listTitle, true, EditorStyles.foldout);
+                if (displayed)
+                {
+                    this.draggable = true;
+                    this.displayAdd = true;
+                    this.displayRemove = true;
+                }
+                else
+                {
+                    this.draggable = false;
+                    this.displayAdd = false;
+                    this.displayRemove = false;
+                }
+            };
+            this.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
             {
-                this.draggable = false;
-                this.displayAdd = false;
-                this.displayRemove = false;
-            }
-        };
-        this.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+                if (displayed)
+                {
+                    rect.y += 2;
+                    rect.height -= 5;
+                    elementCallbackDelegate(rect, index, isActive, isFocused);
+                }
+            };
+            elementHeightCallback = (int index) =>
+            {
+                if (displayed)
+                {
+                    return elementHeight * elementHeightFactor;
+                }
+                else
+                {
+                    return 0;
+                }
+            };
+        }
+
+        public bool Displayed { get => displayed; set => displayed = value; }
+    }
+
+
+    [System.Serializable]
+    public class FilterFoldableReordableList<T> : FoldableReordableList<T>
+    {
+
+        [SerializeField]
+        private bool isFilterEnabled;
+
+        public FilterFoldableReordableList(List<T> list, bool draggable, bool displayHeader, bool displayAddButton,
+             bool displayRemovebutton, string listTitle, float elementHeightFactor, ElementCallbackDelegate elementCallbackDelegate, Action undoRegisterAction)
+             : base(list, draggable, displayHeader, displayAddButton, displayRemovebutton, listTitle, elementHeightFactor, elementCallbackDelegate)
         {
-            if (displayed)
+            this.drawHeaderCallback = (Rect rect) =>
             {
-                rect.y += 2;
-                rect.height -= 5;
-                elementCallbackDelegate(rect, index, isActive, isFocused);
-            }
-        };
-        elementHeightCallback = (int index) =>
+
+                Rect isFilterToggleRect = new Rect(rect);
+                isFilterToggleRect.width = 10f;
+                isFilterToggleRect.height = 10f;
+                isFilterToggleRect.y += 3f;
+                EditorGUI.BeginChangeCheck();
+                var isFilterEnabled = EditorGUI.Toggle(isFilterToggleRect, this.isFilterEnabled, EditorStyles.miniButton);
+                // isFilterEnabled = EditorGUI.Toggle()
+                Rect foldoutRect = new Rect(rect);
+                foldoutRect.x += 20;
+                var displayed = EditorGUI.Foldout(foldoutRect, this.Displayed, listTitle, true);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    undoRegisterAction.Invoke();
+                    this.isFilterEnabled = isFilterEnabled;
+                    this.Displayed = displayed;
+                }
+                if (this.Displayed)
+                {
+                    this.draggable = true;
+                    this.displayAdd = true;
+                    this.displayRemove = true;
+                }
+                else
+                {
+                    this.draggable = false;
+                    this.displayAdd = false;
+                    this.displayRemove = false;
+                }
+            };
+        }
+
+        public bool IsFilterEnabled { get => isFilterEnabled; set => isFilterEnabled = value; }
+
+        public void DisableFilter()
         {
-            if (displayed)
-            {
-                return elementHeight * elementHeightFactor;
-            }
-            else
-            {
-                return 0;
-            }
-        };
+            this.isFilterEnabled = false;
+        }
+
+        internal void ColapseFilter()
+        {
+            this.Displayed = false;
+        }
     }
 }
 
-
-[System.Serializable]
-public class FilterFoldableReordableList<T> : FoldableReordableList<T>
-{
-
-    [SerializeField]
-    private bool isFilterEnabled;
-
-    public FilterFoldableReordableList(List<T> list, bool draggable, bool displayHeader, bool displayAddButton, bool displayRemovebutton, string listTitle, float elementHeightFactor, ElementCallbackDelegate elementCallbackDelegate)
-         : base(list, draggable, displayHeader, displayAddButton, displayRemovebutton, listTitle, elementHeightFactor, elementCallbackDelegate)
-    {
-        this.drawHeaderCallback = (Rect rect) =>
-        {
-
-            Rect isFilterToggleRect = new Rect(rect);
-            isFilterToggleRect.width = 10f;
-            isFilterToggleRect.height = 10f;
-            isFilterToggleRect.y += 3f;
-            this.isFilterEnabled = EditorGUI.Toggle(isFilterToggleRect, this.isFilterEnabled, EditorStyles.miniButton);
-            // isFilterEnabled = EditorGUI.Toggle()
-            Rect foldoutRect = new Rect(rect);
-            foldoutRect.x += 20;
-            displayed = EditorGUI.Foldout(foldoutRect, displayed, listTitle, true);
-            if (displayed)
-            {
-                this.draggable = true;
-                this.displayAdd = true;
-                this.displayRemove = true;
-            }
-            else
-            {
-                this.draggable = false;
-                this.displayAdd = false;
-                this.displayRemove = false;
-            }
-        };
-    }
-
-    public bool IsFilterEnabled { get => isFilterEnabled; }
-}
+#endif //UNITY_EDITOR

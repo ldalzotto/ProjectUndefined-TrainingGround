@@ -58,7 +58,8 @@ public class PrefabEditorInjection
                     if (customDisplayFunction != null)
                     {
                         customDisplayFunction.Invoke(lookedComponent);
-                    } else
+                    }
+                    else
                     {
                         Editor.CreateEditor(this.instanciatedPrefab.GetComponent<T>()).OnInspectorGUI();
                     }
@@ -67,7 +68,7 @@ public class PrefabEditorInjection
                         PrefabUtility.SaveAsPrefabAsset(this.instanciatedPrefab, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(selectedPrefab));
                     }
                 }
-               
+
             }
             else //fallback to old workflow method
             {
@@ -84,6 +85,7 @@ public class PrefabEditorInjection
             PrefabUtility.SaveAsPrefabAsset(this.instanciatedPrefab, PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(selectedPrefab));
         }
     }
+
 
 }
 

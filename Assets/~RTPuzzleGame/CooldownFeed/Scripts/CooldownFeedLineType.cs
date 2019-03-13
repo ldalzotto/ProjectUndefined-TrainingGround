@@ -23,11 +23,13 @@ namespace RTPuzzle
 
         public static CooldownFeedLineType Instanciate(Transform parent, RTPPlayerAction associatedAction)
         {
+            var puzzleCOnfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+
             var cooldownFeedLine = MonoBehaviour.Instantiate(PrefabContainer.Instance.CooldownFeedLineType, parent);
             cooldownFeedLine.AssociatedAction = associatedAction;
 
             var iconImage = cooldownFeedLine.GetComponentInChildren<Image>();
-            iconImage.sprite = SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[associatedAction.GetSelectionWheelConfigurationId()].ContextActionWheelIcon;
+            iconImage.sprite = puzzleCOnfigurationManager.SelectionWheelNodeConfiguration()[associatedAction.GetSelectionWheelConfigurationId()].WheelNodeIcon;
 
             cooldownFeedLine.CooldownFeedLineAnimationManager = new CooldownFeedLineAnimationManager((RectTransform)cooldownFeedLine.transform);
 

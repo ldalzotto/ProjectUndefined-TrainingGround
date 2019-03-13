@@ -26,7 +26,7 @@ namespace RTPuzzle
 
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
             PlayerActionsAvailableManager = new PlayerActionsAvailableManager(puzzleId, puzzleGameConfigurationManager);
-            PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel);
+            PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
             PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerManagerDataRetriever.GetPlayerTransform(), Camera.main);
         }
 
@@ -198,10 +198,12 @@ namespace RTPuzzle
     class PLayerSelectionWheelManager
     {
         private SelectionWheel SelectionWheel;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
 
-        public PLayerSelectionWheelManager(SelectionWheel selectionWheel)
+        public PLayerSelectionWheelManager(SelectionWheel selectionWheel, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
             SelectionWheel = selectionWheel;
+            PuzzleGameConfigurationManager = puzzleGameConfigurationManager;
         }
 
         private bool wheelEnabled;
@@ -229,7 +231,7 @@ namespace RTPuzzle
 
         private Sprite ResolveWheelNodeSpriteFromNodeData(SelectionWheelNodeData selectionWheelNodeData)
         {
-            return SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[(selectionWheelNodeData.Data as RTPPlayerAction).GetSelectionWheelConfigurationId()].ContextActionWheelIcon;
+            return PuzzleGameConfigurationManager.SelectionWheelNodeConfiguration()[(selectionWheelNodeData.Data as RTPPlayerAction).GetSelectionWheelConfigurationId()].WheelNodeIcon;
         }
     }
 
