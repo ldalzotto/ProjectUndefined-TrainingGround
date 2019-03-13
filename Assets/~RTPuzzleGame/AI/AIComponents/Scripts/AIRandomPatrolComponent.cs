@@ -4,17 +4,11 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-
     [System.Serializable]
-    public class AIRandomPatrolComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
+    [CreateAssetMenu(fileName = "AIRandomPatrolComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIRandomPatrolComponent", order = 1)]
+    public class AIRandomPatrolComponent : ScriptableObject
     {
         public float MaxDistance;
-
-        public void InitializeContainer(AIComponents aIComponents)
-        {
-            aIComponents.AIRandomPatrolComponent = this;
-        }
-
     }
 
     public class AIRandomPatrolComponentMananger

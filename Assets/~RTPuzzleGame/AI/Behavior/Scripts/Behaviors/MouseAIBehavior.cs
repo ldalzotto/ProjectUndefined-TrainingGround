@@ -13,7 +13,7 @@ namespace RTPuzzle
         private AIProjectileEscapeManager AIProjectileEscapeManager;
         private AITargetZoneComponentManager AITargetZoneComponentManager;
         private AIFearStunComponentManager AIFearStunComponentManager;
-        private AIAttractiveObjectComponent AIAttractiveObjectComponent;
+        private AIAttractiveObjectManager AIAttractiveObjectComponent;
         #endregion
 
         #region AI Managers
@@ -27,7 +27,7 @@ namespace RTPuzzle
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, aIComponents.AITargetZoneComponent, AIFOVManager, PuzzleEventsManager, aiID);
             AIFearStunComponentManager = new AIFearStunComponentManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID);
-            AIAttractiveObjectComponent = new AIAttractiveObjectComponent(selfAgent);
+            AIAttractiveObjectComponent = new AIAttractiveObjectManager(selfAgent);
         }
 
         #region Internal Events

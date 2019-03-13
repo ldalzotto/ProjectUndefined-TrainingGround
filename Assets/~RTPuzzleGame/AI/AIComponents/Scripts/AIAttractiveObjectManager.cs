@@ -3,12 +3,13 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class AIAttractiveObjectComponent
+
+    public class AIAttractiveObjectManager
     {
 
         private NavMeshAgent selfAgent;
 
-        public AIAttractiveObjectComponent(NavMeshAgent selfAgent)
+        public AIAttractiveObjectManager(NavMeshAgent selfAgent)
         {
             this.selfAgent = selfAgent;
         }

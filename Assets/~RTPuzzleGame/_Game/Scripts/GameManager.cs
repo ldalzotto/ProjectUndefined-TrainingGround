@@ -43,7 +43,6 @@ namespace RTPuzzle
 
             //Initialisations
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
-            GameObject.FindObjectOfType<AIComponentsManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();
             // NpcAiManager.Init();

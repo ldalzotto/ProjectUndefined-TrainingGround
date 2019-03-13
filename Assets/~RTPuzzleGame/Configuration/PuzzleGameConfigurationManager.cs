@@ -12,6 +12,7 @@ namespace RTPuzzle
         public void Init()
         {
             PuzzleGameConfiguration.PlayerActionConfiguration.Init();
+            PuzzleGameConfiguration.AIComponentsConfiguration.Init();
         }
 
         public Dictionary<LaunchProjectileId, ProjectileInherentData> ProjectileConf()
@@ -41,6 +42,10 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData;
         }
+        public Dictionary<AiID, AIComponents> AIComponentsConfiguration()
+        {
+            return PuzzleGameConfiguration.AIComponentsConfiguration.ConfigurationInherentData;
+        }
     }
 
     [System.Serializable]
@@ -53,6 +58,7 @@ namespace RTPuzzle
         public AttractiveObjectConfiguration AttractiveObjectConfiguration;
         public LevelConfiguration LevelConfiguration;
         public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
+        public AIComponentsConfiguration AIComponentsConfiguration;
     }
 
 }

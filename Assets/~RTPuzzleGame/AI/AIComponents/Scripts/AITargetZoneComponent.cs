@@ -3,29 +3,31 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class AITargetZoneComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "AITargetZoneComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AITargetZoneComponent", order = 1)]
+    public class AITargetZoneComponent : ScriptableObject
     {
         public TargetZoneID TargetZoneID;
 
         private TargetZoneInherentData targetZoneConfigurationData;
         private TargetZone targetZone;
-
+     
         #region State
-        public bool IsInTargetZone;
+        private bool isInTargetZone;
         #endregion
-
+   
         public TargetZone TargetZone { get => targetZone; }
         public TargetZoneInherentData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
+        public bool IsInTargetZone { get => isInTargetZone; }
 
-        public void InitializeContainer(AIComponents aIComponents)
+        public void Init()
         {
-            aIComponents.AITargetZoneComponent = this;
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             this.targetZone = targetZoneContainer.TargetZones[TargetZoneID];
             this.targetZoneConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().TargetZonesConfiguration()[this.targetZone.TargetZoneID];
         }
     }
-
+    
     public class AITargetZoneComponentManager
     {
         #region External Dependencies
@@ -36,10 +38,12 @@ namespace RTPuzzle
         private AITargetZoneComponent AITargetZoneComponent;
         #endregion
 
+        private bool isInTargetZone;
+
         #region Logical Conditions
         public bool IsInTargetZone()
         {
-            return AITargetZoneComponent.IsInTargetZone;
+            return isInTargetZone;
         }
         #endregion
 
@@ -51,7 +55,8 @@ namespace RTPuzzle
 
         public void TickComponent()
         {
-            AITargetZoneComponent.IsInTargetZone = Vector3.Distance(agent.transform.position, AITargetZoneComponent.TargetZone.transform.position) <= AITargetZoneComponent.TargetZoneConfigurationData.EscapeMinDistance;
+            this.isInTargetZone = Vector3.Distance(agent.transform.position, AITargetZoneComponent.TargetZone.transform.position)
+                                                <= AITargetZoneComponent.TargetZoneConfigurationData.EscapeMinDistance;
         }
 
     }

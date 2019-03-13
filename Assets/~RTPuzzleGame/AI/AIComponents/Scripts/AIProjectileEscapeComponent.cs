@@ -4,15 +4,13 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
+
     [System.Serializable]
-    public class AIProjectileEscapeComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
+    [CreateAssetMenu(fileName = "AIProjectileEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIProjectileEscapeComponent", order = 1)]
+    public class AIProjectileEscapeComponent : ScriptableObject
     {
         public float EscapeDistance;
 
-        public void InitializeContainer(AIComponents aIComponents)
-        {
-            aIComponents.AIProjectileEscapeComponent = this;
-        }
     }
 
     public class AIProjectileEscapeManager
@@ -22,6 +20,7 @@ namespace RTPuzzle
         #region External Dependencies
         private NavMeshAgent escapingAgent;
         private AITargetZoneComponent AITargetZoneComponent;
+        private TargetZoneContainer TargetZoneContainer;
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion

@@ -23,7 +23,8 @@ namespace RTPuzzle
                           { ComputeSelectionKey(typeof(PlayerActionsInherentData)), new ConfigurationSelectionProfile("PL_ACT")},
                           { ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new ConfigurationSelectionProfile("ATTR_OBJ") },
                           { ComputeSelectionKey(typeof(LevelConfigurationData)), new ConfigurationSelectionProfile("LEVEL") },
-                    { ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new ConfigurationSelectionProfile("WHEEL_ACT") }
+                    { ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new ConfigurationSelectionProfile("WHEEL_ACT") },
+                    { ComputeSelectionKey(typeof(AIComponents)), new ConfigurationSelectionProfile("AI") }
              };
             this.configurations = new Dictionary<string, IGenericConfigurationEditor>() {
                 {  ComputeSelectionKey(typeof(ProjectileInherentData)), new GenericConfigurationEditor<LaunchProjectileId, ProjectileInherentData>("t:ProjectileConfiguration")},
@@ -31,7 +32,8 @@ namespace RTPuzzle
                   {  ComputeSelectionKey(typeof(PlayerActionsInherentData)), new GenericConfigurationEditor<LevelZonesID, PlayerActionsInherentData>("t:PlayerActionConfiguration")},
                   {  ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new GenericConfigurationEditor<AttractiveObjectId, AttractiveObjectInherentConfigurationData>("t:AttractiveObjectConfiguration")},
                   {  ComputeSelectionKey(typeof(LevelConfigurationData)), new GenericConfigurationEditor<LevelZonesID, LevelConfigurationData>("t:LevelConfiguration")},
-                  {  ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new GenericConfigurationEditor<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData>("t:SelectionWheelNodeConfiguration")}
+                  {  ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new GenericConfigurationEditor<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData>("t:SelectionWheelNodeConfiguration")},
+                  {  ComputeSelectionKey(typeof(AIComponents)), new GenericConfigurationEditor<AiID, AIComponents>("t:AIComponentsConfiguration")}
             };
         }
 

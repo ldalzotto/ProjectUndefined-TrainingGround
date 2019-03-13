@@ -64,10 +64,8 @@
     <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PrefabContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentInitializerMessageReceiver.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentsContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponentsManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIAttractiveObjectComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AIComponents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIAttractiveObjectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIFearStunComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIRandomPatrolComponent.cs" />
@@ -78,6 +76,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIComponentsConfiguration\AIComponentsConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\LevelConfiguration\LevelConfiguration.cs" />

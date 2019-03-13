@@ -3,16 +3,13 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
+
     [System.Serializable]
-    public class AIFearStunComponent : MonoBehaviour, AIComponentInitializerMessageReceiver
+    [CreateAssetMenu(fileName = "AIFearStunComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIFearStunComponent", order = 1)]
+    public class AIFearStunComponent : ScriptableObject
     {
         public float FOVSumThreshold;
         public float TimeWhileBeginFeared;
-
-        public void InitializeContainer(AIComponents aIComponents)
-        {
-            aIComponents.AIFearStunComponent = this;
-        }
     }
 
 

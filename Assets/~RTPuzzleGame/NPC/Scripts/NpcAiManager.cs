@@ -40,6 +40,7 @@ namespace RTPuzzle
 
         public void Init()
         {
+            var puzzleCOnfigurationmanager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
 
@@ -51,7 +52,7 @@ namespace RTPuzzle
             agent.updatePosition = false;
             agent.updateRotation = false;
 
-            var aiComponent = GameObject.FindObjectOfType<AIComponentsManager>().Get(AiID);
+            var aiComponent = puzzleCOnfigurationmanager.AIComponentsConfiguration()[AiID];
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
