@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_PassEditor.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
@@ -137,6 +138,7 @@
     <None Include="Assets\_Shader\Water\WaterTrail\WaterTrailShader.shader" />
     <None Include="Assets\Test\CommandBufferTest\CommandBufferTestShader.shader" />
     <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_Pass.shader" />
+    <None Include="Assets\Test\3DTextureAura\TestAura.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />

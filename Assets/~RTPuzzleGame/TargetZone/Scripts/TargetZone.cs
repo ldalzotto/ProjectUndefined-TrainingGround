@@ -18,13 +18,7 @@ namespace RTPuzzle
         #region State
         private bool hasInit;
         #endregion
-
-        /*
-        void Start()
-        {
-            Init();
-        }
-        */
+        
         public void Init()
         {
             if (!this.hasInit)
