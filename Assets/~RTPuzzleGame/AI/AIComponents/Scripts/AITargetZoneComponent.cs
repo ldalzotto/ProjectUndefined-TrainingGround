@@ -8,26 +8,37 @@ namespace RTPuzzle
     public class AITargetZoneComponent : ScriptableObject
     {
         public TargetZoneID TargetZoneID;
-
-        private TargetZoneInherentData targetZoneConfigurationData;
-        private TargetZone targetZone;
-     
-        #region State
-        private bool isInTargetZone;
-        #endregion
-   
-        public TargetZone TargetZone { get => targetZone; }
-        public TargetZoneInherentData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
-        public bool IsInTargetZone { get => isInTargetZone; }
-
-        public void Init()
-        {
-            var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
-            this.targetZone = targetZoneContainer.TargetZones[TargetZoneID];
-            this.targetZoneConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().TargetZonesConfiguration()[this.targetZone.TargetZoneID];
-        }
     }
-    
+
+    public class AITargetZoneComponentManagerDataRetrieval
+    {
+        private AITargetZoneComponentManager AITargetZoneComponentManagerRef;
+
+        public AITargetZoneComponentManagerDataRetrieval(AITargetZoneComponentManager aITargetZoneComponentManagerRef)
+        {
+            AITargetZoneComponentManagerRef = aITargetZoneComponentManagerRef;
+        }
+
+        #region Data Retrieval
+        public TargetZone GetTargetZone()
+        {
+            return this.AITargetZoneComponentManagerRef.TargetZone;
+        }
+
+        public TargetZoneInherentData GetTargetZoneConfigurationData()
+        {
+            return this.AITargetZoneComponentManagerRef.TargetZoneConfigurationData;
+        }
+        #endregion
+
+        #region Logical Conditions
+        public bool IsInTargetZone()
+        {
+            return this.AITargetZoneComponentManagerRef.IsInTargetZone();
+        }
+        #endregion
+    }
+
     public class AITargetZoneComponentManager
     {
         #region External Dependencies
@@ -36,9 +47,18 @@ namespace RTPuzzle
 
         #region Internal Dependencies
         private AITargetZoneComponent AITargetZoneComponent;
+        private AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval;
+        private TargetZoneInherentData targetZoneConfigurationData;
+        private TargetZone targetZone;
         #endregion
 
+        #region State
         private bool isInTargetZone;
+        #endregion
+
+        public TargetZone TargetZone { get => targetZone; }
+        public TargetZoneInherentData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
+        public AITargetZoneComponentManagerDataRetrieval AITargetZoneComponentManagerDataRetrieval { get => aITargetZoneComponentManagerDataRetrieval; }
 
         #region Logical Conditions
         public bool IsInTargetZone()
@@ -51,12 +71,17 @@ namespace RTPuzzle
         {
             this.agent = agent;
             AITargetZoneComponent = aITargetZoneComponent;
+            this.aITargetZoneComponentManagerDataRetrieval = new AITargetZoneComponentManagerDataRetrieval(this);
+
+            var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+            this.targetZone = targetZoneContainer.TargetZones[aITargetZoneComponent.TargetZoneID];
+            this.targetZoneConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().TargetZonesConfiguration()[this.targetZone.TargetZoneID];
         }
 
         public void TickComponent()
         {
-            this.isInTargetZone = Vector3.Distance(agent.transform.position, AITargetZoneComponent.TargetZone.transform.position)
-                                                <= AITargetZoneComponent.TargetZoneConfigurationData.EscapeMinDistance;
+            this.isInTargetZone = Vector3.Distance(agent.transform.position, this.TargetZone.transform.position)
+                                                <= this.TargetZoneConfigurationData.EscapeMinDistance;
         }
 
     }

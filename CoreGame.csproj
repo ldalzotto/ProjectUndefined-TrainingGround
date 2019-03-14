@@ -141,6 +141,7 @@
     <None Include="Assets\Test\3DTextureAura\TestAura.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
+    <None Include="Assets\Plugins\Sirenix\Odin Serializer\Generated\link.xml" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -378,6 +379,9 @@
     </Reference>
     <Reference Include="OdinSerializer">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
+    </Reference>
+    <Reference Include="OdinAOTSupport">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/Generated/OdinAOTSupport.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.8f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

@@ -3,6 +3,7 @@
 
     public enum AiID
     {
-        MOUSE = 0
+        MOUSE = 0,
+        MOUSE_TEST = 1
     }
 }

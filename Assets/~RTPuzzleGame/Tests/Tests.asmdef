@@ -1,14 +1,14 @@
 {
     "name": "Tests",
     "references": [
-        "PuzzleGame"
+        "PuzzleGame",
+        "AdventureGame",
+        "CoreGame"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

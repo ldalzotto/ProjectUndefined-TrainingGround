@@ -12,13 +12,5 @@ namespace RTPuzzle
         public AITargetZoneComponent AITargetZoneComponent;
         public AIFearStunComponent AIFearStunComponent;
 
-        public void Init()
-        {
-            if (AITargetZoneComponent != null)
-            {
-                AITargetZoneComponent.Init();
-            }
-        }
-
     }
 }

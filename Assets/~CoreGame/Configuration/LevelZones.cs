@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class LevelZones
 {
@@ -9,12 +7,16 @@ public class LevelZones
     {
         {LevelZonesID.LEVEL1, "Level1EnvironmentScene" },
         {LevelZonesID.SEWER, "SewerScene" },
-        {LevelZonesID.SEWER_RTP, "RTPuzzle_LV1" }
+        {LevelZonesID.SEWER_RTP, "RTPuzzle_LV1" },
+        {LevelZonesID.RTP_TEST, "TestPuzzle" }
     };
 
 }
 
 public enum LevelZonesID
 {
-    LEVEL1, SEWER, SEWER_RTP
+    LEVEL1 = 0,
+    SEWER = 1,
+    SEWER_RTP = 2,
+    RTP_TEST = 3
 }

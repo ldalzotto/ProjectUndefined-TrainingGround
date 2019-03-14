@@ -18,7 +18,7 @@ namespace RTPuzzle
         #region State
         private bool hasInit;
         #endregion
-        
+
         public void Init()
         {
             if (!this.hasInit)
@@ -44,5 +44,5 @@ namespace RTPuzzle
 
     }
 
-    public enum TargetZoneID { LEVEL1_TARGET_ZONE = 0 }
+    public enum TargetZoneID { LEVEL1_TARGET_ZONE = 0, TEST_TARGET_ZONE = 1 }
 }

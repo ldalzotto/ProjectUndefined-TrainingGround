@@ -23,6 +23,7 @@ namespace RTPuzzle
         private TargetZoneContainer TargetZoneContainer;
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager PuzzleEventsManager;
+        private AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval;
         #endregion
 
         #region Internal Dependencies
@@ -49,7 +50,8 @@ namespace RTPuzzle
         #endregion
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID)
+                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, 
+                AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
@@ -57,6 +59,7 @@ namespace RTPuzzle
             this.AIFOVManager = AIFOVManager;
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.aiID = aiID;
+            this.aITargetZoneComponentManagerDataRetrieval = aITargetZoneComponentManagerDataRetrieval;
         }
 
         public void ClearEscapeDestination()
@@ -68,7 +71,7 @@ namespace RTPuzzle
         public Nullable<Vector3> ForceComputeEscapePoint()
         {
             isEscapingFromTargetZone = true;
-            escapeDestination = ComputeEscapePoint((escapingAgent.transform.position - AITargetZoneComponent.TargetZone.transform.position).normalized, null);
+            escapeDestination = ComputeEscapePoint((escapingAgent.transform.position - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position).normalized, null);
             return escapeDestination;
         }
 
@@ -87,7 +90,7 @@ namespace RTPuzzle
         private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
         {
 
-            if (AITargetZoneComponent.IsInTargetZone && launchProjectile == null)
+            if (this.aITargetZoneComponentManagerDataRetrieval.IsInTargetZone() && launchProjectile == null)
             {
                 Debug.Log("EscapeFromExitZone");
                 return EscapeFromExitZone(escapeDirection);
@@ -125,8 +128,8 @@ namespace RTPuzzle
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
             // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
 
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.AITargetZoneComponent.TargetZoneConfigurationData.EscapeFOVSemiAngle,
-                worldEscapeDirectionAngle + this.AITargetZoneComponent.TargetZoneConfigurationData.EscapeFOVSemiAngle);
+            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZoneConfigurationData().EscapeFOVSemiAngle,
+                worldEscapeDirectionAngle + this.aITargetZoneComponentManagerDataRetrieval.GetTargetZoneConfigurationData().EscapeFOVSemiAngle);
             noTargetZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
 
             for (var i = 0; i < noTargetZonehits.Length; i++)
@@ -139,17 +142,17 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, AITargetZoneComponent.TargetZone.ZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
                     {
-                        currentDistanceToForbidden = Vector3.Distance(noTargetZonehits[i].position, AITargetZoneComponent.TargetZone.transform.position);
+                        currentDistanceToForbidden = Vector3.Distance(noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position);
                         selectedPosition = noTargetZonehits[i].position;
                     }
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, AITargetZoneComponent.TargetZone.ZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
                     {
-                        var computedDistance = Vector3.Distance(noTargetZonehits[i].position, AITargetZoneComponent.TargetZone.transform.position);
+                        var computedDistance = Vector3.Distance(noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position);
                         if (currentDistanceToForbidden < computedDistance)
                         {
                             selectedPosition = noTargetZonehits[i].position;
@@ -182,7 +185,7 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, AITargetZoneComponent.TargetZone.ZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
                     {
                         currentDistanceToRaycastTarget = Vector3.Distance(noTargetZonehits[i].position, escapingAgent.transform.position);
                         selectedPosition = noTargetZonehits[i].position;
@@ -190,7 +193,7 @@ namespace RTPuzzle
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, AITargetZoneComponent.TargetZone.ZoneCollider))
+                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
                     {
                         var computedDistance = Vector3.Distance(noTargetZonehits[i].position, escapingAgent.transform.position);
                         if (currentDistanceToRaycastTarget < computedDistance)
