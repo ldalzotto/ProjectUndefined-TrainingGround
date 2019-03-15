@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -72,14 +71,19 @@ namespace RTPuzzle
 
         public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)
         {
+            this.ComputeAINewDestination(d, timeAttenuationFactor);
+            AIDestinationMoveManager.Tick(d);
+            NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
+        }
+
+        private Vector3? ComputeAINewDestination(in float d, in float timeAttenuationFactor)
+        {
             var newDestination = PuzzleAIBehavior.TickAI(d, timeAttenuationFactor);
             if (newDestination.HasValue)
             {
                 SetDestinationWithCoroutineReached(newDestination.Value);
             }
-
-            AIDestinationMoveManager.Tick(d);
-            NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
+            return newDestination;
         }
 
         internal void TickAlways(in float d, in float timeAttenuationFactor)
@@ -176,7 +180,7 @@ namespace RTPuzzle
         {
             PuzzleAIBehavior.OnDestinationReached();
             // empty tick to immediately choose the next position
-            this.TickWhenTimeFlows(0, 0);
+            this.ComputeAINewDestination(0,0);
         }
         #endregion
 
@@ -285,7 +289,7 @@ namespace RTPuzzle
             {
                 MonoBehaviour.Destroy(this.visualFeedbackMark);
             }
-            if(this.destroyCoroutine != null)
+            if (this.destroyCoroutine != null)
             {
                 Coroutiner.Instance.StopCoroutine(this.destroyCoroutine);
             }
