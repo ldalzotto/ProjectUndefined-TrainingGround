@@ -237,8 +237,6 @@
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Tests\~RTPuzzleGame\AI\Scripts\AIBehaviorTest.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Tests\~RTPuzzleGame\AI\Scripts\AIFOVManagerTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />
@@ -252,46 +250,33 @@
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Test\CommandBufferTest\BufferWriter.cs" />
     <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIBehaviorTest.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIFOVManagerTest.cs" />
     <None Include="app.config" />
     <None Include="Assets\_Shader\Water\MyUnityStandardShadow.cginc" />
     <None Include="Assets\_Shader\Water\WaterStandardCoreForward.cginc" />
-    <None Include="Assets\packages\System.Threading.Tasks.Extensions.4.3.0\dotnet_library_license.txt" />
-    <None Include="Assets\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.xml" />
-    <None Include="Assets\packages\NSubstitute.4.0.0\lib\net45\NSubstitute.xml" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\FX\Particle_Ambiant_Shader.shader" />
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Water\WaterFoam.cginc" />
-    <None Include="Assets\packages\NSubstitute.4.0.0\lib\netstandard1.3\NSubstitute.xml" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Water\WaterShader.shader" />
-    <None Include="Assets\packages\NSubstitute.4.0.0\lib\netstandard2.0\NSubstitute.xml" />
     <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\lib\net40\Castle.Core.xml" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\lib\netstandard1.3\Castle.Core.xml" />
     <None Include="Assets\_Shader\Water\WaterWaveMovement.cginc" />
     <None Include="Assets\_Shader\Common\VertexSurface.shader" />
     <None Include="Assets\Test\WallSatter\WallShatterShader.shader" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\lib\netstandard1.5\Castle.Core.xml" />
     <None Include="Assets\_Shader\Water\DepthColoring.cginc" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\lib\net35\Castle.Core.xml" />
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
-    <None Include="Assets\packages\System.Threading.Tasks.Extensions.4.3.0\lib\netstandard1.0\System.Threading.Tasks.Extensions.xml" />
-    <None Include="Assets\packages\System.Threading.Tasks.Extensions.4.3.0\ThirdPartyNotices.txt" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\ASL - Apache Software Foundation License.txt" />
     <None Include="Assets\_Shader\Water\GeometryFlatShade.cginc" />
     <None Include="Assets\_Shader\Water\WaterTrail\WaterTrailShader.shader" />
-    <None Include="Assets\packages\NSubstitute.4.0.0\lib\net46\NSubstitute.xml" />
     <None Include="Assets\Test\CommandBufferTest\CommandBufferTestShader.shader" />
     <None Include="Assets\~AdventureGame\Discussion\Font\LICENSE.txt" />
     <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_Pass.shader" />
     <None Include="Assets\Test\3DTextureAura\TestAura.shader" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\readme.txt" />
-    <None Include="Assets\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.xml" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
@@ -493,44 +478,44 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.8f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Castle.Core.4.3.1/lib/net35/Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Castle.Core.4.3.1/lib/net40/Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Castle.Core.4.3.1/lib/net45/Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Castle.Core.4.3.1/lib/netstandard1.3/Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Castle.Core.4.3.1/lib/netstandard1.5/Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/NSubstitute.4.0.0/lib/net45/NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/NSubstitute.4.0.0/lib/net46/NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/NSubstitute.4.0.0/lib/netstandard1.3/NSubstitute.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/NSubstitute.4.0.0/lib/netstandard2.0/NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="OdinSerializer">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
     </Reference>
     <Reference Include="OdinAOTSupport">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/Generated/OdinAOTSupport.dll</HintPath>
     </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/NSubstitute.4.0.0/lib/net46/NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/NSubstitute.4.0.0/lib/net45/NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/Castle.Core.4.3.1/lib/net45/Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/Castle.Core.4.3.1/lib/net40/Castle.Core.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/System.Threading.Tasks.Extensions.4.3.0/lib/netstandard1.0/System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/System.Threading.Tasks.Extensions.4.3.0/lib/netstandard1.0/System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/Castle.Core.4.3.1/lib/netstandard1.3/Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/Castle.Core.4.3.1/lib/net35/Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/System.Threading.Tasks.Extensions.4.3.0/lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/NSubstitute.4.0.0/lib/netstandard2.0/NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Core">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/Castle.Core.4.3.1/lib/netstandard1.5/Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/NSubstitute.4.0.0/lib/netstandard1.3/NSubstitute.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/System.Threading.Tasks.Extensions.4.3.0/lib/portable-net45+win8+wp8+wpa81/System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.8f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
