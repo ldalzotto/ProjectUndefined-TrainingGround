@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -18,14 +17,22 @@ namespace RTPuzzle
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
         }
 
+        #region AI destination reached Events
+        public virtual void OnDestinationReached(AiID aiID)
+        {
+            this.NPCAIManagerContainer.OnDestinationReached(aiID);
+        }
+        #endregion
+
         #region Projectile Events
 
-        public void OnAiHittedByProjectile(AiID aiID, int timesInARow)
+        public virtual void OnAiHittedByProjectile(AiID aiID, int timesInARow)
         {
-            if(timesInARow == 1)
+            if (timesInARow == 1)
             {
                 this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
-            } else
+            }
+            else
             {
                 this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectile2InARow();
             }
@@ -101,8 +108,8 @@ namespace RTPuzzle
             //TODO -> not place particles here but in dedicated level completion condition module
             var fxContainerManager = GameObject.FindObjectOfType<FXContainerManager>();
             fxContainerManager.TriggerFX(PrefabContainer.Instance.LevelCompletedParticleEffect);
-            
-          //  SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
+
+            //  SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
         }
 
     }

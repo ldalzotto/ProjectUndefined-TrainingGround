@@ -30,7 +30,6 @@ namespace RTPuzzle
             InventoryMenu.gameObject.SetActive(false);
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            //  NpcAiManager = GameObject.FindObjectOfType<NPCAIManager>();
             NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
@@ -40,12 +39,18 @@ namespace RTPuzzle
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
+            
+            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
+            var LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             //Initialisations
             var targetZones = GameObject.FindObjectsOfType<TargetZone>();
             if (targetZones != null)
             {
-                foreach(var targetZone in targetZones)
+                foreach (var targetZone in targetZones)
                 {
                     targetZone.Init();
                 }
@@ -54,8 +59,8 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();
-            // NpcAiManager.Init();
-            TimeFlowManager.Init(PuzzleId);
+            TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[PuzzleId].AvailableTimeAmount);
+            TimeFlowManager.Init(PuzzleId, PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager, PuzzleEventsManager);
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
             PlayerActionManager.Init(PuzzleId);
             LaunchProjectileContainerManager.Init();
@@ -63,13 +68,13 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<GroundCollision>().Init();
             GroundEffectsManager.Init();
             CooldownFeedManager.Init();
-            GameObject.FindObjectOfType<PuzzleEventsManager>().Init();
+            PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
-            GameObject.FindObjectOfType<LevelManager>().Init(PuzzleId);
+            LevelManager.Init(PuzzleId);
             AttractiveObjectsContainerManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
-            
+
         }
 
         private void Update()

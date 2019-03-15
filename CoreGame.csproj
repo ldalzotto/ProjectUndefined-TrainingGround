@@ -132,7 +132,6 @@
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
-    <None Include="Assets\packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.xml" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\Version.txt" />
     <None Include="Assets\_Shader\Water\GeometryFlatShade.cginc" />
     <None Include="Assets\_Shader\Water\WaterTrail\WaterTrailShader.shader" />
@@ -373,9 +372,6 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/packages/Newtonsoft.Json.12.0.1/lib/net40/Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OdinSerializer">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>

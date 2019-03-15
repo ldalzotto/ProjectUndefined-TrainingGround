@@ -26,7 +26,7 @@ namespace RTPuzzle
             AITargetZoneComponentManager = new AITargetZoneComponentManager(selfAgent, aIComponents.AITargetZoneComponent);
             AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent);
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, aIComponents.AITargetZoneComponent, AIFOVManager, PuzzleEventsManager, aiID,
-                AITargetZoneComponentManager.AITargetZoneComponentManagerDataRetrieval);
+                    AITargetZoneComponentManager.AITargetZoneComponentManagerDataRetrieval);
             AIFearStunComponentManager = new AIFearStunComponentManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID);
             AIAttractiveObjectComponent = new AIAttractiveObjectManager(selfAgent);
         }
@@ -56,30 +56,30 @@ namespace RTPuzzle
         #region Logical Conditions
         private bool IsReactingToProjectile()
         {
-            return !this.AIFearStunComponentManager.IsFeared;
+            return !this.IsFeared();
         }
         #endregion
 
-        public override Nullable<Vector3> TickAI(float d, float timeAttenuationFactor)
+        public override Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
         {
             AITargetZoneComponentManager.TickComponent();
 
             Vector3? newDirection = null;
 
-            if (AIFearStunComponentManager.IsFeared)
+            if (this.IsFeared())
             {
                 AIFearStunComponentManager.TickWhileFeared(d, timeAttenuationFactor);
             }
             else
             {
                 var fearStunPosition = AIFearStunComponentManager.TickComponent(AIFOVManager);
-                if (AIFearStunComponentManager.IsFeared)
+                if (this.IsFeared())
                 {
                     newDirection = fearStunPosition.Value; //position is the agent itself
                 }
                 else
                 {
-                    if (AIProjectileEscapeManager.IsEscaping())
+                    if (this.IsEscaping())
                     {
                         var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
                         OnProjectileEscapeManagerUpdated(escapeDestination);
@@ -87,7 +87,7 @@ namespace RTPuzzle
                     }
                     else
                     {
-                        if (AITargetZoneComponentManager.IsInTargetZone())
+                        if (this.IsInTargetZone())
                         {
                             var escapeDestination = AIProjectileEscapeManager.ForceComputeEscapePoint();
                             OnProjectileEscapeManagerUpdated(escapeDestination);
@@ -96,13 +96,16 @@ namespace RTPuzzle
                         else
                         {
                             AIProjectileEscapeManager.ClearEscapeDestination();
-                            if (AIAttractiveObjectComponent.IsInfluencedByAttractiveObject())
+                            if (this.IsInfluencedByAttractiveObject())
                             {
                                 newDirection = AIAttractiveObjectComponent.TickComponent();
                             }
                             else
                             {
-                                Debug.Log("Patrol direction");
+                                if (Debug.isDebugBuild)
+                                {
+                                    Debug.Log("Patrol direction");
+                                }
                                 newDirection = AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
                             }
                         }
@@ -193,6 +196,14 @@ namespace RTPuzzle
         {
             this.OnDestinationReached(true, true, true);
         }
+
+        #region State Retrieval
+        public bool IsPatrolling() { return AIRandomPatrolComponentManager.IsPatrolling(); }
+        public bool IsFeared() { return AIFearStunComponentManager.IsFeared; }
+        public bool IsEscaping() { return AIProjectileEscapeManager.IsEscaping(); }
+        public bool IsInTargetZone() { return AITargetZoneComponentManager.IsInTargetZone(); }
+        public bool IsInfluencedByAttractiveObject() { return AIAttractiveObjectComponent.IsInfluencedByAttractiveObject(); }
+        #endregion
 
         public void DebugGUITick()
         {

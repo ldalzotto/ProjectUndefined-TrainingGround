@@ -14,19 +14,13 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         #endregion
 
-        public void Init(LevelZonesID puzzleId)
+        public void Init(LevelZonesID puzzleId, PlayerManagerDataRetriever RTPlayerManagerDataRetriever, PlayerManager RTPlayerManager,
+               IGameInputManager gameInputManager, PuzzleGameConfigurationManager puzzleConfigurationManager, TimeFlowBarManager TimeFlowBarManager,
+              LevelManager LevelManager, PuzzleEventsManager PuzzleEventsManager)
         {
-            #region External Dependencies
-            var RTPlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            var RTPlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
-            TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[puzzleId].AvailableTimeAmount, this);
-            LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            #endregion
-
+            this.TimeFlowBarManager = TimeFlowBarManager;
+            this.PuzzleEventsManager = PuzzleEventsManager;
+            this.LevelManager = LevelManager;
             TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
             TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[puzzleId].AvailableTimeAmount);
         }
@@ -66,11 +60,11 @@ namespace RTPuzzle
 
     class TimeFlowInputManager
     {
-        private GameInputManager GameInputManager;
+        private IGameInputManager GameInputManager;
         private PlayerManagerDataRetriever RTPlayerManagerDataRetriever;
         private PlayerManager RTPlayerManager;
 
-        public TimeFlowInputManager(GameInputManager gameInputManager, PlayerManagerDataRetriever rTPlayerManagerDataRetriever, PlayerManager rTPlayerManager)
+        public TimeFlowInputManager(IGameInputManager gameInputManager, PlayerManagerDataRetriever rTPlayerManagerDataRetriever, PlayerManager rTPlayerManager)
         {
             GameInputManager = gameInputManager;
             RTPlayerManagerDataRetriever = rTPlayerManagerDataRetriever;

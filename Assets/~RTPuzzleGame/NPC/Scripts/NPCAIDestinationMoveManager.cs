@@ -41,7 +41,6 @@ namespace RTPuzzle
                     this.OnDestinationReachedEvent.Invoke();
                 }
             }
-
         }
 
         #region External Events

@@ -1,7 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-public class GameInputManager : MonoBehaviour
+public interface IGameInputManager
+{
+    XInput CurrentInput { get; }
+}
+
+public class GameInputManager : MonoBehaviour, IGameInputManager
 {
     private XInput currentInput;
 
@@ -16,18 +21,6 @@ public class GameInputManager : MonoBehaviour
         var modileInputJoystickManager = GameObject.FindObjectOfType<MobileInputJoystickManager>();
         currentInput = new MobileInput(modileInputJoystickManager);
 #endif
-    }
-
-    public interface XInput
-    {
-        Vector3 LocomotionAxis();
-        Vector3 CameraRotationAxis();
-        bool ActionButtonDH();
-        bool ActionButtonD();
-        bool InventoryButtonD();
-        bool CancelButtonD();
-        bool CancelButtonDH();
-        bool TimeForwardButtonDH();
     }
 
     private class JoystickInput : XInput
@@ -161,3 +154,14 @@ public class GameInputManager : MonoBehaviour
 
 }
 
+public interface XInput
+{
+    Vector3 LocomotionAxis();
+    Vector3 CameraRotationAxis();
+    bool ActionButtonDH();
+    bool ActionButtonD();
+    bool InventoryButtonD();
+    bool CancelButtonD();
+    bool CancelButtonDH();
+    bool TimeForwardButtonDH();
+}

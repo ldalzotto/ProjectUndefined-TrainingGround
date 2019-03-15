@@ -64,7 +64,6 @@ namespace RTPuzzle
 
         public void ClearEscapeDestination()
         {
-            Debug.Log("Clear Escape");
             escapeDestination = null;
         }
 

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
+﻿
 namespace AdventureGame
 {
 
@@ -8,9 +6,7 @@ namespace AdventureGame
 
     public class GrabScenarioAction : ScenarioAction
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public ItemID ItemInvolved { get; }
-        [JsonConverter(typeof(StringEnumConverter))]
         public PointOfInterestId PoiInvolved { get; }
 
         public GrabScenarioAction(ItemID itemInvolved, PointOfInterestId poiInvolved)
@@ -43,9 +39,7 @@ namespace AdventureGame
 
     public class GiveScenarioAction : ScenarioAction
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public ItemID ItemInvolved { get; }
-        [JsonConverter(typeof(StringEnumConverter))]
         public PointOfInterestId PoiInvolved { get; }
 
         public GiveScenarioAction(ItemID itemInvolved, PointOfInterestId poiInvolved)
@@ -79,7 +73,6 @@ namespace AdventureGame
 
     public class DiscussionChoiceScenarioAction : ScenarioAction
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public DiscussionChoiceTextId ChoiceId { get; }
 
         public DiscussionChoiceScenarioAction(DiscussionChoiceTextId choiceId)
@@ -108,9 +101,7 @@ namespace AdventureGame
 
     public class CutsceneTimelineScenarioAction : ScenarioAction
     {
-        [JsonConverter(typeof(StringEnumConverter))]
         public CutsceneId CutsceneId;
-        [JsonConverter(typeof(StringEnumConverter))]
         public PointOfInterestId TargetedPOI;
 
         public CutsceneTimelineScenarioAction(CutsceneId cutsceneId, PointOfInterestId targetedPOI)

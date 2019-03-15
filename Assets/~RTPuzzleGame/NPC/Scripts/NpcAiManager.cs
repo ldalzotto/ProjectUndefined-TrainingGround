@@ -18,6 +18,10 @@ namespace RTPuzzle
         [Header("Debug")]
         public bool DebugEabled;
 
+        #region External Dependencies
+        private PuzzleEventsManager PuzzleEventsManager;
+        #endregion
+
         #region Internal Dependencies
         private NavMeshAgent agent;
         #endregion
@@ -40,6 +44,7 @@ namespace RTPuzzle
 
         public void Init()
         {
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var puzzleCOnfigurationmanager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
@@ -57,7 +62,7 @@ namespace RTPuzzle
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
-            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.OnDestinationReached);
+            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
             PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
@@ -65,7 +70,7 @@ namespace RTPuzzle
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
         }
 
-        public void TickWhenTimeFlows(float d, float timeAttenuationFactor)
+        public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)
         {
             var newDestination = PuzzleAIBehavior.TickAI(d, timeAttenuationFactor);
             if (newDestination.HasValue)
@@ -77,7 +82,7 @@ namespace RTPuzzle
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
         }
 
-        internal void TickAlways(float d, float timeAttenuationFactor)
+        internal void TickAlways(in float d, in float timeAttenuationFactor)
         {
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
@@ -164,20 +169,25 @@ namespace RTPuzzle
 
         public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
         {
+
             this.PuzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
+        }
+        public void OnDestinationReached()
+        {
+            PuzzleAIBehavior.OnDestinationReached();
+            // empty tick to immediately choose the next position
+            this.TickWhenTimeFlows(0, 0);
         }
         #endregion
 
         #region Internal Events
-        private void OnDestinationReached()
-        {
-          //  yield return new WaitForNavAgentDestinationReached(agent);
-            PuzzleAIBehavior.OnDestinationReached();
-        }
-
         private void OnFOVChange(FOV currentFOV)
         {
             NpcFOVRingManager.OnFOVChanged(currentFOV);
+        }
+        private void SendOnDestinationReachedEvent()
+        {
+            this.PuzzleEventsManager.OnDestinationReached(this.AiID);
         }
         #endregion
 
@@ -189,6 +199,14 @@ namespace RTPuzzle
         public Vector3 GetInteractionRingOffset()
         {
             return this.NpcFOVRingManager.RingPositionOffset;
+        }
+        public PuzzleAIBehavior GetAIBehavior()
+        {
+            return this.PuzzleAIBehavior;
+        }
+        public NavMeshAgent GetAgent()
+        {
+            return this.agent;
         }
         #endregion
     }

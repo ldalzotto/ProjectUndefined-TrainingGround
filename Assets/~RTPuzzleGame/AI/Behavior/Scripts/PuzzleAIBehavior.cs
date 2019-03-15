@@ -6,7 +6,6 @@ namespace RTPuzzle
 {
     public abstract class PuzzleAIBehavior
     {
-
         #region External Dependencies
         protected NavMeshAgent selfAgent;
         protected Action<FOV> OnFOVChange;
@@ -18,7 +17,7 @@ namespace RTPuzzle
             this.OnFOVChange = OnFOVChange;
         }
 
-        public abstract Nullable<Vector3> TickAI(float d, float timeAttenuationFactor);
+        public abstract Nullable<Vector3> TickAI(in float d,in float timeAttenuationFactor);
         public abstract void TickGizmo();
         public abstract void OnTriggerEnter(Collider collider);
         public abstract void OnTriggerStay(Collider collider);

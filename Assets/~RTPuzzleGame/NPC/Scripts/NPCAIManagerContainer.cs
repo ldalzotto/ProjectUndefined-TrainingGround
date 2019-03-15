@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -27,6 +28,11 @@ namespace RTPuzzle
                 npcAiManager.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
             }
         }
+
+        internal void OnDestinationReached(AiID aiID)
+        {
+            this.npcAiManagers[aiID].OnDestinationReached();
+        }
         #endregion
 
         #region Data Retrieval
@@ -39,7 +45,7 @@ namespace RTPuzzle
         public void Init()
         {
             var initialNPCAIManagers = GameObject.FindObjectsOfType<NPCAIManager>();
-            foreach(var initialNPCManager in initialNPCAIManagers)
+            foreach (var initialNPCManager in initialNPCAIManagers)
             {
                 initialNPCManager.Init();
             }

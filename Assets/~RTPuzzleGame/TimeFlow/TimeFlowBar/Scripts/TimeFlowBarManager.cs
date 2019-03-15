@@ -8,7 +8,7 @@ namespace RTPuzzle
 
         private TimeFlowDepletingUIManager tmeFlowDepletingUIManager;
 
-        public void Init(float availableTimeAmount, TimeFlowManager TimeFlowManagerRef)
+        public void Init(float availableTimeAmount)
         {
             var fullBarObject = gameObject.FindChildObjectRecursively(FULL_BAR_OBJECT_NAME);
             tmeFlowDepletingUIManager = new TimeFlowDepletingUIManager(fullBarObject.transform as RectTransform, availableTimeAmount);
