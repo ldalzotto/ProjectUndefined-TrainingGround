@@ -7,6 +7,7 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NPCAIManagerContainer NPCAIManagerContainer;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
         private AttractiveObjectsContainer AttractiveObjectsContainer;
@@ -14,6 +15,7 @@ namespace RTPuzzle
         public void Init()
         {
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             AttractiveObjectsContainer = new AttractiveObjectsContainer(this);
         }
 
@@ -25,8 +27,13 @@ namespace RTPuzzle
         #region External Events
         public void OnAttractiveObjectActionExecuted(Vector3 attractiveObjectWorldPosition, AttractiveObjectId attractiveObjectId)
         {
-            var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPosition, transform, attractiveObjectId);
-            AttractiveObjectsContainer.AddAttractiveObject(instanciatedAttractiveObject);
+            var attractiveObjectInherentConfigurationData = this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId];
+            var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPosition, transform, attractiveObjectInherentConfigurationData);
+        }
+
+        public void OnAttracteObjectCreated(AttractiveObjectType attractiveObjectType)
+        {
+            AttractiveObjectsContainer.AddAttractiveObject(attractiveObjectType);
         }
         #endregion
 
@@ -61,7 +68,7 @@ namespace RTPuzzle
             List<AttractiveObjectType> attractiveObjectsToDestroy = null;
             foreach (var attractiveObject in attractiveObjects)
             {
-               if(attractiveObject.Tick(d, timeAttenuationFactor))
+                if (attractiveObject.Tick(d, timeAttenuationFactor))
                 {
                     if (attractiveObjectsToDestroy == null)
                     {
@@ -72,7 +79,7 @@ namespace RTPuzzle
             }
             if (attractiveObjectsToDestroy != null)
             {
-                foreach(var attractiveObjectToDestroy in attractiveObjectsToDestroy)
+                foreach (var attractiveObjectToDestroy in attractiveObjectsToDestroy)
                 {
                     this.AttractiveObjectsContainerManager.OnAttractiveObjectDestroy(attractiveObjectToDestroy);
                 }

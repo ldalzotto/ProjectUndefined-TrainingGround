@@ -83,7 +83,6 @@ namespace RTPuzzle
             if (!this.endOfCooldownEventEmitted)
             {
                 this.endOfCooldownEventEmitted = true;
-                Debug.Log(PlayerActionEventManager);
                 PlayerActionEventManager.OnCooldownEnded(involvedAction);
             }
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -33,14 +32,6 @@ namespace RTPuzzle
         internal void OnProjectileGroundTriggerEnter(LaunchProjectile launchProjectile)
         {
             launchProjectile.OnGroundTriggerEnter();
-            StartCoroutine(DestroyLaunchProjectileAtEndOfFixedUpdate(launchProjectile));
-        }
-        #endregion
-
-        private IEnumerator DestroyLaunchProjectileAtEndOfFixedUpdate(LaunchProjectile launchProjectile)
-        {
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
             LaunchProjectileEventManager.OnLaunchProjectileDestroy(launchProjectile);
         }
 
@@ -49,6 +40,8 @@ namespace RTPuzzle
             currentProjectiles.Remove(launchProjectile);
             Destroy(launchProjectile.gameObject);
         }
+        #endregion
+
     }
 
 }

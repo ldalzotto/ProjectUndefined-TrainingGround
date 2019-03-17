@@ -1,5 +1,6 @@
 ﻿using RTPuzzle;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -12,17 +13,17 @@ namespace Tests
 
         private MockPuzzleEventsManager mockPuzzleEventsManager;
 
-        [UnitySetUp]
         public IEnumerator Before()
         {
             this.mockPuzzleEventsManager = null;
             SceneManager.sceneLoaded += (Scene scene, LoadSceneMode loadSceneMode) =>
             {
                 var puzzleEventManagerObject = FindObjectOfType<PuzzleEventsManager>().gameObject;
-                MonoBehaviour.DestroyImmediate(puzzleEventManagerObject.GetComponent<PuzzleEventsManager>());
+                var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
                 this.mockPuzzleEventsManager = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
+                this.mockPuzzleEventsManager.ClearCalls();
             };
-            SceneManager.LoadScene(LevelZones.LevelZonesSceneName[LevelZonesID.RTP_TEST]);
+            SceneManager.LoadScene(LevelZones.LevelZonesSceneName[LevelZonesID.RTP_TEST], LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
             GameObject.FindObjectOfType<PuzzleEventsManager>();
             var timeflowManager = GameObject.FindObjectOfType<TimeFlowManager>();
@@ -32,7 +33,8 @@ namespace Tests
 
         [UnityTest]
         public IEnumerator AI_RandomPatrol_Nominal_Test()
-        {        
+        {
+            yield return this.Before();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var oldPosition = mouseTestAIManager.transform.position;
             yield return null;
@@ -42,7 +44,7 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.IsPatrolling());
             var beforeReachDestination = mouseTestAIManager.GetAgent().destination;
             yield return new WaitUntil(() => mockPuzzleEventsManager.OnDestinationReachedCalled);
-            mockPuzzleEventsManager.OnDestinationReachedCalled = false;
+            mockPuzzleEventsManager.ClearCalls();
             Assert.IsTrue(mouseAIBheavior.IsPatrolling());
             var afterReachDestination = mouseTestAIManager.GetAgent().destination;
             Assert.AreNotEqual(beforeReachDestination, afterReachDestination);
@@ -51,8 +53,73 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_Nominal_Test()
         {
-            yield return new WaitForSeconds(10f);
+            yield return this.Before();
+            var gameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
+            var lpTest = this.SpawnProjectile(gameConfigurationManager.ProjectileConf()[LaunchProjectileId.PROJECTILE_TEST], mouseTestAIManager.transform.position);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been hit, no more patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsEscaping(), "The AI has been hit, escaping.");
+            Assert.AreEqual(this.mockPuzzleEventsManager.AiHittedByProjectileCallCount, 1, "The 'hitted by projectile event' must be triggered only once.");
+            yield return null;
+            Assert.IsNull(lpTest, "The projectile must be detroyed after hit.");
         }
+
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_Nominal_Test()
+        {
+            yield return this.Before();
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been attracted, no more patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is being attracted.");
+        }
+
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_DisruptedByProjectile_Test()
+        {
+            yield return this.Before();
+            var gameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is being attracted.");
+            this.SpawnProjectile(gameConfigurationManager.ProjectileConf()[LaunchProjectileId.PROJECTILE_TEST], mouseTestAIManager.transform.position);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "A projectile has hit the AI. Abort attract.");
+        }
+
+        private LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, AITestPositionID projectilePoistion)
+        {
+            var projectilePosition = GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == projectilePoistion).First().transform.position;
+            return SpawnProjectile(projectileInherentData, projectilePosition);
+        }
+
+        private LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, Vector3 projectilePoistion)
+        {
+            var launchProjectile = LaunchProjectile.Instantiate(projectileInherentData, new BeziersControlPoints(), GameObject.FindObjectOfType<Canvas>());
+            launchProjectile.transform.position = projectilePoistion;
+            return launchProjectile;
+        }
+
+        private void SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AITestPositionID aITestPositionID)
+        {
+            var attractiveObjectSpawnPosition = GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform.position;
+            var attractiveObject = AttractiveObjectType.Instanciate(attractiveObjectSpawnPosition, null, attractiveObjectInherentConfigurationData);
+        }
+
     }
 
     class MockedInputManager : IGameInputManager
@@ -108,11 +175,24 @@ namespace Tests
     {
 
         public bool OnDestinationReachedCalled;
+        public int AiHittedByProjectileCallCount;
 
         public override void OnDestinationReached(AiID aiID)
         {
             base.OnDestinationReached(aiID);
             this.OnDestinationReachedCalled = true;
+        }
+
+        public override void OnAiHittedByProjectile(AiID aiID, int timesInARow)
+        {
+            base.OnAiHittedByProjectile(aiID, timesInARow);
+            this.AiHittedByProjectileCallCount += 1;
+        }
+
+        public void ClearCalls()
+        {
+            this.OnDestinationReachedCalled = false;
+            this.AiHittedByProjectileCallCount = 0;
         }
     }
 }

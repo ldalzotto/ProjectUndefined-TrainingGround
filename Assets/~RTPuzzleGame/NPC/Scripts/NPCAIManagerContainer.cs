@@ -40,6 +40,10 @@ namespace RTPuzzle
         {
             return npcAiManagers[aiID];
         }
+        public Dictionary<AiID, NPCAIManager> GetNPCAiManagers()
+        {
+            return this.npcAiManagers;
+        }
         #endregion
 
         public void Init()

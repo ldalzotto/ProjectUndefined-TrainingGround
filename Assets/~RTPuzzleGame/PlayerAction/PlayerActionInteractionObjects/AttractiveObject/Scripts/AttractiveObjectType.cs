@@ -4,16 +4,21 @@ namespace RTPuzzle
 {
     public class AttractiveObjectType : MonoBehaviour
     {
-
-        #region External Dependencies
-        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
-        #endregion
-
-        public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectId attractiveObjectId)
+        
+        public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
         {
-            var attractiveObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectPrefab, parent);
+            AttractiveObjectType attractiveObject = null;
+            if (parent != null)
+            {
+                attractiveObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectPrefab, parent);
+            }
+            else
+            {
+                attractiveObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectPrefab);
+            }
+
             attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init(attractiveObjectId);
+            attractiveObject.Init(attractiveObjectInherentConfigurationData);
             return attractiveObject;
         }
 
@@ -24,20 +29,21 @@ namespace RTPuzzle
 
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public void Init(AttractiveObjectId attractiveObjectId)
+        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
         {
             #region External Dependencies
-            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var attractiveObjectContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             #endregion
-
-            this.attractiveObjectId = attractiveObjectId;
+            
             var sphereCollider = GetComponent<SphereCollider>();
-            var attractiveObjectInherentConfigurationData = this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId];
+            this.attractiveObjectInherentConfigurationData = attractiveObjectInherentConfigurationData;
             sphereCollider.radius = attractiveObjectInherentConfigurationData.EffectRange;
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
+
+            attractiveObjectContainerManager.OnAttracteObjectCreated(this);
         }
 
-        private AttractiveObjectId attractiveObjectId;
+        private AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData;
 
         public bool Tick(float d, float timeAttenuationFactor)
         {
@@ -48,7 +54,7 @@ namespace RTPuzzle
         #region 
         public bool IsInRangeOf(Vector3 compareWorldPosition)
         {
-            return Vector3.Distance(transform.position, compareWorldPosition) < this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId].EffectRange;
+            return Vector3.Distance(transform.position, compareWorldPosition) < this.attractiveObjectInherentConfigurationData.EffectRange;
         }
         #endregion
 

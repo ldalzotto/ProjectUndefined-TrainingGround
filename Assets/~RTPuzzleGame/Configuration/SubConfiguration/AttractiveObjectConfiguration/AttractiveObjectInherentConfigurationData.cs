@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RTPuzzle
 {
@@ -11,6 +10,11 @@ namespace RTPuzzle
         public float EffectiveTime;
 
         public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime)
+        {
+            this.Init(effectRange, effectiveTime);
+        }
+
+        public void Init(float effectRange, float effectiveTime)
         {
             EffectRange = effectRange;
             EffectiveTime = effectiveTime;

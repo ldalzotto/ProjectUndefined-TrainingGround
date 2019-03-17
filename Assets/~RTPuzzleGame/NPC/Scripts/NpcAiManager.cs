@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +24,7 @@ namespace RTPuzzle
 
         #region Internal Dependencies
         private NavMeshAgent agent;
+        private Collider objectCollider;
         #endregion
 
         #region AI Behavior Components
@@ -52,6 +54,7 @@ namespace RTPuzzle
             var canvas = GameObject.FindObjectOfType<Canvas>();
 
             var animator = GetComponentInChildren<Animator>();
+            this.objectCollider = GetComponent<Collider>();
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
             agent.updateRotation = false;
@@ -93,7 +96,8 @@ namespace RTPuzzle
             ContextMarkVisualFeedbackManager.Tick(d);
         }
 
-        private void OnTriggerEnter(Collider other)
+
+        public void OnTriggerEnter(Collider other)
         {
             PuzzleAIBehavior.OnTriggerEnter(other);
         }
@@ -130,10 +134,16 @@ namespace RTPuzzle
         }
 
         #region External Events
+        public void OnProjectileTriggerEnter(SphereCollider sphereCollider)
+        {
+            this.PuzzleAIBehavior.OnProjectileTriggerEnter(sphereCollider);
+        }
+
         private void SetDestinationWithCoroutineReached(Vector3 destination)
         {
             AIDestinationMoveManager.SetDestination(destination);
         }
+        
         public void EnableAgent()
         {
             AIDestinationMoveManager.EnableAgent();
@@ -211,6 +221,10 @@ namespace RTPuzzle
         public NavMeshAgent GetAgent()
         {
             return this.agent;
+        }
+        public Collider GetCollider()
+        {
+            return this.objectCollider;
         }
         #endregion
     }

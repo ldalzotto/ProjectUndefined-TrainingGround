@@ -11,6 +11,6 @@ namespace RTPuzzle
     
     public enum AttractiveObjectId
     {
-        CHEESE
+        CHEESE = 0
     }
 }

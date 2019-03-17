@@ -10,7 +10,7 @@ namespace RTPuzzle
         {
             LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
         }
-
+        /*
         private void OnTriggerEnter(Collider other)
         {
             var collisionType = other.GetComponent<CollisionType>();
@@ -26,6 +26,7 @@ namespace RTPuzzle
                 }
             }
         }
+        */
     }
 
 }

@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIBehaviorTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIFOVManagerTest.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AITestPosition.cs" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

@@ -104,7 +104,7 @@ namespace RTPuzzle
                             {
                                 if (Debug.isDebugBuild)
                                 {
-                                    Debug.Log("Patrol direction");
+                                    //   Debug.Log("Patrol direction");
                                 }
                                 newDirection = AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
                             }
@@ -118,10 +118,16 @@ namespace RTPuzzle
 
         public override void TickGizmo()
         {
-            // Gizmos.DrawWireSphere(NewDestination, 2f);
             AIRandomPatrolComponentManager.GizmoTick();
             AIProjectileEscapeManager.GizmoTick();
             AIFOVManager.GizmoTick();
+        }
+
+        public override void OnProjectileTriggerEnter(Collider collider)
+        {
+            var collisionType = collider.GetComponent<CollisionType>();
+            this.OnDestinationReached(true, false, true); //no reset of projectile fov FOV intersection
+            AIProjectileEscapeManager.OnTriggerEnter(collider, collisionType);
         }
 
         public override void OnTriggerEnter(Collider collider)
@@ -129,21 +135,13 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (this.IsReactingToProjectile())
-                {
-                    if (collisionType.IsRTPProjectile)
-                    {
-                        this.OnDestinationReached(true, false, true); //no reset of projectile fov FOV intersection
-                        AIProjectileEscapeManager.OnTriggerEnter(collider, collisionType);
-                    }
-                }
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    if (!AIProjectileEscapeManager.IsEscaping())
+                    if (!AIProjectileEscapeManager.IsEscaping() && !this.IsFeared())
                     {
                         this.OnDestinationReached();
+                        AIAttractiveObjectComponent.OnTriggerEnter(collider, collisionType);
                     }
-                    AIAttractiveObjectComponent.OnTriggerEnter(collider, collisionType);
                 }
             }
         }
@@ -153,7 +151,10 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                AIAttractiveObjectComponent.OnTriggerStay(collider, collisionType);
+                if (!this.IsEscaping() && !this.IsFeared())
+                {
+                    AIAttractiveObjectComponent.OnTriggerStay(collider, collisionType);
+                }
             }
         }
 
@@ -162,15 +163,19 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
+                /*
                 if (collisionType.IsRTPProjectile)
                 {
                     AIProjectileEscapeManager.OnTriggerExit(collider, collisionType);
                 }
+                */
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    AIAttractiveObjectComponent.OnTriggerExit(collider, collisionType);
+                    if (!AIProjectileEscapeManager.IsEscaping() && !this.IsFeared())
+                    {
+                        AIAttractiveObjectComponent.OnTriggerExit(collider, collisionType);
+                    }
                 }
-
             }
         }
 

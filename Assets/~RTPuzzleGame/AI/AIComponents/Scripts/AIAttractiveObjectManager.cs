@@ -36,7 +36,7 @@ namespace RTPuzzle
 
         public void OnTriggerStay(Collider collider, CollisionType collisionType)
         {
-            if (collisionType.IsRTAttractiveObject)
+            if (collisionType.IsRTAttractiveObject && !this.IsInfluencedByAttractiveObject())
             {
                 SetAttractedObject(collisionType);
             }
@@ -57,6 +57,7 @@ namespace RTPuzzle
         public void OnDestinationReached()
         {
             this.isAttracted = false;
+            this.involvedAttractiveObject = null;
         }
 
         public void ClearAttractedObject()
