@@ -70,6 +70,7 @@
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />
+    <Compile Include="Assets\~CoreGame\_Constants\SceneConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\StringConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />
     <Compile Include="Assets\~CoreGame\_FX\EffectsInterfaces\TriggerableEffect.cs" />

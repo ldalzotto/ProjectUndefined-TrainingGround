@@ -9,7 +9,9 @@ namespace Tests
 
     public enum AITestPositionID
     {
-        ATTRACTIVE_OBJECT_NOMINAL = 0
+        ATTRACTIVE_OBJECT_NOMINAL = 0,
+        PROJECTILE_TARGET_1 = 1,
+        PROJECTILE_TARGET_2 = 2
     }
 
 }

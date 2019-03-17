@@ -18,7 +18,6 @@ namespace RTPuzzle
     public enum LaunchProjectileId
     {
         STONE = 0,
-        STONE_1 = 1,
-        PROJECTILE_TEST = 2
+        STONE_1 = 1
     }
 }

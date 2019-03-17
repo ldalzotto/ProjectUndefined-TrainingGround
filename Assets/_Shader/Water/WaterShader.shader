@@ -181,5 +181,5 @@ Shader "Custom/Environment/Water"
 		}
 	}
 		FallBack "VertexLit"
-		//CustomEditor "WaterShaderGUI"
+		CustomEditor "WaterShaderGUI"
 }

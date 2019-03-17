@@ -13,7 +13,7 @@ namespace Tests
 
         private MockPuzzleEventsManager mockPuzzleEventsManager;
 
-        public IEnumerator Before()
+        public IEnumerator Before(string sceneName)
         {
             this.mockPuzzleEventsManager = null;
             SceneManager.sceneLoaded += (Scene scene, LoadSceneMode loadSceneMode) =>
@@ -23,7 +23,7 @@ namespace Tests
                 this.mockPuzzleEventsManager = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
                 this.mockPuzzleEventsManager.ClearCalls();
             };
-            SceneManager.LoadScene(LevelZones.LevelZonesSceneName[LevelZonesID.RTP_TEST], LoadSceneMode.Single);
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
             GameObject.FindObjectOfType<PuzzleEventsManager>();
             var timeflowManager = GameObject.FindObjectOfType<TimeFlowManager>();
@@ -34,7 +34,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_RandomPatrol_Nominal_Test()
         {
-            yield return this.Before();
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var oldPosition = mouseTestAIManager.transform.position;
             yield return null;
@@ -53,13 +53,14 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_Nominal_Test()
         {
-            yield return this.Before();
-            var gameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
-            var lpTest = this.SpawnProjectile(gameConfigurationManager.ProjectileConf()[LaunchProjectileId.PROJECTILE_TEST], mouseTestAIManager.transform.position);
+            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
+            projectileData.Init(99999f, 90f, 30f);
+            var lpTest = this.SpawnProjectile(projectileData, mouseTestAIManager.transform.position);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been hit, no more patrolling.");
             Assert.IsTrue(mouseAIBheavior.IsEscaping(), "The AI has been hit, escaping.");
@@ -69,36 +70,113 @@ namespace Tests
         }
 
         [UnityTest]
-        public IEnumerator AI_AttractiveObject_Nominal_Test()
+        public IEnumerator AI_ProjectileReceived_FirstTimeNotIntoTargetZone()
         {
-            yield return this.Before();
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
+            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
+            projectileData.Init(99999f, 90f, 30f);
+            var firstProj = this.SpawnProjectile(projectileData, AITestPositionID.PROJECTILE_TARGET_1);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame(); //wait for destination position to update
+            var aiDestination = mouseTestAIManager.GetAgent().destination;
+            var targetZoneCollider = FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).ZoneCollider;
+            Assert.IsFalse(targetZoneCollider.bounds.Contains(aiDestination), "AI Destination should not be in the target zone the first hit.");
+            var secondProj = this.SpawnProjectile(projectileData, AITestPositionID.PROJECTILE_TARGET_2);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame(); //wait for destination position to update
+            aiDestination = mouseTestAIManager.GetAgent().destination;
+            Assert.IsTrue(targetZoneCollider.bounds.Contains(aiDestination), "AI Destination should contains the target zone the second hit.");
+        }
+
+
+        [UnityTest]
+        public IEnumerator AI_ProjectileRecevied_NoInteruptionByAttractive_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
+            projectileData.Init(99999f, 90f, 30f);
+            yield return null;
+            this.SpawnProjectile(projectileData, mouseTestAIManager.transform.position);
+            yield return new WaitForFixedUpdate();
             this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.IsTrue(mouseAIBheavior.IsEscaping());
+        }
+
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_Nominal_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            float attractiveObjectEffectiveTime = .1f;
+            attractiveObjectInherentConfigurationData.Init(999999f, attractiveObjectEffectiveTime);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            var attractiveObjectType = this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been attracted, no more patrolling.");
             Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is being attracted.");
+            yield return new WaitForSeconds(attractiveObjectEffectiveTime);
+            Assert.IsNull(attractiveObjectType);
         }
 
         [UnityTest]
         public IEnumerator AI_AttractiveObject_DisruptedByProjectile_Test()
         {
-            yield return this.Before();
-            var gameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
             var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
             attractiveObjectInherentConfigurationData.Init(999999f, 99f);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
-            this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            var attractiveObjectType = this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
             Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is being attracted.");
-            this.SpawnProjectile(gameConfigurationManager.ProjectileConf()[LaunchProjectileId.PROJECTILE_TEST], mouseTestAIManager.transform.position);
+            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
+            projectileData.Init(99999f, 90f, 30f);
+            this.SpawnProjectile(projectileData, mouseTestAIManager.transform.position);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "A projectile has hit the AI. Abort attract.");
+        }
+
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_WithSmallRange_NoInfluence_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            attractiveObjectInherentConfigurationData.Init(0.001f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            var attractiveObjectType = this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is too far from attractive object zone.");
+        }
+
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_WhenEnterInRange_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            attractiveObjectInherentConfigurationData.Init(0.1f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            var attractiveObjectType = this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is too far from attractive object zone.");
+            attractiveObjectType.transform.position = mouseTestAIManager.transform.position;
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI has entered the attractive object zone.");
         }
 
         private LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, AITestPositionID projectilePoistion)
@@ -114,10 +192,15 @@ namespace Tests
             return launchProjectile;
         }
 
-        private void SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AITestPositionID aITestPositionID)
+        private AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AITestPositionID aITestPositionID)
         {
             var attractiveObjectSpawnPosition = GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform.position;
-            var attractiveObject = AttractiveObjectType.Instanciate(attractiveObjectSpawnPosition, null, attractiveObjectInherentConfigurationData);
+            return AttractiveObjectType.Instanciate(attractiveObjectSpawnPosition, null, attractiveObjectInherentConfigurationData);
+        }
+
+        private TargetZone FindTargetZone(TargetZoneID targetZoneID)
+        {
+            return GameObject.FindObjectsOfType<TargetZone>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();
         }
 
     }

@@ -33,6 +33,7 @@ namespace RTPuzzle
 
         public void OnAttracteObjectCreated(AttractiveObjectType attractiveObjectType)
         {
+            Debug.Log("Attractive object created");
             AttractiveObjectsContainer.AddAttractiveObject(attractiveObjectType);
         }
         #endregion

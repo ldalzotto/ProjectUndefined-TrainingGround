@@ -1,5 +1,4 @@
 ﻿using ConfigurationEditor;
-using CoreGame;
 using UnityEngine;
 
 
@@ -17,13 +16,20 @@ namespace RTPuzzle
 
         [SerializeField]
         private float travelDistancePerSeconds;
-        
+
         [DictionaryEnumSearch]
         public float EffectRange { get => effectRange; }
         [DictionaryEnumSearch]
         public float EscapeSemiAngle { get => escapeSemiAngle; }
         [DictionaryEnumSearch]
         public float TravelDistancePerSeconds { get => travelDistancePerSeconds; }
+
+        public void Init(float effectRange, float escapeSemiAngle, float travelDistancePerSeconds)
+        {
+            this.effectRange = effectRange;
+            this.escapeSemiAngle = escapeSemiAngle;
+            this.travelDistancePerSeconds = travelDistancePerSeconds;
+        }
 
         #region Debug purposes
         public void SetTravelDistanceDebug(float value)
