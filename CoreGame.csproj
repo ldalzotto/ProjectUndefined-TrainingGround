@@ -125,6 +125,7 @@
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Water\WaterFoam.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
+    <None Include="Assets\_Shader\Common\VertexSurfaceTransparentUnlit.shader" />
     <None Include="Assets\_Shader\Water\WaterShader.shader" />
     <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
     <None Include="Assets\_Shader\Water\WaterWaveMovement.cginc" />
@@ -142,6 +143,7 @@
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
     <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />
+    <None Include="Assets\_Shader\Common\VertexSurfaceTransparent.shader" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
