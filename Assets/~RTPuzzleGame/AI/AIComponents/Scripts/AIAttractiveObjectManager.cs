@@ -26,7 +26,7 @@ namespace RTPuzzle
         #endregion
         private AttractiveObjectType involvedAttractiveObject;
         private Vector3? attractionPosition;
-        
+
         public Vector3? TickComponent()
         {
             if (isAttracted)
@@ -81,7 +81,11 @@ namespace RTPuzzle
         }
         public bool IsInfluencedByAttractiveObject()
         {
-            return this.isAttracted || (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
+            return this.isAttracted || this.HasSensedThePresenceOfAnAttractiveObject();
+        }
+        public bool HasSensedThePresenceOfAnAttractiveObject()
+        {
+            return (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
         }
         #endregion
 

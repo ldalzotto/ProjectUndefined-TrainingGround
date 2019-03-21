@@ -199,7 +199,8 @@ namespace RTPuzzle
 
         public override void OnDestinationReached()
         {
-            this.OnDestinationReached(true, true, true);
+            bool resetAttractiveObjectComponent = !this.AIAttractiveObjectComponent.HasSensedThePresenceOfAnAttractiveObject(); //reset only if attractive object
+            this.OnDestinationReached(true, true, resetAttractiveObjectComponent);
         }
 
         #region State Retrieval

@@ -179,6 +179,26 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI has entered the attractive object zone.");
         }
 
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_WhenDestinationReached_AndObjectStillUp_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            var attractiveObjectType = this.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
+            mouseTestAIManager.GetAgent().Warp(mouseTestAIManager.GetAgent().destination);
+            yield return null;
+            yield return new WaitForEndOfFrame();
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must still be attracted by object at the end of frame.");
+            Assert.AreEqual(attractiveObjectType.transform.position.x, mouseTestAIManager.GetAgent().destination.x, "The AI must have the target position to the attractive object.");
+            Assert.AreEqual(attractiveObjectType.transform.position.z, mouseTestAIManager.GetAgent().destination.z, "The AI must have the target position to the attractive object.");
+        }
+
         private LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, AITestPositionID projectilePoistion)
         {
             var projectilePosition = GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == projectilePoistion).First().transform.position;
