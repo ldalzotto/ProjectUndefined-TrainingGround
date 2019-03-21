@@ -169,8 +169,7 @@ namespace RTPuzzle
         {
             this.ContextMarkVisualFeedbackManager.OnGameOver();
         }
-
-
+        
         internal void OnAIFearedStunnedEnded()
         {
             this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
@@ -181,9 +180,12 @@ namespace RTPuzzle
             this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
 
+        internal void OnAISetAttractedObject()
+        {
+            this.ContextMarkVisualFeedbackManager.OnAISetAttractedObject();
+        }
         public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
         {
-
             this.PuzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }
         public void OnDestinationReached()
@@ -322,6 +324,14 @@ namespace RTPuzzle
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.ExclamationMarkDouble, this.mainCanvas.transform);
+            this.destroyCoroutine = Coroutiner.Instance.StartCoroutine(this.DestroyMarkAfter1Second());
+        }
+
+        internal void OnAISetAttractedObject()
+        {
+            ReInitBeforeSpawningMark();
+            this.isVisualMarkDisplayed = true;
+            this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.LoveCheese, this.mainCanvas.transform);
             this.destroyCoroutine = Coroutiner.Instance.StartCoroutine(this.DestroyMarkAfter1Second());
         }
 

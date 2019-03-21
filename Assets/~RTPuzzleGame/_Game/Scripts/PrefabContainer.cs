@@ -28,6 +28,7 @@ namespace RTPuzzle {
         [Header("AI Mark Feedback Prefabs")]
         public GameObject ExclamationMarkSimple;
         public GameObject ExclamationMarkDouble;
+        public GameObject LoveCheese;
 
         [Header("Visual Feedback")]
         public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;

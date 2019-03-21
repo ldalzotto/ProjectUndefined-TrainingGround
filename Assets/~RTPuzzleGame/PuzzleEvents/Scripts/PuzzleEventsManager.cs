@@ -56,6 +56,11 @@ namespace RTPuzzle
         {
             this.GroundEffectsManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
         }
+        public void OnAISetAttractedObject(AttractiveObjectType attractiveObject, AiID aiID)
+        {
+            Debug.Log("OnAISetAttractedObject", this.gameObject);
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAISetAttractedObject();
+        }
         internal void OnAttractiveObjectActionEnd()
         {
             this.GroundEffectsManager.OnAttractiveObjectActionEnd();

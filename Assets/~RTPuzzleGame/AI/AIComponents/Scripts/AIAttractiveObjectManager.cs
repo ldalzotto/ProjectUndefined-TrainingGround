@@ -7,11 +7,18 @@ namespace RTPuzzle
     public class AIAttractiveObjectManager
     {
 
-        private NavMeshAgent selfAgent;
+        #region External Events
+        private PuzzleEventsManager PuzzleEventsManager;
+        #endregion
 
-        public AIAttractiveObjectManager(NavMeshAgent selfAgent)
+        private NavMeshAgent selfAgent;
+        private AiID aiID;
+
+        public AIAttractiveObjectManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager puzzleEventsManager)
         {
             this.selfAgent = selfAgent;
+            this.aiID = aiID;
+            this.PuzzleEventsManager = puzzleEventsManager;
         }
 
         #region State
@@ -47,6 +54,7 @@ namespace RTPuzzle
             this.isAttracted = true;
             this.attractionPosition = collisionType.transform.position;
             this.involvedAttractiveObject = AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType);
+            this.PuzzleEventsManager.OnAISetAttractedObject(this.involvedAttractiveObject, this.aiID);
         }
 
         internal void OnTriggerExit(Collider collider, CollisionType collisionType)
