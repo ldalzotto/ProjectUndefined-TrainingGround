@@ -79,6 +79,7 @@
     <Compile Include="Assets\~CoreGame\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
     <Compile Include="Assets\~CoreGame\AI\NavMeshRayCaster.cs" />
     <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />

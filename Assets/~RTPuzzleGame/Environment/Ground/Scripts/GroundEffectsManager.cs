@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -39,7 +40,7 @@ namespace RTPuzzle
             this.GroundEffectsCommandBufferManager = new GroundEffectsCommandBufferManager(camera);
 
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
-            ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent);
+            ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent, this);
             AttractiveObjectRangeManager = new AttractiveObjectRangeManager(AttractiveObjectRangeManagerComponent);
 
             AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
@@ -53,8 +54,9 @@ namespace RTPuzzle
         {
             ThrowRangeEffectManager.Tick(d);
             ThrowCursorRangeEffectManager.Tick(d);
+            AttractiveObjectRangeManager.Tick(d);
         }
-        
+
 
         #region External Events
         internal void OnProjectileThrowedEvent()
@@ -99,10 +101,7 @@ namespace RTPuzzle
             AttractiveObjectRangeManager.OnAttractiveObjectActionEnd();
             OnCommandBufferUpdate();
         }
-        #endregion
-
-        #region Internal Events
-        private void OnCommandBufferUpdate()
+        internal void OnCommandBufferUpdate()
         {
             GroundEffectsCommandBufferManager.ClearCommandBuffer();
             ThrowRangeEffectManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
@@ -142,9 +141,9 @@ namespace RTPuzzle
     {
         private GroundEffectsManagerComponent GroundEffectsManagerComponent;
 
+
         private bool throwRangeEnabled;
-        private float currentRange;
-        private float maxRange;
+        private FloatAnimation rangeAnimation;
         private Transform throwerTransformRef;
 
         public bool ThrowRangeEnabled { get => throwRangeEnabled; }
@@ -152,23 +151,22 @@ namespace RTPuzzle
         public ThrowRangeEffectManager(GroundEffectsManagerComponent rTPuzzleGroundEffectsManagerComponent)
         {
             GroundEffectsManagerComponent = rTPuzzleGroundEffectsManagerComponent;
+
         }
 
         public void Tick(float d)
         {
             if (throwRangeEnabled)
             {
-                currentRange += (d * GroundEffectsManagerComponent.RangeExpandSpeed);
-                currentRange = Mathf.Min(currentRange, maxRange);
-                GroundEffectsManagerComponent.RangeEffectMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, currentRange);
+                this.rangeAnimation.Tick(d);
+                GroundEffectsManagerComponent.RangeEffectMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, this.rangeAnimation.CurrentValue);
                 GroundEffectsManagerComponent.RangeEffectMaterial.SetVector(GroundEffectsManager.AURA_CENTER_MATERIAL_PROPERTY, throwerTransformRef.position);
             }
         }
 
         public void OnThrowProjectileActionStart(Transform throwerTransform, float maxRange)
         {
-            this.maxRange = maxRange;
-            this.currentRange = 0f;
+            this.rangeAnimation = new FloatAnimation(maxRange, GroundEffectsManagerComponent.RangeExpandSpeed, 0f);
             throwerTransformRef = throwerTransform;
             throwRangeEnabled = true;
         }
@@ -204,15 +202,17 @@ namespace RTPuzzle
     {
 
         private ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
+        private GroundEffectsManager GroundEffectsManagerRef;
 
-        public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent)
+        public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent, GroundEffectsManager GroundEffectsManagerRef)
         {
             ThrowCursorRangeEffectManagerComponent = throwCursorRangeEffectManagerComponent;
+            this.GroundEffectsManagerRef = GroundEffectsManagerRef;
         }
 
         private Func<Nullable<Vector3>> cursorPositionRetriever;
-        private float projectileRange;
 
+        private FloatAnimation rangeAnimation;
         private bool throwRangeEnabled;
 
         public bool ThrowRangeEnabled { get => throwRangeEnabled; }
@@ -221,16 +221,17 @@ namespace RTPuzzle
         {
             if (throwRangeEnabled)
             {
+                this.rangeAnimation.Tick(d);
                 var currentCursorPosition = cursorPositionRetriever.Invoke();
                 if (currentCursorPosition.HasValue)
                 {
-                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, projectileRange);
+                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, this.rangeAnimation.CurrentValue);
                     ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetVector("_CenterWorldPosition", currentCursorPosition.Value);
                 }
                 else
                 {
-                    //TODO set event to update the command buffer instead of setting a radius of 0f
-                    ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, 0f);
+                    this.throwRangeEnabled = false;
+                    this.GroundEffectsManagerRef.OnCommandBufferUpdate();
                 }
             }
         }
@@ -238,7 +239,7 @@ namespace RTPuzzle
         public void OnThrowProjectileActionStart(Func<Nullable<Vector3>> cursorPositionRetriever, float projectileRange)
         {
             this.cursorPositionRetriever = cursorPositionRetriever;
-            this.projectileRange = projectileRange;
+            this.rangeAnimation = new FloatAnimation(projectileRange, ThrowCursorRangeEffectManagerComponent.RangeExpandSpeed, 0f);
             throwRangeEnabled = true;
         }
 
@@ -287,6 +288,7 @@ namespace RTPuzzle
         public Color CursorOnRangeAuraColor;
         [ColorUsage(true, true)]
         public Color CursorOutOfRangeAuraColor;
+        public float RangeExpandSpeed;
     }
     #endregion
 
@@ -295,6 +297,8 @@ namespace RTPuzzle
     class AttractiveObjectRangeManager
     {
         private AttractiveObjectRangeManagerComponent attractiveObjectRangeManagerComponent;
+        private FloatAnimation rangeAnimation;
+        private Transform playerTransform;
 
         public AttractiveObjectRangeManager(AttractiveObjectRangeManagerComponent attractiveObjectRangeManagerComponent)
         {
@@ -315,11 +319,22 @@ namespace RTPuzzle
             }
         }
 
+        public void Tick(float d)
+        {
+            if (isAttractiveObjectRangeEnabled)
+            {
+                this.rangeAnimation.Tick(d);
+                this.attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial.SetVector(GroundEffectsManager.AURA_CENTER_MATERIAL_PROPERTY, playerTransform.transform.position);
+                this.attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, this.rangeAnimation.CurrentValue);
+            }
+        }
+
         internal void OnAttractiveObjectActionStart(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
         {
+            this.rangeAnimation = new FloatAnimation(attractiveObjectConfigurationData.EffectRange, attractiveObjectRangeManagerComponent.RangeAnimationSpeed, 0f);
             this.isAttractiveObjectRangeEnabled = true;
-            this.attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial.SetVector(GroundEffectsManager.AURA_CENTER_MATERIAL_PROPERTY, playerTransform.transform.position);
-            this.attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial.SetFloat(GroundEffectsManager.AURA_RADIUS_MATERIAL_PROPERTY, attractiveObjectConfigurationData.EffectRange);
+            this.playerTransform = playerTransform;
+            this.Tick(0);
         }
 
         internal void OnAttractiveObjectActionEnd()
@@ -332,6 +347,8 @@ namespace RTPuzzle
     public class AttractiveObjectRangeManagerComponent
     {
         public Material AttractiveObjectRangeMaterial;
+
+        public float RangeAnimationSpeed;
     }
     #endregion
 }
