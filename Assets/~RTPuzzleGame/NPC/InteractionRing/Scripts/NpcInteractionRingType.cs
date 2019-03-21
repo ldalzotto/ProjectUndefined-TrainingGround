@@ -4,6 +4,10 @@ namespace RTPuzzle
 {
     public class NpcInteractionRingType : MonoBehaviour
     {
+
+        public Color AvailableColor;
+        public Color UnavailableColor;
+
         private Texture2D ringTexture;
 
         public Texture2D RingTexture { get => ringTexture; }

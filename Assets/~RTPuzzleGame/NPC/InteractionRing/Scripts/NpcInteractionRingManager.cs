@@ -30,30 +30,43 @@ namespace RTPuzzle
             NpcInteractionRingType.Init();
         }
 
-        public void Tick(float d)
-        {
-            NpcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
-        }
-
+        #region External Events
         public void OnFOVChanged(FOV newFOV)
         {
 
             var colors = NpcInteractionRingType.RingTexture.GetPixels();
             for (var i = 0; i < colors.Length; i++)
             {
-                colors[i] = Color.red;
+                colors[i] = NpcInteractionRingType.UnavailableColor;
             }
 
             foreach (var fovSlice in newFOV.FovSlices)
             {
                 ComputeColorsPixel(fovSlice.BeginAngleIncluded, fovSlice.EndAngleExcluded, ref colors);
-  
+
             }
             NpcInteractionRingType.RingTexture.SetPixels(colors);
             NpcInteractionRingType.RingTexture.Apply(false);
-           // Debug.Log("It has changed : " + newFOV.ToString());
-        }
 
+            //display or hide ring
+            if(newFOV.GetSumOfAvailableAngleDeg() < 360f)
+            {
+                this.NpcInteractionRingType.gameObject.SetActive(true);
+            }
+            else
+            {
+                this.NpcInteractionRingType.gameObject.SetActive(false);
+            }
+
+            // Debug.Log("It has changed : " + newFOV.ToString());
+        }
+        #endregion
+
+        public void Tick(float d)
+        {
+            NpcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
+        }
+        
         private void ComputeColorsPixel(float beginAngle, float endAngle, ref Color[] colors)
         {
             var beginAngleInt = Mathf.RoundToInt(beginAngle);
@@ -61,7 +74,7 @@ namespace RTPuzzle
 
             for (var i = beginAngleInt; i < endAngleInt; i++)
             {
-                colors[i] = Color.green;
+                colors[i] = NpcInteractionRingType.AvailableColor;
             }
         }
 

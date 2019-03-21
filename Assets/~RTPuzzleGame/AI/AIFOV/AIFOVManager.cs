@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -323,6 +324,11 @@ namespace RTPuzzle
             {
                 this.onFOVChange.Invoke(this);
             }
+        }
+
+        public float GetSumOfAvailableAngleDeg()
+        {
+            return fovSlices.ConvertAll((FOVSlice slice) => slice.AngleDiffNotSigned()).Sum();
         }
 
         public override string ToString()
