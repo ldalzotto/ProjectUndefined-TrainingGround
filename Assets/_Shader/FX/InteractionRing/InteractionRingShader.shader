@@ -3,13 +3,15 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+		_Alpha("Alpha", Float) = 1.0
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Transparent" }
 
         Pass
         {
+			Blend OneMinusDstColor One // Soft Additive
 			ZWrite Off
 			ZTest Always
             CGPROGRAM
@@ -32,6 +34,7 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+			float _Alpha;
 
             v2f vert (appdata v)
             {
@@ -44,6 +47,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
+				col.w = _Alpha;
                 return col;
             }
             ENDCG

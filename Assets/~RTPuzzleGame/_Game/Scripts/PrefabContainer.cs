@@ -19,7 +19,7 @@ namespace RTPuzzle {
         public AttractiveObjectType AttractiveObjectPrefab;
 
         [Header("NPC prefabs")]
-        public RTPuzzle.NpcInteractionRingType NpcInteractionRingPrefab;
+        public NpcInteractionRingType NpcInteractionRingPrefab;
 
         [Header("Cooldown Feed Prefabs")]
         public CooldownFeedManager CooldownFeedManager;

@@ -9,6 +9,7 @@ namespace RTPuzzle
 
         #region External Renferences
         private NPCAIManager npcAiManagerRef;
+        private NpcInteractionRingContainer NpcInteractionRingContainer;
         #endregion
 
         private NpcInteractionRingType NpcInteractionRingType;
@@ -20,6 +21,10 @@ namespace RTPuzzle
 
         public NpcInteractionRingManager(NPCAIManager npcAiManagerRef)
         {
+            #region External Dependencies
+            this.NpcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
+            #endregion
+
             ComputePositionOffset(npcAiManagerRef);
 
             this.npcAiManagerRef = npcAiManagerRef;
@@ -28,6 +33,7 @@ namespace RTPuzzle
             NpcInteractionRingType = GameObject.Instantiate(PrefabContainer.Instance.NpcInteractionRingPrefab, npcInteractionRingContainer.transform);
             NpcInteractionRingType.transform.rotation = Quaternion.Euler(Vector3.forward);
             NpcInteractionRingType.Init();
+            this.NpcInteractionRingContainer.OnNpcInteractionRingCreated(NpcInteractionRingType);
         }
 
         #region External Events
@@ -51,11 +57,11 @@ namespace RTPuzzle
             //display or hide ring
             if(newFOV.GetSumOfAvailableAngleDeg() < 360f)
             {
-                this.NpcInteractionRingType.gameObject.SetActive(true);
+                this.NpcInteractionRingContainer.OnNpcInteractionRingEnabled(this.NpcInteractionRingType);
             }
             else
             {
-                this.NpcInteractionRingType.gameObject.SetActive(false);
+                this.NpcInteractionRingContainer.OnNpcInteractionRingDisabled(this.NpcInteractionRingType);
             }
 
             // Debug.Log("It has changed : " + newFOV.ToString());
