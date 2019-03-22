@@ -315,7 +315,7 @@ namespace RTPuzzle
             };
         }
 
-        internal List<FOVSlice> FovSlices { get => fovSlices; }
+        public List<FOVSlice> FovSlices { get => fovSlices; }
 
         public void ReplaceFovSlices(List<FOVSlice> fovSclices)
         {

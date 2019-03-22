@@ -60,6 +60,13 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Data Retrieval
+        public FOV GetFOV()
+        {
+            return this.AIFOVManager.GetFOV();
+        }
+        #endregion
+
         public override Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
         {
             AITargetZoneComponentManager.TickComponent();

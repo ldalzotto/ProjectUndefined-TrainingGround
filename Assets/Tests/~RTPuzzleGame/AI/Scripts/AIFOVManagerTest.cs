@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using RTPuzzle;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Tests
@@ -84,6 +85,5 @@ namespace Tests
                 Assert.IsTrue((calculatedAngles[i] >= 50f && calculatedAngles[i] <= 150f) || (calculatedAngles[i] >= 200f && calculatedAngles[i] <= 250f));
             }
         }
-
     }
 }

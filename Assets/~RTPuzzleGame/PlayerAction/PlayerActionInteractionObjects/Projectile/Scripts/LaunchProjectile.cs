@@ -7,6 +7,11 @@ namespace RTPuzzle
         private ProjectileInherentData launchProjectileInherentData;
 
         public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
+        public SphereCollider SphereCollider { get => sphereCollider; }
+
+        #region Internal Dependencies
+        private SphereCollider sphereCollider;
+        #endregion
 
         private LaunchProjectileMovementManager LaunchProjectileMovementManager;
         private SphereCollisionManager SphereCollisionManager;
@@ -15,12 +20,13 @@ namespace RTPuzzle
         private LaunchProjectileEventManager LaunchProjectileEventManager;
         #endregion
 
-        public static LaunchProjectile Instantiate(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Canvas parentCanvas)
+        public static LaunchProjectile Instantiate(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform)
         {
-            var launchProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, parentCanvas.transform);
+            var launchProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, parentTransform);
             launchProjectile.Init(LaunchProjectileInherentData, ProjectilePath);
             return launchProjectile;
         }
+       
 
         public void Init(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
         {
@@ -30,7 +36,7 @@ namespace RTPuzzle
             #endregion
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
-            var sphereCollider = GetComponent<SphereCollider>();
+            this.sphereCollider = GetComponent<SphereCollider>();
             //    sphereCollider.radius = 1f;// this.launchProjectileInherentData.EffectRange;
             this.transform.position = ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = ProjectilePath.Clone();

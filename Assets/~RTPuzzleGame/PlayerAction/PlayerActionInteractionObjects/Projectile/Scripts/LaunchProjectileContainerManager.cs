@@ -26,7 +26,6 @@ namespace RTPuzzle
         public void OnLaunchProjectileSpawn(LaunchProjectile launchProjectile)
         {
             currentProjectiles.Add(launchProjectile);
-            launchProjectile.transform.parent = transform;
         }
 
         internal void OnProjectileGroundTriggerEnter(LaunchProjectile launchProjectile)

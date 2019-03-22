@@ -81,7 +81,7 @@ namespace RTPuzzle
 
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
-            var escapeDirection = (escapingAgent.transform.position - collider.bounds.center).normalized;
+            var escapeDirection = (escapingAgent.transform.position - collider.transform.position/*.bounds.center*/).normalized;
             escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
             isEscapingFromProjectile = true;
         }
