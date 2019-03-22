@@ -115,7 +115,6 @@
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\RegexObjects.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
-    <Compile Include="Assets\Test\CommandBufferTest\BufferTransparencyInteractionRing\CommandBufferTransTest.cs" />
     <Compile Include="Assets\Test\CommandBufferTest\WriteToBuffer\BufferWriter.cs" />
     <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
