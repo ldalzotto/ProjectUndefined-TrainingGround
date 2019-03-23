@@ -26,9 +26,9 @@ namespace RTPuzzle {
         public CooldownFeedLineType CooldownFeedLineType;
 
         [Header("AI Mark Feedback Prefabs")]
-        public GameObject ExclamationMarkSimple;
-        public GameObject ExclamationMarkDouble;
-        public GameObject LoveCheese;
+        public AIFeedbackMarkType ExclamationMarkSimple;
+        public AIFeedbackMarkType ExclamationMarkDouble;
+        public AIFeedbackMarkType LoveCheese;
 
         [Header("Visual Feedback")]
         public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;

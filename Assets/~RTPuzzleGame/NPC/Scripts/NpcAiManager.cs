@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
@@ -33,6 +31,7 @@ namespace RTPuzzle
         #endregion
 
         public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
+        public ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent;
 
         private NPCAIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
@@ -68,10 +67,10 @@ namespace RTPuzzle
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
             PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, camera, canvas);
+            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, camera, canvas, NpcFOVRingManager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
         }
-        
+
         public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)
         {
             this.ComputeAINewDestination(d, timeAttenuationFactor);
@@ -95,7 +94,7 @@ namespace RTPuzzle
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
         }
-        
+
         public void OnTriggerEnter(Collider other)
         {
             PuzzleAIBehavior.OnTriggerEnter(other);
@@ -142,7 +141,7 @@ namespace RTPuzzle
         {
             AIDestinationMoveManager.SetDestination(destination);
         }
-        
+
         public void EnableAgent()
         {
             AIDestinationMoveManager.EnableAgent();
@@ -172,7 +171,7 @@ namespace RTPuzzle
         {
             this.ContextMarkVisualFeedbackManager.OnGameOver();
         }
-        
+
         internal void OnAIFearedStunnedEnded()
         {
             this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
@@ -199,7 +198,7 @@ namespace RTPuzzle
         {
             PuzzleAIBehavior.OnDestinationReached();
             // empty tick to immediately choose the next position
-            this.ComputeAINewDestination(0,0);
+            this.ComputeAINewDestination(0, 0);
         }
         #endregion
 
@@ -270,38 +269,51 @@ namespace RTPuzzle
 
     }
 
+    [System.Serializable]
+    public class ContextMarkVisualFeedbackManagerComponent
+    {
+        public float YOffsetWhenInteractionRingIsDisplayed;
+    }
+
     class ContextMarkVisualFeedbackManager
     {
 
+        private ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent;
+
+        #region External Dependencies
         private NPCAIManager NPCAIManagerRef;
         private Camera camera;
         private Canvas mainCanvas;
+        private NpcInteractionRingManager NpcInteractionRingManager;
+        #endregion
 
-        public ContextMarkVisualFeedbackManager(NPCAIManager NPCAIManagerRef, Camera camera, Canvas mainCanvas)
+        public ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent,
+            NPCAIManager NPCAIManagerRef, Camera camera, Canvas mainCanvas, NpcInteractionRingManager npcFOVRingManager)
         {
+            this.ContextMarkVisualFeedbackManagerComponent = ContextMarkVisualFeedbackManagerComponent;
             this.NPCAIManagerRef = NPCAIManagerRef;
             this.camera = camera;
             this.isVisualMarkDisplayed = false;
             this.visualFeedbackMark = null;
             this.mainCanvas = mainCanvas;
+            this.NpcInteractionRingManager = npcFOVRingManager;
         }
 
         private bool isVisualMarkDisplayed;
-        private GameObject visualFeedbackMark;
+        private AIFeedbackMarkType visualFeedbackMark;
 
         public void Tick(float d)
         {
             if (this.isVisualMarkDisplayed)
             {
-                this.visualFeedbackMark.transform.position = camera.WorldToScreenPoint(this.NPCAIManagerRef.transform.position + this.NPCAIManagerRef.GetInteractionRingOffset());
+                var visualMarkPosition = this.NPCAIManagerRef.transform.position + this.NPCAIManagerRef.GetInteractionRingOffset();
+                if (this.NpcInteractionRingManager.IsRingEnabled())
+                {
+                    visualMarkPosition.y += this.ContextMarkVisualFeedbackManagerComponent.YOffsetWhenInteractionRingIsDisplayed;
+                }
+                this.visualFeedbackMark.transform.position = visualMarkPosition;
+                this.visualFeedbackMark.Tick(d);
             }
-        }
-
-        private IEnumerator DestroyMarkAfter1Second()
-        {
-            yield return new WaitForSeconds(1f);
-            MonoBehaviour.Destroy(this.visualFeedbackMark);
-            this.isVisualMarkDisplayed = false;
         }
 
         private void ReInitBeforeSpawningMark()
@@ -309,7 +321,7 @@ namespace RTPuzzle
             this.isVisualMarkDisplayed = false;
             if (this.visualFeedbackMark != null)
             {
-                MonoBehaviour.Destroy(this.visualFeedbackMark);
+                MonoBehaviour.Destroy(this.visualFeedbackMark.gameObject);
             }
         }
 
@@ -317,14 +329,14 @@ namespace RTPuzzle
         {
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
-            this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.ExclamationMarkSimple, this.mainCanvas.transform);
+            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.ExclamationMarkSimple, this.NPCAIManagerRef.transform);
         }
 
         internal void OnHittedByProjectile2InARow()
         {
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
-            this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.ExclamationMarkDouble, this.mainCanvas.transform);
+            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.ExclamationMarkDouble, this.NPCAIManagerRef.transform);
         }
 
         internal void OnAiAffectedByProjectileEnd()
@@ -336,7 +348,7 @@ namespace RTPuzzle
         {
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
-            this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.LoveCheese, this.mainCanvas.transform);
+            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.LoveCheese, this.NPCAIManagerRef.transform);
         }
 
         internal void OnAIAttractedEnd()

@@ -12,11 +12,22 @@ namespace RTPuzzle
         private NpcInteractionRingContainer NpcInteractionRingContainer;
         #endregion
 
-        private NpcInteractionRingType NpcInteractionRingType;
+        private NpcInteractionRingType npcInteractionRingType;
         private Vector3 ringPositionOffset;
 
         #region Data Retrieval
         public Vector3 RingPositionOffset { get => ringPositionOffset; }
+        public Bounds GetRingBound()
+        {
+            return this.npcInteractionRingType.GetBoundingRect();
+        }
+        #endregion
+
+        #region Logical Conditions
+        public bool IsRingEnabled()
+        {
+            return this.npcInteractionRingType.IsActive();
+        }
         #endregion
 
         public NpcInteractionRingManager(NPCAIManager npcAiManagerRef)
@@ -30,20 +41,20 @@ namespace RTPuzzle
             this.npcAiManagerRef = npcAiManagerRef;
             var npcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
 
-            NpcInteractionRingType = GameObject.Instantiate(PrefabContainer.Instance.NpcInteractionRingPrefab, npcInteractionRingContainer.transform);
-            NpcInteractionRingType.transform.rotation = Quaternion.Euler(Vector3.forward);
-            NpcInteractionRingType.Init();
-            this.NpcInteractionRingContainer.OnNpcInteractionRingCreated(NpcInteractionRingType);
+            npcInteractionRingType = GameObject.Instantiate(PrefabContainer.Instance.NpcInteractionRingPrefab, npcInteractionRingContainer.transform);
+            npcInteractionRingType.transform.rotation = Quaternion.Euler(Vector3.forward);
+            npcInteractionRingType.Init();
+            this.NpcInteractionRingContainer.OnNpcInteractionRingCreated(npcInteractionRingType);
         }
 
         #region External Events
         public void OnFOVChanged(FOV newFOV)
         {
 
-            var colors = NpcInteractionRingType.RingTexture.GetPixels();
+            var colors = npcInteractionRingType.RingTexture.GetPixels();
             for (var i = 0; i < colors.Length; i++)
             {
-                colors[i] = NpcInteractionRingType.UnavailableColor;
+                colors[i] = npcInteractionRingType.UnavailableColor;
             }
 
             foreach (var fovSlice in newFOV.FovSlices)
@@ -51,17 +62,17 @@ namespace RTPuzzle
                 ComputeColorsPixel(fovSlice.BeginAngleIncluded, fovSlice.EndAngleExcluded, ref colors);
 
             }
-            NpcInteractionRingType.RingTexture.SetPixels(colors);
-            NpcInteractionRingType.RingTexture.Apply(false);
+            npcInteractionRingType.RingTexture.SetPixels(colors);
+            npcInteractionRingType.RingTexture.Apply(false);
 
             //display or hide ring
             if(newFOV.GetSumOfAvailableAngleDeg() < 360f)
             {
-                this.NpcInteractionRingContainer.OnNpcInteractionRingEnabled(this.NpcInteractionRingType);
+                this.NpcInteractionRingContainer.OnNpcInteractionRingEnabled(this.npcInteractionRingType);
             }
             else
             {
-                this.NpcInteractionRingContainer.OnNpcInteractionRingDisabled(this.NpcInteractionRingType);
+                this.NpcInteractionRingContainer.OnNpcInteractionRingDisabled(this.npcInteractionRingType);
             }
 
             // Debug.Log("It has changed : " + newFOV.ToString());
@@ -70,7 +81,7 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            NpcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
+            npcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
         }
         
         private void ComputeColorsPixel(float beginAngle, float endAngle, ref Color[] colors)
@@ -80,7 +91,7 @@ namespace RTPuzzle
 
             for (var i = beginAngleInt; i < endAngleInt; i++)
             {
-                colors[i] = NpcInteractionRingType.AvailableColor;
+                colors[i] = npcInteractionRingType.AvailableColor;
             }
         }
 

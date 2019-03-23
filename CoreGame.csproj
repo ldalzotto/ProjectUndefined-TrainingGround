@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_PassEditor.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
@@ -127,9 +128,9 @@
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Water\WaterFoam.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
-    <None Include="Assets\_Shader\Common\VertexSurfaceTransparentUnlit.shader" />
     <None Include="Assets\_Shader\Water\WaterShader.shader" />
     <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
+    <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\_Shader\Water\WaterWaveMovement.cginc" />
     <None Include="Assets\_Shader\Common\VertexSurface.shader" />
     <None Include="Assets\Test\WallSatter\WallShatterShader.shader" />

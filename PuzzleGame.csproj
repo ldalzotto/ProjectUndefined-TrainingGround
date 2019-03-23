@@ -131,6 +131,8 @@
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackMarkType.cs" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.3.9f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

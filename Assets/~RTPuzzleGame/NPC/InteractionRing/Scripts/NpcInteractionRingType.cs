@@ -12,9 +12,22 @@ namespace RTPuzzle
         private MeshRenderer meshRenderer;
         private MeshFilter meshFilter;
 
+        #region Data Retrieval
         public Texture2D RingTexture { get => ringTexture; }
         public MeshRenderer MeshRenderer { get => meshRenderer; }
         public MeshFilter MeshFilter { get => meshFilter; }
+        public Bounds GetBoundingRect()
+        {
+            return this.meshRenderer.bounds;
+        }
+        #endregion
+
+        #region Logical Conditions
+        public bool IsActive()
+        {
+            return this.gameObject.activeSelf;
+        }
+        #endregion
 
         public void Init()
         {
