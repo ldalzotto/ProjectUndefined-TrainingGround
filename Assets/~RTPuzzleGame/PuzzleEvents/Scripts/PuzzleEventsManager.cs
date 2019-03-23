@@ -24,22 +24,6 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Projectile Events
-
-        public virtual void OnAiHittedByProjectile(AiID aiID, int timesInARow)
-        {
-            if (timesInARow == 1)
-            {
-                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
-            }
-            else
-            {
-                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectile2InARow();
-            }
-        }
-
-        #endregion
-
         #region Fear Events
         public void OnAIFearedStunned(AiID aiID)
         {
@@ -56,10 +40,14 @@ namespace RTPuzzle
         {
             this.GroundEffectsManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
         }
-        public void OnAISetAttractedObject(AttractiveObjectType attractiveObject, AiID aiID)
+
+        public void OnAIAttractedStart(AttractiveObjectType attractiveObject, AiID aiID)
         {
-            Debug.Log("OnAISetAttractedObject", this.gameObject);
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAISetAttractedObject();
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart();
+        }
+        internal void OnAIAttractedEnd(AttractiveObjectType involvedAttractiveObject, AiID aiID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
         }
         internal void OnAttractiveObjectActionEnd()
         {
@@ -98,7 +86,25 @@ namespace RTPuzzle
         {
             GroundEffectsManager.OnProjectileThrowedEvent();
         }
+        #endregion
+        
+        #region AI Projectile event
+        public virtual void OnAiHittedByProjectile(AiID aiID, int timesInARow)
+        {
+            if (timesInARow == 1)
+            {
+                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
+            }
+            else
+            {
+                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectile2InARow();
+            }
+        }
 
+        public void OnAiAffectedByProjectileEnd(AiID aiID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
+        }
         #endregion
 
         public void OnGameOver(LevelZonesID nextZone)

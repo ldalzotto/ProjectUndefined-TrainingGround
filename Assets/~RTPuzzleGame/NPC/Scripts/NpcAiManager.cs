@@ -71,7 +71,7 @@ namespace RTPuzzle
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, camera, canvas);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
         }
-
+        
         public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)
         {
             this.ComputeAINewDestination(d, timeAttenuationFactor);
@@ -95,8 +95,7 @@ namespace RTPuzzle
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
         }
-
-
+        
         public void OnTriggerEnter(Collider other)
         {
             PuzzleAIBehavior.OnTriggerEnter(other);
@@ -164,6 +163,10 @@ namespace RTPuzzle
             this.ContextMarkVisualFeedbackManager.OnHittedByProjectile2InARow();
             this.AnimationVisualFeedbackManager.OnHittedByProjectile2InARow();
         }
+        public void OnAiAffectedByProjectileEnd()
+        {
+            this.ContextMarkVisualFeedbackManager.OnAiAffectedByProjectileEnd();
+        }
 
         internal void OnGameOver()
         {
@@ -180,9 +183,13 @@ namespace RTPuzzle
             this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
 
-        internal void OnAISetAttractedObject()
+        internal void OnAIAttractedStart()
         {
-            this.ContextMarkVisualFeedbackManager.OnAISetAttractedObject();
+            this.ContextMarkVisualFeedbackManager.OnAIAttractedStart();
+        }
+        internal void OnAIAttractedEnd()
+        {
+            this.ContextMarkVisualFeedbackManager.OnAIAttractedEnd();
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
         {
@@ -281,7 +288,6 @@ namespace RTPuzzle
 
         private bool isVisualMarkDisplayed;
         private GameObject visualFeedbackMark;
-        private Coroutine destroyCoroutine;
 
         public void Tick(float d)
         {
@@ -305,10 +311,6 @@ namespace RTPuzzle
             {
                 MonoBehaviour.Destroy(this.visualFeedbackMark);
             }
-            if (this.destroyCoroutine != null)
-            {
-                Coroutiner.Instance.StopCoroutine(this.destroyCoroutine);
-            }
         }
 
         internal void OnHittedByProjectileFirstTime()
@@ -316,7 +318,6 @@ namespace RTPuzzle
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.ExclamationMarkSimple, this.mainCanvas.transform);
-            this.destroyCoroutine = Coroutiner.Instance.StartCoroutine(this.DestroyMarkAfter1Second());
         }
 
         internal void OnHittedByProjectile2InARow()
@@ -324,15 +325,23 @@ namespace RTPuzzle
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.ExclamationMarkDouble, this.mainCanvas.transform);
-            this.destroyCoroutine = Coroutiner.Instance.StartCoroutine(this.DestroyMarkAfter1Second());
         }
 
-        internal void OnAISetAttractedObject()
+        internal void OnAiAffectedByProjectileEnd()
+        {
+            ReInitBeforeSpawningMark();
+        }
+
+        internal void OnAIAttractedStart()
         {
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = MonoBehaviour.Instantiate(PrefabContainer.Instance.LoveCheese, this.mainCanvas.transform);
-            this.destroyCoroutine = Coroutiner.Instance.StartCoroutine(this.DestroyMarkAfter1Second());
+        }
+
+        internal void OnAIAttractedEnd()
+        {
+            this.ReInitBeforeSpawningMark();
         }
 
         internal void OnGameOver()

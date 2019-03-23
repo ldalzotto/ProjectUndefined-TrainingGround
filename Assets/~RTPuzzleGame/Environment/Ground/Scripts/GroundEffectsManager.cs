@@ -56,8 +56,7 @@ namespace RTPuzzle
             ThrowCursorRangeEffectManager.Tick(d);
             AttractiveObjectRangeManager.Tick(d);
         }
-
-
+        
         #region External Events
         internal void OnProjectileThrowedEvent()
         {

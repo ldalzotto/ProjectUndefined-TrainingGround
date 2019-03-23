@@ -51,10 +51,22 @@ namespace RTPuzzle
 
         private void SetAttractedObject(CollisionType collisionType)
         {
-            this.isAttracted = true;
+            this.SetIsAttracted(true);
             this.attractionPosition = collisionType.transform.position;
             this.involvedAttractiveObject = AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType);
-            this.PuzzleEventsManager.OnAISetAttractedObject(this.involvedAttractiveObject, this.aiID);
+        }
+
+        private void SetIsAttracted(bool value)
+        {
+            if (this.isAttracted && !value)
+            {
+                this.PuzzleEventsManager.OnAIAttractedEnd(this.involvedAttractiveObject, this.aiID);
+            }
+            else if (!this.isAttracted && value)
+            {
+                this.PuzzleEventsManager.OnAIAttractedStart(this.involvedAttractiveObject, this.aiID);
+            }
+            this.isAttracted = value;
         }
 
         internal void OnTriggerExit(Collider collider, CollisionType collisionType)
@@ -64,7 +76,7 @@ namespace RTPuzzle
 
         public void OnDestinationReached()
         {
-            this.isAttracted = false;
+            this.SetIsAttracted(false);
             this.involvedAttractiveObject = null;
         }
 

@@ -79,11 +79,20 @@ namespace RTPuzzle
             return escapeDestination;
         }
 
+        private void SetIsEscapingFromProjectile(bool value)
+        {
+            if(this.isEscapingFromProjectile && !value)
+            {
+                this.PuzzleEventsManager.OnAiAffectedByProjectileEnd(this.aiID);
+            }
+            this.isEscapingFromProjectile = value;
+        }
+
         public void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
             var escapeDirection = (escapingAgent.transform.position - collider.transform.position/*.bounds.center*/).normalized;
             escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
-            isEscapingFromProjectile = true;
+            this.SetIsEscapingFromProjectile(true);
         }
 
         private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
@@ -215,8 +224,7 @@ namespace RTPuzzle
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
             noTargetZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
-
-
+            
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToRaycastTarget = 0f;
             for (var i = 0; i < noTargetZonehits.Length; i++)
@@ -257,7 +265,7 @@ namespace RTPuzzle
         {
             AIFOVManager.ResetFOV();
             isEscapingFromTargetZone = false;
-            isEscapingFromProjectile = false;
+            this.SetIsEscapingFromProjectile(false);
         }
 
         public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
@@ -266,7 +274,7 @@ namespace RTPuzzle
 
         public void OnTriggerExit(Collider collider, CollisionType collisionType)
         {
-            isEscapingFromProjectile = false;
+            this.SetIsEscapingFromProjectile(false);
         }
 
         #region Gizmo
