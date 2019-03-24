@@ -5,8 +5,6 @@ namespace RTPuzzle
 {
     public class AttractiveObjectAction : RTPPlayerAction
     {
-        //public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG;
-
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
@@ -18,11 +16,9 @@ namespace RTPuzzle
         #endregion
 
         private bool isActionOver;
-        // private AttractiveObjectId AttractiveObjectId;
 
         public AttractiveObjectAction(AttractiveObjectActionInherentData attractiveObjectActionInherentData) : base(attractiveObjectActionInherentData)
         {
-            // this.AttractiveObjectId = AttractiveObjectId;
         }
 
         public override bool FinishedCondition()
@@ -47,7 +43,6 @@ namespace RTPuzzle
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerTransform());
 
             this.PuzzleEventsManager.OnAttractiveObjectActionStart(puzzleConfigurationManager.AttractiveObjectsConfiguration()[((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId], playerDataRetriever.GetPlayerTransform());
-
         }
 
         public override void GizmoTick()

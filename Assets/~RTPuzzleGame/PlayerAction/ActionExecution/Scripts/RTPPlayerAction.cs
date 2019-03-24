@@ -4,15 +4,13 @@ namespace RTPuzzle
 {
     public abstract class RTPPlayerAction
     {
-      //  public abstract SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId { get; }
-
         public abstract bool FinishedCondition();
         public abstract void Tick(float d);
         public abstract void GUITick();
         public abstract void GizmoTick();
 
         protected PlayerActionInherentData playerActionInherentData;
-      //  private float cooldownTime;
+
         private float onCooldownTimeElapsed;
 
         private CooldownEventTrackerManager CooldownEventTrackerManager;
@@ -20,7 +18,6 @@ namespace RTPuzzle
         protected RTPPlayerAction(PlayerActionInherentData playerActionInherentData)
         {
             this.playerActionInherentData = playerActionInherentData;
-           // this.cooldownTime = cooldownTime;
             //on init, it it available
             this.onCooldownTimeElapsed = this.playerActionInherentData.CoolDownTime * 2;
         }
@@ -34,7 +31,7 @@ namespace RTPuzzle
         public void CoolDownTick(float d)
         {
             onCooldownTimeElapsed += d;
-            if( !IsOnCoolDown())
+            if (!IsOnCoolDown())
             {
                 this.CooldownEventTrackerManager.Tick(this);
             }
@@ -77,7 +74,7 @@ namespace RTPuzzle
         }
 
         private bool endOfCooldownEventEmitted;
-        
+
         public void Tick(RTPPlayerAction involvedAction)
         {
             if (!this.endOfCooldownEventEmitted)

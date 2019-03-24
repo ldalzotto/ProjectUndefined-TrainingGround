@@ -78,6 +78,8 @@
     <Compile Include="Assets\~CoreGame\_FX\GenericEffects\TriggerableParticleSystemFX.cs" />
     <Compile Include="Assets\~CoreGame\_FX\SceneManagement\Scripts\FXContainerManager.cs" />
     <Compile Include="Assets\~CoreGame\_FX\Smoke\Cigarette\Scripts\ConeSmokeEffectV2.cs" />
+    <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimeline.cs" />
+    <Compile Include="Assets\~CoreGame\AbstractTimeline\TimeLineAction.cs" />
     <Compile Include="Assets\~CoreGame\AI\NavMeshRayCaster.cs" />
     <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />

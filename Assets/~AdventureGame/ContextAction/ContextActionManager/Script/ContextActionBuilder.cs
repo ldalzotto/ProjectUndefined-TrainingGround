@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -48,7 +49,7 @@ namespace AdventureGame
             }
         }
 
-        public static ScenarioAction BuildScenarioAction(AContextAction contextAction, AContextActionInput contextActionInput)
+        public static TimeLineAction BuildScenarioAction(AContextAction contextAction, AContextActionInput contextActionInput)
         {
             if (contextAction.GetType() == typeof(GrabAction))
             {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 
 namespace AdventureGame
 {
@@ -8,7 +9,7 @@ namespace AdventureGame
         void Execute(PointOfInterestManager PointOfInterestManager);
     }
 
-    public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction
+    public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private PointOfInterestId PointOfInterestId;
         private DiscussionTree DiscussionTree;
@@ -22,7 +23,7 @@ namespace AdventureGame
             this.contextActionToAdd.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
             if (selectedPOI != null)
@@ -32,7 +33,7 @@ namespace AdventureGame
         }
     }
 
-    public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowAction
+    public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private PointOfInterestId PointOfInterestId;
         private DiscussionChoiceTextId DiscussionIdToDelete;
@@ -45,7 +46,7 @@ namespace AdventureGame
             this.nodeIdsWalk = nodeIdsWalk;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
             if (selectedPOI != null)

@@ -1,8 +1,10 @@
 ﻿
+using CoreGame;
+
 namespace AdventureGame
 {
 
-    public class AddGrabbableItem : TimelineNodeWorkflowAction
+    public class AddGrabbableItem : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private PointOfInterestId poiInvolved;
         private ItemID itemID;
@@ -16,7 +18,7 @@ namespace AdventureGame
             this.contextAction.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
@@ -26,7 +28,7 @@ namespace AdventureGame
         }
     }
 
-    public class RemoveGrabbableItem : TimelineNodeWorkflowAction
+    public class RemoveGrabbableItem : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private ItemID itemInvolved;
         private PointOfInterestId poiInvolved;
@@ -37,7 +39,7 @@ namespace AdventureGame
             this.poiInvolved = poiInvolved;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
@@ -47,7 +49,7 @@ namespace AdventureGame
         }
     }
 
-    public class AddReceivableItem : TimelineNodeWorkflowAction
+    public class AddReceivableItem : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private ItemID itemInvolved;
         private PointOfInterestId poiInvolved;
@@ -58,7 +60,7 @@ namespace AdventureGame
             this.poiInvolved = poiInvolved;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
@@ -68,7 +70,7 @@ namespace AdventureGame
         }
     }
 
-    public class RemoveReceivableItem : TimelineNodeWorkflowAction
+    public class RemoveReceivableItem : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private ItemID itemInvolved;
         private PointOfInterestId poiInvolved;
@@ -79,7 +81,7 @@ namespace AdventureGame
             this.poiInvolved = poiInvolved;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
@@ -89,7 +91,7 @@ namespace AdventureGame
         }
     }
 
-    public class AddPOIInteractableItem : TimelineNodeWorkflowAction
+    public class AddPOIInteractableItem : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private ItemID itemInvolved;
         private PointOfInterestId poiInvolved;
@@ -100,7 +102,7 @@ namespace AdventureGame
             this.poiInvolved = poiInvolved;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
@@ -110,7 +112,7 @@ namespace AdventureGame
         }
     }
 
-    public class RemovePOIInteractableItem : TimelineNodeWorkflowAction
+    public class RemovePOIInteractableItem : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
         private ItemID itemInvolved;
         private PointOfInterestId poiInvolved;
@@ -121,7 +123,7 @@ namespace AdventureGame
             this.poiInvolved = poiInvolved;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
@@ -131,7 +133,7 @@ namespace AdventureGame
         }
     }
 
-    public class AddTransitionLevel : TimelineNodeWorkflowAction
+    public class AddTransitionLevel : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
 
         private LevelZonesID nextLevelZone;
@@ -145,7 +147,7 @@ namespace AdventureGame
             this.contextAction = contextAction;
         }
 
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode timelineNodeRefence)
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)

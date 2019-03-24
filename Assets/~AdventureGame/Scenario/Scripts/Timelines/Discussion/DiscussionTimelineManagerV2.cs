@@ -1,6 +1,6 @@
 ﻿namespace AdventureGame
 {
-    public class DiscussionTimelineManagerV2 : ATimelineNodeManager
+    public class DiscussionTimelineManagerV2 : AScenarioTimeline
     {
 
     }

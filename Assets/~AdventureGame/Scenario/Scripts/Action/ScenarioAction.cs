@@ -1,10 +1,10 @@
 ﻿
+using CoreGame;
+
 namespace AdventureGame
 {
 
-    public interface ScenarioAction { }
-
-    public class GrabScenarioAction : ScenarioAction
+    public class GrabScenarioAction : TimeLineAction
     {
         public ItemID ItemInvolved { get; }
         public PointOfInterestId PoiInvolved { get; }
@@ -37,7 +37,7 @@ namespace AdventureGame
         }
     }
 
-    public class GiveScenarioAction : ScenarioAction
+    public class GiveScenarioAction : TimeLineAction
     {
         public ItemID ItemInvolved { get; }
         public PointOfInterestId PoiInvolved { get; }
@@ -71,7 +71,7 @@ namespace AdventureGame
         }
     }
 
-    public class DiscussionChoiceScenarioAction : ScenarioAction
+    public class DiscussionChoiceScenarioAction : TimeLineAction
     {
         public DiscussionChoiceTextId ChoiceId { get; }
 
@@ -99,7 +99,7 @@ namespace AdventureGame
 
     }
 
-    public class CutsceneTimelineScenarioAction : ScenarioAction
+    public class CutsceneTimelineScenarioAction : TimeLineAction
     {
         public CutsceneId CutsceneId;
         public PointOfInterestId TargetedPOI;

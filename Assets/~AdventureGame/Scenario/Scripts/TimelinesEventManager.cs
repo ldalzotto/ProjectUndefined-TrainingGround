@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -19,7 +20,7 @@ namespace AdventureGame
         }
 
 
-        public void OnScenarioActionExecuted(ScenarioAction scenarioAction)
+        public void OnScenarioActionExecuted(TimeLineAction scenarioAction)
         {
             ScenarioTimelineManager.IncrementGraph(scenarioAction);
             DiscussionTimelineManager.IncrementGraph(scenarioAction);

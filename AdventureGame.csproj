@@ -113,9 +113,8 @@
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestType.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\AbstractTimeline\ATimeline.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\AbstractTimeline\TimelineGraphJSONModel.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Action\ScenarioAction.cs" />
+    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\AScenarioTimeline.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />
