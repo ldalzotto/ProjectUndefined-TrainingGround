@@ -112,6 +112,7 @@ namespace RTPuzzle
             this.PlayerObjectLayAnimationManager =
                  new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, 0.05f, true, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
             this.PlayerPocketObjectOutAnimationManager.Play();
+            this.Tick(0);
         }
 
         public void Tick(float d)
