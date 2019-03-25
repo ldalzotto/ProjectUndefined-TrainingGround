@@ -110,6 +110,12 @@ namespace RTPuzzle
 
         }
 
+        private void LateUpdate()
+        {
+            var d = Time.deltaTime;
+            PlayerActionManager.LateTick(d);
+        }
+
         private void FixedUpdate()
         {
             var d = Time.fixedDeltaTime;

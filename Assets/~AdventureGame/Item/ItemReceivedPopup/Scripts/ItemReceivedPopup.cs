@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CoreGame;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 

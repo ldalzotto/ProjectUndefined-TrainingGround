@@ -45,6 +45,11 @@ namespace RTPuzzle
             PlayerActionsAvailableManager.Tick(d, timeAttenuation);
         }
 
+        public void LateTick(float d)
+        {
+            this.PlayerActionExecutionManager.LateTick(d);
+        }
+
         public void GizmoTick()
         {
             PlayerActionExecutionManager.GizmoTick();
@@ -135,6 +140,14 @@ namespace RTPuzzle
                 {
                     currentAction.Tick(d);
                 }
+            }
+        }
+
+        public void LateTick(float d)
+        {
+            if (currentAction != null)
+            {
+                currentAction.LateTick(d);
             }
         }
 

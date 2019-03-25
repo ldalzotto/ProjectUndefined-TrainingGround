@@ -6,7 +6,7 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Head&UpperBody
+  m_Name: RightArm
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
@@ -34,15 +34,15 @@ AvatarMask:
   - m_Path: Armature/Root/ContextualRootBone/HoldItem.L/HoldItem.L_end
     m_Weight: 0
   - m_Path: Armature/Root/ContextualRootBone/HoldItem.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/ContextualRootBone/HoldItem.R/HoldItem.R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Hair 1
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Hair 1/HairStrand
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Hair 1/HairStrand/HairStrand_end
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Leg Control.L
     m_Weight: 0
   - m_Path: Armature/Root/Leg Control.L/Foot Roll.L
@@ -90,13 +90,13 @@ AvatarMask:
   - m_Path: Armature/Root/Torso
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Neck
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Neck/Head
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Neck/Head/Head_end
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.L
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.L/Lower Arm.L
@@ -112,19 +112,19 @@ AvatarMask:
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.L/Lower Arm.L/Hand.L/Thumb.L/Thumb.L_end
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R/Lower Arm.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R/Lower Arm.R/Hand.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R/Lower Arm.R/Hand.R/Figers.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R/Lower Arm.R/Hand.R/Figers.R/Figers.R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R/Lower Arm.R/Hand.R/Thumb.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Upper Arm.R/Lower Arm.R/Hand.R/Thumb.R/Thumb.R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Root/Torso/Upper Leg.L
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Upper Leg.L/Lower Leg.L
@@ -140,4 +140,4 @@ AvatarMask:
   - m_Path: Body
     m_Weight: 0
   - m_Path: Hair
-    m_Weight: 1
+    m_Weight: 0

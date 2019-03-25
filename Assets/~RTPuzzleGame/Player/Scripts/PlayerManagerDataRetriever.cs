@@ -25,6 +25,11 @@ namespace RTPuzzle
         {
             return PlayerManager.GetPlayerCollider();
         }
+
+        public Animator GetPlayerAnimator()
+        {
+            return PlayerManager.GetPlayerAnimator();
+        }
         #endregion
     }
 

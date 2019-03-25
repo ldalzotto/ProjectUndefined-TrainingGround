@@ -97,6 +97,7 @@
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />
     <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\ContextAnimationManagers\PlayerPocketObjectOutManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
     <Compile Include="Assets\Test\CommandBufferTest\WriteToBuffer\BufferWriter.cs" />
     <Compile Include="Assets\Test\MultipleAnimTest\RuntimeTimeline.cs" />
+    <Compile Include="Assets\Test\TimelineAnimationTest\TimelineTestManager.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\Water\MyUnityStandardShadow.cginc" />
     <None Include="Assets\_Shader\Water\WaterStandardCoreForward.cginc" />

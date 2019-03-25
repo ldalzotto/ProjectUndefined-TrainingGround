@@ -7,6 +7,9 @@ public class AnimationConstants
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN, new PlayerAnimationConstantsData("Armature|Grab_Down", 2) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, new PlayerAnimationConstantsData("Armature|ActionForbidden", 2) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT, new PlayerAnimationConstantsData("Armature|ItemGiven", 2) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM, new PlayerAnimationConstantsData("Armature|CA_PocketItem", 2) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, new PlayerAnimationConstantsData("Armature|CA_PocketItem_Lay", 2) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING, new PlayerAnimationConstantsData("ContextActionOverrideListening", 2) },
         {PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING, new PlayerAnimationConstantsData("IdleActionListening", 1) },
         {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE, new PlayerAnimationConstantsData("Armature|Idle_Action_Smoke", 1) }
     };
@@ -33,6 +36,9 @@ public enum PlayerAnimatioNamesEnum
     PLAYER_ACTION_GRAB_DOWN,
     PLAYER_ACTION_FORBIDDEN,
     PLAYER_ACTION_GIVE_OBJECT,
+    PLAYER_ACTION_CA_POCKET_ITEM,
+    PLAYER_ACTION_CA_POCKET_ITEM_LAY,
+    PLAYER_ACTION_LISTENING,
     PLAYER_IDLE_OVERRIDE_LISTENING,
     PLAYER_IDLE_SMOKE
 }

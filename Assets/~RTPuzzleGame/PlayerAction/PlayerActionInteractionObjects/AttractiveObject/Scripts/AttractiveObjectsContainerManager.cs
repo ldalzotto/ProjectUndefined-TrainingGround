@@ -25,10 +25,10 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnAttractiveObjectActionExecuted(Vector3 attractiveObjectWorldPosition, AttractiveObjectId attractiveObjectId)
+        public void OnAttractiveObjectActionExecuted(RaycastHit attractiveObjectWorldPositionHit, AttractiveObjectId attractiveObjectId)
         {
             var attractiveObjectInherentConfigurationData = this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId];
-            var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPosition, transform, attractiveObjectInherentConfigurationData);
+            var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPositionHit.point, transform, attractiveObjectInherentConfigurationData);
         }
 
         public void OnAttracteObjectCreated(AttractiveObjectType attractiveObjectType)

@@ -75,6 +75,13 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Data Retrieval
+        public Animator GetPlayerAnimator()
+        {
+            return PlayerAnimationDataManager.Animator;
+        }
+        #endregion
+
         public float GetPlayerSpeedMagnitude()
         {
             return PlayerInputMoveManager.PlayerSpeedMagnitude;

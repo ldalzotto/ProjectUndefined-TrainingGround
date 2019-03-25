@@ -6,6 +6,7 @@ namespace RTPuzzle
     {
         public abstract bool FinishedCondition();
         public abstract void Tick(float d);
+        public abstract void LateTick(float d);
         public abstract void GUITick();
         public abstract void GizmoTick();
 

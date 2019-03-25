@@ -17,6 +17,7 @@ namespace RTPuzzle {
 
         [Header("Puzzle attracitve objects prefabs")]
         public AttractiveObjectType AttractiveObjectPrefab;
+        public GameObject AttractiveObjectModelPrefab;
 
         [Header("NPC prefabs")]
         public NpcInteractionRingType NpcInteractionRingPrefab;

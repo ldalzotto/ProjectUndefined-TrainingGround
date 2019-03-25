@@ -5,12 +5,8 @@ namespace RTPuzzle
 {
     public class LaunchProjectileAction : RTPPlayerAction
     {
-        //public override SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId => SelectionWheelNodeConfigurationId.THROW_PLAYER_PUZZLE_WHEEL_CONFIG;
-        //  private LaunchProjectileId LaunchProjectileId;
-
         public LaunchProjectileAction(LaunchProjectileActionInherentData launchProjectileActionInherentData) : base(launchProjectileActionInherentData)
         {
-            //   LaunchProjectileId = launchProjectileId;
         }
 
         #region External Dependencies
@@ -83,6 +79,10 @@ namespace RTPuzzle
 
         }
 
+        public override void LateTick(float d)
+        {
+        }
+
         #region External Events
         public void OnThrowProjectileCursorOnProjectileRange()
         {
@@ -126,6 +126,7 @@ namespace RTPuzzle
         public override void GUITick()
         {
         }
+
     }
 
     #region Screen Position Manager
