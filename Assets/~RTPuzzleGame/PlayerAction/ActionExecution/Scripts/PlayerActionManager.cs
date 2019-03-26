@@ -101,7 +101,8 @@ namespace RTPuzzle
             if (!IsActionExecuting())
             {
                 return null;
-            } else
+            }
+            else
             {
                 return PlayerActionExecutionManager.CurrentAction;
             }
@@ -188,8 +189,7 @@ namespace RTPuzzle
 
         public PlayerActionsAvailableManager(LevelZonesID puzzleId, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
-            var e = puzzleGameConfigurationManager.PlayerActionsConfiguration();
-            currentAvailableActions = puzzleGameConfigurationManager.PlayerActionsConfiguration()[puzzleId].PlayerActions;
+            currentAvailableActions = puzzleGameConfigurationManager.LevelConfiguration()[puzzleId].PlayerActions;
         }
 
         public void Tick(float d, float timeAttenuation)

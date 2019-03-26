@@ -52,7 +52,7 @@ namespace ConfigurationEditor
             }
         }
 
-        private void OnGUI()
+        public void OnGUI()
         {
             this.InitializeConfiguration();
             EditorGUILayout.BeginHorizontal();

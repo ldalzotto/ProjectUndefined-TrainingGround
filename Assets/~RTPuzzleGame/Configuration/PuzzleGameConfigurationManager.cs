@@ -11,7 +11,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            PuzzleGameConfiguration.PlayerActionConfiguration.Init();
+            PuzzleGameConfiguration.LevelConfiguration.Init(PuzzleGameConfiguration.PlayerActionConfiguration);
         }
 
         public Dictionary<LaunchProjectileId, ProjectileInherentData> ProjectileConf()
@@ -22,11 +22,6 @@ namespace RTPuzzle
         public Dictionary<TargetZoneID, TargetZoneInherentData> TargetZonesConfiguration()
         {
             return PuzzleGameConfiguration.TargetZonesConfiguration.ConfigurationInherentData;
-        }
-
-        public Dictionary<LevelZonesID, PlayerActionsInherentData> PlayerActionsConfiguration()
-        {
-            return PuzzleGameConfiguration.PlayerActionConfiguration.ConfigurationInherentData;
         }
 
         public Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData> AttractiveObjectsConfiguration()

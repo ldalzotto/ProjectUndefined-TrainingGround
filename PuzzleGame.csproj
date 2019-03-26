@@ -86,7 +86,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\AttractiveObjectAction\AttractiveObjectActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\LaunchProjectileAction\LaunchProjectileActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionsInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />

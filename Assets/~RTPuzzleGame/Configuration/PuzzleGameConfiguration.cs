@@ -8,10 +8,10 @@ namespace RTPuzzle
     {
         public ProjectileConfiguration ProjectileConfiguration;
         public TargetZonesConfiguration TargetZonesConfiguration;
-        public PlayerActionConfiguration PlayerActionConfiguration;
         public AttractiveObjectConfiguration AttractiveObjectConfiguration;
         public LevelConfiguration LevelConfiguration;
         public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
         public AIComponentsConfiguration AIComponentsConfiguration;
+        public PlayerActionConfiguration PlayerActionConfiguration;
     }
 }

@@ -8,11 +8,12 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "LevelConfiguration", menuName = "Configuration/PuzzleGame/LevelConfiguration/LevelConfiguration", order = 1)]
     public class LevelConfiguration : ConfigurationSerialization<LevelZonesID, LevelConfigurationData>
     {
-        /*
-        public static Dictionary<LevelZonesID, LevelConfigurationData> conf = new Dictionary<LevelZonesID, LevelConfigurationData>()
+        public void Init(PlayerActionConfiguration playerActionConfiguration)
         {
-            { LevelZonesID.SEWER_RTP, new LevelConfigurationData(20f) }
-        };
-        */
+            foreach (var lovelConfigurationData in ConfigurationInherentData)
+            {
+                lovelConfigurationData.Value.Init(playerActionConfiguration);
+            }
+        }
     }
 }

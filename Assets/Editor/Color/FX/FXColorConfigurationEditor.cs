@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using ConfigurationEditor;
 using RTPuzzle;
 using UnityEditor;
 using UnityEngine;

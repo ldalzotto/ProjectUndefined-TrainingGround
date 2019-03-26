@@ -15,4 +15,10 @@ namespace RTPuzzle
             CoolDownTime = coolDownTime;
         }
     }
+
+    public enum PlayerActionId
+    {
+        STONE_PROJECTILE_ACTION_1 = 0,
+        CHEESE_ATTRACTIVE_ACTION_1 = 1,
+    }
 }

@@ -1,21 +1,14 @@
-﻿using ConfigurationEditor;
-using CoreGame;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using ConfigurationEditor;
 
 namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "PlayerActionConfiguration", menuName = "Configuration/PuzzleGame/PlayerActionConfiguration/PlayerActionConfiguration", order = 1)]
-    public class PlayerActionConfiguration : ConfigurationSerialization<LevelZonesID, PlayerActionsInherentData>
+    public class PlayerActionConfiguration : ConfigurationSerialization<PlayerActionId, PlayerActionInherentData>
     {
-
-        public void Init()
-        {
-            foreach (var playerActionConfData in ConfigurationInherentData)
-            {
-                playerActionConfData.Value.Init();
-            }
-        }
+        
     }
+
 }
