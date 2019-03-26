@@ -29,5 +29,21 @@ namespace Tests
         {
             return GameObject.FindObjectsOfType<TargetZone>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();
         }
+
+        public static AttractiveObjectInherentConfigurationData CreateAttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime)
+        {
+            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
+            var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId.CHEESE];
+            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AttractiveObjectModelPrefab, randomAttractiveObjectInherentData.AttractiveObjectPrefab);
+            return attractiveObjectInherentConfigurationData;
+        }
+
+        public static ProjectileInherentData CreateProjectileInherentData(float effectRange, float escapeSemiAngle, float travelDistancePerSeconds)
+        {
+            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
+            var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[LaunchProjectileId.STONE];
+            projectileData.Init(effectRange, escapeSemiAngle, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefab);
+            return projectileData;
+        }
     }
 }

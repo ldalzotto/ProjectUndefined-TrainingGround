@@ -43,10 +43,12 @@ namespace RTPuzzle
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
+            var attractiveObjectInherentConfigurationData = puzzleConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
+
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerTransform());
-            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, this);
-            this.PuzzleEventsManager.OnAttractiveObjectActionStart(puzzleConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId], playerDataRetriever.GetPlayerTransform());
+            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this);
+            this.PuzzleEventsManager.OnAttractiveObjectActionStart(attractiveObjectInherentConfigurationData, playerDataRetriever.GetPlayerTransform());
         }
 
         public override void GizmoTick()
@@ -104,9 +106,9 @@ namespace RTPuzzle
         private PlayerAnimationWithObjectManager PlayerObjectLayAnimationManager;
         private GameObject attractiveObjectInstance;
 
-        public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectAction attractiveObjectActionRef)
+        public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AttractiveObjectAction attractiveObjectActionRef)
         {
-            this.attractiveObjectInstance = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectModelPrefab);
+            this.attractiveObjectInstance = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectModelPrefab);
             this.PlayerPocketObjectOutAnimationManager =
                 new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM, 0f, false, null);
             this.PlayerObjectLayAnimationManager =

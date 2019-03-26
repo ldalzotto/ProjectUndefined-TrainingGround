@@ -10,11 +10,11 @@ namespace RTPuzzle
             AttractiveObjectType attractiveObject = null;
             if (parent != null)
             {
-                attractiveObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectPrefab, parent);
+                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectPrefab, parent);
             }
             else
             {
-                attractiveObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.AttractiveObjectPrefab);
+                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectPrefab);
             }
 
             attractiveObject.transform.position = worldPosition;

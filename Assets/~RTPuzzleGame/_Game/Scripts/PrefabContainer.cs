@@ -11,13 +11,10 @@ namespace RTPuzzle {
         [Space(20)]
         [Header("RT Puzzle Prefabs")]
         [Space(20)]
-        public LaunchProjectile ProjectilePrefab;
         public ThrowProjectilePath ThrowProjectilePathPrefab;
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
 
         [Header("Puzzle attracitve objects prefabs")]
-        public AttractiveObjectType AttractiveObjectPrefab;
-        public GameObject AttractiveObjectModelPrefab;
 
         [Header("NPC prefabs")]
         public NpcInteractionRingType NpcInteractionRingPrefab;

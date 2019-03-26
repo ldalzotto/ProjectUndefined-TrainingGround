@@ -109,10 +109,6 @@ namespace RTPuzzle
                             }
                             else
                             {
-                                if (Debug.isDebugBuild)
-                                {
-                                    //   Debug.Log("Patrol direction");
-                                }
                                 newDirection = AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
                             }
                         }

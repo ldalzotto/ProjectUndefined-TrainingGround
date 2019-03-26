@@ -37,8 +37,7 @@ namespace Tests
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
-            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
-            projectileData.Init(99999f, 90f, 30f);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been hit, no more patrolling.");
@@ -56,8 +55,7 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
-            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
-            projectileData.Init(99999f, 90f, 30f);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
             var firstProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, AITestPositionID.PROJECTILE_TARGET_1, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
@@ -79,10 +77,8 @@ namespace Tests
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
-            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
-            projectileData.Init(99999f, 90f, 30f);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 99f);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
             yield return null;
             PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
@@ -96,9 +92,8 @@ namespace Tests
         public IEnumerator AI_AttractiveObject_Nominal_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
             float attractiveObjectEffectiveTime = .1f;
-            attractiveObjectInherentConfigurationData.Init(999999f, attractiveObjectEffectiveTime);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, attractiveObjectEffectiveTime);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
@@ -115,16 +110,14 @@ namespace Tests
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 99f);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
             Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is being attracted.");
-            var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
-            projectileData.Init(99999f, 90f, 30f);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
             PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "A projectile has hit the AI. Abort attract.");
@@ -134,8 +127,7 @@ namespace Tests
         public IEnumerator AI_AttractiveObject_WithSmallRange_NoInfluence_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            attractiveObjectInherentConfigurationData.Init(0.001f, 99f);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(0.001f, 99f);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
@@ -148,8 +140,7 @@ namespace Tests
         public IEnumerator AI_AttractiveObject_WhenEnterInRange_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            attractiveObjectInherentConfigurationData.Init(0.1f, 99f);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(0.1f, 99f);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;
@@ -165,8 +156,7 @@ namespace Tests
         public IEnumerator AI_AttractiveObject_WhenDestinationReached_AndObjectStillUp_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            attractiveObjectInherentConfigurationData.Init(999999f, 99f);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 99f);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (MouseAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return null;

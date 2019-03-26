@@ -22,7 +22,7 @@ namespace RTPuzzle
 
         public static LaunchProjectile Instantiate(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform)
         {
-            var launchProjectile = MonoBehaviour.Instantiate(PrefabContainer.Instance.ProjectilePrefab, parentTransform);
+            var launchProjectile = MonoBehaviour.Instantiate(LaunchProjectileInherentData.ProjectilePrefab, parentTransform);
             launchProjectile.Init(LaunchProjectileInherentData, ProjectilePath);
             return launchProjectile;
         }
