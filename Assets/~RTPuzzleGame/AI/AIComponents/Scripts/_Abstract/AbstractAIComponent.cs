@@ -11,14 +11,22 @@ namespace RTPuzzle
         public Type SelectedManagerType;
         public Type AbstractManagerType { get => abstractManagerType; }
     }
-
-    public class AIManagerTypeSafeOperation
+    
+    public struct AIManagerTypeSafeOperation
     {
-        public static void ForAllAIManagerTypes(Type managerType,
-            Func<AIRandomPatrolComponentMananger> AIRandomPatrolComponentManangerOperation, Func<AIProjectileEscapeManager> AIProjectileEscapeManagerOperation)
+        public Func<AIRandomPatrolComponentMananger> AIRandomPatrolComponentManangerOperation;
+        public Func<AIProjectileEscapeManager> AIProjectileEscapeManagerOperation;
+        public Func<AIFearStunManager> AIFearStunManagerOperation;
+        public Func<AIAttractiveObjectManager> AIAttractiveObjectOperation;
+        public Func<AITargetZoneManager> AITargetZoneManagerOperation;
+
+        public void ForAllAIManagerTypes(Type managerType)
         {
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileEscapeManager), AIProjectileEscapeManagerOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);
         }
 
         private static bool InvokeIfNotNullAndTypeCorresponds(Type managerType, Type comparedType, Func<object> action)

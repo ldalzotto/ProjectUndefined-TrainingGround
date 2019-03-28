@@ -11,7 +11,6 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Dependencies
-        private AITargetZoneComponent AITargetZoneComponent;
         private TargetZoneInherentData targetZoneConfigurationData;
         private TargetZone targetZone;
         #endregion
@@ -23,7 +22,6 @@ namespace RTPuzzle
         public AITargetZoneManager(NavMeshAgent agent, AITargetZoneComponent aITargetZoneComponent)
         {
             this.agent = agent;
-            AITargetZoneComponent = aITargetZoneComponent;
             this.aITargetZoneComponentManagerDataRetrieval = new AITargetZoneComponentManagerDataRetrieval(this);
 
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();

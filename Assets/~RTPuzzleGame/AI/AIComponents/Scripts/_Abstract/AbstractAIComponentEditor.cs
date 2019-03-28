@@ -68,7 +68,9 @@ namespace RTPuzzle
 
             if (abstractAIComponent.SelectedManagerType != null)
             {
-                EditorGUILayout.LabelField("AI Manager description : " + GetManagerDescription(abstractAIComponent.SelectedManagerType), EditorStyles.miniLabel);
+                var description = "AI Manager description : " + GetManagerDescription(abstractAIComponent.SelectedManagerType);
+                var gContent = new GUIContent(description, description);
+                GUILayout.Label(gContent, EditorStyles.miniLabel);
             }
 
         }
@@ -76,11 +78,14 @@ namespace RTPuzzle
         private string GetManagerDescription(Type managerType)
         {
             string returnMessage = string.Empty;
-            AIManagerTypeSafeOperation.ForAllAIManagerTypes(managerType,
-                () => { returnMessage = "Random patrolling"; return null; },
-                () => { returnMessage = "Escape proj"; return null; }
-                );
-
+            new AIManagerTypeSafeOperation
+            {
+                AIRandomPatrolComponentManangerOperation = () => { returnMessage = "Random patrolling."; return null; },
+                AIProjectileEscapeManagerOperation = () => { returnMessage = "Reduce FOV when a projectile is near."; return null; },
+                AIFearStunManagerOperation = () => { returnMessage = "Block any movement when FOV sum values are below a threshold."; return null; },
+                AIAttractiveObjectOperation = () => { returnMessage = "Move to the nearest attractive point in range.\nOnce targeted, the movement is never cancelled by this component."; return null; },
+                AITargetZoneManagerOperation = () => { returnMessage = "Detect weather the AI is in the selected target zone or not."; return null; }
+            }.ForAllAIManagerTypes(managerType);
             return returnMessage;
         }
     }

@@ -25,16 +25,26 @@ namespace RTPuzzle
             AIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
             AITargetZoneComponentManager = new AITargetZoneManager(selfAgent, aIComponents.AITargetZoneComponent);
 
-            //TODO -> move to safe selection choice ?
-            if (aIComponents.AIRandomPatrolComponent.SelectedManagerType == typeof(AIRandomPatrolComponentMananger))
+            var aiManagerSetter = new AIManagerTypeSafeOperation
             {
-                AIPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, AIFOVManager);
-            }
+                AIRandomPatrolComponentManangerOperation = () => { this.AIPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, AIFOVManager); return null; },
+                AIProjectileEscapeManagerOperation = () =>
+                {
+                    this.AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, aIComponents.AITargetZoneComponent, AIFOVManager, PuzzleEventsManager, aiID,
+                   AITargetZoneComponentManager.AITargetZoneComponentManagerDataRetrieval); return null;
+                },
+                AIFearStunManagerOperation = () => { this.AIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID); return null; },
+                AIAttractiveObjectOperation = () => { this.AIAttractiveObjectComponent = new AIAttractiveObjectManager(selfAgent, aiID, PuzzleEventsManager); return null; },
+                AITargetZoneManagerOperation = () => { this.AITargetZoneComponentManager = new AITargetZoneManager(selfAgent, aIComponents.AITargetZoneComponent); return null; }
+            };
 
-            AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, aIComponents.AITargetZoneComponent, AIFOVManager, PuzzleEventsManager, aiID,
-                          AITargetZoneComponentManager.AITargetZoneComponentManagerDataRetrieval);
-            AIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID);
-            AIAttractiveObjectComponent = new AIAttractiveObjectManager(selfAgent, aiID, PuzzleEventsManager);
+
+            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIAttractiveObjectComponent.SelectedManagerType);
+            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIFearStunComponent.SelectedManagerType);
+            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIProjectileEscapeComponent.SelectedManagerType);
+            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIRandomPatrolComponent.SelectedManagerType);
+            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AITargetZoneComponent.SelectedManagerType);
+
         }
 
         #region External Events
