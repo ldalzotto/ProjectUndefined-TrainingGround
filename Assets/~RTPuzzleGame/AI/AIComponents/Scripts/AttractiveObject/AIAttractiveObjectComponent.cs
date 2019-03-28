@@ -1,7 +1,6 @@
 ﻿using System;
 
 #if UNITY_EDITOR
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 #endif
@@ -40,10 +39,18 @@ namespace RTPuzzle
         {
             this.involvedAttractiveObject = null;
         }
+
+        public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        {
+            if (this.IsDestructedAttractiveObjectEqualsToCurrent(attractiveObjectToDestroy))
+            {
+                this.OnDestinationReached();
+            }
+        }
         #endregion
 
         #region Logical Conditions
-        public bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectType attractiveObjectToDestroy)
+        private bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectType attractiveObjectToDestroy)
         {
             return (this.involvedAttractiveObject != null &&
                 attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());

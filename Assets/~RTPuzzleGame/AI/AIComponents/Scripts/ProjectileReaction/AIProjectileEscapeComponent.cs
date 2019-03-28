@@ -2,7 +2,6 @@
 using UnityEngine;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace RTPuzzle
@@ -19,7 +18,6 @@ namespace RTPuzzle
     public abstract class AbstractAIProjectileEscapeManager
     {
         #region State
-        protected bool isEscapingFromTargetZone;
         protected bool isEscapingFromProjectile;
         protected bool isInTargetZone;
         protected Nullable<Vector3> escapeDestination;
@@ -28,13 +26,12 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsEscaping()
         {
-            return isEscapingFromTargetZone || isEscapingFromProjectile;
+            return isEscapingFromProjectile;
         }
         #endregion
 
 
         public abstract void ClearEscapeDestination();
-        public abstract Nullable<Vector3> ForceComputeEscapePoint();
         public abstract Nullable<Vector3> GetCurrentEscapeDirection();
         public abstract void OnTriggerEnter(Collider collider, CollisionType collisionType);
         public abstract void OnDestinationReached();

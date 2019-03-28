@@ -41,7 +41,7 @@ namespace Tests
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been hit, no more patrolling.");
-            Assert.IsTrue(mouseAIBheavior.IsEscaping(), "The AI has been hit, escaping.");
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "The AI has been hit, escaping.");
             Assert.AreEqual(this.MockPuzzleEventsManagerTest.AiHittedByProjectileCallCount, 1, "The 'hitted by projectile event' must be triggered only once.");
             yield return null;
             Assert.IsNull(lpTest, "The projectile must be detroyed after hit.");
@@ -85,7 +85,7 @@ namespace Tests
             PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, AITestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-            Assert.IsTrue(mouseAIBheavior.IsEscaping());
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone());
         }
 
         [UnityTest]

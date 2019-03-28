@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace RTPuzzle
@@ -12,6 +11,7 @@ namespace RTPuzzle
     public class AITargetZoneComponent : AbstractAIComponent
     {
         public TargetZoneID TargetZoneID;
+        public float TargetZoneEscapeDistance;
 
         protected override Type abstractManagerType => typeof(AbstractAITargetZoneManager);
     }
@@ -28,7 +28,7 @@ namespace RTPuzzle
         #region Data Retrieval
         public TargetZone GetTargetZone()
         {
-            return this.AITargetZoneComponentManagerRef.TargetZone;
+            return this.AITargetZoneComponentManagerRef.GetTargetZone();
         }
 
         public TargetZoneInherentData GetTargetZoneConfigurationData()
@@ -50,12 +50,35 @@ namespace RTPuzzle
     {
         #region State
         protected bool isInTargetZone;
+        protected bool isEscapingFromTargetZone;
         #endregion
+
+        protected TargetZone targetZone;
+
+        protected Vector3? escapeDestination;
+
+        public bool IsEscapingFromTargetZone { get => isEscapingFromTargetZone; }
+        public Vector3? GetCurrentEscapeDestination()
+        {
+            return this.escapeDestination;
+        }
+
+        public void ClearEscapeDestination()
+        {
+            this.escapeDestination = null;
+        }
 
         #region Logical Conditions
         public bool IsInTargetZone()
         {
             return isInTargetZone;
+        }
+        #endregion
+
+        #region Data Retrieval
+        public TargetZone GetTargetZone()
+        {
+            return this.targetZone;
         }
         #endregion
 
@@ -66,6 +89,8 @@ namespace RTPuzzle
         #endregion
 
         public abstract void TickComponent();
+        public abstract Nullable<Vector3> TriggerTargetZoneEscape();
+        public abstract void OnDestinationReached();
     }
 
 }

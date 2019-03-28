@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.AI;
+﻿using CoreGame;
 using System;
+using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
@@ -11,44 +11,34 @@ namespace RTPuzzle
 
         #region External Dependencies
         private NavMeshAgent escapingAgent;
-        private AITargetZoneComponent AITargetZoneComponent;
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager PuzzleEventsManager;
-        private AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval;
+        Func<TargetZone> levelTargetZoneProvider;
         #endregion
 
         #region Internal Dependencies
         private AIProjectileEscapeComponent AIProjectileEscapeComponent;
         #endregion
-        
+
         private NavMeshHit[] noTargetZonehits;
         private Ray[] noTargetZonePhysicsRay;
         private NavMeshHit[] targetZonehits;
         private Ray[] targetZonePhysicsRay;
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID,
-                AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval)
+                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<TargetZone> levelTargetZoneProvider)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
-            this.AITargetZoneComponent = AITargetZoneComponent;
             this.AIFOVManager = AIFOVManager;
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.aiID = aiID;
-            this.aITargetZoneComponentManagerDataRetrieval = aITargetZoneComponentManagerDataRetrieval;
+            this.levelTargetZoneProvider = levelTargetZoneProvider;
         }
 
         public override void ClearEscapeDestination()
         {
             escapeDestination = null;
-        }
-
-        public override Nullable<Vector3> ForceComputeEscapePoint()
-        {
-            isEscapingFromTargetZone = true;
-            escapeDestination = ComputeEscapePoint((escapingAgent.transform.position - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position).normalized, null);
-            return escapeDestination;
         }
 
         public override Nullable<Vector3> GetCurrentEscapeDirection()
@@ -74,81 +64,25 @@ namespace RTPuzzle
 
         private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
         {
-
-            if (this.aITargetZoneComponentManagerDataRetrieval.IsInTargetZone() && launchProjectile == null)
+            if (launchProjectile != null)
             {
-                Debug.Log("EscapeFromExitZone");
-                return EscapeFromExitZone(escapeDirection);
-            }
-            else
-            {
-                if (launchProjectile != null)
+                if (isEscapingFromProjectile)
                 {
-                    if (isEscapingFromProjectile)
-                    {
-                        //if already escaping from projectile
-                        Debug.Log("EscapeToFarest");
-                        this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
-                        return EscapeToFarest(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
-                    }
-                    else
-                    {
-                        Debug.Log("EscapeToFarestWithTargetZone");
-                        this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
-                        return EscapeToFarestWithTargetZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
-                    }
+                    //if already escaping from projectile
+                    Debug.Log("EscapeToFarest");
+                    this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
+                    return EscapeToFarest(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                }
+                else
+                {
+                    Debug.Log("EscapeToFarestWithTargetZone");
+                    this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
+                    return EscapeToFarestWithTargetZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                 }
             }
 
             return null;
 
-        }
-
-        private Vector3? EscapeFromExitZone(Vector3 localEscapeDirection)
-        {
-
-            noTargetZonehits = new NavMeshHit[7];
-            noTargetZonePhysicsRay = new Ray[7];
-
-            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
-            // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
-
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZoneConfigurationData().EscapeFOVSemiAngle,
-                worldEscapeDirectionAngle + this.aITargetZoneComponentManagerDataRetrieval.GetTargetZoneConfigurationData().EscapeFOVSemiAngle);
-            noTargetZonehits = AIFOVManager.NavMeshRaycastSample(7, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
-
-            for (var i = 0; i < noTargetZonehits.Length; i++)
-            {
-                noTargetZonePhysicsRay[i] = new Ray(escapingAgent.transform.position, noTargetZonehits[i].position - escapingAgent.transform.position);
-            }
-            Nullable<Vector3> selectedPosition = null;
-            float currentDistanceToForbidden = 0;
-            for (var i = 0; i < noTargetZonehits.Length; i++)
-            {
-                if (i == 0)
-                {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
-                    {
-                        currentDistanceToForbidden = Vector3.Distance(noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position);
-                        selectedPosition = noTargetZonehits[i].position;
-                    }
-                }
-                else
-                {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
-                    {
-                        var computedDistance = Vector3.Distance(noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position);
-                        if (currentDistanceToForbidden < computedDistance)
-                        {
-                            selectedPosition = noTargetZonehits[i].position;
-                            currentDistanceToForbidden = computedDistance;
-                        }
-
-                    }
-                }
-            }
-
-            return selectedPosition;
         }
 
         private Vector3? EscapeToFarestWithTargetZone(Vector3 localEscapeDirection, float semiAngleEscape)
@@ -170,7 +104,7 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
+                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.levelTargetZoneProvider.Invoke().ZoneCollider))
                     {
                         currentDistanceToRaycastTarget = Vector3.Distance(noTargetZonehits[i].position, escapingAgent.transform.position);
                         selectedPosition = noTargetZonehits[i].position;
@@ -178,7 +112,7 @@ namespace RTPuzzle
                 }
                 else
                 {
-                    if (!PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
+                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.levelTargetZoneProvider.Invoke().ZoneCollider))
                     {
                         var computedDistance = Vector3.Distance(noTargetZonehits[i].position, escapingAgent.transform.position);
                         if (currentDistanceToRaycastTarget < computedDistance)
@@ -225,23 +159,9 @@ namespace RTPuzzle
             return selectedPosition;
         }
 
-        private bool PhysicsRayInContactWithCollider(Ray ray, Vector3 targetPoint, Collider collider)
-        {
-            var raycastHits = Physics.RaycastAll(ray, Vector3.Distance(ray.origin, targetPoint));
-            for (var i = 0; i < raycastHits.Length; i++)
-            {
-                if (raycastHits[i].collider.GetInstanceID() == collider.GetInstanceID())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public override void OnDestinationReached()
         {
             AIFOVManager.ResetFOV();
-            isEscapingFromTargetZone = false;
             this.SetIsEscapingFromProjectile(false);
         }
 
