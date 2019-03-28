@@ -9,11 +9,11 @@ namespace RTPuzzle
     {
 
         #region AI Components
-        private AIRandomPatrolComponentMananger AIRandomPatrolComponentManager;
-        private AIProjectileEscapeManager AIProjectileEscapeManager;
-        private AITargetZoneComponentManager AITargetZoneComponentManager;
-        private AIFearStunComponentManager AIFearStunComponentManager;
-        private AIAttractiveObjectManager AIAttractiveObjectComponent;
+        private AbstractAIPatrolComponentManager AIPatrolComponentManager;
+        private AbstractAIProjectileEscapeManager AIProjectileEscapeManager;
+        private AbstractAITargetZoneManager AITargetZoneComponentManager;
+        private AIFearStunManager AIFearStunComponentManager;
+        private AbstractAIAttractiveObjectManager AIAttractiveObjectComponent;
         #endregion
 
         #region AI Managers
@@ -23,24 +23,19 @@ namespace RTPuzzle
         public MouseAIBehavior(NavMeshAgent selfAgent, AIComponents aIComponents, Action<FOV> OnFOVChange, PuzzleEventsManager PuzzleEventsManager, AiID aiID) : base(selfAgent, OnFOVChange)
         {
             AIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
-            AITargetZoneComponentManager = new AITargetZoneComponentManager(selfAgent, aIComponents.AITargetZoneComponent);
-            AIRandomPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent);
+            AITargetZoneComponentManager = new AITargetZoneManager(selfAgent, aIComponents.AITargetZoneComponent);
+
+            //TODO -> move to safe selection choice ?
+            if (aIComponents.AIRandomPatrolComponent.SelectedManagerType == typeof(AIRandomPatrolComponentMananger))
+            {
+                AIPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, AIFOVManager);
+            }
+
             AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, aIComponents.AITargetZoneComponent, AIFOVManager, PuzzleEventsManager, aiID,
-                    AITargetZoneComponentManager.AITargetZoneComponentManagerDataRetrieval);
-            AIFearStunComponentManager = new AIFearStunComponentManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID);
+                          AITargetZoneComponentManager.AITargetZoneComponentManagerDataRetrieval);
+            AIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID);
             AIAttractiveObjectComponent = new AIAttractiveObjectManager(selfAgent, aiID, PuzzleEventsManager);
         }
-
-        #region Internal Events
-        private void OnProjectileEscapeManagerUpdated(Vector3? escapeDestination)
-        {
-            AIRandomPatrolComponentManager.OnDestinationReached();
-            if (escapeDestination.HasValue)
-            {
-                AIProjectileEscapeManager.ClearEscapeDestination();
-            }
-        }
-        #endregion
 
         #region External Events
         public override void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
@@ -88,28 +83,23 @@ namespace RTPuzzle
                 {
                     if (this.IsEscaping())
                     {
-                        var escapeDestination = AIProjectileEscapeManager.GetCurrentEscapeDirection();
-                        OnProjectileEscapeManagerUpdated(escapeDestination);
-                        newDirection = escapeDestination;
+                        newDirection = AIProjectileEscapeManager.GetCurrentEscapeDirection();
                     }
                     else
                     {
                         if (this.IsInTargetZone())
                         {
-                            var escapeDestination = AIProjectileEscapeManager.ForceComputeEscapePoint();
-                            OnProjectileEscapeManagerUpdated(escapeDestination);
-                            newDirection = escapeDestination;
+                            newDirection = AIProjectileEscapeManager.ForceComputeEscapePoint();
                         }
                         else
                         {
-                            AIProjectileEscapeManager.ClearEscapeDestination();
                             if (this.IsInfluencedByAttractiveObject())
                             {
                                 newDirection = AIAttractiveObjectComponent.TickComponent();
                             }
                             else
                             {
-                                newDirection = AIRandomPatrolComponentManager.TickComponent(AIFOVManager);
+                                newDirection = AIPatrolComponentManager.TickComponent();
                             }
                         }
                     }
@@ -121,7 +111,7 @@ namespace RTPuzzle
 
         public override void TickGizmo()
         {
-            AIRandomPatrolComponentManager.GizmoTick();
+            AIPatrolComponentManager.GizmoTick();
             AIProjectileEscapeManager.GizmoTick();
             AIFOVManager.GizmoTick();
         }
@@ -166,12 +156,6 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                /*
-                if (collisionType.IsRTPProjectile)
-                {
-                    AIProjectileEscapeManager.OnTriggerExit(collider, collisionType);
-                }
-                */
                 if (collisionType.IsRTAttractiveObject)
                 {
                     if (!AIProjectileEscapeManager.IsEscaping() && !this.IsFeared())
@@ -186,7 +170,7 @@ namespace RTPuzzle
         {
             if (randomPatrolReset)
             {
-                AIRandomPatrolComponentManager.OnDestinationReached();
+                AIPatrolComponentManager.OnDestinationReached();
             }
 
             if (projectileEscapeReset)
@@ -207,7 +191,7 @@ namespace RTPuzzle
         }
 
         #region State Retrieval
-        public bool IsPatrolling() { return AIRandomPatrolComponentManager.IsPatrolling(); }
+        public bool IsPatrolling() { return AIPatrolComponentManager.IsPatrolling(); }
         public bool IsFeared() { return AIFearStunComponentManager.IsFeared; }
         public bool IsEscaping() { return AIProjectileEscapeManager.IsEscaping(); }
         public bool IsInTargetZone() { return AITargetZoneComponentManager.IsInTargetZone(); }
@@ -216,7 +200,7 @@ namespace RTPuzzle
 
         public void DebugGUITick()
         {
-            GUILayout.Label("IsPatrolling : " + AIRandomPatrolComponentManager.IsPatrolling());
+            GUILayout.Label("IsPatrolling : " + AIPatrolComponentManager.IsPatrolling());
             GUILayout.Label("IsEscaping : " + AIProjectileEscapeManager.IsEscaping());
             GUILayout.Label("IsInTargetZone : " + AITargetZoneComponentManager.IsInTargetZone());
             GUILayout.Label("IsStunFeared : " + AIFearStunComponentManager.IsFeared);

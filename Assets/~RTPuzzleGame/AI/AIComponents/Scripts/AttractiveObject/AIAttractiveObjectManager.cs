@@ -4,16 +4,13 @@ using UnityEngine.AI;
 namespace RTPuzzle
 {
 
-    public class AIAttractiveObjectManager
+    public class AIAttractiveObjectManager : AbstractAIAttractiveObjectManager
     {
 
         #region External Events
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
-
-        private NavMeshAgent selfAgent;
-        private AiID aiID;
-
+        
         public AIAttractiveObjectManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager puzzleEventsManager)
         {
             this.selfAgent = selfAgent;
@@ -21,13 +18,9 @@ namespace RTPuzzle
             this.PuzzleEventsManager = puzzleEventsManager;
         }
 
-        #region State
-        private bool isAttracted;
-        #endregion
-        private AttractiveObjectType involvedAttractiveObject;
         private Vector3? attractionPosition;
 
-        public Vector3? TickComponent()
+        public override Vector3? TickComponent()
         {
             if (isAttracted)
             {
@@ -36,12 +29,12 @@ namespace RTPuzzle
             return null;
         }
 
-        public void OnTriggerEnter(Collider collider, CollisionType collisionType)
+        public override void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
             SetAttractedObject(collisionType);
         }
 
-        public void OnTriggerStay(Collider collider, CollisionType collisionType)
+        public override void OnTriggerStay(Collider collider, CollisionType collisionType)
         {
             if (collisionType.IsRTAttractiveObject && !this.IsInfluencedByAttractiveObject())
             {
@@ -69,37 +62,17 @@ namespace RTPuzzle
             this.isAttracted = value;
         }
 
-        internal void OnTriggerExit(Collider collider, CollisionType collisionType)
+        public override void OnTriggerExit(Collider collider, CollisionType collisionType)
         {
             OnDestinationReached();
         }
 
-        public void OnDestinationReached()
+        public override void OnDestinationReached()
         {
             this.SetIsAttracted(false);
             this.involvedAttractiveObject = null;
         }
-
-        public void ClearAttractedObject()
-        {
-            this.involvedAttractiveObject = null;
-        }
-
-        #region Logical Conditions
-        public bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectType attractiveObjectToDestroy)
-        {
-            return (this.involvedAttractiveObject != null &&
-                attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());
-        }
-        public bool IsInfluencedByAttractiveObject()
-        {
-            return this.isAttracted || this.HasSensedThePresenceOfAnAttractiveObject();
-        }
-        public bool HasSensedThePresenceOfAnAttractiveObject()
-        {
-            return (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
-        }
-        #endregion
+       
 
     }
 }

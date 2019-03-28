@@ -4,43 +4,30 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    [System.Serializable]
-    [CreateAssetMenu(fileName = "AIRandomPatrolComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIRandomPatrolComponent", order = 1)]
-    public class AIRandomPatrolComponent : ScriptableObject
-    {
-        public float MaxDistance;
-    }
 
-    public class AIRandomPatrolComponentMananger
+    public class AIRandomPatrolComponentMananger : AbstractAIPatrolComponentManager
     {
-        #region External Dependencies
-        private NavMeshAgent patrollingAgent;
-        #endregion
-
-        private AIRandomPatrolComponent AIRandomPatrolComponent;
 
         private bool isMovingTowardsDestination;
         private NavMeshHit[] navMeshHits = new NavMeshHit[8];
 
-        public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIRandomPatrolComponent AIRandomPatrolComponent)
+        public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager) : base(patrollingAgent, AIRandomPatrolComponent, aIFOVManager)
         {
-            this.patrollingAgent = patrollingAgent;
-            this.AIRandomPatrolComponent = AIRandomPatrolComponent;
         }
 
-        public Nullable<Vector3> TickComponent(AIFOVManager aIFOVManager)
+        public override Nullable<Vector3> TickComponent()
         {
             if (!isMovingTowardsDestination)
             {
-                return SetRandomDestination(aIFOVManager);
+                return SetRandomDestination();
             }
             return null;
         }
 
-        private Nullable<Vector3> SetRandomDestination(RTPuzzle.AIFOVManager aIFOVManager)
+        private Nullable<Vector3> SetRandomDestination()
         {
 
-            navMeshHits = aIFOVManager.NavMeshRaycastSample(8, patrollingAgent.transform, AIRandomPatrolComponent.MaxDistance);
+            navMeshHits = this.AIFOVManager.NavMeshRaycastSample(8, patrollingAgent.transform, this.AIPatrolComponent.MaxDistance);
 
             var maxDistance = 0f;
             Nullable<NavMeshHit> selectedHit = null; ;
@@ -72,7 +59,7 @@ namespace RTPuzzle
             }
         }
 
-        public void GizmoTick()
+        public override void GizmoTick()
         {
             for (var i = 0; i < navMeshHits.Length; i++)
             {
@@ -83,17 +70,18 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnDestinationReached()
+        public override void OnDestinationReached()
         {
             isMovingTowardsDestination = false;
         }
         #endregion
 
         #region Logical Conditions
-        public bool IsPatrolling()
+        public override bool IsPatrolling()
         {
             return isMovingTowardsDestination;
         }
         #endregion
     }
+
 }

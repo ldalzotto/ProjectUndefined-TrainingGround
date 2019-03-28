@@ -1,26 +1,17 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.AI;
+using System;
 
 namespace RTPuzzle
 {
-
-    [System.Serializable]
-    [CreateAssetMenu(fileName = "AIProjectileEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIProjectileEscapeComponent", order = 1)]
-    public class AIProjectileEscapeComponent : ScriptableObject
-    {
-        public float EscapeDistance;
-
-    }
-
-    public class AIProjectileEscapeManager
+    public class AIProjectileEscapeManager : AbstractAIProjectileEscapeManager
     {
         private AiID aiID;
 
         #region External Dependencies
         private NavMeshAgent escapingAgent;
         private AITargetZoneComponent AITargetZoneComponent;
-        private TargetZoneContainer TargetZoneContainer;
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager PuzzleEventsManager;
         private AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval;
@@ -29,28 +20,14 @@ namespace RTPuzzle
         #region Internal Dependencies
         private AIProjectileEscapeComponent AIProjectileEscapeComponent;
         #endregion
-
-        #region State
-        private bool isEscapingFromTargetZone;
-        private bool isEscapingFromProjectile;
-        private bool isInTargetZone;
-        private Nullable<Vector3> escapeDestination;
-        #endregion
-
+        
         private NavMeshHit[] noTargetZonehits;
         private Ray[] noTargetZonePhysicsRay;
         private NavMeshHit[] targetZonehits;
         private Ray[] targetZonePhysicsRay;
 
-        #region Logical Conditions
-        public bool IsEscaping()
-        {
-            return isEscapingFromTargetZone || isEscapingFromProjectile;
-        }
-        #endregion
-
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, 
+                AITargetZoneComponent AITargetZoneComponent, AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID,
                 AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
@@ -62,35 +39,35 @@ namespace RTPuzzle
             this.aITargetZoneComponentManagerDataRetrieval = aITargetZoneComponentManagerDataRetrieval;
         }
 
-        public void ClearEscapeDestination()
+        public override void ClearEscapeDestination()
         {
             escapeDestination = null;
         }
 
-        public Nullable<Vector3> ForceComputeEscapePoint()
+        public override Nullable<Vector3> ForceComputeEscapePoint()
         {
             isEscapingFromTargetZone = true;
             escapeDestination = ComputeEscapePoint((escapingAgent.transform.position - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position).normalized, null);
             return escapeDestination;
         }
 
-        public Nullable<Vector3> GetCurrentEscapeDirection()
+        public override Nullable<Vector3> GetCurrentEscapeDirection()
         {
             return escapeDestination;
         }
 
         private void SetIsEscapingFromProjectile(bool value)
         {
-            if(this.isEscapingFromProjectile && !value)
+            if (this.isEscapingFromProjectile && !value)
             {
                 this.PuzzleEventsManager.OnAiAffectedByProjectileEnd(this.aiID);
             }
             this.isEscapingFromProjectile = value;
         }
 
-        public void OnTriggerEnter(Collider collider, CollisionType collisionType)
+        public override void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
-            var escapeDirection = (escapingAgent.transform.position - collider.transform.position/*.bounds.center*/).normalized;
+            var escapeDirection = (escapingAgent.transform.position - collider.transform.position).normalized;
             escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
             this.SetIsEscapingFromProjectile(true);
         }
@@ -224,7 +201,7 @@ namespace RTPuzzle
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
             noTargetZonehits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
-            
+
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToRaycastTarget = 0f;
             for (var i = 0; i < noTargetZonehits.Length; i++)
@@ -261,24 +238,24 @@ namespace RTPuzzle
             return false;
         }
 
-        internal void OnDestinationReached()
+        public override void OnDestinationReached()
         {
             AIFOVManager.ResetFOV();
             isEscapingFromTargetZone = false;
             this.SetIsEscapingFromProjectile(false);
         }
 
-        public void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+        public override void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
         {
         }
 
-        public void OnTriggerExit(Collider collider, CollisionType collisionType)
+        public override void OnTriggerExit(Collider collider, CollisionType collisionType)
         {
             this.SetIsEscapingFromProjectile(false);
         }
 
         #region Gizmo
-        public void GizmoTick()
+        public override void GizmoTick()
         {
             if (escapeDestination.HasValue)
             {
@@ -321,5 +298,4 @@ namespace RTPuzzle
 
 
     }
-
 }

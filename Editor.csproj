@@ -85,6 +85,7 @@
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
+    <Compile Include="Assets\Editor\Helper\SerializableObjectHelper.cs" />
     <Compile Include="Assets\Editor\Shader\WaterShaderGUI.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
     <Reference Include="UnityEngine.AIModule">
