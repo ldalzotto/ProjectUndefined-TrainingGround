@@ -16,12 +16,6 @@ namespace RTPuzzle
         public float MaxDistance;
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(AIPatrolComponent))]
-    public class AIPatrolComponentEditor : AbstractAIComponentEditor<AIPatrolComponent>
-    { }
-#endif
-
     public abstract class AbstractAIPatrolComponentManager
     {
         #region External Dependencies

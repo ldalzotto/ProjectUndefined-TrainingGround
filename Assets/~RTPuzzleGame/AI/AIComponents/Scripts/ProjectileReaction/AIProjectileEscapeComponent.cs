@@ -16,12 +16,6 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIProjectileEscapeManager);
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(AIProjectileEscapeComponent))]
-    public class AIProjectileEscapeComponentEditor : AbstractAIComponentEditor<AIProjectileEscapeComponent>
-    { }
-#endif
-
     public abstract class AbstractAIProjectileEscapeManager
     {
         #region State

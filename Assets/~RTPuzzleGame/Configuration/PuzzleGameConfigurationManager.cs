@@ -36,7 +36,7 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData;
         }
-        public Dictionary<AiID, AIComponents> AIComponentsConfiguration()
+        public Dictionary<AiID, AIBehaviorInherentData> AIComponentsConfiguration()
         {
             return PuzzleGameConfiguration.AIComponentsConfiguration.ConfigurationInherentData;
         }

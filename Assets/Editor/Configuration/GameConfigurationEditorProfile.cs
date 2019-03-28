@@ -32,7 +32,7 @@ namespace RTPuzzle
                   {  ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new GenericConfigurationEditor<AttractiveObjectId, AttractiveObjectInherentConfigurationData>("t:AttractiveObjectConfiguration")},
                   {  ComputeSelectionKey(typeof(LevelConfigurationData)), new GenericConfigurationEditor<LevelZonesID, LevelConfigurationData>("t:LevelConfiguration")},
                   {  ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new GenericConfigurationEditor<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData>("t:SelectionWheelNodeConfiguration")},
-                  {  ComputeSelectionKey(typeof(AIComponents)), new GenericConfigurationEditor<AiID, AIComponents>("t:AIComponentsConfiguration")},
+                  {  ComputeSelectionKey(typeof(AIComponents)), new GenericConfigurationEditor<AiID, AIBehaviorInherentData>("t:AIComponentsConfiguration")},
                   { ComputeSelectionKey(typeof(PlayerActionInherentData)), new GenericConfigurationEditor<PlayerActionId, PlayerActionInherentData>("t:PlayerActionConfiguration")}
             };
         }

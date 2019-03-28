@@ -45,6 +45,11 @@ public class SerializableObjectHelper
 
     public static FieldInfo GetFieldInfo(SerializedProperty prop)
     {
+        if(prop == null)
+        {
+            return null;
+        }
+
         // Separate the steps it takes to get to this property
         string[] separatedPaths = prop.propertyPath.Split('.');
 

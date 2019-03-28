@@ -15,11 +15,7 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIAttractiveObjectManager);
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(AIAttractiveObjectComponent))]
-    public class AIAttractiveObjectComponentEditor : AbstractAIComponentEditor<AIAttractiveObjectComponent>
-    { }
-#endif
+
 
     public abstract class AbstractAIAttractiveObjectManager
     {

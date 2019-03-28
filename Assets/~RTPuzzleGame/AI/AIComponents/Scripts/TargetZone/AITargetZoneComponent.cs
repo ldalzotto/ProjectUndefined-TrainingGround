@@ -68,10 +68,4 @@ namespace RTPuzzle
         public abstract void TickComponent();
     }
 
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(AITargetZoneComponent))]
-    public class AITargetZoneComponentEditor : AbstractAIComponentEditor<AITargetZoneComponent>
-    { }
-#endif
 }

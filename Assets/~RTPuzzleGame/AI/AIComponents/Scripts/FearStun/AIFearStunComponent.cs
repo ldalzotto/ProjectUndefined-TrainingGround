@@ -19,12 +19,6 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIFearStunManager);
     }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(AIFearStunComponent))]
-    public class AIFearStunComponentEditor : AbstractAIComponentEditor<AIFearStunComponent>
-    { }
-#endif
-
     public abstract class AbstractAIFearStunManager
     {
         #region State

@@ -36,7 +36,7 @@ namespace RTPuzzle
         private NPCAIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
-        private PuzzleAIBehavior PuzzleAIBehavior;
+        private IPuzzleAIBehavior<AbstractAIComponents> puzzleAIBehavior;
         private NPCAnimationDataManager NPCAnimationDataManager;
         private NpcInteractionRingManager NpcFOVRingManager;
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
@@ -57,15 +57,15 @@ namespace RTPuzzle
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
             agent.updateRotation = false;
-
-            var aiComponent = puzzleCOnfigurationmanager.AIComponentsConfiguration()[AiID];
+            
+            var aiBehaviorInherentData = puzzleCOnfigurationmanager.AIComponentsConfiguration()[AiID];
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-            PuzzleAIBehavior = new MouseAIBehavior(agent, aiComponent, OnFOVChange, PuzzleEventsManager, this.AiID);
+            puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType, new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, this.AiID));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, camera, canvas, NpcFOVRingManager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
@@ -80,7 +80,7 @@ namespace RTPuzzle
 
         private Vector3? ComputeAINewDestination(in float d, in float timeAttenuationFactor)
         {
-            var newDestination = PuzzleAIBehavior.TickAI(d, timeAttenuationFactor);
+            var newDestination = puzzleAIBehavior.TickAI(d, timeAttenuationFactor);
             if (newDestination.HasValue)
             {
                 SetDestinationWithCoroutineReached(newDestination.Value);
@@ -97,29 +97,29 @@ namespace RTPuzzle
 
         public void OnTriggerEnter(Collider other)
         {
-            PuzzleAIBehavior.OnTriggerEnter(other);
+            puzzleAIBehavior.OnTriggerEnter(other);
         }
 
         private void OnTriggerStay(Collider other)
         {
-            PuzzleAIBehavior.OnTriggerStay(other);
+            puzzleAIBehavior.OnTriggerStay(other);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            PuzzleAIBehavior.OnTriggerExit(other);
+            puzzleAIBehavior.OnTriggerExit(other);
         }
 
         public void GizmoTick()
         {
-            PuzzleAIBehavior.TickGizmo();
+            puzzleAIBehavior.TickGizmo();
         }
 
         public void GUITick()
         {
             if (DebugEabled)
             {
-                var mouseAIBehavior = PuzzleAIBehavior as MouseAIBehavior;
+                var mouseAIBehavior = puzzleAIBehavior as MouseAIBehavior;
                 var screenPos = Camera.main.WorldToScreenPoint(transform.position);
                 screenPos.y = Camera.main.pixelHeight - screenPos.y;
                 GUILayout.BeginArea(new Rect(screenPos, new Vector2(200, 300)));
@@ -134,7 +134,7 @@ namespace RTPuzzle
         #region External Events
         public void OnProjectileTriggerEnter(SphereCollider sphereCollider)
         {
-            this.PuzzleAIBehavior.OnProjectileTriggerEnter(sphereCollider);
+            this.puzzleAIBehavior.OnProjectileTriggerEnter(sphereCollider);
         }
 
         private void SetDestinationWithCoroutineReached(Vector3 destination)
@@ -192,11 +192,11 @@ namespace RTPuzzle
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
         {
-            this.PuzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
+            this.puzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }
         public void OnDestinationReached()
         {
-            PuzzleAIBehavior.OnDestinationReached();
+            puzzleAIBehavior.OnDestinationReached();
             // empty tick to immediately choose the next position
             this.ComputeAINewDestination(0, 0);
         }
@@ -222,9 +222,9 @@ namespace RTPuzzle
         {
             return this.NpcFOVRingManager.RingPositionOffset;
         }
-        public PuzzleAIBehavior GetAIBehavior()
+        public IPuzzleAIBehavior<AbstractAIComponents> GetAIBehavior()
         {
-            return this.PuzzleAIBehavior;
+            return this.puzzleAIBehavior;
         }
         public NavMeshAgent GetAgent()
         {
