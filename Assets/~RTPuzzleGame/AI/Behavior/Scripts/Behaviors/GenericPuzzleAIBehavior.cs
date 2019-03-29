@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class MouseAIBehavior : PuzzleAIBehavior<AIComponents>
+    public class GenericPuzzleAIBehavior : PuzzleAIBehavior<GenericPuzzleAIComponents>
     {
 
         #region AI Components
@@ -15,24 +15,22 @@ namespace RTPuzzle
         private AbstractAIAttractiveObjectManager AIAttractiveObjectManager;
         #endregion
 
-        public MouseAIBehavior(NavMeshAgent selfAgent, AIComponents aIComponents, Action<FOV> OnFOVChange, PuzzleEventsManager PuzzleEventsManager, AiID aiID) : base(selfAgent, aIComponents, OnFOVChange)
+        public GenericPuzzleAIBehavior(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, PuzzleEventsManager PuzzleEventsManager, AiID aiID) : base(selfAgent, aIComponents, OnFOVChange)
         {
-            var aiManagerSetter = new AIManagerTypeSafeOperation
-            {
-                AIRandomPatrolComponentManangerOperation = () => { this.AIPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, AIFOVManager); return null; },
-                AIProjectileEscapeManagerOperation = () => { this.AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, AIFOVManager, PuzzleEventsManager, aiID, AITargetZoneComponentManager.GetTargetZone); return null; },
-                AIFearStunManagerOperation = () => { this.AIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID); return null; },
-                AIAttractiveObjectOperation = () => { this.AIAttractiveObjectManager = new AIAttractiveObjectManager(selfAgent, aiID, PuzzleEventsManager); return null; },
-                AITargetZoneManagerOperation = () => { this.AITargetZoneComponentManager = new AITargetZoneManager(selfAgent, aIComponents.AITargetZoneComponent, this.AIFOVManager); return null; }
-            };
 
+            Func<AIRandomPatrolComponentMananger> aiPatrolComponentManagerSetterOperation = () => { this.AIPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, AIFOVManager); return null; };
+            Func<AIProjectileEscapeManager> AIProjectileEscapeManagerSetterOperation = () => { this.AIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, AIFOVManager, PuzzleEventsManager, aiID, AITargetZoneComponentManager.GetTargetZone); return null; };
+            Func<AIFearStunManager> AIFearStunManagerSetterOperation = () => { this.AIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID); return null; };
+            Func<AIAttractiveObjectManager> AIAttractiveObjectSetterOperation = () => { this.AIAttractiveObjectManager = new AIAttractiveObjectManager(selfAgent, aiID, PuzzleEventsManager); return null; };
+            Func<AITargetZoneManager> AITargetZoneManagerSetterOperation = () => { this.AITargetZoneComponentManager = new AITargetZoneManager(selfAgent, aIComponents.AITargetZoneComponent, this.AIFOVManager); return null; };
 
-            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AITargetZoneComponent.SelectedManagerType);
-            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIAttractiveObjectComponent.SelectedManagerType);
-            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIFearStunComponent.SelectedManagerType);
-            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIProjectileEscapeComponent.SelectedManagerType);
-            aiManagerSetter.ForAllAIManagerTypes(aIComponents.AIRandomPatrolComponent.SelectedManagerType);
+            Action<Type> ForAllAIManagerTypesOperation = (Type managerType) => AIManagerTypeSafeOperation.ForAllAIManagerTypes(managerType, aiPatrolComponentManagerSetterOperation, AIProjectileEscapeManagerSetterOperation, AIFearStunManagerSetterOperation, AIAttractiveObjectSetterOperation, AITargetZoneManagerSetterOperation);
 
+            ForAllAIManagerTypesOperation.Invoke(aIComponents.AITargetZoneComponent.SelectedManagerType);
+            ForAllAIManagerTypesOperation.Invoke(aIComponents.AIAttractiveObjectComponent.SelectedManagerType);
+            ForAllAIManagerTypesOperation.Invoke(aIComponents.AIFearStunComponent.SelectedManagerType);
+            ForAllAIManagerTypesOperation.Invoke(aIComponents.AIProjectileEscapeComponent.SelectedManagerType);
+            ForAllAIManagerTypesOperation.Invoke(aIComponents.AIRandomPatrolComponent.SelectedManagerType);
         }
 
         #region External Events

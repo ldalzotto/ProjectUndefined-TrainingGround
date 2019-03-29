@@ -16,36 +16,6 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAITargetZoneManager);
     }
 
-    public class AITargetZoneComponentManagerDataRetrieval
-    {
-        private AITargetZoneManager AITargetZoneComponentManagerRef;
-
-        public AITargetZoneComponentManagerDataRetrieval(AITargetZoneManager aITargetZoneComponentManagerRef)
-        {
-            AITargetZoneComponentManagerRef = aITargetZoneComponentManagerRef;
-        }
-
-        #region Data Retrieval
-        public TargetZone GetTargetZone()
-        {
-            return this.AITargetZoneComponentManagerRef.GetTargetZone();
-        }
-
-        public TargetZoneInherentData GetTargetZoneConfigurationData()
-        {
-            return this.AITargetZoneComponentManagerRef.TargetZoneConfigurationData;
-        }
-        #endregion
-
-        #region Logical Conditions
-        public bool IsInTargetZone()
-        {
-            return this.AITargetZoneComponentManagerRef.IsInTargetZone();
-        }
-        #endregion
-    }
-
-
     public abstract class AbstractAITargetZoneManager
     {
         #region State
@@ -80,12 +50,6 @@ namespace RTPuzzle
         {
             return this.targetZone;
         }
-        #endregion
-
-        //TODO -> Delete this retrieval
-        #region Internal dependencies
-        protected AITargetZoneComponentManagerDataRetrieval aITargetZoneComponentManagerDataRetrieval;
-        public AITargetZoneComponentManagerDataRetrieval AITargetZoneComponentManagerDataRetrieval { get => aITargetZoneComponentManagerDataRetrieval; }
         #endregion
 
         public abstract void TickComponent();

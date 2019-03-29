@@ -32,14 +32,12 @@ namespace RTPuzzle
         private string GetManagerDescription(Type managerType)
         {
             string returnMessage = string.Empty;
-            new AIManagerTypeSafeOperation
-            {
-                AIRandomPatrolComponentManangerOperation = () => { returnMessage = "Random patrolling."; return null; },
-                AIProjectileEscapeManagerOperation = () => { returnMessage = "Reduce FOV when a projectile is near."; return null; },
-                AIFearStunManagerOperation = () => { returnMessage = "Block any movement when FOV sum values are below a threshold."; return null; },
-                AIAttractiveObjectOperation = () => { returnMessage = "Move to the nearest attractive point in range.\nOnce targeted, the movement is never cancelled by this component."; return null; },
-                AITargetZoneManagerOperation = () => { returnMessage = "Detect weather the AI is in the selected target zone or not."; return null; }
-            }.ForAllAIManagerTypes(managerType);
+            AIManagerTypeSafeOperation.ForAllAIManagerTypes(managerType,
+                () => { returnMessage = "Random patrolling."; return null; },
+                () => { returnMessage = "Reduce FOV when a projectile is near."; return null; },
+                () => { returnMessage = "Block any movement when FOV sum values are below a threshold."; return null; },
+                () => { returnMessage = "Move to the nearest attractive point in range.\nOnce targeted, the movement is never cancelled by this component."; return null; },
+                () => { returnMessage = "Detect weather the AI is in the selected target zone or not."; return null; });
             return "AI Manager description : " + returnMessage;
         }
     }

@@ -9,8 +9,8 @@ namespace RTPuzzle
     public abstract class AbstractAIComponents : SerializedScriptableObject { }
 
     [System.Serializable]
-    [CreateAssetMenu(fileName = "AIComponents", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIComponents", order = 1)]
-    public class AIComponents : AbstractAIComponents
+    [CreateAssetMenu(fileName = "GenericPuzzleAIComponents", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/GenericPuzzleAIComponents", order = 1)]
+    public class GenericPuzzleAIComponents : AbstractAIComponents
     {
         public AIPatrolComponent AIRandomPatrolComponent;
         public AIProjectileEscapeComponent AIProjectileEscapeComponent;

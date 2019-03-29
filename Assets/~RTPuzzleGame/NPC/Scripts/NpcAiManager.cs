@@ -119,7 +119,7 @@ namespace RTPuzzle
         {
             if (DebugEabled)
             {
-                var mouseAIBehavior = puzzleAIBehavior as MouseAIBehavior;
+                var mouseAIBehavior = puzzleAIBehavior as GenericPuzzleAIBehavior;
                 var screenPos = Camera.main.WorldToScreenPoint(transform.position);
                 screenPos.y = Camera.main.pixelHeight - screenPos.y;
                 GUILayout.BeginArea(new Rect(screenPos, new Vector2(200, 300)));

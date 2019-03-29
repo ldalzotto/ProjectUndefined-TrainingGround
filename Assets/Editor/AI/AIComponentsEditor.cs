@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    [CustomEditor(typeof(AIComponents))]
+    [CustomEditor(typeof(GenericPuzzleAIComponents))]
     public class AIComponentsEditor : Editor
     {
 
@@ -12,6 +13,7 @@ namespace RTPuzzle
 
         public override void OnInspectorGUI()
         {
+            EditorGUILayout.ObjectField("Script:", MonoScript.FromScriptableObject((ScriptableObject)target), typeof(MonoScript), false);
             EditorGUI.BeginChangeCheck();
             SerializedProperty prop = serializedObject.GetIterator();
             prop.NextVisible(true);
@@ -54,7 +56,8 @@ namespace RTPuzzle
             }
             return this.cachedEditors[windowType.Name];
         }
-
     }
+
+
 
 }

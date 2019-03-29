@@ -48,9 +48,9 @@ namespace RTPuzzle
 
         public static IPuzzleAIBehavior<AbstractAIComponents> BuildAIBehaviorFromType(Type behaviorType, AIBheaviorBuildInputData aIBheaviorBuildInputData)
         {
-            if (behaviorType == typeof(MouseAIBehavior))
+            if (behaviorType == typeof(GenericPuzzleAIBehavior))
             {
-                return new MouseAIBehavior(aIBheaviorBuildInputData.selfAgent, (AIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.aiID);
+                return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.aiID);
             }
             return null;
         }

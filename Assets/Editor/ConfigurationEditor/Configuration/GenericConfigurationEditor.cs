@@ -36,8 +36,13 @@ namespace ConfigurationEditor
                 LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingeAssetFind<ConfigurationSerialization<K, DATA>>(this.assetSearchFilter);
             }
 
+            EditorGUI.BeginChangeCheck();
             LaunchProjectileInherentDataConfiguration =
                 EditorGUILayout.ObjectField(this.LaunchProjectileInherentDataConfiguration, typeof(ConfigurationSerialization<K, DATA>), false) as ConfigurationSerialization<K, DATA>;
+            if (EditorGUI.EndChangeCheck())
+            {
+                this.projectilesConf.RequestClearEditorCache();
+            }
 
             EditorGUI.BeginChangeCheck();
             if (LaunchProjectileInherentDataConfiguration != null)

@@ -49,6 +49,7 @@ namespace ConfigurationEditor
         #region Search Result
         [SerializeField]
         private Vector2 searchResultScrollPosition;
+
         [SerializeField]
         private DictionaryEnumGUIResultPagination DictionaryEnumGUIResultPagination;
         #endregion
@@ -65,10 +66,21 @@ namespace ConfigurationEditor
         private bool forceLookOfAll;
         private GUIStyle removeButtonDeactivatedStyle;
         private Dictionary<K, Editor> cachedEditors;
+        private bool clearCacheRequested;
+        #endregion
+
+        #region External Events
+        public void RequestClearEditorCache()
+        {
+            this.clearCacheRequested = true;
+        }
         #endregion
 
         public void GUITick(ref Dictionary<K, V> dictionaryEditorValues)
         {
+
+            this.DoClearEditorCache();
+
             DoInit(ref dictionaryEditorValues);
             DoAddEntry(ref dictionaryEditorValues);
 
@@ -119,7 +131,7 @@ namespace ConfigurationEditor
                                 {
                                     this.cachedEditors.Add(dictionaryEditorEntry.Key, Editor.CreateEditor(dictionaryEditorEntry.Value));
                                 }
-
+                                
                                 this.cachedEditors[dictionaryEditorEntry.Key].OnInspectorGUI();
                                 EditorGUILayout.Space();
                             }
@@ -153,6 +165,15 @@ namespace ConfigurationEditor
                 valuesToRemove.Clear();
             }
 
+        }
+        
+        private void DoClearEditorCache()
+        {
+            if (this.clearCacheRequested)
+            {
+                this.cachedEditors = new Dictionary<K, Editor>();
+            }
+            this.clearCacheRequested = false;
         }
 
         private void DoInit(ref Dictionary<K, V> dictionaryEditorValues)
@@ -353,6 +374,7 @@ namespace ConfigurationEditor
             var configurationObjectField = EditorGUILayout.ObjectField(dictionaryEditorEntry.Value, typeof(V), false) as V;
             if (EditorGUI.EndChangeCheck())
             {
+                this.RequestClearEditorCache();
                 valuesToSet[dictionaryEditorEntry.Key] = configurationObjectField;
             }
 

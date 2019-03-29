@@ -20,7 +20,7 @@ namespace Tests
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
-            var fov = (mouseTestAIManager.GetAIBehavior() as MouseAIBehavior).GetFOV();
+            var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
             Assert.AreEqual(2, fov.FovSlices.Count);
             Assert.AreEqual(new FOVSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
             Assert.AreEqual(new FOVSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
@@ -39,7 +39,7 @@ namespace Tests
             lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back - new Vector3(0, lpTest.SphereCollider.bounds.min.y / 2, 0);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
-            var fov = (mouseTestAIManager.GetAIBehavior() as MouseAIBehavior).GetFOV();
+            var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
             Assert.AreEqual(2, fov.FovSlices.Count);
             Assert.AreEqual(new FOVSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
             Assert.AreEqual(new FOVSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
@@ -58,7 +58,7 @@ namespace Tests
             lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back + new Vector3(0, lpTest.SphereCollider.bounds.max.y / 2, 0);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
-            var fov = (mouseTestAIManager.GetAIBehavior() as MouseAIBehavior).GetFOV();
+            var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
             Assert.AreEqual(2, fov.FovSlices.Count);
             Assert.AreEqual(new FOVSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
             Assert.AreEqual(new FOVSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");

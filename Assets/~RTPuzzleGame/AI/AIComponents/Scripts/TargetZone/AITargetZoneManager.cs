@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    
+
     public class AITargetZoneManager : AbstractAITargetZoneManager
     {
         #region External Dependencies
@@ -25,7 +25,6 @@ namespace RTPuzzle
         public AITargetZoneManager(NavMeshAgent agent, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager)
         {
             this.agent = agent;
-            this.aITargetZoneComponentManagerDataRetrieval = new AITargetZoneComponentManagerDataRetrieval(this);
 
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             this.targetZone = targetZoneContainer.TargetZones[aITargetZoneComponent.TargetZoneID];
@@ -52,7 +51,7 @@ namespace RTPuzzle
         public override Vector3? TriggerTargetZoneEscape()
         {
             isEscapingFromTargetZone = true;
-            this.escapeDestination = EscapeFromExitZone((agent.transform.position - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position).normalized);
+            this.escapeDestination = EscapeFromExitZone((agent.transform.position - this.targetZone.transform.position).normalized);
             return this.escapeDestination;
         }
 
@@ -65,8 +64,8 @@ namespace RTPuzzle
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, agent);
             // Debug.DrawRay(escapingAgent.transform.position, localEscapeDirection, Color.green, 1f);
 
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.aITargetZoneComponentManagerDataRetrieval.GetTargetZoneConfigurationData().EscapeFOVSemiAngle,
-                worldEscapeDirectionAngle + this.aITargetZoneComponentManagerDataRetrieval.GetTargetZoneConfigurationData().EscapeFOVSemiAngle);
+            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.targetZoneConfigurationData.EscapeFOVSemiAngle,
+                worldEscapeDirectionAngle + this.targetZoneConfigurationData.EscapeFOVSemiAngle);
             noTargetZonehits = AIFOVManager.NavMeshRaycastSample(7, agent.transform, aITargetZoneComponent.TargetZoneEscapeDistance);
 
             for (var i = 0; i < noTargetZonehits.Length; i++)
@@ -79,17 +78,17 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
+                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.targetZone.ZoneCollider))
                     {
-                        currentDistanceToForbidden = Vector3.Distance(noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position);
+                        currentDistanceToForbidden = Vector3.Distance(noTargetZonehits[i].position, this.targetZone.transform.position);
                         selectedPosition = noTargetZonehits[i].position;
                     }
                 }
                 else
                 {
-                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().ZoneCollider))
+                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(noTargetZonePhysicsRay[i], noTargetZonehits[i].position, this.targetZone.ZoneCollider))
                     {
-                        var computedDistance = Vector3.Distance(noTargetZonehits[i].position, this.aITargetZoneComponentManagerDataRetrieval.GetTargetZone().transform.position);
+                        var computedDistance = Vector3.Distance(noTargetZonehits[i].position, this.targetZone.transform.position);
                         if (currentDistanceToForbidden < computedDistance)
                         {
                             selectedPosition = noTargetZonehits[i].position;

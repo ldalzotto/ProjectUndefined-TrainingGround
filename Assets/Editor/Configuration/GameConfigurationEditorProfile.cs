@@ -23,7 +23,7 @@ namespace RTPuzzle
                 { ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new ConfigurationSelectionProfile("ATTR_OBJ") },
                 { ComputeSelectionKey(typeof(LevelConfigurationData)), new ConfigurationSelectionProfile("LEVEL") },
                 { ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new ConfigurationSelectionProfile("WHEEL_ACT") },
-                { ComputeSelectionKey(typeof(AIComponents)), new ConfigurationSelectionProfile("AI") },
+                { ComputeSelectionKey(typeof(GenericPuzzleAIComponents)), new ConfigurationSelectionProfile("AI") },
                 { ComputeSelectionKey(typeof(PlayerActionInherentData)), new ConfigurationSelectionProfile("PLA_ACT")}
              };
             this.configurations = new Dictionary<string, IGenericConfigurationEditor>() {
@@ -32,7 +32,7 @@ namespace RTPuzzle
                   {  ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new GenericConfigurationEditor<AttractiveObjectId, AttractiveObjectInherentConfigurationData>("t:AttractiveObjectConfiguration")},
                   {  ComputeSelectionKey(typeof(LevelConfigurationData)), new GenericConfigurationEditor<LevelZonesID, LevelConfigurationData>("t:LevelConfiguration")},
                   {  ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new GenericConfigurationEditor<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData>("t:SelectionWheelNodeConfiguration")},
-                  {  ComputeSelectionKey(typeof(AIComponents)), new GenericConfigurationEditor<AiID, AIBehaviorInherentData>("t:AIComponentsConfiguration")},
+                  {  ComputeSelectionKey(typeof(GenericPuzzleAIComponents)), new GenericConfigurationEditor<AiID, AIBehaviorInherentData>("t:AIComponentsConfiguration")},
                   { ComputeSelectionKey(typeof(PlayerActionInherentData)), new GenericConfigurationEditor<PlayerActionId, PlayerActionInherentData>("t:PlayerActionConfiguration")}
             };
         }
