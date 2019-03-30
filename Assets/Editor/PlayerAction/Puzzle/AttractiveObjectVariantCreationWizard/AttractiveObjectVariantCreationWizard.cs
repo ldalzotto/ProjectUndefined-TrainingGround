@@ -66,7 +66,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
                 EditorGUILayout.EndVertical();
 
 
-                this.editorProfile.AttractiveObjectGameConfigurationManager.OnGui(this.editorProfile);
+                this.editorProfile.AttractiveObjectInherentData.OnGui();
 
 
                 if (GUILayout.Button("GENERATE"))
@@ -78,49 +78,42 @@ namespace Editor_AttractiveObjectVariantWizardEditor
                     try
                     {
                         #region Model Prefab
-                        var modelObject = (GameObject)AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(this.editorProfile.ModelCreation.ModelAsset));
-                        var instanceRoot = (GameObject)PrefabUtility.InstantiatePrefab(modelObject, tmpScene);
-                        var createdPrefabpath = this.editorProfile.ProjectRelativeTmpFolderPath;
-                        var createdModelFileName = "\\" + NamingConventionHelper.BuildName(editorProfile.ObjectName, editorProfile.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.MODEL) + ".prefab";
-                        var modelAsset = PrefabUtility.SaveAsPrefabAsset(instanceRoot, createdPrefabpath + createdModelFileName);
-                        this.editorProfile.GeneratedObjects.Add(modelAsset);
-                        GameObject.DestroyImmediate(instanceRoot);
-                        Debug.Log("Generation : " + createdPrefabpath);
+                        var modelAssetGeneration = new GeneratedPrefabAssetManager<GameObject>(this.editorProfile.ModelCreation.ModelAsset, PrefabAssetGenerationWorkflow.MODEL, tmpScene, this.editorProfile.ProjectRelativeTmpFolderPath,
+                               NamingConventionHelper.BuildName(editorProfile.ObjectName, editorProfile.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.MODEL), null);
+                        this.editorProfile.GeneratedObjects.Add(modelAssetGeneration.SavedAsset);
                         #endregion
 
                         #region Attractive Object Prefab
-                        var generatedAttractiveObjectType = (AttractiveObjectType)PrefabUtility.InstantiatePrefab(this.editorProfile.AttractiveObjectBasePrefab, tmpScene);
-                        PrefabUtility.InstantiatePrefab(modelAsset, generatedAttractiveObjectType.transform);
-                        var savedAttractiveObjectTypeFileName = "\\" + NamingConventionHelper.BuildName(editorProfile.ObjectName, editorProfile.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.ATTRACTIVE_OBJECT) + ".prefab";
-                        var savedAttractiveObjectType = PrefabUtility.SaveAsPrefabAsset(generatedAttractiveObjectType.gameObject, this.editorProfile.ProjectRelativeTmpFolderPath + savedAttractiveObjectTypeFileName);
-                        this.editorProfile.GeneratedObjects.Add(savedAttractiveObjectType);
-                        GameObject.DestroyImmediate(generatedAttractiveObjectType);
+                        var attractiveObjectAssetGeneration = new GeneratedPrefabAssetManager<AttractiveObjectType>(this.editorProfile.AttractiveObjectBasePrefab, PrefabAssetGenerationWorkflow.PREFAB, tmpScene,
+                            this.editorProfile.ProjectRelativeTmpFolderPath, NamingConventionHelper.BuildName(editorProfile.ObjectName, editorProfile.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.ATTRACTIVE_OBJECT),
+                            (AttractiveObjectType generatedAsset) =>
+                            {
+                                PrefabUtility.InstantiatePrefab(modelAssetGeneration.SavedAsset, generatedAsset.transform);
+                            });
+                        this.editorProfile.GeneratedObjects.Add(attractiveObjectAssetGeneration.SavedAsset);
                         #endregion
 
                         #region Attractive object game configuration.
-                        this.editorProfile.AttractiveObjectInherentConfigurationData.AttractiveObjectPrefab = savedAttractiveObjectType.GetComponent<AttractiveObjectType>();
-                        this.editorProfile.AttractiveObjectInherentConfigurationData.AttractiveObjectModelPrefab = modelAsset;
-                        var attractiveObjectFileName = "\\" + NamingConventionHelper.BuildName(editorProfile.ObjectName, editorProfile.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.ATTRACTIVE_OBJECT_INHERENT_DATA) + ".asset";
-                        if (this.editorProfile.AttractiveObjectGameConfigurationManager.IsNew)
-                        {
-                            AssetDatabase.CreateAsset(this.editorProfile.AttractiveObjectInherentConfigurationData, this.editorProfile.ProjectRelativeTmpFolderPath + attractiveObjectFileName);
-                            this.editorProfile.GeneratedObjects.Add(this.editorProfile.AttractiveObjectInherentConfigurationData);
-                        }
+                        this.editorProfile.AttractiveObjectInherentData.CreatedObject.AttractiveObjectPrefab = attractiveObjectAssetGeneration.SavedAsset.GetComponent<AttractiveObjectType>();
+                        this.editorProfile.AttractiveObjectInherentData.CreatedObject.AttractiveObjectModelPrefab = modelAssetGeneration.SavedAsset;
+                        var attractiveObjectInherentConfigurationDataGenerated = this.editorProfile.AttractiveObjectInherentData.CreateAsset(this.editorProfile.ProjectRelativeTmpFolderPath, NamingConventionHelper.BuildName(editorProfile.ObjectName, editorProfile.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.ATTRACTIVE_OBJECT_INHERENT_DATA));
+                        this.editorProfile.GeneratedObjects.Add(attractiveObjectInherentConfigurationDataGenerated);
                         #endregion
 
                         #region Game configuration update
-                        this.editorProfile.ConfigurationRetrieval.AttractiveObjectConfiguration.SetEntry(this.editorProfile.AttractiveObjectId, this.editorProfile.AttractiveObjectInherentConfigurationData);
+                        this.editorProfile.ConfigurationRetrieval.AttractiveObjectConfiguration.SetEntry(this.editorProfile.AttractiveObjectId, attractiveObjectInherentConfigurationDataGenerated);
                         #endregion
 
                         #region Assets move from tmp
-                        Debug.Log("Move asset");
-                        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(modelAsset), this.editorProfile.PathConfiguration.ObjectPrefabFolder + createdModelFileName);
-                        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(savedAttractiveObjectType), this.editorProfile.PathConfiguration.ObjectPrefabFolder + savedAttractiveObjectTypeFileName);
-                        if (this.editorProfile.AttractiveObjectGameConfigurationManager.IsNew)
-                        {
-                            AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(this.editorProfile.AttractiveObjectInherentConfigurationData), this.editorProfile.PathConfiguration.ObjectConfigurationFolder + attractiveObjectFileName);
-                        }
+                        modelAssetGeneration.MoveGeneratedAsset(this.editorProfile.PathConfiguration.ObjectPrefabFolder);
+                        attractiveObjectAssetGeneration.MoveGeneratedAsset(this.editorProfile.PathConfiguration.ObjectPrefabFolder);
+                        this.editorProfile.AttractiveObjectInherentData.MoveGeneratedAsset(this.editorProfile.PathConfiguration.ObjectConfigurationFolder);
                         #endregion
+
+                    }
+                    catch (AssetMoveError e)
+                    {
+                        Debug.LogException(e);
                     }
                     catch (Exception e)
                     {
@@ -129,57 +122,40 @@ namespace Editor_AttractiveObjectVariantWizardEditor
                     }
                     finally
                     {
+                        this.editorProfile.AttractiveObjectInherentData.OnGenerationEnd();
                         EditorSceneManager.CloseScene(tmpScene, true);
                     }
                 }
 
-                EditorGUILayout.BeginVertical(EditorStyles.textArea);
-                EditorGUILayout.LabelField("Generated objects : ");
-                foreach (var generatedObject in this.editorProfile.GeneratedObjects)
-                {
-                    EditorGUILayout.ObjectField(generatedObject, typeof(UnityEngine.Object), false);
-                }
-                EditorGUILayout.EndVertical();
-
+                this.DoGenereatedObject();
                 EditorGUILayout.EndScrollView();
 
             }
         }
-    }
 
-
-    public class AttractiveObjectGameConfigurationManager
-    {
-        private bool isNew;
-
-        public bool IsNew { get => isNew; }
-
-        public void OnGui(AttractiveObjectVariantCreationWizardEditorProfile editorProfile)
+        private void DoGenereatedObject()
         {
-            #region Attractive object game configuration
             EditorGUILayout.BeginVertical(EditorStyles.textArea);
-            editorProfile.AttractiveObjectConfigurationFoldout = EditorGUILayout.Foldout(editorProfile.AttractiveObjectConfigurationFoldout, "Object game configuration : ", true);
-            if (editorProfile.AttractiveObjectConfigurationFoldout)
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Generated objects : ");
+            if (GUILayout.Button(new GUIContent("D", "Delete all generations."), EditorStyles.miniButton, GUILayout.Width(20)))
             {
-                if (GUILayout.Button(new GUIContent("N"), EditorStyles.miniButton, GUILayout.Width(30f)))
+                foreach (var generatedAsset in this.editorProfile.GeneratedObjects)
                 {
-                    editorProfile.AttractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-                    this.isNew = true;
+                    AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(generatedAsset));
                 }
-                EditorGUI.BeginChangeCheck();
-                editorProfile.AttractiveObjectInherentConfigurationData = (AttractiveObjectInherentConfigurationData)EditorGUILayout.ObjectField("Generated attractive object configuration : ", editorProfile.AttractiveObjectInherentConfigurationData, typeof(AttractiveObjectInherentConfigurationData), false);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    this.isNew = false;
-                }
-                if (editorProfile.AttractiveObjectInherentConfigurationData != null)
-                {
-                    Editor.CreateEditor(editorProfile.AttractiveObjectInherentConfigurationData).OnInspectorGUI();
-                }
+                this.editorProfile.GeneratedObjects.Clear();
             }
-
+            EditorGUILayout.EndHorizontal();
+            foreach (var generatedObject in this.editorProfile.GeneratedObjects)
+            {
+                EditorGUILayout.ObjectField(generatedObject, typeof(UnityEngine.Object), false);
+            }
             EditorGUILayout.EndVertical();
-            #endregion
         }
+
+     
     }
+
+
 }

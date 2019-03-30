@@ -39,23 +39,18 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         [HideInInspector]
         public bool AttractiveObjectConfigurationFoldout;
 
-        [HideInInspector]
-        public AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData;
-
         public string ProjectRelativeTmpFolderPath { get => projectRelativeTmpFolderPath; }
         public DirectoryInfo TmpDirectoryInfo { get => tmpDirectoryInfo; }
 
         [HideInInspector]
         private List<UnityEngine.Object> generatedObjects;
         public List<UnityEngine.Object> GeneratedObjects { get => generatedObjects; }
-        
+
         public PathConfiguration PathConfiguration;
 
         #region GUIManager
-        [SerializeField]
         [HideInInspector]
-        private AttractiveObjectGameConfigurationManager attractiveObjectGameConfigurationManager;
-        public AttractiveObjectGameConfigurationManager AttractiveObjectGameConfigurationManager { get => attractiveObjectGameConfigurationManager; set => attractiveObjectGameConfigurationManager = value; }
+        public CreateableScriptableObjectComponent<AttractiveObjectInherentConfigurationData> AttractiveObjectInherentData;
         #endregion
 
         private void OnEnable()
@@ -79,7 +74,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         {
             this.ObjectName = "";
             this.ModelCreation.ResetEditor();
-            this.AttractiveObjectInherentConfigurationData = null;
+            this.AttractiveObjectInherentData.CreatedObject = null;
             this.generatedObjects = new List<UnityEngine.Object>();
         }
     }
@@ -144,9 +139,9 @@ namespace Editor_AttractiveObjectVariantWizardEditor
                 Debug.Log("new");
                 profileTarget.ConfigurationRetrieval = new Configurationretrieval();
             }
-            if (profileTarget.AttractiveObjectGameConfigurationManager == null)
+            if (profileTarget.AttractiveObjectInherentData == null)
             {
-                profileTarget.AttractiveObjectGameConfigurationManager = new AttractiveObjectGameConfigurationManager();
+                profileTarget.AttractiveObjectInherentData = new CreateableScriptableObjectComponent<AttractiveObjectInherentConfigurationData>();
             }
         }
     }
