@@ -42,7 +42,7 @@ namespace ConfigurationEditor
             }
             if (ConfigurationProfile == null)
             {
-                ConfigurationProfile = AssetFinder.SafeSingeAssetFind<T>(configurationProfiletAssetFilter);
+                ConfigurationProfile = AssetFinder.SafeSingleAssetFind<T>(configurationProfiletAssetFilter);
                 ConfigurationEditorUndoHelper.ConfigurationEditorProfile = ConfigurationProfile;
             }
             if (this.profileRefreshStyle == null)

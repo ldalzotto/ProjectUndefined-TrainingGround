@@ -33,7 +33,7 @@ namespace ConfigurationEditor
         {
             if (LaunchProjectileInherentDataConfiguration == null)
             {
-                LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingeAssetFind<ConfigurationSerialization<K, DATA>>(this.assetSearchFilter);
+                LaunchProjectileInherentDataConfiguration = AssetFinder.SafeSingleAssetFind<ConfigurationSerialization<K, DATA>>(this.assetSearchFilter);
             }
 
             EditorGUI.BeginChangeCheck();

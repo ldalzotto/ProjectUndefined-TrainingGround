@@ -9,5 +9,16 @@ namespace ConfigurationEditor
     public abstract class ConfigurationSerialization<K, V> : SerializedScriptableObject where K : Enum where V : ScriptableObject
     {
         public Dictionary<K, V> ConfigurationInherentData = new Dictionary<K, V>() { };
+
+#if UNITY_EDITOR
+        public void SetEntry(K key, V value)
+        {
+            if (ConfigurationInherentData.ContainsKey(key))
+            {
+                ConfigurationInherentData.Remove(key);
+            }
+            ConfigurationInherentData.Add(key, value);
+        }
+#endif
     }
 }

@@ -124,11 +124,11 @@ public class FXColorConfigurationEditor : EditorWindow
             this.launchProjectileRangeAreaEffectsManager = new PrefabEditorInjection();
         }
 
-        this.launchProjectileCursorAreaMaterial = AssetFinder.SafeSingeAssetFind<Material>("LaunchProjectileCursorMaterial t:Material");
-        this.launchProjectileRangeAreaEffectsManager.SelectedPrefab = AssetFinder.SafeSingeAssetFind<GameObject>("PuzzleEnvironmentObject t:Prefab");
-        this.attractiveObjectAreaMaterial = AssetFinder.SafeSingeAssetFind<Material>("AttractiveObjectRangeMaterial t:Material");
-        this.throwProjectilePathPrefab = AssetFinder.SafeSingeAssetFind<ThrowProjectilePath>("ThrowProjectilePath t:Prefab");
-        this.throwProjectileCursorPrefab.SelectedPrefab = AssetFinder.SafeSingeAssetFind<GameObject>("ThrowProjectileCursor t:Prefab");
+        this.launchProjectileCursorAreaMaterial = AssetFinder.SafeSingleAssetFind<Material>("LaunchProjectileCursorMaterial t:Material");
+        this.launchProjectileRangeAreaEffectsManager.SelectedPrefab = AssetFinder.SafeSingleAssetFind<GameObject>("PuzzleEnvironmentObject t:Prefab");
+        this.attractiveObjectAreaMaterial = AssetFinder.SafeSingleAssetFind<Material>("AttractiveObjectRangeMaterial t:Material");
+        this.throwProjectilePathPrefab = AssetFinder.SafeSingleAssetFind<ThrowProjectilePath>("ThrowProjectilePath t:Prefab");
+        this.throwProjectileCursorPrefab.SelectedPrefab = AssetFinder.SafeSingleAssetFind<GameObject>("ThrowProjectileCursor t:Prefab");
 
     }
 
