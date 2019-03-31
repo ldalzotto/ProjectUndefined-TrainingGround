@@ -6,25 +6,25 @@ namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "GameConfigurationEditorProfile", menuName = "Configuration/GameConfigurationEditorProfile", order = 1)]
-    public class GameConfigurationEditorProfile : ConfigurationEditorProfile
+    public class GameConfigurationEditorProfile : MultipleChoiceHeaderTab<IGenericConfigurationEditor>
     {
 
         [SerializeField]
-        private Dictionary<string, ConfigurationSelectionProfile> selection;
+        private Dictionary<string, MultipleChoiceHeaderTabSelectionProfile> selection;
 
         [SerializeField]
         private Dictionary<string, IGenericConfigurationEditor> configurations;
 
         public GameConfigurationEditorProfile()
         {
-            this.selection = new Dictionary<string, ConfigurationSelectionProfile>() {
-                { ComputeSelectionKey(typeof(ProjectileInherentData)), new ConfigurationSelectionProfile("PROJ")},
-                { ComputeSelectionKey(typeof(TargetZoneInherentData)), new ConfigurationSelectionProfile("TARG")},
-                { ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new ConfigurationSelectionProfile("ATTR_OBJ") },
-                { ComputeSelectionKey(typeof(LevelConfigurationData)), new ConfigurationSelectionProfile("LEVEL") },
-                { ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new ConfigurationSelectionProfile("WHEEL_ACT") },
-                { ComputeSelectionKey(typeof(GenericPuzzleAIComponents)), new ConfigurationSelectionProfile("AI") },
-                { ComputeSelectionKey(typeof(PlayerActionInherentData)), new ConfigurationSelectionProfile("PLA_ACT")}
+            this.selection = new Dictionary<string, MultipleChoiceHeaderTabSelectionProfile>() {
+                { ComputeSelectionKey(typeof(ProjectileInherentData)), new MultipleChoiceHeaderTabSelectionProfile("PROJ")},
+                { ComputeSelectionKey(typeof(TargetZoneInherentData)), new MultipleChoiceHeaderTabSelectionProfile("TARG")},
+                { ComputeSelectionKey(typeof(AttractiveObjectActionInherentData)), new MultipleChoiceHeaderTabSelectionProfile("ATTR_OBJ") },
+                { ComputeSelectionKey(typeof(LevelConfigurationData)), new MultipleChoiceHeaderTabSelectionProfile("LEVEL") },
+                { ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new MultipleChoiceHeaderTabSelectionProfile("WHEEL_ACT") },
+                { ComputeSelectionKey(typeof(GenericPuzzleAIComponents)), new MultipleChoiceHeaderTabSelectionProfile("AI") },
+                { ComputeSelectionKey(typeof(PlayerActionInherentData)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT")}
              };
             this.configurations = new Dictionary<string, IGenericConfigurationEditor>() {
                 {  ComputeSelectionKey(typeof(ProjectileInherentData)), new GenericConfigurationEditor<LaunchProjectileId, ProjectileInherentData>("t:ProjectileConfiguration")},
@@ -37,7 +37,7 @@ namespace RTPuzzle
             };
         }
 
-        public override Dictionary<string, ConfigurationSelectionProfile> ConfigurationSelection => this.selection;
+        public override Dictionary<string, MultipleChoiceHeaderTabSelectionProfile> ConfigurationSelection => this.selection;
 
         public override Dictionary<string, IGenericConfigurationEditor> Configurations => this.configurations;
     }

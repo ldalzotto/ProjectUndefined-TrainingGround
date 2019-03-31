@@ -6,7 +6,7 @@ namespace ConfigurationEditor
 {
     public class ConfigurationEditorUndoHelper
     {
-        public static ConfigurationEditorProfile ConfigurationEditorProfile;
+        public static MultipleChoiceHeaderTab<IGenericConfigurationEditor> ConfigurationEditorProfile;
         public const string UNDO_KEYWORD = "ConfigurationEditorUndoHelper";
         public static void RecordUndo()
         {

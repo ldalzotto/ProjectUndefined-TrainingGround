@@ -15,11 +15,15 @@ public class EnumSearchGUIWindow : EditorWindow
     private Regex searchRegex;
     private Vector3 enumSearchScrollView;
     private Action<Enum> onEnumSelected;
+    private Enum newEnum;
+
+    public Enum NewEnum { get => newEnum; }
 
     public void Init(Enum enumType, Action<Enum> onEnumSelected)
     {
         this.enumType = enumType;
         this.onEnumSelected = onEnumSelected;
+        this.newEnum = enumType;
     }
 
     private void OnGUI()
@@ -38,6 +42,13 @@ public class EnumSearchGUIWindow : EditorWindow
             }
 
             EditorGUILayout.BeginVertical(this.searchFieldStyle);
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Q"))
+            {
+                this.Close();
+            }
+            EditorGUILayout.EndHorizontal();
+
             // this.searchField.SetFocus();
             EditorGUI.BeginChangeCheck();
             this.searchStr = this.searchField.OnGUI(this.searchStr);
@@ -74,7 +85,8 @@ public class EnumSearchGUIWindow : EditorWindow
                     {
                         if (this.onEnumSelected != null)
                         {
-                            this.onEnumSelected.Invoke((Enum)Enum.Parse(this.enumType.GetType(), enumName));
+                            this.newEnum = (Enum)Enum.Parse(this.enumType.GetType(), enumName);
+                            this.onEnumSelected.Invoke(this.newEnum);
                         }
                     }
                 }

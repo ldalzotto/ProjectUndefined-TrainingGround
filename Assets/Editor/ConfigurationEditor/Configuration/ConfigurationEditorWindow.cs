@@ -7,10 +7,8 @@ namespace ConfigurationEditor
 {
 
     [System.Serializable]
-    public abstract class ConfigurationEditorWindow<T> : EditorWindow where T : ConfigurationEditorProfile
+    public abstract class ConfigurationEditorWindow<T> : EditorWindow where T : MultipleChoiceHeaderTab<IGenericConfigurationEditor>
     {
-        [SerializeField]
-        private ConfigurationSelection ConfigurationSelection;
 
         [SerializeField] private Vector2 scrollPosition;
 
@@ -36,10 +34,6 @@ namespace ConfigurationEditor
 
         private void InitializeConfiguration()
         {
-            if (this.ConfigurationSelection == null)
-            {
-                this.ConfigurationSelection = new ConfigurationSelection();
-            }
             if (ConfigurationProfile == null)
             {
                 ConfigurationProfile = AssetFinder.SafeSingleAssetFind<T>(configurationProfiletAssetFilter);
@@ -76,7 +70,7 @@ namespace ConfigurationEditor
             if (ConfigurationProfile != null)
             {
                 ConfigurationEditorUndoHelper.ConfigurationEditorProfile = ConfigurationProfile;
-                ConfigurationSelection.GUITick();
+                ConfigurationEditorUndoHelper.ConfigurationEditorProfile.GUITick();
                 scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
                 var selectedConf = ConfigurationEditorUndoHelper.ConfigurationEditorProfile.GetSelectedConf();
                 if (selectedConf != null)
@@ -87,48 +81,5 @@ namespace ConfigurationEditor
             }
         }
     }
-
-    [System.Serializable]
-    class ConfigurationSelection
-    {
-        [SerializeField]
-        private Vector2 headerSelectionScrollPosition;
-        
-        public void GUITick()
-        {
-
-            EditorGUILayout.Space();
-
-            this.headerSelectionScrollPosition = EditorGUILayout.BeginScrollView(this.headerSelectionScrollPosition);
-            EditorGUILayout.BeginHorizontal();
-            var configurationsSelections = ConfigurationEditorUndoHelper.ConfigurationEditorProfile.ConfigurationSelection;
-            foreach (var configurationSelection in configurationsSelections)
-            {
-                configurationsSelections[configurationSelection.Key].IsSelected =
-                    OnToggleDisableOthers(configurationSelection.Value.TabName, configurationsSelections[configurationSelection.Key].ButtonStyle, configurationsSelections[configurationSelection.Key].IsSelected,
-                     () => { ConfigurationEditorUndoHelper.ConfigurationEditorProfile.OnSelected(configurationSelection.Key); });
-            }
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndScrollView();
-            EditorGUILayout.Separator();
-            EditorGUILayout.Separator();
-        }
-
-        private bool OnToggleDisableOthers(string text, GUIStyle style, bool currentTab, Action OnActivated)
-        {
-            EditorGUI.BeginChangeCheck();
-            var selected = GUILayout.Toggle(currentTab, text, style);
-            if (EditorGUI.EndChangeCheck())
-            {
-                if (selected)
-                {
-                    OnActivated.Invoke();
-                }
-            }
-            return selected;
-        }
-    }
-
 }
 #endif

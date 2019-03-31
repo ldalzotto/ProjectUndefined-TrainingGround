@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,10 +39,5 @@ public class SearchablePropertyDrawer : PropertyDrawer
             }
 
         }
-
-
     }
-
-
-
 }

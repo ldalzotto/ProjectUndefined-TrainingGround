@@ -1,5 +1,4 @@
-﻿using OdinSerializer;
-using RTPuzzle;
+﻿using RTPuzzle;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -9,26 +8,16 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "AttractiveObjectVariantCreationWizardEditorProfile", menuName = "PlayerAction/Puzzle/AttractiveObject/AttractiveObjectVariantCreationWizardEditorProfile", order = 1)]
-    public class AttractiveObjectVariantCreationWizardEditorProfile : SerializedScriptableObject
+    public class AttractiveObjectVariantCreationWizardEditorProfile : AbstractCreationWizardEditorProfile
     {
         public const string GenericAttractiveObjectprefabName = "GenericAttractiveObjectPrefab";
-
-        [SearchableEnum]
-        public LevelZonesID LevelZoneID;
-        [SearchableEnum]
-        public AttractiveObjectId AttractiveObjectId;
-
-        public string ObjectName;
-        public AttractiveObjectType AttractiveObjectBasePrefab;
 
         private const string TmpDirectoryRelativePath = "tmp";
         private DirectoryInfo tmpDirectoryInfo;
         private string projectRelativeTmpFolderPath;
 
         [HideInInspector]
-        public Vector2 WizardScrollPosition;
-        [HideInInspector]
-        public bool GenericInfoFoldout;
+        public GenericInformation GenericInformation;
 
         [HideInInspector]
         public ModelCreation ModelCreation;
@@ -42,40 +31,38 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         public string ProjectRelativeTmpFolderPath { get => projectRelativeTmpFolderPath; }
         public DirectoryInfo TmpDirectoryInfo { get => tmpDirectoryInfo; }
 
-        [HideInInspector]
-        private List<UnityEngine.Object> generatedObjects;
-        public List<UnityEngine.Object> GeneratedObjects { get => generatedObjects; }
-
-        public PathConfiguration PathConfiguration;
-
         #region GUIManager
         [HideInInspector]
-        public CreateableScriptableObjectComponent<AttractiveObjectInherentConfigurationData> AttractiveObjectInherentData;
+        public AttractiveObjectInherentDataModule AttractiveObjectInherentData;
         #endregion
 
-        private void OnEnable()
+        public override void OnEnable()
         {
+            base.OnEnable();
             var scriptableObjectScriptFileInfo = new FileInfo(AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this)));
             try
             {
                 this.tmpDirectoryInfo = scriptableObjectScriptFileInfo.Directory.CreateSubdirectory(TmpDirectoryRelativePath);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 this.tmpDirectoryInfo = scriptableObjectScriptFileInfo.Directory.GetDirectories(TmpDirectoryRelativePath)[0];
             }
             var assetsFolderIndex = this.tmpDirectoryInfo.FullName.IndexOf("Assets\\");
             this.projectRelativeTmpFolderPath = this.tmpDirectoryInfo.FullName.Substring(assetsFolderIndex);
-            this.generatedObjects = new List<UnityEngine.Object>();
+            this.GeneratedObjects = new List<UnityEngine.Object>();
         }
 
-
-        public void ResetEditor()
+        public override void ResetEditor()
         {
-            this.ObjectName = "";
+            base.ResetEditor();
             this.ModelCreation.ResetEditor();
-            this.AttractiveObjectInherentData.CreatedObject = null;
-            this.generatedObjects = new List<UnityEngine.Object>();
+            this.AttractiveObjectInherentData.ResetEditor();
+        }
+
+        public override void OnGenerationEnd()
+        {
+            this.AttractiveObjectInherentData.OnGenerationEnd();
         }
     }
 
@@ -87,34 +74,69 @@ namespace Editor_AttractiveObjectVariantWizardEditor
     }
 
     [System.Serializable]
-    public class ModelCreation
+    public class ModelCreation : CreationModuleComponent
     {
-        public bool ModelCreationFoldout;
 
         public GameObject ModelAsset;
 
-        public void OnInspectorGUI()
+        public ModelCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
-            this.ModelAsset = EditorGUILayout.ObjectField("Model asset : ", this.ModelAsset, typeof(GameObject), false) as GameObject;
         }
 
-        public void ResetEditor()
+        protected override string foldoutLabel => "Model creation : ";
+
+        public override void ResetEditor()
         {
             this.ModelAsset = null;
         }
+
+        protected override void OnInspectorGUIImpl()
+        {
+            this.ModelAsset = EditorGUILayout.ObjectField("Model asset : ", this.ModelAsset, typeof(GameObject), false) as GameObject;
+        }
     }
 
-    public class Configurationretrieval
+    [System.Serializable]
+    public class Configurationretrieval : CreationModuleComponent
     {
-        public bool ConfigurationFilesRetrievalFoldout;
         private AttractiveObjectConfiguration attractiveObjectConfiguration;
+
+        public Configurationretrieval(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        {
+        }
 
         public AttractiveObjectConfiguration AttractiveObjectConfiguration { get => attractiveObjectConfiguration; set => attractiveObjectConfiguration = value; }
 
-        public void OnInspectorGUI()
+        protected override string foldoutLabel => "Game configuration : ";
+
+        public override void ResetEditor()
         {
-            this.attractiveObjectConfiguration = EditorGUILayout.ObjectField("Attractive object configuration : ", this.attractiveObjectConfiguration, typeof(AttractiveObjectConfiguration), false) as AttractiveObjectConfiguration;
+
         }
+
+        protected override void OnInspectorGUIImpl()
+        {
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField("Attractive object configuration : ", this.attractiveObjectConfiguration, typeof(AttractiveObjectConfiguration), false);
+            EditorGUI.EndDisabledGroup();
+
+            if (this.attractiveObjectConfiguration == null)
+            {
+                this.attractiveObjectConfiguration = AssetFinder.SafeSingleAssetFind<AttractiveObjectConfiguration>("t:" + typeof(AttractiveObjectConfiguration).ToString());
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class AttractiveObjectInherentDataModule : CreateableScriptableObjectComponent<AttractiveObjectInherentConfigurationData>
+    {
+        public AttractiveObjectInherentDataModule(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        {
+        }
+
+        protected override string objectFieldLabel => "Generated attractive object configuration : ";
+
+        protected override string foldoutLabel => "Object game configuration : ";
     }
 
     [CustomEditor(typeof(AttractiveObjectVariantCreationWizardEditorProfile))]
@@ -125,23 +147,28 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             base.DrawDefaultInspector();
             AttractiveObjectVariantCreationWizardEditorProfile profileTarget = target as AttractiveObjectVariantCreationWizardEditorProfile;
 
-            if (profileTarget.AttractiveObjectBasePrefab == null)
+            if (profileTarget.GenericInformation == null)
             {
-                profileTarget.AttractiveObjectBasePrefab = AssetFinder.SafeSingleAssetFind<AttractiveObjectType>(AttractiveObjectVariantCreationWizardEditorProfile.GenericAttractiveObjectprefabName);
+                profileTarget.GenericInformation = new GenericInformation(false, true, false);
+            }
+
+            if (profileTarget.GenericInformation.AttractiveObjectBasePrefab == null)
+            {
+                profileTarget.GenericInformation.AttractiveObjectBasePrefab = AssetFinder.SafeSingleAssetFind<AttractiveObjectType>(AttractiveObjectVariantCreationWizardEditorProfile.GenericAttractiveObjectprefabName);
             }
 
             if (profileTarget.ModelCreation == null)
             {
-                profileTarget.ModelCreation = new ModelCreation();
+                profileTarget.ModelCreation = new ModelCreation(false, true, false);
             }
             if (profileTarget.ConfigurationRetrieval == null)
             {
                 Debug.Log("new");
-                profileTarget.ConfigurationRetrieval = new Configurationretrieval();
+                profileTarget.ConfigurationRetrieval = new Configurationretrieval(false, true, false);
             }
             if (profileTarget.AttractiveObjectInherentData == null)
             {
-                profileTarget.AttractiveObjectInherentData = new CreateableScriptableObjectComponent<AttractiveObjectInherentConfigurationData>();
+                profileTarget.AttractiveObjectInherentData = new AttractiveObjectInherentDataModule(false, true, false);
             }
         }
     }

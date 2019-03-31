@@ -348,6 +348,7 @@ namespace RTPuzzle
         {
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
+            //TODO -> this prefab must be configured
             this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.LoveCheese, this.NPCAIManagerRef.transform);
         }
 
