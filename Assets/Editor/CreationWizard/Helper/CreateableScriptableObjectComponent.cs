@@ -45,7 +45,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
             this.isNew = true;
         }
         EditorGUI.BeginChangeCheck();
-        this.createdObject = (T)EditorGUILayout.ObjectField(this.objectFieldLabel /*"Generated attractive object configuration : "*/, this.createdObject, typeof(T), false);
+        this.createdObject = (T)EditorGUILayout.ObjectField(this.objectFieldLabel, this.createdObject, typeof(T), false);
         if (EditorGUI.EndChangeCheck())
         {
             this.isNew = false;

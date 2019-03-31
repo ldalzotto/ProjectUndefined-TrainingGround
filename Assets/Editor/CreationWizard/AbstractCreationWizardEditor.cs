@@ -33,28 +33,35 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
 
 
             editorProfile.WizardScrollPosition = EditorGUILayout.BeginScrollView(editorProfile.WizardScrollPosition);
-            this.OnWizardGUI();            
+            this.OnWizardGUI();
 
             if (GUILayout.Button("GENERATE"))
             {
-                this.editorProfile.GeneratedObjects.Clear();
-                var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-                tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
 
-                try
+                if (EditorUtility.DisplayDialog("Proceed generation ?", "There are warnings. Do you want to proceed generation ?", "YES", "NO"))
                 {
-                    this.OnGenerationClicked(tmpScene);  
+
+                    this.editorProfile.GeneratedObjects.Clear();
+                    var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+                    tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
+
+                    try
+                    {
+                        this.OnGenerationClicked(tmpScene);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                        Debug.LogError(e.StackTrace);
+                    }
+                    finally
+                    {
+                        this.editorProfile.OnGenerationEnd();
+                        EditorSceneManager.CloseScene(tmpScene, true);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                    Debug.LogError(e.StackTrace);
-                }
-                finally
-                {
-                    this.editorProfile.OnGenerationEnd();
-                    EditorSceneManager.CloseScene(tmpScene, true);
-                }
+
+
             }
 
             this.DoGenereatedObject();

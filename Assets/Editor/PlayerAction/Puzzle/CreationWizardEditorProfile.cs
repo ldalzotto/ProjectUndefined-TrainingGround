@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Editor_AttractiveObjectVariantWizardEditor;
+using Editor_PlayerActionVariantCreationWizardEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -15,11 +17,13 @@ public class CreationWizardEditorProfile : MultipleChoiceHeaderTab<ICreationWiza
     public CreationWizardEditorProfile()
     {
         this.selection = new Dictionary<string, MultipleChoiceHeaderTabSelectionProfile>() {
-            {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new MultipleChoiceHeaderTabSelectionProfile("ATTR_OBJ") }
+            {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new MultipleChoiceHeaderTabSelectionProfile("ATTR_OBJ") },
+            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT") }
         };
         this.configurations = new Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>()
         {
-             {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new AttractiveObjectVariantCreationWizardV2() }
+            {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new AttractiveObjectVariantCreationWizardV2() },
+            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new PlayerActionVariantCreationWizard() }
         };
     }
 

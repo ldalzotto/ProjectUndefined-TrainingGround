@@ -10,7 +10,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             var window = EditorWindow.GetWindow<CreationWizard>();
             window.Show();
         }
-
+        
         private CreationWizardEditorProfile PlayerActionCreationWizardEditorProfile;
 
         private void OnGUI()
