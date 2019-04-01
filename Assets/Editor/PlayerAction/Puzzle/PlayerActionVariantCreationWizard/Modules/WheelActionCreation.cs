@@ -1,17 +1,10 @@
-﻿using CreationWizard;
+﻿using System.Collections.Generic;
+using CreationWizard;
 
 namespace Editor_PlayerActionVariantCreationWizardEditor
 {
     public class WheelActionCreation : CreateableScriptableObjectComponent<RTPuzzle.SelectionWheelNodeConfigurationData>
     {
-        private GameConfiguration gameConfiguration;
-        private GenericInformations genericInformations;
-
-        internal void SetDependencies(GameConfiguration gameConfiguration, GenericInformations genericInformations)
-        {
-            this.gameConfiguration = gameConfiguration;
-            this.genericInformations = genericInformations;
-        }
 
         public WheelActionCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
@@ -23,15 +16,17 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
 
         protected override string headerDescriptionLabel => "The configuration of the UI wheel node.";
 
-        public override string ComputeWarningState()
+        public override string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules)
         {
-            if (this.IsNew && this.gameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData.ContainsKey(this.genericInformations.SelectionWheelNodeConfigurationId))
+            var gameConfiguration = (GameConfiguration)editorModules[typeof(GameConfiguration).Name];
+            var genericInformations = (GenericInformations)editorModules[typeof(GenericInformations).Name];
+
+            if (this.IsNew && gameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData.ContainsKey(genericInformations.SelectionWheelNodeConfigurationId))
             {
-                return ErrorMessages.GetConfigurationOverriteMessage(this.genericInformations.SelectionWheelNodeConfigurationId, this.gameConfiguration.SelectionWheelNodeConfiguration.name);
+                return ErrorMessages.GetConfigurationOverriteMessage(genericInformations.SelectionWheelNodeConfigurationId, gameConfiguration.SelectionWheelNodeConfiguration.name);
             }
             return string.Empty;
         }
-
 
     }
 

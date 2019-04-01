@@ -1,4 +1,5 @@
 ﻿using OdinSerializer;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,7 +48,7 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
         this.ModuleDisableAble = moduleDisableAble;
     }
 
-    public void OnInspectorGUI()
+    public void OnInspectorGUI(ref Dictionary<string, CreationModuleComponent> editorModules)
     {
         this.DoInit();
 
@@ -64,8 +65,8 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
             this.SetFoldoutStyleTextColor(ref this.foldoutStyle, Color.black);
         }
 
-        this.warningMessage = this.ComputeWarningState();
-        this.errorMessage = this.ComputeErrorState();
+        this.warningMessage = this.ComputeWarningState(ref editorModules);
+        this.errorMessage = this.ComputeErrorState(ref editorModules);
         EditorGUILayout.BeginVertical(EditorStyles.textArea);
         EditorGUILayout.BeginHorizontal();
         var newModuleEnabled = GUILayout.Toggle(this.ModuleEnabled, "", EditorStyles.miniButton, GUILayout.Width(10), GUILayout.Height(10));
@@ -106,8 +107,8 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
 
     protected abstract void OnInspectorGUIImpl();
     public abstract void ResetEditor();
-    public virtual string ComputeWarningState() { return string.Empty; }
-    public virtual string ComputeErrorState() { return string.Empty; }
+    public virtual string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules) { return string.Empty; }
+    public virtual string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules) { return string.Empty; }
 
     private void SetFoldoutStyleTextColor(ref GUIStyle style, Color textColor)
     {

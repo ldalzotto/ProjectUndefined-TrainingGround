@@ -15,12 +15,12 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             var configurationRetrieval = this.editorProfile.GetModule<Configurationretrieval>();
             var attractiveObjectInherentData = this.editorProfile.GetModule<AttractiveObjectInherentDataModule>();
 
-            genericInformation.OnInspectorGUI();
-            modelCreation.OnInspectorGUI();
-            aiFeedbackMarkCreation.OnInspectorGUI();
-            configurationRetrieval.OnInspectorGUI();
+            genericInformation.OnInspectorGUI(ref this.editorProfile.Modules);
+            modelCreation.OnInspectorGUI(ref this.editorProfile.Modules);
+            aiFeedbackMarkCreation.OnInspectorGUI(ref this.editorProfile.Modules);
+            configurationRetrieval.OnInspectorGUI(ref this.editorProfile.Modules);
 
-            attractiveObjectInherentData.OnInspectorGUI();
+            attractiveObjectInherentData.OnInspectorGUI(ref this.editorProfile.Modules);
         }
 
         protected override void OnGenerationClicked(Scene tmpScene)

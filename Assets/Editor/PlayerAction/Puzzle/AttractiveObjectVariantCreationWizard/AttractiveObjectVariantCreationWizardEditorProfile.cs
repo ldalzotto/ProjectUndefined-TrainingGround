@@ -10,18 +10,6 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         public const string GenericAttractiveObjectprefabName = "GenericAttractiveObjectPrefab";
         public const string AIFeedbackBasePrefabName = "GenericAIMark";
 
-        /*
-        public GenericInformation GenericInformation;
-        
-        public ModelCreation ModelCreation;
-        
-        public Configurationretrieval ConfigurationRetrieval;
-        public AIFeedbackMarkCreation AIFeedbackMarkCreation;
-
-        #region GUIManager
-        public AttractiveObjectInherentDataModule AttractiveObjectInherentData;
-        #endregion
-        */
         public override void OnEnable()
         {
             base.OnEnable();

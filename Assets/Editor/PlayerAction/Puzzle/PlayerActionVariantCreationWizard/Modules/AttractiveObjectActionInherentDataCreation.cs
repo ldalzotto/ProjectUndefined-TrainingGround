@@ -1,21 +1,11 @@
-﻿using CreationWizard;
+﻿using System.Collections.Generic;
+using CreationWizard;
 using RTPuzzle;
 
 namespace Editor_PlayerActionVariantCreationWizardEditor
 {
     public class AttractiveObjectActionInherentDataCreation : CreateableScriptableObjectComponent<AttractiveObjectActionInherentData>
     {
-        #region External dependencies
-        private GameConfiguration gameConfiguration;
-        private GenericInformations genericInformations;
-        #endregion
-
-        public void SetDependencies(GameConfiguration gameConfiguration, GenericInformations genericInformations)
-        {
-            this.gameConfiguration = gameConfiguration;
-            this.genericInformations = genericInformations;
-        }
-
         public AttractiveObjectActionInherentDataCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
         }
@@ -26,16 +16,19 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
 
         protected override string headerDescriptionLabel => "The configuration of the attractive object player action.";
 
-        public override string ComputeWarningState()
+        public override string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules)
         {
-            if (gameConfiguration.PlayerActionConfiguration != null && gameConfiguration.PlayerActionConfiguration.ConfigurationInherentData.ContainsKey(this.genericInformations.PlayerActionId))
+            var gameConfiguration = (GameConfiguration) editorModules[typeof(GameConfiguration).Name];
+            var genericInformations = (GenericInformations)editorModules[typeof(GenericInformations).Name];
+
+            if (gameConfiguration.PlayerActionConfiguration != null && gameConfiguration.PlayerActionConfiguration.ConfigurationInherentData.ContainsKey(genericInformations.PlayerActionId))
             {
-                return ErrorMessages.GetConfigurationOverriteMessage(this.genericInformations.PlayerActionId, gameConfiguration.PlayerActionConfiguration.name);
+                return ErrorMessages.GetConfigurationOverriteMessage(genericInformations.PlayerActionId, gameConfiguration.PlayerActionConfiguration.name);
             }
             return null;
         }
 
-        public override string ComputeErrorState()
+        public override string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules)
         {
             if (this.IsNew && this.CreatedObject.CoolDownTime < 0)
             {
