@@ -8,12 +8,14 @@ namespace Editor_AttractiveObjectVariantWizardEditor
     public class AttractiveObjectVariantCreationWizardEditorProfile : AbstractCreationWizardEditorProfile
     {
         public const string GenericAttractiveObjectprefabName = "GenericAttractiveObjectPrefab";
+        public const string AIFeedbackBasePrefabName = "GenericAIMark";
         
         public GenericInformation GenericInformation;
         
         public ModelCreation ModelCreation;
         
         public Configurationretrieval ConfigurationRetrieval;
+        public AIFeedbackMarkCreation AIFeedbackMarkCreation;
 
         #region GUIManager
         public AttractiveObjectInherentDataModule AttractiveObjectInherentData;
@@ -31,6 +33,10 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             {
                 this.GenericInformation.AttractiveObjectBasePrefab = AssetFinder.SafeSingleAssetFind<AttractiveObjectType>(AttractiveObjectVariantCreationWizardEditorProfile.GenericAttractiveObjectprefabName);
             }
+            if(this.GenericInformation.AIFeedbackMarkBasePrefab == null)
+            {
+                this.GenericInformation.AIFeedbackMarkBasePrefab = AssetFinder.SafeSingleAssetFind<AIFeedbackMarkType>(AIFeedbackBasePrefabName);
+            }
 
             if (this.ModelCreation == null)
             {
@@ -43,6 +49,10 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             if (this.AttractiveObjectInherentData == null)
             {
                 this.AttractiveObjectInherentData = GenericInformation.Create<AttractiveObjectInherentDataModule>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(AttractiveObjectInherentDataModule).Name + ".asset");
+            }
+            if(this.AIFeedbackMarkCreation == null)
+            {
+                this.AIFeedbackMarkCreation = GenericInformation.Create<AIFeedbackMarkCreation>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(AIFeedbackMarkCreation).Name + ".asset");
             }
         }
 
@@ -65,6 +75,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
     {
         public string ObjectPrefabFolder;
         public string ObjectConfigurationFolder;
+        public string AIMarkPrefabFolder;
     }
 
 }

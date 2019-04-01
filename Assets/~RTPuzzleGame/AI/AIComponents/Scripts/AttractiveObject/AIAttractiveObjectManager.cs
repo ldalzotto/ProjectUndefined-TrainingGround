@@ -10,7 +10,7 @@ namespace RTPuzzle
         #region External Events
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
-        
+
         public AIAttractiveObjectManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager puzzleEventsManager)
         {
             this.selfAgent = selfAgent;
@@ -44,9 +44,9 @@ namespace RTPuzzle
 
         private void SetAttractedObject(CollisionType collisionType)
         {
-            this.SetIsAttracted(true);
             this.attractionPosition = collisionType.transform.position;
             this.involvedAttractiveObject = AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType);
+            this.SetIsAttracted(true);
         }
 
         private void SetIsAttracted(bool value)
@@ -72,7 +72,7 @@ namespace RTPuzzle
             this.SetIsAttracted(false);
             this.involvedAttractiveObject = null;
         }
-       
+
 
     }
 }

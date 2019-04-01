@@ -21,12 +21,12 @@ namespace RTPuzzle
             attractiveObject.Init(attractiveObjectInherentConfigurationData);
             return attractiveObject;
         }
-
+        
         public static AttractiveObjectType GetAttractiveObjectFromCollisionType(CollisionType collisionType)
         {
             return collisionType.GetComponent<AttractiveObjectType>();
         }
-
+        
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
         public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
@@ -44,6 +44,8 @@ namespace RTPuzzle
         }
 
         private AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData;
+
+        public AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData { get => attractiveObjectInherentConfigurationData; }
 
         public bool Tick(float d, float timeAttenuationFactor)
         {

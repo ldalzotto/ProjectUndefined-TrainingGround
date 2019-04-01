@@ -37,29 +37,25 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
 
             if (GUILayout.Button("GENERATE"))
             {
-
-                if (EditorUtility.DisplayDialog("Proceed generation ?", "There are warnings. Do you want to proceed generation ?", "YES", "NO"))
+                if (this.editorProfile.ContainsError())
                 {
-
-                    this.editorProfile.GeneratedObjects.Clear();
-                    var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-                    tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
-
-                    try
+                    if (EditorUtility.DisplayDialog("Proceed generation ?", "There are errors. Do you want to proceed generation ?", "YES", "NO"))
                     {
-                        this.OnGenerationClicked(tmpScene);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogException(e);
-                        Debug.LogError(e.StackTrace);
-                    }
-                    finally
-                    {
-                        this.editorProfile.OnGenerationEnd();
-                        EditorSceneManager.CloseScene(tmpScene, true);
+                        DoGeneration();
                     }
                 }
+                else if (this.editorProfile.ContainsWarn())
+                {
+                    if (EditorUtility.DisplayDialog("Proceed generation ?", "There are warnings. Do you want to proceed generation ?", "YES", "NO"))
+                    {
+                        DoGeneration();
+                    }
+                }
+                else
+                {
+                    DoGeneration();
+                }
+
 
 
             }
@@ -67,6 +63,28 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
             this.DoGenereatedObject();
             EditorGUILayout.EndScrollView();
 
+        }
+    }
+
+    private void DoGeneration()
+    {
+        this.editorProfile.GeneratedObjects.Clear();
+        var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+        tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
+
+        try
+        {
+            this.OnGenerationClicked(tmpScene);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+            Debug.LogError(e.StackTrace);
+        }
+        finally
+        {
+            this.editorProfile.OnGenerationEnd();
+            EditorSceneManager.CloseScene(tmpScene, true);
         }
     }
 

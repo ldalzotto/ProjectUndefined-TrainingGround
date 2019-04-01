@@ -15,7 +15,7 @@
 		Tags{ "RenderType" = "Transparent" }
 		Pass
 		{
-			Blend SrcAlpha OneMinusSrcAlpha
+			Blend SrcAlpha SrcAlpha
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag

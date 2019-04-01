@@ -14,18 +14,20 @@ namespace RTPuzzle
         public float EffectiveTime;
         public GameObject AttractiveObjectModelPrefab;
         public AttractiveObjectType AttractiveObjectPrefab;
+        public AIFeedbackMarkType AttractiveObjectAIMarkPrefab;
 
-        public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)
+        public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab, AIFeedbackMarkType attractiveObjectAiMarkPrefab)
         {
-            this.Init(effectRange, effectiveTime, AttractiveObjectModelPrefab, AttractiveObjectPrefab);
+            this.Init(effectRange, effectiveTime, AttractiveObjectModelPrefab, AttractiveObjectPrefab, attractiveObjectAiMarkPrefab);
         }
 
-        public void Init(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)
+        public void Init(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab, AIFeedbackMarkType attractiveObjectAiMarkPrefab)
         {
             EffectRange = effectRange;
             EffectiveTime = effectiveTime;
             this.AttractiveObjectModelPrefab = AttractiveObjectModelPrefab;
             this.AttractiveObjectPrefab = AttractiveObjectPrefab;
+            this.AttractiveObjectAIMarkPrefab = attractiveObjectAiMarkPrefab;
         }
 
         //TODO -> how to have special editors gui displayed ?

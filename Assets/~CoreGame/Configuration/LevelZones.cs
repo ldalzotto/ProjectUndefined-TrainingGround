@@ -18,5 +18,6 @@ public enum LevelZonesID
     LEVEL1 = 0,
     SEWER = 1,
     SEWER_RTP = 2,
-    RTP_TEST = 3
+    RTP_TEST = 3,
+    RTP_EDITOR_TEST = 4
 }

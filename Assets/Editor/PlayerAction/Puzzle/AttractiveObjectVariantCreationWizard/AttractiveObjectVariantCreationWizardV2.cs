@@ -11,6 +11,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         {
             this.editorProfile.GenericInformation.OnInspectorGUI();
             this.editorProfile.ModelCreation.OnInspectorGUI();
+            this.editorProfile.AIFeedbackMarkCreation.OnInspectorGUI();
             this.editorProfile.ConfigurationRetrieval.OnInspectorGUI();
 
             this.editorProfile.AttractiveObjectInherentData.OnInspectorGUI(); /*.OnGui((AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData) => attractiveObjectInherentConfigurationData.CreationWizardGUI());*/
@@ -19,13 +20,33 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         protected override void OnGenerationClicked(Scene tmpScene)
         {
             #region Model Prefab
-            var modelAssetGeneration = new GeneratedPrefabAssetManager<GameObject>(this.editorProfile.ModelCreation.ModelAsset, PrefabAssetGenerationWorkflow.MODEL, tmpScene, this.editorProfile.ProjectRelativeTmpFolderPath,
+            var modelAssetGeneration = new GeneratedPrefabAssetManager<GameObject>(this.editorProfile.ModelCreation.ModelAsset, tmpScene, this.editorProfile.ProjectRelativeTmpFolderPath,
                    NamingConventionHelper.BuildName(editorProfile.GenericInformation.ObjectName, editorProfile.GenericInformation.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.MODEL), null);
             this.editorProfile.GeneratedObjects.Add(modelAssetGeneration.SavedAsset);
             #endregion
 
+            #region AI Feedback prefab
+            AIFeedbackMarkType genereatedFeedbackMarkType = null;
+            if (this.editorProfile.AIFeedbackMarkCreation.IsNew())
+            {
+                var g = new GeneratedPrefabAssetManager<AIFeedbackMarkType>(this.editorProfile.GenericInformation.AIFeedbackMarkBasePrefab, tmpScene,
+                           this.editorProfile.ProjectRelativeTmpFolderPath,
+                           NamingConventionHelper.BuildName(editorProfile.GenericInformation.ObjectName, PrefixType.AI_FEEDBACK_MARK, SufixType.NONE),
+                           (AIFeedbackMarkType aiFeedBackMarkType) =>
+                           {
+                               PrefabUtility.InstantiatePrefab(this.editorProfile.AIFeedbackMarkCreation.NewPrefab, aiFeedBackMarkType.transform);
+                           });
+                this.editorProfile.GeneratedObjects.Add(g.SavedAsset);
+                genereatedFeedbackMarkType = g.SavedAsset.GetComponent<AIFeedbackMarkType>();
+            }
+            else
+            {
+                genereatedFeedbackMarkType = this.editorProfile.AIFeedbackMarkCreation.SelectionPrefab;
+            }
+            #endregion
+
             #region Attractive Object Prefab
-            var attractiveObjectAssetGeneration = new GeneratedPrefabAssetManager<AttractiveObjectType>(this.editorProfile.GenericInformation.AttractiveObjectBasePrefab, PrefabAssetGenerationWorkflow.PREFAB, tmpScene,
+            var attractiveObjectAssetGeneration = new GeneratedPrefabAssetManager<AttractiveObjectType>(this.editorProfile.GenericInformation.AttractiveObjectBasePrefab, tmpScene,
                 this.editorProfile.ProjectRelativeTmpFolderPath, NamingConventionHelper.BuildName(editorProfile.GenericInformation.ObjectName, editorProfile.GenericInformation.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.ATTRACTIVE_OBJECT),
                 (AttractiveObjectType generatedAsset) =>
                 {
@@ -37,6 +58,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             #region Attractive object game configuration.
             this.editorProfile.AttractiveObjectInherentData.CreatedObject.AttractiveObjectPrefab = attractiveObjectAssetGeneration.SavedAsset.GetComponent<AttractiveObjectType>();
             this.editorProfile.AttractiveObjectInherentData.CreatedObject.AttractiveObjectModelPrefab = modelAssetGeneration.SavedAsset;
+            this.editorProfile.AttractiveObjectInherentData.CreatedObject.AttractiveObjectAIMarkPrefab = genereatedFeedbackMarkType;
             var attractiveObjectInherentConfigurationDataGenerated = this.editorProfile.AttractiveObjectInherentData.CreateAsset(this.editorProfile.ProjectRelativeTmpFolderPath, NamingConventionHelper.BuildName(editorProfile.GenericInformation.ObjectName, editorProfile.GenericInformation.LevelZoneID, PrefixType.ATTRACTIVE_OBJECT, SufixType.ATTRACTIVE_OBJECT_INHERENT_DATA));
             this.editorProfile.GeneratedObjects.Add(attractiveObjectInherentConfigurationDataGenerated);
             #endregion

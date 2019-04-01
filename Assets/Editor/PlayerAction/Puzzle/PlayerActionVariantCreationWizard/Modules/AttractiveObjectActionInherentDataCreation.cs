@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using CreationWizard;
+using RTPuzzle;
 
 namespace Editor_PlayerActionVariantCreationWizardEditor
 {
@@ -25,9 +26,9 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
 
         public override string ComputeWarningState()
         {
-            if (this.IsNew && gameConfiguration.PlayerActionConfiguration.ConfigurationInherentData.ContainsKey(this.genericInformations.PlayerActionId))
+            if (gameConfiguration.PlayerActionConfiguration != null && gameConfiguration.PlayerActionConfiguration.ConfigurationInherentData.ContainsKey(this.genericInformations.PlayerActionId))
             {
-                return "On generation, the key " + this.genericInformations.PlayerActionId + " of " + gameConfiguration.PlayerActionConfiguration.name + " will be overriten.";
+                return ErrorMessages.GetConfigurationOverriteMessage(this.genericInformations.PlayerActionId, gameConfiguration.PlayerActionConfiguration.name);
             }
             return null;
         }

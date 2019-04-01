@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -34,9 +35,17 @@ namespace RTPuzzle
         }
 
         public List<RTPPlayerAction> PlayerActions { get => playerActions; }
-        
+
         public float AvailableTimeAmount { get => availableTimeAmount; set => availableTimeAmount = value; }
-        public List<PlayerActionIdWrapper> PlayerActionIds { get => playerActionIds;}
+        public List<PlayerActionIdWrapper> PlayerActionIds { get => playerActionIds; }
+
+#if UNITY_EDITOR
+        public void AddPlayerActionId(PlayerActionIdWrapper playerActionIdWrapper)
+        {
+            this.playerActionIds.Add(playerActionIdWrapper);
+            this.playerActionIds = this.playerActionIds.Distinct().ToList();
+        }
+#endif
     }
 
     [System.Serializable]
@@ -44,6 +53,23 @@ namespace RTPuzzle
     {
         [SearchableEnum]
         public PlayerActionId playerActionId;
+
+        public PlayerActionIdWrapper(PlayerActionId playerActionId)
+        {
+            this.playerActionId = playerActionId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var wrapper = obj as PlayerActionIdWrapper;
+            return wrapper != null &&
+                   playerActionId == wrapper.playerActionId;
+        }
+
+        public override int GetHashCode()
+        {
+            return 985414159 + playerActionId.GetHashCode();
+        }
     }
 
 }

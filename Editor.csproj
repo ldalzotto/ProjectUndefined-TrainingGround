@@ -82,6 +82,8 @@
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\ScriptableObjectListGUI.cs" />
     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditor.cs" />
     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditorProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard\Constants\ErrorMessages.cs" />
+    <Compile Include="Assets\Editor\CreationWizard\Helper\CreateablePrefabComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helper\CreateableScriptableObjectComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helper\CreationModuleComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helper\GeneratedPrefabAssetManager.cs" />
@@ -97,15 +99,18 @@
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\AttractiveObjectVariantCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\AttractiveObjectVariantCreationWizardV2.cs" />
+    <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\Modules\AIFeedbackMarkCreation.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\Modules\AttractiveObjectInherentDataModule.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\Modules\Configurationretrieval.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\Modules\GenericInformation.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\AttractiveObjectVariantCreationWizard\Modules\ModelCreation.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\CreationWizard.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\CreationWizardEditorProfile.cs" />
+    <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\Modules\AddToLevel.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\Modules\AttractiveObjectActionInherentDataCreation.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\Modules\GameConfiguration.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\Modules\GenericInformations.cs" />
+    <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\Modules\WheelActionCreation.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\PlayerActionVariantCreationWizard.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\PlayerActionVariantCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\WindowTest.cs" />

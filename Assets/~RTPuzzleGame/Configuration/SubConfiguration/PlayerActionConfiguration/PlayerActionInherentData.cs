@@ -20,5 +20,6 @@ namespace RTPuzzle
     {
         STONE_PROJECTILE_ACTION_1 = 0,
         CHEESE_ATTRACTIVE_ACTION_1 = 1,
+        ATTRACTIVE_ACTION_EDITOR_TEST = 2
     }
 }

@@ -57,7 +57,7 @@ namespace RTPuzzle
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
             agent.updateRotation = false;
-            
+
             var aiBehaviorInherentData = puzzleCOnfigurationmanager.AIComponentsConfiguration()[AiID];
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
@@ -182,9 +182,9 @@ namespace RTPuzzle
             this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
 
-        internal void OnAIAttractedStart()
+        internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
         {
-            this.ContextMarkVisualFeedbackManager.OnAIAttractedStart();
+            this.ContextMarkVisualFeedbackManager.OnAIAttractedStart(attractiveObject);
         }
         internal void OnAIAttractedEnd()
         {
@@ -344,12 +344,11 @@ namespace RTPuzzle
             ReInitBeforeSpawningMark();
         }
 
-        internal void OnAIAttractedStart()
+        internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
         {
             ReInitBeforeSpawningMark();
             this.isVisualMarkDisplayed = true;
-            //TODO -> this prefab must be configured
-            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.LoveCheese, this.NPCAIManagerRef.transform);
+            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(attractiveObject.AttractiveObjectInherentConfigurationData.AttractiveObjectAIMarkPrefab, this.NPCAIManagerRef.transform);
         }
 
         internal void OnAIAttractedEnd()

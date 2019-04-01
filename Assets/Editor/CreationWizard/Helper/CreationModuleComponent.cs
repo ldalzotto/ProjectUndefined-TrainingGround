@@ -20,6 +20,15 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
 
     protected abstract string foldoutLabel { get; }
 
+    public static T Create<T>(string filePath, bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble) where T : CreationModuleComponent
+    {
+        var instance = Create<T>(filePath);
+        instance.ModuleFoldout = moduleFoldout;
+        instance.ModuleEnabled = moduleEnabled;
+        instance.ModuleDisableAble = moduleDistableAble;
+        return instance;
+    }
+
     public static T Create<T>(string filePath) where T : CreationModuleComponent
     {
         var instance = ScriptableObject.CreateInstance<T>();
@@ -114,7 +123,7 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
         return !string.IsNullOrEmpty(this.warningMessage);
     }
 
-    public bool hasError()
+    public bool HasError()
     {
         return !string.IsNullOrEmpty(this.errorMessage);
     }

@@ -1,6 +1,7 @@
 ﻿using OdinSerializer;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,12 +14,43 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     [HideInInspector]
     public List<Object> GeneratedObjects { get; set; }
 
+    [HideInInspector]
+    public Dictionary<string, CreationModuleComponent> Modules = new Dictionary<string, CreationModuleComponent>();
+
     private const string TmpDirectoryRelativePath = "tmp";
     private DirectoryInfo tmpDirectoryInfo;
     private string projectRelativeTmpFolderPath;
 
     public string ProjectRelativeTmpFolderPath { get => projectRelativeTmpFolderPath; }
     public DirectoryInfo TmpDirectoryInfo { get => tmpDirectoryInfo; }
+
+    #region Logical Conditions
+    public bool ContainsWarn()
+    {
+        foreach(var mod in this.Modules.Values)
+        {
+            if (mod.HasWarning())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool ContainsError()
+    {
+        foreach (var mod in this.Modules.Values)
+        {
+            if (mod.HasError())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    #endregion
+
 
     public virtual void OnEnable()
     {
@@ -43,4 +75,12 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     }
 
     public abstract void OnGenerationEnd();
+
+    protected void InitModule<T>(bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble) where T : CreationModuleComponent
+    {
+        if (!this.Modules.ContainsKey(typeof(T).Name))
+        {
+            this.Modules[typeof(T).Name] = CreationModuleComponent.Create<T>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(T).Name + ".asset", moduleFoldout, moduleEnabled, moduleDistableAble);
+        }
+    }
 }

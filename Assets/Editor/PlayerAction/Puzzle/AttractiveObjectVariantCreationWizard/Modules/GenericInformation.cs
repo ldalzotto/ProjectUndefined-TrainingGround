@@ -17,6 +17,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 
         public string ObjectName;
         public AttractiveObjectType AttractiveObjectBasePrefab;
+        public AIFeedbackMarkType AIFeedbackMarkBasePrefab;
 
         public PathConfiguration PathConfiguration;
 

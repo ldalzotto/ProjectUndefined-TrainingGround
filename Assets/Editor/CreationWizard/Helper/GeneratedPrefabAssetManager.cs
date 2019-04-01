@@ -11,15 +11,16 @@ public class GeneratedPrefabAssetManager<T> where T : UnityEngine.Object
     private string generatedFileName;
     private GameObject savedAsset;
 
-    public GeneratedPrefabAssetManager(T originalObject, PrefabAssetGenerationWorkflow prefabAssetGenerationWorkflow, Scene destinationScene,
+    public GeneratedPrefabAssetManager(T originalObject, Scene destinationScene,
         string folderPath, string fileBaseName, Action<T> afterAssetCreation)
     {
         T instance = default(T);
-        if (prefabAssetGenerationWorkflow == PrefabAssetGenerationWorkflow.PREFAB)
+        if (typeof(T).IsAssignableFrom(typeof(GameObject)) || typeof(T).IsSubclassOf(typeof(Component)))
+        //   if (prefabAssetGenerationWorkflow == PrefabAssetGenerationWorkflow.PREFAB)
         {
             instance = (T)PrefabUtility.InstantiatePrefab(originalObject, destinationScene);
         }
-        else if (prefabAssetGenerationWorkflow == PrefabAssetGenerationWorkflow.MODEL)
+        else // if (prefabAssetGenerationWorkflow == PrefabAssetGenerationWorkflow.MODEL)
         {
             var modelObject = (GameObject)AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GetAssetPath(originalObject));
             instance = (T)PrefabUtility.InstantiatePrefab(modelObject, destinationScene);

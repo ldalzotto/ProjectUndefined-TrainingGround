@@ -14,5 +14,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         protected override string objectFieldLabel => "Generated attractive object configuration : ";
 
         protected override string foldoutLabel => "Object game configuration : ";
+        
+
     }
 }

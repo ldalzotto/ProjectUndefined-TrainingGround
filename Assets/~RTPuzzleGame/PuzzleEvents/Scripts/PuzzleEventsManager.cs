@@ -43,7 +43,7 @@ namespace RTPuzzle
 
         public void OnAIAttractedStart(AttractiveObjectType attractiveObject, AiID aiID)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart();
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart(attractiveObject);
         }
         internal void OnAIAttractedEnd(AttractiveObjectType involvedAttractiveObject, AiID aiID)
         {

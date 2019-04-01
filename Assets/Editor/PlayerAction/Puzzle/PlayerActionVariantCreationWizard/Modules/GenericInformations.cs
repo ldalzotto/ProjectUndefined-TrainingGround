@@ -15,6 +15,9 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
         [SearchableEnum]
         public LevelZonesID LevelZonesID;
 
+        [SearchableEnum]
+        public SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
+
         public GenericInformations(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
         }

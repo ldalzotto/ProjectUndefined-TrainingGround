@@ -22,13 +22,11 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
 
     protected abstract string objectFieldLabel { get; }
 
-  
+
 
     public bool IsNew { get => isNew; }
     public T CreatedObject { get => createdObject; set => createdObject = value; }
     public GeneratedScriptableObjectManager<T> GenereatedAsset { get => genereatedAsset; }
-
-   // protected override string foldoutLabel => "Object game configuration : ";
 
     #region External Event
     public void OnGenerationEnd()
@@ -52,7 +50,15 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
         }
         if (this.createdObject != null)
         {
+            if (!this.isNew)
+            {
+                EditorGUI.BeginDisabledGroup(true);
+            }
             this.ScriptableObjectGUI(this.createdObject, new SerializedObject(this.createdObject));
+            if (!this.isNew)
+            {
+                EditorGUI.EndDisabledGroup();
+            }
         }
     }
 
@@ -60,7 +66,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     {
         Editor.CreateEditor(obj).OnInspectorGUI();
     }
-    
+
     public T CreateAsset(string folderPath, string fileBaseName)
     {
         T returnObject = default(T);
