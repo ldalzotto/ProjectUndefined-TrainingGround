@@ -24,6 +24,7 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
 
         protected override string foldoutLabel => "Generic informations : ";
 
+        protected override string headerDescriptionLabel => "Informations about ID and generation path.";
         public override void ResetEditor()
         {
         }

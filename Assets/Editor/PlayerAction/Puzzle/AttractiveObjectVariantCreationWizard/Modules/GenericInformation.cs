@@ -27,6 +27,8 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 
         protected override string foldoutLabel => "Generic info : ";
 
+        protected override string headerDescriptionLabel => "Informations about ID and generation path.";
+
         public override void ResetEditor()
         {
             this.ObjectName = "";

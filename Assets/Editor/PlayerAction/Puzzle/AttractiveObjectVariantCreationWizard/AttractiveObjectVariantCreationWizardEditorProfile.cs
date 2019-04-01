@@ -9,7 +9,8 @@ namespace Editor_AttractiveObjectVariantWizardEditor
     {
         public const string GenericAttractiveObjectprefabName = "GenericAttractiveObjectPrefab";
         public const string AIFeedbackBasePrefabName = "GenericAIMark";
-        
+
+        /*
         public GenericInformation GenericInformation;
         
         public ModelCreation ModelCreation;
@@ -20,53 +21,44 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         #region GUIManager
         public AttractiveObjectInherentDataModule AttractiveObjectInherentData;
         #endregion
-
+        */
         public override void OnEnable()
         {
             base.OnEnable();
-            if (this.GenericInformation == null)
+            this.InitModule<GenericInformation>(false, true, false);
+            this.InitModule<ModelCreation>(false, true, false);
+            this.InitModule<Configurationretrieval>(false, true, false);
+            this.InitModule<AttractiveObjectInherentDataModule>(false, true, false);
+            this.InitModule<AIFeedbackMarkCreation>(false, true, false);
+
+            var genericInformation = this.GetModule<GenericInformation>();
+
+            if (genericInformation.AttractiveObjectBasePrefab == null)
             {
-                this.GenericInformation = GenericInformation.Create<GenericInformation>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(GenericInformation).Name + ".asset");
+                genericInformation.AttractiveObjectBasePrefab = AssetFinder.SafeSingleAssetFind<AttractiveObjectType>(AttractiveObjectVariantCreationWizardEditorProfile.GenericAttractiveObjectprefabName);
+            }
+            if (genericInformation.AIFeedbackMarkBasePrefab == null)
+            {
+                genericInformation.AIFeedbackMarkBasePrefab = AssetFinder.SafeSingleAssetFind<AIFeedbackMarkType>(AIFeedbackBasePrefabName);
             }
 
-            if (this.GenericInformation.AttractiveObjectBasePrefab == null)
-            {
-                this.GenericInformation.AttractiveObjectBasePrefab = AssetFinder.SafeSingleAssetFind<AttractiveObjectType>(AttractiveObjectVariantCreationWizardEditorProfile.GenericAttractiveObjectprefabName);
-            }
-            if(this.GenericInformation.AIFeedbackMarkBasePrefab == null)
-            {
-                this.GenericInformation.AIFeedbackMarkBasePrefab = AssetFinder.SafeSingleAssetFind<AIFeedbackMarkType>(AIFeedbackBasePrefabName);
-            }
-
-            if (this.ModelCreation == null)
-            {
-                this.ModelCreation = GenericInformation.Create<ModelCreation>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(ModelCreation).Name + ".asset");
-            }
-            if (this.ConfigurationRetrieval == null)
-            {
-                this.ConfigurationRetrieval = GenericInformation.Create<Configurationretrieval>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(Configurationretrieval).Name + ".asset");
-            }
-            if (this.AttractiveObjectInherentData == null)
-            {
-                this.AttractiveObjectInherentData = GenericInformation.Create<AttractiveObjectInherentDataModule>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(AttractiveObjectInherentDataModule).Name + ".asset");
-            }
-            if(this.AIFeedbackMarkCreation == null)
-            {
-                this.AIFeedbackMarkCreation = GenericInformation.Create<AIFeedbackMarkCreation>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(AIFeedbackMarkCreation).Name + ".asset");
-            }
         }
 
         public override void ResetEditor()
         {
+            var modelCreation = this.GetModule<ModelCreation>();
+            var attractiveObjectInherentData = this.GetModule<AttractiveObjectInherentDataModule>();
+
             this.OnEnable();
             base.ResetEditor();
-            this.ModelCreation.ResetEditor();
-            this.AttractiveObjectInherentData.ResetEditor();
+            modelCreation.ResetEditor();
+            attractiveObjectInherentData.ResetEditor();
         }
 
         public override void OnGenerationEnd()
         {
-            this.AttractiveObjectInherentData.OnGenerationEnd();
+            var attractiveObjectInherentData = this.GetModule<AttractiveObjectInherentDataModule>();
+            attractiveObjectInherentData.OnGenerationEnd();
         }
     }
 

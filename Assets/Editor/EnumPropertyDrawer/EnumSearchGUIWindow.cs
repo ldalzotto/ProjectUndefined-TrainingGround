@@ -42,12 +42,6 @@ public class EnumSearchGUIWindow : EditorWindow
             }
 
             EditorGUILayout.BeginVertical(this.searchFieldStyle);
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Q"))
-            {
-                this.Close();
-            }
-            EditorGUILayout.EndHorizontal();
 
             // this.searchField.SetFocus();
             EditorGUI.BeginChangeCheck();

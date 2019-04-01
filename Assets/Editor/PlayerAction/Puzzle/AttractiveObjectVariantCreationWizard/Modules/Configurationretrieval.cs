@@ -18,6 +18,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 
         protected override string foldoutLabel => "Game configuration : ";
 
+        protected override string headerDescriptionLabel => "Global game configuration.";
         public override void ResetEditor()
         {
 

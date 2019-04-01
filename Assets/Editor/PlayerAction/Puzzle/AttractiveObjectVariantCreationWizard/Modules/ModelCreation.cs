@@ -16,6 +16,8 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 
         protected override string foldoutLabel => "Model creation : ";
 
+        protected override string headerDescriptionLabel => "The 3D model of the attractive object.";
+
         public override void ResetEditor()
         {
             this.ModelAsset = null;

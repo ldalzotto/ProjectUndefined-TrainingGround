@@ -13,6 +13,8 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 
         protected override string foldoutLabel => "AI feedback mark : ";
 
+        protected override string headerDescriptionLabel => "The visual feedback on top of AI when he is influenced by this action.";
+
         public override void ResetEditor()
         {
         }

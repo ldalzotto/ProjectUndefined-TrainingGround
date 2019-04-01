@@ -19,6 +19,7 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
     private GUIStyle foldoutStyle;
 
     protected abstract string foldoutLabel { get; }
+    protected abstract string headerDescriptionLabel { get; }
 
     public static T Create<T>(string filePath, bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble) where T : CreationModuleComponent
     {
@@ -80,6 +81,8 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
 
         if (this.ModuleFoldout)
         {
+            GUILayout.Label(new GUIContent(this.headerDescriptionLabel), EditorStyles.miniLabel);
+
             this.OnInspectorGUIImpl();
             if (!string.IsNullOrEmpty(this.errorMessage))
             {

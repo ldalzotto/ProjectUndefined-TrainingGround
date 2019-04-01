@@ -19,6 +19,8 @@
 
         protected override string foldoutLabel => "Add to level configuration : ";
 
+        protected override string headerDescriptionLabel => "Should the player action added to level configuration ?";
+
         public override void ResetEditor()
         {
         }

@@ -24,6 +24,8 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
 
         protected override string foldoutLabel => "Attractive object player action data :";
 
+        protected override string headerDescriptionLabel => "The configuration of the attractive object player action.";
+
         public override string ComputeWarningState()
         {
             if (gameConfiguration.PlayerActionConfiguration != null && gameConfiguration.PlayerActionConfiguration.ConfigurationInherentData.ContainsKey(this.genericInformations.PlayerActionId))

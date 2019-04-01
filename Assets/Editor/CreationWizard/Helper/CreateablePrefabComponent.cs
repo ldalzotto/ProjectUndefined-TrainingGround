@@ -5,13 +5,11 @@ using UnityEngine.SceneManagement;
 
 public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent where N : UnityEngine.Object where S : UnityEngine.Object
 {
-    [SerializeField]
     private GUIStyle selectionStyle;
 
     [SerializeField]
     private bool selectionToggle;
-
-    [SerializeField]
+    
     private GUIStyle newStyle;
 
     [SerializeField]

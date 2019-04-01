@@ -1,7 +1,6 @@
 ﻿using OdinSerializer;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     #region Logical Conditions
     public bool ContainsWarn()
     {
-        foreach(var mod in this.Modules.Values)
+        foreach (var mod in this.Modules.Values)
         {
             if (mod.HasWarning())
             {
@@ -82,5 +81,10 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         {
             this.Modules[typeof(T).Name] = CreationModuleComponent.Create<T>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(T).Name + ".asset", moduleFoldout, moduleEnabled, moduleDistableAble);
         }
+    }
+
+    public T GetModule<T>() where T : CreationModuleComponent
+    {
+        return (T)this.Modules[typeof(T).Name];
     }
 }

@@ -21,6 +21,8 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
 
         protected override string foldoutLabel => "Wheel node configuration : ";
 
+        protected override string headerDescriptionLabel => "The configuration of the UI wheel node.";
+
         public override string ComputeWarningState()
         {
             if (this.IsNew && this.gameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData.ContainsKey(this.genericInformations.SelectionWheelNodeConfigurationId))
