@@ -3,7 +3,7 @@
 public class VertexUnlitInstanciatedPropertySetter : MonoBehaviour
 {
 
-    public Color colorToSet;
+    public Color colorToSet = Color.white;
     public bool everyFrame;
 
     private MeshRenderer meshRenderer;

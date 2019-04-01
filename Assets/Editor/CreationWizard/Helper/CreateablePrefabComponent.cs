@@ -21,6 +21,8 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
     [SerializeField]
     private S selectionPrefab;
 
+    private GeneratedPrefabAssetManager<S> generatedPrefabAssetManager;
+
     public N NewPrefab { get => newPrefab;  }
     public S SelectionPrefab { get => selectionPrefab; }
 
@@ -75,13 +77,22 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
     {
         if (this.IsNew())
         {
-            var g = new GeneratedPrefabAssetManager<S>(basePrefab, tmpScene, basePath, baseName, (S obj) => {
+            this.generatedPrefabAssetManager = new GeneratedPrefabAssetManager<S>(basePrefab, tmpScene, basePath, baseName, (S obj) => {
                 afterBaseCreation.Invoke(obj, this.newPrefab);
             });
-            return g.SavedAsset.GetComponent<S>();
+            return this.generatedPrefabAssetManager.SavedAsset.GetComponent<S>();
         } else
         {
             return this.SelectionPrefab;
         }
     }
+
+    public void MoveGeneratedAsset(string targetPath)
+    {
+        if (this.IsNew())
+        {
+            this.generatedPrefabAssetManager.MoveGeneratedAsset(targetPath);
+        }
+    }
+
 }

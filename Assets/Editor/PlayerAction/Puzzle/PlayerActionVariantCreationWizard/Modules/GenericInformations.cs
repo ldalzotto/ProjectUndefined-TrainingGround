@@ -18,6 +18,8 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
         [SearchableEnum]
         public SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
 
+        public PathConfiguration PathConfiguration;
+
         public GenericInformations(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
         }
@@ -33,6 +35,13 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
         {
             Editor.CreateEditor(this).OnInspectorGUI();
         }
+    }
+
+    [System.Serializable]
+    public class PathConfiguration
+    {
+        public string AttractiveObjectPlayerActionConfigurationPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData";
+        public string WheelActionConfigurationPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/SelectionNodeConfiguration/SelectionNodeConfigurationData";
     }
 
 }

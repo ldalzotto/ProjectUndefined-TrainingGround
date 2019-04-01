@@ -53,9 +53,9 @@ namespace Editor_AttractiveObjectVariantWizardEditor
     [System.Serializable]
     public class PathConfiguration
     {
-        public string ObjectPrefabFolder;
-        public string ObjectConfigurationFolder;
-        public string AIMarkPrefabFolder;
+        public string ObjectPrefabFolder = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionObjects/AttractiveObject/Objects";
+        public string ObjectConfigurationFolder = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData";
+        public string AIMarkPrefabFolder = "Assets/~RTPuzzleGame/UI/AIFeedback/Prefabs";
     }
 
 }

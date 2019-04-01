@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using RTPuzzle;
-using Editor_AttractiveObjectVariantWizardEditor;
+﻿using RTPuzzle;
+using System.Collections.Generic;
 using UnityEditor;
 
 namespace Editor_AttractiveObjectVariantWizardEditor
@@ -37,6 +35,27 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         protected override void OnInspectorGUIImpl()
         {
             Editor.CreateEditor(this).OnInspectorGUI();
+        }
+
+        public override string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        {
+            if (string.IsNullOrEmpty(this.ObjectName))
+            {
+                return "Object name must not be empty.";
+            }
+            else if (string.IsNullOrEmpty(this.PathConfiguration.ObjectPrefabFolder))
+            {
+                return "ObjectPrefabFolder must not be empty";
+            }
+            else if (string.IsNullOrEmpty(this.PathConfiguration.ObjectConfigurationFolder))
+            {
+                return "ObjectConfigurationFolder must not be empty";
+            }
+            else if (string.IsNullOrEmpty(this.PathConfiguration.AIMarkPrefabFolder))
+            {
+                return "AIMarkPrefabFolder must not be empty";
+            }
+            return string.Empty;
         }
     }
 

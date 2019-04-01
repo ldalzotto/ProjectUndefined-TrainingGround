@@ -11,12 +11,7 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
             var gameConfiguration = (GameConfiguration)this.editorProfile.Modules[typeof(GameConfiguration).Name];
             var addTolevel = (AddToLevel)this.editorProfile.Modules[typeof(AddToLevel).Name];
             var wheelActionCreation = (WheelActionCreation)this.editorProfile.Modules[typeof(WheelActionCreation).Name];
-            
-            /*
-            attractiveObjectActionInherentDataCreation.SetDependencies(gameConfiguration, genericInformations);
-            addTolevel.SetDependencies(gameConfiguration, genericInformations);
-            wheelActionCreation.SetDependencies(gameConfiguration, genericInformations);
-  */         
+
             genericInformations.OnInspectorGUI(ref this.editorProfile.Modules);
             gameConfiguration.OnInspectorGUI(ref this.editorProfile.Modules);
             attractiveObjectActionInherentDataCreation.OnInspectorGUI(ref this.editorProfile.Modules);
@@ -56,6 +51,10 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
             this.editorProfile.GeneratedObjects.Add(attractiveObjectActionInherentConfigurationDataGenerated);
 
             attractiveObjectActionInherentDataCreation.OnGenerationEnd();
+
+            attractiveObjectActionInherentDataCreation.MoveGeneratedAsset(genericInformations.PathConfiguration.AttractiveObjectPlayerActionConfigurationPath);
+            wheelActionCreation.MoveGeneratedAsset(genericInformations.PathConfiguration.WheelActionConfigurationPath);
+
         }
     }
 

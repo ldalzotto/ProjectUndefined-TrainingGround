@@ -6,7 +6,8 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 {
     public class AIFeedbackMarkCreation : CreateablePrefabComponent<GameObject, AIFeedbackMarkType>
     {
-        
+        public Material AIFeedbackVertexLitMaterial;
+
         public AIFeedbackMarkCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
         }
@@ -18,7 +19,19 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         public override void ResetEditor()
         {
         }
-        
+
+        protected override void OnInspectorGUIImpl()
+        {
+            base.OnInspectorGUIImpl();
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField("Vertex lit material : ", this.AIFeedbackVertexLitMaterial, typeof(Material), false);
+            EditorGUI.EndDisabledGroup();
+
+            if(this.AIFeedbackVertexLitMaterial == null)
+            {
+                this.AIFeedbackVertexLitMaterial = AssetFinder.SafeSingleAssetFind<Material>("VertexUnlitInstanciatedMaterial");
+            }
+        }
     }
 
 }

@@ -43,6 +43,9 @@ namespace Editor_AttractiveObjectVariantWizardEditor
                    (AIFeedbackMarkType aiFeedbackMarkType, GameObject newPrefab) =>
                    {
                        PrefabUtility.InstantiatePrefab(newPrefab, aiFeedbackMarkType.transform);
+                       var renderer = aiFeedbackMarkType.GetComponentInChildren<Renderer>();
+                       renderer.material = aiFeedbackMarkCreation.AIFeedbackVertexLitMaterial;
+                       renderer.gameObject.AddComponent<VertexUnlitInstanciatedPropertySetter>();
                    });
             this.editorProfile.GeneratedObjects.Add(genereatedFeedbackMarkType);
             #endregion
@@ -73,6 +76,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             modelAssetGeneration.MoveGeneratedAsset(genericInformation.PathConfiguration.ObjectPrefabFolder);
             attractiveObjectAssetGeneration.MoveGeneratedAsset(genericInformation.PathConfiguration.ObjectPrefabFolder);
             attractiveObjectInherentData.MoveGeneratedAsset(genericInformation.PathConfiguration.ObjectConfigurationFolder);
+            aiFeedbackMarkCreation.MoveGeneratedAsset(genericInformation.PathConfiguration.AIMarkPrefabFolder);
             #endregion
         }
 

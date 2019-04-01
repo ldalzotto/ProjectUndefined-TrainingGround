@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using RTPuzzle;
+using System.Collections.Generic;
+using CreationWizard;
 
 namespace Editor_AttractiveObjectVariantWizardEditor
 {
@@ -16,5 +18,16 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         protected override string foldoutLabel => "Object game configuration : ";
 
         protected override string headerDescriptionLabel => "The configuration of the attractive object.";
+
+        public override string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        {
+            var gameConfiguration = (Configurationretrieval)editorModules[typeof(Configurationretrieval).Name];
+            var genericInfor = (GenericInformation)editorModules[typeof(GenericInformation).Name];
+            if(this.IsNew && gameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData.ContainsKey(genericInfor.AttractiveObjectId))
+            {
+                return ErrorMessages.GetConfigurationOverriteMessage(genericInfor.AttractiveObjectId, gameConfiguration.AttractiveObjectConfiguration.name);
+            }
+            return string.Empty;
+        }
     }
 }
