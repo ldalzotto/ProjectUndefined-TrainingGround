@@ -30,8 +30,7 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
                 this.editorProfile.ResetEditor();
             }
             EditorGUILayout.EndHorizontal();
-
-
+            
             editorProfile.WizardScrollPosition = EditorGUILayout.BeginScrollView(editorProfile.WizardScrollPosition);
             this.OnWizardGUI();
 

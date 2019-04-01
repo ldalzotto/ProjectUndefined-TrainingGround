@@ -70,4 +70,18 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
     {
         return this.selectionToggle;
     }
+
+    public S Create(S basePrefab, Scene tmpScene, string basePath, string baseName, Action<S, N> afterBaseCreation)
+    {
+        if (this.IsNew())
+        {
+            var g = new GeneratedPrefabAssetManager<S>(basePrefab, tmpScene, basePath, baseName, (S obj) => {
+                afterBaseCreation.Invoke(obj, this.newPrefab);
+            });
+            return g.SavedAsset.GetComponent<S>();
+        } else
+        {
+            return this.SelectionPrefab;
+        }
+    }
 }

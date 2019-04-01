@@ -38,23 +38,13 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             #endregion
 
             #region AI Feedback prefab
-            AIFeedbackMarkType genereatedFeedbackMarkType = null;
-            if (aiFeedbackMarkCreation.IsNew())
-            {
-                var g = new GeneratedPrefabAssetManager<AIFeedbackMarkType>(genericInformation.AIFeedbackMarkBasePrefab, tmpScene,
-                           this.editorProfile.ProjectRelativeTmpFolderPath,
-                           NamingConventionHelper.BuildName(genericInformation.ObjectName, PrefixType.AI_FEEDBACK_MARK, SufixType.NONE),
-                           (AIFeedbackMarkType aiFeedBackMarkType) =>
-                           {
-                               PrefabUtility.InstantiatePrefab(aiFeedbackMarkCreation.NewPrefab, aiFeedBackMarkType.transform);
-                           });
-                this.editorProfile.GeneratedObjects.Add(g.SavedAsset);
-                genereatedFeedbackMarkType = g.SavedAsset.GetComponent<AIFeedbackMarkType>();
-            }
-            else
-            {
-                genereatedFeedbackMarkType = aiFeedbackMarkCreation.SelectionPrefab;
-            }
+            AIFeedbackMarkType genereatedFeedbackMarkType = aiFeedbackMarkCreation.Create(genericInformation.AIFeedbackMarkBasePrefab, tmpScene, this.editorProfile.ProjectRelativeTmpFolderPath,
+                   NamingConventionHelper.BuildName(genericInformation.ObjectName, PrefixType.AI_FEEDBACK_MARK, SufixType.NONE),
+                   (AIFeedbackMarkType aiFeedbackMarkType, GameObject newPrefab) =>
+                   {
+                       PrefabUtility.InstantiatePrefab(newPrefab, aiFeedbackMarkType.transform);
+                   });
+            this.editorProfile.GeneratedObjects.Add(genereatedFeedbackMarkType);
             #endregion
 
             #region Attractive Object Prefab
