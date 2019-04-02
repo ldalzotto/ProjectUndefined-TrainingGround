@@ -29,6 +29,8 @@ namespace RTPuzzle
         {
             var attractiveObjectInherentConfigurationData = this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId];
             var instanciatedAttractiveObject = AttractiveObjectType.Instanciate(attractiveObjectWorldPositionHit.point, transform, attractiveObjectInherentConfigurationData);
+            //TODO make the rotation relative to the player
+            instanciatedAttractiveObject.transform.LookAt(instanciatedAttractiveObject.transform.position + Vector3.forward);
         }
 
         public void OnAttracteObjectCreated(AttractiveObjectType attractiveObjectType)

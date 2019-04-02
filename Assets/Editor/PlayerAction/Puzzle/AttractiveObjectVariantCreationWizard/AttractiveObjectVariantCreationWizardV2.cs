@@ -43,7 +43,8 @@ namespace Editor_AttractiveObjectVariantWizardEditor
                    (AIFeedbackMarkType aiFeedbackMarkType, GameObject newPrefab) =>
                    {
                        PrefabUtility.InstantiatePrefab(newPrefab, aiFeedbackMarkType.transform);
-                       var renderer = aiFeedbackMarkType.GetComponentInChildren<Renderer>();
+                       var meshFilter = aiFeedbackMarkType.GetComponentInChildren<MeshFilter>();
+                       var renderer = meshFilter.gameObject.GetComponent<Renderer>();
                        renderer.material = aiFeedbackMarkCreation.AIFeedbackVertexLitMaterial;
                        renderer.gameObject.AddComponent<VertexUnlitInstanciatedPropertySetter>();
                    });

@@ -9,7 +9,7 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
 
     [SerializeField]
     private bool selectionToggle;
-    
+
     private GUIStyle newStyle;
 
     [SerializeField]
@@ -23,7 +23,7 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
 
     private GeneratedPrefabAssetManager<S> generatedPrefabAssetManager;
 
-    public N NewPrefab { get => newPrefab;  }
+    public N NewPrefab { get => newPrefab; }
     public S SelectionPrefab { get => selectionPrefab; }
 
     protected CreateablePrefabComponent(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
@@ -77,11 +77,13 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
     {
         if (this.IsNew())
         {
-            this.generatedPrefabAssetManager = new GeneratedPrefabAssetManager<S>(basePrefab, tmpScene, basePath, baseName, (S obj) => {
+            this.generatedPrefabAssetManager = new GeneratedPrefabAssetManager<S>(basePrefab, tmpScene, basePath, baseName, (S obj) =>
+            {
                 afterBaseCreation.Invoke(obj, this.newPrefab);
             });
             return this.generatedPrefabAssetManager.SavedAsset.GetComponent<S>();
-        } else
+        }
+        else
         {
             return this.SelectionPrefab;
         }
