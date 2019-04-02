@@ -30,12 +30,23 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
             var attractiveObjectActionInherentConfigurationDataGenerated = attractiveObjectActionInherentDataCreation.CreateAsset(this.editorProfile.ProjectRelativeTmpFolderPath,
                 NamingConventionHelper.BuildName("AttractiveObject", genericInformations.LevelZonesID, PrefixType.PLAYER_ACTION, SufixType.NONE));
 
+            if (attractiveObjectActionInherentDataCreation.IsNew)
+            {
+                this.editorProfile.GeneratedObjects.Add(attractiveObjectActionInherentConfigurationDataGenerated);
+            }
+
             var wheelNodeConfiguration = wheelActionCreation.CreateAsset(this.editorProfile.ProjectRelativeTmpFolderPath,
-                NamingConventionHelper.BuildName("", PrefixType.WHEEL_NODE, SufixType.NONE));
+                NamingConventionHelper.BuildName(genericInformations.PlayerActionId.ToString(), genericInformations.LevelZonesID, PrefixType.WHEEL_NODE, SufixType.NONE));
+
+            if (wheelActionCreation.IsNew)
+            {
+                this.editorProfile.GeneratedObjects.Add(wheelNodeConfiguration);
+            }
 
             attractiveObjectActionInherentConfigurationDataGenerated.ActionWheelNodeConfigurationId = genericInformations.SelectionWheelNodeConfigurationId;
 
             gameConfiguration.PlayerActionConfiguration.SetEntry(genericInformations.PlayerActionId, attractiveObjectActionInherentConfigurationDataGenerated);
+
 
             if (wheelActionCreation.IsNew)
             {
@@ -48,7 +59,7 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
                 levelConfigurationData.AddPlayerActionId(new RTPuzzle.PlayerActionIdWrapper(genericInformations.PlayerActionId));
             }
 
-            this.editorProfile.GeneratedObjects.Add(attractiveObjectActionInherentConfigurationDataGenerated);
+
 
             attractiveObjectActionInherentDataCreation.OnGenerationEnd();
 
