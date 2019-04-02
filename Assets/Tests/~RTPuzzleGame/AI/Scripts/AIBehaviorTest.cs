@@ -48,6 +48,54 @@ namespace Tests
         }
 
         [UnityTest]
+        public IEnumerator AI_ProjectileReceived_WhenDestinatioReached_NoMoreEscape()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
+            yield return new WaitForFixedUpdate();
+            //projectile taken into account
+            yield return new WaitForEndOfFrame();
+            //clear agent destinations
+            //TODO -> clear agent position displaced to a common method
+            var agent = mouseTestAIManager.GetAgent();
+            agent.velocity = Vector3.zero;
+            agent.nextPosition = agent.destination;
+            agent.transform.position = agent.destination;
+            yield return null; //trigger SetDestination();
+            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "The AI should no more escape from projectile when destination is reached.");
+        }
+
+        [UnityTest]
+        public IEnumerator AI_ProjectileReceived_WhenDestinationNotReached_StillEscape()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            yield return null;
+            Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
+            yield return new WaitForFixedUpdate();
+            //projectile taken into account
+            yield return new WaitForEndOfFrame();
+            //move agent to a near position
+            //TODO -> clear agent position displaced to a common method
+            var agent = mouseTestAIManager.GetAgent();
+            agent.velocity = Vector3.zero;
+            agent.nextPosition = agent.transform.position + Vector3.one;
+            agent.transform.position = agent.transform.position + Vector3.one;
+            yield return null; //trigger SetDestination();
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "The AI should still escape from projectile when destination is not reached reached.");
+        }
+
+        [UnityTest]
         public IEnumerator AI_ProjectileReceived_FirstTimeNotIntoTargetZone()
         {
             yield return this.Before(SceneConstants.OneAIForcedTargetZone);

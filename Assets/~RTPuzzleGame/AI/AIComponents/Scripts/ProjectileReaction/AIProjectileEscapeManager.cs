@@ -20,6 +20,21 @@ namespace RTPuzzle
         private AIProjectileEscapeComponent AIProjectileEscapeComponent;
         #endregion
 
+        #region Internal Managers
+        private EscapeDistanceManager EscapeDistanceManager;
+        #endregion
+
+        #region Internal State
+        private bool escapingWithTargetZone;
+        #endregion
+
+        #region Internal Events
+        private void OnDestinationSetFromProjectileContact(Vector3 nextDestination)
+        {
+            this.EscapeDistanceManager.OnDestinationSetFromProjectileContact(nextDestination);
+        }
+        #endregion
+
         private NavMeshHit[] NavMeshhits;
         private Ray[] PhysicsRay;
 
@@ -32,15 +47,13 @@ namespace RTPuzzle
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.aiID = aiID;
             this.levelTargetZoneProvider = levelTargetZoneProvider;
+
+            this.EscapeDistanceManager = new EscapeDistanceManager(escapingAgent, this.AIProjectileEscapeComponent);
         }
 
-        public override void ClearEscapeDestination()
+        public override Nullable<Vector3> TickComponent()
         {
-            escapeDestination = null;
-        }
-
-        public override Nullable<Vector3> GetCurrentEscapeDirection()
-        {
+            this.EscapeDistanceManager.TickComponent();
             return escapeDestination;
         }
 
@@ -49,6 +62,10 @@ namespace RTPuzzle
             if (this.isEscapingFromProjectile && !value)
             {
                 this.PuzzleEventsManager.OnAiAffectedByProjectileEnd(this.aiID);
+            }
+            if (!value)
+            {
+                this.escapingWithTargetZone = false;
             }
             this.isEscapingFromProjectile = value;
         }
@@ -60,37 +77,45 @@ namespace RTPuzzle
             this.SetIsEscapingFromProjectile(true);
         }
 
-        private Nullable<Vector3> ComputeEscapePoint(Vector3 escapeDirection, LaunchProjectile launchProjectile)
+        private Nullable<Vector3> ComputeEscapePoint(Vector3 localEscapeDirection, LaunchProjectile launchProjectile)
         {
+            Nullable<Vector3> nextDestination = null;
             if (launchProjectile != null)
             {
+                IntersectFOV(localEscapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
                 if (isEscapingFromProjectile)
                 {
                     //if already escaping from projectile
                     Debug.Log("EscapeToFarest");
                     this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
-                    return EscapeToFarest(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                    nextDestination = EscapeToFarest(AIProjectileEscapeComponent.EscapeDistance);
                 }
                 else
                 {
                     Debug.Log("EscapeToFarestWithTargetZone");
                     this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
-                    return EscapeToFarestWithTargetZone(escapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                    nextDestination = EscapeToFarestWithTargetZone(AIProjectileEscapeComponent.EscapeDistance);
+                    this.escapingWithTargetZone = true;
                 }
             }
 
-            return null;
+            if (nextDestination.HasValue)
+            {
+                Debug.Log("Destination set projectile");
+                this.OnDestinationSetFromProjectileContact(nextDestination.Value);
+            }
+
+            return nextDestination;
 
         }
 
-        private Vector3? EscapeToFarestWithTargetZone(Vector3 localEscapeDirection, float semiAngleEscape)
+        private Vector3? EscapeToFarestWithTargetZone(float maxEscapeDistance)
         {
             NavMeshhits = new NavMeshHit[5];
             PhysicsRay = new Ray[5];
 
-            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
-            NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
+
+            NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
 
             for (var i = 0; i < NavMeshhits.Length; i++)
             {
@@ -126,14 +151,16 @@ namespace RTPuzzle
             return selectedPosition;
         }
 
-        private Vector3? EscapeToFarest(Vector3 localEscapeDirection, float semiAngleEscape)
+        private void IntersectFOV(Vector3 localEscapeDirection, float semiAngleEscape)
         {
-            NavMeshhits = new NavMeshHit[5];
-
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
-            NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, AIProjectileEscapeComponent.EscapeDistance);
+        }
 
+        private Vector3? EscapeToFarest(float maxEscapeDistance)
+        {
+            NavMeshhits = new NavMeshHit[5];
+            NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToRaycastTarget = 0f;
             for (var i = 0; i < NavMeshhits.Length; i++)
@@ -158,6 +185,37 @@ namespace RTPuzzle
         }
 
         public override void OnDestinationReached()
+        {
+            this.EscapeDistanceManager.OnOnDestinationReached();
+            if (this.EscapeDistanceManager.IsDistanceReached)
+            {
+                //if travelled escape distance is reached, we reset
+                ResetAIProjectileEscapeManagerState();
+            }
+            else
+            {
+                //if travelled escape distance is not reached
+                Nullable<Vector3> remainingEscapeDestination = null;
+                if (this.escapingWithTargetZone)
+                {
+                    remainingEscapeDestination = this.EscapeToFarestWithTargetZone(this.EscapeDistanceManager.GetRemainingDistance());
+                }
+                else
+                {
+                    remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance());
+                }
+                if (this.escapingAgent.destination != remainingEscapeDestination)
+                {
+                    this.escapeDestination = remainingEscapeDestination;
+                }
+                else //we cancel the remaining destination
+                {
+                    this.ResetAIProjectileEscapeManagerState();
+                }
+            }
+        }
+
+        private void ResetAIProjectileEscapeManagerState()
         {
             AIFOVManager.ResetFOV();
             this.SetIsEscapingFromProjectile(false);
@@ -216,4 +274,55 @@ namespace RTPuzzle
 
 
     }
+
+    class EscapeDistanceManager
+    {
+        private NavMeshAgent escapingAgnet;
+        private AIProjectileEscapeComponent aIProjectileEscapeComponent;
+
+        public EscapeDistanceManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent aIProjectileEscapeComponent)
+        {
+            this.escapingAgnet = escapingAgent;
+            this.aIProjectileEscapeComponent = aIProjectileEscapeComponent;
+        }
+
+        private bool isDistanceReached = true;
+        private Nullable<Vector3> lastFrameAgentPosition;
+        private float distanceCounter;
+
+        public bool IsDistanceReached { get => isDistanceReached; }
+
+        public void OnDestinationSetFromProjectileContact(Vector3 nextDestination)
+        {
+            this.isDistanceReached = false;
+            this.lastFrameAgentPosition = null;
+            this.distanceCounter = 0f;
+        }
+
+        public void TickComponent()
+        {
+            if (this.lastFrameAgentPosition.HasValue)
+            {
+                this.distanceCounter += Vector3.Distance(this.lastFrameAgentPosition.Value, this.escapingAgnet.transform.position);
+            }
+            this.lastFrameAgentPosition = this.escapingAgnet.transform.position;
+        }
+
+        public void OnOnDestinationReached()
+        {
+            Debug.Log("Distance counter : " + this.distanceCounter);
+            Debug.Log("Escape max distance : " + this.aIProjectileEscapeComponent.EscapeDistance);
+            Debug.Log("Agent stop distance : " + this.escapingAgnet.stoppingDistance);
+            if (this.distanceCounter >= this.aIProjectileEscapeComponent.EscapeDistance - this.escapingAgnet.stoppingDistance)
+            {
+                this.isDistanceReached = true;
+            }
+        }
+
+        public float GetRemainingDistance()
+        {
+            return Mathf.Abs(this.aIProjectileEscapeComponent.EscapeDistance - this.escapingAgnet.stoppingDistance - this.distanceCounter);
+        }
+    }
+
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-
-#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.AI;
-#endif
 
 namespace RTPuzzle
 {
+
     [System.Serializable]
     [CreateAssetMenu(fileName = "AIAttractiveObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIAttractiveObjectComponent", order = 1)]
     public class AIAttractiveObjectComponent : AbstractAIComponent

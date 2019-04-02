@@ -113,7 +113,6 @@
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\Modules\WheelActionCreation.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\PlayerActionVariantCreationWizard.cs" />
     <Compile Include="Assets\Editor\PlayerAction\Puzzle\PlayerActionVariantCreationWizard\PlayerActionVariantCreationWizardEditorProfile.cs" />
-    <Compile Include="Assets\Editor\PlayerAction\Puzzle\WindowTest.cs" />
     <Compile Include="Assets\Editor\Shader\WaterShaderGUI.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
     <Reference Include="UnityEngine.AIModule">

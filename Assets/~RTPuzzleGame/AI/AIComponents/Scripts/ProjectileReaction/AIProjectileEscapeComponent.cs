@@ -30,9 +30,8 @@ namespace RTPuzzle
         }
         #endregion
 
-
-        public abstract void ClearEscapeDestination();
-        public abstract Nullable<Vector3> GetCurrentEscapeDirection();
+        
+        public abstract Nullable<Vector3> TickComponent();
         public abstract void OnTriggerEnter(Collider collider, CollisionType collisionType);
         public abstract void OnDestinationReached();
         public abstract void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile);
