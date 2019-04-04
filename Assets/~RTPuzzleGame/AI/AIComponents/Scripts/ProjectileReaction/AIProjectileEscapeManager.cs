@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,7 +20,7 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Managers
-        private EscapeDistanceManager EscapeDistanceManager;
+        private EscapeDestinationManager escapeDestinationManager;
         #endregion
 
         #region Internal State
@@ -29,14 +28,11 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Events
-        private void OnDestinationSetFromProjectileContact(Vector3 nextDestination)
+        private void OnDestinationSetFromProjectileContact()
         {
-            this.EscapeDistanceManager.OnDestinationSetFromProjectileContact(nextDestination);
+            this.escapeDestinationManager.ResetDistanceComputation(this.AIProjectileEscapeComponent.EscapeDistance);
         }
         #endregion
-
-        private NavMeshHit[] NavMeshhits;
-        private Ray[] PhysicsRay;
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
                 AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<TargetZone> levelTargetZoneProvider)
@@ -48,13 +44,13 @@ namespace RTPuzzle
             this.aiID = aiID;
             this.levelTargetZoneProvider = levelTargetZoneProvider;
 
-            this.EscapeDistanceManager = new EscapeDistanceManager(escapingAgent, this.AIProjectileEscapeComponent);
+            this.escapeDestinationManager = new EscapeDestinationManager(escapingAgent);
         }
 
         public override Nullable<Vector3> TickComponent()
         {
-            this.EscapeDistanceManager.TickComponent();
-            return escapeDestination;
+            this.escapeDestinationManager.Tick();
+            return escapeDestinationManager.EscapeDestination;
         }
 
         private void SetIsEscapingFromProjectile(bool value)
@@ -72,90 +68,15 @@ namespace RTPuzzle
 
         public override void OnTriggerEnter(Collider collider, CollisionType collisionType)
         {
-            var escapeDirection = (escapingAgent.transform.position - collider.transform.position).normalized;
-            escapeDestination = ComputeEscapePoint(escapeDirection, LaunchProjectile.GetFromCollisionType(collisionType));
-            this.SetIsEscapingFromProjectile(true);
-        }
-
-        private Nullable<Vector3> ComputeEscapePoint(Vector3 localEscapeDirection, LaunchProjectile launchProjectile)
-        {
-            Nullable<Vector3> nextDestination = null;
+            var localEscapeDirection = (escapingAgent.transform.position - collider.transform.position).normalized;
+            var launchProjectile = LaunchProjectile.GetFromCollisionType(collisionType);
             if (launchProjectile != null)
             {
-                IntersectFOV(localEscapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
-                if (isEscapingFromProjectile)
-                {
-                    //if already escaping from projectile
-                    Debug.Log("EscapeToFarest");
-                    this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
-                    nextDestination = EscapeToFarest(AIProjectileEscapeComponent.EscapeDistance, NavMeshRaycastStrategy.RANDOM);
-                }
-                else
-                {
-                    Debug.Log("EscapeToFarestWithTargetZone");
-                    this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
-                    nextDestination = EscapeToFarestWithTargetZone(AIProjectileEscapeComponent.EscapeDistance, NavMeshRaycastStrategy.RANDOM);
-                    this.escapingWithTargetZone = true;
-                }
+                this.OnDestinationSetFromProjectileContact();
+                this.IntersectFOV(localEscapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterEscapeDestinationCalculation, null);
             }
-
-            if (nextDestination.HasValue)
-            {
-                Debug.Log("Destination set projectile");
-                this.OnDestinationSetFromProjectileContact(nextDestination.Value);
-            }
-
-            return nextDestination;
-
-        }
-
-        private Vector3? EscapeToFarestWithTargetZone(float maxEscapeDistance, NavMeshRaycastStrategy navMeshRaycastStrategy)
-        {
-            NavMeshhits = new NavMeshHit[5];
-            PhysicsRay = new Ray[5];
-
-            switch (navMeshRaycastStrategy)
-            {
-                case NavMeshRaycastStrategy.RANDOM:
-                    NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
-                    break;
-                case NavMeshRaycastStrategy.END_ANGLES:
-                    NavMeshhits = AIFOVManager.NavMeshRaycastEndOfRanges(escapingAgent.transform, maxEscapeDistance);
-                    break;
-            }
-
-            for (var i = 0; i < NavMeshhits.Length; i++)
-            {
-                PhysicsRay[i] = new Ray(escapingAgent.transform.position, NavMeshhits[i].position - escapingAgent.transform.position);
-            }
-            Nullable<Vector3> selectedPosition = null;
-            float currentDistanceToRaycastTarget = 0f;
-            for (var i = 0; i < NavMeshhits.Length; i++)
-            {
-                if (i == 0)
-                {
-                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(PhysicsRay[i], NavMeshhits[i].position, this.levelTargetZoneProvider.Invoke().ZoneCollider))
-                    {
-                        currentDistanceToRaycastTarget = Vector3.Distance(NavMeshhits[i].position, escapingAgent.transform.position);
-                        selectedPosition = NavMeshhits[i].position;
-                    }
-                }
-                else
-                {
-                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(PhysicsRay[i], NavMeshhits[i].position, this.levelTargetZoneProvider.Invoke().ZoneCollider))
-                    {
-                        var computedDistance = Vector3.Distance(NavMeshhits[i].position, escapingAgent.transform.position);
-                        if (currentDistanceToRaycastTarget < computedDistance)
-                        {
-                            selectedPosition = NavMeshhits[i].position;
-                            currentDistanceToRaycastTarget = computedDistance;
-                        }
-
-                    }
-                }
-            }
-
-            return selectedPosition;
+            this.SetIsEscapingFromProjectile(true);
         }
 
         private void IntersectFOV(Vector3 localEscapeDirection, float semiAngleEscape)
@@ -164,90 +85,62 @@ namespace RTPuzzle
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
         }
 
-        private Vector3? EscapeToFarest(float maxEscapeDistance, NavMeshRaycastStrategy navMeshRaycastStrategy)
-        {
-            NavMeshhits = new NavMeshHit[5];
-            switch (navMeshRaycastStrategy)
-            {
-                case NavMeshRaycastStrategy.RANDOM:
-                    NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
-                    break;
-                case NavMeshRaycastStrategy.END_ANGLES:
-                    NavMeshhits = AIFOVManager.NavMeshRaycastEndOfRanges(escapingAgent.transform, maxEscapeDistance);
-                    break;
-            }
-
-            Nullable<Vector3> selectedPosition = null;
-            float currentDistanceToRaycastTarget = 0f;
-            for (var i = 0; i < NavMeshhits.Length; i++)
-            {
-                if (i == 0)
-                {
-                    currentDistanceToRaycastTarget = Vector3.Distance(NavMeshhits[i].position, escapingAgent.transform.position);
-                    selectedPosition = NavMeshhits[i].position;
-                }
-                else
-                {
-                    var computedDistance = Vector3.Distance(NavMeshhits[i].position, escapingAgent.transform.position);
-                    if (currentDistanceToRaycastTarget < computedDistance)
-                    {
-                        selectedPosition = NavMeshhits[i].position;
-                        currentDistanceToRaycastTarget = computedDistance;
-                    }
-                }
-            }
-
-            return selectedPosition;
-        }
-
         public override void OnDestinationReached()
         {
-            this.EscapeDistanceManager.OnOnDestinationReached();
-            if (this.EscapeDistanceManager.IsDistanceReached)
+            this.escapeDestinationManager.OnAgentDestinationReached();
+            if (this.escapeDestinationManager.IsDistanceReached())
             {
                 //if travelled escape distance is reached, we reset
                 ResetAIProjectileEscapeManagerState();
             }
             else
             {
-                //if travelled escape distance is not reached
-                Nullable<Vector3> remainingEscapeDestination = null;
-                if (this.escapingWithTargetZone)
-                {
-                    remainingEscapeDestination = this.EscapeToFarestWithTargetZone(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.RANDOM);
-                }
-                else
-                {
-                    remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.RANDOM);
-                }
+                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.EscapeDestinationOnlyCalculation, this.ResetAIProjectileEscapeManagerState);
+            }
+        }
 
-                Debug.Log("Escape destination : " + this.escapeDestination.ToString() + " remaining destination : " + remainingEscapeDestination.Value.ToString());
+        private void OnTriggerEnterEscapeDestinationCalculation(NavMeshRaycastStrategy navMeshRaycastStrategy)
+        {
+            this.TargetZoneConsiderationBranch(
+                    withoutTargetZoneAction: () =>
+                    {
+                        //if already escaping from projectile
+                        Debug.Log("EscapeToFarest");
+                        this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
+                        this.escapeDestinationManager.EscapeToFarest(navMeshRaycastStrategy, this.AIFOVManager);
+                    },
+                    withTargetZoneAction: () =>
+                    {
+                        Debug.Log("EscapeToFarestWithTargetZone");
+                        this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
+                        this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
+                        this.escapingWithTargetZone = true;
+                    }
+                   );
+        }
 
-                if (this.escapingAgent.destination != remainingEscapeDestination)
-                {
-                    this.escapeDestination = remainingEscapeDestination;
-                }
-                else //we cancel the remaining destination
-                {
-                    //we try the end navmesh calculation strategy
-                    if (this.escapingWithTargetZone)
-                    {
-                        remainingEscapeDestination = this.EscapeToFarestWithTargetZone(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.END_ANGLES);
-                    }
-                    else
-                    {
-                        remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.END_ANGLES);
-                    }
+        private void EscapeDestinationOnlyCalculation(NavMeshRaycastStrategy navMeshRaycastStrategy)
+        {
+            this.TargetZoneConsiderationBranch(
+                  withTargetZoneAction: () =>
+                  {
+                      this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
+                  },
+                  withoutTargetZoneAction: () =>
+                  {
+                      this.escapeDestinationManager.EscapeToFarest(navMeshRaycastStrategy, this.AIFOVManager);
+                  });
+        }
 
-                    if (this.escapingAgent.destination != remainingEscapeDestination)
-                    {
-                        this.escapeDestination = remainingEscapeDestination;
-                    }
-                    else
-                    {
-                        this.ResetAIProjectileEscapeManagerState();
-                    }
-                }
+        private void TargetZoneConsiderationBranch(Action withTargetZoneAction, Action withoutTargetZoneAction)
+        {
+            if (this.isEscapingFromProjectile)
+            {
+                withoutTargetZoneAction.Invoke();
+            }
+            else
+            {
+                withTargetZoneAction.Invoke();
             }
         }
 
@@ -269,99 +162,10 @@ namespace RTPuzzle
         #region Gizmo
         public override void GizmoTick()
         {
-            if (escapeDestination.HasValue)
-            {
-                Gizmos.DrawWireSphere(escapeDestination.Value, 2f);
-            }
-            if (NavMeshhits != null)
-            {
-                DrawHits(NavMeshhits);
-            }
-            if (PhysicsRay != null)
-            {
-                DrawRays(PhysicsRay);
-            }
-
+            this.escapeDestinationManager.GizmoTick();
         }
 
-        private void DrawRays(Ray[] rays)
-        {
-            for (var i = 0; i < rays.Length; i++)
-            {
-                var ray = rays[i];
-
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawRay(new Ray(ray.origin, ray.direction * 1000));
-                Gizmos.color = Color.white;
-            }
-        }
-
-        private void DrawHits(NavMeshHit[] hits)
-        {
-            for (var i = 0; i < hits.Length; i++)
-            {
-                var hit = hits[i];
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(hit.position, 1f);
-                Gizmos.color = Color.white;
-            }
-        }
         #endregion
-
-
-    }
-
-    enum NavMeshRaycastStrategy
-    {
-        RANDOM = 0,
-        END_ANGLES = 1
-    }
-
-    class EscapeDistanceManager
-    {
-        private NavMeshAgent escapingAgnet;
-        private AIProjectileEscapeComponent aIProjectileEscapeComponent;
-
-        public EscapeDistanceManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent aIProjectileEscapeComponent)
-        {
-            this.escapingAgnet = escapingAgent;
-            this.aIProjectileEscapeComponent = aIProjectileEscapeComponent;
-        }
-
-        private bool isDistanceReached = true;
-        private Nullable<Vector3> lastFrameAgentPosition;
-        private float distanceCounter;
-
-        public bool IsDistanceReached { get => isDistanceReached; }
-
-        public void OnDestinationSetFromProjectileContact(Vector3 nextDestination)
-        {
-            this.isDistanceReached = false;
-            this.lastFrameAgentPosition = null;
-            this.distanceCounter = 0f;
-        }
-
-        public void TickComponent()
-        {
-            if (this.lastFrameAgentPosition.HasValue)
-            {
-                this.distanceCounter += Vector3.Distance(this.lastFrameAgentPosition.Value, this.escapingAgnet.transform.position);
-            }
-            this.lastFrameAgentPosition = this.escapingAgnet.transform.position;
-        }
-
-        public void OnOnDestinationReached()
-        {
-            if (this.distanceCounter >= this.aIProjectileEscapeComponent.EscapeDistance - this.escapingAgnet.stoppingDistance)
-            {
-                this.isDistanceReached = true;
-            }
-        }
-
-        public float GetRemainingDistance()
-        {
-            return Mathf.Abs(this.aIProjectileEscapeComponent.EscapeDistance - this.escapingAgnet.stoppingDistance - this.distanceCounter);
-        }
     }
 
 }

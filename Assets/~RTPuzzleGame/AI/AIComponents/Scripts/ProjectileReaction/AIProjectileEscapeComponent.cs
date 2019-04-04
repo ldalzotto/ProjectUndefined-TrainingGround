@@ -20,7 +20,6 @@ namespace RTPuzzle
         #region State
         protected bool isEscapingFromProjectile;
         protected bool isInTargetZone;
-        protected Nullable<Vector3> escapeDestination;
         #endregion
 
         #region Logical Conditions
