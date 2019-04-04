@@ -38,7 +38,7 @@ namespace RTPuzzle
                 if ((!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f)))
                 {
                     this.currentDestination = null;
-                    //Debug.Log("Destination reached !");
+                    Debug.Log("Destination reached !");
                     this.OnDestinationReachedEvent.Invoke();
                 }
             }
@@ -47,7 +47,7 @@ namespace RTPuzzle
         #region External Events
         public void SetDestination(Vector3 destination)
         {
-       //     Debug.Log("Set to AI : "+ objectAgent.name + " the destination : " + destination);
+            //     Debug.Log("Set to AI : "+ objectAgent.name + " the destination : " + destination);
             this.currentDestination = destination;
             objectAgent.SetDestination(destination);
         }

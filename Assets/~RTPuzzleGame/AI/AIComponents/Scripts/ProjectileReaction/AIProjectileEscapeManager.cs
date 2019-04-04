@@ -204,6 +204,9 @@ namespace RTPuzzle
                 {
                     remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance());
                 }
+
+                Debug.Log("Escape destination : " + this.escapeDestination.ToString() + " remaining destination : " + remainingEscapeDestination.Value.ToString());
+
                 if (this.escapingAgent.destination != remainingEscapeDestination)
                 {
                     this.escapeDestination = remainingEscapeDestination;
@@ -310,9 +313,6 @@ namespace RTPuzzle
 
         public void OnOnDestinationReached()
         {
-            Debug.Log("Distance counter : " + this.distanceCounter);
-            Debug.Log("Escape max distance : " + this.aIProjectileEscapeComponent.EscapeDistance);
-            Debug.Log("Agent stop distance : " + this.escapingAgnet.stoppingDistance);
             if (this.distanceCounter >= this.aIProjectileEscapeComponent.EscapeDistance - this.escapingAgnet.stoppingDistance)
             {
                 this.isDistanceReached = true;

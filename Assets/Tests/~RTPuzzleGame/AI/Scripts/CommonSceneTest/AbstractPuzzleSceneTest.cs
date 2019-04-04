@@ -13,6 +13,11 @@ namespace Tests
 
         public IEnumerator Before(string sceneName)
         {
+            yield return this.Before(sceneName, AiID.MOUSE_TEST);
+        }
+
+        public IEnumerator Before(string sceneName, AiID choosenId)
+        {
             this.mockPuzzleEventsManagerTest = null;
             SceneManager.sceneLoaded += (Scene scene, LoadSceneMode loadSceneMode) =>
             {
@@ -20,6 +25,9 @@ namespace Tests
                 var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
                 this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
                 this.mockPuzzleEventsManagerTest.ClearCalls();
+
+               var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
+                npcAIManager.AiID = choosenId;
             };
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
