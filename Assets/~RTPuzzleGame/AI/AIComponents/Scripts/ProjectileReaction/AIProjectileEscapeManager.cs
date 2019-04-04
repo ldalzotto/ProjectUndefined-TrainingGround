@@ -88,13 +88,13 @@ namespace RTPuzzle
                     //if already escaping from projectile
                     Debug.Log("EscapeToFarest");
                     this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
-                    nextDestination = EscapeToFarest(AIProjectileEscapeComponent.EscapeDistance);
+                    nextDestination = EscapeToFarest(AIProjectileEscapeComponent.EscapeDistance, NavMeshRaycastStrategy.RANDOM);
                 }
                 else
                 {
                     Debug.Log("EscapeToFarestWithTargetZone");
                     this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
-                    nextDestination = EscapeToFarestWithTargetZone(AIProjectileEscapeComponent.EscapeDistance);
+                    nextDestination = EscapeToFarestWithTargetZone(AIProjectileEscapeComponent.EscapeDistance, NavMeshRaycastStrategy.RANDOM);
                     this.escapingWithTargetZone = true;
                 }
             }
@@ -109,13 +109,20 @@ namespace RTPuzzle
 
         }
 
-        private Vector3? EscapeToFarestWithTargetZone(float maxEscapeDistance)
+        private Vector3? EscapeToFarestWithTargetZone(float maxEscapeDistance, NavMeshRaycastStrategy navMeshRaycastStrategy)
         {
             NavMeshhits = new NavMeshHit[5];
             PhysicsRay = new Ray[5];
 
-
-            NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
+            switch (navMeshRaycastStrategy)
+            {
+                case NavMeshRaycastStrategy.RANDOM:
+                    NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
+                    break;
+                case NavMeshRaycastStrategy.END_ANGLES:
+                    NavMeshhits = AIFOVManager.NavMeshRaycastEndOfRanges(escapingAgent.transform, maxEscapeDistance);
+                    break;
+            }
 
             for (var i = 0; i < NavMeshhits.Length; i++)
             {
@@ -157,10 +164,19 @@ namespace RTPuzzle
             AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
         }
 
-        private Vector3? EscapeToFarest(float maxEscapeDistance)
+        private Vector3? EscapeToFarest(float maxEscapeDistance, NavMeshRaycastStrategy navMeshRaycastStrategy)
         {
             NavMeshhits = new NavMeshHit[5];
-            NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
+            switch (navMeshRaycastStrategy)
+            {
+                case NavMeshRaycastStrategy.RANDOM:
+                    NavMeshhits = AIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, maxEscapeDistance);
+                    break;
+                case NavMeshRaycastStrategy.END_ANGLES:
+                    NavMeshhits = AIFOVManager.NavMeshRaycastEndOfRanges(escapingAgent.transform, maxEscapeDistance);
+                    break;
+            }
+
             Nullable<Vector3> selectedPosition = null;
             float currentDistanceToRaycastTarget = 0f;
             for (var i = 0; i < NavMeshhits.Length; i++)
@@ -198,11 +214,11 @@ namespace RTPuzzle
                 Nullable<Vector3> remainingEscapeDestination = null;
                 if (this.escapingWithTargetZone)
                 {
-                    remainingEscapeDestination = this.EscapeToFarestWithTargetZone(this.EscapeDistanceManager.GetRemainingDistance());
+                    remainingEscapeDestination = this.EscapeToFarestWithTargetZone(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.RANDOM);
                 }
                 else
                 {
-                    remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance());
+                    remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.RANDOM);
                 }
 
                 Debug.Log("Escape destination : " + this.escapeDestination.ToString() + " remaining destination : " + remainingEscapeDestination.Value.ToString());
@@ -213,7 +229,24 @@ namespace RTPuzzle
                 }
                 else //we cancel the remaining destination
                 {
-                    this.ResetAIProjectileEscapeManagerState();
+                    //we try the end navmesh calculation strategy
+                    if (this.escapingWithTargetZone)
+                    {
+                        remainingEscapeDestination = this.EscapeToFarestWithTargetZone(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.END_ANGLES);
+                    }
+                    else
+                    {
+                        remainingEscapeDestination = this.EscapeToFarest(this.EscapeDistanceManager.GetRemainingDistance(), NavMeshRaycastStrategy.END_ANGLES);
+                    }
+
+                    if (this.escapingAgent.destination != remainingEscapeDestination)
+                    {
+                        this.escapeDestination = remainingEscapeDestination;
+                    }
+                    else
+                    {
+                        this.ResetAIProjectileEscapeManagerState();
+                    }
                 }
             }
         }
@@ -276,6 +309,12 @@ namespace RTPuzzle
         #endregion
 
 
+    }
+
+    enum NavMeshRaycastStrategy
+    {
+        RANDOM = 0,
+        END_ANGLES = 1
     }
 
     class EscapeDistanceManager

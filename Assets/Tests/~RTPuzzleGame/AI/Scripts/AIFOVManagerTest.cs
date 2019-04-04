@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using RTPuzzle;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.AI;
 
 namespace Tests
@@ -56,6 +55,16 @@ namespace Tests
             var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
         }
+
+        [Test]
+        public void AIFOVManagerTest_RaycastAngleCalculation_WithAdjacentFOV()
+        {
+            var fov = new FOV(null);
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(50, 150), new FOVSlice(150, 200) });
+            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
+            Assert.AreEqual(new float[3] { 50f, 100f, 150f }, calculatedAngles);
+        }
+
         [Test]
         public void AIFOVManagerTest_RaycastAngleCalculation_WithDownSlices()
         {
@@ -85,5 +94,33 @@ namespace Tests
                 Assert.IsTrue((calculatedAngles[i] >= 50f && calculatedAngles[i] <= 150f) || (calculatedAngles[i] >= 200f && calculatedAngles[i] <= 250f));
             }
         }
+
+        [Test]
+        public void AIFOVManagerTest_GetEndAnglesForRayCast_SingleSlice()
+        {
+            var fov = new FOV(null);
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(100, 370) });
+            var calculatedAngles = AIFOVManager.GetEndAnglesForRayCast(fov);
+            Assert.AreEqual(new float[2] { 100f, 370f }, calculatedAngles);
+        }
+
+        [Test]
+        public void AIFOVManagerTest_GetEndAnglesForRayCast_MultipleSlice_WithSpaceBetween()
+        {
+            var fov = new FOV(null);
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(100, 200), new FOVSlice(250, 300) });
+            var calculatedAngles = AIFOVManager.GetEndAnglesForRayCast(fov);
+            Assert.AreEqual(new float[4] { 100f, 200f, 250f, 300f }, calculatedAngles);
+        }
+
+        [Test]
+        public void AIFOVManagerTest_GetEndAnglesForRayCast_MultipleSlice_WithoutSpace()
+        {
+            var fov = new FOV(null);
+            fov.ReplaceFovSlices(new List<FOVSlice>() { new FOVSlice(100, 200), new FOVSlice(200, 300) });
+            var calculatedAngles = AIFOVManager.GetEndAnglesForRayCast(fov);
+            Assert.AreEqual(new float[2] { 100f, 300f }, calculatedAngles);
+        }
+
     }
 }

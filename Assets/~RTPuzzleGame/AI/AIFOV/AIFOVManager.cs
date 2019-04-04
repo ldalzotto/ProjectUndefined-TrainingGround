@@ -34,6 +34,17 @@ namespace RTPuzzle
             return navMeshHits;
         }
 
+        public NavMeshHit[] NavMeshRaycastEndOfRanges(Transform sourceTransform, float raySampleDistance)
+        {
+            var anglesRayCast = AIFOVManager.GetEndAnglesForRayCast(aiFov);
+            var navMeshHits = new NavMeshHit[anglesRayCast.Length];
+            for (var i = 0; i < navMeshHits.Length; i++)
+            {
+                NavMeshRayCaster.CastNavMeshRayFOVAgentWorld(agent, anglesRayCast[i], raySampleDistance, out navMeshHits[i]);
+            }
+            return navMeshHits;
+        }
+
         public void SetAvailableFOVRange(float beginAngle, float endAngle)
         {
             aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
@@ -142,20 +153,8 @@ namespace RTPuzzle
 
         public static float[] CalculateAnglesForRayCast(int sampleNB, FOV aiFov, bool withRandomness)
         {
-
             //(0) converting down slices
-            var rawFOV = new List<FOVSlice>();
-            foreach (var fovSlice in aiFov.FovSlices)
-            {
-                if (fovSlice.Down())
-                {
-                    rawFOV.Add(new FOVSlice(fovSlice.EndAngleExcluded, fovSlice.BeginAngleIncluded));
-                }
-                else
-                {
-                    rawFOV.Add(fovSlice);
-                }
-            }
+            List<FOVSlice> rawFOV = ConvertDownSlices(aiFov);
 
             //(1) mapping raw data
             var mappedFOVSlices = new List<FOVSlice>();
@@ -210,6 +209,73 @@ namespace RTPuzzle
             }
 
             return anglesRayCast;
+        }
+
+        public static float[] GetEndAnglesForRayCast(FOV aiFov)
+        {
+            //(0) Merge adjacent FOV range
+            List<FOVSlice> mergedFOVSlices = MergeAdjacentFOVRange(aiFov.FovSlices);
+
+            //(1) Set end angles
+            var anglesRayCast = new float[mergedFOVSlices.Count * 2];
+            for (var i = 0; i < mergedFOVSlices.Count; i++)
+            {
+                var currentRange = mergedFOVSlices[i];
+                anglesRayCast[i * 2] = currentRange.BeginAngleIncluded;
+                anglesRayCast[(i * 2) + 1] = currentRange.EndAngleExcluded;
+            }
+            return anglesRayCast;
+        }
+
+        private static List<FOVSlice> MergeAdjacentFOVRange(List<FOVSlice> rawFOV)
+        {
+            var mergedFOVSlices = new List<FOVSlice>();
+            if (rawFOV.Count > 1)
+            {
+                for (var i = 0; i < rawFOV.Count; i++)
+                {
+                    if (i != 0)
+                    {
+                        if (rawFOV[i - 1].EndAngleExcluded == rawFOV[i].BeginAngleIncluded)
+                        {
+                            mergedFOVSlices.Add(new FOVSlice(rawFOV[i - 1].BeginAngleIncluded, rawFOV[i].EndAngleExcluded));
+                        }
+                        else
+                        {
+                            mergedFOVSlices.Add(rawFOV[i - 1]);
+                            if (i == rawFOV.Count - 1)
+                            {
+                                mergedFOVSlices.Add(rawFOV[i]);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return rawFOV;
+            }
+
+
+            return mergedFOVSlices;
+        }
+
+        private static List<FOVSlice> ConvertDownSlices(FOV aiFov)
+        {
+            var rawFOV = new List<FOVSlice>();
+            foreach (var fovSlice in aiFov.FovSlices)
+            {
+                if (fovSlice.Down())
+                {
+                    rawFOV.Add(new FOVSlice(fovSlice.EndAngleExcluded, fovSlice.BeginAngleIncluded));
+                }
+                else
+                {
+                    rawFOV.Add(fovSlice);
+                }
+            }
+
+            return rawFOV;
         }
 
         private static List<FOVSlice> CutInputAnglesToSlice(float beginAngle, float endAngle)
@@ -299,6 +365,12 @@ namespace RTPuzzle
         }
         #endregion
 
+    }
+
+    public enum AnglesCalculationMethod
+    {
+        RANDOM = 0,
+        WITH_END_ANGLES = 1
     }
 
 
