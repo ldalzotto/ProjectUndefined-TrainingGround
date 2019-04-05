@@ -24,20 +24,11 @@ namespace RTPuzzle
         #endregion
 
         protected TargetZone targetZone;
-
-        protected Vector3? escapeDestination;
+        
 
         public bool IsEscapingFromTargetZone { get => isEscapingFromTargetZone; }
-        public Vector3? GetCurrentEscapeDestination()
-        {
-            return this.escapeDestination;
-        }
-
-        public void ClearEscapeDestination()
-        {
-            this.escapeDestination = null;
-        }
-
+        public abstract Vector3? GetCurrentEscapeDestination();
+        
         #region Logical Conditions
         public bool IsInTargetZone()
         {

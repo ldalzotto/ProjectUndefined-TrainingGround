@@ -314,11 +314,11 @@ namespace Tests
             Assert.AreEqual(new FOVSlice(360f - targetEscapeSemiAngle, 360f), aiFov.FovSlices[0]);
             Assert.AreEqual(new FOVSlice(0f, targetEscapeSemiAngle), aiFov.FovSlices[1]);
         }
-        
+
         [UnityTest]
-        public IEnumerator AI_TargetZone_WhenAIExitTargetZone_NoMoreEscape()
+        public IEnumerator AI_TargetZone_WhenAIExitTargetZone_WhenThereIsStillEscapeDistanceToTravel_StillEscape()
         {
-            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            yield return this.Before(SceneConstants.OneAIForcedHighDistanceTargetZone);
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
@@ -327,11 +327,17 @@ namespace Tests
             var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
             var aiPosition = targetZoneCollider.transform.position + new Vector3(-0.1f, 0f, 0f);
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), aiPosition);
+            yield return null; //AI is inside the target zone
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.FAR_AWAY_POSITION_1).position);
+           // TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
             yield return null;
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "AI should still escape as there are distance to cross.");
+            Assert.IsFalse(mouseAIBheavior.IsInTargetZone(), "AI has exited the target zone.");
+            Assert.AreNotEqual(new FOVSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0], "AI fov must not be resetted after destination reached and still distance to cross.");
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
             yield return null;
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileOrExitZone());
-            Assert.IsFalse(mouseAIBheavior.IsInTargetZone());
+            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "AI should stop escape when destination is reached.");
+            Assert.AreEqual(new FOVSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0]);
         }
     }
 

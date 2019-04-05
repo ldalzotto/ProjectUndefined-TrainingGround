@@ -19,9 +19,14 @@ namespace Tests
             return launchProjectile;
         }
 
+        public static Transform FindAITestPosition(AITestPositionID aITestPositionID)
+        {
+            return GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform;
+        }
+
         public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AITestPositionID aITestPositionID)
         {
-            var attractiveObjectSpawnPosition = GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform.position;
+            var attractiveObjectSpawnPosition = FindAITestPosition(aITestPositionID).position;
             return AttractiveObjectType.Instanciate(attractiveObjectSpawnPosition, null, attractiveObjectInherentConfigurationData);
         }
 

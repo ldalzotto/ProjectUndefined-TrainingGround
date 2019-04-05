@@ -11,7 +11,8 @@ namespace Tests
     {
         ATTRACTIVE_OBJECT_NOMINAL = 0,
         PROJECTILE_TARGET_1 = 1,
-        PROJECTILE_TARGET_2 = 2
+        PROJECTILE_TARGET_2 = 2,
+        FAR_AWAY_POSITION_1 = 3
     }
 
 }

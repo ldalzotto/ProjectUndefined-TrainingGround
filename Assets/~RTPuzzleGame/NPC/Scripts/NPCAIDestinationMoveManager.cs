@@ -38,7 +38,7 @@ namespace RTPuzzle
                 if ((!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f)))
                 {
                     this.currentDestination = null;
-                    Debug.Log("Destination reached !");
+                    Debug.Log(Time.frameCount + " : Destination reached !");
                     this.OnDestinationReachedEvent.Invoke();
                 }
             }

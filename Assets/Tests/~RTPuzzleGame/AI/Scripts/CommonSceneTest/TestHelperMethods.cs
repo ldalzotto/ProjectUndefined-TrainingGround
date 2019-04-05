@@ -14,6 +14,7 @@ namespace Tests
 
         public static void SetAgentDestinationPositionReached(NavMeshAgent agent, Vector3 worldPosition)
         {
+            agent.Warp(worldPosition);
             agent.SetDestination(worldPosition);
             SetAgentDestinationPositionReached(agent);
         }

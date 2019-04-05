@@ -107,13 +107,13 @@ namespace RTPuzzle
                         //if already escaping from projectile
                         Debug.Log("EscapeToFarest");
                         this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
-                        this.escapeDestinationManager.EscapeToFarest(navMeshRaycastStrategy, this.AIFOVManager);
+                        this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
                     },
                     withTargetZoneAction: () =>
                     {
                         Debug.Log("EscapeToFarestWithTargetZone");
                         this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
-                        this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
+                        this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
                         this.escapingWithTargetZone = true;
                     }
                    );
@@ -124,11 +124,11 @@ namespace RTPuzzle
             this.TargetZoneConsiderationBranch(
                   withTargetZoneAction: () =>
                   {
-                      this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
+                      this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
                   },
                   withoutTargetZoneAction: () =>
                   {
-                      this.escapeDestinationManager.EscapeToFarest(navMeshRaycastStrategy, this.AIFOVManager);
+                      this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
                   });
         }
 
@@ -146,7 +146,10 @@ namespace RTPuzzle
 
         private void ResetAIProjectileEscapeManagerState()
         {
-            AIFOVManager.ResetFOV();
+            if (this.isEscapingFromProjectile)
+            {
+                AIFOVManager.ResetFOV();
+            }
             this.SetIsEscapingFromProjectile(false);
         }
 

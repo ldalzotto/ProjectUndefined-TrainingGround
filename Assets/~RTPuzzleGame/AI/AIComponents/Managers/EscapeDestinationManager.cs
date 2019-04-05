@@ -22,7 +22,7 @@ namespace RTPuzzle
         private NavMeshHit[] NavMeshhits;
         private Ray[] PhysicsRay;
 
-       
+
         public void Tick()
         {
             this.EscapeDistanceManager.Tick();
@@ -81,13 +81,13 @@ namespace RTPuzzle
         /// <param name="navMeshRaycastStrategy"></param>
         /// <param name="aIFOVManager"></param>
         /// <returns></returns>
-        public Vector3? EscapeToFarest(NavMeshRaycastStrategy navMeshRaycastStrategy, AIFOVManager aIFOVManager)
+        public Vector3? EscapeToFarest(int sampleNb, NavMeshRaycastStrategy navMeshRaycastStrategy, AIFOVManager aIFOVManager)
         {
-            NavMeshhits = new NavMeshHit[5];
+            NavMeshhits = new NavMeshHit[sampleNb];
             switch (navMeshRaycastStrategy)
             {
                 case NavMeshRaycastStrategy.RANDOM:
-                    NavMeshhits = aIFOVManager.NavMeshRaycastSample(5, escapingAgent.transform, this.EscapeDistanceManager.GetRemainingDistance());
+                    NavMeshhits = aIFOVManager.NavMeshRaycastSample(sampleNb, escapingAgent.transform, this.EscapeDistanceManager.GetRemainingDistance());
                     break;
                 case NavMeshRaycastStrategy.END_ANGLES:
                     NavMeshhits = aIFOVManager.NavMeshRaycastEndOfRanges(escapingAgent.transform, this.EscapeDistanceManager.GetRemainingDistance());
@@ -128,15 +128,15 @@ namespace RTPuzzle
         /// <param name="aIFOVManager"></param>
         /// <param name="avoidedCollider"></param>
         /// <returns></returns>
-        public Vector3? EscapeToFarestWithColliderAvoid(NavMeshRaycastStrategy navMeshRaycastStrategy, AIFOVManager aIFOVManager, Collider avoidedCollider)
+        public Vector3? EscapeToFarestWithColliderAvoid(int sampleNb, NavMeshRaycastStrategy navMeshRaycastStrategy, AIFOVManager aIFOVManager, Collider avoidedCollider)
         {
-            NavMeshhits = new NavMeshHit[5];
-            PhysicsRay = new Ray[5];
+            NavMeshhits = new NavMeshHit[sampleNb];
+            PhysicsRay = new Ray[sampleNb];
 
             switch (navMeshRaycastStrategy)
             {
                 case NavMeshRaycastStrategy.RANDOM:
-                    NavMeshhits = aIFOVManager.NavMeshRaycastSample(5, this.escapingAgent.transform, this.EscapeDistanceManager.GetRemainingDistance());
+                    NavMeshhits = aIFOVManager.NavMeshRaycastSample(sampleNb, this.escapingAgent.transform, this.EscapeDistanceManager.GetRemainingDistance());
                     break;
                 case NavMeshRaycastStrategy.END_ANGLES:
                     NavMeshhits = aIFOVManager.NavMeshRaycastEndOfRanges(this.escapingAgent.transform, this.EscapeDistanceManager.GetRemainingDistance());
@@ -254,11 +254,15 @@ namespace RTPuzzle
 
         public void Tick()
         {
-            if (this.lastFrameAgentPosition.HasValue)
+            if (!this.isDistanceReached)
             {
-                this.distanceCounter += Vector3.Distance(this.lastFrameAgentPosition.Value, this.escapingAgnet.transform.position);
+                if (this.lastFrameAgentPosition.HasValue)
+                {
+                    this.distanceCounter += Vector3.Distance(this.lastFrameAgentPosition.Value, this.escapingAgnet.transform.position);
+                    Debug.Log(Time.frameCount + " : " + this.distanceCounter);
+                }
+                this.lastFrameAgentPosition = this.escapingAgnet.transform.position;
             }
-            this.lastFrameAgentPosition = this.escapingAgnet.transform.position;
         }
 
         public void OnDestinationReached()
