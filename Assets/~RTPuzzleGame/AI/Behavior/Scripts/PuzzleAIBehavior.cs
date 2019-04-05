@@ -15,15 +15,25 @@ namespace RTPuzzle
 
         void OnDestinationReached();
         void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy);
+#if UNITY_EDITOR
+        AbstractAIComponents AIComponents { get; set; }
+#endif
     }
 
     public abstract class PuzzleAIBehavior<C> : IPuzzleAIBehavior<C> where C : AbstractAIComponents
     {
-        protected C AIComponents;
+        private C aIComponents;
 
         #region External Dependencies
         protected NavMeshAgent selfAgent;
         protected Action<FOV> OnFOVChange;
+        #endregion
+
+        #region Data retrieval
+
+#if UNITY_EDITOR
+        public AbstractAIComponents AIComponents { get => aIComponents; set => aIComponents = (C)value; }
+#endif
         #endregion
 
         protected AIFOVManager AIFOVManager;
@@ -31,7 +41,7 @@ namespace RTPuzzle
         public PuzzleAIBehavior(NavMeshAgent selfAgent, C AIComponents, Action<FOV> OnFOVChange)
         {
             this.selfAgent = selfAgent;
-            this.AIComponents = AIComponents;
+            this.aIComponents = AIComponents;
             this.OnFOVChange = OnFOVChange;
             this.AIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
         }
@@ -73,5 +83,5 @@ namespace RTPuzzle
             this.aiID = aiID;
         }
     }
-    
+
 }

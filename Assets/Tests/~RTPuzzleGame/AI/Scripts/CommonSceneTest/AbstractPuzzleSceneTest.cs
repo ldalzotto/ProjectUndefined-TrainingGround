@@ -1,5 +1,7 @@
 ﻿using RTPuzzle;
+using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -26,7 +28,7 @@ namespace Tests
                 this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
                 this.mockPuzzleEventsManagerTest.ClearCalls();
 
-               var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
+                var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
                 npcAIManager.AiID = choosenId;
             };
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
@@ -42,6 +44,12 @@ namespace Tests
                     GameObject.FindObjectOfType<LevelManager>(),
                     GameObject.FindObjectOfType<PuzzleEventsManager>()
             );
+            
+            //AI Components default intialization
+            GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManagers().Values.ToList().ForEach((NPCAIManager npcAimanager) =>
+            {
+                PuzzleSceneTestHelper.InitializeAIComponents(npcAimanager.GetAIBehavior().AIComponents);
+            });
         }
 
         class MockedInputManager : IGameInputManager

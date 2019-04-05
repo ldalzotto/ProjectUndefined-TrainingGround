@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OdinSerializer;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Tests

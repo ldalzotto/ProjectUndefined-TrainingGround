@@ -7,7 +7,7 @@ namespace RTPuzzle
     public class GenericPuzzleAIBehavior : PuzzleAIBehavior<GenericPuzzleAIComponents>
     {
 
-        #region AI Components
+        #region AI Managers
         private AbstractAIPatrolComponentManager aIPatrolComponentManager;
         private AbstractAIProjectileEscapeManager aIProjectileEscapeManager;
         private AbstractAITargetZoneManager aITargetZoneComponentManager;

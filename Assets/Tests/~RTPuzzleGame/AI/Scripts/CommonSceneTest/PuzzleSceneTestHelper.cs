@@ -50,5 +50,23 @@ namespace Tests
             projectileData.Init(effectRange, escapeSemiAngle, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefab);
             return projectileData;
         }
+
+        public static void InitializeAIComponents(AbstractAIComponents abstractAIComponents)
+        {
+            if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
+            {
+                var genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
+
+                genericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance = 15f;
+
+                genericPuzzleAIComponents.AIProjectileEscapeComponent.EscapeDistance = 25f;
+
+                genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneID = TargetZoneID.TEST_TARGET_ZONE;
+                genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;
+
+                genericPuzzleAIComponents.AIFearStunComponent.FOVSumThreshold = 20f;
+                genericPuzzleAIComponents.AIFearStunComponent.TimeWhileBeginFeared = 2f;
+            }
+        }
     }
 }
