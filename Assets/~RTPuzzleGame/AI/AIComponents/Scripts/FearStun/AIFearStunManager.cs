@@ -36,7 +36,7 @@ namespace RTPuzzle
             return null;
         }
 
-        public override void TickWhileFeared(float d, float timeAttenuationFactor)
+        public override void TickWhileFeared(float d, float timeAttenuationFactor, AIFOVManager aIFOVManager)
         {
             if (isFeared)
             {
@@ -44,6 +44,7 @@ namespace RTPuzzle
                 if (fearedTimer >= AIFearStunComponent.TimeWhileBeginFeared)
                 {
                     this.SetIsFeared(false);
+                    aIFOVManager.ResetFOV();
                 }
             }
         }

@@ -62,7 +62,7 @@ namespace RTPuzzle
 
             if (this.IsFeared())
             {
-                aIFearStunComponentManager.TickWhileFeared(d, timeAttenuationFactor);
+                aIFearStunComponentManager.TickWhileFeared(d, timeAttenuationFactor, this.AIFOVManager);
             }
             else
             {
@@ -73,29 +73,32 @@ namespace RTPuzzle
                 }
                 else
                 {
-                    if (this.IsEscapingFromProjectileOrExitZone())
+                    if (this.IsEscapingFromProjectile())
                     {
                         newDirection = aIProjectileEscapeManager.TickComponent();
-                        if (newDirection == null)
-                        {
-                            newDirection = aITargetZoneComponentManager.GetCurrentEscapeDestination();
-                        }
                     }
                     else
                     {
-                        if (this.IsInTargetZone())
+                        if (this.IsEscapingFromExitZone())
                         {
-                            newDirection = aITargetZoneComponentManager.TriggerTargetZoneEscape();
+                            newDirection = aITargetZoneComponentManager.GetCurrentEscapeDestination();
                         }
                         else
                         {
-                            if (this.IsInfluencedByAttractiveObject())
+                            if (this.IsInTargetZone())
                             {
-                                newDirection = aIAttractiveObjectManager.TickComponent();
+                                newDirection = aITargetZoneComponentManager.TriggerTargetZoneEscape();
                             }
                             else
                             {
-                                newDirection = aIPatrolComponentManager.TickComponent();
+                                if (this.IsInfluencedByAttractiveObject())
+                                {
+                                    newDirection = aIAttractiveObjectManager.TickComponent();
+                                }
+                                else
+                                {
+                                    newDirection = aIPatrolComponentManager.TickComponent();
+                                }
                             }
                         }
                     }
@@ -140,7 +143,7 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (!this.IsEscapingFromProjectileOrExitZone() && !this.IsFeared())
+                if (!this.IsEscapingFromProjectile() && !this.IsEscapingFromExitZone() && !this.IsFeared())
                 {
                     aIAttractiveObjectManager.OnTriggerStay(collider, collisionType);
                 }
@@ -194,7 +197,8 @@ namespace RTPuzzle
         #region State Retrieval
         public bool IsPatrolling() { return aIPatrolComponentManager.IsPatrolling(); }
         public bool IsFeared() { return aIFearStunComponentManager.IsFeared; }
-        public bool IsEscapingFromProjectileOrExitZone() { return aIProjectileEscapeManager.IsEscaping() || aITargetZoneComponentManager.IsEscapingFromTargetZone; }
+        public bool IsEscapingFromProjectile() { return aIProjectileEscapeManager.IsEscaping(); }
+        public bool IsEscapingFromExitZone() { return aITargetZoneComponentManager.IsEscapingFromTargetZone; }
         public bool IsInTargetZone() { return aITargetZoneComponentManager.IsInTargetZone(); }
         public bool IsInfluencedByAttractiveObject() { return aIAttractiveObjectManager.IsInfluencedByAttractiveObject(); }
         #endregion
@@ -202,7 +206,8 @@ namespace RTPuzzle
         public void DebugGUITick()
         {
             GUILayout.Label("IsPatrolling : " + aIPatrolComponentManager.IsPatrolling());
-            GUILayout.Label("IsEscaping : " + aIProjectileEscapeManager.IsEscaping());
+            GUILayout.Label("IsEscapingFromProjectile : " + aIProjectileEscapeManager.IsEscaping());
+            GUILayout.Label("IsEscapingFromTargetZone : " + aITargetZoneComponentManager.IsEscapingFromTargetZone);
             GUILayout.Label("IsInTargetZone : " + aITargetZoneComponentManager.IsInTargetZone());
             GUILayout.Label("IsStunFeared : " + aIFearStunComponentManager.IsFeared);
             GUILayout.Label("IsAttracted : " + aIAttractiveObjectManager.IsInfluencedByAttractiveObject());
