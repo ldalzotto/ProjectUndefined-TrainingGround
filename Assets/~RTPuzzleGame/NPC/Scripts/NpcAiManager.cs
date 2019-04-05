@@ -69,6 +69,9 @@ namespace RTPuzzle
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, camera, canvas, NpcFOVRingManager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
+
+            //Intiialize with 0 time
+            this.TickWhenTimeFlows(0, 0);
         }
 
         public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)

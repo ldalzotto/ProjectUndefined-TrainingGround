@@ -12,6 +12,12 @@ namespace Tests
             agent.transform.position = agent.destination;
         }
 
+        public static void SetAgentDestinationPositionReached(NavMeshAgent agent, Vector3 worldPosition)
+        {
+            agent.SetDestination(worldPosition);
+            SetAgentDestinationPositionReached(agent);
+        }
+
     }
 
 }

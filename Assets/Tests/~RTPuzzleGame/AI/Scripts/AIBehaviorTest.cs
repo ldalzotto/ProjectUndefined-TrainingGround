@@ -13,6 +13,7 @@ namespace Tests
         public IEnumerator AI_RandomPatrol_Nominal_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null; // let the initialisatoin process pass
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var oldPosition = mouseTestAIManager.transform.position;
             yield return null;
@@ -276,13 +277,62 @@ namespace Tests
             PuzzleSceneTestHelper.SpawnProjectile(projectileData, AITestPositionID.PROJECTILE_TARGET_2, launchProjectileContainerManager);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone());
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "The AI should still escape from projectile at second hit.");
             var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).ZoneCollider;
             Assert.IsTrue(targetZoneCollider.bounds.Contains(mouseTestAIManager.GetAgent().destination), "AI Destination should contains the target zone the second (or more) hit.");
         }
         #endregion
 
 
+        [UnityTest]
+        public IEnumerator AI_TargetZone_WhenAIIsNearTargetZone_ShouldEscape_Test()
+        {
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).ZoneCollider;
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), targetZoneCollider.bounds.center);
+            yield return null;
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileOrExitZone(), "The AI should escape from the target zone if it enters inside target trigger zone.");
+            Assert.IsTrue(mouseAIBheavior.IsInTargetZone(), "The AI should be inside target trigger zone.");
+        }
+
+        [UnityTest]
+        public IEnumerator AI_TargetZone_WhenAIIsNearTargetZone_AiFOVShoudlBeReducedBasedOnTargetZoneBoundCenter_Test()
+        {
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).ZoneCollider;
+            var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
+            var aiPosition = targetZoneCollider.transform.position + new Vector3(0, 0, 0.1f);
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), aiPosition);
+            yield return null;
+            var aiFov = mouseAIBheavior.GetFOV();
+            Assert.AreEqual(new FOVSlice(360f - targetEscapeSemiAngle, 360f), aiFov.FovSlices[0]);
+            Assert.AreEqual(new FOVSlice(0f, targetEscapeSemiAngle), aiFov.FovSlices[1]);
+        }
+        
+        [UnityTest]
+        public IEnumerator AI_TargetZone_WhenAIExitTargetZone_NoMoreEscape()
+        {
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).ZoneCollider;
+            var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
+            var aiPosition = targetZoneCollider.transform.position + new Vector3(-0.1f, 0f, 0f);
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), aiPosition);
+            yield return null;
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
+            yield return null;
+            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileOrExitZone());
+            Assert.IsFalse(mouseAIBheavior.IsInTargetZone());
+        }
     }
 
 
