@@ -136,6 +136,7 @@
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneTriggerType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />

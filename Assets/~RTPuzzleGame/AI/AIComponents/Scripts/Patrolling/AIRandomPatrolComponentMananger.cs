@@ -72,6 +72,10 @@ namespace RTPuzzle
         #region External Events
         public override void OnDestinationReached()
         {
+            this.OnStateReset();
+        }
+        public override void OnStateReset()
+        {
             isMovingTowardsDestination = false;
         }
         #endregion

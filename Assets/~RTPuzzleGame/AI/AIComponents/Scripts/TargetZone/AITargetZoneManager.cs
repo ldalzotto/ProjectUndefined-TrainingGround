@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
@@ -8,11 +9,10 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NavMeshAgent agent;
+        private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
         #endregion
 
         #region Internal Dependencies
-        private TargetZoneInherentData targetZoneConfigurationData;
-
         private AIFOVManager AIFOVManager;
         private AITargetZoneComponent aITargetZoneComponent;
         #endregion
@@ -21,31 +21,21 @@ namespace RTPuzzle
         private EscapeDestinationManager EscapeDestinationManager;
         #endregion
 
-        public TargetZoneInherentData TargetZoneConfigurationData { get => targetZoneConfigurationData; }
-
-
         public AITargetZoneManager(NavMeshAgent agent, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager)
         {
             this.agent = agent;
 
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
-            this.targetZone = targetZoneContainer.TargetZones[aITargetZoneComponent.TargetZoneID];
-            this.targetZoneConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().TargetZonesConfiguration()[this.targetZone.TargetZoneID];
+            this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.AIFOVManager = AIFOVManager;
             this.aITargetZoneComponent = aITargetZoneComponent;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
         }
 
-        public override Vector3? GetCurrentEscapeDestination()
-        {
-            return this.EscapeDestinationManager.EscapeDestination;
-        }
-
-        public override void TickComponent()
+        public override Nullable<Vector3> TickComponent()
         {
             this.EscapeDestinationManager.Tick();
-            this.isInTargetZone = Vector3.Distance(agent.transform.position, this.GetTargetZone().transform.position)
-                                                <= this.TargetZoneConfigurationData.EscapeMinDistance;
+            return this.EscapeDestinationManager.EscapeDestination;
         }
 
         public override void OnDestinationReached()
@@ -57,6 +47,7 @@ namespace RTPuzzle
                 {
                     this.AIFOVManager.ResetFOV();
                 }
+                this.OnStateReset();
                 isEscapingFromTargetZone = false;
             }
             else
@@ -65,19 +56,26 @@ namespace RTPuzzle
             }
         }
 
-        public override Vector3? TriggerTargetZoneEscape()
+        public override void OnStateReset()
         {
-            Debug.Log(Time.frameCount + " : Trigger target zone");
-            isEscapingFromTargetZone = true;
+            isEscapingFromTargetZone = false;
+        }
+
+        public override void TriggerTargetZoneEscape(TargetZone targetZone)
+        {
+            Debug.Log(Time.frameCount + "Target zone trigger : " + targetZone.TargetZoneID);
+
+            var targetZoneConfigurationData = this.puzzleGameConfigurationManager.TargetZonesConfiguration()[targetZone.TargetZoneID];
+
+            this.isEscapingFromTargetZone = true;
             this.EscapeDestinationManager.ResetDistanceComputation(aITargetZoneComponent.TargetZoneEscapeDistance);
 
-            var localEscapeDirection = (agent.transform.position - this.targetZone.transform.position).normalized;
+            var localEscapeDirection = (agent.transform.position - targetZone.transform.position).normalized;
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, agent);
 
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.targetZoneConfigurationData.EscapeFOVSemiAngle,
-                worldEscapeDirectionAngle + this.targetZoneConfigurationData.EscapeFOVSemiAngle);
+            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - targetZoneConfigurationData.EscapeFOVSemiAngle,
+                worldEscapeDirectionAngle + targetZoneConfigurationData.EscapeFOVSemiAngle);
             this.CalculateEscapeDirection();
-            return this.EscapeDestinationManager.EscapeDestination;
         }
 
         private void CalculateEscapeDirection()

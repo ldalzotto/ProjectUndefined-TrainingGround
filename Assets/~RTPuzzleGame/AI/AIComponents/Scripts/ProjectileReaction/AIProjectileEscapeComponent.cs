@@ -19,7 +19,7 @@ namespace RTPuzzle
     {
         #region State
         protected bool isEscapingFromProjectile;
-        protected bool isInTargetZone;
+        protected bool isEscapingToFarest;
         #endregion
 
         #region Logical Conditions
@@ -27,12 +27,18 @@ namespace RTPuzzle
         {
             return isEscapingFromProjectile;
         }
+
+        public bool IsEscapingToFarest()
+        {
+            return isEscapingToFarest;
+        }
         #endregion
 
         
         public abstract Nullable<Vector3> TickComponent();
         public abstract void OnTriggerEnter(Collider collider, CollisionType collisionType);
         public abstract void OnDestinationReached();
+        public abstract void OnStateReset();
         public abstract void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile);
         public abstract void OnTriggerExit(Collider collider, CollisionType collisionType);
         public abstract void GizmoTick();

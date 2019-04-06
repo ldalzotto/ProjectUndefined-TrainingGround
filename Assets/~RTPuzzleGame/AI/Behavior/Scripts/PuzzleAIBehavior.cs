@@ -60,7 +60,8 @@ namespace RTPuzzle
         {
             if (behaviorType == typeof(GenericPuzzleAIBehavior))
             {
-                return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.aiID);
+                return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, 
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.TargetZoneContainer, aIBheaviorBuildInputData.aiID);
             }
             return null;
         }
@@ -72,14 +73,16 @@ namespace RTPuzzle
         public AbstractAIComponents aIComponents;
         public Action<FOV> OnFOVChange;
         public PuzzleEventsManager PuzzleEventsManager;
+        public TargetZoneContainer TargetZoneContainer;
         public AiID aiID;
 
-        public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents, Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, AiID aiID)
+        public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents, Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, TargetZoneContainer TargetZoneContainer, AiID aiID)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = aIComponents;
             OnFOVChange = onFOVChange;
             PuzzleEventsManager = puzzleEventsManager;
+            this.TargetZoneContainer = TargetZoneContainer;
             this.aiID = aiID;
         }
     }

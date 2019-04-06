@@ -1,19 +1,23 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace CoreGame
 {
     public class PhysicsHelper
     {
-        public static bool PhysicsRayInContactWithCollider(Ray ray, Vector3 targetPoint, Collider collider)
+        public static bool PhysicsRayInContactWithColliders(Ray ray, Vector3 targetPoint, Collider[] colliders)
         {
             var raycastHits = Physics.RaycastAll(ray, Vector3.Distance(ray.origin, targetPoint));
             for (var i = 0; i < raycastHits.Length; i++)
             {
-                if (raycastHits[i].collider.GetInstanceID() == collider.GetInstanceID())
+                foreach (var collider in colliders)
                 {
-                    return true;
+                    if (raycastHits[i].collider.GetInstanceID() == collider.GetInstanceID())
+                    {
+                        return true;
+                    }
                 }
+
             }
             return false;
         }

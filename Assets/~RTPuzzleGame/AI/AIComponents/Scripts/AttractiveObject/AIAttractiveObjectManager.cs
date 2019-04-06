@@ -69,10 +69,13 @@ namespace RTPuzzle
 
         public override void OnDestinationReached()
         {
+            this.OnStateReset();
+        }
+
+        public override void OnStateReset()
+        {
             this.SetIsAttracted(false);
             this.involvedAttractiveObject = null;
         }
-
-
     }
 }

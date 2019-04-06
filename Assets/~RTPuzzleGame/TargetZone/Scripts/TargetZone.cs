@@ -6,13 +6,20 @@ namespace RTPuzzle
     {
         public TargetZoneID TargetZoneID;
 
-        private Collider zoneCollider;
+        #region Internal Dependencies
+        private SphereCollider zoneDistanceDetectionCollider;
+        private TargetZoneTriggerType targetZoneTriggerType;
+        #endregion
 
-        public Collider ZoneCollider { get => zoneCollider; }
+        #region Data Retrieval
+        public Collider ZoneDistanceDetectionCollider { get => zoneDistanceDetectionCollider; }
+        public TargetZoneTriggerType TargetZoneTriggerType { get => targetZoneTriggerType; }
 
-        #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
-        private LevelManager LevelManager;
+        public static TargetZone FromCollisionType(CollisionType collisionType)
+        {
+            return collisionType.GetComponent<TargetZone>();
+        }
+
         #endregion
 
         #region State
@@ -24,25 +31,23 @@ namespace RTPuzzle
             if (!this.hasInit)
             {
                 var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
-                zoneCollider = GetComponent<Collider>();
+                this.zoneDistanceDetectionCollider = GetComponent<SphereCollider>();
+                this.targetZoneTriggerType = GetComponentInChildren<TargetZoneTriggerType>();
+                targetZoneTriggerType.Init();
                 targetZoneContainer.Add(this);
-                this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-                this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-                this.hasInit = true;
-            }
-        }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            var collisionType = other.gameObject.GetComponent<CollisionType>();
-            var collidedAIManager = CollisionTypeHelper.GetAIManager(collisionType);
-            if (collidedAIManager != null)
-            {
-                this.PuzzleEventsManager.OnLevelCompleted(this.LevelManager.GetCurrentLevel());
+                var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+                this.zoneDistanceDetectionCollider.radius = gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID].AIDistanceDetection;
+
+                this.hasInit = true;
             }
         }
 
     }
 
-    public enum TargetZoneID { LEVEL1_TARGET_ZONE = 0, TEST_TARGET_ZONE = 1 }
+    public enum TargetZoneID
+    {
+        LEVEL1_TARGET_ZONE = 0,
+        TEST_TARGET_ZONE = 1
+    }
 }

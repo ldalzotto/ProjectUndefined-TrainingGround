@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RTPuzzle
 {
@@ -8,13 +7,19 @@ namespace RTPuzzle
     public class TargetZoneInherentData : ScriptableObject
     {
         [SerializeField]
-        private float escapeMinDistance;
+        [Tooltip("The distance from which the AI will take knowledge of the target zone.")]
+        private float aiDistanceDetection;
+
+        [SerializeField]
+        [Tooltip("The total distance crossed by AI when escaping from target zone.")]
+        private float escapeDistance;
 
         [SerializeField]
         private float escapeFOVSemiAngle;
 
-        public float EscapeMinDistance { get => escapeMinDistance; set => escapeMinDistance = value; }
+        public float AIDistanceDetection { get => aiDistanceDetection; set => aiDistanceDetection = value; }
         public float EscapeFOVSemiAngle { get => escapeFOVSemiAngle; set => escapeFOVSemiAngle = value; }
+        public float EscapeDistance { get => escapeDistance; set => escapeDistance = value; }
     }
 
 }

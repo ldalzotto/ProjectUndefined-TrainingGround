@@ -32,6 +32,7 @@ namespace RTPuzzle
         public abstract void OnTriggerStay(Collider collider, CollisionType collisionType);
         public abstract void OnTriggerExit(Collider collider, CollisionType collisionType);
         public abstract void OnDestinationReached();
+        public abstract void OnStateReset();
 
         public void ClearAttractedObject()
         {

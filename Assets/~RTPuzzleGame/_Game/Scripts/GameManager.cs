@@ -39,7 +39,7 @@ namespace RTPuzzle
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
-            
+
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
@@ -47,15 +47,7 @@ namespace RTPuzzle
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             //Initialisations
-            var targetZones = GameObject.FindObjectsOfType<TargetZone>();
-            if (targetZones != null)
-            {
-                foreach (var targetZone in targetZones)
-                {
-                    targetZone.Init();
-                }
-            }
-
+            GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init();

@@ -33,6 +33,7 @@ namespace RTPuzzle
         }
 
         public abstract void OnDestinationReached();
+        public abstract void OnStateReset();
         public abstract bool IsPatrolling();
 
         public abstract Vector3? TickComponent();

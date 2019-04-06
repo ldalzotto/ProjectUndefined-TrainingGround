@@ -8,4 +8,5 @@ public class CollisionType : MonoBehaviour
   //  public bool IsRTPProjectile = false;
     public bool IsRTAttractiveObject = false;
     public bool IsAI = false;
+    public bool IsTargetZone = false;
 }

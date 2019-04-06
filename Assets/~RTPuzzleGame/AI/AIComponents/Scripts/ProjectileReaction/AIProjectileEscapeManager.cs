@@ -12,7 +12,7 @@ namespace RTPuzzle
         private NavMeshAgent escapingAgent;
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager PuzzleEventsManager;
-        Func<TargetZone> levelTargetZoneProvider;
+        private Func<Collider[]> targetZoneTriggerColliderProvider;
         #endregion
 
         #region Internal Dependencies
@@ -35,14 +35,14 @@ namespace RTPuzzle
         #endregion
 
         public AIProjectileEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<TargetZone> levelTargetZoneProvider)
+                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<Collider[]> targetZoneTriggerColliderProvider)
         {
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.escapingAgent = escapingAgent;
             this.AIFOVManager = AIFOVManager;
             this.PuzzleEventsManager = PuzzleEventsManager;
+            this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
             this.aiID = aiID;
-            this.levelTargetZoneProvider = levelTargetZoneProvider;
 
             this.escapeDestinationManager = new EscapeDestinationManager(escapingAgent);
         }
@@ -62,6 +62,7 @@ namespace RTPuzzle
             if (!value)
             {
                 this.escapingWithTargetZone = false;
+                this.isEscapingToFarest = false;
             }
             this.isEscapingFromProjectile = value;
         }
@@ -99,6 +100,11 @@ namespace RTPuzzle
             }
         }
 
+        public override void OnStateReset()
+        {
+            this.SetIsEscapingFromProjectile(false);
+        }
+
         private void OnTriggerEnterEscapeDestinationCalculation(NavMeshRaycastStrategy navMeshRaycastStrategy)
         {
             this.TargetZoneConsiderationBranch(
@@ -108,12 +114,13 @@ namespace RTPuzzle
                         Debug.Log("EscapeToFarest");
                         this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 2);
                         this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
+                        this.isEscapingToFarest = true;
                     },
                     withTargetZoneAction: () =>
                     {
                         Debug.Log("EscapeToFarestWithTargetZone");
                         this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
-                        this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
+                        this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
                         this.escapingWithTargetZone = true;
                     }
                    );
@@ -124,7 +131,7 @@ namespace RTPuzzle
             this.TargetZoneConsiderationBranch(
                   withTargetZoneAction: () =>
                   {
-                      this.escapeDestinationManager.EscapeToFarestWithColliderAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.levelTargetZoneProvider.Invoke().ZoneCollider);
+                      this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
                   },
                   withoutTargetZoneAction: () =>
                   {
@@ -150,7 +157,7 @@ namespace RTPuzzle
             {
                 AIFOVManager.ResetFOV();
             }
-            this.SetIsEscapingFromProjectile(false);
+            this.OnStateReset();
         }
 
         public override void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
@@ -167,7 +174,6 @@ namespace RTPuzzle
         {
             this.escapeDestinationManager.GizmoTick();
         }
-
         #endregion
     }
 

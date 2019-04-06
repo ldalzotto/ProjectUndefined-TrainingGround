@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -128,7 +129,7 @@ namespace RTPuzzle
         /// <param name="aIFOVManager"></param>
         /// <param name="avoidedCollider"></param>
         /// <returns></returns>
-        public Vector3? EscapeToFarestWithColliderAvoid(int sampleNb, NavMeshRaycastStrategy navMeshRaycastStrategy, AIFOVManager aIFOVManager, Collider avoidedCollider)
+        public Vector3? EscapeToFarestWithCollidersAvoid(int sampleNb, NavMeshRaycastStrategy navMeshRaycastStrategy, AIFOVManager aIFOVManager, Collider[] collidersToAvoid)
         {
             NavMeshhits = new NavMeshHit[sampleNb];
             PhysicsRay = new Ray[sampleNb];
@@ -153,7 +154,7 @@ namespace RTPuzzle
             {
                 if (i == 0)
                 {
-                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(PhysicsRay[i], NavMeshhits[i].position, avoidedCollider))
+                    if (!PhysicsHelper.PhysicsRayInContactWithColliders(PhysicsRay[i], NavMeshhits[i].position, collidersToAvoid))
                     {
                         currentDistanceToRaycastTarget = Vector3.Distance(NavMeshhits[i].position, this.escapingAgent.transform.position);
                         selectedPosition = NavMeshhits[i].position;
@@ -161,7 +162,7 @@ namespace RTPuzzle
                 }
                 else
                 {
-                    if (!PhysicsHelper.PhysicsRayInContactWithCollider(PhysicsRay[i], NavMeshhits[i].position, avoidedCollider))
+                    if (!PhysicsHelper.PhysicsRayInContactWithColliders(PhysicsRay[i], NavMeshhits[i].position, collidersToAvoid))
                     {
                         var computedDistance = Vector3.Distance(NavMeshhits[i].position, this.escapingAgent.transform.position);
                         if (currentDistanceToRaycastTarget < computedDistance)
