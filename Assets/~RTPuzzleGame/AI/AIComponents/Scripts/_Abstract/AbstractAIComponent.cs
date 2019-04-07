@@ -1,13 +1,17 @@
 ﻿using OdinSerializer;
 using System;
-
+using UnityEngine;
 
 namespace RTPuzzle
 {
     [System.Serializable]
     public abstract class AbstractAIComponent : SerializedScriptableObject
     {
+
+        [SerializeField]
         protected abstract Type abstractManagerType { get; }
+
+        [SerializeField]
         public Type SelectedManagerType;
         public Type AbstractManagerType { get => abstractManagerType; }
     }
@@ -16,13 +20,15 @@ namespace RTPuzzle
     {
         public static void ForAllAIManagerTypes(Type managerType,
                  Func<AIRandomPatrolComponentMananger> AIRandomPatrolComponentManangerOperation,
-                 Func<AIProjectileEscapeManager> AIProjectileEscapeManagerOperation,
+                 Func<AIProjectileWithCollisionEscapeManager> AIProjectileEscapeWithCollisionManagerOperation,
+                 Func<AIProjectileWithoutCollisionEscapeManager> AIProjectileEscapeWithoutCollisionManagerOperation,
                  Func<AIFearStunManager> AIFearStunManagerOperation,
                  Func<AIAttractiveObjectManager> AIAttractiveObjectOperation,
                  Func<AITargetZoneManager> AITargetZoneManagerOperation)
         {
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileEscapeManager), AIProjectileEscapeManagerOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithoutCollisionEscapeManager), AIProjectileEscapeWithoutCollisionManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);

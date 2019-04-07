@@ -260,7 +260,7 @@ namespace RTPuzzle
                 if (this.lastFrameAgentPosition.HasValue)
                 {
                     this.distanceCounter += Vector3.Distance(this.lastFrameAgentPosition.Value, this.escapingAgnet.transform.position);
-                    Debug.Log(Time.frameCount + " : " + this.distanceCounter);
+                  //  Debug.Log(Time.frameCount + " : " + this.distanceCounter);
                 }
                 this.lastFrameAgentPosition = this.escapingAgnet.transform.position;
             }

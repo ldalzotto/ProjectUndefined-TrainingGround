@@ -95,7 +95,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             if (projectileEscapeDistance != null)
             {
-                ((GenericPuzzleAIComponents)mouseTestAIManager.GetAIBehavior().AIComponents).AIProjectileEscapeComponent.EscapeDistance = projectileEscapeDistance.Value;
+                ((GenericPuzzleAIComponents)mouseTestAIManager.GetAIBehavior().AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistance = projectileEscapeDistance.Value;
             }
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 90f, 30f);
             var secondProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, AITestPositionID.PROJECTILE_TARGET_2, launchProjectileContainerManager);
@@ -252,7 +252,7 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             //high projectile escape distance
-            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIProjectileEscapeComponent.EscapeDistance = 9999f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistance = 9999f;
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
             //wide angle to avoid navmesh ray cast to hit the same point.

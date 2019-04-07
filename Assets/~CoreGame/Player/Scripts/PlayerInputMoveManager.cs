@@ -67,7 +67,6 @@ namespace CoreGame
                     hasMoved = false;
                 }
             }
-
         }
 
         public void ResetSpeed()

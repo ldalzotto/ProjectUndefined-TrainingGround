@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ConfigurationEditor
+﻿namespace ConfigurationEditor
 {
     [System.AttributeUsage(System.AttributeTargets.All)]
     public class DictionaryEnumSearch : System.Attribute

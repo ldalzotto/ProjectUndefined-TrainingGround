@@ -59,7 +59,7 @@ namespace Tests
 
                 genericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance = 15f;
 
-                genericPuzzleAIComponents.AIProjectileEscapeComponent.EscapeDistance = 25f;
+                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistance = 25f;
                 
                 genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;
 

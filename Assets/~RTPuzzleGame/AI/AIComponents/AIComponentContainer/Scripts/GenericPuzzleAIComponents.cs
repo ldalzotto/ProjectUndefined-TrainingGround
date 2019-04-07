@@ -13,7 +13,8 @@ namespace RTPuzzle
     public class GenericPuzzleAIComponents : AbstractAIComponents
     {
         public AIPatrolComponent AIRandomPatrolComponent;
-        public AIProjectileEscapeComponent AIProjectileEscapeComponent;
+        public AIProjectileEscapeComponent AIProjectileEscapeWithCollisionComponent;
+        public AIProjectileEscapeComponent AIProjectileEscapeWithoutCollisionComponent;
         public AITargetZoneComponent AITargetZoneComponent;
         public AIAttractiveObjectComponent AIAttractiveObjectComponent;
         public AIFearStunComponent AIFearStunComponent;

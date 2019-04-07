@@ -43,10 +43,6 @@ namespace RTPuzzle
             this.EscapeDestinationManager.OnAgentDestinationReached();
             if (this.EscapeDestinationManager.IsDistanceReached())
             {
-                if (this.isEscapingFromTargetZone)
-                {
-                    this.AIFOVManager.ResetFOV();
-                }
                 this.OnStateReset();
                 isEscapingFromTargetZone = false;
             }
@@ -85,7 +81,7 @@ namespace RTPuzzle
                 {
                     this.EscapeDestinationManager.EscapeToFarest(7, navMeshRaycastStrategy, this.AIFOVManager);
                 },
-                ifAllFailsAction: null
+                ifAllFailsAction: this.OnStateReset
              );
         }
 

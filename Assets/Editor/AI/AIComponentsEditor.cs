@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace RTPuzzle
     public class AIComponentsEditor : Editor
     {
 
-        private Dictionary<string, Editor> cachedEditors = new Dictionary<string, Editor>();
+        private Dictionary<FieldInfo, Editor> cachedEditors = new Dictionary<FieldInfo, Editor>();
 
         public override void OnInspectorGUI()
         {
@@ -27,10 +28,10 @@ namespace RTPuzzle
                         var propertyType = propertyFieldInfo.FieldType;
                         if (propertyType != null && propertyType.IsSubclassOf(typeof(AbstractAIComponent)))
                         {
-                            prop.objectReferenceValue = EditorGUILayout.ObjectField(propertyType.Name, prop.objectReferenceValue, propertyType, false);
+                            prop.objectReferenceValue = EditorGUILayout.ObjectField(propertyFieldInfo.Name, prop.objectReferenceValue, propertyType, false);
                             if (prop.objectReferenceValue != null)
                             {
-                                this.DisplayNestedEditor(propertyType, prop.objectReferenceValue).OnInspectorGUI();
+                                this.DisplayNestedEditor(propertyFieldInfo, prop.objectReferenceValue).OnInspectorGUI();
                             }
                             EditorGUILayout.Separator();
                             EditorGUILayout.Separator();
@@ -48,13 +49,13 @@ namespace RTPuzzle
             }
         }
 
-        private Editor DisplayNestedEditor(Type windowType, UnityEngine.Object obj)
+        private Editor DisplayNestedEditor(FieldInfo windowType, UnityEngine.Object obj)
         {
-            if (!this.cachedEditors.ContainsKey(windowType.Name) || this.cachedEditors[windowType.Name] == null)
+            if (!this.cachedEditors.ContainsKey(windowType) || this.cachedEditors[windowType] == null)
             {
-                this.cachedEditors[windowType.Name] = Editor.CreateEditor(obj);
+                this.cachedEditors[windowType] = Editor.CreateEditor(obj);
             }
-            return this.cachedEditors[windowType.Name];
+            return this.cachedEditors[windowType];
         }
     }
 
