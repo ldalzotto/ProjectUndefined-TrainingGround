@@ -45,14 +45,9 @@ namespace RTPuzzle
             return navMeshHits;
         }
 
-        public void SetAvailableFOVRange(float beginAngle, float endAngle)
-        {
-            aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
-        }
-
-
         public List<FOVSlice> IntersectFOV(float beginAngle, float endAngle)
         {
+            Debug.Log("Intersect FOV. Intersection angle : " + beginAngle + " , " + endAngle);
             var inputSlices = CutInputAnglesToSlice(beginAngle, endAngle);
 
             var newSlices = new List<FOVSlice>();
@@ -70,6 +65,7 @@ namespace RTPuzzle
             }
 
             aiFov.ReplaceFovSlices(newSlices);
+            Debug.Log("Intersect FOV. Result : " + aiFov);
             return newSlices;
         }
 
@@ -77,7 +73,11 @@ namespace RTPuzzle
         {
             if (sourceSlice.Up())
             {
-                if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
+                if (newSlice.Contains(sourceSlice.BeginAngleIncluded) && newSlice.Contains(sourceSlice.EndAngleExcluded))
+                {
+                    return sourceSlice;
+                }
+                else if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
                 {
                     if (sourceSlice.Contains(newSlice.EndAngleExcluded))
                     {
@@ -114,7 +114,11 @@ namespace RTPuzzle
             }
             else
             {
-                if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
+                if (newSlice.Contains(sourceSlice.BeginAngleIncluded) && newSlice.Contains(sourceSlice.EndAngleExcluded))
+                {
+                    return sourceSlice;
+                }
+                else if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
                 {
                     if (sourceSlice.Contains(newSlice.EndAngleExcluded))
                     {
@@ -318,6 +322,11 @@ namespace RTPuzzle
                 }
             }
             return cuttendSlices;
+        }
+
+        private void SetAvailableFOVRange(float beginAngle, float endAngle)
+        {
+            aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
         }
 
         public void ResetFOV()
