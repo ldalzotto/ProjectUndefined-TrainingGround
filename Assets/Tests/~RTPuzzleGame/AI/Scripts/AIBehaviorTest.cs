@@ -383,7 +383,6 @@ namespace Tests
             var projectileSpanwed = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
 
             yield return new WaitForFixedUpdate();
-            yield return null;
             Assert.IsTrue(mouseAIBheavior.IsFeared());
             yield return new WaitForSeconds(fearTime);
             Assert.IsFalse(mouseAIBheavior.IsFeared());

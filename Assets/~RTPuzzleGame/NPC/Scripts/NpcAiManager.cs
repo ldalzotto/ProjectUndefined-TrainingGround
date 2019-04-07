@@ -12,7 +12,6 @@ namespace RTPuzzle
         public const string AnimationName_Fear = "Fear";
         public const string AnimationName_FearListening = "FearListening";
 
-
         [Header("Debug")]
         public bool DebugEabled;
 

@@ -27,8 +27,7 @@ namespace RTPuzzle
 
         public bool IsFeared { get => isFeared; }
 
-        public abstract Vector3? TickComponent(AIFOVManager aIFOVManager);
-        public abstract void TickWhileFeared(float d, float timeAttenuationFactor, AIFOVManager aIFOVManager);
+        public abstract Vector3? TickComponent(float d, float timeAttenuationFactor);
     }
 
     

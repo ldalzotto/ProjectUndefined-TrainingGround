@@ -20,7 +20,7 @@ namespace RTPuzzle
 
             Func<AIRandomPatrolComponentMananger> aiPatrolComponentManagerSetterOperation = () => { this.aIPatrolComponentManager = new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, AIFOVManager); return null; };
             Func<AIProjectileEscapeManager> AIProjectileEscapeManagerSetterOperation = () => { this.aIProjectileEscapeManager = new AIProjectileEscapeManager(selfAgent, aIComponents.AIProjectileEscapeComponent, AIFOVManager, PuzzleEventsManager, aiID, TargetZoneContainer.GetTargetZonesTriggerColliders); return null; };
-            Func<AIFearStunManager> AIFearStunManagerSetterOperation = () => { this.aIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, aiID); return null; };
+            Func<AIFearStunManager> AIFearStunManagerSetterOperation = () => { this.aIFearStunComponentManager = new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, this.AIFOVManager, aiID); return null; };
             Func<AIAttractiveObjectManager> AIAttractiveObjectSetterOperation = () => { this.aIAttractiveObjectManager = new AIAttractiveObjectManager(selfAgent, aiID, PuzzleEventsManager); return null; };
             Func<AITargetZoneManager> AITargetZoneManagerSetterOperation = () => { this.aITargetZoneComponentManager = new AITargetZoneManager(selfAgent, aIComponents.AITargetZoneComponent, this.AIFOVManager); return null; };
 
@@ -57,40 +57,28 @@ namespace RTPuzzle
         public override Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
         {
             Vector3? newDirection = null;
-
-            if (this.IsFeared())
+            newDirection = aIFearStunComponentManager.TickComponent(d, timeAttenuationFactor);
+            if (!this.IsFeared())
             {
-                aIFearStunComponentManager.TickWhileFeared(d, timeAttenuationFactor, this.AIFOVManager);
-            }
-            else
-            {
-                var fearStunPosition = aIFearStunComponentManager.TickComponent(AIFOVManager);
-                if (this.IsFeared())
+                if (this.IsEscapingFromProjectile())
                 {
-                    newDirection = fearStunPosition.Value; //position is the agent itself
+                    newDirection = aIProjectileEscapeManager.TickComponent();
                 }
                 else
                 {
-                    if (this.IsEscapingFromProjectile())
+                    if (this.IsEscapingFromExitZone())
                     {
-                        newDirection = aIProjectileEscapeManager.TickComponent();
+                        newDirection = aITargetZoneComponentManager.TickComponent();
                     }
                     else
                     {
-                        if (this.IsEscapingFromExitZone())
+                        if (this.IsInfluencedByAttractiveObject())
                         {
-                            newDirection = aITargetZoneComponentManager.TickComponent();
+                            newDirection = aIAttractiveObjectManager.TickComponent();
                         }
                         else
                         {
-                            if (this.IsInfluencedByAttractiveObject())
-                            {
-                                newDirection = aIAttractiveObjectManager.TickComponent();
-                            }
-                            else
-                            {
-                                newDirection = aIPatrolComponentManager.TickComponent();
-                            }
+                            newDirection = aIPatrolComponentManager.TickComponent();
                         }
                     }
                 }
@@ -109,7 +97,7 @@ namespace RTPuzzle
         public override void OnProjectileTriggerEnter(Collider collider)
         {
             var collisionType = collider.GetComponent<CollisionType>();
-            this.ComponentsStateReset(true, false, true, true); //no reset of projectile fov FOV intersection
+            this.ComponentsStateReset(true, false, true, true); //no reset of projectile FOV intersection
             aIProjectileEscapeManager.OnTriggerEnter(collider, collisionType);
         }
 
@@ -120,7 +108,7 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    if (!aIProjectileEscapeManager.IsEscaping() && !this.IsFeared())
+                    if (!this.IsEscapingFromProjectile() && !this.IsEscapingFromExitZone() && !this.IsFeared())
                     {
                         this.ComponentsStateReset(true, true, true, true);
                         aIAttractiveObjectManager.OnTriggerEnter(collider, collisionType);
@@ -128,7 +116,7 @@ namespace RTPuzzle
                 }
                 else if (collisionType.IsTargetZone)
                 {
-                    if (!IsEscapingFromProjectileIngnoringTargetZones())
+                    if (!IsEscapingFromProjectileIngnoringTargetZones() && !this.IsFeared())
                     {
                         var targetZone = TargetZone.FromCollisionType(collisionType);
                         if (targetZone != null)
@@ -147,9 +135,24 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (!this.IsEscapingFromProjectile() && !this.IsEscapingFromExitZone() && !this.IsFeared())
+                if (collisionType.IsRTAttractiveObject)
                 {
-                    aIAttractiveObjectManager.OnTriggerStay(collider, collisionType);
+                    if (!this.IsEscapingFromProjectile() && !this.IsEscapingFromExitZone() && !this.IsFeared())
+                    {
+                        aIAttractiveObjectManager.OnTriggerStay(collider, collisionType);
+                    }
+                }
+                else if (collisionType.IsTargetZone)
+                {
+                    if (!IsEscapingFromProjectileIngnoringTargetZones() && !this.IsFeared() && !this.IsEscapingFromExitZone())
+                    {
+                        var targetZone = TargetZone.FromCollisionType(collisionType);
+                        if (targetZone != null)
+                        {
+                            this.AIFOVManager.ResetFOV();
+                            this.aITargetZoneComponentManager.TriggerTargetZoneEscape(targetZone);
+                        }
+                    }
                 }
             }
         }
