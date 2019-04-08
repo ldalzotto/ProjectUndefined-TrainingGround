@@ -60,7 +60,6 @@ namespace RTPuzzle
                     {
                         newSlices.Add(intersectSlice);
                     }
-
                 }
             }
 
@@ -451,11 +450,25 @@ namespace RTPuzzle
         {
             if (Up())
             {
-                return a >= beginAngleIncluded && a < endAngleExcluded;
+                if (endAngleExcluded == 360f)
+                {
+                    return a >= beginAngleIncluded && a <= endAngleExcluded;
+                }
+                else
+                {
+                    return a >= beginAngleIncluded && a < endAngleExcluded;
+                }
             }
             else
             {
-                return a <= beginAngleIncluded && a > endAngleExcluded;
+                if (endAngleExcluded == 360f)
+                {
+                    return a <= beginAngleIncluded && a >= endAngleExcluded;
+                }
+                else
+                {
+                    return a < beginAngleIncluded && a >= endAngleExcluded;
+                }
             }
 
         }

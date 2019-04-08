@@ -68,6 +68,16 @@ namespace Tests
         }
 
         [Test]
+        public void AIFOVManagerTest_Intersect_CutInsideAnAlreadyCuttedFOV()
+        {
+            var aiFOVManager = InitializeFOVManager();
+            var cuttedFOV = aiFOVManager.IntersectFOV(-75f, 104f);
+            Assert.AreEqual(new List<FOVSlice>() { new FOVSlice(285f, 360f), new FOVSlice(0, 104f) }, cuttedFOV);
+            var secondCuttedFOV = aiFOVManager.IntersectFOV(-163f, 16f);
+           Assert.AreEqual(new List<FOVSlice>() { new FOVSlice(285f, 360f), new FOVSlice(0f, 16f) }, secondCuttedFOV);
+        }
+
+        [Test]
         public void AIFOVManagerTest_RaycastAngleCalculation()
         {
             var fov = new FOV(null);
