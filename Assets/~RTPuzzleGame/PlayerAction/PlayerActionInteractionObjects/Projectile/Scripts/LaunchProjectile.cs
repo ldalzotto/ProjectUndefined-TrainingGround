@@ -26,7 +26,7 @@ namespace RTPuzzle
             launchProjectile.Init(LaunchProjectileInherentData, ProjectilePath);
             return launchProjectile;
         }
-       
+
 
         public void Init(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
         {
@@ -59,11 +59,10 @@ namespace RTPuzzle
         #region External Events
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.layer == LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER))
+            if (other.gameObject.layer == LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER))
             {
                 this.LaunchProjectileEventManager.OnProjectileGroundTriggerEnter(this);
             }
-            
         }
 
         public void OnGroundTriggerEnter()

@@ -41,8 +41,9 @@ namespace RTPuzzle
                 fearedTimer += (d * timeAttenuationFactor);
                 if (fearedTimer >= AIFearStunComponent.TimeWhileBeginFeared)
                 {
-                    this.SetIsFeared(false);
                     this.aiFovManager.ResetFOV();
+                    fearedTimer -= AIFearStunComponent.TimeWhileBeginFeared;
+                    this.SetIsFeared(false);
                 }
             }
             return null;

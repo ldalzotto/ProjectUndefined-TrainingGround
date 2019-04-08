@@ -28,6 +28,12 @@ namespace RTPuzzle
 
         public void Init()
         {
+            var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.Init(gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]);
+        }
+
+        public void Init(TargetZoneInherentData targetZoneInherentData)
+        {
             if (!this.hasInit)
             {
                 var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
@@ -36,11 +42,18 @@ namespace RTPuzzle
                 targetZoneTriggerType.Init();
                 targetZoneContainer.Add(this);
 
-                var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-                this.zoneDistanceDetectionCollider.radius = gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID].AIDistanceDetection;
+                this.zoneDistanceDetectionCollider.radius = targetZoneInherentData.AIDistanceDetection;
 
                 this.hasInit = true;
             }
+        }
+
+        public static TargetZone Instanciate(TargetZoneInherentData targetZoneInherentData, Vector3 worldPosition)
+        {
+            var targetZone = MonoBehaviour.Instantiate(PrefabContainer.Instance.TargetZonePrefab);
+            targetZone.Init(targetZoneInherentData);
+            targetZone.transform.position = worldPosition;
+            return targetZone;
         }
 
     }

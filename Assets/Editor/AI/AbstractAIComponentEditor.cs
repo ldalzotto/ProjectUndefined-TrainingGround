@@ -35,8 +35,8 @@ namespace RTPuzzle
             string returnMessage = string.Empty;
             AIManagerTypeSafeOperation.ForAllAIManagerTypes(managerType,
                 () => { returnMessage = "Random patrolling."; return null; },
-                () => { returnMessage = "Reduce FOV when a projectile is near while taking into account target zones."; return null; },
-                () => { returnMessage = "Reduce FOV when a projectile is near while not taking into account target zones."; return null; },
+                () => { returnMessage = "Reduce FOV when a projectile is near."; return null; },
+                () => { returnMessage = "Reduce FOV when a projectile is near while not taking into account physics obstacles entity."; return null; },
                 () => { returnMessage = "Block any movement when FOV sum values are below a threshold."; return null; },
                 () => { returnMessage = "Move to the nearest attractive point in range.\nOnce targeted, the movement is never cancelled by this component."; return null; },
                 () => { returnMessage = "Detect weather the AI is in the selected target zone or not."; return null; });

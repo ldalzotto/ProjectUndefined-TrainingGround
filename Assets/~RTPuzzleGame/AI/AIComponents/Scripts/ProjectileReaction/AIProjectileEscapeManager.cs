@@ -45,13 +45,13 @@ namespace RTPuzzle
         }
     }
 
-    public class AIProjectileWithoutCollisionEscapeManager : AbstractAIProjectileEscapeManager
+    public class AIProjectileIgnorePhysicsEscapeManager : AbstractAIProjectileEscapeManager
     {
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        public AIProjectileWithoutCollisionEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
+        public AIProjectileIgnorePhysicsEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
                 AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent)
         {
             this.PuzzleEventsManager = PuzzleEventsManager;

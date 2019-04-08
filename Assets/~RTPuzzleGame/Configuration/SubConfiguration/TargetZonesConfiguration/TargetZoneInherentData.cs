@@ -17,6 +17,13 @@ namespace RTPuzzle
         [SerializeField]
         private float escapeFOVSemiAngle;
 
+        public TargetZoneInherentData(float aiDistanceDetection, float escapeDistance, float escapeFOVSemiAngle)
+        {
+            this.aiDistanceDetection = aiDistanceDetection;
+            this.escapeDistance = escapeDistance;
+            this.escapeFOVSemiAngle = escapeFOVSemiAngle;
+        }
+
         public float AIDistanceDetection { get => aiDistanceDetection; set => aiDistanceDetection = value; }
         public float EscapeFOVSemiAngle { get => escapeFOVSemiAngle; set => escapeFOVSemiAngle = value; }
         public float EscapeDistance { get => escapeDistance; set => escapeDistance = value; }

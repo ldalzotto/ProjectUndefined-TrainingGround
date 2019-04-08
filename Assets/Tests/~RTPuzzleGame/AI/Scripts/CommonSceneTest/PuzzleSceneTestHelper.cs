@@ -1,4 +1,6 @@
 ﻿using RTPuzzle;
+using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -27,7 +29,12 @@ namespace Tests
         public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AITestPositionID aITestPositionID)
         {
             var attractiveObjectSpawnPosition = FindAITestPosition(aITestPositionID).position;
-            return AttractiveObjectType.Instanciate(attractiveObjectSpawnPosition, null, attractiveObjectInherentConfigurationData);
+            return SpawnAttractiveObject(attractiveObjectInherentConfigurationData, attractiveObjectSpawnPosition);
+        }
+
+        public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition)
+        {
+            return AttractiveObjectType.Instanciate(worldPosition, null, attractiveObjectInherentConfigurationData);
         }
 
         public static TargetZone FindTargetZone(TargetZoneID targetZoneID)
@@ -51,6 +58,116 @@ namespace Tests
             return projectileData;
         }
 
+        #region Attractive Object
+        public static IEnumerator AttractiveObjectYield(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition,
+                    Func<AttractiveObjectType, IEnumerator> OnAttractiveObjectSpawn, Func<IEnumerator> OnAttractiveObjectDestroyed)
+        {
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, worldPosition);
+            yield return new WaitForFixedUpdate();
+            if (OnAttractiveObjectSpawn != null)
+            {
+                yield return OnAttractiveObjectSpawn.Invoke(attractiveObjectType);
+            }
+            if (OnAttractiveObjectDestroyed != null)
+            {
+                yield return new WaitForSeconds(attractiveObjectInherentConfigurationData.EffectiveTime);
+                yield return OnAttractiveObjectDestroyed.Invoke();
+            }
+        }
+        #endregion
+
+        #region Projectile
+        public static IEnumerator ProjectileYield(ProjectileInherentData projectileInherentData, Vector3 projectilePoistion,
+                Func<LaunchProjectile, IEnumerator> OnProjectileSpawn, Func<IEnumerator> OnDistanceReached)
+        {
+            var projectile = SpawnProjectile(projectileInherentData, projectilePoistion, GameObject.FindObjectOfType<LaunchProjectileContainerManager>());
+            yield return new WaitForFixedUpdate();
+            if (OnProjectileSpawn != null)
+            {
+                yield return OnProjectileSpawn.Invoke(projectile);
+            }
+            if (OnDistanceReached != null)
+            {
+                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                TestHelperMethods.SetAgentDestinationPositionReached(agent);
+                yield return null;
+                yield return new WaitForFixedUpdate();
+                yield return OnDistanceReached.Invoke();
+            }
+        }
+        #endregion
+
+        #region TargetZone
+        public static IEnumerator TargetZoneYield(TargetZoneInherentData targetZoneInherentData, Vector3 targetZonePosition,
+            Func<TargetZone, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached)
+        {
+            var targetZone = TargetZone.Instanciate(targetZoneInherentData, targetZonePosition);
+            yield return new WaitForFixedUpdate();
+            if (OnTargetZoneSpawn != null)
+            {
+                yield return OnTargetZoneSpawn.Invoke(targetZone);
+            }
+            if (OnDistanceReached != null)
+            {
+                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                TestHelperMethods.SetAgentDestinationPositionReached(agent);
+                yield return null;
+                yield return new WaitForFixedUpdate();
+                yield return OnDistanceReached.Invoke();
+            }
+        }
+        #endregion
+
+        #region Projectile Ignore Target
+        public static IEnumerator ProjectileIngoreTargetYield(ProjectileInherentData projectileInherentData, Vector3 projectilePoistion,
+            Func<IEnumerator> OnBeforeSecondProjectileSpawn,
+            Func<LaunchProjectile, IEnumerator> OnSecondProjectileSpawned,
+            Func<IEnumerator> OnSecondProjectileDistanceReached)
+        {
+            SpawnProjectile(projectileInherentData, projectilePoistion, GameObject.FindObjectOfType<LaunchProjectileContainerManager>());
+            yield return new WaitForFixedUpdate();
+            if (OnBeforeSecondProjectileSpawn != null)
+            {
+                yield return OnBeforeSecondProjectileSpawn.Invoke();
+            }
+            var projectile = SpawnProjectile(projectileInherentData, projectilePoistion, GameObject.FindObjectOfType<LaunchProjectileContainerManager>());
+            yield return new WaitForFixedUpdate();
+            if (OnSecondProjectileSpawned != null)
+            {
+                yield return OnSecondProjectileSpawned.Invoke(projectile);
+            }
+            if (OnSecondProjectileDistanceReached != null)
+            {
+                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                TestHelperMethods.SetAgentDestinationPositionReached(agent);
+                yield return null;
+                yield return new WaitForFixedUpdate();
+                yield return OnSecondProjectileDistanceReached.Invoke();
+            }
+        }
+        #endregion
+
+        #region Fear
+        public static IEnumerator FearYield(Vector3 projectilePosition,
+            Func<IEnumerator> OnFearTriggered, Func<IEnumerator> OnFearEnded, float fearTime)
+        {
+            yield return ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(1000, 1f, 1), projectilePosition,
+                OnProjectileSpawn: null,
+                OnDistanceReached: null);
+            yield return new WaitForEndOfFrame();
+            if (OnFearTriggered != null)
+            {
+                OnFearTriggered.Invoke();
+            }
+            if (OnFearEnded != null)
+            {
+                yield return new WaitForSeconds(fearTime);
+                yield return new WaitForFixedUpdate();
+                OnFearEnded.Invoke();
+            }
+        }
+        #endregion
+
         public static void InitializeAIComponents(AbstractAIComponents abstractAIComponents)
         {
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
@@ -60,7 +177,7 @@ namespace Tests
                 genericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance = 15f;
 
                 genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistance = 25f;
-                
+
                 genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;
 
                 genericPuzzleAIComponents.AIFearStunComponent.FOVSumThreshold = 20f;

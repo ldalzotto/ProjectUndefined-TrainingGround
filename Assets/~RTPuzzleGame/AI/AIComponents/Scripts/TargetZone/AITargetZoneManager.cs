@@ -7,9 +7,13 @@ namespace RTPuzzle
 
     public class AITargetZoneManager : AbstractAITargetZoneManager
     {
+        private AiID aiID;
+        private Collider aiCollider;
+
         #region External Dependencies
         private NavMeshAgent agent;
         private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
+        private TargetZoneContainer targetZoneContainer;
         #endregion
 
         #region Internal Dependencies
@@ -21,15 +25,17 @@ namespace RTPuzzle
         private EscapeDestinationManager EscapeDestinationManager;
         #endregion
 
-        public AITargetZoneManager(NavMeshAgent agent, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager)
+        public AITargetZoneManager(NavMeshAgent agent, Collider aiCollider, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager, AiID aiID)
         {
             this.agent = agent;
+            this.aiCollider = aiCollider;
 
-            var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+            this.targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.AIFOVManager = AIFOVManager;
             this.aITargetZoneComponent = aITargetZoneComponent;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
+            this.aiID = aiID;
         }
 
         public override Nullable<Vector3> TickComponent()
@@ -43,8 +49,24 @@ namespace RTPuzzle
             this.EscapeDestinationManager.OnAgentDestinationReached();
             if (this.EscapeDestinationManager.IsDistanceReached())
             {
-                this.OnStateReset();
-                isEscapingFromTargetZone = false;
+                if (this.isEscapingFromTargetZone)
+                {
+                    var overlappingTargetZone = this.IsAIOverlappingWithATargetZone();
+                    if (overlappingTargetZone != null)
+                    {
+                        this.TriggerTargetZoneEscape(overlappingTargetZone);
+                    }
+                    else
+                    {
+                        this.OnStateReset();
+                        isEscapingFromTargetZone = false;
+                    }
+                }
+                else
+                {
+                    this.OnStateReset();
+                    isEscapingFromTargetZone = false;
+                }
             }
             else
             {
@@ -83,6 +105,16 @@ namespace RTPuzzle
                 },
                 ifAllFailsAction: this.OnStateReset
              );
+        }
+
+        private TargetZone IsAIOverlappingWithATargetZone()
+        {
+            var overlappingTargetZones = this.targetZoneContainer.GetAllTargetZonesWhereDistanceCheckOverlaps(this.aiCollider.bounds);
+            if (overlappingTargetZones != null && overlappingTargetZones.Count > 0)
+            {
+                return overlappingTargetZones[0];
+            }
+            return null;
         }
 
 

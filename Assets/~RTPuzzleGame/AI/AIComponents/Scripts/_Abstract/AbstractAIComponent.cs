@@ -21,14 +21,14 @@ namespace RTPuzzle
         public static void ForAllAIManagerTypes(Type managerType,
                  Func<AIRandomPatrolComponentMananger> AIRandomPatrolComponentManangerOperation,
                  Func<AIProjectileWithCollisionEscapeManager> AIProjectileEscapeWithCollisionManagerOperation,
-                 Func<AIProjectileWithoutCollisionEscapeManager> AIProjectileEscapeWithoutCollisionManagerOperation,
+                 Func<AIProjectileIgnorePhysicsEscapeManager> AIProjectileEscapeWithoutCollisionManagerOperation,
                  Func<AIFearStunManager> AIFearStunManagerOperation,
                  Func<AIAttractiveObjectManager> AIAttractiveObjectOperation,
                  Func<AITargetZoneManager> AITargetZoneManagerOperation)
         {
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithoutCollisionEscapeManager), AIProjectileEscapeWithoutCollisionManagerOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileIgnorePhysicsEscapeManager), AIProjectileEscapeWithoutCollisionManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);

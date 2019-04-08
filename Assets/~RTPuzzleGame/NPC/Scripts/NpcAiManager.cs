@@ -65,7 +65,8 @@ namespace RTPuzzle
 
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-            puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType, new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, targetZoneContainer, this.AiID));
+            puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType,
+                new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, camera, canvas, NpcFOVRingManager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
@@ -81,14 +82,18 @@ namespace RTPuzzle
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
         }
 
-        private Vector3? ComputeAINewDestination(in float d, in float timeAttenuationFactor)
+        private void ForceTickAI()
+        {
+            this.ComputeAINewDestination(0, 0);
+        }
+
+        private void ComputeAINewDestination(in float d, in float timeAttenuationFactor)
         {
             var newDestination = puzzleAIBehavior.TickAI(d, timeAttenuationFactor);
             if (newDestination.HasValue)
             {
                 SetDestinationWithCoroutineReached(newDestination.Value);
             }
-            return newDestination;
         }
 
         internal void TickAlways(in float d, in float timeAttenuationFactor)
@@ -177,6 +182,7 @@ namespace RTPuzzle
 
         internal void OnAIFearedStunnedEnded()
         {
+            this.puzzleAIBehavior.OnAiFearEnd();
             this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
         }
 
@@ -201,7 +207,7 @@ namespace RTPuzzle
         {
             puzzleAIBehavior.OnDestinationReached();
             // empty tick to immediately choose the next position
-            this.ComputeAINewDestination(0, 0);
+            this.ForceTickAI();
         }
         #endregion
 

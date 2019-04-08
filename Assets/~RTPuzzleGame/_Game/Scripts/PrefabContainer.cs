@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace RTPuzzle {
-    
+namespace RTPuzzle
+{
+
     public class PrefabContainer : MonoBehaviour
     {
         private static PrefabContainer instance;
@@ -13,6 +13,11 @@ namespace RTPuzzle {
         [Space(20)]
         public ThrowProjectilePath ThrowProjectilePathPrefab;
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
+
+        [Header("RT Puzzle Target Zone Prefab")]
+        [Space(20)]
+        public TargetZone TargetZonePrefab;
+
 
         [Header("Puzzle attracitve objects prefabs")]
 
