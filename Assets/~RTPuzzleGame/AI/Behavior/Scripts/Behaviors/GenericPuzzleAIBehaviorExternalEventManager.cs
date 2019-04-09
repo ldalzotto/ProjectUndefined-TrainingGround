@@ -20,6 +20,15 @@ namespace RTPuzzle
 
         protected override Dictionary<string, int> EventProcessingOrder => GenericPuzzleAIEventProcessingOrder;
 
+        #region State Tracker
+        private ProjectileStateTracker projectileStateTracker;
+        #endregion
+        
+        public GenericPuzzleAIBehaviorExternalEventManager()
+        {
+            this.projectileStateTracker = new ProjectileStateTracker();
+        }
+
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
         {
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
@@ -30,6 +39,8 @@ namespace RTPuzzle
             EventTypeCheck<AttractiveObjectTriggerExitAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerExit);
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
+
+            this.projectileStateTracker.OnEventProcessed(genericAiBehavior);
         }
 
         private void EventTypeCheck<T>(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent ev, Action<GenericPuzzleAIBehavior, T> processEventAction) where T : PuzzleAIBehaviorExternalEvent
@@ -48,7 +59,7 @@ namespace RTPuzzle
             if (!genericAiBehavior.IsFeared())
             {
                 //if already escape from exit zone or escaping from projectile -> escape with ignoring
-                if (genericAiBehavior.IsEscapingFromProjectile() || genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones())
+                if (this.projectileStateTracker.HasFirstProjectileHitted || genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones())
                 {
                     Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
                     genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
@@ -139,6 +150,11 @@ namespace RTPuzzle
             }
         }
 
+        public override void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        {
+            var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
+            this.projectileStateTracker.AfterDestinationReached(genericAiBehavior);
+        }
     }
 
     public class ProjectileTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent

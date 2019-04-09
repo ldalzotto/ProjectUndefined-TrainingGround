@@ -83,6 +83,8 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehaviorExternalEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\ExternalEvent\PuzzleAIBehaviorExternalEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\StateTracker\BehaviorStateTracker.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\StateTracker\ProjectileStateTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />

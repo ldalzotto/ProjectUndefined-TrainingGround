@@ -45,6 +45,7 @@ namespace RTPuzzle
         }
 
         public abstract void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior);
+        public abstract void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior);
 
     }
 

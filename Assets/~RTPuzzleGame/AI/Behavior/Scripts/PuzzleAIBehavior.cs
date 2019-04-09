@@ -68,7 +68,7 @@ namespace RTPuzzle
         }
 
         public abstract Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
-        public void EndOfFixedTick()
+        public virtual void EndOfFixedTick()
         {
             this.puzzleAIBehaviorExternalEventManager.ConsumeEvents();
         }

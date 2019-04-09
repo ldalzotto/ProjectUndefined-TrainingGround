@@ -23,6 +23,7 @@ namespace RTPuzzle
         public AIFearStunManager AIFearStunComponentManager { get => aIFearStunComponentManager; }
         public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; }
 
+
         public GenericPuzzleAIBehavior(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
             PuzzleEventsManager PuzzleEventsManager, TargetZoneContainer TargetZoneContainer, AiID aiID, Collider aiCollider) : base(selfAgent, aIComponents, new GenericPuzzleAIBehaviorExternalEventManager(), OnFOVChange, ForceUpdateAIBehavior)
         {
@@ -231,6 +232,7 @@ namespace RTPuzzle
                 }
             }
 
+            this.puzzleAIBehaviorExternalEventManager.AfterDestinationReached(this);
         }
 
         public override void OnDestinationReached()
