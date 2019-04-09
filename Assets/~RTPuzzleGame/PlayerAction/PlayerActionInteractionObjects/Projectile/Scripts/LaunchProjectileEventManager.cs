@@ -21,13 +21,13 @@ namespace RTPuzzle
 
         public void OnLaunchProjectileDestroy(LaunchProjectile launchProjectile)
         {
-            Debug.Log("Projectile destroyed");
+            Debug.Log(MyLog.Format("Projectile destroyed"));
             LaunchProjectileContainerManager.OnLaunchProjectileDestroy(launchProjectile);
         }
 
         public void OnProjectileGroundTriggerEnter(LaunchProjectile launchProjectile)
         {
-            Debug.Log("Projectile trigger enter");
+            Debug.Log(MyLog.Format("Projectile trigger enter"));
             LaunchProjectileContainerManager.OnProjectileGroundTriggerEnter(launchProjectile);
         }
     }

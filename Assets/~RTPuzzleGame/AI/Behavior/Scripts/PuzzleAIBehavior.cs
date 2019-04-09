@@ -9,6 +9,7 @@ namespace RTPuzzle
         Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
         void TickGizmo();
         void OnProjectileTriggerEnter(Collider collider);
+        void OnAIFearedStunned();
         void OnAiFearEnd();
         void OnTriggerEnter(Collider collider);
         void OnTriggerStay(Collider collider);
@@ -55,6 +56,7 @@ namespace RTPuzzle
         public abstract Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
         public abstract void TickGizmo();
         public abstract void OnProjectileTriggerEnter(Collider collider);
+        public abstract void OnAIFearedStunned();
         public abstract void OnAiFearEnd();
         public abstract void OnTriggerEnter(Collider collider);
         public abstract void OnTriggerStay(Collider collider);

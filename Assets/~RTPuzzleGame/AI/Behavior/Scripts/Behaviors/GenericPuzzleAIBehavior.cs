@@ -67,7 +67,7 @@ namespace RTPuzzle
 
             if (this.IsFeared())
             {
-                Debug.Log("Feared");
+                Debug.Log(MyLog.Format("Feared"));
             }
             else
             {
@@ -110,6 +110,11 @@ namespace RTPuzzle
             aIPatrolComponentManager.GizmoTick();
             aIProjectileEscapeWithCollisionManager.GizmoTick();
             AIFOVManager.GizmoTick();
+        }
+        
+        public override void OnAIFearedStunned()
+        {
+            this.ComponentsStateReset(true, true, true, true, true);
         }
 
         public override void OnAiFearEnd()
@@ -328,6 +333,7 @@ namespace RTPuzzle
                     aITargetZoneComponentManager.IsEscapingFromTargetZone.ToString(), aIProjectileEscapeWithCollisionManager.IsEscaping().ToString(),
                 aIAttractiveObjectManager.IsInfluencedByAttractiveObject().ToString(), aIPatrolComponentManager.IsPatrolling().ToString() });
         }
+
     }
 
 }

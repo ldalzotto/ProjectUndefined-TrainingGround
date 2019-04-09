@@ -188,6 +188,7 @@ namespace RTPuzzle
 
         internal void OnAIFearedStunned()
         {
+            this.puzzleAIBehavior.OnAIFearedStunned();
             this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
 

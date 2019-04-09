@@ -45,6 +45,7 @@ namespace RTPuzzle
                     fearedTimer -= AIFearStunComponent.TimeWhileBeginFeared;
                     this.SetIsFeared(false);
                 }
+                //Debug.Log(Time.frameCount + " Fear timer : " + fearedTimer);
             }
             return null;
         }

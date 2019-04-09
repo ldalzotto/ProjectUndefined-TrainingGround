@@ -742,6 +742,152 @@ namespace Tests
             yield return new WaitForSeconds(fearTime);
             Assert.IsFalse(mouseAIBheavior.IsFeared());
         }
+
+        [UnityTest]
+        public IEnumerator AI_FearStun_NotInterruptedBy_Attractive()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            var fearTime = 0.15f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+            yield return PuzzleSceneTestHelper.FearYield(mouseTestAIManager.transform.position,
+                OnFearTriggered: () =>
+                {
+                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999, 0.1f), mouseTestAIManager.transform.position,
+                        OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            return null;
+                        },
+                        OnAttractiveObjectDestroyed: () =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            return null;
+                        }
+                        );
+                },
+                OnFearEnded: () =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    return null;
+                },
+               fearTime
+             );
+        }
+
+        [UnityTest]
+        public IEnumerator AI_FearStun_NotInterruptedBy_Projectile()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            var fearTime = 0.1f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+            yield return PuzzleSceneTestHelper.FearYield(mouseTestAIManager.transform.position,
+                OnFearTriggered: () =>
+                {
+                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectile());
+                    return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 170, 1), mouseTestAIManager.transform.position,
+                        OnProjectileSpawn: (LaunchProjectile projectile) =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectile());
+                            return null;
+                        },
+                        OnDistanceReached: null
+                    );
+                },
+                OnFearEnded: () =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectile());
+                    return null;
+                },
+                fearTime
+             );
+        }
+
+        [UnityTest]
+        public IEnumerator Ai_FearStun_NotInterruptedBy_ProjectileIgnoreTarget()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            var fearTime = 0.1f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+            yield return PuzzleSceneTestHelper.FearYield(mouseTestAIManager.transform.position,
+                OnFearTriggered: () =>
+                {
+                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileIngnoringTargetZones());
+                    return PuzzleSceneTestHelper.ProjectileIngoreTargetYield(PuzzleSceneTestHelper.CreateProjectileInherentData(999f, 170, 1), mouseTestAIManager.transform.position,
+                       OnBeforeSecondProjectileSpawn: null,
+                       OnSecondProjectileSpawned: (LaunchProjectile projectile) =>
+                       {
+                           Assert.IsTrue(mouseAIBheavior.IsFeared());
+                           Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileIngnoringTargetZones());
+                           return null;
+                       },
+                       OnSecondProjectileDistanceReached: null
+                       );
+                },
+                OnFearEnded: () =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileIngnoringTargetZones());
+                    return null;
+                },
+                fearTime
+             );
+        }
+
+        [UnityTest]
+        public IEnumerator Ai_FearStun_NotInterruptedBy_TargetZone()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            var fearTime = 0.1f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+            yield return PuzzleSceneTestHelper.FearYield(mouseTestAIManager.transform.position,
+                OnFearTriggered: () =>
+                {
+                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                    return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 0.2f, 170), mouseTestAIManager.transform.position,
+                        OnTargetZoneSpawn: (TargetZone targetZone) =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                            return null;
+                        },
+                        OnDistanceReached: null
+                    );
+                },
+                OnFearEnded: () =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                    return null;
+                },
+                fearTime
+             );
+        }
     }
 
 
