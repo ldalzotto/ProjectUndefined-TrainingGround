@@ -7,10 +7,12 @@ namespace RTPuzzle
     public interface IPuzzleAIBehavior<out C> where C : AbstractAIComponents
     {
         Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
+        void EndOfFixedTick();
         void TickGizmo();
-        void OnProjectileTriggerEnter(Collider collider);
+        void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent);
+        // void OnProjectileTriggerEnter(Collider collider);
         void OnAIFearedStunned();
-        void OnAiFearEnd();
+        // void OnAiFearEnd();
         void OnTriggerEnter(Collider collider);
         void OnTriggerStay(Collider collider);
         void OnTriggerExit(Collider collider);
@@ -32,7 +34,8 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Dependencies
-        protected Action ForceUpdateAIBehavior;
+        private Action forceUpdateAIBehavior;
+        protected PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager;
         #endregion
 
         #region Data retrieval
@@ -40,24 +43,39 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public AbstractAIComponents AIComponents { get => aIComponents; set => aIComponents = (C)value; }
 #endif
+        public Action ForceUpdateAIBehavior { get => forceUpdateAIBehavior; }
+        public AIFOVManager AIFOVManager { get => aIFOVManager; }
         #endregion
 
-        protected AIFOVManager AIFOVManager;
+        #region External Events
+        public void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent)
+        {
+            this.puzzleAIBehaviorExternalEventManager.ReceiveEvent(externalEvent);
+        }
+        #endregion
 
-        public PuzzleAIBehavior(NavMeshAgent selfAgent, C AIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
+        protected AIFOVManager aIFOVManager;
+
+        public PuzzleAIBehavior(NavMeshAgent selfAgent, C AIComponents, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = AIComponents;
+            this.puzzleAIBehaviorExternalEventManager = puzzleAIBehaviorExternalEventManager;
+            this.puzzleAIBehaviorExternalEventManager.Init(this);
             this.OnFOVChange = OnFOVChange;
-            this.ForceUpdateAIBehavior = ForceUpdateAIBehavior;
-            this.AIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
+            this.forceUpdateAIBehavior = ForceUpdateAIBehavior;
+            this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
         }
 
         public abstract Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
+        public void EndOfFixedTick()
+        {
+            this.puzzleAIBehaviorExternalEventManager.ConsumeEvents();
+        }
         public abstract void TickGizmo();
-        public abstract void OnProjectileTriggerEnter(Collider collider);
+        // public abstract void OnProjectileTriggerEnter(Collider collider);
         public abstract void OnAIFearedStunned();
-        public abstract void OnAiFearEnd();
+        // public abstract void OnAiFearEnd();
         public abstract void OnTriggerEnter(Collider collider);
         public abstract void OnTriggerStay(Collider collider);
         public abstract void OnTriggerExit(Collider collider);

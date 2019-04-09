@@ -29,23 +29,23 @@ namespace RTPuzzle
             return null;
         }
 
-        public override void OnTriggerEnter(Collider collider, CollisionType collisionType)
+        public override void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)//  Collider collider, CollisionType collisionType)
         {
-            SetAttractedObject(collisionType);
+            SetAttractedObject(attractivePosition, attractiveObjectType);
         }
 
-        public override void OnTriggerStay(Collider collider, CollisionType collisionType)
+        public override void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)//(Collider collider, CollisionType collisionType)
         {
-            if (collisionType.IsRTAttractiveObject && !this.IsInfluencedByAttractiveObject())
+            if (!this.IsInfluencedByAttractiveObject())
             {
-                SetAttractedObject(collisionType);
+                SetAttractedObject(attractivePosition, attractiveObjectType);
             }
         }
 
-        private void SetAttractedObject(CollisionType collisionType)
+        private void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)//CollisionType collisionType)
         {
-            this.attractionPosition = collisionType.transform.position;
-            this.involvedAttractiveObject = AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType);
+            this.attractionPosition = attractivePosition;
+            this.involvedAttractiveObject = attractiveObjectType;
             this.SetIsAttracted(true);
         }
 
@@ -62,7 +62,7 @@ namespace RTPuzzle
             this.isAttracted = value;
         }
 
-        public override void OnTriggerExit(Collider collider, CollisionType collisionType)
+        public override void OnTriggerExit()
         {
             OnDestinationReached();
         }

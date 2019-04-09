@@ -86,14 +86,13 @@ namespace RTPuzzle
             this.OnStateReset();
         }
 
-        public virtual void OnTriggerEnter(Collider collider, CollisionType collisionType)
+        public virtual void OnTriggerEnter(Vector3 impactPoint, ProjectileInherentData launchProjectileInherentData)
         {
-            var localEscapeDirection = (escapingAgent.transform.position - collider.transform.position).normalized;
-            var launchProjectile = LaunchProjectile.GetFromCollisionType(collisionType);
-            if (launchProjectile != null)
+            var localEscapeDirection = (escapingAgent.transform.position - impactPoint).normalized;
+            if (launchProjectileInherentData != null)
             {
                 this.OnDestinationSetFromProjectileContact();
-                this.IntersectFOV(localEscapeDirection, launchProjectile.LaunchProjectileInherentData.EscapeSemiAngle);
+                this.IntersectFOV(localEscapeDirection, launchProjectileInherentData.EscapeSemiAngle);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation, null);
             }
             this.SetIsEscapingFromProjectile(true);

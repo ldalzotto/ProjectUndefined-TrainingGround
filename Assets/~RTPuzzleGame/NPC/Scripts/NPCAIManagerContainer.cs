@@ -71,6 +71,14 @@ namespace RTPuzzle
             }
         }
 
+        public void EndOfFixedTick()
+        {
+            foreach (var npcAiManager in npcAiManagers.Values)
+            {
+                npcAiManager.EndOfFixedTick();
+            }
+        }
+
         public void DisableAgents()
         {
             foreach (var npcAiManager in npcAiManagers.Values)
@@ -102,7 +110,6 @@ namespace RTPuzzle
                 npcAiManager.GUITick();
             }
         }
-
     }
 
 }

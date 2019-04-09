@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
@@ -82,6 +83,18 @@ namespace RTPuzzle
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
         }
 
+        internal void TickAlways(in float d, in float timeAttenuationFactor)
+        {
+            NPCAnimationDataManager.Tick(timeAttenuationFactor);
+            NpcFOVRingManager.Tick(d);
+            ContextMarkVisualFeedbackManager.Tick(d);
+        }
+
+        internal void EndOfFixedTick()
+        {
+            this.puzzleAIBehavior.EndOfFixedTick();
+        }
+
         private void ForceTickAI()
         {
             this.ComputeAINewDestination(0, 0);
@@ -94,13 +107,6 @@ namespace RTPuzzle
             {
                 SetDestinationWithCoroutineReached(newDestination.Value);
             }
-        }
-
-        internal void TickAlways(in float d, in float timeAttenuationFactor)
-        {
-            NPCAnimationDataManager.Tick(timeAttenuationFactor);
-            NpcFOVRingManager.Tick(d);
-            ContextMarkVisualFeedbackManager.Tick(d);
         }
 
         public void OnTriggerEnter(Collider other)
@@ -140,9 +146,10 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnProjectileTriggerEnter(SphereCollider sphereCollider)
+        public void OnProjectileTriggerEnter(LaunchProjectile launchProjectile)
         {
-            this.puzzleAIBehavior.OnProjectileTriggerEnter(sphereCollider);
+            this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
+            //OnProjectileTriggerEnter(sphereCollider);
         }
 
         private void SetDestinationWithCoroutineReached(Vector3 destination)
@@ -182,7 +189,8 @@ namespace RTPuzzle
 
         internal void OnAIFearedStunnedEnded()
         {
-            this.puzzleAIBehavior.OnAiFearEnd();
+            this.puzzleAIBehavior.ReceiveEvent(new FearedEndAIBehaviorEvent());
+          //  this.puzzleAIBehavior.OnAiFearEnd();
             this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
         }
 

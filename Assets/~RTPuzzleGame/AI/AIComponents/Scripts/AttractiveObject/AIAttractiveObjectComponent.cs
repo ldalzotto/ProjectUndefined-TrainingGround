@@ -28,9 +28,9 @@ namespace RTPuzzle
         public abstract Vector3? TickComponent();
 
         #region External Events
-        public abstract void OnTriggerEnter(Collider collider, CollisionType collisionType);
-        public abstract void OnTriggerStay(Collider collider, CollisionType collisionType);
-        public abstract void OnTriggerExit(Collider collider, CollisionType collisionType);
+        public abstract void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType);
+        public abstract void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType);
+        public abstract void OnTriggerExit();
         public abstract void OnDestinationReached();
         public abstract void OnStateReset();
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -14,7 +15,6 @@ namespace RTPuzzle
 
         private PlayerManager PlayerManager;
         private PlayerManagerDataRetriever PlayerManagerDataRetriever;
-        //  private NPCAIManager NpcAiManager;
         private NPCAIManagerContainer NPCAIManagerContainer;
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
@@ -26,6 +26,8 @@ namespace RTPuzzle
 
         private void Start()
         {
+            Coroutiner.Instance.StartCoroutine(this.EndOfFixedUpdate());
+
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
 
@@ -82,14 +84,11 @@ namespace RTPuzzle
             TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
 
             NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
-            //NpcAiManager.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
 
             if (TimeFlowManager.IsAbleToFlowTime())
             {
                 NPCAIManagerContainer.EnableAgents();
                 NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                //  NpcAiManager.EnableAgent();
-                //   NpcAiManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                 LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                 PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                 AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
@@ -97,7 +96,6 @@ namespace RTPuzzle
             else
             {
                 NPCAIManagerContainer.DisableAgents();
-                //   NpcAiManager.DisableAgent();
             }
 
         }
@@ -114,18 +112,21 @@ namespace RTPuzzle
             PlayerManager.FixedTick(d);
         }
 
+        private IEnumerator EndOfFixedUpdate()
+        {
+            yield return new WaitForFixedUpdate();
+
+            NPCAIManagerContainer.EndOfFixedTick();
+
+            yield return this.EndOfFixedUpdate();
+        }
+
         private void OnDrawGizmos()
         {
             if (NPCAIManagerContainer != null)
             {
                 NPCAIManagerContainer.GizmoTick();
             }
-            /*
-            if (NpcAiManager != null)
-            {
-                NpcAiManager.GizmoTick();
-            }
-            */
 
             if (PlayerActionManager != null)
             {
@@ -139,13 +140,6 @@ namespace RTPuzzle
             {
                 NPCAIManagerContainer.GUITick();
             }
-
-            /*
-            if (NpcAiManager != null)
-            {
-                NpcAiManager.GUITick();
-            }
-            */
 
             if (PlayerActionManager != null)
             {

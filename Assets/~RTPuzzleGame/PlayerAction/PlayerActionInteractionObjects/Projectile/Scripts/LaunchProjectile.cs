@@ -67,7 +67,7 @@ namespace RTPuzzle
 
         public void OnGroundTriggerEnter()
         {
-            SphereCollisionManager.OnGroundTriggerEnter();
+            SphereCollisionManager.OnGroundTriggerEnter(this);
         }
         #endregion
 
@@ -116,14 +116,14 @@ namespace RTPuzzle
             SphereCollider.radius = 1f;
         }
 
-        public void OnGroundTriggerEnter()
+        public void OnGroundTriggerEnter(LaunchProjectile launchProjectileRef)
         {
             SphereCollider.radius = LaunchProjectileInherentData.EffectRange;
             foreach (var npcAiManagerWithId in NPCAIManagerContainer.GetNPCAiManagers())
             {
                 if (npcAiManagerWithId.Value.GetCollider().bounds.Intersects(SphereCollider.bounds))
                 {
-                    npcAiManagerWithId.Value.OnProjectileTriggerEnter(this.SphereCollider);
+                    npcAiManagerWithId.Value.OnProjectileTriggerEnter(launchProjectileRef);
                 }
             }
             MonoBehaviour.Destroy(this.SphereCollider);
