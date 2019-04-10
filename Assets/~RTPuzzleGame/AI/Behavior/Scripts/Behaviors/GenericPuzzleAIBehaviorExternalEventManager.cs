@@ -9,38 +9,37 @@ namespace RTPuzzle
 
         private Dictionary<string, int> GenericPuzzleAIEventProcessingOrder = new Dictionary<string, int>()
         {
-            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 1 },
-            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 2 },
-            {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 3 },
-            {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 4 },
-            {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 5 },
-            {typeof(TargetZoneTriggerStayAIBehaviorEvent).Name, 6 },
-            {typeof(FearedEndAIBehaviorEvent).Name, 7 }
+            {typeof(FearedEndAIBehaviorEvent).Name, 1 },
+            {typeof(FearedStartAIBehaviorEvent).Name, 2 },
+            {typeof(TargetZoneTriggerStayAIBehaviorEvent).Name, 3 },
+            {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 4 },
+            {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 5 },
+            {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 6 },
+            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 7 },
+            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 8 }
         };
+
+        private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
+            {
+                { typeof(ProjectileStateTracker), new ProjectileStateTracker()}
+            }
+        );
 
         protected override Dictionary<string, int> EventProcessingOrder => GenericPuzzleAIEventProcessingOrder;
 
-        #region State Tracker
-        private ProjectileStateTracker projectileStateTracker;
-        #endregion
-        
-        public GenericPuzzleAIBehaviorExternalEventManager()
-        {
-            this.projectileStateTracker = new ProjectileStateTracker();
-        }
+        protected override BehaviorStateTrackerContainer BehaviorStateTrackerContainer => trackerContainer;
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
         {
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
+            EventTypeCheck<FearedStartAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Start);
             EventTypeCheck<FearedEndAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_End);
             EventTypeCheck<AttractiveObjectTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerEnter);
             EventTypeCheck<AttractiveObjectTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerStay);
             EventTypeCheck<AttractiveObjectTriggerExitAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerExit);
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
-
-            this.projectileStateTracker.OnEventProcessed(genericAiBehavior);
         }
 
         private void EventTypeCheck<T>(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent ev, Action<GenericPuzzleAIBehavior, T> processEventAction) where T : PuzzleAIBehaviorExternalEvent
@@ -59,7 +58,7 @@ namespace RTPuzzle
             if (!genericAiBehavior.IsFeared())
             {
                 //if already escape from exit zone or escaping from projectile -> escape with ignoring
-                if (this.projectileStateTracker.HasFirstProjectileHitted || genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones())
+                if (this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted || genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones())
                 {
                     Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
                     genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
@@ -72,6 +71,11 @@ namespace RTPuzzle
                     genericAiBehavior.AIProjectileEscapeWithCollisionManager.OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
                 }
             }
+        }
+
+        private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
+        {
+            genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
         }
 
         private void Feared_End(GenericPuzzleAIBehavior genericAiBehavior, FearedEndAIBehaviorEvent fearedEndAIBehaviorEvent)
@@ -150,11 +154,6 @@ namespace RTPuzzle
             }
         }
 
-        public override void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
-        {
-            var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
-            this.projectileStateTracker.AfterDestinationReached(genericAiBehavior);
-        }
     }
 
     public class ProjectileTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
@@ -174,6 +173,8 @@ namespace RTPuzzle
         public Vector3 CollisionPosition { get => collisionPosition; }
         public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
     }
+
+    public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
 
     public class FearedEndAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
 

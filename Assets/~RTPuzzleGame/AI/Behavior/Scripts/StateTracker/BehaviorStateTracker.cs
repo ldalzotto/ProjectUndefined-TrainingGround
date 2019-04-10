@@ -1,8 +1,8 @@
 ﻿namespace RTPuzzle
 {
-    public interface BehaviorStateTracker<T, C> where C : AbstractAIComponents where T : IPuzzleAIBehavior<C> 
+    public interface BehaviorStateTracker
     {
-        void AfterDestinationReached(T behavior);
-        void OnEventProcessed(T behavior);
+        void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> behavior);
+        void OnEventProcessed(IPuzzleAIBehavior<AbstractAIComponents> behavior);
     }
 }

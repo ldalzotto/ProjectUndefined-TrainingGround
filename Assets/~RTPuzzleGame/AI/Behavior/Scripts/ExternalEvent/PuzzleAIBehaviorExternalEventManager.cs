@@ -16,6 +16,8 @@ namespace RTPuzzle
 
         private List<PuzzleAIBehaviorExternalEvent> waitingToConsumeEvents = new List<PuzzleAIBehaviorExternalEvent>();
 
+        protected abstract BehaviorStateTrackerContainer BehaviorStateTrackerContainer { get; }
+
         public void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent)
         {
             if (Time.inFixedTimeStep)
@@ -24,7 +26,7 @@ namespace RTPuzzle
             }
             else
             {
-                this.ProcessEvent(externalEvent, aiBehavior);
+                this.A_ProcessEvent(externalEvent, aiBehavior);
             }
         }
 
@@ -34,18 +36,33 @@ namespace RTPuzzle
             {
                 var e1 = EventProcessingOrder[ev1.GetType().Name];
                 var e2 = EventProcessingOrder[ev2.GetType().Name];
-                return EventProcessingOrder[ev1.GetType().Name].CompareTo(EventProcessingOrder[ev2.GetType().Name]);
+                return EventProcessingOrder[ev1.GetType().Name].CompareTo(EventProcessingOrder[ev2.GetType().Name]) * -1;
             });
 
             foreach (var externalEvent in this.waitingToConsumeEvents)
             {
-                this.ProcessEvent(externalEvent, this.aiBehavior);
+                this.A_ProcessEvent(externalEvent, this.aiBehavior);
             }
             this.waitingToConsumeEvents.Clear();
         }
 
+        private void A_ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        {
+            this.ProcessEvent(externalEvent, aiBehavior);
+            foreach (var behaviorStateTracker in this.BehaviorStateTrackerContainer.BehaviorStateTrackers.Values)
+            {
+                behaviorStateTracker.OnEventProcessed(aiBehavior);
+            }
+        }
+
         public abstract void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior);
-        public abstract void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior);
+        public void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        {
+            foreach (var behaviorStateTracker in this.BehaviorStateTrackerContainer.BehaviorStateTrackers.Values)
+            {
+                behaviorStateTracker.AfterDestinationReached(aiBehavior);
+            }
+        }
 
     }
 

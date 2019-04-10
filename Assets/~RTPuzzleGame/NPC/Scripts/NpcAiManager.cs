@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
@@ -190,13 +189,13 @@ namespace RTPuzzle
         internal void OnAIFearedStunnedEnded()
         {
             this.puzzleAIBehavior.ReceiveEvent(new FearedEndAIBehaviorEvent());
-          //  this.puzzleAIBehavior.OnAiFearEnd();
+            //  this.puzzleAIBehavior.OnAiFearEnd();
             this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
         }
 
         internal void OnAIFearedStunned()
         {
-            this.puzzleAIBehavior.OnAIFearedStunned();
+            this.puzzleAIBehavior.ReceiveEvent(new FearedStartAIBehaviorEvent());
             this.AnimationVisualFeedbackManager.OnAIFearedStunned();
         }
 

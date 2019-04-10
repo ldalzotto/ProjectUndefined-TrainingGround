@@ -1,23 +1,25 @@
 ﻿namespace RTPuzzle
 {
-    public class ProjectileStateTracker : BehaviorStateTracker<GenericPuzzleAIBehavior, GenericPuzzleAIComponents>
+    public class ProjectileStateTracker : BehaviorStateTracker
     {
 
         private bool hasFirstProjectileHitted;
 
         public bool HasFirstProjectileHitted { get => hasFirstProjectileHitted; }
 
-        public void AfterDestinationReached(GenericPuzzleAIBehavior behavior)
+        public void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> behavior)
         {
-            if (!behavior.IsEscapingFromProjectile() && !behavior.IsEscapingFromExitZone())
+            var genericPuzzleBehavior = (GenericPuzzleAIBehavior)behavior;
+            if (!genericPuzzleBehavior.IsEscapingFromProjectile() && !genericPuzzleBehavior.IsEscapingFromExitZone())
             {
                 this.hasFirstProjectileHitted = false;
             }
         }
 
-        public void OnEventProcessed(GenericPuzzleAIBehavior behavior)
+        public void OnEventProcessed(IPuzzleAIBehavior<AbstractAIComponents> behavior)
         {
-            if (behavior.IsEscapingFromProjectile())
+            var genericPuzzleBehavior = (GenericPuzzleAIBehavior)behavior;
+            if (genericPuzzleBehavior.IsEscapingFromProjectile())
             {
                 this.hasFirstProjectileHitted = true;
             }

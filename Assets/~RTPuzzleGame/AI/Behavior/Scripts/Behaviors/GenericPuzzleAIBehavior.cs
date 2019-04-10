@@ -53,14 +53,7 @@ namespace RTPuzzle
             aIAttractiveObjectManager.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }
         #endregion
-
-        #region Logical Conditions
-        private bool IsReactingToProjectile()
-        {
-            return !this.IsFeared();
-        }
-        #endregion
-
+        
         #region Data Retrieval
         public FOV GetFOV()
         {
@@ -118,11 +111,6 @@ namespace RTPuzzle
             aIPatrolComponentManager.GizmoTick();
             aIProjectileEscapeWithCollisionManager.GizmoTick();
             aIFOVManager.GizmoTick();
-        }
-
-        public override void OnAIFearedStunned()
-        {
-            this.ComponentsStateReset(true, true, true, true, true);
         }
 
         public override void OnTriggerEnter(Collider collider)

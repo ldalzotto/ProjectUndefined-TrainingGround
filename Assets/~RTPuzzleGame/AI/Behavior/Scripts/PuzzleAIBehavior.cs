@@ -10,9 +10,6 @@ namespace RTPuzzle
         void EndOfFixedTick();
         void TickGizmo();
         void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent);
-        // void OnProjectileTriggerEnter(Collider collider);
-        void OnAIFearedStunned();
-        // void OnAiFearEnd();
         void OnTriggerEnter(Collider collider);
         void OnTriggerStay(Collider collider);
         void OnTriggerExit(Collider collider);
@@ -73,9 +70,6 @@ namespace RTPuzzle
             this.puzzleAIBehaviorExternalEventManager.ConsumeEvents();
         }
         public abstract void TickGizmo();
-        // public abstract void OnProjectileTriggerEnter(Collider collider);
-        public abstract void OnAIFearedStunned();
-        // public abstract void OnAiFearEnd();
         public abstract void OnTriggerEnter(Collider collider);
         public abstract void OnTriggerStay(Collider collider);
         public abstract void OnTriggerExit(Collider collider);
