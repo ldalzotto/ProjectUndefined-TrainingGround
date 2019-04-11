@@ -103,6 +103,8 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerHairStrandAnimationManager.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerHoodAnimationManager.cs" />
     <Compile Include="Assets\~CoreGame\Random\RandomHelper.cs" />
     <Compile Include="Assets\~CoreGame\Scene\SceneLoadHelper.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />

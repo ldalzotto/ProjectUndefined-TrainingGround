@@ -195,9 +195,10 @@ public class PlayerBoneRetriever
 {
     private static Dictionary<PlayerBone, string> BoneNames = new Dictionary<PlayerBone, string>()
     {
-        {PlayerBone.HEAD, "Head"},
-        {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem.R" },
-        {PlayerBone.RIGH_FINGERS, "Figers.R" }
+        {PlayerBone.HEAD, "Head_0"},
+        {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem_R" },
+        {PlayerBone.RIGH_FINGERS, "Figers_R" },
+        { PlayerBone.HOOD, "Hood"}
     };
 
     public static GameObject GetPlayerBone(PlayerBone playerBone, Animator playerAnimator)
@@ -213,6 +214,6 @@ public class PlayerBoneRetriever
 
 public enum PlayerBone
 {
-    HEAD, RIGHT_HAND_CONTEXT, RIGH_FINGERS
+    HEAD, RIGHT_HAND_CONTEXT, RIGH_FINGERS, HOOD
 }
 #endregion

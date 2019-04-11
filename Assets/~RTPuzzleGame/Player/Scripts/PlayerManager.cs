@@ -12,11 +12,15 @@ namespace RTPuzzle
 
         public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
         public BodyGroundStickContactDistance BodyGroundStickContactDistance;
+        public PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent;
+        public PlayerHoodAnimationManagerComponent PlayerHoodAnimationManagerComponent;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
         private PlayerAnimationDataManager PlayerAnimationDataManager;
+        private PlayerHairStrandAnimationManager PlayerHairStrandAnimationManager;
+        private PlayerHoodAnimationManager PlayerHoodAnimationManager;
 
         public void Init()
         {
@@ -34,6 +38,8 @@ namespace RTPuzzle
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
+            PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(playerRigidBody, PlayerHairStrandAnimationManagerComponent);
+            PlayerHoodAnimationManager = new PlayerHoodAnimationManager(PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, animator).transform, playerRigidBody, PlayerInputMoveManagerComponent);
         }
 
         public void Tick(float d)
@@ -66,6 +72,12 @@ namespace RTPuzzle
         {
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
+        }
+
+        public void LateTick(float d)
+        {
+            PlayerHairStrandAnimationManager.LateTick(d);
+            PlayerHoodAnimationManager.LateTick(d);
         }
 
         #region Logical Conditions

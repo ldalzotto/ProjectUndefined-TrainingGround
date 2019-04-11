@@ -20,6 +20,8 @@ public class AnimationConstants
         private string animationName;
         private int layerIndex;
 
+        public const string HAIR_OBJECT_NAME = "Hair";
+
         public PlayerAnimationConstantsData(string animationName, int layerIndex)
         {
             this.animationName = animationName;
@@ -28,6 +30,16 @@ public class AnimationConstants
 
         public string AnimationName { get => animationName; }
         public int LayerIndex { get => layerIndex; }
+
+        public class PlayerHairStrandBlendShapeNames
+        {
+            public const string FORWARD = "HairStrand_Bounce_Forward";
+            public const string BACKWARD = "HairStrand_Bounce_Backward";
+            public const string UP = "HairStrand_Bounce_Up";
+            public const string DOWN = "HairStrand_Bounce_Down";
+
+        }
+
     }
 }
 
