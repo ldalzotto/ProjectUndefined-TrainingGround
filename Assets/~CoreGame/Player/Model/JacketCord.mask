@@ -6,7 +6,7 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Hood
+  m_Name: JacketCord
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
@@ -38,6 +38,18 @@ AvatarMask:
   - m_Path: Armature/Root/Torso/Chest
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Hood
+    m_Weight: 0
+  - m_Path: Armature/Root/Torso/Chest/Jacket_Cord_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Torso/Chest/Jacket_Cord_L/Jacket_Cord_L_001
+    m_Weight: 1
+  - m_Path: Armature/Root/Torso/Chest/Jacket_Cord_L/Jacket_Cord_L_001/Jacket_Cord_L_002
+    m_Weight: 1
+  - m_Path: Armature/Root/Torso/Chest/Jacket_Cord_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Torso/Chest/Jacket_Cord_R/Jacket_Cord_R_001
+    m_Weight: 1
+  - m_Path: Armature/Root/Torso/Chest/Jacket_Cord_R/Jacket_Cord_R_001/Jacket_Cord_R_002
     m_Weight: 1
   - m_Path: Armature/Root/Torso/Chest/Neck
     m_Weight: 0
@@ -72,6 +84,8 @@ AvatarMask:
   - m_Path: Armature/Root/Torso/Upper_Leg_R/Lower_Leg_R
     m_Weight: 0
   - m_Path: Body
+    m_Weight: 0
+  - m_Path: Eyes
     m_Weight: 0
   - m_Path: Hair
     m_Weight: 0
