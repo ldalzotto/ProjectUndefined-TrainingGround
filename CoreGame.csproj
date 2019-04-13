@@ -84,6 +84,8 @@
     <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
+    <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
+    <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />

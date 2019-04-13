@@ -18,10 +18,14 @@ namespace RTPuzzle
         private PlayerInputMoveManager PlayerInputMoveManager;
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
+
+        #region Procedural Animation Managers
+        private AnimationPositionTrackerManager HairObjectAnimationTracker;
+
         private PlayerAnimationDataManager PlayerAnimationDataManager;
         private PlayerHairStrandAnimationManager PlayerHairStrandAnimationManager;
         private PlayerHoodAnimationManager PlayerHoodAnimationManager;
-
+        #endregion
         public void Init()
         {
             #region External Dependencies
@@ -38,7 +42,10 @@ namespace RTPuzzle
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
-            PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(playerRigidBody, PlayerHairStrandAnimationManagerComponent);
+
+            var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(AnimationConstants.PlayerAnimationConstantsData.HAIR_OBJECT_NAME);
+            HairObjectAnimationTracker = new AnimationPositionTrackerManager(hairObject);
+            PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(HairObjectAnimationTracker, hairObject, PlayerHairStrandAnimationManagerComponent);
             PlayerHoodAnimationManager = new PlayerHoodAnimationManager(PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, animator).transform, playerRigidBody, PlayerInputMoveManagerComponent);
         }
 
@@ -76,6 +83,10 @@ namespace RTPuzzle
 
         public void LateTick(float d)
         {
+            #region Trackers Update
+            HairObjectAnimationTracker.LateTick(d);
+            #endregion
+
             PlayerHairStrandAnimationManager.LateTick(d);
             PlayerHoodAnimationManager.LateTick(d);
         }

@@ -8,49 +8,74 @@ namespace CoreGame
         public AnimationCurve HairStrandRunningCurveDamp;
         public AnimationCurve HairStrandStaticCurveDamp;
         public float HairStrandStaticAnimationSpeed;
-
         public float MinDistanceMoving;
     }
 
     public class PlayerHairStrandAnimationManager
     {
         private PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent;
-        private SkinnedMeshRenderer hairMeshRenderer;
+        private AnimationPositionTrackerManager playerHairPositionTracker;
 
-        public PlayerHairStrandAnimationManager(Rigidbody playerRigidBody, PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent)
+        private StaticState staticState;
+        private MovingState movingState;
+
+        public PlayerHairStrandAnimationManager(AnimationPositionTrackerManager playerHairPositionTracker, GameObject hairObject, PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent)
         {
-            this.hairMeshRenderer = playerRigidBody.gameObject.FindChildObjectRecursively(AnimationConstants.PlayerAnimationConstantsData.HAIR_OBJECT_NAME).GetComponent<SkinnedMeshRenderer>();
+            var hairMeshRenderer = hairObject.GetComponent<SkinnedMeshRenderer>();
+            this.playerHairPositionTracker = playerHairPositionTracker;
             this.PlayerHairStrandAnimationManagerComponent = PlayerHairStrandAnimationManagerComponent;
-            this.lastFramePosition = hairMeshRenderer.transform.position;
+
+            this.staticState = new StaticState(PlayerHairStrandAnimationManagerComponent, hairMeshRenderer);
+            this.staticState.onJustEnabled += () =>
+            {
+                this.movingState.SetIsEnabled(false);
+            };
+
+            this.movingState = new MovingState(PlayerHairStrandAnimationManagerComponent, hairMeshRenderer);
+            this.movingState.onJustEnabled += () =>
+            {
+                this.staticState.SetIsEnabled(false);
+            };
         }
 
-        private Vector3 lastFramePosition;
 
-        private float currentAnimationCurveStaticElapsedTime;
         private float currentAnimationCurveRunningElapsedTime;
 
         private bool isRunning;
-        private bool isStatic;
         private bool endOfAnimationCurveReached;
+
 
         public void LateTick(float d)
         {
-            var magni = Vector3.Distance(this.lastFramePosition, hairMeshRenderer.transform.position);
-            if (magni <= this.PlayerHairStrandAnimationManagerComponent.MinDistanceMoving)
+            this.staticState.SetIsEnabled(playerHairPositionTracker.AnimationPositionTrackerInformations.CrossedDistanceSigned.HasValue
+                && playerHairPositionTracker.AnimationPositionTrackerInformations.CrossedDistanceSigned.Value.magnitude <= this.PlayerHairStrandAnimationManagerComponent.MinDistanceMoving);
+
+            this.staticState.LateTick(d);
+            this.movingState.LateTick(d);
+        }
+
+        private class StaticState : AnimationProceduralState
+        {
+            private PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent;
+            private SkinnedMeshRenderer hairMeshRenderer;
+
+            public StaticState(PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent, SkinnedMeshRenderer hairMeshRenderer)
             {
-                if (!this.isStatic)
+                this.hairMeshRenderer = hairMeshRenderer;
+                this.PlayerHairStrandAnimationManagerComponent = PlayerHairStrandAnimationManagerComponent;
+                this.onJustEnabled += () =>
                 {
-                    this.currentAnimationCurveStaticElapsedTime = 0f;
-                    this.endOfAnimationCurveReached = false;
-                }
-                this.isStatic = true;
-                this.isRunning = false;
+                    this.endOfAnimationCurve = false;
+                };
+            }
 
-                if (!this.endOfAnimationCurveReached)
+            private bool endOfAnimationCurve;
+
+            protected override void LateTickImpl(float d)
+            {
+                if (!this.endOfAnimationCurve)
                 {
-
-                    this.currentAnimationCurveStaticElapsedTime += d;
-                    var evaluationTime = this.currentAnimationCurveStaticElapsedTime * this.PlayerHairStrandAnimationManagerComponent.HairStrandStaticAnimationSpeed;
+                    var evaluationTime = this.currentElapsedTimeFromActive * this.PlayerHairStrandAnimationManagerComponent.HairStrandStaticAnimationSpeed;
                     var animationBlendRunningSample =
                         this.PlayerHairStrandAnimationManagerComponent.HairStrandRunningCurveDamp.Evaluate(evaluationTime) * 100;
                     if (animationBlendRunningSample >= 0)
@@ -63,43 +88,50 @@ namespace CoreGame
                     }
                     if (evaluationTime > 1)
                     {
-                        this.endOfAnimationCurveReached = true;
+                        this.endOfAnimationCurve = true;
                     }
                 }
-
-
             }
-            else
+        }
+
+        private class MovingState : AnimationProceduralState
+        {
+            private PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent;
+            private SkinnedMeshRenderer hairMeshRenderer;
+
+            public MovingState(PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent, SkinnedMeshRenderer hairMeshRenderer)
             {
-                if (!this.isRunning)
+                this.hairMeshRenderer = hairMeshRenderer;
+                this.PlayerHairStrandAnimationManagerComponent = PlayerHairStrandAnimationManagerComponent;
+
+                this.onJustEnabled += () =>
                 {
-                    this.currentAnimationCurveRunningElapsedTime = 0f;
+                    this.endOfAnimationCurve = false;
                     this.hairMeshRenderer.SetBlendShapeWeight(0, 0);
-                    this.endOfAnimationCurveReached = false;
-                }
-                this.isStatic = false;
-                this.isRunning = true;
+                };
+            }
 
-                if (!this.endOfAnimationCurveReached)
+            private bool endOfAnimationCurve;
+
+            protected override void LateTickImpl(float d)
+            {
+                if (!this.endOfAnimationCurve)
                 {
-                    var evaluationTime = this.currentAnimationCurveRunningElapsedTime;
+                    var evaluationTime = this.currentElapsedTimeFromActive;
 
-                    this.currentAnimationCurveRunningElapsedTime += d;
+                    this.currentElapsedTimeFromActive += d;
                     this.hairMeshRenderer.SetBlendShapeWeight(1, this.PlayerHairStrandAnimationManagerComponent.HairStrandRunningCurveDamp.Evaluate(evaluationTime) * 100);
 
 
                     if (evaluationTime > 1)
                     {
-                        this.endOfAnimationCurveReached = true;
+                        this.endOfAnimationCurve = true;
                     }
                 }
-
             }
-
-            this.lastFramePosition = hairMeshRenderer.transform.position;
-
         }
 
     }
+
 
 }
