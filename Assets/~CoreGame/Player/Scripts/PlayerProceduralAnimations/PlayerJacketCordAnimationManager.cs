@@ -27,14 +27,12 @@ namespace CoreGame
             this.standingState = new StandingState(playerAnimator, PlayerJacketCordAnimationManagerComponent);
             this.standingState.onJustEnabled += () =>
             {
-                Debug.Log("Enter standing state");
                 this.movingState.SetIsEnabled(false);
             };
             this.movingState = new MovingState(playerAnimator);
 
             this.movingState.onJustEnabled += () =>
             {
-                Debug.Log("Enter moving state");
                 this.standingState.SetIsEnabled(false);
             };
         }

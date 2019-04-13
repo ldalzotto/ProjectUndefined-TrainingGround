@@ -16,7 +16,7 @@ namespace CoreGame
         public AnimationCurve FlickerAnimationCurve;
     }
 
-    public class PlayerHoodAnimationManager : MonoBehaviour
+    public class PlayerHoodAnimationManager
     {
         PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
         private PlayerHoodAnimationManagerComponent PlayerHoodAnimationManagerComponent;

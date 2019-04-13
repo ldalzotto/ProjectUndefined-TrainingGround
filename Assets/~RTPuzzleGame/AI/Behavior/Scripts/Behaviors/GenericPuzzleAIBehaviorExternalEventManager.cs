@@ -87,7 +87,10 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerEnterAIBehaviorEvent attractiveObjectTriggerEnterAIBehaviorEvent)
         {
-            if (!genericAiBehavior.IsEscapingFromProjectile() && !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() && !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
+            if (!genericAiBehavior.IsInfluencedByAttractiveObject() &&
+                !genericAiBehavior.IsEscapingFromProjectile() &&
+                !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() &&
+                !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
             {
                 Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerEnter");
                 genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
