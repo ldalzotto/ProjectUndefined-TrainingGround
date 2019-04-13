@@ -11,7 +11,10 @@ public class AnimationConstants
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, new PlayerAnimationConstantsData("Armature|CA_PocketItem_Lay", 2) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING, new PlayerAnimationConstantsData("ContextActionOverrideListening", 2) },
         {PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING, new PlayerAnimationConstantsData("IdleActionListening", 1) },
-        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE, new PlayerAnimationConstantsData("Armature|Idle_Action_Smoke", 1) }
+        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE, new PlayerAnimationConstantsData("Armature|Idle_Action_Smoke", 1) },
+        //procedural animations
+        {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_LISTENING, new PlayerAnimationConstantsData("JacketCord_Listening", 3) },
+        {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_JITTER_TREE, new PlayerAnimationConstantsData("JacketJitterTree", 3) }
     };
 
     public class PlayerAnimationConstantsData
@@ -30,16 +33,20 @@ public class AnimationConstants
 
         public string AnimationName { get => animationName; }
         public int LayerIndex { get => layerIndex; }
+    }
 
-        public class PlayerHairStrandBlendShapeNames
-        {
-            public const string FORWARD = "HairStrand_Bounce_Forward";
-            public const string BACKWARD = "HairStrand_Bounce_Backward";
-            public const string UP = "HairStrand_Bounce_Up";
-            public const string DOWN = "HairStrand_Bounce_Down";
+    public class PlayerHairStrandBlendShapeNames
+    {
+        public const string FORWARD = "HairStrand_Bounce_Forward";
+        public const string BACKWARD = "HairStrand_Bounce_Backward";
+        public const string UP = "HairStrand_Bounce_Up";
+        public const string DOWN = "HairStrand_Bounce_Down";
+    }
 
-        }
-
+    public class PlayerAnimatorParametersName
+    {
+        public const string Speed = "Speed";
+        public const string JacketCordJitter = "Jacket_Cord_Jitter";
     }
 }
 
@@ -52,5 +59,8 @@ public enum PlayerAnimatioNamesEnum
     PLAYER_ACTION_CA_POCKET_ITEM_LAY,
     PLAYER_ACTION_LISTENING,
     PLAYER_IDLE_OVERRIDE_LISTENING,
-    PLAYER_IDLE_SMOKE
+    PLAYER_IDLE_SMOKE,
+    //procedural animation
+    PLAYER_JACKET_CORD_LISTENING,
+    PLAYER_JACKET_CORD_JITTER_TREE
 }

@@ -16,7 +16,7 @@ namespace CoreGame
 
         public AnimationPositionTrackerInformations AnimationPositionTrackerInformations { get => animationPositionTrackerInformations; }
 
-        public void LateTick(float d)
+        public void FixedTick(float d)
         {
             this.animationPositionTrackerInformations.CurrentDeltaTime = d;
 

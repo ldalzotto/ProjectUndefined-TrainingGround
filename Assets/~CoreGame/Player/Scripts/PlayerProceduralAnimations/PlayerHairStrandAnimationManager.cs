@@ -80,11 +80,11 @@ namespace CoreGame
                         this.PlayerHairStrandAnimationManagerComponent.HairStrandRunningCurveDamp.Evaluate(evaluationTime) * 100;
                     if (animationBlendRunningSample >= 0)
                     {
-                        this.hairMeshRenderer.SetBlendShapeWeight(0, animationBlendRunningSample);
+                        this.hairMeshRenderer.SetBlendShapeWeight(this.hairMeshRenderer.sharedMesh.GetBlendShapeIndex(AnimationConstants.PlayerHairStrandBlendShapeNames.FORWARD), animationBlendRunningSample);
                     }
                     else
                     {
-                        this.hairMeshRenderer.SetBlendShapeWeight(1, animationBlendRunningSample * -1);
+                        this.hairMeshRenderer.SetBlendShapeWeight(this.hairMeshRenderer.sharedMesh.GetBlendShapeIndex(AnimationConstants.PlayerHairStrandBlendShapeNames.BACKWARD), animationBlendRunningSample * -1);
                     }
                     if (evaluationTime > 1)
                     {
@@ -107,7 +107,7 @@ namespace CoreGame
                 this.onJustEnabled += () =>
                 {
                     this.endOfAnimationCurve = false;
-                    this.hairMeshRenderer.SetBlendShapeWeight(0, 0);
+                    this.hairMeshRenderer.SetBlendShapeWeight(this.hairMeshRenderer.sharedMesh.GetBlendShapeIndex(AnimationConstants.PlayerHairStrandBlendShapeNames.FORWARD), 0);
                 };
             }
 
@@ -120,7 +120,7 @@ namespace CoreGame
                     var evaluationTime = this.currentElapsedTimeFromActive;
 
                     this.currentElapsedTimeFromActive += d;
-                    this.hairMeshRenderer.SetBlendShapeWeight(1, this.PlayerHairStrandAnimationManagerComponent.HairStrandRunningCurveDamp.Evaluate(evaluationTime) * 100);
+                    this.hairMeshRenderer.SetBlendShapeWeight(this.hairMeshRenderer.sharedMesh.GetBlendShapeIndex(AnimationConstants.PlayerHairStrandBlendShapeNames.BACKWARD), this.PlayerHairStrandAnimationManagerComponent.HairStrandRunningCurveDamp.Evaluate(evaluationTime) * 100);
 
 
                     if (evaluationTime > 1)

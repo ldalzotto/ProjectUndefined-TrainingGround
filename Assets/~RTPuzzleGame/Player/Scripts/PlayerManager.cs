@@ -14,6 +14,7 @@ namespace RTPuzzle
         public BodyGroundStickContactDistance BodyGroundStickContactDistance;
         public PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent;
         public PlayerHoodAnimationManagerComponent PlayerHoodAnimationManagerComponent;
+        public PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
@@ -21,10 +22,12 @@ namespace RTPuzzle
 
         #region Procedural Animation Managers
         private AnimationPositionTrackerManager HairObjectAnimationTracker;
+        private AnimationPositionTrackerManager ChestObjectAnimationTracker;
 
         private PlayerAnimationDataManager PlayerAnimationDataManager;
         private PlayerHairStrandAnimationManager PlayerHairStrandAnimationManager;
         private PlayerHoodAnimationManager PlayerHoodAnimationManager;
+        private PlayerJacketCordAnimationManager PlayerJacketCordAnimationManager;
         #endregion
         public void Init()
         {
@@ -44,9 +47,14 @@ namespace RTPuzzle
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
 
             var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(AnimationConstants.PlayerAnimationConstantsData.HAIR_OBJECT_NAME);
+            var chestObject = PlayerBoneRetriever.GetPlayerBone(PlayerBone.CHEST, animator);
+
             HairObjectAnimationTracker = new AnimationPositionTrackerManager(hairObject);
+            ChestObjectAnimationTracker = new AnimationPositionTrackerManager(chestObject);
+
             PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(HairObjectAnimationTracker, hairObject, PlayerHairStrandAnimationManagerComponent);
             PlayerHoodAnimationManager = new PlayerHoodAnimationManager(PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, animator).transform, playerRigidBody, PlayerInputMoveManagerComponent);
+            PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(animator, ChestObjectAnimationTracker, PlayerJacketCordAnimationManagerComponent, PlayerInputMoveManagerComponent);
         }
 
         public void Tick(float d)
@@ -79,16 +87,18 @@ namespace RTPuzzle
         {
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
+
+            #region Trackers Update
+            HairObjectAnimationTracker.FixedTick(d);
+            ChestObjectAnimationTracker.FixedTick(d);
+            #endregion
         }
 
         public void LateTick(float d)
         {
-            #region Trackers Update
-            HairObjectAnimationTracker.LateTick(d);
-            #endregion
-
             PlayerHairStrandAnimationManager.LateTick(d);
             PlayerHoodAnimationManager.LateTick(d);
+            PlayerJacketCordAnimationManager.LateTick(d);
         }
 
         #region Logical Conditions
