@@ -7,7 +7,7 @@ namespace CoreGame
     {
         private GameObject involvedObjectInstanciated;
         private Animator playerAnimator;
-        private GameObject righthandContext;
+        private GameObject rightHandContext;
         private PlayerAnimatioNamesEnum playerAnimationContextName;
         private float crossFadeTime;
         Action onAnimationEndAction;
@@ -25,7 +25,7 @@ namespace CoreGame
             this.involvedObjectInstanciated = involvedObjectInstanciated;
             this.playerAnimator = playerAnimator;
             this.destroyObjectOnEnd = destroyObjectOnEnd;
-            this.righthandContext = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, this.playerAnimator);
+            this.rightHandContext = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, this.playerAnimator);
             this.playerAnimationContextName = playerAnimationContextName;
             this.crossFadeTime = crossFadeTime;
             this.onAnimationEndAction = onAnimationEndAction;
@@ -41,8 +41,8 @@ namespace CoreGame
         {
             if (!animationEnded && animationPlaying)
             {
-                this.involvedObjectInstanciated.transform.position = righthandContext.transform.position;
-                this.involvedObjectInstanciated.transform.rotation = righthandContext.transform.rotation;
+                this.involvedObjectInstanciated.transform.position = rightHandContext.transform.position;
+                this.involvedObjectInstanciated.transform.rotation = rightHandContext.transform.rotation;
             }
         }
 
