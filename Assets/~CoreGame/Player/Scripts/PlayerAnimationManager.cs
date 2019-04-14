@@ -123,7 +123,7 @@ public class PlayerIdleAnimationManager
     {
         isIdlingAnimationRuning = true;
         var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
-        var layerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].LayerIndex;
+        var layerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].GetLayerIndex(this.PlayerAnimator);
         PlayerAnimator.Play(animationName);
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfAnimation(PlayerAnimator, animationName, layerIndex);

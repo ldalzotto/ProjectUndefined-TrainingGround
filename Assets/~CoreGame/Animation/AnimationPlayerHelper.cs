@@ -25,7 +25,7 @@ namespace CoreGame
         public static IEnumerator Play(Animator animator, PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration, Action animationEndCallback)
         {
             var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
-            var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].LayerIndex;
+            var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].GetLayerIndex(animator);
             return Play(animator, animationName, animationLayerIndex, crossFadeDuration, animationEndCallback);
         }
 

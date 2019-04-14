@@ -90,7 +90,7 @@ namespace CoreGame
                 if (!this.dampingEnded)
                 {
                     var jitterAnimationConstant = AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_JITTER_TREE];
-                    if (!this.playerAnimator.GetCurrentAnimatorStateInfo(jitterAnimationConstant.LayerIndex).IsName(jitterAnimationConstant.AnimationName))
+                    if (!this.playerAnimator.GetCurrentAnimatorStateInfo(jitterAnimationConstant.GetLayerIndex(this.playerAnimator)).IsName(jitterAnimationConstant.AnimationName))
                     {
                         this.playerAnimator.Play(jitterAnimationConstant.AnimationName);
                     }

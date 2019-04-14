@@ -1,38 +1,53 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class AnimationConstants
 {
     public static Dictionary<PlayerAnimatioNamesEnum, PlayerAnimationConstantsData> PlayerAnimationConstants = new Dictionary<PlayerAnimatioNamesEnum, PlayerAnimationConstantsData>()
     {
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN, new PlayerAnimationConstantsData("Armature|Grab_Down", 2) },
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, new PlayerAnimationConstantsData("Armature|ActionForbidden", 2) },
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT, new PlayerAnimationConstantsData("Armature|ItemGiven", 2) },
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM, new PlayerAnimationConstantsData("Armature|CA_PocketItem", 2) },
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, new PlayerAnimationConstantsData("Armature|CA_PocketItem_Lay", 2) },
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING, new PlayerAnimationConstantsData("ContextActionOverrideListening", 2) },
-        {PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING, new PlayerAnimationConstantsData("IdleActionListening", 1) },
-        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE, new PlayerAnimationConstantsData("Armature|Idle_Action_Smoke", 1) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN, new PlayerAnimationConstantsData("Armature|Grab_Down", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, new PlayerAnimationConstantsData("Armature|ActionForbidden", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT, new PlayerAnimationConstantsData("Armature|ItemGiven", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM, new PlayerAnimationConstantsData("Armature|CA_PocketItem", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, new PlayerAnimationConstantsData("Armature|CA_PocketItem_Lay", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING, new PlayerAnimationConstantsData("ContextActionOverrideListening", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING, new PlayerAnimationConstantsData("IdleActionListening", PlyaerAnimationLayerNames.IDLE_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE, new PlayerAnimationConstantsData("Armature|Idle_Action_Smoke", PlyaerAnimationLayerNames.IDLE_ACTION_OVERRIDE) },
         //procedural animations
-        {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_LISTENING, new PlayerAnimationConstantsData("JacketCord_Listening", 3) },
-        {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_JITTER_TREE, new PlayerAnimationConstantsData("JacketJitterTree", 3) }
+        {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_LISTENING, new PlayerAnimationConstantsData("JacketCord_Listening", PlyaerAnimationLayerNames.JACKET_CORD) },
+        {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_JITTER_TREE, new PlayerAnimationConstantsData("JacketJitterTree", PlyaerAnimationLayerNames.JACKET_CORD) }
     };
+
+    public class PlyaerAnimationLayerNames
+    {
+        public const string BASE_LAYER = "Base Layer";
+        public const string EMPTY_LAYER = "Empty_Layer";
+        public const string CONTEXT_ACTION_OVERRIDE = "Context_Action_Override";
+        public const string JACKET_CORD = "Jacket_Cord";
+        public const string IDLE_ACTION_OVERRIDE = "Idle_Action_Override";
+    }
 
     public class PlayerAnimationConstantsData
     {
 
         private string animationName;
-        private int layerIndex;
+        private string layerName;
 
         public const string HAIR_OBJECT_NAME = "Hair";
 
-        public PlayerAnimationConstantsData(string animationName, int layerIndex)
+        public PlayerAnimationConstantsData(string animationName, string layerName)
         {
             this.animationName = animationName;
-            this.layerIndex = layerIndex;
+            this.layerName = layerName;
+        }
+
+        public int GetLayerIndex(Animator animator)
+        {
+            return animator.GetLayerIndex(this.layerName);
         }
 
         public string AnimationName { get => animationName; }
-        public int LayerIndex { get => layerIndex; }
+        public string LayerName { get => layerName; }
     }
 
     public class PlayerHairStrandBlendShapeNames
