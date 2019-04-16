@@ -484,6 +484,7 @@ namespace AdventureGame
             if (LastNearestPOI != null)
             {
                 var beforeHeadMoveAngle = Vector3.Angle(playerPOIVisualHeadMovementComponent.HeadBone.forward, LastNearestPOI.transform.position - playerPOIVisualHeadMovementComponent.HeadBone.position);
+                //   Debug.Log(beforeHeadMoveAngle);
                 if (beforeHeadMoveAngle <= playerPOIVisualHeadMovementComponent.HeadMoveAngleLimit)
                 {
 
@@ -498,7 +499,7 @@ namespace AdventureGame
                     for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
                     {
                         var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
-                        var targetRotation = Quaternion.LookRotation(LastNearestPOI.transform.position - affectedBone.transform.position);
+                        var targetRotation = Quaternion.LookRotation(LastNearestPOI.transform.position - affectedBone.transform.position, affectedBone.transform.up);
                         affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], targetRotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
                         InterpolatedBoneRotations[i] = affectedBone.rotation;
                     }

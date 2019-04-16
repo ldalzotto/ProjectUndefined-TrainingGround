@@ -672,7 +672,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 1
     m_PostExtrapolationTime: Infinity
     m_PreExtrapolationTime: 0
-    m_DisplayName: Armature|SewerOpen
+    m_DisplayName: SewerOpen
     m_Version: 1
   m_Version: 2
   m_OpenClipPreExtrapolation: 0
@@ -823,7 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 2024714994, guid: 6a10b2909283487f913b00d94cd3faf5, type: 3}
   m_Name: AnimationPlayableAsset
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 7400022, guid: 68c1aef5e3c80854cab0daf5c37cdfa3, type: 3}
+  m_Clip: {fileID: 7400028, guid: 8261fbdfb34c1f042a21cad87d4f7cc0, type: 3}
   m_Position: {x: 0, y: 0, z: 0}
   m_EulerAngles: {x: 0, y: 0, z: 0}
   m_UseTrackMatchFields: 1
