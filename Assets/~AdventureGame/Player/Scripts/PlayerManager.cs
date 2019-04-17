@@ -484,8 +484,7 @@ namespace AdventureGame
             if (LastNearestPOI != null)
             {
                 var beforeHeadMoveAngle = Vector3.Angle(playerPOIVisualHeadMovementComponent.HeadBone.forward, LastNearestPOI.transform.position - playerPOIVisualHeadMovementComponent.HeadBone.position);
-                //   Debug.Log(beforeHeadMoveAngle);
-                if (beforeHeadMoveAngle <= playerPOIVisualHeadMovementComponent.HeadMoveAngleLimit)
+                if (beforeHeadMoveAngle <= playerPOIVisualHeadMovementComponent.POIDetectionAngleLimit)
                 {
 
                     if (!IsLookingToPOI)
@@ -496,11 +495,28 @@ namespace AdventureGame
 
                     IsLookingToPOI = true;
                     hasEndedSmoothingOut = false;
+
                     for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
                     {
                         var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
-                        var targetRotation = Quaternion.LookRotation(LastNearestPOI.transform.position - affectedBone.transform.position, affectedBone.transform.up);
-                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], targetRotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
+
+                        // (1) - Target direction is the direction between bone and POI point.
+                        var targetDirection = (LastNearestPOI.transform.position - affectedBone.transform.position).normalized;
+
+                        // (2) - We clamp the bone rotation to a cone.
+                        var coneClampedRotation = QuaternionHelper.ConeReduction(playerPOIVisualHeadMovementComponent.HeadBone.forward, targetDirection, this.playerPOIVisualHeadMovementComponent.RotationAngleLimit);
+
+                        // (3) - We rotate the target direction to fit the cone constraint.
+                        var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
+
+                        /*
+                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (playerPOIVisualHeadMovementComponent.HeadBone.forward * 10), Color.blue);
+                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (targetDirection.normalized * 10), Color.green);
+                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (adjustedDirection.normalized * 10), Color.red);
+                        */
+
+                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
+                            playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
                         InterpolatedBoneRotations[i] = affectedBone.rotation;
                     }
                 }
@@ -588,8 +604,10 @@ namespace AdventureGame
     {
         public Transform[] BonesThatReactToPOI;
         public Transform HeadBone;
-        [Header("Angle limit in +-X")]
-        public float HeadMoveAngleLimit;
+        [Tooltip("This angle is the maximum value for the look system to be enabled. The angle is Ang(player forward, player to POI)")]
+        public float POIDetectionAngleLimit;
+        [Tooltip("This angle is the maximum angle where player actually rotate.")]
+        public float RotationAngleLimit;
 
         public float SmoothMovementSpeed;
         [Range(0.0f, 1.0f)]

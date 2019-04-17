@@ -6,7 +6,7 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RightArmWithContext
+  m_Name: RightArm
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
@@ -14,8 +14,6 @@ AvatarMask:
   - m_Path: Armature
     m_Weight: 0
   - m_Path: Armature/Root
-    m_Weight: 0
-  - m_Path: Armature/Root/Hair_0
     m_Weight: 0
   - m_Path: Armature/Root/Leg_Control_L
     m_Weight: 0
@@ -50,6 +48,10 @@ AvatarMask:
   - m_Path: Armature/Root/Torso/Chest/Neck
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Neck/Head
+    m_Weight: 0
+  - m_Path: Armature/Root/Torso/Chest/Neck/Head/Eye_L
+    m_Weight: 0
+  - m_Path: Armature/Root/Torso/Chest/Neck/Head/Eye_R
     m_Weight: 0
   - m_Path: Armature/Root/Torso/Chest/Upper_Arm_L
     m_Weight: 0
