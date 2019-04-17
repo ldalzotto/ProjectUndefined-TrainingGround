@@ -22,14 +22,12 @@ namespace AdventureGame
 
         private void Start()
         {
-            var playerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
-
             var PlayerAnimator = GetComponentInChildren<Animator>();
 
             this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
-            this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this, playerGlobalAnimationEventHandler);
+            this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this);
 
-            this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<PlayerGlobalAnimationEventHandler>(), FindObjectOfType<FXContainerManager>(), PlayerAnimator);
+            this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<FXContainerManager>(), PlayerAnimator);
         }
 
 
@@ -48,6 +46,13 @@ namespace AdventureGame
         }
         #endregion
 
+        #region Internal Events
+        public void OnSpawnFireSmoke()
+        {
+            PlayerAnimationFXHandler.OnSpawnFireSmoke();
+        }
+        #endregion
+
         public Animator GetPlayerAnimator()
         {
             return playerAnimationDataManager.Animator;
@@ -60,8 +65,7 @@ namespace AdventureGame
     {
         private PlayerIdleAnimationManagerComponent PlayerIdleAnimationManagerComponent;
         private Animator PlayerAnimator;
-        private MonoBehaviour PlayerManagerReference;
-        private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
+        private PlayerAnimationManager PlayerManagerReference;
 
         private float elapsedTime;
         private bool isIdlingAnimationRuning;
@@ -70,12 +74,11 @@ namespace AdventureGame
 
         public bool IsIdlingAnimationRuning { get => isIdlingAnimationRuning; }
 
-        public PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent playerIdleAnimationManagerComponent, Animator playerAnimator, MonoBehaviour playerManagerReference, PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler)
+        public PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent playerIdleAnimationManagerComponent, Animator playerAnimator, PlayerAnimationManager playerManagerReference)
         {
             PlayerIdleAnimationManagerComponent = playerIdleAnimationManagerComponent;
             PlayerAnimator = playerAnimator;
             PlayerManagerReference = playerManagerReference;
-            this.PlayerGlobalAnimationEventHandler = PlayerGlobalAnimationEventHandler;
         }
 
         public void Tick(float delta, float unscaledSpeedMagnitude)
@@ -110,7 +113,9 @@ namespace AdventureGame
         private IEnumerator PlayPlayerIdleSmokeAnimation()
         {
             isIdlingAnimationRuning = true;
-            yield return PlayerAnimationPlayer.PlayIdleSmokeAnimation(PlayerAnimator, PlayerGlobalAnimationEventHandler);
+            yield return PlayerAnimationPlayer.PlayIdleSmokeAnimation(PlayerAnimator,
+                onTriggerSmokeEffect: PlayerManagerReference.OnSpawnFireSmoke,
+                onAnimationEnd: null);
             ResetIdleTimer();
         }
 
@@ -146,15 +151,14 @@ namespace AdventureGame
 
         private TriggerableEffect CurrentEffectPlaying;
 
-        public PlayerAnimationFXHandler(PlayerGlobalAnimationEventHandler playerGlobalAnimationEventHandler, FXContainerManager fXContainerManager, Animator playerAnimator)
+        public PlayerAnimationFXHandler(FXContainerManager fXContainerManager, Animator playerAnimator)
         {
             FXContainerManager = fXContainerManager;
             this.PlayerAnimator = playerAnimator;
-            playerGlobalAnimationEventHandler.OnIdleOverideTriggerSmokeEffect += SpawnFireSmoke;
         }
 
         #region Idle animations
-        private void SpawnFireSmoke()
+        public void OnSpawnFireSmoke()
         {
             CurrentEffectPlaying = FXContainerManager.TriggerFX(PrefabContainer.Instance.PlayerSmokeEffectPrefab, PlayerAnimationConstants.PlayerBoneRetriever.GetPlayerBone(PlayerBone.HEAD, PlayerAnimator).transform);
         }

@@ -37,7 +37,7 @@ namespace CoreGame
             return Play(animator, animationName, animationLayerIndex, crossFadeDuration, animationEndCallback);
         }
 
-        public static bool IsCurrentStateNameEquals(Animator animator ,PlayerAnimatioNamesEnum playerAnimatioNnamesEnum)
+        public static bool IsCurrentStateNameEquals(Animator animator, PlayerAnimatioNamesEnum playerAnimatioNnamesEnum)
         {
             var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
             var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].GetLayerIndex(animator);

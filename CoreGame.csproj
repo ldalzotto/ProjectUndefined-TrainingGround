@@ -62,7 +62,6 @@
   <ItemGroup>
     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_PassEditor.cs" />
-    <Compile Include="Assets\~CoreGame\__Game\Scripts\AnimationEvent\PlayerGlobalAnimationEventHandler.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\MaterialContainer.cs" />

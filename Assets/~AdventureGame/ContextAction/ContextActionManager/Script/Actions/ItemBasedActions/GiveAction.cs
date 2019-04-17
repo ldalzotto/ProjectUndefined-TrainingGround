@@ -52,10 +52,9 @@ namespace AdventureGame
         {
 
             #region External Dependencies
-            var PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
             this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             #endregion
-            GiveActionAnimationManager = new GiveActionAnimationManager(PlayerGlobalAnimationEventHandler, itemGiven);
+            GiveActionAnimationManager = new GiveActionAnimationManager(itemGiven);
 
             //reset
             isActionEnded = false;
@@ -67,7 +66,6 @@ namespace AdventureGame
                 this.itemGiven.StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, () =>
                 {
                     this.OnGiveAnimationEnd();
-                    return null;
                 }));
                 itemSuccesfullyGiven = true;
             }
@@ -117,33 +115,28 @@ namespace AdventureGame
     #region Give Action Animation
     class GiveActionAnimationManager
     {
-        private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
         private Item ItemGiven;
 
-        public GiveActionAnimationManager(PlayerGlobalAnimationEventHandler playerGlobalAnimationEventHandler, Item itemGiven)
+        public GiveActionAnimationManager(Item itemGiven)
         {
-            PlayerGlobalAnimationEventHandler = playerGlobalAnimationEventHandler;
             ItemGiven = itemGiven;
         }
 
         private Animator PlayerAnimator;
         private GameObject DisplayedItemModel;
 
-        public IEnumerator Start(GiveActionInput giveActionInput, Func<IEnumerator> onAnimationEndCallback)
+        public IEnumerator Start(GiveActionInput giveActionInput, Action onAnimationEndCallback)
         {
             this.PlayerAnimator = giveActionInput.PlayerAnimator;
 
-            PlayerGlobalAnimationEventHandler.OnShowGivenItem += InstanciateDisplayedItem;
-            PlayerGlobalAnimationEventHandler.OnHideGivenItem += HideDisplayedItem;
-
             PlayerAnimator = giveActionInput.PlayerAnimator;
-            return PlayerAnimationPlayer.PlayItemGivenAnimation(giveActionInput.PlayerAnimator, PlayerGlobalAnimationEventHandler, () =>
-             {
-                 Debug.Log("HIDE");
-                 PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
-                 PlayerGlobalAnimationEventHandler.OnHideGivenItem -= HideDisplayedItem;
-                 return onAnimationEndCallback.Invoke();
-             });
+            return PlayerAnimationPlayer.PlayItemGivenAnimation(giveActionInput.PlayerAnimator,
+                onItemShow: InstanciateDisplayedItem,
+                onAnimationEnd: () =>
+                {
+                    HideDisplayedItem();
+                    onAnimationEndCallback.Invoke();
+                });
         }
 
         private void InstanciateDisplayedItem()
