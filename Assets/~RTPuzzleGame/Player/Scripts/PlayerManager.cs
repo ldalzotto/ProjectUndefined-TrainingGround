@@ -10,24 +10,19 @@ namespace RTPuzzle
         private PlayerActionManager PlayerActionManager;
         #endregion
 
-        public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
         public BodyGroundStickContactDistance BodyGroundStickContactDistance;
-        public PlayerHairStrandAnimationManagerComponent PlayerHairStrandAnimationManagerComponent;
-        public PlayerHoodAnimationManagerComponent PlayerHoodAnimationManagerComponent;
-        public PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent;
+
+        #region Player Common component
+        private PlayerCommonComponents PlayerCommonComponents;
+        #endregion
 
         private PlayerInputMoveManager PlayerInputMoveManager;
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
-        #region Procedural Animation Managers
-        private AnimationPositionTrackerManager HairObjectAnimationTracker;
-        private AnimationPositionTrackerManager ChestObjectAnimationTracker;
-
+        #region Animation Managers
         private PlayerAnimationDataManager PlayerAnimationDataManager;
-        private PlayerHairStrandAnimationManager PlayerHairStrandAnimationManager;
-        private PlayerHoodAnimationManager PlayerHoodAnimationManager;
-        private PlayerJacketCordAnimationManager PlayerJacketCordAnimationManager;
+        private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
         public void Init()
         {
@@ -41,20 +36,12 @@ namespace RTPuzzle
             var animator = GetComponentInChildren<Animator>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
-            PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
+            this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
+            PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
+            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, playerRigidBody);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
-
-            var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(AnimationConstants.PlayerAnimationConstantsData.HAIR_OBJECT_NAME);
-            var chestObject = PlayerBoneRetriever.GetPlayerBone(PlayerBone.CHEST, animator);
-
-            HairObjectAnimationTracker = new AnimationPositionTrackerManager(hairObject);
-            ChestObjectAnimationTracker = new AnimationPositionTrackerManager(chestObject);
-
-            PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(HairObjectAnimationTracker, hairObject, PlayerHairStrandAnimationManagerComponent);
-            PlayerHoodAnimationManager = new PlayerHoodAnimationManager(PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, animator).transform, playerRigidBody, PlayerInputMoveManagerComponent);
-            PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(animator, ChestObjectAnimationTracker, PlayerJacketCordAnimationManagerComponent, PlayerInputMoveManagerComponent);
         }
 
         public void Tick(float d)
@@ -85,20 +72,14 @@ namespace RTPuzzle
 
         public void FixedTick(float d)
         {
+            PlayerProceduralAnimationsManager.FickedTick(d);
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
-
-            #region Trackers Update
-            HairObjectAnimationTracker.FixedTick(d);
-            ChestObjectAnimationTracker.FixedTick(d);
-            #endregion
         }
 
         public void LateTick(float d)
         {
-            PlayerHairStrandAnimationManager.LateTick(d);
-            PlayerHoodAnimationManager.LateTick(d);
-            PlayerJacketCordAnimationManager.LateTick(d);
+            PlayerProceduralAnimationsManager.LateTick(d);
         }
 
         #region Logical Conditions

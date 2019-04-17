@@ -20,12 +20,16 @@ namespace AdventureGame
         [Header("Camera Follow")]
         public float DampTime;
 
-        public PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
         public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
         public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
-        #region Sub Managers
+        #region Player Common component
+        private PlayerCommonComponents PlayerCommonComponents;
+        #endregion
+
+        #region Animation Managers
         private PlayerAnimationManager PlayerAnimationManager;
+        private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
 
         private CameraFollowManager CameraFollowManager;
@@ -52,27 +56,29 @@ namespace AdventureGame
             InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             #endregion
 
-            GameObject PlayerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
-            BoxCollider ObstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
-            Animator PlayerAnimator = GetComponentInChildren<Animator>();
-            Rigidbody PlayerRigidBody = GetComponent<Rigidbody>();
-            NavMeshAgent PlayerAgent = GetComponent<NavMeshAgent>();
-            PlayerAgent.updatePosition = false;
-            PlayerAgent.updateRotation = false;
+            GameObject playerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
+            BoxCollider obstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
+            Animator playerAnimator = GetComponentInChildren<Animator>();
+            Rigidbody playerRigidBody = GetComponent<Rigidbody>();
+            NavMeshAgent playerAgent = GetComponent<NavMeshAgent>();
+            playerAgent.updatePosition = false;
+            playerAgent.updateRotation = false;
 
             SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
+            this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
 
-            this.CameraFollowManager = new CameraFollowManager(PlayerObject.transform, CameraPivotPoint.transform);
+            this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, PlayerRigidBody);
-            this.PlayerAIMoveManager = new PlayerAIMoveManager(PlayerRigidBody, PlayerAgent, transform, this);
-            this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(PlayerRigidBody, ObstacleOvercomeCollider);
-            this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, PlayerObject.transform);
-            this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(PlayerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
+            this.PlayerAIMoveManager = new PlayerAIMoveManager(playerRigidBody, playerAgent, transform, this);
+            this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
+            this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, playerObject.transform);
+            this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
             this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
+            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, playerAnimator, playerRigidBody);
         }
 
         public void Tick(float d)
@@ -95,7 +101,7 @@ namespace AdventureGame
             }
             else
             {
-                PlayerAIMoveManager.Tick(d, PlayerInputMoveManagerComponent.SpeedMultiplicationFactor, AIRotationSpeed);
+                PlayerAIMoveManager.Tick(d, PlayerCommonComponents.PlayerInputMoveManagerComponent.SpeedMultiplicationFactor, AIRotationSpeed);
                 playerSpeedMagnitude = PlayerAIMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
             }
 
@@ -125,6 +131,8 @@ namespace AdventureGame
 
         public void FixedTick(float d)
         {
+            this.PlayerProceduralAnimationsManager.FickedTick(d);
+
             if (!PlayerAIMoveManager.IsDirectedByAi)
             {
                 PlayerInputMoveManager.FixedTick(d);
@@ -133,6 +141,7 @@ namespace AdventureGame
 
         public void LateTick(float d)
         {
+            this.PlayerProceduralAnimationsManager.LateTick(d);
             if (IsHeadRotatingTowardsPOI())
             {
                 PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
