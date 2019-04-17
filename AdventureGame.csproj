@@ -103,6 +103,7 @@
     <Compile Include="Assets\~AdventureGame\NPC\Scripts\NPCManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationEventHandler.cs" />
+    <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManagerEventHandler.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerObstacleOvercomeTriggerTracker.cs" />

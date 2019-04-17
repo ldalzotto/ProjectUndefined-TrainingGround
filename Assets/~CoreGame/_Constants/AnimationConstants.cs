@@ -7,12 +7,14 @@ public class AnimationConstants
     {
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN, new PlayerAnimationConstantsData("Armature|Grab_Down", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, new PlayerAnimationConstantsData("Armature|ActionForbidden", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
-        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT, new PlayerAnimationConstantsData("Armature|ItemGiven", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT_0, new PlayerAnimationConstantsData("ItemGiven_0", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT_1, new PlayerAnimationConstantsData("ItemGiven_1", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM, new PlayerAnimationConstantsData("Armature|CA_PocketItem", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, new PlayerAnimationConstantsData("Armature|CA_PocketItem_Lay", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
         {PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING, new PlayerAnimationConstantsData("ContextActionOverrideListening", PlyaerAnimationLayerNames.CONTEXT_ACTION_OVERRIDE) },
         {PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING, new PlayerAnimationConstantsData("IdleActionListening", PlyaerAnimationLayerNames.IDLE_ACTION_OVERRIDE) },
-        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE, new PlayerAnimationConstantsData("Armature|Idle_Action_Smoke", PlyaerAnimationLayerNames.IDLE_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE_0, new PlayerAnimationConstantsData("Idle_Action_Smoke_0", PlyaerAnimationLayerNames.IDLE_ACTION_OVERRIDE) },
+        {PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE_1, new PlayerAnimationConstantsData("Idle_Action_Smoke_1", PlyaerAnimationLayerNames.IDLE_ACTION_OVERRIDE) },
         //procedural animations
         {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_LISTENING, new PlayerAnimationConstantsData("JacketCord_Listening", PlyaerAnimationLayerNames.JACKET_CORD) },
         {PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_JITTER_TREE, new PlayerAnimationConstantsData("JacketJitterTree", PlyaerAnimationLayerNames.JACKET_CORD) }
@@ -69,12 +71,14 @@ public enum PlayerAnimatioNamesEnum
 {
     PLAYER_ACTION_GRAB_DOWN,
     PLAYER_ACTION_FORBIDDEN,
-    PLAYER_ACTION_GIVE_OBJECT,
+    PLAYER_ACTION_GIVE_OBJECT_0,
+    PLAYER_ACTION_GIVE_OBJECT_1,
     PLAYER_ACTION_CA_POCKET_ITEM,
     PLAYER_ACTION_CA_POCKET_ITEM_LAY,
     PLAYER_ACTION_LISTENING,
     PLAYER_IDLE_OVERRIDE_LISTENING,
-    PLAYER_IDLE_SMOKE,
+    PLAYER_IDLE_SMOKE_0,
+    PLAYER_IDLE_SMOKE_1,
     //procedural animation
     PLAYER_JACKET_CORD_LISTENING,
     PLAYER_JACKET_CORD_JITTER_TREE

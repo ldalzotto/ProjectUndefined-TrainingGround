@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static CoreGame.PlayerAnimationConstants;
 
 namespace AdventureGame
 {
@@ -63,12 +64,22 @@ namespace AdventureGame
 
             if (IsIemGivenElligibleToGive(giveActionInput))
             {
-                this.itemGiven.StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, OnGiveAnimationEnd));
+                this.itemGiven.StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, () =>
+                {
+                    this.OnGiveAnimationEnd();
+                    return null;
+                }));
                 itemSuccesfullyGiven = true;
             }
             else
             {
-                this.itemGiven.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnGiveAnimationEnd));
+                this.itemGiven.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
+                {
+                    {
+                        this.OnGiveAnimationEnd();
+                        return null;
+                    }
+                }));
             }
         }
 
@@ -106,7 +117,6 @@ namespace AdventureGame
     #region Give Action Animation
     class GiveActionAnimationManager
     {
-
         private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
         private Item ItemGiven;
 
@@ -119,7 +129,7 @@ namespace AdventureGame
         private Animator PlayerAnimator;
         private GameObject DisplayedItemModel;
 
-        public IEnumerator Start(GiveActionInput giveActionInput, Action onAnimationEndCallback)
+        public IEnumerator Start(GiveActionInput giveActionInput, Func<IEnumerator> onAnimationEndCallback)
         {
             this.PlayerAnimator = giveActionInput.PlayerAnimator;
 
@@ -127,12 +137,13 @@ namespace AdventureGame
             PlayerGlobalAnimationEventHandler.OnHideGivenItem += HideDisplayedItem;
 
             PlayerAnimator = giveActionInput.PlayerAnimator;
-            return AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT, 0f, () =>
-            {
-                PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
-                PlayerGlobalAnimationEventHandler.OnHideGivenItem -= HideDisplayedItem;
-                onAnimationEndCallback.Invoke();
-            });
+            return PlayerAnimationPlayer.PlayItemGivenAnimation(giveActionInput.PlayerAnimator, PlayerGlobalAnimationEventHandler, () =>
+             {
+                 Debug.Log("HIDE");
+                 PlayerGlobalAnimationEventHandler.OnShowGivenItem -= InstanciateDisplayedItem;
+                 PlayerGlobalAnimationEventHandler.OnHideGivenItem -= HideDisplayedItem;
+                 return onAnimationEndCallback.Invoke();
+             });
         }
 
         private void InstanciateDisplayedItem()

@@ -30,6 +30,7 @@ namespace AdventureGame
             animatorActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.Play(animatorActionInput.PlayerAnimator, playerAnimationEnum, 0f, () =>
             {
                 animationEnded = true;
+                return null;
             }));
         }
 

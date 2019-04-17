@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Playables;
+using static CoreGame.PlayerAnimationConstants;
 
 namespace AdventureGame
 {

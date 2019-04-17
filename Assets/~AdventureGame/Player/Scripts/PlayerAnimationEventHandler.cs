@@ -1,31 +1,48 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using System;
+using System.Collections;
+using UnityEngine;
 
 namespace AdventureGame
 {
-
-    public class PlayerAnimationEventHandler : MonoBehaviour
+    public class PlayerAnimationPlayer
     {
 
-        private PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler;
-
-        private void Start()
+        public static IEnumerator PlayIdleSmokeAnimation(Animator animator, PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler)
         {
-            PlayerGlobalAnimationEventHandler = GameObject.FindObjectOfType<PlayerGlobalAnimationEventHandler>();
+            return AnimationPlayerHelper.Play(animator, PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE_0, 0f,
+                animationEndCallback: () =>
+                {
+                    if (AnimationPlayerHelper.IsCurrentStateNameEquals(animator, PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE_1))
+                    {
+                        PlayerGlobalAnimationEventHandler.IdleOverideTriggerSmokeEffect();
+                        return AnimationPlayerHelper.Play(animator, PlayerAnimatioNamesEnum.PLAYER_IDLE_SMOKE_1, 0f, null);
+                    }
+                    return null;
+                });
         }
 
-        public void OnShowGivenItem()
+        public static IEnumerator PlayItemGivenAnimation(Animator animator, PlayerGlobalAnimationEventHandler PlayerGlobalAnimationEventHandler, Func<IEnumerator> onAnimationEnd)
         {
-            PlayerGlobalAnimationEventHandler.ShowGivenItem();
-        }
+            return AnimationPlayerHelper.Play(animator, PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT_0, 0f,
+                animationEndCallback: () =>
+                {
+                    if (AnimationPlayerHelper.IsCurrentStateNameEquals(animator, PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT_1))
+                    {
+                        PlayerGlobalAnimationEventHandler.ShowGivenItem();
+                        return AnimationPlayerHelper.Play(animator, PlayerAnimatioNamesEnum.PLAYER_ACTION_GIVE_OBJECT_1, 0f, animationEndCallback: () =>
+                        {
+                            PlayerGlobalAnimationEventHandler.HideGivenItem();
+                            if (onAnimationEnd != null)
+                            {
+                                return onAnimationEnd.Invoke();
+                            }
+                            return null;
+                        });
+                    }
 
-        public void OnHideGivenItem()
-        {
-            PlayerGlobalAnimationEventHandler.HideGivenItem();
-        }
-
-        public void OnIdleOverideTriggerSmokeEffect()
-        {
-            PlayerGlobalAnimationEventHandler.IdleOverideTriggerSmokeEffect();
+                    return null;
+                });
         }
 
     }

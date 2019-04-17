@@ -104,7 +104,8 @@
     <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerCommonComponents.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\ContextAnimationManagers\PlayerPocketObjectOutManager.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimationManager.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\PlayerAnimationConstants.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\PlayerAnimationDataManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerHairStrandAnimationManager.cs" />

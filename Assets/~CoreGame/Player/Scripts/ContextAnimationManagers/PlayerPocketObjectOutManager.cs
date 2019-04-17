@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using static CoreGame.PlayerAnimationConstants;
 
 namespace CoreGame
 {
@@ -33,7 +34,11 @@ namespace CoreGame
 
         public void Play()
         {
-            this.endCoroutine = Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.Play(this.playerAnimator, this.playerAnimationContextName, this.crossFadeTime, OnAnimationEnd));
+            this.endCoroutine = Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.Play(this.playerAnimator, this.playerAnimationContextName, this.crossFadeTime, () =>
+            {
+                this.OnAnimationEnd();
+                return null;
+            }));
             this.animationPlaying = true;
         }
 

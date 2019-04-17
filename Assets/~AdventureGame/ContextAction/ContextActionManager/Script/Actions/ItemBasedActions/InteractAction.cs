@@ -35,7 +35,11 @@ namespace AdventureGame
             }
             else
             {
-                interactActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.Play(interactActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, OnInteractionResolved));
+                interactActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.Play(interactActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
+                {
+                    this.OnInteractionResolved();
+                    return null;
+                }));
                 //abort context action chain
                 NextContextAction = null;
             }

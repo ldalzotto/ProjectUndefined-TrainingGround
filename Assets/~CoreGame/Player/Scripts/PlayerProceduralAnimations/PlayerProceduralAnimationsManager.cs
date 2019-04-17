@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static CoreGame.PlayerAnimationConstants;
 
 namespace CoreGame
 {

@@ -20,8 +20,6 @@ namespace AdventureGame
 
         void Start()
         {
-            Debug.Log("Start GameManager : " + name);
-
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
             PlayerManager = FindObjectOfType<PlayerManager>();
