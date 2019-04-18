@@ -276,9 +276,6 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="OdinAOTSupport">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/Generated/OdinAOTSupport.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
     </Reference>

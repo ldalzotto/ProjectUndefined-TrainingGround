@@ -23,11 +23,11 @@ public class RotationFollowTestScript : MonoBehaviour
         transform.Rotate(rotationQuaternion.eulerAngles);
     }
 
-
-
     private void OnDrawGizmos()
     {
+#if UNITY_EDITOR
         Handles.Label(transform.position, targetAngle.ToString());
+#endif
     }
 
 }
