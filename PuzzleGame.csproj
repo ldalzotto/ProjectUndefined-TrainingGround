@@ -353,6 +353,9 @@
     <Reference Include="OdinSerializer">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
+    </Reference>
     <Reference Include="OdinAOTSupport">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/Generated/OdinAOTSupport.dll</HintPath>
     </Reference>

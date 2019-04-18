@@ -32,7 +32,10 @@ namespace AdventureGame
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.normal.textColor = Color.yellow;
 #if UNITY_EDITOR
-            Handles.Label(playerStartingTransform.position + new Vector3(0, 3, 0), CutsceneId.ToString(), labelStyle);
+            if (playerStartingTransform != null)
+            {
+                Handles.Label(playerStartingTransform.position + new Vector3(0, 3, 0), CutsceneId.ToString(), labelStyle);
+            }
 #endif
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(playerStartingTransform.position, 1f);
