@@ -25,6 +25,7 @@ namespace UnityEngine.Rendering.LWRP
 
         #region Custom
         RangeFXPass m_RangeFXPass;
+        InteractionRingPass m_InteractionRingPass;
         #endregion
 
         RenderTargetHandle m_ActiveCameraColorAttachment;
@@ -58,6 +59,7 @@ namespace UnityEngine.Rendering.LWRP
             m_DrawSkyboxPass = new DrawSkyboxPass(RenderPassEvent.BeforeRenderingSkybox);
             m_CopyColorPass = new CopyColorPass(RenderPassEvent.BeforeRenderingTransparents, samplingMaterial, downsamplingMethod);
             m_RenderTransparentForwardPass = new RenderTransparentForwardPass(RenderPassEvent.BeforeRenderingTransparents, RenderQueueRange.transparent, data.transparentLayerMask);
+            m_InteractionRingPass = new InteractionRingPass(RenderPassEvent.AfterRenderingTransparents);
             m_PostProcessPass = new PostProcessPass(RenderPassEvent.BeforeRenderingPostProcessing);
             m_CapturePass = new CapturePass(RenderPassEvent.AfterRendering);
             m_FinalBlitPass = new FinalBlitPass(RenderPassEvent.AfterRendering, blitMaterial);
@@ -161,7 +163,10 @@ namespace UnityEngine.Rendering.LWRP
 
             EnqueuePass(m_RenderTransparentForwardPass);
 
+            #region Custom
             EnqueuePass(m_RangeFXPass);
+            EnqueuePass(m_InteractionRingPass);
+            #endregion
 
             bool afterRenderExists = renderingData.cameraData.captureActions != null ||
                                      hasAfterRendering;

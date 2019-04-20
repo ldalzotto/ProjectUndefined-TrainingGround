@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\AssemblyInfo.cs" />
     <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\CameraCaptureBridge.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\CustomPasses\InteractionRingPass.cs" />
     <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\CustomPasses\RangeFXPass.cs" />
     <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Data\LightweightRenderPipelineAsset.cs" />
     <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Data\LightweightRenderPipelineEditorResources.cs" />
