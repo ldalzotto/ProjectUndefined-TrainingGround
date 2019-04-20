@@ -24,8 +24,7 @@ namespace RTPuzzle
         private ThrowCursorRangeEffectManager ThrowCursorRangeEffectManager;
         private AttractiveObjectRangeManager AttractiveObjectRangeManager;
 
-
-        private GroundEffectType[] AffectedGroundEffectsType;
+        private bool hasInit;
 
         public void Init()
         {
@@ -38,11 +37,7 @@ namespace RTPuzzle
             ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent);
             AttractiveObjectRangeManager = new AttractiveObjectRangeManager(AttractiveObjectRangeManagerComponent);
 
-            AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
-            for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
-            {
-                AffectedGroundEffectsType[i].Init();
-            }
+            this.hasInit = true;
         }
 
         public void Tick(float d)
@@ -89,20 +84,19 @@ namespace RTPuzzle
         {
             AttractiveObjectRangeManager.OnAttractiveObjectActionEnd();
         }
-        public void OnCommandBufferUpdate(CommandBuffer cmd)
+
+        public Material[] GetActiveFXMaterials()
         {
-            if (ThrowRangeEffectManager != null)
+            if (!hasInit)
             {
-                ThrowRangeEffectManager.OnCommandBufferUpdate(cmd, AffectedGroundEffectsType);
+                return null;
             }
-            if (ThrowCursorRangeEffectManager != null)
-            {
-                ThrowCursorRangeEffectManager.OnCommandBufferUpdate(cmd, AffectedGroundEffectsType);
-            }
-            if (AttractiveObjectRangeManager != null)
-            {
-                AttractiveObjectRangeManager.OnCommandBufferUpdate(cmd, AffectedGroundEffectsType);
-            }
+
+            return new Material[3]{
+                ThrowRangeEffectManager.GetMaterialIfEnabled(),
+                ThrowCursorRangeEffectManager.GetMaterialIfEnabled(),
+                AttractiveObjectRangeManager.GetMaterialIfEnabled()
+             };
         }
         #endregion
     }
@@ -146,16 +140,13 @@ namespace RTPuzzle
         {
             throwRangeEnabled = false;
         }
-
-        internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
+        public Material GetMaterialIfEnabled()
         {
-            if (throwRangeEnabled)
+            if (this.throwRangeEnabled)
             {
-                foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-                {
-                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, GroundEffectsManagerComponent.RangeEffectMaterial, 0, 0);
-                }
+                return GroundEffectsManagerComponent.RangeEffectMaterial;
             }
+            return null;
         }
     }
 
@@ -226,17 +217,6 @@ namespace RTPuzzle
             throwRangeEnabled = false;
         }
 
-        internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
-        {
-            if (throwRangeEnabled)
-            {
-                foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-                {
-                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial, 0, 0);
-                }
-            }
-        }
-
         internal void OnThrowProjectileCursorOnProjectileRange()
         {
             ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOnRangeAuraColor);
@@ -245,6 +225,15 @@ namespace RTPuzzle
         internal void OnThrowProjectileCursorOutOfProjectileRange()
         {
             ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, ThrowCursorRangeEffectManagerComponent.CursorOutOfRangeAuraColor);
+        }
+
+        public Material GetMaterialIfEnabled()
+        {
+            if (this.throwRangeEnabled)
+            {
+                return ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial;
+            }
+            return null;
         }
     }
 
@@ -276,17 +265,6 @@ namespace RTPuzzle
 
         private bool isAttractiveObjectRangeEnabled;
 
-        internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
-        {
-            if (isAttractiveObjectRangeEnabled)
-            {
-                foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-                {
-                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial, 0, 0);
-                }
-            }
-        }
-
         public void Tick(float d)
         {
             if (isAttractiveObjectRangeEnabled)
@@ -308,6 +286,15 @@ namespace RTPuzzle
         internal void OnAttractiveObjectActionEnd()
         {
             this.isAttractiveObjectRangeEnabled = false;
+        }
+
+        public Material GetMaterialIfEnabled()
+        {
+            if (this.isAttractiveObjectRangeEnabled)
+            {
+                return attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial;
+            }
+            return null;
         }
     }
 

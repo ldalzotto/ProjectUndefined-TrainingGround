@@ -10,13 +10,13 @@ namespace UnityEngine.Rendering.LWRP
         FilteringSettings m_FilteringSettings;
         const string m_ProfilerTag = "Range FX";
 
-        private Material rangeFXMaterial;
-
+        private List<ShaderTagId> m_ShaderTagIdList = new List<ShaderTagId>();
         private GroundEffectsManager GroundEffectsManager;
 
-        public RangeFXPass(RenderPassEvent evt, Material rangeFXMaterial, RenderQueueRange renderQueueRange, LayerMask layerMask)
+        public RangeFXPass(RenderPassEvent evt, RenderQueueRange renderQueueRange, LayerMask layerMask)
         {
-            this.rangeFXMaterial = rangeFXMaterial;
+            m_ShaderTagIdList.Add(new ShaderTagId("LightweightForward"));
+            m_ShaderTagIdList.Add(new ShaderTagId("SRPDefaultUnlit"));
             renderPassEvent = evt;
             m_FilteringSettings = new FilteringSettings(renderQueueRange, layerMask);
         }
@@ -36,7 +36,21 @@ namespace UnityEngine.Rendering.LWRP
                     context.ExecuteCommandBuffer(cmd);
                     cmd.Clear();
 
-                    GroundEffectsManager.OnCommandBufferUpdate(cmd);
+                    var sortFlags = renderingData.cameraData.defaultOpaqueSortFlags;
+                    var drawSettings = CreateDrawingSettings(m_ShaderTagIdList, ref renderingData, sortFlags);
+
+                    var activeFXMaterials = this.GroundEffectsManager.GetActiveFXMaterials();
+                    if (activeFXMaterials != null)
+                    {
+                        foreach (var effectMaterial in activeFXMaterials)
+                        {
+                            if (effectMaterial != null)
+                            {
+                                drawSettings.overrideMaterial = effectMaterial;
+                                context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref m_FilteringSettings);
+                            }
+                        }
+                    }
                 }
 
                 context.ExecuteCommandBuffer(cmd);

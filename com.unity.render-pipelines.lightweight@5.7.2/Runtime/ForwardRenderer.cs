@@ -54,7 +54,7 @@ namespace UnityEngine.Rendering.LWRP
             m_RenderOpaqueForwardPass = new RenderOpaqueForwardPass(RenderPassEvent.BeforeRenderingOpaques, RenderQueueRange.opaque, data.opaqueLayerMask);
             m_CopyDepthPass = new CopyDepthPass(RenderPassEvent.BeforeRenderingOpaques, copyDepthMaterial);
             m_OpaquePostProcessPass = new PostProcessPass(RenderPassEvent.BeforeRenderingOpaques, true);
-            m_RangeFXPass = new RangeFXPass(RenderPassEvent.AfterRenderingOpaques, data.m_RangeFX, RenderQueueRange.all, data.m_RangeFXLayer);
+            m_RangeFXPass = new RangeFXPass(RenderPassEvent.AfterRenderingOpaques, RenderQueueRange.opaque, data.m_RangeFXLayer);
             m_DrawSkyboxPass = new DrawSkyboxPass(RenderPassEvent.BeforeRenderingSkybox);
             m_CopyColorPass = new CopyColorPass(RenderPassEvent.BeforeRenderingTransparents, samplingMaterial, downsamplingMethod);
             m_RenderTransparentForwardPass = new RenderTransparentForwardPass(RenderPassEvent.BeforeRenderingTransparents, RenderQueueRange.transparent, data.transparentLayerMask);

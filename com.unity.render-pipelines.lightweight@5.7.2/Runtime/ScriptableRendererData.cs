@@ -18,8 +18,9 @@ namespace UnityEngine.Rendering.LWRP
 
         [SerializeField] List<ScriptableRendererFeature> m_RendererFeatures = new List<ScriptableRendererFeature>(10);
 
-        public Material m_RangeFX;
+        #region Custom
         public LayerMask m_RangeFXLayer;
+        #endregion
 
         /// <summary>
         /// List of additional render pass features for this renderer.
