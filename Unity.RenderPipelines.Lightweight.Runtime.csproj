@@ -62,43 +62,46 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\AssemblyInfo.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Data\LightweightRenderPipelineAsset.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Data\LightweightRenderPipelineEditorResources.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Data\RenderStateData.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ForwardLights.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ForwardRenderer.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ForwardRendererData.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\LightweightRenderPipeline.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\LightweightRenderPipelineCore.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\LWRPAdditionalCameraData.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\LWRPAdditionalLightData.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\AdditionalLightsShadowCasterPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\CapturePass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\CopyColorPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\CopyDepthPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\DepthOnlyPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\DrawObjectsPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\DrawSkyboxPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\FinalBlitPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\MainLightShadowCasterPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\PostProcessPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\RenderObjectsPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\SceneViewDepthCopy.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\ScreenSpaceShadowResolvePass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\Passes\ScriptableRenderPass.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\RendererFeatures\RenderObjects.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\RenderingUtils.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\RenderTargetHandle.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\SampleCount.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\SceneViewDrawMode.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ScriptableRenderer.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ScriptableRendererData.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ScriptableRendererFeature.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ShaderUtils.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Runtime\ShadowUtils.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\AssemblyInfo.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\CameraCaptureBridge.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\CustomPasses\RangeFXPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Data\LightweightRenderPipelineAsset.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Data\LightweightRenderPipelineEditorResources.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ForwardLights.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ForwardRenderer.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ForwardRendererData.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\LightweightRenderPipeline.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\LightweightRenderPipelineCore.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\LWRPAdditionalCameraData.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\LWRPAdditionalLightData.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\AdditionalLightsShadowCasterPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\CapturePass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\CopyColorPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\CopyDepthPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\DepthOnlyPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\DrawSkyboxPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\FinalBlitPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\MainLightShadowCasterPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\PostProcessPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\RenderOpaqueForwardPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\RenderTransparentForwardPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\SceneViewDepthCopy.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\ScreenSpaceShadowResolvePass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\Passes\ScriptableRenderPass.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\RenderingUtils.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\RenderTargetHandle.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\SampleCount.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\SceneViewDrawMode.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ScriptableRenderer.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ScriptableRendererData.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ScriptableRendererFeature.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ShaderUtils.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Runtime\ShadowUtils.cs" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -652,12 +655,6 @@
     <Reference Include="System.Xml.Serialization">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj">
-      <Project>{0517464D-74B5-BA5B-EC25-D403330EB7E7}</Project>
-      <Name>Unity.RenderPipelines.Core.Runtime</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

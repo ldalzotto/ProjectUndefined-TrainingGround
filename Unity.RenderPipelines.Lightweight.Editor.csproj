@@ -62,48 +62,55 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\AssetVersion.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\EditorUtils.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ForwardRendererDataEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LightExplorer.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LightweightRenderPipelineAssetEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LightweightRenderPipelineCameraEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LightweightRenderPipelineLightEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LightweightRenderPipelineMaterialUpgrader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LWRPAdditionalCameraDataEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\LWRPAdditionalLightDataEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\MaterialPostprocessor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\RendererFeatures\RenderObjectsPassFeatureEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\RenderStateDataEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\SavedBool.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ScriptableRendererDataEditor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\LightWeightPBRSubShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\LightWeightUnlitSubShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\BaseShaderGUI.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\ParticleGUI.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\BakedLitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\LitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\ParticlesLitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\ParticlesSimpleLitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\ParticlesUnlitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\SimpleLitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\Shaders\UnlitShader.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\ShadingModels\BakedLitGUI.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\ShadingModels\LitGUI.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGUI\ShadingModels\SimpleLitGUI.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderPreprocessor.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\Shadow\ShadowCascadeSplitGUI.cs" />
-    <Compile Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\UpgradeCommon.cs" />
-    <None Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\lightweightUnlitPass.template" />
-    <None Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\lightweightPBRForwardPass.template" />
-    <None Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\lightweightUnlitExtraPasses.template" />
-    <None Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\lightweightSubshaderFastBlinn.template" />
-    <None Include="ScriptableRenderPipeline-5.13.0\com.unity.render-pipelines.lightweight\Editor\ShaderGraph\lightweightPBRExtraPasses.template" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\AssetVersion.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\EditorUtils.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ForwardRendererDataEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LightExplorer.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LightweightRenderPipelineAssetEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LightweightRenderPipelineCameraEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LightweightRenderPipelineLightEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LightweightRenderPipelineMaterialUpgrader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LWRPAdditionalCameraDataEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\LWRPAdditionalLightDataEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\MaterialPostprocessor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\SavedBool.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ScriptableRendererDataEditor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\LightWeightPBRSubShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\LightWeightUnlitSubShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\BaseShaderGUI.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\ParticleGUI.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\BakedLitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\LitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\ParticlesLitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\ParticlesSimpleLitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\ParticlesUnlitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\SimpleLitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\Shaders\UnlitShader.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\ShadingModels\BakedLitGUI.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\ShadingModels\LitGUI.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGUI\ShadingModels\SimpleLitGUI.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderPreprocessor.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\Shadow\ShadowCascadeSplitGUI.cs" />
+    <Compile Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\UpgradeCommon.cs" />
+    <None Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\lightweightUnlitPass.template" />
+    <None Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\lightweightPBRForwardPass.template" />
+    <None Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\lightweightUnlitExtraPasses.template" />
+    <None Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\lightweightSubshaderFastBlinn.template" />
+    <None Include="com.unity.render-pipelines.lightweight@5.7.2\Editor\ShaderGraph\lightweightPBRExtraPasses.template" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.Postprocessing.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ShaderGraph.Editor">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -671,18 +678,6 @@
     <ProjectReference Include="Unity.RenderPipelines.Lightweight.Runtime.csproj">
       <Project>{82C31CAD-8B7A-8E17-365E-9723845B893F}</Project>
       <Name>Unity.RenderPipelines.Lightweight.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj">
-      <Project>{0517464D-74B5-BA5B-EC25-D403330EB7E7}</Project>
-      <Name>Unity.RenderPipelines.Core.Runtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.RenderPipelines.Core.Editor.csproj">
-      <Project>{22D20C22-E9AF-307F-650F-41BBEC1AAF33}</Project>
-      <Name>Unity.RenderPipelines.Core.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.ShaderGraph.Editor.csproj">
-      <Project>{9BF44DD5-29CA-406E-A9DA-5C647875B4FC}</Project>
-      <Name>Unity.ShaderGraph.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
