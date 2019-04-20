@@ -23,6 +23,10 @@ namespace UnityEngine.Rendering.LWRP
         SceneViewDepthCopyPass m_SceneViewDepthCopyPass;
 #endif
 
+        #region Custom
+        RangeFXPass m_RangeFXPass;
+        #endregion
+
         RenderTargetHandle m_ActiveCameraColorAttachment;
         RenderTargetHandle m_ActiveCameraDepthAttachment;
         RenderTargetHandle m_CameraColorAttachment;
@@ -50,6 +54,7 @@ namespace UnityEngine.Rendering.LWRP
             m_RenderOpaqueForwardPass = new RenderOpaqueForwardPass(RenderPassEvent.BeforeRenderingOpaques, RenderQueueRange.opaque, data.opaqueLayerMask);
             m_CopyDepthPass = new CopyDepthPass(RenderPassEvent.BeforeRenderingOpaques, copyDepthMaterial);
             m_OpaquePostProcessPass = new PostProcessPass(RenderPassEvent.BeforeRenderingOpaques, true);
+            m_RangeFXPass = new RangeFXPass(RenderPassEvent.AfterRenderingOpaques, data.m_RangeFX, RenderQueueRange.all, data.m_RangeFXLayer);
             m_DrawSkyboxPass = new DrawSkyboxPass(RenderPassEvent.BeforeRenderingSkybox);
             m_CopyColorPass = new CopyColorPass(RenderPassEvent.BeforeRenderingTransparents, samplingMaterial, downsamplingMethod);
             m_RenderTransparentForwardPass = new RenderTransparentForwardPass(RenderPassEvent.BeforeRenderingTransparents, RenderQueueRange.transparent, data.transparentLayerMask);
@@ -78,7 +83,7 @@ namespace UnityEngine.Rendering.LWRP
             bool mainLightShadows = m_MainLightShadowCasterPass.Setup(ref renderingData);
             bool additionalLightShadows = m_AdditionalLightsShadowCasterPass.Setup(ref renderingData);
             bool resolveShadowsInScreenSpace = mainLightShadows && renderingData.shadowData.requiresScreenSpaceShadowResolve;
-            
+
             // Depth prepass is generated in the following cases:
             // - We resolve shadows in screen space
             // - Scene view camera always requires a depth texture. We do a depth pre-pass to simplify it and it shouldn't matter much for editor.
@@ -110,7 +115,7 @@ namespace UnityEngine.Rendering.LWRP
             int count = activeRenderPassQueue.Count;
             for (int i = count - 1; i >= 0; i--)
             {
-                if(activeRenderPassQueue[i] == null)
+                if (activeRenderPassQueue[i] == null)
                     activeRenderPassQueue.RemoveAt(i);
             }
             bool hasAfterRendering = activeRenderPassQueue.Find(x => x.renderPassEvent == RenderPassEvent.AfterRendering) != null;
@@ -155,6 +160,8 @@ namespace UnityEngine.Rendering.LWRP
             }
 
             EnqueuePass(m_RenderTransparentForwardPass);
+
+            EnqueuePass(m_RangeFXPass);
 
             bool afterRenderExists = renderingData.cameraData.captureActions != null ||
                                      hasAfterRendering;
@@ -204,6 +211,7 @@ namespace UnityEngine.Rendering.LWRP
                 EnqueuePass(m_SceneViewDepthCopyPass);
             }
 #endif
+
         }
 
         public override void SetupLights(ScriptableRenderContext context, ref RenderingData renderingData)

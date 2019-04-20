@@ -31,6 +31,10 @@ namespace UnityEngine.Rendering.LWRP
         [SerializeField]
         private Shader m_TerrainDetailGrassBillboardShader = null;
 
+        #region Custom
+        public Material FXRangeMaterial = null;
+        #endregion
+
         public Material litMaterial
         {
             get { return m_LitMaterial; }

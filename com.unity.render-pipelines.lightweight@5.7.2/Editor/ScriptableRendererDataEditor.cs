@@ -7,6 +7,7 @@ using UnityEngine.Rendering.LWRP;
 
 namespace UnityEditor.Rendering.LWRP
 {
+    /*
     [CustomEditor(typeof(ScriptableRendererData), true)]
     public class ScriptableRendererDataEditor : Editor
     {
@@ -243,4 +244,5 @@ namespace UnityEditor.Rendering.LWRP
             EditorUtility.SetDirty(m_RenderPasses.serializedObject.targetObject);
         }
     }
+    */
 }

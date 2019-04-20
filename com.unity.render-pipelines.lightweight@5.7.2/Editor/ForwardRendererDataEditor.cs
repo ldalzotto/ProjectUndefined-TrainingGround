@@ -3,6 +3,7 @@ using UnityEngine.Rendering.LWRP;
 
 namespace UnityEditor.Rendering.LWRP
 {
+    /*
     [CustomEditor(typeof(ForwardRendererData), true)]
     public class ForwardRendererDataEditor : ScriptableRendererDataEditor
     {
@@ -35,7 +36,7 @@ namespace UnityEditor.Rendering.LWRP
 
             serializedObject.ApplyModifiedProperties();
             
-            base.OnInspectorGUI(); // Draw the base UI, contains ScriptableRenderFeatures list
         }
     }
+    */
 }

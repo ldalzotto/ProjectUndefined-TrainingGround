@@ -20,7 +20,6 @@ namespace RTPuzzle
         public ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
         public AttractiveObjectRangeManagerComponent AttractiveObjectRangeManagerComponent;
 
-        private GroundEffectsCommandBufferManager GroundEffectsCommandBufferManager;
         private ThrowRangeEffectManager ThrowRangeEffectManager;
         private ThrowCursorRangeEffectManager ThrowCursorRangeEffectManager;
         private AttractiveObjectRangeManager AttractiveObjectRangeManager;
@@ -35,12 +34,8 @@ namespace RTPuzzle
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
-            var camera = Camera.main;
-
-            this.GroundEffectsCommandBufferManager = new GroundEffectsCommandBufferManager(camera);
-
             ThrowRangeEffectManager = new ThrowRangeEffectManager(GroundEffectsManagerComponent);
-            ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent, this);
+            ThrowCursorRangeEffectManager = new ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent);
             AttractiveObjectRangeManager = new AttractiveObjectRangeManager(AttractiveObjectRangeManagerComponent);
 
             AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
@@ -56,31 +51,27 @@ namespace RTPuzzle
             ThrowCursorRangeEffectManager.Tick(d);
             AttractiveObjectRangeManager.Tick(d);
         }
-        
+
         #region External Events
         internal void OnProjectileThrowedEvent()
         {
             ThrowRangeEffectManager.OnThrowProjectileThrowed();
             ThrowCursorRangeEffectManager.OnThrowProjectileThrowed();
-            OnCommandBufferUpdate();
         }
 
         internal void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
         {
             ThrowRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.ThrowerTransform, throwProjectileActionStartEvent.MaxRange);
             ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.CurrentCursorPositionRetriever, PuzzleGameConfigurationManager.ProjectileConf()[throwProjectileActionStartEvent.ProjectileInvolved].EffectRange);
-            OnCommandBufferUpdate();
         }
         internal void OnThrowProjectileCursorAvailable()
         {
             ThrowCursorRangeEffectManager.OnThrowProjectileCursorAvailable();
-            OnCommandBufferUpdate();
         }
 
         internal void OnThrowProjectileCursorNotAvailable()
         {
             ThrowCursorRangeEffectManager.OnThrowProjectileCursorNotAvailable();
-            OnCommandBufferUpdate();
         }
         public void OnThrowProjectileCursorOnProjectileRange()
         {
@@ -93,47 +84,28 @@ namespace RTPuzzle
         internal void OnAttractiveObjectActionStart(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
         {
             AttractiveObjectRangeManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
-            OnCommandBufferUpdate();
         }
         internal void OnAttractiveObjectActionEnd()
         {
             AttractiveObjectRangeManager.OnAttractiveObjectActionEnd();
-            OnCommandBufferUpdate();
         }
-        internal void OnCommandBufferUpdate()
+        public void OnCommandBufferUpdate(CommandBuffer cmd)
         {
-            GroundEffectsCommandBufferManager.ClearCommandBuffer();
-            ThrowRangeEffectManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
-            ThrowCursorRangeEffectManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
-            AttractiveObjectRangeManager.OnCommandBufferUpdate(GroundEffectsCommandBufferManager.CommandBuffer, AffectedGroundEffectsType);
+            if (ThrowRangeEffectManager != null)
+            {
+                ThrowRangeEffectManager.OnCommandBufferUpdate(cmd, AffectedGroundEffectsType);
+            }
+            if (ThrowCursorRangeEffectManager != null)
+            {
+                ThrowCursorRangeEffectManager.OnCommandBufferUpdate(cmd, AffectedGroundEffectsType);
+            }
+            if (AttractiveObjectRangeManager != null)
+            {
+                AttractiveObjectRangeManager.OnCommandBufferUpdate(cmd, AffectedGroundEffectsType);
+            }
         }
         #endregion
     }
-
-    #region Effect Command Buffer Manager
-    class GroundEffectsCommandBufferManager
-    {
-        private Camera camera;
-
-        public GroundEffectsCommandBufferManager(Camera camera)
-        {
-            this.camera = camera;
-            this.commandBuffer = new CommandBuffer();
-            this.commandBuffer.name = "GoundEffectsRender";
-            this.camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.commandBuffer);
-        }
-
-        private CommandBuffer commandBuffer;
-
-        public CommandBuffer CommandBuffer { get => commandBuffer; }
-
-        public void ClearCommandBuffer()
-        {
-            commandBuffer.Clear();
-        }
-
-    }
-    #endregion
 
     #region Throw range effect manager
     class ThrowRangeEffectManager
@@ -201,12 +173,10 @@ namespace RTPuzzle
     {
 
         private ThrowCursorRangeEffectManagerComponent ThrowCursorRangeEffectManagerComponent;
-        private GroundEffectsManager GroundEffectsManagerRef;
 
-        public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent, GroundEffectsManager GroundEffectsManagerRef)
+        public ThrowCursorRangeEffectManager(ThrowCursorRangeEffectManagerComponent throwCursorRangeEffectManagerComponent)
         {
             ThrowCursorRangeEffectManagerComponent = throwCursorRangeEffectManagerComponent;
-            this.GroundEffectsManagerRef = GroundEffectsManagerRef;
         }
 
         private Func<Nullable<Vector3>> cursorPositionRetriever;
@@ -230,7 +200,6 @@ namespace RTPuzzle
                 else
                 {
                     this.throwRangeEnabled = false;
-                    this.GroundEffectsManagerRef.OnCommandBufferUpdate();
                 }
             }
         }
