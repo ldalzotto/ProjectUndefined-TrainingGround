@@ -132,9 +132,6 @@
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
     <Compile Include="Assets\PropertyAttributes\Enum\SearchableEnum.cs" />
-    <Compile Include="Assets\Test\CommandBufferTest\WriteToBuffer\BufferWriter.cs" />
-    <Compile Include="Assets\Test\RotationFollowTest\RotationFollowTestScript.cs" />
-    <Compile Include="Assets\Test\TimelineAnimationTest\TimelineTestManager.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\Water\MyUnityStandardShadow.cginc" />
     <None Include="Assets\_Shader\Water\WaterStandardCoreForward.cginc" />
@@ -146,11 +143,7 @@
     <None Include="Assets\_Shader\Water\WaterFoam.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Water\WaterShader.shader" />
-    <None Include="Assets\Test\CamClip\CameraBehindClip.shader" />
-    <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\_Shader\Water\WaterWaveMovement.cginc" />
-    <None Include="Assets\_Shader\Common\VertexSurface.shader" />
-    <None Include="Assets\Test\WallSatter\WallShatterShader.shader" />
     <None Include="Assets\_Shader\Water\DepthColoring.cginc" />
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />
@@ -158,12 +151,9 @@
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\Version.txt" />
     <None Include="Assets\_Shader\Water\GeometryFlatShade.cginc" />
     <None Include="Assets\_Shader\Water\WaterTrail\WaterTrailShader.shader" />
-    <None Include="Assets\Test\CommandBufferTest\WriteToBuffer\CommandBufferTestShader.shader" />
     <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_Pass.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
-    <None Include="Assets\Test\CamClip\CameraBehinClipStand.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />
-    <None Include="Assets\_Shader\Common\VertexSurfaceTransparent.shader" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
