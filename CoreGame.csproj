@@ -135,6 +135,7 @@
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\Water\MyUnityStandardShadow.cginc" />
     <None Include="Assets\_Shader\Water\WaterStandardCoreForward.cginc" />
+    <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\FX\Particle_Ambiant_Shader.shader" />

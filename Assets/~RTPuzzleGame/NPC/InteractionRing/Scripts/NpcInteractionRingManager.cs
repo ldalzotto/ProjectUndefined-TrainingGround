@@ -66,7 +66,7 @@ namespace RTPuzzle
             npcInteractionRingType.RingTexture.Apply(false);
 
             //display or hide ring
-            if(newFOV.GetSumOfAvailableAngleDeg() < 360f)
+            if (newFOV.GetSumOfAvailableAngleDeg() < 360f)
             {
                 this.NpcInteractionRingContainer.OnNpcInteractionRingEnabled(this.npcInteractionRingType);
             }
@@ -83,7 +83,7 @@ namespace RTPuzzle
         {
             npcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
         }
-        
+
         private void ComputeColorsPixel(float beginAngle, float endAngle, ref Color[] colors)
         {
             var beginAngleInt = Mathf.RoundToInt(beginAngle);
