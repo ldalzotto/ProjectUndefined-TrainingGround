@@ -50,10 +50,10 @@ namespace RTPuzzle
         #region External Events
         public override void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
         {
-            aIAttractiveObjectManager.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
+            this.ReceiveEvent(new AttractiveObectDestroyedAIBehaviorEvent(attractiveObjectToDestroy));
         }
         #endregion
-        
+
         #region Data Retrieval
         public FOV GetFOV()
         {
@@ -84,7 +84,7 @@ namespace RTPuzzle
                     }
                     else
                     {
-                        if (this.IsEscapingFromProjectile())
+                        if (this.IsEscapingFromProjectileWithTargetZones())
                         {
                             newDirection = aIProjectileEscapeWithCollisionManager.TickComponent();
                         }
@@ -136,7 +136,7 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(collider.transform.position, AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(collider.transform.position, AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
                 else if (collisionType.IsTargetZone)
                 {
@@ -214,7 +214,7 @@ namespace RTPuzzle
 
             if (!this.IsFeared())
             {
-                if (!this.IsEscapingFromProjectileIngnoringTargetZones() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectile())
+                if (!this.IsEscapingFromProjectileIngnoringTargetZones() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectileWithTargetZones())
                 {
                     this.aIFOVManager.ResetFOV();
                 }
@@ -225,14 +225,14 @@ namespace RTPuzzle
 
         public override void OnDestinationReached()
         {
-            bool resetAttractiveObjectComponent = !this.aIAttractiveObjectManager.HasSensedThePresenceOfAnAttractiveObject(); //reset only if attractive object
-            this.OnDestinationReached(true, true, true, resetAttractiveObjectComponent, true);
+           // bool resetAttractiveObjectComponent = !this.aIAttractiveObjectManager.HasSensedThePresenceOfAnAttractiveObject(); //reset only if attractive object
+            this.OnDestinationReached(true, true, true, true, true);
         }
 
         #region State Retrieval
         public bool IsPatrolling() { return aIPatrolComponentManager.IsPatrolling(); }
         public bool IsFeared() { return aIFearStunComponentManager.IsFeared; }
-        public bool IsEscapingFromProjectile() { return aIProjectileEscapeWithCollisionManager.IsEscaping(); }
+        public bool IsEscapingFromProjectileWithTargetZones() { return aIProjectileEscapeWithCollisionManager.IsEscaping(); }
         public bool IsEscapingFromProjectileIngnoringTargetZones() { return aIProjectileIgnoringTargetZoneEscapeManager.IsEscaping(); }
         public bool IsEscapingFromExitZone() { return aITargetZoneComponentManager.IsEscapingFromTargetZone; }
         public bool IsInfluencedByAttractiveObject() { return aIAttractiveObjectManager.IsInfluencedByAttractiveObject(); }
@@ -241,17 +241,17 @@ namespace RTPuzzle
         public void DebugGUITick()
         {
             GUILayout.Label("StunFeared : " + aIFearStunComponentManager.IsFeared);
-            GUILayout.Label("ProjEscapingWithoutTarget : " + aIProjectileEscapeWithCollisionManager.IsEscaping());
+            GUILayout.Label("ProjEscapingWithoutTarget : " + aIProjectileIgnoringTargetZoneEscapeManager.IsEscaping());
             GUILayout.Label("EscapingFromTargetZone : " + aITargetZoneComponentManager.IsEscapingFromTargetZone);
-            GUILayout.Label("EscapingFromProjectile : " + aIProjectileEscapeWithCollisionManager.IsEscaping());
+            GUILayout.Label("ProjEscapingWithTarget : " + aIProjectileEscapeWithCollisionManager.IsEscaping());
             GUILayout.Label("Attracted : " + aIAttractiveObjectManager.IsInfluencedByAttractiveObject());
             GUILayout.Label("Patrolling : " + aIPatrolComponentManager.IsPatrolling());
         }
 
         public override string ToString()
         {
-            return String.Format("[StunFeared : {0}, ProjEscapingWithoutTarget : {1}, EscapingFromTargetZone : {2}, EscapingFromProjectile : {3}, Attracted : {4}, Patrolling : {5}]",
-                new string[] { aIFearStunComponentManager.IsFeared.ToString(), aIProjectileEscapeWithCollisionManager.IsEscaping().ToString(),
+            return String.Format("[StunFeared : {0}, ProjEscapingWithoutTarget : {1}, EscapingFromTargetZone : {2}, ProjEscapingWithTarget : {3}, Attracted : {4}, Patrolling : {5}]",
+                new string[] { aIFearStunComponentManager.IsFeared.ToString(), aIProjectileIgnoringTargetZoneEscapeManager.IsEscaping().ToString(),
                     aITargetZoneComponentManager.IsEscapingFromTargetZone.ToString(), aIProjectileEscapeWithCollisionManager.IsEscaping().ToString(),
                 aIAttractiveObjectManager.IsInfluencedByAttractiveObject().ToString(), aIPatrolComponentManager.IsPatrolling().ToString() });
         }

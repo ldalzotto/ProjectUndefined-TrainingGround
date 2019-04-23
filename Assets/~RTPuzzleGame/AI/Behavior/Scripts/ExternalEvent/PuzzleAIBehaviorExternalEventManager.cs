@@ -20,8 +20,10 @@ namespace RTPuzzle
 
         public void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent)
         {
+            //If the event is occuring on physics engine timestep
             if (Time.inFixedTimeStep)
             {
+                //we push the events to be consumed after the fixed timestep by AI Behavior
                 this.waitingToConsumeEvents.Add(externalEvent);
             }
             else
@@ -30,7 +32,10 @@ namespace RTPuzzle
             }
         }
 
-        public void ConsumeEvents()
+        /// <summary>
+        /// Consume all events stacked during the fixed timestep stage.
+        /// </summary>
+        public void ConsumeEventsQueued()
         {
             this.waitingToConsumeEvents.Sort(delegate (PuzzleAIBehaviorExternalEvent ev1, PuzzleAIBehaviorExternalEvent ev2)
             {
@@ -48,11 +53,13 @@ namespace RTPuzzle
 
         private void A_ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
         {
+            // Debug.Log(MyLog.Format("Processing Event : " + externalEvent.GetType().Name) + " state : " + aiBehavior.ToString());
             this.ProcessEvent(externalEvent, aiBehavior);
             foreach (var behaviorStateTracker in this.BehaviorStateTrackerContainer.BehaviorStateTrackers.Values)
             {
                 behaviorStateTracker.OnEventProcessed(aiBehavior);
             }
+            // Debug.Log(MyLog.Format("After processing Event : " + externalEvent.GetType().Name) + " state : " + aiBehavior.ToString());
         }
 
         public abstract void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior);

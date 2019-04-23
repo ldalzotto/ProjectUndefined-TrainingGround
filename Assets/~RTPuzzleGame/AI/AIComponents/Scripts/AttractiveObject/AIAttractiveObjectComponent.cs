@@ -43,7 +43,7 @@ namespace RTPuzzle
         {
             if (this.IsDestructedAttractiveObjectEqualsToCurrent(attractiveObjectToDestroy))
             {
-                this.OnDestinationReached();
+                this.OnStateReset();
             }
         }
         #endregion

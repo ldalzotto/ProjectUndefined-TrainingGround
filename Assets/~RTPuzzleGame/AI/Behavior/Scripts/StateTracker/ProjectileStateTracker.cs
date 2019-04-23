@@ -10,7 +10,7 @@
         public void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> behavior)
         {
             var genericPuzzleBehavior = (GenericPuzzleAIBehavior)behavior;
-            if (!genericPuzzleBehavior.IsEscapingFromProjectile() && !genericPuzzleBehavior.IsEscapingFromExitZone())
+            if (!genericPuzzleBehavior.IsEscapingFromProjectileWithTargetZones() && !genericPuzzleBehavior.IsEscapingFromExitZone())
             {
                 this.hasFirstProjectileHitted = false;
             }
@@ -19,7 +19,7 @@
         public void OnEventProcessed(IPuzzleAIBehavior<AbstractAIComponents> behavior)
         {
             var genericPuzzleBehavior = (GenericPuzzleAIBehavior)behavior;
-            if (genericPuzzleBehavior.IsEscapingFromProjectile())
+            if (genericPuzzleBehavior.IsEscapingFromProjectileWithTargetZones())
             {
                 this.hasFirstProjectileHitted = true;
             }

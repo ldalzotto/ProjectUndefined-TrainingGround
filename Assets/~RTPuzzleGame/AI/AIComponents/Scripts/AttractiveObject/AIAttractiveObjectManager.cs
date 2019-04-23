@@ -29,12 +29,12 @@ namespace RTPuzzle
             return null;
         }
 
-        public override void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)//  Collider collider, CollisionType collisionType)
+        public override void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
             SetAttractedObject(attractivePosition, attractiveObjectType);
         }
 
-        public override void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)//(Collider collider, CollisionType collisionType)
+        public override void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
             if (!this.IsInfluencedByAttractiveObject())
             {
@@ -42,7 +42,7 @@ namespace RTPuzzle
             }
         }
 
-        private void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)//CollisionType collisionType)
+        private void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
             this.attractionPosition = attractivePosition;
             this.involvedAttractiveObject = attractiveObjectType;
@@ -64,12 +64,15 @@ namespace RTPuzzle
 
         public override void OnTriggerExit()
         {
-            OnDestinationReached();
+            this.OnStateReset();
         }
 
         public override void OnDestinationReached()
         {
-            this.OnStateReset();
+            if (!this.HasSensedThePresenceOfAnAttractiveObject())
+            {
+                this.OnStateReset();
+            }
         }
 
         public override void OnStateReset()

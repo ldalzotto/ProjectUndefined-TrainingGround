@@ -15,8 +15,9 @@ namespace RTPuzzle
             {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 4 },
             {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 5 },
             {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 6 },
-            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 7 },
-            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 8 }
+            {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 7 },
+            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 8 },
+            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 9 }
         };
 
         private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
@@ -38,6 +39,7 @@ namespace RTPuzzle
             EventTypeCheck<AttractiveObjectTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerEnter);
             EventTypeCheck<AttractiveObjectTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerStay);
             EventTypeCheck<AttractiveObjectTriggerExitAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerExit);
+            EventTypeCheck<AttractiveObectDestroyedAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_Destroyed);
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
         }
@@ -88,7 +90,7 @@ namespace RTPuzzle
         private void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerEnterAIBehaviorEvent attractiveObjectTriggerEnterAIBehaviorEvent)
         {
             if (!genericAiBehavior.IsInfluencedByAttractiveObject() &&
-                !genericAiBehavior.IsEscapingFromProjectile() &&
+                !genericAiBehavior.IsEscapingFromProjectileWithTargetZones() &&
                 !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() &&
                 !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
             {
@@ -102,7 +104,7 @@ namespace RTPuzzle
         {
             if (!genericAiBehavior.IsInfluencedByAttractiveObject())
             {
-                if (!genericAiBehavior.IsEscapingFromProjectile() && !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() && !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
+                if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones() && !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() && !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
                 {
                     Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerStay");
                     genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
@@ -113,10 +115,18 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
-            if (!genericAiBehavior.AIProjectileEscapeWithCollisionManager.IsEscaping() && !genericAiBehavior.IsFeared())
+            //When the AI is influenced by attractive object, it remains attracted 
+            /*
+            if (!genericAiBehavior.IsInfluencedByAttractiveObject())
             {
                 genericAiBehavior.AIAttractiveObjectManager.OnTriggerExit();
             }
+            */
+        }
+
+        private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
+        {
+            genericAiBehavior.AIAttractiveObjectManager.OnAttractiveObjectDestroyed(attractiveObectDestroyedAIBehaviorEvent.DestroyedAttractiveObject);
         }
 
         private void TargetZone_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerEnterAIBehaviorEvent targetZoneTriggerEnterAIBehaviorEvent)
@@ -125,7 +135,7 @@ namespace RTPuzzle
             {
                 if (targetZoneTriggerEnterAIBehaviorEvent.TargetZone != null)
                 {
-                    if (!genericAiBehavior.IsEscapingFromProjectile())
+                    if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                     {
                         genericAiBehavior.AIFOVManager.ResetFOV();
                     }
@@ -143,7 +153,7 @@ namespace RTPuzzle
             {
                 if (!genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() && !genericAiBehavior.IsFeared())
                 {
-                    if (!genericAiBehavior.IsEscapingFromProjectile())
+                    if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                     {
                         genericAiBehavior.AIFOVManager.ResetFOV();
                     }
@@ -212,6 +222,18 @@ namespace RTPuzzle
     }
 
     public class AttractiveObjectTriggerExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
+
+    public class AttractiveObectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        private AttractiveObjectType destroyedAttractiveObject;
+
+        public AttractiveObectDestroyedAIBehaviorEvent(AttractiveObjectType destroyedAttractiveObject)
+        {
+            this.destroyedAttractiveObject = destroyedAttractiveObject;
+        }
+
+        public AttractiveObjectType DestroyedAttractiveObject { get => destroyedAttractiveObject; }
+    }
 
     public class TargetZoneTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
