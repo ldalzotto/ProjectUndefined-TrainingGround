@@ -1,5 +1,3 @@
-#ifndef GEOMETRY_FLAT_SHADER
-#define GEOMETRY_FLAT_SHADER
 
 float _FlatWireFrameInfluence;
 
@@ -48,19 +46,11 @@ void MyGeometryProgramBase(
 	float3 p1 = IN_WORLDPOS(i[1]);
 	float3 p2 = IN_WORLDPOS(i[2]);
 
-#if _FLAT_SHADING
 	float3 triangleNormal = normalize(cross(p1 - p0, p2 - p0));
-
-	float3 randNormalDelta =
-		saturate(rand(float3(i[0].tex.xy + i[1].tex.xy + i[2].tex.xy, 0), 1))
-		* _FlatWireFrameInfluence;
-
-	triangleNormal += saturate(randNormalDelta);
 
 	SetNormalWorld(i[0], triangleNormal);
 	SetNormalWorld(i[1], triangleNormal);
 	SetNormalWorld(i[2], triangleNormal);
-#endif
 
 	stream.Append(i[0]);
 	stream.Append(i[1]);
@@ -78,24 +68,14 @@ void MyGeometryProgramAdd(
 	float3 p1 = IN_WORLDPOS_FWDADD(i[1]);
 	float3 p2 = IN_WORLDPOS_FWDADD(i[2]);
 
-#if _FLAT_SHADING
 	float3 triangleNormal = normalize(cross(p1 - p0, p2 - p0));
-
-	float3 randNormalDelta =
-		saturate(rand(float3(i[0].tex.xy + i[1].tex.xy + i[2].tex.xy, 0), 1))
-		* _FlatWireFrameInfluence;
-
-	triangleNormal += saturate(randNormalDelta);
 
 	SetNormalWorld(i[0], triangleNormal);
 	SetNormalWorld(i[1], triangleNormal);
 	SetNormalWorld(i[2], triangleNormal);
-#endif
 
 	stream.Append(i[0]);
 	stream.Append(i[1]);
 	stream.Append(i[2]);
 
 }
-
-#endif // GEOMETRY_FLAT_SHADER
