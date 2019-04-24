@@ -29,7 +29,6 @@ namespace RTPuzzle
             }
         }
 
-
         private string GetManagerDescription(Type managerType)
         {
             string returnMessage = string.Empty;

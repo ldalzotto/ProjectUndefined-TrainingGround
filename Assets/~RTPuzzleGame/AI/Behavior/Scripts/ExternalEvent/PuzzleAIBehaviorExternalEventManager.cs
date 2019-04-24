@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    /// <summary>
+    /// All changes of <see cref="AIBehaviorManagerContainer"/> behaviors interal state are handled by a <see cref="PuzzleAIBehaviorExternalEventManager"/>.
+    /// The external events are recevied from <see cref="PuzzleAIBehavior{C}"/>.
+    /// The events are processed in the defined order. Also, events occuring in physics step are stacked to be processed at the end of frame.
+    /// </summary>
     public abstract class PuzzleAIBehaviorExternalEventManager
     {
         protected IPuzzleAIBehavior<AbstractAIComponents> aiBehavior;

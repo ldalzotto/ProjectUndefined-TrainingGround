@@ -4,10 +4,13 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    /// <summary>
+    /// <see cref="AbstractAIComponent"/> is the definition of <see cref="InterfaceAIManager"/> implementation type and configuration data associated to the <see cref="InterfaceAIManager"/>.
+    /// It is used by <see cref="PuzzleAIBehavior"/> to intialize the <see cref="AIBehaviorManagerContainer"/>.
+    /// </summary>
     [System.Serializable]
     public abstract class AbstractAIComponent : SerializedScriptableObject
     {
-
         [SerializeField]
         protected abstract Type abstractManagerType { get; }
 

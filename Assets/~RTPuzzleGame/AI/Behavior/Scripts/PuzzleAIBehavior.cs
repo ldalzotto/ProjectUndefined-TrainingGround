@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
+using static RTPuzzle.AIBehaviorManagerContainer;
 
 namespace RTPuzzle
 {
@@ -21,6 +22,13 @@ namespace RTPuzzle
 #endif
     }
 
+    /// <summary>
+    /// The <see cref="PuzzleAIBehavior{C}"/> is the entry point of AI.
+    /// It inializes the <see cref="InterfaceAIManager"/>s based on <see cref="AbstractAIComponents"/> to a container <see cref="AIBehaviorManagerContainer"/>.
+    /// The container <see cref="AIBehaviorManagerContainer"/> is responsible of the order of execution of <see cref="InterfaceAIManager"/>s.
+    /// All change of AI behaviors are handles by the <see cref="PuzzleAIBehaviorExternalEventManager"/> where all events are processed.
+    /// </summary>
+    /// <typeparam name="C"></typeparam>
     public abstract class PuzzleAIBehavior<C> : IPuzzleAIBehavior<C> where C : AbstractAIComponents
     {
         protected C aIComponents;
@@ -33,6 +41,7 @@ namespace RTPuzzle
         #region Internal Dependencies
         private Action forceUpdateAIBehavior;
         protected PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager;
+        protected AIBehaviorManagerContainer aIBehaviorManagerContainer;
         #endregion
 
         #region Data retrieval
@@ -42,6 +51,13 @@ namespace RTPuzzle
 #endif
         public Action ForceUpdateAIBehavior { get => forceUpdateAIBehavior; }
         public AIFOVManager AIFOVManager { get => aIFOVManager; }
+        #endregion
+
+        #region AI Manager Availability
+        public bool EvaluateAIManagerAvailabilityToTheFirst(in InterfaceAIManager aiManager, EvaluationType evaluationType = EvaluationType.INCLUDED)
+        {
+            return this.aIBehaviorManagerContainer.EvaluateAIManagerAvailabilityToTheFirst(aiManager, evaluationType);
+        }
         #endregion
 
         #region External Events
@@ -64,7 +80,39 @@ namespace RTPuzzle
             this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
         }
 
-        public abstract Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
+        public Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
+        {
+            // (1) - Call the BeforeManagersUpdate callbacks.
+            foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
+            {
+                aiManager.BeforeManagersUpdate(d, timeAttenuationFactor);
+            }
+
+            // (2) - Computing the first enabled AI Manager next position.
+            var orderedAIManagers = this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values;
+            foreach (var aiManager in orderedAIManagers)
+            {
+                if (aiManager.IsManagerEnabled())
+                {
+                    return aiManager.OnManagerTick(d, timeAttenuationFactor);
+                }
+            }
+
+            // (3) - If nothing has been detected active. Fallback to the last ai manager.
+            return orderedAIManagers[orderedAIManagers.Count - 1].OnManagerTick(d, timeAttenuationFactor);
+        }
+
+        /// <summary>
+        /// Reseting all manager state. This is called before enabling a manager.
+        /// </summary>
+        public void ManagersStateReset()
+        {
+            foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
+            {
+                aiManager.OnStateReset();
+            }
+        }
+
         public virtual void EndOfFixedTick()
         {
             this.puzzleAIBehaviorExternalEventManager.ConsumeEventsQueued();
@@ -74,7 +122,13 @@ namespace RTPuzzle
         public abstract void OnTriggerStay(Collider collider);
         public abstract void OnTriggerExit(Collider collider);
 
-        public abstract void OnDestinationReached();
+        public virtual void OnDestinationReached()
+        {
+            foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
+            {
+                aiManager.OnDestinationReached();
+            }
+        }
         public virtual void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy) { }
 
         public static IPuzzleAIBehavior<AbstractAIComponents> BuildAIBehaviorFromType(Type behaviorType, AIBheaviorBuildInputData aIBheaviorBuildInputData)

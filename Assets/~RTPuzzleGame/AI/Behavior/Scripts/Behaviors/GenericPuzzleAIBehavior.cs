@@ -1,39 +1,38 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static RTPuzzle.AIBehaviorManagerContainer;
 
 namespace RTPuzzle
 {
     public class GenericPuzzleAIBehavior : PuzzleAIBehavior<GenericPuzzleAIComponents>
     {
-        #region AI Managers V2
-        private AIBehaviorManagerContainer AIBehaviorManagerContainer;
-        #endregion
-
         #region AI Manager data retrieval
         public AbstractAIPatrolComponentManager AIPatrolComponentManager()
         {
-            return this.AIBehaviorManagerContainer.GetManager<AbstractAIPatrolComponentManager>(this.aIComponents.AIRandomPatrolComponent);
+            return this.aIBehaviorManagerContainer.GetManager<AbstractAIPatrolComponentManager>(this.aIComponents.AIRandomPatrolComponent);
         }
         public AbstractAIProjectileEscapeManager AIProjectileEscapeWithCollisionManager()
         {
-            return this.AIBehaviorManagerContainer.GetManager<AbstractAIProjectileEscapeManager>(this.aIComponents.AIProjectileEscapeWithCollisionComponent);
+            return this.aIBehaviorManagerContainer.GetManager<AbstractAIProjectileEscapeManager>(this.aIComponents.AIProjectileEscapeWithCollisionComponent);
         }
         public AbstractAIProjectileEscapeManager AIProjectileIgnoringTargetZoneEscapeManager()
         {
-            return this.AIBehaviorManagerContainer.GetManager<AbstractAIProjectileEscapeManager>(this.aIComponents.AIProjectileEscapeWithoutCollisionComponent);
+            return this.aIBehaviorManagerContainer.GetManager<AbstractAIProjectileEscapeManager>(this.aIComponents.AIProjectileEscapeWithoutCollisionComponent);
         }
         public AbstractAITargetZoneManager AITargetZoneManager()
         {
-            return this.AIBehaviorManagerContainer.GetManager<AbstractAITargetZoneManager>(this.aIComponents.AITargetZoneComponent);
+            return this.aIBehaviorManagerContainer.GetManager<AbstractAITargetZoneManager>(this.aIComponents.AITargetZoneComponent);
         }
         public AbstractAIFearStunManager AIFearStunManager()
         {
-            return this.AIBehaviorManagerContainer.GetManager<AbstractAIFearStunManager>(this.aIComponents.AIFearStunComponent);
+            return this.aIBehaviorManagerContainer.GetManager<AbstractAIFearStunManager>(this.aIComponents.AIFearStunComponent);
         }
         public AbstractAIAttractiveObjectManager AIAttractiveObjectManager()
         {
-            return this.AIBehaviorManagerContainer.GetManager<AbstractAIAttractiveObjectManager>(this.aIComponents.AIAttractiveObjectComponent);
+            return this.aIBehaviorManagerContainer.GetManager<AbstractAIAttractiveObjectManager>(this.aIComponents.AIAttractiveObjectComponent);
         }
         #endregion
 
@@ -51,13 +50,13 @@ namespace RTPuzzle
                 AIProjectileEscapeWithCollisionManagerSetterOperation, AIProjectileEscapeWithoutCollisionManagerSetterOperation, AIFearStunManagerSetterOperation,
                 AIAttractiveObjectSetterOperation, AITargetZoneManagerSetterOperation);
 
-            AIBehaviorManagerContainer = new AIBehaviorManagerContainer(new System.Collections.Generic.Dictionary<int, InterfaceAIManager>() {
-            { 1, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIFearStunComponent.SelectedManagerType)},
-            { 2, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIProjectileEscapeWithoutCollisionComponent.SelectedManagerType)},
-            { 3, ForAllAIManagerTypesOperation.Invoke(aIComponents.AITargetZoneComponent.SelectedManagerType)},
-            { 4,ForAllAIManagerTypesOperation.Invoke(aIComponents.AIProjectileEscapeWithCollisionComponent.SelectedManagerType) },
-            { 5, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIAttractiveObjectComponent.SelectedManagerType) },
-            { 6, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIRandomPatrolComponent.SelectedManagerType) }
+            aIBehaviorManagerContainer = new AIBehaviorManagerContainer(new SortedList<int, InterfaceAIManager>() {
+                 { 1, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIFearStunComponent.SelectedManagerType)},
+                 { 2, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIProjectileEscapeWithoutCollisionComponent.SelectedManagerType)},
+                 { 3, ForAllAIManagerTypesOperation.Invoke(aIComponents.AITargetZoneComponent.SelectedManagerType)},
+                 { 4,ForAllAIManagerTypesOperation.Invoke(aIComponents.AIProjectileEscapeWithCollisionComponent.SelectedManagerType) },
+                 { 5, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIAttractiveObjectComponent.SelectedManagerType) },
+                 { 6, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIRandomPatrolComponent.SelectedManagerType) }
             });
 
         }
@@ -113,10 +112,7 @@ namespace RTPuzzle
 
         public override void OnDestinationReached()
         {
-            foreach (var aiManager in this.AIBehaviorManagerContainer.GetAllAIManagers())
-            {
-                aiManager.OnDestinationReached();
-            }
+            base.OnDestinationReached();
 
             if (!this.IsFeared())
             {
@@ -136,64 +132,11 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
-        {
-            Vector3? newDirection = null;
-            this.AIFearStunManager().BeforeManagersUpdate(d, timeAttenuationFactor);
-
-            if (this.AIFearStunManager().IsManagerEnabled())
-            {
-                newDirection = this.AIFearStunManager().OnManagerTick(d, timeAttenuationFactor);
-            }
-            else
-            {
-                if (this.AIProjectileIgnoringTargetZoneEscapeManager().IsManagerEnabled())
-                {
-                    newDirection = this.AIProjectileIgnoringTargetZoneEscapeManager().OnManagerTick(d, timeAttenuationFactor);
-                }
-                else
-                {
-                    if (this.AITargetZoneManager().IsManagerEnabled())
-                    {
-                        newDirection = this.AITargetZoneManager().OnManagerTick(d, timeAttenuationFactor);
-                    }
-                    else
-                    {
-                        if (this.AIProjectileEscapeWithCollisionManager().IsManagerEnabled())
-                        {
-                            newDirection = this.AIProjectileEscapeWithCollisionManager().OnManagerTick(d, timeAttenuationFactor);
-                        }
-                        else
-                        {
-                            if (this.AIAttractiveObjectManager().IsManagerEnabled())
-                            {
-                                newDirection = this.AIAttractiveObjectManager().OnManagerTick(d, timeAttenuationFactor);
-                            }
-                            else
-                            {
-                                newDirection = this.AIPatrolComponentManager().OnManagerTick(d, timeAttenuationFactor);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return newDirection;
-        }
-
         public override void TickGizmo()
         {
             this.AIPatrolComponentManager().GizmoTick();
             this.AIProjectileEscapeWithCollisionManager().GizmoTick();
             aIFOVManager.GizmoTick();
-        }
-
-        public void ComponentsStateReset()
-        {
-            foreach (var aiManager in this.AIBehaviorManagerContainer.GetAllAIManagers())
-            {
-                aiManager.OnStateReset();
-            }
         }
 
         #region State Retrieval
