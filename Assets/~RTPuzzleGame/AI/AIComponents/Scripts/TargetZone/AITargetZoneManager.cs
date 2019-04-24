@@ -38,7 +38,7 @@ namespace RTPuzzle
             this.aiID = aiID;
         }
 
-        public override Nullable<Vector3> TickComponent()
+        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             this.EscapeDestinationManager.Tick();
             return this.EscapeDestinationManager.EscapeDestination;
@@ -116,7 +116,6 @@ namespace RTPuzzle
             }
             return null;
         }
-
 
     }
 

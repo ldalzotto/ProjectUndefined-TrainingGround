@@ -18,7 +18,7 @@ namespace RTPuzzle
 
     public class AIManagerTypeSafeOperation
     {
-        public static void ForAllAIManagerTypes(Type managerType,
+        public static InterfaceAIManager ForAllAIManagerTypes(Type managerType,
                  Func<AIRandomPatrolComponentMananger> AIRandomPatrolComponentManangerOperation,
                  Func<AIProjectileWithCollisionEscapeManager> AIProjectileEscapeWithCollisionManagerOperation,
                  Func<AIProjectileIgnorePhysicsEscapeManager> AIProjectileEscapeWithoutCollisionManagerOperation,
@@ -26,25 +26,32 @@ namespace RTPuzzle
                  Func<AIAttractiveObjectManager> AIAttractiveObjectOperation,
                  Func<AITargetZoneManager> AITargetZoneManagerOperation)
         {
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileIgnorePhysicsEscapeManager), AIProjectileEscapeWithoutCollisionManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);
+            var aiRandomPatrolComponentManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
+            if (aiRandomPatrolComponentManager != null) { return aiRandomPatrolComponentManager; }
+            var AIProjectileWithCollisionEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
+            if (AIProjectileWithCollisionEscapeManager != null) { return AIProjectileWithCollisionEscapeManager; }
+            var AIProjectileIgnorePhysicsEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileIgnorePhysicsEscapeManager), AIProjectileEscapeWithoutCollisionManagerOperation);
+            if (AIProjectileIgnorePhysicsEscapeManager != null) { return AIProjectileIgnorePhysicsEscapeManager; }
+            var AIFearStunManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
+            if (AIFearStunManager != null) { return AIFearStunManager; }
+            var AIAttractiveObjectManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);
+            if (AIAttractiveObjectManager != null) { return AIAttractiveObjectManager; }
+            var AITargetZoneManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);
+            if (AITargetZoneManager != null) { return AITargetZoneManager; }
+
+            return null;
         }
 
-        private static bool InvokeIfNotNullAndTypeCorresponds(Type managerType, Type comparedType, Func<object> action)
+        private static InterfaceAIManager InvokeIfNotNullAndTypeCorresponds(Type managerType, Type comparedType, Func<InterfaceAIManager> action)
         {
             if (managerType == comparedType)
             {
                 if (action != null)
                 {
-                    action.Invoke();
+                    return action.Invoke();
                 }
-                return true;
             }
-            return false;
+            return null;
         }
     }
 

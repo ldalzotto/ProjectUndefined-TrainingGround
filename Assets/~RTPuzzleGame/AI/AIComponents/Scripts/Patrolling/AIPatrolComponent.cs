@@ -16,7 +16,7 @@ namespace RTPuzzle
         public float MaxDistance;
     }
 
-    public abstract class AbstractAIPatrolComponentManager
+    public abstract class AbstractAIPatrolComponentManager : InterfaceAIManager
     {
         #region External Dependencies
         protected NavMeshAgent patrollingAgent;
@@ -34,10 +34,17 @@ namespace RTPuzzle
 
         public abstract void OnDestinationReached();
         public abstract void OnStateReset();
-        public abstract bool IsPatrolling();
-
-        public abstract Vector3? TickComponent();
+        protected abstract bool IsPatrolling();
+        public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
         public abstract void GizmoTick();
+
+        public virtual void BeforeManagersUpdate(float d, float timeAttenuationFactor) { }
+
+        public bool IsManagerEnabled()
+        {
+            return this.IsPatrolling();
+        }
+
     }
 
 }

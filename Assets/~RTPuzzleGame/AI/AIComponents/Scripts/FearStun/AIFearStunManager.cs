@@ -25,27 +25,30 @@ namespace RTPuzzle
 
         private float fearedTimer;
 
-        public override Vector3? TickComponent(float d, float timeAttenuationFactor)
+        public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
-            if (!isFeared)
+            if (!this.isFeared)
             {
                 if (this.aiFovManager.GetFOVAngleSum() <= this.AIFearStunComponent.FOVSumThreshold)
                 {
                     this.SetIsFeared(true);
                     this.fearedTimer = 0f;
-                    return this.currentAgent.transform.position;
                 }
             }
-            else
+        }
+
+        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        {
+            fearedTimer += (d * timeAttenuationFactor);
+            if (fearedTimer >= AIFearStunComponent.TimeWhileBeginFeared)
             {
-                fearedTimer += (d * timeAttenuationFactor);
-                if (fearedTimer >= AIFearStunComponent.TimeWhileBeginFeared)
-                {
-                    this.aiFovManager.ResetFOV();
-                    fearedTimer -= AIFearStunComponent.TimeWhileBeginFeared;
-                    this.SetIsFeared(false);
-                }
-                //Debug.Log(Time.frameCount + " Fear timer : " + fearedTimer);
+                this.aiFovManager.ResetFOV();
+                fearedTimer -= AIFearStunComponent.TimeWhileBeginFeared;
+                this.SetIsFeared(false);
+            }
+            if (this.isFeared)
+            {
+                return this.currentAgent.transform.position;
             }
             return null;
         }

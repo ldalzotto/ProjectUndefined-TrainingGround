@@ -20,7 +20,7 @@ namespace RTPuzzle
 
         private Vector3? attractionPosition;
 
-        public override Vector3? TickComponent()
+        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             if (isAttracted)
             {
@@ -80,5 +80,6 @@ namespace RTPuzzle
             this.SetIsAttracted(false);
             this.involvedAttractiveObject = null;
         }
+
     }
 }

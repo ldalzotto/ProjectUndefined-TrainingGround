@@ -16,7 +16,7 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIProjectileEscapeManager);
     }
 
-    public abstract class AbstractAIProjectileEscapeManager
+    public abstract class AbstractAIProjectileEscapeManager : InterfaceAIManager
     {
         protected AiID aiID;
         #region External Dependencies
@@ -58,13 +58,13 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        public bool IsEscaping()
+        public bool IsManagerEnabled()
         {
             return isEscapingFromProjectile;
         }
         #endregion
 
-        public virtual Nullable<Vector3> TickComponent()
+        public Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             this.escapeDestinationManager.Tick();
             return escapeDestinationManager.EscapeDestination;
@@ -124,6 +124,9 @@ namespace RTPuzzle
         {
             this.escapeDestinationManager.GizmoTick();
         }
+
+        public virtual void BeforeManagersUpdate(float d, float timeAttenuationFactor) { }
+        
     }
 
 }

@@ -63,26 +63,26 @@ namespace RTPuzzle
                 if (this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted || genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones())
                 {
                     Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
-                    genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
-                    genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager.OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
+                    genericAiBehavior.ComponentsStateReset();
+                    genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
                 }
                 else
                 {
                     Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
-                    genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
-                    genericAiBehavior.AIProjectileEscapeWithCollisionManager.OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
+                    genericAiBehavior.ComponentsStateReset();
+                    genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
                 }
             }
         }
 
         private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
         {
-            genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
+            genericAiBehavior.ComponentsStateReset();
         }
 
         private void Feared_End(GenericPuzzleAIBehavior genericAiBehavior, FearedEndAIBehaviorEvent fearedEndAIBehaviorEvent)
         {
-            genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
+            genericAiBehavior.ComponentsStateReset();
             // to not have inactive frame.
             genericAiBehavior.ForceUpdateAIBehavior.Invoke();
         }
@@ -92,11 +92,12 @@ namespace RTPuzzle
             if (!genericAiBehavior.IsInfluencedByAttractiveObject() &&
                 !genericAiBehavior.IsEscapingFromProjectileWithTargetZones() &&
                 !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() &&
-                !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
+                !genericAiBehavior.IsEscapingFromExitZone() && 
+                !genericAiBehavior.IsFeared())
             {
                 Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerEnter");
-                genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
-                genericAiBehavior.AIAttractiveObjectManager.OnTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.ComponentsStateReset();
+                genericAiBehavior.AIAttractiveObjectManager().OnTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
             }
         }
 
@@ -107,8 +108,8 @@ namespace RTPuzzle
                 if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones() && !genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() && !genericAiBehavior.IsEscapingFromExitZone() && !genericAiBehavior.IsFeared())
                 {
                     Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerStay");
-                    genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
-                    genericAiBehavior.AIAttractiveObjectManager.OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
+                    genericAiBehavior.ComponentsStateReset();
+                    genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
                 }
             }
         }
@@ -126,7 +127,9 @@ namespace RTPuzzle
 
         private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
         {
-            genericAiBehavior.AIAttractiveObjectManager.OnAttractiveObjectDestroyed(attractiveObectDestroyedAIBehaviorEvent.DestroyedAttractiveObject);
+            genericAiBehavior.AIAttractiveObjectManager().OnAttractiveObjectDestroyed(attractiveObectDestroyedAIBehaviorEvent.DestroyedAttractiveObject);
+            // to not have inactive frame.
+            genericAiBehavior.ForceUpdateAIBehavior.Invoke();
         }
 
         private void TargetZone_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerEnterAIBehaviorEvent targetZoneTriggerEnterAIBehaviorEvent)
@@ -141,8 +144,8 @@ namespace RTPuzzle
                     }
 
                     Debug.Log(Time.frameCount + "AI - OnTargetZoneTriggerEnter");
-                    genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
-                    genericAiBehavior.AITargetZoneComponentManager.TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
+                    genericAiBehavior.ComponentsStateReset();
+                    genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
                 }
             }
         }
@@ -160,8 +163,8 @@ namespace RTPuzzle
                     if (targetZoneTriggerStayAIBehaviorEvent.TargetZone != null)
                     {
                         Debug.Log(Time.frameCount + "AI - OnTargetZoneTriggerStay");
-                        genericAiBehavior.ComponentsStateReset(true, true, true, true, true);
-                        genericAiBehavior.AITargetZoneComponentManager.TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
+                        genericAiBehavior.ComponentsStateReset();
+                        genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
                     }
                 }
             }

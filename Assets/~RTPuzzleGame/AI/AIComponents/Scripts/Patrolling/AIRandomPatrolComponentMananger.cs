@@ -15,7 +15,7 @@ namespace RTPuzzle
         {
         }
 
-        public override Nullable<Vector3> TickComponent()
+        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             if (!isMovingTowardsDestination)
             {
@@ -81,7 +81,7 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        public override bool IsPatrolling()
+        protected override bool IsPatrolling()
         {
             return isMovingTowardsDestination;
         }

@@ -14,7 +14,7 @@ namespace RTPuzzle
 
 
 
-    public abstract class AbstractAIAttractiveObjectManager
+    public abstract class AbstractAIAttractiveObjectManager : InterfaceAIManager
     {
 
         protected NavMeshAgent selfAgent;
@@ -24,9 +24,7 @@ namespace RTPuzzle
         protected bool isAttracted;
         #endregion
         protected AttractiveObjectType involvedAttractiveObject;
-
-        public abstract Vector3? TickComponent();
-
+        
         #region External Events
         public abstract void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType);
         public abstract void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType);
@@ -48,13 +46,22 @@ namespace RTPuzzle
         }
         #endregion
 
+        public virtual void BeforeManagersUpdate(float d, float timeAttenuationFactor) { }
+
+        public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
+
         #region Logical Conditions
+        public bool IsManagerEnabled()
+        {
+            return this.IsInfluencedByAttractiveObject();
+        }
+
         private bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectType attractiveObjectToDestroy)
         {
             return (this.involvedAttractiveObject != null &&
                 attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());
         }
-        public bool IsInfluencedByAttractiveObject()
+        protected bool IsInfluencedByAttractiveObject()
         {
             return this.isAttracted || this.HasSensedThePresenceOfAnAttractiveObject();
         }

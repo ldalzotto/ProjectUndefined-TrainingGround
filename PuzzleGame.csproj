@@ -69,6 +69,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\GenericPuzzleAIComponents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Managers\EscapeDestinationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\InterfaceAIManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\FearStun\AIFearStunComponent.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIType\Scripts\AIType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehaviorExternalEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\ExternalEvent\PuzzleAIBehaviorExternalEventManager.cs" />

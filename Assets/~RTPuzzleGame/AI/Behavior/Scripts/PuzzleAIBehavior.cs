@@ -23,7 +23,7 @@ namespace RTPuzzle
 
     public abstract class PuzzleAIBehavior<C> : IPuzzleAIBehavior<C> where C : AbstractAIComponents
     {
-        private C aIComponents;
+        protected C aIComponents;
 
         #region External Dependencies
         protected NavMeshAgent selfAgent;

@@ -19,15 +19,27 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIFearStunManager);
     }
 
-    public abstract class AbstractAIFearStunManager
+    public abstract class AbstractAIFearStunManager : InterfaceAIManager
     {
         #region State
         protected bool isFeared;
         #endregion
+        
+        public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 
-        public bool IsFeared { get => isFeared; }
+        public bool IsManagerEnabled()
+        {
+            return this.isFeared;
+        }
 
-        public abstract Vector3? TickComponent(float d, float timeAttenuationFactor);
+        public virtual void OnDestinationReached() { }
+
+        public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
+
+        public void OnStateReset()
+        {
+            this.isFeared = false;
+        }
     }
 
     
