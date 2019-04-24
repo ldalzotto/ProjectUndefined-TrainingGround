@@ -131,7 +131,7 @@ namespace RTPuzzle
             this.camera = camera;
             this.renderBuffer = new CommandBuffer();
             this.renderBuffer.name = "GoundEffectsRender";
-            this.camera.AddCommandBuffer(CameraEvent.AfterEverything, this.renderBuffer);
+            this.camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.renderBuffer);
         }
 
         private CommandBuffer renderBuffer;

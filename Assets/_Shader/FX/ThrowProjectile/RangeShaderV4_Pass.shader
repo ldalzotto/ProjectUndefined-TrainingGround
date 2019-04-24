@@ -4,7 +4,7 @@
 	{
 		_CenterWorldPosition("Center World Position", Vector) = (0,0,0,0)
 		_Radius("Radius", float) = 0
-		[HDR] _AuraColor("Aura Color", Color) = (1,1,1,1)
+		_AuraColor("Aura Color", Color) = (1,1,1,1)
 		_AuraTexture("Aura Texture", 2D) = "white" {}
 		_AuraAnimationSpeed("Aura Animation Speed", Float) = 0
 	}
@@ -14,6 +14,7 @@
 		Tags{ "RenderType" = "Transparent" }
 		Pass
 		{
+			ZWrite Off
 			Blend SrcAlpha SrcAlpha
 			CGPROGRAM
 			#pragma vertex vert
@@ -54,6 +55,7 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
+
 			float calcDistance = abs(distance(i.worldPos,_CenterWorldPosition));
 			clip(_Radius - calcDistance);
 			fixed4 col = _AuraColor * (1 - step(_Radius, calcDistance));
@@ -63,17 +65,7 @@
 			screenTextureCoordinate.x *= aspect;
 			screenTextureCoordinate.xy = screenTextureCoordinate.xy / i.screenPos.w;
 			_AuraTexture_ST.z += _AuraAnimationSpeed * _Time.x;
-			//col = saturate(col + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + _AuraTexture_ST.zw)/15);
-
-			/*
- // sample the texture in the orthographic way
-			float sceneDepth = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.screenPos)).r;
-			float objectZ = i.screenPos.z;
-			float diff = saturate(abs(sceneDepth - objectZ));
-			if (diff > 0.1) {
-				discard;
-            }
-			*/
+			col = saturate(col + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + _AuraTexture_ST.zw)/15);
 
 			return col;
 		}
