@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Graphics\CameraDepthEnabled.cs" />
     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_PassEditor.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
@@ -140,6 +141,7 @@
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
     <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
+    <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV4_Pass.shader" />
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryStandard.shader" />
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />

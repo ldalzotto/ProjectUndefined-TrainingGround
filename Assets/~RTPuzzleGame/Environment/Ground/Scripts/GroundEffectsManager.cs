@@ -8,6 +8,8 @@ namespace RTPuzzle
     public class GroundEffectsManager : MonoBehaviour
     {
 
+        public const string GroundEffectBufferShaderProperty = "_GroundEffectBuffer";
+
         public const string AURA_RADIUS_MATERIAL_PROPERTY = "_Radius";
         public const string AURA_CENTER_MATERIAL_PROPERTY = "_CenterWorldPosition";
         public const string AURA_COLOR_MATERIAL_PROPERTY = "_AuraColor";
@@ -55,7 +57,16 @@ namespace RTPuzzle
             ThrowRangeEffectManager.Tick(d);
             ThrowCursorRangeEffectManager.Tick(d);
             AttractiveObjectRangeManager.Tick(d);
+
+            this.OnCommandBufferUpdate();
         }
+
+        #region Logical Conditions
+        public bool GoundEffectEnabled()
+        {
+            return (ThrowRangeEffectManager.ThrowRangeEnabled || ThrowCursorRangeEffectManager.ThrowRangeEnabled || AttractiveObjectRangeManager.IsAttractiveObjectRangeEnabled);
+        }
+        #endregion
 
         #region External Events
         internal void OnProjectileThrowedEvent()
@@ -118,18 +129,18 @@ namespace RTPuzzle
         public GroundEffectsCommandBufferManager(Camera camera)
         {
             this.camera = camera;
-            this.commandBuffer = new CommandBuffer();
-            this.commandBuffer.name = "GoundEffectsRender";
-            this.camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.commandBuffer);
+            this.renderBuffer = new CommandBuffer();
+            this.renderBuffer.name = "GoundEffectsRender";
+            this.camera.AddCommandBuffer(CameraEvent.AfterEverything, this.renderBuffer);
         }
 
-        private CommandBuffer commandBuffer;
+        private CommandBuffer renderBuffer;
 
-        public CommandBuffer CommandBuffer { get => commandBuffer; }
+        public CommandBuffer CommandBuffer { get => renderBuffer; }
 
         public void ClearCommandBuffer()
         {
-            commandBuffer.Clear();
+            renderBuffer.Clear();
         }
 
     }
@@ -140,7 +151,6 @@ namespace RTPuzzle
     {
         private GroundEffectsManagerComponent GroundEffectsManagerComponent;
 
-
         private bool throwRangeEnabled;
         private FloatAnimation rangeAnimation;
         private Transform throwerTransformRef;
@@ -150,7 +160,6 @@ namespace RTPuzzle
         public ThrowRangeEffectManager(GroundEffectsManagerComponent rTPuzzleGroundEffectsManagerComponent)
         {
             GroundEffectsManagerComponent = rTPuzzleGroundEffectsManagerComponent;
-
         }
 
         public void Tick(float d)
@@ -181,7 +190,10 @@ namespace RTPuzzle
             {
                 foreach (var affectedGroundEffectType in affectedGroundEffectsType)
                 {
-                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, GroundEffectsManagerComponent.RangeEffectMaterial, 0, 0);
+                    if (affectedGroundEffectType.MeshRenderer.isVisible)
+                    {
+                        commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, GroundEffectsManagerComponent.RangeEffectMaterial, 0, 0);
+                    }
                 }
             }
         }
@@ -263,7 +275,10 @@ namespace RTPuzzle
             {
                 foreach (var affectedGroundEffectType in affectedGroundEffectsType)
                 {
-                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial, 0, 0);
+                    if (affectedGroundEffectType.MeshRenderer.isVisible)
+                    {
+                        commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, ThrowCursorRangeEffectManagerComponent.ProjectileEffectRangeMaterial, 0, 0);
+                    }
                 }
             }
         }
@@ -307,13 +322,18 @@ namespace RTPuzzle
 
         private bool isAttractiveObjectRangeEnabled;
 
+        public bool IsAttractiveObjectRangeEnabled { get => isAttractiveObjectRangeEnabled; }
+
         internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
         {
             if (isAttractiveObjectRangeEnabled)
             {
                 foreach (var affectedGroundEffectType in affectedGroundEffectsType)
                 {
-                    commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial, 0, 0);
+                    if (affectedGroundEffectType.MeshRenderer.isVisible)
+                    {
+                        commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, attractiveObjectRangeManagerComponent.AttractiveObjectRangeMaterial, 0, 0);
+                    }
                 }
             }
         }
