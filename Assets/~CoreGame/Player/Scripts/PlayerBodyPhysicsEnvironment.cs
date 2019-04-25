@@ -9,9 +9,9 @@ namespace CoreGame
         private StickGroundBodyPositioner StickGroundBodyPositioner;
         private SlopeVelocityAdjuster SlopeVelocityAdjuster;
 
-        public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, BodyGroundStickContactDistance BodyGroundStickContactDistance)
+        public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, BodyGroundStickContactDistance BodyGroundStickContactDistance)
         {
-            GroundRayCaster = new GroundRayCaster(rigidbody);
+            GroundRayCaster = new GroundRayCaster(rigidbody, collider);
             StickGroundBodyPositioner = new StickGroundBodyPositioner(BodyGroundStickContactDistance, rigidbody);
             SlopeVelocityAdjuster = new SlopeVelocityAdjuster(rigidbody);
         }
@@ -34,23 +34,29 @@ namespace CoreGame
             }
         }
 
-
     }
 
     class GroundRayCaster
     {
         private Rigidbody rigidbody;
+        private Collider collider;
         private RaycastHit hit;
 
-        public GroundRayCaster(Rigidbody rigidbody)
+        public GroundRayCaster(Rigidbody rigidbody, Collider collider)
         {
             this.rigidbody = rigidbody;
+            this.collider = collider;
         }
 
         public void Tick(float d)
         {
             int layerMask = 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER);
-            Physics.Raycast(rigidbody.position, Vector3.down, out hit, 10f, layerMask);
+            var rayDistance = Mathf.Abs(rigidbody.transform.localPosition.y - collider.bounds.center.y) * 2;
+            var startPosition = collider.bounds.center;
+
+            Debug.DrawLine(startPosition, (startPosition + Vector3.down * rayDistance), Color.blue);
+            Physics.Raycast(startPosition, Vector3.down, out hit, rayDistance, layerMask);
+            Debug.DrawLine(hit.point, hit.point + (hit.normal * 5), Color.magenta);
         }
 
         public bool HasHitted()
@@ -69,6 +75,7 @@ namespace CoreGame
         }
     }
 
+
     class StickGroundBodyPositioner
     {
         private Rigidbody rigidbody;
@@ -84,11 +91,9 @@ namespace CoreGame
         {
             if (Vector3.Distance(rigidbody.position, hitPosition) > BodyGroundStickContactDistance.ContactDistance)
             {
-                Debug.Log("MOVE");
                 rigidbody.MovePosition(hitPosition);
             }
         }
-
     }
 
     [System.Serializable]
@@ -108,9 +113,15 @@ namespace CoreGame
 
         public void FixedTick(Vector3 hitNormal)
         {
-            var slopeQuaternion = Quaternion.FromToRotation(Vector3.up, hitNormal);
+            // (1) - We project the normal in the current direction of rigid body -> this allow to take player orientation while getting on slope.
+            var rigidBodyProjectedNormal = Vector3.ProjectOnPlane(hitNormal, rigidbody.transform.right);
+            var slopeQuaternion = Quaternion.FromToRotation(rigidbody.transform.up, rigidBodyProjectedNormal);
+            // velocity vector is rotated
             rigidbody.velocity = slopeQuaternion * rigidbody.velocity;
+
+            Debug.DrawRay(rigidbody.position, rigidBodyProjectedNormal * 10, Color.green);
             Debug.DrawRay(rigidbody.position, rigidbody.velocity * 10, Color.red);
+
         }
     }
 }
