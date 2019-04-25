@@ -17,79 +17,32 @@ namespace RTPuzzle
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
         }
 
-        #region AI destination reached Events
-        public virtual void OnDestinationReached(AiID aiID)
+        #region AI related events
+        public virtual void PZ_EVT_AI_DestinationReached(AiID aiID)
         {
             this.NPCAIManagerContainer.OnDestinationReached(aiID);
         }
         #endregion
 
         #region Fear Events
-        public void OnAIFearedStunned(AiID aiID)
+        public void PZ_EVT_AI_FearedStunned_Start(AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunned();
         }
-        public void OnAIFearedStunnedEnded(AiID aiID)
+        public void PZ_EVT_AI_FearedStunned_Ended(AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
         }
-        #endregion
-
-        #region Attractive Object Events
-        internal void OnAttractiveObjectActionStart(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
-        {
-            this.GroundEffectsManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
-        }
-
-        public void OnAIAttractedStart(AttractiveObjectType attractiveObject, AiID aiID)
+        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectType attractiveObject, AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart(attractiveObject);
         }
-        internal void OnAIAttractedEnd(AttractiveObjectType involvedAttractiveObject, AiID aiID)
+        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectType involvedAttractiveObject, AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
         }
-        internal void OnAttractiveObjectActionEnd()
-        {
-            this.GroundEffectsManager.OnAttractiveObjectActionEnd();
-        }
-        #endregion
 
-        #region Projectile throw action events
-
-        public void OnThrowProjectileActionStart(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
-        {
-            GroundEffectsManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent);
-        }
-
-        public void OnThrowProjectileCursorAvailable()
-        {
-            GroundEffectsManager.OnThrowProjectileCursorAvailable();
-        }
-        public void OnThrowProjectileCursorNotAvailable()
-        {
-            GroundEffectsManager.OnThrowProjectileCursorNotAvailable();
-        }
-
-        public void OnThrowProjectileCursorOnProjectileRange()
-        {
-            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
-            GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
-        }
-        public void OnThrowProjectileCursorOutOfProjectileRange()
-        {
-            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
-            GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
-        }
-
-        public void OnProjectileThrowedEvent()
-        {
-            GroundEffectsManager.OnProjectileThrowedEvent();
-        }
-        #endregion
-        
-        #region AI Projectile event
-        public virtual void OnAiHittedByProjectile(AiID aiID, int timesInARow)
+        public virtual void PZ_EVT_AI_Projectile_Hitted(AiID aiID, int timesInARow)
         {
             if (timesInARow == 1)
             {
@@ -101,19 +54,63 @@ namespace RTPuzzle
             }
         }
 
-        public void OnAiAffectedByProjectileEnd(AiID aiID)
+        public void PZ_EVT_AI_Projectile_NoMoreAffected(AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
         }
         #endregion
 
-        public void OnGameOver(LevelZonesID nextZone)
+        #region Attractive Object Events
+        internal void PZ_EVT_AttractiveObject_PlayerAction_Start(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
+        {
+            this.GroundEffectsManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
+        }
+        internal void PZ_EVT_AttractiveObject_PlayerAction_End()
+        {
+            this.GroundEffectsManager.OnAttractiveObjectActionEnd();
+        }
+        #endregion
+
+        #region Projectile throw action events
+
+        public void PZ_EVT_ThrowProjectile_PlayerAction_Start(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
+        {
+            GroundEffectsManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent);
+        }
+
+        public void PZ_EVT_ThrowProjectile_PlayerAction_End()
+        {
+            GroundEffectsManager.OnThrowProjectileActionEnd();
+        }
+
+        public void PZ_EVT_ThrowProjectileCursor_Positionable()
+        {
+            GroundEffectsManager.OnThrowProjectileCursorPositionable();
+        }
+        public void PZ_EVT_ThrowProjectileCursor_NotPositionable()
+        {
+            GroundEffectsManager.OnThrowProjectileCursorNotPositionable();
+        }
+
+        public void PZ_EVT_ThrowProjectileCursor_OnProjectileRange()
+        {
+            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
+            GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
+        }
+        public void PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange()
+        {
+            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
+            GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
+        }
+        #endregion
+        
+        public void PZ_EVT_GameOver(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();
             SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
         }
 
-        public void OnLevelCompleted(LevelZonesID nextZone)
+        public void PZ_EVT_LevelCompleted(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();
             //TODO -> not place particles here but in dedicated level completion condition module

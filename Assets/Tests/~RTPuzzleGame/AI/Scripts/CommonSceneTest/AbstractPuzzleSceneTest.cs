@@ -112,15 +112,15 @@ namespace Tests
             public bool OnDestinationReachedCalled;
             public int AiHittedByProjectileCallCount;
 
-            public override void OnDestinationReached(AiID aiID)
+            public override void PZ_EVT_AI_DestinationReached(AiID aiID)
             {
-                base.OnDestinationReached(aiID);
+                base.PZ_EVT_AI_DestinationReached(aiID);
                 this.OnDestinationReachedCalled = true;
             }
 
-            public override void OnAiHittedByProjectile(AiID aiID, int timesInARow)
+            public override void PZ_EVT_AI_Projectile_Hitted(AiID aiID, int timesInARow)
             {
-                base.OnAiHittedByProjectile(aiID, timesInARow);
+                base.PZ_EVT_AI_Projectile_Hitted(aiID, timesInARow);
                 this.AiHittedByProjectileCallCount += 1;
             }
 

@@ -53,11 +53,11 @@ namespace RTPuzzle
         {
             if (this.isAttracted && !value)
             {
-                this.PuzzleEventsManager.OnAIAttractedEnd(this.involvedAttractiveObject, this.aiID);
+                this.PuzzleEventsManager.PZ_EVT_AI_Attracted_End(this.involvedAttractiveObject, this.aiID);
             }
             else if (!this.isAttracted && value)
             {
-                this.PuzzleEventsManager.OnAIAttractedStart(this.involvedAttractiveObject, this.aiID);
+                this.PuzzleEventsManager.PZ_EVT_AI_Attracted_Start(this.involvedAttractiveObject, this.aiID);
             }
             this.isAttracted = value;
         }

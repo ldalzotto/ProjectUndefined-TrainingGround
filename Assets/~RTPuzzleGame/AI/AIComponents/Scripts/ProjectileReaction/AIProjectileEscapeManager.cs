@@ -24,14 +24,14 @@ namespace RTPuzzle
             base.SetIsEscapingFromProjectile(value);
             if (this.isEscapingFromProjectile && !value)
             {
-                this.PuzzleEventsManager.OnAiAffectedByProjectileEnd(this.aiID);
+                this.PuzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
             }
         }
 
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
             Debug.Log(MyLog.Format("EscapeToFarestWithTargetZone"));
-            this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
+            this.PuzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 1);
             this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
         };
 
@@ -60,7 +60,7 @@ namespace RTPuzzle
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
             Debug.Log("EscapeToFarest");
-            this.PuzzleEventsManager.OnAiHittedByProjectile(this.aiID, 1);
+            this.PuzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 2);
             this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
         };
 

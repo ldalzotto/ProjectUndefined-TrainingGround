@@ -36,7 +36,7 @@ namespace RTPuzzle
 
             if (TimeFlowValueTracker.NoMoreTimeAvailable())
             {
-                PuzzleEventsManager.OnGameOver(LevelManager.GetCurrentLevel());
+                PuzzleEventsManager.PZ_EVT_GameOver(LevelManager.GetCurrentLevel());
             }
         }
 

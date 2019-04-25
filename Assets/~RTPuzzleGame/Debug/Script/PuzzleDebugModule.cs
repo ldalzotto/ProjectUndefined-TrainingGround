@@ -30,7 +30,7 @@ namespace RTPuzzle
         {
             if (TriggerGameOverEvent)
             {
-                this.PuzzleEventsManager.OnGameOver(NextZone);
+                this.PuzzleEventsManager.PZ_EVT_GameOver(NextZone);
             }
         }
 #endif

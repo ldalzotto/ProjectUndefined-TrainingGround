@@ -49,9 +49,6 @@ namespace RTPuzzle
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
 
-            var camera = Camera.main;
-            var canvas = GameObject.FindObjectOfType<Canvas>();
-
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
             agent = GetComponent<NavMeshAgent>();
@@ -68,7 +65,7 @@ namespace RTPuzzle
             puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType,
                 new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, camera, canvas, NpcFOVRingManager);
+            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, NpcFOVRingManager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
 
             //Intiialize with 0 time
@@ -226,7 +223,7 @@ namespace RTPuzzle
         }
         private void SendOnDestinationReachedEvent()
         {
-            this.PuzzleEventsManager.OnDestinationReached(this.AiID);
+            this.PuzzleEventsManager.PZ_EVT_AI_DestinationReached(this.AiID);
         }
         #endregion
 
@@ -299,20 +296,16 @@ namespace RTPuzzle
 
         #region External Dependencies
         private NPCAIManager NPCAIManagerRef;
-        private Camera camera;
-        private Canvas mainCanvas;
         private NpcInteractionRingManager NpcInteractionRingManager;
         #endregion
 
         public ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent,
-            NPCAIManager NPCAIManagerRef, Camera camera, Canvas mainCanvas, NpcInteractionRingManager npcFOVRingManager)
+            NPCAIManager NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager)
         {
             this.ContextMarkVisualFeedbackManagerComponent = ContextMarkVisualFeedbackManagerComponent;
             this.NPCAIManagerRef = NPCAIManagerRef;
-            this.camera = camera;
             this.SetIsVisualMarkDisaplyed(false);
             this.visualFeedbackMark = null;
-            this.mainCanvas = mainCanvas;
             this.NpcInteractionRingManager = npcFOVRingManager;
         }
 
@@ -352,6 +345,7 @@ namespace RTPuzzle
             this.isVisualMarkDisplayed = value;
         }
 
+        #region External Events
         internal void OnHittedByProjectileFirstTime()
         {
             ReInitBeforeSpawningMark();
@@ -368,7 +362,7 @@ namespace RTPuzzle
 
         internal void OnAiAffectedByProjectileEnd()
         {
-            ReInitBeforeSpawningMark();
+           this.ReInitBeforeSpawningMark();
         }
 
         internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
@@ -385,8 +379,9 @@ namespace RTPuzzle
 
         internal void OnGameOver()
         {
-            ReInitBeforeSpawningMark();
+            this.ReInitBeforeSpawningMark();
         }
+        #endregion
     }
 
     class AnimationVisualFeedbackManager

@@ -59,14 +59,14 @@ namespace RTPuzzle
             {
                 if (!this.isFeared)
                 {
-                    this.PuzzleEventsManager.OnAIFearedStunned(this.AiID);
+                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Start(this.AiID);
                 }
             }
             else
             {
                 if (this.isFeared)
                 {
-                    this.PuzzleEventsManager.OnAIFearedStunnedEnded(this.AiID);
+                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Ended(this.AiID);
                 }
             }
             this.isFeared = newIsFearedValue;

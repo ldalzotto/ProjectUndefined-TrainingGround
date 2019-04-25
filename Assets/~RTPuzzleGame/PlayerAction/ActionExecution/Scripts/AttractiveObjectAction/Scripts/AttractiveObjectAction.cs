@@ -48,7 +48,7 @@ namespace RTPuzzle
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerCollider());
             this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this);
-            this.PuzzleEventsManager.OnAttractiveObjectActionStart(attractiveObjectInherentConfigurationData, playerDataRetriever.GetPlayerTransform());
+            this.PuzzleEventsManager.PZ_EVT_AttractiveObject_PlayerAction_Start(attractiveObjectInherentConfigurationData, playerDataRetriever.GetPlayerTransform());
         }
 
         public override void GizmoTick()
@@ -94,7 +94,7 @@ namespace RTPuzzle
         private void OnEndAction()
         {
             this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionEnd();
-            this.PuzzleEventsManager.OnAttractiveObjectActionEnd();
+            this.PuzzleEventsManager.PZ_EVT_AttractiveObject_PlayerAction_End();
             this.isActionOver = true;
         }
         #endregion

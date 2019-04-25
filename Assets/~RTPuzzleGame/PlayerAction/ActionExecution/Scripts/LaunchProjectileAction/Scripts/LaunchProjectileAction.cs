@@ -58,7 +58,7 @@ namespace RTPuzzle
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
 
 
-            PuzzleEventsManager.OnThrowProjectileActionStart(new ThrowProjectileActionStartEvent(playerTransform,
+            PuzzleEventsManager.PZ_EVT_ThrowProjectile_PlayerAction_Start(new ThrowProjectileActionStartEvent(playerTransform,
                  configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, LaunchProjectileRayPositionerManager.GetCurrentCursorPosition,
                ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId));
         }
@@ -97,7 +97,7 @@ namespace RTPuzzle
         #region Internal Events
         public void OnExit()
         {
-            PuzzleEventsManager.OnProjectileThrowedEvent();
+            PuzzleEventsManager.PZ_EVT_ThrowProjectile_PlayerAction_End();
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectilePathAnimationmanager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
@@ -225,7 +225,7 @@ namespace RTPuzzle
             {
                 if (!isCursorPositioned)
                 {
-                    PuzzleEventsManager.OnThrowProjectileCursorAvailable();
+                    PuzzleEventsManager.PZ_EVT_ThrowProjectileCursor_Positionable();
                 }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;
@@ -245,7 +245,7 @@ namespace RTPuzzle
             {
                 if (isCursorPositioned)
                 {
-                    PuzzleEventsManager.OnThrowProjectileCursorNotAvailable();
+                    PuzzleEventsManager.PZ_EVT_ThrowProjectileCursor_NotPositionable();
                 }
                 isCursorPositioned = false;
                 SetIsCursorInRange(false);
@@ -260,14 +260,14 @@ namespace RTPuzzle
             {
                 if (!this.isCursorInRange)
                 {
-                    this.PuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
+                    this.PuzzleEventsManager.PZ_EVT_ThrowProjectileCursor_OnProjectileRange();
                 }
             }
             else
             {
                 if (this.isCursorInRange)
                 {
-                    this.PuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
+                    this.PuzzleEventsManager.PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange();
                 }
             }
 

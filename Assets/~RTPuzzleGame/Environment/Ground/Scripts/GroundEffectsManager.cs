@@ -69,10 +69,10 @@ namespace RTPuzzle
         #endregion
 
         #region External Events
-        internal void OnProjectileThrowedEvent()
+        internal void OnThrowProjectileActionEnd()
         {
-            ThrowRangeEffectManager.OnThrowProjectileThrowed();
-            ThrowCursorRangeEffectManager.OnThrowProjectileThrowed();
+            ThrowRangeEffectManager.OnThrowProjectileActionEnd();
+            ThrowCursorRangeEffectManager.OnThrowProjectileActionEnd();
             OnCommandBufferUpdate();
         }
 
@@ -82,15 +82,15 @@ namespace RTPuzzle
             ThrowCursorRangeEffectManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent.CurrentCursorPositionRetriever, PuzzleGameConfigurationManager.ProjectileConf()[throwProjectileActionStartEvent.ProjectileInvolved].EffectRange);
             OnCommandBufferUpdate();
         }
-        internal void OnThrowProjectileCursorAvailable()
+        internal void OnThrowProjectileCursorPositionable()
         {
-            ThrowCursorRangeEffectManager.OnThrowProjectileCursorAvailable();
+            ThrowCursorRangeEffectManager.OnThrowProjectileCursorPositionable();
             OnCommandBufferUpdate();
         }
 
-        internal void OnThrowProjectileCursorNotAvailable()
+        internal void OnThrowProjectileCursorNotPositionable()
         {
-            ThrowCursorRangeEffectManager.OnThrowProjectileCursorNotAvailable();
+            ThrowCursorRangeEffectManager.OnThrowProjectileCursorNotPositionable();
             OnCommandBufferUpdate();
         }
         public void OnThrowProjectileCursorOnProjectileRange()
@@ -179,7 +179,7 @@ namespace RTPuzzle
             throwRangeEnabled = true;
         }
 
-        public void OnThrowProjectileThrowed()
+        public void OnThrowProjectileActionEnd()
         {
             throwRangeEnabled = false;
         }
@@ -254,17 +254,17 @@ namespace RTPuzzle
             throwRangeEnabled = true;
         }
 
-        public void OnThrowProjectileThrowed()
+        public void OnThrowProjectileActionEnd()
         {
             throwRangeEnabled = false;
         }
 
-        internal void OnThrowProjectileCursorAvailable()
+        internal void OnThrowProjectileCursorPositionable()
         {
             throwRangeEnabled = true;
         }
 
-        internal void OnThrowProjectileCursorNotAvailable()
+        internal void OnThrowProjectileCursorNotPositionable()
         {
             throwRangeEnabled = false;
         }
