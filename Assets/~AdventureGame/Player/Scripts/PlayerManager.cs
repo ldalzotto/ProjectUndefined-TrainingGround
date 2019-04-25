@@ -15,11 +15,6 @@ namespace AdventureGame
         [Header("Player Movement")]
         public float AIRotationSpeed;
 
-        [Header("Camera Rotation")]
-        public float CameraRotationSpeed;
-        [Header("Camera Follow")]
-        public float DampTime;
-
         public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
         public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
@@ -67,8 +62,8 @@ namespace AdventureGame
             SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
 
-            this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform);
-            this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager);
+            this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent);
+            this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
             this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerAIMoveManager = new PlayerAIMoveManager(playerRigidBody, playerAgent, transform, this);
             this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
@@ -83,8 +78,8 @@ namespace AdventureGame
 
         public void Tick(float d)
         {
-            CameraFollowManager.Tick(d, DampTime);
-            CameraOrientationManager.Tick(d, CameraRotationSpeed);
+            CameraFollowManager.Tick(d);
+            CameraOrientationManager.Tick(d);
 
             var playerSpeedMagnitude = 0f;
             if (!PlayerAIMoveManager.IsDirectedByAi)
@@ -252,48 +247,6 @@ namespace AdventureGame
         }
 
     }
-
-    #region Camera
-
-    public class CameraFollowManager
-    {
-        private Transform playerPosition;
-        private Transform cameraPivotPoint;
-
-        private Vector3 currentVelocity;
-
-        public CameraFollowManager(Transform playerPosition, Transform cameraPivotPoint)
-        {
-            this.playerPosition = playerPosition;
-            this.cameraPivotPoint = cameraPivotPoint;
-        }
-
-        public void Tick(float d, float smoothTime)
-        {
-            cameraPivotPoint.position = Vector3.SmoothDamp(cameraPivotPoint.position, playerPosition.position, ref currentVelocity, smoothTime);
-        }
-    }
-
-    public class CameraOrientationManager
-    {
-        private Transform cameraPivotPoint;
-        private GameInputManager gameInputManager;
-
-        public CameraOrientationManager(Transform cameraPivotPoint, GameInputManager gameInputManager)
-        {
-            this.cameraPivotPoint = cameraPivotPoint;
-            this.gameInputManager = gameInputManager;
-        }
-
-        public void Tick(float d, float rotationSpeed)
-        {
-            cameraPivotPoint.eulerAngles += new Vector3(0,
-                (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * rotationSpeed,
-                0);
-        }
-    }
-
-    #endregion
 
     #region Player Movement
 

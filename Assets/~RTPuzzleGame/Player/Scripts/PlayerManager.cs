@@ -25,6 +25,11 @@ namespace RTPuzzle
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
+        #region Camera Managers
+        private CameraFollowManager CameraFollowManager;
+        private CameraOrientationManager CameraOrientationManager;
+        #endregion
+
         #region Animation Managers
         private PlayerAnimationDataManager PlayerAnimationDataManager;
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
@@ -49,10 +54,18 @@ namespace RTPuzzle
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, this.playerRigidbody);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
+
+            CameraFollowManager = new CameraFollowManager(this.playerRigidbody.transform, cameraPivotPoint.transform, PlayerCommonComponents.CameraFollowManagerComponent);
+            CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint.transform, gameInputManager, PlayerCommonComponents.CameraOrientationManagerComponent);
         }
 
         public void Tick(float d)
         {
+            #region Camera
+            CameraFollowManager.Tick(d);
+            CameraOrientationManager.Tick(d);
+            #endregion
+
             PlayerBodyPhysicsEnvironment.Tick(d);
 
             if (!PlayerActionManager.IsActionExecuting())
