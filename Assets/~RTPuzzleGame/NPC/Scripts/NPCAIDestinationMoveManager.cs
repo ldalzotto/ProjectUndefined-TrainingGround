@@ -25,10 +25,10 @@ namespace RTPuzzle
         {
             if (objectAgent.velocity.normalized != Vector3.zero)
             {
-                objectTransform.rotation = Quaternion.Slerp(objectTransform.rotation, Quaternion.LookRotation(objectAgent.velocity.normalized), d * AIDestimationMoveManagerComponent.AIRotationSpeed);
+                objectTransform.rotation = Quaternion.Slerp(objectTransform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(objectAgent.velocity.normalized, Vector3.up)),
+                    d * AIDestimationMoveManagerComponent.AIRotationSpeed);
             }
 
-            var playerMovementOrientation = (objectAgent.nextPosition - objectTransform.position).normalized;
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
             objectTransform.position = objectAgent.nextPosition;
 
