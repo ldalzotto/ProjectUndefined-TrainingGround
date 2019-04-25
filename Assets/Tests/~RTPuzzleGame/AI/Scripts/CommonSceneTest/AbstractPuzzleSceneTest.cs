@@ -70,11 +70,6 @@ namespace Tests
                 return false;
             }
 
-            public Vector3 CameraRotationAxis()
-            {
-                return Vector3.zero;
-            }
-
             public bool CancelButtonD()
             {
                 return false;
@@ -90,9 +85,19 @@ namespace Tests
                 return false;
             }
 
+            public float LeftRotationCameraDH()
+            {
+                throw new NotImplementedException();
+            }
+
             public Vector3 LocomotionAxis()
             {
                 return Vector3.zero;
+            }
+
+            public float RightRotationCameraDH()
+            {
+                throw new NotImplementedException();
             }
 
             public bool TimeForwardButtonDH()

@@ -55,9 +55,14 @@ public class GameInputManager : MonoBehaviour, IGameInputManager
             return new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         }
 
-        public Vector3 CameraRotationAxis()
+        public float LeftRotationCameraDH()
         {
-            return new Vector3(Input.GetAxis("Camera_Vertical"), Input.GetAxis("Camera_Horizontal"), 0f);
+            return Convert.ToInt32(Input.GetButton("Camera_Rotation_Left") || Input.GetButtonDown("Camera_Rotation_Left"));
+        }
+
+        public float RightRotationCameraDH()
+        {
+            return Convert.ToInt32(Input.GetButton("Camera_Rotation_Right") || Input.GetButtonDown("Camera_Rotation_Right"));
         }
 
         public bool TimeForwardButtonDH()
@@ -78,11 +83,6 @@ public class GameInputManager : MonoBehaviour, IGameInputManager
             throw new NotImplementedException();
         }
 
-        public Vector3 CameraRotationAxis()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool CancelButtonD()
         {
             throw new NotImplementedException();
@@ -98,9 +98,19 @@ public class GameInputManager : MonoBehaviour, IGameInputManager
             throw new NotImplementedException();
         }
 
+        public float LeftRotationCameraDH()
+        {
+            throw new NotImplementedException();
+        }
+
         public Vector3 LocomotionAxis()
         {
             throw new System.NotImplementedException();
+        }
+
+        public float RightRotationCameraDH()
+        {
+            throw new NotImplementedException();
         }
 
         public bool TimeForwardButtonDH()
@@ -121,11 +131,6 @@ public class GameInputManager : MonoBehaviour, IGameInputManager
             throw new NotImplementedException();
         }
 
-        public Vector3 CameraRotationAxis()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool CancelButtonD()
         {
             throw new NotImplementedException();
@@ -141,9 +146,19 @@ public class GameInputManager : MonoBehaviour, IGameInputManager
             throw new NotImplementedException();
         }
 
+        public float LeftRotationCameraDH()
+        {
+            throw new NotImplementedException();
+        }
+
         public Vector3 LocomotionAxis()
         {
             throw new System.NotImplementedException();
+        }
+
+        public float RightRotationCameraDH()
+        {
+            throw new NotImplementedException();
         }
 
         public bool TimeForwardButtonDH()
@@ -157,7 +172,8 @@ public class GameInputManager : MonoBehaviour, IGameInputManager
 public interface XInput
 {
     Vector3 LocomotionAxis();
-    Vector3 CameraRotationAxis();
+    float LeftRotationCameraDH();
+    float RightRotationCameraDH();
     bool ActionButtonDH();
     bool ActionButtonD();
     bool InventoryButtonD();

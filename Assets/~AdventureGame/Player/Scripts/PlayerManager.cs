@@ -287,7 +287,9 @@ namespace AdventureGame
 
         public void Tick(float d, float rotationSpeed)
         {
-            cameraPivotPoint.eulerAngles += (gameInputManager.CurrentInput.CameraRotationAxis() * d * rotationSpeed);
+            cameraPivotPoint.eulerAngles += new Vector3(0,
+                (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * rotationSpeed,
+                0);
         }
     }
 
