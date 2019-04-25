@@ -46,7 +46,7 @@ namespace RTPuzzle
             var attractiveObjectInherentConfigurationData = puzzleConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
-            this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerTransform());
+            this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerCollider());
             this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this);
             this.PuzzleEventsManager.OnAttractiveObjectActionStart(attractiveObjectInherentConfigurationData, playerDataRetriever.GetPlayerTransform());
         }
@@ -126,7 +126,8 @@ namespace RTPuzzle
         public void OnAttractiveObjectActionEnd()
         {
             this.PlayerPocketObjectOutAnimationManager.Kill();
-            if (this.attractiveObjectInstance != null) {
+            if (this.attractiveObjectInstance != null)
+            {
                 MonoBehaviour.Destroy(this.attractiveObjectInstance);
             }
         }
@@ -165,18 +166,19 @@ namespace RTPuzzle
 
     class AttractiveObjectGroundPositioner
     {
-        private Transform playerTransform;
+        private Rigidbody playerRigidBody;
+        private Collider playerCollider;
 
-        public AttractiveObjectGroundPositioner(Transform playerTransform)
+        public AttractiveObjectGroundPositioner(Rigidbody playerRigidBody, Collider playerCollider)
         {
-            this.playerTransform = playerTransform;
+            this.playerRigidBody = playerRigidBody;
+            this.playerCollider = playerCollider;
         }
 
         public Nullable<RaycastHit> GetAttractiveObjectSpawnPosition()
         {
-            int groundLayerMask = 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER);
             RaycastHit hit;
-            if (Physics.Raycast(playerTransform.position, Vector3.down, out hit, Mathf.Infinity, groundLayerMask))
+            if (PhysicsHelper.RaycastToDownVertically(playerCollider, playerRigidBody, 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER), out hit))
             {
                 return hit;
             }

@@ -10,6 +10,11 @@ namespace RTPuzzle
         private PlayerActionManager PlayerActionManager;
         #endregion
 
+        #region Internal Components
+        private Rigidbody playerRigidbody;
+        private Collider playerCollier;
+        #endregion
+
         public BodyGroundStickContactDistance BodyGroundStickContactDistance;
 
         #region Player Common component
@@ -24,6 +29,7 @@ namespace RTPuzzle
         private PlayerAnimationDataManager PlayerAnimationDataManager;
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
+
         public void Init()
         {
             #region External Dependencies
@@ -31,17 +37,17 @@ namespace RTPuzzle
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             #endregion
 
-            var playerRigidBody = GetComponent<Rigidbody>();
-            var playerCollider = GetComponent<Collider>();
+            this.playerRigidbody = GetComponent<Rigidbody>();
+            this.playerCollier = GetComponent<Collider>();
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var animator = GetComponentInChildren<Animator>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
-            PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, playerRigidBody);
-            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, playerCollider, BodyGroundStickContactDistance);
+            PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
-            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, playerRigidBody);
+            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, this.playerRigidbody);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
         }
 
@@ -101,10 +107,8 @@ namespace RTPuzzle
         {
             return PlayerInputMoveManager.PlayerSpeedMagnitude;
         }
-        public Collider GetPlayerCollider()
-        {
-            return GetComponentInChildren<Collider>();
-        }
+        public Rigidbody PlayerRigidbody { get => playerRigidbody; }
+        public Collider PlayerCollier { get => playerCollier; }
 
     }
 

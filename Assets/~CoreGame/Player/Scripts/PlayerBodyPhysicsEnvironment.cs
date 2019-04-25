@@ -50,13 +50,7 @@ namespace CoreGame
 
         public void Tick(float d)
         {
-            int layerMask = 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER);
-            var rayDistance = Mathf.Abs(rigidbody.transform.localPosition.y - collider.bounds.center.y) * 2;
-            var startPosition = collider.bounds.center;
-
-            Debug.DrawLine(startPosition, (startPosition + Vector3.down * rayDistance), Color.blue);
-            Physics.Raycast(startPosition, Vector3.down, out hit, rayDistance, layerMask);
-            Debug.DrawLine(hit.point, hit.point + (hit.normal * 5), Color.magenta);
+            PhysicsHelper.RaycastToDownVertically(collider, rigidbody, 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER), out hit);
         }
 
         public bool HasHitted()

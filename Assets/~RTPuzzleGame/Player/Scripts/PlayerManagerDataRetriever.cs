@@ -23,12 +23,17 @@ namespace RTPuzzle
         }
         public Collider GetPlayerCollider()
         {
-            return PlayerManager.GetPlayerCollider();
+            return PlayerManager.PlayerCollier;
         }
 
         public Animator GetPlayerAnimator()
         {
             return PlayerManager.GetPlayerAnimator();
+        }
+
+        public Rigidbody GetPlayerRigidBody()
+        {
+            return PlayerManager.PlayerRigidbody;
         }
         #endregion
     }
