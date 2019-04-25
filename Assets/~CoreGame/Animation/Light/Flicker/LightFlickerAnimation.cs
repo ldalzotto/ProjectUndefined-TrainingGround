@@ -7,6 +7,8 @@ public class LightFlickerAnimation : MonoBehaviour
 
     public float MaxIntensity;
     public float MinIntensity;
+    public float MinIndirectMultiplier;
+    public float MaxIndirectMultiplier;
     public float MaxRange;
     public float MinRange;
     public float MaxChangeDeltaTime;
@@ -42,5 +44,6 @@ public class LightFlickerAnimation : MonoBehaviour
     {
         this.lightComponent.range = Random.Range(MinRange, MaxRange);
         this.lightComponent.intensity = Random.Range(MinIntensity, MaxIntensity);
+        this.lightComponent.bounceIntensity = Random.Range(MinIndirectMultiplier, MaxIndirectMultiplier);
     }
 }

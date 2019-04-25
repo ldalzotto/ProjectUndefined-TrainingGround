@@ -309,7 +309,7 @@ namespace RTPuzzle
             this.ContextMarkVisualFeedbackManagerComponent = ContextMarkVisualFeedbackManagerComponent;
             this.NPCAIManagerRef = NPCAIManagerRef;
             this.camera = camera;
-            this.isVisualMarkDisplayed = false;
+            this.SetIsVisualMarkDisaplyed(false);
             this.visualFeedbackMark = null;
             this.mainCanvas = mainCanvas;
             this.NpcInteractionRingManager = npcFOVRingManager;
@@ -334,25 +334,35 @@ namespace RTPuzzle
 
         private void ReInitBeforeSpawningMark()
         {
-            this.isVisualMarkDisplayed = false;
+            this.SetIsVisualMarkDisaplyed(false);
             if (this.visualFeedbackMark != null)
             {
                 MonoBehaviour.Destroy(this.visualFeedbackMark.gameObject);
             }
         }
 
+        private void SetIsVisualMarkDisaplyed(bool value)
+        {
+            if (value && !this.isVisualMarkDisplayed)
+            {
+                //visual has just popped
+                this.Tick(0);//we initialize positions
+            }
+            this.isVisualMarkDisplayed = value;
+        }
+
         internal void OnHittedByProjectileFirstTime()
         {
             ReInitBeforeSpawningMark();
-            this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.ExclamationMarkSimple, this.NPCAIManagerRef.transform);
+            this.SetIsVisualMarkDisaplyed(true);
         }
 
         internal void OnHittedByProjectile2InARow()
         {
             ReInitBeforeSpawningMark();
-            this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.ExclamationMarkDouble, this.NPCAIManagerRef.transform);
+            this.SetIsVisualMarkDisaplyed(true);
         }
 
         internal void OnAiAffectedByProjectileEnd()
@@ -363,8 +373,8 @@ namespace RTPuzzle
         internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
         {
             ReInitBeforeSpawningMark();
-            this.isVisualMarkDisplayed = true;
             this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(attractiveObject.AttractiveObjectInherentConfigurationData.AttractiveObjectAIMarkPrefab, this.NPCAIManagerRef.transform);
+            this.SetIsVisualMarkDisaplyed(true);
         }
 
         internal void OnAIAttractedEnd()
