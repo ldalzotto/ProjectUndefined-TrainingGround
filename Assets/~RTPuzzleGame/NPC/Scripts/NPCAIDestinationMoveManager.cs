@@ -23,10 +23,10 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            if (objectAgent.velocity.normalized != Vector3.zero)
+            // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
+            if (Vector3.Distance(Vector3.zero, (objectAgent.velocity / AIDestimationMoveManagerComponent.SpeedMultiplicationFactor)) >= AIDestimationMoveManagerComponent.RotationFollow_VelocityThreshold)
             {
-                objectTransform.rotation = Quaternion.Slerp(objectTransform.rotation, Quaternion.LookRotation(Vector3.ProjectOnPlane(objectAgent.velocity.normalized, Vector3.up)),
-                    d * AIDestimationMoveManagerComponent.AIRotationSpeed);
+                objectTransform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(objectAgent.velocity.normalized, Vector3.up));
             }
 
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
@@ -67,7 +67,10 @@ namespace RTPuzzle
     [System.Serializable]
     public class AIDestimationMoveManagerComponent
     {
-        public float AIRotationSpeed;
+        [Tooltip("This value is the minimum value of speed, starting from the transform rotation will follow the agent direction. If this value were not " +
+            "present, the precission loss of agent speed calculation would cause the rotation to go crazy when speed is very low.")]
+        [Range(0,1)]
+        public float RotationFollow_VelocityThreshold;
         public float SpeedMultiplicationFactor;
     }
 }

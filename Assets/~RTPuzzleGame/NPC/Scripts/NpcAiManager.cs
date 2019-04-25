@@ -138,6 +138,7 @@ namespace RTPuzzle
                 GUILayout.BeginArea(new Rect(screenPos, new Vector2(200, 300)));
                 GUILayout.BeginVertical("box");
                 GUILayout.Label("Position : " + transform.position.ToString());
+                GUILayout.Label("Agent speed : " + this.agent.velocity.ToString("F8"));
                 mouseAIBehavior.DebugGUITick();
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
