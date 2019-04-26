@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "PuzzleGameConfiguration", menuName = "Configuration/PuzzleGame/PuzzleGameConfiguration", order = 1)]
-    public class PuzzleGameConfiguration : ScriptableObject
+    public class PuzzleGameConfiguration : GameConfiguration
     {
         public ProjectileConfiguration ProjectileConfiguration;
         public TargetZonesConfiguration TargetZonesConfiguration;
@@ -13,5 +14,6 @@ namespace RTPuzzle
         public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
         public AIComponentsConfiguration AIComponentsConfiguration;
         public PlayerActionConfiguration PlayerActionConfiguration;
+        public ContextMarkVisualFeedbackConfiguration ContextMarkVisualFeedbackConfiguration;
     }
 }

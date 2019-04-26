@@ -40,6 +40,11 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.AIComponentsConfiguration.ConfigurationInherentData;
         }
+
+        public Dictionary<AiID, ContextMarkVisualFeedbackInherentData> ContextMarkVisualFeedbackConfiguration()
+        {
+            return PuzzleGameConfiguration.ContextMarkVisualFeedbackConfiguration.ConfigurationInherentData;
+        }
     }
 
 

@@ -65,7 +65,7 @@ namespace RTPuzzle
             puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType,
                 new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, NpcFOVRingManager);
+            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
 
             //Intiialize with 0 time
@@ -165,23 +165,23 @@ namespace RTPuzzle
 
         public void OnHittedByProjectileFirstTime()
         {
-            this.ContextMarkVisualFeedbackManager.OnHittedByProjectileFirstTime();
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME, this.AiID);
             this.AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime();
         }
 
         public void OnHittedByProjectile2InARow()
         {
-            this.ContextMarkVisualFeedbackManager.OnHittedByProjectile2InARow();
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_2_IN_A_ROW, this.AiID);
             this.AnimationVisualFeedbackManager.OnHittedByProjectile2InARow();
         }
         public void OnAiAffectedByProjectileEnd()
         {
-            this.ContextMarkVisualFeedbackManager.OnAiAffectedByProjectileEnd();
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
         }
 
         internal void OnGameOver()
         {
-            this.ContextMarkVisualFeedbackManager.OnGameOver();
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
         }
 
         internal void OnAIFearedStunnedEnded()
@@ -198,11 +198,11 @@ namespace RTPuzzle
 
         internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
         {
-            this.ContextMarkVisualFeedbackManager.OnAIAttractedStart(attractiveObject);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ATTRACTED_START, this.AiID);
         }
         internal void OnAIAttractedEnd()
         {
-            this.ContextMarkVisualFeedbackManager.OnAIAttractedEnd();
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
         {
@@ -281,107 +281,6 @@ namespace RTPuzzle
             NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
         }
 
-    }
-
-    [System.Serializable]
-    public class ContextMarkVisualFeedbackManagerComponent
-    {
-        public float YOffsetWhenInteractionRingIsDisplayed;
-    }
-
-    class ContextMarkVisualFeedbackManager
-    {
-
-        private ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent;
-
-        #region External Dependencies
-        private NPCAIManager NPCAIManagerRef;
-        private NpcInteractionRingManager NpcInteractionRingManager;
-        #endregion
-
-        public ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent,
-            NPCAIManager NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager)
-        {
-            this.ContextMarkVisualFeedbackManagerComponent = ContextMarkVisualFeedbackManagerComponent;
-            this.NPCAIManagerRef = NPCAIManagerRef;
-            this.SetIsVisualMarkDisaplyed(false);
-            this.visualFeedbackMark = null;
-            this.NpcInteractionRingManager = npcFOVRingManager;
-        }
-
-        private bool isVisualMarkDisplayed;
-        private AIFeedbackMarkType visualFeedbackMark;
-
-        public void Tick(float d)
-        {
-            if (this.isVisualMarkDisplayed)
-            {
-                var visualMarkPosition = this.NPCAIManagerRef.transform.position + this.NPCAIManagerRef.GetInteractionRingOffset();
-                if (this.NpcInteractionRingManager.IsRingEnabled())
-                {
-                    visualMarkPosition.y += this.ContextMarkVisualFeedbackManagerComponent.YOffsetWhenInteractionRingIsDisplayed;
-                }
-                this.visualFeedbackMark.transform.position = visualMarkPosition;
-                this.visualFeedbackMark.Tick(d);
-            }
-        }
-
-        private void ReInitBeforeSpawningMark()
-        {
-            this.SetIsVisualMarkDisaplyed(false);
-            if (this.visualFeedbackMark != null)
-            {
-                MonoBehaviour.Destroy(this.visualFeedbackMark.gameObject);
-            }
-        }
-
-        private void SetIsVisualMarkDisaplyed(bool value)
-        {
-            if (value && !this.isVisualMarkDisplayed)
-            {
-                //visual has just popped
-                this.Tick(0);//we initialize positions
-            }
-            this.isVisualMarkDisplayed = value;
-        }
-
-        #region External Events
-        internal void OnHittedByProjectileFirstTime()
-        {
-            ReInitBeforeSpawningMark();
-            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.ExclamationMarkSimple, this.NPCAIManagerRef.transform);
-            this.SetIsVisualMarkDisaplyed(true);
-        }
-
-        internal void OnHittedByProjectile2InARow()
-        {
-            ReInitBeforeSpawningMark();
-            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PrefabContainer.Instance.ExclamationMarkDouble, this.NPCAIManagerRef.transform);
-            this.SetIsVisualMarkDisaplyed(true);
-        }
-
-        internal void OnAiAffectedByProjectileEnd()
-        {
-           this.ReInitBeforeSpawningMark();
-        }
-
-        internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
-        {
-            ReInitBeforeSpawningMark();
-            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(attractiveObject.AttractiveObjectInherentConfigurationData.AttractiveObjectAIMarkPrefab, this.NPCAIManagerRef.transform);
-            this.SetIsVisualMarkDisaplyed(true);
-        }
-
-        internal void OnAIAttractedEnd()
-        {
-            this.ReInitBeforeSpawningMark();
-        }
-
-        internal void OnGameOver()
-        {
-            this.ReInitBeforeSpawningMark();
-        }
-        #endregion
     }
 
     class AnimationVisualFeedbackManager

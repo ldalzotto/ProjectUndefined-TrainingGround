@@ -89,6 +89,7 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitEndOfCutscene.cs" />

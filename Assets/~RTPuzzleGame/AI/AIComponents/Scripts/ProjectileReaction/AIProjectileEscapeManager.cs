@@ -21,11 +21,11 @@ namespace RTPuzzle
 
         protected override void SetIsEscapingFromProjectile(bool value)
         {
-            base.SetIsEscapingFromProjectile(value);
             if (this.isEscapingFromProjectile && !value)
             {
                 this.PuzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
             }
+            base.SetIsEscapingFromProjectile(value);
         }
 
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
@@ -55,6 +55,15 @@ namespace RTPuzzle
                 AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent)
         {
             this.PuzzleEventsManager = PuzzleEventsManager;
+        }
+
+        protected override void SetIsEscapingFromProjectile(bool value)
+        {
+            if (this.isEscapingFromProjectile && !value)
+            {
+                this.PuzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
+            }
+            base.SetIsEscapingFromProjectile(value);
         }
 
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>

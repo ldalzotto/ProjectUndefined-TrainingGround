@@ -24,7 +24,8 @@ namespace RTPuzzle
                 { ComputeSelectionKey(typeof(LevelConfigurationData)), new MultipleChoiceHeaderTabSelectionProfile("LEVEL") },
                 { ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new MultipleChoiceHeaderTabSelectionProfile("WHEEL_ACT") },
                 { ComputeSelectionKey(typeof(GenericPuzzleAIComponents)), new MultipleChoiceHeaderTabSelectionProfile("AI") },
-                { ComputeSelectionKey(typeof(PlayerActionInherentData)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT")}
+                { ComputeSelectionKey(typeof(PlayerActionInherentData)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT")},
+                { ComputeSelectionKey(typeof(ContextMarkVisualFeedbackInherentData)), new MultipleChoiceHeaderTabSelectionProfile("CTX_MARK")}
              };
             this.configurations = new Dictionary<string, IGenericConfigurationEditor>() {
                 {  ComputeSelectionKey(typeof(ProjectileInherentData)), new GenericConfigurationEditor<LaunchProjectileId, ProjectileInherentData>("t:ProjectileConfiguration")},
@@ -33,7 +34,8 @@ namespace RTPuzzle
                   {  ComputeSelectionKey(typeof(LevelConfigurationData)), new GenericConfigurationEditor<LevelZonesID, LevelConfigurationData>("t:LevelConfiguration")},
                   {  ComputeSelectionKey(typeof(SelectionWheelNodeConfigurationData)), new GenericConfigurationEditor<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData>("t:SelectionWheelNodeConfiguration")},
                   {  ComputeSelectionKey(typeof(GenericPuzzleAIComponents)), new GenericConfigurationEditor<AiID, AIBehaviorInherentData>("t:AIComponentsConfiguration")},
-                  { ComputeSelectionKey(typeof(PlayerActionInherentData)), new GenericConfigurationEditor<PlayerActionId, PlayerActionInherentData>("t:PlayerActionConfiguration")}
+                  { ComputeSelectionKey(typeof(PlayerActionInherentData)), new GenericConfigurationEditor<PlayerActionId, PlayerActionInherentData>("t:PlayerActionConfiguration")},
+                { ComputeSelectionKey(typeof(ContextMarkVisualFeedbackInherentData)), new GenericConfigurationEditor<AiID, ContextMarkVisualFeedbackInherentData>("t:"+typeof(ContextMarkVisualFeedbackConfiguration).Name)}
             };
         }
 

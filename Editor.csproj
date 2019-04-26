@@ -92,6 +92,8 @@
     <Compile Include="Assets\Editor\CreationWizard\Helper\GeneratedScriptableObjectManager.cs" />
     <Compile Include="Assets\Editor\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
     <Compile Include="Assets\Editor\EnumPropertyDrawer\SearchablePropertyDrawer.cs" />
+    <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
+    <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />
     <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />
