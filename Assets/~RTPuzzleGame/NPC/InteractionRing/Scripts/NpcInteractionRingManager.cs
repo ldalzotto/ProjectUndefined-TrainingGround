@@ -17,9 +17,9 @@ namespace RTPuzzle
 
         #region Data Retrieval
         public Vector3 RingPositionOffset { get => ringPositionOffset; }
-        public Bounds GetRingBound()
+        public Vector3 GetRingPosition()
         {
-            return this.npcInteractionRingType.GetBoundingRect();
+            return this.npcInteractionRingType.transform.position;
         }
         #endregion
 
@@ -60,7 +60,6 @@ namespace RTPuzzle
             foreach (var fovSlice in newFOV.FovSlices)
             {
                 ComputeColorsPixel(fovSlice.BeginAngleIncluded, fovSlice.EndAngleExcluded, ref colors);
-
             }
             npcInteractionRingType.RingTexture.SetPixels(colors);
             npcInteractionRingType.RingTexture.Apply(false);
@@ -74,8 +73,6 @@ namespace RTPuzzle
             {
                 this.NpcInteractionRingContainer.OnNpcInteractionRingDisabled(this.npcInteractionRingType);
             }
-
-            // Debug.Log("It has changed : " + newFOV.ToString());
         }
         #endregion
 

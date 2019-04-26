@@ -32,8 +32,7 @@ namespace RTPuzzle
         {
             if (this.visualFeedbackMark != null)
             {
-                var visualMarkPosition = this.NPCAIManagerRef.transform.position + this.NPCAIManagerRef.GetInteractionRingOffset();
-                //TODO -> this seems to not work.
+                var visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.NPCAIManagerRef.GetInteractionRingOffset();
                 if (this.NpcInteractionRingManager.IsRingEnabled())
                 {
                     visualMarkPosition.y += this.ContextMarkVisualFeedbackManagerComponent.YOffsetWhenInteractionRingIsDisplayed;

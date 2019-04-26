@@ -20,6 +20,13 @@ namespace RTPuzzle
             ResetFOV();
         }
 
+        /// <summary>
+        /// Navmesh raycast by taking random angles but evenly spreaded across the FOV.
+        /// </summary>
+        /// <param name="sampleNB"></param>
+        /// <param name="sourceTransform"></param>
+        /// <param name="raySampleDistance"></param>
+        /// <returns></returns>
         public NavMeshHit[] NavMeshRaycastSample(int sampleNB, Transform sourceTransform, float raySampleDistance)
         {
             var navMeshHits = new NavMeshHit[sampleNB];
@@ -34,6 +41,12 @@ namespace RTPuzzle
             return navMeshHits;
         }
 
+        /// <summary>
+        /// Navmesh raycast by forcing the extreme angles of the FOV. Then, the remaining samples are shoces random and evenly spread across the FOV.
+        /// </summary>
+        /// <param name="sourceTransform"></param>
+        /// <param name="raySampleDistance"></param>
+        /// <returns></returns>
         public NavMeshHit[] NavMeshRaycastEndOfRanges(Transform sourceTransform, float raySampleDistance)
         {
             var anglesRayCast = AIFOVManager.GetEndAnglesForRayCast(aiFov);

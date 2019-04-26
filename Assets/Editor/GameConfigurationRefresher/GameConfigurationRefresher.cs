@@ -110,6 +110,7 @@ public class GameConfigurationRefresher : EditorWindow
             {
                 field.SetValue(this.gameConfiguration, AssetFinder.SafeSingleAssetFind<UnityEngine.Object>("t:" + field.FieldType.Name));
             }
+            EditorUtility.SetDirty(this.gameConfiguration);
         }
     }
 }
