@@ -25,7 +25,7 @@ namespace Editor_PlayerActionVariantCreationWizardEditor
         {
         }
 
-        protected override void OnInspectorGUIImpl()
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
         {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.ObjectField(this.playerActionConfiguration, typeof(PlayerActionConfiguration), false);

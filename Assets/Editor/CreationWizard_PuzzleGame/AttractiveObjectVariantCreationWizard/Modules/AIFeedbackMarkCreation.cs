@@ -4,7 +4,16 @@ using UnityEngine;
 
 namespace Editor_AttractiveObjectVariantWizardEditor
 {
-    public class AIFeedbackMarkCreation : CreateablePrefabComponent<GameObject, AIFeedbackMarkType>
+    [System.Serializable]
+    public class AIFeedbackMarkCreationInput : CreatablePrefabInput
+    {
+        public GameObject AIFeedbackModel;
+        public void OnInspectorGUI()
+        {
+            this.AIFeedbackModel = (GameObject)EditorGUILayout.ObjectField("Model : ", this.AIFeedbackModel, typeof(GameObject), false);
+        }
+    }
+    public class AIFeedbackMarkCreation : CreateablePrefabComponent<AIFeedbackMarkCreationInput, AIFeedbackMarkType>
     {
         public Material AIFeedbackVertexLitMaterial;
 
@@ -20,14 +29,14 @@ namespace Editor_AttractiveObjectVariantWizardEditor
         {
         }
 
-        protected override void OnInspectorGUIImpl()
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
         {
-            base.OnInspectorGUIImpl();
+            base.OnInspectorGUIImpl(serializedObject);
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.ObjectField("Vertex lit material : ", this.AIFeedbackVertexLitMaterial, typeof(Material), false);
             EditorGUI.EndDisabledGroup();
 
-            if(this.AIFeedbackVertexLitMaterial == null)
+            if (this.AIFeedbackVertexLitMaterial == null)
             {
                 this.AIFeedbackVertexLitMaterial = AssetFinder.SafeSingleAssetFind<Material>("VertexUnlitInstanciatedMaterial");
             }

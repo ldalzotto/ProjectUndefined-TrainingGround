@@ -35,7 +35,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     }
     #endregion
 
-    protected override void OnInspectorGUIImpl()
+    protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
     {
         if (GUILayout.Button(new GUIContent("N"), EditorStyles.miniButton, GUILayout.Width(20f)))
         {

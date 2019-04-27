@@ -19,8 +19,8 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
     private string errorMessage;
     private GUIStyle foldoutStyle;
 
-    protected abstract string foldoutLabel { get; }
-    protected abstract string headerDescriptionLabel { get; }
+    protected virtual string foldoutLabel { get; }
+    protected virtual string headerDescriptionLabel { get; }
 
     public static T Create<T>(string filePath, bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble) where T : CreationModuleComponent
     {
@@ -76,15 +76,24 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
             this.ModuleEnabled = newModuleEnabled;
         }
 
-        this.ModuleFoldout = EditorGUILayout.Foldout(this.ModuleFoldout, this.foldoutLabel, true, this.foldoutStyle);
+        var displayedFoldoutLabel = this.foldoutLabel;
+        if (displayedFoldoutLabel == null)
+        {
+            displayedFoldoutLabel = this.GetType().Name + " : ";
+        }
+        this.ModuleFoldout = EditorGUILayout.Foldout(this.ModuleFoldout, displayedFoldoutLabel, true, this.foldoutStyle);
 
         EditorGUILayout.EndHorizontal();
 
         if (this.ModuleFoldout)
         {
-            GUILayout.Label(new GUIContent(this.headerDescriptionLabel), EditorStyles.miniLabel);
+            var serializedObject = new SerializedObject(this);
+            EditorGUILayout.LabelField(this.headerDescriptionLabel, EditorStyles.miniLabel);
+            //GUILayout.Label(new GUIContent(this.headerDescriptionLabel), EditorStyles.miniLabel);
 
-            this.OnInspectorGUIImpl();
+            this.OnInspectorGUIImpl(serializedObject);
+            serializedObject.ApplyModifiedProperties();
+
             if (!string.IsNullOrEmpty(this.errorMessage))
             {
                 EditorGUILayout.HelpBox(this.errorMessage, MessageType.Error, true);
@@ -105,7 +114,7 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
         }
     }
 
-    protected abstract void OnInspectorGUIImpl();
+    protected abstract void OnInspectorGUIImpl(SerializedObject serializedObject);
     public abstract void ResetEditor();
     public virtual string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules) { return string.Empty; }
     public virtual string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules) { return string.Empty; }

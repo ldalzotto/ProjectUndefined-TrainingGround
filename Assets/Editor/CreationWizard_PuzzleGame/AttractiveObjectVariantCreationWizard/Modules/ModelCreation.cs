@@ -23,7 +23,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             this.ModelAsset = null;
         }
 
-        protected override void OnInspectorGUIImpl()
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
         {
             this.ModelAsset = EditorGUILayout.ObjectField("Model asset : ", this.ModelAsset, typeof(GameObject), false) as GameObject;
         }

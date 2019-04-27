@@ -6,6 +6,18 @@ namespace RTPuzzle
     public class AIFeedbackMarkType : MonoBehaviour
     {
 
+        private const string MarkObjectBaseName = "MarkObject";
+        private const string ParticleObjectBaseName = "MarkParticles";
+
+        public static string GetMarkObjectName(int nb)
+        {
+            return AIFeedbackMarkType.MarkObjectBaseName + nb;
+        }
+        public static string GetParticleObjectName(int nb)
+        {
+            return AIFeedbackMarkType.ParticleObjectBaseName + nb;
+        }
+
         private VertexUnlitInstanciatedPropertySetter[] materialPropertySetters;
 
 

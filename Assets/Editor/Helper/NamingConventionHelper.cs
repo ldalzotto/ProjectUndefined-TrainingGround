@@ -29,6 +29,9 @@
             case SufixType.ATTRACTIVE_OBJECT_INHERENT_DATA:
                 sufix = "AttractiveObject_Conf";
                 break;
+            case SufixType.PARTICLE_SYSTEM:
+                sufix = "ParticleSystem";
+                break;
             case SufixType.NONE:
                 sufix = "";
                 break;
@@ -72,5 +75,6 @@ public enum SufixType
     MODEL = 0,
     ATTRACTIVE_OBJECT = 1,
     ATTRACTIVE_OBJECT_INHERENT_DATA = 2,
-    NONE = 3
+    NONE = 3,
+    PARTICLE_SYSTEM = 4
 }

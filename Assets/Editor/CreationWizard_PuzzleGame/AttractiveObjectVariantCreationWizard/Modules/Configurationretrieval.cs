@@ -24,7 +24,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
 
         }
 
-        protected override void OnInspectorGUIImpl()
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
         {
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.ObjectField("Attractive object configuration : ", this.attractiveObjectConfiguration, typeof(AttractiveObjectConfiguration), false);

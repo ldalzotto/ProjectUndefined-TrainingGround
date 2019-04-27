@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent where N : UnityEngine.Object where S : UnityEngine.Object
+public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent where N : CreatablePrefabInput where S : UnityEngine.Object
 {
     private GUIStyle selectionStyle;
 
@@ -16,21 +16,21 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
     private bool newToggle;
 
     [SerializeField]
-    private N newPrefab;
+    protected N newPrefabInput;
 
     [SerializeField]
     private S selectionPrefab;
 
     private GeneratedPrefabAssetManager<S> generatedPrefabAssetManager;
 
-    public N NewPrefab { get => newPrefab; }
     public S SelectionPrefab { get => selectionPrefab; }
 
     protected CreateablePrefabComponent(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
     {
+        this.newPrefabInput = (N)Activator.CreateInstance(typeof(N));
     }
 
-    protected override void OnInspectorGUIImpl()
+    protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
     {
         if (selectionStyle == null)
         {
@@ -54,13 +54,23 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
         }
         EditorGUILayout.EndHorizontal();
 
+
+        if (this.newPrefabInput == null)
+        {
+            this.newPrefabInput = (N)Activator.CreateInstance(typeof(N));
+        }
+
         if (this.selectionToggle)
         {
             this.selectionPrefab = EditorGUILayout.ObjectField("Select " + typeof(S).Name, this.selectionPrefab, typeof(S), false) as S;
         }
         else if (this.newToggle)
         {
-            this.newPrefab = EditorGUILayout.ObjectField("Select " + typeof(N).Name, this.newPrefab, typeof(N), false) as N;
+            if (this.newPrefabInput != null)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.newPrefabInput)), true);
+                //TODO -> overriding ?
+            }
         }
     }
 
@@ -79,7 +89,7 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
         {
             this.generatedPrefabAssetManager = new GeneratedPrefabAssetManager<S>(basePrefab, tmpScene, basePath, baseName, (S obj) =>
             {
-                afterBaseCreation.Invoke(obj, this.newPrefab);
+                afterBaseCreation.Invoke(obj, this.newPrefabInput);
             });
             return this.generatedPrefabAssetManager.SavedAsset.GetComponent<S>();
         }
@@ -97,4 +107,12 @@ public abstract class CreateablePrefabComponent<N, S> : CreationModuleComponent 
         }
     }
 
+    public override void ResetEditor()
+    {
+        this.newPrefabInput = default(N);
+    }
+}
+
+public interface CreatablePrefabInput
+{
 }

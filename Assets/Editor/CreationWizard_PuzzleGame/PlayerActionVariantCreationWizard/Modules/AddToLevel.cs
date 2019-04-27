@@ -1,4 +1,6 @@
-﻿namespace Editor_PlayerActionVariantCreationWizardEditor
+﻿using UnityEditor;
+
+namespace Editor_PlayerActionVariantCreationWizardEditor
 {
     public class AddToLevel : CreationModuleComponent
     {
@@ -15,7 +17,7 @@
         {
         }
 
-        protected override void OnInspectorGUIImpl()
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
         {
         }
 

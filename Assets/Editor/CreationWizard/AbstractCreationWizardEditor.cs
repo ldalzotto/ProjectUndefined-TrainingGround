@@ -30,7 +30,7 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
                 this.editorProfile.ResetEditor();
             }
             EditorGUILayout.EndHorizontal();
-            
+
             editorProfile.WizardScrollPosition = EditorGUILayout.BeginScrollView(editorProfile.WizardScrollPosition);
             this.OnWizardGUI();
 
@@ -111,5 +111,8 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
         EditorGUILayout.EndVertical();
     }
 
-
+    protected M GetModule<M>() where M : CreationModuleComponent
+    {
+        return (M)this.editorProfile.Modules[typeof(M).Name];
+    }
 }

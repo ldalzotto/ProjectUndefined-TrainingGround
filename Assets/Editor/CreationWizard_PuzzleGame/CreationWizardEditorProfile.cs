@@ -1,4 +1,5 @@
-﻿using Editor_AttractiveObjectVariantWizardEditor;
+﻿using Editor_AIContextMarkVisualFeedbackCreationWizardEditor;
+using Editor_AttractiveObjectVariantWizardEditor;
 using Editor_PlayerActionVariantCreationWizardEditor;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,12 +19,14 @@ public class CreationWizardEditorProfile : MultipleChoiceHeaderTab<ICreationWiza
     {
         this.selection = new Dictionary<string, MultipleChoiceHeaderTabSelectionProfile>() {
             {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new MultipleChoiceHeaderTabSelectionProfile("ATTR_OBJ") },
-            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT") }
+            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT") },
+            {ComputeSelectionKey(typeof(AIContextMarkVisualFeedbackCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("CTX_MARK") }
         };
         this.configurations = new Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>()
         {
             {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new AttractiveObjectVariantCreationWizardV2() },
-            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new PlayerActionVariantCreationWizard() }
+            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new PlayerActionVariantCreationWizard() },
+            {ComputeSelectionKey(typeof(AIContextMarkVisualFeedbackCreationWizard)), new AIContextMarkVisualFeedbackCreationWizard() }
         };
     }
 

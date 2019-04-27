@@ -32,7 +32,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             this.ObjectName = "";
         }
 
-        protected override void OnInspectorGUIImpl()
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject)
         {
             Editor.CreateEditor(this).OnInspectorGUI();
         }
