@@ -31,7 +31,18 @@ namespace Editor_AIContextMarkVisualFeedbackCreationWizardEditor
             }
             aiMarkModelAnimator.runtimeAnimatorController = GenericInformation.SingleAIFeedbackAniamtorController;
 
+            //setup model renderer
+            Renderer renderer = aiMarkModel.GetComponentInChildren<Renderer>();
+            renderer.material = GenericInformation.AIFeedbackMarkUnlitMaterial;
+            if (renderer.GetComponent<VertexUnlitInstanciatedPropertySetter>() == null)
+            {
+                var VertexUnlitInstanciatedPropertySetter = renderer.gameObject.AddComponent<VertexUnlitInstanciatedPropertySetter>();
+                VertexUnlitInstanciatedPropertySetter.colorToSet = singleMarkCreatorInput.ModelBaseColor;
+            }
+
+            //setup particles
             var aiFeedbackMeshRenderer = AIFeedbackMarkType.GetComponentInChildren<MeshRenderer>();
+
             var particleSystem = new GeneratedPrefabAssetManager<ParticleSystem>(GenericInformation.BaseAIFeedbackParticlesPrefab, tmpScene, GenericInformation.PathConfiguration.AIFeedbackPrefabPath,
                 NamingConventionHelper.BuildName(GenericInformation.MarkObjectBaseName + "_" + singleMarkCreatorInput.MarkParticleAdditionalName, PrefixType.AI_FEEDBACK_MARK, SufixType.PARTICLE_SYSTEM),
                   afterAssetCreation: (ParticleSystem ParticleSystem) =>

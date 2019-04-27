@@ -17,7 +17,6 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             this.InitModule<ModelCreation>(false, true, false);
             this.InitModule<Configurationretrieval>(false, true, false);
             this.InitModule<AttractiveObjectInherentDataModule>(false, true, false);
-            this.InitModule<AIFeedbackMarkCreation>(false, true, false);
 
             var genericInformation = this.GetModule<GenericInformation>();
 

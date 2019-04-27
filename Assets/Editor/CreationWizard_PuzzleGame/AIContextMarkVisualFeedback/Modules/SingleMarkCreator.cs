@@ -16,6 +16,7 @@ namespace Editor_AIContextMarkVisualFeedbackCreationWizardEditor
     {
         public string MarkParticleAdditionalName;
         public GameObject AIMarkModel;
+        public Color ModelBaseColor = new Color(1,1,1,1);
         public Color ParticleColor;
     }
 
