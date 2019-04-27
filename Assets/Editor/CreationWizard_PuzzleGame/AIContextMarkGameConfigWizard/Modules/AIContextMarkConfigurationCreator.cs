@@ -21,7 +21,9 @@ namespace Editor_AIContextMarkGameConfigWizard
             var genericInformations = (GenericInformations)editorModules[typeof(GenericInformations).Name];
             var gameConfiguration = (GameConfiguration)editorModules[typeof(GameConfiguration).Name];
             var selectedId = genericInformations.AiID;
-            if (gameConfiguration.ContextMarkVisualFeedbackConfiguration.ConfigurationInherentData.ContainsKey(selectedId))
+            if (gameConfiguration!=null && gameConfiguration.ContextMarkVisualFeedbackConfiguration!=null &&
+                gameConfiguration.ContextMarkVisualFeedbackConfiguration.ConfigurationInherentData != null &&
+                gameConfiguration.ContextMarkVisualFeedbackConfiguration.ConfigurationInherentData.ContainsKey(selectedId))
             {
                 return ErrorMessages.GetConfigurationOverriteMessage(selectedId, gameConfiguration.ContextMarkVisualFeedbackConfiguration.name);
             }
