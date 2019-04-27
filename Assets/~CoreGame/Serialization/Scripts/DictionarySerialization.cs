@@ -1,6 +1,7 @@
 ﻿using OdinSerializer;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace ConfigurationEditor
@@ -18,6 +19,7 @@ namespace ConfigurationEditor
                 ConfigurationInherentData.Remove(key);
             }
             ConfigurationInherentData.Add(key, value);
+            EditorUtility.SetDirty(this);
         }
 #endif
     }

@@ -90,6 +90,11 @@
     <Compile Include="Assets\Editor\CreationWizard\Helper\CreationModuleComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helper\GeneratedPrefabAssetManager.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helper\GeneratedScriptableObjectManager.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkGameConfigWizard\AIContextMarkGameConfigEditorProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkGameConfigWizard\AIContextMarkGameConfigWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkGameConfigWizard\Modules\AIContextMarkConfigurationCreator.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkGameConfigWizard\Modules\GameConfiguration.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkGameConfigWizard\Modules\GenericInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkVisualFeedback\AIContextMarkCreationHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkVisualFeedback\AIContextMarkVisualFeedbackCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\AIContextMarkVisualFeedback\AIContextMarkVisualFeedbackEditorProfile.cs" />

@@ -32,6 +32,9 @@
             case SufixType.PARTICLE_SYSTEM:
                 sufix = "ParticleSystem";
                 break;
+            case SufixType.AI_FEEDBACK_MARK_INHERENT_DATA:
+                sufix = "AIFeedBackMark_Conf";
+                break;
             case SufixType.NONE:
                 sufix = "";
                 break;
@@ -76,5 +79,6 @@ public enum SufixType
     ATTRACTIVE_OBJECT = 1,
     ATTRACTIVE_OBJECT_INHERENT_DATA = 2,
     NONE = 3,
-    PARTICLE_SYSTEM = 4
+    PARTICLE_SYSTEM = 4,
+    AI_FEEDBACK_MARK_INHERENT_DATA = 5
 }
