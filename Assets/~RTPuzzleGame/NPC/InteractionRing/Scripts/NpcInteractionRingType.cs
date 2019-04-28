@@ -48,5 +48,12 @@ namespace RTPuzzle
             this.gameObject.SetActive(false);
         }
         #endregion
+
+        #region data Retrieval
+        public Bounds GetBounds()
+        {
+            return this.meshRenderer.bounds;
+        }
+        #endregion
     }
 }

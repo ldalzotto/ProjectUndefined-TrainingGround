@@ -21,9 +21,9 @@ namespace RTPuzzle
         private VertexUnlitInstanciatedPropertySetter[] materialPropertySetters;
 
 
-        public static AIFeedbackMarkType Instanciate(AIFeedbackMarkType prefab, Transform parent)
+        public static AIFeedbackMarkType Instanciate(AIFeedbackMarkType prefab)
         {
-            var aiFeedbackMarkType = MonoBehaviour.Instantiate(prefab, parent);
+            var aiFeedbackMarkType = MonoBehaviour.Instantiate(prefab, GameObject.FindObjectOfType<AIFeedbackContainer>().transform);
             aiFeedbackMarkType.Init();
             return aiFeedbackMarkType;
         }

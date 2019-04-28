@@ -24,9 +24,13 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        public bool IsRingEnabled()
+        public float GetInteractionRingHeight()
         {
-            return this.npcInteractionRingType.IsActive();
+            if (this.npcInteractionRingType.IsActive())
+            {
+                return this.npcInteractionRingType.GetBounds().size.y;
+            }
+            return 0f;
         }
         #endregion
 

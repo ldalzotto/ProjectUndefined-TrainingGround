@@ -30,7 +30,6 @@ namespace RTPuzzle
         #endregion
 
         public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
-        public ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent;
 
         private NPCAIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
@@ -65,7 +64,7 @@ namespace RTPuzzle
             puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType,
                 new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent, this, NpcFOVRingManager, puzzleCOnfigurationmanager);
+            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
 
             //Intiialize with 0 time

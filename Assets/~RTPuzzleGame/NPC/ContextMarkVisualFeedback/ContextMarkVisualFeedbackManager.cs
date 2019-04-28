@@ -7,18 +7,14 @@ namespace RTPuzzle
     public class ContextMarkVisualFeedbackManager
     {
 
-        private ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent;
-
         #region External Dependencies
         private NPCAIManager NPCAIManagerRef;
         private NpcInteractionRingManager NpcInteractionRingManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
-        public ContextMarkVisualFeedbackManager(ContextMarkVisualFeedbackManagerComponent ContextMarkVisualFeedbackManagerComponent,
-        NPCAIManager NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
+        public ContextMarkVisualFeedbackManager(NPCAIManager NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
         {
-            this.ContextMarkVisualFeedbackManagerComponent = ContextMarkVisualFeedbackManagerComponent;
             this.NPCAIManagerRef = NPCAIManagerRef;
             this.DeleteOperation();
             this.visualFeedbackMark = null;
@@ -33,10 +29,7 @@ namespace RTPuzzle
             if (this.visualFeedbackMark != null)
             {
                 var visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.NPCAIManagerRef.GetInteractionRingOffset();
-                if (this.NpcInteractionRingManager.IsRingEnabled())
-                {
-                    visualMarkPosition.y += this.ContextMarkVisualFeedbackManagerComponent.YOffsetWhenInteractionRingIsDisplayed;
-                }
+                visualMarkPosition.y += (this.NpcInteractionRingManager.GetInteractionRingHeight() * 4);
                 this.visualFeedbackMark.transform.position = visualMarkPosition;
                 this.visualFeedbackMark.Tick(d);
             }
@@ -48,13 +41,13 @@ namespace RTPuzzle
             switch (contextMarkVisualFeedbackEvent)
             {
                 case ContextMarkVisualFeedbackEvent.ATTRACTED_START:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].AttractedPrafab, this.NPCAIManagerRef.transform);
+                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].AttractedPrafab);
                     break;
                 case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileHitPrefab, this.NPCAIManagerRef.transform);
+                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileHitPrefab);
                     break;
                 case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_2_IN_A_ROW:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileSecondHitPrefab, this.NPCAIManagerRef.transform);
+                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileSecondHitPrefab);
                     break;
             }
         }
@@ -69,16 +62,11 @@ namespace RTPuzzle
 
         private void CreateOperation(AIFeedbackMarkType visualFeedbackMarkPrefab)
         {
-            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(visualFeedbackMarkPrefab, this.NPCAIManagerRef.transform);
+            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(visualFeedbackMarkPrefab);
         }
 
     }
 
-    [System.Serializable]
-    public class ContextMarkVisualFeedbackManagerComponent
-    {
-        public float YOffsetWhenInteractionRingIsDisplayed;
-    }
 
     public enum ContextMarkVisualFeedbackEvent
     {
