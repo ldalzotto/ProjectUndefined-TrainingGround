@@ -21,9 +21,8 @@ namespace RTPuzzle
             this.NpcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
         }
 
-        private void Update()
+        public void Tick(float d)
         {
-            var d = Time.deltaTime;
             this.NpcInteractionRingCommandBufferManager.Tick(d, NpcInteractionRingContainer.ActiveNpcInteractionRings);
         }
 
@@ -52,12 +51,12 @@ namespace RTPuzzle
 
         private CommandBuffer interactionRingBuffer;
 
-        public void Tick(float d, List<NpcInteractionRingType> activeNpcInteractionRings)
+        public void Tick(float d, HashSet<NpcInteractionRingType> activeNpcInteractionRings)
         {
             this.interactionRingBuffer.Clear();
             if (activeNpcInteractionRings.Count > 0)
             {
-                activeNpcInteractionRings.Sort((NpcInteractionRingType r1, NpcInteractionRingType r2) => Vector3.Distance(mainCamera.transform.position, r1.transform.position) >= Vector3.Distance(mainCamera.transform.position, r2.transform.position) ? 0 : 1);
+                //activeNpcInteractionRings.Sort((NpcInteractionRingType r1, NpcInteractionRingType r2) => Vector3.Distance(mainCamera.transform.position, r1.transform.position) >= Vector3.Distance(mainCamera.transform.position, r2.transform.position) ? 0 : 1);
                 foreach (var interactionRing in activeNpcInteractionRings)
                 {
                     var materialProperty = new MaterialPropertyBlock();

@@ -14,23 +14,24 @@ namespace RTPuzzle
             this.NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
         }
 
-        private List<NpcInteractionRingType> activeNpcInteractionRings = new List<NpcInteractionRingType>();
-        private List<NpcInteractionRingType> inactiveInteractionRings = new List<NpcInteractionRingType>();
+        private HashSet<NpcInteractionRingType> activeNpcInteractionRings = new HashSet<NpcInteractionRingType>();
+        private HashSet<NpcInteractionRingType> inactiveInteractionRings = new HashSet<NpcInteractionRingType>();
 
-        public List<NpcInteractionRingType> ActiveNpcInteractionRings { get => activeNpcInteractionRings; }
+        public HashSet<NpcInteractionRingType> ActiveNpcInteractionRings { get => activeNpcInteractionRings; }
 
         #region External Events
         public void OnNpcInteractionRingCreated(NpcInteractionRingType createdNpcInteractionRingType)
         {
             this.activeNpcInteractionRings.Add(createdNpcInteractionRingType);
         }
-        public void OnNpcInteractionRingDisabled(NpcInteractionRingType disabledNpcInteractionRingType)
+        public void OnNpcInteractionRingSetTo360(NpcInteractionRingType disabledNpcInteractionRingType)
         {
+            Debug.Log("DISABLING : " + disabledNpcInteractionRingType.name);
             disabledNpcInteractionRingType.OnDeactivate();
             this.activeNpcInteractionRings.Remove(disabledNpcInteractionRingType);
             this.inactiveInteractionRings.Add(disabledNpcInteractionRingType);
         }
-        public void OnNpcInteractionRingEnabled(NpcInteractionRingType enabledNpcInteractionRingType)
+        public void OnNpcInteractionRingSetUnder360(NpcInteractionRingType enabledNpcInteractionRingType)
         {
             enabledNpcInteractionRingType.OnActivate();
             this.inactiveInteractionRings.Remove(enabledNpcInteractionRingType);

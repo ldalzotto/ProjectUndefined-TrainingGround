@@ -71,11 +71,11 @@ namespace RTPuzzle
             //display or hide ring
             if (newFOV.GetSumOfAvailableAngleDeg() < 360f)
             {
-                this.NpcInteractionRingContainer.OnNpcInteractionRingEnabled(this.npcInteractionRingType);
+                this.NpcInteractionRingContainer.OnNpcInteractionRingSetUnder360(this.npcInteractionRingType);
             }
             else
             {
-                this.NpcInteractionRingContainer.OnNpcInteractionRingDisabled(this.npcInteractionRingType);
+                this.NpcInteractionRingContainer.OnNpcInteractionRingSetTo360(this.npcInteractionRingType);
             }
         }
         #endregion

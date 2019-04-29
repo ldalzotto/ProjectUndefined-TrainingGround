@@ -23,6 +23,7 @@ namespace RTPuzzle
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
+        private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
 
         private void Start()
         {
@@ -41,6 +42,7 @@ namespace RTPuzzle
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
+            NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -68,7 +70,7 @@ namespace RTPuzzle
             LevelManager.Init(PuzzleId);
             AttractiveObjectsContainerManager.Init();
             GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
-            GameObject.FindObjectOfType<NpcInteractionRingRendererManager>().Init();
+            NpcInteractionRingRendererManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
 
         }
@@ -98,6 +100,7 @@ namespace RTPuzzle
                 NPCAIManagerContainer.DisableAgents();
             }
 
+            NpcInteractionRingRendererManager.Tick(d);
         }
 
         private void LateUpdate()
