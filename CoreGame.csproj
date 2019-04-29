@@ -154,7 +154,7 @@
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\Version.txt" />
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryFlatShade.cginc" />
-    <None Include="Assets\_Shader\WaterV2\GeometryFlatShade.cginc" />
+    <None Include="Assets\_Shader\WaterV2\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\FX\ThrowProjectile\RangeShaderV3_Pass.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />

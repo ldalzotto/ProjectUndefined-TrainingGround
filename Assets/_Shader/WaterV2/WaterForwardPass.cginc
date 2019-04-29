@@ -8,6 +8,7 @@
 #include "UnityStandardConfig.cginc"
 #include "UnityStandardCore.cginc"
 #include "WaterWaveMovement.cginc"
+#include "FragmentFlatShade.cginc"
 
 VertexOutputForwardBase waterVertBase (VertexInput v) {
 	Displace(v);
@@ -16,6 +17,15 @@ VertexOutputForwardBase waterVertBase (VertexInput v) {
 VertexOutputForwardAdd waterVertAdd (VertexInput v) {
 	Displace(v);
 	return vertForwardAdd(v); 
+}
+
+half4 waterFragBase (VertexOutputForwardBase i) : SV_Target { 
+	FlatShadeFragBase(i);
+	return fragForwardBaseInternal(i); 
+}
+half4 waterFragAdd (VertexOutputForwardAdd i) : SV_Target {
+	FlatShadeFragAdd(i);
+	return fragForwardAddInternal(i);
 }
 
 #endif // WATER_FORWARD_PASS

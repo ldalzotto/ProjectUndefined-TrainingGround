@@ -45,17 +45,12 @@ Shader "Custom/Water"
         [HideInInspector] _DstBlend ("__dst", Float) = 0.0
         [HideInInspector] _ZWrite ("__zw", Float) = 1.0
 
-		_FlatWireFrameInfluence("Flat wire frame mess", Float) = 1.0
-
 		_WaveDisplacementTexture("Water direction texture", 2D) = "grey" {}
 
-		_AmplitudeTexture("Amplitude texture", 2D) = "white" {}
+		_WaterWaveMap("(R) Amplitude texture, (G) Speed texture, (B) Frequency texture", 2D) = "white" {}
+
 		_MaxAmplitude("Max amplitude", Float) = 1.0
-
-		_SpeedTexture("Speed texture", 2D) = "white" {}
 		_MaxSpeed("Max speed", Float) = 1.0
-
-		_FrequencyTexture("Frequency texture", 2D) = "white"
 		_MaxFrequency("Max frequency", Float) = 1.0 
 
     }
@@ -102,12 +97,11 @@ Shader "Custom/Water"
             //#pragma multi_compile _ LOD_FADE_CROSSFADE
 
             #include "UnityStandardCoreForward.cginc"
-			#include "GeometryFlatShade.cginc"
 			#include "WaterForwardPass.cginc"
 
             #pragma vertex waterVertBase
-			#pragma geometry MyGeometryProgramBase
-            #pragma fragment fragBase
+			//#pragma geometry MyGeometryProgramBase
+            #pragma fragment waterFragBase
 
             ENDCG
         }
@@ -141,12 +135,11 @@ Shader "Custom/Water"
             //#pragma multi_compile _ LOD_FADE_CROSSFADE
 
             #include "UnityStandardCoreForward.cginc"
-			#include "GeometryFlatShade.cginc"
 			#include "WaterForwardPass.cginc"
 
             #pragma vertex waterVertAdd
-			#pragma geometry MyGeometryProgramAdd
-            #pragma fragment fragAdd
+			//#pragma geometry MyGeometryProgramAdd
+            #pragma fragment waterFragAdd
 
             ENDCG
         }

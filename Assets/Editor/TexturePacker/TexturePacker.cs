@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using System.IO;
 
 namespace Editor_TexturePacker
 {
@@ -59,7 +60,7 @@ namespace Editor_TexturePacker
                 {
                     Color packedColor =
                         new Color(
-                            this.redTexture.GetPixel(i,j).r,
+                            this.redTexture.GetPixel(i, j).r,
                             this.greenTexture.GetPixel(i, j).r,
                             this.blueTexture.GetPixel(i, j).r,
                             this.alphaTexture.GetPixel(i, j).r
@@ -69,14 +70,16 @@ namespace Editor_TexturePacker
             }
             targetTexture.Apply();
             var redTextureAssetpath = AssetDatabase.GetAssetPath(this.redTexture);
-           var splittedPath = redTextureAssetpath.Split('/');
+            var splittedPath = redTextureAssetpath.Split('/');
             string targetTexturePath = "";
-            for(var i = 0;i< splittedPath.Length - 1; i++)
+            for (var i = 1; i < splittedPath.Length - 1; i++)
             {
                 targetTexturePath = string.Concat(targetTexturePath, splittedPath[i] + "/");
             }
             targetTexturePath += "TargetTexture.png";
-            AssetDatabase.CreateAsset(this.targetTexture, targetTexturePath);
+
+            var pngByte = targetTexture.EncodeToPNG();
+            File.WriteAllBytes(Application.dataPath + "/" + targetTexturePath, pngByte);
         }
     }
 
