@@ -144,7 +144,7 @@ Shader "Custom/Water"
             ENDCG
         }
         // ------------------------------------------------------------------
-        //  Shadow rendering pass
+        //  Shadow rendering pass 
         Pass {
             Name "ShadowCaster"
             Tags { "LightMode" = "ShadowCaster" }
@@ -166,7 +166,7 @@ Shader "Custom/Water"
             // Uncomment the following line to enable dithering LOD crossfade. Note: there are more in the file to uncomment for other passes.
             //#pragma multi_compile _ LOD_FADE_CROSSFADE
 			
-			#include "MyUnityStandardShadow.cginc"
+			#include "WaterStandardShadowPass.cginc"
 
             #pragma vertex MyVertShadowCaster
             #pragma fragment fragShadowCaster

@@ -1,7 +1,7 @@
 // Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
 
-#ifndef MY_STANDARD_SHADOW_CORE_FORWARD_INCLUDED
-#define MY_STANDARD_SHADOW_CORE_FORWARD_INCLUDED
+#ifndef WATER_STANDARD_SHADOW_PASS
+#define WATER_STANDARD_SHADOW_PASS
 
 #include "UnityStandardShadow.cginc"
 #include "WaterWaveMovement.cginc"
@@ -26,4 +26,4 @@ void MyVertShadowCaster(VertexInput v
 #endif
 	);
 }
-#endif // MY_STANDARD_SHADOW_CORE_FORWARD_INCLUDED
+#endif // WATER_STANDARD_SHADOW_PASS
