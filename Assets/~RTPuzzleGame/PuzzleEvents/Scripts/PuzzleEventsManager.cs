@@ -6,14 +6,12 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NPCAIManagerContainer NPCAIManagerContainer;
-        private GroundEffectsManager GroundEffectsManager;
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         #endregion
 
         public void Init()
         {
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
-            this.GroundEffectsManager = GameObject.FindObjectOfType<GroundEffectsManager>();
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
         }
 
@@ -60,47 +58,17 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Attractive Object Events
-        internal void PZ_EVT_AttractiveObject_PlayerAction_Start(AttractiveObjectInherentConfigurationData attractiveObjectConfigurationData, Transform playerTransform)
-        {
-            this.GroundEffectsManager.OnAttractiveObjectActionStart(attractiveObjectConfigurationData, playerTransform);
-        }
-        internal void PZ_EVT_AttractiveObject_PlayerAction_End()
-        {
-            this.GroundEffectsManager.OnAttractiveObjectActionEnd();
-        }
-        #endregion
-
         #region Projectile throw action events
-
-        public void PZ_EVT_ThrowProjectile_PlayerAction_Start(ThrowProjectileActionStartEvent throwProjectileActionStartEvent)
-        {
-            GroundEffectsManager.OnThrowProjectileActionStart(throwProjectileActionStartEvent);
-        }
-
-        public void PZ_EVT_ThrowProjectile_PlayerAction_End()
-        {
-            GroundEffectsManager.OnThrowProjectileActionEnd();
-        }
-
-        public void PZ_EVT_ThrowProjectileCursor_Positionable()
-        {
-            GroundEffectsManager.OnThrowProjectileCursorPositionable();
-        }
-        public void PZ_EVT_ThrowProjectileCursor_NotPositionable()
-        {
-            GroundEffectsManager.OnThrowProjectileCursorNotPositionable();
-        }
 
         public void PZ_EVT_ThrowProjectileCursor_OnProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
-            GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
+          //  GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
         }
         public void PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
-            GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
+           // GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
         #endregion
         

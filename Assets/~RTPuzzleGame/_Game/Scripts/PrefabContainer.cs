@@ -28,10 +28,8 @@ namespace RTPuzzle
         public CooldownFeedManager CooldownFeedManager;
         public CooldownFeedLineType CooldownFeedLineType;
 
-        [Header("AI Mark Feedback Prefabs")]
-        public AIFeedbackMarkType ExclamationMarkSimple;
-        public AIFeedbackMarkType ExclamationMarkDouble;
-        public AIFeedbackMarkType LoveCheese;
+        [Header("Ranges prefab")]
+        public SphereRangeType BaseSphereRangePrefab;
 
         [Header("Visual Feedback")]
         public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;

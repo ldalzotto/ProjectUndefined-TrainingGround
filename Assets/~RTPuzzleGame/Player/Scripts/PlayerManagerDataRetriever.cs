@@ -21,6 +21,10 @@ namespace RTPuzzle
         {
             return PlayerManager.transform;
         }
+        public Vector3 GetPlayerWorldPosition()
+        {
+            return this.GetPlayerTransform().position;
+        }
         public Collider GetPlayerCollider()
         {
             return PlayerManager.PlayerCollier;

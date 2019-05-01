@@ -45,6 +45,11 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.ContextMarkVisualFeedbackConfiguration.ConfigurationInherentData;
         }
+
+        public Dictionary<RangeTypeID, RangeTypeInherentConfigurationData> RangeTypeConfiguration()
+        {
+            return PuzzleGameConfiguration.RangeTypeConfiguration.ConfigurationInherentData;
+        }
     }
 
 

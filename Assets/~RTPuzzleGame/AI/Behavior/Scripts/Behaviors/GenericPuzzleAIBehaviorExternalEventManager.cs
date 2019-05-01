@@ -110,6 +110,7 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
+            Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerExit");
             //When the AI is influenced by attractive object, it remains attracted 
             /*
             if (!genericAiBehavior.IsInfluencedByAttractiveObject())

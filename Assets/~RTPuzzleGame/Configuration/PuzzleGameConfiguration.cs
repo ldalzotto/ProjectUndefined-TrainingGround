@@ -15,5 +15,6 @@ namespace RTPuzzle
         public AIComponentsConfiguration AIComponentsConfiguration;
         public PlayerActionConfiguration PlayerActionConfiguration;
         public ContextMarkVisualFeedbackConfiguration ContextMarkVisualFeedbackConfiguration;
+        public RangeTypeConfiguration RangeTypeConfiguration;
     }
 }

@@ -93,6 +93,9 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfigurationContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIComponentsConfiguration\AIBehaviorInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIComponentsConfiguration\AIComponentsConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackConfiguration.cs" />
@@ -107,6 +110,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\LaunchProjectileAction\LaunchProjectileActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\TargetZonesConfiguration\TargetZoneInherentData.cs" />
@@ -115,7 +120,7 @@
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundCollision.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelManagement\Scripts\LevelManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
@@ -144,8 +149,12 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectile.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\SphereRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\Events\PuzzleEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\PuzzleEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PuzzleEvents\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneTriggerType.cs" />

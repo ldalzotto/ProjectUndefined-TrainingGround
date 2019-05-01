@@ -4,7 +4,7 @@ namespace RTPuzzle
 {
     public class AttractiveObjectType : MonoBehaviour
     {
-        
+
         public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
         {
             AttractiveObjectType attractiveObject = null;
@@ -21,12 +21,21 @@ namespace RTPuzzle
             attractiveObject.Init(attractiveObjectInherentConfigurationData);
             return attractiveObject;
         }
-        
+
         public static AttractiveObjectType GetAttractiveObjectFromCollisionType(CollisionType collisionType)
         {
-            return collisionType.GetComponent<AttractiveObjectType>();
+            var sphereRange = RangeType.RetrieveFromCollisionType(collisionType);
+            if (sphereRange != null)
+            {
+                return sphereRange.GetComponentInParent<AttractiveObjectType>();
+            }
+            return null;
         }
-        
+
+        #region Internal Dependencies
+        private SphereRangeType sphereRange;
+        #endregion
+
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
         public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
@@ -34,10 +43,11 @@ namespace RTPuzzle
             #region External Dependencies
             var attractiveObjectContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             #endregion
-            
-            var sphereCollider = GetComponent<SphereCollider>();
+
+            this.sphereRange = GetComponentInChildren<SphereRangeType>();
+            this.sphereRange.Init(attractiveObjectInherentConfigurationData.EffectRange);
+
             this.attractiveObjectInherentConfigurationData = attractiveObjectInherentConfigurationData;
-            sphereCollider.radius = attractiveObjectInherentConfigurationData.EffectRange;
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
 
             attractiveObjectContainerManager.OnAttracteObjectCreated(this);
@@ -56,7 +66,7 @@ namespace RTPuzzle
         #region 
         public bool IsInRangeOf(Vector3 compareWorldPosition)
         {
-            return Vector3.Distance(transform.position, compareWorldPosition) < this.attractiveObjectInherentConfigurationData.EffectRange;
+            return this.sphereRange.IsInside(compareWorldPosition);
         }
         #endregion
 

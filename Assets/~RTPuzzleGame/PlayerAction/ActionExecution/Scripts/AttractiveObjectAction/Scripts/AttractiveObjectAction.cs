@@ -7,7 +7,6 @@ namespace RTPuzzle
     public class AttractiveObjectAction : RTPPlayerAction
     {
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
         #endregion
 
@@ -19,6 +18,7 @@ namespace RTPuzzle
 
         private bool isActionOver;
         private AttractiveObjectId attractiveObjectId;
+        private SphereRangeType attractiveObjectRange;
 
         public AttractiveObjectAction(AttractiveObjectActionInherentData attractiveObjectActionInherentData) : base(attractiveObjectActionInherentData)
         {
@@ -37,7 +37,6 @@ namespace RTPuzzle
 
             #region External Dependencies
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             var playerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -48,7 +47,8 @@ namespace RTPuzzle
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerCollider());
             this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this);
-            this.PuzzleEventsManager.PZ_EVT_AttractiveObject_PlayerAction_Start(attractiveObjectInherentConfigurationData, playerDataRetriever.GetPlayerTransform());
+
+            this.attractiveObjectRange = SphereRangeType.Instanciate(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
         }
 
         public override void GizmoTick()
@@ -94,7 +94,7 @@ namespace RTPuzzle
         private void OnEndAction()
         {
             this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionEnd();
-            this.PuzzleEventsManager.PZ_EVT_AttractiveObject_PlayerAction_End();
+            MonoBehaviour.Destroy(this.attractiveObjectRange);
             this.isActionOver = true;
         }
         #endregion

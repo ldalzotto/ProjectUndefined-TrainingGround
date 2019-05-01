@@ -46,7 +46,7 @@ namespace Tests
         {
             var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
             var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId.CHEESE];
-            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AttractiveObjectModelPrefab, randomAttractiveObjectInherentData.AttractiveObjectPrefab, randomAttractiveObjectInherentData.AttractiveObjectAIMarkPrefab);
+            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AttractiveObjectModelPrefab, randomAttractiveObjectInherentData.AttractiveObjectPrefab);
             return attractiveObjectInherentConfigurationData;
         }
 

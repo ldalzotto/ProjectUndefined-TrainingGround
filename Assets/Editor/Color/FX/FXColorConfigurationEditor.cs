@@ -48,7 +48,7 @@ public class FXColorConfigurationEditor : EditorWindow
             this.launchProjectileRangeMaterial = EditorGUILayout.ObjectField(launchProjectileRangeMaterial, typeof(Material), false) as Material;
             if (this.launchProjectileRangeMaterial != null)
             {
-                this.launchProjectileRangeMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, EditorGUILayout.ColorField(new GUIContent("Aura color : "), this.launchProjectileRangeMaterial.GetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY), true, true, false));
+                this.launchProjectileRangeMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, EditorGUILayout.ColorField(new GUIContent("Aura color : "), this.launchProjectileRangeMaterial.GetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY), true, true, false));
             }
         }
 
@@ -58,7 +58,7 @@ public class FXColorConfigurationEditor : EditorWindow
             this.launchProjectileCursorAreaMaterial = EditorGUILayout.ObjectField(launchProjectileCursorAreaMaterial, typeof(Material), false) as Material;
             if (this.launchProjectileCursorAreaMaterial != null)
             {
-                this.launchProjectileCursorAreaMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, EditorGUILayout.ColorField(new GUIContent("Aura color : "), this.launchProjectileCursorAreaMaterial.GetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY), true, true, false));
+                this.launchProjectileCursorAreaMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, EditorGUILayout.ColorField(new GUIContent("Aura color : "), this.launchProjectileCursorAreaMaterial.GetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY), true, true, false));
             }
         }
 
@@ -70,10 +70,12 @@ public class FXColorConfigurationEditor : EditorWindow
             this.launchProjectileRangeAreaEffectsManager.SelectedPrefab = EditorGUILayout.ObjectField(launchProjectileRangeAreaEffectsManager.SelectedPrefab, typeof(GameObject), false) as GameObject;
             if (this.launchProjectileRangeAreaEffectsManager.SelectedPrefab != null)
             {
+                /*
                 this.launchProjectileRangeAreaEffectsManager.DisplayComponentEditorUI<GroundEffectsManager>((GroundEffectsManager groundEffectsManager) => {
                     groundEffectsManager.ThrowCursorRangeEffectManagerComponent.CursorOnRangeAuraColor = EditorGUILayout.ColorField(new GUIContent("Cursor on range aura color : "), groundEffectsManager.ThrowCursorRangeEffectManagerComponent.CursorOnRangeAuraColor, true, true, false);
                     groundEffectsManager.ThrowCursorRangeEffectManagerComponent.CursorOutOfRangeAuraColor = EditorGUILayout.ColorField(new GUIContent("Cursor out of range aura color : "), groundEffectsManager.ThrowCursorRangeEffectManagerComponent.CursorOutOfRangeAuraColor, true, true, false);
                 });
+                */
             }
         }
 
@@ -85,7 +87,7 @@ public class FXColorConfigurationEditor : EditorWindow
             this.attractiveObjectAreaMaterial = EditorGUILayout.ObjectField(attractiveObjectAreaMaterial, typeof(Material), false) as Material;
             if (this.attractiveObjectAreaMaterial != null)
             {
-                this.attractiveObjectAreaMaterial.SetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY, EditorGUILayout.ColorField(new GUIContent("Aura color : "), this.attractiveObjectAreaMaterial.GetColor(GroundEffectsManager.AURA_COLOR_MATERIAL_PROPERTY), true, true, false));
+                this.attractiveObjectAreaMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, EditorGUILayout.ColorField(new GUIContent("Aura color : "), this.attractiveObjectAreaMaterial.GetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY), true, true, false));
             }
         }
 
