@@ -102,7 +102,7 @@ namespace RTPuzzle
         public void OnExit()
         {
             MonoBehaviour.Destroy(this.projectileSphereRange.gameObject);
-           // PuzzleEventsManager.PZ_EVT_ThrowProjectile_PlayerAction_End();
+            // PuzzleEventsManager.PZ_EVT_ThrowProjectile_PlayerAction_End();
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectilePathAnimationmanager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();

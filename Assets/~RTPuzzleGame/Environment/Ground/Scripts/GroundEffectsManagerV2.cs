@@ -25,6 +25,7 @@ namespace RTPuzzle
         private GroundEffectType[] AffectedGroundEffectsType;
 
         private Dictionary<RangeTypeID, SphereGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, SphereGroundEffectManager>();
+
         private Dictionary<RangeTypeID, int> rangeEffectRenderOrder = new Dictionary<RangeTypeID, int>() {
             {RangeTypeID.ATTRACTIVE_OBJECT, 1 },
             {RangeTypeID.LAUNCH_PROJECTILE, 2 },
@@ -126,13 +127,9 @@ namespace RTPuzzle
             {
                 foreach (var affectedGroundEffectType in affectedGroundEffectsType)
                 {
-                    if (affectedGroundEffectType.MeshRenderer.isVisible)
+                    if (affectedGroundEffectType.MeshRenderer.isVisible
+                        && this.associatedSphereRange.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                     {
-                        if (rangeTypeInherentConfigurationData.RangeColorProvider != null)
-                        {
-                            rangeTypeInherentConfigurationData.GoundEffectMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke());
-                        }
-
                         commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, rangeTypeInherentConfigurationData.GoundEffectMaterial, 0, 0);
                     }
                 }
@@ -146,6 +143,10 @@ namespace RTPuzzle
                 this.rangeAnimation.Tick(d);
                 this.rangeTypeInherentConfigurationData.GoundEffectMaterial.SetVector(GroundEffectsManagerV2.AURA_CENTER_MATERIAL_PROPERTY, this.associatedSphereRange.GetCenterWorldPos());
                 this.rangeTypeInherentConfigurationData.GoundEffectMaterial.SetFloat(GroundEffectsManagerV2.AURA_RADIUS_MATERIAL_PROPERTY, this.rangeAnimation.CurrentValue);
+                if (rangeTypeInherentConfigurationData.RangeColorProvider != null)
+                {
+                    rangeTypeInherentConfigurationData.GoundEffectMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke());
+                }
             }
         }
 

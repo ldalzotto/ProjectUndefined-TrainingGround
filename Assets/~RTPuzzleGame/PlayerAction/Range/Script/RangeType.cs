@@ -32,6 +32,7 @@ namespace RTPuzzle
         public virtual void Tick(float d) { }
 
         public abstract bool IsInside(Vector3 worldPointComparison);
+        public abstract Collider GetCollider();
 
         public static RangeType RetrieveFromCollisionType(CollisionType collisionType)
         {

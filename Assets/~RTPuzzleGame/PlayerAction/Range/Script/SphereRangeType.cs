@@ -51,5 +51,10 @@ namespace RTPuzzle
         {
             return transform.TransformPoint(this.sphereCollider.center);
         }
+
+        public override Collider GetCollider()
+        {
+            return this.sphereCollider;
+        }
     }
 }
