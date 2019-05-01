@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using CoreGame;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RTPuzzle
 {
@@ -24,6 +25,14 @@ namespace RTPuzzle
         private GroundEffectType[] AffectedGroundEffectsType;
 
         private Dictionary<RangeTypeID, SphereGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, SphereGroundEffectManager>();
+        private Dictionary<RangeTypeID, int> rangeEffectRenderOrder = new Dictionary<RangeTypeID, int>() {
+            {RangeTypeID.ATTRACTIVE_OBJECT, 1 },
+            {RangeTypeID.LAUNCH_PROJECTILE, 2 },
+            {RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE, 3 },
+            {RangeTypeID.LAUNCH_PROJECTILE_CURSOR, 4 }
+        };
+
+
         public void Init()
         {
 
@@ -75,7 +84,13 @@ namespace RTPuzzle
         internal void OnCommandBufferUpdate()
         {
             this.command.Clear();
-            foreach (var groundEffectManager in this.rangeEffectManagers.Values)
+
+            var sortedRangeEffectManagers = this.rangeEffectManagers.Values.ToList();
+            sortedRangeEffectManagers.Sort(delegate (SphereGroundEffectManager r1, SphereGroundEffectManager r2)
+            {
+                return this.rangeEffectRenderOrder[r1.GetRangeTypeID()].CompareTo(this.rangeEffectRenderOrder[r2.GetRangeTypeID()]);
+            });
+            foreach (var groundEffectManager in sortedRangeEffectManagers)
             {
                 if (groundEffectManager != null)
                 {
@@ -100,6 +115,10 @@ namespace RTPuzzle
         private bool isAttractiveObjectRangeEnabled;
 
         public bool IsAttractiveObjectRangeEnabled { get => isAttractiveObjectRangeEnabled; }
+        public RangeTypeID GetRangeTypeID()
+        {
+            return this.associatedSphereRange.RangeTypeID;
+        }
 
         internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
         {
@@ -109,7 +128,7 @@ namespace RTPuzzle
                 {
                     if (affectedGroundEffectType.MeshRenderer.isVisible)
                     {
-                        if(rangeTypeInherentConfigurationData.RangeColorProvider != null)
+                        if (rangeTypeInherentConfigurationData.RangeColorProvider != null)
                         {
                             rangeTypeInherentConfigurationData.GoundEffectMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke());
                         }

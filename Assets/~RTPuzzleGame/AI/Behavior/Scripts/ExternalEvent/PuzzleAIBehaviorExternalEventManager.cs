@@ -44,8 +44,6 @@ namespace RTPuzzle
         {
             this.waitingToConsumeEvents.Sort(delegate (PuzzleAIBehaviorExternalEvent ev1, PuzzleAIBehaviorExternalEvent ev2)
             {
-                var e1 = EventProcessingOrder[ev1.GetType().Name];
-                var e2 = EventProcessingOrder[ev2.GetType().Name];
                 return EventProcessingOrder[ev1.GetType().Name].CompareTo(EventProcessingOrder[ev2.GetType().Name]) * -1;
             });
 
