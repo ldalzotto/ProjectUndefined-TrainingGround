@@ -27,9 +27,9 @@ namespace RTPuzzle
         private Dictionary<RangeTypeID, SphereGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, SphereGroundEffectManager>();
 
         private Dictionary<RangeTypeID, int> rangeEffectRenderOrder = new Dictionary<RangeTypeID, int>() {
-            {RangeTypeID.ATTRACTIVE_OBJECT, 1 },
-            {RangeTypeID.LAUNCH_PROJECTILE, 2 },
-            {RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE, 3 },
+            {RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE, 1 },
+            {RangeTypeID.ATTRACTIVE_OBJECT, 2 },
+            {RangeTypeID.LAUNCH_PROJECTILE, 3 },
             {RangeTypeID.LAUNCH_PROJECTILE_CURSOR, 4 }
         };
 

@@ -6,6 +6,7 @@
 		_Radius("Radius", float) = 0
 		_AuraColor("Aura Color", Color) = (1,1,1,1)
 		_AuraTexture("Aura Texture", 2D) = "white" {}
+		_AuraTextureAlbedoBoost("Aura texture albedo boost", Float) = 1.0
 		_AuraAnimationSpeed("Aura Animation Speed", Float) = 0
 	}
 		SubShader
@@ -15,8 +16,9 @@
 		Pass
 		{
 			ZWrite Off
-			Blend SrcAlpha SrcAlpha
+			Blend SrcAlpha OneMinusSrcAlpha 
 			CGPROGRAM
+			#pragma shader_feature AURA_ADDITVE AURA_MULTIPLICATIVE
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -42,6 +44,7 @@
 			float4 _AuraColor;
 			sampler2D _AuraTexture;
 			float4 _AuraTexture_ST;
+			float _AuraTextureAlbedoBoost;
 			float _AuraAnimationSpeed;
 
 			v2f vert(appdata v)
@@ -58,6 +61,11 @@
 
 			float calcDistance = abs(distance(i.worldPos,_CenterWorldPosition));
 			clip(_Radius - calcDistance);
+
+			#if AURA_COLOR_ANIMATION
+			_AuraColor.a = abs(sin(_Time *100));
+			#endif
+
 			fixed4 col = _AuraColor * (1 - step(_Radius, calcDistance));
 
 			float aspect = _ScreenParams.x / _ScreenParams.y;
@@ -65,12 +73,16 @@
 			screenTextureCoordinate.x *= aspect;
 			screenTextureCoordinate.xy = screenTextureCoordinate.xy / i.screenPos.w;
 			_AuraTexture_ST.z += _AuraAnimationSpeed * _Time.x;
-			col = saturate(col + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + _AuraTexture_ST.zw)/15);
-
+			#if AURA_ADDITVE
+			col = saturate(col + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + _AuraTexture_ST.zw) * _AuraTextureAlbedoBoost);
+			#else
+			col = saturate(col * tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + _AuraTexture_ST.zw) * _AuraTextureAlbedoBoost);
+			#endif
 			return col;
 		}
 	ENDCG
 	}
 	}
 		FallBack "Diffuse"
+		CustomEditor "RangeShaderEditor"
 }
