@@ -94,7 +94,7 @@ namespace RTPuzzle
         private void OnEndAction()
         {
             this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionEnd();
-            MonoBehaviour.Destroy(this.attractiveObjectRange);
+            MonoBehaviour.Destroy(this.attractiveObjectRange.gameObject);
             this.isActionOver = true;
         }
         #endregion

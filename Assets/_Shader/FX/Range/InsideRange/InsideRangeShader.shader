@@ -5,11 +5,13 @@
 		_PlaneYPos("Plane Y world pos", Float) = 0
 		_BarThickness("Bar thickness", Float) = 1
 		_BarColor("Bar color", Color) = (1,1,1,1)
+		_BarDistance("Bar distance", Float) = 1
+		_TranslationSpeed("Translation speed", Float) = 1
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-
+		Blend OneMinusDstColor One
         Pass
         {
             CGPROGRAM
@@ -31,6 +33,8 @@
 
 			float _PlaneYPos;
 			float _BarThickness;
+			float _BarDistance;
+			float _TranslationSpeed;
 			float4 _BarColor;
 
             v2f vert (appdata v)
@@ -43,7 +47,8 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float distanceFromPlane = distance(i.worldPos.y, _PlaneYPos);
+				float normalizedWorldPosition = fmod(abs(i.worldPos.y + _PlaneYPos + (_TranslationSpeed * _Time.x)) ,_BarDistance);
+				float distanceFromPlane = distance(normalizedWorldPosition, 0);
 				clip(-distanceFromPlane + _BarThickness);
                 return _BarColor;
             }

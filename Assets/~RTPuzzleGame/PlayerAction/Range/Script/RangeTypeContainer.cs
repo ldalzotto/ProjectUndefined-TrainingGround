@@ -28,7 +28,7 @@ namespace RTPuzzle
         {
             if (this.rangeTypes.Remove(rangeType.RangeTypeID))
             {
-                this.RangeEventsManager.RANGE_EVT_Range_Deleted(rangeType);
+                this.RangeEventsManager.RANGE_EVT_Range_Destroy(rangeType);
             }
         }
         #endregion

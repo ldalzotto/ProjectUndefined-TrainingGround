@@ -36,12 +36,23 @@ namespace RTPuzzle
 
         public static RangeType RetrieveFromCollisionType(CollisionType collisionType)
         {
-            if (collisionType.IsRange)
+            if (collisionType != null && collisionType.IsRange)
             {
                 return collisionType.GetComponent<RangeType>();
             }
             return null;
         }
+
+        #region Logical conditions
+        public bool IsInRangeEffectEnabled()
+        {
+            return this.IsRangeConfigurationDefined() && this.rangeTypeInherentConfigurationData.InRangeEffectMaterial != null;
+        }
+        public bool IsRangeConfigurationDefined()
+        {
+            return this.rangeTypeInherentConfigurationData != null;
+        }
+        #endregion
     }
 
 }

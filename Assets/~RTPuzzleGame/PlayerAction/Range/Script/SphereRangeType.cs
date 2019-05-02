@@ -18,7 +18,10 @@ namespace RTPuzzle
             this.sphereCollider = GetComponent<SphereCollider>();
             this.sphereCollider.radius = sphereRadius;
             base.Init();
-            this.rangeTypeInherentConfigurationData.RangeColorProvider = rangeColorProvider;
+            if (this.IsRangeConfigurationDefined())
+            {
+                this.rangeTypeInherentConfigurationData.RangeColorProvider = rangeColorProvider;
+            }
         }
 
         public static SphereRangeType Instanciate(RangeTypeID rangeTypeID, float sphereRadius, Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)

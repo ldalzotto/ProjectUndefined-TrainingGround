@@ -67,20 +67,28 @@ namespace RTPuzzle
             this.OnCommandBufferUpdate();
         }
 
+        #region External events
         public void OnRangeAdded(RangeType rangeType)
         {
-            var sphereRangeType = (SphereRangeType)rangeType;
-            this.rangeEffectManagers[rangeType.RangeTypeID] = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeType.RangeTypeID]);
-            this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionStart(sphereRangeType);
-            OnCommandBufferUpdate();
+            if (rangeType.IsRangeConfigurationDefined())
+            {
+                var sphereRangeType = (SphereRangeType)rangeType;
+                this.rangeEffectManagers[rangeType.RangeTypeID] = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeType.RangeTypeID]);
+                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionStart(sphereRangeType);
+                OnCommandBufferUpdate();
+            }
         }
 
-        internal void OnRangeDeleted(RangeType rangeType)
+        internal void OnRangeDestroy(RangeType rangeType)
         {
-            this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionEnd();
-            this.rangeEffectManagers.Remove(rangeType.RangeTypeID);
-            OnCommandBufferUpdate();
+            if (rangeType.IsRangeConfigurationDefined())
+            {
+                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionEnd();
+                this.rangeEffectManagers.Remove(rangeType.RangeTypeID);
+                OnCommandBufferUpdate();
+            }
         }
+        #endregion
 
         internal void OnCommandBufferUpdate()
         {

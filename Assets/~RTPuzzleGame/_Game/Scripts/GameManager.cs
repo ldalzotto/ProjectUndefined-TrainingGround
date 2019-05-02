@@ -19,6 +19,7 @@ namespace RTPuzzle
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
+        private InRangeEffectManager InRangeEffectManager;
         private LaunchProjectileContainerManager LaunchProjectileContainerManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
@@ -39,6 +40,7 @@ namespace RTPuzzle
             PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
             GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
+            InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
             LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
@@ -65,6 +67,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
             GameObject.FindObjectOfType<GroundCollision>().Init();
             GroundEffectsManagerV2.Init();
+            InRangeEffectManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
@@ -105,6 +108,7 @@ namespace RTPuzzle
 
             RangeTypeContainer.Tick(d);
             GroundEffectsManagerV2.Tick(d);
+            InRangeEffectManager.Tick(d);
             NpcInteractionRingRendererManager.Tick(d);
         }
 

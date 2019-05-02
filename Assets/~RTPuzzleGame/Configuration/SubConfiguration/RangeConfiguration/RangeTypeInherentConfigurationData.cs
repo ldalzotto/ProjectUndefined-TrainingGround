@@ -11,6 +11,8 @@ namespace RTPuzzle
         public Material GoundEffectMaterial;
         public float RangeAnimationSpeed;
 
+        public Material InRangeEffectMaterial;
+
         #region Runtime Methods
         private Func<Color> rangeColorProvider;
         public Func<Color> RangeColorProvider { get => rangeColorProvider; set => rangeColorProvider = value; }
