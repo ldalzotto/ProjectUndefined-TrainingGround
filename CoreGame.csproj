@@ -140,10 +140,10 @@
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\EditorOnly\OdinSerializer.xml" />
+    <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\FX\Particle_Ambiant_Shader.shader" />
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
-    <None Include="Assets\_Shader\UI\Selection\NonSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
@@ -160,6 +160,7 @@
     <None Include="Assets\_Shader\FX\Range\RangeShaderV3_Pass.shader" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />
+    <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

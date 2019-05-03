@@ -1,10 +1,11 @@
-﻿Shader "Custom/UI/Selection/NonSelectedWithMaskShader"
+﻿Shader "Custom/UI/Selection/NotSelectedWithMaskShader"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
 		_MaskTexture("Mask Texture", 2D) = "white" {}
-		_AlphaFactor("Alpha Factor", Float) = 1
+		_AuraMaskTexture("Aura Texture", 2D) = "white" {}
+		_AuraAlphaFactor("Aura Alpha Factor", Float) = 1
 		_StencilComp("Stencil Comparison", Float) = 8
 		_Stencil("Stencil ID", Float) = 0
 		_StencilOp("Stencil Operation", Float) = 0
@@ -45,7 +46,7 @@
 
 			Pass
 			{
-				Name "Default"
+				Name "Main texture"
 			CGPROGRAM
 				#pragma vertex vert
 				#pragma fragment frag
@@ -83,7 +84,6 @@
 				float4 _ClipRect;
 				float4 _MainTex_ST;
 				float4 _MaskTexture_ST;
-				float _AlphaFactor;
 
 				v2f vert(appdata_t v)
 				{
@@ -93,6 +93,7 @@
 					OUT.worldPosition = v.vertex;
 
 					OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
+
 					OUT.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
 					OUT.masktextcoord = TRANSFORM_TEX(v.texcoord, _MaskTexture);
 					OUT.color = v.color;
@@ -103,19 +104,14 @@
 				{
 
 					half4 inputImageColor = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd);
-					half4 maskImageColor = (tex2D(_MaskTexture, IN.texcoord));
-
-					half4 color = inputImageColor * IN.color;
-
-					#ifdef UNITY_UI_CLIP_RECT
-					color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-					#endif
+					half4 maskImageColor = (tex2D(_MaskTexture, IN.masktextcoord));
+							
+				half4 color = half4(0,0,0,0);
+				color = saturate((inputImageColor * maskImageColor) * IN.color );
 
 					#ifdef UNITY_UI_ALPHACLIP
 					clip(color.a - 0.001);
 					#endif
-
-					color.a *= (1 - maskImageColor.r) * _AlphaFactor;
 
 					return color;
 				}
