@@ -18,7 +18,8 @@ public class WaitForEndOfAnimation : CustomYieldInstruction
     {
         get
         {
-            return (animator.GetCurrentAnimatorStateInfo(animatorLayer).IsName(animationName));
+            return (animator.GetCurrentAnimatorStateInfo(animatorLayer).IsName(animationName)) ||
+               (animator.GetNextAnimatorStateInfo(animatorLayer).IsName(animationName));
         }
     }
 }

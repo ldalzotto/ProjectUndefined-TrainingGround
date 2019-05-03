@@ -472,7 +472,7 @@ namespace RTPuzzle
             var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             MonoBehaviour.Destroy(sph.GetComponent<Collider>());
             #endregion
-            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE_THROW, 0f, true,
+            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE_THROW, 0.1f, true,
                 onAnimationEndAction: onAnimationEnd);
             this.ProjectileLaunchAnimationManager.Play();
         }
@@ -491,11 +491,13 @@ namespace RTPuzzle
         public void OnExit()
         {
             this.ProjectileAnimationManager.Kill();
+
             /*
             if (this.ProjectileLaunchAnimationManager != null)
             {
                 this.ProjectileLaunchAnimationManager.Kill();
-            }*/
+            }
+            */
         }
     }
     #endregion
