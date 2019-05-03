@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -19,6 +20,8 @@ namespace RTPuzzle
         private ThrowProjectileManager ThrowProjectileManager;
         private LauncheProjectileActionExitManager LauncheProjectileActionExitManager;
         private LaunchProjectilePathAnimationmanager LaunchProjectilePathAnimationmanager;
+        private LaunchProjectilePlayerAnimationManager LaunchProjectilePlayerAnimationManager;
+        private PlayerOrientationManager PlayerOrientationManager;
 
         private SphereRangeType projectileSphereRange;
 
@@ -64,23 +67,31 @@ namespace RTPuzzle
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
+            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator());
+            PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
 
         }
 
         public override void Tick(float d)
         {
-            if (!LauncheProjectileActionExitManager.Tick())
-            {
-                LaunchProjectileScreenPositionManager.Tick(d);
-                LaunchProjectileRayPositionerManager.Tick(d, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
+            LaunchProjectilePlayerAnimationManager.Tick(d);
 
+            //If launch animation is not playng (animation exit callback is exiting the action)
+            if (!this.LaunchProjectilePlayerAnimationManager.LaunchProjectileAnimationPlaying())
+            {
                 if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
                 {
                     ThrowProjectileManager.Tick(d, ref LaunchProjectileRayPositionerManager);
                     LaunchProjectilePathAnimationmanager.Tick(d, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
                 }
-            }
 
+                //If exit not called
+                if (!LauncheProjectileActionExitManager.Tick())
+                {
+                    LaunchProjectileScreenPositionManager.Tick(d);
+                    LaunchProjectileRayPositionerManager.Tick(d, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
+                }
+            }
         }
 
         public override void LateTick(float d)
@@ -106,6 +117,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectilePathAnimationmanager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
+            LaunchProjectilePlayerAnimationManager.OnExit();
             isActionFinished = true;
         }
 
@@ -113,9 +125,15 @@ namespace RTPuzzle
         {
             if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
             {
-                ResetCoolDown();
-                var throwPorjectilePath = LaunchProjectilePathAnimationmanager.ThrowProjectilePath;
-                ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
+                PlayerOrientationManager.OnLaunchProjectileSpawn(LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
+                this.LaunchProjectilePlayerAnimationManager.PlayThrowProjectileAnimation(
+                    onAnimationEnd: () =>
+                    {
+                        ResetCoolDown();
+                        var throwPorjectilePath = LaunchProjectilePathAnimationmanager.ThrowProjectilePath;
+                        ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
+                    }
+                    );
             }
         }
         #endregion
@@ -415,6 +433,88 @@ namespace RTPuzzle
         public void OnLaunchProjectileSpawn()
         {
 
+        }
+    }
+    #endregion
+
+    #region Launch Projectile player animation manager
+    class LaunchProjectilePlayerAnimationManager
+    {
+        private Animator playerAnimator;
+
+        private PlayerAnimationWithObjectManager ProjectileAnimationManager;
+        private PlayerAnimationWithObjectManager ProjectileLaunchAnimationManager;
+
+        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator)
+        {
+            this.playerAnimator = playerAnimator;
+
+            //TODO -> DELETE
+            #region TO DELETE
+            var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            MonoBehaviour.Destroy(sph.GetComponent<Collider>());
+            #endregion
+            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE, 0f, true,
+                onAnimationEndAction: null);
+            this.ProjectileAnimationManager.Play();
+        }
+
+        public bool LaunchProjectileAnimationPlaying()
+        {
+            return this.ProjectileLaunchAnimationManager != null && this.ProjectileLaunchAnimationManager.IsPlaying();
+        }
+
+        #region External Events
+        public void PlayThrowProjectileAnimation(Action onAnimationEnd)
+        {
+            this.ProjectileAnimationManager.KillSilently();
+            #region TO DELETE
+            var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            MonoBehaviour.Destroy(sph.GetComponent<Collider>());
+            #endregion
+            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE_THROW, 0f, true,
+                onAnimationEndAction: onAnimationEnd);
+            this.ProjectileLaunchAnimationManager.Play();
+        }
+        #endregion
+
+        public void Tick(float d)
+        {
+            this.ProjectileAnimationManager.Tick(d);
+
+            if (this.ProjectileLaunchAnimationManager != null)
+            {
+                this.ProjectileLaunchAnimationManager.Tick(d);
+            }
+        }
+
+        public void OnExit()
+        {
+            this.ProjectileAnimationManager.Kill();
+            /*
+            if (this.ProjectileLaunchAnimationManager != null)
+            {
+                this.ProjectileLaunchAnimationManager.Kill();
+            }*/
+        }
+    }
+    #endregion
+
+    #region Player orientation manager
+    class PlayerOrientationManager
+    {
+        private Rigidbody rigidbody;
+
+        public PlayerOrientationManager(Rigidbody rigidbody)
+        {
+            this.rigidbody = rigidbody;
+        }
+
+        public void OnLaunchProjectileSpawn(Vector3 targetProjectileWorldPosition)
+        {
+            var targetProjetilePlayerRelativeDirection = Vector3.ProjectOnPlane((targetProjectileWorldPosition - this.rigidbody.position).normalized, this.rigidbody.transform.up);
+            this.rigidbody.rotation = Quaternion.LookRotation(targetProjetilePlayerRelativeDirection, this.rigidbody.transform.up);
+            //this.rigidbody.MoveRotation(Quaternion.FromToRotation(this.rigidbody.transform.forward, targetProjetilePlayerRelativeDirection));
         }
     }
     #endregion

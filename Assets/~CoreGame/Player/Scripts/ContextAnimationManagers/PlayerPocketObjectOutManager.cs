@@ -14,7 +14,6 @@ namespace CoreGame
         Action onAnimationEndAction;
         private bool destroyObjectOnEnd;
         private bool animationEnded;
-        private bool animationPlaying;
         private Coroutine endCoroutine;
 
         public PlayerAnimationWithObjectManager(GameObject involvedObjectInstanciated,
@@ -39,27 +38,32 @@ namespace CoreGame
                 this.OnAnimationEnd();
                 return null;
             }));
-            this.animationPlaying = true;
+            this.Tick(0); //for position initialization
         }
 
         public void Tick(float d)
         {
-            if (!animationEnded && animationPlaying)
+            if (this.IsPlaying())
             {
                 this.involvedObjectInstanciated.transform.position = rightHandContext.transform.position;
                 this.involvedObjectInstanciated.transform.rotation = rightHandContext.transform.rotation;
             }
         }
 
+        public bool IsPlaying()
+        {
+            return !this.animationEnded;
+        }
+
         #region Internal Events
-        public void OnAnimationEnd()
+        private void OnAnimationEnd()
         {
             this.animationEnded = true;
             if (this.endCoroutine != null)
             {
                 Coroutiner.Instance.StopCoroutine(this.endCoroutine);
             }
-            if (this.destroyObjectOnEnd)
+            if (this.destroyObjectOnEnd && this.involvedObjectInstanciated != null)
             {
                 MonoBehaviour.Destroy(this.involvedObjectInstanciated);
             }
@@ -68,12 +72,23 @@ namespace CoreGame
                 this.onAnimationEndAction.Invoke();
             }
         }
+        #endregion
 
+        #region External Events
         public void Kill()
         {
-            this.playerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING].AnimationName);
+            this.SetContextActionAnimatorToListening();
+            this.OnAnimationEnd();
+        }
+        public void KillSilently()
+        {
             this.OnAnimationEnd();
         }
         #endregion
+
+        private void SetContextActionAnimatorToListening()
+        {
+            this.playerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING].AnimationName);
+        }
     }
 }
