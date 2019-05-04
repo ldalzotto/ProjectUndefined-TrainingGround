@@ -32,7 +32,9 @@ namespace RTPuzzle
                 if (this.aiFovManager.GetFOVAngleSum() <= this.AIFearStunComponent.FOVSumThreshold)
                 {
                     this.SetIsFeared(true);
-                    this.fearedTimer = 0f;
+                    //because BeforeManagersUpdate is called before OnManagerTick, we anticipate the fact that the mananger will be called.
+                    //this, we set the current timer so that after OnManagerTick will be called, fearedTimer = 0f
+                    this.fearedTimer = -(d * timeAttenuationFactor);
                 }
             }
         }
