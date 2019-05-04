@@ -37,7 +37,6 @@ namespace RTPuzzle
         public override void FirstExecution()
         {
             base.FirstExecution();
-
             isActionFinished = false;
 
             #region External Dependencies
@@ -176,7 +175,7 @@ namespace RTPuzzle
         public void Tick(float d)
         {
             var locomotionAxis = GameInputManager.CurrentInput.LocomotionAxis();
-            currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * LaunchProjectileScreenPositionManagerComponent.CursorSpeed * d);
+            currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * Screen.width * LaunchProjectileScreenPositionManagerComponent.CursorSpeedScreenWidthPerCent * d);
             UpdateCursorPosition();
         }
 
@@ -208,7 +207,9 @@ namespace RTPuzzle
     [System.Serializable]
     public class LaunchProjectileScreenPositionManagerComponent
     {
-        public float CursorSpeed;
+        [Tooltip("In screen width %")]
+        [Range(0.0f, 1.0f)]
+        public float CursorSpeedScreenWidthPerCent;
     }
     #endregion
 
