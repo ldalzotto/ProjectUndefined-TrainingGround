@@ -12,9 +12,9 @@ namespace CoreGame
     {
         private CameraOrientationManagerComponent CameraOrientationManagerComponent;
         private Transform cameraPivotPoint;
-        private GameInputManager gameInputManager;
+        private IGameInputManager gameInputManager;
 
-        public CameraOrientationManager(Transform cameraPivotPoint, GameInputManager gameInputManager, CameraOrientationManagerComponent CameraOrientationManagerComponent)
+        public CameraOrientationManager(Transform cameraPivotPoint, IGameInputManager gameInputManager, CameraOrientationManagerComponent CameraOrientationManagerComponent)
         {
             this.cameraPivotPoint = cameraPivotPoint;
             this.gameInputManager = gameInputManager;

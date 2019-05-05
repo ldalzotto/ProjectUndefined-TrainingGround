@@ -112,7 +112,6 @@ namespace CoreGame
             var slopeQuaternion = Quaternion.FromToRotation(rigidbody.transform.up, rigidBodyProjectedNormal);
             // velocity vector is rotated
             rigidbody.velocity = slopeQuaternion * rigidbody.velocity;
-
             Debug.DrawRay(rigidbody.position, rigidBodyProjectedNormal * 10, Color.green);
             Debug.DrawRay(rigidbody.position, rigidbody.velocity * 10, Color.red);
 

@@ -44,7 +44,7 @@ namespace Tests
                     GameObject.FindObjectOfType<LevelManager>(),
                     GameObject.FindObjectOfType<PuzzleEventsManager>()
             );
-            
+
             //AI Components default intialization
             GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManagers().Values.ToList().ForEach((NPCAIManager npcAimanager) =>
             {

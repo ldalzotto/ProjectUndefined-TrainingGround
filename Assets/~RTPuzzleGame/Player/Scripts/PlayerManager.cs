@@ -35,7 +35,7 @@ namespace RTPuzzle
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
 
-        public void Init()
+        public void Init(IGameInputManager gameInputManager)
         {
             #region External Dependencies
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
@@ -44,7 +44,6 @@ namespace RTPuzzle
 
             this.playerRigidbody = GetComponent<Rigidbody>();
             this.playerCollier = GetComponent<Collider>();
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var animator = GetComponentInChildren<Animator>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
@@ -128,11 +127,11 @@ namespace RTPuzzle
     #region Player Action Selection Manager
     class PlayerSelectionWheelManager
     {
-        private GameInputManager GameInputManager;
+        private IGameInputManager GameInputManager;
         private PlayerActionEventManager PlayerActionEventManager;
         private PlayerActionManager PlayerActionManager;
 
-        public PlayerSelectionWheelManager(GameInputManager gameInputManager, PlayerActionEventManager PlayerActionEventManager, PlayerActionManager PlayerActionManager)
+        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PlayerActionEventManager PlayerActionEventManager, PlayerActionManager PlayerActionManager)
         {
             GameInputManager = gameInputManager;
             this.PlayerActionEventManager = PlayerActionEventManager;

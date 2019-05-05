@@ -58,7 +58,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
-            PlayerManager.Init();
+            PlayerManager.Init(gameInputManager);
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[PuzzleId].AvailableTimeAmount);
             TimeFlowManager.Init(PuzzleId, PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager, PuzzleEventsManager);
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();

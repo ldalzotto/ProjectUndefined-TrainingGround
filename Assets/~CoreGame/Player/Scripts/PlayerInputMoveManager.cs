@@ -9,13 +9,13 @@ namespace CoreGame
         private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
 
         private Transform CameraPivotPoint;
-        private GameInputManager GameInputManager;
+        private IGameInputManager GameInputManager;
         private Rigidbody PlayerRigidBody;
 
         private bool hasMoved;
         private float playerSpeedMagnitude;
 
-        public PlayerInputMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Transform cameraPivotPoint, GameInputManager gameInputManager, Rigidbody playerRigidBody)
+        public PlayerInputMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
         {
             this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
             CameraPivotPoint = cameraPivotPoint;
@@ -57,7 +57,8 @@ namespace CoreGame
                 //move rigid body rotation
                 if (playerSpeedProcessingInput.PlayerMovementOrientation.sqrMagnitude > .05)
                 {
-                    PlayerRigidBody.MoveRotation(Quaternion.LookRotation(playerSpeedProcessingInput.PlayerMovementOrientation));
+                    PlayerRigidBody.rotation = Quaternion.LookRotation(playerSpeedProcessingInput.PlayerMovementOrientation);
+                    //rotation will take place at the end of physics step https://docs.unity3d.com/ScriptReference/Rigidbody-rotation.html
                 }
 
                 //move rigid body

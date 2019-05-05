@@ -69,6 +69,9 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\PuzzleSceneTestHelper.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestHelperMethods.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\LaunchProjectileTest.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PhysicsPlayerMovementTest.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PlayerMovementTestPosition.cs" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.1f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>
