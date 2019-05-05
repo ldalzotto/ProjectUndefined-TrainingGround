@@ -47,6 +47,7 @@ namespace RTPuzzle
             var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+            var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
@@ -62,7 +63,7 @@ namespace RTPuzzle
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
             puzzleAIBehavior = PuzzleAIBehavior<AbstractAIComponents>.BuildAIBehaviorFromType(aiBehaviorInherentData.BehaviorType,
-                new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI));
+                new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);

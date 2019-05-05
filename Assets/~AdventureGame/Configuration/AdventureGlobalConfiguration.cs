@@ -16,7 +16,8 @@ namespace AdventureGame
         DUMBSTER = 5,
         CROWBAR = 6,
         SEWER_ENTRANCE = 7,
-        SEWER_EXIT = 8
+        SEWER_EXIT = 8,
+        SEWER_TO_PUZZLE = 9
     }
     #endregion
 

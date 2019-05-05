@@ -38,7 +38,8 @@ namespace RTPuzzle
                 () => { returnMessage = "Reduce FOV when a projectile is near while not taking into account physics obstacles entity."; return null; },
                 () => { returnMessage = "Block any movement when FOV sum values are below a threshold."; return null; },
                 () => { returnMessage = "Move to the nearest attractive point in range.\nOnce targeted, the movement is never cancelled by this component."; return null; },
-                () => { returnMessage = "Detect weather the AI is in the selected target zone or not."; return null; });
+                () => { returnMessage = "Detect weather the AI is in the selected target zone or not."; return null; },
+                () => { returnMessage = "Reduce FOV when the player is near."; return null; });
             return "AI Manager description : " + returnMessage;
         }
     }
@@ -59,6 +60,8 @@ namespace RTPuzzle
     [CustomEditor(typeof(AITargetZoneComponent))]
     public class AITargetZoneComponentEditor : AbstractAIComponentEditor<AITargetZoneComponent>
     { }
+    [CustomEditor(typeof(AIPlayerEscapeComponent))]
+    public class AIPlayerEscapeComponentEditor : AbstractAIComponentEditor<AIPlayerEscapeComponent> { }
     #endregion
 }
 

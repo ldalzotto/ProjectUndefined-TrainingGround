@@ -18,5 +18,6 @@ namespace RTPuzzle
         public AITargetZoneComponent AITargetZoneComponent;
         public AIAttractiveObjectComponent AIAttractiveObjectComponent;
         public AIFearStunComponent AIFearStunComponent;
+        public AIPlayerEscapeComponent AIPlayerEscapeComponent;
     }
 }

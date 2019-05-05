@@ -144,5 +144,17 @@ namespace AdventureGame
 
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();
     }
+
+    public class Sewer_TO_SewerRTP_TransitionNode : TimelineNode<GhostsPOIManager>, Level1_SewerTimelineNode
+    {
+        public override Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>> TransitionRequirements => new Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>>();
+
+        public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnStartNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>()
+        {
+            new AddTransitionLevel(LevelZonesID.SEWER_RTP, PointOfInterestId.SEWER_TO_PUZZLE, new LevelZoneTransitionAction(LevelZonesID.SEWER_RTP))
+        };
+
+        public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();
+    }
     #endregion
 }

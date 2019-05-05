@@ -1,4 +1,6 @@
-﻿namespace RTPuzzle
+﻿using static RTPuzzle.AIBehaviorManagerContainer;
+
+namespace RTPuzzle
 {
     public class ProjectileStateTracker : BehaviorStateTracker
     {
@@ -10,10 +12,7 @@
         public void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> behavior)
         {
             var genericPuzzleBehavior = (GenericPuzzleAIBehavior)behavior;
-            if (!genericPuzzleBehavior.IsEscapingFromProjectileWithTargetZones() && !genericPuzzleBehavior.IsEscapingFromExitZone())
-            {
-                this.hasFirstProjectileHitted = false;
-            }
+            this.hasFirstProjectileHitted = genericPuzzleBehavior.IsEscapingFromProjectileWithTargetZones();
         }
 
         public void OnEventProcessed(IPuzzleAIBehavior<AbstractAIComponents> behavior)

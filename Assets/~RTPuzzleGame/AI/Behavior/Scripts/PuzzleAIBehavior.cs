@@ -69,7 +69,8 @@ namespace RTPuzzle
 
         protected AIFOVManager aIFOVManager;
 
-        public PuzzleAIBehavior(NavMeshAgent selfAgent, C AIComponents, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
+        public PuzzleAIBehavior(NavMeshAgent selfAgent, C AIComponents,
+            PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = AIComponents;
@@ -136,7 +137,7 @@ namespace RTPuzzle
             if (behaviorType == typeof(GenericPuzzleAIBehavior))
             {
                 return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.TargetZoneContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider);
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.TargetZoneContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever);
             }
             return null;
         }
@@ -148,19 +149,21 @@ namespace RTPuzzle
         public AbstractAIComponents aIComponents;
         public Action<FOV> OnFOVChange;
         public PuzzleEventsManager PuzzleEventsManager;
+        public PlayerManagerDataRetriever PlayerManagerDataRetriever;
         public TargetZoneContainer TargetZoneContainer;
         public AiID aiID;
         public Collider aiCollider;
         public Action ForceUpdateAIBehavior;
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents,
-            Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager,
+            Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
             TargetZoneContainer TargetZoneContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = aIComponents;
             OnFOVChange = onFOVChange;
             PuzzleEventsManager = puzzleEventsManager;
+            this.PlayerManagerDataRetriever = PlayerManagerDataRetriever;
             this.TargetZoneContainer = TargetZoneContainer;
             this.aiID = aiID;
             this.aiCollider = aiCollider;

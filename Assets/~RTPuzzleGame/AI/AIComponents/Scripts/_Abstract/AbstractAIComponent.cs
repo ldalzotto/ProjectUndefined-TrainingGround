@@ -27,7 +27,8 @@ namespace RTPuzzle
                  Func<AIProjectileIgnorePhysicsEscapeManager> AIProjectileEscapeWithoutCollisionManagerOperation,
                  Func<AIFearStunManager> AIFearStunManagerOperation,
                  Func<AIAttractiveObjectManager> AIAttractiveObjectOperation,
-                 Func<AITargetZoneManager> AITargetZoneManagerOperation)
+                 Func<AITargetZoneManager> AITargetZoneManagerOperation,
+                 Func<AIPlayerEscapeManager> AIPlayerEscapeManagerOperation)
         {
             var aiRandomPatrolComponentManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
             if (aiRandomPatrolComponentManager != null) { return aiRandomPatrolComponentManager; }
@@ -41,6 +42,8 @@ namespace RTPuzzle
             if (AIAttractiveObjectManager != null) { return AIAttractiveObjectManager; }
             var AITargetZoneManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);
             if (AITargetZoneManager != null) { return AITargetZoneManager; }
+            var AIPlayerEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIPlayerEscapeManager), AIPlayerEscapeManagerOperation);
+            if (AIPlayerEscapeManager != null) { return AIPlayerEscapeManager; }
 
             return null;
         }

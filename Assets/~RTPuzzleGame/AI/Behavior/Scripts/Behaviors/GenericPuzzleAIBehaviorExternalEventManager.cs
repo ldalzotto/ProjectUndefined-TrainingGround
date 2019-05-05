@@ -43,6 +43,7 @@ namespace RTPuzzle
             EventTypeCheck<AttractiveObectDestroyedAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_Destroyed);
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
+            EventTypeCheck<PlayerEscapeStartAIBehaviorEvent>(genericAiBehavior, externalEvent, PlayerEscape_Start);
         }
 
         private void EventTypeCheck<T>(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent ev, Action<GenericPuzzleAIBehavior, T> processEventAction) where T : PuzzleAIBehaviorExternalEvent
@@ -58,21 +59,21 @@ namespace RTPuzzle
 
         private void Projectile_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager(), EvaluationType.EXCLUDED))
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager(), EvaluationType.EXCLUDED) &&
+                             this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
             {
-                //if already escape from exit zone or escaping from projectile -> escape with ignoring
-                if (this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted || genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones())
-                {
-                    Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
-                    genericAiBehavior.ManagersStateReset();
-                    genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
-                }
-                else
-                {
-                    Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
-                    genericAiBehavior.ManagersStateReset();
-                    genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
-                }
+                Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
+                genericAiBehavior.ManagersStateReset();
+                genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
+            }
+            else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED) &&
+                    !this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
+                    || genericAiBehavior.IsEscapingFromExitZone()
+                    || genericAiBehavior.IsEscapingFromPlayer())
+            {
+                Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
+                genericAiBehavior.ManagersStateReset();
+                genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
         }
 
@@ -159,6 +160,15 @@ namespace RTPuzzle
                     genericAiBehavior.ManagersStateReset();
                     genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
                 }
+            }
+        }
+
+        private void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, PlayerEscapeStartAIBehaviorEvent playerEscapeStartAIBehaviorEvent)
+        {
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED))
+            {
+                genericAiBehavior.ManagersStateReset();
+                genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();
             }
         }
 
@@ -252,6 +262,11 @@ namespace RTPuzzle
         }
 
         public TargetZone TargetZone { get => targetZone; }
+    }
+
+    public class PlayerEscapeStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+
     }
 
 }
