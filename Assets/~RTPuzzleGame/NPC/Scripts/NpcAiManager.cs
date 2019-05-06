@@ -146,7 +146,6 @@ namespace RTPuzzle
         public void OnProjectileTriggerEnter(LaunchProjectile launchProjectile)
         {
             this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
-            //OnProjectileTriggerEnter(sphereCollider);
         }
 
         private void SetDestinationWithCoroutineReached(Vector3 destination)

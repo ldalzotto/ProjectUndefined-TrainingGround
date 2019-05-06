@@ -23,6 +23,10 @@ namespace RTPuzzle
 
         protected abstract BehaviorStateTrackerContainer BehaviorStateTrackerContainer { get; }
 
+#if UNITY_EDITOR
+        public BehaviorStateTrackerContainer GetBehaviorStateTrackerContainer() { return BehaviorStateTrackerContainer; }
+#endif
+
         public void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent)
         {
             //If the event is occuring on physics engine timestep
@@ -60,7 +64,7 @@ namespace RTPuzzle
             this.ProcessEvent(externalEvent, aiBehavior);
             foreach (var behaviorStateTracker in this.BehaviorStateTrackerContainer.BehaviorStateTrackers.Values)
             {
-                behaviorStateTracker.OnEventProcessed(aiBehavior);
+                behaviorStateTracker.OnEventProcessed(aiBehavior, externalEvent);
             }
             // Debug.Log(MyLog.Format("After processing Event : " + externalEvent.GetType().Name) + " state : " + aiBehavior.ToString());
         }

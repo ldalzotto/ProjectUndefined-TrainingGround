@@ -23,7 +23,7 @@ namespace RTPuzzle
 
         private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
             {
-                { typeof(ProjectileStateTracker), new ProjectileStateTracker()}
+                {typeof(EscapeWhileIgnoringTargetZoneTracker), new EscapeWhileIgnoringTargetZoneTracker() }
             }
         );
 
@@ -60,13 +60,14 @@ namespace RTPuzzle
         private void Projectile_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterEvent)
         {
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager(), EvaluationType.EXCLUDED) &&
-                             this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
+                             this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {
                 Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
-            else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED) && !this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
+            else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED)
+                && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                     || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
                 Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
@@ -161,6 +162,12 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED)
                  || genericAiBehavior.DoesEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
             {
+                /*
+                if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
+                {
+                    Debug.Log("Escape player with ignore.");
+                }
+                */
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();
             }

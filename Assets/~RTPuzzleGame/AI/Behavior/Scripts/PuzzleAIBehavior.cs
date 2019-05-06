@@ -50,6 +50,7 @@ namespace RTPuzzle
 
 #if UNITY_EDITOR
         public AbstractAIComponents AIComponents { get => aIComponents; set => aIComponents = (C)value; }
+        public PuzzleAIBehaviorExternalEventManager PuzzleAIBehaviorExternalEventManager { get => puzzleAIBehaviorExternalEventManager; }
 #endif
         public Action ForceUpdateAIBehavior { get => forceUpdateAIBehavior; }
         public AIFOVManager AIFOVManager { get => aIFOVManager; }
