@@ -24,15 +24,17 @@ namespace RTPuzzle
         private Ray[] PhysicsRay;
 
 
-        public void Tick()
+        public Vector3? Tick()
         {
             this.EscapeDistanceManager.Tick();
+            return this.escapeDestination;
         }
 
         #region External Events
-        public void OnAgentDestinationReached()
+        public bool OnAgentDestinationReached()
         {
             this.EscapeDistanceManager.OnDestinationReached();
+            return this.IsDistanceReached();
         }
         public void ResetDistanceComputation(float totalEscapeDistanceToTravel)
         {

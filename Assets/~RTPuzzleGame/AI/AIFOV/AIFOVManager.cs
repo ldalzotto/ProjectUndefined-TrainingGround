@@ -58,6 +58,13 @@ namespace RTPuzzle
             return navMeshHits;
         }
 
+        public List<FOVSlice> IntersectFOV_FromEscapeDirection(Vector3 from, Vector3 to, float escapeSemiAngle)
+        {
+            var localEscapeDirection = (to - from).normalized;
+            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection);
+            return this.IntersectFOV(worldEscapeDirectionAngle - escapeSemiAngle, worldEscapeDirectionAngle + escapeSemiAngle);
+        }
+
         public List<FOVSlice> IntersectFOV(float beginAngle, float endAngle)
         {
             Debug.Log("Intersect FOV. Intersection angle : " + beginAngle + " , " + endAngle);

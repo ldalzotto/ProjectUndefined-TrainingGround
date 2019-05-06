@@ -40,14 +40,12 @@ namespace RTPuzzle
 
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
-            this.EscapeDestinationManager.Tick();
-            return this.EscapeDestinationManager.EscapeDestination;
+            return this.EscapeDestinationManager.Tick();
         }
 
         public override void OnDestinationReached()
         {
-            this.EscapeDestinationManager.OnAgentDestinationReached();
-            if (this.EscapeDestinationManager.IsDistanceReached())
+            if (this.EscapeDestinationManager.OnAgentDestinationReached())
             {
                 if (this.isEscapingFromTargetZone)
                 {
@@ -88,11 +86,8 @@ namespace RTPuzzle
             this.isEscapingFromTargetZone = true;
             this.EscapeDestinationManager.ResetDistanceComputation(aITargetZoneComponent.TargetZoneEscapeDistance);
 
-            var localEscapeDirection = (agent.transform.position - targetZone.transform.position).normalized;
-            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, agent);
+            AIFOVManager.IntersectFOV_FromEscapeDirection(targetZone.transform.position, agent.transform.position, targetZoneConfigurationData.EscapeFOVSemiAngle);
 
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - targetZoneConfigurationData.EscapeFOVSemiAngle,
-                worldEscapeDirectionAngle + targetZoneConfigurationData.EscapeFOVSemiAngle);
             this.CalculateEscapeDirection();
         }
 

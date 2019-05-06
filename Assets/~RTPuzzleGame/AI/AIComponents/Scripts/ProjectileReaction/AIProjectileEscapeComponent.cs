@@ -66,14 +66,7 @@ namespace RTPuzzle
 
         public Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
-            this.escapeDestinationManager.Tick();
-            return escapeDestinationManager.EscapeDestination;
-        }
-
-        protected void IntersectFOV(Vector3 localEscapeDirection, float semiAngleEscape)
-        {
-            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, escapingAgent);
-            AIFOVManager.IntersectFOV(worldEscapeDirectionAngle - semiAngleEscape, worldEscapeDirectionAngle + semiAngleEscape);
+            return this.escapeDestinationManager.Tick();
         }
 
         protected virtual void SetIsEscapingFromProjectile(bool value)
@@ -88,11 +81,10 @@ namespace RTPuzzle
 
         public virtual void OnTriggerEnter(Vector3 impactPoint, ProjectileInherentData launchProjectileInherentData)
         {
-            var localEscapeDirection = (escapingAgent.transform.position - impactPoint).normalized;
-            if (launchProjectileInherentData != null)
+            if (impactPoint != null)
             {
                 this.OnDestinationSetFromProjectileContact();
-                this.IntersectFOV(localEscapeDirection, launchProjectileInherentData.EscapeSemiAngle);
+                this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, launchProjectileInherentData.EscapeSemiAngle);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation, null);
             }
             this.SetIsEscapingFromProjectile(true);
@@ -100,8 +92,7 @@ namespace RTPuzzle
 
         public virtual void OnDestinationReached()
         {
-            this.escapeDestinationManager.OnAgentDestinationReached();
-            if (this.escapeDestinationManager.IsDistanceReached())
+            if (this.escapeDestinationManager.OnAgentDestinationReached())
             {
                 //if travelled escape distance is reached, we reset
                 this.ResetAIProjectileEscapeManagerState();

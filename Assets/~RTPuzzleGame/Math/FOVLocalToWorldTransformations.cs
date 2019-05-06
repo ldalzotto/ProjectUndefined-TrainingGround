@@ -17,9 +17,8 @@ namespace RTPuzzle
         /// 
         /// </summary>
         /// <param name="localEscapeDirection"></param>
-        /// <param name="agent"></param>
         /// <returns></returns>
-        public static float AngleFromDirectionInFOVSpace(Vector3 localEscapeDirection, NavMeshAgent agent)
+        public static float AngleFromDirectionInFOVSpace(Vector3 localEscapeDirection)
         {
             //TODO -> is reacting correctly with slopes ?
             var localDirectionProjected = Vector3.ProjectOnPlane(localEscapeDirection, Vector3.up);// agent.transform.up);

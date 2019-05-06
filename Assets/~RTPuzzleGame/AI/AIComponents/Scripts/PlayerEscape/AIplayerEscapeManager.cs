@@ -50,14 +50,6 @@ namespace RTPuzzle
             if (isInRange && !this.isNearPlayer && !this.escapeDestinationManager.IsDistanceReached())
             {
                 this.puzzleAIBehaviorExternalEventManager.ReceiveEvent(new PlayerEscapeStartAIBehaviorEvent());
-                /*
-                var localEscapeDirection = (selfAgent.transform.position - this.playerManagerDataRetriever.GetPlayerRigidBody().position).normalized;
-                var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, selfAgent);
-
-                this.aIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.aIPlayerEscapeComponent.EscapeSemiAngle, worldEscapeDirectionAngle + this.aIPlayerEscapeComponent.EscapeSemiAngle);
-                this.escapeDestinationManager.ResetDistanceComputation(this.aIPlayerEscapeComponent.EscapeDistance);
-                this.CalculateEscapeDirection();
-                */
             }
         }
 
@@ -65,10 +57,7 @@ namespace RTPuzzle
         public override void OnPlayerEscapeStart()
         {
             this.isNearPlayer = true;
-            var localEscapeDirection = (selfAgent.transform.position - this.playerManagerDataRetriever.GetPlayerRigidBody().position).normalized;
-            var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection, selfAgent);
-
-            this.aIFOVManager.IntersectFOV(worldEscapeDirectionAngle - this.aIPlayerEscapeComponent.EscapeSemiAngle, worldEscapeDirectionAngle + this.aIPlayerEscapeComponent.EscapeSemiAngle);
+            this.aIFOVManager.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.aIPlayerEscapeComponent.EscapeSemiAngle);
             this.escapeDestinationManager.ResetDistanceComputation(this.aIPlayerEscapeComponent.EscapeDistance);
             this.CalculateEscapeDirection();
         }
@@ -81,8 +70,7 @@ namespace RTPuzzle
 
         public override void OnDestinationReached()
         {
-            this.escapeDestinationManager.OnAgentDestinationReached();
-            if (this.escapeDestinationManager.IsDistanceReached())
+            if (this.escapeDestinationManager.OnAgentDestinationReached())
             {
                 this.OnStateReset();
             }
@@ -94,8 +82,7 @@ namespace RTPuzzle
 
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
-            this.escapeDestinationManager.Tick();
-            return this.escapeDestinationManager.EscapeDestination;
+            return this.escapeDestinationManager.Tick();
         }
 
         public override void OnStateReset()
