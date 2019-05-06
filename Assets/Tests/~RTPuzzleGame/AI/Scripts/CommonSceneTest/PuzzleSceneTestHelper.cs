@@ -50,6 +50,13 @@ namespace Tests
             return attractiveObjectInherentConfigurationData;
         }
 
+        public static void SetPlayerEscapeComponentValues(GenericPuzzleAIComponents GenericPuzzleAIComponents, float escapeDistance, float escapeSemiAngle, float playerDetectionRadius)
+        {
+            GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance = escapeDistance;
+            GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle = escapeSemiAngle;
+            GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = playerDetectionRadius;
+        }
+
         public static ProjectileInherentData CreateProjectileInherentData(float effectRange, float escapeSemiAngle, float travelDistancePerSeconds)
         {
             var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
@@ -157,13 +164,37 @@ namespace Tests
             yield return new WaitForEndOfFrame();
             if (OnFearTriggered != null)
             {
-                OnFearTriggered.Invoke();
+                yield return OnFearTriggered.Invoke();
             }
             if (OnFearEnded != null)
             {
                 yield return new WaitForSeconds(fearTime);
                 yield return new WaitForFixedUpdate();
-                OnFearEnded.Invoke();
+                yield return OnFearEnded.Invoke();
+            }
+        }
+        #endregion
+
+        #region Player escape
+        public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, NPCAIManager nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
+        {
+            nPCAIManager.GetAgent().Warp(playerManager.transform.position);
+            if (OnBeforeSettingPosition != null)
+            {
+                yield return OnBeforeSettingPosition.Invoke();
+            }
+            yield return null;
+            if (OnSamePositionSetted != null)
+            {
+                yield return OnSamePositionSetted.Invoke();
+            }
+            if (OnDestinationReached != null)
+            {
+                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                TestHelperMethods.SetAgentDestinationPositionReached(agent);
+                yield return null;
+                yield return new WaitForFixedUpdate();
+                yield return OnDestinationReached.Invoke();
             }
         }
         #endregion
@@ -182,6 +213,8 @@ namespace Tests
 
                 genericPuzzleAIComponents.AIFearStunComponent.FOVSumThreshold = 20f;
                 genericPuzzleAIComponents.AIFearStunComponent.TimeWhileBeginFeared = 2f;
+
+                genericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = -1f;
             }
         }
     }

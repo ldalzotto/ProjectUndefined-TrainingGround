@@ -145,7 +145,7 @@ namespace RTPuzzle
         }
 
         #region Interuption matrix
-        public bool IsEventInteruptManager(Type externalEventType)
+        public bool DoesEventInteruptManager(Type externalEventType)
         {
             if (this.aiBehaviorExternalEventInterruptionMatrix.ContainsKey(externalEventType))
             {

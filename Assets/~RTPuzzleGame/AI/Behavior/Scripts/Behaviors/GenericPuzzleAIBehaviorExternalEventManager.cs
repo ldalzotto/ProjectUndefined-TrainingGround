@@ -67,7 +67,7 @@ namespace RTPuzzle
                 genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
             else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED) && !this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
-                    || genericAiBehavior.IsEventInteruptManager(projectileTriggerEnterEvent.GetType()))
+                    || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
                 Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
                 genericAiBehavior.ManagersStateReset();
@@ -159,7 +159,7 @@ namespace RTPuzzle
         private void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, PlayerEscapeStartAIBehaviorEvent playerEscapeStartAIBehaviorEvent)
         {
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED)
-                 || genericAiBehavior.IsEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
+                 || genericAiBehavior.DoesEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
             {
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();
