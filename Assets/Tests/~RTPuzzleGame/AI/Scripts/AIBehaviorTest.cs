@@ -576,15 +576,6 @@ namespace Tests
             );
         }
 
-        private IEnumerator SetAIPosition(NPCAIManager npcAiManager, Vector3 targetPosition)
-        {
-            var mouseAIBheavior = (GenericPuzzleAIBehavior)npcAiManager.GetAIBehavior();
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-            TestHelperMethods.SetAgentDestinationPositionReached(npcAiManager.GetAgent(), targetPosition);
-            yield return null;
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-        }
-
         [UnityTest]
         public IEnumerator AI_AttractiveObject_WhenAIGetsOutOfRangeToReachIt_ThenStillAttracted_Test()
         {
@@ -596,9 +587,12 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(attractiveRange, 0.2f), mouseTestAIManager.transform.position,
                 OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObjectType) =>
                 {
-                    return SetAIPosition(mouseTestAIManager, mouseTestAIManager.transform.position + new Vector3(attractiveRange * 2, 0f, 0f));
+                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    TestHelperMethods.SetAgentPosition(mouseTestAIManager.GetAgent(), mouseTestAIManager.transform.position + new Vector3(attractiveRange * 2, 0f, 0f));
+                    return null;
                 },
                 OnAttractiveObjectDestroyed: null);
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
         }
 
         [UnityTest]
@@ -670,7 +664,6 @@ namespace Tests
             //move agent to a near position
             var agent = mouseTestAIManager.GetAgent();
             TestHelperMethods.SetAgentDestinationPositionReached(agent);
-            Debug.Log("Agent position manually updated.");
             yield return null; //trigger SetDestination();
         }
 
@@ -732,7 +725,7 @@ namespace Tests
             var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
             var aiPosition = targetZoneCollider.transform.position + new Vector3(0, 0, 0.1f);
-            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), aiPosition);
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, aiPosition);
             yield return null;
             var aiFov = mouseAIBheavior.GetFOV();
             Assert.AreEqual(new FOVSlice(360f - targetEscapeSemiAngle, 360f), aiFov.FovSlices[0]);
@@ -750,9 +743,9 @@ namespace Tests
             var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
             var aiPosition = targetZoneCollider.transform.position + new Vector3(-0.1f, 0f, 0f);
-            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), aiPosition);
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, aiPosition);
             yield return null; //AI is inside the target zone
-            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent(), PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.FAR_AWAY_POSITION_1).position);
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.FAR_AWAY_POSITION_1).position);
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone(), "AI should still escape as there are distance to cross.");
             Assert.AreNotEqual(new FOVSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0], "AI fov must not be resetted after destination reached and still distance to cross.");
@@ -1115,7 +1108,7 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
 
-            PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 10f, 90f, 1f);
+            PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 10f, 90f, 0.1f);
 
             yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, mouseTestAIManager,
                    OnBeforeSettingPosition: () =>
@@ -1139,6 +1132,75 @@ namespace Tests
                        Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        return null;
                    });
+        }
+
+        [UnityTest]
+        public IEnumerator AI_PlayerEscape_EscapeFromPlayerWhenInRange_StillEscapeAfterDestinationReached()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var playerManager = GameObject.FindObjectOfType<PlayerManager>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 1f, 90f, 0.1f);
+
+            yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, mouseTestAIManager,
+                   OnBeforeSettingPosition: () =>
+                   {
+                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                       Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+                       Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+                       return null;
+                   },
+                   OnSamePositionSetted: () =>
+                   {
+                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+                       PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 1f, 90f, 99999f);
+                       return null;
+                   },
+                   OnDestinationReached: () =>
+                   {
+                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+                       return null;
+                   });
+        }
+
+        [UnityTest]
+        public IEnumerator AI_PlayerEscape_EscapeFromPlayerWhenInRange_StillEscapeWhenThereIsStillDistanceToTravel()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var playerManager = GameObject.FindObjectOfType<PlayerManager>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 99999f, 90f, 0.1f);
+
+            yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, mouseTestAIManager,
+                   OnBeforeSettingPosition: () =>
+                   {
+                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                       Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+                       Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+                       return null;
+                   },
+                   OnSamePositionSetted: () =>
+                   {
+                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+                       return null;
+                   },
+                   OnDestinationReached: null);
+            TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, mouseTestAIManager.transform.position + (Vector3.forward * 10f));
+            Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+            Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+            Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
         }
 
         [UnityTest]

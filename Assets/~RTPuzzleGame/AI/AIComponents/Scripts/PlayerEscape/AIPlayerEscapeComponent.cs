@@ -21,12 +21,18 @@ namespace RTPuzzle
 
         public abstract bool IsManagerEnabled();
 
-        public abstract void OnPlayerEscapeStart();
+        public abstract void OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType AIPlayerEscapeDestinationCalculationType);
 
         public abstract void OnDestinationReached();
 
         public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
 
         public abstract void OnStateReset();
+    }
+
+    public enum AIPlayerEscapeDestinationCalculationType
+    {
+        FAREST = 0,
+        WITH_COLLIDERS = 1
     }
 }

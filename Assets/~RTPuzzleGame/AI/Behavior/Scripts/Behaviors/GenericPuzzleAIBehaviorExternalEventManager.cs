@@ -62,7 +62,7 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager(), EvaluationType.EXCLUDED) &&
                              this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {
-                Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
+                Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
@@ -70,7 +70,7 @@ namespace RTPuzzle
                 && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                     || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
-                Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
+                Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
@@ -92,7 +92,7 @@ namespace RTPuzzle
         {
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager()))
             {
-                Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerEnter");
+                Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
             }
@@ -102,7 +102,7 @@ namespace RTPuzzle
         {
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager()))
             {
-                Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerStay");
+                Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
             }
@@ -110,7 +110,7 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
-            Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerExit");
+            Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
         }
 
         private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
@@ -128,11 +128,11 @@ namespace RTPuzzle
                 {
                     if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                     {
-                        Debug.Log("Target zone reset FOV");
+                        Debug.Log(MyLog.Format("Target zone reset FOV"));
                         genericAiBehavior.AIFOVManager.ResetFOV();
                     }
 
-                    Debug.Log(Time.frameCount + "AI - OnTargetZoneTriggerEnter");
+                    Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerEnter"));
                     genericAiBehavior.ManagersStateReset();
                     genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
                 }
@@ -145,12 +145,12 @@ namespace RTPuzzle
             {
                 if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                 {
-                    Debug.Log("Target zone reset FOV");
+                    Debug.Log(MyLog.Format("Target zone reset FOV"));
                     genericAiBehavior.AIFOVManager.ResetFOV();
                 }
                 if (targetZoneTriggerStayAIBehaviorEvent.TargetZone != null)
                 {
-                    Debug.Log(Time.frameCount + "AI - OnTargetZoneTriggerStay");
+                    Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerStay"));
                     genericAiBehavior.ManagersStateReset();
                     genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
                 }
@@ -162,14 +162,18 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED)
                  || genericAiBehavior.DoesEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
             {
-                /*
+                genericAiBehavior.ManagersStateReset();
                 if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                 {
-                    Debug.Log("Escape player with ignore.");
+                    Debug.Log(MyLog.Format("AI - Player escape without colliders."));
+                    genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType.FAREST);
                 }
-                */
-                genericAiBehavior.ManagersStateReset();
-                genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();
+                else
+                {
+                    Debug.Log(MyLog.Format("AI - Player escape with colliders."));
+                    genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType.WITH_COLLIDERS);
+                }
+
             }
         }
 

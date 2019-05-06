@@ -178,11 +178,11 @@ namespace Tests
         #region Player escape
         public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, NPCAIManager nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
         {
-            nPCAIManager.GetAgent().Warp(playerManager.transform.position);
             if (OnBeforeSettingPosition != null)
             {
                 yield return OnBeforeSettingPosition.Invoke();
             }
+            nPCAIManager.GetAgent().Warp(playerManager.transform.position);
             yield return null;
             if (OnSamePositionSetted != null)
             {

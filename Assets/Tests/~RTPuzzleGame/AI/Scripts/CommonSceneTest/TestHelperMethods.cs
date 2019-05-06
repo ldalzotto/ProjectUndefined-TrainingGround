@@ -1,4 +1,5 @@
 ﻿using OdinSerializer;
+using RTPuzzle;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,11 +14,22 @@ namespace Tests
             agent.transform.position = agent.destination;
         }
 
-        public static void SetAgentDestinationPositionReached(NavMeshAgent agent, Vector3 worldPosition)
+        public static void SetAgentDestinationPositionReached(NPCAIManager ai, Vector3 worldPosition)
         {
+            var agent = ai.GetAgent();
             agent.Warp(worldPosition);
             agent.SetDestination(worldPosition);
-            SetAgentDestinationPositionReached(agent);
+            agent.velocity = Vector3.zero;
+            agent.transform.position = agent.destination;
+            agent.ResetPath();
+            ai.OnDestinationReached();
+        }
+
+        public static void SetAgentPosition(NavMeshAgent agent, Vector3 worldPosition)
+        {
+            agent.velocity = Vector3.zero;
+            agent.nextPosition = worldPosition;
+            agent.transform.position = worldPosition;
         }
 
     }

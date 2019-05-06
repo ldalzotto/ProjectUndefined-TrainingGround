@@ -69,7 +69,7 @@ namespace RTPuzzle
     {
         [Tooltip("This value is the minimum value of speed, starting from the transform rotation will follow the agent direction. If this value were not " +
             "present, the precission loss of agent speed calculation would cause the rotation to go crazy when speed is very low.")]
-        [Range(0,1)]
+        [Range(0, 1)]
         public float RotationFollow_VelocityThreshold;
         public float SpeedMultiplicationFactor;
     }

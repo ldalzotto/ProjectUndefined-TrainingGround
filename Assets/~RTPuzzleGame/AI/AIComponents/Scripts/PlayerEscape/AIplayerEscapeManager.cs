@@ -22,6 +22,7 @@ namespace RTPuzzle
 
         #region State
         private bool isNearPlayer;
+        private AIPlayerEscapeDestinationCalculationType AIPlayerEscapeDestinationCalculationType;
         #endregion
 
         #region Internal Managers
@@ -38,15 +39,13 @@ namespace RTPuzzle
             this.aIFOVManager = aIFOVManager;
             this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
             this.escapeDestinationManager = new EscapeDestinationManager(this.selfAgent);
+            this.OnStateReset();
         }
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
-            bool isInRange = false;
-            if (!this.isNearPlayer || (this.isNearPlayer && this.escapeDestinationManager.IsDistanceReached()))
-            {
-                isInRange = Vector3.Distance(this.selfAgent.transform.position, this.playerManagerDataRetriever.GetPlayerRigidBody().position) <= this.aIPlayerEscapeComponent.PlayerDetectionRadius;
-            }
+            bool isInRange = Vector3.Distance(this.selfAgent.transform.position, this.playerManagerDataRetriever.GetPlayerRigidBody().position) <= this.aIPlayerEscapeComponent.PlayerDetectionRadius;
+            //The event is triggered only when AI is not already escaping
             if (isInRange && !this.isNearPlayer && !this.escapeDestinationManager.IsDistanceReached())
             {
                 this.puzzleAIBehaviorExternalEventManager.ReceiveEvent(new PlayerEscapeStartAIBehaviorEvent());
@@ -54,8 +53,9 @@ namespace RTPuzzle
         }
 
         #region External Event
-        public override void OnPlayerEscapeStart()
+        public override void OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType AIPlayerEscapeDestinationCalculationType)
         {
+            this.AIPlayerEscapeDestinationCalculationType = AIPlayerEscapeDestinationCalculationType;
             this.isNearPlayer = true;
             this.aIFOVManager.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.aIPlayerEscapeComponent.EscapeSemiAngle);
             this.escapeDestinationManager.ResetDistanceComputation(this.aIPlayerEscapeComponent.EscapeDistance);
@@ -87,6 +87,7 @@ namespace RTPuzzle
 
         public override void OnStateReset()
         {
+            this.AIPlayerEscapeDestinationCalculationType = AIPlayerEscapeDestinationCalculationType.WITH_COLLIDERS;
             this.isNearPlayer = false;
             this.escapeDestinationManager.ResetDistanceComputation(this.aIPlayerEscapeComponent.EscapeDistance);
         }
@@ -96,7 +97,14 @@ namespace RTPuzzle
             this.escapeDestinationManager.EscapeDestinationCalculationStrategy(
                 escapeDestinationCalculationMethod: (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
                 {
-                    this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
+                    if (this.AIPlayerEscapeDestinationCalculationType == AIPlayerEscapeDestinationCalculationType.WITH_COLLIDERS)
+                    {
+                        this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
+                    }
+                    else
+                    {
+                        this.escapeDestinationManager.EscapeToFarest(7, navMeshRaycastStrategy, this.aIFOVManager);
+                    }
                 },
                 ifAllFailsAction: this.OnStateReset
              );
