@@ -66,10 +66,8 @@ namespace RTPuzzle
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
-            else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED) &&
-                    !this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
-                    || genericAiBehavior.IsEscapingFromExitZone()
-                    || genericAiBehavior.IsEscapingFromPlayer())
+            else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED) && !this.trackerContainer.GetBehavior<ProjectileStateTracker>().HasFirstProjectileHitted)
+                    || genericAiBehavior.IsEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
                 Debug.Log(Time.frameCount + "AI - OnProjectileTriggerEnter");
                 genericAiBehavior.ManagersStateReset();
@@ -112,13 +110,6 @@ namespace RTPuzzle
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
             Debug.Log(Time.frameCount + "AI - OnAttractiveObjectTriggerExit");
-            //When the AI is influenced by attractive object, it remains attracted 
-            /*
-            if (!genericAiBehavior.IsInfluencedByAttractiveObject())
-            {
-                genericAiBehavior.AIAttractiveObjectManager.OnTriggerExit();
-            }
-            */
         }
 
         private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
@@ -130,12 +121,13 @@ namespace RTPuzzle
 
         private void TargetZone_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerEnterAIBehaviorEvent targetZoneTriggerEnterAIBehaviorEvent)
         {
-            if (!genericAiBehavior.IsEscapingFromProjectileIngnoringTargetZones() && !genericAiBehavior.IsFeared())
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AITargetZoneManager()))
             {
                 if (targetZoneTriggerEnterAIBehaviorEvent.TargetZone != null)
                 {
                     if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                     {
+                        Debug.Log("Target zone reset FOV");
                         genericAiBehavior.AIFOVManager.ResetFOV();
                     }
 
@@ -152,6 +144,7 @@ namespace RTPuzzle
             {
                 if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                 {
+                    Debug.Log("Target zone reset FOV");
                     genericAiBehavior.AIFOVManager.ResetFOV();
                 }
                 if (targetZoneTriggerStayAIBehaviorEvent.TargetZone != null)
@@ -165,7 +158,8 @@ namespace RTPuzzle
 
         private void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, PlayerEscapeStartAIBehaviorEvent playerEscapeStartAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED))
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED)
+                 || genericAiBehavior.IsEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
             {
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();

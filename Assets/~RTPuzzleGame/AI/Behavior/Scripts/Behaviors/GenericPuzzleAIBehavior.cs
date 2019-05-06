@@ -65,6 +65,19 @@ namespace RTPuzzle
                  { 7, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIRandomPatrolComponent.SelectedManagerType) }
             });
 
+            this.aiBehaviorExternalEventInterruptionMatrix = new Dictionary<Type, List<Func<bool>>>() {
+                { typeof(ProjectileTriggerEnterAIBehaviorEvent), new List<Func<bool>>(){
+                                this.AIAttractiveObjectManager().IsManagerEnabled,
+                                this.AITargetZoneManager().IsManagerEnabled,
+                                this.AIPlayerEscapeManager().IsManagerEnabled }
+                },
+                {
+                  typeof(PlayerEscapeStartAIBehaviorEvent), new List<Func<bool>>(){
+                            this.AITargetZoneManager().IsManagerEnabled
+                  }
+                }
+            };
+
         }
 
         #region External Events

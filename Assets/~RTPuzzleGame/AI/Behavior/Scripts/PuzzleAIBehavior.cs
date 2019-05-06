@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using static RTPuzzle.AIBehaviorManagerContainer;
@@ -41,6 +42,7 @@ namespace RTPuzzle
         #region Internal Dependencies
         private Action forceUpdateAIBehavior;
         protected PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager;
+        protected Dictionary<Type, List<Func<bool>>> aiBehaviorExternalEventInterruptionMatrix;
         protected AIBehaviorManagerContainer aIBehaviorManagerContainer;
         #endregion
 
@@ -141,6 +143,24 @@ namespace RTPuzzle
             }
             return null;
         }
+
+        #region Interuption matrix
+        public bool IsEventInteruptManager(Type externalEventType)
+        {
+            if (this.aiBehaviorExternalEventInterruptionMatrix.ContainsKey(externalEventType))
+            {
+                foreach (var interuptionCondition in this.aiBehaviorExternalEventInterruptionMatrix[externalEventType])
+                {
+                    if (interuptionCondition.Invoke())
+                    {
+                        //at least one of interruption trigger is true -> we interrupt
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        #endregion
     }
 
     public struct AIBheaviorBuildInputData
