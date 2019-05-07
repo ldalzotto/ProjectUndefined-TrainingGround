@@ -40,6 +40,8 @@ namespace RTPuzzle
         {
             this.isFeared = false;
         }
+
+        internal abstract void OnFearedForced(FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent);
     }
 
     

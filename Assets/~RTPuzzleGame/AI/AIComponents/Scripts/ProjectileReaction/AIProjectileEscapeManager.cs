@@ -8,14 +8,13 @@ namespace RTPuzzle
     {
 
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
         private Func<Collider[]> targetZoneTriggerColliderProvider;
         #endregion
 
         public AIProjectileWithCollisionEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<Collider[]> targetZoneTriggerColliderProvider) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent)
+                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<Collider[]> targetZoneTriggerColliderProvider,
+                AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent, PuzzleEventsManager, AIDestimationMoveManagerComponent)
         {
-            this.PuzzleEventsManager = PuzzleEventsManager;
             this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
         }
 
@@ -23,7 +22,7 @@ namespace RTPuzzle
         {
             if (this.isEscapingFromProjectile && !value)
             {
-                this.PuzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
+                this.puzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
             }
             base.SetIsEscapingFromProjectile(value);
         }
@@ -31,7 +30,7 @@ namespace RTPuzzle
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
             Debug.Log(MyLog.Format("EscapeToFarestWithTargetZone"));
-            this.PuzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 1);
+            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 1);
             this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
         };
 
@@ -47,21 +46,16 @@ namespace RTPuzzle
 
     public class AIProjectileIgnorePhysicsEscapeManager : AbstractAIProjectileEscapeManager
     {
-        #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
-        #endregion
-
         public AIProjectileIgnorePhysicsEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent)
+                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent, PuzzleEventsManager, AIDestimationMoveManagerComponent)
         {
-            this.PuzzleEventsManager = PuzzleEventsManager;
         }
 
         protected override void SetIsEscapingFromProjectile(bool value)
         {
             if (this.isEscapingFromProjectile && !value)
             {
-                this.PuzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
+                this.puzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
             }
             base.SetIsEscapingFromProjectile(value);
         }
@@ -69,7 +63,7 @@ namespace RTPuzzle
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
             Debug.Log("EscapeToFarest");
-            this.PuzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 2);
+            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 2);
             this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
         };
 

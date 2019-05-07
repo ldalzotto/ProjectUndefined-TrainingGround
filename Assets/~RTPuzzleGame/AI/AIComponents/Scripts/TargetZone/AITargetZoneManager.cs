@@ -74,6 +74,7 @@ namespace RTPuzzle
 
         public override void OnStateReset()
         {
+            this.EscapeDestinationManager.OnStateReset();
             isEscapingFromTargetZone = false;
         }
 

@@ -40,7 +40,12 @@ namespace RTPuzzle
         {
             this.EscapeDistanceManager.ResetDistanceComputation(totalEscapeDistanceToTravel);
         }
+        public void OnStateReset()
+        {
+            this.EscapeDistanceManager.ResetState();
+        }
         #endregion
+
 
         #region Logical conditions
         public bool IsDistanceReached()
@@ -51,6 +56,10 @@ namespace RTPuzzle
 
         #region Data retrieval
         public Vector3? EscapeDestination { get => escapeDestination; }
+        public float GetRemainingDistance()
+        {
+            return this.EscapeDistanceManager.GetRemainingDistance();
+        }
         #endregion
 
         #region Escape destination computation methods
@@ -182,6 +191,18 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Calculation failed fallback
+        public static Action OnDestinationCalculationFailed_ForceAIFear(PuzzleEventsManager puzzleEventsManager, AiID aiID, float fearTime)
+        {
+            return () => { puzzleEventsManager.PZ_EVT_AI_FearedForced(aiID, fearTime); };
+        }
+
+        public static float ForcedFearRemainingDistanceToFearTime(EscapeDestinationManager escapeDestinationManager, AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent)
+        {
+            return escapeDestinationManager.GetRemainingDistance() / aIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
+        }
+        #endregion
+
         #region Gizmo Tick
         public void GizmoTick()
         {
@@ -262,7 +283,7 @@ namespace RTPuzzle
                 if (this.lastFrameAgentPosition.HasValue)
                 {
                     this.distanceCounter += Vector3.Distance(this.lastFrameAgentPosition.Value, this.escapingAgnet.transform.position);
-                  //  Debug.Log(Time.frameCount + " : " + this.distanceCounter);
+                    //  Debug.Log(Time.frameCount + " : " + this.distanceCounter);
                 }
                 this.lastFrameAgentPosition = this.escapingAgnet.transform.position;
             }
@@ -274,6 +295,11 @@ namespace RTPuzzle
             {
                 this.isDistanceReached = true;
             }
+        }
+
+        public void ResetState()
+        {
+            this.isDistanceReached = true;
         }
 
         public float GetRemainingDistance()

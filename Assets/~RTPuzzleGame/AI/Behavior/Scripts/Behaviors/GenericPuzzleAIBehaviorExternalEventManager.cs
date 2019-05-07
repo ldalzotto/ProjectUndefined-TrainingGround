@@ -12,13 +12,14 @@ namespace RTPuzzle
         {
             {typeof(FearedEndAIBehaviorEvent).Name, 1 },
             {typeof(FearedStartAIBehaviorEvent).Name, 2 },
-            {typeof(TargetZoneTriggerStayAIBehaviorEvent).Name, 3 },
-            {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 4 },
-            {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 5 },
-            {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 6 },
-            {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 7 },
-            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 8 },
-            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 9 }
+            {typeof(FearedForcedAIBehaviorEvent).Name, 3 },
+            {typeof(TargetZoneTriggerStayAIBehaviorEvent).Name, 4 },
+            {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 5 },
+            {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 6 },
+            {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 7 },
+            {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 8 },
+            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 9 },
+            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 10 }
         };
 
         private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
@@ -36,6 +37,7 @@ namespace RTPuzzle
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
             EventTypeCheck<FearedStartAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Start);
+            EventTypeCheck<FearedForcedAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Forced);
             EventTypeCheck<FearedEndAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_End);
             EventTypeCheck<AttractiveObjectTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerEnter);
             EventTypeCheck<AttractiveObjectTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerStay);
@@ -79,6 +81,12 @@ namespace RTPuzzle
         private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
         {
             genericAiBehavior.ManagersStateReset();
+        }
+
+        private void Feared_Forced(GenericPuzzleAIBehavior genericAiBehavior, FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent)
+        {
+            genericAiBehavior.ManagersStateReset();
+            genericAiBehavior.AIFearStunManager().OnFearedForced(fearedForcedAIBehaviorEvent);
         }
 
         private void Feared_End(GenericPuzzleAIBehavior genericAiBehavior, FearedEndAIBehaviorEvent fearedEndAIBehaviorEvent)
@@ -198,6 +206,18 @@ namespace RTPuzzle
     }
 
     public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
+
+    public class FearedForcedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        private float fearedTime;
+
+        public FearedForcedAIBehaviorEvent(float fearedTime)
+        {
+            this.fearedTime = fearedTime;
+        }
+
+        public float FearedTime { get => fearedTime; set => fearedTime = value; }
+    }
 
     public class FearedEndAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
 

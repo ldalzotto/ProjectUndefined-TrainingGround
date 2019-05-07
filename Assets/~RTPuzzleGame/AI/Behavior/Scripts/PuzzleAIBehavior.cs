@@ -140,7 +140,7 @@ namespace RTPuzzle
             if (behaviorType == typeof(GenericPuzzleAIBehavior))
             {
                 return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.TargetZoneContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever);
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.TargetZoneContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
             }
             return null;
         }
@@ -175,10 +175,11 @@ namespace RTPuzzle
         public AiID aiID;
         public Collider aiCollider;
         public Action ForceUpdateAIBehavior;
+        public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents,
             Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
-            TargetZoneContainer TargetZoneContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior)
+            TargetZoneContainer TargetZoneContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = aIComponents;
@@ -189,6 +190,7 @@ namespace RTPuzzle
             this.aiID = aiID;
             this.aiCollider = aiCollider;
             this.ForceUpdateAIBehavior = ForceUpdateAIBehavior;
+            this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
         }
     }
 

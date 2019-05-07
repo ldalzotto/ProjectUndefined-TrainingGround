@@ -27,6 +27,10 @@ namespace RTPuzzle
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunned();
         }
+        public void PZ_EVT_AI_FearedForced(AiID aiID, float fearTime)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedForced(fearTime);
+        }
         public void PZ_EVT_AI_FearedStunned_Ended(AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
@@ -63,15 +67,15 @@ namespace RTPuzzle
         public void PZ_EVT_ThrowProjectileCursor_OnProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
-          //  GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
+            //  GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
         }
         public void PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
-           // GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
+            // GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
         #endregion
-        
+
         public void PZ_EVT_GameOver(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();

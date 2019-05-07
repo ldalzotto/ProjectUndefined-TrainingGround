@@ -22,6 +22,8 @@ namespace RTPuzzle
         #region External Dependencies
         protected NavMeshAgent escapingAgent;
         protected AIFOVManager AIFOVManager;
+        protected PuzzleEventsManager puzzleEventsManager;
+        private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
         #endregion
 
         #region Internal Dependencies
@@ -37,13 +39,16 @@ namespace RTPuzzle
         protected abstract Action<NavMeshRaycastStrategy> DestinationCalulationMethod { get; }
         #endregion
 
-        protected AbstractAIProjectileEscapeManager(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID, AIProjectileEscapeComponent AIProjectileEscapeComponent)
+        protected AbstractAIProjectileEscapeManager(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID,
+            AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             this.AIFOVManager = aIFOVManager;
             this.aiID = aiID;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
             this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
+            this.puzzleEventsManager = puzzleEventsManager;
+            this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
         }
 
         #region Internal Events
@@ -85,7 +90,8 @@ namespace RTPuzzle
             {
                 this.OnDestinationSetFromProjectileContact();
                 this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, launchProjectileInherentData.EscapeSemiAngle);
-                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation, null);
+                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation,
+                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }
             this.SetIsEscapingFromProjectile(true);
         }
@@ -99,12 +105,14 @@ namespace RTPuzzle
             }
             else
             {
-                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.DestinationCalulationMethod, this.ResetAIProjectileEscapeManagerState);
+                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.DestinationCalulationMethod, EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID,
+                   EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }
         }
         public virtual void OnStateReset()
         {
             this.SetIsEscapingFromProjectile(false);
+            this.escapeDestinationManager.OnStateReset();
         }
         public abstract void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile);
         public virtual void OnTriggerExit(Collider collider, CollisionType collisionType)
@@ -117,7 +125,7 @@ namespace RTPuzzle
         }
 
         public virtual void BeforeManagersUpdate(float d, float timeAttenuationFactor) { }
-        
+
     }
 
 }
