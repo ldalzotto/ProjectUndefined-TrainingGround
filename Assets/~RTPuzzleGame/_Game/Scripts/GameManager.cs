@@ -65,7 +65,6 @@ namespace RTPuzzle
             PlayerActionManager.Init(PuzzleId);
             LaunchProjectileContainerManager.Init();
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
-            GameObject.FindObjectOfType<GroundCollision>().Init();
             GroundEffectsManagerV2.Init();
             InRangeEffectManager.Init();
             CooldownFeedManager.Init();

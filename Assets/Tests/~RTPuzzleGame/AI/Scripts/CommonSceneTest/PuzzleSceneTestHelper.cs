@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Tests
 {
@@ -196,6 +197,46 @@ namespace Tests
                 yield return new WaitForFixedUpdate();
                 yield return OnDestinationReached.Invoke();
             }
+        }
+
+        public static IEnumerator EscapeFromPlayerIgnoreTargetYield(PlayerManager playerManager, NPCAIManager nPCAIManager, ProjectileInherentData projectileInherentData, Vector3 projectilePosition,
+            Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
+        {
+            yield return PuzzleSceneTestHelper.ProjectileYield(projectileInherentData, projectilePosition,
+                OnProjectileSpawn: (LaunchProjectile launchProjectile) =>
+                {
+                    return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, nPCAIManager, OnBeforeSettingPosition, OnSamePositionSetted, null);
+                },
+                OnDistanceReached: OnDestinationReached);
+        }
+        #endregion
+
+        #region Wait for condition
+        public static IEnumerator WaitForConditionUpdate(int numberOfFrameWaited, Func<bool> condition, Func<IEnumerator> OnSuccess, Func<IEnumerator> OnFailure)
+        {
+            bool success = false;
+            for (var i = 0; i < numberOfFrameWaited; i++)
+            {
+                yield return null;
+                if (condition.Invoke())
+                {
+                    if (OnSuccess != null)
+                    {
+                        yield return OnSuccess.Invoke();
+                    }
+                    success = true;
+                    break;
+                }
+            }
+            if (!success)
+            {
+                if (OnFailure != null)
+                {
+                    yield return OnFailure.Invoke();
+                }
+                Assert.IsTrue(false, "A WaitForConditionUpdate has not been fulfilled.");
+            }
+
         }
         #endregion
 

@@ -9,6 +9,8 @@ namespace Tests
     public class AIBehaviorTest : AbstractPuzzleSceneTest
     {
 
+        private const int PITFALL_AI_TO_FEAR_FRAME_PRECISION = 20;
+
         private EscapeWhileIgnoringTargetZoneTracker GetEscapeWhileIgnoringTargetZoneTracker(GenericPuzzleAIBehavior genericPuzzleAIBehavior)
         {
             return genericPuzzleAIBehavior.PuzzleAIBehaviorExternalEventManager.GetBehaviorStateTrackerContainer().GetBehavior<EscapeWhileIgnoringTargetZoneTracker>();
@@ -292,6 +294,31 @@ namespace Tests
             yield return this.AI_ProjectileReceived_SecondTimeInTargetZone(SceneConstants.OneAIForcedTargetZone, null);
         }
 
+        [UnityTest]
+        public IEnumerator AI_ProjectileReceived_WhenThereIsNoAvailableDestination_BeFeared()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position);
+            yield return null;
+            Assert.IsFalse(mouseAIBheavior.IsFeared());
+            yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
+                OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    return PuzzleSceneTestHelper.WaitForConditionUpdate(PITFALL_AI_TO_FEAR_FRAME_PRECISION, () => { return mouseAIBheavior.IsFeared(); },
+                        OnSuccess: () =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            return null;
+                        },
+                        OnFailure: null);
+                },
+                OnDistanceReached: null
+                );
+        }
 
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_InterruptedBy_TargetZone_Test()
@@ -1171,6 +1198,31 @@ namespace Tests
         }
 
         [UnityTest]
+        public IEnumerator AI_PlayerEscape_EscapeFromPlayerWhenInRange_WhenThereIsNoAvailableDestination_BeFeared()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var playerManager = GameObject.FindObjectOfType<PlayerManager>();
+            var playerDataRetriver = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+
+            PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 1f, 20f, 1);
+            mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position);
+            playerDataRetriver.GetPlayerRigidBody().transform.position = PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position - (Vector3.forward * 0.5f);
+
+            yield return null;
+            playerDataRetriver.GetPlayerRigidBody().transform.position = Vector3.zero;
+            yield return PuzzleSceneTestHelper.WaitForConditionUpdate(PITFALL_AI_TO_FEAR_FRAME_PRECISION, () => { return mouseAIBheavior.IsFeared(); },
+                    OnSuccess: () =>
+                    {
+                        Assert.IsTrue(mouseAIBheavior.IsFeared());
+                        return null;
+                    },
+                    OnFailure: null);
+        }
+
+        [UnityTest]
         public IEnumerator AI_PlayerEscape_EscapeFromPlayerWhenInRange_StillEscapeWhenThereIsStillDistanceToTravel()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
@@ -1201,6 +1253,41 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
             Assert.IsFalse(mouseAIBheavior.IsPatrolling());
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+        }
+
+        [UnityTest]
+        public IEnumerator AI_PlayerEscape_EscapeFromPlayerWhenInRange_WhenEscapingWithoutTargetZones_DestinationIntoTargetZone()
+        {
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            yield return null;
+
+            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var playerManager = GameObject.FindObjectOfType<PlayerManager>();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).TargetZoneTriggerType.TargetZoneTriggerCollider;
+
+            PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 99999f, 180f, 0.2f);
+            playerManager.transform.position = new Vector3(999, 999, 999);
+            ((GenericPuzzleAIComponents)mouseTestAIManager.GetAIBehavior().AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistance = 999f;
+
+            yield return PuzzleSceneTestHelper.EscapeFromPlayerIgnoreTargetYield(playerManager, mouseTestAIManager,
+                PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position + (Vector3.right * 0.1f),
+                OnBeforeSettingPosition: () =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    playerManager.transform.position = mouseTestAIManager.transform.position + Vector3.right;
+                    return null;
+                },
+                OnSamePositionSetted: () =>
+                {
+                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsTrue(targetZoneCollider.bounds.Contains(mouseTestAIManager.GetAgent().destination));
+                    return null;
+                },
+                OnDestinationReached: null);
         }
 
         [UnityTest]
@@ -1316,7 +1403,6 @@ namespace Tests
                        OnFearEnded: null, 1f);
                 },
                 OnDestinationReached: null);
-
         }
 
     }
