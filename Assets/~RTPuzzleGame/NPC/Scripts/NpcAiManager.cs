@@ -169,10 +169,14 @@ namespace RTPuzzle
             this.AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime();
         }
 
-        public void OnHittedByProjectile2InARow()
+        public void OnEscapeWithoutTargetStart()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_2_IN_A_ROW, this.AiID);
-            this.AnimationVisualFeedbackManager.OnHittedByProjectile2InARow();
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET, this.AiID);
+            this.AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart();
+        }
+        public void OnEscapeWithoutTargetEnd()
+        {
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
         }
         public void OnAiAffectedByProjectileEnd()
         {
@@ -302,7 +306,7 @@ namespace RTPuzzle
             this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectileFirstTime);
         }
 
-        internal void OnHittedByProjectile2InARow()
+        internal void OnEscapeWithoutTargetStart()
         {
             this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectile2InARow);
         }

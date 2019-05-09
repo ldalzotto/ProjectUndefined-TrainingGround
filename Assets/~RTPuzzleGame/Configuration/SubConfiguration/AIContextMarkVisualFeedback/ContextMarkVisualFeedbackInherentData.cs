@@ -10,7 +10,7 @@ namespace RTPuzzle
     {
         public AIFeedbackMarkType AttractedPrafab;
         public AIFeedbackMarkType ProjectileHitPrefab;
-        public AIFeedbackMarkType ProjectileSecondHitPrefab;
+        public AIFeedbackMarkType EscapeWithoutTargetPrefab;
     }
 
 }

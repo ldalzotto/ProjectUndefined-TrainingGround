@@ -1427,6 +1427,40 @@ namespace Tests
                 OnDestinationReached: null);
         }
 
+
+        [UnityTest]
+        public IEnumerator AI_EscapeWithoutarget_InterruptedBy_FearStun()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var fearTime = 10f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+
+            yield return PuzzleSceneTestHelper.ProjectileIngoreTargetYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 170f, 30f), mouseTestAIManager.transform.position,
+                OnBeforeSecondProjectileSpawn: () =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    return null;
+                },
+                OnSecondProjectileSpawned: (LaunchProjectile launchProjectile) =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
+                    return PuzzleSceneTestHelper.FearYield(mouseTestAIManager.transform.position,
+                        OnFearTriggered: () =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                            return null;
+                        },
+                        OnFearEnded: null, 0f);
+                },
+                OnSecondProjectileDistanceReached: null);
+        }
+
     }
 
 

@@ -30,7 +30,7 @@ namespace RTPuzzle
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
             Debug.Log(MyLog.Format("EscapeToFarestWithTargetZone"));
-            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 1);
+            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID);
             this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
         };
 

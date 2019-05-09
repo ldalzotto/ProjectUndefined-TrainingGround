@@ -61,7 +61,7 @@ namespace RTPuzzle
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.EscapeCaluclation,
                         EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.playerAIDestimationMoveManagerComponent)));
             }
-            this.isEscaping = true;
+            this.SetIsEscaping(true);
         }
 
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
@@ -69,17 +69,29 @@ namespace RTPuzzle
             return this.escapeDestinationManager.Tick();
         }
 
+        private void SetIsEscaping(bool value)
+        {
+            if (value && !this.isEscaping)
+            {
+                this.puzzleEventsManager.PZ_EVT_AI_EscapeWithoutTarget_Start(this.aiID);
+            }
+            if (!value && this.isEscaping)
+            {
+                this.puzzleEventsManager.PZ_EVT_AI_EscapeWithoutTarget_End(this.aiID);
+            }
+            this.isEscaping = value;
+        }
+
         private void EscapeCaluclation(NavMeshRaycastStrategy navMeshRaycastStrategy)
         {
             Debug.Log("EscapeToFarest");
-            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 2);
             this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
         }
 
         public override void OnStateReset()
         {
             this.escapeDestinationManager.OnStateReset();
-            this.isEscaping = false;
+            this.SetIsEscaping(false);
         }
 
     }

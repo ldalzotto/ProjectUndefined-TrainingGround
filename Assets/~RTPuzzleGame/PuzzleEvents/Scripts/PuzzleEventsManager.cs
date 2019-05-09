@@ -44,21 +44,25 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
         }
 
-        public virtual void PZ_EVT_AI_Projectile_Hitted(AiID aiID, int timesInARow)
+        public virtual void PZ_EVT_AI_Projectile_Hitted(AiID aiID)
         {
-            if (timesInARow == 1)
-            {
-                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
-            }
-            else
-            {
-                this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectile2InARow();
-            }
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
         }
 
         public void PZ_EVT_AI_Projectile_NoMoreAffected(AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
+        }
+        #endregion
+
+        #region Escape without target zone events
+        public void PZ_EVT_AI_EscapeWithoutTarget_Start(AiID aiID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetStart();
+        }
+        public void PZ_EVT_AI_EscapeWithoutTarget_End(AiID aiID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetEnd();
         }
         #endregion
 

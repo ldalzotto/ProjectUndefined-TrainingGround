@@ -46,8 +46,8 @@ namespace RTPuzzle
                 case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME:
                     this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileHitPrefab);
                     break;
-                case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_2_IN_A_ROW:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileSecondHitPrefab);
+                case ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET:
+                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].EscapeWithoutTargetPrefab);
                     break;
             }
         }
@@ -71,7 +71,7 @@ namespace RTPuzzle
     public enum ContextMarkVisualFeedbackEvent
     {
         PROJECTILE_HITTED_FIRST_TIME = 0,
-        PROJECTILE_HITTED_2_IN_A_ROW = 1,
+        ESCAPE_WITHOUT_TARGET = 1,
         ATTRACTED_START = 2,
         DELETE = 3
     }
