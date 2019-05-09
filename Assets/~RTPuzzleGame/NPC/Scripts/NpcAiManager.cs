@@ -30,6 +30,14 @@ namespace RTPuzzle
         public AiID AiID;
         #endregion
 
+        #region Data Retrieval
+        public static NPCAIManager FromCollisionType(CollisionType collisionType)
+        {
+            if(collisionType == null) { return null; }
+            return collisionType.GetComponent<NPCAIManager>();
+        }
+        #endregion
+
         public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
 
         private NPCAIDestinationMoveManager AIDestinationMoveManager;

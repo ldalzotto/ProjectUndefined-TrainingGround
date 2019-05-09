@@ -4,6 +4,7 @@ namespace RTPuzzle
 {
     public class TargetZone : MonoBehaviour
     {
+        [SearchableEnum]
         public TargetZoneID TargetZoneID;
 
         #region Internal Dependencies

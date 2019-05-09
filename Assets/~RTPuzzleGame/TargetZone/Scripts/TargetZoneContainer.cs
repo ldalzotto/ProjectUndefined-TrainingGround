@@ -7,8 +7,6 @@ namespace RTPuzzle
     {
         private Dictionary<TargetZoneID, TargetZone> targetZones = new Dictionary<TargetZoneID, TargetZone>();
 
-        public Dictionary<TargetZoneID, TargetZone> TargetZones { get => targetZones; }
-
         public void Init()
         {
             var targetZones = GameObject.FindObjectsOfType<TargetZone>();
@@ -40,6 +38,12 @@ namespace RTPuzzle
             return foundColliders;
         }
 
+        public TargetZone GetTargetZone(TargetZoneID targetZoneID)
+        {
+            return this.targetZones[targetZoneID];
+        }
+
+
         public List<TargetZone> GetAllTargetZonesWhereDistanceCheckOverlaps(Bounds testingBound)
         {
             List<TargetZone> results = null;
@@ -47,7 +51,7 @@ namespace RTPuzzle
             {
                 if (targetZone.ZoneDistanceDetectionCollider.bounds.Intersects(testingBound))
                 {
-                    if(results == null)
+                    if (results == null)
                     {
                         results = new List<TargetZone>();
                     }

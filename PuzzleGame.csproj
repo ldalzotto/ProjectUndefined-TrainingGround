@@ -106,6 +106,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\LevelConfiguration\LevelCompletionConfiguration\LevelCompletionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\LevelConfiguration\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\LevelConfiguration\LevelConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeColliderTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelManagement\Scripts\LevelManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\ContextMarkVisualFeedback\ContextMarkVisualFeedbackManager.cs" />

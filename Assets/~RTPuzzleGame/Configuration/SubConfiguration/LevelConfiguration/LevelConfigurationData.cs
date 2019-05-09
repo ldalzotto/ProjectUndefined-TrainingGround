@@ -14,6 +14,9 @@ namespace RTPuzzle
         [SerializeField]
         public List<PlayerActionIdWrapper> playerActionIds = new List<PlayerActionIdWrapper>();
 
+        [SerializeField]
+        public LevelCompletionInherentData LevelCompletionInherentData;
+
         private List<RTPPlayerAction> playerActions;
 
         public void Init(PlayerActionConfiguration playerActionConfiguration)

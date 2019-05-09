@@ -7,12 +7,14 @@ namespace RTPuzzle
         #region External Dependencies
         private NPCAIManagerContainer NPCAIManagerContainer;
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
+        private LevelCompletionManager LevelCompletionManager;
         #endregion
 
         public void Init()
         {
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
+            this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
         }
 
         #region AI related events
@@ -71,12 +73,10 @@ namespace RTPuzzle
         public void PZ_EVT_ThrowProjectileCursor_OnProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
-            //  GroundEffectsManager.OnThrowProjectileCursorOnProjectileRange();
         }
         public void PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
-            // GroundEffectsManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
         #endregion
 
@@ -89,12 +89,15 @@ namespace RTPuzzle
         public void PZ_EVT_LevelCompleted(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();
-            //TODO -> not place particles here but in dedicated level completion condition module
-            var fxContainerManager = GameObject.FindObjectOfType<FXContainerManager>();
-            fxContainerManager.TriggerFX(PrefabContainer.Instance.LevelCompletedParticleEffect);
-
             //  SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
         }
+
+        #region Level Completion Events
+        public void PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate()
+        {
+            this.LevelCompletionManager.ConditionRecalculationEvaluate();
+        }
+        #endregion
 
     }
 }
