@@ -37,7 +37,7 @@ namespace RTPuzzle
 
         private bool IsGenericBehaviorInAStateThatAllowsEscapingWhileIgnoringTargets(GenericPuzzleAIBehavior genericBehavior)
         {
-            return genericBehavior.IsEscapingFromProjectileWithTargetZones() || genericBehavior.IsEscapingFromProjectileIngnoringTargetZones() || genericBehavior.IsEscapingFromPlayer();
+            return genericBehavior.IsEscapingFromProjectileWithTargetZones() || genericBehavior.IsEscapingWithoutTarget() || genericBehavior.IsEscapingFromPlayer();
         }
     }
 

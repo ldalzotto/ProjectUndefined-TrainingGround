@@ -21,7 +21,7 @@ namespace RTPuzzle
 
         public abstract bool IsManagerEnabled();
 
-        public abstract void OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType AIPlayerEscapeDestinationCalculationType);
+        public abstract void OnPlayerEscapeStart();
 
         public abstract void OnDestinationReached();
 
@@ -30,9 +30,4 @@ namespace RTPuzzle
         public abstract void OnStateReset();
     }
 
-    public enum AIPlayerEscapeDestinationCalculationType
-    {
-        FAREST = 0,
-        WITH_COLLIDERS = 1
-    }
 }

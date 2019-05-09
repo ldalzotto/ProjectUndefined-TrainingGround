@@ -43,38 +43,4 @@ namespace RTPuzzle
         {
         }
     }
-
-    public class AIProjectileIgnorePhysicsEscapeManager : AbstractAIProjectileEscapeManager
-    {
-        public AIProjectileIgnorePhysicsEscapeManager(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent) : base(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent, PuzzleEventsManager, AIDestimationMoveManagerComponent)
-        {
-        }
-
-        protected override void SetIsEscapingFromProjectile(bool value)
-        {
-            if (this.isEscapingFromProjectile && !value)
-            {
-                this.puzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
-            }
-            base.SetIsEscapingFromProjectile(value);
-        }
-
-        protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
-        {
-            Debug.Log("EscapeToFarest");
-            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID, 2);
-            this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
-        };
-
-        protected override Action<NavMeshRaycastStrategy> DestinationCalulationMethod => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
-        {
-            this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
-        };
-
-        public override void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
-        {
-
-        }
-    }
 }

@@ -24,7 +24,7 @@ namespace RTPuzzle
         public static InterfaceAIManager ForAllAIManagerTypes(Type managerType,
                  Func<AIRandomPatrolComponentMananger> AIRandomPatrolComponentManangerOperation,
                  Func<AIProjectileWithCollisionEscapeManager> AIProjectileEscapeWithCollisionManagerOperation,
-                 Func<AIProjectileIgnorePhysicsEscapeManager> AIProjectileEscapeWithoutCollisionManagerOperation,
+                 Func<AIEscapeWithoutTriggerManager> AIEscapeWithoutTriggerManagerOperation,
                  Func<AIFearStunManager> AIFearStunManagerOperation,
                  Func<AIAttractiveObjectManager> AIAttractiveObjectOperation,
                  Func<AITargetZoneManager> AITargetZoneManagerOperation,
@@ -34,8 +34,8 @@ namespace RTPuzzle
             if (aiRandomPatrolComponentManager != null) { return aiRandomPatrolComponentManager; }
             var AIProjectileWithCollisionEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
             if (AIProjectileWithCollisionEscapeManager != null) { return AIProjectileWithCollisionEscapeManager; }
-            var AIProjectileIgnorePhysicsEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileIgnorePhysicsEscapeManager), AIProjectileEscapeWithoutCollisionManagerOperation);
-            if (AIProjectileIgnorePhysicsEscapeManager != null) { return AIProjectileIgnorePhysicsEscapeManager; }
+            var AIEscapeWithoutTriggerManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIEscapeWithoutTriggerManager), AIEscapeWithoutTriggerManagerOperation);
+            if (AIEscapeWithoutTriggerManager != null) { return AIEscapeWithoutTriggerManager; }
             var AIFearStunManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
             if (AIFearStunManager != null) { return AIFearStunManager; }
             var AIAttractiveObjectManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);

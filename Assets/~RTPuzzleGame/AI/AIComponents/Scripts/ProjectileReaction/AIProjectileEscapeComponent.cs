@@ -69,6 +69,13 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Data Retrieval
+        public float GetMaxEscapeDistance()
+        {
+            return this.AIProjectileEscapeComponent.EscapeDistance;
+        }
+        #endregion
+
         public Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             return this.escapeDestinationManager.Tick();
@@ -95,6 +102,7 @@ namespace RTPuzzle
             }
             this.SetIsEscapingFromProjectile(true);
         }
+
 
         public virtual void OnDestinationReached()
         {

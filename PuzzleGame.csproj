@@ -72,6 +72,8 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\InterfaceAIManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\EscapeWithoutTrigger\AIEscapeWithoutTriggerComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\EscapeWithoutTrigger\AIEscapeWithoutTriggerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\FearStun\AIFearStunComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\FearStun\AIFearStunManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIPatrolComponent.cs" />

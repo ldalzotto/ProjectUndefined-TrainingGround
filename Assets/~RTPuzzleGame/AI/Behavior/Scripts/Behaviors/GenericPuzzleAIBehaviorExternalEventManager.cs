@@ -36,6 +36,7 @@ namespace RTPuzzle
         {
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
+            EventTypeCheck<EscapeWithoutTriggerStartAIBehaviorEvent>(genericAiBehavior, externalEvent, EscapeWithoutTrigger_Start);
             EventTypeCheck<FearedStartAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Start);
             EventTypeCheck<FearedForcedAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Forced);
             EventTypeCheck<FearedEndAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_End);
@@ -61,21 +62,27 @@ namespace RTPuzzle
 
         private void Projectile_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager(), EvaluationType.EXCLUDED) &&
+            Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIEscapeWithoutTriggerManager(), EvaluationType.EXCLUDED) &&
                              this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {
-                Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
-                genericAiBehavior.ManagersStateReset();
-                genericAiBehavior.AIProjectileIgnoringTargetZoneEscapeManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
+                this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(projectileTriggerEnterEvent.CollisionPosition,
+                    projectileTriggerEnterEvent.LaunchProjectileInherentData.EscapeSemiAngle, genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetMaxEscapeDistance()), genericAiBehavior);
             }
             else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED)
                 && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                     || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
-                Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
                 genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
             }
+        }
+
+        private void EscapeWithoutTrigger_Start(GenericPuzzleAIBehavior genericAiBehavior, EscapeWithoutTriggerStartAIBehaviorEvent escapeWithoutTriggerStartAIBehaviorEvent)
+        {
+            Debug.Log(MyLog.Format("AI - EscapeWithoutTrigger_Start"));
+            genericAiBehavior.ManagersStateReset();
+            genericAiBehavior.AIEscapeWithoutTriggerManager().OnEscapeStart(escapeWithoutTriggerStartAIBehaviorEvent);
         }
 
         private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
@@ -174,12 +181,14 @@ namespace RTPuzzle
                 if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                 {
                     Debug.Log(MyLog.Format("AI - Player escape without colliders."));
-                    genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType.FAREST);
+                    this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(playerEscapeStartAIBehaviorEvent.PlayerPosition,
+                        playerEscapeStartAIBehaviorEvent.AIPlayerEscapeComponent.EscapeSemiAngle,
+                        playerEscapeStartAIBehaviorEvent.AIPlayerEscapeComponent.EscapeDistance), genericAiBehavior);
                 }
                 else
                 {
                     Debug.Log(MyLog.Format("AI - Player escape with colliders."));
-                    genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType.WITH_COLLIDERS);
+                    genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();
                 }
 
             }
@@ -203,6 +212,24 @@ namespace RTPuzzle
 
         public Vector3 CollisionPosition { get => collisionPosition; }
         public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
+    }
+
+    public class EscapeWithoutTriggerStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        private Vector3 threatStartPoint;
+        private float escapeSemiAngle;
+        private float escapeDistance;
+
+        public EscapeWithoutTriggerStartAIBehaviorEvent(Vector3 threatStartPoint, float escapeSemiAngle, float escapeDistance)
+        {
+            this.threatStartPoint = threatStartPoint;
+            this.escapeSemiAngle = escapeSemiAngle;
+            this.escapeDistance = escapeDistance;
+        }
+
+        public Vector3 ThreatStartPoint { get => threatStartPoint; }
+        public float EscapeSemiAngle { get => escapeSemiAngle; }
+        public float EscapeDistance { get => escapeDistance; }
     }
 
     public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
@@ -291,7 +318,17 @@ namespace RTPuzzle
 
     public class PlayerEscapeStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
+        private Vector3 playerPosition;
+        private AIPlayerEscapeComponent aIPlayerEscapeComponent;
 
+        public PlayerEscapeStartAIBehaviorEvent(Vector3 playerPosition, AIPlayerEscapeComponent AIPlayerEscapeComponent)
+        {
+            this.playerPosition = playerPosition;
+            this.aIPlayerEscapeComponent = AIPlayerEscapeComponent;
+        }
+
+        public Vector3 PlayerPosition { get => playerPosition; }
+        public AIPlayerEscapeComponent AIPlayerEscapeComponent { get => aIPlayerEscapeComponent; }
     }
 
 }

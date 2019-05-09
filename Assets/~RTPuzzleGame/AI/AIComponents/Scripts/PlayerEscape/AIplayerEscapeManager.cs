@@ -26,7 +26,6 @@ namespace RTPuzzle
 
         #region State
         private bool isNearPlayer;
-        private AIPlayerEscapeDestinationCalculationType AIPlayerEscapeDestinationCalculationType;
         #endregion
 
         #region Internal Managers
@@ -56,14 +55,13 @@ namespace RTPuzzle
             //The event is triggered only when AI is not already escaping
             if (isInRange && !this.isNearPlayer && this.escapeDestinationManager.IsDistanceReached())
             {
-                this.puzzleAIBehaviorExternalEventManager.ReceiveEvent(new PlayerEscapeStartAIBehaviorEvent());
+                this.puzzleAIBehaviorExternalEventManager.ReceiveEvent(new PlayerEscapeStartAIBehaviorEvent(this.playerManagerDataRetriever.GetPlayerRigidBody().position, this.aIPlayerEscapeComponent));
             }
         }
 
         #region External Event
-        public override void OnPlayerEscapeStart(AIPlayerEscapeDestinationCalculationType AIPlayerEscapeDestinationCalculationType)
+        public override void OnPlayerEscapeStart()
         {
-            this.AIPlayerEscapeDestinationCalculationType = AIPlayerEscapeDestinationCalculationType;
             this.isNearPlayer = true;
             this.aIFOVManager.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.aIPlayerEscapeComponent.EscapeSemiAngle);
             this.escapeDestinationManager.ResetDistanceComputation(this.aIPlayerEscapeComponent.EscapeDistance);
@@ -96,7 +94,6 @@ namespace RTPuzzle
         public override void OnStateReset()
         {
             this.escapeDestinationManager.OnStateReset();
-            this.AIPlayerEscapeDestinationCalculationType = AIPlayerEscapeDestinationCalculationType.WITH_COLLIDERS;
             this.isNearPlayer = false;
         }
 
@@ -105,14 +102,7 @@ namespace RTPuzzle
             this.escapeDestinationManager.EscapeDestinationCalculationStrategy(
                 escapeDestinationCalculationMethod: (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
                 {
-                    if (this.AIPlayerEscapeDestinationCalculationType == AIPlayerEscapeDestinationCalculationType.WITH_COLLIDERS)
-                    {
-                        this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
-                    }
-                    else
-                    {
-                        this.escapeDestinationManager.EscapeToFarest(7, navMeshRaycastStrategy, this.aIFOVManager);
-                    }
+                    this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
                 },
                 ifAllFailsAction: EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.aIDestimationMoveManagerComponent))
              );
