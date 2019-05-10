@@ -24,7 +24,7 @@ namespace CoreGame
 
         public ConditionNode ConditionRootNode { get => conditionRootNode; set => conditionRootNode = value; }
 
-        public bool ResolveGraph<T>(ref T conditionGraphResolutionInput) where T : ConditionGraphResolutionInput
+        public bool ResolveGraph(ref ConditionGraphResolutionInput conditionGraphResolutionInput)
         {
             return this.conditionRootNode.ResolveNode(ref conditionGraphResolutionInput, this);
         }
@@ -89,12 +89,12 @@ namespace CoreGame
         {
         }
 
-        protected abstract bool ConditionEvaluation<T>(ref T ConditionGraphResolutionInput) where T : ConditionGraphResolutionInput;
+        protected abstract bool ConditionEvaluation(ref ConditionGraphResolutionInput ConditionGraphResolutionInput);
 #if UNITY_EDITOR
         public abstract void SpecificEditorRender();
 #endif
 
-        public bool ResolveNode<T>(ref T ConditionGraphResolutionInput, ConditionGraph conditionGraph) where T : ConditionGraphResolutionInput
+        public bool ResolveNode(ref ConditionGraphResolutionInput ConditionGraphResolutionInput, ConditionGraph conditionGraph)
         {
             bool returnValue = this.ConditionEvaluation(ref ConditionGraphResolutionInput);
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using CoreGame;
 
 namespace RTPuzzle
 {
@@ -8,43 +9,37 @@ namespace RTPuzzle
     public class LevelCompletionManager : MonoBehaviour
     {
         #region External dependencies
-        private NPCAIManagerContainer NPCAIManagerContainer;
-        private TargetZoneContainer TargetZoneContainer;
         private PuzzleEventsManager PuzzleEventsManager;
         private FXContainerManager FXContainerManager;
         #endregion
 
         private LevelConfigurationData currentLevelConfiguration;
-
         private LevelZonesID currentLevelID;
+        private ConditionGraphResolutionInput levelCompletionConditionResolutionInput;
 
         public void Init(LevelZonesID currentLevelID)
         {
             #region External dependencies
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
-            this.TargetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+            var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var TargetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.FXContainerManager = GameObject.FindObjectOfType<FXContainerManager>();
             #endregion
 
             this.currentLevelConfiguration = PuzzleGameConfigurationManager.LevelConfiguration()[currentLevelID];
             this.currentLevelID = currentLevelID;
+            this.levelCompletionConditionResolutionInput = new LevelCompletionConditionResolutionInput(NPCAIManagerContainer, TargetZoneContainer);
         }
 
         internal void ConditionRecalculationEvaluate()
         {
             Debug.Log(MyLog.Format("Level completion recalculation."));
-            if (this.currentLevelConfiguration.LevelCompletionInherentData != null && this.currentLevelConfiguration.LevelCompletionInherentData.LevelCompletionAIConditions != null)
+            if (this.currentLevelConfiguration.LevelCompletionInherentData != null && this.currentLevelConfiguration.LevelCompletionInherentData.LevelCompletionConditionConfiguration != null)
             {
-                foreach (var levelCompletionCondition in this.currentLevelConfiguration.LevelCompletionInherentData.LevelCompletionAIConditions)
+                if (this.currentLevelConfiguration.LevelCompletionInherentData.LevelCompletionConditionConfiguration.ResolveGraph(ref this.levelCompletionConditionResolutionInput))
                 {
-                    var involvedTargetZoneTriggerCollider = this.TargetZoneContainer.GetTargetZone(levelCompletionCondition.TargetZoneID).TargetZoneTriggerType.TargetZoneTriggerCollider;
-                    var involvedAI = this.NPCAIManagerContainer.GetNPCAiManager(levelCompletionCondition.aiID).GetCollider();
-                    if (involvedTargetZoneTriggerCollider.bounds.Intersects(involvedAI.bounds))
-                    {
-                        this.OnLevelCompleted();
-                    }
+                    this.OnLevelCompleted();
                 }
             }
         }

@@ -9,16 +9,8 @@ namespace RTPuzzle
 
     public class LevelCompletionInherentData : ScriptableObject
     {
-        public List<LevelCompletionAICondition> LevelCompletionAIConditions;
+        public LevelCompletionConditionConfiguration LevelCompletionConditionConfiguration;
     }
 
-    [System.Serializable]
-    public class LevelCompletionAICondition
-    {
-        [SearchableEnum]
-        public AiID aiID;
-        [SearchableEnum]
-        public TargetZoneID TargetZoneID;
-    }
 
 }

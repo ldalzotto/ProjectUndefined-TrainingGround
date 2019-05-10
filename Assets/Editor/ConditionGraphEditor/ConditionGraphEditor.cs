@@ -19,6 +19,7 @@ namespace Editor_ConditionGraph
 
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
             nodeToRemove = -9999;
 
             ConditionGraph myTarget = (ConditionGraph)target;
@@ -30,6 +31,10 @@ namespace Editor_ConditionGraph
             this.RenderNode(ConditionGraph.ROOT_NODE_KEY);
             EditorGUILayout.EndVertical();
             this.RemoveNodeFormGraph();
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(target);
+            }
         }
 
         private void RenderNode(int nodeIndex)
