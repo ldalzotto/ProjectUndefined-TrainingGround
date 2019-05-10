@@ -66,6 +66,7 @@
     <Compile Include="Assets\Editor\AI\AiBehaviorInherentDataEditor.cs" />
     <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
     <Compile Include="Assets\Editor\Color\FX\FXColorConfigurationEditor.cs" />
+    <Compile Include="Assets\Editor\ConditionGraphEditor\ConditionGraphEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\GameConfigurationEditorProfile.cs" />
     <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorUndoHelper.cs" />

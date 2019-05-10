@@ -90,6 +90,7 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
+    <Compile Include="Assets\~CoreGame\ConditionGraph\ConditionGraph.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
@@ -136,9 +137,6 @@
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
     <Compile Include="Assets\PropertyAttributes\Enum\SearchableEnum.cs" />
-    <Compile Include="Assets\Test\LevelCompletionConditionGraph\Scripts\FakeEnums.cs" />
-    <Compile Include="Assets\Test\LevelCompletionConditionGraph\Scripts\GraphBehavior.cs" />
-    <Compile Include="Assets\Test\LevelCompletionConditionGraph\Scripts\LevelCompletionConditionGraph.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
