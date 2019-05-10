@@ -15,6 +15,13 @@ namespace RTPuzzle
         public GameObject AttractiveObjectModelPrefab;
         public AttractiveObjectType AttractiveObjectPrefab;
 
+        [Header("Animation")]
+
+        [SearchableEnum]
+        public PlayerAnimatioNamesEnum PreActionAnimation;
+        [SearchableEnum]
+        public PlayerAnimatioNamesEnum PostActionAnimation;
+
         public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)
         {
             this.Init(effectRange, effectiveTime, AttractiveObjectModelPrefab, AttractiveObjectPrefab);
@@ -28,18 +35,5 @@ namespace RTPuzzle
             this.AttractiveObjectPrefab = AttractiveObjectPrefab;
         }
 
-        //TODO -> how to have special editors gui displayed ?
-#if UNITY_EDITOR
-        public void CreationWizardGUI()
-        {
-            this.EffectRange = EditorGUILayout.FloatField("Effect range", this.EffectRange);
-            this.EffectiveTime = EditorGUILayout.FloatField("Effective time", this.EffectiveTime);
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.ObjectField("Attractive object model prefab", this.AttractiveObjectModelPrefab, typeof(GameObject), false);
-            EditorGUILayout.ObjectField("Attractive object prefab", this.AttractiveObjectPrefab, typeof(AttractiveObjectType), false);
-            EditorGUI.EndDisabledGroup();
-
-        }
-#endif
     }
 }

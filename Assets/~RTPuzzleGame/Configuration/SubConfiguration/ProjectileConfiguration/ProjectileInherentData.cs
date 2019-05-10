@@ -12,6 +12,9 @@ namespace RTPuzzle
         private float effectRange;
 
         [SerializeField]
+        private float projectileThrowRange;
+
+        [SerializeField]
         private float escapeSemiAngle;
 
         [SerializeField]
@@ -20,6 +23,16 @@ namespace RTPuzzle
         [SerializeField]
         private LaunchProjectile projectilePrefab;
 
+        [SerializeField]
+        private GameObject projectileModelPrefab;
+
+        [Header("Animation")]
+
+        [SearchableEnum]
+        public PlayerAnimatioNamesEnum PreActionAnimation;
+        [SearchableEnum]
+        public PlayerAnimatioNamesEnum PostActionAnimation;
+
         [DictionaryEnumSearch]
         public float EffectRange { get => effectRange; }
         [DictionaryEnumSearch]
@@ -27,10 +40,13 @@ namespace RTPuzzle
         [DictionaryEnumSearch]
         public float TravelDistancePerSeconds { get => travelDistancePerSeconds; }
         public LaunchProjectile ProjectilePrefab { get => projectilePrefab; }
+        public float ProjectileThrowRange { get => projectileThrowRange; }
+        public GameObject ProjectileModelPrefab { get => projectileModelPrefab; }
 
-        public void Init(float effectRange, float escapeSemiAngle, float travelDistancePerSeconds, LaunchProjectile projectilePrefab)
+        public void Init(float effectRange, float projectileThrowRange, float escapeSemiAngle, float travelDistancePerSeconds, LaunchProjectile projectilePrefab)
         {
             this.effectRange = effectRange;
+            this.projectileThrowRange = projectileThrowRange;
             this.escapeSemiAngle = escapeSemiAngle;
             this.travelDistancePerSeconds = travelDistancePerSeconds;
             this.projectilePrefab = projectilePrefab;

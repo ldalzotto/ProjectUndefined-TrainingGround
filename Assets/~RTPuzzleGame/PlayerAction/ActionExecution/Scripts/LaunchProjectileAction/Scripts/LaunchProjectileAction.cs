@@ -57,7 +57,7 @@ namespace RTPuzzle
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
             var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
-            this.projectileSphereRange = SphereRangeType.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, configuration.LaunchProjectileRayPositionerManagerComponent.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.projectileSphereRange = SphereRangeType.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
 
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
@@ -66,7 +66,7 @@ namespace RTPuzzle
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
-            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator());
+            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), projectileInherentData);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
 
         }
@@ -327,12 +327,6 @@ namespace RTPuzzle
         }
 
     }
-
-    [System.Serializable]
-    public class LaunchProjectileRayPositionerManagerComponent
-    {
-        public float ProjectileThrowRange;
-    }
     #endregion
 
     #region Throw Projectile Manager
@@ -442,20 +436,17 @@ namespace RTPuzzle
     class LaunchProjectilePlayerAnimationManager
     {
         private Animator playerAnimator;
+        private ProjectileInherentData ProjectileInherentData;
 
         private PlayerAnimationWithObjectManager ProjectileAnimationManager;
         private PlayerAnimationWithObjectManager ProjectileLaunchAnimationManager;
 
-        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator)
+        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, ProjectileInherentData ProjectileInherentData)
         {
             this.playerAnimator = playerAnimator;
+            this.ProjectileInherentData = ProjectileInherentData;
 
-            //TODO -> DELETE
-            #region TO DELETE
-            var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            MonoBehaviour.Destroy(sph.GetComponent<Collider>());
-            #endregion
-            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE, 0f, true,
+            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(MonoBehaviour.Instantiate(ProjectileInherentData.ProjectileModelPrefab), this.playerAnimator, this.ProjectileInherentData.PreActionAnimation, 0f, true,
                 onAnimationEndAction: null);
             this.ProjectileAnimationManager.Play();
         }
@@ -473,7 +464,7 @@ namespace RTPuzzle
             var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             MonoBehaviour.Destroy(sph.GetComponent<Collider>());
             #endregion
-            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE_THROW, 0.1f, true,
+            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, this.ProjectileInherentData.PostActionAnimation, 0.1f, true,
                 onAnimationEndAction: onAnimationEnd);
             this.ProjectileLaunchAnimationManager.Play();
         }

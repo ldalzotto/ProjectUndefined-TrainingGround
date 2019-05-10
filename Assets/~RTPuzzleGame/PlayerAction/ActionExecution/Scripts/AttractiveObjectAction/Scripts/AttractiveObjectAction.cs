@@ -110,9 +110,9 @@ namespace RTPuzzle
         {
             this.attractiveObjectInstance = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectModelPrefab);
             this.PlayerPocketObjectOutAnimationManager =
-                new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM, 0f, false, null);
+                new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), attractiveObjectInherentConfigurationData.PreActionAnimation, 0f, false, null);
             this.PlayerObjectLayAnimationManager =
-                 new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_POCKET_ITEM_LAY, 0.05f, true, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
+                 new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), attractiveObjectInherentConfigurationData.PostActionAnimation, 0.05f, true, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
             this.PlayerPocketObjectOutAnimationManager.Play();
             this.Tick(0);
         }

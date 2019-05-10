@@ -20,7 +20,7 @@ public class CreationWizardEditorProfile : MultipleChoiceHeaderTab<ICreationWiza
     {
         this.selection = new Dictionary<string, MultipleChoiceHeaderTabSelectionProfile>() {
             {ComputeSelectionKey(typeof(AttractiveObjectVariantCreationWizardV2)), new MultipleChoiceHeaderTabSelectionProfile("ATTR_OBJ") },
-            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("PLA_ACT") },
+            {ComputeSelectionKey(typeof(PlayerActionVariantCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("ATTR_OBJ_PLA_ACT") },
             {ComputeSelectionKey(typeof(AIContextMarkVisualFeedbackCreationWizard)), new MultipleChoiceHeaderTabSelectionProfile("CTX_MARK") },
             {ComputeSelectionKey(typeof(AIContextMarkGameConfigWizard)), new MultipleChoiceHeaderTabSelectionProfile("CTX_MARK_CONF") }
         };

@@ -62,7 +62,7 @@ namespace Tests
         {
             var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
             var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[LaunchProjectileId.STONE];
-            projectileData.Init(effectRange, escapeSemiAngle, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefab);
+            projectileData.Init(effectRange, 0f, escapeSemiAngle, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefab);
             return projectileData;
         }
 

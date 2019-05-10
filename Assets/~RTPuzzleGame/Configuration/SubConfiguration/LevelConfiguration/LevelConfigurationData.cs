@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace RTPuzzle
@@ -74,5 +77,28 @@ namespace RTPuzzle
             return 985414159 + playerActionId.GetHashCode();
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(LevelConfigurationData))]
+    public class LevelConfigurationDataEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            LevelConfigurationData myTarget = (LevelConfigurationData)target;
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("availableTimeAmount"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("playerActionIds"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelCompletionInherentData"));
+
+            if (myTarget.LevelCompletionInherentData != null)
+            {
+                EditorGUI.indentLevel += 1;
+                Editor.CreateEditor(myTarget.LevelCompletionInherentData).OnInspectorGUI();
+                EditorGUI.indentLevel -= 1;
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+#endif
 
 }
