@@ -35,7 +35,7 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             GameObject.FindObjectOfType<PuzzleEventsManager>();
             var timeflowManager = GameObject.FindObjectOfType<TimeFlowManager>();
-            timeflowManager.Init(GameObject.FindObjectOfType<GameManager>().PuzzleId,
+            timeflowManager.Init(
                     GameObject.FindObjectOfType<PlayerManagerDataRetriever>(),
                     GameObject.FindObjectOfType<PlayerManager>(),
                     new MockedInputManager(),

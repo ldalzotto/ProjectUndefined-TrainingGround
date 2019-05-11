@@ -14,18 +14,19 @@ namespace RTPuzzle
 
         private SelectionWheel SelectionWheel;
 
-        public void Init(LevelZonesID puzzleId)
+        public void Init()
         {
             #region External Dependencies
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var levelManager = GameObject.FindObjectOfType<LevelManager>();
             #endregion
 
             SelectionWheel = GameObject.FindObjectOfType<SelectionWheel>();
 
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
-            PlayerActionsAvailableManager = new PlayerActionsAvailableManager(puzzleId, puzzleGameConfigurationManager);
+            PlayerActionsAvailableManager = new PlayerActionsAvailableManager(levelManager.GetCurrentLevel(), puzzleGameConfigurationManager);
             PLayerSelectionWheelManager = new PLayerSelectionWheelManager(SelectionWheel, puzzleGameConfigurationManager);
             PlayerSelectioNWheelPositioner = new PlayerSelectioNWheelPositioner(PlayerSelectioNWheelPositionerComponent, SelectionWheel, PlayerManagerDataRetriever.GetPlayerTransform(), Camera.main);
         }

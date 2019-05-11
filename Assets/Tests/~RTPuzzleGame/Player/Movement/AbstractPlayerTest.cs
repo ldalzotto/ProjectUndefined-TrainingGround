@@ -20,7 +20,7 @@ namespace Tests
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             var mockedInputManager = new MockedInputManager(() => { return cameraPivotPoint.transform.InverseTransformDirection(this.currentLocomotionAxisWorld); });
             var timeflowManager = GameObject.FindObjectOfType<TimeFlowManager>();
-            timeflowManager.Init(GameObject.FindObjectOfType<GameManager>().PuzzleId,
+            timeflowManager.Init(
                     GameObject.FindObjectOfType<PlayerManagerDataRetriever>(),
                     GameObject.FindObjectOfType<PlayerManager>(),
                    mockedInputManager,

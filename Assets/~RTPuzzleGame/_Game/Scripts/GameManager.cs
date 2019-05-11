@@ -7,8 +7,6 @@ namespace RTPuzzle
     public class GameManager : MonoBehaviour
     {
 
-        public LevelZonesID PuzzleId;
-
         #region Persistance Dependencies
         private AInventoryMenu InventoryMenu;
         #endregion
@@ -59,10 +57,10 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init(gameInputManager);
-            TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[PuzzleId].AvailableTimeAmount);
-            TimeFlowManager.Init(PuzzleId, PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager, PuzzleEventsManager);
+            TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
+            TimeFlowManager.Init(PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager, PuzzleEventsManager);
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
-            PlayerActionManager.Init(PuzzleId);
+            PlayerActionManager.Init();
             LaunchProjectileContainerManager.Init();
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
             GroundEffectsManagerV2.Init();
@@ -77,7 +75,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             RangeTypeContainer.Init();
-            GameObject.FindObjectOfType<LevelCompletionManager>().Init(this.PuzzleId);
+            GameObject.FindObjectOfType<LevelCompletionManager>().Init();
 
         }
 

@@ -14,7 +14,7 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         #endregion
 
-        public void Init(LevelZonesID puzzleId, PlayerManagerDataRetriever RTPlayerManagerDataRetriever, PlayerManager RTPlayerManager,
+        public void Init(PlayerManagerDataRetriever RTPlayerManagerDataRetriever, PlayerManager RTPlayerManager,
                IGameInputManager gameInputManager, PuzzleGameConfigurationManager puzzleConfigurationManager, TimeFlowBarManager TimeFlowBarManager,
               LevelManager LevelManager, PuzzleEventsManager PuzzleEventsManager)
         {
@@ -22,7 +22,7 @@ namespace RTPuzzle
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.LevelManager = LevelManager;
             TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
-            TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[puzzleId].AvailableTimeAmount);
+            TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()].AvailableTimeAmount);
         }
 
         public void Tick(float d)
