@@ -10,11 +10,11 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             var window = EditorWindow.GetWindow<CreationWizard>();
             window.Show();
         }
-        
+
         private CreationWizardEditorProfile PlayerActionCreationWizardEditorProfile;
 
         private void OnGUI()
-        {
+        { 
             this.PlayerActionCreationWizardEditorProfile = EditorGUILayout.ObjectField(this.PlayerActionCreationWizardEditorProfile, typeof(CreationWizardEditorProfile), false) as CreationWizardEditorProfile;
             if (this.PlayerActionCreationWizardEditorProfile == null)
             {
@@ -22,7 +22,7 @@ namespace Editor_AttractiveObjectVariantWizardEditor
             }
             if (this.PlayerActionCreationWizardEditorProfile != null)
             {
-                this.PlayerActionCreationWizardEditorProfile.GUITick();
+                this.PlayerActionCreationWizardEditorProfile.GUITick(() => { Repaint(); });
                 ICreationWizardEditor<AbstractCreationWizardEditorProfile> selectedTab = this.PlayerActionCreationWizardEditorProfile.GetSelectedConf();
                 if (selectedTab != null)
                 {
