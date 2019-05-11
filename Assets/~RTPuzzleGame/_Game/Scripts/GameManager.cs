@@ -71,7 +71,6 @@ namespace RTPuzzle
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
-            LevelManager.Init(PuzzleId);
             AttractiveObjectsContainerManager.Init();
             GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
             NpcInteractionRingRendererManager.Init();
