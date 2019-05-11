@@ -68,10 +68,10 @@
     <Compile Include="Assets\Editor\Color\FX\FXColorConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConditionGraphEditor\ConditionGraphEditor.cs" />
     <Compile Include="Assets\Editor\ConditionGraphEditor\PuzzleGameEditors\LevelCompletionConditionConfigurationEditor.cs" />
-    <Compile Include="Assets\Editor\Configuration\GameConfigurationEditorProfile.cs" />
-    <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditor.cs" />
+    <Compile Include="Assets\Editor\Configuration\GameConfigurationEditorProfileV2.cs" />
+    <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditorV2.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorUndoHelper.cs" />
-    <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorWindow.cs" />
+    <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorWindowV2.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUIFilter.cs" />
@@ -125,6 +125,7 @@
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />
+    <Compile Include="Assets\Editor\Helper\Header\TreeChoiceHeaderTab.cs" />
     <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />
     <Compile Include="Assets\Editor\Helper\NamingConventionHelper.cs" />
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
@@ -329,6 +330,12 @@
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.1f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WebGL.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.1f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.1f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
