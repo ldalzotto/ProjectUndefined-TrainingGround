@@ -54,6 +54,7 @@ namespace RTPuzzle
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             //Initialisations
+            LevelManager.Init(LevelType.PUZZLE);
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();

@@ -5,8 +5,17 @@ namespace CoreGame
 {
     public class LevelManager : MonoBehaviour
     {
+        private LevelType currentLevelType;
+
         [SerializeField]
         private LevelZonesID levelID;
+
+        public LevelType CurrentLevelType { get => currentLevelType; }
+
+        public void Init(LevelType currentLevelType)
+        {
+            this.currentLevelType = currentLevelType;
+        }
 
         #region Data Retrieval
         public LevelZonesID GetCurrentLevel()
@@ -15,6 +24,11 @@ namespace CoreGame
         }
         #endregion
 
+    }
+
+    public enum LevelType
+    {
+        ADVENTURE, PUZZLE
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CoreGame;
+using System.Collections;
 using UnityEngine;
 
 namespace AdventureGame
@@ -32,6 +33,7 @@ namespace AdventureGame
             DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
             //initialization
+            GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
             PlayerManager.Init();
             StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
             StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());

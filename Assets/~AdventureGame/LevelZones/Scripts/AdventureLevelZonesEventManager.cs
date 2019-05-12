@@ -13,7 +13,6 @@ namespace AdventureGame
 
         private bool isNewZoneLoading;
 
-        // Use this for initialization
         void Start()
         {
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
