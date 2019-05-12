@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CoreGame;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace AdventureGame
         private PlayerManager PlayerManager;
         private PointOfInterestManager PointOfInterestManager;
         private GhostsPOIManager GhostsPOIManager;
-        private AdventureLevelZonesEventManager levelZonesEventManager;
+        private AbstractLevelTransitionManager levelTransitionManager;
 
 
         public void Init()
@@ -18,18 +19,18 @@ namespace AdventureGame
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-            levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>();
+            levelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
         }
 
-        private AdventureLevelZonesEventManager LevelZonesEventManager
+        private AbstractLevelTransitionManager LevelTransitionManager
         {
             get
             {
-                if (levelZonesEventManager == null)
+                if (levelTransitionManager == null)
                 {
-                    levelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>(); ;
+                    levelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>(); ;
                 }
-                return levelZonesEventManager;
+                return levelTransitionManager;
             }
         }
 
@@ -41,7 +42,7 @@ namespace AdventureGame
 
         public void DestroyPOI(PointOfInterestType POITobeDestroyed)
         {
-            if (!LevelZonesEventManager.IsNewZoneLoading())
+            if (!LevelTransitionManager.IsNewZoneLoading())
             {
                 POITobeDestroyed.OnPOIDestroyedFromPlayerAction();
             }

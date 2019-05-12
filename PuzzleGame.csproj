@@ -131,6 +131,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionConditionNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\LevelManagement\Script\PuzzleLevelTransitionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\ContextMarkVisualFeedback\ContextMarkVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />

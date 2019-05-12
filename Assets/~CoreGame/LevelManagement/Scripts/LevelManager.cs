@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-
 namespace CoreGame
 {
     public class LevelManager : MonoBehaviour
@@ -23,12 +22,13 @@ namespace CoreGame
             return levelID;
         }
         #endregion
-
     }
 
     public enum LevelType
     {
         ADVENTURE, PUZZLE
     }
+
+
 
 }

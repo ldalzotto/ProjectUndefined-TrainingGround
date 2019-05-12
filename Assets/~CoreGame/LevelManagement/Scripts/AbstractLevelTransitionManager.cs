@@ -1,32 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-namespace AdventureGame
+namespace CoreGame
 {
-    public class AdventureLevelZonesEventManager : MonoBehaviour
+    public abstract class AbstractLevelTransitionManager : MonoBehaviour
     {
         #region External Dependencies
-        private PointOfInterestManager PointOfInterestManager;
         private Coroutiner Coroutiner;
         #endregion
-
         private bool isNewZoneLoading;
 
-        void Start()
+        public virtual void Init()
         {
-            PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
+            this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
         }
 
         #region External Events
         public void OnLevelZoneChange(LevelZonesID nextZone)
         {
             isNewZoneLoading = true;
-            PointOfInterestManager.OnActualZoneSwitched();
+            this.OnLevelZoneChange_IMPL();
             SceneLoadHelper.LoadScene(Coroutiner, nextZone);
             isNewZoneLoading = false;
         }
+        protected abstract void OnLevelZoneChange_IMPL();
         #endregion
 
         #region Logical Conditions

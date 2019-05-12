@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -27,8 +28,8 @@ namespace AdventureGame
 
         public override void FirstExecutionAction(AContextActionInput ContextActionInput)
         {
-            var LevelZonesEventManager = GameObject.FindObjectOfType<AdventureLevelZonesEventManager>();
-            LevelZonesEventManager.OnLevelZoneChange(nextZone);
+            var levelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
+            levelTransitionManager.OnLevelZoneChange(nextZone);
         }
 
         public override void Tick(float d)

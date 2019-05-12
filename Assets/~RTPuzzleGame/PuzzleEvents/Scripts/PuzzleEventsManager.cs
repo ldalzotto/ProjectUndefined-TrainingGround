@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using CoreGame;
 
 namespace RTPuzzle
 {
@@ -8,6 +9,7 @@ namespace RTPuzzle
         private NPCAIManagerContainer NPCAIManagerContainer;
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         private LevelCompletionManager LevelCompletionManager;
+        private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
         #endregion
 
         public void Init()
@@ -15,6 +17,7 @@ namespace RTPuzzle
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
+            this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
         }
 
         #region AI related events
@@ -89,6 +92,7 @@ namespace RTPuzzle
         public void PZ_EVT_LevelCompleted(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();
+            this.PuzzleLevelTransitionManager.OnLevelZoneChange(LevelZonesID.SEWER_ADVENTURE);
             //  SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
         }
 

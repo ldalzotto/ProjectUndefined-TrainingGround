@@ -33,6 +33,7 @@ namespace AdventureGame
             DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
             //initialization
+            GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
             PlayerManager.Init();
             StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
