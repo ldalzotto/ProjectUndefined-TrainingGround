@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace RTPuzzle
+namespace CoreGame
 {
     public class LevelManager : MonoBehaviour
     {

@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using CoreGame;
+using RTPuzzle;
 using System;
 using System.Collections;
 using System.Collections.Generic;
