@@ -151,7 +151,7 @@ namespace AdventureGame
 
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnStartNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>()
         {
-            new AddTransitionLevel(LevelZonesID.SEWER_RTP, PointOfInterestId.SEWER_TO_PUZZLE, new LevelZoneTransitionAction(LevelZonesID.SEWER_RTP))
+            new AddTransitionLevel(LevelZonesID.SEWER_ADVENTURE, PointOfInterestId.SEWER_TO_PUZZLE, new LevelZoneTransitionAction(LevelZonesID.SEWER_RTP))
         };
 
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();

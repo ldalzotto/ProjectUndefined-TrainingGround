@@ -76,7 +76,6 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             RangeTypeContainer.Init();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
-
         }
 
         private void Update()

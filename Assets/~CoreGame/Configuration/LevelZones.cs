@@ -8,7 +8,8 @@ public class LevelZones
         {LevelZonesID.LEVEL1, "Level1EnvironmentScene" },
         {LevelZonesID.SEWER, "SewerScene" },
         {LevelZonesID.SEWER_RTP, "RTPuzzle_LV1" },
-        {LevelZonesID.RTP_TEST, "TestPuzzle" }
+        {LevelZonesID.RTP_TEST, "TestPuzzle" },
+        {LevelZonesID.SEWER_ADVENTURE, "Adventure_LV1" }
     };
 
 }
@@ -19,5 +20,6 @@ public enum LevelZonesID
     SEWER = 1,
     SEWER_RTP = 2,
     RTP_TEST = 3,
-    RTP_EDITOR_TEST = 4
+    RTP_EDITOR_TEST = 4,
+    SEWER_ADVENTURE = 5
 }
