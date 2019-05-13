@@ -102,6 +102,7 @@
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\AbstractLevelTransitionManager.cs" />
+    <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelAvailabilityManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
     <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />

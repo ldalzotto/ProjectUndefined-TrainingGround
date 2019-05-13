@@ -86,14 +86,13 @@ namespace RTPuzzle
         public void PZ_EVT_GameOver(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();
-            SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
+            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
         public void PZ_EVT_LevelCompleted(LevelZonesID nextZone)
         {
             this.NPCAIManagerContainer.OnGameOver();
-            this.PuzzleLevelTransitionManager.OnLevelZoneChange(LevelZonesID.SEWER_ADVENTURE);
-            //  SceneLoadHelper.LoadScene(Coroutiner.Instance, nextZone);
+            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
         #region Level Completion Events

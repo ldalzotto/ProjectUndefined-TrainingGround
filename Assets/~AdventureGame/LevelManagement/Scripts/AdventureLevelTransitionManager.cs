@@ -16,7 +16,7 @@ namespace AdventureGame
             this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
         }
 
-        protected override void OnLevelZoneChange_IMPL()
+        protected override void OnLevelChange_IMPL()
         {
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
         }

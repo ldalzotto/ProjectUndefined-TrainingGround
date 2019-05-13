@@ -27,6 +27,9 @@ namespace AdventureGame
 
         void Start()
         {
+            var InventoryMenu = AInventoryMenu.FindCurrentInstance();
+            InventoryMenu.gameObject.SetActive(true);
+
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
             PlayerManager = FindObjectOfType<PlayerManager>();

@@ -49,7 +49,6 @@ namespace AdventureGame
                         InventoryActionWheelTriggerManager.Tick(InventoryMenu.GetCurrentSelectedItem());
                     }
                 }
-
             }
 
             InventoryMenu.TickAnimation(d);

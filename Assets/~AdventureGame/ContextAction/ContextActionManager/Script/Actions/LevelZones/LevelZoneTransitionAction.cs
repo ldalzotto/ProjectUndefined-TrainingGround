@@ -29,7 +29,7 @@ namespace AdventureGame
         public override void FirstExecutionAction(AContextActionInput ContextActionInput)
         {
             var levelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
-            levelTransitionManager.OnLevelZoneChange(nextZone);
+            levelTransitionManager.OnAdventureToPuzzleLevel(nextZone);
         }
 
         public override void Tick(float d)
