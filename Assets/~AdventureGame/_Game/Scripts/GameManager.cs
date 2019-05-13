@@ -19,6 +19,12 @@ namespace AdventureGame
         private ScenarioTimelineManagerV2 ScenarioTimelineManager;
         private DiscussionTimelineManagerV2 DiscussionTimelineManager;
 
+        private void Awake()
+        {
+            //Level chunk initialization
+            GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
+        }
+
         void Start()
         {
             ContextActionManager = FindObjectOfType<ContextActionManager>();
@@ -34,7 +40,6 @@ namespace AdventureGame
 
             //initialization
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
-            GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
             PlayerManager.Init();
             StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
             StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());

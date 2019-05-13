@@ -26,6 +26,13 @@ namespace RTPuzzle
         private RangeTypeContainer RangeTypeContainer;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
 
+        private void Awake()
+        {
+            //Level chunk initialization
+            var LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            LevelManager.Init(LevelType.PUZZLE);
+        }
+
         private void Start()
         {
             Coroutiner.Instance.StartCoroutine(this.EndOfFixedUpdate());
@@ -50,12 +57,11 @@ namespace RTPuzzle
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
-            var LevelManager = GameObject.FindObjectOfType<LevelManager>();
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            var LevelManager = GameObject.FindObjectOfType<LevelManager>();
 
             //Initialisations
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
-            LevelManager.Init(LevelType.PUZZLE);
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
