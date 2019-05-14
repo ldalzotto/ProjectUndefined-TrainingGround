@@ -65,6 +65,7 @@
     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderV3_PassEditor.cs" />
+    <Compile Include="Assets\~CoreGame\__Game\Scripts\AsbtractCoreGameManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\MaterialContainer.cs" />
@@ -94,12 +95,15 @@
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
+    <Compile Include="Assets\~CoreGame\CoreEvents\CoreEventsManager.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitEndOfCutscene.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
+    <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForNavAgentDestinationReached.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForParticlesToNotEmit.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\AbstractLevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelAvailabilityManager.cs" />

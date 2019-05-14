@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AdventureGame
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : AsbtractCoreGameManager
     {
 
         private ContextActionManager ContextActionManager;
@@ -23,6 +23,11 @@ namespace AdventureGame
         {
             //Level chunk initialization
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
+        }
+
+        public override void OnLevelChanged()
+        {
+            this.Start();
         }
 
         void Start()
@@ -115,6 +120,7 @@ namespace AdventureGame
                 }
             }
         }
+
     }
 
 }

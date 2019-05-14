@@ -6,13 +6,12 @@ public class SceneLoadHelper
 {
     public static void LoadScene(Coroutiner coroutiner, LevelZonesID nextZone)
     {
-        coroutiner.StopAllCoroutines();
-        SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone]);
+        LoadScene(coroutiner, LoadSceneMode.Single, nextZone);
     }
 
-    public static void LoadSceneAsync(Coroutiner coroutiner, LevelZonesID nextZone, LoadSceneMode loadSceneMode, Action<AsyncOperation> onCompleted)
+    public static void LoadScene(Coroutiner coroutiner, LoadSceneMode loadSceneMode, LevelZonesID nextZone)
     {
         coroutiner.StopAllCoroutines();
-        SceneManager.LoadSceneAsync(LevelZones.LevelZonesSceneName[nextZone], loadSceneMode).completed += onCompleted;
+        SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone], loadSceneMode);
     }
 }

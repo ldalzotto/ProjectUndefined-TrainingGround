@@ -5,7 +5,7 @@ using CoreGame;
 namespace RTPuzzle
 {
 
-    public class GameManager : MonoBehaviour
+    public class GameManager : AsbtractCoreGameManager
     {
 
         #region Persistance Dependencies
@@ -31,6 +31,11 @@ namespace RTPuzzle
             //Level chunk initialization
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
             LevelManager.Init(LevelType.PUZZLE);
+        }
+
+        public override void OnLevelChanged()
+        {
+            this.Start();
         }
 
         private void Start()
@@ -165,6 +170,7 @@ namespace RTPuzzle
                 PlayerActionManager.GUITick();
             }
         }
+
     }
 
 }

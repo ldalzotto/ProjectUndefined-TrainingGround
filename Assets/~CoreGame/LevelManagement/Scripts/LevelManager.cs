@@ -33,13 +33,13 @@ namespace CoreGame
         }
 
         #region External Event
-        public void OnAdventureToPuzzleLevel(LevelZonesID nextPuzzleLevel)
+        public List<AsyncOperation> OnAdventureToPuzzleLevel(LevelZonesID nextPuzzleLevel)
         {
-            this.EnvironmentSceneLevelManager.OnAdventureToPuzzleLevel(nextPuzzleLevel);
+            return this.EnvironmentSceneLevelManager.OnAdventureToPuzzleLevel(nextPuzzleLevel);
         }
-        internal void OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
+        internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
         {
-            this.EnvironmentSceneLevelManager.OnPuzzleToAdventureLevel(nextPuzzleLevel);
+            return this.EnvironmentSceneLevelManager.OnPuzzleToAdventureLevel(nextPuzzleLevel);
         }
         #endregion
 
@@ -54,7 +54,6 @@ namespace CoreGame
 
     class EnvironmentSceneLevelManager
     {
-        private List<LevelZoneChunkID> LoadedEnvironmentLevels = new List<LevelZoneChunkID>();
 
         #region External Dependencies
         private LevelAvailabilityManager LevelAvailabilityManager;
@@ -69,48 +68,47 @@ namespace CoreGame
             LoadAllLevels(this.LevelManagerRef.GetCurrentLevel());
         }
 
-        private void LoadAllLevels(LevelZonesID levelZonesID)
+        private List<AsyncOperation> LoadAllLevels(LevelZonesID levelZonesID)
         {
+            List<AsyncOperation> sceneLoadOperations = new List<AsyncOperation>();
             if (LevelZones.LevelHierarchy.ContainsKey(levelZonesID))
             {
-                foreach (var level in LevelZones.LevelHierarchy[levelZonesID])
+                foreach (var levelChunk in LevelZones.LevelHierarchy[levelZonesID])
                 {
-                    this.SceneLoadWithoutDuplicates(level);
+                    var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(LevelZones.LevelZonesChunkScenename[levelChunk]);
+                    if (sceneLoadAsyncOperation != null)
+                    {
+                        sceneLoadOperations.Add(sceneLoadAsyncOperation);
+                    }
                 }
             }
+            return sceneLoadOperations;
         }
 
-        public void OnAdventureToPuzzleLevel(LevelZonesID nextPuzzleLevel)
+        public List<AsyncOperation> OnAdventureToPuzzleLevel(LevelZonesID nextPuzzleLevel)
         {
-            foreach (var loadedChunk in this.LoadedEnvironmentLevels)
+            List<AsyncOperation> sceneUnloadOperations = new List<AsyncOperation>();
+            foreach (var referenceChunk in LevelZones.LevelHierarchy[LevelManagerRef.GetCurrentLevel()])
             {
-                if (!LevelZones.LevelHierarchy[nextPuzzleLevel].Contains(loadedChunk))
+                if (!LevelZones.LevelHierarchy[nextPuzzleLevel].Contains(referenceChunk))
                 {
-                    this.SceneUnload(loadedChunk);
+                    var unloadAsyncOperation = this.SceneUnload(referenceChunk);
+                    if (unloadAsyncOperation != null)
+                    {
+                        sceneUnloadOperations.Add(unloadAsyncOperation);
+                    }
                 }
             }
+            return sceneUnloadOperations;
         }
-        internal void OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
+        internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
         {
-            this.LoadAllLevels(nextPuzzleLevel);
-        }
-
-        private void SceneLoadWithoutDuplicates(LevelZoneChunkID levelChunk)
-        {
-            var name = LevelZones.LevelZonesChunkScenename[levelChunk];
-            if (!SceneManager.GetSceneByName(name).isLoaded && !this.LoadedEnvironmentLevels.Contains(levelChunk))
-            {
-                SceneManager.LoadScene(name, LoadSceneMode.Additive);
-                this.LoadedEnvironmentLevels.Add(levelChunk);
-            }
+            return this.LoadAllLevels(nextPuzzleLevel);
         }
 
-        private void SceneUnload(LevelZoneChunkID levelChunk)
+        private AsyncOperation SceneUnload(LevelZoneChunkID levelChunk)
         {
-            if (this.LoadedEnvironmentLevels.Contains(levelChunk))
-            {
-                SceneManager.UnloadSceneAsync(LevelZones.LevelZonesChunkScenename[levelChunk]);
-            }
+            return SceneManager.UnloadSceneAsync(LevelZones.LevelZonesChunkScenename[levelChunk]);
         }
 
 

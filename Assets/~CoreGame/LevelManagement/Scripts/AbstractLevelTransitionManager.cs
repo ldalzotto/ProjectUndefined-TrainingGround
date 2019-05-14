@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 namespace CoreGame
 {
@@ -9,6 +10,7 @@ namespace CoreGame
         #region External Dependencies
         private Coroutiner Coroutiner;
         private LevelManager LevelManager;
+        private CoreEventsManager CoreEventsManager;
         #endregion
         private bool isNewZoneLoading;
 
@@ -16,6 +18,7 @@ namespace CoreGame
         {
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.CoreEventsManager = GameObject.FindObjectOfType<CoreEventsManager>();
         }
 
         #region External Events
@@ -32,21 +35,34 @@ namespace CoreGame
         {
             isNewZoneLoading = true;
             this.OnLevelChange_IMPL();
+
+            List<AsyncOperation> chunkOperations = null;
             if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE)
             {
-                this.LevelManager.OnAdventureToPuzzleLevel(nextZone);
+                chunkOperations = this.LevelManager.OnAdventureToPuzzleLevel(nextZone);
             }
             else
             {
-                this.LevelManager.OnPuzzleToAdventureLevel(nextZone);
+                chunkOperations = this.LevelManager.OnPuzzleToAdventureLevel(nextZone);
             }
-            SceneManager.UnloadSceneAsync(LevelZones.LevelZonesSceneName[LevelManager.GetCurrentLevel()]).completed += (AsyncOperation asyncOperation) =>
+
+            foreach (var chunkOperation in chunkOperations)
             {
-                SceneLoadHelper.LoadSceneAsync(Coroutiner, nextZone, LoadSceneMode.Additive, (AsyncOperation) =>
-                {
-                    isNewZoneLoading = false;
-                });
-            };
+                chunkOperation.allowSceneActivation = false;
+            }
+            this.Coroutiner.StartCoroutine(this.SceneTrasitionOperation(chunkOperations, nextZone));
+        }
+
+        private IEnumerator SceneTrasitionOperation(List<AsyncOperation> chunkOperations, LevelZonesID nextZone)
+        {
+            yield return new WaitForListOfAsyncOperation(chunkOperations);
+            foreach (var chunkOperation in chunkOperations)
+            {
+                chunkOperation.allowSceneActivation = true;
+            }
+            isNewZoneLoading = false;
+            SceneManager.UnloadSceneAsync(LevelZones.LevelZonesSceneName[LevelManager.GetCurrentLevel()]);
+            SceneLoadHelper.LoadScene(Coroutiner, LoadSceneMode.Additive, nextZone);
         }
 
         protected abstract void OnLevelChange_IMPL();
