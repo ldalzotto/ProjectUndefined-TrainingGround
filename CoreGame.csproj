@@ -95,7 +95,6 @@
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
-    <Compile Include="Assets\~CoreGame\CoreEvents\CoreEventsManager.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitEndOfCutscene.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />

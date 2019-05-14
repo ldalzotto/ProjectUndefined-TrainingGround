@@ -11,16 +11,14 @@ namespace RTPuzzle
 
         #region External Dependencies
         private TimeFlowBarManager TimeFlowBarManager;
-        private PuzzleEventsManager PuzzleEventsManager;
         private LevelManager LevelManager;
         #endregion
 
         public void Init(PlayerManagerDataRetriever RTPlayerManagerDataRetriever, PlayerManager RTPlayerManager,
                IGameInputManager gameInputManager, PuzzleGameConfigurationManager puzzleConfigurationManager, TimeFlowBarManager TimeFlowBarManager,
-              LevelManager LevelManager, PuzzleEventsManager PuzzleEventsManager)
+              LevelManager LevelManager)
         {
             this.TimeFlowBarManager = TimeFlowBarManager;
-            this.PuzzleEventsManager = PuzzleEventsManager;
             this.LevelManager = LevelManager;
             TimeFlowInputManager = new TimeFlowInputManager(gameInputManager, RTPlayerManagerDataRetriever, RTPlayerManager);
             TimeFlowValueTracker = new TimeFlowValueTracker(puzzleConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()].AvailableTimeAmount);
@@ -34,17 +32,16 @@ namespace RTPuzzle
                 TimeFlowValueTracker.Tick(d, TimeFlowInputManager.GetTimeAttenuation());
                 TimeFlowBarManager.Tick(TimeFlowValueTracker.CurrentAvailableTime);
             }
-
-            if (TimeFlowValueTracker.NoMoreTimeAvailable())
-            {
-                PuzzleEventsManager.PZ_EVT_GameOver(LevelManager.GetCurrentLevel());
-            }
         }
 
         #region Logical Conditions
         public bool IsAbleToFlowTime()
         {
             return TimeFlowInputManager.IsAbleToFlowTime();
+        }
+        public bool NoMoreTimeAvailable()
+        {
+            return TimeFlowValueTracker.NoMoreTimeAvailable();
         }
         #endregion
 
@@ -53,10 +50,6 @@ namespace RTPuzzle
             return TimeFlowInputManager.GetTimeAttenuation();
         }
 
-        public float GetCurrentAvailableTime()
-        {
-            return TimeFlowValueTracker.CurrentAvailableTime;
-        }
     }
 
     class TimeFlowInputManager

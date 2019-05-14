@@ -85,12 +85,14 @@ namespace RTPuzzle
 
         public void PZ_EVT_GameOver(LevelZonesID nextZone)
         {
+            Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
             this.NPCAIManagerContainer.OnGameOver();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
         public void PZ_EVT_LevelCompleted(LevelZonesID nextZone)
         {
+            Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
             this.NPCAIManagerContainer.OnGameOver();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }

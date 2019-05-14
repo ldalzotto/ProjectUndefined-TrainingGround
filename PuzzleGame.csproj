@@ -129,6 +129,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeColliderTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionConditionNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelManagement\Script\PuzzleLevelTransitionManager.cs" />

@@ -42,8 +42,7 @@ namespace Tests
                     new MockedInputManager(),
                     GameObject.FindObjectOfType<PuzzleGameConfigurationManager>(),
                     GameObject.FindObjectOfType<TimeFlowBarManager>(),
-                    GameObject.FindObjectOfType<LevelManager>(),
-                    GameObject.FindObjectOfType<PuzzleEventsManager>()
+                    GameObject.FindObjectOfType<LevelManager>()
             );
 
             //AI Components default intialization

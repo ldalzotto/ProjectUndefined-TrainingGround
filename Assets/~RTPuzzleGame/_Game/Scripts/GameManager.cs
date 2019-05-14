@@ -25,6 +25,8 @@ namespace RTPuzzle
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
         private RangeTypeContainer RangeTypeContainer;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
+        private AbstractLevelTransitionManager LevelTransitionManager;
+        private GameOverManager GameOverManager;
 
         private void Awake()
         {
@@ -58,6 +60,8 @@ namespace RTPuzzle
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeContainer>();
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
+            LevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
+            GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -66,13 +70,14 @@ namespace RTPuzzle
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
 
             //Initialisations
-            GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
+            LevelTransitionManager.Init();
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init(gameInputManager);
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
-            TimeFlowManager.Init(PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager, PuzzleEventsManager);
+            TimeFlowManager.Init(PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
+            GameOverManager.Init();
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
             PlayerActionManager.Init();
             LaunchProjectileContainerManager.Init();
@@ -96,51 +101,64 @@ namespace RTPuzzle
         {
             var d = Time.deltaTime;
 
-            PlayerActionManager.Tick(d);
-            PlayerManager.Tick(d);
-            TimeFlowManager.Tick(d);
-            CooldownFeedManager.Tick(d);
-            TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
-
-            NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
-
-            if (TimeFlowManager.IsAbleToFlowTime())
+            if (!GameOverManager.OnGameOver)
             {
-                NPCAIManagerContainer.EnableAgents();
-                NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
-                PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
-            }
-            else
-            {
-                NPCAIManagerContainer.DisableAgents();
-            }
+                PlayerActionManager.Tick(d);
+                PlayerManager.Tick(d);
+                TimeFlowManager.Tick(d);
+                GameOverManager.Tick(d);
+                CooldownFeedManager.Tick(d);
+                TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
 
-            RangeTypeContainer.Tick(d);
-            GroundEffectsManagerV2.Tick(d);
-            InRangeEffectManager.Tick(d);
-            NpcInteractionRingRendererManager.Tick(d);
+                NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
+
+                if (TimeFlowManager.IsAbleToFlowTime())
+                {
+                    NPCAIManagerContainer.EnableAgents();
+                    NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                    LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                    PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                    AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                }
+                else
+                {
+                    NPCAIManagerContainer.DisableAgents();
+                }
+
+                RangeTypeContainer.Tick(d);
+                GroundEffectsManagerV2.Tick(d);
+                InRangeEffectManager.Tick(d);
+                NpcInteractionRingRendererManager.Tick(d);
+            }
         }
 
         private void LateUpdate()
         {
             var d = Time.deltaTime;
-            PlayerManager.LateTick(d);
-            PlayerActionManager.LateTick(d);
+            if (!GameOverManager.OnGameOver)
+            {
+                PlayerManager.LateTick(d);
+                PlayerActionManager.LateTick(d);
+            }
         }
 
         private void FixedUpdate()
         {
             var d = Time.fixedDeltaTime;
-            PlayerManager.FixedTick(d);
+            if (!GameOverManager.OnGameOver)
+            {
+                PlayerManager.FixedTick(d);
+            }
         }
 
         private IEnumerator EndOfFixedUpdate()
         {
             yield return new WaitForFixedUpdate();
 
-            NPCAIManagerContainer.EndOfFixedTick();
+            if (!GameOverManager.OnGameOver)
+            {
+                NPCAIManagerContainer.EndOfFixedTick();
+            }
 
             yield return this.EndOfFixedUpdate();
         }

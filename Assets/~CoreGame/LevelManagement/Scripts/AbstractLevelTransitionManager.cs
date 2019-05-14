@@ -10,7 +10,6 @@ namespace CoreGame
         #region External Dependencies
         private Coroutiner Coroutiner;
         private LevelManager LevelManager;
-        private CoreEventsManager CoreEventsManager;
         #endregion
         private bool isNewZoneLoading;
 
@@ -18,7 +17,6 @@ namespace CoreGame
         {
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.CoreEventsManager = GameObject.FindObjectOfType<CoreEventsManager>();
         }
 
         #region External Events

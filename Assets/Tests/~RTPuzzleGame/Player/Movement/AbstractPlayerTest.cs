@@ -27,8 +27,7 @@ namespace Tests
                    mockedInputManager,
                     GameObject.FindObjectOfType<PuzzleGameConfigurationManager>(),
                     GameObject.FindObjectOfType<TimeFlowBarManager>(),
-                    GameObject.FindObjectOfType<LevelManager>(),
-                    GameObject.FindObjectOfType<PuzzleEventsManager>());
+                    GameObject.FindObjectOfType<LevelManager>());
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
             playerManager.Init(mockedInputManager);
 

@@ -27,6 +27,7 @@ namespace RTPuzzle
             if (TriggerGameOverEvent)
             {
                 this.PuzzleEventsManager.PZ_EVT_GameOver(NextZone);
+                TriggerGameOverEvent = false;
             }
         }
 #endif
