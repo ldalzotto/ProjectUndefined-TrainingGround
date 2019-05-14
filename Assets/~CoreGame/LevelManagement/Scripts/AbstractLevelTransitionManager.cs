@@ -10,6 +10,7 @@ namespace CoreGame
         #region External Dependencies
         private Coroutiner Coroutiner;
         private LevelManager LevelManager;
+        private CoreConfigurationManager CoreConfigurationManager;
         #endregion
         private bool isNewZoneLoading;
 
@@ -17,6 +18,7 @@ namespace CoreGame
         {
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
         }
 
         #region External Events
@@ -60,10 +62,11 @@ namespace CoreGame
                 chunkOperation.allowSceneActivation = true;
             }
             isNewZoneLoading = false;
-            SceneManager.UnloadSceneAsync(LevelZones.LevelZonesSceneName[LevelManager.GetCurrentLevel()]);
-            SceneLoadHelper.LoadScene(LoadSceneMode.Additive, nextZone);
+            SceneManager.UnloadSceneAsync(this.CoreConfigurationManager.LevelZonesSceneConfiguration().GetSceneName(LevelManager.GetCurrentLevel()));
+            var nextZoneSceneName = this.CoreConfigurationManager.LevelZonesSceneConfiguration().GetSceneName(nextZone);
+            SceneManager.LoadScene(nextZoneSceneName, LoadSceneMode.Additive);
             yield return null;
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(LevelZones.LevelZonesSceneName[nextZone]));
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextZoneSceneName));
         }
 
         protected abstract void OnLevelChange_IMPL();

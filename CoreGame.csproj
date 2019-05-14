@@ -92,9 +92,14 @@
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
     <Compile Include="Assets\~CoreGame\ConditionGraph\ConditionGraph.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitEndOfCutscene.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
@@ -125,7 +130,6 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerJacketCordAnimationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerProceduralAnimationsManager.cs" />
     <Compile Include="Assets\~CoreGame\Random\RandomHelper.cs" />
-    <Compile Include="Assets\~CoreGame\Scene\SceneLoadHelper.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
     <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
@@ -143,6 +147,7 @@
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
     <Compile Include="Assets\PropertyAttributes\Enum\SearchableEnum.cs" />
+    <Compile Include="Assets\PropertyAttributes\List\ReorderableListAttribute.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />

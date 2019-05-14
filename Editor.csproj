@@ -68,8 +68,10 @@
     <Compile Include="Assets\Editor\Color\FX\FXColorConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConditionGraphEditor\ConditionGraphEditor.cs" />
     <Compile Include="Assets\Editor\ConditionGraphEditor\PuzzleGameEditors\LevelCompletionConditionConfigurationEditor.cs" />
-    <Compile Include="Assets\Editor\Configuration\GameConfigurationEditorProfileV2.cs" />
+    <Compile Include="Assets\Editor\Configuration\CoreGame\CoreGameConfigurationEditor.cs" />
+    <Compile Include="Assets\Editor\Configuration\CoreGameConfigurationEditorProfile.cs" />
     <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditorV2.cs" />
+    <Compile Include="Assets\Editor\Configuration\PuzzleGameConfigurationEditorProfileV2.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorUndoHelper.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorWindowV2.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
@@ -119,8 +121,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PlayerActionVariantCreationWizard\Modules\WheelActionCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PlayerActionVariantCreationWizard\PlayerActionVariantCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PlayerActionVariantCreationWizard\PlayerActionVariantCreationWizardEditorProfile.cs" />
-    <Compile Include="Assets\Editor\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
-    <Compile Include="Assets\Editor\EnumPropertyDrawer\SearchablePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
@@ -132,6 +132,9 @@
     <Compile Include="Assets\Editor\Helper\SerializableObjectHelper.cs" />
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\LevelSceneLoader\LevelSceneLoader.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\SearchablePropertyDrawer.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
     <Reference Include="UnityEngine.AIModule">

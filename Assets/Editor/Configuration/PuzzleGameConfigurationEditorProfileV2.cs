@@ -7,8 +7,8 @@ using ConfigurationEditor;
 using RTPuzzle;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "GameConfigurationEditorProfileV2", menuName = "Configuration/GameConfigurationEditorProfileV2", order = 1)]
-public class GameConfigurationEditorProfileV2 : TreeChoiceHeaderTab<IGenericConfigurationEditor>
+[CreateAssetMenu(fileName = "PuzzleGameConfigurationEditorProfileV2", menuName = "Configuration/PuzzleGameConfigurationEditorProfileV2", order = 1)]
+public class PuzzleGameConfigurationEditorProfileV2 : TreeChoiceHeaderTab<IGenericConfigurationEditor>
 {
     public override Dictionary<string, IGenericConfigurationEditor> Configurations => this.myConf;
 

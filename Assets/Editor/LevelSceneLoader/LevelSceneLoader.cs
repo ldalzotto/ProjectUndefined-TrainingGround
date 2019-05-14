@@ -29,9 +29,18 @@ namespace Editor_LevelSceneLoader
                 }
                 else
                 {
-                    foreach (var chunkId in LevelZones.LevelHierarchy[levelManager.GetCurrentLevel()])
+                    var levelZonesConfiguration = AssetFinder.SafeSingleAssetFind<LevelZonesSceneConfiguration>("t:" + typeof(LevelZonesSceneConfiguration).Name);
+                    var chunkZonesConfiguration = AssetFinder.SafeSingleAssetFind<ChunkZonesSceneConfiguration>("t:" + typeof(ChunkZonesSceneConfiguration).Name);
+                    if (chunkZonesConfiguration == null)
                     {
-                        this.SceneLoadWithoutDuplicate(LevelZones.LevelZonesChunkScenename[chunkId]);
+                        Debug.LogError("The chunk zone configuration has not been found.");
+                    }
+                    else
+                    {
+                        foreach (var chunkId in levelZonesConfiguration.GetLevelHierarchy(levelManager.GetCurrentLevel()))
+                        {
+                            this.SceneLoadWithoutDuplicate(chunkZonesConfiguration.GetSceneName(chunkId));
+                        }
                     }
                 }
             }

@@ -43,9 +43,45 @@ public class SerializableObjectHelper
         return (T)reflectionTarget;
     }
 
+    public static SerializedProperty GetParentProperty(SerializedProperty prop)
+    {
+        // Separate the steps it takes to get to this property
+        string[] separatedPaths = prop.propertyPath.Split('.');
+
+        if (separatedPaths.Length > 1)
+        {
+            string parentPropertypath = string.Empty;
+            for (var i = 0; i < separatedPaths.Length - 1; i++)
+            {
+                if (i != 0)
+                {
+                    parentPropertypath += ".";
+                }
+                parentPropertypath += separatedPaths[i];
+            }
+            return prop.serializedObject.FindProperty(parentPropertypath);
+
+        }
+        return null;
+
+    }
+
+    public static int GetArrayIndex(SerializedProperty elementProperty)
+    {
+        // Separate the steps it takes to get to this property
+        string[] separatedPaths = elementProperty.propertyPath.Split('.');
+
+        if (separatedPaths.Length > 0)
+        {
+            var elementArrayPath = separatedPaths[separatedPaths.Length - 1];
+            return int.Parse(elementArrayPath.Replace("data[", "").Replace("]", ""));
+        }
+        return -1;
+    }
+
     public static FieldInfo GetFieldInfo(SerializedProperty prop)
     {
-        if(prop == null)
+        if (prop == null)
         {
             return null;
         }
@@ -81,7 +117,7 @@ public class SerializableObjectHelper
                 {
                     reflectionTarget = fieldInfo.GetValue(reflectionTarget);
                 }
-                
+
             }
 
         }
