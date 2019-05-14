@@ -131,6 +131,7 @@
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
     <Compile Include="Assets\Editor\Helper\SerializableObjectHelper.cs" />
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
+    <Compile Include="Assets\Editor\LevelSceneLoader\LevelSceneLoader.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <Compile Include="Assets\Editor\Timeline\TimelineGraphsJSONSerialization.cs" />
     <Reference Include="UnityEngine.AIModule">
