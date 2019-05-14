@@ -4,14 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoadHelper
 {
-    public static void LoadScene(Coroutiner coroutiner, LevelZonesID nextZone)
+    public static void LoadScene(LevelZonesID nextZone)
     {
-        LoadScene(coroutiner, LoadSceneMode.Single, nextZone);
+        LoadScene(LoadSceneMode.Single, nextZone);
     }
 
-    public static void LoadScene(Coroutiner coroutiner, LoadSceneMode loadSceneMode, LevelZonesID nextZone)
+    public static void LoadScene(LoadSceneMode loadSceneMode, LevelZonesID nextZone)
     {
-        coroutiner.StopAllCoroutines();
         SceneManager.LoadScene(LevelZones.LevelZonesSceneName[nextZone], loadSceneMode);
     }
 }

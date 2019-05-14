@@ -50,6 +50,7 @@ namespace CoreGame
             {
                 chunkOperation.allowSceneActivation = false;
             }
+            this.Coroutiner.StopAllCoroutines();
             this.Coroutiner.StartCoroutine(this.SceneTrasitionOperation(chunkOperations, nextZone));
         }
 
@@ -62,7 +63,9 @@ namespace CoreGame
             }
             isNewZoneLoading = false;
             SceneManager.UnloadSceneAsync(LevelZones.LevelZonesSceneName[LevelManager.GetCurrentLevel()]);
-            SceneLoadHelper.LoadScene(Coroutiner, LoadSceneMode.Additive, nextZone);
+            SceneLoadHelper.LoadScene(LoadSceneMode.Additive, nextZone);
+            yield return null;
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(LevelZones.LevelZonesSceneName[nextZone]));
         }
 
         protected abstract void OnLevelChange_IMPL();
