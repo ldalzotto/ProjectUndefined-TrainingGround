@@ -17,7 +17,10 @@ public class GameManagerPersistanceInstance : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            if (gameObject != Instance.gameObject)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
