@@ -9,6 +9,7 @@ namespace CoreGame
     {
         public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
         public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
+        public LevelHierarchyConfiguration LevelHierarchyConfiguration;
     }
 }
 

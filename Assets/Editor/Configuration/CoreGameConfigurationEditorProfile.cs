@@ -13,7 +13,8 @@ public class CoreGameConfigurationEditorProfile : TreeChoiceHeaderTab<IGenericCo
     [SerializeField]
     private Dictionary<string, IGenericConfigurationEditor> myConfig = new Dictionary<string, IGenericConfigurationEditor>()
     {
-        {typeof(LevelZonesSceneConfiguration).Name, new GenericConfigurationEditor<LevelZonesID, LevelZonesSceneConfigurationData>("t:"+ typeof(LevelZonesSceneConfiguration).Name) },
-        {typeof(ChunkZonesSceneConfiguration).Name, new GenericConfigurationEditor<LevelZoneChunkID, LevelZonesSceneConfigurationData>("t:"+ typeof(ChunkZonesSceneConfiguration).Name) }
+        {"LevelManagement//" + typeof(LevelZonesSceneConfiguration).Name, new GenericConfigurationEditor<LevelZonesID, LevelZonesSceneConfigurationData>("t:"+ typeof(LevelZonesSceneConfiguration).Name) },
+        {"LevelManagement//" + typeof(ChunkZonesSceneConfiguration).Name, new GenericConfigurationEditor<LevelZoneChunkID, LevelZonesSceneConfigurationData>("t:"+ typeof(ChunkZonesSceneConfiguration).Name) },
+        {"LevelManagement//" + typeof(LevelHierarchyConfiguration).Name, new GenericConfigurationEditor<LevelZonesID, LevelHierarchyConfigurationData>("t:"+ typeof(LevelHierarchyConfiguration).Name) }
     };
 }

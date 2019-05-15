@@ -9,6 +9,7 @@ namespace CoreGame
 
         public LevelZonesSceneConfiguration LevelZonesSceneConfiguration() { return CoreConfiguration.LevelZonesSceneConfiguration; }
         public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration() { return CoreConfiguration.ChunkZonesSceneConfiguration; }
+        public LevelHierarchyConfiguration LevelHierarchyConfiguration() { return CoreConfiguration.LevelHierarchyConfiguration; }
     }
 
 }

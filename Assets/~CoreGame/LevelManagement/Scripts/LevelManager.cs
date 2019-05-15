@@ -75,7 +75,7 @@ namespace CoreGame
         private List<AsyncOperation> LoadAllLevels(LevelZonesID levelZonesID)
         {
             List<AsyncOperation> sceneLoadOperations = new List<AsyncOperation>();
-            foreach (var levelChunk in this.CoreConfigurationManager.LevelZonesSceneConfiguration().GetLevelHierarchy(levelZonesID))
+            foreach (var levelChunk in this.CoreConfigurationManager.LevelHierarchyConfiguration().GetLevelHierarchy(levelZonesID))
             {
                 var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
                 if (sceneLoadAsyncOperation != null)
@@ -89,9 +89,9 @@ namespace CoreGame
         public List<AsyncOperation> OnAdventureToPuzzleLevel(LevelZonesID nextPuzzleLevel)
         {
             List<AsyncOperation> sceneUnloadOperations = new List<AsyncOperation>();
-            foreach (var referenceChunk in this.CoreConfigurationManager.LevelZonesSceneConfiguration().GetLevelHierarchy(LevelManagerRef.GetCurrentLevel()))
+            foreach (var referenceChunk in this.CoreConfigurationManager.LevelHierarchyConfiguration().GetLevelHierarchy(LevelManagerRef.GetCurrentLevel()))
             {
-                if (!this.CoreConfigurationManager.LevelZonesSceneConfiguration().GetLevelHierarchy(nextPuzzleLevel).Contains(referenceChunk))
+                if (!this.CoreConfigurationManager.LevelHierarchyConfiguration().GetLevelHierarchy(nextPuzzleLevel).Contains(referenceChunk))
                 {
                     var unloadAsyncOperation = this.SceneUnload(referenceChunk);
                     if (unloadAsyncOperation != null)

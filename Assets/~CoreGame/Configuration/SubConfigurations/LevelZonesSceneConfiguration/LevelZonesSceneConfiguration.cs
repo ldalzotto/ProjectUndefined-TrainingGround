@@ -14,10 +14,6 @@ namespace CoreGame
             return ConfigurationInherentData[levelZonesID].sceneName;
         }
 
-        public List<LevelZoneChunkID> GetLevelHierarchy(LevelZonesID levelZonesID)
-        {
-            return ConfigurationInherentData[levelZonesID].LevelHierarchy;
-        }
     }
 }
 

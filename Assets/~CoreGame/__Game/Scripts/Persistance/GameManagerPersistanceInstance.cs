@@ -7,7 +7,7 @@ public class GameManagerPersistanceInstance : MonoBehaviour
 
     private static GameManagerPersistanceInstance Instance;
 
-    private void Awake()
+    public void Init()
     {
         if (Instance == null)
         {

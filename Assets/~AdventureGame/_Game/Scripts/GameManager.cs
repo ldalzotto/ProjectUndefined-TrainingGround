@@ -21,6 +21,7 @@ namespace AdventureGame
 
         private void Awake()
         {
+            GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
             //Level chunk initialization
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }

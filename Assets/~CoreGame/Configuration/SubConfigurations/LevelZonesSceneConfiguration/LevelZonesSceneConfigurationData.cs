@@ -18,9 +18,6 @@ namespace CoreGame
 #endif
         public string sceneName;
 
-        [ReorderableListAttribute]
-        public List<LevelZoneChunkID> LevelHierarchy;
-
         public void OnAfterDeserialize()
         {
         }

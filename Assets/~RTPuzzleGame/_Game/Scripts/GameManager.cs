@@ -30,6 +30,7 @@ namespace RTPuzzle
 
         private void Awake()
         {
+            GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
             //Level chunk initialization
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
             LevelManager.Init(LevelType.PUZZLE);

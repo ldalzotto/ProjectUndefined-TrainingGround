@@ -29,7 +29,7 @@ namespace Editor_LevelSceneLoader
                 }
                 else
                 {
-                    var levelZonesConfiguration = AssetFinder.SafeSingleAssetFind<LevelZonesSceneConfiguration>("t:" + typeof(LevelZonesSceneConfiguration).Name);
+                    var levelHierarchyConfiguration = AssetFinder.SafeSingleAssetFind<LevelHierarchyConfiguration>("t:" + typeof(LevelHierarchyConfiguration).Name);
                     var chunkZonesConfiguration = AssetFinder.SafeSingleAssetFind<ChunkZonesSceneConfiguration>("t:" + typeof(ChunkZonesSceneConfiguration).Name);
                     if (chunkZonesConfiguration == null)
                     {
@@ -37,7 +37,7 @@ namespace Editor_LevelSceneLoader
                     }
                     else
                     {
-                        foreach (var chunkId in levelZonesConfiguration.GetLevelHierarchy(levelManager.GetCurrentLevel()))
+                        foreach (var chunkId in levelHierarchyConfiguration.GetLevelHierarchy(levelManager.GetCurrentLevel()))
                         {
                             this.SceneLoadWithoutDuplicate(chunkZonesConfiguration.GetSceneName(chunkId));
                         }
