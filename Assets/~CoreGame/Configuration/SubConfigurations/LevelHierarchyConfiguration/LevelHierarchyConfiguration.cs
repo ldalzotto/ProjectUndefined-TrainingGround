@@ -11,7 +11,14 @@ namespace CoreGame
     {
         public List<LevelZoneChunkID> GetLevelHierarchy(LevelZonesID levelZonesID)
         {
-            return ConfigurationInherentData[levelZonesID].LevelHierarchy;
+            if (ConfigurationInherentData[levelZonesID] == null)
+            {
+                return new List<LevelZoneChunkID>();
+            }
+            else
+            {
+                return ConfigurationInherentData[levelZonesID].LevelHierarchy;
+            }
         }
     }
 
