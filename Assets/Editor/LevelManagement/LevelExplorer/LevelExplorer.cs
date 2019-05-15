@@ -7,6 +7,7 @@ using System;
 using CoreGame;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using static VisualElementsHelper;
 
 namespace Editor_LevelExplorer
 {
@@ -156,11 +157,7 @@ namespace Editor_LevelExplorer
             return line;
         }
 
-        private VisualElement VisualElementWithStyle(VisualElement ve, Action<IStyle> style)
-        {
-            style.Invoke(ve.style);
-            return ve;
-        }
+
 
         private ObjectField BuildObjectField(Type objectType, UnityEngine.Object objectValue)
         {

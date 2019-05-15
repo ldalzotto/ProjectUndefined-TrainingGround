@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{2D0D139A-D349-1A90-D57D-94B6348DCEA8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -132,6 +131,7 @@
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
     <Compile Include="Assets\Editor\Helper\SerializableObjectHelper.cs" />
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
+    <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelExplorer\LevelExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoader.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
