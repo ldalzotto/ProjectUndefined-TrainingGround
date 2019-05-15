@@ -32,6 +32,8 @@ namespace RTPuzzle
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
             //Level chunk initialization
+
+            GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
             LevelManager.Init(LevelType.PUZZLE);
         }
@@ -71,6 +73,7 @@ namespace RTPuzzle
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
 
             //Initialisations
+            GameObject.FindObjectOfType<LevelAvailabilityTimelineManager>().Init();
             LevelTransitionManager.Init();
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();

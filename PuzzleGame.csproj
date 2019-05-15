@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{0250D51F-1CD3-3671-88F3-42979529C21E}</ProjectGuid>
+    <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>PuzzleGame</AssemblyName>
@@ -376,10 +376,10 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="OdinSerializer">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.2f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -729,7 +729,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CoreGame.csproj">
-      <Project>{E14729CF-4489-0F8E-54EC-D5E00042F9EF}</Project>
+      <Project>{FE9BDCD4-369B-DF85-6665-8E0251B2C44B}</Project>
       <Name>CoreGame</Name>
     </ProjectReference>
   </ItemGroup>

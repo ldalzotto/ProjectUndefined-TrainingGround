@@ -77,10 +77,13 @@ namespace CoreGame
             List<AsyncOperation> sceneLoadOperations = new List<AsyncOperation>();
             foreach (var levelChunk in this.CoreConfigurationManager.LevelHierarchyConfiguration().GetLevelHierarchy(levelZonesID))
             {
-                var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
-                if (sceneLoadAsyncOperation != null)
+                if (this.LevelAvailabilityManager.IsLevelAvailable(levelChunk))
                 {
-                    sceneLoadOperations.Add(sceneLoadAsyncOperation);
+                    var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
+                    if (sceneLoadAsyncOperation != null)
+                    {
+                        sceneLoadOperations.Add(sceneLoadAsyncOperation);
+                    }
                 }
             }
             return sceneLoadOperations;
@@ -93,7 +96,7 @@ namespace CoreGame
             {
                 if (!this.CoreConfigurationManager.LevelHierarchyConfiguration().GetLevelHierarchy(nextPuzzleLevel).Contains(referenceChunk))
                 {
-                    var unloadAsyncOperation = this.SceneUnload(referenceChunk);
+                    var unloadAsyncOperation = this.SceneUnloadIfNecessary(referenceChunk);
                     if (unloadAsyncOperation != null)
                     {
                         sceneUnloadOperations.Add(unloadAsyncOperation);
@@ -107,9 +110,9 @@ namespace CoreGame
             return this.LoadAllLevels(nextPuzzleLevel);
         }
 
-        private AsyncOperation SceneUnload(LevelZoneChunkID levelChunk)
+        private AsyncOperation SceneUnloadIfNecessary(LevelZoneChunkID levelChunk)
         {
-            return SceneManager.UnloadSceneAsync(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
+            return SceneLoadingHelper.SceneUnLoadWIthoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
         }
 
 

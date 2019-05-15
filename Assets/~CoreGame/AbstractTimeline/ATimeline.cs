@@ -11,15 +11,14 @@ namespace CoreGame
         #region External Dependencies
         protected abstract T workflowActionPassedDataStruct { get; }
         #endregion
-        
+
 
         private List<TimelineNode<T>> nodes = new List<TimelineNode<T>>();
 
         public List<TimelineNode<T>> Nodes { get => nodes; }
 
-        public void Init()
+        public virtual void Init()
         {
-          //  GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
             var TimelineInitilizer = GetComponent<TimelineInitializer<T>>();
             if (!TimelineInitilizer.HasBeenInit)
             {
@@ -122,7 +121,7 @@ namespace CoreGame
             }
             return nextNodes;
         }
-        
+
     }
 
     public abstract class TimelineNodeWorkflowAction<T>

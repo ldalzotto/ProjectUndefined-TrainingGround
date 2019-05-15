@@ -23,6 +23,7 @@ namespace AdventureGame
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
             //Level chunk initialization
+            GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }
 
@@ -48,6 +49,7 @@ namespace AdventureGame
             DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
             //initialization
+            GameObject.FindObjectOfType<LevelAvailabilityTimelineManager>().Init();
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             PlayerManager.Init();
             StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());

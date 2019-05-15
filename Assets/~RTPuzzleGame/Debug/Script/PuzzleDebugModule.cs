@@ -8,7 +8,7 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public bool InstantProjectileHit;
         public bool TriggerGameOverEvent;
-        public LevelZonesID NextZone;
+        public bool TriggerLevelSuccessEvent;
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -26,8 +26,13 @@ namespace RTPuzzle
         {
             if (TriggerGameOverEvent)
             {
-                this.PuzzleEventsManager.PZ_EVT_GameOver(NextZone);
+                this.PuzzleEventsManager.PZ_EVT_GameOver();
                 TriggerGameOverEvent = false;
+            }
+            if (TriggerLevelSuccessEvent)
+            {
+                this.PuzzleEventsManager.PZ_EVT_LevelCompleted();
+                TriggerLevelSuccessEvent = false;
             }
         }
 #endif

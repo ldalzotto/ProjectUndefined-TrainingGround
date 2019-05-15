@@ -9,7 +9,9 @@ namespace RTPuzzle
         private NPCAIManagerContainer NPCAIManagerContainer;
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         private LevelCompletionManager LevelCompletionManager;
+        private LevelManager LevelManager;
         private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
+        private LevelAvailabilityTimelineManager LevelAvailabilityTimelineManager;
         #endregion
 
         public void Init()
@@ -18,6 +20,8 @@ namespace RTPuzzle
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
             this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
+            this.LevelAvailabilityTimelineManager = GameObject.FindObjectOfType<LevelAvailabilityTimelineManager>();
+            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
         }
 
         #region AI related events
@@ -83,17 +87,18 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void PZ_EVT_GameOver(LevelZonesID nextZone)
+        public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
             this.NPCAIManagerContainer.OnGameOver();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
-        public void PZ_EVT_LevelCompleted(LevelZonesID nextZone)
+        public void PZ_EVT_LevelCompleted()
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
             this.NPCAIManagerContainer.OnGameOver();
+            this.LevelAvailabilityTimelineManager.IncrementGraph(new LevelCompletedTimelineAction(this.LevelManager.GetCurrentLevel()));
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 

@@ -46,7 +46,7 @@ namespace RTPuzzle
         private void OnLevelCompleted()
         {
             this.FXContainerManager.TriggerFX(PrefabContainer.Instance.LevelCompletedParticleEffect);
-            this.PuzzleEventsManager.PZ_EVT_LevelCompleted(this.LevelManager.GetCurrentLevel());
+            this.PuzzleEventsManager.PZ_EVT_LevelCompleted();
         }
     }
 }

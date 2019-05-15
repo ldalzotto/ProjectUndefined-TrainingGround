@@ -11,7 +11,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{2C22DDCA-ACEF-FA52-96B0-0B84B3295FB9}</ProjectGuid>
+    <ProjectGuid>{F166990D-8474-7606-2C5D-4DD059FAED65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>AdventureGame</AssemblyName>
@@ -122,7 +122,6 @@
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\TimelineIDs.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\TimelinesEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\CommonManagers\LinearWayPointFollow.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPoint.cs" />
@@ -331,10 +330,10 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="OdinSerializer">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.34/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.2f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -684,7 +683,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="CoreGame.csproj">
-      <Project>{E14729CF-4489-0F8E-54EC-D5E00042F9EF}</Project>
+      <Project>{FE9BDCD4-369B-DF85-6665-8E0251B2C44B}</Project>
       <Name>CoreGame</Name>
     </ProjectReference>
   </ItemGroup>
