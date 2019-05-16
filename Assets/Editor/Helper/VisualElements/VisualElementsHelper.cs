@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UIElements;
 using System;
 
-public class VisualElementsHelper : MonoBehaviour
+public class VisualElementsHelper 
 {
     public static VisualElement VisualElementWithStyle(VisualElement ve, Action<IStyle> style)
     {

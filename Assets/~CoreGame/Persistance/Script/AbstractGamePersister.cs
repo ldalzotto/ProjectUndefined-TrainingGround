@@ -58,7 +58,7 @@ namespace CoreGame
 
         }
 
-        private string GetDataPath()
+        public string GetDataPath()
         {
             return Path.Combine(this.folderPath, this.fileName + this.fileExtension);
         }
