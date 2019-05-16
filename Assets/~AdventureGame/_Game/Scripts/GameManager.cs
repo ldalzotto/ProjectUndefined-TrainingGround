@@ -15,10 +15,6 @@ namespace AdventureGame
         private DiscussionWindowManager DiscussionWindowManager;
         private GhostsPOIManager GhostsPOIManager;
 
-        //timelines
-        private ScenarioTimelineManagerV2 ScenarioTimelineManager;
-        private DiscussionTimelineManagerV2 DiscussionTimelineManager;
-
         private void Awake()
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
@@ -27,16 +23,12 @@ namespace AdventureGame
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }
 
-        public override void OnLevelChanged()
-        {
-            this.Start();
-        }
-
         void Start()
         {
             var InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(true);
 
+            base.OnStart();
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
             PlayerManager = FindObjectOfType<PlayerManager>();
@@ -45,15 +37,11 @@ namespace AdventureGame
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
             GhostsPOIManager = FindObjectOfType<GhostsPOIManager>();
 
-            ScenarioTimelineManager = FindObjectOfType<ScenarioTimelineManagerV2>();
-            DiscussionTimelineManager = FindObjectOfType<DiscussionTimelineManagerV2>();
 
             //initialization
-            GameObject.FindObjectOfType<LevelAvailabilityTimelineManager>().Init();
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             PlayerManager.Init();
             StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
-            StartCoroutine(ScenarioTimelinesInitialisationAtEndOfFrame());
             InventoryManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             FindObjectOfType<PointOfInterestEventManager>().Init();
@@ -102,13 +90,6 @@ namespace AdventureGame
             {
                 PlayerManager.OnGizmoTick();
             }
-        }
-
-        private IEnumerator ScenarioTimelinesInitialisationAtEndOfFrame()
-        {
-            yield return new WaitForEndOfFrame();
-            ScenarioTimelineManager.Init();
-            DiscussionTimelineManager.Init();
         }
 
         private IEnumerator PointIsInterestInitialisationAtEndOfFrame()

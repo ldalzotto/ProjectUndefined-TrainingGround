@@ -3,8 +3,10 @@ using System.Collections;
 
 namespace CoreGame
 {
+    [System.Serializable]
     public class LevelUnlockWorkflowAction : TimelineNodeWorkflowAction<LevelAvailabilityManager>
     {
+        [SerializeField]
         private LevelZoneChunkID levelZoneChunkToUnlock;
 
         public LevelUnlockWorkflowAction(LevelZoneChunkID levelZoneChunkToUnlock)

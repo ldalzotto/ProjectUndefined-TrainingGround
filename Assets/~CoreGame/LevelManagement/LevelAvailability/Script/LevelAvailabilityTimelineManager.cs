@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public class LevelAvailabilityTimelineManager : ATimelineNodeManager<LevelAvailabilityManager>
+    public class LevelAvailabilityTimelineManager : TimelineNodeManager<LevelAvailabilityManager>
     {
         protected override LevelAvailabilityManager workflowActionPassedDataStruct => this.LevelAvailabilityManager;
+
+        protected override bool isPersisted => true;
 
         #region External Dependencies
         private LevelAvailabilityManager LevelAvailabilityManager;

@@ -38,10 +38,6 @@ namespace RTPuzzle
             LevelManager.Init(LevelType.PUZZLE);
         }
 
-        public override void OnLevelChanged()
-        {
-            this.Start();
-        }
 
         private void Start()
         {
@@ -49,6 +45,7 @@ namespace RTPuzzle
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
+            base.OnStart();
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
@@ -73,7 +70,6 @@ namespace RTPuzzle
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
 
             //Initialisations
-            GameObject.FindObjectOfType<LevelAvailabilityTimelineManager>().Init();
             LevelTransitionManager.Init();
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();

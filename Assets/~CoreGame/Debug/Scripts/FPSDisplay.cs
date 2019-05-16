@@ -3,6 +3,7 @@
 public class FPSDisplay : MonoBehaviour
 {
 
+#if UNITY_EDITOR
 
     float deltaTime = 0.0f;
 
@@ -26,4 +27,6 @@ public class FPSDisplay : MonoBehaviour
         string text = string.Format("{0:0.0} ms ({1:0.} fps)", msec, fps);
         GUI.Label(rect, text, style);
     }
+
+#endif
 }

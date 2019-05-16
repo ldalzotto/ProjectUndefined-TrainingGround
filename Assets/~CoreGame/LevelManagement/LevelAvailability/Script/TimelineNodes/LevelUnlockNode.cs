@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CoreGame
 {
+    [System.Serializable]
     public class LevelUnlockNode : TimelineNode<LevelAvailabilityManager>
     {
         public override Dictionary<TimeLineAction, TimelineNode<LevelAvailabilityManager>> TransitionRequirements => new Dictionary<TimeLineAction, TimelineNode<LevelAvailabilityManager>>();

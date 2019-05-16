@@ -5,13 +5,25 @@ using UnityEngine;
 
 namespace CoreGame
 {
+    public interface ITimelineNodeManager
+    {
+        void Init();
+        void Persist();
+    }
+    public abstract class ATimelineNodeManager : MonoBehaviour
+    {
+    }
 
-    public abstract class ATimelineNodeManager<T> : MonoBehaviour
+    public abstract class TimelineNodeManager<T> : ATimelineNodeManager, ITimelineNodeManager
     {
         #region External Dependencies
         protected abstract T workflowActionPassedDataStruct { get; }
         #endregion
 
+        #region Perisistance
+        protected abstract bool isPersisted { get; }
+        private ATimelinePersister<TimelineNode<T>> timelinePersister;
+        #endregion
 
         private List<TimelineNode<T>> nodes = new List<TimelineNode<T>>();
 
@@ -19,13 +31,35 @@ namespace CoreGame
 
         public virtual void Init()
         {
+            if (this.isPersisted)
+            {
+                this.timelinePersister = new ATimelinePersister<TimelineNode<T>>(this.GetType());
+                var loadedNodes = this.timelinePersister.Load();
+
+                if (loadedNodes == null)
+                {
+                    InitFromConfig();
+                    this.timelinePersister.Save(this.nodes);
+                }
+                else
+                {
+                    this.nodes = loadedNodes;
+                }
+            }
+            else
+            {
+                InitFromConfig();
+            }
+        }
+
+        private void InitFromConfig()
+        {
             var TimelineInitilizer = GetComponent<TimelineInitializer<T>>();
             if (!TimelineInitilizer.HasBeenInit)
             {
                 AddToNodes(TimelineInitilizer.InitialNodes);
                 TimelineInitilizer.HasBeenInit = true;
             }
-
         }
 
         public void IncrementGraph(TimeLineAction executedTimelineAction)
@@ -39,6 +73,15 @@ namespace CoreGame
                 {
                     endAction.Execute(workflowActionPassedDataStruct, oldnode);
                 }
+            }
+            this.Persist();
+        }
+
+        public void Persist()
+        {
+            if (this.timelinePersister != null)
+            {
+                this.timelinePersister.Save(this.nodes);
             }
         }
 
@@ -97,10 +140,16 @@ namespace CoreGame
         public abstract Enum TimelineId { get; }
     }
 
+    [System.Serializable]
     public abstract class TimelineNode<T>
     {
+        [SerializeField]
         public abstract Dictionary<TimeLineAction, TimelineNode<T>> TransitionRequirements { get; }
+
+        [SerializeField]
         public abstract List<TimelineNodeWorkflowAction<T>> OnStartNodeAction { get; }
+
+        [SerializeField]
         public abstract List<TimelineNodeWorkflowAction<T>> OnExitNodeAction { get; }
 
         public List<TimelineNode<T>> ComputeTransitions(TimeLineAction executedTimelineAction)
@@ -124,6 +173,7 @@ namespace CoreGame
 
     }
 
+    [System.Serializable]
     public abstract class TimelineNodeWorkflowAction<T>
     {
         public abstract void Execute(T workflowActionPassedDataStruct, TimelineNode<T> timelineNodeRefence);

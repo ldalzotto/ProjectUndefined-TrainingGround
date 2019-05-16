@@ -3,8 +3,10 @@ using System.Collections;
 
 namespace CoreGame
 {
+    [System.Serializable]
     public class LevelCompletedTimelineAction : TimeLineAction
     {
+        [SerializeField]
         private LevelZonesID completedLevelZone;
 
         public LevelCompletedTimelineAction(LevelZonesID completedLevelZone)
