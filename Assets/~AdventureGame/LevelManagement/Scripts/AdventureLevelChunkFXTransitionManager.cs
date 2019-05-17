@@ -30,9 +30,9 @@ namespace AdventureGame
         #endregion
 
         #region Internal Events
-        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current, ChunkFXTransitionType TransitionType)
         {
-            this.FXTransitionAnimationManager.OnNewChunkLevel(old, current);
+            this.FXTransitionAnimationManager.OnNewChunkLevel(old, current, TransitionType);
         }
         #endregion
 
@@ -56,18 +56,26 @@ namespace AdventureGame
 
         public void OnChunkLevelSwitch(LevelChunkTracker nextLevelChunkTracker)
         {
-            bool transitionCompleted = false;
             if (old == null)
             {
                 this.old = nextLevelChunkTracker.TransitionableLevelFXType;
-                transitionCompleted = true;
+                Debug.Log(MyLog.Format("SAME"));
+                AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
             }
             else if (current == null)
             {
                 if (this.old != nextLevelChunkTracker.TransitionableLevelFXType)
                 {
                     this.current = nextLevelChunkTracker.TransitionableLevelFXType;
-                    transitionCompleted = true;
+                    if (!this.IsNewPostProcessDifferent(nextLevelChunkTracker))
+                    {
+                        Debug.Log(MyLog.Format("SAME"));
+                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
+                    }
+                    else
+                    {
+                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.SMOOTH);
+                    }
                 }
             }
             else
@@ -76,15 +84,25 @@ namespace AdventureGame
                 {
                     this.old = this.current;
                     this.current = nextLevelChunkTracker.TransitionableLevelFXType;
-                    transitionCompleted = true;
+                    if (!this.IsNewPostProcessDifferent(nextLevelChunkTracker))
+                    {
+                        Debug.Log(MyLog.Format("SAME"));
+                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
+                    }
+                    else
+                    {
+                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.SMOOTH);
+                    }
                 }
             }
-
-            if (transitionCompleted)
-            {
-                AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current);
-            }
         }
+
+        #region Logical conditions
+        private bool IsNewPostProcessDifferent(LevelChunkTracker nextLevelChunkTracker)
+        {
+            return this.old.PostProcessVolume.sharedProfile.name != nextLevelChunkTracker.TransitionableLevelFXType.PostProcessVolume.sharedProfile.name;
+        }
+        #endregion
 
     }
 
@@ -101,7 +119,7 @@ namespace AdventureGame
         private TransitionableLevelFXType old;
         private TransitionableLevelFXType current;
 
-        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current, ChunkFXTransitionType TransitionType)
         {
             this.old = old;
             this.current = current;
@@ -114,8 +132,16 @@ namespace AdventureGame
             else
             {
                 current.PostProcessVolume.gameObject.SetActive(true);
-                this.isTransitioning = true;
-                this.ResetState();
+
+                if (TransitionType == ChunkFXTransitionType.SMOOTH)
+                {
+                    this.isTransitioning = true;
+                    this.ResetState();
+                }
+                else
+                {
+                    this.OnTransitionEnd();
+                }
             }
         }
 
@@ -132,10 +158,7 @@ namespace AdventureGame
                 var completionPercent = this.elapsedTime / MAX_TIME;
                 if (completionPercent >= 1)
                 {
-                    this.isTransitioning = false;
-                    this.old.PostProcessVolume.gameObject.SetActive(false);
-                    this.current.PostProcessVolume.weight = 1f;
-                    this.old.PostProcessVolume.weight = 0f;
+                    this.OnTransitionEnd();
                 }
                 else
                 {
@@ -146,6 +169,19 @@ namespace AdventureGame
             }
         }
 
+        private void OnTransitionEnd()
+        {
+            this.isTransitioning = false;
+            this.old.PostProcessVolume.gameObject.SetActive(false);
+            this.current.PostProcessVolume.weight = 1f;
+            this.old.PostProcessVolume.weight = 0f;
+        }
+
+    }
+
+    public enum ChunkFXTransitionType
+    {
+        INSTANT, SMOOTH
     }
 
 }
