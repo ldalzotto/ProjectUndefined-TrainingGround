@@ -133,7 +133,8 @@ namespace AdventureGame
 
         #region State
         private bool isTransitioning;
-        private TimeElapsingType timeElapsingType;
+        private float oldPostProcessingStartingWeight = 1f;
+        private float currentPostProcessingStartingWeight = 0f;
         #endregion
 
         private float elapsedTime;
@@ -154,15 +155,13 @@ namespace AdventureGame
             }
             else
             {
-                this.timeElapsingType = TimeElapsingType.INCREASING;
-
                 current.PostProcessVolume.gameObject.SetActive(true);
 
                 if (TransitionType == ChunkFXTransitionType.SMOOTH)
                 {
                     if (this.isTransitioning)
                     {
-                        this.timeElapsingType = TimeElapsingType.DECREASING;
+                        this.OnTimeElapsingReverse();
                     }
                     else
                     {
@@ -180,6 +179,8 @@ namespace AdventureGame
         private void ResetState()
         {
             this.elapsedTime = 0f;
+            this.oldPostProcessingStartingWeight = 1f;
+            this.currentPostProcessingStartingWeight = 0f;
         }
 
         public void Tick(float d)
@@ -206,53 +207,37 @@ namespace AdventureGame
 
         private void UpdateElapsedTime(float d)
         {
-            if (this.timeElapsingType == TimeElapsingType.INCREASING)
-            {
-                this.elapsedTime += d;
-            }
-            else
-            {
-                this.elapsedTime -= d;
-            }
-
+            this.elapsedTime += d;
         }
 
         private float CalculateCompletionPercent()
         {
-            if (this.timeElapsingType == TimeElapsingType.INCREASING)
-            {
-                return this.elapsedTime / MAX_TIME;
-            }
-            else
-            {
-                return (-this.elapsedTime / MAX_TIME) + 1;
-            }
-
+            return this.elapsedTime / MAX_TIME;
         }
 
         private void UpdatePostProcessesWeight(float completionPercent)
         {
             //the completionPercent - 0.3f is for delaying the old postprecessing transition -> causing artifacts
-            if (this.timeElapsingType == TimeElapsingType.INCREASING)
-            {
-                this.old.PostProcessVolume.weight = Mathf.SmoothStep(1, 0, completionPercent - 0.3f);
-                this.current.PostProcessVolume.weight = Mathf.SmoothStep(0, 1, completionPercent);
-            }
+            this.old.PostProcessVolume.weight = Mathf.SmoothStep(this.oldPostProcessingStartingWeight, 0, completionPercent - 0.3f);
+            this.current.PostProcessVolume.weight = Mathf.SmoothStep(this.currentPostProcessingStartingWeight, 1, completionPercent);
         }
 
         private void OnTransitionEnd()
         {
+            Debug.Log(MyLog.Format("Transition end"));
             this.isTransitioning = false;
             this.old.PostProcessVolume.gameObject.SetActive(false);
             this.current.PostProcessVolume.weight = 1f;
             this.old.PostProcessVolume.weight = 0f;
         }
 
-        enum TimeElapsingType
+        private void OnTimeElapsingReverse()
         {
-            INCREASING, DECREASING
+            //we reverse PP weight to have continuity in weight
+            this.oldPostProcessingStartingWeight = this.old.PostProcessVolume.weight;
+            this.currentPostProcessingStartingWeight = this.current.PostProcessVolume.weight;
+            this.elapsedTime = 0f;
         }
-
 
     }
 
