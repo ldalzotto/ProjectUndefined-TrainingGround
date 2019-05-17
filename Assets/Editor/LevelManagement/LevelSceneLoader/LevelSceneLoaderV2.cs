@@ -29,7 +29,7 @@ namespace Editor_LevelSceneLoader
 
         private void InitStyles()
         {
-            if (this.leftAlignedText != null)
+            if (this.leftAlignedText == null)
             {
                 this.leftAlignedText = new GUIStyle(EditorStyles.label);
                 this.leftAlignedText.alignment = TextAnchor.MiddleLeft;
