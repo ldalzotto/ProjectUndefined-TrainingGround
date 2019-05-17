@@ -135,7 +135,7 @@
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelExplorer\LevelExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
-    <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoader.cs" />
+    <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\SearchablePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
