@@ -122,7 +122,9 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodes\LevelUnlockStartNode.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\AbstractLevelTransitionManager.cs" />
+    <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkType.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
+    <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
     <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
@@ -185,6 +187,9 @@
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\AOT\link.xml" />
     <None Include="Assets\Plugins\Sirenix\Odin Serializer\License.txt" />
     <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

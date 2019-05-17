@@ -91,6 +91,7 @@
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Event\AdventureEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryManager.cs" />
@@ -99,7 +100,9 @@
     <Compile Include="Assets\~AdventureGame\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
+    <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\AdventureLevelChunkFXTransitionManager.cs" />
     <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\AdventureLevelTransitionManager.cs" />
+    <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
     <Compile Include="Assets\~AdventureGame\NPC\Car\Scripts\CarManager.cs" />
     <Compile Include="Assets\~AdventureGame\NPC\Car\Scripts\CarSpawnerManager.cs" />
     <Compile Include="Assets\~AdventureGame\NPC\Scripts\NPCManager.cs" />
@@ -128,6 +131,9 @@
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPathContainer.cs" />
     <None Include="Assets\~AdventureGame\Discussion\Font\LICENSE.txt" />
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

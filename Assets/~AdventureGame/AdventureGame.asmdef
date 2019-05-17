@@ -1,7 +1,8 @@
 {
     "name": "AdventureGame",
     "references": [
-        "CoreGame"
+        "CoreGame",
+        "Unity.Postprocessing.Runtime"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
@@ -10,5 +11,6 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": []
 }

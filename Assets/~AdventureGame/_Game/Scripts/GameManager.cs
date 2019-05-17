@@ -14,6 +14,7 @@ namespace AdventureGame
         private InventoryManager InventoryManager;
         private DiscussionWindowManager DiscussionWindowManager;
         private GhostsPOIManager GhostsPOIManager;
+        private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManager;
 
         private void Awake()
         {
@@ -36,15 +37,18 @@ namespace AdventureGame
             InventoryManager = FindObjectOfType<InventoryManager>();
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
             GhostsPOIManager = FindObjectOfType<GhostsPOIManager>();
+            AdventureLevelChunkFXTransitionManager = GameObject.FindObjectOfType<AdventureLevelChunkFXTransitionManager>();
 
 
             //initialization
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
+            AdventureLevelChunkFXTransitionManager.Init();
             PlayerManager.Init();
             StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
             InventoryManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             FindObjectOfType<PointOfInterestEventManager>().Init();
+            GameObject.FindObjectOfType<AdventureEventManager>().Init();
 
             var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
             if (WayPointPathContainer != null)
@@ -58,6 +62,7 @@ namespace AdventureGame
         {
             var d = Time.deltaTime;
 
+            AdventureLevelChunkFXTransitionManager.Tick(d);
             ContextActionWheelManager.Tick(d);
             ContextActionManager.Tick(d);
             PlayerManager.Tick(d);
