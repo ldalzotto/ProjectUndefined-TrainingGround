@@ -2,6 +2,7 @@
 using System.Collections;
 using CoreGame;
 using System;
+using System.Collections.Generic;
 
 namespace AdventureGame
 {
@@ -10,6 +11,8 @@ namespace AdventureGame
 
         private CurrentTransitionableLevelFXTypeManager CurrentTransitionableLevelFXTypeManager;
         private FXTransitionAnimationManager FXTransitionAnimationManager;
+
+        private List<LevelChunkTracker> currentInsideTracker = new List<LevelChunkTracker>();
 
         public void Init()
         {
@@ -23,9 +26,25 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnChunkLevelSwitch(LevelChunkTracker nextLevelChunkTracker)
+        public void OnChunkLevelEnter(LevelChunkTracker nextLevelChunkTracker)
         {
-            this.CurrentTransitionableLevelFXTypeManager.OnChunkLevelSwitch(nextLevelChunkTracker);
+            this.currentInsideTracker.Add(nextLevelChunkTracker);
+            this.CurrentTransitionableLevelFXTypeManager.OnChunkLevelEnter(nextLevelChunkTracker);
+        }
+
+        public void OnChunkLevelExit(LevelChunkTracker levelChunkTracker)
+        {
+            this.currentInsideTracker.Remove(levelChunkTracker);
+            if (this.currentInsideTracker.Count == 1)
+            {
+                //If when there is only one chunk tracker, the current tracker considered is not the last one
+                if (!this.CurrentTransitionableLevelFXTypeManager.IsCurrentChunkTrackerEqualsTo(this.currentInsideTracker[0]))
+                {
+                    //we transition
+                    this.CurrentTransitionableLevelFXTypeManager.OnChunkLevelEnter(this.currentInsideTracker[0]);
+                }
+            }
+
         }
         #endregion
 
@@ -54,7 +73,7 @@ namespace AdventureGame
         private TransitionableLevelFXType current;
         private TransitionableLevelFXType old;
 
-        public void OnChunkLevelSwitch(LevelChunkTracker nextLevelChunkTracker)
+        public void OnChunkLevelEnter(LevelChunkTracker nextLevelChunkTracker)
         {
             if (old == null)
             {
@@ -69,7 +88,6 @@ namespace AdventureGame
                     this.current = nextLevelChunkTracker.TransitionableLevelFXType;
                     if (!this.IsNewPostProcessDifferent(nextLevelChunkTracker))
                     {
-                        Debug.Log(MyLog.Format("SAME"));
                         AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
                     }
                     else
@@ -86,7 +104,6 @@ namespace AdventureGame
                     this.current = nextLevelChunkTracker.TransitionableLevelFXType;
                     if (!this.IsNewPostProcessDifferent(nextLevelChunkTracker))
                     {
-                        Debug.Log(MyLog.Format("SAME"));
                         AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
                     }
                     else
@@ -102,6 +119,11 @@ namespace AdventureGame
         {
             return this.old.PostProcessVolume.sharedProfile.name != nextLevelChunkTracker.TransitionableLevelFXType.PostProcessVolume.sharedProfile.name;
         }
+
+        public bool IsCurrentChunkTrackerEqualsTo(LevelChunkTracker compareChunkTracker)
+        {
+            return this.current != null && this.current == compareChunkTracker;
+        }
         #endregion
 
     }
@@ -111,6 +133,7 @@ namespace AdventureGame
 
         #region State
         private bool isTransitioning;
+        private TimeElapsingType timeElapsingType;
         #endregion
 
         private float elapsedTime;
@@ -131,12 +154,21 @@ namespace AdventureGame
             }
             else
             {
+                this.timeElapsingType = TimeElapsingType.INCREASING;
+
                 current.PostProcessVolume.gameObject.SetActive(true);
 
                 if (TransitionType == ChunkFXTransitionType.SMOOTH)
                 {
-                    this.isTransitioning = true;
-                    this.ResetState();
+                    if (this.isTransitioning)
+                    {
+                        this.timeElapsingType = TimeElapsingType.DECREASING;
+                    }
+                    else
+                    {
+                        this.isTransitioning = true;
+                        this.ResetState();
+                    }
                 }
                 else
                 {
@@ -154,18 +186,57 @@ namespace AdventureGame
         {
             if (this.isTransitioning)
             {
-                this.elapsedTime += d;
-                var completionPercent = this.elapsedTime / MAX_TIME;
-                if (completionPercent >= 1)
+                UpdateElapsedTime(d);
+                float completionPercent = CalculateCompletionPercent();
+                if (IsTransitionFinished(completionPercent))
                 {
                     this.OnTransitionEnd();
                 }
                 else
                 {
-                    //the completionPercent - 0.3f is for delaying the old postprecessing transition -> causing artifacts
-                    this.old.PostProcessVolume.weight = Mathf.SmoothStep(1, 0, completionPercent - 0.3f);
-                    this.current.PostProcessVolume.weight = Mathf.SmoothStep(0, 1, completionPercent);
+                    UpdatePostProcessesWeight(completionPercent);
                 }
+            }
+        }
+
+        private bool IsTransitionFinished(float completionPercent)
+        {
+            return completionPercent >= 1;
+        }
+
+        private void UpdateElapsedTime(float d)
+        {
+            if (this.timeElapsingType == TimeElapsingType.INCREASING)
+            {
+                this.elapsedTime += d;
+            }
+            else
+            {
+                this.elapsedTime -= d;
+            }
+
+        }
+
+        private float CalculateCompletionPercent()
+        {
+            if (this.timeElapsingType == TimeElapsingType.INCREASING)
+            {
+                return this.elapsedTime / MAX_TIME;
+            }
+            else
+            {
+                return (-this.elapsedTime / MAX_TIME) + 1;
+            }
+
+        }
+
+        private void UpdatePostProcessesWeight(float completionPercent)
+        {
+            //the completionPercent - 0.3f is for delaying the old postprecessing transition -> causing artifacts
+            if (this.timeElapsingType == TimeElapsingType.INCREASING)
+            {
+                this.old.PostProcessVolume.weight = Mathf.SmoothStep(1, 0, completionPercent - 0.3f);
+                this.current.PostProcessVolume.weight = Mathf.SmoothStep(0, 1, completionPercent);
             }
         }
 
@@ -176,6 +247,12 @@ namespace AdventureGame
             this.current.PostProcessVolume.weight = 1f;
             this.old.PostProcessVolume.weight = 0f;
         }
+
+        enum TimeElapsingType
+        {
+            INCREASING, DECREASING
+        }
+
 
     }
 

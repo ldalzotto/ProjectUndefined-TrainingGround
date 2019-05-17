@@ -29,7 +29,15 @@ namespace AdventureGame
         {
             if (other.tag == TagConstants.PLAYER_TAG)
             {
-                this.AdventureEventManager.AD_EVT_OnChunkLevelSwitch(this);
+                this.AdventureEventManager.AD_EVT_OnChunkLevelEnter(this);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if(other.tag == TagConstants.PLAYER_TAG)
+            {
+                this.AdventureEventManager.AD_EVT_OnChunkLevelExit(this);
             }
         }
 
