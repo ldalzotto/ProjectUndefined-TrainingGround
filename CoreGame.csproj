@@ -162,6 +162,7 @@
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
     <Compile Include="Assets\PropertyAttributes\Enum\SearchableEnum.cs" />
     <Compile Include="Assets\PropertyAttributes\List\ReorderableListAttribute.cs" />
+    <Compile Include="Assets\PropertyAttributes\Property\ReadOnly.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />

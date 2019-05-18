@@ -5,7 +5,6 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(SearchableEnum))]
 public class SearchablePropertyDrawer : PropertyDrawer
 {
-
     private Rect enumPopupRect;
     private EnumSearchGUIWindow windowInstance;
 

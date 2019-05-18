@@ -56,6 +56,11 @@ namespace ConfigurationEditor
                 EditorGUILayout.EndScrollView();
             }
         }
+
+        public T GetConfigurationProfile()
+        {
+            return ConfigurationProfile;
+        }
     }
 }
 #endif

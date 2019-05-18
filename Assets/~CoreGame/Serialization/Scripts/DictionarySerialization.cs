@@ -14,13 +14,20 @@ namespace ConfigurationEditor
 #if UNITY_EDITOR
         public void SetEntry(K key, V value)
         {
+            this.ClearEntry(key);
+            ConfigurationInherentData.Add(key, value);
+            EditorUtility.SetDirty(this);
+        }
+
+        public void ClearEntry(K key)
+        {
             if (ConfigurationInherentData.ContainsKey(key))
             {
                 ConfigurationInherentData.Remove(key);
             }
-            ConfigurationInherentData.Add(key, value);
             EditorUtility.SetDirty(this);
         }
+
 #endif
     }
 }

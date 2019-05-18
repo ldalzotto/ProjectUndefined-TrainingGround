@@ -15,6 +15,7 @@ namespace CoreGame
         private LevelZonesID levelID;
 
         public LevelType CurrentLevelType { get => currentLevelType; }
+        public LevelZonesID LevelID { get => levelID; set => levelID = value; }
 
         #region External Dependencies
         private Coroutiner Coroutiner;

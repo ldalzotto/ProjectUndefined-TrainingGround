@@ -2,6 +2,7 @@
 using System.Collections;
 using ConfigurationEditor;
 using UnityEditor;
+using System;
 
 namespace RTPuzzle
 {
@@ -15,8 +16,24 @@ namespace RTPuzzle
         static void Init()
         {
             var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditorV2>();
-            window.Init("t:"+ typeof(PuzzleGameConfigurationEditorProfileV2).Name);
+            window.Init("t:" + typeof(PuzzleGameConfigurationEditorProfileV2).Name);
             window.Show();
+        }
+
+        public static bool OpenToDesiredConfiguration(Type configurationDataType)
+        {
+            var foundConfiguration = PuzzleGameConfigurationEditorProfileV2.GetConfigurationID(configurationDataType);
+            if (!string.IsNullOrEmpty(foundConfiguration))
+            {
+                Init();
+                var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditorV2>();
+                window.GetConfigurationProfile().SetSelectedKey(foundConfiguration);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

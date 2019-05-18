@@ -11,6 +11,16 @@ namespace CreationWizard
         {
           return  "On generation, the key " + key + " of " + configurationName + " will be overriten.";
         }
+
+        public static string NonNullityErrorMessage(string fieldName)
+        {
+            return "The field : " + fieldName + " must not be null.";
+        }
+
+        public static string ModuleIgnoredMessage(string ignoredModuleName, string reason)
+        {
+            return "The module : " + ignoredModuleName + " is ignored because " + reason + ".";
+        }
     }
     
 }

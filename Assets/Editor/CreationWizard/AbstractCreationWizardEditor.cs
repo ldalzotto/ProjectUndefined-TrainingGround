@@ -67,7 +67,8 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
 
     private void DoGeneration()
     {
-        this.editorProfile.GeneratedObjects.Clear();
+        this.editorProfile.CreationWizardFeedLines.Clear();
+
         var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
         tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
 
@@ -97,16 +98,21 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
         EditorGUILayout.LabelField("Generated objects : ");
         if (GUILayout.Button(new GUIContent("D", "Delete all generations."), EditorStyles.miniButton, GUILayout.Width(20)))
         {
-            foreach (var generatedAsset in this.editorProfile.GeneratedObjects)
+           
+            foreach (var creationWizardFeedLines in this.editorProfile.CreationWizardFeedLines)
             {
-                AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(generatedAsset));
+                if (creationWizardFeedLines.GetType() == typeof(CreatedObjectFeedLine))
+                {
+                    var feedLine = (CreatedObjectFeedLine)creationWizardFeedLines;
+                    AssetDatabase.DeleteAsset(feedLine.FilePath);
+                }
             }
-            this.editorProfile.GeneratedObjects.Clear();
+            this.editorProfile.CreationWizardFeedLines.Clear();
         }
         EditorGUILayout.EndHorizontal();
-        foreach (var generatedObject in this.editorProfile.GeneratedObjects)
+        foreach (var creationWizardFeedLines in this.editorProfile.CreationWizardFeedLines)
         {
-            EditorGUILayout.ObjectField(generatedObject, typeof(UnityEngine.Object), false);
+            creationWizardFeedLines.GUITick();
         }
         EditorGUILayout.EndVertical();
     }

@@ -66,6 +66,11 @@ public abstract class TreeChoiceHeaderTab<T> : SerializedScriptableObject
         }
         return default;
     }
+
+    public void SetSelectedKey(string newSelectedKey)
+    {
+        this.selectedKey = newSelectedKey;
+    }
 }
 
 public class TreePickerPopup : PopupWindowContent
