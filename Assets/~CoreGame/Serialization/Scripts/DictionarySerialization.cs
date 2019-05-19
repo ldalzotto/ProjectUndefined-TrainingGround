@@ -6,8 +6,13 @@ using UnityEngine;
 
 namespace ConfigurationEditor
 {
+    public interface IConfigurationSerialization
+    {
+        void ClearEntry(Enum key);
+    }
+
     [System.Serializable]
-    public abstract class ConfigurationSerialization<K, V> : SerializedScriptableObject where K : Enum where V : ScriptableObject
+    public abstract class ConfigurationSerialization<K, V> : SerializedScriptableObject, IConfigurationSerialization where K : Enum where V : ScriptableObject
     {
         public Dictionary<K, V> ConfigurationInherentData = new Dictionary<K, V>() { };
 
@@ -19,11 +24,21 @@ namespace ConfigurationEditor
             EditorUtility.SetDirty(this);
         }
 
-        public void ClearEntry(K key)
+        private void ClearEntry(K key)
         {
             if (ConfigurationInherentData.ContainsKey(key))
             {
                 ConfigurationInherentData.Remove(key);
+            }
+            EditorUtility.SetDirty(this);
+        }
+
+        public void ClearEntry(Enum key)
+        {
+            var catedKey = (K)key;
+            if (ConfigurationInherentData.ContainsKey(catedKey))
+            {
+                ConfigurationInherentData.Remove(catedKey);
             }
             EditorUtility.SetDirty(this);
         }

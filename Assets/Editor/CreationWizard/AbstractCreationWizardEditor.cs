@@ -98,13 +98,17 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
         EditorGUILayout.LabelField("Generated objects : ");
         if (GUILayout.Button(new GUIContent("D", "Delete all generations."), EditorStyles.miniButton, GUILayout.Width(20)))
         {
-           
+
             foreach (var creationWizardFeedLines in this.editorProfile.CreationWizardFeedLines)
             {
                 if (creationWizardFeedLines.GetType() == typeof(CreatedObjectFeedLine))
                 {
                     var feedLine = (CreatedObjectFeedLine)creationWizardFeedLines;
                     AssetDatabase.DeleteAsset(feedLine.FilePath);
+                }
+                else if (creationWizardFeedLines.GetType() == typeof(ConfigurationModifiedFeedLine))
+                {
+                    ((ConfigurationModifiedFeedLine)creationWizardFeedLines).RemoveEntry();
                 }
             }
             this.editorProfile.CreationWizardFeedLines.Clear();

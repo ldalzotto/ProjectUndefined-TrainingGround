@@ -1,4 +1,5 @@
-﻿using OdinSerializer;
+﻿using ConfigurationEditor;
+using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -85,7 +86,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     public void GameConfigurationModified(UnityEngine.Object configuration, Enum key, UnityEngine.Object value)
     {
         this.creationWizardFeedLines.Add(new ConfigurationModifiedFeedLine(
-            AssetDatabase.GetAssetPath(configuration), key, AssetDatabase.GetAssetPath(value)            ));
+            AssetDatabase.GetAssetPath(configuration), key, AssetDatabase.GetAssetPath(value)));
     }
 
     protected void InitModule<T>(bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble) where T : CreationModuleComponent
@@ -160,7 +161,7 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
         EditorGUILayout.BeginVertical();
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Added configuration key : ", GUILayout.Width(150));
-        EditorGUILayout.ObjectField(this.configurationObject, typeof(UnityEngine.Object), false);
+        EditorGUILayout.ObjectField((UnityEngine.Object)this.configurationObject, typeof(UnityEngine.Object), false);
         EditorGUILayout.EndHorizontal();
         EditorGUI.indentLevel += 1;
         EditorGUILayout.LabelField(this.keySet.ToString());
@@ -169,18 +170,26 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
         EditorGUILayout.EndVertical();
     }
 
-    private UnityEngine.Object configurationObject;
+    private IConfigurationSerialization configurationObject;
     private UnityEngine.Object objectSet;
+
+    public string ConfigurationPath { get => configurationPath; }
 
     private void Init()
     {
-        if(this.configurationObject == null)
+        if (this.configurationObject == null)
         {
-            this.configurationObject = AssetDatabase.LoadAssetAtPath(this.configurationPath, typeof(UnityEngine.Object));
+            this.configurationObject = (IConfigurationSerialization)AssetDatabase.LoadAssetAtPath(this.configurationPath, typeof(UnityEngine.Object));
         }
         if (this.objectSet == null)
         {
             this.objectSet = AssetDatabase.LoadAssetAtPath(this.objectSetPath, typeof(UnityEngine.Object));
         }
     }
+
+    public void RemoveEntry()
+    {
+        this.configurationObject.ClearEntry(this.keySet);
+    }
+
 }
