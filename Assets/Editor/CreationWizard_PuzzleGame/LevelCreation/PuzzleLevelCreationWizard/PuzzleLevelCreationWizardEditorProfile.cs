@@ -15,7 +15,7 @@ namespace Editor_PuzzleLevelCreationWizard
             this.InitModule<SceneCreation>(true, true, false);
             this.InitModule<LevelConfigurationCreation>(true, true, false);
             this.InitModule<LevelCompletionCreation>(true, true, false);
-            this.InitModule<LevelCompletionCreationCondition>(true, true, false);
+            this.InitModule<LevelCompletionConditionCreation>(true, true, false);
             this.InitModule<PuzzleLevelDynamicsCreation>(true, true, false);
         }
 
@@ -23,7 +23,7 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             this.GetModule<LevelConfigurationCreation>().OnGenerationEnd();
             this.GetModule<LevelCompletionCreation>().OnGenerationEnd();
-            this.GetModule<LevelCompletionCreationCondition>().OnGenerationEnd();
+            this.GetModule<LevelCompletionConditionCreation>().OnGenerationEnd();
             this.GetModule<PuzzleLevelDynamicsCreation>().OnGenerationEnd();
         }
 
@@ -34,7 +34,7 @@ namespace Editor_PuzzleLevelCreationWizard
                 this.GetModule<SceneCreation>(),
                 this.GetModule<LevelConfigurationCreation>(),
                 this.GetModule<LevelCompletionCreation>(),
-                this.GetModule<LevelCompletionCreationCondition>(),
+                this.GetModule<LevelCompletionConditionCreation>(),
                 this.GetModule<PuzzleLevelDynamicsCreation>()
             );
         }
@@ -46,7 +46,7 @@ namespace Editor_PuzzleLevelCreationWizard
               (SceneCreation)modules[typeof(SceneCreation).Name],
               (LevelConfigurationCreation)modules[typeof(LevelConfigurationCreation).Name],
               (LevelCompletionCreation)modules[typeof(LevelCompletionCreation).Name],
-              (LevelCompletionCreationCondition)modules[typeof(LevelCompletionCreationCondition).Name],
+              (LevelCompletionConditionCreation)modules[typeof(LevelCompletionConditionCreation).Name],
               (PuzzleLevelDynamicsCreation)modules[typeof(PuzzleLevelDynamicsCreation).Name]
            );
         }
@@ -58,10 +58,10 @@ namespace Editor_PuzzleLevelCreationWizard
         public SceneCreation SceneCreation;
         public LevelConfigurationCreation LevelConfigurationCreation;
         public LevelCompletionCreation LevelCompletionCreation;
-        public LevelCompletionCreationCondition LevelCompletionCreationCondition;
+        public LevelCompletionConditionCreation LevelCompletionCreationCondition;
         public PuzzleLevelDynamicsCreation PuzzleLevelDynamicsCreation;
 
-        public CreationWizardModules(EditorInformations editorInformations, SceneCreation sceneCreation, LevelConfigurationCreation levelConfigurationCreation, LevelCompletionCreation levelCompletionCreation, LevelCompletionCreationCondition levelCompletionCreationCondition, PuzzleLevelDynamicsCreation puzzleLevelDynamicsCreation)
+        public CreationWizardModules(EditorInformations editorInformations, SceneCreation sceneCreation, LevelConfigurationCreation levelConfigurationCreation, LevelCompletionCreation levelCompletionCreation, LevelCompletionConditionCreation levelCompletionCreationCondition, PuzzleLevelDynamicsCreation puzzleLevelDynamicsCreation)
         {
             EditorInformations = editorInformations;
             SceneCreation = sceneCreation;

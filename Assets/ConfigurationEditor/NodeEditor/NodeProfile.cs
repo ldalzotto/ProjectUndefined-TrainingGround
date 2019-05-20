@@ -46,7 +46,7 @@ namespace NodeGraph
             }
             nodeInstance.Id = randomNodeId;
             nodeInstance.Bounds.position = startPosition - nodeEditorProfileRef.EditorBound.position;
-            nodeInstance.EdgesDirectoryPath = nodeEditorProfileRef.NodesTmpFolderPath + "/Node_" + nodeInstance.Id.ToString() + "_Edges";
+            nodeInstance.EdgesDirectoryPath =  nodeEditorProfileRef.NodesTmpFolderPath + "/Node_" + nodeInstance.Id.ToString() + "_Edges";
             var edgeDI = new DirectoryInfo(nodeInstance.EdgesDirectoryPath);
             if (!edgeDI.Exists)
             {

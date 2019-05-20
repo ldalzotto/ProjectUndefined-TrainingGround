@@ -5,7 +5,7 @@ using NodeGraph;
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "NodeEditorProfile", menuName = "Experimental/ConditionGraphEditorProfile", order = 1)]
+    [CreateAssetMenu(fileName = "LevelCompletionCondition", menuName = "Configuration/PuzzleGame/LevelConfiguration/LevelCompletion/LevelCompletionCondition", order = 1)]
     public class ConditionGraphEditorProfile : NodeEditorProfile
     {
         public ConditionGraphEditorProfile()

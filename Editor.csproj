@@ -72,6 +72,7 @@
     <Compile Include="Assets\Editor\Configuration\PuzzleGameConfigurationEditorProfileV2.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorUndoHelper.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorWindowV2.cs" />
+    <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUIFilter.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\StringTypeDictionaryEnumFilter.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\FilterTypes\UnityObjectTypeDictionaryEnumFilter.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\ScriptableObjectListGUI.cs" />
-    <Compile Include="Assets\Editor\ContextMenuActions\OpenSpecial.cs" />
     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditor.cs" />
     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Components\CreateablePrefabComponent.cs" />
@@ -96,8 +96,8 @@
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\LevelCompletionConditionCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\LevelCompletionCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\LevelCompletionCreationCondition.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\LevelConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\PuzzleLevelDynamicsCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\SceneCreation.cs" />
@@ -132,6 +132,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditorContextMenu.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />

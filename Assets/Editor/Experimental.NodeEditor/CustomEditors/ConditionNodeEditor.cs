@@ -4,6 +4,7 @@ using UnityEditor;
 using System;
 using System.Collections.Generic;
 using RTPuzzle;
+using NodeGraph;
 
 namespace Experimental.Editor_NodeEditor
 {
@@ -18,10 +19,11 @@ namespace Experimental.Editor_NodeEditor
 
         protected override Type NodeEditorProfileType => typeof(ConditionGraphEditorProfile);
 
-        [MenuItem("Experimental/ConditionNodeEditor")]
-        static void Init()
+        public static void Init(NodeEditorProfile nodeEditorProfile)
         {
             ConditionNodeEditor window = (ConditionNodeEditor)EditorWindow.GetWindow(typeof(ConditionNodeEditor));
+            nodeEditorProfile.Init();
+            window.NodeEditorProfile = nodeEditorProfile;
             window.Show();
         }
 

@@ -28,9 +28,10 @@ namespace Experimental.Editor_NodeEditor
         protected abstract Type NodeEditorProfileType { get; }
 
         protected abstract Dictionary<string, Type> NodePickerConfiguration { get; }
+        public NodeEditorProfile NodeEditorProfile { set => nodeEditorProfile = value; }
 
         [SerializeField]
-        private NodeEditorProfile NodeEditorProfile;
+        private NodeEditorProfile nodeEditorProfile;
 
         private DragNodeManager DragNodeManager;
         private DragGridManager DragGridManager;
@@ -45,44 +46,44 @@ namespace Experimental.Editor_NodeEditor
         private void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
-            NodeEditorProfile = (NodeEditorProfile)EditorGUILayout.ObjectField(this.NodeEditorProfile, NodeEditorProfileType, false, GUILayout.Width(150f));
+            nodeEditorProfile = (NodeEditorProfile)EditorGUILayout.ObjectField(this.nodeEditorProfile, NodeEditorProfileType, false, GUILayout.Width(150f));
             if (EditorGUI.EndChangeCheck())
             {
-                if (NodeEditorProfile != null)
+                if (nodeEditorProfile != null)
                 {
-                    NodeEditorProfile.Init();
+                    nodeEditorProfile.Init();
                 }
             }
-            if (NodeEditorProfile != null)
+            if (nodeEditorProfile != null)
             {
 
                 if (this.NodePicker == null)
                 {
                     this.NodePicker = new TreePickerPopup(this.NodePickerConfiguration.Keys.ToList(),
-                    () => { this.NodeCreationManager.OnNodePickerChange(ref this.NodePicker, ref this.NodeEditorProfile, NodePickerConfiguration, this); }, this.NodeEditorProfile.NodeCreationPickerProfile.SelectedKey);
+                    () => { this.NodeCreationManager.OnNodePickerChange(ref this.NodePicker, ref this.nodeEditorProfile, NodePickerConfiguration, this); }, this.nodeEditorProfile.NodeCreationPickerProfile.SelectedKey);
                     this.NodePicker.RepaintAction = () => { GUI.changed = true; };
-                    this.NodePicker.WindowDimensions = this.NodeEditorProfile.NodeCreationPickerProfile.PickerSize;
+                    this.NodePicker.WindowDimensions = this.nodeEditorProfile.NodeCreationPickerProfile.PickerSize;
                 }
 
-                NodeEditorProfile.EditorBound.size = this.position.size;
-                this.GridDrawer.GUITick(ref this.NodeEditorProfile);
+                nodeEditorProfile.EditorBound.size = this.position.size;
+                this.GridDrawer.GUITick(ref this.nodeEditorProfile);
 
-                foreach (var node in this.NodeEditorProfile.Nodes.Values)
+                foreach (var node in this.nodeEditorProfile.Nodes.Values)
                 {
-                    node.GUITick(ref this.NodeEditorProfile);
+                    node.GUITick(ref this.nodeEditorProfile);
                 }
 
-                this.NodeSelectionInspector.GUITick(ref this.NodeEditorProfile);
+                this.NodeSelectionInspector.GUITick(ref this.nodeEditorProfile);
 
                 if (!this.NodeCreationManager.GUITick(ref this.NodePicker))
                 {
-                    if (!this.CreateConnectionManager.GUITick(ref this.NodeEditorProfile))
+                    if (!this.CreateConnectionManager.GUITick(ref this.nodeEditorProfile))
                     {
-                        if (!this.DeleteNodeManager.GUITick(ref this.NodeEditorProfile))
+                        if (!this.DeleteNodeManager.GUITick(ref this.nodeEditorProfile))
                         {
-                            if (!this.DragNodeManager.GUITick(ref this.NodeEditorProfile))
+                            if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
                             {
-                                this.DragGridManager.GUITick(ref this.NodeEditorProfile);
+                                this.DragGridManager.GUITick(ref this.nodeEditorProfile);
                             }
                         }
                     }
@@ -99,8 +100,8 @@ namespace Experimental.Editor_NodeEditor
 
         internal void OnAddNode(Vector2 mousePosition, Type nodeType)
         {
-            NodeProfile.CreateNode((NodeProfile)ScriptableObject.CreateInstance(nodeType), ref this.NodeEditorProfile, mousePosition);
-            this.NodeEditorProfile.RefreshNodes();
+            NodeProfile.CreateNode((NodeProfile)ScriptableObject.CreateInstance(nodeType), ref this.nodeEditorProfile, mousePosition);
+            this.nodeEditorProfile.RefreshNodes();
         }
 
 

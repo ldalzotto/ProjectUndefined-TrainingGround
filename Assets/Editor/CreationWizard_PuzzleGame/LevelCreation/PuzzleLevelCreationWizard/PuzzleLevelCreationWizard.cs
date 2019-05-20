@@ -23,8 +23,8 @@ namespace Editor_PuzzleLevelCreationWizard
             this.GetModule<SceneCreation>().OnInspectorGUI(ref this.editorProfile.Modules);
             this.GetModule<LevelConfigurationCreation>().OnInspectorGUI(ref this.editorProfile.Modules);
             this.GetModule<LevelCompletionCreation>().OnInspectorGUI(ref this.editorProfile.Modules);
+            this.GetModule<LevelCompletionConditionCreation>().OnInspectorGUI(ref this.editorProfile.Modules);
             this.GetModule<PuzzleLevelDynamicsCreation>().OnInspectorGUI(ref this.editorProfile.Modules);
-            this.GetModule<LevelCompletionCreationCondition>().OnInspectorGUI(ref this.editorProfile.Modules);
         }
     }
 }

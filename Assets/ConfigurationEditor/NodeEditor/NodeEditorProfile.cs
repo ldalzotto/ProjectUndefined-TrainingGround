@@ -14,7 +14,6 @@ namespace NodeGraph
     [System.Serializable]
     public abstract class NodeEditorProfile : SerializedScriptableObject
     {
-        public const string RELATIVE_GRAPH_TMP_FOLDER_PATH = "tmp";
         public string GraphTmpFolderPath;
         public string NodesTmpFolderPath;
 
@@ -32,7 +31,7 @@ namespace NodeGraph
         {
             if (string.IsNullOrEmpty(this.GraphTmpFolderPath))
             {
-                var graphTmpFolderFullPath = FileUtil.GetAssetDirectoryPath(this) + RELATIVE_GRAPH_TMP_FOLDER_PATH;
+                var graphTmpFolderFullPath = FileUtil.GetAssetDirectoryPath(this) + this.name + "_tmp";
                 var di = new DirectoryInfo(graphTmpFolderFullPath);
                 if (!di.Exists)
                 {

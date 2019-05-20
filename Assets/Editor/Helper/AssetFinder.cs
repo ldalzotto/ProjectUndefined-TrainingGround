@@ -55,6 +55,8 @@ public class AssetFinder
                 }
             }
 
+            return returnlist;
+
         }
 
         return new List<T>();

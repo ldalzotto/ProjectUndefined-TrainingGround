@@ -8,9 +8,9 @@ using System;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
-    public class LevelCompletionCreationCondition : CreateableScriptableObjectComponent<ConditionGraphEditorProfile>
+    public class LevelCompletionConditionCreation : CreateableScriptableObjectComponent<ConditionGraphEditorProfile>
     {
-        public LevelCompletionCreationCondition(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        public LevelCompletionConditionCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
         }
 
@@ -26,7 +26,7 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             if (LevelCompletionCreation.IsNew)
             {
-                var createdCompletionInherentData = this.CreateAsset(editorInformationsData.LevelCompletionConfigurationDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionConditionConfigurationName);
+                var createdCompletionInherentData = this.CreateAsset(editorInformationsData.LevelCompletionConditionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionConditionConfigurationName);
                 LevelCompletionCreation.CreatedObject.ConditionGraphEditorProfile = createdCompletionInherentData;
                 addToGenerated.Invoke(new UnityEngine.Object[] { createdCompletionInherentData });
             }
