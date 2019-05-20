@@ -1,27 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 using OdinSerializer;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections.Generic;
 using System;
 
-namespace Experimental.Editor_NodeEditor
+namespace NodeGraph
 {
     [System.Serializable]
     public abstract class NodeEdgeProfile : SerializedScriptableObject
     {
         public int Id;
         public object Value;
-        public Rect Bounds;
+        
         public NodeProfile NodeProfileRef;
         public abstract List<Type> AllowedConnectedNodeEdges { get; }
+     
+        public List<NodeEdgeProfile> ConnectedNodeEdges = new List<NodeEdgeProfile>();
+        public NodeEdgeProfile BackwardConnectedNodeEdge;
+
+#if UNITY_EDITOR
+        public Rect Bounds;
         protected virtual Color EdgeColor()
         {
             return Color.gray;
         }
-
-        public List<NodeEdgeProfile> ConnectedNodeEdges = new List<NodeEdgeProfile>();
-        public List<NodeEdgeProfile> BackwardConnectedNodeEdges = new List<NodeEdgeProfile>();
 
         private bool IsSelected = false;
         private Color selectedColor;
@@ -77,7 +82,11 @@ namespace Experimental.Editor_NodeEditor
                 if (!this.ConnectedNodeEdges.Contains(NodeEdge))
                 {
                     this.ConnectedNodeEdges.Add(NodeEdge);
-                    NodeEdge.BackwardConnectedNodeEdges.Add(this);
+                    if (NodeEdge.BackwardConnectedNodeEdge != null)
+                    {
+                        NodeEdge.BackwardConnectedNodeEdge.ClearConnection(NodeEdge);
+                    }
+                    NodeEdge.BackwardConnectedNodeEdge = this;
                 }
             }
         }
@@ -90,31 +99,48 @@ namespace Experimental.Editor_NodeEditor
 
         protected abstract void GUI_Impl(Rect rect);
 
-        internal void ClearConnections()
+        public void ClearConnections()
         {
             foreach (var connectedEdges in this.ConnectedNodeEdges)
             {
-                var backwardNodeEdge = connectedEdges.BackwardConnectedNodeEdges.Find(edge => edge.Id == this.Id);
-                if (backwardNodeEdge != null)
+                if (connectedEdges.BackwardConnectedNodeEdge != null && connectedEdges.BackwardConnectedNodeEdge.Id == this.Id)
                 {
-                    connectedEdges.BackwardConnectedNodeEdges.Remove(backwardNodeEdge);
+                    connectedEdges.BackwardConnectedNodeEdge = null;
                 }
             }
             this.ConnectedNodeEdges.Clear();
         }
 
-        public void ClearBackwardConnections()
+        public void ClearConnection(NodeEdgeProfile removedEdgeConnection)
         {
-            foreach (var backardEdge in this.BackwardConnectedNodeEdges)
+            bool remove = false;
+            foreach (var connectedEdges in this.ConnectedNodeEdges)
             {
-                var edgeToDeleteReference = backardEdge.ConnectedNodeEdges.Find(edge => edge.Id == this.Id);
-                if (edgeToDeleteReference != null)
+                if (connectedEdges != null && connectedEdges.Id == removedEdgeConnection.Id)
                 {
-                    backardEdge.ConnectedNodeEdges.Remove(this);
+                    remove = true;
                 }
             }
-            this.BackwardConnectedNodeEdges.Clear();
+            if (remove)
+            {
+                this.ConnectedNodeEdges.Remove(removedEdgeConnection);
+            }
         }
+
+        public void ClearBackwardConnection()
+        {
+            if (this.BackwardConnectedNodeEdge != null)
+            {
+                var edgeToDeleteReference = this.BackwardConnectedNodeEdge.ConnectedNodeEdges.Find(edge => edge.Id == this.Id);
+                if (edgeToDeleteReference != null)
+                {
+                    this.BackwardConnectedNodeEdge.ConnectedNodeEdges.Remove(this);
+                }
+                this.BackwardConnectedNodeEdge = null;
+            }
+
+        }
+#endif
     }
 }
 

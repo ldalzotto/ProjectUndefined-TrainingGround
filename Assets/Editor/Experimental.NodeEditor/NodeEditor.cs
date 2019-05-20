@@ -2,46 +2,50 @@
 using System.Collections;
 using UnityEditor;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using NodeGraph;
 
 namespace Experimental.Editor_NodeEditor
 {
-    public class NodeEditor : EditorWindow
+    public abstract class NodeEditor : EditorWindow
     {
-        [MenuItem("Experimental/NodeEditor")]
-        static void Init()
-        {
-            NodeEditor window = (NodeEditor)EditorWindow.GetWindow(typeof(NodeEditor));
-            window.Show();
-        }
-
 
         private void OnEnable()
         {
-            this.NodeEditorContextMenu = new NodeEditorContextMenu();
-            this.NodeEditorContextMenu.Init(this);
             this.DragNodeManager = new DragNodeManager();
             this.DragGridManager = new DragGridManager();
             this.GridDrawer = new GridDrawer();
             this.CreateConnectionManager = new CreateConnectionManager();
             this.NodeSelectionInspector = new NodeSelectionInspector();
             this.DeleteNodeManager = new DeleteNodeManager();
+            this.NodeCreationManager = new NodeCreationManager();
+            this.OnEnable_Impl();
         }
+
+        protected abstract void OnEnable_Impl();
+
+        protected abstract Type NodeEditorProfileType { get; }
+
+        protected abstract Dictionary<string, Type> NodePickerConfiguration { get; }
 
         [SerializeField]
         private NodeEditorProfile NodeEditorProfile;
 
-        private NodeEditorContextMenu NodeEditorContextMenu;
         private DragNodeManager DragNodeManager;
         private DragGridManager DragGridManager;
         private GridDrawer GridDrawer;
         private NodeSelectionInspector NodeSelectionInspector;
         private CreateConnectionManager CreateConnectionManager;
         private DeleteNodeManager DeleteNodeManager;
+        private NodeCreationManager NodeCreationManager;
+
+        private TreePickerPopup NodePicker;
 
         private void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
-            NodeEditorProfile = (NodeEditorProfile)EditorGUILayout.ObjectField(this.NodeEditorProfile, typeof(NodeEditorProfile), false, GUILayout.Width(150f));
+            NodeEditorProfile = (NodeEditorProfile)EditorGUILayout.ObjectField(this.NodeEditorProfile, NodeEditorProfileType, false, GUILayout.Width(150f));
             if (EditorGUI.EndChangeCheck())
             {
                 if (NodeEditorProfile != null)
@@ -51,9 +55,17 @@ namespace Experimental.Editor_NodeEditor
             }
             if (NodeEditorProfile != null)
             {
+
+                if (this.NodePicker == null)
+                {
+                    this.NodePicker = new TreePickerPopup(this.NodePickerConfiguration.Keys.ToList(),
+                    () => { this.NodeCreationManager.OnNodePickerChange(ref this.NodePicker, ref this.NodeEditorProfile, NodePickerConfiguration, this); }, this.NodeEditorProfile.NodeCreationPickerProfile.SelectedKey);
+                    this.NodePicker.RepaintAction = () => { GUI.changed = true; };
+                    this.NodePicker.WindowDimensions = this.NodeEditorProfile.NodeCreationPickerProfile.PickerSize;
+                }
+
                 NodeEditorProfile.EditorBound.size = this.position.size;
                 this.GridDrawer.GUITick(ref this.NodeEditorProfile);
-                this.NodeEditorContextMenu.GUITick();
 
                 foreach (var node in this.NodeEditorProfile.Nodes.Values)
                 {
@@ -61,30 +73,64 @@ namespace Experimental.Editor_NodeEditor
                 }
 
                 this.NodeSelectionInspector.GUITick(ref this.NodeEditorProfile);
-                
-                if (!this.CreateConnectionManager.GUITick(ref this.NodeEditorProfile))
+
+                if (!this.NodeCreationManager.GUITick(ref this.NodePicker))
                 {
-                    if(!this.DeleteNodeManager.GUITick(ref this.NodeEditorProfile))
+                    if (!this.CreateConnectionManager.GUITick(ref this.NodeEditorProfile))
                     {
-                        if (!this.DragNodeManager.GUITick(ref this.NodeEditorProfile))
+                        if (!this.DeleteNodeManager.GUITick(ref this.NodeEditorProfile))
                         {
-                            this.DragGridManager.GUITick(ref this.NodeEditorProfile);
+                            if (!this.DragNodeManager.GUITick(ref this.NodeEditorProfile))
+                            {
+                                this.DragGridManager.GUITick(ref this.NodeEditorProfile);
+                            }
                         }
                     }
                 }
 
 
+                this.OnGUI_Impl();
 
             }
             if (GUI.changed) Repaint();
         }
 
-        internal void OnAddNode(Vector2 mousePosition)
+        protected abstract void OnGUI_Impl();
+
+        internal void OnAddNode(Vector2 mousePosition, Type nodeType)
         {
-            NodeProfile.CreateNode((NodeProfile)ScriptableObject.CreateInstance(typeof(IntAdditionNode)), ref this.NodeEditorProfile, mousePosition);
+            NodeProfile.CreateNode((NodeProfile)ScriptableObject.CreateInstance(nodeType), ref this.NodeEditorProfile, mousePosition);
             this.NodeEditorProfile.RefreshNodes();
         }
 
+
+    }
+
+    class NodeCreationManager
+    {
+        private Vector2 pickerPosition;
+
+        public bool GUITick(ref TreePickerPopup NodePicker)
+        {
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 1)
+            {
+                this.pickerPosition = Event.current.mousePosition;
+                PopupWindow.Show(new Rect(this.pickerPosition, Vector2.zero), NodePicker);
+                return true;
+            }
+            return false;
+        }
+
+        public void OnNodePickerChange(ref TreePickerPopup NodePicker,
+            ref NodeEditorProfile nodeEditorProfile,
+            Dictionary<string, Type> nodePickerConfiguration,
+            NodeEditor nodeEditor)
+        {
+            nodeEditorProfile.NodeCreationPickerProfile.SelectedKey = NodePicker.SelectedKey;
+            var nodeType = nodePickerConfiguration[nodeEditorProfile.NodeCreationPickerProfile.SelectedKey];
+            nodeEditor.OnAddNode(this.pickerPosition, nodeType);
+          //  NodePicker
+        }
     }
 
     class CreateConnectionManager

@@ -24,7 +24,7 @@ namespace Experimental.Editor_NodeEditor
                 var contextMenu = new GenericMenu();
                 contextMenu.AddItem(new GUIContent("Add node"), false, () =>
                 {
-                    this.nodeEditorRef.OnAddNode(this.currentmousePosition);
+                 //   this.nodeEditorRef.OnAddNode(this.currentmousePosition);
                 });
                 contextMenu.ShowAsContext();
             }

@@ -94,7 +94,6 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
-    <Compile Include="Assets\~CoreGame\ConditionGraph\ConditionGraph.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
@@ -152,12 +151,16 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\ConfigurationEditor\EditorHelper\DictionaryEnumSearchAttribute.cs" />
+    <Compile Include="Assets\ConfigurationEditor\EditorHelper\FileUtil.cs" />
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\EventClasses.cs" />
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\ExprEval.cs" />
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\FunctionEval.cs" />
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\IExpression.cs" />
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\ConfigurationEditor\ExpressionEval\RegexObjects.cs" />
+    <Compile Include="Assets\ConfigurationEditor\NodeEditor\NodeEdgeProfile.cs" />
+    <Compile Include="Assets\ConfigurationEditor\NodeEditor\NodeEditorProfile.cs" />
+    <Compile Include="Assets\ConfigurationEditor\NodeEditor\NodeProfile.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Plugins\Sirenix\Odin Serializer\OdinBuildAutomation.cs" />
     <Compile Include="Assets\PropertyAttributes\Enum\SearchableEnum.cs" />

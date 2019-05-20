@@ -3,15 +3,16 @@ using System.Collections;
 using OdinSerializer;
 using System.Collections.Generic;
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.IO;
 using System.Linq;
 
-namespace Experimental.Editor_NodeEditor
+namespace NodeGraph
 {
-    [CreateAssetMenu(fileName = "NodeEditorProfile", menuName = "Experimental/NodeEditorProfile", order = 1)]
     [System.Serializable]
-    public class NodeEditorProfile : SerializedScriptableObject
+    public abstract class NodeEditorProfile : SerializedScriptableObject
     {
         public const string RELATIVE_GRAPH_TMP_FOLDER_PATH = "tmp";
         public string GraphTmpFolderPath;
@@ -24,7 +25,9 @@ namespace Experimental.Editor_NodeEditor
         public Color SelectedBackgoundColor = new Color(0.63f, 1f, 0.95f);
         public NodeEditorGridProfile NodeEditorGridProfile;
         public NodeEdtitorSelectionProfile NodeEdtitorSelectionProfile;
+        public NodeCreationPickerProfile NodeCreationPickerProfile;
 
+#if UNITY_EDITOR
         public void Init()
         {
             if (string.IsNullOrEmpty(this.GraphTmpFolderPath))
@@ -57,7 +60,7 @@ namespace Experimental.Editor_NodeEditor
             this.RefreshNodes();
         }
 
-        internal void RefreshNodes()
+        public void RefreshNodes()
         {
             this.Nodes.Clear();
             var nodes = AssetDatabase.FindAssets("t:" + typeof(NodeProfile).Name, new string[] { this.NodesTmpFolderPath }).ToList().ConvertAll((p) => (NodeProfile)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(p), typeof(NodeProfile)));
@@ -92,6 +95,8 @@ namespace Experimental.Editor_NodeEditor
         {
             this.Nodes.Remove(nodeProfile.Id);
         }
+
+#endif
     }
 
     [System.Serializable]
@@ -108,6 +113,14 @@ namespace Experimental.Editor_NodeEditor
     {
         public UnityEngine.Object currentSelectedObject;
         public UnityEngine.Object oldSelectedObject;
+    }
+
+    [System.Serializable]
+    public class NodeCreationPickerProfile
+    {
+        public string SelectedKey;
+
+        public Vector2 PickerSize = new Vector2(200,300);
     }
 
 }

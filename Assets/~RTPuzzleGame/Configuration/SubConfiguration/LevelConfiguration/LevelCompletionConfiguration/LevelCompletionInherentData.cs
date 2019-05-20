@@ -12,29 +12,7 @@ namespace RTPuzzle
 
     public class LevelCompletionInherentData : ScriptableObject
     {
-        public LevelCompletionConditionConfiguration LevelCompletionConditionConfiguration;
+        public ConditionGraphEditorProfile ConditionGraphEditorProfile;
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(LevelCompletionInherentData))]
-    public class LevelCompletionInherentDataEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            LevelCompletionInherentData myTarget = (LevelCompletionInherentData)target;
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelCompletionConditionConfiguration"));
-
-            if (myTarget.LevelCompletionConditionConfiguration != null)
-            {
-                EditorGUI.indentLevel += 1;
-                Editor.CreateEditor(myTarget.LevelCompletionConditionConfiguration).OnInspectorGUI();
-                EditorGUI.indentLevel -= 1;
-            }
-
-            serializedObject.ApplyModifiedProperties();
-        }
-    }
-#endif
-
 
 }

@@ -8,7 +8,9 @@ namespace ConfigurationEditor
 {
     public interface IConfigurationSerialization
     {
+#if UNITY_EDITOR
         void ClearEntry(Enum key);
+#endif
     }
 
     [System.Serializable]

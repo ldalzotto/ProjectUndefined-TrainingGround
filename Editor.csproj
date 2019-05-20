@@ -66,8 +66,6 @@
     <Compile Include="Assets\Editor\AI\AiBehaviorInherentDataEditor.cs" />
     <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
     <Compile Include="Assets\Editor\Color\FX\FXColorConfigurationEditor.cs" />
-    <Compile Include="Assets\Editor\ConditionGraphEditor\ConditionGraphEditor.cs" />
-    <Compile Include="Assets\Editor\ConditionGraphEditor\PuzzleGameEditors\LevelCompletionConditionConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\CoreGame\CoreGameConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\CoreGameConfigurationEditorProfile.cs" />
     <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditorV2.cs" />
@@ -133,13 +131,9 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomNodes\IntAdditionNode.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomNodes\IntNodeEdge.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEdgeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditorContextMenu.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditorProfile.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeProfile.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
@@ -151,6 +145,7 @@
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
     <Compile Include="Assets\Editor\Helper\Search\RegexTextFinder.cs" />
     <Compile Include="Assets\Editor\Helper\SerializableObjectHelper.cs" />
+    <Compile Include="Assets\Editor\Helper\TreePicker\TreePickerPopup.cs" />
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelExplorer\LevelExplorer.cs" />

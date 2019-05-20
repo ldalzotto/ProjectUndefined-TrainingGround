@@ -1,24 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using OdinSerializer;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections.Generic;
 using System;
 using System.IO;
 
-namespace Experimental.Editor_NodeEditor
+namespace NodeGraph
 {
     [System.Serializable]
     public abstract class NodeProfile : SerializedScriptableObject
     {
         public int Id;
-        public Rect Bounds = new Rect(new Vector2(0, 0), new Vector2(100, 100));
+      
         public List<NodeEdgeProfile> InputEdges = new List<NodeEdgeProfile>();
         public List<NodeEdgeProfile> OutputEdges = new List<NodeEdgeProfile>();
+
+#if UNITY_EDITOR
+        public Rect Bounds = new Rect(new Vector2(0, 0), new Vector2(100, 100));
         public string EdgesDirectoryPath;
         protected virtual Color NodeColor()
         {
             return Color.gray;
+        }
+        protected virtual Vector2 Size()
+        {
+            return new Vector2(100, 100);
         }
         protected virtual string NodeTitle() { return this.GetType().Name; }
 
@@ -56,7 +65,7 @@ namespace Experimental.Editor_NodeEditor
         public void GUITick(ref NodeEditorProfile nodeEditorProfileRef)
         {
             this.offsettedBounds.position = this.Bounds.position + nodeEditorProfileRef.EditorBound.position;
-            this.offsettedBounds.size = this.Bounds.size;
+            this.offsettedBounds.size = this.Size();
 
             var oldBackGouncColor = GUI.backgroundColor;
             GUI.backgroundColor = this.NodeColor();
@@ -80,11 +89,11 @@ namespace Experimental.Editor_NodeEditor
 
         }
 
-        internal void DeleteNode(ref NodeEditorProfile nodeEditorProfileRef)
+        public void DeleteNode(ref NodeEditorProfile nodeEditorProfileRef)
         {
             foreach(var inputNodeEdge in this.InputEdges)
             {
-                inputNodeEdge.ClearBackwardConnections();
+                inputNodeEdge.ClearBackwardConnection();
                 AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(inputNodeEdge));
             }
             this.InputEdges.Clear();
@@ -164,6 +173,7 @@ namespace Experimental.Editor_NodeEditor
             this.IsSelected = value;
             this.selectedColor = selectionColor;
         }
+#endif
 
     }
 

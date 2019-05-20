@@ -15,7 +15,7 @@ namespace RTPuzzle
         #endregion
 
         private LevelConfigurationData currentLevelConfiguration;
-        private ConditionGraphResolutionInput levelCompletionConditionResolutionInput;
+        private LevelCompletionConditionResolutionInput levelCompletionConditionResolutionInput;
 
         public void Init()
         {
@@ -34,9 +34,9 @@ namespace RTPuzzle
 
         internal void ConditionRecalculationEvaluate()
         {
-            if (this.currentLevelConfiguration.LevelCompletionInherentData != null && this.currentLevelConfiguration.LevelCompletionInherentData.LevelCompletionConditionConfiguration != null)
+            if (this.currentLevelConfiguration.LevelCompletionInherentData != null && this.currentLevelConfiguration.LevelCompletionInherentData.ConditionGraphEditorProfile != null)
             {
-                if (this.currentLevelConfiguration.LevelCompletionInherentData.LevelCompletionConditionConfiguration.ResolveGraph(ref this.levelCompletionConditionResolutionInput))
+                if (this.currentLevelConfiguration.LevelCompletionInherentData.ConditionGraphEditorProfile.Resolve(ref this.levelCompletionConditionResolutionInput))
                 {
                     this.OnLevelCompleted();
                 }

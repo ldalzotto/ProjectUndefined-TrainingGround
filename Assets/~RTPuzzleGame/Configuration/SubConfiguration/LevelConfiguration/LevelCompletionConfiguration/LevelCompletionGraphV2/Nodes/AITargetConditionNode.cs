@@ -1,0 +1,48 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using RTPuzzle;
+using NodeGraph;
+
+namespace RTPuzzle
+{
+    [System.Serializable]
+    public class AITargetConditionNode : NodeProfile
+    {
+        private AITargetConditionEdge AITargetConditionEdge;
+        private BoolNodeEdge ResultBool;
+
+#if UNITY_EDITOR
+        public override List<NodeEdgeProfile> InitInputEdges()
+        {
+            this.AITargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<AITargetConditionEdge>(this);
+            return new List<NodeEdgeProfile>() { this.AITargetConditionEdge };
+        }
+
+        public override List<NodeEdgeProfile> InitOutputEdges()
+        {
+            this.ResultBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this);
+            return new List<NodeEdgeProfile>() { this.ResultBool };
+        }
+
+        protected override Vector2 Size()
+        {
+            return new Vector2(200, 100);
+        }
+
+        protected override Color NodeColor()
+        {
+            return Color.red;
+        }
+#endif
+
+        public void Resolve(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)
+        {
+            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.TargetZoneContainer.GetTargetZone(this.AITargetConditionEdge.TargetZoneID).TargetZoneTriggerType.TargetZoneTriggerCollider;
+            var involvedAI = ConditionGraphResolutionInput.NPCAIManagerContainer.GetNPCAiManager(this.AITargetConditionEdge.AiID).GetCollider();
+            this.ResultBool.Value = (bool)involvedTargetZoneTriggerCollider.bounds.Intersects(involvedAI.bounds);
+        }
+
+        public bool GetResult() { return (bool)this.ResultBool.Value; }
+    }
+}
