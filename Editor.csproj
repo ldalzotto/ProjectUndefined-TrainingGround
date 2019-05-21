@@ -88,6 +88,7 @@
     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditor.cs" />
     <Compile Include="Assets\Editor\CreationWizard\AbstractCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Components\CreateablePrefabComponent.cs" />
+    <Compile Include="Assets\Editor\CreationWizard\Components\CreateableSceneComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Components\CreateableScriptableObjectComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Components\CreationModuleComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Components\GeneratedPrefabAssetManager.cs" />

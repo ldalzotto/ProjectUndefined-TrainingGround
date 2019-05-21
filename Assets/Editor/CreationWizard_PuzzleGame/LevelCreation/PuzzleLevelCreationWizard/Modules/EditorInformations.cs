@@ -147,11 +147,11 @@ namespace Editor_PuzzleLevelCreationWizard
         [ReadOnly]
         public string LevelChunkScenePath = "Assets/_Scenes/RTPuzzles";
         [ReadOnly]
-        public string LevelConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/LevelConfiguration/LevelConfigurationData";
+        public string LevelConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/LevelConfigurationData";
         [ReadOnly]
-        public string LevelCompletionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/LevelConfiguration/LevelCompletionConfiguration/LevelCompletionConfigurationData";
+        public string LevelCompletionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/CompletionConfiguration/Data";
         [ReadOnly]
-        public string LevelCompletionConditionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/LevelConfiguration/LevelCompletionCondition/ConfigurationData";
+        public string LevelCompletionConditionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/CompletionCondition/Data";
         [ReadOnly]
         public string PuzzleLevelDynamicsPath = "Assets/~CoreGame/LevelManagement/Prefab";
         [ReadOnly]

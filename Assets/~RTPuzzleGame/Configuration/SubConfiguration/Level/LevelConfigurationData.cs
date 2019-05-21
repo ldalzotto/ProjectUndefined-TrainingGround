@@ -78,6 +78,7 @@ namespace RTPuzzle
         }
     }
 
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(LevelConfigurationData))]
     public class LevelConfigurationDataEditor : Editor
@@ -86,7 +87,7 @@ namespace RTPuzzle
         {
             LevelConfigurationData myTarget = (LevelConfigurationData)target;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("availableTimeAmount"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("playerActionIds"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("playerActionIds"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelCompletionInherentData"));
 
             if (myTarget.LevelCompletionInherentData != null)

@@ -25,6 +25,26 @@ namespace CoreGame
             {
                 this.levelAvailability = loadedLevelAvailability;
             }
+            if (this.SynchLevelAvailabilityFromAllLevel())
+            {
+                this.LevelAvailabilityPersistanceManager.Save(this.levelAvailability);
+            }
+        }
+
+        private bool SynchLevelAvailabilityFromAllLevel()
+        {
+            if (this.levelAvailability.LevelZoneChunkAvailability.Count < Enum.GetNames(typeof(LevelZoneChunkID)).Length)
+            {
+                foreach(var levelChunkId in Enum.GetValues(typeof(LevelZoneChunkID)))
+                {
+                    if (!this.levelAvailability.LevelZoneChunkAvailability.ContainsKey((LevelZoneChunkID)levelChunkId))
+                    {
+                        this.levelAvailability.LevelZoneChunkAvailability[(LevelZoneChunkID)levelChunkId] = false;
+                    }
+                }
+                return true;
+            }
+            return false;
         }
 
         internal void UnlockLevel(LevelZoneChunkID levelZoneChunkToUnlock)
