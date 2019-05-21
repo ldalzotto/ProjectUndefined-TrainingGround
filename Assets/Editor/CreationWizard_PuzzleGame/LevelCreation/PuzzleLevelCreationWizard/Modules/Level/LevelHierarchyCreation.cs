@@ -18,11 +18,11 @@ namespace Editor_PuzzleLevelCreationWizard
 
         public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile)
         {
-            var generatedHierarchy = this.CreateAsset(editorInformationsData.InstancePath.PuzzleLevelHierarchyDataPath, editorInformationsData.LevelZonesID + NameConstants.LevelHierarchyConfigurationData);
+            var generatedHierarchy = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.PuzzleLevelHierarchyDataPath, editorInformationsData.LevelZonesID + NameConstants.LevelHierarchyConfigurationData);
             editorProfile.AddToGeneratedObjects(new Object[] { generatedHierarchy });
 
-            editorInformationsData.PuzzleGameConfigurations.LevelHierarchyConfiguration.SetEntry(editorInformationsData.LevelZonesID, generatedHierarchy);
-            editorProfile.GameConfigurationModified(editorInformationsData.PuzzleGameConfigurations.LevelHierarchyConfiguration, editorInformationsData.LevelZonesID, generatedHierarchy);
+            editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.SetEntry(editorInformationsData.LevelZonesID, generatedHierarchy);
+            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration, editorInformationsData.LevelZonesID, generatedHierarchy);
         }
     }
 }

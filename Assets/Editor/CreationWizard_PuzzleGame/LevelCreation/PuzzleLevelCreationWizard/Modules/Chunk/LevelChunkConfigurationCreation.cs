@@ -16,11 +16,11 @@ namespace Editor_PuzzleLevelCreationWizard
 
         public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile, LevelHierarchyCreation levelHierarchyCreation)
         {
-            var createdChunkConfig = this.CreateAsset(editorInformationsData.InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData);
+            var createdChunkConfig = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData);
             editorProfile.AddToGeneratedObjects(new Object[] { createdChunkConfig });
 
-            editorInformationsData.PuzzleGameConfigurations.ChunkZonesSceneConfiguration.SetEntry(editorInformationsData.LevelZoneChunkID, createdChunkConfig);
-            editorProfile.GameConfigurationModified(editorInformationsData.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, editorInformationsData.LevelZoneChunkID, createdChunkConfig);
+            editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration.SetEntry(editorInformationsData.LevelZoneChunkID, createdChunkConfig);
+            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, editorInformationsData.LevelZoneChunkID, createdChunkConfig);
 
             levelHierarchyCreation.CreatedObject.LevelHierarchy = new System.Collections.Generic.List<LevelZoneChunkID>();
             levelHierarchyCreation.CreatedObject.LevelHierarchy.Add(editorInformationsData.LevelZoneChunkID);

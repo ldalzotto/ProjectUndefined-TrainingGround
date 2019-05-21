@@ -20,13 +20,13 @@ namespace Editor_PuzzleLevelCreationWizard
             Action<UnityEngine.Object[]> addToGenerated)
         {
             this.CreateNewScene();
-            var scenePath = editorInformationsData.InstancePath.LevelScenePath + "/" + editorInformationsData.LevelZonesID.ToString() + ".unity";
+            var scenePath = editorInformationsData.CommonGameConfigurations.InstancePath.LevelScenePath + "/" + editorInformationsData.LevelZonesID.ToString() + ".unity";
             if (this.SaveScene(scenePath))
             {
-                PrefabUtility.InstantiatePrefab(editorInformationsData.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements);
-                PrefabUtility.InstantiatePrefab(editorInformationsData.PuzzleLevelCommonPrefabs.EventSystem);
-                PrefabUtility.InstantiatePrefab(editorInformationsData.PuzzleLevelCommonPrefabs.GameManagerPersistanceInstance);
-                PrefabUtility.InstantiatePrefab(editorInformationsData.PuzzleLevelCommonPrefabs.PuzzleDebugModule);
+                PrefabUtility.InstantiatePrefab(editorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements);
+                PrefabUtility.InstantiatePrefab(editorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.EventSystem);
+                PrefabUtility.InstantiatePrefab(editorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.GameManagerPersistanceInstance);
+                PrefabUtility.InstantiatePrefab(editorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule);
                 PrefabUtility.InstantiatePrefab(puzzleLevelDynamicsCreation.CreatedPrefab);
 
                 this.SaveScene(scenePath);

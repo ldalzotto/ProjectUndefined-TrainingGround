@@ -5,6 +5,7 @@ using Editor_AIContextMarkGameConfigWizard;
 using System.Collections.Generic;
 using UnityEngine;
 using Editor_PuzzleLevelCreationWizard;
+using Editor_AICreationObjectCreationWizard;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "PuzzleCreationWizardEditorProfile", menuName = "CreationWizard/PuzzleCreationWizardEditorProfile", order = 1)]
@@ -24,6 +25,7 @@ public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWi
             {nameof(AIContextMarkVisualFeedbackCreationWizard), new AIContextMarkVisualFeedbackCreationWizard() },
             {nameof(AIContextMarkGameConfigWizard), new AIContextMarkGameConfigWizard() },
             {nameof(PuzzleLevelCreationWizard), new PuzzleLevelCreationWizard() },
+            {nameof(AIObjectCreationWizard), new AIObjectCreationWizard() }
         };
     }
 

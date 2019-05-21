@@ -96,6 +96,7 @@
     <Compile Include="Assets\Editor\CreationWizard\Components\Interfaces\ICreateable.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Constants\ErrorMessages.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Chunk\LevelChunkConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Chunk\LevelChunkPrefabCreation.cs" />
@@ -122,6 +123,11 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIContextMarkVisualFeedback\Modules\AlternanceMarkCreator.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIContextMarkVisualFeedback\Modules\GenericInformation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIContextMarkVisualFeedback\Modules\SingleMarkCreator.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectCreationWizard\AIObjectCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectCreationWizard\AIObjectCreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectCreationWizard\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AttractiveObjectVariantCreationWizard\AttractiveObjectVariantCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AttractiveObjectVariantCreationWizard\AttractiveObjectVariantCreationWizardV2.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AttractiveObjectVariantCreationWizard\Modules\AttractiveObjectInherentDataModule.cs" />
@@ -144,6 +150,12 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditorContextMenu.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AddAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\FileUtil.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />

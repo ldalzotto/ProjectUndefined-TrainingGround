@@ -13,5 +13,7 @@ namespace Editor_PuzzleGameCreationWizard
         public const string LevelHierarchyConfigurationData = "_LevelHierarchyConfigurationData";
         public const string LevelSceneConfigurationData = "_LevelZonesSceneConfigurationData";
         public const string LevelChunkSceneConfigurationData = "_ChunkZonesSceneConfigurationData";
+        public static string BaseAIPrefab = "_AIPrefab";
+        public static string AIBehavior = "_AIBehavior";
     }
 }

@@ -16,10 +16,10 @@ namespace Editor_PuzzleLevelCreationWizard
 
         public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile)
         {
-            var createdAsset = this.CreateAsset(editorInformationsData.InstancePath.LevelConfigurationDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelConfigurationData);
-            editorInformationsData.PuzzleGameConfigurations.LevelConfiguration.SetEntry(editorInformationsData.LevelZonesID, createdAsset);
+            var createdAsset = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelConfigurationDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelConfigurationData);
+            editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration.SetEntry(editorInformationsData.LevelZonesID, createdAsset);
             editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { createdAsset });
-            editorProfile.GameConfigurationModified(editorInformationsData.PuzzleGameConfigurations.LevelConfiguration, editorInformationsData.LevelZonesID, createdAsset);
+            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration, editorInformationsData.LevelZonesID, createdAsset);
         }
     }
 }

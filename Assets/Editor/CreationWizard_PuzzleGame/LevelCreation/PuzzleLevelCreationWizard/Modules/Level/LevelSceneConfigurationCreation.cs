@@ -17,11 +17,11 @@ namespace Editor_PuzzleLevelCreationWizard
 
         public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile)
         {
-            var levelZoneConfiguration = this.CreateAsset(editorInformationsData.InstancePath.LevelZoneSceneConfigurationDataPath, editorInformationsData.LevelZonesID + NameConstants.LevelSceneConfigurationData);
+            var levelZoneConfiguration = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelZoneSceneConfigurationDataPath, editorInformationsData.LevelZonesID + NameConstants.LevelSceneConfigurationData);
             editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { levelZoneConfiguration });
 
-            editorInformationsData.PuzzleGameConfigurations.LevelZonesSceneConfiguration.SetEntry(editorInformationsData.LevelZonesID, levelZoneConfiguration);
-            editorProfile.GameConfigurationModified(editorInformationsData.PuzzleGameConfigurations.LevelZonesSceneConfiguration, editorInformationsData.LevelZonesID, levelZoneConfiguration);
+            editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration.SetEntry(editorInformationsData.LevelZonesID, levelZoneConfiguration);
+            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration, editorInformationsData.LevelZonesID, levelZoneConfiguration);
         }
 
         public void AfterSceneGeneration(LevelSceneCreation sceneCreation)

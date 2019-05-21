@@ -13,7 +13,6 @@ namespace Editor_LevelExplorer
 {
     public class LevelExplorer : EditorWindow
     {
-
         [MenuItem("Level/LevelExplorer")]
         static void Init()
         {
@@ -216,7 +215,7 @@ namespace Editor_LevelExplorer
         public void Hide()
         {
             this.lineElement.style.display = DisplayStyle.None;
-            foreach(var chunkLine in this.nestedChunkLines)
+            foreach (var chunkLine in this.nestedChunkLines)
             {
                 chunkLine.Hide();
             }
@@ -227,7 +226,7 @@ namespace Editor_LevelExplorer
             this.lineElement.style.display = DisplayStyle.Flex;
             foreach (var chunkLine in this.nestedChunkLines)
             {
-                 chunkLine.Display();
+                chunkLine.Display();
             }
         }
     }

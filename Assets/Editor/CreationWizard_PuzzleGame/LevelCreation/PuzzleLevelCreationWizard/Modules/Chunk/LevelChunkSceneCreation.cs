@@ -16,7 +16,7 @@ namespace Editor_PuzzleLevelCreationWizard
         public void OnGenerationClicked(EditorInformationsData editorInformationsData, LevelChunkPrefabCreation levelChunkPrefabCreation, AbstractCreationWizardEditorProfile editorProfile)
         {
             this.CreateNewScene();
-            var scenePath = editorInformationsData.InstancePath.LevelChunkScenePath + "/" + editorInformationsData.LevelZoneChunkID.ToString() + "_Chunk.unity";
+            var scenePath = editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkScenePath + "/" + editorInformationsData.LevelZoneChunkID.ToString() + "_Chunk.unity";
             if (this.SaveScene(scenePath))
             {
                 PrefabUtility.InstantiatePrefab(levelChunkPrefabCreation.CreatedPrefab);
