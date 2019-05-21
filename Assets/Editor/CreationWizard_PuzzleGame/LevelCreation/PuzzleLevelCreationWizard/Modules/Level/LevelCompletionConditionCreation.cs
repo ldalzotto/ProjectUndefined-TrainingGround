@@ -26,7 +26,7 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             if (LevelCompletionCreation.IsNew)
             {
-                var createdCompletionInherentData = this.CreateAsset(editorInformationsData.LevelCompletionConditionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionConditionConfigurationName);
+                var createdCompletionInherentData = this.CreateAsset(editorInformationsData.InstancePath.LevelCompletionConditionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionConditionConfigurationName);
                 LevelCompletionCreation.CreatedObject.ConditionGraphEditorProfile = createdCompletionInherentData;
                 addToGenerated.Invoke(new UnityEngine.Object[] { createdCompletionInherentData });
             }

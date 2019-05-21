@@ -10,9 +10,13 @@ namespace RTPuzzle
     {
         public void Init(PlayerActionConfiguration playerActionConfiguration)
         {
-            foreach (var lovelConfigurationData in ConfigurationInherentData)
+            foreach (var levelConfigurationData in ConfigurationInherentData)
             {
-                lovelConfigurationData.Value.Init(playerActionConfiguration);
+                if(levelConfigurationData.Value != null)
+                {
+                    levelConfigurationData.Value.Init(playerActionConfiguration);
+                }
+                
             }
         }
     }

@@ -13,6 +13,7 @@ public class GeneratedScriptableObjectManager<T> where T : ScriptableObject
         this.generatedFileName = "\\" + fileBaseName + ".asset";
         AssetDatabase.CreateAsset(originalObject, folderPath + this.generatedFileName);
         this.generatedAsset = originalObject;
+
     }
 
     public T GeneratedAsset { get => generatedAsset; }

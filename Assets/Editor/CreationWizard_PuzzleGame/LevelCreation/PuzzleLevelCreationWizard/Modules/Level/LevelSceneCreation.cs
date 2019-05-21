@@ -8,28 +8,29 @@ using System.Collections.Generic;
 namespace Editor_PuzzleLevelCreationWizard
 {
     [System.Serializable]
-    public class SceneCreation : CreationModuleComponent
+    public class LevelSceneCreation : CreationModuleComponent
     {
-        public CreatedSceneContainer CreatedSceneContainer;
+        public SceneAsset CreatedSceneAsset;
 
-        public SceneCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        public LevelSceneCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
         {
         }
 
         public override void ResetEditor()
         {
+            this.CreatedSceneAsset = null;
         }
 
         protected override void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules)
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.CreatedSceneContainer)), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.CreatedSceneAsset)));
         }
 
         public void OnGenerationClicked(EditorInformationsData editorInformationsData, PuzzleLevelDynamicsCreation puzzleLevelDynamicsCreation,
             Action<UnityEngine.Object[]> addToGenerated)
         {
             var createdScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
-            var scenePath = editorInformationsData.ScenePath + "/" + editorInformationsData.LevelZonesID.ToString() + ".unity";
+            var scenePath = editorInformationsData.InstancePath.LevelScenePath + "/" + editorInformationsData.LevelZonesID.ToString() + ".unity";
             if (EditorSceneManager.SaveScene(createdScene, scenePath))
             {
                 PrefabUtility.InstantiatePrefab(editorInformationsData.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements);
@@ -40,17 +41,11 @@ namespace Editor_PuzzleLevelCreationWizard
 
                 EditorSceneManager.SaveScene(createdScene, scenePath);
 
-                var createdSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
-                addToGenerated.Invoke(new UnityEngine.Object[] { createdSceneAsset });
+                this.CreatedSceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
+                addToGenerated.Invoke(new UnityEngine.Object[] { this.CreatedSceneAsset });
             }
         }
     }
 
-    [System.Serializable]
-    public class CreatedSceneContainer
-    {
-        [ReadOnly]
-        SceneAsset scene;
-    }
 
 }

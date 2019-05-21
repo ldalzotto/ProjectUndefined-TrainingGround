@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class CreateableScriptableObjectComponent<T> : CreationModuleComponent where T : ScriptableObject
+public abstract class CreateableScriptableObjectComponent<T> : CreationModuleComponent, ICreateable where T : ScriptableObject
 {
     [SerializeField]
     private CreationModuleComponent module;
@@ -40,8 +40,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     {
         if (GUILayout.Button(new GUIContent("N"), EditorStyles.miniButton, GUILayout.Width(20f)))
         {
-            this.createdObject = ScriptableObject.CreateInstance<T>();
-            this.isNew = true;
+            this.InstanciateInEditor(ref editorModules);
         }
         EditorGUI.BeginChangeCheck();
         this.createdObject = (T)EditorGUILayout.ObjectField(this.objectFieldLabel, this.createdObject, typeof(T), false);
@@ -81,6 +80,12 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
             returnObject = this.createdObject;
         }
         return returnObject;
+    }
+
+    public void InstanciateInEditor(ref Dictionary<string, CreationModuleComponent> editorModules)
+    {
+        this.createdObject = ScriptableObject.CreateInstance<T>();
+        this.isNew = true;
     }
 
     public void MoveGeneratedAsset(string targetPath)

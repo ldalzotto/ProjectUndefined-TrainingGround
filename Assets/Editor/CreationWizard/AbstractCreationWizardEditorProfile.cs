@@ -39,6 +39,25 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         return false;
     }
 
+    internal void ColapseAll()
+    {
+        foreach (var mod in this.Modules.Values)
+        {
+            mod.ModuleFoldout = false;
+        }
+    }
+
+    internal void CreateAll()
+    {
+        foreach (var mod in this.Modules.Values)
+        {
+            if(mod is ICreateable createable)
+            {
+                createable.InstanciateInEditor(ref this.Modules);
+            }
+        }
+    }
+
     public bool ContainsError()
     {
         foreach (var mod in this.Modules.Values)

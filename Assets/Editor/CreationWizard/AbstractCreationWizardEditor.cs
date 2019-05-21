@@ -29,6 +29,14 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
             {
                 this.editorProfile.ResetEditor();
             }
+            if (GUILayout.Button(new GUIContent(".", "Collapse all."), EditorStyles.miniButtonMid, GUILayout.Width(20)))
+            {
+                this.editorProfile.ColapseAll();
+            }
+            if (GUILayout.Button(new GUIContent("*", "Create all."), EditorStyles.miniButtonMid, GUILayout.Width(20)))
+            {
+                this.editorProfile.CreateAll();
+            }
             EditorGUILayout.EndHorizontal();
 
             editorProfile.WizardScrollPosition = EditorGUILayout.BeginScrollView(editorProfile.WizardScrollPosition);
@@ -54,9 +62,6 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
                 {
                     DoGeneration();
                 }
-
-
-
             }
 
             this.DoGenereatedObject();

@@ -5,7 +5,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class CreateablePrefabComponent<S> : CreationModuleComponent where S : UnityEngine.Object
+public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, ICreateable where S : UnityEngine.Object
 {
     private GUIStyle selectionStyle;
 
@@ -61,15 +61,22 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent whe
         }
         else if (this.newToggle)
         {
-            if (this.createdPrefab == null && this.BasePrefabProvider != null)
-            {
-                if (this.BasePrefab == null)
-                {
-                    this.BasePrefab = this.BasePrefabProvider.Invoke(editorModules);
-                }
-                this.createdPrefab = PrefabUtility.LoadPrefabContents(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.BasePrefab)).GetComponent<S>();
-            }
+            this.InstanciateInEditor(ref editorModules);
             Editor.CreateEditor(this.createdPrefab).OnInspectorGUI();
+        }
+    }
+
+    public void InstanciateInEditor(ref Dictionary<string, CreationModuleComponent> editorModules)
+    {
+        this.newToggle = true;
+        this.selectionToggle = false;
+        if (this.createdPrefab == null && this.BasePrefabProvider != null)
+        {
+            if (this.BasePrefab == null)
+            {
+                this.BasePrefab = this.BasePrefabProvider.Invoke(editorModules);
+            }
+            this.createdPrefab = PrefabUtility.LoadPrefabContents(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.BasePrefab)).GetComponent<S>();
         }
     }
 

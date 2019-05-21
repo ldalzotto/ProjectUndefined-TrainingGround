@@ -18,11 +18,13 @@ public enum LevelZonesID
     SEWER_RTP = 2,
     RTP_TEST = 3,
     RTP_EDITOR_TEST = 4,
-    SEWER_ADVENTURE = 5
+    SEWER_ADVENTURE = 5,
+    RTP_PUZZLE_CREATION_TEST = 6
 }
 
 public enum LevelZoneChunkID
 {
     SEWER_RTP_1 = 0,
-    SEWER_RTP_2 = 1
+    SEWER_RTP_2 = 1,
+    RTP_PUZZLE_CREATION_TEST_CHUNK = 2
 }
