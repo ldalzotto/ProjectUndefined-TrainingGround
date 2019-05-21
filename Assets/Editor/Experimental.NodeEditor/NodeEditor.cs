@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NodeGraph;
+using Editor_Zoom;
 
 namespace Experimental.Editor_NodeEditor
 {
@@ -20,6 +21,7 @@ namespace Experimental.Editor_NodeEditor
             this.NodeSelectionInspector = new NodeSelectionInspector();
             this.DeleteNodeManager = new DeleteNodeManager();
             this.NodeCreationManager = new NodeCreationManager();
+            this.EditorZoomManager = new EditorZoomManager();
             this.OnEnable_Impl();
         }
 
@@ -40,6 +42,7 @@ namespace Experimental.Editor_NodeEditor
         private CreateConnectionManager CreateConnectionManager;
         private DeleteNodeManager DeleteNodeManager;
         private NodeCreationManager NodeCreationManager;
+        private EditorZoomManager EditorZoomManager;
 
         private TreePickerPopup NodePicker;
 
@@ -65,8 +68,13 @@ namespace Experimental.Editor_NodeEditor
                     this.NodePicker.WindowDimensions = this.nodeEditorProfile.NodeCreationPickerProfile.PickerSize;
                 }
 
+                nodeEditorProfile.NodeEditorZoomProfile.EditorZoomBound.size = this.position.size;
+
                 nodeEditorProfile.EditorBound.size = this.position.size;
+
                 this.GridDrawer.GUITick(ref this.nodeEditorProfile);
+
+                EditorZoomArea.Begin(nodeEditorProfile.NodeEditorZoomProfile.ZoomScale, nodeEditorProfile.NodeEditorZoomProfile.EditorZoomBound);
 
                 foreach (var node in this.nodeEditorProfile.Nodes.Values)
                 {
@@ -75,23 +83,25 @@ namespace Experimental.Editor_NodeEditor
 
                 this.NodeSelectionInspector.GUITick(ref this.nodeEditorProfile);
 
-                if (!this.NodeCreationManager.GUITick(ref this.NodePicker))
+                if (!this.EditorZoomManager.GUITick(ref this.nodeEditorProfile))
                 {
-                    if (!this.CreateConnectionManager.GUITick(ref this.nodeEditorProfile))
+                    if (!this.NodeCreationManager.GUITick(ref this.NodePicker))
                     {
-                        if (!this.DeleteNodeManager.GUITick(ref this.nodeEditorProfile))
+                        if (!this.CreateConnectionManager.GUITick(ref this.nodeEditorProfile))
                         {
-                            if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
+                            if (!this.DeleteNodeManager.GUITick(ref this.nodeEditorProfile))
                             {
-                                this.DragGridManager.GUITick(ref this.nodeEditorProfile);
+                                if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
+                                {
+                                    this.DragGridManager.GUITick(ref this.nodeEditorProfile);
+                                }
                             }
                         }
                     }
                 }
 
-
                 this.OnGUI_Impl();
-
+                EditorZoomArea.End();
             }
             if (GUI.changed) Repaint();
         }
@@ -130,7 +140,7 @@ namespace Experimental.Editor_NodeEditor
             nodeEditorProfile.NodeCreationPickerProfile.SelectedKey = NodePicker.SelectedKey;
             var nodeType = nodePickerConfiguration[nodeEditorProfile.NodeCreationPickerProfile.SelectedKey];
             nodeEditor.OnAddNode(this.pickerPosition, nodeType);
-          //  NodePicker
+            //  NodePicker
         }
     }
 
@@ -240,6 +250,21 @@ namespace Experimental.Editor_NodeEditor
             nodeEdgeProfile.ClearConnections();
         }
 
+    }
+
+    class EditorZoomManager
+    {
+        public bool GUITick(ref NodeEditorProfile NodeEditorProfileRef)
+        {
+            if (Event.current.type == EventType.ScrollWheel)
+            {
+                NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale += (-Event.current.delta.y * 0.01f);
+                NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale = Mathf.Clamp(NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale, 0.2f, 5f);
+                GUI.changed = true;
+                return true;
+            }
+            return false;
+        }
     }
     class DragNodeManager
     {

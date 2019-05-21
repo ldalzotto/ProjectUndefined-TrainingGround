@@ -18,10 +18,12 @@ namespace NodeGraph
         public string NodesTmpFolderPath;
 
         public Rect EditorBound = new Rect(new Vector2(0, 0), new Vector2(0, 0));
-        public float ZoomScale = 1f;
+  
         public Dictionary<int, NodeProfile> Nodes = new Dictionary<int, NodeProfile>();
 
         public Color SelectedBackgoundColor = new Color(0.63f, 1f, 0.95f);
+
+        public NodeEditorZoomProfile NodeEditorZoomProfile;
         public NodeEditorGridProfile NodeEditorGridProfile;
         public NodeEdtitorSelectionProfile NodeEdtitorSelectionProfile;
         public NodeCreationPickerProfile NodeCreationPickerProfile;
@@ -96,6 +98,14 @@ namespace NodeGraph
         }
 
 #endif
+    }
+
+    [System.Serializable]
+    public class NodeEditorZoomProfile
+    {
+        public Rect EditorZoomBound = new Rect(Vector2.zero, Vector2.zero);
+        public float ZoomScale = 1f;
+        public Vector2 ZoomCoordsOrigin = Vector2.zero;
     }
 
     [System.Serializable]
