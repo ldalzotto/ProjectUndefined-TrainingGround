@@ -23,4 +23,5 @@ public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWi
     }
 
     public override Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>> Configurations => this.configurations;
+
 }

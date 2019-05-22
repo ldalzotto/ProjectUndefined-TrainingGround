@@ -130,7 +130,9 @@
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AddAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\FileUtil.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />

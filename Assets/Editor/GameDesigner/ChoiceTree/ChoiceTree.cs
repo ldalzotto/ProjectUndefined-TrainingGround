@@ -15,6 +15,8 @@ namespace Editor_GameDesigner
         private Dictionary<string, Type> Modules = new Dictionary<string, Type>()
         {
             {"Ground", typeof(GroundSetter) },
+            {"Level//CreatePuzzleLevel", typeof(CreatePuzzleLevel) },
+            {"AI//CreateAI", typeof(CreateAI) },
             {"AI//AddAI", typeof(AddAI) }
         };
 

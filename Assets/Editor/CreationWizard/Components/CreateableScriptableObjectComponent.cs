@@ -16,6 +16,9 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     private T createdObject;
 
     private GeneratedScriptableObjectManager<T> genereatedAsset;
+
+    private Editor scriptableObjectEditor;
+    private Object lastFrameObject;
     
     protected virtual string objectFieldLabel { get; }
 
@@ -65,7 +68,15 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
 
     protected virtual void ScriptableObjectGUI(T obj, SerializedObject sObj)
     {
-        Editor.CreateEditor(obj).OnInspectorGUI();
+        if (this.lastFrameObject == null || this.lastFrameObject != obj)
+        {
+            this.scriptableObjectEditor = Editor.CreateEditor(obj);
+        }
+        this.lastFrameObject = obj;
+        if (this.scriptableObjectEditor != null)
+        {
+            this.scriptableObjectEditor.OnInspectorGUI();
+        }
     }
 
     public T CreateAsset(string folderPath, string fileBaseName)

@@ -24,6 +24,9 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
 
     private S BasePrefab;
 
+    private Editor prefabObjectEditor;
+    private UnityEngine.Object lastFrameObject;
+
     public abstract Func<AbstractCreationWizardEditorProfile, S> BasePrefabProvider { get; }
     public S CreatedPrefab { get => createdPrefab; }
 
@@ -57,8 +60,16 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
         }
         else if (this.newToggle)
         {
+
             this.InstanciateInEditor(editorProfile);
-            Editor.CreateEditor(this.createdPrefab).OnInspectorGUI();
+            if (this.lastFrameObject == null || this.lastFrameObject != this.createdPrefab)
+            {
+                this.prefabObjectEditor = Editor.CreateEditor(this.createdPrefab);
+            }
+            if (this.prefabObjectEditor != null)
+            {
+                this.prefabObjectEditor.OnInspectorGUI();
+            }
         }
     }
 
