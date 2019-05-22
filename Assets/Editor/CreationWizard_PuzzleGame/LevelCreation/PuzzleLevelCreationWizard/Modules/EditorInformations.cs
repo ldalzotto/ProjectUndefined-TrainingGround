@@ -18,17 +18,13 @@ namespace Editor_PuzzleLevelCreationWizard
         [SerializeField]
         public EditorInformationsData EditorInformationsData;
 
-        public EditorInformations(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-        {
-        }
-
         protected override string headerDescriptionLabel => "Base informations used by the creation wizard.";
 
         public override void ResetEditor()
         {
         }
 
-        protected override void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules)
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.EditorInformationsData)), true);
@@ -39,13 +35,13 @@ namespace Editor_PuzzleLevelCreationWizard
             EditorInformationsHelper.InitProperties(ref this.EditorInformationsData.CommonGameConfigurations);
         }
 
-        public override string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        public override string ComputeErrorState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
             return EditorInformationsHelper.ComputeErrorState(ref this.EditorInformationsData.CommonGameConfigurations);
         }
 
-        public override string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        public override string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
             return new List<string>() {

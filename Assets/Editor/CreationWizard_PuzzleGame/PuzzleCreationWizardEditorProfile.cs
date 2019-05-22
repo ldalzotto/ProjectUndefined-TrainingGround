@@ -1,7 +1,4 @@
-﻿using Editor_AIContextMarkVisualFeedbackCreationWizardEditor;
-using Editor_PuzzleGameCreationWizard;
-using Editor_PlayerActionVariantCreationWizardEditor;
-using Editor_AIContextMarkGameConfigWizard;
+﻿using Editor_PuzzleGameCreationWizard;
 using System.Collections.Generic;
 using UnityEngine;
 using Editor_PuzzleLevelCreationWizard;
@@ -20,10 +17,6 @@ public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWi
     {
         this.configurations = new Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>()
         {
-            {nameof(AttractiveObjectVariantCreationWizardV2), new AttractiveObjectVariantCreationWizardV2() },
-            {nameof(PlayerActionVariantCreationWizard), new PlayerActionVariantCreationWizard() },
-            {nameof(AIContextMarkVisualFeedbackCreationWizard), new AIContextMarkVisualFeedbackCreationWizard() },
-            {nameof(AIContextMarkGameConfigWizard), new AIContextMarkGameConfigWizard() },
             {nameof(PuzzleLevelCreationWizard), new PuzzleLevelCreationWizard() },
             {nameof(AIObjectCreationWizard), new AIObjectCreationWizard() }
         };

@@ -8,14 +8,11 @@ namespace Editor_PuzzleLevelCreationWizard
     [System.Serializable]
     public class LevelChunkConfigurationCreation : CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
     {
-        public LevelChunkConfigurationCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
-        }
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
+            var levelHierarchyCreation = editorProfile.GetModule<LevelHierarchyCreation>();
 
-        protected override string objectFieldLabel => typeof(LevelChunkConfigurationCreation).Name;
-
-        public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile, LevelHierarchyCreation levelHierarchyCreation)
-        {
             var createdChunkConfig = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData);
             editorProfile.AddToGeneratedObjects(new Object[] { createdChunkConfig });
 

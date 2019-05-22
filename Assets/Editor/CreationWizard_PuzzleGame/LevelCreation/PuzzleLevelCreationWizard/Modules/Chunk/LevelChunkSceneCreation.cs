@@ -9,12 +9,10 @@ namespace Editor_PuzzleLevelCreationWizard
     [System.Serializable]
     public class LevelChunkSceneCreation : CreateableSceneComponent
     {
-        public LevelChunkSceneCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
-        }
-
-        public void OnGenerationClicked(EditorInformationsData editorInformationsData, LevelChunkPrefabCreation levelChunkPrefabCreation, AbstractCreationWizardEditorProfile editorProfile)
-        {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
+            var levelChunkPrefabCreation = editorProfile.GetModule<LevelChunkPrefabCreation>();
             this.CreateNewScene();
             var scenePath = editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkScenePath + "/" + editorInformationsData.LevelZoneChunkID.ToString() + "_Chunk.unity";
             if (this.SaveScene(scenePath))

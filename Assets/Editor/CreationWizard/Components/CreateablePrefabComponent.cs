@@ -24,14 +24,10 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
 
     private S BasePrefab;
 
-    public abstract Func<Dictionary<string, CreationModuleComponent>, S> BasePrefabProvider { get; }
+    public abstract Func<AbstractCreationWizardEditorProfile, S> BasePrefabProvider { get; }
     public S CreatedPrefab { get => createdPrefab; }
 
-    protected CreateablePrefabComponent(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-    {
-    }
-
-    protected override void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules)
+    protected override void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile)
     {
         if (selectionStyle == null)
         {
@@ -61,12 +57,12 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
         }
         else if (this.newToggle)
         {
-            this.InstanciateInEditor(ref editorModules);
+            this.InstanciateInEditor(editorProfile);
             Editor.CreateEditor(this.createdPrefab).OnInspectorGUI();
         }
     }
 
-    public void InstanciateInEditor(ref Dictionary<string, CreationModuleComponent> editorModules)
+    public void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile)
     {
         this.newToggle = true;
         this.selectionToggle = false;
@@ -74,7 +70,7 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
         {
             if (this.BasePrefab == null)
             {
-                this.BasePrefab = this.BasePrefabProvider.Invoke(editorModules);
+                this.BasePrefab = this.BasePrefabProvider.Invoke(editorProfile);
             }
             this.createdPrefab = PrefabUtility.LoadPrefabContents(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.BasePrefab)).GetComponent<S>();
         }
@@ -113,7 +109,7 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
         this.createdPrefab = null;
     }
 
-    public void OnGenerationEnd()
+    public override void OnGenerationEnd()
     {
         this.newToggle = false;
         this.selectionToggle = true;

@@ -11,14 +11,10 @@ namespace Editor_PuzzleLevelCreationWizard
     public class LevelSceneCreation : CreateableSceneComponent
     {
 
-        public LevelSceneCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
-        }
-
-
-        public void OnGenerationClicked(EditorInformationsData editorInformationsData, PuzzleLevelDynamicsCreation puzzleLevelDynamicsCreation,
-            Action<UnityEngine.Object[]> addToGenerated)
-        {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
+            var puzzleLevelDynamicsCreation = editorProfile.GetModule<PuzzleLevelDynamicsCreation>();
             this.CreateNewScene();
             var scenePath = editorInformationsData.CommonGameConfigurations.InstancePath.LevelScenePath + "/" + editorInformationsData.LevelZonesID.ToString() + ".unity";
             if (this.SaveScene(scenePath))
@@ -30,9 +26,10 @@ namespace Editor_PuzzleLevelCreationWizard
                 PrefabUtility.InstantiatePrefab(puzzleLevelDynamicsCreation.CreatedPrefab);
 
                 this.SaveScene(scenePath);
-                addToGenerated.Invoke(new UnityEngine.Object[] { this.CreatedSceneAsset });
+                editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { this.CreatedSceneAsset });
             }
         }
+
     }
 
 

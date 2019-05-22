@@ -1,4 +1,5 @@
 ﻿using OdinSerializer;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -8,12 +9,6 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
 {
     [HideInInspector]
     public bool ModuleFoldout;
-
-    [HideInInspector]
-    public bool ModuleEnabled;
-
-    [HideInInspector]
-    public bool ModuleDisableAble;
 
     [HideInInspector]
     public string TmpFolderPath;
@@ -26,34 +21,22 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
     protected virtual string foldoutLabel { get; }
     protected virtual string headerDescriptionLabel { get; }
 
-    public static T Create<T>(string filePath, bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble, string tmpFolderPath) where T : CreationModuleComponent
+    public static CreationModuleComponent Create(Type objType, string filePath, string tmpFolderPath)
     {
-        var instance = Create<T>(filePath);
-        instance.ModuleFoldout = moduleFoldout;
-        instance.ModuleEnabled = moduleEnabled;
-        instance.ModuleDisableAble = moduleDistableAble;
+        var instance = Create(objType, filePath);
         instance.TmpFolderPath = tmpFolderPath;
         return instance;
     }
 
-    public static T Create<T>(string filePath) where T : CreationModuleComponent
+    public static CreationModuleComponent Create(Type objType, string filePath)
     {
-        var instance = ScriptableObject.CreateInstance<T>();
+        var instance = (CreationModuleComponent)ScriptableObject.CreateInstance(objType);
         instance.ModuleFoldout = false;
-        instance.ModuleEnabled = true;
-        instance.ModuleDisableAble = false;
         AssetDatabase.CreateAsset(instance, filePath);
         return instance;
     }
 
-    protected CreationModuleComponent(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble)
-    {
-        ModuleFoldout = moduleFoldout;
-        ModuleEnabled = moduleEnabled;
-        this.ModuleDisableAble = moduleDisableAble;
-    }
-
-    public void OnInspectorGUI(ref Dictionary<string, CreationModuleComponent> editorModules)
+    public void OnInspectorGUI(AbstractCreationWizardEditorProfile editorProfile)
     {
         this.DoInit();
 
@@ -70,16 +53,10 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
             this.SetFoldoutStyleTextColor(ref this.foldoutStyle, Color.black);
         }
 
-        this.warningMessage = this.ComputeWarningState(ref editorModules);
-        this.errorMessage = this.ComputeErrorState(ref editorModules);
+        this.warningMessage = this.ComputeWarningState(editorProfile);
+        this.errorMessage = this.ComputeErrorState(editorProfile);
         EditorGUILayout.BeginVertical(EditorStyles.textArea);
         EditorGUILayout.BeginHorizontal();
-        var newModuleEnabled = GUILayout.Toggle(this.ModuleEnabled, "", EditorStyles.miniButton, GUILayout.Width(10), GUILayout.Height(10));
-
-        if (ModuleDisableAble)
-        {
-            this.ModuleEnabled = newModuleEnabled;
-        }
 
         var displayedFoldoutLabel = this.foldoutLabel;
         if (displayedFoldoutLabel == null)
@@ -96,7 +73,7 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
             EditorGUILayout.LabelField(this.headerDescriptionLabel, EditorStyles.miniLabel);
             //GUILayout.Label(new GUIContent(this.headerDescriptionLabel), EditorStyles.miniLabel);
 
-            this.OnInspectorGUIImpl(serializedObject, ref editorModules);
+            this.OnInspectorGUIImpl(serializedObject, editorProfile);
             serializedObject.ApplyModifiedProperties();
 
             if (!string.IsNullOrEmpty(this.errorMessage))
@@ -119,11 +96,14 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
         }
     }
 
-    protected abstract void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules);
+    public virtual void AfterGeneration(AbstractCreationWizardEditorProfile editorProfile) { }
+    protected abstract void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile);
     public abstract void ResetEditor();
-    public virtual string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules) { return string.Empty; }
-    public virtual string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules) { return string.Empty; }
+    public virtual string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile) { return string.Empty; }
+    public virtual string ComputeErrorState(AbstractCreationWizardEditorProfile editorProfile) { return string.Empty; }
 
+    public virtual void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile) { }
+    public virtual void OnGenerationEnd() { }
     private void SetFoldoutStyleTextColor(ref GUIStyle style, Color textColor)
     {
         style.normal.textColor = textColor;

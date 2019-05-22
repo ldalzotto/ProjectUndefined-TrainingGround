@@ -11,24 +11,19 @@ namespace Editor_PuzzleLevelCreationWizard
     [System.Serializable]
     public class PuzzleLevelDynamicsCreation : CreateablePrefabComponent<LevelManager>
     {
-        public PuzzleLevelDynamicsCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-        {
-        }
-
-        public override Func<Dictionary<string, CreationModuleComponent>, LevelManager> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, LevelManager> BasePrefabProvider
         {
             get
             {
-                return (Dictionary<string, CreationModuleComponent> imodules) =>
-                {
-                    var modules = PuzzleLevelCreationWizardEditorProfile.GetAllModules(imodules);
-                    return modules.EditorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics;
+                return (AbstractCreationWizardEditorProfile editorProfile) => {
+                    return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics;
                 };
             }
         }
-
-        internal void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile)
+        
+        public override  void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var createdLevelManager = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.PuzzleLevelDynamicsPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.PuzzleLevelDynamics);
             createdLevelManager.LevelID = editorInformationsData.LevelZonesID;
             PrefabUtility.SavePrefabAsset(createdLevelManager.gameObject);

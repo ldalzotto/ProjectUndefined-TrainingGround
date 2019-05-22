@@ -10,25 +10,24 @@ namespace Editor_PuzzleLevelCreationWizard
 {
     public class LevelCompletionConditionCreation : CreateableScriptableObjectComponent<ConditionGraphEditorProfile>
     {
-        public LevelCompletionConditionCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-        {
-        }
-
         protected override string objectFieldLabel => this.GetType().Name;
 
-        public override string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        public override string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile)
         {
-            var modules = PuzzleLevelCreationWizardEditorProfile.GetAllModules(editorModules);
-            return ErrorHelper.ModuleIgnoredIfIsNew(modules.LevelCompletionCreation.IsNew, nameof(modules.LevelCompletionCreationCondition), nameof(modules.LevelCompletionCreation));
+            var LevelCompletionCreation = editorProfile.GetModule<LevelCompletionCreation>();
+            var LevelCompletionCreationCondition = editorProfile.GetModule<LevelCompletionConditionCreation>();
+            return ErrorHelper.ModuleIgnoredIfIsNew(LevelCompletionCreation.IsNew, nameof(LevelCompletionCreationCondition), nameof(LevelCompletionCreation));
         }
 
-        public void OnGenerationClicked(EditorInformationsData editorInformationsData, LevelCompletionCreation LevelCompletionCreation, Action<UnityEngine.Object[]> addToGenerated)
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
+            var LevelCompletionCreation = editorProfile.GetModule<LevelCompletionCreation>();
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             if (LevelCompletionCreation.IsNew)
             {
                 var createdCompletionInherentData = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelCompletionConditionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionConditionConfigurationName);
                 LevelCompletionCreation.CreatedObject.ConditionGraphEditorProfile = createdCompletionInherentData;
-                addToGenerated.Invoke(new UnityEngine.Object[] { createdCompletionInherentData });
+                editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { createdCompletionInherentData });
             }
         }
     }

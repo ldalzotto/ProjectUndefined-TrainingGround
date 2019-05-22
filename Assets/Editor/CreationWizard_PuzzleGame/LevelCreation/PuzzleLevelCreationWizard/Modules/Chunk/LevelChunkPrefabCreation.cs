@@ -11,24 +11,20 @@ namespace Editor_PuzzleLevelCreationWizard
     [System.Serializable]
     public class LevelChunkPrefabCreation : CreateablePrefabComponent<LevelChunkType>
     {
-        public LevelChunkPrefabCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-        {
-        }
-
-        public override Func<Dictionary<string, CreationModuleComponent>, LevelChunkType> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, LevelChunkType> BasePrefabProvider
         {
             get
             {
-                return (Dictionary<string, CreationModuleComponent> imodules) =>
+                return (AbstractCreationWizardEditorProfile editorProfile) =>
                 {
-                    var modules = PuzzleLevelCreationWizardEditorProfile.GetAllModules(imodules);
-                    return modules.EditorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab;
+                    return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab;
                 };
             }
         }
 
-        public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile)
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var createdBaseChunk = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.BaseLevelChunkPrefab);
             createdBaseChunk.LevelZoneChunkID = editorInformationsData.LevelZoneChunkID;
             PrefabUtility.SavePrefabAsset(createdBaseChunk.gameObject);

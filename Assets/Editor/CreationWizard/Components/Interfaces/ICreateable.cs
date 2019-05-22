@@ -4,5 +4,5 @@ using System.Collections.Generic;
 
 public interface ICreateable 
 {
-    void InstanciateInEditor(ref Dictionary<string, CreationModuleComponent> editorModules);
+    void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile);
 }

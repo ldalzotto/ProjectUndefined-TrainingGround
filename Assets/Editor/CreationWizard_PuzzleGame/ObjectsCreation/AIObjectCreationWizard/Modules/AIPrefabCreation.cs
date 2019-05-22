@@ -11,24 +11,20 @@ namespace Editor_AICreationObjectCreationWizard
     [System.Serializable]
     public class AIPrefabCreation : CreateablePrefabComponent<NPCAIManager>
     {
-        public AIPrefabCreation(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-        {
-        }
-
-        public override Func<Dictionary<string, CreationModuleComponent>, NPCAIManager> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, NPCAIManager> BasePrefabProvider
         {
             get
             {
-                return (Dictionary<string, CreationModuleComponent> imodules) =>
+                return (AbstractCreationWizardEditorProfile editorProfile) =>
                 {
-                    var modules = AIObjectCreationWizardProfile.GetAllModules(imodules);
-                    return modules.EditorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab;
+                    return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab;
                 };
             }
         }
 
-        public void OnGenerationClicked(EditorInformationsData editorInformationsData, AbstractCreationWizardEditorProfile editorProfile)
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var createdAI = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.AIPrefabPaths, editorInformationsData.AiID.ToString() + NameConstants.BaseAIPrefab);
             createdAI.AiID = editorInformationsData.AiID;
             PrefabUtility.SavePrefabAsset(createdAI.gameObject);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -79,7 +81,28 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
 
         try
         {
-            this.OnGenerationClicked(tmpScene);
+            var modulesToGenerate = new List<CreationWizardOrderConfiguration>(this.editorProfile.ModulesConfiguration).Select(c => c).Where(c => c.GenerationOrder != -1).ToList();
+            modulesToGenerate.Sort((c1, c2) =>
+                {
+                    return c1.GenerationOrder.CompareTo(c2.GenerationOrder);
+                });
+
+            foreach(var module in modulesToGenerate)
+            {
+                this.editorProfile.Modules[module.ModuleType.Name].OnGenerationClicked(this.editorProfile);
+            }
+
+
+            var afterGenerationModules = new List<CreationWizardOrderConfiguration>(this.editorProfile.ModulesConfiguration).Select(c => c).Where(c => c.AfterGenerationOrder != -1).ToList();
+            afterGenerationModules.Sort((c1, c2) =>
+            {
+                return c1.AfterGenerationOrder.CompareTo(c2.AfterGenerationOrder);
+            });
+
+            foreach (var module in afterGenerationModules)
+            {
+                this.editorProfile.Modules[module.ModuleType.Name].AfterGeneration(this.editorProfile);
+            }
         }
         catch (Exception e)
         {
@@ -93,8 +116,13 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
         }
     }
 
-    protected abstract void OnWizardGUI();
-    protected abstract void OnGenerationClicked(Scene tmpScene);
+    private void OnWizardGUI()
+    {
+        foreach (var module in this.editorProfile.Modules.Values)
+        {
+            module.OnInspectorGUI(this.editorProfile);
+        }
+    }
 
     private void DoGenereatedObject()
     {

@@ -13,11 +13,8 @@ public abstract class CreateableSceneComponent : CreationModuleComponent
     private SceneAsset createdSceneAsset;
 
     private Scene tmpCreatedScene;
-    protected CreateableSceneComponent(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-    {
-    }
 
-    protected override void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules)
+    protected override void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile)
     {
         EditorGUILayout.PropertyField(serializedObject.FindProperty("createdSceneAsset"));
     }

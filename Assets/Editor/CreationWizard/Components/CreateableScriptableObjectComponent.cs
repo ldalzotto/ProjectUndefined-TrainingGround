@@ -16,12 +16,8 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     private T createdObject;
 
     private GeneratedScriptableObjectManager<T> genereatedAsset;
-
-    protected CreateableScriptableObjectComponent(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-    {
-    }
-
-    protected abstract string objectFieldLabel { get; }
+    
+    protected virtual string objectFieldLabel { get; }
 
 
 
@@ -30,20 +26,25 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     public GeneratedScriptableObjectManager<T> GenereatedAsset { get => genereatedAsset; }
 
     #region External Event
-    public void OnGenerationEnd()
+    public override void OnGenerationEnd()
     {
         this.isNew = false;
     }
     #endregion
 
-    protected override void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules)
+    protected override void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile)
     {
         if (GUILayout.Button(new GUIContent("N"), EditorStyles.miniButton, GUILayout.Width(20f)))
         {
-            this.InstanciateInEditor(ref editorModules);
+            this.InstanciateInEditor(editorProfile);
         }
         EditorGUI.BeginChangeCheck();
-        this.createdObject = (T)EditorGUILayout.ObjectField(this.objectFieldLabel, this.createdObject, typeof(T), false);
+        string labelField = this.GetType().Name;
+        if(this.objectFieldLabel != null)
+        {
+            labelField = this.objectFieldLabel;
+        }
+        this.createdObject = (T)EditorGUILayout.ObjectField(labelField, this.createdObject, typeof(T), false);
         if (EditorGUI.EndChangeCheck())
         {
             this.isNew = false;
@@ -82,7 +83,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
         return returnObject;
     }
 
-    public void InstanciateInEditor(ref Dictionary<string, CreationModuleComponent> editorModules)
+    public void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile)
     {
         this.createdObject = ScriptableObject.CreateInstance<T>();
         this.isNew = true;

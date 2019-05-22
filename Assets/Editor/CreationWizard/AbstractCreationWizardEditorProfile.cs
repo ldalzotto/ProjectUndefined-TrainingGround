@@ -26,6 +26,8 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     public DirectoryInfo TmpDirectoryInfo { get => tmpDirectoryInfo; }
     public List<ICreationWizardFeedLine> CreationWizardFeedLines { get => creationWizardFeedLines; }
 
+    public abstract List<CreationWizardOrderConfiguration> ModulesConfiguration { get; }
+
     #region Logical Conditions
     public bool ContainsWarn()
     {
@@ -53,7 +55,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         {
             if(mod is ICreateable createable)
             {
-                createable.InstanciateInEditor(ref this.Modules);
+                createable.InstanciateInEditor(this);
             }
         }
     }
@@ -85,6 +87,11 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         }
         var assetsFolderIndex = this.tmpDirectoryInfo.FullName.IndexOf("Assets\\");
         this.projectRelativeTmpFolderPath = this.tmpDirectoryInfo.FullName.Substring(assetsFolderIndex);
+
+        foreach(var moduleConfiguration in this.ModulesConfiguration)
+        {
+            this.InitModule(moduleConfiguration.ModuleType);
+        }
     }
 
     public virtual void ResetEditor()
@@ -92,7 +99,12 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         this.creationWizardFeedLines.Clear();
     }
 
-    public abstract void OnGenerationEnd();
+    public void OnGenerationEnd() {
+        foreach(var module in this.Modules.Values)
+        {
+            module.OnGenerationEnd();
+        }
+    }
 
     public void AddToGeneratedObjects(UnityEngine.Object[] objs)
     {
@@ -108,11 +120,11 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
             AssetDatabase.GetAssetPath(configuration), key, AssetDatabase.GetAssetPath(value)));
     }
 
-    protected void InitModule<T>(bool moduleFoldout, bool moduleEnabled, bool moduleDistableAble) where T : CreationModuleComponent
+    private void InitModule(Type objType)
     {
-        if (!this.Modules.ContainsKey(typeof(T).Name))
+        if (!this.Modules.ContainsKey(objType.Name))
         {
-            this.Modules[typeof(T).Name] = CreationModuleComponent.Create<T>(this.ProjectRelativeTmpFolderPath + "\\" + typeof(T).Name + ".asset", moduleFoldout, moduleEnabled, moduleDistableAble, this.ProjectRelativeTmpFolderPath);
+            this.Modules[objType.Name] = CreationModuleComponent.Create(objType, this.ProjectRelativeTmpFolderPath + "\\" + objType.Name + ".asset", this.ProjectRelativeTmpFolderPath);
         }
     }
 
@@ -211,4 +223,23 @@ public class ConfigurationModifiedFeedLine : ICreationWizardFeedLine
         this.configurationObject.ClearEntry(this.keySet);
     }
 
+}
+
+[System.Serializable]
+public class CreationWizardOrderConfiguration
+{
+    private Type moduleType;
+    private int generationOrder;
+    private int afterGenerationOrder;
+
+    public CreationWizardOrderConfiguration(Type moduleType, int generationOrder, int afterGenerationOrder = -1)
+    {
+        this.moduleType = moduleType;
+        this.generationOrder = generationOrder;
+        this.afterGenerationOrder = afterGenerationOrder;
+    }
+
+    public Type ModuleType { get => moduleType; }
+    public int GenerationOrder { get => generationOrder; }
+    public int AfterGenerationOrder { get => afterGenerationOrder; }
 }

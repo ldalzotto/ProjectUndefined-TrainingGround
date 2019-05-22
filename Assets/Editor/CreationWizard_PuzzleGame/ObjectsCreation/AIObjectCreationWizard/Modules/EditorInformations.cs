@@ -15,10 +15,6 @@ namespace Editor_AICreationObjectCreationWizard
     {
         public EditorInformationsData EditorInformationsData;
 
-        public EditorInformations(bool moduleFoldout, bool moduleEnabled, bool moduleDisableAble) : base(moduleFoldout, moduleEnabled, moduleDisableAble)
-        {
-        }
-
         public override void ResetEditor()
         {
         }
@@ -28,19 +24,19 @@ namespace Editor_AICreationObjectCreationWizard
             EditorInformationsHelper.InitProperties(ref this.EditorInformationsData.CommonGameConfigurations);
         }
 
-        protected override void OnInspectorGUIImpl(SerializedObject serializedObject, ref Dictionary<string, CreationModuleComponent> editorModules)
+        protected override void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.EditorInformationsData)), true);
         }
 
-        public override string ComputeErrorState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        public override string ComputeErrorState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
             return EditorInformationsHelper.ComputeErrorState(ref this.EditorInformationsData.CommonGameConfigurations);
         }
 
-        public override string ComputeWarningState(ref Dictionary<string, CreationModuleComponent> editorModules)
+        public override string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
             return new List<string>()
