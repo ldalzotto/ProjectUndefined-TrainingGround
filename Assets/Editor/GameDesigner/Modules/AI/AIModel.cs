@@ -12,12 +12,8 @@ namespace Editor_GameDesigner
 
         public void GUITick()
         {
-            var currentSelectedObj = Selection.activeObject as GameObject;
-            if (currentSelectedObj != null && currentSelectedObj.scene == null)
-            {
-                currentSelectedObj = null;
-            }
-            EditorGUILayout.ObjectField(currentSelectedObj, typeof(Object), false);
+           
+            var currentSelectedObj = GameDesignerHelper.GetCurrentSceneSelectedObject();
 
             this.AIModelObject = (GameObject)EditorGUILayout.ObjectField("AI new Model : ", this.AIModelObject, typeof(GameObject), false);
 

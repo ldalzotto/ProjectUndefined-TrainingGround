@@ -10,7 +10,7 @@ namespace Editor_GameDesigner
     {
         public GameDesignerTreePickerProfile GameDesignerTreePickerProfile;
         public IGameDesignerModule CurrentGameDesignerModule;
-
+        public Vector2 ScrollPosition;
         public void ChangeCurrentModule(IGameDesignerModule nextModule)
         {
             if (this.CurrentGameDesignerModule != null)

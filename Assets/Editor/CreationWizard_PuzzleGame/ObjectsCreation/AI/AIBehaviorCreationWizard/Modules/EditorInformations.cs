@@ -1,22 +1,24 @@
-﻿using CreationWizard;
-using Editor_PuzzleGameCreationWizard;
-using RTPuzzle;
-using System;
+﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
-using UnityEngine;
+using RTPuzzle;
+using Editor_PuzzleGameCreationWizard;
+using System.Collections.Generic;
+using CreationWizard;
+using System.Linq;
+using System;
 
-namespace Editor_AICreationObjectCreationWizard
+namespace Editor_AIBehaviorCreationWizard
 {
     [System.Serializable]
     public class EditorInformations : CreationModuleComponent
     {
+
         public EditorInformationsData EditorInformationsData;
 
         public override void ResetEditor()
         {
+
         }
 
         private void InitProperties()
@@ -33,21 +35,15 @@ namespace Editor_AICreationObjectCreationWizard
         public override string ComputeErrorState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
-            return EditorInformationsHelper.ComputeErrorState(ref this.EditorInformationsData.CommonGameConfigurations);
+            return new List<string>() {
+                EditorInformationsHelper.ComputeErrorState(ref this.EditorInformationsData.CommonGameConfigurations) ,
+                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AiID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
+                nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration.ConfigurationInherentData))
+            }.Find((s) => !string.IsNullOrEmpty(s));
         }
 
-        public override string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile)
-        {
-            this.InitProperties();
-            return new List<string>()
-            {
-              ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AiID, 
-              this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
-              this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration.GetType().Name)
-            }
-            .Find(s => !string.IsNullOrEmpty(s));
-        }
     }
+
 
     [System.Serializable]
     public class EditorInformationsData
@@ -55,5 +51,4 @@ namespace Editor_AICreationObjectCreationWizard
         public AiID AiID;
         public CommonGameConfigurations CommonGameConfigurations;
     }
-
 }

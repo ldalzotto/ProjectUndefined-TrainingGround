@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [CustomEditor(typeof(GenericPuzzleAIComponents))]
+    [CustomEditor(typeof(AbstractAIComponents), true)]
     public class AIComponentsEditor : Editor
     {
 

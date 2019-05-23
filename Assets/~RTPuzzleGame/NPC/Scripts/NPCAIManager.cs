@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -132,6 +133,17 @@ namespace RTPuzzle
         public void GizmoTick()
         {
             puzzleAIBehavior.TickGizmo();
+        }
+
+        private void OnDrawGizmos()
+        {
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.normal.textColor = Color.magenta;
+#if UNITY_EDITOR
+            Handles.Label(transform.position + new Vector3(0,3f,0), AiID.ToString(), labelStyle);
+#endif
+            Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AI", true);
         }
 
         public void GUITick()

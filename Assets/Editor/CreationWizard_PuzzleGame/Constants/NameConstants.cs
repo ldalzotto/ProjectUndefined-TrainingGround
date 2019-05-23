@@ -15,5 +15,6 @@ namespace Editor_PuzzleGameCreationWizard
         public const string LevelChunkSceneConfigurationData = "_ChunkZonesSceneConfigurationData";
         public static string BaseAIPrefab = "_AIPrefab";
         public static string AIBehavior = "_AIBehavior";
+        public static string AIComponents = "_AIComponents";
     }
 }

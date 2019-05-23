@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Editor_PuzzleLevelCreationWizard;
 using Editor_AICreationObjectCreationWizard;
+using Editor_AIBehaviorCreationWizard;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "PuzzleCreationWizardEditorProfile", menuName = "CreationWizard/PuzzleCreationWizardEditorProfile", order = 1)]
@@ -18,7 +19,8 @@ public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWi
         this.configurations = new Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>()
         {
             {nameof(PuzzleLevelCreationWizard), new PuzzleLevelCreationWizard() },
-            {nameof(AIObjectCreationWizard), new AIObjectCreationWizard() }
+            {nameof(AIObjectCreationWizard), new AIObjectCreationWizard() },
+            {nameof(AIBehaviorCreationWizard), new AIBehaviorCreationWizard() }
         };
     }
 

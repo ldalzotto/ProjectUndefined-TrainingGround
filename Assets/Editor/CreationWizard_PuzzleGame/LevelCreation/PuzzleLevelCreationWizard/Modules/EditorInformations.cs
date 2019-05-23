@@ -45,16 +45,16 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             this.InitProperties();
             return new List<string>() {
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
+                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
                         this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
                         nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration)),
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
+                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
                         this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
                         nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration)),
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
+                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
                         this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
                         nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration)),
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.LevelZoneChunkID,
+                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZoneChunkID,
                         this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
                         nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration))
 

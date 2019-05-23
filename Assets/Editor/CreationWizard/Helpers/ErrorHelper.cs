@@ -26,11 +26,20 @@ namespace CreationWizard
             return string.Empty;
         }
 
-        public static string NotAlreadyPresentInConfiguration(Enum key, List<Enum> keys, string configurationName)
+        public static string AlreadyPresentInConfiguration(Enum key, List<Enum> keys, string configurationName)
         {
             if (keys.Contains(key))
             {
                 return ErrorMessages.GetConfigurationOverriteMessage(key, configurationName);
+            }
+            return string.Empty;
+        }
+
+        public static string NotAlreadyPresentInConfiguration(Enum key, List<Enum> keys, string configurationName)
+        {
+            if (!keys.Contains(key))
+            {
+                return ErrorMessages.GetConfigurationMissingMessage(key, configurationName);
             }
             return string.Empty;
         }

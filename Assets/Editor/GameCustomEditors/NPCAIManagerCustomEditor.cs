@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
+[ExecuteInEditMode]
 [CustomEditor(typeof(NPCAIManager))]
 public class NPCAIManagerCustomEditor : Editor
 {
@@ -16,21 +17,24 @@ public class NPCAIManagerCustomEditor : Editor
 
     private void OnEnable()
     {
-        AIComponentsConfiguration = AssetFinder.SafeSingleAssetFind<AIComponentsConfiguration>("t:" + typeof(AIComponentsConfiguration).Name);
-        if (AIComponentsConfiguration != null)
+        if (target != null)
         {
-            AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
-            if (AIComponents != null)
+            AIComponentsConfiguration = AssetFinder.SafeSingleAssetFind<AIComponentsConfiguration>("t:" + typeof(AIComponentsConfiguration).Name);
+            if (AIComponentsConfiguration != null)
             {
-                foreach (var aiComponentField in AIComponents.GetType().GetFields())
+                AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
+                if (AIComponents != null)
                 {
-                    if (aiComponentField.FieldType.IsSubclassOf(typeof(AbstractAIComponent)))
+                    foreach (var aiComponentField in AIComponents.GetType().GetFields())
                     {
-                        ComponentGizmosEnabled[aiComponentField.Name] = true;
+                        if (aiComponentField.FieldType.IsSubclassOf(typeof(AbstractAIComponent)))
+                        {
+                            ComponentGizmosEnabled[aiComponentField.Name] = true;
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 

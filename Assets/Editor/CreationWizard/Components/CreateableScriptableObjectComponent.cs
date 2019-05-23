@@ -9,7 +9,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     [SerializeField]
     private CreationModuleComponent module;
     [SerializeField]
-    private bool isNew;
+    protected bool isNew;
     [SerializeField]
     private bool headerFoldout;
     [SerializeField]
@@ -58,7 +58,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
             {
                 EditorGUI.BeginDisabledGroup(true);
             }
-            this.ScriptableObjectGUI(this.createdObject, new SerializedObject(this.createdObject));
+            this.ScriptableObjectGUI(this.createdObject);
             if (!this.isNew)
             {
                 EditorGUI.EndDisabledGroup();
@@ -66,7 +66,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
         }
     }
 
-    protected virtual void ScriptableObjectGUI(T obj, SerializedObject sObj)
+    protected virtual void ScriptableObjectGUI(T obj)
     {
         if (this.lastFrameObject == null || this.lastFrameObject != obj)
         {
@@ -94,7 +94,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
         return returnObject;
     }
 
-    public void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile)
+    public virtual void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile)
     {
         this.createdObject = ScriptableObject.CreateInstance<T>();
         this.isNew = true;

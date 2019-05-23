@@ -1,6 +1,7 @@
 ﻿using OdinSerializer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -124,6 +125,15 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
     public bool HasError()
     {
         return !string.IsNullOrEmpty(this.errorMessage);
+    }
+
+    protected void CreateFolderIfNecessary(string directoryPath)
+    {
+        var di = new DirectoryInfo(directoryPath);
+        if (!di.Exists)
+        {
+            di.Create();
+        }
     }
 
 }

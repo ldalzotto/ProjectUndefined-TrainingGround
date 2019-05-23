@@ -4,7 +4,6 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-
     public class AbstractAIComponentEditor<T> : Editor where T : AbstractAIComponent
     {
 

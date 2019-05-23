@@ -16,7 +16,7 @@ namespace Editor_GameDesigner
         private GameDesignerEditorProfile GameDesignerEditorProfile;
 
         private ChoiceTree ChoiceTree;
-        
+
         private void OnGUI()
         {
             if (this.GameDesignerEditorProfile == null)
@@ -43,7 +43,9 @@ namespace Editor_GameDesigner
                 EditorGUILayout.BeginVertical();
                 if (this.GameDesignerEditorProfile.CurrentGameDesignerModule != null)
                 {
+                    this.GameDesignerEditorProfile.ScrollPosition = EditorGUILayout.BeginScrollView(this.GameDesignerEditorProfile.ScrollPosition);
                     this.GameDesignerEditorProfile.CurrentGameDesignerModule.GUITick();
+                    EditorGUILayout.EndScrollView();
                 }
                 EditorGUILayout.EndVertical();
 
@@ -53,6 +55,11 @@ namespace Editor_GameDesigner
             EditorGUILayout.ObjectField(this.GameDesignerEditorProfile, typeof(Object), false);
 
             if (GUI.changed) { this.Repaint(); }
+        }
+
+        private void OnSelectionChange()
+        {
+            this.Repaint();
         }
     }
 

@@ -6,7 +6,7 @@ using System;
 namespace Editor_AICreationObjectCreationWizard
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "AIObjectCreationWizardProfile", menuName = "CreationWizard/PuzzleObjectCreationWizard/AIObjectCreationWizardProfile", order = 1)]
+    [CreateAssetMenu(fileName = "AIObjectCreationWizardProfile", menuName = "CreationWizard/PuzzleObjectCreationWizard/AI/AIObjectCreationWizardProfile", order = 1)]
     public class AIObjectCreationWizardProfile : AbstractCreationWizardEditorProfile
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {

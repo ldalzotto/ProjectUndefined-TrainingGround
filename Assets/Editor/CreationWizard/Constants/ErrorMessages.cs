@@ -11,6 +11,11 @@ namespace CreationWizard
         {
           return  "On generation, the key " + key + " of " + configurationName + " will be overriten.";
         }
+        public static string GetConfigurationMissingMessage(Enum key, string configurationName)
+        {
+            return "The key " + key + " of " + configurationName + " is missing.";
+        }
+
 
         public static string NonNullityErrorMessage(string fieldName)
         {

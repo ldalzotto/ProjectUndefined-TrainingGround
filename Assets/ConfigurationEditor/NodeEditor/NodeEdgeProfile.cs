@@ -18,7 +18,7 @@ namespace NodeGraph
         public NodeProfile NodeProfileRef;
         public abstract List<Type> AllowedConnectedNodeEdges { get; }
      
-        public List<NodeEdgeProfile> ConnectedNodeEdges = new List<NodeEdgeProfile>();
+        public List<NodeEdgeProfile> ConnectedNodeEdges;
         public NodeEdgeProfile BackwardConnectedNodeEdge;
 
 #if UNITY_EDITOR
@@ -36,6 +36,7 @@ namespace NodeGraph
             nodeEdgeInstance.Id = NodeProfileRef.GetNextEdgeId();
             nodeEdgeInstance.NodeProfileRef = NodeProfileRef;
             nodeEdgeInstance.Bounds.size = new Vector2(nodeEdgeInstance.Bounds.size.x, nodeEdgeInstance.DefaultGetEdgeHeight());
+            nodeEdgeInstance.ConnectedNodeEdges = new List<NodeEdgeProfile>();
             AssetDatabase.CreateAsset(nodeEdgeInstance, NodeProfileRef.EdgesDirectoryPath + "/" + nodeEdgeInstance.GetType().Name + "_" + nodeEdgeInstance.Id.ToString() + ".asset");
             return nodeEdgeInstance;
         }
