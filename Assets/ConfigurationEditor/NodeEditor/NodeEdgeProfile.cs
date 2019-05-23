@@ -14,10 +14,10 @@ namespace NodeGraph
     {
         public int Id;
         public object Value;
-        
+
         public NodeProfile NodeProfileRef;
         public abstract List<Type> AllowedConnectedNodeEdges { get; }
-     
+
         public List<NodeEdgeProfile> ConnectedNodeEdges;
         public NodeEdgeProfile BackwardConnectedNodeEdge;
 
@@ -74,6 +74,7 @@ namespace NodeGraph
             }
 
             GUI.backgroundColor = oldBackground;
+            EditorUtility.SetDirty(this);
         }
 
         public void AddConnectedNode(NodeEdgeProfile NodeEdge)
@@ -141,6 +142,7 @@ namespace NodeGraph
             }
 
         }
+
 #endif
     }
 }

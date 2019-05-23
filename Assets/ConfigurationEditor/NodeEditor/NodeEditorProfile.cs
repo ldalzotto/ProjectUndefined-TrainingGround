@@ -79,7 +79,7 @@ namespace NodeGraph
         {
             this.EditorBound.position += delta;
         }
-
+        
         public static NodeProfile GetFirstContainedNode(Vector2 position, ref NodeEditorProfile NodeEditorProfileRef)
         {
             foreach (var node in NodeEditorProfileRef.Nodes.Values)

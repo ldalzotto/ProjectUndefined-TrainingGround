@@ -87,6 +87,7 @@ namespace NodeGraph
                 outputEdge.GUITick(this.GetOutputEdgeRect(this.OutputEdges.IndexOf(outputEdge)));
             }
 
+            EditorUtility.SetDirty(this);
         }
 
         public void DeleteNode(ref NodeEditorProfile nodeEditorProfileRef)
