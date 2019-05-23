@@ -100,7 +100,7 @@ namespace Tests
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 10, 170), mouseTestAIManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), mouseTestAIManager.transform.position,
                 OnTargetZoneSpawn: (TargetZone targetZone) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsPatrolling());
@@ -329,7 +329,7 @@ namespace Tests
                      Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                      Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
                      Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
-                     return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 100, 170), mouseTestAIManager.transform.position,
+                     return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 170), mouseTestAIManager.transform.position,
                          OnTargetZoneSpawn: (TargetZone targetZone) =>
                          {
                              Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
@@ -531,7 +531,7 @@ namespace Tests
                {
                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                   return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 1, 170), mouseTestAIManager.transform.position,
+                   return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 170), mouseTestAIManager.transform.position,
                        OnTargetZoneSpawn: (TargetZone targetZone) =>
                        {
                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
@@ -818,7 +818,7 @@ namespace Tests
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 2, 170), mouseTestAIManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), mouseTestAIManager.transform.position,
                 OnTargetZoneSpawn: (TargetZone targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
@@ -851,7 +851,7 @@ namespace Tests
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 2, 170), mouseTestAIManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), mouseTestAIManager.transform.position,
                 OnTargetZoneSpawn: (TargetZone targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
@@ -884,7 +884,7 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
 
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 100, 170), mouseTestAIManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), mouseTestAIManager.transform.position,
                 OnTargetZoneSpawn: (TargetZone targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
@@ -923,7 +923,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 100, 170), mouseTestAIManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), mouseTestAIManager.transform.position,
                OnTargetZoneSpawn: (TargetZone targetZone) =>
                {
                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
@@ -960,7 +960,7 @@ namespace Tests
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 2, 170), mouseTestAIManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), mouseTestAIManager.transform.position,
                 OnTargetZoneSpawn: (TargetZone targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
@@ -1135,7 +1135,7 @@ namespace Tests
                 {
                     Assert.IsTrue(mouseAIBheavior.IsFeared());
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                    return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 0.2f, 170), mouseTestAIManager.transform.position,
+                    return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 170), mouseTestAIManager.transform.position,
                         OnTargetZoneSpawn: (TargetZone targetZone) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsFeared());
@@ -1344,7 +1344,7 @@ namespace Tests
                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
                       Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
-                      return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 0.2f, 170), mouseTestAIManager.transform.position,
+                      return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 170), mouseTestAIManager.transform.position,
                           OnTargetZoneSpawn: (TargetZone targetZone) =>
                           {
                               Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());

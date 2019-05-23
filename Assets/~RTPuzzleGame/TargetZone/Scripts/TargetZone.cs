@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace RTPuzzle
 {
     public class TargetZone : MonoBehaviour
@@ -55,6 +59,17 @@ namespace RTPuzzle
             targetZone.Init(targetZoneInherentData);
             targetZone.transform.position = worldPosition;
             return targetZone;
+        }
+
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.normal.textColor = Color.blue;
+            Handles.Label(transform.position + new Vector3(0, 3f, 0), TargetZoneID.ToString(), labelStyle);
+            Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_TargetZone", true);
+#endif
         }
 
     }
