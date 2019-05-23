@@ -6,43 +6,33 @@ using System.Linq;
 
 namespace Editor_GameDesigner
 {
-    public class ChoiceTree
+    public class GameDesignerChoiceTree : TreePicker<Type>
     {
-        private TreePickerPopup TreePickerPopup;
-
-        private GameDesignerEditorProfile gameDesignerEditorProfile;
-
         private Dictionary<string, Type> Modules = new Dictionary<string, Type>()
         {
-            {"Ground", typeof(GroundSetter) },
-            {"Level//CreatePuzzleLevel", typeof(CreatePuzzleLevel) },
-            {"AI//Create", typeof(CreateAI) },
-            {"AI//Add", typeof(AddAI) },
-            {"AI//Model", typeof(AIModel) },
-            {"AI//Behavior//Create", typeof(CreateBehavior) },
-            {"AI//Behavior//Edit", typeof(EditBehavior) }
+            { typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
+            {"Level//"+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
+            {"AI//"+ typeof(CreateAI).Name, typeof(CreateAI) },
+            {"AI//"+typeof(AddAI).Name, typeof(AddAI) },
+            {"AI//" + typeof(AIModel).Name, typeof(AIModel) },
+            {"AI//Behavior//"+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
+            {"AI//Behavior//"+typeof(EditBehavior).Name, typeof(EditBehavior) }
         };
 
-        public ChoiceTree(ref GameDesignerEditorProfile gameDesignerEditorProfile)
+        public override Dictionary<string, Type> Configurations => this.Modules;
+
+        private GameDesignerEditorProfile GameDesignerEditorProfileRef;
+
+        public GameDesignerChoiceTree(GameDesignerEditorProfile gameDesignerEditorProfileRef)
         {
-            this.TreePickerPopup = new TreePickerPopup(this.Modules.Keys.ToList(), () => { this.OnSelectionChange(this.TreePickerPopup.SelectedKey); },
-                gameDesignerEditorProfile.GameDesignerTreePickerProfile.SelectedKey);
-            this.TreePickerPopup.RepaintAction = () => { GUI.changed = true; };
-            this.gameDesignerEditorProfile = gameDesignerEditorProfile;
+            GameDesignerEditorProfileRef = gameDesignerEditorProfileRef;
         }
 
-        public void GUITick()
+        protected override void OnSelectionChange()
         {
-            this.TreePickerPopup.OnGUI(new Rect());
+            base.OnSelectionChange();
+            this.GameDesignerEditorProfileRef.ChangeCurrentModule((IGameDesignerModule)Activator.CreateInstance(this.GetSelectedConf()));
         }
-
-        private void OnSelectionChange(string newKey)
-        {
-            this.gameDesignerEditorProfile.GameDesignerTreePickerProfile.SelectedKey = newKey;
-            this.gameDesignerEditorProfile.ChangeCurrentModule((IGameDesignerModule)Activator.CreateInstance(this.Modules[newKey]));
-        }
-
-
     }
 
 }

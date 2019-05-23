@@ -4,7 +4,7 @@ using UnityEditor;
 using RTPuzzle;
 using System.Collections.Generic;
 using System.Linq;
-
+using Editor_GameDesigner;
 
 [ExecuteInEditMode]
 [CustomEditor(typeof(NPCAIManager))]
@@ -43,6 +43,10 @@ public class NPCAIManagerCustomEditor : Editor
         if (GUILayout.Button("OPEN CONFIGURATION"))
         {
             PuzzleGameConfigurationEditorV2.OpenToDesiredConfiguration(typeof(AIComponentsConfiguration));
+        }
+        if (GUILayout.Button("OPEN IN DESIGNER"))
+        {
+            GameDesignerEditor.InitWithSelectedKey(typeof(EditBehavior));
         }
         base.OnInspectorGUI();
     }

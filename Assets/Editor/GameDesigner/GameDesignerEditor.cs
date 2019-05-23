@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using System;
 
 namespace Editor_GameDesigner
 {
@@ -13,30 +14,45 @@ namespace Editor_GameDesigner
             window.Show();
         }
 
+        public static void InitWithSelectedKey(Type designerModuleType)
+        {
+            GameDesignerEditor window = (GameDesignerEditor)EditorWindow.GetWindow(typeof(GameDesignerEditor));
+            window.InitEditorData();
+            window.ChoiceTree.SetSelectedKey(designerModuleType);
+            window.Show();
+        }
+
         private GameDesignerEditorProfile GameDesignerEditorProfile;
 
-        private ChoiceTree ChoiceTree;
+        public GameDesignerChoiceTree ChoiceTree;
 
-        private void OnGUI()
+        public void InitEditorData()
         {
             if (this.GameDesignerEditorProfile == null)
             {
                 this.GameDesignerEditorProfile = AssetFinder.SafeSingleAssetFind<GameDesignerEditorProfile>("t:" + typeof(GameDesignerEditorProfile).Name);
             }
-
             if (this.GameDesignerEditorProfile != null)
             {
 
                 if (this.ChoiceTree == null)
                 {
-                    this.ChoiceTree = new ChoiceTree(ref this.GameDesignerEditorProfile);
+                    this.ChoiceTree = new GameDesignerChoiceTree(this.GameDesignerEditorProfile);
                 }
+            }
+        }
 
+        private void OnGUI()
+        {
+
+            this.InitEditorData();
+            if (this.GameDesignerEditorProfile != null)
+            {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.BeginVertical(GUILayout.Width(200f));
                 if (this.ChoiceTree != null)
                 {
-                    this.ChoiceTree.GUITick();
+                    this.ChoiceTree.GUITick(() => { this.Repaint(); });
                 }
                 EditorGUILayout.EndVertical();
 
@@ -52,7 +68,7 @@ namespace Editor_GameDesigner
                 EditorGUILayout.EndHorizontal();
             }
 
-            EditorGUILayout.ObjectField(this.GameDesignerEditorProfile, typeof(Object), false);
+            EditorGUILayout.ObjectField(this.GameDesignerEditorProfile, typeof(UnityEngine.Object), false);
 
             if (GUI.changed) { this.Repaint(); }
         }

@@ -6,7 +6,7 @@ using RTPuzzle;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class GroundSetter : IGameDesignerModule
+    public class GroundEffectAdd : IGameDesignerModule
     {
         public void GUITick()
         {

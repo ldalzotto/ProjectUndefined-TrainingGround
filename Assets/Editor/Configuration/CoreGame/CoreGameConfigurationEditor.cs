@@ -23,19 +23,9 @@ namespace CoreGame
 
         public static bool OpenToDesiredConfiguration(Type configurationDataType)
         {
-            var foundConfiguration = CoreGameConfigurationEditorProfile.GetConfigurationID(configurationDataType);
-            if (!string.IsNullOrEmpty(foundConfiguration))
-            {
-                Init();
-                var window = EditorWindow.GetWindow<CoreGameConfigurationEditor>();
-                window.GetConfigurationProfile().SetSelectedKey(foundConfiguration);
-                return true;
-            }
-            else
-            {
-                Debug.LogError("Configuration not found.");
-                return false;
-            }
+            Init();
+            var window = EditorWindow.GetWindow<CoreGameConfigurationEditor>();
+            return window.GetConfigurationProfile().SetSelectedKey(configurationDataType);
         }
     }
 

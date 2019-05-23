@@ -10,17 +10,11 @@ using System;
 using System.Text.RegularExpressions;
 
 [System.Serializable]
-public abstract class TreeChoiceHeaderTab<T> : SerializedScriptableObject
+public abstract class TreeChoiceHeaderTab<T> : AbstractTreePickerGUI<T>
 {
-    public abstract Dictionary<string, T> Configurations { get; }
 
-    public Vector2 TreePickerPopupWindowDimensions = new Vector2(300, 400);
-    private TreePickerPopup TreePickerPopup;
-    [SerializeField]
-    private string selectedKey;
-
-    private GUIStyle selectedItemLabelStyle;
     private Rect buttonRect;
+
     public void GUITick(Action repaintAction)
     {
         Init(repaintAction);
@@ -40,35 +34,5 @@ public abstract class TreeChoiceHeaderTab<T> : SerializedScriptableObject
         if (Event.current.type == EventType.Repaint) buttonRect = GUILayoutUtility.GetLastRect();
     }
 
-    private void Init(Action repaintAction)
-    {
-        if (this.selectedItemLabelStyle == null)
-        {
-            this.selectedItemLabelStyle = new GUIStyle(EditorStyles.label);
-            this.selectedItemLabelStyle.normal.background = Texture2D.whiteTexture;
-        }
-        if (this.TreePickerPopup == null)
-        {
-            var sortedKeys = this.Configurations.Keys.ToList();
-            sortedKeys.Sort();
-            this.TreePickerPopup = new TreePickerPopup(sortedKeys, OnSelectionChange: () => { this.selectedKey = this.TreePickerPopup.SelectedKey; }, this.selectedKey);
-        }
-        this.TreePickerPopup.RepaintAction = repaintAction;
-        this.TreePickerPopup.WindowDimensions = this.TreePickerPopupWindowDimensions;
-
-    }
-
-    public T GetSelectedConf()
-    {
-        if (!string.IsNullOrEmpty(this.selectedKey))
-        {
-            return this.Configurations[this.selectedKey];
-        }
-        return default;
-    }
-
-    public void SetSelectedKey(string newSelectedKey)
-    {
-        this.selectedKey = newSelectedKey;
-    }
+ 
 }

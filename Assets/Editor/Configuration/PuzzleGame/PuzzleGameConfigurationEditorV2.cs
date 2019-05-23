@@ -22,18 +22,9 @@ namespace RTPuzzle
 
         public static bool OpenToDesiredConfiguration(Type configurationDataType)
         {
-            var foundConfiguration = PuzzleGameConfigurationEditorProfileV2.GetConfigurationID(configurationDataType);
-            if (!string.IsNullOrEmpty(foundConfiguration))
-            {
-                Init();
-                var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditorV2>();
-                window.GetConfigurationProfile().SetSelectedKey(foundConfiguration);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            Init();
+            var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditorV2>();
+            return window.GetConfigurationProfile().SetSelectedKey(configurationDataType);
         }
 
     }

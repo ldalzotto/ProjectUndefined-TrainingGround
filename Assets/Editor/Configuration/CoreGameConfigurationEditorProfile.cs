@@ -21,15 +21,4 @@ public class CoreGameConfigurationEditorProfile : TreeChoiceHeaderTab<IGenericCo
     [SerializeField]
     private Dictionary<string, IGenericConfigurationEditor> myConfig = ConfigurationProfile;
 
-    public static string GetConfigurationID(Type configurationDataType)
-    {
-        foreach (var configuration in ConfigurationProfile)
-        {
-            if (configuration.Key.Contains(configurationDataType.Name))
-            {
-                return configuration.Key;
-            }
-        }
-        return string.Empty;
-    }
 }
