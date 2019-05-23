@@ -125,12 +125,15 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditorContextMenu.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AddAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AIModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\DesignAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />

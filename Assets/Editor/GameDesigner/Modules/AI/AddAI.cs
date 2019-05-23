@@ -14,7 +14,7 @@ namespace Editor_GameDesigner
         public void GUITick()
         {
             this.aiToAdd = (NPCAIManager)EditorGUILayout.ObjectField(this.aiToAdd, typeof(NPCAIManager), false);
-            if (GUILayout.Button("ADD"))
+            if (GUILayout.Button("ADD TO SCENE"))
             {
                 if(this.aiToAdd != null)
                 {

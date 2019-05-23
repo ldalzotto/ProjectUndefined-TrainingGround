@@ -16,8 +16,9 @@ namespace Editor_GameDesigner
         {
             {"Ground", typeof(GroundSetter) },
             {"Level//CreatePuzzleLevel", typeof(CreatePuzzleLevel) },
-            {"AI//CreateAI", typeof(CreateAI) },
-            {"AI//AddAI", typeof(AddAI) }
+            {"AI//Create", typeof(CreateAI) },
+            {"AI//Add", typeof(AddAI) },
+            {"AI//Model", typeof(AIModel) }
         };
 
         public ChoiceTree(ref GameDesignerEditorProfile gameDesignerEditorProfile)

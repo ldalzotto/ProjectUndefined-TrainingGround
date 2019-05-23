@@ -17,6 +17,8 @@ namespace RTPuzzle
         [SerializeField]
         public Type SelectedManagerType;
         public Type AbstractManagerType { get => abstractManagerType; }
+
+        public virtual void EditorGUI(Transform transform) { }
     }
 
     public class AIManagerTypeSafeOperation

@@ -14,6 +14,15 @@ namespace RTPuzzle
     {
         protected override Type abstractManagerType => typeof(AbstractAIPatrolComponentManager);
         public float MaxDistance;
+
+        public override void EditorGUI(Transform transform)
+        {
+            Handles.color = Color.magenta;
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Color.magenta;
+            Handles.Label(transform.position + (Vector3.up * MaxDistance), "AI Patrol distance.", labelStyle);
+            Handles.DrawWireDisc(transform.position, Vector3.up, MaxDistance);
+        }
     }
 
     public abstract class AbstractAIPatrolComponentManager : InterfaceAIManager

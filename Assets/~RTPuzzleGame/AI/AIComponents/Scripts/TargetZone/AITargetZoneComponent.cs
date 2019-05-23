@@ -2,6 +2,7 @@
 using UnityEngine;
 
 #if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 namespace RTPuzzle
@@ -13,6 +14,15 @@ namespace RTPuzzle
         public float TargetZoneEscapeDistance;
 
         protected override Type abstractManagerType => typeof(AbstractAITargetZoneManager);
+
+        public override void EditorGUI(Transform transform)
+        {
+            Handles.color = Color.green;
+            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Handles.color;
+            Handles.Label(transform.position + Vector3.up * TargetZoneEscapeDistance, nameof(this.TargetZoneEscapeDistance), labelStyle);
+            Handles.DrawWireDisc(transform.position, Vector3.up, TargetZoneEscapeDistance);
+        }
     }
 
     public abstract class AbstractAITargetZoneManager : InterfaceAIManager

@@ -33,7 +33,7 @@ namespace RTPuzzle
         #region Data Retrieval
         public static NPCAIManager FromCollisionType(CollisionType collisionType)
         {
-            if(collisionType == null) { return null; }
+            if (collisionType == null) { return null; }
             return collisionType.GetComponent<NPCAIManager>();
         }
         #endregion
