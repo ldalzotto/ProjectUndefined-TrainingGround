@@ -10,9 +10,9 @@ namespace Editor_AICreationObjectCreationWizard
     public class AIObjectCreationWizardProfile : AbstractCreationWizardEditorProfile
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {
-            new CreationWizardOrderConfiguration( typeof(EditorInformations), 0),
+            new CreationWizardOrderConfiguration( typeof(EditorInformations), -1),
+            new CreationWizardOrderConfiguration( typeof(AIPrefabCreation), 0),
             new CreationWizardOrderConfiguration( typeof(AIBehaviorConfigurationCreation), 1),
-            new CreationWizardOrderConfiguration( typeof(AIPrefabCreation), 2)
         };
 
         public override List<CreationWizardOrderConfiguration> ModulesConfiguration => this.ModuleTypes_IMPL;

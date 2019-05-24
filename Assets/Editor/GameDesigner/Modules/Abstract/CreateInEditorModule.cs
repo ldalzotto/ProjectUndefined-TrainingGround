@@ -10,7 +10,7 @@ namespace Editor_GameDesigner
         {
             if (GUILayout.Button("CREATE IN EDITOR"))
             {
-                PuzzleCreationWizard.InitWithSelected(nameof(CREATION_WIZARD));
+                PuzzleCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
             }
         }
 

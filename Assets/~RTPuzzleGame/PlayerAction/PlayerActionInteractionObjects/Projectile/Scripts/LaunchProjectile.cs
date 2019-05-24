@@ -4,8 +4,8 @@ namespace RTPuzzle
 {
     public class LaunchProjectile : MonoBehaviour
     {
+        public LaunchProjectileId LaunchProjectileId;
         private ProjectileInherentData launchProjectileInherentData;
-
         public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
         public SphereCollider SphereCollider { get => sphereCollider; }
 

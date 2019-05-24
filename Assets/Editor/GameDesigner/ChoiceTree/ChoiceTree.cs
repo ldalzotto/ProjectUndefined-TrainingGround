@@ -19,7 +19,9 @@ namespace Editor_GameDesigner
             {"AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
             {"TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
             {"TargetZone//." + typeof(EditTargetZone).Name, typeof(EditTargetZone) },
-            {"TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) }
+            {"TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) },
+            {"Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
+            {"Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

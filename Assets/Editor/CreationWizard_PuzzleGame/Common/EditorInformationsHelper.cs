@@ -22,6 +22,7 @@ namespace Editor_PuzzleGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab, "TargetZoneBasePrefab");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLaunchProjectilePrefab, "GenericProjectilePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
@@ -77,6 +78,8 @@ namespace Editor_PuzzleGameCreationWizard
         public AIComponentsConfiguration AIComponentsConfiguration;
         [ReadOnly]
         public TargetZonesConfiguration TargetZonesConfiguration;
+        [ReadOnly]
+        public ProjectileConfiguration ProjectileConfiguration;
     }
 
     [System.Serializable]
@@ -96,6 +99,8 @@ namespace Editor_PuzzleGameCreationWizard
         public LevelChunkType BaseLevelChunkPrefab;
         [ReadOnly]
         public TargetZone BaseTargetZonePrefab;
+        [ReadOnly]
+        public LaunchProjectile BaseLaunchProjectilePrefab;
     }
 
     [System.Serializable]
@@ -136,5 +141,9 @@ namespace Editor_PuzzleGameCreationWizard
         public string TargetZoneConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/TargetZonesConfiguration/Data";
         [ReadOnly]
         public string TargetZonePrefabPath = "Assets/~RTPuzzleGame/TargetZone/Prefab";
+        [ReadOnly]
+        public string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ProjectileConfiguration/Data";
+        [ReadOnly]
+        public string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/Prefab";
     }
 }
