@@ -9,7 +9,6 @@ using Editor_GameDesigner;
 
 namespace Editor_GameCustomEditors
 {
-    [ExecuteInEditMode]
     [CustomEditor(typeof(NPCAIManager))]
     public class NPCAIManagerCustomEditor : Editor
     {
@@ -56,6 +55,7 @@ namespace Editor_GameCustomEditors
 
         private void OnSceneGUI()
         {
+
             if (ComponentGizmosEnabled != null)
             {
                 var oldGUiBackground = GUI.backgroundColor;
@@ -70,8 +70,8 @@ namespace Editor_GameCustomEditors
                 GUILayout.EndArea();
                 Handles.EndGUI();
 
+
                 var npcAIManager = (NPCAIManager)target;
-                base.OnInspectorGUI();
                 if (npcAIManager != null && AIComponentsConfiguration != null && AIComponents != null)
                 {
                     var oldGizmoColor = Gizmos.color;
