@@ -25,10 +25,9 @@ namespace Editor_PuzzleLevelCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdBaseChunk = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.BaseLevelChunkPrefab);
+            var createdBaseChunk = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.BaseLevelChunkPrefab, editorProfile);
             createdBaseChunk.LevelZoneChunkID = editorInformationsData.LevelZoneChunkID;
             PrefabUtility.SavePrefabAsset(createdBaseChunk.gameObject);
-            editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { createdBaseChunk });
         }
     }
 }

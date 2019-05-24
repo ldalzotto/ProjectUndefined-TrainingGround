@@ -26,10 +26,10 @@ namespace Editor_PuzzleLevelCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             if (LevelConfigurationCreation.IsNew)
             {
-                var createdCompletionInherentData = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelCompletionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionInherentData);
+                var createdCompletionInherentData = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelCompletionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionInherentData,
+                    editorProfile);
                 LevelConfigurationCreation.CreatedObject.LevelCompletionInherentData = createdCompletionInherentData;
-                editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { createdCompletionInherentData });
-            }
+                     }
         }
 
     }

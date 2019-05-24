@@ -2,6 +2,8 @@
 using System.Collections;
 using CoreGame;
 using Editor_PuzzleGameCreationWizard;
+using UnityEditor;
+using System;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
@@ -13,19 +15,21 @@ namespace Editor_PuzzleLevelCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var levelHierarchyCreation = editorProfile.GetModule<LevelHierarchyCreation>();
 
-            var createdChunkConfig = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData);
-            editorProfile.AddToGeneratedObjects(new Object[] { createdChunkConfig });
+            this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData, editorProfile);
+            this.AddToGameConfiguration(editorInformationsData.LevelZoneChunkID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, editorProfile);
 
-            editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration.SetEntry(editorInformationsData.LevelZoneChunkID, createdChunkConfig);
-            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, editorInformationsData.LevelZoneChunkID, createdChunkConfig);
-
-            levelHierarchyCreation.CreatedObject.LevelHierarchy = new System.Collections.Generic.List<LevelZoneChunkID>();
-            levelHierarchyCreation.CreatedObject.LevelHierarchy.Add(editorInformationsData.LevelZoneChunkID);
+            var levelHierarchyCreationSerialized = new SerializedObject(levelHierarchyCreation.CreatedObject);
+            var levelHierarchy = new System.Collections.Generic.List<LevelZoneChunkID>() { editorInformationsData.LevelZoneChunkID };
+            SerializableObjectHelper.SetArray(levelHierarchy.ConvertAll(e => (Enum)e), levelHierarchyCreationSerialized.FindProperty(nameof(levelHierarchyCreation.CreatedObject.LevelHierarchy)));
+            levelHierarchyCreationSerialized.ApplyModifiedProperties();
         }
 
-        public void AfterSceneCreation(EditorInformationsData editorInformationsData, LevelChunkSceneCreation levelChunkSceneCreation)
+        public override void AfterGeneration(AbstractCreationWizardEditorProfile editorProfile)
         {
-            this.CreatedObject.scene = levelChunkSceneCreation.CreatedSceneAsset;
+            var levelChunkSceneCreation = editorProfile.GetModule<LevelChunkSceneCreation>();
+            var serializedCreatedObject = new SerializedObject(this.CreatedObject);
+            serializedCreatedObject.FindProperty(nameof(this.CreatedObject.scene)).objectReferenceValue = levelChunkSceneCreation.CreatedSceneAsset;
+            serializedCreatedObject.ApplyModifiedProperties();
         }
     }
 }

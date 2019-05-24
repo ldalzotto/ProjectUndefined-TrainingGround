@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿
+
+using UnityEngine;
 using System.Collections;
 using System;
 using CoreGame;
@@ -35,7 +37,7 @@ namespace AdventureGame
 
         private void OnTriggerExit(Collider other)
         {
-            if(other.tag == TagConstants.PLAYER_TAG)
+            if (other.tag == TagConstants.PLAYER_TAG)
             {
                 this.AdventureEventManager.AD_EVT_OnChunkLevelExit(this);
             }
@@ -45,13 +47,7 @@ namespace AdventureGame
         private void OnDrawGizmos()
         {
             var box = GetComponent<BoxCollider>();
-            var oldColor = Gizmos.color;
-            Gizmos.color = Color.magenta;
-            var labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.normal.textColor = Color.magenta;
-            Handles.Label(transform.TransformPoint(new Vector3(box.center.x, box.center.y + box.bounds.max.y + 10f, box.center.z)), gameObject.name, labelStyle);
-            Gizmos.DrawWireCube(transform.TransformPoint(box.center), box.size);
-            Gizmos.color = oldColor;
+            GizmoHelper.DrawBoxCollider(box, transform, Color.magenta, gameObject.name, MyEditorStyles.LabelMagenta);
         }
 #endif
 

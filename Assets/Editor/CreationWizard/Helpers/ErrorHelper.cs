@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using System;
 using System.Collections.Generic;
+using ConfigurationEditor;
 
 namespace CreationWizard
 {
@@ -25,12 +26,12 @@ namespace CreationWizard
             }
             return string.Empty;
         }
-
-        public static string AlreadyPresentInConfiguration(Enum key, List<Enum> keys, string configurationName)
+        
+        public static string AlreadyPresentInConfigurationV2(Enum key, IConfigurationSerialization configuration)
         {
-            if (keys.Contains(key))
+            if (configuration.GetKeys().Contains(key))
             {
-                return ErrorMessages.GetConfigurationOverriteMessage(key, configurationName);
+                return ErrorMessages.GetConfigurationOverriteMessage(key, configuration.GetType().Name);
             }
             return string.Empty;
         }

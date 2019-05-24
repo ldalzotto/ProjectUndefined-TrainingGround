@@ -1,6 +1,7 @@
 ﻿using OdinSerializer;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace ConfigurationEditor
     {
 #if UNITY_EDITOR
         void ClearEntry(Enum key);
+        void SetEntry(Enum key, ScriptableObject value);
+        List<Enum> GetKeys();
 #endif
     }
 
@@ -26,6 +29,13 @@ namespace ConfigurationEditor
             EditorUtility.SetDirty(this);
         }
 
+        public void SetEntry(Enum key, ScriptableObject value)
+        {
+            var castedKey = (K)key;
+            var castedValue = (V)value;
+            this.SetEntry(castedKey, castedValue);
+        }
+
         private void ClearEntry(K key)
         {
             if (ConfigurationInherentData.ContainsKey(key))
@@ -38,11 +48,12 @@ namespace ConfigurationEditor
         public void ClearEntry(Enum key)
         {
             var catedKey = (K)key;
-            if (ConfigurationInherentData.ContainsKey(catedKey))
-            {
-                ConfigurationInherentData.Remove(catedKey);
-            }
-            EditorUtility.SetDirty(this);
+            this.ClearEntry(catedKey);
+        }
+
+        public List<Enum> GetKeys()
+        {
+            return this.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e);
         }
 
 #endif

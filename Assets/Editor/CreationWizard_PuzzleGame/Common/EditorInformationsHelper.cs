@@ -5,6 +5,8 @@ using RTPuzzle;
 using UnityEngine.EventSystems;
 using CreationWizard;
 using System.Collections.Generic;
+using ConfigurationEditor;
+using System.Linq;
 
 namespace Editor_PuzzleGameCreationWizard
 {
@@ -19,39 +21,35 @@ namespace Editor_PuzzleGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule, "PuzzleDebugModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab, "TargetZoneBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
-            #region Game Configuration
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration, "t:" + typeof(LevelConfiguration).Name);
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration, "t:" + typeof(LevelZonesSceneConfiguration).Name);
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration, "t:" + typeof(LevelHierarchyConfiguration).Name);
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, "t:" + typeof(ChunkZonesSceneConfiguration).Name);
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration, "t:" + typeof(AIComponentsConfiguration).Name);
-            #endregion
+            foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleGameConfigurations.GetType().GetFields())
+            {
+                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleGameConfigurations);
+                if (configurationObject == null)
+                {
+                    AssetFinder.SafeSingleAssetFind(ref configurationObject, "t:" + configurationFieldInfo.FieldType.Name);
+                    configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleGameConfigurations, configurationObject);
+                }
+            }
         }
 
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
         {
-            return new List<string>()
-            {
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration, nameof(CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration)),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration, nameof(CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration)),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration, nameof(CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration)),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, nameof(CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration)),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration, nameof(CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration)),
 
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleLevelCommonPrefabs.GameManagerPersistanceInstance, nameof(CommonGameConfigurations.PuzzleLevelCommonPrefabs.GameManagerPersistanceInstance)),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements, nameof(CommonGameConfigurations.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements) ),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleLevelCommonPrefabs.EventSystem, nameof(CommonGameConfigurations.PuzzleLevelCommonPrefabs.EventSystem) ),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule, nameof(CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule) ),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, nameof(CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics) ),
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, nameof(CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab) ),
+            return NonNullityFieldCheck(CommonGameConfigurations.PuzzleGameConfigurations)
+                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs)).ToList()
+                   .Find((s) => !string.IsNullOrEmpty(s));
+        }
 
-                ErrorHelper.NonNullity(CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, nameof(CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab) )
-            }
-             .Find((s) => !string.IsNullOrEmpty(s));
-            // ErrorHelper.NonNullity(X, nameof(X)),
+        static List<string> NonNullityFieldCheck(object containerObjectToCheck)
+        {
+            return containerObjectToCheck.GetType().GetFields().ToList().ConvertAll(field =>
+             {
+                 return ErrorHelper.NonNullity((Object)field.GetValue(containerObjectToCheck), field.Name);
+             });
         }
     }
 
@@ -77,6 +75,8 @@ namespace Editor_PuzzleGameCreationWizard
         public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
         [ReadOnly]
         public AIComponentsConfiguration AIComponentsConfiguration;
+        [ReadOnly]
+        public TargetZonesConfiguration TargetZonesConfiguration;
     }
 
     [System.Serializable]
@@ -94,6 +94,8 @@ namespace Editor_PuzzleGameCreationWizard
         public LevelManager BasePuzzleLevelDynamics;
         [ReadOnly]
         public LevelChunkType BaseLevelChunkPrefab;
+        [ReadOnly]
+        public TargetZone BaseTargetZonePrefab;
     }
 
     [System.Serializable]
@@ -130,5 +132,9 @@ namespace Editor_PuzzleGameCreationWizard
         public string AIPrefabPaths = "Assets/~RTPuzzleGame/AI/Prefabs";
         [ReadOnly]
         public string AIBehaviorConfigurationPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AIComponentsConfiguration/Configuration";
+        [ReadOnly]
+        public string TargetZoneConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/TargetZonesConfiguration/Data";
+        [ReadOnly]
+        public string TargetZonePrefabPath = "Assets/~RTPuzzleGame/TargetZone/Prefab";
     }
 }

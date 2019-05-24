@@ -96,13 +96,14 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
         return this.selectionToggle;
     }
 
-    public S Create(string basePath, string baseName)
+    public S Create(string basePath, string baseName, AbstractCreationWizardEditorProfile editorProfile)
     {
         if (this.IsNew())
         {
             this.generatedPrefabAssetManager = new GeneratedPrefabAssetManager<S>(this.BasePrefab, basePath, baseName);
             DestroyImmediate(this.createdPrefab);
             this.createdPrefab = this.generatedPrefabAssetManager.SavedAsset.GetComponent<S>();
+            editorProfile.AddToGeneratedObjects(this.createdPrefab);
         }
         return this.createdPrefab;
     }

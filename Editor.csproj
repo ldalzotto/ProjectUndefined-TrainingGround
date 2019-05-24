@@ -120,6 +120,11 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZoneConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZonePrefabCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
@@ -130,6 +135,7 @@
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
     <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
@@ -142,6 +148,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\CreateTargetZone.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\FileUtil.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />

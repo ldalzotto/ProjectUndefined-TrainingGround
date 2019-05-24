@@ -12,12 +12,8 @@ namespace Editor_AICreationObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdBehavior = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.AIBehaviorConfigurationPath, editorInformationsData.AiID.ToString() + NameConstants.AIBehavior);
-            editorProfile.AddToGeneratedObjects(new Object[] { createdBehavior });
-
-            editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration.SetEntry(editorInformationsData.AiID, createdBehavior);
-            editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration, editorInformationsData.AiID, createdBehavior);
-
+            this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.AIBehaviorConfigurationPath, editorInformationsData.AiID.ToString() + NameConstants.AIBehavior, editorProfile);
+            this.AddToGameConfiguration(editorInformationsData.AiID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration, editorProfile);
         }
     }
 }

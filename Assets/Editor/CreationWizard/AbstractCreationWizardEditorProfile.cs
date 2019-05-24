@@ -113,6 +113,10 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
             this.creationWizardFeedLines.Add(new CreatedObjectFeedLine(AssetDatabase.GetAssetPath(obj)));
         }
     }
+    public void AddToGeneratedObjects(UnityEngine.Object obj)
+    {
+            this.creationWizardFeedLines.Add(new CreatedObjectFeedLine(AssetDatabase.GetAssetPath(obj)));
+    }
 
     public void GameConfigurationModified(UnityEngine.Object configuration, Enum key, UnityEngine.Object value)
     {

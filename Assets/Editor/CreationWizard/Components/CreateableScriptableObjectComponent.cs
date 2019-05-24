@@ -1,4 +1,6 @@
 ﻿#if UNITY_EDITOR
+using ConfigurationEditor;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -18,8 +20,8 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     private GeneratedScriptableObjectManager<T> genereatedAsset;
 
     private Editor scriptableObjectEditor;
-    private Object lastFrameObject;
-    
+    private UnityEngine.Object lastFrameObject;
+
     protected virtual string objectFieldLabel { get; }
 
 
@@ -43,7 +45,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
         }
         EditorGUI.BeginChangeCheck();
         string labelField = this.GetType().Name;
-        if(this.objectFieldLabel != null)
+        if (this.objectFieldLabel != null)
         {
             labelField = this.objectFieldLabel;
         }
@@ -79,12 +81,27 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
         }
     }
 
-    public T CreateAsset(string folderPath, string fileBaseName)
+    public T CreateAsset(string folderPath, string fileBaseName, AbstractCreationWizardEditorProfile editorProfile)
     {
         T returnObject = default(T);
         if (this.isNew)
         {
             this.genereatedAsset = new GeneratedScriptableObjectManager<T>(this.createdObject, folderPath, fileBaseName);
+            returnObject = this.genereatedAsset.GeneratedAsset;
+        }
+        else
+        {
+            returnObject = this.createdObject;
+        }
+        editorProfile.AddToGeneratedObjects(returnObject);
+        return returnObject;
+    }
+
+    private T GetCreatedAsset()
+    {
+        T returnObject = default(T);
+        if (this.isNew)
+        {
             returnObject = this.genereatedAsset.GeneratedAsset;
         }
         else
@@ -111,6 +128,13 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     public override void ResetEditor()
     {
         this.createdObject = null;
+    }
+
+    public void AddToGameConfiguration(Enum key, IConfigurationSerialization configuration, AbstractCreationWizardEditorProfile editorProfile)
+    {
+        configuration.SetEntry(key, this.GetCreatedAsset());
+        EditorUtility.SetDirty((UnityEngine.Object)configuration);
+        editorProfile.GameConfigurationModified((UnityEngine.Object)configuration, key, this.GetCreatedAsset());
     }
 
 }

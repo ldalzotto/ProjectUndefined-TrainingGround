@@ -4,6 +4,8 @@ using System.Collections;
 using UnityEditor;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
+using System;
 
 public class SerializableObjectHelper
 {
@@ -124,5 +126,21 @@ public class SerializableObjectHelper
         return fieldInfo;
     }
 
+    public static void SetArray(List<Enum> list, SerializedProperty prop)
+    {
+        prop.ClearArray();
+        for (var i = 0; i < list.Count; i++)
+        {
+            prop.InsertArrayElementAtIndex(0);
+            prop.GetArrayElementAtIndex(0).enumValueIndex = (int)((object)list[i]);
+        }
+    }
+
+    public static void Modify(UnityEngine.Object obj, Action<SerializedObject> modification)
+    {
+        var so = new SerializedObject(obj);
+        modification.Invoke(so);
+        so.ApplyModifiedProperties();
+    }
 }
 #endif

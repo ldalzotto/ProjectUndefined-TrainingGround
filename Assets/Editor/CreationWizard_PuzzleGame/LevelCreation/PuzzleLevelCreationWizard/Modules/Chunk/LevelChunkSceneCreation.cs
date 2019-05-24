@@ -19,7 +19,6 @@ namespace Editor_PuzzleLevelCreationWizard
             {
                 PrefabUtility.InstantiatePrefab(levelChunkPrefabCreation.CreatedPrefab);
                 this.SaveScene(scenePath);
-
                 editorProfile.AddToGeneratedObjects(new Object[] { this.CreatedSceneAsset });
 
             }

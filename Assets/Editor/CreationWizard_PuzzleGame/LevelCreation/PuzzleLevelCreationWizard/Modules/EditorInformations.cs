@@ -45,18 +45,10 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             this.InitProperties();
             return new List<string>() {
-                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
-                        this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
-                        nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration)),
-                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
-                        this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
-                        nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration)),
-                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZonesID,
-                        this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
-                        nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration)),
-                ErrorHelper.AlreadyPresentInConfiguration(this.EditorInformationsData.LevelZoneChunkID,
-                        this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e),
-                        nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration))
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration),
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration),
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration),
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration)
 
             }
             .Find((s) => !string.IsNullOrEmpty(s));

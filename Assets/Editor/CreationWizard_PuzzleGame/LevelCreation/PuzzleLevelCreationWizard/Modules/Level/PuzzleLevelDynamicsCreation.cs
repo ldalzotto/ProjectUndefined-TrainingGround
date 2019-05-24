@@ -15,19 +15,19 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             get
             {
-                return (AbstractCreationWizardEditorProfile editorProfile) => {
+                return (AbstractCreationWizardEditorProfile editorProfile) =>
+                {
                     return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics;
                 };
             }
         }
-        
-        public override  void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
+
+        public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdLevelManager = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.PuzzleLevelDynamicsPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.PuzzleLevelDynamics);
+            var createdLevelManager = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.PuzzleLevelDynamicsPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.PuzzleLevelDynamics, editorProfile);
             createdLevelManager.LevelID = editorInformationsData.LevelZonesID;
             PrefabUtility.SavePrefabAsset(createdLevelManager.gameObject);
-            editorProfile.AddToGeneratedObjects(new UnityEngine.Object[] { createdLevelManager });
         }
     }
 

@@ -77,6 +77,7 @@ namespace RTPuzzle
     public enum TargetZoneID
     {
         LEVEL1_TARGET_ZONE = 0,
-        TEST_TARGET_ZONE = 1
+        TEST_TARGET_ZONE = 1,
+        RTP_PUZZLE_CREATION_TEST = 2
     }
 }

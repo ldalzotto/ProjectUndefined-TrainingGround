@@ -111,6 +111,8 @@
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForParticlesToNotEmit.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
