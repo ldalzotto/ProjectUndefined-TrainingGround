@@ -80,6 +80,8 @@ namespace Editor_PuzzleGameCreationWizard
         public TargetZonesConfiguration TargetZonesConfiguration;
         [ReadOnly]
         public ProjectileConfiguration ProjectileConfiguration;
+        [ReadOnly]
+        public PlayerActionConfiguration PlayerActionConfiguration;
     }
 
     [System.Serializable]
