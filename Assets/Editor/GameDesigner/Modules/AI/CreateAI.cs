@@ -8,25 +8,7 @@ using RTPuzzle;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class CreateAI : IGameDesignerModule
+    public class CreateAI : CreateInEditorModule<AIObjectCreationWizard>
     {
-        private NPCAIManager npcAIManagerSelected;
-
-        public void GUITick()
-        {
-            if (GUILayout.Button("CREATE IN EDITOR"))
-            {
-                PuzzleCreationWizard.InitWithSelected(nameof(AIObjectCreationWizard));
-            }
-
-        }
-
-        public void OnDisabled()
-        {
-        }
-
-        public void OnEnabled()
-        {
-        }
     }
 }

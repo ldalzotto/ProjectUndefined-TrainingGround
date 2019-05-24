@@ -24,6 +24,7 @@ namespace RTPuzzle
         {
             Init();
             var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditorV2>();
+            window.GetConfigurationProfile().Init(() => { window.Repaint(); });
             return window.GetConfigurationProfile().SetSelectedKey(configurationDataType);
         }
 

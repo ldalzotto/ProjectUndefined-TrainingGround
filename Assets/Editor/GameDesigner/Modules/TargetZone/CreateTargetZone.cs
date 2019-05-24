@@ -1,24 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Editor_PuzzleGameCreationWizard;
+using Editor_TargetZoneCreationWizard;
+
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class CreateTargetZone : IGameDesignerModule
-    {
-        public void GUITick()
-        {
-            if (GUILayout.Button("CREATE TARGET ZONE IN EDITOR"))
-            {
-                //PuzzleCreationWizard.InitWithSelected(nameof(PuzzleLevelCreationWizard));
-            }
-        }
-
-        public void OnDisabled()
-        {
-        }
-
-        public void OnEnabled()
-        {
-        }
-    }
+    public class CreateTargetZone : CreateInEditorModule<TargetZoneCreationWizard>
+    {    }
 }

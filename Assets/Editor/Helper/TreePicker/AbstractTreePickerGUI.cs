@@ -17,7 +17,7 @@ public abstract class AbstractTreePickerGUI<T> : SerializedScriptableObject
     protected string selectedKey;
 
     protected GUIStyle selectedItemLabelStyle;
-    protected void Init(Action repaintAction)
+    public void Init(Action repaintAction)
     {
         if (this.selectedItemLabelStyle == null)
         {
@@ -50,7 +50,7 @@ public abstract class AbstractTreePickerGUI<T> : SerializedScriptableObject
 
     public void SetSelectedKey(string newSelectedKey)
     {
-        this.selectedKey = newSelectedKey;
+        this.TreePickerPopup.SetSelectedKey(newSelectedKey);
     }
 
     public bool SetSelectedKey(Type valueType)
@@ -60,6 +60,7 @@ public abstract class AbstractTreePickerGUI<T> : SerializedScriptableObject
             if (configuration.Key.Contains(valueType.Name))
             {
                 this.SetSelectedKey(configuration.Key);
+                this.OnSelectionChange();
                 return true;
             }
         }

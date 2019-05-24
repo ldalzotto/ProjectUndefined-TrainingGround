@@ -2,70 +2,39 @@
 using System.Collections;
 using RTPuzzle;
 using UnityEditor;
+using System;
 
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditBehavior : IGameDesignerModule
+    public class EditBehavior : EditScriptableObjectModule<NPCAIManager>
     {
 
         private AIComponentsConfiguration aIComponentsConfiguration;
-        private Editor aiComponentsConfigurationEditor;
-        private GameObject lastFrameObj;
-        public void GUITick()
+        protected override Func<NPCAIManager, ScriptableObject> scriptableObjectResolver
         {
-            this.OnEnabled();
-            var currentSelectedObj = GameDesignerHelper.GetCurrentSceneSelectedObject();
-            if (currentSelectedObj != null)
+            get
             {
-                var npcAIManager = currentSelectedObj.GetComponent<NPCAIManager>();
-                if (currentSelectedObj == null || npcAIManager == null)
+                return (NPCAIManager npcAIManager) =>
                 {
-                    this.aiComponentsConfigurationEditor = null;
-                }
-                else
-                {
-                    if (currentSelectedObj != this.lastFrameObj && npcAIManager != null)
+                    if (aIComponentsConfiguration != null)
                     {
-                        CreateEditor(npcAIManager);
+                        if (aIComponentsConfiguration.ConfigurationInherentData.ContainsKey(npcAIManager.AiID) && aIComponentsConfiguration.ConfigurationInherentData[npcAIManager.AiID] != null)
+                        {
+                            return aIComponentsConfiguration.ConfigurationInherentData[npcAIManager.AiID];
+                        }
                     }
-                }
-
-                if (GUILayout.Button("REFRESH", GUILayout.Width(50f)))
-                {
-                    CreateEditor(npcAIManager);
-                }
-
-                if (this.aiComponentsConfigurationEditor != null)
-                {
-                    this.aiComponentsConfigurationEditor.OnInspectorGUI();
-                }
-            }
-            this.lastFrameObj = currentSelectedObj;
-        }
-
-        private void CreateEditor(NPCAIManager npcAIManager)
-        {
-            if (aIComponentsConfiguration != null)
-            {
-                if (aIComponentsConfiguration.ConfigurationInherentData.ContainsKey(npcAIManager.AiID) && aIComponentsConfiguration.ConfigurationInherentData[npcAIManager.AiID] != null)
-                {
-                    this.aiComponentsConfigurationEditor = Editor.CreateEditor(aIComponentsConfiguration.ConfigurationInherentData[npcAIManager.AiID]);
-                }
+                    return null;
+                };
             }
         }
 
-        public void OnDisabled()
-        {
-        }
-
-        public void OnEnabled()
+        public override void OnEnabled()
         {
             if (this.aIComponentsConfiguration == null)
             {
                 this.aIComponentsConfiguration = AssetFinder.SafeSingleAssetFind<AIComponentsConfiguration>("t:" + typeof(AIComponentsConfiguration));
             }
-            
         }
     }
 }

@@ -1,23 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
-using RTPuzzle;
-using UnityEditor;
 using CoreGame;
+using RTPuzzle;
 using System;
 
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class AddAI : AddPrefabModule<NPCAIManager>
+    public class AddTargetZone : AddPrefabModule<TargetZone>
     {
         protected override Func<GameObject> ParentGameObject
         {
             get
             {
-                return () => GameObject.FindObjectOfType<LevelManager>().gameObject.FindChildObjectRecursively("AI");
+                return () => GameObject.FindObjectOfType<LevelManager>().gameObject.FindChildObjectRecursively("TargetZones");
             }
         }
-
     }
-
 }

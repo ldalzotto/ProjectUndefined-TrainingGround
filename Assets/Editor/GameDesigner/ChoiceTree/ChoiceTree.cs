@@ -10,14 +10,16 @@ namespace Editor_GameDesigner
     {
         private Dictionary<string, Type> Modules = new Dictionary<string, Type>()
         {
-            { typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
-            {"Level//"+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
-            {"AI//"+ typeof(CreateAI).Name, typeof(CreateAI) },
-            {"AI//"+typeof(AddAI).Name, typeof(AddAI) },
-            {"AI//" + typeof(AIModel).Name, typeof(AIModel) },
-            {"AI//Behavior//"+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
-            {"AI//Behavior//"+typeof(EditBehavior).Name, typeof(EditBehavior) },
-            {"TargetZone//" + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) }
+            {"Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
+            {"Level//."+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
+            {"AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
+            {"AI//."+typeof(AddAI).Name, typeof(AddAI) },
+            {"AI//." + typeof(AIModel).Name, typeof(AIModel) },
+            {"AI//Behavior//."+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
+            {"AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
+            {"TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
+            {"TargetZone//." + typeof(EditTargetZone).Name, typeof(EditTargetZone) },
+            {"TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) }
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

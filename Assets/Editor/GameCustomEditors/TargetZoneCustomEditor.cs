@@ -2,46 +2,68 @@
 using System.Collections;
 using RTPuzzle;
 using UnityEditor;
+using System;
+using System.Collections.Generic;
+using Editor_GameDesigner;
 
-[ExecuteInEditMode]
-[CustomEditor(typeof(TargetZone))]
-public class TargetZoneCustomEditor : Editor
+namespace Editor_GameCustomEditors
 {
-
-    public static TargetZonesConfiguration TargetZonesConfiguration;
-    public static TargetZoneInherentData TargetZoneInherentData;
-
-    private void OnEnable()
+    [ExecuteInEditMode]
+    [CustomEditor(typeof(TargetZone))]
+    public class TargetZoneCustomEditor : AbstractGameCustomEditorWithLiveSelection<TargetZone, TargetZoneCustomEditorContext, TargetZonesConfiguration, EditTargetZone>
     {
-        var targetZone = (TargetZone)target;
-        if (TargetZonesConfiguration == null)
+        
+        private void OnEnable()
         {
-            TargetZonesConfiguration = AssetFinder.SafeSingleAssetFind<TargetZonesConfiguration>("t:" + typeof(TargetZonesConfiguration));
-            if (TargetZonesConfiguration != null)
+            if (target != null)
             {
-                TargetZoneInherentData = TargetZonesConfiguration.ConfigurationInherentData[targetZone.TargetZoneID];
+                this.drawModules = new List<GUIDrawModule<TargetZone, TargetZoneCustomEditorContext>>()
+                {
+                    new AIDistanceDetection(),
+                    new EscapeFOVSemiAngle()
+                };
+
+                this.context = new TargetZoneCustomEditorContext();
+                var targetZone = (TargetZone)target;
+                if (this.context.TargetZonesConfiguration == null)
+                {
+                    this.context.TargetZonesConfiguration = AssetFinder.SafeSingleAssetFind<TargetZonesConfiguration>("t:" + typeof(TargetZonesConfiguration));
+                    if (this.context.TargetZonesConfiguration != null)
+                    {
+                        this.context.TargetZoneInherentData = this.context.TargetZonesConfiguration.ConfigurationInherentData[targetZone.TargetZoneID];
+                    }
+                }
             }
         }
     }
 
-    private void OnSceneGUI()
+    public class TargetZoneCustomEditorContext
     {
-        var targetZone = (TargetZone)target;
-        if (TargetZoneInherentData != null)
+        public TargetZonesConfiguration TargetZonesConfiguration;
+        public TargetZoneInherentData TargetZoneInherentData;
+    }
+
+    internal class AIDistanceDetection : GUIDrawModule<TargetZone, TargetZoneCustomEditorContext>
+    {
+        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZone targetZone)
         {
-            var oldColor = Handles.color;
             Handles.color = Color.red;
-            Handles.Label(targetZone.transform.position + Vector3.up * TargetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
-            Handles.DrawWireDisc(targetZone.transform.position, Vector3.up, TargetZoneInherentData.AIDistanceDetection);
-
-            Handles.color = Color.yellow;
-            Handles.Label(targetZone.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
-            Handles.DrawWireArc(targetZone.transform.position, Vector3.up, targetZone.transform.forward, TargetZoneInherentData.EscapeFOVSemiAngle, 5f);
-            Handles.DrawWireArc(targetZone.transform.position, Vector3.up, targetZone.transform.forward, -TargetZoneInherentData.EscapeFOVSemiAngle, 5f);
-
-            Handles.color = oldColor;
+            Handles.Label(targetZone.transform.position + Vector3.up * context.TargetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
+            Handles.DrawWireDisc(targetZone.transform.position, Vector3.up, context.TargetZoneInherentData.AIDistanceDetection);
         }
     }
+
+    class EscapeFOVSemiAngle : GUIDrawModule<TargetZone, TargetZoneCustomEditorContext>
+    {
+        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZone targetZone)
+        {
+            Handles.color = Color.yellow;
+            Handles.Label(targetZone.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
+            Handles.DrawWireArc(targetZone.transform.position, Vector3.up, targetZone.transform.forward, context.TargetZoneInherentData.EscapeFOVSemiAngle, 5f);
+            Handles.DrawWireArc(targetZone.transform.position, Vector3.up, targetZone.transform.forward, -context.TargetZoneInherentData.EscapeFOVSemiAngle, 5f);
+        }
+    }
+
 
 
 }

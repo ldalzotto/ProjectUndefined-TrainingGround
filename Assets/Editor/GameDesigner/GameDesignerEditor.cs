@@ -18,6 +18,7 @@ namespace Editor_GameDesigner
         {
             GameDesignerEditor window = (GameDesignerEditor)EditorWindow.GetWindow(typeof(GameDesignerEditor));
             window.InitEditorData();
+            window.ChoiceTree.Init(() => { window.Repaint(); });
             window.ChoiceTree.SetSelectedKey(designerModuleType);
             window.Show();
         }

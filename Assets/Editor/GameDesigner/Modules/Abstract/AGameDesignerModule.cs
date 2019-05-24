@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Editor_GameDesigner
 {
-    public interface IGameDesignerModule
+    public interface IGameDesignerModule 
     {
         void OnEnabled();
         void OnDisabled();

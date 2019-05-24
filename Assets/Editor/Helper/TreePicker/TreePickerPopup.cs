@@ -49,6 +49,12 @@ public class TreePickerPopup : PopupWindowContent
     public Action RepaintAction { set => repaintAction = value; }
     public Vector2 WindowDimensions { set => windowDimensions = value; }
 
+    public void SetSelectedKey(string newKey)
+    {
+        this.selectedKey = newKey;
+        this.OnSelectionChange();
+    }
+
     public override void OnGUI(Rect rect)
     {
         this.Init();
