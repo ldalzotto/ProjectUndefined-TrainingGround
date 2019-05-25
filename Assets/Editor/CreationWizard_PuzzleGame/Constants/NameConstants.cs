@@ -20,5 +20,6 @@ namespace Editor_PuzzleGameCreationWizard
         public static string TargetZonePrefab = "_TargetZone";
         public static string ProjectileInherentData = "_ProjectileInherentData";
         public static string ProjectilePrefab = "_ProjectilePrefab";
+        public static string PlayerActionsInherentData = "_PlayerAction";
     }
 }

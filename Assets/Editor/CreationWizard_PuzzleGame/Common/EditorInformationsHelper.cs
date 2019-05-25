@@ -61,6 +61,14 @@ namespace Editor_PuzzleGameCreationWizard
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
         public PuzzleAICommonPrefabs PuzzleAICommonPrefabs;
         public InstacePath InstancePath;
+
+        public CommonGameConfigurations()
+        {
+            this.PuzzleGameConfigurations = new PuzzleGameConfigurations();
+            this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
+            this.PuzzleAICommonPrefabs = new PuzzleAICommonPrefabs();
+            this.InstancePath = new InstacePath();
+        }
     }
 
     [System.Serializable]
@@ -147,5 +155,7 @@ namespace Editor_PuzzleGameCreationWizard
         public string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ProjectileConfiguration/Data";
         [ReadOnly]
         public string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/Prefab";
+        [ReadOnly]
+        public string PlayerActionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/PlayerActionConfiguration/PlayerActionInherentData/Data";
     }
 }

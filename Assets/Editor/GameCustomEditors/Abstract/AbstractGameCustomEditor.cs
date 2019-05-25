@@ -20,24 +20,30 @@ namespace Editor_GameCustomEditors
                 var oldColor = Handles.color;
                 var oldGizmoColor = Gizmos.color;
                 var oldGUiBackground = GUI.backgroundColor;
-                Handles.BeginGUI();
-                GUI.backgroundColor = new Color(oldGUiBackground.r, oldGUiBackground.g, oldGUiBackground.b, 0.5f);
-                GUILayout.BeginArea(new Rect(10, 10, 200, 600));
 
-                foreach (var module in this.drawModules)
+                if (this.drawModules != null)
                 {
-                    module.EditorGUI();
-                }
-                GUILayout.EndArea();
-                Handles.EndGUI();
+                    Handles.BeginGUI();
+                    GUI.backgroundColor = new Color(oldGUiBackground.r, oldGUiBackground.g, oldGUiBackground.b, 0.5f);
+                    GUILayout.BeginArea(new Rect(10, 10, 200, 600));
 
-                foreach (var module in this.drawModules)
-                {
-                    if (module.Enabled)
+
+                    foreach (var module in this.drawModules)
                     {
-                        module.SceneGUI(this.context, targetZone);
+                        module.EditorGUI();
+                    }
+                    GUILayout.EndArea();
+                    Handles.EndGUI();
+
+                    foreach (var module in this.drawModules)
+                    {
+                        if (module.Enabled)
+                        {
+                            module.SceneGUI(this.context, targetZone);
+                        }
                     }
                 }
+               
 
                 Gizmos.color = oldGizmoColor;
                 GUI.backgroundColor = oldGUiBackground;

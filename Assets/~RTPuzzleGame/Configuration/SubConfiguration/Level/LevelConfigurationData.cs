@@ -50,6 +50,17 @@ namespace RTPuzzle
         {
             this.playerActionIds.Add(playerActionIdWrapper);
             this.playerActionIds = this.playerActionIds.Distinct().ToList();
+            EditorUtility.SetDirty(this);
+        }
+
+        public void RemovePlayerActionId(PlayerActionId playerActionId)
+        {
+            var playerActionIdToRemove = this.playerActionIds.Find(p => p.playerActionId == playerActionId);
+            if (playerActionIdToRemove != null)
+            {
+                this.playerActionIds.Remove(playerActionIdToRemove);
+                EditorUtility.SetDirty(this);
+            }
         }
 #endif
     }

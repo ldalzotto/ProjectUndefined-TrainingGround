@@ -87,7 +87,7 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
                     return c1.GenerationOrder.CompareTo(c2.GenerationOrder);
                 });
 
-            foreach(var module in modulesToGenerate)
+            foreach (var module in modulesToGenerate)
             {
                 this.editorProfile.Modules[module.ModuleType.Name].OnGenerationClicked(this.editorProfile);
             }
@@ -142,6 +142,11 @@ public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T>
                 else if (creationWizardFeedLines.GetType() == typeof(ConfigurationModifiedFeedLine))
                 {
                     ((ConfigurationModifiedFeedLine)creationWizardFeedLines).RemoveEntry();
+                }
+                else if (creationWizardFeedLines.GetType() == typeof(PlayerActionAddedFeedLine))
+                {
+                    var PlayerActionAddedFeedLine = (PlayerActionAddedFeedLine)creationWizardFeedLines;
+                    PlayerActionAddedFeedLine.LevelConfiguration.ConfigurationInherentData[PlayerActionAddedFeedLine.LevelZonesID].RemovePlayerActionId(PlayerActionAddedFeedLine.PlayerActionId);
                 }
             }
             this.editorProfile.CreationWizardFeedLines.Clear();

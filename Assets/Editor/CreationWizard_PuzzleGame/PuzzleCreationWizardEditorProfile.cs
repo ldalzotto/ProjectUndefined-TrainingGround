@@ -6,6 +6,7 @@ using Editor_AICreationObjectCreationWizard;
 using Editor_AIBehaviorCreationWizard;
 using Editor_TargetZoneCreationWizard;
 using Editor_ProjectileCreationWizard;
+using Editor_PlayerActionCreationWizard;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "PuzzleCreationWizardEditorProfile", menuName = "CreationWizard/PuzzleCreationWizardEditorProfile", order = 1)]
@@ -24,7 +25,8 @@ public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWi
             {nameof(AIObjectCreationWizard), new AIObjectCreationWizard() },
             {nameof(AIBehaviorCreationWizard), new AIBehaviorCreationWizard() },
             {nameof(TargetZoneCreationWizard), new TargetZoneCreationWizard() },
-            {nameof(ProjectileCreationWizard), new ProjectileCreationWizard() }
+            {nameof(ProjectileCreationWizard), new ProjectileCreationWizard() },
+            {nameof(PlayerActionCreationWizard), new PlayerActionCreationWizard() }
         };
     }
 

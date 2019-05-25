@@ -12,6 +12,7 @@ namespace Editor_GameDesigner
         {
             {"Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
             {"Level//."+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
+            {"Level//." + typeof(EditPuzzleLevel).Name, typeof(EditPuzzleLevel) },
             {"AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
             {"AI//."+typeof(AddAI).Name, typeof(AddAI) },
             {"AI//." + typeof(AIModel).Name, typeof(AIModel) },
@@ -22,6 +23,8 @@ namespace Editor_GameDesigner
             {"TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) },
             {"Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
             {"Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
+            {"PlayerAction//." + typeof(ExplorePlayerActions).Name, typeof(ExplorePlayerActions) },
+            {"PlayerAction//." + typeof(CreatePlayerActions).Name, typeof(CreatePlayerActions) }
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

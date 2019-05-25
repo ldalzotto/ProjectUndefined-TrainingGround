@@ -72,7 +72,6 @@ public abstract class CreationModuleComponent : SerializedScriptableObject
         {
             var serializedObject = new SerializedObject(this);
             EditorGUILayout.LabelField(this.headerDescriptionLabel, EditorStyles.miniLabel);
-            //GUILayout.Label(new GUIContent(this.headerDescriptionLabel), EditorStyles.miniLabel);
 
             this.OnInspectorGUIImpl(serializedObject, editorProfile);
             serializedObject.ApplyModifiedProperties();
