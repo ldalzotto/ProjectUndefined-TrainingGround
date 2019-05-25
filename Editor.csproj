@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{A49DEB64-1BB8-7A03-3613-F94BABF7F69E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -158,6 +157,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\CreateInEditorModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditScriptableObjectModule.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\ExploreModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AddAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AIModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\CreateBehavior.cs" />
@@ -173,8 +173,10 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\AddTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\CreateTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\EditTargetZone.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\ExploreTargetZone.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
     <Compile Include="Assets\Editor\Helper\FileUtil.cs" />
+    <Compile Include="Assets\Editor\Helper\HandlesHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />
     <Compile Include="Assets\Editor\Helper\Header\TreeChoiceHeaderTab.cs" />
     <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />

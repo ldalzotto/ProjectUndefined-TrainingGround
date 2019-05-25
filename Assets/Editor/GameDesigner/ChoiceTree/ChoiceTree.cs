@@ -21,6 +21,7 @@ namespace Editor_GameDesigner
             {"TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
             {"TargetZone//." + typeof(EditTargetZone).Name, typeof(EditTargetZone) },
             {"TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) },
+            {"TargetZone//." + typeof(ExploreTargetZone).Name, typeof(ExploreTargetZone) },
             {"Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
             {"Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
             {"PlayerAction//." + typeof(ExplorePlayerActions).Name, typeof(ExplorePlayerActions) },

@@ -20,7 +20,8 @@ namespace Editor_GameCustomEditors
                 this.drawModules = new List<GUIDrawModule<TargetZone, TargetZoneCustomEditorContext>>()
                 {
                     new AIDistanceDetection(),
-                    new EscapeFOVSemiAngle()
+                    new EscapeFOVSemiAngle(),
+                    new TriggerZone()
                 };
 
                 this.context = new TargetZoneCustomEditorContext();
@@ -33,6 +34,7 @@ namespace Editor_GameCustomEditors
                         this.context.TargetZoneInherentData = this.context.TargetZonesConfiguration.ConfigurationInherentData[targetZone.TargetZoneID];
                     }
                 }
+                this.context.TargetZoneTriggerType = targetZone.GetComponentInChildren<TargetZoneTriggerType>();
             }
         }
     }
@@ -41,6 +43,7 @@ namespace Editor_GameCustomEditors
     {
         public TargetZonesConfiguration TargetZonesConfiguration;
         public TargetZoneInherentData TargetZoneInherentData;
+        public TargetZoneTriggerType TargetZoneTriggerType; 
     }
 
     internal class AIDistanceDetection : GUIDrawModule<TargetZone, TargetZoneCustomEditorContext>
@@ -61,6 +64,14 @@ namespace Editor_GameCustomEditors
             Handles.Label(targetZone.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
             Handles.DrawWireArc(targetZone.transform.position, Vector3.up, targetZone.transform.forward, context.TargetZoneInherentData.EscapeFOVSemiAngle, 5f);
             Handles.DrawWireArc(targetZone.transform.position, Vector3.up, targetZone.transform.forward, -context.TargetZoneInherentData.EscapeFOVSemiAngle, 5f);
+        }
+    }
+
+    class TriggerZone : GUIDrawModule<TargetZone, TargetZoneCustomEditorContext>
+    {
+        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZone target)
+        {
+            HandlesHelper.DrawBoxCollider(context.TargetZoneTriggerType.GetComponent<BoxCollider>(), target.transform, Color.blue, this.GetType().Name, MyEditorStyles.LabelBlue);
         }
     }
 
