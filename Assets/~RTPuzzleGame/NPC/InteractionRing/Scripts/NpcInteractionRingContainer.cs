@@ -26,13 +26,14 @@ namespace RTPuzzle
         }
         public void OnNpcInteractionRingSetTo360(NpcInteractionRingType disabledNpcInteractionRingType)
         {
-            Debug.Log("DISABLING : " + disabledNpcInteractionRingType.name);
+            Debug.Log(MyLog.Format("DISABLING : " + disabledNpcInteractionRingType.name));
             disabledNpcInteractionRingType.OnDeactivate();
             this.activeNpcInteractionRings.Remove(disabledNpcInteractionRingType);
             this.inactiveInteractionRings.Add(disabledNpcInteractionRingType);
         }
         public void OnNpcInteractionRingSetUnder360(NpcInteractionRingType enabledNpcInteractionRingType)
         {
+            Debug.Log(MyLog.Format("ENABLING : " + enabledNpcInteractionRingType.name));
             enabledNpcInteractionRingType.OnActivate();
             this.inactiveInteractionRings.Remove(enabledNpcInteractionRingType);
             this.activeNpcInteractionRings.Add(enabledNpcInteractionRingType);

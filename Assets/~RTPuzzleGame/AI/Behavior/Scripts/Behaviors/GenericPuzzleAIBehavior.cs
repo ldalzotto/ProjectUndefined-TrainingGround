@@ -135,13 +135,11 @@ namespace RTPuzzle
         {
             base.OnDestinationReached();
 
-            if (!this.IsFeared())
+            if (!this.IsFeared() && !this.IsEscapingWithoutTarget() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectileWithTargetZones() && !this.IsEscapingFromPlayer())
             {
-                if (!this.IsEscapingWithoutTarget() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectileWithTargetZones())
-                {
-                    this.aIFOVManager.ResetFOV();
-                }
+                this.aIFOVManager.ResetFOV();
             }
+
             this.puzzleAIBehaviorExternalEventManager.AfterDestinationReached(this);
         }
         #endregion

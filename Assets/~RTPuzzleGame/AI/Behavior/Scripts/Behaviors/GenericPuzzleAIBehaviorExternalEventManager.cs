@@ -63,6 +63,7 @@ namespace RTPuzzle
         private void Projectile_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterEvent)
         {
             Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
+            // If the player is already escaping without taking into account colliders
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIEscapeWithoutTriggerManager(), EvaluationType.EXCLUDED) &&
                              this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {

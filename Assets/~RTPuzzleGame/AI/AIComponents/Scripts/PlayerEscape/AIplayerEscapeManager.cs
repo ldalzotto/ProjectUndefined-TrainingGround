@@ -63,8 +63,8 @@ namespace RTPuzzle
         public override void OnPlayerEscapeStart()
         {
             this.isNearPlayer = true;
-            this.aIFOVManager.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.aIPlayerEscapeComponent.EscapeSemiAngle);
             this.escapeDestinationManager.ResetDistanceComputation(this.aIPlayerEscapeComponent.EscapeDistance);
+            this.aIFOVManager.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.aIPlayerEscapeComponent.EscapeSemiAngle);
             this.CalculateEscapeDirection();
         }
         #endregion
@@ -78,10 +78,12 @@ namespace RTPuzzle
         {
             if (this.escapeDestinationManager.OnAgentDestinationReached())
             {
+                Debug.Log(MyLog.Format("AI Player escape destination reached - state reset"));
                 this.OnStateReset();
             }
             else
             {
+                Debug.Log(MyLog.Format("AI Player escape destination reached - calculate escape direction. Remaining disance : " + this.escapeDestinationManager.GetRemainingDistance())) ;
                 this.CalculateEscapeDirection();
             }
         }
