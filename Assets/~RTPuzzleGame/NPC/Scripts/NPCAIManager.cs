@@ -85,7 +85,7 @@ namespace RTPuzzle
         public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)
         {
             this.ComputeAINewDestination(d, timeAttenuationFactor);
-            AIDestinationMoveManager.Tick(d);
+            AIDestinationMoveManager.Tick(d, timeAttenuationFactor);
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
         }
 

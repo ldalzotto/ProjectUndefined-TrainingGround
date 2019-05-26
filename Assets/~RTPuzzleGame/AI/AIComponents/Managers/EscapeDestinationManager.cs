@@ -50,11 +50,6 @@ namespace RTPuzzle
         #region Logical conditions
         public bool IsDistanceReached()
         {
-            //TODO 
-            /*
-             2/ AI - Destination point calculation is submitted to precision loss. This means that if a destination point for a distance of 3 is calculated, then the navigation mesh query may return 3.0001.
-               Thus, if at the end a frame, crossed distance is 2.9999, the AI will still escape the next frame for a distance of 0.0002. For such a ridiculous distance, the AI will look like it has stopped for one frame. 
-             */
             return this.EscapeDistanceManager.IsDistanceReached;
         }
         #endregion

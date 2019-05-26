@@ -19,18 +19,13 @@ namespace RTPuzzle
             this.OnDestinationReachedEvent = OnDestinationReachedEvent;
         }
 
+        private float CurrentTimeAttenuated;
         private Vector3? currentDestination;
 
-        public void Tick(float d)
+        public void Tick(float d, float timeAttenuationFactor)
         {
-            // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
-            if (Vector3.Distance(Vector3.zero, (objectAgent.velocity / AIDestimationMoveManagerComponent.SpeedMultiplicationFactor)) >= AIDestimationMoveManagerComponent.RotationFollow_VelocityThreshold)
-            {
-                objectTransform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(objectAgent.velocity.normalized, Vector3.up));
-            }
-
-            objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
-            objectTransform.position = objectAgent.nextPosition;
+            this.CurrentTimeAttenuated = d * timeAttenuationFactor;
+            this.UpdateAgentTransform();
 
             //is destination reached
             if (this.currentDestination.HasValue)
@@ -47,10 +42,33 @@ namespace RTPuzzle
         #region External Events
         public void SetDestination(Vector3 destination)
         {
-            //     Debug.Log("Set to AI : "+ objectAgent.name + " the destination : " + destination);
-            this.currentDestination = destination;
-            objectAgent.SetDestination(destination);
+            //When a different path is calculated, we manually reset the path and calculate the next destination
+            if (objectAgent.destination != destination)
+            {
+                this.currentDestination = destination;
+                NavMeshPath path = new NavMeshPath();
+                objectAgent.ResetPath();
+                objectAgent.CalculatePath(destination, path);
+                objectAgent.SetPath(path);
+                NavMeshHit pathHit;
+                objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
+                objectAgent.nextPosition = pathHit.position;
+                this.UpdateAgentTransform();
+            }
         }
+
+        private void UpdateAgentTransform()
+        {
+            // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
+            if (Vector3.Distance(Vector3.zero, (objectAgent.velocity / AIDestimationMoveManagerComponent.SpeedMultiplicationFactor)) >= AIDestimationMoveManagerComponent.RotationFollow_VelocityThreshold)
+            {
+                objectTransform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(objectAgent.velocity.normalized, Vector3.up));
+            }
+
+            objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
+            objectTransform.position = objectAgent.nextPosition;
+        }
+
         public void EnableAgent()
         {
             objectAgent.isStopped = false;
