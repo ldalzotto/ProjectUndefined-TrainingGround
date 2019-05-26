@@ -53,7 +53,6 @@ namespace RTPuzzle
                 NavMeshHit pathHit;
                 objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
                 objectAgent.nextPosition = pathHit.position;
-                this.UpdateAgentTransform();
             }
         }
 
