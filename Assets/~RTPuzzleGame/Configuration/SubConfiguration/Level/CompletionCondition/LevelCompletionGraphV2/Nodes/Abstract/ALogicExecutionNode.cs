@@ -21,8 +21,8 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.FirstBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this);
-            this.SecondBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this);
+            this.FirstBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
+            this.SecondBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() {
                 this.FirstBool,
                 this.SecondBool
@@ -31,7 +31,7 @@ namespace RTPuzzle
 
         public override List<NodeEdgeProfile> InitOutputEdges()
         {
-            this.OutputBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this);
+            this.OutputBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() {
                 this.OutputBool
             };

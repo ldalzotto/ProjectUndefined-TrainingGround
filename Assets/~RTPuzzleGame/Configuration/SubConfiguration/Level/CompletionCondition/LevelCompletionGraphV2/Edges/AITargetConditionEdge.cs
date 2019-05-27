@@ -19,14 +19,12 @@ namespace RTPuzzle
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() { };
 
 #if UNITY_EDITOR
+        private Editor cachedEditor;
         protected override void GUI_Impl(Rect rect)
         {
             var so = new SerializedObject(this);
-            var currentRect = new Rect(rect);
-            currentRect.height = rect.height / 2;
-            EditorGUI.PropertyField(currentRect, so.FindProperty(nameof(this.AiID)), GUIContent.none);
-            currentRect.position = new Vector2(currentRect.position.x, currentRect.position.y + currentRect.height);
-            EditorGUI.PropertyField(currentRect, so.FindProperty(nameof(this.TargetZoneID)), GUIContent.none);
+            EditorGUILayout.PropertyField(so.FindProperty(nameof(this.AiID)));
+            EditorGUILayout.PropertyField(so.FindProperty(nameof(this.TargetZoneID)));
             so.ApplyModifiedProperties();
         }
         protected override float DefaultGetEdgeHeight()

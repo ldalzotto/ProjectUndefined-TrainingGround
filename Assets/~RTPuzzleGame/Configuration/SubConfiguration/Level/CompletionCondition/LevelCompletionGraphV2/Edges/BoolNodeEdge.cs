@@ -22,7 +22,7 @@ namespace RTPuzzle
                 this.Value = false;
             }
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUI.Toggle(rect, (bool)this.Value);
+            GUILayout.Toggle((bool)this.Value, "");
             EditorGUI.EndDisabledGroup();
         }
 
@@ -39,15 +39,15 @@ namespace RTPuzzle
 
         public void ComputeValue(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)
         {
-            if (this.BackwardConnectedNodeEdge.NodeProfileRef.GetType() == typeof(AITargetConditionNode))
+            if (this.BackwardConnectedNodeEdges[0].NodeProfileRef.GetType() == typeof(AITargetConditionNode))
             {
-                ((AITargetConditionNode)this.BackwardConnectedNodeEdge.NodeProfileRef).Resolve(ref ConditionGraphResolutionInput);
+                ((AITargetConditionNode)this.BackwardConnectedNodeEdges[0].NodeProfileRef).Resolve(ref ConditionGraphResolutionInput);
             }
-            else if (this.BackwardConnectedNodeEdge.NodeProfileRef.GetType().IsSubclassOf(typeof(ALogicExecutionNode)))
+            else if (this.BackwardConnectedNodeEdges[0].NodeProfileRef.GetType().IsSubclassOf(typeof(ALogicExecutionNode)))
             {
-                ((ALogicExecutionNode)this.BackwardConnectedNodeEdge.NodeProfileRef).ResolveOutput(ref ConditionGraphResolutionInput);
+                ((ALogicExecutionNode)this.BackwardConnectedNodeEdges[0].NodeProfileRef).ResolveOutput(ref ConditionGraphResolutionInput);
             }
-            this.Value = this.BackwardConnectedNodeEdge.Value;
+            this.Value = this.BackwardConnectedNodeEdges[0].Value;
         }
 
 

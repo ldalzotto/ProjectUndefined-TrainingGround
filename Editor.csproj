@@ -138,6 +138,16 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\LevelAvailabilityNodeEditor.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineActionsNode\LevelCompletedTimelineActionEdgeV2.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineActionsNode\TimelineActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineActionsNode\TimelineActionToNodeEdgeV2.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineNode\LevelAvailabilityNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineNode\TimelineNodeEdgeV2.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineNode\TimelineStartNodeV2.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineWorkflowActionNode\LevelUnlockWorklowActionEdgeV2.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineWorkflowActionNode\LevelUnlockWorklowActionV2.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\LevelAvailabilityTimelineV2\TimelineWorkflowActionNode\WorkflowActionToNodeEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditorContextMenu.cs" />

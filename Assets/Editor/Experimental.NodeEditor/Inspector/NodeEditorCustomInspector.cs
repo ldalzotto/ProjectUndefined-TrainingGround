@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using NodeGraph;
 using RTPuzzle;
+using Editor_LevelAvailabilityNodeEditor;
 
 namespace Experimental.Editor_NodeEditor
 {
@@ -16,7 +17,12 @@ namespace Experimental.Editor_NodeEditor
                 if (this.target.GetType() == typeof(ConditionGraphEditorProfile))
                 {
                     ConditionNodeEditor.Init((NodeEditorProfile)this.target);
-                } else
+                }
+                else if (this.target.GetType() == typeof(LevelAvailabilityNodeEditorProfile))
+                {
+                    LevelAvailabilityNodeEditor.Init((NodeEditorProfile)this.target);
+                }
+                else
                 {
                     Debug.LogError("NodeEditor not defined.");
                 }

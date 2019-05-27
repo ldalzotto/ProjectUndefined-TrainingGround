@@ -19,10 +19,11 @@ namespace NodeGraph
         public abstract List<Type> AllowedConnectedNodeEdges { get; }
 
         public List<NodeEdgeProfile> ConnectedNodeEdges;
-        public NodeEdgeProfile BackwardConnectedNodeEdge;
+        public List<NodeEdgeProfile> BackwardConnectedNodeEdges;
 
 #if UNITY_EDITOR
         public Rect Bounds;
+        public NodeEdgeType NodeEdgeType;
         protected virtual Color EdgeColor()
         {
             return Color.gray;
@@ -30,13 +31,15 @@ namespace NodeGraph
 
         private bool IsSelected = false;
         private Color selectedColor;
-        public static T CreateNodeEdge<T>(NodeProfile NodeProfileRef) where T : NodeEdgeProfile
+        public static T CreateNodeEdge<T>(NodeProfile NodeProfileRef, NodeEdgeType NodeEdgeType) where T : NodeEdgeProfile
         {
             T nodeEdgeInstance = (T)ScriptableObject.CreateInstance(typeof(T));
             nodeEdgeInstance.Id = NodeProfileRef.GetNextEdgeId();
             nodeEdgeInstance.NodeProfileRef = NodeProfileRef;
+            nodeEdgeInstance.NodeEdgeType = NodeEdgeType;
             nodeEdgeInstance.Bounds.size = new Vector2(nodeEdgeInstance.Bounds.size.x, nodeEdgeInstance.DefaultGetEdgeHeight());
             nodeEdgeInstance.ConnectedNodeEdges = new List<NodeEdgeProfile>();
+            nodeEdgeInstance.BackwardConnectedNodeEdges = new List<NodeEdgeProfile>();
             AssetDatabase.CreateAsset(nodeEdgeInstance, NodeProfileRef.EdgesDirectoryPath + "/" + nodeEdgeInstance.GetType().Name + "_" + nodeEdgeInstance.Id.ToString() + ".asset");
             return nodeEdgeInstance;
         }
@@ -46,10 +49,10 @@ namespace NodeGraph
             return 20f;
         }
 
-        public void GUITick(Rect rect)
+        public void GUIEdgeRectangles(Rect parentNodeRect)
         {
-            rect.size = new Vector2(rect.size.x, this.Bounds.size.y);
-            this.Bounds = rect;
+
+
             var oldBackground = GUI.backgroundColor;
             if (this.IsSelected)
             {
@@ -60,21 +63,38 @@ namespace NodeGraph
                 GUI.backgroundColor = this.EdgeColor();
             }
 
-            GUI.Box(this.Bounds, "");
+
+            var verticalBound = EditorGUILayout.BeginVertical(GUI.skin.box);
             this.GUI_Impl(this.Bounds);
+            EditorGUILayout.EndVertical();
 
+            this.Bounds.position = verticalBound.position + parentNodeRect.position;
+            this.Bounds.size = verticalBound.size;
 
+            GUI.backgroundColor = oldBackground;
+            EditorUtility.SetDirty(this);
+        }
+
+        public void GUIConnectionLines()
+        {
+            var oldBackground = GUI.backgroundColor;
+            if (this.IsSelected)
+            {
+                GUI.backgroundColor = this.selectedColor;
+            }
+            else
+            {
+                GUI.backgroundColor = this.EdgeColor();
+            }
             foreach (var connectedNodeEdge in this.ConnectedNodeEdges)
             {
                 var startPoint = this.Bounds.center + new Vector2(this.Bounds.width / 2, 0);
-                var endPoint = connectedNodeEdge.Bounds.center - new Vector2(connectedNodeEdge.Bounds.width / 2, 0);
+                var endPoint = connectedNodeEdge.Bounds.position - new Vector2(0, -connectedNodeEdge.Bounds.height / 2);
                 Handles.DrawBezier(startPoint, endPoint,
                      startPoint - Vector2.left * 50f,
                endPoint + Vector2.left * 50f, GUI.backgroundColor, null, 5f);
             }
-
             GUI.backgroundColor = oldBackground;
-            EditorUtility.SetDirty(this);
         }
 
         public void AddConnectedNode(NodeEdgeProfile NodeEdge)
@@ -84,11 +104,33 @@ namespace NodeGraph
                 if (!this.ConnectedNodeEdges.Contains(NodeEdge))
                 {
                     this.ConnectedNodeEdges.Add(NodeEdge);
-                    if (NodeEdge.BackwardConnectedNodeEdge != null)
+
+                    if (NodeEdge.BackwardConnectedNodeEdges == null)
                     {
-                        NodeEdge.BackwardConnectedNodeEdge.ClearConnection(NodeEdge);
+                        NodeEdge.BackwardConnectedNodeEdges = new List<NodeEdgeProfile>();
                     }
-                    NodeEdge.BackwardConnectedNodeEdge = this;
+
+                    if (NodeEdge.NodeEdgeType == NodeEdgeType.SINGLE_INPUT)
+                    {
+                        if (NodeEdge.BackwardConnectedNodeEdges == null)
+                        {
+                            NodeEdge.BackwardConnectedNodeEdges = new List<NodeEdgeProfile>();
+                        }
+                        if (NodeEdge.BackwardConnectedNodeEdges.Count > 0)
+                        {
+                            NodeEdge.BackwardConnectedNodeEdges[0].ClearConnection(NodeEdge);
+                            NodeEdge.BackwardConnectedNodeEdges[0] = this;
+                        }
+                        else
+                        {
+                            NodeEdge.BackwardConnectedNodeEdges.Add(this);
+                        }
+                    }
+                    else
+                    {
+                        NodeEdge.BackwardConnectedNodeEdges.Add(this);
+                    }
+
                 }
             }
         }
@@ -99,15 +141,22 @@ namespace NodeGraph
             this.selectedColor = selectionColor;
         }
 
-        protected abstract void GUI_Impl(Rect rect);
+        protected virtual void GUI_Impl(Rect rect) { GUILayout.Label(""); }
 
         public void ClearConnections()
         {
             foreach (var connectedEdges in this.ConnectedNodeEdges)
             {
-                if (connectedEdges.BackwardConnectedNodeEdge != null && connectedEdges.BackwardConnectedNodeEdge.Id == this.Id)
+                if (connectedEdges.BackwardConnectedNodeEdges != null)
                 {
-                    connectedEdges.BackwardConnectedNodeEdge = null;
+                    foreach (var connectedEdgeBackgoundNode in new List<NodeEdgeProfile>(connectedEdges.BackwardConnectedNodeEdges))
+                    {
+                        if (connectedEdgeBackgoundNode.Id == this.Id)
+                        {
+                            connectedEdges.BackwardConnectedNodeEdges.Remove(connectedEdgeBackgoundNode);
+                        }
+                    }
+                    connectedEdges.BackwardConnectedNodeEdges = null;
                 }
             }
             this.ConnectedNodeEdges.Clear();
@@ -129,21 +178,35 @@ namespace NodeGraph
             }
         }
 
-        public void ClearBackwardConnection()
+        public void ClearBackwardConnections()
         {
-            if (this.BackwardConnectedNodeEdge != null)
+
+            if (this.BackwardConnectedNodeEdges != null)
             {
-                var edgeToDeleteReference = this.BackwardConnectedNodeEdge.ConnectedNodeEdges.Find(edge => edge.Id == this.Id);
-                if (edgeToDeleteReference != null)
+                foreach (var BackwardConnectedNodeEdge in this.BackwardConnectedNodeEdges)
                 {
-                    this.BackwardConnectedNodeEdge.ConnectedNodeEdges.Remove(this);
+                    var edgeToDeleteReference = BackwardConnectedNodeEdge.ConnectedNodeEdges.Find(edge => edge.Id == this.Id);
+                    if (edgeToDeleteReference != null)
+                    {
+                        BackwardConnectedNodeEdge.ConnectedNodeEdges.Remove(this);
+                    }
                 }
-                this.BackwardConnectedNodeEdge = null;
+
+                this.BackwardConnectedNodeEdges.Clear();
+
             }
 
         }
 
 #endif
     }
+
+#if UNITY_EDITOR
+    public enum NodeEdgeType
+    {
+        SINGLE_INPUT,
+        MULTIPLE_INPUT
+    }
+#endif
 }
 

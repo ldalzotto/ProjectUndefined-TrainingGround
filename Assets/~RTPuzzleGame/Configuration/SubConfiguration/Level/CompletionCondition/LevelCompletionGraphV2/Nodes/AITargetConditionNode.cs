@@ -15,13 +15,13 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.AITargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<AITargetConditionEdge>(this);
+            this.AITargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<AITargetConditionEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() { this.AITargetConditionEdge };
         }
 
         public override List<NodeEdgeProfile> InitOutputEdges()
         {
-            this.ResultBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this);
+            this.ResultBool = NodeEdgeProfile.CreateNodeEdge<BoolNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() { this.ResultBool };
         }
 

@@ -7,6 +7,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace NodeGraph
 {
@@ -14,7 +15,7 @@ namespace NodeGraph
     public abstract class NodeProfile : SerializedScriptableObject
     {
         public int Id;
-      
+
         public List<NodeEdgeProfile> InputEdges = new List<NodeEdgeProfile>();
         public List<NodeEdgeProfile> OutputEdges = new List<NodeEdgeProfile>();
 
@@ -32,6 +33,7 @@ namespace NodeGraph
         protected virtual string NodeTitle() { return this.GetType().Name; }
 
         private Rect offsettedBounds = new Rect();
+        private Rect currentInnerNodeRect = new Rect();
 
         private bool IsSelected = false;
         private Color selectedColor;
@@ -46,7 +48,8 @@ namespace NodeGraph
             }
             nodeInstance.Id = randomNodeId;
             nodeInstance.Bounds.position = startPosition - nodeEditorProfileRef.EditorBound.position;
-            nodeInstance.EdgesDirectoryPath =  nodeEditorProfileRef.NodesTmpFolderPath + "/Node_" + nodeInstance.Id.ToString() + "_Edges";
+            nodeInstance.Bounds.size = nodeInstance.Size();
+            nodeInstance.EdgesDirectoryPath = nodeEditorProfileRef.NodesTmpFolderPath + "/Node_" + nodeInstance.Id.ToString() + "_Edges";
             var edgeDI = new DirectoryInfo(nodeInstance.EdgesDirectoryPath);
             if (!edgeDI.Exists)
             {
@@ -65,7 +68,7 @@ namespace NodeGraph
         public void GUITick(ref NodeEditorProfile nodeEditorProfileRef)
         {
             this.offsettedBounds.position = this.Bounds.position + nodeEditorProfileRef.EditorBound.position;
-            this.offsettedBounds.size = this.Size();
+            this.offsettedBounds.size = this.Bounds.size;
 
             var oldBackGouncColor = GUI.backgroundColor;
             GUI.backgroundColor = this.NodeColor();
@@ -74,27 +77,49 @@ namespace NodeGraph
                 GUI.backgroundColor = this.selectedColor;
             }
 
-            GUI.Box(this.offsettedBounds, this.NodeTitle());
-
+            GUILayout.BeginArea(this.offsettedBounds, this.NodeTitle(), GUI.skin.window);
+            this.currentInnerNodeRect = EditorGUILayout.BeginVertical();
+            this.NodeGUI(ref nodeEditorProfileRef);
+            EditorGUILayout.EndVertical();
+            GUILayout.EndArea();
             GUI.backgroundColor = oldBackGouncColor;
-
-            foreach (var inputEdge in this.InputEdges)
-            {
-                inputEdge.GUITick(this.GetInputEdgeRect(this.InputEdges.IndexOf(inputEdge)));
-            }
-            foreach (var outputEdge in this.OutputEdges)
-            {
-                outputEdge.GUITick(this.GetOutputEdgeRect(this.OutputEdges.IndexOf(outputEdge)));
-            }
 
             EditorUtility.SetDirty(this);
         }
 
+        protected virtual void NodeGUI(ref NodeEditorProfile nodeEditorProfileRef)
+        {
+            var maxEdgeIndex = Mathf.Max(this.InputEdges.Count, this.OutputEdges.Count);
+            for (var i = 0; i < maxEdgeIndex; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                if (i < this.InputEdges.Count)
+                {
+                    this.InputEdges[i].GUIEdgeRectangles(this.offsettedBounds);
+                }
+                if (i < this.OutputEdges.Count)
+                {
+                    this.OutputEdges[i].GUIEdgeRectangles(this.offsettedBounds);
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
+        protected void AddInputEdge(NodeEdgeProfile nodeEdgeProfile)
+        {
+            this.InputEdges.Add(nodeEdgeProfile);
+        }
+
+        protected void AddOutputEdge(NodeEdgeProfile nodeEdgeProfile)
+        {
+            this.OutputEdges.Add(nodeEdgeProfile);
+        }
+
         public void DeleteNode(ref NodeEditorProfile nodeEditorProfileRef)
         {
-            foreach(var inputNodeEdge in this.InputEdges)
+            foreach (var inputNodeEdge in this.InputEdges)
             {
-                inputNodeEdge.ClearBackwardConnection();
+                inputNodeEdge.ClearBackwardConnections();
                 AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(inputNodeEdge));
             }
             this.InputEdges.Clear();
@@ -108,6 +133,15 @@ namespace NodeGraph
             nodeEditorProfileRef.OnDeletedNode(this);
             AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this));
             Directory.Delete(this.EdgesDirectoryPath);
+        }
+
+        protected void DeleteEdge(NodeEdgeProfile edgeToDelete)
+        {
+            this.InputEdges.Remove(edgeToDelete);
+            this.OutputEdges.Remove(edgeToDelete);
+            edgeToDelete.ClearBackwardConnections();
+            edgeToDelete.ClearConnections();
+            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(edgeToDelete));
         }
 
         public void Move(Vector2 delta)
@@ -168,11 +202,15 @@ namespace NodeGraph
             return id;
         }
 
-
         public void SetIsSelected(bool value, Color selectionColor)
         {
             this.IsSelected = value;
             this.selectedColor = selectionColor;
+        }
+
+        public void AutoAdjustNodeSize()
+        {
+            this.Bounds.size = new Vector2(this.offsettedBounds.size.x, this.currentInnerNodeRect.height + 25);
         }
 #endif
 

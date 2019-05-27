@@ -35,6 +35,11 @@ namespace AdventureGame
         {
             return "GrabScenarioAction. " + " Item involved : " + ItemInvolved.ToString() + ", POIInvolved : " + PoiInvolved.ToString();
         }
+
+        public void NodeGUI()
+        {
+           
+        }
     }
 
     public class GiveScenarioAction : TimeLineAction
@@ -69,6 +74,11 @@ namespace AdventureGame
         {
             return "GiveScenarioAction. " + " Item involved : " + ItemInvolved.ToString() + ", POIInvolved : " + PoiInvolved.ToString();
         }
+
+        public void NodeGUI()
+        {
+          
+        }
     }
 
     public class DiscussionChoiceScenarioAction : TimeLineAction
@@ -97,6 +107,10 @@ namespace AdventureGame
             return "DiscussionChoiceScenarioAction. " + " Choice made : " + ChoiceId.ToString();
         }
 
+        public void NodeGUI()
+        {
+         
+        }
     }
 
     public class CutsceneTimelineScenarioAction : TimeLineAction
@@ -124,6 +138,11 @@ namespace AdventureGame
             hashCode = hashCode * -1521134295 + CutsceneId.GetHashCode();
             hashCode = hashCode * -1521134295 + TargetedPOI.GetHashCode();
             return hashCode;
+        }
+
+        public void NodeGUI()
+        {
+           
         }
 
         public override string ToString()

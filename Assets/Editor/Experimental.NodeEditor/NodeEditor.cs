@@ -22,6 +22,7 @@ namespace Experimental.Editor_NodeEditor
             this.DeleteNodeManager = new DeleteNodeManager();
             this.NodeCreationManager = new NodeCreationManager();
             this.EditorZoomManager = new EditorZoomManager();
+            this.NodeSizeFitterManager = new NodeSizeFitterManager();
             this.OnEnable_Impl();
         }
 
@@ -33,7 +34,7 @@ namespace Experimental.Editor_NodeEditor
         public NodeEditorProfile NodeEditorProfile { set => nodeEditorProfile = value; }
 
         [SerializeField]
-        private NodeEditorProfile nodeEditorProfile;
+        protected NodeEditorProfile nodeEditorProfile;
 
         private DragNodeManager DragNodeManager;
         private DragGridManager DragGridManager;
@@ -43,6 +44,7 @@ namespace Experimental.Editor_NodeEditor
         private DeleteNodeManager DeleteNodeManager;
         private NodeCreationManager NodeCreationManager;
         private EditorZoomManager EditorZoomManager;
+        private NodeSizeFitterManager NodeSizeFitterManager;
 
         private TreePickerPopup NodePicker;
 
@@ -57,6 +59,7 @@ namespace Experimental.Editor_NodeEditor
                     nodeEditorProfile.Init();
                 }
             }
+            this.OnGUI_Impl();
             if (nodeEditorProfile != null)
             {
 
@@ -81,6 +84,19 @@ namespace Experimental.Editor_NodeEditor
                     node.GUITick(ref this.nodeEditorProfile);
                 }
 
+                //draw connections 
+                foreach (var node in this.nodeEditorProfile.Nodes.Values)
+                {
+                    foreach (var inputEdge in node.InputEdges)
+                    {
+                        inputEdge.GUIConnectionLines();
+                    }
+                    foreach (var outputEdge in node.OutputEdges)
+                    {
+                        outputEdge.GUIConnectionLines();
+                    }
+                }
+
                 this.NodeSelectionInspector.GUITick(ref this.nodeEditorProfile);
 
                 if (!this.EditorZoomManager.GUITick(ref this.nodeEditorProfile))
@@ -91,16 +107,18 @@ namespace Experimental.Editor_NodeEditor
                         {
                             if (!this.DeleteNodeManager.GUITick(ref this.nodeEditorProfile))
                             {
-                                if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
+                                if (!this.NodeSizeFitterManager.GUITick(ref this.nodeEditorProfile))
                                 {
-                                    this.DragGridManager.GUITick(ref this.nodeEditorProfile);
+                                    if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
+                                    {
+                                        this.DragGridManager.GUITick(ref this.nodeEditorProfile);
+                                    }
                                 }
                             }
                         }
                     }
                 }
 
-                this.OnGUI_Impl();
                 EditorZoomArea.End();
             }
             if (GUI.changed) Repaint();
@@ -266,6 +284,24 @@ namespace Experimental.Editor_NodeEditor
             return false;
         }
     }
+
+    class NodeSizeFitterManager
+    {
+        public bool GUITick(ref NodeEditorProfile NodeEditorProfileRef)
+        {
+            if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Q)
+            {
+                if (NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject.GetType().IsSubclassOf(typeof(NodeProfile)))
+                {
+                    ((NodeProfile)NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject).AutoAdjustNodeSize();
+                    GUI.changed = true;
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     class DragNodeManager
     {
         private NodeProfile selectedNode;
