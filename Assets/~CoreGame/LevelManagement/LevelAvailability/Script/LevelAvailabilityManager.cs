@@ -68,10 +68,7 @@ namespace CoreGame
 
         public LevelAvailability()
         {
-            //New game configuration
-            this.LevelZoneChunkAvailability = new Dictionary<LevelZoneChunkID, bool>() {
-                     {LevelZoneChunkID.SEWER_RTP_1, true }
-            };
+            this.LevelZoneChunkAvailability = new Dictionary<LevelZoneChunkID, bool>();
         }
     }
 

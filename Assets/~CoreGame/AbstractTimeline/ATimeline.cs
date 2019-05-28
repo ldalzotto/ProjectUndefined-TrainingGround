@@ -193,7 +193,11 @@ namespace CoreGame
                     endAction.Execute(workflowActionPassedDataStruct, oldNode);
                 }
             }
-            this.Persist();
+
+            if (scenarioNodesIncrementation != null && (scenarioNodesIncrementation.nexNodes.Count > 0 || scenarioNodesIncrementation.oldNodes.Count > 0))
+            {
+                this.Persist();
+            }
         }
 
         public void Persist()
@@ -206,13 +210,16 @@ namespace CoreGame
 
         private void AddToNodes(List<NODE_KEY> nodesToAdd)
         {
-            nodes.AddRange(nodesToAdd);
-            foreach (var newNodeId in nodesToAdd)
+            foreach (var nodeToAdd in nodesToAdd)
             {
-                var newNode = this.TimelineInitializer.GetNode(newNodeId);
-                foreach (var startAction in newNode.OnStartNodeAction)
+                if (!this.nodes.Contains(nodeToAdd))
                 {
-                    startAction.Execute(workflowActionPassedDataStruct, newNode);
+                    nodes.Add(nodeToAdd);
+                    var newNode = this.TimelineInitializer.GetNode(nodeToAdd);
+                    foreach (var startAction in newNode.OnStartNodeAction)
+                    {
+                        startAction.Execute(workflowActionPassedDataStruct, newNode);
+                    }
                 }
             }
         }
