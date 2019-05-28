@@ -117,11 +117,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityTimelineInitializer.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityTimelineManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineAction\LevelCompletedTimelineAction.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodes\LevelUnlockNode.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodes\LevelUnlockStartNode.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\LevelAvailabilityTimelineManagerV2.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelAvailabilityTimelineInitializerV2.cs" />

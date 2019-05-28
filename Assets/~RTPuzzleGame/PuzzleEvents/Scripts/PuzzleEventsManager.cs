@@ -11,7 +11,7 @@ namespace RTPuzzle
         private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
         private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
-        private LevelAvailabilityTimelineManager LevelAvailabilityTimelineManager;
+        private LevelAvailabilityTimelineManagerV2 LevelAvailabilityTimelineManager;
         #endregion
 
         public void Init()
@@ -20,7 +20,7 @@ namespace RTPuzzle
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
             this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
-            this.LevelAvailabilityTimelineManager = GameObject.FindObjectOfType<LevelAvailabilityTimelineManager>();
+            this.LevelAvailabilityTimelineManager = GameObject.FindObjectOfType<LevelAvailabilityTimelineManagerV2>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
         }
 

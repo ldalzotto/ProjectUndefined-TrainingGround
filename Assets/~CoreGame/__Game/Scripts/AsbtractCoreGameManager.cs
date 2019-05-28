@@ -8,19 +8,19 @@ namespace CoreGame
 
         private ATimelinesManager ATimelinesManager;
 
-        protected void OnStart()
+        protected void OnAwake()
         {
             this.ATimelinesManager = GameObject.FindObjectOfType<ATimelinesManager>();
             var Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
 
             this.ATimelinesManager.Init();
-            Coroutiner.StartCoroutine(this.InitializeAllTimelinesAtEndOfFrame());
+            Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
         }
 
-        private IEnumerator InitializeAllTimelinesAtEndOfFrame()
+        private IEnumerator InitializeTimelinesAtEndOfFrame()
         {
             yield return new WaitForEndOfFrame();
-            ATimelinesManager.InitAllTimelines();
+            ATimelinesManager.InitTimelinesAtEndOfFrame();
         }
 
         private void OnApplicationQuit()

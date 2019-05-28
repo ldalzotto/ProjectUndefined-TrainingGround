@@ -9,25 +9,13 @@ namespace CoreGame
 
         private LevelAvailabilityManager LevelAvailabilityManager;
         protected override bool isPersisted => true;
+        protected override TimelineIDs TimelineID => TimelineIDs.LEVEL_AVAILABILITY_TIMELINE;
 
-        #region //TODO DEBUG TO REMOVE
-        public LevelCompletedTimelineAction LevelCompletedTimelineAction;
-        public bool sendEvent;
-        private void Start()
+        public override void Init()
         {
-            this.LevelAvailabilityManager = new LevelAvailabilityManager();
-            this.LevelAvailabilityManager.Init();
-            this.Init();
+            this.LevelAvailabilityManager = GameObject.FindObjectOfType<LevelAvailabilityManager>();
+            base.Init();
         }
-        private void Update()
-        {
-            if (this.sendEvent)
-            {
-                this.IncrementGraph(this.LevelCompletedTimelineAction);
-                this.sendEvent = false;
-            }
-        }
-        #endregion
     }
 
 }

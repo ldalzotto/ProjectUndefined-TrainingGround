@@ -5,9 +5,8 @@ namespace CoreGame
 {
     public enum LevelAvailabilityTimelineNodeID
     {
-        RtPuzzleUnlock,
-        RtPuzzleUnlock2,
-        RtPuzzleUnlock3
+       SewersLV1_Unlock,
+       SewersLV2_Unlock
     }
 
 }

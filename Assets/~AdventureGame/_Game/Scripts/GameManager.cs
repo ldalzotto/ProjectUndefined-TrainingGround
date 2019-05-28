@@ -19,8 +19,10 @@ namespace AdventureGame
         private void Awake()
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
+
             //Level chunk initialization
             GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
+            base.OnAwake();
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }
 
@@ -29,7 +31,6 @@ namespace AdventureGame
             var InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(true);
 
-            base.OnStart();
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
             PlayerManager = FindObjectOfType<PlayerManager>();

@@ -31,9 +31,10 @@ namespace RTPuzzle
         private void Awake()
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
-            //Level chunk initialization
 
+            //Level chunk initialization
             GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
+            base.OnAwake();
             var LevelManager = GameObject.FindObjectOfType<LevelManager>();
             LevelManager.Init(LevelType.PUZZLE);
         }
@@ -45,7 +46,6 @@ namespace RTPuzzle
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
-            base.OnStart();
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();

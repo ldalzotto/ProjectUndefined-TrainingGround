@@ -6,24 +6,50 @@ namespace CoreGame
 {
     public class ATimelinesManager : MonoBehaviour
     {
-        private ITimelineNodeManager[] AllTimelines;
+
+        private ITimelineNodeManager ScenarioTimeline;
+        private ITimelineNodeManager DiscussionTimeline;
+        //V2
+        private ITimelineNodeManager LevelAvailabilityTimeline;
 
         public void Init()
         {
             var aTimelinens = GameObject.FindObjectsOfType<ATimelineNodeManager>();
-            this.AllTimelines = new ITimelineNodeManager[aTimelinens.Length];
-            for (var i = 0; i < aTimelinens.Length; i++)
+            foreach (var timeline in aTimelinens)
             {
-                this.AllTimelines[i] = (ITimelineNodeManager)aTimelinens[i];
+                switch (timeline.GetTimelineID())
+                {
+                    case TimelineIDs.DISCUSSION_TIMELINE:
+                        this.DiscussionTimeline = (ITimelineNodeManager)timeline;
+                        break;
+                    case TimelineIDs.LEVEL_AVAILABILITY_TIMELINE:
+                        this.LevelAvailabilityTimeline = (ITimelineNodeManager)timeline;
+                        break;
+                    case TimelineIDs.SCENARIO_TIMELINE:
+                        this.ScenarioTimeline = (ITimelineNodeManager)timeline;
+                        break;
+                }
             }
+            this.InitTimelinesOnStart();
         }
 
-        public void InitAllTimelines()
+        private ITimelineNodeManager[] GetAllTimelines()
         {
-            foreach (var timeline in this.AllTimelines)
+            return new ITimelineNodeManager[3]
             {
-                timeline.Init();
-            }
+                this.ScenarioTimeline, this.DiscussionTimeline, this.LevelAvailabilityTimeline
+            };
+        }
+
+        private void InitTimelinesOnStart()
+        {
+            this.LevelAvailabilityTimeline.Init();
+        }
+
+        public void InitTimelinesAtEndOfFrame()
+        {
+            this.ScenarioTimeline.Init();
+            this.DiscussionTimeline.Init();
         }
 
         internal void ApplicationQuit()
@@ -33,7 +59,7 @@ namespace CoreGame
 
         public void PersistAllTimelines()
         {
-            foreach (var timeline in this.AllTimelines)
+            foreach (var timeline in this.GetAllTimelines())
             {
                 timeline.Persist();
             }

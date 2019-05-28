@@ -10,9 +10,11 @@ namespace CoreGame
     {
         void Init();
         void Persist();
+
     }
     public abstract class ATimelineNodeManager : MonoBehaviour
     {
+        public abstract TimelineIDs GetTimelineID();
     }
 
     public abstract class TimelineNodeManager<T> : ATimelineNodeManager, ITimelineNodeManager
@@ -139,8 +141,15 @@ namespace CoreGame
         protected abstract T workflowActionPassedDataStruct { get; }
         #endregion
 
-        public TimelineInitializerScriptableObject AbstractTimelineInitializer;
         private TimelineInitializerV2<T, NODE_KEY> TimelineInitializer;
+
+        #region Timeline ID
+        protected abstract TimelineIDs TimelineID { get; }
+        public override TimelineIDs GetTimelineID()
+        {
+            return this.TimelineID;
+        }
+        #endregion
 
         #region Perisistance
         protected abstract bool isPersisted { get; }
@@ -153,7 +162,7 @@ namespace CoreGame
 
         public virtual void Init()
         {
-            this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)AbstractTimelineInitializer;
+            this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)GameObject.FindObjectOfType<CoreConfigurationManager>().TimelineConfiguration().ConfigurationInherentData[TimelineID];
             if (this.isPersisted)
             {
                 this.timelinePersister = new ATimelinePersister<NODE_KEY>(this.GetType());
@@ -246,6 +255,8 @@ namespace CoreGame
             }
             return new NodesIncrementation(nextTimelineNodes, oldTimelineNodes);
         }
+
+
 
         private class NodesIncrementation
         {
