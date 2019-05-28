@@ -1,7 +1,10 @@
 ﻿using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace RTPuzzle
 {
@@ -137,17 +140,18 @@ namespace RTPuzzle
 
         private void OnDrawGizmos()
         {
+#if UNITY_EDITOR
             var labelStyle = new GUIStyle(EditorStyles.label);
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.normal.textColor = Color.magenta;
-#if UNITY_EDITOR
             Handles.Label(transform.position + new Vector3(0,3f,0), AiID.ToString(), labelStyle);
-#endif
             Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AI", true);
+#endif
         }
 
         public void GUITick()
         {
+#if UNITY_EDITOR
             if (DebugEabled)
             {
                 var mouseAIBehavior = puzzleAIBehavior as GenericPuzzleAIBehavior;
@@ -161,6 +165,7 @@ namespace RTPuzzle
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
             }
+#endif
         }
 
         #region External Events

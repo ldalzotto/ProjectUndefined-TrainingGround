@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace RTPuzzle
 {
@@ -14,6 +17,7 @@ namespace RTPuzzle
 
         protected override Type abstractManagerType => typeof(AbstractPlayerEscapeManager);
 
+#if UNITY_EDITOR
         public override void EditorGUI(Transform transform)
         {
             Handles.color = Color.yellow;
@@ -31,6 +35,7 @@ namespace RTPuzzle
             Handles.DrawWireArc(transform.position, Vector3.up, transform.forward, EscapeSemiAngle, 5f);
             Handles.DrawWireArc(transform.position, Vector3.up, transform.forward, -EscapeSemiAngle, 5f);
         }
+#endif
     }
 
     public abstract class AbstractPlayerEscapeManager : InterfaceAIManager

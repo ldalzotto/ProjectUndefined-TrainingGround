@@ -373,13 +373,18 @@ namespace CoreGame
 
     public interface TimelineNodeWorkflowActionV2Drawable
     {
+#if UNITY_EDITOR
         void ActionGUI();
+#endif
     }
 
     [System.Serializable]
     public abstract class TimelineNodeWorkflowActionV2<T, NODE_KEY> : TimelineNodeWorkflowActionV2Drawable
     {
-        public abstract void ActionGUI();
         public abstract void Execute(T workflowActionPassedDataStruct, TimelineNodeV2<T, NODE_KEY> timelineNodeRefence);
+
+#if UNITY_EDITOR
+        public abstract void ActionGUI();
+#endif
     }
 }

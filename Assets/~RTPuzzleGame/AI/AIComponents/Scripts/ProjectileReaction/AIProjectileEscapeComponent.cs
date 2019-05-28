@@ -16,6 +16,7 @@ namespace RTPuzzle
         public float EscapeDistance;
         protected override Type abstractManagerType => typeof(AbstractAIProjectileEscapeManager);
 
+#if UNITY_EDITOR
         public override void EditorGUI(Transform transform)
         {
             Handles.color = Color.blue;
@@ -24,6 +25,7 @@ namespace RTPuzzle
             Handles.Label(transform.position + Vector3.up * EscapeDistance, this.GetType().Name, labelStyle);
             Handles.DrawWireDisc(transform.position, Vector3.up, EscapeDistance);
         }
+#endif
     }
 
     public abstract class AbstractAIProjectileEscapeManager : InterfaceAIManager

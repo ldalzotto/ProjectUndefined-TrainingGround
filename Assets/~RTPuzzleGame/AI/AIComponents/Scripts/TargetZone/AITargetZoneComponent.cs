@@ -15,6 +15,7 @@ namespace RTPuzzle
 
         protected override Type abstractManagerType => typeof(AbstractAITargetZoneManager);
 
+#if UNITY_EDITOR
         public override void EditorGUI(Transform transform)
         {
             Handles.color = Color.green;
@@ -23,6 +24,7 @@ namespace RTPuzzle
             Handles.Label(transform.position + Vector3.up * TargetZoneEscapeDistance, nameof(this.TargetZoneEscapeDistance), labelStyle);
             Handles.DrawWireDisc(transform.position, Vector3.up, TargetZoneEscapeDistance);
         }
+#endif
     }
 
     public abstract class AbstractAITargetZoneManager : InterfaceAIManager
