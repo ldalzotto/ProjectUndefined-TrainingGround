@@ -1,32 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
 using NodeGraph;
-using System;
-using System.Collections.Generic;
-using UnityEditor;
 using CoreGame;
+using System.Collections.Generic;
+using System;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
     [System.Serializable]
-    public class LevelCompletedTimelineActionEdgeV2 : NodeEdgeProfile
+    public abstract class TimelineActionEdgeProfile<T> : NodeEdgeProfile where T : TimeLineAction
     {
-        public LevelCompletedTimelineAction LevelCompletedTimelineAction;
+        public T TimelineAction;
 
         [SerializeField]
         private int selectedTimelineActionIndex;
-        
+
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() {
-            typeof(LevelCompletedTimelineActionEdgeV2)
+            typeof(T)
         };
 
         protected override void GUI_Impl(Rect rect)
         {
-            if(this.LevelCompletedTimelineAction == null)
+            if (this.TimelineAction == null)
             {
-                this.LevelCompletedTimelineAction = new LevelCompletedTimelineAction();
+                this.TimelineAction = Activator.CreateInstance<T>();
             }
-            this.LevelCompletedTimelineAction.NodeGUI();            
+            this.TimelineAction.NodeGUI();
         }
 
         protected override Color EdgeColor()

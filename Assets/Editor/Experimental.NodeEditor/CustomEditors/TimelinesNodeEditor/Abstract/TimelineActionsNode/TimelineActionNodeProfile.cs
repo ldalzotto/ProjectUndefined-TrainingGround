@@ -2,24 +2,30 @@
 using System.Collections;
 using NodeGraph;
 using System.Collections.Generic;
-using System;
-using UnityEditor;
+using CoreGame;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
-    public class TimelineActionNodeProfile : NodeProfile
+    public interface TimelineActionNodeProfileDataRetrieval
     {
-
-        public LevelCompletedTimelineActionEdgeV2 TimelineAction;
+        TimeLineAction GetTimelineAction();
+    }
+    public abstract class TimelineActionNodeProfile<T, A> : NodeProfile, TimelineActionNodeProfileDataRetrieval where A : TimeLineAction where T : TimelineActionEdgeProfile<A>
+    {
+        public T TimelineActionEdge;
         public TimelineActionToNodeEdgeV2 TimelineActionConnection;
+
+        public TimeLineAction GetTimelineAction()
+        {
+            return this.TimelineActionEdge.TimelineAction;
+        }
 
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.TimelineAction = NodeEdgeProfile.CreateNodeEdge<LevelCompletedTimelineActionEdgeV2>(this, NodeEdgeType.SINGLE_INPUT);
+            this.TimelineActionEdge = NodeEdgeProfile.CreateNodeEdge<T>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>()
             {
-                 this.TimelineAction
+                 this.TimelineActionEdge
             };
         }
 
@@ -36,7 +42,5 @@ namespace Editor_LevelAvailabilityNodeEditor
         {
             return new Vector2(180, 150);
         }
-
     }
-
 }

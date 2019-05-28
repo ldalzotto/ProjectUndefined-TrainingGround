@@ -8,14 +8,14 @@ using CoreGame;
 namespace Editor_LevelAvailabilityNodeEditor
 {
     [System.Serializable]
-    public class LevelUnlockWorklowActionEdgeV2 : NodeEdgeProfile
+    public abstract class TimelineWorklowActionEdgeV2<T> : NodeEdgeProfile where T : TimelineNodeWorkflowActionV2Drawable
     {
-        public LevelUnlockWorkflowActionV2 LevelUnlockWorkflowAction;
+        public T WorkflowAction;
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>();
 
         protected override void GUI_Impl(Rect rect)
         {
-            this.LevelUnlockWorkflowAction.ActionGUI();
+            this.WorkflowAction.ActionGUI();
         }
     }
 }

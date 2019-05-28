@@ -10,6 +10,5 @@ namespace CoreGame
 
     public class TimelineConfiguration : ConfigurationSerialization<TimelineIDs, TimelineInitializerScriptableObject>
     {
-        //TimelineInitializerV2
     }
 }

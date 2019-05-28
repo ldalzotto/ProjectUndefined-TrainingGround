@@ -318,7 +318,7 @@ namespace CoreGame
     }
 
     [System.Serializable]
-    public abstract class TimelineNodeV2<T, NODE_KEY>
+    public class TimelineNodeV2<T, NODE_KEY>
     {
         public Dictionary<TimeLineAction, List<NODE_KEY>> TransitionRequirements;
 
@@ -326,7 +326,7 @@ namespace CoreGame
 
         public List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> OnExitNodeAction;
 
-        protected TimelineNodeV2(Dictionary<TimeLineAction, List<NODE_KEY>> transitionRequirements, List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> onStartNodeAction, List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> onExitNodeAction)
+        public TimelineNodeV2(Dictionary<TimeLineAction, List<NODE_KEY>> transitionRequirements, List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> onStartNodeAction, List<TimelineNodeWorkflowActionV2<T, NODE_KEY>> onExitNodeAction)
         {
             TransitionRequirements = transitionRequirements;
             OnStartNodeAction = onStartNodeAction;
@@ -360,9 +360,15 @@ namespace CoreGame
         public abstract void Execute(T workflowActionPassedDataStruct, TimelineNode<T> timelineNodeRefence);
     }
 
-    [System.Serializable]
-    public abstract class TimelineNodeWorkflowActionV2<T, NODE_KEY>
+    public interface TimelineNodeWorkflowActionV2Drawable
     {
+        void ActionGUI();
+    }
+
+    [System.Serializable]
+    public abstract class TimelineNodeWorkflowActionV2<T, NODE_KEY> : TimelineNodeWorkflowActionV2Drawable
+    {
+        public abstract void ActionGUI();
         public abstract void Execute(T workflowActionPassedDataStruct, TimelineNodeV2<T, NODE_KEY> timelineNodeRefence);
     }
 }

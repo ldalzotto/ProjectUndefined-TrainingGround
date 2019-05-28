@@ -4,10 +4,12 @@ using UnityEditor;
 using System.Collections.Generic;
 using RTPuzzle;
 using Editor_GameDesigner;
+using CoreGame;
+using ConfigurationEditor;
 
 namespace Editor_GameCustomEditors
 {
-    public abstract class AbstractGameCustomEditor<T, C> : Editor where T : UnityEngine.Object 
+    public abstract class AbstractGameCustomEditor<T, C> : Editor where T : UnityEngine.Object
     {
         protected List<GUIDrawModule<T, C>> drawModules;
         protected C context;
@@ -43,7 +45,7 @@ namespace Editor_GameCustomEditors
                         }
                     }
                 }
-               
+
 
                 Gizmos.color = oldGizmoColor;
                 GUI.backgroundColor = oldGUiBackground;
@@ -63,6 +65,18 @@ namespace Editor_GameCustomEditors
             if (GUILayout.Button("EDIT IN DESIGNER"))
             {
                 GameDesignerEditor.InitWithSelectedKey(typeof(DESIGN_TYPE));
+            }
+            base.OnInspectorGUI();
+        }
+    }
+
+    public abstract class AbstractConfigurationDataCustomEditor<CONF_TYPE> : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            if (GUILayout.Button("OPEN CONFIGURATION"))
+            {
+                ConfigurationInspector.OpenConfigurationEditor(typeof(CONF_TYPE));
             }
             base.OnInspectorGUI();
         }

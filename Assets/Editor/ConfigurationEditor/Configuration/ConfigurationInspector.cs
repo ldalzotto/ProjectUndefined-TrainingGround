@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using RTPuzzle;
 using CoreGame;
+using System;
 
 namespace ConfigurationEditor
 {
@@ -13,15 +14,20 @@ namespace ConfigurationEditor
         {
             if(GUILayout.Button("OPEN IN EDITOR"))
             {
-                if (!PuzzleGameConfigurationEditorV2.OpenToDesiredConfiguration(this.target.GetType()))
-                {
-                    if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration(this.target.GetType()))
-                    {
-                        Debug.LogError("Configuration not found.");
-                    }
-                }
+                OpenConfigurationEditor(this.target.GetType());
             }
             base.OnInspectorGUI();
+        }
+
+        public static void OpenConfigurationEditor(Type targetType)
+        {
+            if (!PuzzleGameConfigurationEditorV2.OpenToDesiredConfiguration(targetType))
+            {
+                if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration(targetType))
+                {
+                    Debug.LogError("Configuration not found.");
+                }
+            }
         }
     }
 

@@ -1,30 +1,33 @@
 ﻿using UnityEngine;
-using UnityEditor;
-using OdinSerializer;
-using System.Collections.Generic;
+using System.Collections;
 using NodeGraph;
-using System;
 using CoreGame;
+using System.Collections.Generic;
+using UnityEditor;
+using System;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
-    [System.Serializable]
-    public class LevelAvailabilityNodeProfile : NodeProfile
+    public interface TimelineNodeProfileDataRetrieval
     {
+        ENUM GetTimelineNodeId<ENUM>();
+    }
 
-#if UNITY_EDITOR
+    [System.Serializable]
+    public abstract class TimelineNodeProfile<NODE_KEY> : NodeProfile, TimelineNodeProfileDataRetrieval where NODE_KEY : Enum
+    {
         [SearchableEnum]
-        public LevelAvailabilityTimelineNodeID LevelAvailabilityTimelineNodeID;
+        public NODE_KEY TimelineNodeId;
         public List<TimelineActionToNodeEdgeV2> TransitionTimelineActionInputEdges = new List<TimelineActionToNodeEdgeV2>();
-        public List<TimelineNodeEdgeV2> TransitionTimelineActionOutputEdges = new List<TimelineNodeEdgeV2>();
-        public TimelineNodeEdgeV2 InputNodeConnectionEdge;
+        public List<TimelineNodeEdgeProfile> TransitionTimelineActionOutputEdges = new List<TimelineNodeEdgeProfile>();
+        public TimelineNodeEdgeProfile InputNodeConnectionEdge;
 
         public List<WorkflowActionToNodeEdge> OnStartWorkflowActionEdges = new List<WorkflowActionToNodeEdge>();
         public List<WorkflowActionToNodeEdge> OnExitWorkflowActionEdges = new List<WorkflowActionToNodeEdge>();
 
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.InputNodeConnectionEdge = NodeEdgeProfile.CreateNodeEdge<TimelineNodeEdgeV2>(this, NodeEdgeType.MULTIPLE_INPUT);
+            this.InputNodeConnectionEdge = NodeEdgeProfile.CreateNodeEdge<TimelineNodeEdgeProfile>(this, NodeEdgeType.MULTIPLE_INPUT);
             return new List<NodeEdgeProfile>() { this.InputNodeConnectionEdge };
         }
 
@@ -42,7 +45,7 @@ namespace Editor_LevelAvailabilityNodeEditor
 
         protected override string NodeTitle()
         {
-            return this.LevelAvailabilityTimelineNodeID.ToString();
+            return this.TimelineNodeId.ToString();
         }
 
         protected override void NodeGUI(ref NodeEditorProfile nodeEditorProfileRef)
@@ -57,7 +60,7 @@ namespace Editor_LevelAvailabilityNodeEditor
                 this.TransitionTimelineActionInputEdges.Add(createdTransitionInputEdge);
                 this.AddInputEdge(createdTransitionInputEdge);
 
-                var createdTransitionOutputEdge = NodeEdgeProfile.CreateNodeEdge<TimelineNodeEdgeV2>(this, NodeEdgeType.SINGLE_INPUT);
+                var createdTransitionOutputEdge = NodeEdgeProfile.CreateNodeEdge<TimelineNodeEdgeProfile>(this, NodeEdgeType.SINGLE_INPUT);
                 this.TransitionTimelineActionOutputEdges.Add(createdTransitionOutputEdge);
                 this.AddOutputEdge(createdTransitionOutputEdge);
             }
@@ -102,8 +105,10 @@ namespace Editor_LevelAvailabilityNodeEditor
                 OnStartWorkflowActionEdge.GUIEdgeRectangles(this.OffsettedBounds);
             }
         }
-#endif
 
+        public ENUM GetTimelineNodeId<ENUM>()
+        {
+            return (ENUM)Enum.Parse(typeof(ENUM), this.TimelineNodeId.ToString());
+        }
     }
-
 }

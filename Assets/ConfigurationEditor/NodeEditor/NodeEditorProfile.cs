@@ -8,6 +8,7 @@ using UnityEditor;
 #endif
 using System.IO;
 using System.Linq;
+using CoreGame;
 
 namespace NodeGraph
 {
@@ -18,7 +19,7 @@ namespace NodeGraph
         public string NodesTmpFolderPath;
 
         public Rect EditorBound = new Rect(new Vector2(0, 0), new Vector2(0, 0));
-  
+
         public Dictionary<int, NodeProfile> Nodes = new Dictionary<int, NodeProfile>();
 
         public Color SelectedBackgoundColor = new Color(0.63f, 1f, 0.95f);
@@ -27,6 +28,7 @@ namespace NodeGraph
         public NodeEditorGridProfile NodeEditorGridProfile;
         public NodeEdtitorSelectionProfile NodeEdtitorSelectionProfile;
         public NodeCreationPickerProfile NodeCreationPickerProfile;
+
 
 #if UNITY_EDITOR
         public void Init()
@@ -79,7 +81,7 @@ namespace NodeGraph
         {
             this.EditorBound.position += delta;
         }
-        
+
         public static NodeProfile GetFirstContainedNode(Vector2 position, ref NodeEditorProfile NodeEditorProfileRef)
         {
             foreach (var node in NodeEditorProfileRef.Nodes.Values)
@@ -129,7 +131,7 @@ namespace NodeGraph
     {
         public string SelectedKey;
 
-        public Vector2 PickerSize = new Vector2(200,300);
+        public Vector2 PickerSize = new Vector2(200, 300);
     }
 
 }

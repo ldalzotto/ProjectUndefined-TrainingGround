@@ -21,13 +21,6 @@ namespace CoreGame
         {
             levelAvailabilityManager.UnlockLevel(this.levelZoneChunkToUnlock);
         }
-
-#if UNITY_EDITOR
-        public void ActionGUI()
-        {
-            this.levelZoneChunkToUnlock = (LevelZoneChunkID)EditorGUILayout.EnumPopup(this.levelZoneChunkToUnlock);
-        }
-#endif
     }
 
     [System.Serializable]
@@ -47,12 +40,10 @@ namespace CoreGame
         }
 
 #if UNITY_EDITOR
-        public void ActionGUI()
+        public override void ActionGUI()
         {
             this.levelZoneChunkToUnlock = (LevelZoneChunkID)EditorGUILayout.EnumPopup(this.levelZoneChunkToUnlock);
         }
-
-
 #endif
     }
 

@@ -25,7 +25,12 @@ namespace CoreGame
         {
             Init();
             var window = EditorWindow.GetWindow<CoreGameConfigurationEditor>();
-            return window.GetConfigurationProfile().SetSelectedKey(configurationDataType);
+            if (!window.GetConfigurationProfile().SetSelectedKey(configurationDataType))
+            {
+                window.Close();
+                return false;
+            }
+            return true;
         }
     }
 

@@ -124,10 +124,8 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodes\LevelUnlockStartNode.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\LevelAvailabilityTimelineManagerV2.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelAvailabilityNodeEditorProfile.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelAvailabilityTimelineInitializerV2.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelAvailabilityTimelineNodeID.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelUnlockNodeV2.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\AbstractLevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkType.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
