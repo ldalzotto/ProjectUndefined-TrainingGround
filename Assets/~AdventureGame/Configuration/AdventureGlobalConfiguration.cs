@@ -7,6 +7,7 @@ namespace AdventureGame
 
     #region Item Configuration
 
+    /*
     public class ItemContextActionBuilder
     {
         public static List<AContextAction> BuilItemContextActions(Item item)
@@ -22,6 +23,7 @@ namespace AdventureGame
         }
     }
 
+    */
     #endregion
 
     #region Context Action Wheel Configuration

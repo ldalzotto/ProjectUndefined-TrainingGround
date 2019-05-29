@@ -7,10 +7,10 @@ namespace AdventureGame
     public class InteractAction : AContextAction
     {
 
-        private Item involvedItem;
+        private ItemID involvedItem;
         private bool InteractionResolved;
 
-        public InteractAction(Item involvedItem, AContextAction nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
+        public InteractAction(ItemID involvedItem, AContextAction nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
         {
             this.involvedItem = involvedItem;
         }

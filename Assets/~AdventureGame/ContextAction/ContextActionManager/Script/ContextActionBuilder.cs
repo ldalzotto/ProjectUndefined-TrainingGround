@@ -60,9 +60,9 @@ namespace AdventureGame
             {
                 var giveAction = (GiveAction)contextAction;
                 var giveActionInput = (GiveActionInput)contextActionInput;
-                if (giveAction.ItemGiven != null && giveActionInput.TargetPOI != null)
+                if (giveActionInput.TargetPOI != null)
                 {
-                    return new GiveScenarioAction(giveAction.ItemGiven.ItemID, giveActionInput.TargetPOI.PointOfInterestId);
+                    return new GiveScenarioAction(giveAction.ItemGiven, giveActionInput.TargetPOI.PointOfInterestId);
                 }
                 else
                 {

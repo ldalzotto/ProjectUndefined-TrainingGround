@@ -101,6 +101,30 @@ namespace AdventureGame
         };
     }
 
+    public class CrowBar_InventoryScenarioNode : TimelineNode<GhostsPOIManager>, Level1TimelineNode
+    {
+        public override Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>> TransitionRequirements => new Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>>();
+
+        public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnStartNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>()
+        {
+            new AddInventoryItemGiveAction(ItemID.CROWBAR, PointOfInterestId.CROWBAR_INVENTORY, new InteractAction(ItemID.CROWBAR, new CutsceneTimelineAction(CutsceneId.PLAYER_OPEN_SEWER, null)) )
+        };
+
+        public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();
+    }
+
+    public class IdCard_InventoryScenarioNode : TimelineNode<GhostsPOIManager>, Level1TimelineNode
+    {
+        public override Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>> TransitionRequirements => new Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>>();
+
+        public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnStartNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>()
+        {
+            new AddInventoryItemGiveAction(ItemID.ID_CARD, PointOfInterestId.ID_CARD_INVENTORY,new GiveAction(ItemID.ID_CARD, null))
+        };
+
+        public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();
+    }
+
     #endregion
 
     #region DiscussionScenarioNode

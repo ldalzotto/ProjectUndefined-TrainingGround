@@ -20,10 +20,6 @@ namespace AdventureGame
         [Header("Player FX")]
         public TriggerableEffect PlayerSmokeEffectPrefab;
 
-        [Header("Inventory Items Prefabs")]
-        public Item IdCardItem;
-        public Item CrowBarItem;
-
         [Header("Item Grab Popup")]
         public ItemReceivedPopup ItemReceivedPopup;
 

@@ -105,9 +105,9 @@ namespace AdventureGame
         {
             InventoryCellContainer.AddItemToFreeCell(item);
         }
-        public void OnItemDeleted(Item item)
+        public void OnItemDeleted(ItemID itemID)
         {
-            InventoryCellContainer.DeleteItemFromMenu(item);
+            InventoryCellContainer.DeleteItemFromMenu(itemID);
         }
         public Item GetCurrentSelectedItem()
         {
@@ -301,14 +301,14 @@ namespace AdventureGame
             }
         }
 
-        public void DeleteItemFromMenu(Item deletedItem)
+        public void DeleteItemFromMenu(ItemID deletedItem)
         {
             for (var h = 0; h < height; h++)
             {
                 for (var w = 0; w < width; w++)
                 {
                     var inventoryCell = GetCell(w, h);
-                    if (inventoryCell.AssociatedItem != null && inventoryCell.AssociatedItem.ItemID == deletedItem.ItemID)
+                    if (inventoryCell.AssociatedItem != null && inventoryCell.AssociatedItem.ItemID == deletedItem)
                     {
                         inventoryCell.ClearCell();
                         return;

@@ -9,11 +9,11 @@ namespace AdventureGame
 
     public class GiveAction : AContextAction
     {
-        private Item itemGiven;
+        private ItemID itemGiven;
         private bool isActionEnded;
         private bool itemSuccesfullyGiven;
 
-        public Item ItemGiven { get => itemGiven; }
+        public ItemID ItemGiven { get => itemGiven; }
 
         #region External Dependencies
         private InventoryEventManager InventoryEventManager;
@@ -37,7 +37,7 @@ namespace AdventureGame
         }
         #endregion
 
-        public GiveAction(Item itemGiven, AContextAction nextAction) : base(nextAction)
+        public GiveAction(ItemID itemGiven, AContextAction nextAction) : base(nextAction)
         {
             this.itemGiven = itemGiven;
             contextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
@@ -53,8 +53,9 @@ namespace AdventureGame
 
             #region External Dependencies
             this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
-            GiveActionAnimationManager = new GiveActionAnimationManager(itemGiven);
+            GiveActionAnimationManager = new GiveActionAnimationManager(itemGiven, AdventureGameConfigurationManager);
 
             //reset
             isActionEnded = false;
@@ -63,7 +64,7 @@ namespace AdventureGame
 
             if (IsIemGivenElligibleToGive(giveActionInput))
             {
-                this.itemGiven.StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, () =>
+                Coroutiner.Instance.StartCoroutine(GiveActionAnimationManager.Start(giveActionInput, () =>
                 {
                     this.OnGiveAnimationEnd();
                 }));
@@ -71,7 +72,7 @@ namespace AdventureGame
             }
             else
             {
-                this.itemGiven.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
+                Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.Play(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
                 {
                     {
                         this.OnGiveAnimationEnd();
@@ -115,11 +116,13 @@ namespace AdventureGame
     #region Give Action Animation
     class GiveActionAnimationManager
     {
-        private Item ItemGiven;
+        private ItemID ItemGiven;
+        private AdventureGameConfigurationManager AdventureGameConfigurationManager;
 
-        public GiveActionAnimationManager(Item itemGiven)
+        public GiveActionAnimationManager(ItemID itemGiven, AdventureGameConfigurationManager AdventureGameConfigurationManager)
         {
             ItemGiven = itemGiven;
+            this.AdventureGameConfigurationManager = AdventureGameConfigurationManager;
         }
 
         private Animator PlayerAnimator;
@@ -146,7 +149,7 @@ namespace AdventureGame
                 var rightHandBoneTransform = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, PlayerAnimator).transform;
                 var scaleFactor = Vector3.one;
                 ComponentSearchHelper.ComputeScaleFactorRecursively(rightHandBoneTransform, PlayerAnimator.transform, ref scaleFactor);
-                DisplayedItemModel = GiveActionMiniatureInstanciate.Instance(ItemGiven.ItemInherentData.ItemModel, rightHandBoneTransform, scaleFactor);
+                DisplayedItemModel = GiveActionMiniatureInstanciate.Instance(this.AdventureGameConfigurationManager.ItemConf()[ItemGiven].ItemModel, rightHandBoneTransform, scaleFactor);
             }
         }
 

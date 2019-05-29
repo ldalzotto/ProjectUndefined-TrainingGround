@@ -73,13 +73,13 @@ namespace AdventureGame
         }
 
         #region Logical Conditions
-        public bool IsElligibleToGiveItem(Item itemToGive)
+        public bool IsElligibleToGiveItem(ItemID itemToGive)
         {
-            return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligible(itemToGive.ItemID);
+            return pointOfInterestScenarioState != null && pointOfInterestScenarioState.ReceivableItemsComponent != null && pointOfInterestScenarioState.ReceivableItemsComponent.IsElligible(itemToGive);
         }
-        public bool IsInteractableWithItem(Item involvedItem)
+        public bool IsInteractableWithItem(ItemID involvedItem)
         {
-            return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligible(involvedItem.ItemID);
+            return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligible(involvedItem);
         }
         #endregion
 

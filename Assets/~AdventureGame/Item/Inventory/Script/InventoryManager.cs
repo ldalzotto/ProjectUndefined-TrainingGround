@@ -98,9 +98,9 @@ namespace AdventureGame
         {
             InventoryStateWorkflowManager.OnContextActionFinished();
         }
-        public void OnItemGiven(Item item)
+        public void OnItemGiven(ItemID itemID)
         {
-            StartCoroutine(InventoryItemManager.OnItemDelete(item));
+            StartCoroutine(InventoryItemManager.OnItemDelete(itemID));
         }
 
         #endregion
@@ -148,7 +148,7 @@ namespace AdventureGame
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
-                    ContextActionWheelEventManager.OnWheelEnabled(currentSelectedItem.ContextActions, WheelTriggerSource.INVENTORY_MENU);
+                    ContextActionWheelEventManager.OnWheelEnabled(currentSelectedItem.GetContextActions(), WheelTriggerSource.INVENTORY_MENU);
                     InventoryStateWorkflowManager.IsInventoryActionWheelDisplayed = true;
                     return true;
                 }
@@ -206,15 +206,15 @@ namespace AdventureGame
             return itemGameObject;
         }
 
-        public IEnumerator OnItemDelete(Item itemToDelete)
+        public IEnumerator OnItemDelete(ItemID itemToDelete)
         {
             foreach (Transform possessedItemTransform in InventoryItemsContainer.transform)
             {
                 Item possessedItem = possessedItemTransform.GetComponent<Item>();
-                if (possessedItem.ItemID == itemToDelete.ItemID)
+                if (possessedItem.ItemID == itemToDelete)
                 {
                     yield return new WaitForEndOfFrame();
-                    MonoBehaviour.Destroy(itemToDelete.gameObject);
+                    MonoBehaviour.Destroy(possessedItem.gameObject);
                 }
             }
         }

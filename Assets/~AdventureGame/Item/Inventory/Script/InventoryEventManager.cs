@@ -36,7 +36,7 @@ namespace AdventureGame
             InventoryMenu.OnInventoryDisabled();
         }
 
-        public void OnItemGiven(Item givenItem)
+        public void OnItemGiven(ItemID givenItem)
         {
             InventoryManager.OnItemGiven(givenItem);
             InventoryMenu.OnItemDeleted(givenItem);

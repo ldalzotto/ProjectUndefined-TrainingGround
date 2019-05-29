@@ -79,9 +79,9 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnGrabbableItemAdd(ItemID itemID, AContextAction contextActionToAdd)
+        public void OnContextActionAdd(ItemID itemID, AContextAction contextActionToAdd)
         {
-            contextActionSynchronizerManager.OnGrabbableItemAdded(itemID, contextActionToAdd);
+            contextActionSynchronizerManager.OnContextActionAdd(itemID, contextActionToAdd);
         }
         public void OnGrabbableItemRemove(ItemID itemId)
         {
@@ -115,6 +115,12 @@ namespace AdventureGame
             }
             PointOfInterestScenarioState.InteractableItemsComponent.Add(itemID);
         }
+
+        public void OnInventoryItemGiveActionAdd(ItemID itemID, AContextAction contextActionToAdd)
+        {
+
+        }
+
         public void OnInteractableItemRemove(ItemID itemID)
         {
             if (PointOfInterestScenarioState.InteractableItemsComponent != null)
@@ -144,7 +150,7 @@ namespace AdventureGame
             }
         }
 
-        public void OnGrabbableItemAdded(ItemID itemId, AContextAction contextActionToAdd)
+        public void OnContextActionAdd(ItemID itemId, AContextAction contextActionToAdd)
         {
             var key = itemId.ToString();
             ContextActionAddSilently(contextActionToAdd, key);
