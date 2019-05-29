@@ -146,7 +146,7 @@ namespace AdventureGame
                 var rightHandBoneTransform = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, PlayerAnimator).transform;
                 var scaleFactor = Vector3.one;
                 ComponentSearchHelper.ComputeScaleFactorRecursively(rightHandBoneTransform, PlayerAnimator.transform, ref scaleFactor);
-                DisplayedItemModel = GiveActionMiniatureInstanciate.Instance(ItemGiven.ItemModel, rightHandBoneTransform, scaleFactor);
+                DisplayedItemModel = GiveActionMiniatureInstanciate.Instance(ItemGiven.ItemInherentData.ItemModel, rightHandBoneTransform, scaleFactor);
             }
         }
 

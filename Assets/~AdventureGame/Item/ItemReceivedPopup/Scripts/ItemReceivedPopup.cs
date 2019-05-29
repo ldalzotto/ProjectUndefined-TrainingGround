@@ -26,11 +26,15 @@ namespace AdventureGame
             var popupIcon = ((RectTransform)gameObject.FindChildObjectRecursively(PopupImageObjectName).transform).GetComponent<Image>();
             #endregion
 
+            #region External Dependencies
+            var adventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            #endregion
+
             ItemReceivedPopupDimensionsManager = new ItemReceivedPopupDimensionsManager(ItemReceivedPopupDimensionsComponent, (RectTransform)transform, popupContentTransform);
             DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, popupText);
             ItemReceivedPopupAnimationManager = new ItemReceivedPopupAnimationManager(GetComponent<Animator>());
             popupIcon.sprite = ItemResourceResolver.ResolveItemInventoryIcon(involvedItem);
-            this.OnDiscussionTextStartWriting(ItemReceivedDescriptionTextConstants.ItemReceivedDescriptionText[involvedItem.ItemID]);
+            this.OnDiscussionTextStartWriting(adventureGameConfigurationManager.ItemConf()[involvedItem.ItemID].ItemReceivedDescriptionText);
         }
 
         public void Tick(float d)

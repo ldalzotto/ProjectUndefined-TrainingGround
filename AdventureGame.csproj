@@ -66,10 +66,14 @@
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderBehavior.cs" />
     <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\Level1\Level1Configuration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\Level1\TestSceneDiscussionTimelineInitialisation.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\Level1\TestSceneInitialisation.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\AnimationActions\AnimatorAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\AnimationActions\CutsceneTimelineAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />

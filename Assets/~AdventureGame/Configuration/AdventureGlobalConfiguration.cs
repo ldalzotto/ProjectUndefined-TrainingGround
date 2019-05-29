@@ -22,14 +22,6 @@ namespace AdventureGame
     #endregion
 
     #region Item Configuration
-    [System.Serializable]
-    public enum ItemID
-    {
-        NONE = 0,
-        DUMMY_ITEM = 1,
-        ID_CARD = 2,
-        CROWBAR = 5
-    }
 
     public class ItemContextActionBuilder
     {
@@ -46,14 +38,6 @@ namespace AdventureGame
         }
     }
 
-    public class ItemReceivedDescriptionTextConstants
-    {
-        public static Dictionary<ItemID, string> ItemReceivedDescriptionText = new Dictionary<ItemID, string>()
-    {
-        { ItemID.ID_CARD, "A dummy id card."},
-        {ItemID.CROWBAR, "A bar." }
-    };
-    }
     #endregion
 
     #region Context Action Wheel Configuration

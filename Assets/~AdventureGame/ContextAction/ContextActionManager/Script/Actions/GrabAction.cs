@@ -26,7 +26,10 @@ namespace AdventureGame
 
         public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
         {
-            Item = PrefabContainer.InventoryItemsPrefabs[itemId];
+            #region External Dependencies
+            var adventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            #endregion
+            Item = adventureGameConfigurationManager.ItemConf()[itemId].ItemPrefab;
             this.deletePOIOnGrab = deletePOIOnGrab;
         }
 

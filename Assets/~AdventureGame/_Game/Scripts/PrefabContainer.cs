@@ -30,8 +30,6 @@ namespace AdventureGame
         [Header("Car Prefab")]
         public CarManager CarManagerPrefab;
 
-        public static Dictionary<ItemID, Item> InventoryItemsPrefabs;
-
         public static PrefabContainer Instance
         {
             get
@@ -44,14 +42,6 @@ namespace AdventureGame
             }
         }
 
-        private void Awake()
-        {
-            InventoryItemsPrefabs = new Dictionary<ItemID, Item>()
-        {
-            {ItemID.ID_CARD,  IdCardItem},
-            {ItemID.CROWBAR,  CrowBarItem}
-        };
-        }
     }
 
 }
