@@ -33,6 +33,7 @@ namespace AdventureGame
 
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
+            this.PointOfInterestInitialisation();
             PlayerManager = FindObjectOfType<PlayerManager>();
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
@@ -45,7 +46,7 @@ namespace AdventureGame
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             AdventureLevelChunkFXTransitionManager.Init();
             PlayerManager.Init();
-            StartCoroutine(PointIsInterestInitialisationAtEndOfFrame());
+            StartCoroutine(PointOfInterestInitialisationAtEndOfFrame());
             InventoryManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             FindObjectOfType<PointOfInterestEventManager>().Init();
@@ -98,9 +99,21 @@ namespace AdventureGame
             }
         }
 
-        private IEnumerator PointIsInterestInitialisationAtEndOfFrame()
+        private IEnumerator PointOfInterestInitialisationAtEndOfFrame()
         {
             yield return new WaitForEndOfFrame();
+            var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
+            if (allActivePOI != null)
+            {
+                for (var i = 0; i < allActivePOI.Length; i++)
+                {
+                    allActivePOI[i].Init_EndOfFrame();
+                }
+            }
+        }
+
+        private void PointOfInterestInitialisation()
+        {
             var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
             if (allActivePOI != null)
             {

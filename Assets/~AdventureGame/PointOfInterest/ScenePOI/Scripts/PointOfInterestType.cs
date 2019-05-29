@@ -8,13 +8,13 @@ namespace AdventureGame
     public class PointOfInterestType : MonoBehaviour
     {
         public PointOfInterestId PointOfInterestId;
-        public bool InteractionWithPlayerAllowed = true;
-        public float MaxDistanceToInteractWithPlayer;
 
         #region Internal Depencies
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestContextDataContainer PointOfInterestContextData;
+
+        private PointOfInterestInherentData PointOfInterestInherentData;
         #endregion
 
         #region External Dependencies
@@ -26,15 +26,37 @@ namespace AdventureGame
 
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
 
+        #region Data Retrieval
+        public float GetMaxDistanceToInteractWithPlayer()
+        {
+            return this.PointOfInterestInherentData.MaxDistanceToInteractWithPlayer;
+        }
+        public bool IsInteractionWithPlayerAllowed()
+        {
+            return this.PointOfInterestInherentData.InteractionWithPlayerAllowed;
+        }
+        #endregion
+
         public void Init()
         {
             #region External Dependencies
-            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.PointOfInterestContextData = GetComponentInChildren<PointOfInterestContextDataContainer>();
+
+            Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
+            this.PointOfInterestInherentData = AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
+        }
+
+        public void Init_EndOfFrame()
+        {
+            #region External Dependencies
+            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            #endregion
+         
             PointOfInterestEventManager.OnPOICreated(this);
         }
 

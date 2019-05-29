@@ -5,7 +5,7 @@ using RTPuzzle;
 using System.Collections.Generic;
 using System.Linq;
 using Editor_GameDesigner;
-
+using CoreGame;
 
 namespace Editor_GameCustomEditors
 {
@@ -44,7 +44,7 @@ namespace Editor_GameCustomEditors
         {
             if (GUILayout.Button("OPEN CONFIGURATION"))
             {
-                PuzzleGameConfigurationEditorV2.OpenToDesiredConfiguration(typeof(AIComponentsConfiguration));
+                CoreGameConfigurationEditor.OpenToDesiredConfiguration<PuzzleGameConfigurationEditorV2>(typeof(AIComponentsConfiguration));
             }
             if (GUILayout.Button("EDIT IN DESIGNER"))
             {

@@ -9,6 +9,8 @@ namespace CoreGame
 {
     public class AdventureGameConfigurationEditor : ConfigurationEditorWindowV2<AdventureGameConfigurationEditorProfile>
     {
+        public AdventureGameConfigurationEditor() { }
+
         [MenuItem("Configuration/AdventureGameConfigurationEditor")]
         static void Init()
         {

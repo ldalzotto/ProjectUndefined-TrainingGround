@@ -74,6 +74,8 @@
     <Compile Include="Assets\~AdventureGame\Configuration\Level1\TestSceneInitialisation.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestConfiguration.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\AnimationActions\AnimatorAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\AnimationActions\CutsceneTimelineAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />

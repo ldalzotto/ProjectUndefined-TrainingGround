@@ -13,6 +13,11 @@ namespace AdventureGame
             return AdventureGameConfiguration.ItemConfiguration.ConfigurationInherentData;
         }
 
+        public Dictionary<PointOfInterestId, PointOfInterestInherentData> POIConf()
+        {
+            return AdventureGameConfiguration.PointOfInterestConfiguration.ConfigurationInherentData;
+        }
+
     }
 
 }

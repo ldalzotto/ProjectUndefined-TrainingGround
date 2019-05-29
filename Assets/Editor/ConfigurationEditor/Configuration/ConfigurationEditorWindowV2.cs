@@ -6,8 +6,13 @@ using UnityEngine;
 namespace ConfigurationEditor
 {
 
+    public interface IConfigurationEditorWindowV2
+    {
+        IAbstractTreePickerGUI GetTreePicker();
+    }
+
     [System.Serializable]
-    public abstract class ConfigurationEditorWindowV2<T> : EditorWindow where T : TreeChoiceHeaderTab<IGenericConfigurationEditor>
+    public abstract class ConfigurationEditorWindowV2<T> : EditorWindow, IConfigurationEditorWindowV2 where T : TreeChoiceHeaderTab<IGenericConfigurationEditor>
     {
 
         [SerializeField] private Vector2 scrollPosition;
@@ -60,6 +65,11 @@ namespace ConfigurationEditor
         public T GetConfigurationProfile()
         {
             return ConfigurationProfile;
+        }
+
+        public IAbstractTreePickerGUI GetTreePicker()
+        {
+            return (IAbstractTreePickerGUI)ConfigurationProfile;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace AdventureGame
     public class AdventureGameConfiguration : GameConfiguration
     {
         public ItemConfiguration ItemConfiguration;
+        public PointOfInterestConfiguration PointOfInterestConfiguration;
     }
 
 }

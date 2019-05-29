@@ -348,7 +348,7 @@ namespace AdventureGame
             nearestInRangeInteractabledPointOfInterest = null;
             if (nearestInRangePointOfInterest != null)
             {
-                if (Vector3.Distance(PlayerTransform.position, nearestInRangePointOfInterest.transform.position) <= nearestInRangePointOfInterest.MaxDistanceToInteractWithPlayer)
+                if (Vector3.Distance(PlayerTransform.position, nearestInRangePointOfInterest.transform.position) <= nearestInRangePointOfInterest.GetMaxDistanceToInteractWithPlayer())
                 {
                     nearestInRangeInteractabledPointOfInterest = nearestInRangePointOfInterest;
                 }
@@ -625,7 +625,7 @@ namespace AdventureGame
             if (PlayerTransform != null && nearestPOI != null)
             {
                 Gizmos.color = Color.green;
-                Gizmos.DrawRay(nearestPOI.transform.position, (PlayerTransform.position - nearestPOI.transform.position).normalized * nearestPOI.MaxDistanceToInteractWithPlayer);
+                Gizmos.DrawRay(nearestPOI.transform.position, (PlayerTransform.position - nearestPOI.transform.position).normalized * nearestPOI.GetMaxDistanceToInteractWithPlayer());
             }
         }
     }

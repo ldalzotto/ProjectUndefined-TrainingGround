@@ -12,7 +12,7 @@ namespace ConfigurationEditor
     {
         public override void OnInspectorGUI()
         {
-            if(GUILayout.Button("OPEN IN EDITOR"))
+            if (GUILayout.Button("OPEN IN EDITOR"))
             {
                 OpenConfigurationEditor(this.target.GetType());
             }
@@ -21,11 +21,14 @@ namespace ConfigurationEditor
 
         public static void OpenConfigurationEditor(Type targetType)
         {
-            if (!PuzzleGameConfigurationEditorV2.OpenToDesiredConfiguration(targetType))
+            if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration<PuzzleGameConfigurationEditorV2>(targetType))
             {
-                if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration(targetType))
+                if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration<CoreGameConfigurationEditor>(targetType))
                 {
-                    Debug.LogError("Configuration not found.");
+                    if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration<AdventureGameConfigurationEditor>(targetType))
+                    {
+                        Debug.LogError("Configuration not found.");
+                    }
                 }
             }
         }

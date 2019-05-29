@@ -89,7 +89,7 @@ namespace AdventureGame
 
         public void OnPOICreated(PointOfInterestType POICreated)
         {
-            if (POICreated.InteractionWithPlayerAllowed)
+            if (POICreated.IsInteractionWithPlayerAllowed())
             {
                 activePointOfInterests.Add(POICreated);
             }
@@ -102,7 +102,7 @@ namespace AdventureGame
 
         public void OnPOIDestroyed(PointOfInterestType POITobeDestroyed)
         {
-            if (POITobeDestroyed.InteractionWithPlayerAllowed)
+            if (POITobeDestroyed.IsInteractionWithPlayerAllowed())
             {
                 activePointOfInterests.Remove(POITobeDestroyed);
             }

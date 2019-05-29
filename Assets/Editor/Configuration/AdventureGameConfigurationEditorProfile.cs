@@ -11,7 +11,8 @@ public class AdventureGameConfigurationEditorProfile : TreeChoiceHeaderTab<IGene
 
     public static Dictionary<string, IGenericConfigurationEditor> ConfigurationProfile = new Dictionary<string, IGenericConfigurationEditor>()
     {
-        {"Item//" + typeof(ItemConfiguration).Name, new GenericConfigurationEditor<ItemID, ItemInherentData>("t:"+ typeof(ItemConfiguration).Name) }
+        {"Item//" + typeof(ItemConfiguration).Name, new GenericConfigurationEditor<ItemID, ItemInherentData>("t:"+ typeof(ItemConfiguration).Name) },
+        {"POI//" + typeof(PointOfInterestConfiguration).Name, new GenericConfigurationEditor<PointOfInterestId, PointOfInterestInherentData>("t:"+ typeof(PointOfInterestConfiguration).Name) }
     };
 
     public override Dictionary<string, IGenericConfigurationEditor> Configurations => this.myConfig;

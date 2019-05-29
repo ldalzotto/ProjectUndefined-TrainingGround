@@ -21,11 +21,13 @@ namespace CoreGame
             window.Show();
         }
 
-        public static bool OpenToDesiredConfiguration(Type configurationDataType)
+        public static bool OpenToDesiredConfiguration<T>(Type configurationDataType) where T : EditorWindow
         {
             Init();
-            var window = EditorWindow.GetWindow<CoreGameConfigurationEditor>();
-            if (!window.GetConfigurationProfile().SetSelectedKey(configurationDataType))
+            var window = EditorWindow.GetWindow<T>();
+            var castedWindow = (IConfigurationEditorWindowV2)window;
+            castedWindow.GetTreePicker().Init(() => { window.Repaint(); });
+            if (!castedWindow.GetTreePicker().SetSelectedKey(configurationDataType))
             {
                 window.Close();
                 return false;

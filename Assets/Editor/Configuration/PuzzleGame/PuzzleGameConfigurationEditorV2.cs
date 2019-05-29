@@ -20,6 +20,7 @@ namespace RTPuzzle
             window.Show();
         }
 
+        /*
         public static bool OpenToDesiredConfiguration(Type configurationDataType)
         {
             Init();
@@ -32,6 +33,7 @@ namespace RTPuzzle
             }
             return true;
         }
+        */
 
     }
 

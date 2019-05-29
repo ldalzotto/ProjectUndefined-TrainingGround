@@ -6,8 +6,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+public interface IAbstractTreePickerGUI
+{
+    void SetSelectedKey(string newSelectedKey);
+    bool SetSelectedKey(Type valueType);
+    void Init(Action repaintAction);
+}
+
 [System.Serializable]
-public abstract class AbstractTreePickerGUI<T> : SerializedScriptableObject
+public abstract class AbstractTreePickerGUI<T> : SerializedScriptableObject, IAbstractTreePickerGUI
 {
     public abstract Dictionary<string, T> Configurations { get; }
 
