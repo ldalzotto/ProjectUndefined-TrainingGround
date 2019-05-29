@@ -37,10 +37,16 @@ namespace Editor_LevelAvailabilityNodeEditor
         }
 
         private Color customNodeColor = new Color(1, 0.5f, 0);
+        private Vector2 baseNodeSize = new Vector2(120,100);
 
         protected override Color NodeColor()
         {
             return this.customNodeColor;
+        }
+
+        protected override Vector2 Size()
+        {
+            return this.baseNodeSize;
         }
 
         protected override string NodeTitle()

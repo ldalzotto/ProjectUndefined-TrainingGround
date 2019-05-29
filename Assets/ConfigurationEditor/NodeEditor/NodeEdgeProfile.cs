@@ -51,8 +51,6 @@ namespace NodeGraph
 
         public void GUIEdgeRectangles(Rect parentNodeRect)
         {
-
-
             var oldBackground = GUI.backgroundColor;
             if (this.IsSelected)
             {
@@ -63,6 +61,7 @@ namespace NodeGraph
                 GUI.backgroundColor = this.EdgeColor();
             }
 
+            EditorGUI.BeginChangeCheck();
 
             var verticalBound = EditorGUILayout.BeginVertical(GUI.skin.box);
             this.GUI_Impl(this.Bounds);
@@ -72,7 +71,11 @@ namespace NodeGraph
             this.Bounds.size = verticalBound.size;
 
             GUI.backgroundColor = oldBackground;
-            EditorUtility.SetDirty(this);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(this);
+            }
         }
 
         public void GUIConnectionLines()
@@ -131,6 +134,8 @@ namespace NodeGraph
                         NodeEdge.BackwardConnectedNodeEdges.Add(this);
                     }
 
+                    EditorUtility.SetDirty(NodeEdge);
+                    EditorUtility.SetDirty(this);
                 }
             }
         }
@@ -157,9 +162,11 @@ namespace NodeGraph
                         }
                     }
                     connectedEdges.BackwardConnectedNodeEdges = null;
+                    EditorUtility.SetDirty(connectedEdges);
                 }
             }
             this.ConnectedNodeEdges.Clear();
+            EditorUtility.SetDirty(this);
         }
 
         public void ClearConnection(NodeEdgeProfile removedEdgeConnection)
@@ -175,6 +182,7 @@ namespace NodeGraph
             if (remove)
             {
                 this.ConnectedNodeEdges.Remove(removedEdgeConnection);
+                EditorUtility.SetDirty(this);
             }
         }
 
@@ -189,11 +197,12 @@ namespace NodeGraph
                     if (edgeToDeleteReference != null)
                     {
                         BackwardConnectedNodeEdge.ConnectedNodeEdges.Remove(this);
+                        EditorUtility.SetDirty(BackwardConnectedNodeEdge);
                     }
                 }
 
                 this.BackwardConnectedNodeEdges.Clear();
-
+                EditorUtility.SetDirty(this);
             }
 
         }

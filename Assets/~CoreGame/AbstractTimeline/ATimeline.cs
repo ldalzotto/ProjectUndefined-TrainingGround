@@ -247,9 +247,15 @@ namespace CoreGame
                     {
                         if (computedNode != null)
                         {
-                            nextTimelineNodes.Add(computedNode);
+                            if (!nextTimelineNodes.Contains(computedNode))
+                            {
+                                nextTimelineNodes.Add(computedNode);
+                            }
                         }
-                        oldTimelineNodes.Add(nodeId);
+                        if (!oldTimelineNodes.Contains(nodeId))
+                        {
+                            oldTimelineNodes.Add(nodeId);
+                        }
                     }
                 }
             }
@@ -270,6 +276,8 @@ namespace CoreGame
             }
         }
     }
+
+    [Obsolete("This timeline must be switched to V2")]
     public abstract class TimelineInitializer<T> : MonoBehaviour
     {
         private bool hasBeenInit;
@@ -295,6 +303,7 @@ namespace CoreGame
     [System.Serializable]
     public abstract class TimelineInitializerScriptableObject : SerializedScriptableObject { }
 
+    [Obsolete("This timeline must be switched to V2")]
     [System.Serializable]
     public abstract class TimelineNode<T>
     {
@@ -365,6 +374,7 @@ namespace CoreGame
 
     }
 
+    [Obsolete("This timeline must be switched to V2")]
     [System.Serializable]
     public abstract class TimelineNodeWorkflowAction<T>
     {

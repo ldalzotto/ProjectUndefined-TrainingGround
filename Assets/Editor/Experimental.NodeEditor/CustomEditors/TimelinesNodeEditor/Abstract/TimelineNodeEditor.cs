@@ -14,9 +14,9 @@ namespace Editor_LevelAvailabilityNodeEditor
                     where TIMELINE_INITIALIZER : TimelineInitializerV2<TIMELINE_CONTEXT, NODE_KEY> //TimelineInitializerV2<LevelAvailabilityManager, LevelAvailabilityTimelineNodeID>
     {
 
-        public static void Init(NodeEditorProfile nodeEditorProfile)
+        public static void Init(NodeEditorProfile nodeEditorProfile, Type timelineNodeEditorType)
         {
-            LevelAvailabilityNodeEditor window = (LevelAvailabilityNodeEditor)EditorWindow.GetWindow(typeof(LevelAvailabilityNodeEditor));
+            TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY> window = (TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY>)EditorWindow.GetWindow(timelineNodeEditorType);
             nodeEditorProfile.Init();
             window.NodeEditorProfile = nodeEditorProfile;
             window.Show();

@@ -20,7 +20,7 @@ namespace Experimental.Editor_NodeEditor
                 }
                 else if (this.target.GetType() == typeof(LevelAvailabilityNodeEditorProfile))
                 {
-                    LevelAvailabilityNodeEditor.Init((NodeEditorProfile)this.target);
+                    LevelAvailabilityNodeEditor.Init((NodeEditorProfile)this.target, typeof(LevelAvailabilityNodeEditor));
                 }
                 else
                 {

@@ -77,6 +77,8 @@ namespace NodeGraph
                 GUI.backgroundColor = this.selectedColor;
             }
 
+            EditorGUI.BeginChangeCheck();
+
             GUILayout.BeginArea(this.offsettedBounds, this.NodeTitle(), GUI.skin.window);
             this.currentInnerNodeRect = EditorGUILayout.BeginVertical();
             this.NodeGUI(ref nodeEditorProfileRef);
@@ -84,7 +86,10 @@ namespace NodeGraph
             GUILayout.EndArea();
             GUI.backgroundColor = oldBackGouncColor;
 
-            EditorUtility.SetDirty(this);
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(this);
+            }
         }
 
         protected virtual void NodeGUI(ref NodeEditorProfile nodeEditorProfileRef)
@@ -147,6 +152,7 @@ namespace NodeGraph
         public void Move(Vector2 delta)
         {
             this.Bounds.position += delta;
+            EditorUtility.SetDirty(this);
         }
 
         public NodeEdgeProfile IsContainedInInputEdge(Vector2 position)
