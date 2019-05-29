@@ -117,11 +117,6 @@
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineAction\LevelCompletedTimelineAction.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\LevelAvailabilityTimelineManagerV2.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelAvailabilityTimelineInitializerV2.cs" />
-    <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailabilityV2\Script\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\AbstractLevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkType.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
@@ -148,6 +143,12 @@
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
     <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
+    <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
+    <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineManagerV2.cs" />
+    <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
+    <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineNode\LevelAvailabilityTimelineNodeID.cs" />
+    <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
+    <Compile Include="Assets\~CoreGame\Timelines\TimelinesEventManager.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />

@@ -10,6 +10,7 @@ namespace CoreGame
     {
         void Init();
         void Persist();
+        void IncrementGraph(TimeLineAction executedTimelineAction);
 
     }
     public abstract class ATimelineNodeManager : MonoBehaviour

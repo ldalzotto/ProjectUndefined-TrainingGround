@@ -11,7 +11,7 @@ namespace RTPuzzle
         private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
         private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
-        private LevelAvailabilityTimelineManagerV2 LevelAvailabilityTimelineManager;
+        private TimelinesEventManager TimelinesEventManager;
         #endregion
 
         public void Init()
@@ -20,7 +20,7 @@ namespace RTPuzzle
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
             this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
-            this.LevelAvailabilityTimelineManager = GameObject.FindObjectOfType<LevelAvailabilityTimelineManagerV2>();
+            this.TimelinesEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
         }
 
@@ -98,7 +98,7 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
             this.NPCAIManagerContainer.OnGameOver();
-            this.LevelAvailabilityTimelineManager.IncrementGraph(new LevelCompletedTimelineAction(this.LevelManager.GetCurrentLevel()));
+            this.TimelinesEventManager.OnScenarioActionExecuted(new LevelCompletedTimelineAction(this.LevelManager.GetCurrentLevel()));
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 

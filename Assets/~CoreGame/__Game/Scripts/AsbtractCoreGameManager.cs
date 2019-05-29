@@ -14,6 +14,7 @@ namespace CoreGame
             var Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
 
             this.ATimelinesManager.Init();
+            GameObject.FindObjectOfType<TimelinesEventManager>().Init();
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
         }
 

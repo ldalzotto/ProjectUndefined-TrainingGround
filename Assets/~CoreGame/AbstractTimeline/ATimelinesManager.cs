@@ -33,7 +33,7 @@ namespace CoreGame
             this.InitTimelinesOnStart();
         }
 
-        private ITimelineNodeManager[] GetAllTimelines()
+        public ITimelineNodeManager[] GetAllTimelines()
         {
             return new ITimelineNodeManager[3]
             {

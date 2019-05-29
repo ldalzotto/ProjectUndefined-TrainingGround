@@ -125,7 +125,6 @@
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineNodeAction.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\TimelinesEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\CommonManagers\LinearWayPointFollow.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPoint.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />
