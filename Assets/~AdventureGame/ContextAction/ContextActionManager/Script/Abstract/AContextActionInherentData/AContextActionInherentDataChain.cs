@@ -10,6 +10,31 @@ namespace AdventureGame
     public class AContextActionInherentDataChain : SerializedScriptableObject
     {
         public List<AContextActionInherentData> ContextActionChain;
+
+        public AContextAction BuildContextActionChain()
+        {
+            AContextAction rootContextAction = null;
+            AContextAction lastBuildedContextAction = null;
+
+
+            foreach (var aContextActionInherentData in ContextActionChain)
+            {
+                if (rootContextAction == null)
+                {
+                    rootContextAction = aContextActionInherentData.BuildContextAction();
+                    lastBuildedContextAction = rootContextAction;
+                }
+                else
+                {
+                    var buildedContextAction = aContextActionInherentData.BuildContextAction();
+                    lastBuildedContextAction.SetNextContextAction(buildedContextAction);
+                    lastBuildedContextAction = buildedContextAction;
+                }
+            }
+
+            return rootContextAction;
+        }
+
     }
 
 }

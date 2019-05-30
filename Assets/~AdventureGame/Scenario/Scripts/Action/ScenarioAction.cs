@@ -1,18 +1,29 @@
 ﻿
 using CoreGame;
 
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEngine;
+#endif
+
 namespace AdventureGame
 {
 
+    [System.Serializable]
     public class GrabScenarioAction : TimeLineAction
     {
-        public ItemID ItemInvolved { get; }
-        public PointOfInterestId PoiInvolved { get; }
+        public ItemID ItemInvolved { get => itemInvolved; }
+        public PointOfInterestId PoiInvolved { get => poiInvolved; }
+
+        [SerializeField]
+        private ItemID itemInvolved;
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
 
         public GrabScenarioAction(ItemID itemInvolved, PointOfInterestId poiInvolved)
         {
-            this.ItemInvolved = itemInvolved;
-            this.PoiInvolved = poiInvolved;
+            this.itemInvolved = itemInvolved;
+            this.poiInvolved = poiInvolved;
         }
 
         public override bool Equals(object obj)
@@ -36,10 +47,13 @@ namespace AdventureGame
             return "GrabScenarioAction. " + " Item involved : " + ItemInvolved.ToString() + ", POIInvolved : " + PoiInvolved.ToString();
         }
 
+#if UNITY_EDITOR
         public void NodeGUI()
         {
-           
+            this.itemInvolved = (ItemID)EditorGUILayout.EnumPopup("ITEM : ", this.itemInvolved);
+            this.poiInvolved = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ", this.poiInvolved);
         }
+#endif
     }
 
     public class GiveScenarioAction : TimeLineAction
@@ -77,7 +91,7 @@ namespace AdventureGame
 
         public void NodeGUI()
         {
-          
+
         }
     }
 
@@ -109,20 +123,26 @@ namespace AdventureGame
 
         public void NodeGUI()
         {
-         
+
         }
     }
 
     public class CutsceneTimelineScenarioAction : TimeLineAction
     {
-        public CutsceneId CutsceneId;
-        public PointOfInterestId TargetedPOI;
+        public CutsceneId CutsceneId { get => cutsceneId; }
+        public PointOfInterestId TargetedPOI { get => targetedPOI; }
+
+        [SerializeField]
+        private CutsceneId cutsceneId;
+        [SerializeField]
+        private PointOfInterestId targetedPOI;
 
         public CutsceneTimelineScenarioAction(CutsceneId cutsceneId, PointOfInterestId targetedPOI)
         {
-            CutsceneId = cutsceneId;
-            TargetedPOI = targetedPOI;
+            this.cutsceneId = cutsceneId;
+            this.targetedPOI = targetedPOI;
         }
+
 
         public override bool Equals(object obj)
         {
@@ -140,10 +160,13 @@ namespace AdventureGame
             return hashCode;
         }
 
+#if UNITY_EDITOR
         public void NodeGUI()
         {
-           
+            this.cutsceneId = (CutsceneId)EditorGUILayout.EnumPopup("Cutscene : ", this.cutsceneId);
+            this.targetedPOI = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ", this.targetedPOI);
         }
+#endif
 
         public override string ToString()
         {

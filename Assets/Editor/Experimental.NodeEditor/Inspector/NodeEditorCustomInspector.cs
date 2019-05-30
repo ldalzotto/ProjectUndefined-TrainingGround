@@ -4,6 +4,7 @@ using UnityEditor;
 using NodeGraph;
 using RTPuzzle;
 using Editor_LevelAvailabilityNodeEditor;
+using Editor_ScenarioNodeEditor;
 
 namespace Experimental.Editor_NodeEditor
 {
@@ -14,6 +15,7 @@ namespace Experimental.Editor_NodeEditor
         {
             if (GUILayout.Button("OPEN IN EDITOR"))
             {
+
                 if (this.target.GetType() == typeof(ConditionGraphEditorProfile))
                 {
                     ConditionNodeEditor.Init((NodeEditorProfile)this.target);
@@ -21,6 +23,10 @@ namespace Experimental.Editor_NodeEditor
                 else if (this.target.GetType() == typeof(LevelAvailabilityNodeEditorProfile))
                 {
                     LevelAvailabilityNodeEditor.Init((NodeEditorProfile)this.target, typeof(LevelAvailabilityNodeEditor));
+                }
+                else if (this.target.GetType() == typeof(ScenarioNodeEditorProfile))
+                {
+                    ScenarioNodeEditor.Init((NodeEditorProfile)this.target, typeof(ScenarioNodeEditor));
                 }
                 else
                 {
