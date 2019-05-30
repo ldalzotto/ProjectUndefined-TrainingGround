@@ -41,7 +41,7 @@ namespace AdventureGame
                     return null;
                 }));
                 //abort context action chain
-                NextContextAction = null;
+                SetNextContextAction(null);
             }
         }
 

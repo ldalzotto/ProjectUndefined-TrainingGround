@@ -1,5 +1,6 @@
 ﻿
 using CoreGame;
+using System.Collections.Generic;
 
 namespace AdventureGame
 {
@@ -132,6 +133,31 @@ namespace AdventureGame
             if (foundedPoi != null)
             {
                 foundedPoi.OnContextActionAdd(this.itemInvolved, this.contextActionToAdd);
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class AddInventoryItemGiveActionV2 : TimelineNodeWorkflowAction<GhostsPOIManager>
+    {
+        private ItemID itemInvolved;
+        private PointOfInterestId poiInvolved;
+
+        private List<AContextActionInherentData> contextActionsDataExecution;
+
+        public AddInventoryItemGiveActionV2(ItemID itemInvolved, PointOfInterestId poiInvolved, List<AContextActionInherentData> contextActionsDataExecution)
+        {
+            this.itemInvolved = itemInvolved;
+            this.poiInvolved = poiInvolved;
+            this.contextActionsDataExecution = contextActionsDataExecution;
+        }
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                foundedPoi.OnContextActionAdd(this.itemInvolved, AContextActionInherentData.BuildContextActionChain(this.contextActionsDataExecution));
             }
         }
     }

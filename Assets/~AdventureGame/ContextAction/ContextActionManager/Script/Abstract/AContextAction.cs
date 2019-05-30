@@ -1,0 +1,75 @@
+﻿using UnityEngine;
+using System.Collections;
+
+namespace AdventureGame
+{
+    [System.Serializable]
+    public abstract class AContextAction
+    {
+        public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
+        public abstract bool ComputeFinishedConditions();
+        public abstract void AfterFinishedEventProcessed();
+        public abstract void Tick(float d);
+
+        protected SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+        private AContextAction nextContextAction;
+
+        #region Internal Dependencies
+        private AContextActionInput contextActionInput;
+        #endregion
+
+        public AContextAction(AContextAction nextAction)
+        {
+            nextContextAction = nextAction;
+        }
+
+        public void OnTick(float d, ContextActionEventManager contextActionEventManager)
+        {
+            if (!isFinished)
+            {
+                Tick(d);
+
+                if (ComputeFinishedConditions())
+                {
+                    isFinished = true;
+                    contextActionEventManager.OnContextActionFinished(this, contextActionInput);
+                    AfterFinishedEventProcessed();
+                }
+            }
+        }
+
+        private bool isFinished;
+
+        public AContextActionInput ContextActionInput { get => contextActionInput; set => contextActionInput = value; }
+        public AContextAction NextContextAction { get => nextContextAction; }
+        public SelectionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId { get => contextActionWheelNodeConfigurationId; set => contextActionWheelNodeConfigurationId = value; }
+
+        public void SetNextContextAction(AContextAction nextContextAction)
+        {
+            this.nextContextAction = nextContextAction;
+        }
+
+        public bool IsFinished()
+        {
+            return isFinished;
+        }
+
+        internal void ResetState()
+        {
+            isFinished = false;
+        }
+
+        #region Logical Conditions
+        public bool IsTalkAction()
+        {
+            return GetType() == typeof(TalkAction);
+        }
+        #endregion
+    }
+
+    [System.Serializable]
+    public abstract class AContextActionInput
+    {
+
+    }
+}

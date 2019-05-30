@@ -12,6 +12,7 @@ public class ReorderableListPropertyDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        ReorderableListAttribute attr = (ReorderableListAttribute)attribute;
         var parentProperty = SerializableObjectHelper.GetParentProperty(property);
 
         position.height *= 3;
@@ -30,7 +31,14 @@ public class ReorderableListPropertyDrawer : PropertyDrawer
                     {
                         rect.y += 2;
                         rect.height -= 5;
-                        EditorGUI.PropertyField(rect, this.rList.serializedProperty.GetArrayElementAtIndex(index), true);
+                        if (attr.DisplayLineLabel)
+                        {
+                            EditorGUI.PropertyField(rect, this.rList.serializedProperty.GetArrayElementAtIndex(index), true);
+                        }
+                        else
+                        {
+                            EditorGUI.PropertyField(rect, this.rList.serializedProperty.GetArrayElementAtIndex(index), GUIContent.none, true);
+                        }
                     };
                     this.rList.elementHeightCallback = (int index) =>
                     {

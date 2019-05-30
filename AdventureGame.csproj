@@ -76,6 +76,9 @@
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestInherentData.cs" />
+    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Abstract\AContextAction.cs" />
+    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Abstract\AContextActionInherentData\AContextActionInherentData.cs" />
+    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Abstract\AContextActionInherentData\AContextActionInherentDataChain.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\AnimationActions\AnimatorAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\AnimationActions\CutsceneTimelineAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\DummyContextAction.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\GrabAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\ItemBasedActions\GiveAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\ItemBasedActions\InteractAction.cs" />
+    <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\ItemBasedActions\InteractActionInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\LevelZones\LevelZoneTransitionAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\Actions\TalkAction.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\ContextActionBuilder.cs" />
