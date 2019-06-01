@@ -1,17 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using CoreGame;
 using Experimental.Editor_NodeEditor;
 using NodeGraph;
-using UnityEditor;
-using System.Collections.Generic;
-using CoreGame;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
     public abstract class TimelineNodeEditor<TIMELINE_INITIALIZER, TIMELINE_CONTEXT, NODE_KEY> : NodeEditor
                     where NODE_KEY : Enum
-                    where TIMELINE_INITIALIZER : TimelineInitializerV2<TIMELINE_CONTEXT, NODE_KEY> //TimelineInitializerV2<LevelAvailabilityManager, LevelAvailabilityTimelineNodeID>
+                    where TIMELINE_INITIALIZER : TimelineInitializerV2<TIMELINE_CONTEXT, NODE_KEY>
     {
 
         public static void Init(NodeEditorProfile nodeEditorProfile, Type timelineNodeEditorType)
@@ -22,9 +22,10 @@ namespace Editor_LevelAvailabilityNodeEditor
             window.Show();
         }
 
+
+
         protected override void OnEnable_Impl()
         {
-
         }
 
         protected override void OnGUI_Impl()
@@ -32,6 +33,13 @@ namespace Editor_LevelAvailabilityNodeEditor
             if (GUILayout.Button("GENERATE", EditorStyles.miniButton, GUILayout.Width(100f)))
             {
                 this.Generate();
+            }
+            if (GUILayout.Button("SEARCH", EditorStyles.miniButton, GUILayout.Width(75f)))
+            {
+                new TimelineNodeSearchTreePicker().OnSearch(ref this.nodeEditorProfile, (int selectedNodeKey) => {
+                    this.OnManuallyNodeSelected(selectedNodeKey);
+                    this.Repaint();
+                });
             }
         }
 
@@ -83,12 +91,43 @@ namespace Editor_LevelAvailabilityNodeEditor
             LevelAvailabilityTimelineInitializerV2.Nodes = nodes;
             Debug.Assert(LevelAvailabilityTimelineInitializerV2.InitialNodes.Count > 0);
 
-            var generationPath = FileUtil.GetAssetDirectoryPath(this.nodeEditorProfile)+ LevelAvailabilityTimelineInitializerV2.GetType().Name + ".asset";
+            var generationPath = FileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + LevelAvailabilityTimelineInitializerV2.GetType().Name + ".asset";
             AssetDatabase.CreateAsset(LevelAvailabilityTimelineInitializerV2, generationPath);
             //update timeline game configuration
             var timelineConfiguration = AssetFinder.SafeSingleAssetFind<TimelineConfiguration>("t:" + typeof(TimelineConfiguration).Name);
-            timelineConfiguration.SetEntry(((TimelineNodeEditorProfile)this.nodeEditorProfile).TimelineID, 
+            timelineConfiguration.SetEntry(((TimelineNodeEditorProfile)this.nodeEditorProfile).TimelineID,
                 (TimelineInitializerScriptableObject)AssetDatabase.LoadAssetAtPath(generationPath, typeof(TimelineInitializerScriptableObject)));
         }
+
+
+        class TimelineNodeSearchTreePicker
+        {
+            private TreePickerPopup nodeSearchTreePicker;
+            private Dictionary<NODE_KEY, int> temporaryNodeLookupTable;
+
+            public void OnSearch(ref NodeEditorProfile nodeEditorProfile, Action<int> onSelectionChange)
+            {
+                this.temporaryNodeLookupTable = new Dictionary<NODE_KEY, int>();
+                foreach (var node in nodeEditorProfile.Nodes.Values)
+                {
+                    var timelineNode = node as TimelineNodeProfile<NODE_KEY>;
+                    if (timelineNode != null)
+                    {
+                        this.temporaryNodeLookupTable.Add(timelineNode.TimelineNodeId, timelineNode.Id);
+                    }
+                }
+                this.nodeSearchTreePicker = new TreePickerPopup(this.temporaryNodeLookupTable.Keys.ToList().ConvertAll(e => e.ToString()), () =>
+                {
+                    onSelectionChange.Invoke(this.temporaryNodeLookupTable[(NODE_KEY)Enum.Parse(typeof(NODE_KEY), this.nodeSearchTreePicker.SelectedKey)]);
+                }, string.Empty);
+
+                var popupRect = new Rect(Event.current.mousePosition, Vector2.zero);
+                this.nodeSearchTreePicker.WindowDimensions = new Vector2(200, 450);
+                this.nodeSearchTreePicker.RepaintAction = () => { GUI.changed = true; };
+                PopupWindow.Show(popupRect, this.nodeSearchTreePicker);
+            }
+        }
+
     }
+
 }

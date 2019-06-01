@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Editor_Zoom;
+using NodeGraph;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Editor_Zoom;
-using NodeGraph;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -51,7 +51,7 @@ namespace Experimental.Editor_NodeEditor
         private void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
-            nodeEditorProfile = (NodeEditorProfile) EditorGUILayout.ObjectField(this.nodeEditorProfile,
+            nodeEditorProfile = (NodeEditorProfile)EditorGUILayout.ObjectField(this.nodeEditorProfile,
                 NodeEditorProfileType, false, GUILayout.Width(150f));
             if (EditorGUI.EndChangeCheck())
             {
@@ -61,7 +61,6 @@ namespace Experimental.Editor_NodeEditor
                 }
             }
 
-            this.OnGUI_Impl();
             if (nodeEditorProfile != null)
             {
                 if (this.NodePicker == null)
@@ -125,6 +124,8 @@ namespace Experimental.Editor_NodeEditor
                 }
 
                 EditorZoomArea.End();
+
+                this.OnGUI_Impl();
             }
 
             if (GUI.changed) Repaint();
@@ -132,12 +133,25 @@ namespace Experimental.Editor_NodeEditor
 
         protected abstract void OnGUI_Impl();
 
-        internal void OnAddNode(Vector2 mousePosition, Type nodeType)
+
+
+        #region External Event 
+        public void OnAddNode(Vector2 mousePosition, Type nodeType)
         {
-            NodeProfile.CreateNode((NodeProfile) CreateInstance(nodeType), ref this.nodeEditorProfile,
+            NodeProfile.CreateNode((NodeProfile)CreateInstance(nodeType), ref this.nodeEditorProfile,
                 mousePosition);
             this.nodeEditorProfile.RefreshNodes();
         }
+        public void OnManuallyNodeSelected(int nodeID)
+        {
+            var selectedNode = this.nodeEditorProfile.Nodes[nodeID];
+            this.NodeSelectionInspector.SetActiveObject(selectedNode, ref this.nodeEditorProfile);
+            //move selected node to center
+            var newWindowPosition = new Vector2((selectedNode.Bounds.position.x * -1) + (this.nodeEditorProfile.EditorBound.width / 2)/this.nodeEditorProfile.NodeEditorZoomProfile.ZoomScale ,
+                               (selectedNode.Bounds.position.y * -1) + (this.nodeEditorProfile.EditorBound.height / 2) / this.nodeEditorProfile.NodeEditorZoomProfile.ZoomScale);
+            this.nodeEditorProfile.EditorBound.position = newWindowPosition;
+        }
+        #endregion
     }
 
     class NodeCreationManager
@@ -254,11 +268,11 @@ namespace Experimental.Editor_NodeEditor
                 {
                     if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)))
                     {
-                        this.DeleteEdge((NodeEdgeProfile) currentSelectedObject, ref nodeEditorProfile);
+                        this.DeleteEdge((NodeEdgeProfile)currentSelectedObject, ref nodeEditorProfile);
                     }
                     else if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeProfile)))
                     {
-                        this.DeleteNode((NodeProfile) currentSelectedObject, ref nodeEditorProfile);
+                        this.DeleteNode((NodeProfile)currentSelectedObject, ref nodeEditorProfile);
                     }
 
                     GUI.changed = true;
@@ -306,7 +320,7 @@ namespace Experimental.Editor_NodeEditor
                 if (NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject.GetType()
                     .IsSubclassOf(typeof(NodeProfile)))
                 {
-                    ((NodeProfile) NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject)
+                    ((NodeProfile)NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject)
                         .AutoAdjustNodeSize();
                     GUI.changed = true;
                     return true;
@@ -346,10 +360,6 @@ namespace Experimental.Editor_NodeEditor
     {
         private Color selectedColor;
 
-        private void OnSelectionChanged()
-        {
-        }
-
         public void GUITick(ref NodeEditorProfile NodeEditorProfile)
         {
             this.selectedColor = NodeEditorProfile.SelectedBackgoundColor;
@@ -377,7 +387,7 @@ namespace Experimental.Editor_NodeEditor
             }
         }
 
-        private void SetActiveObject(Object newObject, ref NodeEditorProfile nodeEditorProfile)
+        public void SetActiveObject(Object newObject, ref NodeEditorProfile nodeEditorProfile)
         {
             nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject =
                 nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject;
@@ -395,11 +405,11 @@ namespace Experimental.Editor_NodeEditor
         {
             if (obj.GetType().IsSubclassOf(typeof(NodeEdgeProfile)))
             {
-                ((NodeEdgeProfile) obj).SetIsSelected(value, this.selectedColor);
+                ((NodeEdgeProfile)obj).SetIsSelected(value, this.selectedColor);
             }
             else if (obj.GetType().IsSubclassOf(typeof(NodeProfile)))
             {
-                ((NodeProfile) obj).SetIsSelected(value, this.selectedColor);
+                ((NodeProfile)obj).SetIsSelected(value, this.selectedColor);
             }
 
             GUI.changed = true;
@@ -436,5 +446,5 @@ namespace Experimental.Editor_NodeEditor
             }
         }
     }
- 
+
 }
