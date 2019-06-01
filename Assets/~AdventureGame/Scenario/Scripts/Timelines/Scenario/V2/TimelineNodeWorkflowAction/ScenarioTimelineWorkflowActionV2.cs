@@ -8,7 +8,7 @@ using NodeGraph_Editor;
 namespace AdventureGame
 {
     [System.Serializable]
-    public class AddGrabbableItemV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddGrabbableItemV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private PointOfInterestId poiInvolved;
@@ -76,7 +76,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class RemoveGrabbableItemV2 : ScenarioTimelineBaseWorkflowAction
+    public class RemoveGrabbableItemV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -102,7 +102,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class AddItemGiveV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddItemGiveV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -128,7 +128,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class AddReceivableItemV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddReceivableItemV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -154,7 +154,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class RemoveReceivableItemV2 : ScenarioTimelineBaseWorkflowAction
+    public class RemoveReceivableItemV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -180,7 +180,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class AddPOItoItemInteractionV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddPOItoItemInteractionV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -206,7 +206,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class RemovePOItoItemInteractionV2 : ScenarioTimelineBaseWorkflowAction
+    public class RemovePOItoItemInteractionV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -232,7 +232,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class AddItemInteractionActionV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddItemInteractionActionV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -266,7 +266,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class AddTransitionLevelV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddTransitionLevelV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
 
         [SerializeField]
