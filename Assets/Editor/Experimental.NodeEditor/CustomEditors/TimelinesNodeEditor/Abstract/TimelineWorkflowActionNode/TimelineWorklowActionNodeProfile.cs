@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using CoreGame;
 using NodeGraph;
 using System.Collections.Generic;
-using CoreGame;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {
@@ -32,6 +30,11 @@ namespace Editor_LevelAvailabilityNodeEditor
         {
             this.WorkflowActionToNodeEdge = NodeEdgeProfile.CreateNodeEdge<WorkflowActionToNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() { this.WorkflowActionToNodeEdge };
+        }
+
+        protected override string NodeTitle()
+        {
+            return typeof(A).Name;
         }
     }
 }

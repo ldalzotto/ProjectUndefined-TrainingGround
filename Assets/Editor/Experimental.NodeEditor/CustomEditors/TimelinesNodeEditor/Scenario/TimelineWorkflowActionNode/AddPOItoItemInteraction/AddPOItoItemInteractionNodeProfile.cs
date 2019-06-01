@@ -6,7 +6,7 @@ using AdventureGame;
 namespace Editor_ScenarioNodeEditor
 {
     [System.Serializable]
-    public class RemovePOIInteractableItemNodeProfile : TimelineWorklowActionNodeProfile<RemovePOIInteractableItemEdge, RemovePOIInteractableItemV2>
+    public class AddPOItoItemInteractionNodeProfile : TimelineWorklowActionNodeProfile<AddPOItoItemInteractionEdge, AddPOItoItemInteractionV2>
     {
 
     }

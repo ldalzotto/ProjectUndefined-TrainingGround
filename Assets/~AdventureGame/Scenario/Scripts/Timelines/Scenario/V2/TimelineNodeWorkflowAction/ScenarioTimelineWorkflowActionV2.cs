@@ -116,7 +116,7 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class AddPOIInteractableItemV2 : ScenarioTimelineBaseWorkflowAction
+    public class AddPOItoItemInteractionV2 : ScenarioTimelineBaseWorkflowAction
     {
         [SerializeField]
         private ItemID itemInvolved;
@@ -129,6 +129,32 @@ namespace AdventureGame
             if (foundedPoi != null)
             {
                 foundedPoi.OnInteractableItemAdd(itemInvolved);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ", this.poiInvolved);
+            this.itemInvolved = (ItemID)EditorGUILayout.EnumPopup("ITEM : ", this.itemInvolved);
+        }
+#endif
+    }
+
+    [System.Serializable]
+    public class RemovePOItoItemInteractionV2 : ScenarioTimelineBaseWorkflowAction
+    {
+        [SerializeField]
+        private ItemID itemInvolved;
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                foundedPoi.OnInteractableItemRemove(itemInvolved);
             }
         }
 
@@ -164,32 +190,6 @@ namespace AdventureGame
             this.poiInvolved = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ", this.poiInvolved);
             this.itemInvolved = (ItemID)EditorGUILayout.EnumPopup("ITEM : ", this.itemInvolved);
             base.ActionGUI();
-        }
-#endif
-    }
-
-    [System.Serializable]
-    public class RemovePOIInteractableItemV2 : ScenarioTimelineBaseWorkflowAction
-    {
-        [SerializeField]
-        private ItemID itemInvolved;
-        [SerializeField]
-        private PointOfInterestId poiInvolved;
-
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
-        {
-            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
-            if (foundedPoi != null)
-            {
-                foundedPoi.OnInteractableItemRemove(itemInvolved);
-            }
-        }
-
-#if UNITY_EDITOR
-        public override void ActionGUI()
-        {
-            this.poiInvolved = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ",  this.poiInvolved);
-            this.itemInvolved = (ItemID)EditorGUILayout.EnumPopup("ITEM : ", this.itemInvolved);
         }
 #endif
     }

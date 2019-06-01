@@ -17,5 +17,10 @@ namespace Editor_LevelAvailabilityNodeEditor
         {
             this.WorkflowAction.ActionGUI();
         }
+
+        protected override Color EdgeColor()
+        {
+            return Color.yellow;
+        }
     }
 }

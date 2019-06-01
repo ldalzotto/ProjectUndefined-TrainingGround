@@ -21,8 +21,8 @@ namespace Editor_ScenarioNodeEditor
             {"WorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
             {"WorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
             {"WorkflowActions//AddInventoryItemGiveAction", typeof(AddInventoryItemGiveActionWorkflowActionNodeProfile) },
-            {"WorkflowActions//AddPOIInteractableItem", typeof(AddPOIInteractableItemNodeProfile) },
-            {"WorkflowActions//RemovePOIInteractableItem", typeof(RemovePOIInteractableItemNodeProfile) },
+            {"WorkflowActions//AddPOItoItemInteraction", typeof(AddPOItoItemInteractionNodeProfile) },
+            {"WorkflowActions//RemovePOItoItemInteraction", typeof(RemovePOItoItemInteractionNodeProfile) },
             {"WorkflowActions//AddTransitionLevel",typeof(AddTransitionLevelNodeProfile) },
             {"WorkflowActions//AddReceivableItem",typeof(AddReceivableItemNodeProfile) },
             {"WorkflowActions//RemoveReceivableItem",typeof(RemoveReceivableItemNodeProfile) }

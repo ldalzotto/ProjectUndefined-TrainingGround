@@ -40,7 +40,12 @@ namespace Editor_LevelAvailabilityNodeEditor
 
         protected override Vector2 Size()
         {
-            return new Vector2(180, 150);
+            return new Vector2(300, 150);
+        }
+
+        protected override string NodeTitle()
+        {
+            return typeof(A).Name;
         }
     }
 }
