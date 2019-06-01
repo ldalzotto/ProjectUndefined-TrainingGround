@@ -94,13 +94,16 @@ namespace Editor_LevelAvailabilityNodeEditor
             }
             if (GUILayout.Button("-", EditorStyles.miniButtonRight, GUILayout.Width(20f)))
             {
-                if (nodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject != null
-                    && nodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject.GetType() == typeof(WorkflowActionToNodeEdge)
-                    && workflowActionEdges.Contains((WorkflowActionToNodeEdge)nodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject))
+                foreach(var currentSelectedObject in nodeEditorProfileRef.NodeEdtitorSelectionProfile.CurrentSelectedObjects)
                 {
-                    var edgeToDelete = (NodeEdgeProfile)nodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject;
-                    this.DeleteEdge(edgeToDelete);
-                    workflowActionEdges.Remove((WorkflowActionToNodeEdge)edgeToDelete);
+                    if (currentSelectedObject != null
+                   && currentSelectedObject.GetType() == typeof(WorkflowActionToNodeEdge)
+                   && workflowActionEdges.Contains((WorkflowActionToNodeEdge)currentSelectedObject))
+                    {
+                        var edgeToDelete = (NodeEdgeProfile)currentSelectedObject;
+                        this.DeleteEdge(edgeToDelete);
+                        workflowActionEdges.Remove((WorkflowActionToNodeEdge)edgeToDelete);
+                    }
                 }
             }
             GUILayout.Label(label);

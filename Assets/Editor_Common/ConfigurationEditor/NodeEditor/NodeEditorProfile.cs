@@ -22,6 +22,7 @@ namespace NodeGraph
         public Dictionary<int, NodeProfile> Nodes = new Dictionary<int, NodeProfile>();
 
         public Color SelectedBackgoundColor = new Color(0.63f, 1f, 0.95f);
+        public Color SlectionRectangleColor = new Color(1f, 1f, 0f, 0.3f);
 
         public NodeEditorZoomProfile NodeEditorZoomProfile;
         public NodeEditorGridProfile NodeEditorGridProfile;
@@ -65,14 +66,14 @@ namespace NodeGraph
         {
             this.Nodes.Clear();
             var nodes = AssetDatabase
-                .FindAssets("t:" + typeof(NodeProfile).Name, new string[] {this.NodesTmpFolderPath}).ToList()
+                .FindAssets("t:" + typeof(NodeProfile).Name, new string[] { this.NodesTmpFolderPath }).ToList()
                 .ConvertAll((p) =>
-                    (NodeProfile) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(p), typeof(NodeProfile)));
+                    (NodeProfile)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(p), typeof(NodeProfile)));
             if (nodes != null)
             {
                 foreach (var node in nodes)
                 {
-                    var castedNode = (NodeProfile) node;
+                    var castedNode = (NodeProfile)node;
                     this.Nodes.Add(castedNode.Id, castedNode);
                 }
             }
@@ -94,6 +95,19 @@ namespace NodeGraph
             }
 
             return null;
+        }
+
+        public static List<NodeProfile> GetAllContainedNode(Rect selectionRect, ref NodeEditorProfile NodeEditorProfileRef)
+        {
+            var foundedNodes = new List<NodeProfile>();
+            foreach (var node in NodeEditorProfileRef.Nodes.Values)
+            {
+                if (node.OffsettedBounds.Overlaps(selectionRect))
+                {
+                    foundedNodes.Add(node);
+                }
+            }
+            return foundedNodes;
         }
 
         internal void OnDeletedNode(NodeProfile nodeProfile)
@@ -124,8 +138,8 @@ namespace NodeGraph
     [Serializable]
     public class NodeEdtitorSelectionProfile
     {
-        public Object currentSelectedObject;
-        public Object oldSelectedObject;
+        public List<Object> CurrentSelectedObjects;
+        public List<Object> OldSelectedObjects;
     }
 
     [Serializable]

@@ -101,21 +101,22 @@ namespace Experimental.Editor_NodeEditor
                     }
                 }
 
-                this.NodeSelectionInspector.GUITick(ref this.nodeEditorProfile);
-
-                if (!this.EditorZoomManager.GUITick(ref this.nodeEditorProfile))
+                if (!this.NodeSelectionInspector.GUITick(ref this.nodeEditorProfile))
                 {
-                    if (!this.NodeCreationManager.GUITick(ref this.NodePicker))
+                    if (!this.EditorZoomManager.GUITick(ref this.nodeEditorProfile))
                     {
-                        if (!this.CreateConnectionManager.GUITick(ref this.nodeEditorProfile))
+                        if (!this.NodeCreationManager.GUITick(ref this.NodePicker))
                         {
-                            if (!this.DeleteNodeManager.GUITick(ref this.nodeEditorProfile))
+                            if (!this.CreateConnectionManager.GUITick(ref this.nodeEditorProfile))
                             {
-                                if (!this.NodeSizeFitterManager.GUITick(ref this.nodeEditorProfile))
+                                if (!this.DeleteNodeManager.GUITick(ref this.nodeEditorProfile))
                                 {
-                                    if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
+                                    if (!this.NodeSizeFitterManager.GUITick(ref this.nodeEditorProfile))
                                     {
-                                        this.DragGridManager.GUITick(ref this.nodeEditorProfile);
+                                        if (!this.DragNodeManager.GUITick(ref this.nodeEditorProfile))
+                                        {
+                                            this.DragGridManager.GUITick(ref this.nodeEditorProfile);
+                                        }
                                     }
                                 }
                             }
@@ -145,9 +146,9 @@ namespace Experimental.Editor_NodeEditor
         public void OnManuallyNodeSelected(int nodeID)
         {
             var selectedNode = this.nodeEditorProfile.Nodes[nodeID];
-            this.NodeSelectionInspector.SetActiveObject(selectedNode, ref this.nodeEditorProfile);
+            this.NodeSelectionInspector.SetActiveObjects(new List<Object>() { selectedNode }, ref this.nodeEditorProfile);
             //move selected node to center
-            var newWindowPosition = new Vector2((selectedNode.Bounds.position.x * -1) + (this.nodeEditorProfile.EditorBound.width / 2)/this.nodeEditorProfile.NodeEditorZoomProfile.ZoomScale ,
+            var newWindowPosition = new Vector2((selectedNode.Bounds.position.x * -1) + (this.nodeEditorProfile.EditorBound.width / 2) / this.nodeEditorProfile.NodeEditorZoomProfile.ZoomScale,
                                (selectedNode.Bounds.position.y * -1) + (this.nodeEditorProfile.EditorBound.height / 2) / this.nodeEditorProfile.NodeEditorZoomProfile.ZoomScale);
             this.nodeEditorProfile.EditorBound.position = newWindowPosition;
         }
@@ -263,21 +264,23 @@ namespace Experimental.Editor_NodeEditor
         {
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.A)
             {
-                var currentSelectedObject = nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject;
-                if (currentSelectedObject != null)
+                foreach (var currentSelectedObject in nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects)
                 {
-                    if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)))
+                    if (currentSelectedObject != null)
                     {
-                        this.DeleteEdge((NodeEdgeProfile)currentSelectedObject, ref nodeEditorProfile);
+                        if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)))
+                        {
+                            this.DeleteEdge((NodeEdgeProfile)currentSelectedObject, ref nodeEditorProfile);
+                        }
+                        else if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeProfile)))
+                        {
+                            this.DeleteNode((NodeProfile)currentSelectedObject, ref nodeEditorProfile);
+                        }
                     }
-                    else if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeProfile)))
-                    {
-                        this.DeleteNode((NodeProfile)currentSelectedObject, ref nodeEditorProfile);
-                    }
-
-                    GUI.changed = true;
-                    return true;
                 }
+                GUI.changed = true;
+                return true;
+
             }
 
             return false;
@@ -317,14 +320,18 @@ namespace Experimental.Editor_NodeEditor
         {
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Q)
             {
-                if (NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject.GetType()
-                    .IsSubclassOf(typeof(NodeProfile)))
+                foreach (var currentSelectedObject in NodeEditorProfileRef.NodeEdtitorSelectionProfile.CurrentSelectedObjects)
                 {
-                    ((NodeProfile)NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject)
-                        .AutoAdjustNodeSize();
-                    GUI.changed = true;
-                    return true;
+                    if (currentSelectedObject.GetType()
+                  .IsSubclassOf(typeof(NodeProfile)))
+                    {
+                        ((NodeProfile)currentSelectedObject)
+                            .AutoAdjustNodeSize();
+
+                    }
                 }
+                GUI.changed = true;
+                return true;
             }
 
             return false;
@@ -333,20 +340,42 @@ namespace Experimental.Editor_NodeEditor
 
     class DragNodeManager
     {
-        private NodeProfile selectedNode;
+        private bool isDragging = false;
 
         internal bool GUITick(ref NodeEditorProfile NodeEditorProfileRef)
         {
             if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
-                this.selectedNode =
-                    NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfileRef);
+                this.isDragging = false;
+                var pointedNode = NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfileRef);
+                if (pointedNode != null)
+                {
+                    foreach (var currentSelectedNode in NodeEditorProfileRef.NodeEdtitorSelectionProfile.CurrentSelectedObjects)
+                    {
+                        if (currentSelectedNode.GetType().IsSubclassOf(typeof(NodeProfile)))
+                        {
+                            var selectedNodeProfile = (NodeProfile)currentSelectedNode;
+                            if (pointedNode.Id == selectedNodeProfile.Id)
+                            {
+                                this.isDragging = true;
+                            }
+                        }
+                    }
+                }
             }
             else
             {
-                if (this.selectedNode != null && Event.current.type == EventType.MouseDrag && Event.current.button == 0)
+                if (this.isDragging && Event.current.type == EventType.MouseDrag && Event.current.button == 0)
                 {
-                    this.selectedNode.Move(Event.current.delta);
+                    foreach (var currentSelectedNode in NodeEditorProfileRef.NodeEdtitorSelectionProfile.CurrentSelectedObjects)
+                    {
+                        if (currentSelectedNode.GetType().IsSubclassOf(typeof(NodeProfile)))
+                        {
+                            var selectedNodeProfile = (NodeProfile)currentSelectedNode;
+                            selectedNodeProfile.Move(Event.current.delta);
+                        }
+                    }
+
                     GUI.changed = true;
                     return true;
                 }
@@ -358,47 +387,92 @@ namespace Experimental.Editor_NodeEditor
 
     class NodeSelectionInspector
     {
+        private bool isDragging;
+        private Rect selectionRect;
         private Color selectedColor;
 
-        public void GUITick(ref NodeEditorProfile NodeEditorProfile)
+        public bool GUITick(ref NodeEditorProfile NodeEditorProfile)
         {
             this.selectedColor = NodeEditorProfile.SelectedBackgoundColor;
-            if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
-            {
-                var selectedNode =
-                    NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfile);
-                if (selectedNode != null)
-                {
-                    var selectedEdge = selectedNode.IsContainedInInputEdge(Event.current.mousePosition);
-                    if (selectedEdge == null)
-                    {
-                        selectedEdge = selectedNode.IsContainedInOutputEdge(Event.current.mousePosition);
-                    }
 
-                    if (selectedEdge != null)
+            if (Event.current.type == EventType.MouseDown && Event.current.button == 0 && Event.current.alt)
+            {
+                this.isDragging = true;
+                this.selectionRect = new Rect(Event.current.mousePosition, Vector2.zero);
+            }
+
+            if (Event.current.type == EventType.MouseUp && Event.current.button == 0)
+            {
+
+                if (this.isDragging)
+                {
+                    this.AdjustSelectionRectToStartTopLeft();
+                    this.SetActiveObjects(
+                        NodeEditorProfile.GetAllContainedNode(this.selectionRect, ref NodeEditorProfile).ConvertAll(n => (Object)n),
+                        ref NodeEditorProfile);
+                }
+                else
+                {
+                    var selectedNode =
+                         NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfile);
+                    if (selectedNode != null)
                     {
-                        SetActiveObject(selectedEdge, ref NodeEditorProfile);
-                    }
-                    else
-                    {
-                        SetActiveObject(selectedNode, ref NodeEditorProfile);
+                        var selectedEdge = selectedNode.IsContainedInInputEdge(Event.current.mousePosition);
+                        if (selectedEdge == null)
+                        {
+                            selectedEdge = selectedNode.IsContainedInOutputEdge(Event.current.mousePosition);
+                        }
+
+                        if (selectedEdge != null)
+                        {
+                            this.SetActiveObjects(new List<Object>() { selectedEdge }, ref NodeEditorProfile);
+                        }
+                        else
+                        {
+                            this.SetActiveObjects(new List<Object>() { selectedNode }, ref NodeEditorProfile);
+                        }
                     }
                 }
+                this.isDragging = false;
             }
+
+            if (this.isDragging && Event.current.alt)
+            {
+                if (Event.current.type == EventType.MouseDrag && Event.current.button == 0)
+                {
+                    this.selectionRect.size = this.selectionRect.size + Event.current.delta;
+                }
+
+                EditorGUI.DrawRect(this.selectionRect, NodeEditorProfile.SlectionRectangleColor);
+                GUI.changed = true;
+            }
+
+            return this.isDragging;
         }
 
-        public void SetActiveObject(Object newObject, ref NodeEditorProfile nodeEditorProfile)
+        public void SetActiveObjects(List<Object> newObjects, ref NodeEditorProfile nodeEditorProfile)
         {
-            nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject =
-                nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject;
-            nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject = newObject;
-            if (nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject != null)
+            nodeEditorProfile.NodeEdtitorSelectionProfile.OldSelectedObjects =
+                nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects;
+            nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects = newObjects;
+
+            if (nodeEditorProfile.NodeEdtitorSelectionProfile.OldSelectedObjects != null)
             {
-                this.SetObjectSelectedFlag(nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject, false);
+                foreach (var oldSelectedNode in nodeEditorProfile.NodeEdtitorSelectionProfile.OldSelectedObjects)
+                {
+                    this.SetObjectSelectedFlag(oldSelectedNode, false);
+                }
+
             }
 
-            this.SetObjectSelectedFlag(nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject, true);
-            Selection.activeObject = newObject;
+            foreach (var newSelectedNode in nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects)
+            {
+                this.SetObjectSelectedFlag(newSelectedNode, true);
+            }
+            if (nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects != null && nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects.Count > 0)
+            {
+                Selection.activeObject = nodeEditorProfile.NodeEdtitorSelectionProfile.CurrentSelectedObjects[0];
+            }
         }
 
         private void SetObjectSelectedFlag(Object obj, bool value)
@@ -415,11 +489,22 @@ namespace Experimental.Editor_NodeEditor
             GUI.changed = true;
         }
 
-        private bool IsNodeOrEdge(object selectedObject)
+        private void AdjustSelectionRectToStartTopLeft()
         {
-            return selectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)) ||
-                   selectedObject.GetType().IsSubclassOf(typeof(NodeProfile));
+            if (this.selectionRect.size.x < 0)
+            {
+                var delta = this.selectionRect.size.x;
+                this.selectionRect.position = this.selectionRect.position + new Vector2(delta, 0);
+                this.selectionRect.size = new Vector2(Math.Abs(delta), this.selectionRect.size.y);
+            }
+            if(this.selectionRect.size.y < 0)
+            {
+                var delta = this.selectionRect.size.y;
+                this.selectionRect.position = this.selectionRect.position + new Vector2(0, delta);
+                this.selectionRect.size = new Vector2(this.selectionRect.size.x, Math.Abs(delta));
+            }
         }
+
     }
 
     class DragGridManager
