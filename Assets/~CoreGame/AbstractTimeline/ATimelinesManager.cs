@@ -51,19 +51,6 @@ namespace CoreGame
             this.ScenarioTimeline.Init();
             this.DiscussionTimeline.Init();
         }
-
-        internal void ApplicationQuit()
-        {
-            this.PersistAllTimelines();
-        }
-
-        public void PersistAllTimelines()
-        {
-            foreach (var timeline in this.GetAllTimelines())
-            {
-                timeline.Persist();
-            }
-        }
     }
 
 }

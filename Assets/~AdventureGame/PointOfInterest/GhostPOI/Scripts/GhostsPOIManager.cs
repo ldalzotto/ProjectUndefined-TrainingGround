@@ -60,9 +60,10 @@ namespace AdventureGame
             pointOfInterestType.SyncDestroyedFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
+
         public void OnGhostPOIChanged()
         {
-            this.GhostPOIManagerPersister.Save(this.ghostPOIs);
+            this.GhostPOIManagerPersister.SaveAsync(this.ghostPOIs);
         }
         #endregion
     }

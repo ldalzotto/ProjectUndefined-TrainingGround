@@ -9,7 +9,7 @@ namespace CoreGame
     public interface ITimelineNodeManager
     {
         void Init();
-        void Persist();
+        void PersistAsync();
         void IncrementGraph(TimeLineAction executedTimelineAction);
 
     }
@@ -43,7 +43,7 @@ namespace CoreGame
                 if (loadedNodes == null)
                 {
                     InitFromConfig();
-                    this.timelinePersister.Save(this.nodes);
+                    this.PersistAsync();
                 }
                 else
                 {
@@ -78,14 +78,14 @@ namespace CoreGame
                     endAction.Execute(workflowActionPassedDataStruct, oldnode);
                 }
             }
-            this.Persist();
+            this.PersistAsync();
         }
 
-        public void Persist()
+        public void PersistAsync()
         {
             if (this.timelinePersister != null)
             {
-                this.timelinePersister.Save(this.nodes);
+                this.timelinePersister.SaveAsync(this.nodes);
             }
         }
 
@@ -140,9 +140,8 @@ namespace CoreGame
     {
         #region External Dependencies
         protected abstract T workflowActionPassedDataStruct { get; }
-        #endregion
-
         private TimelineInitializerV2<T, NODE_KEY> TimelineInitializer;
+        #endregion
 
         #region Timeline ID
         protected abstract TimelineIDs TimelineID { get; }
@@ -163,7 +162,10 @@ namespace CoreGame
 
         public virtual void Init()
         {
+            #region External Dependencies
             this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)GameObject.FindObjectOfType<CoreConfigurationManager>().TimelineConfiguration().ConfigurationInherentData[TimelineID];
+            #endregion
+
             if (this.isPersisted)
             {
                 this.timelinePersister = new ATimelinePersister<NODE_KEY>(this.GetType());
@@ -172,7 +174,7 @@ namespace CoreGame
                 if (loadedNodes == null)
                 {
                     InitFromConfig();
-                    this.timelinePersister.Save(this.nodes);
+                    this.PersistAsync();
                 }
                 else
                 {
@@ -206,15 +208,15 @@ namespace CoreGame
 
             if (scenarioNodesIncrementation != null && (scenarioNodesIncrementation.nexNodes.Count > 0 || scenarioNodesIncrementation.oldNodes.Count > 0))
             {
-                this.Persist();
+                this.PersistAsync();
             }
         }
 
-        public void Persist()
+        public void PersistAsync()
         {
             if (this.timelinePersister != null)
             {
-                this.timelinePersister.Save(this.nodes);
+                this.timelinePersister.SaveAsync(this.nodes);
             }
         }
 

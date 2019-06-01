@@ -27,7 +27,7 @@ namespace CoreGame
             }
             if (this.SynchLevelAvailabilityFromAllLevel())
             {
-                this.LevelAvailabilityPersistanceManager.Save(this.levelAvailability);
+                this.Persist();
             }
         }
 
@@ -50,7 +50,12 @@ namespace CoreGame
         internal void UnlockLevel(LevelZoneChunkID levelZoneChunkToUnlock)
         {
             this.levelAvailability.LevelZoneChunkAvailability[levelZoneChunkToUnlock] = true;
-            this.LevelAvailabilityPersistanceManager.Save(this.levelAvailability);
+            this.Persist();
+        }
+
+        private void Persist()
+        {
+            this.LevelAvailabilityPersistanceManager.SaveAsync(this.levelAvailability);
         }
 
         #region Logical conditions

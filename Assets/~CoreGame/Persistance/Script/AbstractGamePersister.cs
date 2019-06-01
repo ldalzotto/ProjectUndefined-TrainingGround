@@ -1,12 +1,15 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
+using UnityEngine;
 
 namespace CoreGame
 {
     public abstract class AbstractGamePersister<T>
     {
+        #region External Dependencies
+        private PersistanceManager PersistanceManager;
+        #endregion
+
         private string persisterFolderName;
         private string fileExtension;
         private string fileName;
@@ -21,6 +24,7 @@ namespace CoreGame
             this.fileExtension = fileExtension;
             this.fileName = fileName;
             folderPath = Path.Combine(Application.persistentDataPath, persisterFolderName);
+            this.PersistanceManager = GameObject.FindObjectOfType<PersistanceManager>();
         }
 
 
@@ -43,7 +47,15 @@ namespace CoreGame
             return default(T);
         }
 
-        public bool Save(T dataToSave)
+        public void SaveAsync(T dataToSave)
+        {
+            this.PersistanceManager.OnPersistRequested(() =>
+            {
+                this.SaveSync(dataToSave);
+            });
+        }
+
+        public bool SaveSync(T dataToSave)
         {
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
@@ -52,10 +64,8 @@ namespace CoreGame
             using (FileStream fileStream = File.Open(GetDataPath(), FileMode.OpenOrCreate))
             {
                 binaryFormatter.Serialize(fileStream, dataToSave);
-                Debug.Log(MyLog.Format("Saved : " + GetDataPath()));
                 return true;
             }
-
         }
 
         public string GetDataPath()

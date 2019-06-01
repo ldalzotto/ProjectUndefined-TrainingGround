@@ -268,7 +268,6 @@ namespace AdventureGame
     [System.Serializable]
     public class AddTransitionLevelV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
     {
-
         [SerializeField]
         private LevelZonesID nextLevelZone;
         [SerializeField]

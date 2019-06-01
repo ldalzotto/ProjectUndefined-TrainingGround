@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 public class GameManagerPersistanceInstance : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameManagerPersistanceInstance : MonoBehaviour
         {
             Instance = this;
             Instantiate(GameManagerPersistancePrefab, transform);
+            GameObject.FindObjectOfType<PersistanceManager>().Init();
             DontDestroyOnLoad(gameObject);
         }
         else
