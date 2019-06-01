@@ -58,13 +58,22 @@ namespace AdventureGame
 
     public class GiveScenarioAction : TimeLineAction
     {
-        public ItemID ItemInvolved { get; }
-        public PointOfInterestId PoiInvolved { get; }
+        public ItemID ItemInvolved { get => this.itemInvolved; }
+        public PointOfInterestId PoiInvolved { get => this.poiInvolved; }
+
+        [SerializeField]
+        private ItemID itemInvolved;
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
 
         public GiveScenarioAction(ItemID itemInvolved, PointOfInterestId poiInvolved)
         {
-            ItemInvolved = itemInvolved;
-            this.PoiInvolved = poiInvolved;
+            this.itemInvolved = itemInvolved;
+            this.poiInvolved = poiInvolved;
+        }
+
+        public GiveScenarioAction()
+        {
         }
 
         public override bool Equals(object obj)
@@ -89,10 +98,13 @@ namespace AdventureGame
             return "GiveScenarioAction. " + " Item involved : " + ItemInvolved.ToString() + ", POIInvolved : " + PoiInvolved.ToString();
         }
 
+#if UNITY_EDITOR
         public void NodeGUI()
         {
-
+            this.itemInvolved = (ItemID)EditorGUILayout.EnumPopup("ITEM : ", this.itemInvolved);
+            this.poiInvolved = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ", this.poiInvolved);
         }
+#endif
     }
 
     public class DiscussionChoiceScenarioAction : TimeLineAction

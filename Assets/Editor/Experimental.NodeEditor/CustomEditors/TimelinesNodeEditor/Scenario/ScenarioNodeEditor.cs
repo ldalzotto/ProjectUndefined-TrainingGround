@@ -17,6 +17,7 @@ namespace Editor_ScenarioNodeEditor
             {"TimelineNodes//ScenarioNode", typeof(ScenarioNodeProfile) },
             {"TimelineActions//GrabScenarioAction", typeof(GrabScenarioActionTimelineActionNodeProfile) },
             {"TimelineActions//CutsceneTimelineAction", typeof(CutsceneTimelineActionNodeProfile) },
+            {"TimelineActions//GiveScenarioAction", typeof(GiveScenarioActionTimelineActionNodeProfile) },
             {"WorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
             {"WorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
             {"WorkflowActions//AddInventoryItemGiveAction", typeof(AddInventoryItemGiveActionWorkflowActionNodeProfile) },

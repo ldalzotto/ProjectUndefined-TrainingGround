@@ -1,17 +1,16 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NodeGraph;
 using Editor_Zoom;
+using NodeGraph;
+using UnityEditor;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Experimental.Editor_NodeEditor
 {
     public abstract class NodeEditor : EditorWindow
     {
-
         private void OnEnable()
         {
             this.DragNodeManager = new DragNodeManager();
@@ -31,10 +30,13 @@ namespace Experimental.Editor_NodeEditor
         protected abstract Type NodeEditorProfileType { get; }
 
         protected abstract Dictionary<string, Type> NodePickerConfiguration { get; }
-        public NodeEditorProfile NodeEditorProfile { set => nodeEditorProfile = value; }
 
-        [SerializeField]
-        protected NodeEditorProfile nodeEditorProfile;
+        public NodeEditorProfile NodeEditorProfile
+        {
+            set => nodeEditorProfile = value;
+        }
+
+        [SerializeField] protected NodeEditorProfile nodeEditorProfile;
 
         private DragNodeManager DragNodeManager;
         private DragGridManager DragGridManager;
@@ -51,7 +53,8 @@ namespace Experimental.Editor_NodeEditor
         private void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
-            nodeEditorProfile = (NodeEditorProfile)EditorGUILayout.ObjectField(this.nodeEditorProfile, NodeEditorProfileType, false, GUILayout.Width(150f));
+            nodeEditorProfile = (NodeEditorProfile) EditorGUILayout.ObjectField(this.nodeEditorProfile,
+                NodeEditorProfileType, false, GUILayout.Width(150f));
             if (EditorGUI.EndChangeCheck())
             {
                 if (nodeEditorProfile != null)
@@ -59,14 +62,18 @@ namespace Experimental.Editor_NodeEditor
                     nodeEditorProfile.Init();
                 }
             }
+
             this.OnGUI_Impl();
             if (nodeEditorProfile != null)
             {
-
                 if (this.NodePicker == null)
                 {
                     this.NodePicker = new TreePickerPopup(this.NodePickerConfiguration.Keys.ToList(),
-                    () => { this.NodeCreationManager.OnNodePickerChange(ref this.NodePicker, ref this.nodeEditorProfile, NodePickerConfiguration, this); }, this.nodeEditorProfile.NodeCreationPickerProfile.SelectedKey);
+                        () =>
+                        {
+                            this.NodeCreationManager.OnNodePickerChange(ref this.NodePicker, ref this.nodeEditorProfile,
+                                NodePickerConfiguration, this);
+                        }, this.nodeEditorProfile.NodeCreationPickerProfile.SelectedKey);
                     this.NodePicker.RepaintAction = () => { GUI.changed = true; };
                     this.NodePicker.WindowDimensions = this.nodeEditorProfile.NodeCreationPickerProfile.PickerSize;
                 }
@@ -77,7 +84,8 @@ namespace Experimental.Editor_NodeEditor
 
                 this.GridDrawer.GUITick(ref this.nodeEditorProfile);
 
-                EditorZoomArea.Begin(nodeEditorProfile.NodeEditorZoomProfile.ZoomScale, nodeEditorProfile.NodeEditorZoomProfile.EditorZoomBound);
+                EditorZoomArea.Begin(nodeEditorProfile.NodeEditorZoomProfile.ZoomScale,
+                    nodeEditorProfile.NodeEditorZoomProfile.EditorZoomBound);
 
                 foreach (var node in this.nodeEditorProfile.Nodes.Values)
                 {
@@ -91,6 +99,7 @@ namespace Experimental.Editor_NodeEditor
                     {
                         inputEdge.GUIConnectionLines();
                     }
+
                     foreach (var outputEdge in node.OutputEdges)
                     {
                         outputEdge.GUIConnectionLines();
@@ -121,6 +130,7 @@ namespace Experimental.Editor_NodeEditor
 
                 EditorZoomArea.End();
             }
+
             if (GUI.changed) Repaint();
         }
 
@@ -128,11 +138,10 @@ namespace Experimental.Editor_NodeEditor
 
         internal void OnAddNode(Vector2 mousePosition, Type nodeType)
         {
-            NodeProfile.CreateNode((NodeProfile)ScriptableObject.CreateInstance(nodeType), ref this.nodeEditorProfile, mousePosition);
+            NodeProfile.CreateNode((NodeProfile) CreateInstance(nodeType), ref this.nodeEditorProfile,
+                mousePosition);
             this.nodeEditorProfile.RefreshNodes();
         }
-
-
     }
 
     class NodeCreationManager
@@ -147,6 +156,7 @@ namespace Experimental.Editor_NodeEditor
                 PopupWindow.Show(new Rect(this.pickerPosition, Vector2.zero), NodePicker);
                 return true;
             }
+
             return false;
         }
 
@@ -212,8 +222,10 @@ namespace Experimental.Editor_NodeEditor
                     return clickedEdge;
                 }
             }
+
             return null;
         }
+
         private NodeEdgeProfile GetOutputClickedEdge(ref NodeEditorProfile NodeEditorProfile)
         {
             foreach (var node in NodeEditorProfile.Nodes.Values)
@@ -224,6 +236,7 @@ namespace Experimental.Editor_NodeEditor
                     return clickedEdge;
                 }
             }
+
             return null;
         }
 
@@ -245,16 +258,18 @@ namespace Experimental.Editor_NodeEditor
                 {
                     if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)))
                     {
-                        this.DeleteEdge((NodeEdgeProfile)currentSelectedObject, ref nodeEditorProfile);
+                        this.DeleteEdge((NodeEdgeProfile) currentSelectedObject, ref nodeEditorProfile);
                     }
                     else if (currentSelectedObject.GetType().IsSubclassOf(typeof(NodeProfile)))
                     {
-                        this.DeleteNode((NodeProfile)currentSelectedObject, ref nodeEditorProfile);
+                        this.DeleteNode((NodeProfile) currentSelectedObject, ref nodeEditorProfile);
                     }
+
                     GUI.changed = true;
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -267,7 +282,6 @@ namespace Experimental.Editor_NodeEditor
         {
             nodeEdgeProfile.ClearConnections();
         }
-
     }
 
     class EditorZoomManager
@@ -277,10 +291,12 @@ namespace Experimental.Editor_NodeEditor
             if (Event.current.type == EventType.ScrollWheel)
             {
                 NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale += (-Event.current.delta.y * 0.01f);
-                NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale = Mathf.Clamp(NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale, 0.2f, 5f);
+                NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale =
+                    Mathf.Clamp(NodeEditorProfileRef.NodeEditorZoomProfile.ZoomScale, 0.2f, 5f);
                 GUI.changed = true;
                 return true;
             }
+
             return false;
         }
     }
@@ -291,13 +307,16 @@ namespace Experimental.Editor_NodeEditor
         {
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Q)
             {
-                if (NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject.GetType().IsSubclassOf(typeof(NodeProfile)))
+                if (NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject.GetType()
+                    .IsSubclassOf(typeof(NodeProfile)))
                 {
-                    ((NodeProfile)NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject).AutoAdjustNodeSize();
+                    ((NodeProfile) NodeEditorProfileRef.NodeEdtitorSelectionProfile.currentSelectedObject)
+                        .AutoAdjustNodeSize();
                     GUI.changed = true;
                     return true;
                 }
             }
+
             return false;
         }
     }
@@ -305,11 +324,13 @@ namespace Experimental.Editor_NodeEditor
     class DragNodeManager
     {
         private NodeProfile selectedNode;
+
         internal bool GUITick(ref NodeEditorProfile NodeEditorProfileRef)
         {
             if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
-                this.selectedNode = NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfileRef);
+                this.selectedNode =
+                    NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfileRef);
             }
             else
             {
@@ -320,19 +341,17 @@ namespace Experimental.Editor_NodeEditor
                     return true;
                 }
             }
+
             return false;
         }
-
     }
 
     class NodeSelectionInspector
     {
-
         private Color selectedColor;
 
         private void OnSelectionChanged()
         {
-
         }
 
         public void GUITick(ref NodeEditorProfile NodeEditorProfile)
@@ -340,7 +359,8 @@ namespace Experimental.Editor_NodeEditor
             this.selectedColor = NodeEditorProfile.SelectedBackgoundColor;
             if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
-                var selectedNode = NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfile);
+                var selectedNode =
+                    NodeEditorProfile.GetFirstContainedNode(Event.current.mousePosition, ref NodeEditorProfile);
                 if (selectedNode != null)
                 {
                     var selectedEdge = selectedNode.IsContainedInInputEdge(Event.current.mousePosition);
@@ -348,6 +368,7 @@ namespace Experimental.Editor_NodeEditor
                     {
                         selectedEdge = selectedNode.IsContainedInOutputEdge(Event.current.mousePosition);
                     }
+
                     if (selectedEdge != null)
                     {
                         SetActiveObject(selectedEdge, ref NodeEditorProfile);
@@ -360,41 +381,45 @@ namespace Experimental.Editor_NodeEditor
             }
         }
 
-        private void SetActiveObject(UnityEngine.Object newObject, ref NodeEditorProfile nodeEditorProfile)
+        private void SetActiveObject(Object newObject, ref NodeEditorProfile nodeEditorProfile)
         {
-            nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject = nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject;
+            nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject =
+                nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject;
             nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject = newObject;
             if (nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject != null)
             {
                 this.SetObjectSelectedFlag(nodeEditorProfile.NodeEdtitorSelectionProfile.oldSelectedObject, false);
             }
+
             this.SetObjectSelectedFlag(nodeEditorProfile.NodeEdtitorSelectionProfile.currentSelectedObject, true);
             Selection.activeObject = newObject;
         }
 
-        private void SetObjectSelectedFlag(UnityEngine.Object obj, bool value)
+        private void SetObjectSelectedFlag(Object obj, bool value)
         {
             if (obj.GetType().IsSubclassOf(typeof(NodeEdgeProfile)))
             {
-                ((NodeEdgeProfile)obj).SetIsSelected(value, this.selectedColor);
+                ((NodeEdgeProfile) obj).SetIsSelected(value, this.selectedColor);
             }
             else if (obj.GetType().IsSubclassOf(typeof(NodeProfile)))
             {
-                ((NodeProfile)obj).SetIsSelected(value, this.selectedColor);
+                ((NodeProfile) obj).SetIsSelected(value, this.selectedColor);
             }
+
             GUI.changed = true;
         }
 
         private bool IsNodeOrEdge(object selectedObject)
         {
-            return selectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)) || selectedObject.GetType().IsSubclassOf(typeof(NodeProfile));
+            return selectedObject.GetType().IsSubclassOf(typeof(NodeEdgeProfile)) ||
+                   selectedObject.GetType().IsSubclassOf(typeof(NodeProfile));
         }
-
     }
 
     class DragGridManager
     {
         private bool isDragging = false;
+
         internal void GUITick(ref NodeEditorProfile nodeEditorProfile)
         {
             if (Event.current.button == 0)
@@ -413,18 +438,17 @@ namespace Experimental.Editor_NodeEditor
                     GUI.changed = true;
                 }
             }
-
         }
     }
 
     class GridDrawer
     {
-
         public void GUITick(ref NodeEditorProfile nodeEditorProfile)
         {
-
-            int widthDivs = Mathf.CeilToInt(nodeEditorProfile.EditorBound.width / nodeEditorProfile.NodeEditorGridProfile.GridSpacing);
-            int heightDivs = Mathf.CeilToInt(nodeEditorProfile.EditorBound.height / nodeEditorProfile.NodeEditorGridProfile.GridSpacing);
+            int widthDivs = Mathf.CeilToInt(nodeEditorProfile.EditorBound.width /
+                                            nodeEditorProfile.NodeEditorGridProfile.GridSpacing);
+            int heightDivs = Mathf.CeilToInt(nodeEditorProfile.EditorBound.height /
+                                             nodeEditorProfile.NodeEditorGridProfile.GridSpacing);
 
             var oldColor = Handles.color;
 
@@ -435,8 +459,12 @@ namespace Experimental.Editor_NodeEditor
                 {
                     Handles.color = nodeEditorProfile.NodeEditorGridProfile.StrongColor;
                 }
-                Handles.DrawLine(new Vector3(i * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, nodeEditorProfile.EditorBound.yMax, 0),
-                    new Vector3(i * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, nodeEditorProfile.EditorBound.yMin, 0));
+
+                Handles.DrawLine(
+                    new Vector3(i * nodeEditorProfile.NodeEditorGridProfile.GridSpacing,
+                        nodeEditorProfile.EditorBound.yMax, 0),
+                    new Vector3(i * nodeEditorProfile.NodeEditorGridProfile.GridSpacing,
+                        nodeEditorProfile.EditorBound.yMin, 0));
             }
 
             for (int j = 0; j < heightDivs; j++)
@@ -446,12 +474,15 @@ namespace Experimental.Editor_NodeEditor
                 {
                     Handles.color = nodeEditorProfile.NodeEditorGridProfile.StrongColor;
                 }
-                Handles.DrawLine(new Vector3(nodeEditorProfile.EditorBound.xMax, j * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, 0),
-                   new Vector3(nodeEditorProfile.EditorBound.xMin, j * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, 0));
+
+                Handles.DrawLine(
+                    new Vector3(nodeEditorProfile.EditorBound.xMax,
+                        j * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, 0),
+                    new Vector3(nodeEditorProfile.EditorBound.xMin,
+                        j * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, 0));
             }
 
             Handles.color = oldColor;
         }
     }
-
 }

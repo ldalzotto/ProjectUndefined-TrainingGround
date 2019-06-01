@@ -74,7 +74,7 @@ namespace Editor_LevelAvailabilityNodeEditor
                     var startTimelineNode = node as TimelineStartNodeProfile;
                     if (startTimelineNode != null)
                     {
-                        initialNodes = startTimelineNode.StartNodeEdge.ConnectedNodeEdges.ConvertAll(e => (e.NodeProfileRef as TimelineNodeProfile<NODE_KEY>).TimelineNodeId);
+                        initialNodes.AddRange(startTimelineNode.StartNodeEdge.ConnectedNodeEdges.ConvertAll(e => (e.NodeProfileRef as TimelineNodeProfile<NODE_KEY>).TimelineNodeId));
                     }
                 }
             }

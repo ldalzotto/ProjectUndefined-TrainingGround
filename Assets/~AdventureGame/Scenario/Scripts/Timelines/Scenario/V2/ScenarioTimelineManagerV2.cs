@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -22,6 +21,7 @@ namespace AdventureGame
         TransitionToSewer = 3,
         IDCard_Inventory = 4,
         IDCard_Grabbed = 7,
+        IDCard_Grabbed_END = 8,
         Dumpster_POI = 5,
         Bouncer_POI = 6
     }

@@ -1,18 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
-using OdinSerializer;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using System.IO;
+using System.Linq;
+using OdinSerializer;
+using UnityEngine;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using System.IO;
-using System.Linq;
-using CoreGame;
 
 namespace NodeGraph
 {
-    [System.Serializable]
+    [Serializable]
     public abstract class NodeEditorProfile : SerializedScriptableObject
     {
         public string GraphTmpFolderPath;
@@ -28,7 +27,6 @@ namespace NodeGraph
         public NodeEditorGridProfile NodeEditorGridProfile;
         public NodeEdtitorSelectionProfile NodeEdtitorSelectionProfile;
         public NodeCreationPickerProfile NodeCreationPickerProfile;
-
 
 #if UNITY_EDITOR
         public void Init()
@@ -66,12 +64,15 @@ namespace NodeGraph
         public void RefreshNodes()
         {
             this.Nodes.Clear();
-            var nodes = AssetDatabase.FindAssets("t:" + typeof(NodeProfile).Name, new string[] { this.NodesTmpFolderPath }).ToList().ConvertAll((p) => (NodeProfile)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(p), typeof(NodeProfile)));
+            var nodes = AssetDatabase
+                .FindAssets("t:" + typeof(NodeProfile).Name, new string[] {this.NodesTmpFolderPath}).ToList()
+                .ConvertAll((p) =>
+                    (NodeProfile) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(p), typeof(NodeProfile)));
             if (nodes != null)
             {
                 foreach (var node in nodes)
                 {
-                    var castedNode = (NodeProfile)node;
+                    var castedNode = (NodeProfile) node;
                     this.Nodes.Add(castedNode.Id, castedNode);
                 }
             }
@@ -91,6 +92,7 @@ namespace NodeGraph
                     return node;
                 }
             }
+
             return null;
         }
 
@@ -102,7 +104,7 @@ namespace NodeGraph
 #endif
     }
 
-    [System.Serializable]
+    [Serializable]
     public class NodeEditorZoomProfile
     {
         public Rect EditorZoomBound = new Rect(Vector2.zero, Vector2.zero);
@@ -110,7 +112,7 @@ namespace NodeGraph
         public Vector2 ZoomCoordsOrigin = Vector2.zero;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class NodeEditorGridProfile
     {
         public float GridSpacing = 5;
@@ -119,19 +121,18 @@ namespace NodeGraph
         public Color StrongColor = Color.grey;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class NodeEdtitorSelectionProfile
     {
-        public UnityEngine.Object currentSelectedObject;
-        public UnityEngine.Object oldSelectedObject;
+        public Object currentSelectedObject;
+        public Object oldSelectedObject;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class NodeCreationPickerProfile
     {
         public string SelectedKey;
 
         public Vector2 PickerSize = new Vector2(200, 300);
     }
-
 }
