@@ -15,7 +15,6 @@ namespace Experimental.Editor_NodeEditor
         {
             this.DragNodeManager = new DragNodeManager();
             this.DragGridManager = new DragGridManager();
-            this.GridDrawer = new GridDrawer();
             this.CreateConnectionManager = new CreateConnectionManager();
             this.NodeSelectionInspector = new NodeSelectionInspector();
             this.DeleteNodeManager = new DeleteNodeManager();
@@ -40,7 +39,6 @@ namespace Experimental.Editor_NodeEditor
 
         private DragNodeManager DragNodeManager;
         private DragGridManager DragGridManager;
-        private GridDrawer GridDrawer;
         private NodeSelectionInspector NodeSelectionInspector;
         private CreateConnectionManager CreateConnectionManager;
         private DeleteNodeManager DeleteNodeManager;
@@ -81,8 +79,6 @@ namespace Experimental.Editor_NodeEditor
                 nodeEditorProfile.NodeEditorZoomProfile.EditorZoomBound.size = this.position.size;
 
                 nodeEditorProfile.EditorBound.size = this.position.size;
-
-                this.GridDrawer.GUITick(ref this.nodeEditorProfile);
 
                 EditorZoomArea.Begin(nodeEditorProfile.NodeEditorZoomProfile.ZoomScale,
                     nodeEditorProfile.NodeEditorZoomProfile.EditorZoomBound);
@@ -440,49 +436,5 @@ namespace Experimental.Editor_NodeEditor
             }
         }
     }
-
-    class GridDrawer
-    {
-        public void GUITick(ref NodeEditorProfile nodeEditorProfile)
-        {
-            int widthDivs = Mathf.CeilToInt(nodeEditorProfile.EditorBound.width /
-                                            nodeEditorProfile.NodeEditorGridProfile.GridSpacing);
-            int heightDivs = Mathf.CeilToInt(nodeEditorProfile.EditorBound.height /
-                                             nodeEditorProfile.NodeEditorGridProfile.GridSpacing);
-
-            var oldColor = Handles.color;
-
-            for (int i = 0; i < widthDivs; i++)
-            {
-                Handles.color = nodeEditorProfile.NodeEditorGridProfile.WeakColor;
-                if ((i % nodeEditorProfile.NodeEditorGridProfile.StrongColorGridPeriod) == 0)
-                {
-                    Handles.color = nodeEditorProfile.NodeEditorGridProfile.StrongColor;
-                }
-
-                Handles.DrawLine(
-                    new Vector3(i * nodeEditorProfile.NodeEditorGridProfile.GridSpacing,
-                        nodeEditorProfile.EditorBound.yMax, 0),
-                    new Vector3(i * nodeEditorProfile.NodeEditorGridProfile.GridSpacing,
-                        nodeEditorProfile.EditorBound.yMin, 0));
-            }
-
-            for (int j = 0; j < heightDivs; j++)
-            {
-                Handles.color = nodeEditorProfile.NodeEditorGridProfile.WeakColor;
-                if ((j % nodeEditorProfile.NodeEditorGridProfile.StrongColorGridPeriod) == 0)
-                {
-                    Handles.color = nodeEditorProfile.NodeEditorGridProfile.StrongColor;
-                }
-
-                Handles.DrawLine(
-                    new Vector3(nodeEditorProfile.EditorBound.xMax,
-                        j * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, 0),
-                    new Vector3(nodeEditorProfile.EditorBound.xMin,
-                        j * nodeEditorProfile.NodeEditorGridProfile.GridSpacing, 0));
-            }
-
-            Handles.color = oldColor;
-        }
-    }
+ 
 }

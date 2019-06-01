@@ -169,8 +169,10 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\ScenarioNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddGrabbableItem\AddGrabbableItemWorkflowActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddGrabbableItem\AddGrabbableItemWorkflowActionNodeProfile.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddInventoryItemGiveAction\AddInventoryItemGiveActionWorkflowActionEdge.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddInventoryItemGiveAction\AddInventoryItemGiveActionWorkflowActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddInventoryItemGiveAction\AddItemInteractionActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddInventoryItemGiveAction\AddItemInteractionActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddItemGive\AddItemGiveEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddItemGive\AddItemGiveNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddPOItoItemInteraction\AddPOItoItemInteractionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddPOItoItemInteraction\AddPOItoItemInteractionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\AddReceivableItem\AddReceivableItemEdge.cs" />
@@ -820,6 +822,10 @@
     <ProjectReference Include="PuzzleGame.csproj">
       <Project>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</Project>
       <Name>PuzzleGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="Editor_Common.csproj">
+      <Project>{4515CF8C-D010-E6DC-319E-E452A370D349}</Project>
+      <Name>Editor_Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

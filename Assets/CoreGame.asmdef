@@ -1,7 +1,8 @@
 {
     "name": "CoreGame",
     "references": [
-        "GUID:d60799ab2a985554ea1a39cd38695018"
+        "GUID:d60799ab2a985554ea1a39cd38695018",
+        "GUID:18572ca2bc29c7f49acd7b6782aec78e"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

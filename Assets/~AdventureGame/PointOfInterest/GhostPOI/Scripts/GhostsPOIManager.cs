@@ -115,12 +115,7 @@ namespace AdventureGame
             }
             PointOfInterestScenarioState.InteractableItemsComponent.Add(itemID);
         }
-
-        public void OnInventoryItemGiveActionAdd(ItemID itemID, AContextAction contextActionToAdd)
-        {
-
-        }
-
+        
         public void OnInteractableItemRemove(ItemID itemID)
         {
             if (PointOfInterestScenarioState.InteractableItemsComponent != null)

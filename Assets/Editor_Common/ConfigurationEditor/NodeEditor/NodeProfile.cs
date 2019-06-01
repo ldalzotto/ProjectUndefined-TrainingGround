@@ -78,7 +78,7 @@ namespace NodeGraph
             }
 
             EditorGUI.BeginChangeCheck();
-
+            
             GUILayout.BeginArea(this.offsettedBounds, this.NodeTitle(), GUI.skin.window);
             this.currentInnerNodeRect = EditorGUILayout.BeginVertical();
             this.NodeGUI(ref nodeEditorProfileRef);

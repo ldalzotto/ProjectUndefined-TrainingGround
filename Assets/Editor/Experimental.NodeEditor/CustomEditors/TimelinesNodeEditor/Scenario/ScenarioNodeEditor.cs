@@ -1,10 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using Experimental.Editor_NodeEditor;
+﻿using AdventureGame;
+using Editor_LevelAvailabilityNodeEditor;
 using System;
 using System.Collections.Generic;
-using Editor_LevelAvailabilityNodeEditor;
-using AdventureGame;
 
 namespace Editor_ScenarioNodeEditor
 {
@@ -20,12 +17,13 @@ namespace Editor_ScenarioNodeEditor
             {"TimelineActions//GiveScenarioAction", typeof(GiveScenarioActionTimelineActionNodeProfile) },
             {"WorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
             {"WorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
-            {"WorkflowActions//AddInventoryItemGiveAction", typeof(AddInventoryItemGiveActionWorkflowActionNodeProfile) },
+            {"WorkflowActions//AddItemInteractionAction", typeof(AddItemInteractionActionNodeProfile) },
             {"WorkflowActions//AddPOItoItemInteraction", typeof(AddPOItoItemInteractionNodeProfile) },
             {"WorkflowActions//RemovePOItoItemInteraction", typeof(RemovePOItoItemInteractionNodeProfile) },
             {"WorkflowActions//AddTransitionLevel",typeof(AddTransitionLevelNodeProfile) },
             {"WorkflowActions//AddReceivableItem",typeof(AddReceivableItemNodeProfile) },
-            {"WorkflowActions//RemoveReceivableItem",typeof(RemoveReceivableItemNodeProfile) }
+            {"WorkflowActions//RemoveReceivableItem",typeof(RemoveReceivableItemNodeProfile) },
+            {"WorkflowActions//AddItemGive",typeof(AddItemGiveNodeProfile) }
         };
     }
 }

@@ -1,11 +1,10 @@
 ﻿#if UNITY_EDITOR
-using UnityEngine;
+using System;
 using System.Collections;
-using UnityEditor;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
-using System;
+using UnityEditor;
 
 public class SerializableObjectHelper
 {

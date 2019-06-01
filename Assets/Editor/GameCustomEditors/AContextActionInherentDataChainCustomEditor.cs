@@ -23,6 +23,7 @@ namespace Editor_GameCustomEditors
 
 
         private Type[] allowedContextActionInherentDataToCreate;
+        private string[] displayedAllowedContextActionInherentDataToCreate;
         private int contextActionInherentDataSelectedIndex;
 
         private int lastFrameReorderableListSelectedIndex = -1;
@@ -37,7 +38,7 @@ namespace Editor_GameCustomEditors
             {
                 AContextActionInherentDataChain.ContextActionChain.Add(this.Create());
             }
-            this.contextActionInherentDataSelectedIndex = EditorGUILayout.Popup(this.contextActionInherentDataSelectedIndex, this.allowedContextActionInherentDataToCreate.ToList().ConvertAll(t => t.Name).ToArray());
+            this.contextActionInherentDataSelectedIndex = EditorGUILayout.Popup(this.contextActionInherentDataSelectedIndex, this.displayedAllowedContextActionInherentDataToCreate);
 
             EditorGUILayout.EndHorizontal();
         }
@@ -46,6 +47,7 @@ namespace Editor_GameCustomEditors
         {
             var AContextActionInherentDataChain = (AContextActionInherentDataChain)target;
             this.allowedContextActionInherentDataToCreate = TypeHelper.GetAllTypeAssignableFrom(typeof(AContextActionInherentData));
+            this.displayedAllowedContextActionInherentDataToCreate = this.allowedContextActionInherentDataToCreate.ToList().ConvertAll(t => t.Name.Replace("InherentData", "")).ToArray();
 
             //sync assets
             var assets = AssetDatabase.LoadAllAssetRepresentationsAtPath(AssetDatabase.GetAssetPath(target)).ToList().ConvertAll(o => (AContextActionInherentData)o);

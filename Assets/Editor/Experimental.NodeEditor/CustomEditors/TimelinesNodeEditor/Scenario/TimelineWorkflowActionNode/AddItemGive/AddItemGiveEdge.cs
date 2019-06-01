@@ -6,7 +6,7 @@ using AdventureGame;
 namespace Editor_ScenarioNodeEditor
 {
     [System.Serializable]
-    public class AddInventoryItemGiveActionWorkflowActionEdge : TimelineWorklowActionEdgeV2<AddInventoryItemGiveActionV2>
+    public class AddItemGiveEdge : TimelineWorklowActionEdgeV2<AddItemGiveV2>
     {
     }
 }

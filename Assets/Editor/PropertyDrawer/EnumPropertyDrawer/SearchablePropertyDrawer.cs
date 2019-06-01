@@ -5,7 +5,6 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(SearchableEnum))]
 public class SearchablePropertyDrawer : PropertyDrawer
 {
-    private Rect enumPopupRect;
     private EnumSearchGUIWindow windowInstance;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -15,7 +14,7 @@ public class SearchablePropertyDrawer : PropertyDrawer
         {
             var fullRect = new Rect(position);
             var targetEnum = SerializableObjectHelper.GetBaseProperty<Enum>(property);
-
+            
             var labelFieldRect = new Rect(position.x, position.y, position.width / 2, position.height);
             EditorGUI.LabelField(labelFieldRect, label);
             var enumPopupRect = new Rect(position.x + position.width / 2, position.y, position.width / 2, position.height);

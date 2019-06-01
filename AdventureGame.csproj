@@ -710,6 +710,10 @@
       <Project>{FE9BDCD4-369B-DF85-6665-8E0251B2C44B}</Project>
       <Name>CoreGame</Name>
     </ProjectReference>
+    <ProjectReference Include="Editor_Common.csproj">
+      <Project>{4515CF8C-D010-E6DC-319E-E452A370D349}</Project>
+      <Name>Editor_Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
