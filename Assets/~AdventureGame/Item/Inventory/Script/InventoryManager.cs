@@ -25,6 +25,7 @@ namespace AdventureGame
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             var ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
+            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
 
             InventoryItemsContainer = transform.Find(INVENTORY_ITEMS_CONTAINER_NAME).gameObject;
@@ -66,13 +67,13 @@ namespace AdventureGame
         #endregion
 
         #region External Events
-        public void OnAddItem(Item item)
+        public void OnAddItem(ItemID itemID, ItemInherentData itemInherentData)
         {
-            if (!holdItems.ContainsKey(item.ItemID))
+            if (!holdItems.ContainsKey(itemID))
             {
-                var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(item);
-                holdItems[item.ItemID] = itemGameObject;
-                InventoryMenu.OnItemAdd(itemGameObject);
+                var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(itemID, itemInherentData);
+                holdItems[itemID] = itemGameObject;
+                InventoryMenu.OnItemAdd(itemGameObject, itemInherentData);
             }
         }
 
@@ -191,18 +192,20 @@ namespace AdventureGame
     #region Inventory Item
     class InventoryItemManager
     {
-
+        #region External Dependencies
         private GameObject InventoryItemsContainer;
+        #endregion
 
         public InventoryItemManager(GameObject inventoryItemsContainer)
         {
             InventoryItemsContainer = inventoryItemsContainer;
         }
 
-        public Item OnItemAddInstanciatePrefab(Item item)
+        public Item OnItemAddInstanciatePrefab(ItemID itemID, ItemInherentData itemInherentData)
         {
-            var itemGameObject = MonoBehaviour.Instantiate(item, InventoryItemsContainer.transform);
-            itemGameObject.name = item.name;
+            var itemPrefab = itemInherentData.ItemPrefab;
+            var itemGameObject = MonoBehaviour.Instantiate(itemPrefab, InventoryItemsContainer.transform);
+            itemGameObject.name = itemID.ToString();
             return itemGameObject;
         }
 

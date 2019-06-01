@@ -1,13 +1,17 @@
 ﻿using CoreGame;
+using System;
 using UnityEngine;
 
 namespace AdventureGame
 {
-
+    [System.Serializable]
     public class InteractAction : AContextAction
     {
 
+        [SerializeField]
         private ItemID involvedItem;
+
+        [NonSerialized]
         private bool InteractionResolved;
 
         public InteractAction(ItemID involvedItem, AContextAction nextActionInteractionAllowed) : base(nextActionInteractionAllowed)

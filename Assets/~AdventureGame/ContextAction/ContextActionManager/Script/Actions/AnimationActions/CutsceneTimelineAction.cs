@@ -1,26 +1,39 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
 
 namespace AdventureGame
 {
 
+    [System.Serializable]
     public class CutsceneTimelineAction : AContextAction
     {
+        [SerializeField]
         private CutsceneId cutsceneId;
+        [SerializeField]
         private bool DestroyPOIAtEnd;
 
+
+        [NonSerialized]
         private CutsceneTimelineActionInput CutsceneTimelineActionInput;
+        [NonSerialized]
         private CutsceneTimelinePOIData CutsceneTimelinePOIData;
+        [NonSerialized]
         private bool isActionEnded;
+        [NonSerialized]
         private bool isAgentDestinationReached;
 
 
         #region External Dependencies
+        [NonSerialized]
         private PlayerManagerEventHandler PlayerManagerEventHandler;
+        [NonSerialized]
+        private PointOfInterestEventManager PointOfInterestEventManager;
         #endregion
 
         #region Internal Dependecnies
+        [NonSerialized]
         private PlayerInitialPositionerManager PlayerInitialPositionerManager;
 
         public CutsceneId CutsceneId { get => cutsceneId; }
@@ -40,7 +53,7 @@ namespace AdventureGame
 
             if (DestroyPOIAtEnd)
             {
-                MonoBehaviour.Destroy(CutsceneTimelineActionInput.TargetedPOI.gameObject);
+                PointOfInterestEventManager.DestroyPOI(CutsceneTimelineActionInput.TargetedPOI);
             }
         }
 
@@ -51,7 +64,10 @@ namespace AdventureGame
 
         public override void FirstExecutionAction(AContextActionInput ContextActionInput)
         {
+            #region External dependencies
             PlayerManagerEventHandler = GameObject.FindObjectOfType<PlayerManagerEventHandler>();
+            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            #endregion
             var cutsceneTimelineContextActionInput = (CutsceneTimelineActionInput)ContextActionInput;
             this.CutsceneTimelineActionInput = cutsceneTimelineContextActionInput;
             if (cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer != null && cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer.CutsceneTimelinePOIDatas != null)

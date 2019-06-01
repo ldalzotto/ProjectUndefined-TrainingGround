@@ -3,10 +3,11 @@ using UnityEngine;
 
 namespace AdventureGame
 {
-
+    [System.Serializable]
     public class LevelZoneTransitionAction : AContextAction
     {
 
+        [SerializeField]
         private LevelZonesID nextZone;
 
         public LevelZoneTransitionAction(LevelZonesID nextZone) : base(null)

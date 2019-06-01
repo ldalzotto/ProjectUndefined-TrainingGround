@@ -13,7 +13,6 @@ namespace AdventureGame
         private NPCManager NPCManager;
         private InventoryManager InventoryManager;
         private DiscussionWindowManager DiscussionWindowManager;
-        private GhostsPOIManager GhostsPOIManager;
         private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManager;
 
         private void Awake()
@@ -22,6 +21,7 @@ namespace AdventureGame
 
             //Level chunk initialization
             GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
+            GameObject.FindObjectOfType<GhostsPOIManager>().Init();
             base.OnAwake();
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }
@@ -38,7 +38,6 @@ namespace AdventureGame
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
-            GhostsPOIManager = FindObjectOfType<GhostsPOIManager>();
             AdventureLevelChunkFXTransitionManager = GameObject.FindObjectOfType<AdventureLevelChunkFXTransitionManager>();
 
 

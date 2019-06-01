@@ -18,7 +18,7 @@ namespace AdventureGame
         private DiscussionWriterManager DiscussionWriterManager;
         private ItemReceivedPopupAnimationManager ItemReceivedPopupAnimationManager;
 
-        public void Init(Item involvedItem)
+        public void Init(ItemID involvedItem)
         {
             #region Internal Dependencies
             var popupContentTransform = (RectTransform)gameObject.FindChildObjectRecursively(PopupContentObjectName).transform;
@@ -33,8 +33,8 @@ namespace AdventureGame
             ItemReceivedPopupDimensionsManager = new ItemReceivedPopupDimensionsManager(ItemReceivedPopupDimensionsComponent, (RectTransform)transform, popupContentTransform);
             DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, popupText);
             ItemReceivedPopupAnimationManager = new ItemReceivedPopupAnimationManager(GetComponent<Animator>());
-            popupIcon.sprite = ItemResourceResolver.ResolveItemInventoryIcon(involvedItem);
-            this.OnDiscussionTextStartWriting(adventureGameConfigurationManager.ItemConf()[involvedItem.ItemID].ItemReceivedDescriptionText);
+           //TODO popupIcon.sprite = ItemResourceResolver.ResolveItemInventoryIcon(involvedItem);
+            this.OnDiscussionTextStartWriting(adventureGameConfigurationManager.ItemConf()[involvedItem].ItemReceivedDescriptionText);
         }
 
         public void Tick(float d)

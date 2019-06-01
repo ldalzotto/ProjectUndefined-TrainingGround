@@ -15,7 +15,7 @@ namespace AdventureGame
             }
             else if (contextAction.GetType() == typeof(GrabAction))
             {
-                return new GrabActionInput(playerManager.GetCurrentTargetedPOI(), ((GrabAction)contextAction).Item);
+                return new GrabActionInput(playerManager.GetCurrentTargetedPOI(), ((GrabAction)contextAction).ItemInvolved);
             }
             else if (contextAction.GetType() == typeof(AnimatorAction))
             {
@@ -54,7 +54,7 @@ namespace AdventureGame
             if (contextAction.GetType() == typeof(GrabAction))
             {
                 var grabAction = (GrabAction)contextAction;
-                return new GrabScenarioAction(grabAction.Item.ItemID, grabAction.AssociatedPOI.PointOfInterestId);
+                return new GrabScenarioAction(grabAction.ItemInvolved, grabAction.AssociatedPOI.PointOfInterestId);
             }
             else if (contextAction.GetType() == typeof(GiveAction))
             {

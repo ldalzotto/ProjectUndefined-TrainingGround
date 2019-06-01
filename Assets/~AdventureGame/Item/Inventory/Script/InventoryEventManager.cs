@@ -10,16 +10,21 @@ namespace AdventureGame
         private InventoryMenu InventoryMenu;
         private PlayerManager PlayerManager;
 
+        #region External Dependencies
+        private AdventureGameConfigurationManager AdventureGameConfigurationManager;
+        #endregion
+
         public void Init()
         {
             InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
             InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
         }
 
-        public void OnAddItem(Item item)
+        public void OnAddItem(ItemID itemID)
         {
-            InventoryManager.OnAddItem(item);
+            InventoryManager.OnAddItem(itemID, this.AdventureGameConfigurationManager.ItemConf()[itemID]);
         }
 
         public void OnInventoryEnabled()

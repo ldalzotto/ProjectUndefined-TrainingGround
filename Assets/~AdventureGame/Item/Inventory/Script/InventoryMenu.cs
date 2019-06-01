@@ -101,9 +101,9 @@ namespace AdventureGame
         {
             InventoryAnimationManager.OnInventoryDisabled();
         }
-        public void OnItemAdd(Item item)
+        public void OnItemAdd(Item item, ItemInherentData itemInherentData)
         {
-            InventoryCellContainer.AddItemToFreeCell(item);
+            InventoryCellContainer.AddItemToFreeCell(item, itemInherentData);
         }
         public void OnItemDeleted(ItemID itemID)
         {
@@ -285,7 +285,7 @@ namespace AdventureGame
             return (x >= 0 && x < width) && (y >= 0 && y < height);
         }
 
-        public void AddItemToFreeCell(Item itemToAdd)
+        public void AddItemToFreeCell(Item itemToAdd, ItemInherentData itemInherentData)
         {
             for (var h = 0; h < height; h++)
             {
@@ -294,7 +294,7 @@ namespace AdventureGame
                     var inventoryCell = GetCell(w, h);
                     if (inventoryCell.AssociatedItem == null)
                     {
-                        inventoryCell.SetItem(itemToAdd);
+                        inventoryCell.SetItem(itemToAdd, itemInherentData);
                         return;
                     }
                 }

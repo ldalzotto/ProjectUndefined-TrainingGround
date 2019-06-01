@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -7,6 +8,7 @@ namespace AdventureGame
     public class DummyContextAction : AContextAction
     {
 
+        [NonSerialized]
         private float elapsedTime;
 
         public DummyContextAction(AContextAction nextContextAction) : base(nextContextAction) { }

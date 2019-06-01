@@ -6,20 +6,25 @@ using static CoreGame.PlayerAnimationConstants;
 
 namespace AdventureGame
 {
-
+    [System.Serializable]
     public class GiveAction : AContextAction
     {
+        [SerializeField]
         private ItemID itemGiven;
+        [NonSerialized]
         private bool isActionEnded;
+        [NonSerialized]
         private bool itemSuccesfullyGiven;
 
         public ItemID ItemGiven { get => itemGiven; }
 
         #region External Dependencies
+        [NonSerialized]
         private InventoryEventManager InventoryEventManager;
         #endregion
 
         #region Internal Managers
+        [NonSerialized]
         private GiveActionAnimationManager GiveActionAnimationManager;
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 namespace AdventureGame
 {
@@ -11,10 +12,13 @@ namespace AdventureGame
         public abstract void AfterFinishedEventProcessed();
         public abstract void Tick(float d);
 
+        [SerializeField]
         protected SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+        [SerializeField]
         private AContextAction nextContextAction;
 
         #region Internal Dependencies
+        [NonSerialized]
         private AContextActionInput contextActionInput;
         #endregion
 

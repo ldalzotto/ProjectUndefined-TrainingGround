@@ -1,35 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace AdventureGame
 {
-
+    [System.Serializable]
     public class GrabAction : AContextAction
     {
-        public Item Item;
+        [SerializeField]
+        private ItemID itemInvolved;
+        [SerializeField]
         private bool deletePOIOnGrab;
 
+        [NonSerialized]
         private GrabActionInput grabActionInput;
 
         #region External Dependencies
+        [NonSerialized]
         private InventoryEventManager InventoryEventManager;
+        [NonSerialized]
         private PointOfInterestEventManager PointOfInterestEventManager;
         #endregion
 
         #region Internal Dependencies
+        [NonSerialized]
         private PointOfInterestType associatedPOI;
+        [NonSerialized]
         private ItemReceivedPopupManager ItemReceivedPopupManager;
+        #endregion
 
         public PointOfInterestType AssociatedPOI { get => associatedPOI; }
-
-        #endregion
+        public ItemID ItemInvolved { get => itemInvolved; }
 
         public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
         {
-            #region External Dependencies
-            var adventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
-            #endregion
-            Item = adventureGameConfigurationManager.ItemConf()[itemId].ItemPrefab;
+            this.itemInvolved = itemId;
             this.deletePOIOnGrab = deletePOIOnGrab;
         }
 
@@ -48,7 +53,7 @@ namespace AdventureGame
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
 
-            ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, Item);
+            ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, this.itemInvolved);
 
 
             ItemReceivedPopupManager.ResetState();
@@ -89,9 +94,9 @@ namespace AdventureGame
         private Canvas GameCanvas;
         private ItemReceivedPopup ItemReceivedPopup;
         private GameInputManager gameInputManager;
-        private Item involvedItem;
+        private ItemID involvedItem;
 
-        public ItemReceivedPopupManager(Canvas gameCanvas, GameInputManager gameInputManager, Item involvedItem)
+        public ItemReceivedPopupManager(Canvas gameCanvas, GameInputManager gameInputManager, ItemID involvedItem)
         {
             this.GameCanvas = gameCanvas;
             this.gameInputManager = gameInputManager;
@@ -130,15 +135,15 @@ namespace AdventureGame
     public class GrabActionInput : AContextActionInput
     {
         private PointOfInterestType targetedPOI;
-        private Item grabbedItem;
+        private ItemID grabbedItem;
 
-        public GrabActionInput(PointOfInterestType targetedPOI, Item grabbedItem)
+        public GrabActionInput(PointOfInterestType targetedPOI, ItemID grabbedItem)
         {
             this.targetedPOI = targetedPOI;
             this.grabbedItem = grabbedItem;
         }
 
-        public Item GrabbedItem { get => grabbedItem; }
+        public ItemID GrabbedItem { get => grabbedItem; }
         public PointOfInterestType TargetedPOI { get => targetedPOI; }
     }
 }

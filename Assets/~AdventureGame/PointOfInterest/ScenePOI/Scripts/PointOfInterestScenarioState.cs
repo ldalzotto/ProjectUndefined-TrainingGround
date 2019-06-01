@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AdventureGame
 {
-
+    [System.Serializable]
     public class PointOfInterestScenarioState
     {
         public ReceivableItemsComponent ReceivableItemsComponent;
@@ -12,7 +12,7 @@ namespace AdventureGame
         public InteractableItemsComponent InteractableItemsComponent;
     }
 
-
+    [System.Serializable]
     public abstract class POIIdContainer<E> where E : Enum
     {
         public List<E> containedIDs = new List<E>();
@@ -41,9 +41,13 @@ namespace AdventureGame
     #endregion
 
     #region Model State
+    [System.Serializable]
     public class PointOfInterestModelState
     {
+        [SerializeField]
         private bool isDestroyed;
+
+        [SerializeField]
         private Dictionary<string, bool> MeshRendererStates = new Dictionary<string, bool>();
 
         public bool IsDestroyed { get => isDestroyed; set => isDestroyed = value; }

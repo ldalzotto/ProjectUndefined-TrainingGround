@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,26 +17,30 @@ namespace AdventureGame
     {
 
         private Dictionary<PointOfInterestId, GhostPOI> ghostPOIs = null;
+        private GhostPOIManagerPersister GhostPOIManagerPersister;
 
-        public Dictionary<PointOfInterestId, GhostPOI> GhostPOIs
+        public Dictionary<PointOfInterestId, GhostPOI> GhostPOIs { get { return ghostPOIs; } }
+
+        public void Init()
         {
-            get
+            this.GhostPOIManagerPersister = new GhostPOIManagerPersister();
+            var loadedGhostPOIS = this.GhostPOIManagerPersister.Load();
+            if (loadedGhostPOIS == null)
             {
-                if (ghostPOIs == null)
+                ghostPOIs = new Dictionary<PointOfInterestId, GhostPOI>();
+                var poiIds = Enum.GetValues(typeof(PointOfInterestId)).Cast<PointOfInterestId>();
+                foreach (var poiId in poiIds)
                 {
-                    Init();
+                    ghostPOIs.Add(poiId, new GhostPOI());
                 }
-                return ghostPOIs;
             }
-        }
-
-        private void Init()
-        {
-            ghostPOIs = new Dictionary<PointOfInterestId, GhostPOI>();
-            var poiIds = Enum.GetValues(typeof(PointOfInterestId)).Cast<PointOfInterestId>();
-            foreach (var poiId in poiIds)
+            else
             {
-                ghostPOIs.Add(poiId, new GhostPOI(poiId));
+                this.ghostPOIs = loadedGhostPOIS;
+            }
+            foreach(var ghostPOI in this.ghostPOIs.Values)
+            {
+                ghostPOI.Init(this);
             }
         }
 
@@ -48,29 +53,46 @@ namespace AdventureGame
         public void OnScenePOICreated(PointOfInterestType pointOfInterestType)
         {
             pointOfInterestType.SyncCreateFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+            this.OnGhostPOIChanged();
         }
         public void OnScenePOIDestroyed(PointOfInterestType pointOfInterestType)
         {
             pointOfInterestType.SyncDestroyedFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+            this.OnGhostPOIChanged();
+        }
+        public void OnGhostPOIChanged()
+        {
+            this.GhostPOIManagerPersister.Save(this.ghostPOIs);
         }
         #endregion
     }
 
+    [System.Serializable]
     public class GhostPOI
     {
-        public PointOfInterestId PointOfInterestId;
+        [SerializeField]
         private PointOfInterestScenarioState PointOfInterestScenarioState;
+        [SerializeField]
         private ContextActionSynchronizerManager contextActionSynchronizerManager;
+        [SerializeField]
         private PointOfInterestModelState pointOfInterestModelState;
 
         public PointOfInterestScenarioState PointOfInterestScenarioState1 { get => PointOfInterestScenarioState; }
         internal ContextActionSynchronizerManager ContextActionSynchronizerManager { get => contextActionSynchronizerManager; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; set => pointOfInterestModelState = value; }
 
-        public GhostPOI(PointOfInterestId PointOfInterestId)
+        [NonSerialized]
+        private GhostsPOIManager ghostsPOIManagerRef;
+
+        public GhostPOI()
         {
             PointOfInterestScenarioState = new PointOfInterestScenarioState();
             contextActionSynchronizerManager = new ContextActionSynchronizerManager();
+        }
+
+        public void Init(GhostsPOIManager ghostsPOIManagerRef)
+        {
+            this.ghostsPOIManagerRef = ghostsPOIManagerRef;
         }
 
         public DiscussionTree GetAssociatedDiscussionTree()
@@ -82,10 +104,12 @@ namespace AdventureGame
         public void OnContextActionAdd(ItemID itemID, AContextAction contextActionToAdd)
         {
             contextActionSynchronizerManager.OnContextActionAdd(itemID, contextActionToAdd);
+            this.OnGhostPOIChanged();
         }
         public void OnGrabbableItemRemove(ItemID itemId)
         {
             contextActionSynchronizerManager.OnGrabbableItemRemoved(itemId);
+            this.OnGhostPOIChanged();
         }
         public void OnReceivableItemAdd(ItemID itemID)
         {
@@ -94,18 +118,21 @@ namespace AdventureGame
                 PointOfInterestScenarioState.ReceivableItemsComponent = new ReceivableItemsComponent();
             }
             PointOfInterestScenarioState.ReceivableItemsComponent.Add(itemID);
+            this.OnGhostPOIChanged();
         }
         public void OnReceivableItemRemove(ItemID itemID)
         {
             if (PointOfInterestScenarioState.ReceivableItemsComponent != null)
             {
                 PointOfInterestScenarioState.ReceivableItemsComponent.Remove(itemID);
+                this.OnGhostPOIChanged();
             }
         }
         public void OnDiscussionTreeAdd(DiscussionTree discussionTree, AContextAction contextActionToAdd)
         {
             PointOfInterestScenarioState.DiscussionTree = discussionTree;
             contextActionSynchronizerManager.OnDiscussionTreeAdd(contextActionToAdd);
+            this.OnGhostPOIChanged();
         }
         public void OnInteractableItemAdd(ItemID itemID)
         {
@@ -114,27 +141,35 @@ namespace AdventureGame
                 PointOfInterestScenarioState.InteractableItemsComponent = new InteractableItemsComponent();
             }
             PointOfInterestScenarioState.InteractableItemsComponent.Add(itemID);
+            this.OnGhostPOIChanged();
         }
-        
+
         public void OnInteractableItemRemove(ItemID itemID)
         {
             if (PointOfInterestScenarioState.InteractableItemsComponent != null)
             {
                 PointOfInterestScenarioState.InteractableItemsComponent.Remove(itemID);
+                this.OnGhostPOIChanged();
             }
         }
         public void OnLevelZoneTransitionAdd(LevelZonesID levelZonesID, AContextAction contextActionToAdd)
         {
             contextActionSynchronizerManager.OnLevelTransitionAdd(contextActionToAdd);
+            this.OnGhostPOIChanged();
         }
         #endregion
-    }
 
+        private void OnGhostPOIChanged()
+        {
+            this.ghostsPOIManagerRef.OnGhostPOIChanged();
+        }
+    }
 
     #region Context Action Synchronizer
     [System.Serializable]
     class ContextActionSynchronizerManager
     {
+        [SerializeField]
         private Dictionary<string, AContextAction> contextActions = new Dictionary<string, AContextAction>();
 
         public List<AContextAction> ContextActions
@@ -193,4 +228,12 @@ namespace AdventureGame
     }
     #endregion
 
+    #region GhostPOI peristance
+    class GhostPOIManagerPersister : AbstractGamePersister<Dictionary<PointOfInterestId, GhostPOI>>
+    {
+        public GhostPOIManagerPersister() : base("GhostPOIManager", ".poi", "POI")
+        {
+        }
+    }
+    #endregion
 }

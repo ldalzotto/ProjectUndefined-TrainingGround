@@ -10,6 +10,7 @@ namespace AdventureGame
         public Item ItemPrefab;
         public GameObject ItemModel;
         public string ItemReceivedDescriptionText;
+        public Sprite ItemMenuIcon;
     }
 
 }

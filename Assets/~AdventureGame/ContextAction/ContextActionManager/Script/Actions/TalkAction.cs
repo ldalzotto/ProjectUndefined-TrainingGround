@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -8,12 +9,17 @@ namespace AdventureGame
     {
 
         #region External Event Dependencies
+        [NonSerialized]
         private DiscussionEventHandler DiscussionEventHandler;
+        [NonSerialized]
         private PointOfInterestManager PointOfInterestManager;
         #endregion
 
+        [NonSerialized]
         private bool isConversationFinished;
+        [NonSerialized]
         private DiscussionTreeNode currentDiscussionTreeNode;
+        [NonSerialized]
         private DiscussionChoiceTextId discussionChoiceMade;
 
         public TalkAction(AContextAction nextContextAction) : base(nextContextAction)

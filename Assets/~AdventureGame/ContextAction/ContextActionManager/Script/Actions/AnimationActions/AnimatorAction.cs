@@ -3,9 +3,12 @@ using UnityEngine;
 
 namespace AdventureGame
 {
+    [System.Serializable]
     public class AnimatorAction : AContextAction
     {
+        [SerializeField]
         private PlayerAnimatioNamesEnum playerAnimationEnum;
+        [SerializeField]
         private bool animationEnded;
 
         public AnimatorAction(PlayerAnimatioNamesEnum playerAnimationEnum, AContextAction nextContextAction) : base(nextContextAction)

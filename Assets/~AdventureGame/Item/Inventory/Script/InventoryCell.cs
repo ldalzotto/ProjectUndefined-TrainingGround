@@ -18,29 +18,16 @@ namespace AdventureGame
             inventoryCellImage = GetComponent<Image>();
         }
 
-        public void SetItem(Item item)
+        public void SetItem(Item item, ItemInherentData itemInherentData)
         {
             this.associatedItem = item;
-            this.RefreshItemSprite();
+            this.inventoryCellImage.sprite = itemInherentData.ItemMenuIcon;
         }
 
         public void ClearCell()
         {
             associatedItem = null;
-            this.RefreshItemSprite();
-        }
-
-        public void RefreshItemSprite()
-        {
-            if (associatedItem != null)
-            {
-                inventoryCellImage.sprite = ItemResourceResolver.ResolveItemInventoryIcon(associatedItem);
-            }
-            else
-            {
-                inventoryCellImage.sprite = null;
-            }
-
+            this.inventoryCellImage.sprite = null;
         }
     }
 

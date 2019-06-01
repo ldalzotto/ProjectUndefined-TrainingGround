@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -6,6 +7,8 @@ namespace AdventureGame
     [System.Serializable]
     public class DiscussionTree
     {
+
+        [SerializeField]
         private DiscussionTreeNode discussionRootNode;
 
         public DiscussionTree(DiscussionTreeNode discussionRootNode)
@@ -29,10 +32,14 @@ namespace AdventureGame
     [System.Serializable]
     public class DiscussionTextOnlyNode : DiscussionTreeNode
     {
+        [SerializeField]
         private DiscussionNodeId discussionNodeId;
+        [SerializeField]
         private DisucssionSentenceTextId displayedText;
+        [SerializeField]
         private PointOfInterestId talker;
-
+        
+        [SerializeField]
         private DiscussionTreeNode nextNode;
 
         public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)

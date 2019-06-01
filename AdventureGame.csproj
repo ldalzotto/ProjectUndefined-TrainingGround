@@ -104,7 +104,6 @@
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryMenu.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemObject\GiveActionMiniature\Scripts\GiveActionMiniatureInstanciate.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemObject\Scripts\Item.cs" />
-    <Compile Include="Assets\~AdventureGame\Item\ItemObject\Scripts\ItemResourceResolver.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
     <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\AdventureLevelChunkFXTransitionManager.cs" />
     <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\AdventureLevelTransitionManager.cs" />
