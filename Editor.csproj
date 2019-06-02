@@ -100,6 +100,8 @@
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Chunk\LevelChunkConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Chunk\LevelChunkPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Chunk\LevelChunkSceneCreation.cs" />
@@ -131,13 +133,16 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIPrefabCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZoneConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZonePrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizardProfile.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizard.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\PuzzleCreationWizardEditorProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionEdgeProfile.cs" />
@@ -195,6 +200,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
@@ -216,6 +222,10 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\CreatePlayerActions.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\ExplorePlayerActions.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\CreatePOI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\EditPOI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\ExplorePOI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\POIModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\AddTargetZone.cs" />

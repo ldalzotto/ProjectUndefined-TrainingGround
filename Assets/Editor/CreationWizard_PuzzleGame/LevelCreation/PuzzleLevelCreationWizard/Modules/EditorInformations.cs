@@ -8,7 +8,7 @@ using RTPuzzle;
 using System.Linq;
 using System;
 using CoreGame;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 
 namespace Editor_PuzzleLevelCreationWizard
 {

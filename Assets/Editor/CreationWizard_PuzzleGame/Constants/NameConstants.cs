@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace Editor_PuzzleGameCreationWizard
+namespace Editor_MainGameCreationWizard
 {
     public class NameConstants
     {
@@ -21,5 +21,7 @@ namespace Editor_PuzzleGameCreationWizard
         public static string ProjectileInherentData = "_ProjectileInherentData";
         public static string ProjectilePrefab = "_ProjectilePrefab";
         public static string PlayerActionsInherentData = "_PlayerAction";
+        public static string POIPrefab = "_POIObject";
+        public static string POIInherentData = "_PointOfInterestInherentData";
     }
 }

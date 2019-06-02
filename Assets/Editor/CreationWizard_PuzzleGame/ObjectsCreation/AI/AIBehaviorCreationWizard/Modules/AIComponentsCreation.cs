@@ -5,7 +5,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 
 namespace Editor_AIBehaviorCreationWizard
 {
@@ -44,7 +44,6 @@ namespace Editor_AIBehaviorCreationWizard
 
         public override void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile)
         {
-            Debug.Log("Instanciate");
             this.CreatedObject = (AbstractAIComponents)ScriptableObject.CreateInstance(this.AIComponentsType[this.selectedType].Name);
             this.isNew = true;
         }

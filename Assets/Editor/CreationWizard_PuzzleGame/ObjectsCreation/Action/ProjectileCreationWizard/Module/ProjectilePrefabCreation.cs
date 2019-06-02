@@ -2,7 +2,7 @@
 using System.Collections;
 using RTPuzzle;
 using System;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 
 namespace Editor_ProjectileCreationWizard
 {

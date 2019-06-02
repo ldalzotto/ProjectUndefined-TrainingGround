@@ -60,7 +60,7 @@ namespace Editor_GameCustomEditors
         {
             if (GUILayout.Button("OPEN CONFIGURATION"))
             {
-                CoreGameConfigurationEditor.OpenToDesiredConfiguration<PuzzleGameConfigurationEditorV2>(typeof(CONF_TYPE));
+                ConfigurationInspector.OpenConfigurationEditor(typeof(CONF_TYPE));
             }
             if (GUILayout.Button("EDIT IN DESIGNER"))
             {

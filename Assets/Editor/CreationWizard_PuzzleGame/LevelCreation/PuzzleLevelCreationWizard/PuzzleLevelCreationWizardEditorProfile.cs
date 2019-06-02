@@ -6,7 +6,7 @@ using System;
 namespace Editor_PuzzleLevelCreationWizard
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "PuzzleLevelCreationWizardEditorProfile", menuName = "CreationWizard/PuzzleLevelCreationWizard/PuzzleLevelCreationWizardEditorProfile", order = 1)]
+    [CreateAssetMenu(fileName = "PuzzleLevelCreationWizardEditorProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile/PuzzleLevelCreationWizardEditorProfile", order = 1)]
     public class PuzzleLevelCreationWizardEditorProfile : AbstractCreationWizardEditorProfile
     {
 

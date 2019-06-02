@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Editor_PlayerActionCreationWizard
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "PlayerActionCreationWizardProfile", menuName = "CreationWizard/PuzzleObjectCreationWizard/Action/PlayerAction/PlayerActionCreationWizardProfile", order = 1)]
+    [CreateAssetMenu(fileName = "PlayerActionCreationWizardProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile/Action/PlayerAction/PlayerActionCreationWizardProfile", order = 1)]
     public class PlayerActionCreationWizardProfile : AbstractCreationWizardEditorProfile
     {
 

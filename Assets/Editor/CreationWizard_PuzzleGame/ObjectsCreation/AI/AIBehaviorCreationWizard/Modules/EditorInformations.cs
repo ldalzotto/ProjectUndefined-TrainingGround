@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEditor;
 using RTPuzzle;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using System.Collections.Generic;
 using CreationWizard;
 using System.Linq;

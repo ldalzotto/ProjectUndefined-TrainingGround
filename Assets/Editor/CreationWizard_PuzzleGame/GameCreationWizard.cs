@@ -1,23 +1,23 @@
 ﻿using UnityEditor;
 
-namespace Editor_PuzzleGameCreationWizard
+namespace Editor_MainGameCreationWizard
 {
-    public class PuzzleCreationWizard : EditorWindow
+    public class GameCreationWizard : EditorWindow
     {
-        [MenuItem("CreationWizard/PuzzleCreationWizard")]
+        [MenuItem("CreationWizard/GameCreationWizard")]
         public static void Init()
         {
-            var window = EditorWindow.GetWindow<PuzzleCreationWizard>();
+            var window = EditorWindow.GetWindow<GameCreationWizard>();
             window.Show();
         }
 
         public static void InitWithSelected(string key)
         {
-            var window = EditorWindow.GetWindow<PuzzleCreationWizard>();
+            var window = EditorWindow.GetWindow<GameCreationWizard>();
             window.Show();
             if (window.playerActionCreationWizardEditorProfile == null)
             {
-                window.playerActionCreationWizardEditorProfile = AssetFinder.SafeSingleAssetFind<PuzzleCreationWizardEditorProfile>("t:" + typeof(PuzzleCreationWizardEditorProfile).ToString());
+                window.playerActionCreationWizardEditorProfile = AssetFinder.SafeSingleAssetFind<GameCreationWizardEditorProfile>("t:" + typeof(GameCreationWizardEditorProfile).ToString());
                 if (window.playerActionCreationWizardEditorProfile != null)
                 {
                     window.playerActionCreationWizardEditorProfile.SetSelectedKey(key);
@@ -25,14 +25,14 @@ namespace Editor_PuzzleGameCreationWizard
             }
         }
 
-        private PuzzleCreationWizardEditorProfile playerActionCreationWizardEditorProfile;
+        private GameCreationWizardEditorProfile playerActionCreationWizardEditorProfile;
         
         private void OnGUI()
         {
-            this.playerActionCreationWizardEditorProfile = EditorGUILayout.ObjectField(this.playerActionCreationWizardEditorProfile, typeof(PuzzleCreationWizardEditorProfile), false) as PuzzleCreationWizardEditorProfile;
+            this.playerActionCreationWizardEditorProfile = EditorGUILayout.ObjectField(this.playerActionCreationWizardEditorProfile, typeof(GameCreationWizardEditorProfile), false) as GameCreationWizardEditorProfile;
             if (this.playerActionCreationWizardEditorProfile == null)
             {
-                this.playerActionCreationWizardEditorProfile = AssetFinder.SafeSingleAssetFind<PuzzleCreationWizardEditorProfile>("t:" + typeof(PuzzleCreationWizardEditorProfile).ToString());
+                this.playerActionCreationWizardEditorProfile = AssetFinder.SafeSingleAssetFind<GameCreationWizardEditorProfile>("t:" + typeof(GameCreationWizardEditorProfile).ToString());
             }
             if (this.playerActionCreationWizardEditorProfile != null)
             {

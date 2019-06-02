@@ -3,7 +3,7 @@ using System.Collections;
 using RTPuzzle;
 using System;
 using System.Collections.Generic;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
 using CreationWizard;
 

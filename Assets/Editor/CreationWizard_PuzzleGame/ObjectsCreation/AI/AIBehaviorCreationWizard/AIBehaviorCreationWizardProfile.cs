@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Editor_AIBehaviorCreationWizard
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "AIBehaviorCreationWizardProfile", menuName = "CreationWizard/PuzzleObjectCreationWizard/AI/AIBehaviorCreationWizardProfile", order = 1)]
+    [CreateAssetMenu(fileName = "AIBehaviorCreationWizardProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile/AI/AIBehaviorCreationWizardProfile", order = 1)]
 
     public class AIBehaviorCreationWizardProfile : AbstractCreationWizardEditorProfile
     {

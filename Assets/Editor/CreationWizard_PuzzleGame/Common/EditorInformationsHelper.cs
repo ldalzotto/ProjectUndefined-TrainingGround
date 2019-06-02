@@ -7,8 +7,9 @@ using CreationWizard;
 using System.Collections.Generic;
 using ConfigurationEditor;
 using System.Linq;
+using AdventureGame;
 
-namespace Editor_PuzzleGameCreationWizard
+namespace Editor_MainGameCreationWizard
 {
     public class EditorInformationsHelper
     {
@@ -26,6 +27,10 @@ namespace Editor_PuzzleGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
+            #region Adventure Common Prefabs
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
+            #endregion
+
             foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleGameConfigurations.GetType().GetFields())
             {
                 var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleGameConfigurations);
@@ -35,13 +40,27 @@ namespace Editor_PuzzleGameCreationWizard
                     configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleGameConfigurations, configurationObject);
                 }
             }
+
+            foreach (var configurationFieldInfo in CommonGameConfigurations.AdventureGameConfigurations.GetType().GetFields())
+            {
+                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.AdventureGameConfigurations);
+                if (configurationObject == null)
+                {
+                    AssetFinder.SafeSingleAssetFind(ref configurationObject, "t:" + configurationFieldInfo.FieldType.Name);
+                    configurationFieldInfo.SetValue(CommonGameConfigurations.AdventureGameConfigurations, configurationObject);
+                }
+            }
         }
 
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
         {
 
             return NonNullityFieldCheck(CommonGameConfigurations.PuzzleGameConfigurations)
-                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs)).ToList()
+                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureGameConfigurations))
+                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs))
+                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleAICommonPrefabs))
+                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureCommonPrefabs))
+                        .ToList()
                    .Find((s) => !string.IsNullOrEmpty(s));
         }
 
@@ -58,15 +77,19 @@ namespace Editor_PuzzleGameCreationWizard
     public class CommonGameConfigurations
     {
         public PuzzleGameConfigurations PuzzleGameConfigurations;
+        public AdventureGameConfigurations AdventureGameConfigurations;
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
         public PuzzleAICommonPrefabs PuzzleAICommonPrefabs;
+        public AdventureCommonPrefabs AdventureCommonPrefabs;
         public InstacePath InstancePath;
 
         public CommonGameConfigurations()
         {
             this.PuzzleGameConfigurations = new PuzzleGameConfigurations();
+            this.AdventureGameConfigurations = new AdventureGameConfigurations();
             this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
             this.PuzzleAICommonPrefabs = new PuzzleAICommonPrefabs();
+            this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
             this.InstancePath = new InstacePath();
         }
     }
@@ -91,7 +114,7 @@ namespace Editor_PuzzleGameCreationWizard
         [ReadOnly]
         public PlayerActionConfiguration PlayerActionConfiguration;
     }
-
+    
     [System.Serializable]
     public class PuzzleLevelCommonPrefabs
     {
@@ -118,6 +141,20 @@ namespace Editor_PuzzleGameCreationWizard
     {
         [ReadOnly]
         public NPCAIManager AIBasePrefab;
+    }
+
+    [System.Serializable]
+    public class AdventureGameConfigurations
+    {
+        [ReadOnly]
+        public PointOfInterestConfiguration PointOfInterestConfiguration;
+    }
+
+    [System.Serializable]
+    public class AdventureCommonPrefabs
+    {
+        [ReadOnly]
+        public GameObject BasePOIPrefab;
     }
 
     [System.Serializable]
@@ -157,5 +194,9 @@ namespace Editor_PuzzleGameCreationWizard
         public string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/Prefab";
         [ReadOnly]
         public string PlayerActionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/PlayerActionConfiguration/PlayerActionInherentData/Data";
+        [ReadOnly]
+        public string POIPrefabPath = "Assets/~AdventureGame/PointOfInterest/ScenePOI/Items";
+        [ReadOnly]
+        public string POIInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestConfiguration/Data";
     }
 }

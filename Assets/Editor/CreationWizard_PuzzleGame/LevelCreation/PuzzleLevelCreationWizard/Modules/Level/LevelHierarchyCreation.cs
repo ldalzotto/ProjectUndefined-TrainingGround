@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using CoreGame;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
 
 namespace Editor_PuzzleLevelCreationWizard

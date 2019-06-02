@@ -1,14 +1,12 @@
-﻿using CreationWizard;
-using Editor_MainGameCreationWizard;
-using RTPuzzle;
-using System;
+﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using AdventureGame;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
-using UnityEngine;
+using System.Collections.Generic;
+using CreationWizard;
 
-namespace Editor_AICreationObjectCreationWizard
+namespace Editor_POICreationWizard
 {
     [System.Serializable]
     public class EditorInformations : CreationModuleComponent
@@ -41,16 +39,16 @@ namespace Editor_AICreationObjectCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AiID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration)
-            }.Find(s => !string.IsNullOrEmpty(s));
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PointOfInterestID, this.EditorInformationsData.CommonGameConfigurations.AdventureGameConfigurations.PointOfInterestConfiguration)
+            }
+            .Find(s => !string.IsNullOrEmpty(s));
         }
     }
 
     [System.Serializable]
     public class EditorInformationsData
     {
-        public AiID AiID;
+        public PointOfInterestId PointOfInterestID;
         public CommonGameConfigurations CommonGameConfigurations;
     }
-
 }

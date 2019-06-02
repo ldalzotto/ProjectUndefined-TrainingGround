@@ -1,8 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
-using System.Linq;
 
 namespace Editor_GameDesigner
 {
@@ -10,22 +7,26 @@ namespace Editor_GameDesigner
     {
         private Dictionary<string, Type> Modules = new Dictionary<string, Type>()
         {
-            {"Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
+            {"Puzzle//Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
             {"Level//."+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
             {"Level//." + typeof(EditPuzzleLevel).Name, typeof(EditPuzzleLevel) },
-            {"AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
-            {"AI//."+typeof(AddAI).Name, typeof(AddAI) },
-            {"AI//." + typeof(AIModel).Name, typeof(AIModel) },
-            {"AI//Behavior//."+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
-            {"AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
-            {"TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
-            {"TargetZone//." + typeof(EditTargetZone).Name, typeof(EditTargetZone) },
-            {"TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) },
-            {"TargetZone//." + typeof(ExploreTargetZone).Name, typeof(ExploreTargetZone) },
-            {"Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
-            {"Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
-            {"PlayerAction//." + typeof(ExplorePlayerActions).Name, typeof(ExplorePlayerActions) },
-            {"PlayerAction//." + typeof(CreatePlayerActions).Name, typeof(CreatePlayerActions) }
+            {"Puzzle//AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
+            {"Puzzle//AI//."+typeof(AddAI).Name, typeof(AddAI) },
+            {"Puzzle//AI//." + typeof(AIModel).Name, typeof(AIModel) },
+            {"Puzzle//AI//Behavior//."+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
+            {"Puzzle//AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
+            {"Puzzle//TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
+            {"Puzzle//TargetZone//." + typeof(EditTargetZone).Name, typeof(EditTargetZone) },
+            {"Puzzle//TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) },
+            {"Puzzle//TargetZone//." + typeof(ExploreTargetZone).Name, typeof(ExploreTargetZone) },
+            {"Puzzle//Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
+            {"Puzzle//Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
+            {"Puzzle//PlayerAction//." + typeof(ExplorePlayerActions).Name, typeof(ExplorePlayerActions) },
+            {"Puzzle//PlayerAction//." + typeof(CreatePlayerActions).Name, typeof(CreatePlayerActions) },
+            {"Adventure//POI//." + typeof(CreatePOI).Name, typeof(CreatePOI) },
+            {"Adventure//POI//." + typeof(EditPOI).Name, typeof(EditPOI) },
+            {"Adventure//POI//." + typeof(POIModel).Name, typeof(POIModel) },
+            {"Adventure//POI//." + typeof(ExplorePOI).Name, typeof(ExplorePOI) }
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

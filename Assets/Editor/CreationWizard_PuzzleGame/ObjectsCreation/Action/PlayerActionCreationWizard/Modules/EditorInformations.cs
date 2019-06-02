@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
 using RTPuzzle;
 using CreationWizard;

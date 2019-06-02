@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Editor_ProjectileCreationWizard
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ProjectileCreationWizardProfile", menuName = "CreationWizard/PuzzleObjectCreationWizard/Action/Projectile/ProjectileCreationWizardProfile", order = 1)]
+    [CreateAssetMenu(fileName = "ProjectileCreationWizardProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile/Action/Projectile/ProjectileCreationWizardProfile", order = 1)]
     public class ProjectileCreationWizardProfile : AbstractCreationWizardEditorProfile
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {

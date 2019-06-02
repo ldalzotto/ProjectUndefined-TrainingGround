@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using RTPuzzle;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
 
 namespace Editor_ProjectileCreationWizard

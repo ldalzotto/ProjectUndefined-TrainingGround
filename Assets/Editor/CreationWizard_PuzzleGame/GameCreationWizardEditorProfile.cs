@@ -1,4 +1,4 @@
-﻿using Editor_PuzzleGameCreationWizard;
+﻿using Editor_MainGameCreationWizard;
 using System.Collections.Generic;
 using UnityEngine;
 using Editor_PuzzleLevelCreationWizard;
@@ -7,17 +7,18 @@ using Editor_AIBehaviorCreationWizard;
 using Editor_TargetZoneCreationWizard;
 using Editor_ProjectileCreationWizard;
 using Editor_PlayerActionCreationWizard;
+using Editor_POICreationWizard;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "PuzzleCreationWizardEditorProfile", menuName = "CreationWizard/PuzzleCreationWizardEditorProfile", order = 1)]
-public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWizardEditor<AbstractCreationWizardEditorProfile>>
+[CreateAssetMenu(fileName = "GameCreationWizardEditorProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile", order = 1)]
+public class GameCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWizardEditor<AbstractCreationWizardEditorProfile>>
 {
 
     [SerializeField]
     private Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>> configurations;
 
 
-    public PuzzleCreationWizardEditorProfile()
+    public GameCreationWizardEditorProfile()
     {
         this.configurations = new Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>()
         {
@@ -26,7 +27,8 @@ public class PuzzleCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWi
             {nameof(AIBehaviorCreationWizard), new AIBehaviorCreationWizard() },
             {nameof(TargetZoneCreationWizard), new TargetZoneCreationWizard() },
             {nameof(ProjectileCreationWizard), new ProjectileCreationWizard() },
-            {nameof(PlayerActionCreationWizard), new PlayerActionCreationWizard() }
+            {nameof(PlayerActionCreationWizard), new PlayerActionCreationWizard() },
+            {nameof(POICreationWizard), new POICreationWizard() }
         };
     }
 

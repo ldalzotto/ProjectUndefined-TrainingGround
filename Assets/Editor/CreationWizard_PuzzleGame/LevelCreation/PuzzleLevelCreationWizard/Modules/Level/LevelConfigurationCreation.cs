@@ -2,7 +2,7 @@
 using UnityEditor;
 using RTPuzzle;
 using System;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using System.Collections.Generic;
 
 namespace Editor_PuzzleLevelCreationWizard

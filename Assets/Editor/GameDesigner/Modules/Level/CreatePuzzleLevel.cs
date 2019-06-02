@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using Editor_PuzzleLevelCreationWizard;
 
 namespace Editor_GameDesigner
@@ -12,7 +12,7 @@ namespace Editor_GameDesigner
         {
             if(GUILayout.Button("CREATE LEVEL IN EDITOR"))
             {
-                PuzzleCreationWizard.InitWithSelected(nameof(PuzzleLevelCreationWizard));
+                GameCreationWizard.InitWithSelected(nameof(PuzzleLevelCreationWizard));
             }
         }
 

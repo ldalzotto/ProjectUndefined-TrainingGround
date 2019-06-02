@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 using Editor_AIBehaviorCreationWizard;
 
 namespace Editor_GameDesigner

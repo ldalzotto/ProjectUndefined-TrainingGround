@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, ICreateable where S : UnityEngine.Object
 {
@@ -83,7 +80,15 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
             {
                 this.BasePrefab = this.BasePrefabProvider.Invoke(editorProfile);
             }
-            this.createdPrefab = PrefabUtility.LoadPrefabContents(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.BasePrefab)).GetComponent<S>();
+            if (typeof(S).IsAssignableFrom(typeof(GameObject)))
+            {
+                this.createdPrefab = PrefabUtility.LoadPrefabContents(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.BasePrefab)) as S;
+            }
+            else
+            {
+                this.createdPrefab = PrefabUtility.LoadPrefabContents(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this.BasePrefab)).GetComponent<S>();
+            }
+
         }
     }
 
@@ -102,7 +107,14 @@ public abstract class CreateablePrefabComponent<S> : CreationModuleComponent, IC
         {
             this.generatedPrefabAssetManager = new GeneratedPrefabAssetManager<S>(this.BasePrefab, basePath, baseName);
             DestroyImmediate(this.createdPrefab);
-            this.createdPrefab = this.generatedPrefabAssetManager.SavedAsset.GetComponent<S>();
+            if (typeof(S).IsAssignableFrom(typeof(GameObject)))
+            {
+                this.createdPrefab = this.generatedPrefabAssetManager.SavedAsset as S;
+            }
+            else
+            {
+                this.createdPrefab = this.generatedPrefabAssetManager.SavedAsset.GetComponent<S>();
+            }
             editorProfile.AddToGeneratedObjects(this.createdPrefab);
         }
         return this.createdPrefab;

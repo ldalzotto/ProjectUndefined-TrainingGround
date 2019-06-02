@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Editor_PuzzleGameCreationWizard;
+using Editor_MainGameCreationWizard;
 
 namespace Editor_GameDesigner
 {
@@ -10,7 +10,7 @@ namespace Editor_GameDesigner
         {
             if (GUILayout.Button("CREATE IN EDITOR"))
             {
-                PuzzleCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
+                GameCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
             }
         }
 

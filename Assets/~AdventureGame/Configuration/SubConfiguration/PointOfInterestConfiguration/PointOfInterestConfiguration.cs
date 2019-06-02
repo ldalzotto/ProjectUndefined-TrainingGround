@@ -23,7 +23,8 @@ namespace AdventureGame
         CROWBAR_INVENTORY = 10,
         SEWER_ENTRANCE = 7,
         SEWER_EXIT = 8,
-        SEWER_TO_PUZZLE = 9
+        SEWER_TO_PUZZLE = 9,
+        RTP_PUZZLE_CREATION_TEST = 9999
     }
 
 }
