@@ -32,27 +32,4 @@ namespace AdventureGame
             }
         }
     }
-
-    public class DiscussionTimelineTreeChoiceDeleteAction : TimelineNodeWorkflowAction<GhostsPOIManager>
-    {
-        private PointOfInterestId PointOfInterestId;
-        private DiscussionChoiceTextId DiscussionIdToDelete;
-        private Stack<DiscussionNodeId> nodeIdsWalk;
-
-        public DiscussionTimelineTreeChoiceDeleteAction(PointOfInterestId pointOfInterestId, DiscussionChoiceTextId discussionIdToDelete, Stack<DiscussionNodeId> nodeIdsWalk)
-        {
-            PointOfInterestId = pointOfInterestId;
-            DiscussionIdToDelete = discussionIdToDelete;
-            this.nodeIdsWalk = nodeIdsWalk;
-        }
-
-        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNode<GhostsPOIManager> timelineNodeRefence)
-        {
-            var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
-            if (selectedPOI != null)
-            {
-                selectedPOI.GetAssociatedDiscussionTree().BreakConnectionAtEndOfStack(nodeIdsWalk);
-            }
-        }
-    }
 }

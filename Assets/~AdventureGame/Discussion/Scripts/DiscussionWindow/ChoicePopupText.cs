@@ -18,10 +18,10 @@ namespace AdventureGame
             text = GetComponent<Text>();
         }
 
-        public void SetDiscussionChoice(DiscussionChoice choice)
+        public void SetDiscussionChoice(DiscussionChoice choice, ref DiscussionTextRepertoire DiscussionTextRepertoire)
         {
             discussionChoice = choice;
-            this.text.text = DiscussionChoiceTextConstants.ChoiceTexts[choice.Text];
+            this.text.text = DiscussionTextRepertoire.ChoiceTexts[choice.Text];
             TextGenerationSettings = new TextGenerationSettings();
             TextGenerationSettings.font = text.font;
             TextGenerationSettings.fontSize = text.fontSize;

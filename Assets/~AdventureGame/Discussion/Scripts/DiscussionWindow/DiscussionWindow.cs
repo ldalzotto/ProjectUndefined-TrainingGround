@@ -64,11 +64,11 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
+        public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position, ref DiscussionTextRepertoire DiscussionTextRepertoire)
         {
             DiscussionWindowAnimationManager.PlayEnterAnimation();
             DiscussionWindowPositioner.SetTransformToFollow(position);
-            InitializeDiscussionWindow(DiscussionSentencesTextConstants.SentencesText[discussionNode.DisplayedText]);
+            InitializeDiscussionWindow(DiscussionTextRepertoire.SentencesText[discussionNode.DisplayedText]);
         }
 
         public void OnDiscussionWindowSleep()

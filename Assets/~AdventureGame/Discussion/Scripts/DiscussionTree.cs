@@ -17,16 +17,10 @@ namespace AdventureGame
         }
 
         public DiscussionTreeNode DiscussionRootNode { get => discussionRootNode; }
-
-        public void BreakConnectionAtEndOfStack(Stack<DiscussionNodeId> nodeIdsStack)
-        {
-            discussionRootNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-        }
     }
 
     public interface DiscussionTreeNode
     {
-        void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack);
     }
 
     [System.Serializable]
@@ -54,23 +48,6 @@ namespace AdventureGame
         public PointOfInterestId Talker { get => talker; }
         public DiscussionTreeNode NextNode { get => nextNode; }
 
-        public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
-        {
-            var idToSeek = nodeIdsStack.Pop();
-            if (discussionNodeId == idToSeek)
-            {
-                if (nodeIdsStack.Count > 0)
-                {
-                    nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-                }
-                else
-                {
-                    //break connection
-                    nextNode = null;
-                }
-            }
-        }
-
         public DiscussionTreeNode GetNextNode()
         {
             return nextNode;
@@ -94,44 +71,6 @@ namespace AdventureGame
 
         public PointOfInterestId Talker { get => talker; }
         public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
-
-        public void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
-        {
-            var idToSeek = nodeIdsStack.Pop();
-            DiscussionChoice choiceToRemove = null;
-
-            if (idToSeek == discussionTreeNodeId)
-            {
-                if (nodeIdsStack.Count > 0)
-                {
-                    var choiceIdSeek = nodeIdsStack.Pop();
-                    foreach (var discussionChoice in discussionChoices)
-                    {
-                        if (discussionChoice.DiscussionNodeId == choiceIdSeek)
-                        {
-                            if (nodeIdsStack.Count > 0)
-                            {
-                                discussionChoice.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-                            }
-                            else
-                            {
-                                choiceToRemove = discussionChoice;
-                            }
-                        }
-                    }
-
-                    if (choiceToRemove != null)
-                    {
-                        discussionChoices.Remove(choiceToRemove);
-                    }
-                }
-                else
-                {
-                    discussionChoices = new List<DiscussionChoice>();
-                }
-
-            }
-        }
 
         public DiscussionTreeNode GetNextNode(DiscussionChoiceTextId selectedChoice)
         {
@@ -163,23 +102,6 @@ namespace AdventureGame
         public DiscussionChoiceTextId Text { get => text; }
         public DiscussionTreeNode NextNode { get => nextNode; }
         public DiscussionNodeId DiscussionNodeId { get => discussionNodeId; }
-
-        internal void BreakConnectionAtEndOfStack(ref Stack<DiscussionNodeId> nodeIdsStack)
-        {
-            var idToSeek = nodeIdsStack.Pop();
-            if (discussionNodeId == idToSeek)
-            {
-                if (nodeIdsStack.Count > 0)
-                {
-                    nextNode.BreakConnectionAtEndOfStack(ref nodeIdsStack);
-                }
-                else
-                {
-                    //break connection
-                    nextNode = null;
-                }
-            }
-        }
     }
 
     public class DiscussionChoiceEvent
@@ -220,50 +142,5 @@ namespace AdventureGame
     }
 
     #endregion
-
-    #region Discussion Sentence Text
-    public enum DisucssionSentenceTextId
-    {
-        BOUNCER_FORBIDDEN_INTRODUCTION,
-        BOUNCER_ASK_AGE,
-        BOUNCER_GET_OUT,
-        BOUNCER_ALLOWED,
-        PLAYER_TELL_AGE
-    }
-
-    public class DiscussionSentencesTextConstants
-    {
-
-        public static Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>()
-    {
-        {DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, "I don't like your haircut.\nAge below 18 = NO ENTRY." },
-        {DisucssionSentenceTextId.BOUNCER_ASK_AGE, "How old are you?"},
-        {DisucssionSentenceTextId.BOUNCER_GET_OUT, "Ridiculous.\nGet out!" },
-        {DisucssionSentenceTextId.BOUNCER_ALLOWED, "You have the right to pass."},
-        {DisucssionSentenceTextId.PLAYER_TELL_AGE, "18 years old." }
-    };
-    }
-    #endregion
-
-    #region Discussion Choice Text
-    public enum DiscussionChoiceIntroductionTextId
-    {
-        BOUNCER_CHOICE_INTRO_1
-    }
-
-    public enum DiscussionChoiceTextId
-    {
-        PLAYER_AGE_CHOICE_17,
-        PLAYER_AGE_CHOICE_18
-    }
-
-    public class DiscussionChoiceTextConstants
-    {
-        public static Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>()
-    {
-        { DiscussionChoiceTextId.PLAYER_AGE_CHOICE_17, "17"},
-        { DiscussionChoiceTextId.PLAYER_AGE_CHOICE_18, "18"}
-    };
-    }
-    #endregion
+    
 }

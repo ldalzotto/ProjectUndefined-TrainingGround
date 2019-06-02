@@ -8,6 +8,7 @@ namespace AdventureGame
     {
         #region External Dependencies
         private Canvas GameCanvas;
+        private AdventureStaticConfiguration AdventureStaticConfiguration;
         #endregion
 
         private DicussionInputManager DicussionInputManager;
@@ -19,6 +20,7 @@ namespace AdventureGame
         {
             #region External Dependencies
             GameCanvas = GameObject.FindObjectOfType<Canvas>();
+            this.AdventureStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration;
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
 
@@ -74,7 +76,7 @@ namespace AdventureGame
             OpenedDiscussion = Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies();
-            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position);
+            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, position, ref this.AdventureStaticConfiguration.DiscussionTestRepertoire);
         }
 
         public IEnumerator PlayDiscussionCloseAnimation()
@@ -85,7 +87,7 @@ namespace AdventureGame
         public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
         {
             OpenedChoicePopup = Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
-            OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero);
+            OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero, ref this.AdventureStaticConfiguration.DiscussionTestRepertoire);
         }
 
         public void OnDiscussionWindowSleep()
