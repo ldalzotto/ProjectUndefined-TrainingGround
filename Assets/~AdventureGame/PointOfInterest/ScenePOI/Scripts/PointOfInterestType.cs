@@ -69,7 +69,7 @@ namespace AdventureGame
             Handles.Label(transform.position, PointOfInterestId.ToString(), labelStyle);
 #endif
 
-            Gizmos.DrawIcon(transform.position + new Vector3(0, 1.5f, 0), "Gizmo_POI", true);
+            Gizmos.DrawIcon(transform.position + new Vector3(0,5f, 0), "Gizmo_POI", true);
         }
 
         #region Logical Conditions
