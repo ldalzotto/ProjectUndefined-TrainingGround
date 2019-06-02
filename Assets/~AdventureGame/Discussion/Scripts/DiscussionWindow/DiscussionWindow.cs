@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,6 +80,7 @@ namespace AdventureGame
         private void InitializeDiscussionWindow(string fullTextContent)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
+            fullTextContent = Regex.Unescape(fullTextContent);
             TextDiscussionWindowDimensionsManager.InitializeDiscussionWindow(fullTextContent);
             var truncatedText = TextDiscussionWindowDimensionsManager.ComputeTrucatedText(fullTextContent);
             DiscussionWriterManager.OnDiscussionTextStartWriting(truncatedText);

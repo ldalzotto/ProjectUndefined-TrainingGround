@@ -11,7 +11,6 @@ namespace Editor_GameCustomEditors
     public class DiscussionTextRepertoireCustomEditor : Editor
     {
         private TextDictionaryGUI<DisucssionSentenceTextId> SentecesGUI;
-        private TextDictionaryGUI<DiscussionChoiceTextId> ChoicesGUI;
 
         public override void OnInspectorGUI()
         {
@@ -20,7 +19,6 @@ namespace Editor_GameCustomEditors
             EditorGUI.BeginChangeCheck();
             this.SentecesGUI.GUiTick();
             EditorGUILayout.Separator();
-            this.ChoicesGUI.GUiTick();
             if (EditorGUI.EndChangeCheck())
             {
                 EditorUtility.SetDirty(DiscussionTestRepertoire);
@@ -32,7 +30,6 @@ namespace Editor_GameCustomEditors
         {
             DiscussionTextRepertoire DiscussionTestRepertoire = (DiscussionTextRepertoire)target;
             this.SentecesGUI = new TextDictionaryGUI<DisucssionSentenceTextId>(ref DiscussionTestRepertoire.SentencesText, "Discussion Sentences : ");
-            this.ChoicesGUI = new TextDictionaryGUI<DiscussionChoiceTextId>(ref DiscussionTestRepertoire.ChoiceTexts, "Discussion Choices : ");
         }
     }
 

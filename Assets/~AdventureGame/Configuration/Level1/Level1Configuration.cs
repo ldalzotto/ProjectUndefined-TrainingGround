@@ -15,7 +15,7 @@ namespace AdventureGame
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();
 
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnStartNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>() {
-             new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.Sentenses[DiscussionTreeId.BOUNCER_DISCUSSION_TREE]), new TalkAction(null) )
+             new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.DiscussionTrees[DiscussionTreeId.BOUNCER_DISCUSSION_TREE]), new TalkAction(null) )
     };
 
         public override Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>> TransitionRequirements => new Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>>()
@@ -29,7 +29,7 @@ namespace AdventureGame
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnExitNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>();
 
         public override List<TimelineNodeWorkflowAction<GhostsPOIManager>> OnStartNodeAction => new List<TimelineNodeWorkflowAction<GhostsPOIManager>>() {
-              new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.Sentenses[DiscussionTreeId.BOUNCER_OK_DISCUSSION]), new TalkAction(null) )
+              new DiscussionTimelineTreeCreationAction(PointOfInterestId.BOUNCER, new DiscussionTree(DiscussionSentencesConstants.DiscussionTrees[DiscussionTreeId.BOUNCER_OK_DISCUSSION]), new TalkAction(null) )
     };
 
         public override Dictionary<TimeLineAction, TimelineNode<GhostsPOIManager>> TransitionRequirements => null;

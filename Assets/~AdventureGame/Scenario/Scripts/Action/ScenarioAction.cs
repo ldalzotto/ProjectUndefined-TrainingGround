@@ -109,9 +109,9 @@ namespace AdventureGame
 
     public class DiscussionChoiceScenarioAction : TimeLineAction
     {
-        public DiscussionChoiceTextId ChoiceId { get; }
+        public DiscussionNodeId ChoiceId { get; }
 
-        public DiscussionChoiceScenarioAction(DiscussionChoiceTextId choiceId)
+        public DiscussionChoiceScenarioAction(DiscussionNodeId choiceId)
         {
             this.ChoiceId = choiceId;
         }

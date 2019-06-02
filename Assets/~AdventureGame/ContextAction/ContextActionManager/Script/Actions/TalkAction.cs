@@ -20,7 +20,7 @@ namespace AdventureGame
         [NonSerialized]
         private DiscussionTreeNode currentDiscussionTreeNode;
         [NonSerialized]
-        private DiscussionChoiceTextId discussionChoiceMade;
+        private DiscussionNodeId discussionChoiceMade;
 
         public TalkAction(AContextAction nextContextAction) : base(nextContextAction)
         {
@@ -93,7 +93,7 @@ namespace AdventureGame
             }
         }
 
-        private void OnDiscussionChoiceNodeEnd(DiscussionChoiceTextId choiceMade)
+        private void OnDiscussionChoiceNodeEnd(DiscussionNodeId choiceMade)
         {
             discussionChoiceMade = choiceMade;
             DiscussionEventHandler.StartCoroutine(DiscussionEventHandler.OnDiscussionWindowSleep());

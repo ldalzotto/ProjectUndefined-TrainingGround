@@ -43,7 +43,7 @@ namespace AdventureGame
             transform.localPosition = localPosition;
 
             var choicePopupTexts = new List<ChoicePopupText>();
-            foreach (var choice in nextDisucssionChoiceNode.DiscussionChoices)
+            foreach (var choice in nextDisucssionChoiceNode.GetDiscussionChoices())
             {
                 var choicesPopupText = Instantiate(PrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
                 choicesPopupText.SetDiscussionChoice(choice, ref DiscussionTextRepertoire);

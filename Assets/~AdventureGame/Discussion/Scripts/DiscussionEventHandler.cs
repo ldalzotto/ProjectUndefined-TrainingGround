@@ -17,7 +17,7 @@ namespace AdventureGame
         public delegate void DiscussionTextNodeHandler();
         private event DiscussionTextNodeHandler OnDiscussionTextNodeEndEvent;
 
-        public delegate void DiscussionChoiceNodeHandler(DiscussionChoiceTextId selectedChoice);
+        public delegate void DiscussionChoiceNodeHandler(DiscussionNodeId selectedChoice);
         private event DiscussionChoiceNodeHandler OnDiscussionChoiceNodeEndEvent;
 
         private void Start()
@@ -53,7 +53,7 @@ namespace AdventureGame
             DiscussionWindowManager.OnChoicePopupAwake(discussionChoice);
         }
 
-        public void OnDiscussionChoiceEnd(DiscussionChoiceTextId selectedChoice)
+        public void OnDiscussionChoiceEnd(DiscussionNodeId selectedChoice)
         {
             ScenarioTimelineEventManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(selectedChoice));
             OnDiscussionChoiceNodeEndEvent.Invoke(selectedChoice);

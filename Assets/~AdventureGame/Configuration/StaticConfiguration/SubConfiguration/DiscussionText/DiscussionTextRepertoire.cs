@@ -10,7 +10,6 @@ namespace AdventureGame
     public class DiscussionTextRepertoire : SerializedScriptableObject
     {
         public Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>();
-        public Dictionary<DiscussionChoiceTextId, string> ChoiceTexts = new Dictionary<DiscussionChoiceTextId, string>();
     }
     
     public enum DisucssionSentenceTextId
@@ -19,11 +18,7 @@ namespace AdventureGame
         BOUNCER_ASK_AGE,
         BOUNCER_GET_OUT,
         BOUNCER_ALLOWED,
-        PLAYER_TELL_AGE
-    }
-
-    public enum DiscussionChoiceTextId
-    {
+        PLAYER_TELL_AGE,
         PLAYER_AGE_CHOICE_17,
         PLAYER_AGE_CHOICE_18
     }

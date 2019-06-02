@@ -38,7 +38,7 @@ namespace AdventureGame
                     if (DicussionInputManager.Tick())
                     {
                         var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
-                        DiscussionEventHandler.OnDiscussionChoiceEnd(selectedChoice.Text);
+                        DiscussionEventHandler.OnDiscussionChoiceEnd(selectedChoice.DiscussionNodeId);
                     }
                 }
                 else

@@ -19,24 +19,26 @@ namespace AdventureGame
         public DiscussionTreeNode DiscussionRootNode { get => discussionRootNode; }
     }
 
-    public interface DiscussionTreeNode
+    [System.Serializable]
+    public abstract class DiscussionTreeNode
     {
+        [SerializeField]
+        protected DiscussionNodeId discussionNodeId;
     }
 
     [System.Serializable]
     public class DiscussionTextOnlyNode : DiscussionTreeNode
     {
-        [SerializeField]
-        private DiscussionNodeId discussionNodeId;
+
         [SerializeField]
         private DisucssionSentenceTextId displayedText;
         [SerializeField]
         private PointOfInterestId talker;
-        
-        [SerializeField]
-        private DiscussionTreeNode nextNode;
 
-        public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionTreeNode nextNode)
+        [SerializeField]
+        private DiscussionNodeId nextNode;
+
+        public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionNodeId nextNode)
         {
             this.discussionNodeId = DiscussionNodeId;
             this.displayedText = displayedText;
@@ -46,39 +48,50 @@ namespace AdventureGame
 
         public DisucssionSentenceTextId DisplayedText { get => displayedText; }
         public PointOfInterestId Talker { get => talker; }
-        public DiscussionTreeNode NextNode { get => nextNode; }
+        public DiscussionNodeId NextNode { get => nextNode; }
 
         public DiscussionTreeNode GetNextNode()
         {
-            return nextNode;
+            return DiscussionSentencesConstants.DiscussionNodes[nextNode];
         }
     }
 
     [System.Serializable]
     public class DiscussionChoiceNode : DiscussionTreeNode
     {
-        private DiscussionNodeId discussionTreeNodeId;
 
         private PointOfInterestId talker;
-        private List<DiscussionChoice> discussionChoices;
+        private List<DiscussionNodeId> discussionChoices;
 
-        public DiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, PointOfInterestId talker, List<DiscussionChoice> discussionChoices)
+        public DiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, PointOfInterestId talker, List<DiscussionNodeId> discussionChoices)
         {
-            this.discussionTreeNodeId = DiscussionTreeNodeId;
+            this.discussionNodeId = DiscussionTreeNodeId;
             this.talker = talker;
             this.discussionChoices = discussionChoices;
         }
 
         public PointOfInterestId Talker { get => talker; }
-        public List<DiscussionChoice> DiscussionChoices { get => discussionChoices; }
 
-        public DiscussionTreeNode GetNextNode(DiscussionChoiceTextId selectedChoice)
+        public List<DiscussionChoice> GetDiscussionChoices()
+        {
+            return this.discussionChoices.ConvertAll(c => (DiscussionChoice)DiscussionSentencesConstants.DiscussionNodes[c]);
+        }
+
+        public DiscussionTreeNode GetNextNode(DiscussionNodeId selectedChoice)
         {
             foreach (var discussionChoice in discussionChoices)
             {
-                if (discussionChoice.Text == selectedChoice)
+                if (discussionChoice == selectedChoice)
                 {
-                    return discussionChoice.NextNode;
+                    var selectedNode = DiscussionSentencesConstants.DiscussionNodes[selectedChoice];
+                    if (selectedNode.GetType() == typeof(DiscussionChoice))
+                    {
+                        return ((DiscussionChoice)selectedNode).GetNextNode();
+                    }
+                    else if (selectedNode.GetType() == typeof(DiscussionTextOnlyNode))
+                    {
+                        return ((DiscussionTextOnlyNode)selectedNode).GetNextNode();
+                    }
                 }
             }
             return null;
@@ -86,27 +99,27 @@ namespace AdventureGame
     }
 
     [System.Serializable]
-    public class DiscussionChoice
+    public class DiscussionChoice : DiscussionTreeNode
     {
-        private DiscussionNodeId discussionNodeId;
-        private DiscussionChoiceTextId text;
-        private DiscussionTreeNode nextNode;
+        private DisucssionSentenceTextId text;
+        private DiscussionNodeId nextNode;
 
-        public DiscussionChoice(DiscussionNodeId discussionNodeId, DiscussionChoiceTextId text, DiscussionTreeNode nextNode)
+        public DiscussionChoice(DiscussionNodeId discussionNodeId, DisucssionSentenceTextId text, DiscussionNodeId nextNode)
         {
             this.discussionNodeId = discussionNodeId;
             this.text = text;
             this.nextNode = nextNode;
         }
 
-        public DiscussionChoiceTextId Text { get => text; }
-        public DiscussionTreeNode NextNode { get => nextNode; }
+        public DisucssionSentenceTextId Text { get => text; }
+        public DiscussionNodeId NextNode { get => nextNode; }
         public DiscussionNodeId DiscussionNodeId { get => discussionNodeId; }
-    }
 
-    public class DiscussionChoiceEvent
-    {
-        private DiscussionChoiceTextId text;
+
+        public DiscussionTreeNode GetNextNode()
+        {
+            return DiscussionSentencesConstants.DiscussionNodes[nextNode];
+        }
     }
 
     #region Discussion Tree Workflow
@@ -118,29 +131,38 @@ namespace AdventureGame
 
     public enum DiscussionNodeId
     {
+        NONE = 0,
         BOUNCER_FORBIDDEN_INTRODUCTION,
-        BOUNCER_OK_INTRODUCTION
+        BOUNCER_ASK_AGE,
+        BOUNCER_OK_INTRODUCTION,
+        PLAYER_AGE_CHOICE,
+        PLAYER_AGE_CHOICE_17,
+        PLAYER_AGE_CHOICE_18,
+        BOUNCER_GET_OUT
     }
 
     public class DiscussionSentencesConstants
     {
-        public static Dictionary<DiscussionTreeId, DiscussionTextOnlyNode> Sentenses = new Dictionary<DiscussionTreeId, DiscussionTextOnlyNode>()
-    {
-        {DiscussionTreeId.BOUNCER_DISCUSSION_TREE, new DiscussionTextOnlyNode(
-                DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION, PointOfInterestId.BOUNCER, new DiscussionTextOnlyNode(
-                       DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ASK_AGE, PointOfInterestId.BOUNCER,
-                       new DiscussionChoiceNode(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, PointOfInterestId.PLAYER, new List<DiscussionChoice>(){
-                           new DiscussionChoice(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DiscussionChoiceTextId.PLAYER_AGE_CHOICE_17, null),
-                           new DiscussionChoice(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DiscussionChoiceTextId.PLAYER_AGE_CHOICE_18, null)
-                       })
-                    )
-            )},
-        { DiscussionTreeId.BOUNCER_OK_DISCUSSION, new DiscussionTextOnlyNode(
-                   DiscussionNodeId.BOUNCER_OK_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ALLOWED, PointOfInterestId.BOUNCER, null
-            )}
-    };
+        public static Dictionary<DiscussionNodeId, DiscussionTreeNode> DiscussionNodes = new Dictionary<DiscussionNodeId, DiscussionTreeNode>()
+        {
+            { DiscussionNodeId.NONE, null },
+            { DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, new DiscussionTextOnlyNode(DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_FORBIDDEN_INTRODUCTION,  PointOfInterestId.BOUNCER, DiscussionNodeId.BOUNCER_ASK_AGE  ) },
+            { DiscussionNodeId.BOUNCER_ASK_AGE, new DiscussionTextOnlyNode(DiscussionNodeId.BOUNCER_ASK_AGE, DisucssionSentenceTextId.BOUNCER_ASK_AGE, PointOfInterestId.BOUNCER, DiscussionNodeId.PLAYER_AGE_CHOICE ) },
+            { DiscussionNodeId.PLAYER_AGE_CHOICE, new DiscussionChoiceNode(DiscussionNodeId.PLAYER_AGE_CHOICE, PointOfInterestId.PLAYER, new List<DiscussionNodeId>(){ DiscussionNodeId.PLAYER_AGE_CHOICE_17, DiscussionNodeId.PLAYER_AGE_CHOICE_18 } ) },
+            { DiscussionNodeId.PLAYER_AGE_CHOICE_17, new DiscussionChoice(DiscussionNodeId.PLAYER_AGE_CHOICE_17, DisucssionSentenceTextId.PLAYER_AGE_CHOICE_17,  DiscussionNodeId.BOUNCER_GET_OUT ) },
+            { DiscussionNodeId.BOUNCER_GET_OUT, new DiscussionTextOnlyNode(DiscussionNodeId.BOUNCER_GET_OUT, DisucssionSentenceTextId.BOUNCER_GET_OUT, PointOfInterestId.BOUNCER, DiscussionNodeId.NONE) },
+            { DiscussionNodeId.PLAYER_AGE_CHOICE_18, new DiscussionChoice(DiscussionNodeId.PLAYER_AGE_CHOICE_18, DisucssionSentenceTextId.PLAYER_AGE_CHOICE_18,  DiscussionNodeId.NONE ) },
+            { DiscussionNodeId.BOUNCER_OK_INTRODUCTION, new DiscussionTextOnlyNode(DiscussionNodeId.BOUNCER_OK_INTRODUCTION, DisucssionSentenceTextId.BOUNCER_ASK_AGE,  PointOfInterestId.BOUNCER, DiscussionNodeId.NONE  ) }
+        };
+
+        public static Dictionary<DiscussionTreeId, DiscussionTreeNode> DiscussionTrees = new Dictionary<DiscussionTreeId, DiscussionTreeNode>()
+        {
+            {DiscussionTreeId.BOUNCER_DISCUSSION_TREE, DiscussionSentencesConstants.DiscussionNodes[DiscussionNodeId.BOUNCER_FORBIDDEN_INTRODUCTION]},
+            {DiscussionTreeId.BOUNCER_OK_DISCUSSION, DiscussionSentencesConstants.DiscussionNodes[DiscussionNodeId.BOUNCER_OK_INTRODUCTION] }
+
+        };
     }
 
     #endregion
-    
+
 }
