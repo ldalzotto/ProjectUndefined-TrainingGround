@@ -13,6 +13,9 @@ namespace CoreGame
             this.ATimelinesManager = GameObject.FindObjectOfType<ATimelinesManager>();
             var Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
 
+
+            GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
+            GameObject.FindObjectOfType<AGhostPOIManager>().Init();
             this.ATimelinesManager.Init();
             GameObject.FindObjectOfType<TimelinesEventManager>().Init();
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());

@@ -6,14 +6,13 @@ using UnityEngine;
 
 namespace AdventureGame
 {
-
     /// <summary>
     /// A <see cref="GhostsPOIManager"/> represent the persistance of internal state of a <see cref="PointOfInterestManager"/>.
     /// While <see cref="GhostsPOIManager"/> persist across the game, a <see cref="PointOfInterestManager"/> is the physical entity in the scene.
     /// Every state change occurs at the <see cref="GhostPOI"/> that store and pass the information to <see cref="PointOfInterestManager"/>.
     /// When a <see cref="PointOfInterestManager"/> is created, it first sync to his associated <see cref="GhostPOI"/> to be in sync with the current state.
     /// </summary>
-    public class GhostsPOIManager : MonoBehaviour
+    public class GhostsPOIManager : AGhostPOIManager
     {
 
         private Dictionary<PointOfInterestId, GhostPOI> ghostPOIs = null;
@@ -21,7 +20,7 @@ namespace AdventureGame
 
         public Dictionary<PointOfInterestId, GhostPOI> GhostPOIs { get { return ghostPOIs; } }
 
-        public void Init()
+        public override void Init()
         {
             this.GhostPOIManagerPersister = new GhostPOIManagerPersister();
             var loadedGhostPOIS = this.GhostPOIManagerPersister.Load();
@@ -67,6 +66,7 @@ namespace AdventureGame
         }
         #endregion
     }
+
 
     [System.Serializable]
     public class GhostPOI

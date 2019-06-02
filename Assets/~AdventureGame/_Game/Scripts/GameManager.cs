@@ -20,8 +20,6 @@ namespace AdventureGame
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
 
             //Level chunk initialization
-            GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
-            GameObject.FindObjectOfType<GhostsPOIManager>().Init();
             base.OnAwake();
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }

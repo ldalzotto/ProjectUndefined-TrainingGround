@@ -140,6 +140,7 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerHoodAnimationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerJacketCordAnimationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerProceduralAnimationsManager.cs" />
+    <Compile Include="Assets\~CoreGame\PointOfInterest\AGhostPOIManager.cs" />
     <Compile Include="Assets\~CoreGame\Random\RandomHelper.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
