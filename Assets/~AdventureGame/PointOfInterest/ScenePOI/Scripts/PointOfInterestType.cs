@@ -45,7 +45,7 @@ namespace AdventureGame
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
-            this.PointOfInterestContextData = GetComponentInChildren<PointOfInterestContextDataContainer>();
+            this.PointOfInterestContextData = transform.parent.GetComponentInChildren<PointOfInterestContextDataContainer>();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
             this.PointOfInterestInherentData = AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
@@ -119,8 +119,7 @@ namespace AdventureGame
         #region Prefab Data Retrieval
         public Renderer[] GetRenderers(bool includeInactives = false)
         {
-            var parentObject = transform.parent;
-            return parentObject.GetComponentsInChildren<Renderer>(includeInactives);
+            return transform.parent.GetComponentsInChildren<Renderer>(includeInactives);
         }
         public GameObject GetRootObject()
         {

@@ -9,7 +9,7 @@ namespace AdventureGame
     {
         private const string INVENTORY_ITEMS_CONTAINER_NAME = "InventoryItems";
 
-        private Dictionary<ItemID, Item> holdItems = new Dictionary<ItemID, Item>();
+        private List<ItemID> holdItems = new List<ItemID>();
 
         private InventoryExitTriggerManager InventoryExitTriggerManager;
         private InventoryActionWheelTriggerManager InventoryActionWheelTriggerManager;
@@ -69,10 +69,10 @@ namespace AdventureGame
         #region External Events
         public void OnAddItem(ItemID itemID, ItemInherentData itemInherentData)
         {
-            if (!holdItems.ContainsKey(itemID))
+            if (!holdItems.Contains(itemID))
             {
                 var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(itemID, itemInherentData);
-                holdItems[itemID] = itemGameObject;
+                holdItems.Add(itemID);
                 InventoryMenu.OnItemAdd(itemGameObject, itemInherentData);
             }
         }

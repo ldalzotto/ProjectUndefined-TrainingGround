@@ -187,8 +187,9 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineWorkflowActionNode\RemoveReceivableItem\RemoveReceivableItemNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
-    <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
-    <Compile Include="Assets\Editor\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
+    <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
+    <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
+    <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
@@ -237,7 +238,6 @@
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Zoom\EditorZoomArea.cs" />
-    <Compile Include="Assets\Editor\LevelManagement\LevelExplorer\LevelExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
