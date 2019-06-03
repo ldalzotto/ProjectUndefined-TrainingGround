@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace CoreGame
@@ -8,11 +9,16 @@ namespace CoreGame
     public class PersistanceManager : MonoBehaviour
     {
 
+        private AutoSaveIcon AutoSaveIcon;
+
         private BackgroundWorker persistThread;
         private Queue<Action> persistQueueActions;
 
         public void Init()
         {
+            this.AutoSaveIcon = GameObject.FindObjectOfType<AutoSaveIcon>();
+            this.AutoSaveIcon.Init();
+
             this.persistThread = new BackgroundWorker();
             this.persistThread.DoWork += this.DoWork;
             this.persistThread.RunWorkerCompleted += this.OnTaskCompleted;
@@ -23,6 +29,7 @@ namespace CoreGame
         #region External Event
         public void OnPersistRequested(Action persistAction)
         {
+            this.AutoSaveIcon.OnSaveStart();
             if (!this.persistThread.IsBusy)
             {
                 this.persistThread.RunWorkerAsync(persistAction);
@@ -44,7 +51,7 @@ namespace CoreGame
         {
             if (e.Error != null)
             {
-                Debug.LogError(e.Error);
+                UnityEngine.Debug.LogError(e.Error);
             }
             if (this.persistQueueActions.Count > 0)
             {
@@ -53,6 +60,9 @@ namespace CoreGame
                 {
                     this.persistThread.RunWorkerAsync(nextAction);
                 }
+            } else
+            {
+                this.AutoSaveIcon.OnSaveEnd();
             }
         }
 

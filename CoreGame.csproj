@@ -126,6 +126,7 @@
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\AbstractGamePersister.cs" />
+    <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\PersistanceManager.cs" />
     <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CameraManagers\Follow\CameraFollowManager.cs" />
