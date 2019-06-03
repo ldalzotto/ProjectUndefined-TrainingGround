@@ -99,7 +99,7 @@ namespace RTPuzzle
         private void Update()
         {
             var d = Time.deltaTime;
-
+            
             if (!GameOverManager.OnGameOver)
             {
                 PlayerActionManager.Tick(d);
