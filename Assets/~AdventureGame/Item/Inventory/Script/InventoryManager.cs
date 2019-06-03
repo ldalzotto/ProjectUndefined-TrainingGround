@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using CoreGame;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +13,16 @@ namespace AdventureGame
 
         private List<ItemID> holdItems = new List<ItemID>();
 
+        #region External Dependencies
+        private InventoryEventManager InventoryEventManager;
+        #endregion
+
         private InventoryExitTriggerManager InventoryExitTriggerManager;
         private InventoryActionWheelTriggerManager InventoryActionWheelTriggerManager;
         private InventoryStateWorkflowManager InventoryStateWorkflowManager;
         private InventoryMenu InventoryMenu;
         private InventoryItemManager InventoryItemManager;
+        private InventoryPersister InventoryPersister;
 
         private GameObject InventoryItemsContainer;
 
@@ -23,7 +30,7 @@ namespace AdventureGame
         {
             #region External dependencies
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            var InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+            this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             var ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
             var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
@@ -35,6 +42,18 @@ namespace AdventureGame
             InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
             InventoryStateWorkflowManager = new InventoryStateWorkflowManager();
             InventoryActionWheelTriggerManager = new InventoryActionWheelTriggerManager(GameInputManager, ContextActionWheelEventManager, InventoryStateWorkflowManager);
+
+            InventoryPersister = new InventoryPersister();
+
+            var persistedHoldItems = InventoryPersister.Load();
+            if (persistedHoldItems == null)
+            {
+                this.PersistCurrentItems();
+            }
+            else
+            {
+                PersistInputItems(persistedHoldItems);
+            }
         }
 
         public void Tick(float d)
@@ -67,13 +86,17 @@ namespace AdventureGame
         #endregion
 
         #region External Events
-        public void OnAddItem(ItemID itemID, ItemInherentData itemInherentData)
+        public void OnAddItem(ItemID itemID, ItemInherentData itemInherentData, bool persistAddedItem = true)
         {
             if (!holdItems.Contains(itemID))
             {
                 var itemGameObject = InventoryItemManager.OnItemAddInstanciatePrefab(itemID, itemInherentData);
                 holdItems.Add(itemID);
                 InventoryMenu.OnItemAdd(itemGameObject, itemInherentData);
+                if (persistAddedItem)
+                {
+                    this.InventoryPersister.SaveAsync(this.holdItems);
+                }
             }
         }
 
@@ -101,10 +124,25 @@ namespace AdventureGame
         }
         public void OnItemGiven(ItemID itemID)
         {
-            StartCoroutine(InventoryItemManager.OnItemDelete(itemID));
+            this.holdItems.Remove(itemID);
+            StartCoroutine(InventoryItemManager.OnItemDelete(itemID, this.PersistCurrentItems));
         }
 
         #endregion
+
+        private void PersistInputItems(List<ItemID> persistedHoldItems)
+        {
+            foreach (var loadedItem in persistedHoldItems)
+            {
+                this.InventoryEventManager.OnAddItem(loadedItem, persistAddedItem: false);
+            }
+            InventoryPersister.SaveAsync(this.holdItems);
+        }
+
+        private void PersistCurrentItems()
+        {
+            InventoryPersister.SaveAsync(this.holdItems);
+        }
     }
 
     #region Inventory Workflow
@@ -209,7 +247,7 @@ namespace AdventureGame
             return itemGameObject;
         }
 
-        public IEnumerator OnItemDelete(ItemID itemToDelete)
+        public IEnumerator OnItemDelete(ItemID itemToDelete, Action inventoryPersistanceAction)
         {
             foreach (Transform possessedItemTransform in InventoryItemsContainer.transform)
             {
@@ -218,8 +256,18 @@ namespace AdventureGame
                 {
                     yield return new WaitForEndOfFrame();
                     MonoBehaviour.Destroy(possessedItem.gameObject);
+                    inventoryPersistanceAction.Invoke();
                 }
             }
+        }
+    }
+    #endregion
+
+    #region Inventory persistance
+    class InventoryPersister : AbstractGamePersister<List<ItemID>>
+    {
+        public InventoryPersister() : base("Inventory", ".inv", "Inventory")
+        {
         }
     }
     #endregion

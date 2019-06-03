@@ -22,9 +22,9 @@ namespace AdventureGame
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
         }
 
-        public void OnAddItem(ItemID itemID)
+        public void OnAddItem(ItemID itemID, bool persistAddedItem = true)
         {
-            InventoryManager.OnAddItem(itemID, this.AdventureGameConfigurationManager.ItemConf()[itemID]);
+            InventoryManager.OnAddItem(itemID, this.AdventureGameConfigurationManager.ItemConf()[itemID], persistAddedItem: persistAddedItem);
         }
 
         public void OnInventoryEnabled()

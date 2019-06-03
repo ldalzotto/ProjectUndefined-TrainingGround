@@ -23,7 +23,7 @@ namespace AdventureGame
         private RectTransform InventoryMenuBodyCellContainer;
         private RectTransform InventoryMenuHead;
 
-        private void Start()
+        public void Init()
         {
             #region External Dependencies
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();

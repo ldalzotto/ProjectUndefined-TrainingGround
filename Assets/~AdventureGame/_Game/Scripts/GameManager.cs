@@ -37,15 +37,15 @@ namespace AdventureGame
             InventoryManager = FindObjectOfType<InventoryManager>();
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
             AdventureLevelChunkFXTransitionManager = GameObject.FindObjectOfType<AdventureLevelChunkFXTransitionManager>();
-
-
+            
             //initialization
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             AdventureLevelChunkFXTransitionManager.Init();
             PlayerManager.Init();
             StartCoroutine(PointOfInterestInitialisationAtEndOfFrame());
-            InventoryManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
+            GameObject.FindObjectOfType<InventoryMenu>().Init();
+            InventoryManager.Init();
             FindObjectOfType<PointOfInterestEventManager>().Init();
             GameObject.FindObjectOfType<AdventureEventManager>().Init();
 
