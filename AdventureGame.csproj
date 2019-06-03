@@ -74,6 +74,8 @@
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\DiscussionTreeConfiguration\DiscussionTree.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\DiscussionTreeConfiguration\DiscussionTreeConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestConfiguration.cs" />
@@ -95,7 +97,6 @@
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Cutscene.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionEventHandler.cs" />
-    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionTree.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />

@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -9,16 +10,21 @@ namespace AdventureGame
         void Execute(PointOfInterestManager PointOfInterestManager);
     }
 
+    [System.Serializable]
     public class DiscussionTimelineTreeCreationAction : TimelineNodeWorkflowAction<GhostsPOIManager>
     {
+        [SerializeField]
         private PointOfInterestId PointOfInterestId;
-        private DiscussionTree DiscussionTree;
+        [SerializeField]
+        private DiscussionTreeId DiscussionTreeId;
+        [SerializeField]
         private AContextAction contextActionToAdd;
+        
 
-        public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTree DiscussionTree, AContextAction contextActionToAdd)
+        public DiscussionTimelineTreeCreationAction(PointOfInterestId pointOfInterestId, DiscussionTreeId DiscussionTreeId, AContextAction contextActionToAdd)
         {
             PointOfInterestId = pointOfInterestId;
-            this.DiscussionTree = DiscussionTree;
+            this.DiscussionTreeId = DiscussionTreeId;
             this.contextActionToAdd = contextActionToAdd;
             this.contextActionToAdd.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
         }
@@ -28,7 +34,7 @@ namespace AdventureGame
             var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
             if (selectedPOI != null)
             {
-                selectedPOI.OnDiscussionTreeAdd(DiscussionTree, contextActionToAdd);
+                selectedPOI.OnDiscussionTreeAdd(DiscussionTreeId, contextActionToAdd);
             }
         }
     }

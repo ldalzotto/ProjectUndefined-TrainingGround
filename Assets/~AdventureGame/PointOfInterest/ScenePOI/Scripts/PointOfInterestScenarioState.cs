@@ -8,7 +8,7 @@ namespace AdventureGame
     public class PointOfInterestScenarioState
     {
         public ReceivableItemsComponent ReceivableItemsComponent;
-        public DiscussionTree DiscussionTree;
+        public DiscussionTreeId DiscussionTreeID;
         public InteractableItemsComponent InteractableItemsComponent;
     }
 

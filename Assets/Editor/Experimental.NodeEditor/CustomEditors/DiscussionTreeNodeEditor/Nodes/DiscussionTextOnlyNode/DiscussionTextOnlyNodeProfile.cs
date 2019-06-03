@@ -1,4 +1,5 @@
-﻿using NodeGraph;
+﻿using AdventureGame;
+using NodeGraph;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,5 +37,7 @@ namespace Editor_DiscussionTreeNodeEditor
         {
             return this.DiscussionNodeEdge.DiscussionNodeId.ToString();
         }
+        
+        
     }
 }

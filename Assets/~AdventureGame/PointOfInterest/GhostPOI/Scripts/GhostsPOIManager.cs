@@ -96,11 +96,6 @@ namespace AdventureGame
             this.ghostsPOIManagerRef = ghostsPOIManagerRef;
         }
 
-        public DiscussionTree GetAssociatedDiscussionTree()
-        {
-            return PointOfInterestScenarioState.DiscussionTree;
-        }
-
         #region External Events
         public void OnContextActionAdd(ItemID itemID, AContextAction contextActionToAdd)
         {
@@ -129,9 +124,9 @@ namespace AdventureGame
                 this.OnGhostPOIChanged();
             }
         }
-        public void OnDiscussionTreeAdd(DiscussionTree discussionTree, AContextAction contextActionToAdd)
+        public void OnDiscussionTreeAdd(DiscussionTreeId discussionTreeId, AContextAction contextActionToAdd)
         {
-            PointOfInterestScenarioState.DiscussionTree = discussionTree;
+            PointOfInterestScenarioState.DiscussionTreeID = discussionTreeId;
             contextActionSynchronizerManager.OnDiscussionTreeAdd(contextActionToAdd);
             this.OnGhostPOIChanged();
         }

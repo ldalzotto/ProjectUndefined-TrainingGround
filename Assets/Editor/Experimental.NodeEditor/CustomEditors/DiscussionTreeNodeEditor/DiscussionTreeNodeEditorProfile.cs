@@ -25,5 +25,7 @@ namespace Editor_DiscussionTreeNodeEditor
             base.Init();
             DiscussionTreeNodeEditorProfile.DiscussionTextRepertoire = AssetFinder.SafeSingleAssetFind<DiscussionTextRepertoire>("t:" + typeof(DiscussionTextRepertoire).Name);
         }
+        
+        
     }
 }

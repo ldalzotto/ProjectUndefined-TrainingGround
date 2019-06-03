@@ -12,7 +12,8 @@ public class AdventureGameConfigurationEditorProfile : TreeChoiceHeaderTab<IGene
     {
         {"Item//" + typeof(ItemConfiguration).Name, new GenericConfigurationEditor<ItemID, ItemInherentData>("t:"+ typeof(ItemConfiguration).Name) },
         {"POI//" + typeof(PointOfInterestConfiguration).Name, new GenericConfigurationEditor<PointOfInterestId, PointOfInterestInherentData>("t:"+ typeof(PointOfInterestConfiguration).Name) },
-        {"Disucssion//" + typeof(DiscussionTextRepertoire).Name, new DiscussionRepertoireConfigurationEditor() }
+        {"Disucssion//" + typeof(DiscussionTextRepertoire).Name, new DiscussionRepertoireConfigurationEditor() },
+        {"Disucssion//" + typeof(DiscussionTreeConfiguration).Name, new GenericConfigurationEditor<DiscussionTreeId, DiscussionTree>("t:"+ typeof(DiscussionTreeConfiguration).Name) }
     };
 
     public override Dictionary<string, IGenericConfigurationEditor> Configurations => this.myConfig;

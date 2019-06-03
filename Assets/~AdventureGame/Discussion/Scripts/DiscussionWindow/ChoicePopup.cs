@@ -28,7 +28,7 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode, Vector2 localPosition, ref DiscussionTextRepertoire DiscussionTextRepertoire)
+        public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices, Vector2 localPosition, ref DiscussionTextRepertoire DiscussionTextRepertoire)
         {
 
             #region External Dependencies
@@ -43,7 +43,7 @@ namespace AdventureGame
             transform.localPosition = localPosition;
 
             var choicePopupTexts = new List<ChoicePopupText>();
-            foreach (var choice in nextDisucssionChoiceNode.GetDiscussionChoices())
+            foreach (var choice in nexDiscussionChoices)
             {
                 var choicesPopupText = Instantiate(PrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
                 choicesPopupText.SetDiscussionChoice(choice, ref DiscussionTextRepertoire);

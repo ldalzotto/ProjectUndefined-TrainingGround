@@ -11,5 +11,10 @@ namespace Editor_DiscussionTreeNodeEditor
         {
             typeof(DiscussionTextOnlyNodeEdge)
         };
+
+        public DiscussionTextOnlyNodeEdge GetLinkedEdge()
+        {
+            return this.ConnectedNodeEdges[0] as DiscussionTextOnlyNodeEdge;
+        }
     }
 }

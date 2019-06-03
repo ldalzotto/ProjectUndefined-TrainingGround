@@ -32,5 +32,15 @@ namespace Editor_DiscussionTreeNodeEditor
         {
             return MyColors.PaleBlue;
         }
+
+        public NodeEdgeProfile GetLinkedNodeEdge()
+        {
+            var outputEdge = (DiscussionConnectionNodeEdge)this.NodeProfileRef.OutputEdges[0];
+            if (outputEdge.ConnectedNodeEdges != null && outputEdge.ConnectedNodeEdges.Count > 0)
+            {
+                return outputEdge.ConnectedNodeEdges[0];
+            }
+            return null;
+        }
     }
 }

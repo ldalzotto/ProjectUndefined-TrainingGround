@@ -18,6 +18,11 @@ namespace AdventureGame
             return AdventureGameConfiguration.PointOfInterestConfiguration.ConfigurationInherentData;
         }
 
+        public Dictionary<DiscussionTreeId, DiscussionTree> DiscussionTreeConf()
+        {
+            return AdventureGameConfiguration.DiscussionTreeConfiguration.ConfigurationInherentData;
+        }
+
     }
 
 }

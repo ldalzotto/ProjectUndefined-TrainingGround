@@ -22,6 +22,11 @@ namespace Editor_DiscussionTreeNodeEditor
             return new List<NodeEdgeProfile>() { this.DiscussionConnectionNodeEdge };
         }
 
+        protected override string NodeTitle()
+        {
+            return this.DiscussionChoiceTextInputEdge.DiscussionNodeId.ToString();
+        }
+
         protected override Color NodeColor()
         {
             return MyColors.Coral;

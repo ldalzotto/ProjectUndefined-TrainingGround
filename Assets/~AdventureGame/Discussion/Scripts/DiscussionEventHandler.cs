@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -48,9 +49,9 @@ namespace AdventureGame
         #endregion
 
         #region Discusion Choices Event
-        public void OnDiscussionChoiceStart(DiscussionChoiceNode discussionChoice)
+        public void OnDiscussionChoiceStart(List<DiscussionChoice> discussionChoices)
         {
-            DiscussionWindowManager.OnChoicePopupAwake(discussionChoice);
+            DiscussionWindowManager.OnChoicePopupAwake(discussionChoices);
         }
 
         public void OnDiscussionChoiceEnd(DiscussionNodeId selectedChoice)

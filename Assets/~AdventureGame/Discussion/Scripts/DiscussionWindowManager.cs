@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -84,10 +85,10 @@ namespace AdventureGame
             return OpenedDiscussion.PlayDiscussionCloseAnimation();
         }
 
-        public void OnChoicePopupAwake(DiscussionChoiceNode nextDisucssionChoiceNode)
+        public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)
         {
             OpenedChoicePopup = Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
-            OpenedChoicePopup.OnChoicePopupAwake(nextDisucssionChoiceNode, Vector2.zero, ref this.AdventureStaticConfiguration.DiscussionTestRepertoire);
+            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, ref this.AdventureStaticConfiguration.DiscussionTestRepertoire);
         }
 
         public void OnDiscussionWindowSleep()

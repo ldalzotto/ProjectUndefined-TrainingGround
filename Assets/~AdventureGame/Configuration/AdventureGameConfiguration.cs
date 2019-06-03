@@ -10,6 +10,7 @@ namespace AdventureGame
     {
         public ItemConfiguration ItemConfiguration;
         public PointOfInterestConfiguration PointOfInterestConfiguration;
+        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
     }
 
 }

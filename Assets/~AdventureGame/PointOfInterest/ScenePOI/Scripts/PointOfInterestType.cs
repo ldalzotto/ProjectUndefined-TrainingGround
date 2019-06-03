@@ -19,6 +19,7 @@ namespace AdventureGame
 
         #region External Dependencies
         private PointOfInterestEventManager PointOfInterestEventManager;
+        private AdventureGameConfigurationManager AdventureGameConfigurationManager;
         #endregion
 
         private ContextActionSynchronizerManager ContextActionSynchronizerManager;
@@ -40,15 +41,16 @@ namespace AdventureGame
         public void Init()
         {
             #region External Dependencies
-            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
+
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.PointOfInterestContextData = transform.parent.GetComponentInChildren<PointOfInterestContextDataContainer>();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
-            this.PointOfInterestInherentData = AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
+            this.PointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
         }
 
         public void Init_EndOfFrame()
@@ -56,7 +58,7 @@ namespace AdventureGame
             #region External Dependencies
             PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
             #endregion
-         
+
             PointOfInterestEventManager.OnPOICreated(this);
         }
 
@@ -69,7 +71,7 @@ namespace AdventureGame
             Handles.Label(transform.position, PointOfInterestId.ToString(), labelStyle);
 #endif
 
-            Gizmos.DrawIcon(transform.position + new Vector3(0,5f, 0), "Gizmo_POI", true);
+            Gizmos.DrawIcon(transform.position + new Vector3(0, 5f, 0), "Gizmo_POI", true);
         }
 
         #region Logical Conditions
@@ -129,7 +131,7 @@ namespace AdventureGame
 
         public DiscussionTree GetAssociatedDiscussionTree()
         {
-            return pointOfInterestScenarioState.DiscussionTree;
+            return this.AdventureGameConfigurationManager.DiscussionTreeConf()[pointOfInterestScenarioState.DiscussionTreeID];
         }
 
         public PointOfInterestContextDataContainer GetContextData()
