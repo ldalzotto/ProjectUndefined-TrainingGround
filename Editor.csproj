@@ -169,6 +169,11 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineWorkflowActionNode\TimelineWorklowActionEdgeV2.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineWorkflowActionNode\TimelineWorklowActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineWorkflowActionNode\WorkflowActionToNodeEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\DiscussionTimelineNodeEditor.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\DiscussionTimelineNodeEditorProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineNode\DiscussionTimelineNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\ReplaceDiscussionTree\ReplaceDiscussionTreeWorkflowActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\ReplaceDiscussionTree\ReplaceDiscussionTreeWorkflowActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\LevelAvailabilityNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\LevelAvailabilityNodeEditorProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineActionsNode\LevelCompletedTimelineActionEdgeV2.cs" />
@@ -247,11 +252,11 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\EditTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\ExploreTargetZone.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
-    <Compile Include="Assets\Editor\Helper\FileUtil.cs" />
     <Compile Include="Assets\Editor\Helper\HandlesHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Header\MultipleChoiceHeaderTab.cs" />
     <Compile Include="Assets\Editor\Helper\Header\TreeChoiceHeaderTab.cs" />
     <Compile Include="Assets\Editor\Helper\Lists\FoldableReordableList.cs" />
+    <Compile Include="Assets\Editor\Helper\MyFileUtil.cs" />
     <Compile Include="Assets\Editor\Helper\NamingConventionHelper.cs" />
     <Compile Include="Assets\Editor\Helper\PrefabEditorInjection.cs" />
     <Compile Include="Assets\Editor\Helper\Search\RegexTextFinder.cs" />

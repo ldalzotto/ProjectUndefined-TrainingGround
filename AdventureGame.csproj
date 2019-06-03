@@ -69,8 +69,6 @@
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\Level1\DiscussionTimelineInitialisation.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\Level1\Level1Configuration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
@@ -129,10 +127,9 @@
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Action\ScenarioAction.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\AScenarioTimeline.cs" />
+    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineInitializerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineModifierActions.cs" />
-    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\ScenarioTimelineManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineWorkflowActionV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\V2\ScenarioTimelineInitializerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\V2\ScenarioTimelineManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\V2\TimelineNodeWorkflowAction\ScenarioTimelineWorkflowActionV2.cs" />

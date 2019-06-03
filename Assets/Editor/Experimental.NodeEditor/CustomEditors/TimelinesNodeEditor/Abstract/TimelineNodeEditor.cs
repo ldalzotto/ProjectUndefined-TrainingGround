@@ -91,7 +91,7 @@ namespace Editor_LevelAvailabilityNodeEditor
             LevelAvailabilityTimelineInitializerV2.Nodes = nodes;
             Debug.Assert(LevelAvailabilityTimelineInitializerV2.InitialNodes.Count > 0);
 
-            var generationPath = FileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + LevelAvailabilityTimelineInitializerV2.GetType().Name + ".asset";
+            var generationPath = MyFileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + LevelAvailabilityTimelineInitializerV2.GetType().Name + ".asset";
             AssetDatabase.CreateAsset(LevelAvailabilityTimelineInitializerV2, generationPath);
             //update timeline game configuration
             var timelineConfiguration = AssetFinder.SafeSingleAssetFind<TimelineConfiguration>("t:" + typeof(TimelineConfiguration).Name);

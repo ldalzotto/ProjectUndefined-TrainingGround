@@ -9,7 +9,6 @@ namespace CoreGame
 
         private ITimelineNodeManager ScenarioTimeline;
         private ITimelineNodeManager DiscussionTimeline;
-        //V2
         private ITimelineNodeManager LevelAvailabilityTimeline;
 
         public void Init()

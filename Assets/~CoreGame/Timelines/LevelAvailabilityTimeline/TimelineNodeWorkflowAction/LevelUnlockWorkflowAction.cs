@@ -7,23 +7,6 @@ using UnityEditor;
 namespace CoreGame
 {
     [System.Serializable]
-    public class LevelUnlockWorkflowAction : TimelineNodeWorkflowAction<LevelAvailabilityManager>
-    {
-        [SerializeField]
-        private LevelZoneChunkID levelZoneChunkToUnlock;
-
-        public LevelUnlockWorkflowAction(LevelZoneChunkID levelZoneChunkToUnlock)
-        {
-            this.levelZoneChunkToUnlock = levelZoneChunkToUnlock;
-        }
-
-        public override void Execute(LevelAvailabilityManager levelAvailabilityManager, TimelineNode<LevelAvailabilityManager> timelineNodeRefence)
-        {
-            levelAvailabilityManager.UnlockLevel(this.levelZoneChunkToUnlock);
-        }
-    }
-
-    [System.Serializable]
     public class LevelUnlockWorkflowActionV2 : TimelineNodeWorkflowActionV2<LevelAvailabilityManager, LevelAvailabilityTimelineNodeID>
     {
         [SerializeField]

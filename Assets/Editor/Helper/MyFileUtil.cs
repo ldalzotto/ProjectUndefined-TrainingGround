@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEditor;
 
-public class FileUtil
+public class MyFileUtil
 {
 
    public static string GetAssetDirectoryPath(UnityEngine.Object asset)

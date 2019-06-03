@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using NodeGraph;
-using RTPuzzle;
+﻿using Editor_DiscussionTimelineNodeEditor;
+using Editor_DiscussionTreeNodeEditor;
 using Editor_LevelAvailabilityNodeEditor;
 using Editor_ScenarioNodeEditor;
-using Editor_DiscussionTreeNodeEditor;
+using NodeGraph;
+using RTPuzzle;
+using UnityEditor;
+using UnityEngine;
 
 namespace Experimental.Editor_NodeEditor
 {
@@ -32,6 +32,10 @@ namespace Experimental.Editor_NodeEditor
                 else if (this.target.GetType() == typeof(DiscussionTreeNodeEditorProfile))
                 {
                     DiscussionTreeNodeEditorProfile.Init((NodeEditorProfile)this.target);
+                }
+                else if (this.target.GetType() == typeof(DiscussionTimelineNodeEditorProfile))
+                {
+                    DiscussionTimelineNodeEditor.Init((NodeEditorProfile)this.target, typeof(DiscussionTimelineNodeEditor));
                 }
                 else
                 {
