@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using OdinSerializer;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
 {
-
     [System.Serializable]
-    public class DiscussionTree
+    public class DiscussionTree : SerializedScriptableObject
     {
-
         [SerializeField]
         private DiscussionTreeNode discussionRootNode;
 
@@ -29,12 +28,10 @@ namespace AdventureGame
     [System.Serializable]
     public class DiscussionTextOnlyNode : DiscussionTreeNode
     {
-
         [SerializeField]
         private DisucssionSentenceTextId displayedText;
         [SerializeField]
         private PointOfInterestId talker;
-
         [SerializeField]
         private DiscussionNodeId nextNode;
 

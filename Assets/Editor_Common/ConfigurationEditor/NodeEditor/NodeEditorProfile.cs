@@ -30,7 +30,7 @@ namespace NodeGraph
         public NodeCreationPickerProfile NodeCreationPickerProfile;
 
 #if UNITY_EDITOR
-        public void Init()
+        public virtual void Init()
         {
             if (string.IsNullOrEmpty(this.GraphTmpFolderPath))
             {

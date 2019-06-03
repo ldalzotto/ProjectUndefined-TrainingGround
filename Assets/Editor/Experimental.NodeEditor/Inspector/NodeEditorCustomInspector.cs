@@ -5,6 +5,7 @@ using NodeGraph;
 using RTPuzzle;
 using Editor_LevelAvailabilityNodeEditor;
 using Editor_ScenarioNodeEditor;
+using Editor_DiscussionTreeNodeEditor;
 
 namespace Experimental.Editor_NodeEditor
 {
@@ -27,6 +28,10 @@ namespace Experimental.Editor_NodeEditor
                 else if (this.target.GetType() == typeof(ScenarioNodeEditorProfile))
                 {
                     ScenarioNodeEditor.Init((NodeEditorProfile)this.target, typeof(ScenarioNodeEditor));
+                }
+                else if (this.target.GetType() == typeof(DiscussionTreeNodeEditorProfile))
+                {
+                    DiscussionTreeNodeEditorProfile.Init((NodeEditorProfile)this.target);
                 }
                 else
                 {
