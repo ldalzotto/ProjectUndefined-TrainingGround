@@ -25,6 +25,5 @@ public enum LevelZonesID
 public enum LevelZoneChunkID
 {
     SEWER_RTP_1 = 0,
-    SEWER_RTP_2 = 1,
     RTP_PUZZLE_CREATION_TEST_CHUNK = 2
 }
