@@ -10,6 +10,7 @@ namespace Editor_GameDesigner
             {"Puzzle//Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
             {"Level//."+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
             {"Level//." + typeof(EditPuzzleLevel).Name, typeof(EditPuzzleLevel) },
+            {"LevelChunk//Environmnent//." + typeof(AddEnvironmentModel).Name, typeof(AddEnvironmentModel) },
             {"Puzzle//AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
             {"Puzzle//AI//."+typeof(AddAI).Name, typeof(AddAI) },
             {"Puzzle//AI//." + typeof(AIModel).Name, typeof(AIModel) },

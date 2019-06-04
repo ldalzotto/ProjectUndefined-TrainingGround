@@ -24,7 +24,8 @@ namespace AdventureGame
         IDCard_Grabbed_END = 8,
         Dumpster_POI = 5,
         Bouncer_POI = 6,
-        Sewer_To_Puzzle_POI = 9
+        Sewer_To_SewerRTP_1 = 9,
+        Sewer_To_SewerRTP_2 = 10
     }
 
 }

@@ -73,7 +73,7 @@ namespace Editor_LevelProgressionSaveEditor
 
             if (newValuesToSet != null)
             {
-                this.LevelAvailabilityPersistanceManager.SaveAsync(this.CurrentLevelAvailability);
+                this.LevelAvailabilityPersistanceManager.SaveSync(this.CurrentLevelAvailability);
             }
 
             EditorGUILayout.EndVertical();
