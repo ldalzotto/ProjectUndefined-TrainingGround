@@ -236,6 +236,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\CreateBehavior.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\EditBehavior.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ExploreAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />

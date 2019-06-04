@@ -13,6 +13,7 @@ namespace Editor_GameDesigner
             {"Puzzle//AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
             {"Puzzle//AI//."+typeof(AddAI).Name, typeof(AddAI) },
             {"Puzzle//AI//." + typeof(AIModel).Name, typeof(AIModel) },
+            {"Puzzle//AI//." + typeof(ExploreAI).Name, typeof(ExploreAI) },
             {"Puzzle//AI//Behavior//."+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
             {"Puzzle//AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
             {"Puzzle//TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
