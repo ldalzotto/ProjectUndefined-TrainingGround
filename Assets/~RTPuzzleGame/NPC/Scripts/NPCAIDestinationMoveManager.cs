@@ -39,20 +39,25 @@ namespace RTPuzzle
             }
         }
 
+        private Vector3 lastSuccessfulWorldDestination;
+
         #region External Events
-        public void SetDestination(Vector3 destination)
+        public void SetDestination(Vector3 worldDestination)
         {
             //When a different path is calculated, we manually reset the path and calculate the next destination
-            if (objectAgent.destination != destination)
+            //The input world destination may not be exactly on NavMesh.
+            //So we do comparison between world destination
+            if (this.lastSuccessfulWorldDestination != worldDestination)
             {
-                this.currentDestination = destination;
+                this.currentDestination = worldDestination;
                 NavMeshPath path = new NavMeshPath();
                 objectAgent.ResetPath();
-                objectAgent.CalculatePath(destination, path);
+                objectAgent.CalculatePath(worldDestination, path);
                 objectAgent.SetPath(path);
                 NavMeshHit pathHit;
                 objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
                 objectAgent.nextPosition = pathHit.position;
+                this.lastSuccessfulWorldDestination = worldDestination;
             }
         }
 
@@ -65,6 +70,7 @@ namespace RTPuzzle
             }
 
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
+            Debug.Log(MyLog.Format("Moving agent : " + objectAgent.nextPosition));
             objectTransform.position = objectAgent.nextPosition;
         }
 
