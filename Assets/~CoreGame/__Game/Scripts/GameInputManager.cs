@@ -17,18 +17,19 @@ namespace CoreGame
         public void Init()
         {
             currentInput = new JoystickInput();
+            Cursor.lockState = CursorLockMode.Locked;
         }
 
         private class JoystickInput : XInput
         {
             public bool ActionButtonD()
             {
-                return Input.GetButtonDown("Action");
+                return Input.GetButtonDown("Action") || Input.GetMouseButtonDown(0);
             }
 
             public bool ActionButtonDH()
             {
-                return Input.GetButton("Action") || Input.GetButtonDown("Action");
+                return Input.GetButton("Action") || Input.GetButtonDown("Action") || Input.GetMouseButton(0) || Input.GetMouseButtonDown(0);
             }
 
             public bool CancelButtonD()
