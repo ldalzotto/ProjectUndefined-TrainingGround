@@ -20,6 +20,7 @@ namespace Editor_MainGameCreationWizard
                 window.playerActionCreationWizardEditorProfile = AssetFinder.SafeSingleAssetFind<GameCreationWizardEditorProfile>("t:" + typeof(GameCreationWizardEditorProfile).ToString());
                 if (window.playerActionCreationWizardEditorProfile != null)
                 {
+                    window.playerActionCreationWizardEditorProfile.Init(() => { window.Repaint(); });
                     window.playerActionCreationWizardEditorProfile.SetSelectedKey(key);
                 }
             }
