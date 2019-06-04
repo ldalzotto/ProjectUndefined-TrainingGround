@@ -8,6 +8,7 @@ using Editor_TargetZoneCreationWizard;
 using Editor_ProjectileCreationWizard;
 using Editor_PlayerActionCreationWizard;
 using Editor_POICreationWizard;
+using Editor_AttractiveObjectCreationWizard;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "GameCreationWizardEditorProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile", order = 1)]
@@ -28,6 +29,7 @@ public class GameCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWiza
             {nameof(TargetZoneCreationWizard), new TargetZoneCreationWizard() },
             {nameof(ProjectileCreationWizard), new ProjectileCreationWizard() },
             {nameof(PlayerActionCreationWizard), new PlayerActionCreationWizard() },
+            {nameof(AttractiveObjectCreationWizard), new AttractiveObjectCreationWizard() },
             {nameof(POICreationWizard), new POICreationWizard() }
         };
     }

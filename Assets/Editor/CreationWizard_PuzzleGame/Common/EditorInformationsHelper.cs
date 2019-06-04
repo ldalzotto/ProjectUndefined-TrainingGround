@@ -24,6 +24,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab, "TargetZoneBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLaunchProjectilePrefab, "GenericProjectilePrefab");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseAttractiveObjectPrefab, "GenericAttractiveObjectPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
@@ -113,6 +114,8 @@ namespace Editor_MainGameCreationWizard
         public ProjectileConfiguration ProjectileConfiguration;
         [ReadOnly]
         public PlayerActionConfiguration PlayerActionConfiguration;
+        [ReadOnly]
+        public AttractiveObjectConfiguration AttractiveObjectConfiguration;
     }
     
     [System.Serializable]
@@ -134,6 +137,8 @@ namespace Editor_MainGameCreationWizard
         public TargetZone BaseTargetZonePrefab;
         [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
+        [ReadOnly]
+        public AttractiveObjectType BaseAttractiveObjectPrefab; 
     }
 
     [System.Serializable]
@@ -198,5 +203,9 @@ namespace Editor_MainGameCreationWizard
         public string POIPrefabPath = "Assets/~AdventureGame/PointOfInterest/ScenePOI/Items";
         [ReadOnly]
         public string POIInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestConfiguration/Data";
+        [ReadOnly]
+        public string AttractiveObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionObjects/AttractiveObject/Prefab";
+        [ReadOnly]
+        public string AttractiveObjectInherantDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData";
     }
 }

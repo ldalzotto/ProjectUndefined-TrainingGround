@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static RTPuzzle.AIBehaviorManagerContainer;
 
 namespace RTPuzzle
 {
@@ -74,6 +72,7 @@ namespace RTPuzzle
                                 this.AIPlayerEscapeManager().IsManagerEnabled }
                 },
                 {
+                    //PlayerEscapeStart event interrupt target zone escape
                   typeof(PlayerEscapeStartAIBehaviorEvent), new List<Func<bool>>(){
                             this.AITargetZoneManager().IsManagerEnabled
                   }
