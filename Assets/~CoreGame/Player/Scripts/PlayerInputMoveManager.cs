@@ -37,12 +37,8 @@ namespace CoreGame
             var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
 
             var playerMovementOrientation = projectedDisplacement.normalized;
-
-            #region Calculate magnitude attenuation
-            float magnitudeAttenuationDiagonal = 1f;
-
-            playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude / magnitudeAttenuationDiagonal;
-            #endregion
+            
+            playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude;
             if (playerSpeedMagnitude > float.Epsilon)
             {
                 hasMoved = true;

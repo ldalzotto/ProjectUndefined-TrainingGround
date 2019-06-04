@@ -1,9 +1,7 @@
-﻿
-using CoreGame;
-
+﻿using CoreGame;
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine;
 #endif
 
 namespace AdventureGame

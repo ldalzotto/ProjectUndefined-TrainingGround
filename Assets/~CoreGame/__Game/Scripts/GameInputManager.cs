@@ -48,7 +48,24 @@ namespace CoreGame
 
             public Vector3 LocomotionAxis()
             {
-                return new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                if (Mathf.Abs(Input.GetAxis("Horizontal")) > float.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > float.Epsilon)
+                {
+                    //keyboard
+                    var rawDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                    if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
+                    {
+                        rawDirection = rawDirection.normalized;
+                        //var normalizedRawDirection = rawDirection.normalized;
+                        //  rawDirection = new Vector3(Mathf.Sign(rawDirection.x) * normalizedRawDirection.x, 0, Mathf.Sign(rawDirection.z) * normalizedRawDirection.z);
+                    }
+
+                    return rawDirection;
+                }
+                else
+                {
+                    //gamepad
+                    return new Vector3(Input.GetAxis("Horizontal_PAD"), 0, Input.GetAxis("Vertical_PAD"));
+                }
             }
 
             public float LeftRotationCameraDH()
