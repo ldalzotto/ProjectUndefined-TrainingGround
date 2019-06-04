@@ -5,7 +5,8 @@
         "AdventureGame",
         "CoreGame",
         "Editor",
-        "Editor_Common"
+        "Editor_Common",
+        "OdinSerializer"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -14,7 +15,10 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
-    "precompiledReferences": [],
+    "precompiledReferences": [
+        "OdinAOTSupport.dll",
+        "OdinSerializer.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": []

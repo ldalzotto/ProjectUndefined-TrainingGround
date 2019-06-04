@@ -3,7 +3,8 @@
     "references": [
         "CoreGame",
         "Unity.Postprocessing.Runtime",
-        "Editor_Common"
+        "Editor_Common",
+        "OdinSerializer"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

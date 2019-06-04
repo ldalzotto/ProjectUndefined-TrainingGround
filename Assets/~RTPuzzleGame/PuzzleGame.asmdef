@@ -2,7 +2,8 @@
     "name": "PuzzleGame",
     "references": [
         "CoreGame",
-        "Editor_Common"
+        "Editor_Common",
+        "OdinSerializer"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

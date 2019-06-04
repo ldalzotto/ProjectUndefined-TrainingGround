@@ -477,15 +477,6 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="OdinSerializer">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/OdinSerializer.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/EditorOnly/UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="OdinAOTSupport">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Assets/Plugins/Sirenix/Odin Serializer/Generated/OdinAOTSupport.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.5f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
     </Reference>
@@ -857,6 +848,10 @@
     <ProjectReference Include="Editor_Common.csproj">
       <Project>{4515CF8C-D010-E6DC-319E-E452A370D349}</Project>
       <Name>Editor_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="OdinSerializer.csproj">
+      <Project>{A681D4DB-01A1-7910-AB52-5F994409AF08}</Project>
+      <Name>OdinSerializer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

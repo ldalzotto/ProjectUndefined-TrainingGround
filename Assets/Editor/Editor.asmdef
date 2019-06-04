@@ -4,7 +4,8 @@
         "CoreGame",
         "AdventureGame",
         "PuzzleGame",
-        "Editor_Common"
+        "Editor_Common",
+        "OdinSerializer"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
