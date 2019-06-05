@@ -531,6 +531,25 @@ namespace Tests
         }
 
         [UnityTest]
+        public IEnumerator AI_AttractiveObject_OnStay_AIFollowPosition()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 1f), mouseTestAIManager.transform.position);
+            yield return new WaitForFixedUpdate();
+            yield return null; //Wait for AI to set the destination
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.AreEqual(attractiveObjectType.transform.position, mouseTestAIManager.GetAgent().destination);
+            attractiveObjectType.transform.position = attractiveObjectType.transform.position + Vector3.forward;
+            yield return new WaitForFixedUpdate();
+            yield return null; //Wait for AI to set the destination
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.AreEqual(attractiveObjectType.transform.position, mouseTestAIManager.GetAgent().destination);
+        }
+
+        [UnityTest]
         public IEnumerator AI_AttractiveObject_InterruptedBy_Projectile_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
