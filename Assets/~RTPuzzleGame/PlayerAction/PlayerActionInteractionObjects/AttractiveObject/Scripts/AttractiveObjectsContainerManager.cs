@@ -19,6 +19,15 @@ namespace RTPuzzle
             AttractiveObjectsContainer = new AttractiveObjectsContainer(this);
         }
 
+        public void InitStaticInitials()
+        {
+            //Initialize all static initial attractiveObjects
+            foreach (var attractiveObjectType in GameObject.FindObjectsOfType<AttractiveObjectType>())
+            {
+                attractiveObjectType.Init();
+            }
+        }
+
         public void Tick(float d, float timeAttenuationFactor)
         {
             AttractiveObjectsContainer.Tick(d, timeAttenuationFactor);

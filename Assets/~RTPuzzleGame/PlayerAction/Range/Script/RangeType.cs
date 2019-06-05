@@ -12,7 +12,6 @@ namespace RTPuzzle
 
         #region External dependencies
         protected RangeTypeContainer rangeTypeContainer;
-
         #endregion
 
         public RangeTypeID RangeTypeID { get => rangeTypeID; set => rangeTypeID = value; }

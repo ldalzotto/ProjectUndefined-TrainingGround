@@ -1,6 +1,8 @@
 ﻿using Editor_MainGameCreationWizard;
 using RTPuzzle;
 using System;
+using UnityEditor;
+using UnityEngine;
 
 namespace Editor_AttractiveObjectCreationWizard
 {
@@ -23,6 +25,7 @@ namespace Editor_AttractiveObjectCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.AttractiveObjectPrefabPath, editorInformationsData.AttractiveObjectId.ToString() + NameConstants.AttractiveObjectPrefab, editorProfile);
             this.CreatedPrefab.AttractiveObjectId = editorInformationsData.AttractiveObjectId;
+            PrefabUtility.SavePrefabAsset(this.CreatedPrefab.gameObject);
         }
     }
 }

@@ -93,6 +93,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             RangeTypeContainer.Init();
+            AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
         }
 

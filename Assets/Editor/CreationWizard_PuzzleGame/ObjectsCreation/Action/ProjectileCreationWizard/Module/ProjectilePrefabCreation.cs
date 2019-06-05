@@ -3,6 +3,7 @@ using System.Collections;
 using RTPuzzle;
 using System;
 using Editor_MainGameCreationWizard;
+using UnityEditor;
 
 namespace Editor_ProjectileCreationWizard
 {
@@ -23,6 +24,7 @@ namespace Editor_ProjectileCreationWizard
             this.Create(editorInformations.EditorInformationsData.CommonGameConfigurations.InstancePath.ProjectilePrefabPath, editorInformations.EditorInformationsData.LaunchProjectileId.ToString() +
                 NameConstants.ProjectilePrefab, editorProfile);
             this.CreatedPrefab.LaunchProjectileId = editorInformations.EditorInformationsData.LaunchProjectileId;
+            PrefabUtility.SavePrefabAsset(this.CreatedPrefab.gameObject);
         }
     }
 }

@@ -1,38 +1,24 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using RTPuzzle;
+using System;
 using UnityEditor;
-using RTPuzzle;
+using UnityEngine;
 
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class AIModel : IGameDesignerModule
+    public class AIModel : SetModelModule<NPCAIManager>
     {
         public GameObject AIModelObject;
 
-        public void GUITick()
+        protected override Func<NPCAIManager, Transform> FindParent
         {
-           
-            var currentSelectedObj = GameDesignerHelper.GetCurrentSceneSelectedObject();
-
-            this.AIModelObject = (GameObject)EditorGUILayout.ObjectField("AI new Model : ", this.AIModelObject, typeof(GameObject), false);
-
-            EditorGUI.BeginDisabledGroup(this.AIModelObject == null || currentSelectedObj == null || currentSelectedObj.GetComponent<NPCAIManager>() == null);
-            if (GUILayout.Button("SET AI MODEL"))
+            get
             {
-                PrefabUtility.InstantiatePrefab(this.AIModelObject, currentSelectedObj.FindChildObjectRecursively("Model").transform);
-                
+                return (NPCAIManager NPCAIManager) =>
+                {
+                    return NPCAIManager.gameObject.FindChildObjectRecursively("Model").transform;
+                };
             }
-            EditorGUI.EndDisabledGroup();
-
-        }
-
-        public void OnDisabled()
-        {
-        }
-
-        public void OnEnabled()
-        {
         }
     }
 }

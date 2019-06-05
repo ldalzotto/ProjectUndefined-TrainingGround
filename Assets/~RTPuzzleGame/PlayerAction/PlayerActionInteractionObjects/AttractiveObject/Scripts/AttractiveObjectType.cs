@@ -18,7 +18,7 @@ namespace RTPuzzle
             }
 
             attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init(attractiveObjectInherentConfigurationData);
+            attractiveObject.Init();
             return attractiveObject;
         }
 
@@ -39,23 +39,21 @@ namespace RTPuzzle
         public AttractiveObjectId AttractiveObjectId;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
+        public void Init()
         {
             #region External Dependencies
             var attractiveObjectContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
+            var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
+            var attractiveObjectInherentConfigurationData = puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.AttractiveObjectId];
+
             this.sphereRange = GetComponentInChildren<SphereRangeType>();
             this.sphereRange.Init(attractiveObjectInherentConfigurationData.EffectRange);
-
-            this.attractiveObjectInherentConfigurationData = attractiveObjectInherentConfigurationData;
+            
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
 
             attractiveObjectContainerManager.OnAttracteObjectCreated(this);
         }
-
-        private AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData;
-
-        public AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData { get => attractiveObjectInherentConfigurationData; }
 
         public bool Tick(float d, float timeAttenuationFactor)
         {
