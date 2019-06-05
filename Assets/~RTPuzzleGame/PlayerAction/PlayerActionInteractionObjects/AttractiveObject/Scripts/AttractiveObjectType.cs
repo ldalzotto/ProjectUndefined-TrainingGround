@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace RTPuzzle
 {
     public class AttractiveObjectType : MonoBehaviour
@@ -67,6 +71,17 @@ namespace RTPuzzle
             return this.sphereRange.IsInside(compareWorldPosition);
         }
         #endregion
+
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.normal.textColor = Color.yellow;
+            Handles.Label(transform.position + new Vector3(0, 3f, 0), AttractiveObjectId.ToString(), labelStyle);
+            Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AttractiveObject", true);
+#endif
+        }
 
     }
 

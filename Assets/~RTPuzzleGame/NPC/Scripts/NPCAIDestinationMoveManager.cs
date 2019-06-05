@@ -70,7 +70,6 @@ namespace RTPuzzle
             }
 
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
-            Debug.Log(MyLog.Format("Moving agent : " + objectAgent.nextPosition));
             objectTransform.position = objectAgent.nextPosition;
         }
 
