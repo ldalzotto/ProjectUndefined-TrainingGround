@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using CoreGame;
+using System.Collections;
 using UnityEngine;
-using CoreGame;
 
 namespace RTPuzzle
 {
@@ -27,6 +27,7 @@ namespace RTPuzzle
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
         private AbstractLevelTransitionManager LevelTransitionManager;
         private GameOverManager GameOverManager;
+        private ObjectRepelContainerManager ObjectRepelContainerManager;
 
         private void Awake()
         {
@@ -61,6 +62,7 @@ namespace RTPuzzle
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
             LevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
+            ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -91,6 +93,8 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
             NpcInteractionRingRendererManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
+            GameObject.FindObjectOfType<ObjectRepelContainer>().Init();
+            ObjectRepelContainerManager.Init();
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             RangeTypeContainer.Init();
             AttractiveObjectsContainerManager.InitStaticInitials();
@@ -100,7 +104,7 @@ namespace RTPuzzle
         private void Update()
         {
             var d = Time.deltaTime;
-            
+
             if (!GameOverManager.OnGameOver)
             {
                 PlayerActionManager.Tick(d);
@@ -119,6 +123,7 @@ namespace RTPuzzle
                     LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                     PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                     AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                    ObjectRepelContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                 }
                 else
                 {

@@ -46,4 +46,18 @@ public class BeziersControlPoints
         beziersClone.p3 = p3;
         return beziersClone;
     }
+
+    public static BeziersControlPoints Build(Vector3 initialPosition, Vector3 targetPosition, Vector3 normal)
+    {
+        BeziersControlPoints beziersControlPoints = new BeziersControlPoints();
+        beziersControlPoints.P0 = initialPosition;
+        beziersControlPoints.P3 = targetPosition;
+
+        var upProjectedPath = Vector3.ProjectOnPlane(targetPosition - beziersControlPoints.P0, normal);
+        var upProjectedPathLength = upProjectedPath.magnitude;
+
+        beziersControlPoints.P1 = beziersControlPoints.P0 + (upProjectedPath.normalized + normal) * upProjectedPathLength / 3;
+        beziersControlPoints.P2 = beziersControlPoints.P1 + (upProjectedPath.normalized) * upProjectedPathLength / 3;
+        return beziersControlPoints;
+    }
 }

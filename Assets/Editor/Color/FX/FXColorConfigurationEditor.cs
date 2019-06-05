@@ -24,14 +24,12 @@ public class FXColorConfigurationEditor : EditorWindow
     [SerializeField] private bool launchProjectileRangeMaterialFold;
     [SerializeField] private bool launchProjectileRangeAreaMaterialFold;
     [SerializeField] private bool attractiveObjectAreaMaterialFold;
-    [SerializeField] private bool throwProjectilePathPrefabFold;
     [SerializeField] private bool throwProjectileCursorPrefabFold;
     #endregion
 
     private Material launchProjectileRangeMaterial;
 
     private Material attractiveObjectAreaMaterial;
-    private ThrowProjectilePath throwProjectilePathPrefab;
     private PrefabEditorInjection throwProjectileCursorPrefab;
     private RangeColorConfiguration RangeColorConfiguration;
 
@@ -69,21 +67,6 @@ public class FXColorConfigurationEditor : EditorWindow
 
         EditorGUILayout.Separator();
 
-        throwProjectilePathPrefabFold = EditorGUILayout.Foldout(throwProjectilePathPrefabFold, new GUIContent("Throw projectile path prefab : "), true);
-        if (throwProjectilePathPrefabFold)
-        {
-            this.throwProjectilePathPrefab = EditorGUILayout.ObjectField(this.throwProjectilePathPrefab, typeof(ThrowProjectilePath), false) as ThrowProjectilePath;
-            if (this.throwProjectilePathPrefab != null)
-            {
-                var trails = this.throwProjectilePathPrefab.GetComponent<ParticleSystem>().trails;
-                var colorOverTrail = trails.colorOverTrail;
-                colorOverTrail.gradient = EditorGUILayout.GradientField(new GUIContent("Color over trail : "), colorOverTrail.gradient);
-                trails.colorOverTrail = colorOverTrail;
-            }
-        }
-
-        EditorGUILayout.Separator();
-
         throwProjectileCursorPrefabFold = EditorGUILayout.Foldout(throwProjectileCursorPrefabFold, new GUIContent("Launch projectile cursor : "), true);
         if (throwProjectileCursorPrefabFold)
         {
@@ -112,7 +95,6 @@ public class FXColorConfigurationEditor : EditorWindow
 
         this.launchProjectileRangeMaterial = AssetFinder.SafeSingleAssetFind<Material>("LaunchProjectileRangeMaterial t:Material");
         this.attractiveObjectAreaMaterial = AssetFinder.SafeSingleAssetFind<Material>("AttractiveObjectRangeMaterial t:Material");
-        this.throwProjectilePathPrefab = AssetFinder.SafeSingleAssetFind<ThrowProjectilePath>("ThrowProjectilePath t:Prefab");
         this.throwProjectileCursorPrefab.SelectedPrefab = AssetFinder.SafeSingleAssetFind<GameObject>("ThrowProjectileCursor t:Prefab");
         this.RangeColorConfiguration = AssetFinder.SafeSingleAssetFind<RangeColorConfiguration>("t:" + typeof(RangeColorConfiguration).Name);
     }

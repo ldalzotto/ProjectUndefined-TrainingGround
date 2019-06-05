@@ -11,7 +11,6 @@ namespace RTPuzzle
         [Space(20)]
         [Header("RT Puzzle Prefabs")]
         [Space(20)]
-        public ThrowProjectilePath ThrowProjectilePathPrefab;
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
 
         [Header("RT Puzzle Target Zone Prefab")]

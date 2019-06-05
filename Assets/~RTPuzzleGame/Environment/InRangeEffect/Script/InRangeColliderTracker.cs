@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -16,12 +15,17 @@ namespace RTPuzzle
 
         private void Start()
         {
-            var r = this.GetComponent<Renderer>();
+            var r = this.GetAllowedRenderer();
             if (r != null)
             {
                 involvedRenderers.Add(r);
             }
-            involvedRenderers.AddRange(this.GetComponentsInChildren<Renderer>());
+            involvedRenderers.AddRange(this.GetAllRenderersInChildrenFiltered(this.transform));
+            //parent fallback
+            if (involvedRenderers.Count == 0)
+            {
+                involvedRenderers.AddRange(this.GetAllRenderersInChildrenFiltered(this.transform.parent));
+            }
 
             this.InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
         }
@@ -42,6 +46,39 @@ namespace RTPuzzle
             {
                 this.InRangeEffectManager.OnInRangeRemove(this, rangeType);
             }
+        }
+
+        private Renderer GetAllowedRenderer()
+        {
+            var r = this.GetComponent<Renderer>();
+            if (this.FilterRendererToAllowed(r))
+            {
+                return r;
+            }
+            return null;
+        }
+
+        private List<Renderer> GetAllRenderersInChildrenFiltered(Transform baseTransform)
+        {
+            var foundRenderes = baseTransform.GetComponentsInChildren<Renderer>();
+            if (foundRenderes != null)
+            {
+                var filteredRenderes = new List<Renderer>();
+                foreach (var foundRend in foundRenderes)
+                {
+                    if (this.FilterRendererToAllowed(foundRend))
+                    {
+                        filteredRenderes.Add(foundRend);
+                    }
+                }
+                return filteredRenderes;
+            }
+            return new List<Renderer>();
+        }
+
+        private bool FilterRendererToAllowed(Renderer r)
+        {
+            return (r != null && (r.GetType() == typeof(MeshRenderer) || r.GetType() == typeof(SkinnedMeshRenderer)));
         }
     }
 }

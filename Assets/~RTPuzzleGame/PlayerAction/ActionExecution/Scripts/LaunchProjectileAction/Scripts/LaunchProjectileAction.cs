@@ -13,13 +13,13 @@ namespace RTPuzzle
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private PlayerManagerDataRetriever PlayerManagerDataRetriever;
         #endregion
 
         private LaunchProjectileScreenPositionManager LaunchProjectileScreenPositionManager;
         private LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager;
         private ThrowProjectileManager ThrowProjectileManager;
         private LauncheProjectileActionExitManager LauncheProjectileActionExitManager;
-        private LaunchProjectilePathAnimationmanager LaunchProjectilePathAnimationmanager;
         private LaunchProjectilePlayerAnimationManager LaunchProjectilePlayerAnimationManager;
         private PlayerOrientationManager PlayerOrientationManager;
 
@@ -41,7 +41,7 @@ namespace RTPuzzle
 
             #region External Dependencies
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            this.PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var camera = Camera.main;
             var launchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
@@ -65,7 +65,6 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
-            LaunchProjectilePathAnimationmanager = new LaunchProjectilePathAnimationmanager(PlayerManagerDataRetriever.GetPlayerCollider());
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), projectileInherentData);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
 
@@ -81,7 +80,6 @@ namespace RTPuzzle
                 if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
                 {
                     ThrowProjectileManager.Tick(d, ref LaunchProjectileRayPositionerManager);
-                    LaunchProjectilePathAnimationmanager.Tick(d, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
                 }
 
                 //If exit not called
@@ -114,7 +112,6 @@ namespace RTPuzzle
             MonoBehaviour.Destroy(this.projectileSphereRange.gameObject);
             // PuzzleEventsManager.PZ_EVT_ThrowProjectile_PlayerAction_End();
             LaunchProjectileRayPositionerManager.OnExit();
-            LaunchProjectilePathAnimationmanager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
             LaunchProjectilePlayerAnimationManager.OnExit();
             isActionFinished = true;
@@ -128,21 +125,19 @@ namespace RTPuzzle
                 this.LaunchProjectilePlayerAnimationManager.PlayThrowProjectileAnimation(
                     onAnimationEnd: () =>
                     {
+                        //LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition()
                         ResetCoolDown();
-                        var throwPorjectilePath = LaunchProjectilePathAnimationmanager.ThrowProjectilePath;
+                        var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerCollider().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
+                                             this.PlayerManagerDataRetriever.GetPlayerCollider().transform.up);
                         ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
                     }
-                    );
+                   );
             }
         }
         #endregion
 
         public override void GizmoTick()
         {
-            if (LaunchProjectilePathAnimationmanager != null)
-            {
-                LaunchProjectilePathAnimationmanager.GizmoSelectedTick();
-            }
         }
 
         public override void GUITick()
@@ -358,9 +353,9 @@ namespace RTPuzzle
             }
         }
 
-        public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, ThrowProjectilePath throwProjectilePath)
+        public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, BeziersControlPoints throwProjectilePath)
         {
-            currentProjectile = LaunchProjectile.Instantiate(PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId], throwProjectilePath.BeziersControlPoints, launchProjectileContainerManager.transform);
+            currentProjectile = LaunchProjectile.Instantiate(PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId], throwProjectilePath, launchProjectileContainerManager.transform);
             LaunchProjectileEventManager.OnLaunchProjectileSpawn(currentProjectile);
             LaunchProjectileRTPActionRef.OnExit();
         }
@@ -393,41 +388,6 @@ namespace RTPuzzle
         private bool IsExitRequested()
         {
             return GameInputManager.CurrentInput.CancelButtonD();
-        }
-    }
-    #endregion
-
-    #region Launch Projectile Path Animation Manager 
-    class LaunchProjectilePathAnimationmanager
-    {
-        private ThrowProjectilePath throwProjectilePath;
-
-        public ThrowProjectilePath ThrowProjectilePath { get => throwProjectilePath; }
-
-        public LaunchProjectilePathAnimationmanager(Collider throwerCollider)
-        {
-            throwProjectilePath = MonoBehaviour.Instantiate(PrefabContainer.Instance.ThrowProjectilePathPrefab, Vector3.zero, Quaternion.identity);
-            throwProjectilePath.Init(throwerCollider);
-        }
-
-        public void Tick(float d, Vector3 currentCursorPosition)
-        {
-            throwProjectilePath.Tick(d, currentCursorPosition);
-        }
-
-        public void GizmoSelectedTick()
-        {
-            throwProjectilePath.GizmoSelectedTick();
-        }
-
-        public void OnExit()
-        {
-            MonoBehaviour.Destroy(throwProjectilePath.gameObject);
-        }
-
-        public void OnLaunchProjectileSpawn()
-        {
-
         }
     }
     #endregion

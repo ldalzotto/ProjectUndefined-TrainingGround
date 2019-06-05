@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
@@ -33,6 +34,8 @@ namespace RTPuzzle
             #region External Dependencies
             var npcAiManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
+            var ObjectRepelContainer = GameObject.FindObjectOfType<ObjectRepelContainer>();
+            var ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
             #endregion
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
@@ -41,7 +44,7 @@ namespace RTPuzzle
             this.transform.position = ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = ProjectilePath.Clone();
 
-            this.SphereCollisionManager = new SphereCollisionManager(sphereCollider, this.launchProjectileInherentData, npcAiManagerContainer);
+            this.SphereCollisionManager = new SphereCollisionManager(sphereCollider, this.launchProjectileInherentData, npcAiManagerContainer, ObjectRepelContainer, ObjectRepelContainerManager);
             this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, transform, projectilePathDeepCopy);
 
         }
@@ -105,20 +108,27 @@ namespace RTPuzzle
     class SphereCollisionManager
     {
         private NPCAIManagerContainer NPCAIManagerContainer;
+        private ObjectRepelContainer ObjectRepelContainer;
+        private ObjectRepelContainerManager ObjectRepelContainerManager;
+
         private SphereCollider SphereCollider;
         private ProjectileInherentData LaunchProjectileInherentData;
 
-        public SphereCollisionManager(SphereCollider sphereCollider, ProjectileInherentData LaunchProjectileInherentData, NPCAIManagerContainer NPCAIManagerContainer)
+        public SphereCollisionManager(SphereCollider sphereCollider, ProjectileInherentData LaunchProjectileInherentData,
+            NPCAIManagerContainer NPCAIManagerContainer, ObjectRepelContainer ObjectRepelContainer, ObjectRepelContainerManager ObjectRepelContainerManager)
         {
             SphereCollider = sphereCollider;
             this.LaunchProjectileInherentData = LaunchProjectileInherentData;
             this.NPCAIManagerContainer = NPCAIManagerContainer;
+            this.ObjectRepelContainer = ObjectRepelContainer;
+            this.ObjectRepelContainerManager = ObjectRepelContainerManager;
             SphereCollider.radius = 1f;
         }
 
         public void OnGroundTriggerEnter(LaunchProjectile launchProjectileRef)
         {
             SphereCollider.radius = LaunchProjectileInherentData.EffectRange;
+            #region AI escape
             foreach (var npcAiManagerWithId in NPCAIManagerContainer.GetNPCAiManagers())
             {
                 if (npcAiManagerWithId.Value.GetCollider().bounds.Intersects(SphereCollider.bounds))
@@ -126,6 +136,30 @@ namespace RTPuzzle
                     npcAiManagerWithId.Value.OnProjectileTriggerEnter(launchProjectileRef);
                 }
             }
+            #endregion
+
+            #region Repel objects
+            foreach (var repelAbleObject in this.ObjectRepelContainer.ObjectsRepelable)
+            {
+                if (repelAbleObject.ObjectRepelCollider.bounds.Intersects(SphereCollider.bounds))
+                {
+                    float remainingDistance = 10;
+                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - SphereCollider.transform.position), repelAbleObject.transform.up).normalized;
+                    NavMeshHit navmeshHit;
+                    if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, remainingDistance, NavMesh.AllAreas))
+                    {
+                        this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
+                    } else
+                    {
+                        if (NavMesh.Raycast(repelAbleObject.transform.position, repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, NavMesh.AllAreas))
+                        {
+                            this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
+                        }
+                    }
+                }
+            }
+            #endregion
+
             MonoBehaviour.Destroy(this.SphereCollider);
         }
     }

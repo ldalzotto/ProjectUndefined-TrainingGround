@@ -14,4 +14,6 @@ public class CollisionType : MonoBehaviour
     [Header("RT_Puzzle_Range")]
     public bool IsRange = false;
 
+    [Header("RT_Puzzle object behaior")]
+    public bool IsRepelable = false;
 }

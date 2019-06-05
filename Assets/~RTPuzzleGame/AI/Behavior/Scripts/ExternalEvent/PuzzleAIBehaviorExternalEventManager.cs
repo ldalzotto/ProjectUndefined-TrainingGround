@@ -18,7 +18,7 @@ namespace RTPuzzle
         {
             this.aiBehavior = aiBehavior;
         }
-
+        
         private List<PuzzleAIBehaviorExternalEvent> waitingToConsumeEvents = new List<PuzzleAIBehaviorExternalEvent>();
 
         protected abstract BehaviorStateTrackerContainer BehaviorStateTrackerContainer { get; }
