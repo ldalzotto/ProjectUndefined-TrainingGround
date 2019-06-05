@@ -22,7 +22,7 @@ namespace RTPuzzle
             }
 
             attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init();
+            attractiveObject.Init(attractiveObjectInherentConfigurationData);
             return attractiveObject;
         }
 
@@ -43,13 +43,11 @@ namespace RTPuzzle
         public AttractiveObjectId AttractiveObjectId;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public void Init()
+        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
         {
             #region External Dependencies
             var attractiveObjectContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
-            var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
-            var attractiveObjectInherentConfigurationData = puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.AttractiveObjectId];
 
             this.sphereRange = GetComponentInChildren<SphereRangeType>();
             this.sphereRange.Init(attractiveObjectInherentConfigurationData.EffectRange);

@@ -24,7 +24,7 @@ namespace RTPuzzle
             //Initialize all static initial attractiveObjects
             foreach (var attractiveObjectType in GameObject.FindObjectsOfType<AttractiveObjectType>())
             {
-                attractiveObjectType.Init();
+                attractiveObjectType.Init(this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectType.AttractiveObjectId]);
             }
         }
 
