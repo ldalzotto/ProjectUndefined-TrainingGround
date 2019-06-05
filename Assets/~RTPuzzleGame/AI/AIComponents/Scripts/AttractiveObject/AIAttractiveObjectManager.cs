@@ -36,10 +36,7 @@ namespace RTPuzzle
 
         public override void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
-            if (!this.IsInfluencedByAttractiveObject())
-            {
-                SetAttractedObject(attractivePosition, attractiveObjectType);
-            }
+            SetAttractedObject(attractivePosition, attractiveObjectType);
         }
 
         private void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)

@@ -116,10 +116,17 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerStayAIBehaviorEvent attractiveObjectTriggerStayAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager()))
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
             {
-                Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
-                genericAiBehavior.ManagersStateReset();
+                // Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
+
+                // If the attractive module is disabled, we reset state
+                // This is to be sure that other states are cleared
+                if (!genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
+                {
+                    genericAiBehavior.ManagersStateReset();
+                }
+
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
             }
         }
