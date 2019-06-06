@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace CoreGame
@@ -11,10 +13,12 @@ namespace CoreGame
 
         private AutoSaveIcon AutoSaveIcon;
 
+        private BinaryFormatter binaryFormatter = new BinaryFormatter();
+
         private BackgroundWorker persistThread;
         private Queue<Action> persistQueueActions;
 
-        public void Init()
+        public virtual void Init()
         {
             this.AutoSaveIcon = GameObject.FindObjectOfType<AutoSaveIcon>();
             this.AutoSaveIcon.Init();
@@ -27,7 +31,7 @@ namespace CoreGame
         }
 
         #region External Event
-        public void OnPersistRequested(Action persistAction)
+        public virtual void OnPersistRequested(Action persistAction)
         {
             this.AutoSaveIcon.OnSaveStart();
             if (!this.persistThread.IsBusy)
@@ -65,6 +69,25 @@ namespace CoreGame
                 this.AutoSaveIcon.OnSaveEnd();
             }
         }
+
+        #region Loading
+        public virtual T Load<T>(string folderPath, string dataPath, string filename, string fileExtension)
+        {
+            if (Directory.Exists(folderPath))
+            {
+                var directoryFiles = Directory.GetFiles(folderPath, filename + fileExtension);
+                if (directoryFiles.Length > 0)
+                {
+                    using (FileStream fileStream = File.Open(dataPath, FileMode.Open))
+                    {
+                        UnityEngine.Debug.Log(MyLog.Format("Loaded : " + dataPath));
+                        return (T)binaryFormatter.Deserialize(fileStream);
+                    }
+                }
+            }
+            return default(T);
+        }
+        #endregion
 
     }
 }

@@ -30,21 +30,8 @@ namespace CoreGame
 
         public T Load()
         {
-            if (Directory.Exists(folderPath))
-            {
-                var path = this.GetDataPath();
-                var directoryFiles = Directory.GetFiles(folderPath, this.fileName + this.fileExtension);
-                if (directoryFiles.Length > 0)
-                {
-                    using (FileStream fileStream = File.Open(path, FileMode.Open))
-                    {
-                        Debug.Log(MyLog.Format("Loaded : " + path));
-                        return (T)binaryFormatter.Deserialize(fileStream);
-                    }
-                }
-            }
-
-            return default(T);
+            var path = this.GetDataPath();
+            return this.PersistanceManager.Load<T>(folderPath, path, this.fileName, this.fileExtension);
         }
 
         public void SaveAsync(T dataToSave)

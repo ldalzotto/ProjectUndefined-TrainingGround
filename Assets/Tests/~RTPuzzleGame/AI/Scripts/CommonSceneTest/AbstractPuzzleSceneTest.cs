@@ -31,6 +31,12 @@ namespace Tests
 
                 var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
                 npcAIManager.AiID = choosenId;
+
+                //persistance
+                var persistanceManager = GameObject.FindObjectOfType<PersistanceManager>();
+                var persistanceManagerGO = persistanceManager.gameObject;
+                MonoBehaviour.DestroyImmediate(persistanceManager);
+                persistanceManagerGO.AddComponent<MockPersistanceManager>();
             };
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
@@ -128,6 +134,23 @@ namespace Tests
             {
                 this.OnDestinationReachedCalled = false;
                 this.AiHittedByProjectileCallCount = 0;
+            }
+        }
+
+        public class MockPersistanceManager : PersistanceManager
+        {
+            public override void Init()
+            {
+            
+            }
+
+            public override void OnPersistRequested(Action persistAction)
+            {
+            }
+
+            public override T Load<T>(string folderPath, string dataPath, string filename, string fileExtension)
+            {
+                return default(T);
             }
         }
     }
