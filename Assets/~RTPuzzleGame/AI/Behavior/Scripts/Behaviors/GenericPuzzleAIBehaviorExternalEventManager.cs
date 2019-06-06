@@ -212,7 +212,7 @@ namespace RTPuzzle
 
         public ProjectileTriggerEnterAIBehaviorEvent(LaunchProjectile launchProjectile)
         {
-            this.collisionPosition = launchProjectile.SphereCollider.transform.position;
+            this.collisionPosition = launchProjectile.GetGroundCollisionTrackingCollider().transform.position;
             if (launchProjectile != null)
             {
                 launchProjectileInherentData = launchProjectile.LaunchProjectileInherentData;

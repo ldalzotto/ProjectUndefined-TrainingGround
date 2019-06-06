@@ -62,7 +62,8 @@ namespace RTPuzzle
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas);
-            LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer);
+            LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
+                         projectileInherentData);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), projectileInherentData);
@@ -213,6 +214,7 @@ namespace RTPuzzle
     {
         private Camera camera;
         private PuzzleEventsManager PuzzleEventsManager;
+        private ProjectileInherentData projectileInherentData;
         private PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer;
         private LaunchProjectileAction launchProjectileActionRef;
         private SphereRangeType projectileCursorRange;
@@ -231,12 +233,13 @@ namespace RTPuzzle
         }
 
         public LaunchProjectileRayPositionerManager(Camera camera, Vector2 cursorScreenPositionAtInit, LaunchProjectileAction launchProjectileAction,
-                PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer)
+                PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer, ProjectileInherentData projectileInherentData)
         {
             this.camera = camera;
             this.launchProjectileActionRef = launchProjectileAction;
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.PuzzleStaticConfigurationContainer = PuzzleStaticConfigurationContainer;
+            this.projectileInherentData = projectileInherentData;
             Tick(0f, cursorScreenPositionAtInit);
         }
 
@@ -252,7 +255,7 @@ namespace RTPuzzle
                     {
                         MonoBehaviour.DestroyImmediate(this.projectileCursorRange.gameObject);
                     }
-                    this.projectileCursorRange = SphereRangeType.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, 10, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
+                    this.projectileCursorRange = SphereRangeType.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.projectileInherentData.EffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
                 }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;

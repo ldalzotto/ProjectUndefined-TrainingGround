@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using CoreGame;
 
 #if UNITY_EDITOR
 using UnityEditor;

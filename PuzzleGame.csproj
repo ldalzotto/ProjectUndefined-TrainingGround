@@ -168,6 +168,7 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectile.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\SphereRangeType.cs" />

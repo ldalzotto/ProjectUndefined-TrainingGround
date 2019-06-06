@@ -17,7 +17,12 @@ namespace Tests
 
         public static LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, Vector3 projectilePoistion, LaunchProjectileContainerManager launchProjectileContainerManager)
         {
-            var launchProjectile = LaunchProjectile.Instantiate(projectileInherentData, new BeziersControlPoints(), launchProjectileContainerManager.transform);
+            var projectileBezierPath = new BeziersControlPoints();
+            projectileBezierPath.P0 = projectilePoistion;
+            projectileBezierPath.P1 = projectilePoistion;
+            projectileBezierPath.P2 = projectilePoistion;
+            projectileBezierPath.P3 = projectilePoistion;
+            var launchProjectile = LaunchProjectile.Instantiate(projectileInherentData, projectileBezierPath, launchProjectileContainerManager.transform);
             launchProjectile.transform.position = projectilePoistion;
             return launchProjectile;
         }

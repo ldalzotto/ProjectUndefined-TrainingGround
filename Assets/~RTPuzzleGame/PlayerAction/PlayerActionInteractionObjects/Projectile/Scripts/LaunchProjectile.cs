@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
@@ -8,10 +9,9 @@ namespace RTPuzzle
         public LaunchProjectileId LaunchProjectileId;
         private ProjectileInherentData launchProjectileInherentData;
         public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
-        public SphereCollider SphereCollider { get => sphereCollider; }
 
         #region Internal Dependencies
-        private SphereCollider sphereCollider;
+        private LaunchProjectileGroundColliderTracker LaunchProjectileGroundColliderTracker;
         #endregion
 
         private LaunchProjectileMovementManager LaunchProjectileMovementManager;
@@ -19,6 +19,17 @@ namespace RTPuzzle
 
         #region External Dependencies
         private LaunchProjectileEventManager LaunchProjectileEventManager;
+        #endregion
+
+        #region Data Retrieval
+        public Collider GetGroundCollisionTrackingCollider()
+        {
+            return this.LaunchProjectileGroundColliderTracker.SphereCollider;
+        }
+        public Vector3 GetTargetPosition()
+        {
+            return this.LaunchProjectileMovementManager.GetTargetPosition();
+        }
         #endregion
 
         public static LaunchProjectile Instantiate(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform)
@@ -38,13 +49,17 @@ namespace RTPuzzle
             var ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
             #endregion
 
+            #region Internal Dependencies
+            this.LaunchProjectileGroundColliderTracker = this.GetComponentInChildren<LaunchProjectileGroundColliderTracker>();
+            this.LaunchProjectileGroundColliderTracker.Init(this);
+            #endregion
+
             this.launchProjectileInherentData = LaunchProjectileInherentData;
-            this.sphereCollider = GetComponent<SphereCollider>();
             //    sphereCollider.radius = 1f;// this.launchProjectileInherentData.EffectRange;
             this.transform.position = ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = ProjectilePath.Clone();
 
-            this.SphereCollisionManager = new SphereCollisionManager(sphereCollider, this.launchProjectileInherentData, npcAiManagerContainer, ObjectRepelContainer, ObjectRepelContainerManager);
+            this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, ObjectRepelContainer, ObjectRepelContainerManager);
             this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, transform, projectilePathDeepCopy);
 
         }
@@ -60,14 +75,6 @@ namespace RTPuzzle
         }
 
         #region External Events
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.layer == LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER))
-            {
-                this.LaunchProjectileEventManager.OnProjectileGroundTriggerEnter(this);
-            }
-        }
-
         public void OnGroundTriggerEnter()
         {
             SphereCollisionManager.OnGroundTriggerEnter(this);
@@ -102,6 +109,11 @@ namespace RTPuzzle
             projectileTransform.position = ProjectilePath.ResolvePoint(currentProjectilePathBeziersPosition);
         }
 
+        public Vector3 GetTargetPosition()
+        {
+            return this.ProjectilePath.ResolvePoint(1f);
+        }
+
     }
     #endregion
 
@@ -110,30 +122,27 @@ namespace RTPuzzle
         private NPCAIManagerContainer NPCAIManagerContainer;
         private ObjectRepelContainer ObjectRepelContainer;
         private ObjectRepelContainerManager ObjectRepelContainerManager;
-        
-        private SphereCollider SphereCollider;
+
         private ProjectileInherentData LaunchProjectileInherentData;
 
-        public SphereCollisionManager(SphereCollider sphereCollider, ProjectileInherentData LaunchProjectileInherentData,
+        public SphereCollisionManager(ProjectileInherentData LaunchProjectileInherentData,
             NPCAIManagerContainer NPCAIManagerContainer, ObjectRepelContainer ObjectRepelContainer, ObjectRepelContainerManager ObjectRepelContainerManager)
         {
-            SphereCollider = sphereCollider;
             this.LaunchProjectileInherentData = LaunchProjectileInherentData;
             this.NPCAIManagerContainer = NPCAIManagerContainer;
             this.ObjectRepelContainer = ObjectRepelContainer;
             this.ObjectRepelContainerManager = ObjectRepelContainerManager;
-            SphereCollider.radius = 1f;
         }
 
         public void OnGroundTriggerEnter(LaunchProjectile launchProjectileRef)
         {
-            SphereCollider.radius = LaunchProjectileInherentData.EffectRange;
+            var projectileTargetPosition = launchProjectileRef.GetTargetPosition();
             #region AI escape
-            foreach (var npcAiManagerWithId in NPCAIManagerContainer.GetNPCAiManagers())
+            foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {
-                if (npcAiManagerWithId.Value.GetCollider().bounds.Intersects(SphereCollider.bounds))
+                if (Intersection.BoxIntersectsSphere(npcAIManager.GetCollider() as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
-                    npcAiManagerWithId.Value.OnProjectileTriggerEnter(launchProjectileRef);
+                    npcAIManager.OnProjectileTriggerEnter(launchProjectileRef);
                 }
             }
             #endregion
@@ -141,15 +150,16 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.ObjectRepelContainer.ObjectsRepelable)
             {
-                if (repelAbleObject.ObjectRepelCollider.bounds.Intersects(SphereCollider.bounds))
+                if (Intersection.BoxIntersectsSphere(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
                     float remainingDistance = 10;
-                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - SphereCollider.transform.position), repelAbleObject.transform.up).normalized;
+                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - projectileTargetPosition), repelAbleObject.transform.up).normalized;
                     NavMeshHit navmeshHit;
                     if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, remainingDistance, NavMesh.AllAreas))
                     {
                         this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
-                    } else
+                    }
+                    else
                     {
                         if (NavMesh.Raycast(repelAbleObject.transform.position, repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, NavMesh.AllAreas))
                         {
@@ -160,7 +170,7 @@ namespace RTPuzzle
             }
             #endregion
 
-            MonoBehaviour.Destroy(this.SphereCollider);
+            MonoBehaviour.Destroy(launchProjectileRef.gameObject);
         }
     }
 }

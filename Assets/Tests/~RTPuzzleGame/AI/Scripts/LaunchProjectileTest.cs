@@ -36,7 +36,7 @@ namespace Tests
             var projectileSemiAngle = 90f;
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, projectileSemiAngle, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, launchProjectileContainerManager);
-            lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back - new Vector3(0, lpTest.SphereCollider.bounds.min.y / 2, 0);
+            lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back - new Vector3(0, lpTest.GetGroundCollisionTrackingCollider().bounds.min.y / 2, 0);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
@@ -55,7 +55,7 @@ namespace Tests
             var projectileSemiAngle = 90f;
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, projectileSemiAngle, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, launchProjectileContainerManager);
-            lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back + new Vector3(0, lpTest.SphereCollider.bounds.max.y / 2, 0);
+            lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back + new Vector3(0, lpTest.GetGroundCollisionTrackingCollider().bounds.max.y / 2, 0);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();

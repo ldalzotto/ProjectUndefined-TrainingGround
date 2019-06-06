@@ -123,6 +123,7 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
     <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />
+    <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\AbstractGamePersister.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
+    <Compile Include="Assets\Test\Intersectiontest\Circle.cs" />
+    <Compile Include="Assets\Test\Intersectiontest\IntersectionTest.cs" />
+    <Compile Include="Assets\Test\Intersectiontest\MyBox.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
