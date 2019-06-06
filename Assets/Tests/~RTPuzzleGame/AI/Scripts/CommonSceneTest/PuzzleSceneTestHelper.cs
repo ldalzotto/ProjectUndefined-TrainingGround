@@ -240,6 +240,12 @@ namespace Tests
         }
         #endregion
 
+        public static IEnumerator WaitForSeconds(float seconds, Func<IEnumerator> OnTimerReached)
+        {
+            yield return new WaitForSeconds(seconds);
+            yield return OnTimerReached;
+        }
+
         public static void InitializeAIComponents(AbstractAIComponents abstractAIComponents)
         {
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))

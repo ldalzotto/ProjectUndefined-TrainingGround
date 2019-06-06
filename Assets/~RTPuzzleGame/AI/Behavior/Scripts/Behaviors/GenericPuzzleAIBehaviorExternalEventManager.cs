@@ -89,6 +89,7 @@ namespace RTPuzzle
         private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
         {
             genericAiBehavior.ManagersStateReset();
+            genericAiBehavior.AIFearStunManager().OnFearStarted(fearedStartAIBehaviorEvent);
         }
 
         private void Feared_Forced(GenericPuzzleAIBehavior genericAiBehavior, FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent)
@@ -240,7 +241,13 @@ namespace RTPuzzle
         public float EscapeDistance { get => escapeDistance; }
     }
 
-    public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
+    public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        public FearedStartAIBehaviorEvent(Action eventProcessedCallback)
+        {
+            this.eventProcessedCallback = eventProcessedCallback;
+        }
+    }
 
     public class FearedForcedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
@@ -254,7 +261,13 @@ namespace RTPuzzle
         public float FearedTime { get => fearedTime; set => fearedTime = value; }
     }
 
-    public class FearedEndAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
+    public class FearedEndAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        public FearedEndAIBehaviorEvent(Action eventProcessedCallback)
+        {
+            this.eventProcessedCallback = eventProcessedCallback;
+        }
+    }
 
     public class AttractiveObjectTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {

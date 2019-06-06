@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 #if UNITY_EDITOR
@@ -144,7 +143,7 @@ namespace RTPuzzle
             var labelStyle = new GUIStyle(EditorStyles.label);
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.normal.textColor = Color.magenta;
-            Handles.Label(transform.position + new Vector3(0,3f,0), AiID.ToString(), labelStyle);
+            Handles.Label(transform.position + new Vector3(0, 3f, 0), AiID.ToString(), labelStyle);
             Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AI", true);
 #endif
         }
@@ -215,8 +214,12 @@ namespace RTPuzzle
 
         internal void OnAIFearedStunnedEnded()
         {
-            this.puzzleAIBehavior.ReceiveEvent(new FearedEndAIBehaviorEvent());
-            this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
+            this.puzzleAIBehavior.ReceiveEvent(new FearedEndAIBehaviorEvent(
+                eventProcessedCallback: () =>
+                {
+                    this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
+                }
+           ));
         }
 
         internal void OnAIFearedForced(float fearTime)
@@ -226,8 +229,12 @@ namespace RTPuzzle
 
         internal void OnAIFearedStunned()
         {
-            this.puzzleAIBehavior.ReceiveEvent(new FearedStartAIBehaviorEvent());
-            this.AnimationVisualFeedbackManager.OnAIFearedStunned();
+            this.puzzleAIBehavior.ReceiveEvent(new FearedStartAIBehaviorEvent(
+                eventProcessedCallback: () =>
+                {
+                    this.AnimationVisualFeedbackManager.OnAIFearedStunned();
+                }
+            ));
         }
 
         internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)

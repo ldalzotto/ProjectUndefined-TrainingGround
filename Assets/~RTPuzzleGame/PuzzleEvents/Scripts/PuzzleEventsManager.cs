@@ -34,14 +34,17 @@ namespace RTPuzzle
         #region Fear Events
         public void PZ_EVT_AI_FearedStunned_Start(AiID aiID)
         {
+            Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Start"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunned();
         }
         public void PZ_EVT_AI_FearedForced(AiID aiID, float fearTime)
         {
+            Debug.Log(MyLog.Format("PZ_EVT_AI_FearedForced"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedForced(fearTime);
         }
         public void PZ_EVT_AI_FearedStunned_Ended(AiID aiID)
         {
+            Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
         }
         public void PZ_EVT_AI_Attracted_Start(AttractiveObjectType attractiveObject, AiID aiID)

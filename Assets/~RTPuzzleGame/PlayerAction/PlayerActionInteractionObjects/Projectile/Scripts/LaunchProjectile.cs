@@ -110,7 +110,7 @@ namespace RTPuzzle
         private NPCAIManagerContainer NPCAIManagerContainer;
         private ObjectRepelContainer ObjectRepelContainer;
         private ObjectRepelContainerManager ObjectRepelContainerManager;
-
+        
         private SphereCollider SphereCollider;
         private ProjectileInherentData LaunchProjectileInherentData;
 

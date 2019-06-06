@@ -15,20 +15,16 @@ namespace RTPuzzle
 
         private NavMeshAgent currentAgent;
         private AIFearStunComponent AIFearStunComponent;
-        private PuzzleEventsManager PuzzleEventsManager;
-        private AiID AiID;
+
 
         public AIFearStunManager(NavMeshAgent currentAgent, AIFearStunComponent aIFearStunComponent, PuzzleEventsManager PuzzleEventsManager, AIFOVManager aiFovManager, AiID AiID)
+                : base(AiID, PuzzleEventsManager)
         {
             this.currentAgent = currentAgent;
             AIFearStunComponent = aIFearStunComponent;
-            this.PuzzleEventsManager = PuzzleEventsManager;
             this.aiFovManager = aiFovManager;
-            this.AiID = AiID;
             this.AIFearTimeCounterManager = new AIFearTimeCounterManager();
         }
-
-
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
@@ -60,6 +56,11 @@ namespace RTPuzzle
         }
 
         #region External Events
+        internal override void OnFearStarted(FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
+        {
+            this.isFeared = true;
+        }
+
         internal override void OnFearedForced(FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent)
         {
             this.SetIsFeared(true);
@@ -67,24 +68,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        private void SetIsFeared(bool newIsFearedValue)
-        {
-            if (newIsFearedValue)
-            {
-                if (!this.isFeared)
-                {
-                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Start(this.AiID);
-                }
-            }
-            else
-            {
-                if (this.isFeared)
-                {
-                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Ended(this.AiID);
-                }
-            }
-            this.isFeared = newIsFearedValue;
-        }
+
 
 
     }

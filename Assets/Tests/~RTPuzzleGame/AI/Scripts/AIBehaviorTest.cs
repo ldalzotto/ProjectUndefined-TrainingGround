@@ -333,7 +333,11 @@ namespace Tests
                             Assert.IsTrue(mouseAIBheavior.IsFeared());
                             return null;
                         },
-                        OnFailure: null);
+                        OnFailure: () =>
+                        {
+                            Assert.IsTrue(false);
+                            return null;
+                        });
                 },
                 OnDistanceReached: null
                 );
@@ -1132,6 +1136,55 @@ namespace Tests
         }
 
         [UnityTest]
+        public IEnumerator AI_FearStun_OnForcedFear_IsFeared()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position);
+            var fearTime = 0.3f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+            yield return null;
+            Assert.IsFalse(mouseAIBheavior.IsFeared());
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+            yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
+                OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                {
+                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
+                    return PuzzleSceneTestHelper.WaitForConditionUpdate(PITFALL_AI_TO_FEAR_FRAME_PRECISION, () => { return mouseAIBheavior.IsFeared(); },
+                        OnSuccess: () =>
+                        {
+                            Assert.IsTrue(mouseAIBheavior.IsFeared());
+                            return PuzzleSceneTestHelper.WaitForSeconds(fearTime,
+                                 OnTimerReached: () =>
+                                 {
+                                     Assert.IsFalse(mouseAIBheavior.IsFeared());
+                                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+                                     //We try a second time in a row
+                                     return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
+                                       OnProjectileSpawn: (LaunchProjectile lauinchProjectile2) =>
+                                       {
+                                           Assert.IsTrue(mouseAIBheavior.IsFeared());
+                                           return null;
+                                       },
+                                       OnDistanceReached: null
+                                       );
+                                 }
+                                );
+                        },
+                        OnFailure: () =>
+                        {
+                            Assert.IsTrue(false);
+                            return null;
+                        });
+                },
+                OnDistanceReached: null
+                );
+        }
+
+        [UnityTest]
         public IEnumerator AI_FearStun_NotInterruptedBy_Attractive()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
@@ -1386,7 +1439,11 @@ namespace Tests
                         Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                         return null;
                     },
-                    OnFailure: null);
+                    OnFailure: () =>
+                    {
+                        Assert.IsTrue(false);
+                        return null;
+                    });
         }
 
         [UnityTest]

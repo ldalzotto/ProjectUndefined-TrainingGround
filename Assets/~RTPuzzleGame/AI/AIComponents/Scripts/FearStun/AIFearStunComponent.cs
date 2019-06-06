@@ -1,9 +1,7 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace RTPuzzle
@@ -21,10 +19,22 @@ namespace RTPuzzle
 
     public abstract class AbstractAIFearStunManager : InterfaceAIManager
     {
+        protected AiID AiID;
+
         #region State
         protected bool isFeared;
         #endregion
-        
+
+        #region External Dependencies
+        protected PuzzleEventsManager PuzzleEventsManager;
+        #endregion
+
+        protected AbstractAIFearStunManager(AiID aiID, PuzzleEventsManager puzzleEventsManager)
+        {
+            AiID = aiID;
+            PuzzleEventsManager = puzzleEventsManager;
+        }
+
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 
         public bool IsManagerEnabled()
@@ -40,9 +50,29 @@ namespace RTPuzzle
         {
             this.isFeared = false;
         }
-
+        
+        internal abstract void OnFearStarted(FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent);
         internal abstract void OnFearedForced(FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent);
+
+        protected void SetIsFeared(bool newIsFearedValue)
+        {
+            if (newIsFearedValue)
+            {
+                if (!this.isFeared)
+                {
+                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Start(this.AiID);
+                }
+            }
+            else
+            {
+                if (this.isFeared)
+                {
+                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Ended(this.AiID);
+                }
+            }
+            this.isFeared = newIsFearedValue;
+        }
     }
 
-    
+
 }
