@@ -169,10 +169,15 @@ namespace Tests
             }
             if (OnFearEnded != null)
             {
-                yield return new WaitForSeconds(fearTime);
-                yield return new WaitForFixedUpdate();
-                yield return OnFearEnded.Invoke();
+                yield return WaitForFearTimer(fearTime, OnFearEnded);
             }
+        }
+
+        public static IEnumerator WaitForFearTimer(float fearTime, Func<IEnumerator> OnFearEnded)
+        {
+            yield return new WaitForSeconds(fearTime);
+            yield return new WaitForFixedUpdate();
+            yield return OnFearEnded.Invoke();
         }
         #endregion
 
@@ -210,41 +215,6 @@ namespace Tests
                 OnDistanceReached: OnDestinationReached);
         }
         #endregion
-
-        #region Wait for condition
-        public static IEnumerator WaitForConditionUpdate(int numberOfFrameWaited, Func<bool> condition, Func<IEnumerator> OnSuccess, Func<IEnumerator> OnFailure)
-        {
-            bool success = false;
-            for (var i = 0; i < numberOfFrameWaited; i++)
-            {
-                yield return null;
-                if (condition.Invoke())
-                {
-                    if (OnSuccess != null)
-                    {
-                        yield return OnSuccess.Invoke();
-                    }
-                    success = true;
-                    break;
-                }
-            }
-            if (!success)
-            {
-                if (OnFailure != null)
-                {
-                    yield return OnFailure.Invoke();
-                }
-                Assert.IsTrue(false, "A WaitForConditionUpdate has not been fulfilled.");
-            }
-
-        }
-        #endregion
-
-        public static IEnumerator WaitForSeconds(float seconds, Func<IEnumerator> OnTimerReached)
-        {
-            yield return new WaitForSeconds(seconds);
-            yield return OnTimerReached;
-        }
 
         public static void InitializeAIComponents(AbstractAIComponents abstractAIComponents)
         {

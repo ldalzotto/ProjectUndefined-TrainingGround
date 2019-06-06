@@ -325,19 +325,9 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
                 OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsFeared());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
-                    return PuzzleSceneTestHelper.WaitForConditionUpdate(PITFALL_AI_TO_FEAR_FRAME_PRECISION, () => { return mouseAIBheavior.IsFeared(); },
-                        OnSuccess: () =>
-                        {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            return null;
-                        },
-                        OnFailure: () =>
-                        {
-                            Assert.IsTrue(false);
-                            return null;
-                        });
+                    return null;
                 },
                 OnDistanceReached: null
                 );
@@ -1142,43 +1132,18 @@ namespace Tests
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position);
-            var fearTime = 0.3f;
-            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
+            mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_FAR_EDGE).transform.position);
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.FOVSumThreshold = 0f;
+            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistance = 5f;
             yield return null;
             Assert.IsFalse(mouseAIBheavior.IsFeared());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
-            yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
+            yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 1f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
                 OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsFeared());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
-                    return PuzzleSceneTestHelper.WaitForConditionUpdate(PITFALL_AI_TO_FEAR_FRAME_PRECISION, () => { return mouseAIBheavior.IsFeared(); },
-                        OnSuccess: () =>
-                        {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            return PuzzleSceneTestHelper.WaitForSeconds(fearTime,
-                                 OnTimerReached: () =>
-                                 {
-                                     Assert.IsFalse(mouseAIBheavior.IsFeared());
-                                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
-                                     //We try a second time in a row
-                                     return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 20f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
-                                       OnProjectileSpawn: (LaunchProjectile lauinchProjectile2) =>
-                                       {
-                                           Assert.IsTrue(mouseAIBheavior.IsFeared());
-                                           return null;
-                                       },
-                                       OnDistanceReached: null
-                                       );
-                                 }
-                                );
-                        },
-                        OnFailure: () =>
-                        {
-                            Assert.IsTrue(false);
-                            return null;
-                        });
+                    return null;
                 },
                 OnDistanceReached: null
                 );
@@ -1429,21 +1394,10 @@ namespace Tests
             PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 1f, 20f, 1);
             mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position);
             playerDataRetriver.GetPlayerRigidBody().transform.position = PuzzleSceneTestHelper.FindAITestPosition(AITestPositionID.PITFAL_Z_POSITION_1).transform.position - (Vector3.forward * 0.5f);
-
             yield return null;
             playerDataRetriver.GetPlayerRigidBody().transform.position = Vector3.zero;
-            yield return PuzzleSceneTestHelper.WaitForConditionUpdate(PITFALL_AI_TO_FEAR_FRAME_PRECISION, () => { return mouseAIBheavior.IsFeared(); },
-                    OnSuccess: () =>
-                    {
-                        Assert.IsTrue(mouseAIBheavior.IsFeared());
-                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
-                        return null;
-                    },
-                    OnFailure: () =>
-                    {
-                        Assert.IsTrue(false);
-                        return null;
-                    });
+            Assert.IsTrue(mouseAIBheavior.IsFeared());
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
         }
 
         [UnityTest]

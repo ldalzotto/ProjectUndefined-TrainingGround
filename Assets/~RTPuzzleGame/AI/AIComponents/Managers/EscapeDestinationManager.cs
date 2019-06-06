@@ -9,6 +9,8 @@ namespace RTPuzzle
     public class EscapeDestinationManager
     {
 
+        public const float DESTINATION_CALCUALTION_ROUNDING_DISTANCE = 0.001f;
+
         private NavMeshAgent escapingAgent;
         private Nullable<Vector3> escapeDestination;
 
@@ -68,13 +70,14 @@ namespace RTPuzzle
         {
             if (escapeDestinationCalculationMethod != null)
             {
-                //if travelled escape distance is not reached
                 escapeDestinationCalculationMethod.Invoke(NavMeshRaycastStrategy.RANDOM);
-                if (this.escapingAgent.destination == this.EscapeDestination)
+
+                //if the calculated destination is the same as AI position
+                if ( Vector3.Distance(this.escapingAgent.transform.position, this.EscapeDestination.Value) <= DESTINATION_CALCUALTION_ROUNDING_DISTANCE)
                 {
                     //we try the end navmesh calculation strategy
                     escapeDestinationCalculationMethod.Invoke(NavMeshRaycastStrategy.END_ANGLES);
-                    if (this.escapingAgent.destination == this.EscapeDestination)
+                    if (Vector3.Distance(this.escapingAgent.transform.position, this.EscapeDestination.Value) <= DESTINATION_CALCUALTION_ROUNDING_DISTANCE)
                     {
                         if (ifAllFailsAction != null)
                         {
