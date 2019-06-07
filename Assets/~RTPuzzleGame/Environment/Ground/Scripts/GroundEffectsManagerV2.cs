@@ -1,38 +1,35 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.Rendering;
-using CoreGame;
+﻿using CoreGame;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace RTPuzzle
 {
     public class GroundEffectsManagerV2 : MonoBehaviour
     {
 
-        public const string GroundEffectBufferShaderProperty = "_GroundEffectBuffer";
-
-        public const string AURA_RADIUS_MATERIAL_PROPERTY = "_Radius";
-        public const string AURA_CENTER_MATERIAL_PROPERTY = "_CenterWorldPosition";
-        public const string AURA_COLOR_MATERIAL_PROPERTY = "_AuraColor";
-
+        public Material MasterRangeMaterial;
+        
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
         private CommandBuffer command;
         private GroundEffectType[] AffectedGroundEffectsType;
+        private HashSet<MeshRenderer> RenderedRenderers = new HashSet<MeshRenderer>();
 
         private Dictionary<RangeTypeID, SphereGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, SphereGroundEffectManager>();
 
-        private Dictionary<RangeTypeID, int> rangeEffectRenderOrder = new Dictionary<RangeTypeID, int>() {
-            {RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE, 1 },
-            {RangeTypeID.ATTRACTIVE_OBJECT, 2 },
-            {RangeTypeID.LAUNCH_PROJECTILE, 3 },
-            {RangeTypeID.LAUNCH_PROJECTILE_CURSOR, 4 }
+        private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
+            RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
+            RangeTypeID.ATTRACTIVE_OBJECT,
+            RangeTypeID.LAUNCH_PROJECTILE,
+            RangeTypeID.LAUNCH_PROJECTILE_CURSOR
         };
 
+        private CircleRangeBufferData[] CircleRangeBufferValues = new CircleRangeBufferData[4];
+        private ComputeBuffer CircleRangeBuffer;
 
         public void Init()
         {
@@ -52,18 +49,38 @@ namespace RTPuzzle
             {
                 AffectedGroundEffectsType[i].Init();
             }
+
+            for (var i = 0; i < this.rangeEffectRenderOrder.Count; i++)
+            {
+                this.CircleRangeBufferValues[i] = new CircleRangeBufferData();
+            }
+
+            this.CircleRangeBuffer = new ComputeBuffer(4, (1 * sizeof(int)) + ((3 + 1 + 4 + 1 + 1) * sizeof(float)));
+            this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
+            this.MasterRangeMaterial.SetBuffer("CircleRangeBuffer", this.CircleRangeBuffer);
         }
 
         public void Tick(float d)
         {
+            this.RenderedRenderers.Clear();
             foreach (var groundEffectManager in this.rangeEffectManagers.Values)
             {
                 if (groundEffectManager != null)
                 {
                     groundEffectManager.Tick(d);
+                    groundEffectManager.MeshToRender(ref this.RenderedRenderers, this.AffectedGroundEffectsType);
                 }
             }
 
+            foreach (var rangeEffectId in this.rangeEffectRenderOrder)
+            {
+                if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
+                {
+                    this.rangeEffectManagers[rangeEffectId].UpdateCircleRangeBufferData(ref this.CircleRangeBufferValues[this.rangeEffectRenderOrder.IndexOf(rangeEffectId)]);
+                }
+            }
+
+            this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
             this.OnCommandBufferUpdate();
         }
 
@@ -74,8 +91,7 @@ namespace RTPuzzle
             {
                 var sphereRangeType = (SphereRangeType)rangeType;
                 this.rangeEffectManagers[rangeType.RangeTypeID] = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeType.RangeTypeID]);
-                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionStart(sphereRangeType);
-                OnCommandBufferUpdate();
+                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionStart(sphereRangeType, ref this.CircleRangeBufferValues[this.rangeEffectRenderOrder.IndexOf(rangeType.RangeTypeID)]);
             }
         }
 
@@ -83,9 +99,8 @@ namespace RTPuzzle
         {
             if (rangeType.IsRangeConfigurationDefined())
             {
-                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionEnd();
+                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionEnd(ref this.CircleRangeBufferValues[this.rangeEffectRenderOrder.IndexOf(rangeType.RangeTypeID)]);
                 this.rangeEffectManagers.Remove(rangeType.RangeTypeID);
-                OnCommandBufferUpdate();
             }
         }
         #endregion
@@ -93,18 +108,18 @@ namespace RTPuzzle
         internal void OnCommandBufferUpdate()
         {
             this.command.Clear();
-
-            var sortedRangeEffectManagers = this.rangeEffectManagers.Values.ToList();
-            sortedRangeEffectManagers.Sort(delegate (SphereGroundEffectManager r1, SphereGroundEffectManager r2)
+            this.MasterRangeMaterial.SetInt("_CountSize", this.rangeEffectRenderOrder.Count);
+            foreach (var rangeEffectId in this.rangeEffectRenderOrder)
             {
-                return this.rangeEffectRenderOrder[r1.GetRangeTypeID()].CompareTo(this.rangeEffectRenderOrder[r2.GetRangeTypeID()]);
-            });
-            foreach (var groundEffectManager in sortedRangeEffectManagers)
-            {
-                if (groundEffectManager != null)
+                if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
                 {
-                    groundEffectManager.OnCommandBufferUpdate(this.command, this.AffectedGroundEffectsType);
+                    this.rangeEffectManagers[rangeEffectId].MeshToRender(ref this.RenderedRenderers, this.AffectedGroundEffectsType);
                 }
+            }
+
+            foreach (var meshToRender in this.RenderedRenderers)
+            {
+                this.command.DrawRenderer(meshToRender, this.MasterRangeMaterial);
             }
         }
     }
@@ -129,46 +144,76 @@ namespace RTPuzzle
             return this.associatedSphereRange.RangeTypeID;
         }
 
-        internal void OnCommandBufferUpdate(CommandBuffer commandBuffer, GroundEffectType[] affectedGroundEffectsType)
-        {
-            if (isAttractiveObjectRangeEnabled)
-            {
-                foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-                {
-                    if (affectedGroundEffectType.MeshRenderer.isVisible
-                        && this.associatedSphereRange.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
-                    {
-                        commandBuffer.DrawRenderer(affectedGroundEffectType.MeshRenderer, rangeTypeInherentConfigurationData.GoundEffectMaterial, 0, 0);
-                    }
-                }
-            }
-        }
-
         public void Tick(float d)
         {
             if (isAttractiveObjectRangeEnabled)
             {
                 this.rangeAnimation.Tick(d);
-                this.rangeTypeInherentConfigurationData.GoundEffectMaterial.SetVector(GroundEffectsManagerV2.AURA_CENTER_MATERIAL_PROPERTY, this.associatedSphereRange.GetCenterWorldPos());
-                this.rangeTypeInherentConfigurationData.GoundEffectMaterial.SetFloat(GroundEffectsManagerV2.AURA_RADIUS_MATERIAL_PROPERTY, this.rangeAnimation.CurrentValue);
-                if (rangeTypeInherentConfigurationData.RangeColorProvider != null)
+            }
+        }
+
+        public void MeshToRender(ref HashSet<MeshRenderer> renderers, GroundEffectType[] affectedGroundEffectsType)
+        {
+            foreach (var affectedGroundEffectType in affectedGroundEffectsType)
+            {
+                if (affectedGroundEffectType.MeshRenderer.isVisible
+                    && this.associatedSphereRange.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                 {
-                    rangeTypeInherentConfigurationData.GoundEffectMaterial.SetColor(GroundEffectsManagerV2.AURA_COLOR_MATERIAL_PROPERTY, this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke());
+                    renderers.Add(affectedGroundEffectType.MeshRenderer);
                 }
             }
         }
 
-        internal void OnAttractiveObjectActionStart(SphereRangeType sphereRangeType)
+        public void UpdateCircleRangeBufferData(ref CircleRangeBufferData OldCircleRangeBufferData)
+        {
+            OldCircleRangeBufferData.Enabled = Convert.ToInt32(this.isAttractiveObjectRangeEnabled);
+            OldCircleRangeBufferData.CenterWorldPosition = this.associatedSphereRange.GetCenterWorldPos();
+            OldCircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
+            if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
+            {
+                OldCircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
+            }
+            else
+            {
+                OldCircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
+            }
+            OldCircleRangeBufferData.AuraTextureAlbedoBoost = 0.2f;
+            OldCircleRangeBufferData.AuraAnimationSpeed = 20f;
+        }
+
+        internal void OnAttractiveObjectActionStart(SphereRangeType sphereRangeType, ref CircleRangeBufferData circleRangeBufferData)
         {
             this.rangeAnimation = new FloatAnimation(sphereRangeType.GetRadiusRange(), rangeTypeInherentConfigurationData.RangeAnimationSpeed, 0f);
             this.isAttractiveObjectRangeEnabled = true;
+            circleRangeBufferData.Enabled = 1;
             this.associatedSphereRange = sphereRangeType;
             this.Tick(0);
         }
 
-        internal void OnAttractiveObjectActionEnd()
+        internal void OnAttractiveObjectActionEnd(ref CircleRangeBufferData circleRangeBufferData)
         {
+            circleRangeBufferData.Enabled = 0;
             this.isAttractiveObjectRangeEnabled = false;
+        }
+    }
+
+    struct CircleRangeBufferData
+    {
+        public int Enabled;
+        public Vector3 CenterWorldPosition;
+        public float Radius;
+        public Vector4 AuraColor;
+        public float AuraTextureAlbedoBoost;
+        public float AuraAnimationSpeed;
+
+        public CircleRangeBufferData(int enabled, Vector3 centerWorldPosition, float radius, Vector4 auraColor, float auraTextureAlbedoBoost, float auraAnimationSpeed)
+        {
+            Enabled = enabled;
+            CenterWorldPosition = centerWorldPosition;
+            Radius = radius;
+            AuraColor = auraColor;
+            AuraTextureAlbedoBoost = auraTextureAlbedoBoost;
+            AuraAnimationSpeed = auraAnimationSpeed;
         }
     }
 }

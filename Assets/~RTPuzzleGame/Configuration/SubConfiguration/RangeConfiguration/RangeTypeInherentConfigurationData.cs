@@ -8,10 +8,10 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "RangeTypeInherentConfigurationData", menuName = "Configuration/PuzzleGame/RangeTypeConfiguration/RangeTypeInherentConfigurationData", order = 1)]
     public class RangeTypeInherentConfigurationData : ScriptableObject
     {
-        public Material GoundEffectMaterial;
         public float RangeAnimationSpeed;
 
         public Material InRangeEffectMaterial;
+        public Color RangeBaseColor;
 
         #region Runtime Methods
         private Func<Color> rangeColorProvider;

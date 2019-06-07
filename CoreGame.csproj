@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
-    <Compile Include="Assets\_Shader\FX\Range\RangeShaderV3_PassEditor.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AsbtractCoreGameManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
@@ -158,10 +157,13 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
+    <Compile Include="Assets\Test\RangeComputeShaderTest\Script\SquareRange.cs" />
+    <Compile Include="Assets\Test\RangeComputeShaderTest\Script\SquareRangeManager.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
+    <None Include="Assets\Test\RangeComputeShaderTest\Shader\SquareUnlitShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\FX\Particle_Ambiant_Shader.shader" />
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
@@ -177,8 +179,8 @@
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryFlatShade.cginc" />
     <None Include="Assets\_Shader\WaterV2\FragmentFlatShade.cginc" />
-    <None Include="Assets\_Shader\FX\Range\RangeShaderV3_Pass.shader" />
     <None Include="Assets\CoreGame.asmdef" />
+    <None Include="Assets\_Shader\FX\Range\RangeShaderV5.shader" />
     <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>

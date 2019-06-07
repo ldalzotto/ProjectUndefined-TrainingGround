@@ -65,7 +65,6 @@
     <Compile Include="Assets\Editor\AI\AbstractAIComponentEditor.cs" />
     <Compile Include="Assets\Editor\AI\AiBehaviorInherentDataEditor.cs" />
     <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
-    <Compile Include="Assets\Editor\Color\FX\FXColorConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\AdventureGame\AdventureGameConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\AdventureGame\StaticConfiguration\DiscussionRepertoireConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\AdventureGameConfigurationEditorProfile.cs" />
