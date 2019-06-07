@@ -158,9 +158,6 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
-    <Compile Include="Assets\Test\Intersectiontest\Circle.cs" />
-    <Compile Include="Assets\Test\Intersectiontest\IntersectionTest.cs" />
-    <Compile Include="Assets\Test\Intersectiontest\MyBox.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
