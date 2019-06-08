@@ -63,13 +63,13 @@ namespace Tests
         private void AssertBox(Vector3 moveDirection, float directionDelta, ref BoxCollider box, Vector3 sphereWorldPosition, float sphereRadius) {
 
             box.transform.position = moveDirection;
-            Assert.IsTrue(Intersection.BoxIntersectsSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsSphereV2(box, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * (-1 * directionDelta));
-            Assert.IsTrue(Intersection.BoxIntersectsSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsSphereV2(box, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * directionDelta);
-            Assert.IsFalse(Intersection.BoxIntersectsSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsFalse(Intersection.BoxIntersectsSphereV2(box, sphereWorldPosition, sphereRadius));
         }
     }
 

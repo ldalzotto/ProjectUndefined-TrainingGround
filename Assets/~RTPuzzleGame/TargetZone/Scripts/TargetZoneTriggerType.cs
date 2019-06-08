@@ -16,6 +16,7 @@ namespace RTPuzzle
         {
             this.targetZoneTriggerCollider = GetComponent<Collider>();
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            GetComponent<BoxRangeType>().Init();
         }
 
         private void OnTriggerEnter(Collider other)

@@ -46,7 +46,7 @@ namespace RTPuzzle
             return Vector3.Distance(this.GetCenterWorldPos(), worldPointComparison) <= this.sphereCollider.radius;
         }
 
-        public float GetRadiusRange()
+        public override float GetRadiusRange()
         {
             return this.sphereCollider.radius;
         }

@@ -140,7 +140,7 @@ namespace RTPuzzle
             #region AI escape
             foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {
-                if (Intersection.BoxIntersectsSphere(npcAIManager.GetCollider() as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
+                if (Intersection.BoxIntersectsSphereV2(npcAIManager.GetCollider() as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
                     npcAIManager.OnProjectileTriggerEnter(launchProjectileRef);
                 }
@@ -150,7 +150,7 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.ObjectRepelContainer.ObjectsRepelable)
             {
-                if (Intersection.BoxIntersectsSphere(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
+                if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
                     float remainingDistance = 10;
                     var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - projectileTargetPosition), repelAbleObject.transform.up).normalized;

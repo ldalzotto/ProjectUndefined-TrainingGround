@@ -72,8 +72,11 @@ namespace RTPuzzle
 
             //Initialisations
             LevelTransitionManager.Init();
-            GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
+            GroundEffectsManagerV2.Init();
+            GameObject.FindObjectOfType<RangeEventsManager>().Init();
+            RangeTypeContainer.Init();
+            GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init(gameInputManager);
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
@@ -83,7 +86,6 @@ namespace RTPuzzle
             PlayerActionManager.Init();
             LaunchProjectileContainerManager.Init();
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
-            GroundEffectsManagerV2.Init();
             InRangeEffectManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
@@ -95,8 +97,6 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             GameObject.FindObjectOfType<ObjectRepelContainer>().Init();
             ObjectRepelContainerManager.Init();
-            GameObject.FindObjectOfType<RangeEventsManager>().Init();
-            RangeTypeContainer.Init();
             AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
         }

@@ -133,6 +133,9 @@
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\AbstractGroundEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\BoxGroundEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\SphereGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeColliderTracker.cs" />
@@ -169,6 +172,7 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\BoxRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\SphereRangeType.cs" />
@@ -382,6 +386,9 @@
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.5f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.5f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>

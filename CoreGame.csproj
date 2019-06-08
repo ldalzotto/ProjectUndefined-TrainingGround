@@ -157,13 +157,13 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
-    <Compile Include="Assets\Test\RangeComputeShaderTest\Script\SquareRange.cs" />
-    <Compile Include="Assets\Test\RangeComputeShaderTest\Script\SquareRangeManager.cs" />
+    <Compile Include="Assets\Test\IntersectionTest\Test_Box.cs" />
+    <Compile Include="Assets\Test\IntersectionTest\Test_Intersection.cs" />
+    <Compile Include="Assets\Test\IntersectionTest\Test_Sphere.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
-    <None Include="Assets\Test\RangeComputeShaderTest\Shader\SquareUnlitShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\FX\Particle_Ambiant_Shader.shader" />
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
@@ -382,6 +382,9 @@
     </Reference>
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.5f1/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.LinuxStandalone.Extensions">
+      <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.5f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>

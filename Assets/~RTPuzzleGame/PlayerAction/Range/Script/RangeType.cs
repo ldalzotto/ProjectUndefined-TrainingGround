@@ -32,6 +32,7 @@ namespace RTPuzzle
 
         public abstract bool IsInside(Vector3 worldPointComparison);
         public abstract Collider GetCollider();
+        public abstract float GetRadiusRange();
 
         public static RangeType RetrieveFromCollisionType(CollisionType collisionType)
         {
