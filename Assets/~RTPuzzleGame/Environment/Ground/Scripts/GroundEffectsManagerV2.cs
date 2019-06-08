@@ -10,7 +10,7 @@ namespace RTPuzzle
     {
 
         public Material MasterRangeMaterial;
-        
+
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
@@ -21,6 +21,7 @@ namespace RTPuzzle
 
         private Dictionary<RangeTypeID, SphereGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, SphereGroundEffectManager>();
 
+        private const int RangeEffectCount = 4;
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
             RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
             RangeTypeID.ATTRACTIVE_OBJECT,
@@ -28,8 +29,11 @@ namespace RTPuzzle
             RangeTypeID.LAUNCH_PROJECTILE_CURSOR
         };
 
-        private CircleRangeBufferData[] CircleRangeBufferValues = new CircleRangeBufferData[4];
+        private List<CircleRangeBufferData> CircleRangeBufferValues = new List<CircleRangeBufferData>();
         private ComputeBuffer CircleRangeBuffer;
+
+        private List<RangeExecutionOrderBufferData> RangeExecutionOrderBufferDataValues = new List<RangeExecutionOrderBufferData>();
+        private ComputeBuffer RangeExecutionOrderBuffer;
 
         public void Init()
         {
@@ -49,15 +53,14 @@ namespace RTPuzzle
             {
                 AffectedGroundEffectsType[i].Init();
             }
-
-            for (var i = 0; i < this.rangeEffectRenderOrder.Count; i++)
-            {
-                this.CircleRangeBufferValues[i] = new CircleRangeBufferData();
-            }
-
-            this.CircleRangeBuffer = new ComputeBuffer(4, (1 * sizeof(int)) + ((3 + 1 + 4 + 1 + 1) * sizeof(float)));
+            
+            this.CircleRangeBuffer = new ComputeBuffer(RangeEffectCount, ((3 + 1 + 4 + 1 + 1) * sizeof(float)));
             this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
             this.MasterRangeMaterial.SetBuffer("CircleRangeBuffer", this.CircleRangeBuffer);
+
+            this.RangeExecutionOrderBuffer = new ComputeBuffer(RangeEffectCount, 3 * sizeof(int));
+            this.RangeExecutionOrderBuffer.SetData(this.RangeExecutionOrderBufferDataValues);
+            this.MasterRangeMaterial.SetBuffer("RangeExecutionOrderBuffer", this.RangeExecutionOrderBuffer);
         }
 
         public void Tick(float d)
@@ -72,15 +75,20 @@ namespace RTPuzzle
                 }
             }
 
+            this.CircleRangeBufferValues.Clear();
+            this.RangeExecutionOrderBufferDataValues.Clear();
             foreach (var rangeEffectId in this.rangeEffectRenderOrder)
             {
                 if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
                 {
-                    this.rangeEffectManagers[rangeEffectId].UpdateCircleRangeBufferData(ref this.CircleRangeBufferValues[this.rangeEffectRenderOrder.IndexOf(rangeEffectId)]);
+                    this.CircleRangeBufferValues.Add(this.rangeEffectManagers[rangeEffectId].ToSphereBuffer());
+                    this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(1,0, this.CircleRangeBufferValues.Count -1));
                 }
             }
 
             this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
+            this.RangeExecutionOrderBuffer.SetData(this.RangeExecutionOrderBufferDataValues);
+            
             this.OnCommandBufferUpdate();
         }
 
@@ -91,7 +99,7 @@ namespace RTPuzzle
             {
                 var sphereRangeType = (SphereRangeType)rangeType;
                 this.rangeEffectManagers[rangeType.RangeTypeID] = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeType.RangeTypeID]);
-                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionStart(sphereRangeType, ref this.CircleRangeBufferValues[this.rangeEffectRenderOrder.IndexOf(rangeType.RangeTypeID)]);
+                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionStart(sphereRangeType);
             }
         }
 
@@ -99,7 +107,7 @@ namespace RTPuzzle
         {
             if (rangeType.IsRangeConfigurationDefined())
             {
-                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionEnd(ref this.CircleRangeBufferValues[this.rangeEffectRenderOrder.IndexOf(rangeType.RangeTypeID)]);
+                this.rangeEffectManagers[rangeType.RangeTypeID].OnAttractiveObjectActionEnd();
                 this.rangeEffectManagers.Remove(rangeType.RangeTypeID);
             }
         }
@@ -108,7 +116,8 @@ namespace RTPuzzle
         internal void OnCommandBufferUpdate()
         {
             this.command.Clear();
-            this.MasterRangeMaterial.SetInt("_CountSize", this.rangeEffectRenderOrder.Count);
+            this.MasterRangeMaterial.SetInt("_CountSize", this.RangeExecutionOrderBufferDataValues.Count);
+
             foreach (var rangeEffectId in this.rangeEffectRenderOrder)
             {
                 if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
@@ -164,56 +173,58 @@ namespace RTPuzzle
             }
         }
 
-        public void UpdateCircleRangeBufferData(ref CircleRangeBufferData OldCircleRangeBufferData)
+        public CircleRangeBufferData ToSphereBuffer()
         {
-            OldCircleRangeBufferData.Enabled = Convert.ToInt32(this.isAttractiveObjectRangeEnabled);
-            OldCircleRangeBufferData.CenterWorldPosition = this.associatedSphereRange.GetCenterWorldPos();
-            OldCircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
+            CircleRangeBufferData CircleRangeBufferData = new CircleRangeBufferData();
+            CircleRangeBufferData.CenterWorldPosition = this.associatedSphereRange.GetCenterWorldPos();
+            CircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
-                OldCircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
+                CircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
             }
             else
             {
-                OldCircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
+                CircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
-            OldCircleRangeBufferData.AuraTextureAlbedoBoost = 0.2f;
-            OldCircleRangeBufferData.AuraAnimationSpeed = 20f;
+            CircleRangeBufferData.AuraTextureAlbedoBoost = 0.2f;
+            CircleRangeBufferData.AuraAnimationSpeed = 20f;
+            return CircleRangeBufferData;
         }
 
-        internal void OnAttractiveObjectActionStart(SphereRangeType sphereRangeType, ref CircleRangeBufferData circleRangeBufferData)
+        internal void OnAttractiveObjectActionStart(SphereRangeType sphereRangeType)
         {
             this.rangeAnimation = new FloatAnimation(sphereRangeType.GetRadiusRange(), rangeTypeInherentConfigurationData.RangeAnimationSpeed, 0f);
             this.isAttractiveObjectRangeEnabled = true;
-            circleRangeBufferData.Enabled = 1;
             this.associatedSphereRange = sphereRangeType;
             this.Tick(0);
         }
 
-        internal void OnAttractiveObjectActionEnd(ref CircleRangeBufferData circleRangeBufferData)
+        internal void OnAttractiveObjectActionEnd()
         {
-            circleRangeBufferData.Enabled = 0;
             this.isAttractiveObjectRangeEnabled = false;
+        }
+    }
+
+    struct RangeExecutionOrderBufferData
+    {
+        public int IsSphere;
+        public int IsCube;
+        public int Index;
+
+        public RangeExecutionOrderBufferData(int isSphere, int isCube, int index)
+        {
+            IsSphere = isSphere;
+            IsCube = isCube;
+            Index = index;
         }
     }
 
     struct CircleRangeBufferData
     {
-        public int Enabled;
         public Vector3 CenterWorldPosition;
         public float Radius;
         public Vector4 AuraColor;
         public float AuraTextureAlbedoBoost;
         public float AuraAnimationSpeed;
-
-        public CircleRangeBufferData(int enabled, Vector3 centerWorldPosition, float radius, Vector4 auraColor, float auraTextureAlbedoBoost, float auraAnimationSpeed)
-        {
-            Enabled = enabled;
-            CenterWorldPosition = centerWorldPosition;
-            Radius = radius;
-            AuraColor = auraColor;
-            AuraTextureAlbedoBoost = auraTextureAlbedoBoost;
-            AuraAnimationSpeed = auraAnimationSpeed;
-        }
     }
 }

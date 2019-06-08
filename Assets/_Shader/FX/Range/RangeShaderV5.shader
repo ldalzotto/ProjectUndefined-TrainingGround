@@ -14,7 +14,6 @@
 			ZWrite Off
 			Blend SrcAlpha OneMinusSrcAlpha 
 			CGPROGRAM
-			#pragma shader_feature AURA_ADDITVE AURA_MULTIPLICATIVE
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -34,7 +33,6 @@
 			};
 
 			struct CircleRangeBufferData {
-				int Enabled;
 				float3 CenterWorldPosition;
 				float Radius;
 				float4 AuraColor;
@@ -42,9 +40,17 @@
 				float AuraAnimationSpeed;
 			};
 
-			uniform StructuredBuffer<CircleRangeBufferData> CircleRangeBuffer;
+			struct RangeExecutionOrderBufferData
+			{
+				int IsSphere;
+				int IsCube;
+				int Index;
+			};
+
+			uniform StructuredBuffer<RangeExecutionOrderBufferData> RangeExecutionOrderBuffer;
 			int _CountSize;
 
+			uniform StructuredBuffer<CircleRangeBufferData> CircleRangeBuffer;
 			sampler2D _AuraTexture;
 			float4 _AuraTexture_ST;
 
@@ -64,23 +70,22 @@
 			fixed4 computeCol = fixed4(0,0,0,0);
 
 			for (int index = 0; index < _CountSize; index++) {
-				CircleRangeBufferData rangeBuffer = CircleRangeBuffer[index];
-				float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
-				if (calcDistance <= rangeBuffer.Radius && rangeBuffer.Enabled >= 1) {
-	
-#if AURA_COLOR_ANIMATION
-					rangeBuffer.AuraColor.a = abs(sin(_Time * 100));
-#endif
-					fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance)) ;
+				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[index];
 
-					float aspect = _ScreenParams.x / _ScreenParams.y;
-					float2 screenTextureCoordinate = i.screenPos.xy;
-					screenTextureCoordinate.x *= aspect;
-					screenTextureCoordinate.xy = screenTextureCoordinate.xy / i.screenPos.w;
-					newCol = saturate(newCol + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w)) 
-						* rangeBuffer.AuraTextureAlbedoBoost);
-					computeCol = saturate( (computeCol + newCol)*0.5 );
-					returnCol = computeCol;
+					if (executionOrder.IsSphere == 1) {
+						CircleRangeBufferData rangeBuffer = CircleRangeBuffer[executionOrder.Index];
+						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
+						if (calcDistance <= rangeBuffer.Radius) {
+							fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
+							float aspect = _ScreenParams.x / _ScreenParams.y;
+							float2 screenTextureCoordinate = i.screenPos.xy;
+							screenTextureCoordinate.x *= aspect;
+							screenTextureCoordinate.xy = screenTextureCoordinate.xy / i.screenPos.w;
+							newCol = saturate(newCol + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w))
+								* rangeBuffer.AuraTextureAlbedoBoost);
+							computeCol = saturate((computeCol + newCol)*0.5);
+							returnCol = computeCol;
+					}
 				}
 			}
 
