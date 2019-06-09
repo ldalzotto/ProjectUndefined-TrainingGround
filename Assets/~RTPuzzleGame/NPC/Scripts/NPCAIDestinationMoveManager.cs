@@ -54,9 +54,16 @@ namespace RTPuzzle
                 objectAgent.ResetPath();
                 objectAgent.CalculatePath(worldDestination, path);
                 objectAgent.SetPath(path);
-                NavMeshHit pathHit;
-                objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
-                objectAgent.nextPosition = pathHit.position;
+
+                //If direction change is occuring when current destination has been reached
+                //We manually calculate next position to avoid a frame where AI is standing still
+                if (objectAgent.transform.position == objectAgent.nextPosition)
+                {
+                    Debug.Log(MyLog.Format("NextPosition calculation"));
+                    NavMeshHit pathHit;
+                    objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
+                    objectAgent.nextPosition = pathHit.position;
+                }
                 this.lastSuccessfulWorldDestination = worldDestination;
             }
         }

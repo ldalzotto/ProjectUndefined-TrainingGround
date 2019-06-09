@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using RTPuzzle;
 using System.Collections;
-using UnityEngine.TestTools;
-using RTPuzzle;
+using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.TestTools;
 
 namespace Tests
 {
@@ -21,6 +21,22 @@ namespace Tests
             Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);
         }
 
+        [UnityTest]
+        public IEnumerator OnNewDestination_WhenCurrentDestinationhasNotBeenReached_NewPathIsCalculatedTheSameFrame()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZone);
+            yield return null;
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
+            var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
+            PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 30f, 10f), mouseTestAIManager.transform.position,
+                OnProjectileSpawn: (LaunchProjectile LaunchProjectile) =>
+                {
+                    Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);
+                    return null;
+                },
+                OnDistanceReached: null);
+        }
 
         [UnityTest]
         public IEnumerator OnDestinationReached_NewPathIsCalculatedTheSameFrame_ButPositionIsNotUpdated()
