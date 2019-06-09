@@ -22,7 +22,7 @@ namespace RTPuzzle
             {
                 CircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
-            CircleRangeBufferData.AuraTextureAlbedoBoost = 0.2f;
+            CircleRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
             CircleRangeBufferData.AuraAnimationSpeed = 20f;
             return CircleRangeBufferData;
         }

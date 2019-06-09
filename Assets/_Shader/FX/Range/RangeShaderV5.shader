@@ -102,11 +102,6 @@
 			fixed4 returnCol = fixed4(0,0,0,0);
 			fixed4 computeCol = fixed4(0,0,0,0);
 
-			float2 screenTextureCoordinate = i.screenPos.xy;
-			float aspect = _ScreenParams.x / _ScreenParams.y;
-			screenTextureCoordinate.x *= aspect;
-			screenTextureCoordinate.xy = screenTextureCoordinate.xy / i.screenPos.w;
-
 			for (int index = 0; index < _CountSize; index++) {
 				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[index];
 
@@ -115,8 +110,8 @@
 						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
 						if (calcDistance <= rangeBuffer.Radius) {
 							fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
-							newCol = saturate(newCol + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w))
-								* rangeBuffer.AuraTextureAlbedoBoost);
+							fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost);
 							computeCol = saturate((computeCol + newCol)*0.5);
 							returnCol = computeCol;
 						}
@@ -125,8 +120,8 @@
 						BoxRangeBufferData rangeBuffer = BoxRangeBuffer[executionOrder.Index];
 						if (BoxIntersectsPoint(rangeBuffer, i.worldPos) == 1) {
 							fixed4 newCol = rangeBuffer.AuraColor;
-							newCol = saturate(newCol + tex2D(_AuraTexture, screenTextureCoordinate * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w))
-								* rangeBuffer.AuraTextureAlbedoBoost);
+							fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost);
 							computeCol = saturate((computeCol + newCol)*0.5);
 							returnCol = computeCol;
 						}

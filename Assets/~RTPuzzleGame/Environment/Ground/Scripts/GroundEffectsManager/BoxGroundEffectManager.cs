@@ -25,7 +25,7 @@ namespace RTPuzzle
             {
                 boxRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
-            boxRangeBufferData.AuraTextureAlbedoBoost = 0.2f;
+            boxRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
             boxRangeBufferData.AuraAnimationSpeed = 20f;
 
             return boxRangeBufferData;
