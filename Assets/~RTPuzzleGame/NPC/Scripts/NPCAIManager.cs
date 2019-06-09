@@ -52,6 +52,7 @@ namespace RTPuzzle
         private NpcInteractionRingManager NpcFOVRingManager;
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
+        private LineVisualFeedbackManager LineVisualFeedbackManager;
 
         public void Init()
         {
@@ -80,6 +81,7 @@ namespace RTPuzzle
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
+            LineVisualFeedbackManager = new LineVisualFeedbackManager();
 
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
@@ -97,6 +99,7 @@ namespace RTPuzzle
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
+            LineVisualFeedbackManager.Tick(d, this.transform.position);
         }
 
         internal void EndOfFixedTick()
@@ -240,10 +243,12 @@ namespace RTPuzzle
 
         internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
         {
+            this.LineVisualFeedbackManager.OnAttractiveObjectStart(attractiveObject.AttractiveObjectId);
             this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ATTRACTED_START, this.AiID);
         }
         internal void OnAIAttractedEnd()
         {
+            this.LineVisualFeedbackManager.OnAttractiveObjectEnd();
             this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)

@@ -47,6 +47,11 @@ public class BeziersControlPoints
         return beziersClone;
     }
 
+    public float GetPointsRawDistance()
+    {
+        return Vector3.Distance(this.p0, this.p1) + Vector3.Distance(this.p1, this.p2) + Vector3.Distance(this.p2, this.p3);
+    }
+
     public static BeziersControlPoints Build(Vector3 initialPosition, Vector3 targetPosition, Vector3 normal)
     {
         BeziersControlPoints beziersControlPoints = new BeziersControlPoints();

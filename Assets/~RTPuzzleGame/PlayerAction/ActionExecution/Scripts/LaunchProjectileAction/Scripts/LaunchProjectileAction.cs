@@ -22,6 +22,7 @@ namespace RTPuzzle
         private LauncheProjectileActionExitManager LauncheProjectileActionExitManager;
         private LaunchProjectilePlayerAnimationManager LaunchProjectilePlayerAnimationManager;
         private PlayerOrientationManager PlayerOrientationManager;
+        private LaunchProjectilePathAnimationManager LaunchProjectilePathAnimationManager;
 
         private SphereRangeType projectileSphereRange;
 
@@ -64,12 +65,15 @@ namespace RTPuzzle
                playerTransformScreen, gameInputManager, canvas);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData);
+            LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), projectileInherentData);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
 
+            LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
         }
+        
 
         public override void Tick(float d)
         {
@@ -81,6 +85,7 @@ namespace RTPuzzle
                 if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
                 {
                     ThrowProjectileManager.Tick(d, ref LaunchProjectileRayPositionerManager);
+                    LaunchProjectilePathAnimationManager.Tick(d);
                 }
 
                 //If exit not called
@@ -99,10 +104,12 @@ namespace RTPuzzle
         #region External Events
         public void OnThrowProjectileCursorOnProjectileRange()
         {
+            LaunchProjectilePathAnimationManager.OnThrowProjectileCursorOnProjectileRange();
             LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOnProjectileRange();
         }
         public void OnThrowProjectileCursorOutOfProjectileRange()
         {
+            LaunchProjectilePathAnimationManager.OnThrowProjectileCursorOutOfProjectileRange();
             LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
         #endregion
@@ -115,6 +122,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
             LaunchProjectilePlayerAnimationManager.OnExit();
+            LaunchProjectilePathAnimationManager.OnExit();
             isActionFinished = true;
         }
 
@@ -240,7 +248,6 @@ namespace RTPuzzle
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.PuzzleStaticConfigurationContainer = PuzzleStaticConfigurationContainer;
             this.projectileInherentData = projectileInherentData;
-            Tick(0f, cursorScreenPositionAtInit);
         }
 
         public void Tick(float d, Vector2 currentScreenPositionPoint)
@@ -455,6 +462,48 @@ namespace RTPuzzle
             */
         }
     }
+   
+    class LaunchProjectilePathAnimationManager
+    {
+        private PlayerManagerDataRetriever PlayerManagerDataRetriever;
+        private LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager;
+        private DottedLine ProjectilePath;
+
+        public LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, LaunchProjectileRayPositionerManager launchProjectileRayPositionerManager)
+        {
+            PlayerManagerDataRetriever = playerManagerDataRetriever;
+            LaunchProjectileRayPositionerManager = launchProjectileRayPositionerManager;
+
+            this.ProjectilePath = DottedLine.CreateInstance();
+        }
+
+        public void Tick(float d)
+        {
+            if (this.ProjectilePath != null)
+            {
+                this.ProjectilePath.Tick(d, this.PlayerManagerDataRetriever.GetPlayerCollider().bounds.center, this.LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
+            }
+        }
+
+
+        public void OnThrowProjectileCursorOnProjectileRange()
+        {
+            if (this.ProjectilePath == null)
+            {
+                this.ProjectilePath = DottedLine.CreateInstance();
+            }
+        }
+
+        public void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            this.ProjectilePath.DestroyInstance();
+        }
+
+        public void OnExit()
+        {
+            this.ProjectilePath.DestroyInstance();
+        }
+    }
     #endregion
 
     #region Player orientation manager
@@ -475,5 +524,7 @@ namespace RTPuzzle
         }
     }
     #endregion
+
+
 }
 

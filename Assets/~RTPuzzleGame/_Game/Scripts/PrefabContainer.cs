@@ -33,6 +33,9 @@ namespace RTPuzzle
         [Header("Visual Feedback")]
         public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;
 
+        public DottedLine ProjectileDottedLineBasePrefab;
+        public DottedLine AttractiveObjectDottedLineBasePrefab;
+
         public static PrefabContainer Instance
         {
             get

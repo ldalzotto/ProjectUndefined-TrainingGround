@@ -28,6 +28,7 @@ namespace RTPuzzle
         private AbstractLevelTransitionManager LevelTransitionManager;
         private GameOverManager GameOverManager;
         private ObjectRepelContainerManager ObjectRepelContainerManager;
+        private DottedLineRendererManager DottedLineRendererManager;
 
         private void Awake()
         {
@@ -63,6 +64,7 @@ namespace RTPuzzle
             LevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
             ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
+            DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -99,6 +101,7 @@ namespace RTPuzzle
             ObjectRepelContainerManager.Init();
             AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
+            DottedLineRendererManager.Init();
         }
 
         private void Update()
@@ -134,6 +137,7 @@ namespace RTPuzzle
                 GroundEffectsManagerV2.Tick(d);
                 InRangeEffectManager.Tick(d);
                 NpcInteractionRingRendererManager.Tick(d);
+                DottedLineRendererManager.Tick();
             }
         }
 

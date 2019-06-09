@@ -169,6 +169,7 @@
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
+    <None Include="Assets\Test\DottedLineTest\Shader\DottedLineShader.shader" />
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryStandard.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />

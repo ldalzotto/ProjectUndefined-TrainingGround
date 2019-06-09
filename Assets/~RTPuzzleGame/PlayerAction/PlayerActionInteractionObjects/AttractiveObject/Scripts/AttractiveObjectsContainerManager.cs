@@ -57,28 +57,35 @@ namespace RTPuzzle
             MonoBehaviour.Destroy(attractiveObjectToDestroy.gameObject);
         }
         #endregion
+
+        #region Data Retrieval
+        public AttractiveObjectType GetAttractiveObjectType(AttractiveObjectId attractiveObjectTypeID)
+        {
+            return this.AttractiveObjectsContainer.GetAttractiveObjectType(attractiveObjectTypeID);
+        }
+        #endregion
     }
 
     class AttractiveObjectsContainer
     {
-        private List<AttractiveObjectType> attractiveObjects;
+        private Dictionary<AttractiveObjectId, AttractiveObjectType> attractiveObjects;
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
 
         public AttractiveObjectsContainer(AttractiveObjectsContainerManager AttractiveObjectsContainerManager)
         {
             this.AttractiveObjectsContainerManager = AttractiveObjectsContainerManager;
-            this.attractiveObjects = new List<AttractiveObjectType>();
+            this.attractiveObjects = new Dictionary<AttractiveObjectId, AttractiveObjectType>();
         }
 
         public void AddAttractiveObject(AttractiveObjectType attractiveObject)
         {
-            this.attractiveObjects.Add(attractiveObject);
+            this.attractiveObjects.Add(attractiveObject.AttractiveObjectId, attractiveObject);
         }
 
         public void Tick(float d, float timeAttenuationFactor)
         {
             List<AttractiveObjectType> attractiveObjectsToDestroy = null;
-            foreach (var attractiveObject in attractiveObjects)
+            foreach (var attractiveObject in attractiveObjects.Values)
             {
                 if (attractiveObject.Tick(d, timeAttenuationFactor))
                 {
@@ -100,7 +107,16 @@ namespace RTPuzzle
 
         public void OnAttractiveObjectDestroy(AttractiveObjectType attractiveObjectToDestroy)
         {
-            attractiveObjects.Remove(attractiveObjectToDestroy);
+            attractiveObjects.Remove(attractiveObjectToDestroy.AttractiveObjectId);
+        }
+
+        public AttractiveObjectType GetAttractiveObjectType(AttractiveObjectId attractiveObjectTypeID)
+        {
+            if (this.attractiveObjects.ContainsKey(attractiveObjectTypeID))
+            {
+                return this.attractiveObjects[attractiveObjectTypeID];
+            }
+            return null;
         }
     }
 }
