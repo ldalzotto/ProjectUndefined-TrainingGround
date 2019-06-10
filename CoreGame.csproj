@@ -111,6 +111,7 @@
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForParticlesToNotEmit.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\BoundsHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />

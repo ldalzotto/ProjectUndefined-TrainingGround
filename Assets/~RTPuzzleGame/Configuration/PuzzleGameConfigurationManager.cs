@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -50,6 +49,12 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.RangeTypeConfiguration.ConfigurationInherentData;
         }
+
+        public Dictionary<DottedLineID, DottedLineInherentData> DottedLineConfiguration()
+        {
+            return PuzzleGameConfiguration.DottedLineConfiguration.ConfigurationInherentData;
+        }
+
     }
 
 

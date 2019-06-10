@@ -20,21 +20,6 @@ namespace RTPuzzle
             window.Show();
         }
 
-        /*
-        public static bool OpenToDesiredConfiguration(Type configurationDataType)
-        {
-            Init();
-            var window = EditorWindow.GetWindow<PuzzleGameConfigurationEditorV2>();
-            window.GetConfigurationProfile().Init(() => { window.Repaint(); });
-            if (!window.GetConfigurationProfile().SetSelectedKey(configurationDataType))
-            {
-                window.Close();
-                return false;
-            }
-            return true;
-        }
-        */
-
     }
 
 }

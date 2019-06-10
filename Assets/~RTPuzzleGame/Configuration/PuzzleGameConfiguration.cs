@@ -16,5 +16,6 @@ namespace RTPuzzle
         public PlayerActionConfiguration PlayerActionConfiguration;
         public ContextMarkVisualFeedbackConfiguration ContextMarkVisualFeedbackConfiguration;
         public RangeTypeConfiguration RangeTypeConfiguration;
+        public DottedLineConfiguration DottedLineConfiguration;
     }
 }

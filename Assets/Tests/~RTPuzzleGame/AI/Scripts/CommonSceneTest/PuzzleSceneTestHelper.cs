@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using CoreGame;
+using RTPuzzle;
 using System;
 using System.Collections;
 using System.Linq;
@@ -15,15 +16,15 @@ namespace Tests
             return SpawnProjectile(projectileInherentData, projectilePosition, launchProjectileContainerManager);
         }
 
-        public static LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, Vector3 projectilePoistion, LaunchProjectileContainerManager launchProjectileContainerManager)
+        public static LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, Vector3 projectilePosition, LaunchProjectileContainerManager launchProjectileContainerManager)
         {
             var projectileBezierPath = new BeziersControlPoints();
-            projectileBezierPath.P0 = projectilePoistion;
-            projectileBezierPath.P1 = projectilePoistion;
-            projectileBezierPath.P2 = projectilePoistion;
-            projectileBezierPath.P3 = projectilePoistion;
+            projectileBezierPath.P0 = projectilePosition;
+            projectileBezierPath.P1 = projectilePosition;
+            projectileBezierPath.P2 = projectilePosition;
+            projectileBezierPath.P3 = projectilePosition;
             var launchProjectile = LaunchProjectile.Instantiate(projectileInherentData, projectileBezierPath, launchProjectileContainerManager.transform);
-            launchProjectile.transform.position = projectilePoistion;
+            launchProjectile.transform.position = projectilePosition;
             return launchProjectile;
         }
 

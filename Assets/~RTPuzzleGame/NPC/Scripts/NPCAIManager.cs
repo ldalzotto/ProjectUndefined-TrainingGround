@@ -81,7 +81,7 @@ namespace RTPuzzle
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
-            LineVisualFeedbackManager = new LineVisualFeedbackManager();
+            LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
 
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
@@ -294,6 +294,10 @@ namespace RTPuzzle
         public Collider GetCollider()
         {
             return this.objectCollider;
+        }
+        public Bounds GetAverageRendererBoundsLocalSpace()
+        {
+            return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
         }
         #endregion
     }

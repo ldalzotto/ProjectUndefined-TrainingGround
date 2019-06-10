@@ -22,7 +22,8 @@ public class PuzzleGameConfigurationEditorProfileV2 : TreeChoiceHeaderTab<IGener
             {typeof(AIComponentsConfiguration).Name, new GenericConfigurationEditor<AiID, AIBehaviorInherentData>("t:" + typeof(AIComponentsConfiguration).Name) },
             {typeof(PlayerActionConfiguration).Name, new GenericConfigurationEditor<PlayerActionId, PlayerActionInherentData>("t:" + typeof(PlayerActionConfiguration).Name) },
             {typeof(ContextMarkVisualFeedbackConfiguration).Name, new GenericConfigurationEditor<AiID, ContextMarkVisualFeedbackInherentData>("t:" + typeof(ContextMarkVisualFeedbackConfiguration).Name) },
-            {typeof(RangeTypeConfiguration).Name, new GenericConfigurationEditor<RangeTypeID, RangeTypeInherentConfigurationData>("t:" + typeof(RangeTypeConfiguration).Name) },
+            {"FX//" + typeof(RangeTypeConfiguration).Name, new GenericConfigurationEditor<RangeTypeID, RangeTypeInherentConfigurationData>("t:" + typeof(RangeTypeConfiguration).Name) },
+            {"FX//" + typeof(DottedLineConfiguration).Name, new GenericConfigurationEditor<DottedLineID, DottedLineInherentData>("t:" + typeof(DottedLineConfiguration).Name) },
     };
 
     [SerializeField]

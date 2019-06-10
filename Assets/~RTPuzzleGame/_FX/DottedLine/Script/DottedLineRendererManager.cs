@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -59,7 +60,7 @@ namespace RTPuzzle
         public void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
         {
             this.dottedLines[DottedLine.GetInstanceID()] = DottedLine;
-            this.DottedLineManagerThreadObject.OnComputeBeziersInnerPointEvent(DottedLine.BuilComputeBeziersInnerPointEvent());
+            this.DottedLineManagerThreadObject.OnComputeBeziersInnerPointEvent(DottedLine.BuildComputeBeziersInnerPointEvent());
         }
         public void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
         {
@@ -127,11 +128,11 @@ namespace RTPuzzle
         public Vector3 MeshScale;
         public float PointNumberPerUnitDistance;
 
-        public ComputeBeziersInnerPointEvent(int iD, BeziersControlPoints beziersControlPoints, Vector3 meshScale, float pointNumberPerUnitDistance)
+        public ComputeBeziersInnerPointEvent(int iD, BeziersControlPoints beziersControlPoints, float meshScale, float pointNumberPerUnitDistance)
         {
             ID = iD;
             BeziersControlPoints = beziersControlPoints;
-            MeshScale = meshScale;
+            MeshScale = new Vector3(meshScale, meshScale, meshScale);
             PointNumberPerUnitDistance = pointNumberPerUnitDistance;
         }
     }

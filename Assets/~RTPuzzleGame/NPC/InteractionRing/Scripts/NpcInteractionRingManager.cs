@@ -98,25 +98,7 @@ namespace RTPuzzle
 
         private void ComputePositionOffset(NPCAIManager npcAiManagerRef)
         {
-            float maxYOffset = 0f;
-
-            var renderers = npcAiManagerRef.GetRenderers();
-            for (var i = 0; i < renderers.Length; i++)
-            {
-                if (i == 0)
-                {
-                    maxYOffset = renderers[0].bounds.max.y;
-                }
-                else
-                {
-                    var currentY = renderers[i].bounds.max.y;
-                    if (currentY > maxYOffset)
-                    {
-                        maxYOffset = currentY;
-                    }
-                }
-            }
-            ringPositionOffset = new Vector3(0, maxYOffset, 0);
+            ringPositionOffset = new Vector3(0, npcAiManagerRef.GetAverageRendererBoundsLocalSpace().max.y, 0);
         }
     }
 }

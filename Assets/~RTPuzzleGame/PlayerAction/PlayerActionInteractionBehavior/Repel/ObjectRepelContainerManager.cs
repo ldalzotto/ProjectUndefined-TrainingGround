@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -16,7 +17,7 @@ namespace RTPuzzle
         #region External Events
         public void OnObjectRepelRepelled(ObjectRepelType objectRepelType, Vector3 targetWorldPosition)
         {
-            objectRepelType.OnObjectRepelRepelled(BeziersControlPoints.Build(objectRepelType.transform.position, targetWorldPosition, objectRepelType.transform.up));
+            objectRepelType.OnObjectRepelRepelled(BeziersControlPoints.Build(objectRepelType.transform.position, targetWorldPosition, objectRepelType.transform.up, BeziersControlPointsShape.CURVED));
         }
         #endregion
 

@@ -63,8 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\~RTPuzzleGame\_Collision\Scripts\CollisionTypeHelper.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\DottedLine.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\DottedLineRendererManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\LineTypes\DottedLine.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PrefabContainer.cs" />
@@ -108,6 +108,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\ConditionGraphEditorProfile.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Edges\AITargetConditionEdge.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Edges\BoolNodeEdge.cs" />

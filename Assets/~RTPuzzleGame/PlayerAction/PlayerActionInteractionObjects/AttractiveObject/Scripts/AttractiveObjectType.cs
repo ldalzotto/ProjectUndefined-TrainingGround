@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using CoreGame;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -39,6 +40,9 @@ namespace RTPuzzle
         #region Internal Dependencies
         private SphereRangeType sphereRange;
         #endregion
+        #region Properties
+        private Bounds AverageModeBounds;
+        #endregion
 
         public AttractiveObjectId AttractiveObjectId;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
@@ -51,8 +55,10 @@ namespace RTPuzzle
 
             this.sphereRange = GetComponentInChildren<SphereRangeType>();
             this.sphereRange.Init(attractiveObjectInherentConfigurationData.EffectRange);
-            
+
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
+
+            this.AverageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
 
             attractiveObjectContainerManager.OnAttracteObjectCreated(this);
         }
@@ -63,7 +69,7 @@ namespace RTPuzzle
             return this.AttractiveObjectLifetimeTimer.IsTimeOver();
         }
 
-        #region 
+        #region Logical Conditions
         public bool IsInRangeOf(Vector3 compareWorldPosition)
         {
             return this.sphereRange.IsInside(compareWorldPosition);
@@ -81,6 +87,12 @@ namespace RTPuzzle
 #endif
         }
 
+        #region Data Retrieval
+        public Bounds GetAverageModelBound()
+        {
+            return this.AverageModeBounds;
+        }
+        #endregion
     }
 
     class AttractiveObjectLifetimeTimer

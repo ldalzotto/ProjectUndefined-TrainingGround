@@ -65,7 +65,7 @@ namespace RTPuzzle
                playerTransformScreen, gameInputManager, canvas);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData);
-            LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager);
+            LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), projectileInherentData);
@@ -137,7 +137,7 @@ namespace RTPuzzle
                         //LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition()
                         ResetCoolDown();
                         var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerCollider().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
-                                             this.PlayerManagerDataRetriever.GetPlayerCollider().transform.up);
+                                             this.PlayerManagerDataRetriever.GetPlayerCollider().transform.up, BeziersControlPointsShape.CURVED);
                         ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
                     }
                    );
@@ -465,16 +465,24 @@ namespace RTPuzzle
    
     class LaunchProjectilePathAnimationManager
     {
+        #region External Dependencies
         private PlayerManagerDataRetriever PlayerManagerDataRetriever;
         private LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        #endregion
+
         private DottedLine ProjectilePath;
 
-        public LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, LaunchProjectileRayPositionerManager launchProjectileRayPositionerManager)
+        public LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, LaunchProjectileRayPositionerManager launchProjectileRayPositionerManager,
+                            PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
+            #region External Dependencies
             PlayerManagerDataRetriever = playerManagerDataRetriever;
             LaunchProjectileRayPositionerManager = launchProjectileRayPositionerManager;
+            PuzzleGameConfigurationManager = puzzleGameConfigurationManager;
+            #endregion
 
-            this.ProjectilePath = DottedLine.CreateInstance();
+            this.ProjectilePath = DottedLine.CreateInstance(DottedLineID.PROJECTILE_POSITIONING, PuzzleGameConfigurationManager);
         }
 
         public void Tick(float d)
@@ -490,7 +498,7 @@ namespace RTPuzzle
         {
             if (this.ProjectilePath == null)
             {
-                this.ProjectilePath = DottedLine.CreateInstance();
+                this.ProjectilePath = DottedLine.CreateInstance(DottedLineID.PROJECTILE_POSITIONING, PuzzleGameConfigurationManager);
             }
         }
 

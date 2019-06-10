@@ -1,19 +1,28 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RTPuzzle
 {
-    public class LineVisualFeedbackManager 
+    public class LineVisualFeedbackManager
     {
+        public const float LineYPositionBoundsFactor = 0.8f;
+
         #region External Dependencies
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
-        public LineVisualFeedbackManager()
+        public LineVisualFeedbackManager(NPCAIManager nPCAIManagerRef)
         {
             this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
+            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+
+            //position calculation
+            var renderedBoundsOffset = nPCAIManagerRef.GetAverageRendererBoundsLocalSpace();
+            this.positionOffsetFromNPC = new Vector3(0, renderedBoundsOffset.max.y * LineYPositionBoundsFactor, 0);
         }
 
+        private Vector3 positionOffsetFromNPC;
+        private Vector3 targetWorldPositionOffset;
         private DottedLine AttractiveObjectDottedLine;
         private AttractiveObjectId AttractiveObjectId;
 
@@ -22,18 +31,21 @@ namespace RTPuzzle
         {
             if (this.AttractiveObjectDottedLine != null)
             {
-                this.AttractiveObjectDottedLine.Tick(d, npcAIBoundsCenterWorldPosition, this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId).transform.position);
+                var attractiveObject = this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId);
+                this.AttractiveObjectDottedLine.Tick(d, npcAIBoundsCenterWorldPosition + this.positionOffsetFromNPC, attractiveObject.transform.position + this.targetWorldPositionOffset);
             }
         }
 
         #region External Events
         public void OnAttractiveObjectStart(AttractiveObjectId attractiveObjectId)
         {
-            if(this.AttractiveObjectDottedLine == null)
+            if (this.AttractiveObjectDottedLine == null)
             {
-                this.AttractiveObjectDottedLine = DottedLine.CreateInstance();
+                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID.ATTRACTIVE_OBJECT, this.PuzzleGameConfigurationManager);
             }
             this.AttractiveObjectId = attractiveObjectId;
+            var attractiveObject = this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId);
+            this.targetWorldPositionOffset = new Vector3(0, attractiveObject.GetAverageModelBound().max.y * LineYPositionBoundsFactor, 0);
         }
         public void OnAttractiveObjectEnd()
         {

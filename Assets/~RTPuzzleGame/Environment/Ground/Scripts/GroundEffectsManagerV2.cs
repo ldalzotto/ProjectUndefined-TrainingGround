@@ -20,11 +20,11 @@ namespace RTPuzzle
         private Dictionary<RangeTypeID, IAbstractGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, IAbstractGroundEffectManager>();
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
-            RangeTypeID.TARGET_ZONE,
             RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
             RangeTypeID.ATTRACTIVE_OBJECT,
             RangeTypeID.LAUNCH_PROJECTILE,
-            RangeTypeID.LAUNCH_PROJECTILE_CURSOR
+            RangeTypeID.LAUNCH_PROJECTILE_CURSOR,
+            RangeTypeID.TARGET_ZONE
         };
 
         private List<CircleRangeBufferData> CircleRangeBufferValues = new List<CircleRangeBufferData>();
