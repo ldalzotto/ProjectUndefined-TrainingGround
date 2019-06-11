@@ -79,17 +79,22 @@ namespace RTPuzzle
                     this.RePositionLine(worldSpaceStartPoint, worldSpaceEndPoint, Vector3.up);
                 }
             }
-
-            this.LastFrameWorldSpaceStartPoint = worldSpaceStartPoint;
-            this.LastFrameWorldSpaceEndPoint = worldSpaceEndPoint;
-
+            
             this.currentPosition += d;
             if (this.currentPosition > 1)
             {
                 this.currentPosition = 1 - this.currentPosition;
             }
 
-            this.MeshRenderer.material.SetVector("_ColorPointPosition", this.transform.TransformPoint(this.BeziersControlPoints.ResolvePoint(this.currentPosition)));
+            //The beziers control points can be null because DottedLine can be instanciated and immediately clear line. Thus, this.RePositionLine is not called,
+            //thus, beziers calculation is not triggered.
+            if (this.BeziersControlPoints != null)
+            {
+                this.MeshRenderer.material.SetVector("_ColorPointPosition", this.transform.TransformPoint(this.BeziersControlPoints.ResolvePoint(this.currentPosition)));
+            }
+
+            this.LastFrameWorldSpaceStartPoint = worldSpaceStartPoint;
+            this.LastFrameWorldSpaceEndPoint = worldSpaceEndPoint;
         }
 
         public ComputeBeziersInnerPointEvent BuildComputeBeziersInnerPointEvent()

@@ -72,12 +72,14 @@ namespace RTPuzzle
             {
                 escapeDestinationCalculationMethod.Invoke(NavMeshRaycastStrategy.RANDOM);
 
-                //if the calculated destination is the same as AI position
-                if ( Vector3.Distance(this.escapingAgent.transform.position, this.EscapeDestination.Value) <= DESTINATION_CALCUALTION_ROUNDING_DISTANCE)
+                //if destination calculation failed or the calculated destination is the same as AI position
+                if (!this.EscapeDestination.HasValue ||
+                            Vector3.Distance(this.escapingAgent.transform.position, this.EscapeDestination.Value) <= DESTINATION_CALCUALTION_ROUNDING_DISTANCE)
                 {
                     //we try the end navmesh calculation strategy
                     escapeDestinationCalculationMethod.Invoke(NavMeshRaycastStrategy.END_ANGLES);
-                    if (Vector3.Distance(this.escapingAgent.transform.position, this.EscapeDestination.Value) <= DESTINATION_CALCUALTION_ROUNDING_DISTANCE)
+                    if (!this.EscapeDestination.HasValue ||
+                            Vector3.Distance(this.escapingAgent.transform.position, this.EscapeDestination.Value) <= DESTINATION_CALCUALTION_ROUNDING_DISTANCE)
                     {
                         if (ifAllFailsAction != null)
                         {

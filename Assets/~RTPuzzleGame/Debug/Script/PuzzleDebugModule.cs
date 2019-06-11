@@ -10,6 +10,8 @@ namespace RTPuzzle
         public bool TriggerGameOverEvent;
         public bool TriggerLevelSuccessEvent;
 
+        public bool InfiniteTime;
+
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
@@ -19,6 +21,10 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             if (InstantProjectileHit)
             {
+            }
+            if (InfiniteTime)
+            {
+                GameObject.FindObjectOfType<TimeFlowManager>().CHEAT_SetInfiniteTime();
             }
         }
 

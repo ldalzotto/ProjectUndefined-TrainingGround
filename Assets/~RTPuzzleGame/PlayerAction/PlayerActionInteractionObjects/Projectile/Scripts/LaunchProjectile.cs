@@ -152,7 +152,7 @@ namespace RTPuzzle
             {
                 if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
-                    float remainingDistance = 10;
+                    float remainingDistance = 13;
                     var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - projectileTargetPosition), repelAbleObject.transform.up).normalized;
                     NavMeshHit navmeshHit;
                     if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))

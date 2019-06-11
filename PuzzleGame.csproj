@@ -115,7 +115,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\ConditionGraphEditorProfile.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Edges\AITargetConditionEdge.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Edges\BoolNodeEdge.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Input\LevelCompletionConditionResolutionInput.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Nodes\Abstract\ALogicExecutionNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Nodes\AITargetConditionNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionCondition\LevelCompletionGraphV2\Nodes\AndNode.cs" />

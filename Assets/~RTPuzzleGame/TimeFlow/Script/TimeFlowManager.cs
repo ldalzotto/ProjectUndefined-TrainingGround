@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -49,6 +50,15 @@ namespace RTPuzzle
         {
             return TimeFlowInputManager.GetTimeAttenuation();
         }
+
+#if UNITY_EDITOR
+        #region Debug CHEAT
+        public void CHEAT_SetInfiniteTime()
+        {
+            this.TimeFlowValueTracker.CHEAT_SetInfiniteTime();
+        }
+        #endregion
+#endif
 
     }
 
@@ -120,6 +130,13 @@ namespace RTPuzzle
         {
             return currentAvailableTime <= 0f;
         }
+
+#if UNITY_EDITOR
+        internal void CHEAT_SetInfiniteTime()
+        {
+            this.currentAvailableTime = 99999999f;
+        }
+#endif
     }
 
 }

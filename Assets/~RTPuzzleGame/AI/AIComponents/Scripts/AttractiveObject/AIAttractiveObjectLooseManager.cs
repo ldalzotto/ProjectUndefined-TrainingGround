@@ -22,7 +22,8 @@ namespace RTPuzzle
 
         public override void OnTriggerExit(AttractiveObjectType attractiveObjectType)
         {
-            if (attractiveObjectType.AttractiveObjectId == this.involvedAttractiveObject.AttractiveObjectId)
+            if (this.involvedAttractiveObject != null && 
+                attractiveObjectType.AttractiveObjectId == this.involvedAttractiveObject.AttractiveObjectId)
             {
                 this.OnStateReset();
             }
