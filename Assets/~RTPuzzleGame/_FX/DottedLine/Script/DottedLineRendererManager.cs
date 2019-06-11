@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -86,11 +87,14 @@ namespace RTPuzzle
             this.sampler = CustomSampler.Create("DottedLineManagerThreadTick");
         }
 
-        private Queue<ComputeBeziersInnerPointEvent> computeBeziersInnerPointEvents = new Queue<ComputeBeziersInnerPointEvent>();
+        private Dictionary<int, ComputeBeziersInnerPointEvent> computeBeziersInnerPointEvents = new Dictionary<int, ComputeBeziersInnerPointEvent>();
 
         public void OnComputeBeziersInnerPointEvent(ComputeBeziersInnerPointEvent ComputeBeziersInnerPointEvent)
         {
-            this.computeBeziersInnerPointEvents.Enqueue(ComputeBeziersInnerPointEvent);
+            lock (this.computeBeziersInnerPointEvents)
+            {
+                this.computeBeziersInnerPointEvents[ComputeBeziersInnerPointEvent.ID] = ComputeBeziersInnerPointEvent;
+            }
         }
 
         public void Main()
@@ -109,7 +113,16 @@ namespace RTPuzzle
 
         private void ComputeEvent()
         {
-            var ComputeBeziersInnerPointEvent = this.computeBeziersInnerPointEvents.Dequeue();
+            ComputeBeziersInnerPointEvent ComputeBeziersInnerPointEvent = null;
+            lock (this.computeBeziersInnerPointEvents)
+            {
+                var e = this.computeBeziersInnerPointEvents.Keys.GetEnumerator();
+                e.MoveNext();
+                var key = e.Current;
+                ComputeBeziersInnerPointEvent = this.computeBeziersInnerPointEvents[key];
+                this.computeBeziersInnerPointEvents.Remove(key);
+            }
+
             var ComputeBeziersInnerPointEventResponse = new ComputeBeziersInnerPointResponse();
             ComputeBeziersInnerPointEventResponse.ID = ComputeBeziersInnerPointEvent.ID;
             ComputeBeziersInnerPointEventResponse.Transforms = new List<Matrix4x4>();
