@@ -134,7 +134,11 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
-            Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
+            if(!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
+            {
+                Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
+                genericAiBehavior.AIAttractiveObjectManager().OnTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
+            }
         }
 
         private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
@@ -299,7 +303,18 @@ namespace RTPuzzle
         public AttractiveObjectType AttractiveObjectType { get => attractiveObjectType; }
     }
 
-    public class AttractiveObjectTriggerExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent { }
+    public class AttractiveObjectTriggerExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+
+        private AttractiveObjectType attractiveObjectType;
+
+        public AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectType attractiveObjectType)
+        {
+            this.attractiveObjectType = attractiveObjectType;
+        }
+
+        public AttractiveObjectType AttractiveObjectType { get => attractiveObjectType; }
+    }
 
     public class AttractiveObectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {

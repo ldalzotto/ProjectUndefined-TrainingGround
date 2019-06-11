@@ -155,7 +155,7 @@ namespace RTPuzzle
                     float remainingDistance = 10;
                     var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - projectileTargetPosition), repelAbleObject.transform.up).normalized;
                     NavMeshHit navmeshHit;
-                    if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, remainingDistance, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
                     {
                         this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
                     }

@@ -34,7 +34,7 @@ namespace RTPuzzle
 
             if (aiBehaviorInherentData.BehaviorType != null)
             {
-                GUILayout.Label(new GUIContent(this.GetAIBehavrioDescription(aiBehaviorInherentData.BehaviorType)), EditorStyles.miniLabel);
+                GUILayout.Label(new GUIContent(this.GetAIBehaviorDescription(aiBehaviorInherentData.BehaviorType)), EditorStyles.miniLabel);
             }
 
             if (aiBehaviorInherentData.AIComponents != null)
@@ -55,7 +55,7 @@ namespace RTPuzzle
             }
         }
 
-        private string GetAIBehavrioDescription(Type aiComponentsType)
+        private string GetAIBehaviorDescription(Type aiComponentsType)
         {
             string aiComponentsDescription = string.Empty;
             AIBehaviorTypeSafeOperation.ForAllAIBehaviorType(aiComponentsType, () => { aiComponentsDescription = "The generic puzzle ai behavior."; return null; });

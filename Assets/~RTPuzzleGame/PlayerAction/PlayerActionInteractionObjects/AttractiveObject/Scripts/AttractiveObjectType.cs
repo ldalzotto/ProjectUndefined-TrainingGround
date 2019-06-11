@@ -40,6 +40,7 @@ namespace RTPuzzle
         #region Internal Dependencies
         private SphereRangeType sphereRange;
         #endregion
+
         #region Properties
         private Bounds AverageModeBounds;
         #endregion

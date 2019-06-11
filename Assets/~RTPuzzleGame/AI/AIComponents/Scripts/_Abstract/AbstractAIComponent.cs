@@ -30,7 +30,8 @@ namespace RTPuzzle
                  Func<AIProjectileWithCollisionEscapeManager> AIProjectileEscapeWithCollisionManagerOperation,
                  Func<AIEscapeWithoutTriggerManager> AIEscapeWithoutTriggerManagerOperation,
                  Func<AIFearStunManager> AIFearStunManagerOperation,
-                 Func<AIAttractiveObjectManager> AIAttractiveObjectOperation,
+                 Func<AIAttractiveObjectPersistantManager> AIAttractiveObjectPersistantOperation,
+                 Func<AIAttractiveObjectLooseManager> AIAttractiveObjectLooseOperation,
                  Func<AITargetZoneManager> AITargetZoneManagerOperation,
                  Func<AIPlayerEscapeManager> AIPlayerEscapeManagerOperation)
         {
@@ -42,8 +43,10 @@ namespace RTPuzzle
             if (AIEscapeWithoutTriggerManager != null) { return AIEscapeWithoutTriggerManager; }
             var AIFearStunManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
             if (AIFearStunManager != null) { return AIFearStunManager; }
-            var AIAttractiveObjectManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectManager), AIAttractiveObjectOperation);
-            if (AIAttractiveObjectManager != null) { return AIAttractiveObjectManager; }
+            var AIAttractiveObjectPersistantManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectPersistantManager), AIAttractiveObjectPersistantOperation);
+            if (AIAttractiveObjectPersistantManager != null) { return AIAttractiveObjectPersistantManager; }
+            var AIAttractiveObjectLooseOperationManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectLooseManager), AIAttractiveObjectLooseOperation);
+            if (AIAttractiveObjectLooseOperationManager != null) { return AIAttractiveObjectLooseOperationManager; }
             var AITargetZoneManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);
             if (AITargetZoneManager != null) { return AITargetZoneManager; }
             var AIPlayerEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIPlayerEscapeManager), AIPlayerEscapeManagerOperation);
