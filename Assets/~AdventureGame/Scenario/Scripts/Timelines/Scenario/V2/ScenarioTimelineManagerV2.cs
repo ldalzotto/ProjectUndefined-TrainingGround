@@ -25,7 +25,8 @@ namespace AdventureGame
         Dumpster_POI = 5,
         Bouncer_POI = 6,
         Sewer_To_SewerRTP_1 = 9,
-        Sewer_To_SewerRTP_2 = 10
+        Sewer_To_SewerRTP_2_Disabling = 10,
+        SewerRTP2_Success = 11
     }
 
 }

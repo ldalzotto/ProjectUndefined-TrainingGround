@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AdventureGame
@@ -45,34 +46,30 @@ namespace AdventureGame
     public class PointOfInterestModelState
     {
         [SerializeField]
-        private bool isDestroyed;
-
-        [SerializeField]
-        private Dictionary<string, bool> MeshRendererStates = new Dictionary<string, bool>();
-
-        public bool IsDestroyed { get => isDestroyed; set => isDestroyed = value; }
-
-        public PointOfInterestModelState(Renderer[] renderers)
-        {
-            SynchGhostPOIRenderers(renderers);
-        }
-
-        public void SyncScenePOIRenderers(Renderer[] scenePOIRenderers)
+        private bool isDisabled;
+        
+        public bool IsDisabled { get => isDisabled; set => isDisabled = value; }
+        
+        public void SyncPointOfInterestModelState(Renderer[] scenePOIRenderers)
         {
             for (var i = 0; i < scenePOIRenderers.Length; i++)
             {
-                scenePOIRenderers[i].enabled = MeshRendererStates[scenePOIRenderers[i].name];
+                scenePOIRenderers[i].enabled = !this.isDisabled;
             }
         }
 
-        public void SynchGhostPOIRenderers(Renderer[] scenePOIRenderers)
+        #region External Events
+        public void OnPOIDisabled()
         {
-            MeshRendererStates = new Dictionary<string, bool>();
-            for (var i = 0; i < scenePOIRenderers.Length; i++)
-            {
-                MeshRendererStates[scenePOIRenderers[i].name] = scenePOIRenderers[i].enabled;
-            }
+            this.IsDisabled = true;
         }
+
+        internal void OnPOIEnabled()
+        {
+            this.isDisabled = false;
+        }
+        #endregion
+        
     }
     #endregion
 }

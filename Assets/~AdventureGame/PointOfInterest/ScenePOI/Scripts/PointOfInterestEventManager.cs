@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,34 +35,36 @@ namespace AdventureGame
 
         public void OnPOICreated(PointOfInterestType POICreated)
         {
-            GhostsPOIManager.OnScenePOICreated(POICreated);
+            GhostsPOIManager.OnPOICreated(POICreated);
             PointOfInterestManager.OnPOICreated(POICreated);
         }
 
-        public void DestroyPOI(PointOfInterestType POITobeDestroyed)
+        public void DisablePOI(PointOfInterestType POITobeDisabled)
         {
-            if (!LevelTransitionManager.IsNewZoneLoading())
+            if (POITobeDisabled != null)
             {
-                POITobeDestroyed.OnPOIDestroyedFromPlayerAction();
-            }
-            PointOfInterestManager.OnPOIDestroyed(POITobeDestroyed);
-            GhostsPOIManager.OnScenePOIDestroyed(POITobeDestroyed);
-            PlayerManager.OnPOIDestroyed(POITobeDestroyed);
-            StartCoroutine(DestroyPOICoroutine(POITobeDestroyed));
-        }
-
-        public void DetroyPOIs(List<PointOfInterestType> POIsTobeDestroyed)
-        {
-            foreach (var POITobeDestroyed in POIsTobeDestroyed)
-            {
-                DestroyPOI(POITobeDestroyed);
+                if (!LevelTransitionManager.IsNewZoneLoading())
+                {
+                    POITobeDisabled.OnPOIDisabled();
+                }
+                PointOfInterestManager.OnPOIDisabled(POITobeDisabled);
+                PlayerManager.OnPOIDestroyed(POITobeDisabled);
+                GhostsPOIManager.OnPOIDisabled(POITobeDisabled);
             }
         }
 
-        private IEnumerator DestroyPOICoroutine(PointOfInterestType POITobeDestroyed)
+        public void EnablePOI(PointOfInterestType POIToEnable)
         {
-            yield return new WaitForEndOfFrame();
-            Destroy(POITobeDestroyed.GetRootObject());
+            this.PointOfInterestManager.OnPOIEnabled(POIToEnable);
+            POIToEnable.OnPOIEnabled();
+        }
+
+        public void DisablePOIs(List<PointOfInterestType> POIsTobeDisabled)
+        {
+            foreach (var POITobeDisabled in POIsTobeDisabled)
+            {
+                DisablePOI(POITobeDisabled);
+            }
         }
 
     }

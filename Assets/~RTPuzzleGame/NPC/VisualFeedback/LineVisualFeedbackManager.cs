@@ -9,12 +9,14 @@ namespace RTPuzzle
         #region External Dependencies
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private DottedLineContainer DottedLineContainer;
         #endregion
 
         public LineVisualFeedbackManager(NPCAIManager nPCAIManagerRef)
         {
             this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.DottedLineContainer = GameObject.FindObjectOfType<DottedLineContainer>();
 
             //position calculation
             var renderedBoundsOffset = nPCAIManagerRef.GetAverageRendererBoundsLocalSpace();
@@ -41,7 +43,7 @@ namespace RTPuzzle
         {
             if (this.AttractiveObjectDottedLine == null)
             {
-                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID.ATTRACTIVE_OBJECT, this.PuzzleGameConfigurationManager);
+                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID.ATTRACTIVE_OBJECT, this.PuzzleGameConfigurationManager, this.DottedLineContainer);
             }
             this.AttractiveObjectId = attractiveObjectId;
             var attractiveObject = this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId);

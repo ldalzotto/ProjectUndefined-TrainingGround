@@ -285,10 +285,55 @@ namespace AdventureGame
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.nextLevelZone = (LevelZonesID)EditorGUILayout.EnumPopup("LEVEL : ", this.nextLevelZone);
-            this.poiInvolved = (PointOfInterestId)EditorGUILayout.EnumPopup("POI : ", this.poiInvolved);
+            this.nextLevelZone = (LevelZonesID)NodeEditorGUILayout.EnumField("LEVEL : ", string.Empty, this.nextLevelZone);
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.poiInvolved);
         }
 #endif
     }
 
+    [System.Serializable]
+    public class DisablePOI : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                foundedPoi.OnDisablePOI();
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.poiInvolved);
+        }
+#endif
+    }
+
+    [System.Serializable]
+    public class EnablePOI : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                  foundedPoi.OnEnablePOI();
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.poiInvolved);
+        }
+#endif
+    }
 }

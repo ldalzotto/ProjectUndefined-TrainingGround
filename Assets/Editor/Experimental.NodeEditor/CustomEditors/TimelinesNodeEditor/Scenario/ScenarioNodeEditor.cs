@@ -15,6 +15,7 @@ namespace Editor_ScenarioNodeEditor
             {"TimelineActions//GrabScenarioAction", typeof(GrabScenarioActionTimelineActionNodeProfile) },
             {"TimelineActions//CutsceneTimelineAction", typeof(CutsceneTimelineActionNodeProfile) },
             {"TimelineActions//GiveScenarioAction", typeof(GiveScenarioActionTimelineActionNodeProfile) },
+            {"TimelineActions//LevelCompleted", typeof(LevelCompletedTimelineActionNodeProfile) },
             {"WorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
             {"WorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
             {"WorkflowActions//AddItemInteractionAction", typeof(AddItemInteractionActionNodeProfile) },
@@ -23,7 +24,10 @@ namespace Editor_ScenarioNodeEditor
             {"WorkflowActions//AddTransitionLevel",typeof(AddTransitionLevelNodeProfile) },
             {"WorkflowActions//AddReceivableItem",typeof(AddReceivableItemNodeProfile) },
             {"WorkflowActions//RemoveReceivableItem",typeof(RemoveReceivableItemNodeProfile) },
-            {"WorkflowActions//AddItemGive",typeof(AddItemGiveNodeProfile) }
+            {"WorkflowActions//AddItemGive",typeof(AddItemGiveNodeProfile) },
+            {"WorkflowActions//DisablePOI",typeof(DisablePOINodeProfile) },
+            {"WorkflowActions//EnablePOI",typeof(EnablePOINodeProfile) }
+
         };
     }
 }

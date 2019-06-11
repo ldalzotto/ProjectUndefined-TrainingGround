@@ -38,15 +38,45 @@ namespace AdventureGame
             }
         }
 
+        public void Tick(float d)
+        {
+            //When a POI is marked as enabled (setted from timeline) and the curretn state is desabled.
+            //We re-enable the poi.
+            List<PointOfInterestType> poisToReEnable = null;
+            foreach (var disabledPointOfinterest in this.PointOfInterestContainerManager.GetDisabledPointOfInterest())
+            {
+                if (!disabledPointOfinterest.PointOfInterestModelState.IsDisabled)
+                {
+                    if (poisToReEnable == null)
+                    {
+                        poisToReEnable = new List<PointOfInterestType>();
+                    }
+                    poisToReEnable.Add(disabledPointOfinterest);
+                }
+            }
+            if (poisToReEnable != null)
+            {
+                foreach (var poiToReEnable in poisToReEnable)
+                {
+                    this.PointOfInterestEventManager.EnablePOI(poiToReEnable);
+                }
+            }
+        }
+
         #region External Events
         public void OnPOICreated(PointOfInterestType POICreated)
         {
             PointOfInterestContainerManager.OnPOICreated(POICreated);
         }
 
-        public void OnPOIDestroyed(PointOfInterestType POITobeDestroyed)
+        public void OnPOIDisabled(PointOfInterestType POITobeDestroyed)
         {
-            PointOfInterestContainerManager.OnPOIDestroyed(POITobeDestroyed);
+            PointOfInterestContainerManager.OnPOIDisabled(POITobeDestroyed);
+        }
+
+        public void OnPOIEnabled(PointOfInterestType POITobeEnabled)
+        {
+            PointOfInterestContainerManager.OnPOIEnabled(POITobeEnabled);
         }
 
         public void OnActualZoneSwitched()
@@ -55,6 +85,7 @@ namespace AdventureGame
         }
         #endregion
 
+        #region Data Retrieval
         public PointOfInterestType GetActivePointOfInterest(PointOfInterestId pointOfInterestId)
         {
             var activePOI = PointOfInterestContainerManager.GetActivePointOfInterest(pointOfInterestId);
@@ -68,10 +99,7 @@ namespace AdventureGame
             }
         }
 
-        public List<PointOfInterestType> GetAllPointOfInterests()
-        {
-            return PointOfInterestContainerManager.GetAllPointOfInterests();
-        }
+        #endregion
     }
 
     class PointOfInterestContainerManager
@@ -86,6 +114,7 @@ namespace AdventureGame
 
         private List<PointOfInterestType> activePointOfInterests = new List<PointOfInterestType>();
         private List<PointOfInterestType> inactivePointOfInterest = new List<PointOfInterestType>();
+        private List<PointOfInterestType> disabledPointOfInterest = new List<PointOfInterestType>();
 
         public void OnPOICreated(PointOfInterestType POICreated)
         {
@@ -100,18 +129,26 @@ namespace AdventureGame
 
         }
 
-        public void OnPOIDestroyed(PointOfInterestType POITobeDestroyed)
+        public void OnPOIDisabled(PointOfInterestType POITobeDisabled)
         {
-            if (POITobeDestroyed.IsInteractionWithPlayerAllowed())
+            if (POITobeDisabled.IsInteractionWithPlayerAllowed())
             {
-                activePointOfInterests.Remove(POITobeDestroyed);
+                activePointOfInterests.Remove(POITobeDisabled);
             }
             else
             {
-                inactivePointOfInterest.Remove(POITobeDestroyed);
+                inactivePointOfInterest.Remove(POITobeDisabled);
             }
-
+            this.disabledPointOfInterest.Add(POITobeDisabled);
         }
+
+        public void OnPOIEnabled(PointOfInterestType POITobeEnabled)
+        {
+            this.disabledPointOfInterest.Remove(POITobeEnabled);
+            this.OnPOICreated(POITobeEnabled);
+        }
+
+        #region Data Retrieval
         public PointOfInterestType GetActivePointOfInterest(PointOfInterestId pointOfInterestId)
         {
             foreach (var activePOI in activePointOfInterests)
@@ -136,6 +173,11 @@ namespace AdventureGame
             return null;
         }
 
+        public List<PointOfInterestType> GetDisabledPointOfInterest()
+        {
+            return this.disabledPointOfInterest;
+        }
+
         public List<PointOfInterestType> GetAllPointOfInterests()
         {
             var returnList = new List<PointOfInterestType>();
@@ -149,12 +191,13 @@ namespace AdventureGame
             }
             return returnList;
         }
+        #endregion
 
-        internal void DestroyAllPOI()
+        public void DestroyAllPOI()
         {
             var allPois = activePointOfInterests.Concat(inactivePointOfInterest).ToList();
             allPois.RemoveAll(e => e == null);
-            PointOfInterestEventManager.DetroyPOIs(allPois);
+            PointOfInterestEventManager.DisablePOIs(allPois);
         }
     }
 

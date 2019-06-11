@@ -53,7 +53,7 @@ namespace AdventureGame
 
             if (DestroyPOIAtEnd)
             {
-                PointOfInterestEventManager.DestroyPOI(CutsceneTimelineActionInput.TargetedPOI);
+                PointOfInterestEventManager.DisablePOI(CutsceneTimelineActionInput.TargetedPOI);
             }
         }
 

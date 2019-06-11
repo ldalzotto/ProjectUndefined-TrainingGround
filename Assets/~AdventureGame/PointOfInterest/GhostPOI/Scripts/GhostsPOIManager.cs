@@ -49,16 +49,23 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnScenePOICreated(PointOfInterestType pointOfInterestType)
+        public void OnPOICreated(PointOfInterestType pointOfInterestType)
         {
-            pointOfInterestType.SyncCreateFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+            pointOfInterestType.SyncPOIFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
-        public void OnScenePOIDestroyed(PointOfInterestType pointOfInterestType)
+
+        public void OnPOIDisabled(PointOfInterestType pointOfInterestType)
         {
-            pointOfInterestType.SyncDestroyedFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+            pointOfInterestType.SyncPointOfInterestModelStateToGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
+
+        public void OnPOIEnabled(PointOfInterestId pointOfInterestId)
+        {
+
+        }
+        
 
         public void OnGhostPOIChanged()
         {
@@ -89,6 +96,7 @@ namespace AdventureGame
         {
             PointOfInterestScenarioState = new PointOfInterestScenarioState();
             contextActionSynchronizerManager = new ContextActionSynchronizerManager();
+            PointOfInterestModelState = new PointOfInterestModelState();
         }
 
         public void Init(GhostsPOIManager ghostsPOIManagerRef)
@@ -102,11 +110,13 @@ namespace AdventureGame
             contextActionSynchronizerManager.OnContextActionAdd(itemID, contextActionToAdd);
             this.OnGhostPOIChanged();
         }
+
         public void OnGrabbableItemRemove(ItemID itemId)
         {
             contextActionSynchronizerManager.OnGrabbableItemRemoved(itemId);
             this.OnGhostPOIChanged();
         }
+
         public void OnReceivableItemAdd(ItemID itemID)
         {
             if (PointOfInterestScenarioState.ReceivableItemsComponent == null)
@@ -116,6 +126,7 @@ namespace AdventureGame
             PointOfInterestScenarioState.ReceivableItemsComponent.Add(itemID);
             this.OnGhostPOIChanged();
         }
+
         public void OnReceivableItemRemove(ItemID itemID)
         {
             if (PointOfInterestScenarioState.ReceivableItemsComponent != null)
@@ -148,17 +159,33 @@ namespace AdventureGame
                 this.OnGhostPOIChanged();
             }
         }
+
         public void OnLevelZoneTransitionAdd(LevelZonesID levelZonesID, AContextAction contextActionToAdd)
         {
             contextActionSynchronizerManager.OnLevelTransitionAdd(contextActionToAdd);
             this.OnGhostPOIChanged();
         }
+
+        public void OnDisablePOI()
+        {
+            this.PointOfInterestModelState.OnPOIDisabled();
+            this.OnGhostPOIChanged();
+        }
+
+        public void OnEnablePOI()
+        {
+            this.PointOfInterestModelState.OnPOIEnabled();
+            this.OnGhostPOIChanged();
+        }
+
         #endregion
 
         private void OnGhostPOIChanged()
         {
             this.ghostsPOIManagerRef.OnGhostPOIChanged();
         }
+
+        
     }
 
     #region Context Action Synchronizer

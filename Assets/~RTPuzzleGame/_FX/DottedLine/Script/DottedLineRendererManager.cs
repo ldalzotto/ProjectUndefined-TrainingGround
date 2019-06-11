@@ -66,6 +66,12 @@ namespace RTPuzzle
         {
             this.ComputeBeziersInnerPointResponses.Enqueue(ComputeBeziersInnerPointResponse);
         }
+
+        public void OnLevelExit()
+        {
+            this.ComputeBeziersInnerPointResponses.Clear();
+            this.DottedLineManagerThread.Abort();
+        }
         #endregion
     }
 

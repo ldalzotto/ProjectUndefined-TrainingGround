@@ -14,6 +14,7 @@ namespace AdventureGame
         private InventoryManager InventoryManager;
         private DiscussionWindowManager DiscussionWindowManager;
         private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManager;
+        private PointOfInterestManager PointOfInterestManager;
 
         private void Awake()
         {
@@ -37,7 +38,8 @@ namespace AdventureGame
             InventoryManager = FindObjectOfType<InventoryManager>();
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
             AdventureLevelChunkFXTransitionManager = GameObject.FindObjectOfType<AdventureLevelChunkFXTransitionManager>();
-            
+            PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+
             //initialization
             GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             AdventureLevelChunkFXTransitionManager.Init();
@@ -68,6 +70,7 @@ namespace AdventureGame
             NPCManager.Tick(d);
             InventoryManager.Tick(d);
             DiscussionWindowManager.Tick(d);
+            PointOfInterestManager.Tick(d);
         }
 
         private void FixedUpdate()

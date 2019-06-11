@@ -26,6 +26,7 @@ namespace AdventureGame
         private POIMeshRendererManager POIMeshRendererManager;
 
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
+        public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
 
         #region Data Retrieval
         public float GetMaxDistanceToInteractWithPlayer()
@@ -86,35 +87,32 @@ namespace AdventureGame
         #endregion
 
         #region External Events
-        public void SyncCreateFromGhostPOI(GhostPOI ghostPOI)
+        public void SyncPOIFromGhostPOI(GhostPOI ghostPOI)
         {
             pointOfInterestScenarioState = ghostPOI.PointOfInterestScenarioState1;
             ContextActionSynchronizerManager = ghostPOI.ContextActionSynchronizerManager;
-            if (ghostPOI.PointOfInterestModelState == null)
+            pointOfInterestModelState = ghostPOI.PointOfInterestModelState;
+            this.pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
+            if (ghostPOI.PointOfInterestModelState.IsDisabled)
             {
-                this.pointOfInterestModelState = new PointOfInterestModelState(POIMeshRendererManager.POIRenderers);
-                ghostPOI.PointOfInterestModelState = this.pointOfInterestModelState;
-            }
-            else
-            {
-
-                this.pointOfInterestModelState = ghostPOI.PointOfInterestModelState;
-                this.pointOfInterestModelState.SyncScenePOIRenderers(POIMeshRendererManager.POIRenderers);
-                if (ghostPOI.PointOfInterestModelState.IsDestroyed)
-                {
-                    PointOfInterestEventManager.DestroyPOI(this);
-                }
+                PointOfInterestEventManager.DisablePOI(this);
             }
         }
-        public void SyncDestroyedFromGhostPOI(GhostPOI ghostPOI)
+
+        public void SyncPointOfInterestModelStateToGhostPOI(GhostPOI ghostPOI)
         {
-            this.pointOfInterestModelState.SynchGhostPOIRenderers(POIMeshRendererManager.POIRenderers);
             ghostPOI.PointOfInterestModelState = this.pointOfInterestModelState;
         }
-        public void OnPOIDestroyedFromPlayerAction()
+
+        public void OnPOIDisabled()
         {
-            Debug.Log("Destroyed By Player : " + PointOfInterestId.ToString());
-            pointOfInterestModelState.IsDestroyed = true;
+            Debug.Log("Disabled By Player : " + PointOfInterestId.ToString());
+            this.DisablePOI();
+        }
+
+        public void OnPOIEnabled()
+        {
+            this.EnablePOI();
         }
         #endregion
 
@@ -142,6 +140,20 @@ namespace AdventureGame
         internal List<AContextAction> GetContextActions()
         {
             return ContextActionSynchronizerManager.ContextActions;
+        }
+
+        private void DisablePOI()
+        {
+            pointOfInterestModelState.OnPOIDisabled();
+            pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
+            this.gameObject.SetActive(false);
+        }
+
+        private void EnablePOI()
+        {
+            pointOfInterestModelState.OnPOIEnabled();
+            pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
+            this.gameObject.SetActive(true);
         }
     }
 

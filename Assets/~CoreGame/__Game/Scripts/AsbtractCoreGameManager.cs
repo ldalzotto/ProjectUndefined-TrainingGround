@@ -28,6 +28,7 @@ namespace CoreGame
             yield return new WaitForEndOfFrame();
             ATimelinesManager.InitTimelinesAtEndOfFrame();
         }
+
     }
 }
 

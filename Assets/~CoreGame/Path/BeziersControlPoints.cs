@@ -74,7 +74,7 @@ namespace CoreGame
                 float distance = Vector3.Distance(targetPosition, initialPosition);
 
                 beziersControlPoints.P1 = beziersControlPoints.P0 + (direction * distance / 3f);
-                beziersControlPoints.P2 = beziersControlPoints.P1 + (2 * direction * distance / 3f);
+                beziersControlPoints.P2 = beziersControlPoints.P1 + (direction * distance / 3f);
             }
 
             return beziersControlPoints;

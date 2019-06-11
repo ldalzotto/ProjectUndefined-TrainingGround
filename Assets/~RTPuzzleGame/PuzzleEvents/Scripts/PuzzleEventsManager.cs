@@ -12,6 +12,7 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
+        private DottedLineRendererManager DottedLineRendererManager;
         #endregion
 
         public void Init()
@@ -22,6 +23,7 @@ namespace RTPuzzle
             this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
             this.TimelinesEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
         }
 
         #region AI related events
@@ -94,7 +96,7 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
             this.NPCAIManagerContainer.OnGameOver();
-            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
+            this.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
         public void PZ_EVT_LevelCompleted()
@@ -102,7 +104,13 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
             this.NPCAIManagerContainer.OnGameOver();
             this.TimelinesEventManager.OnScenarioActionExecuted(new LevelCompletedTimelineAction(this.LevelManager.GetCurrentLevel()));
-            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
+            this.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
+        }
+
+        private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
+        {
+            this.DottedLineRendererManager.OnLevelExit();
+            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
         }
 
         #region Level Completion Events

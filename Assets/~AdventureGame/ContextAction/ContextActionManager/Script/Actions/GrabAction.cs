@@ -78,7 +78,7 @@ namespace AdventureGame
         {
             if (deletePOIOnGrab)
             {
-                PointOfInterestEventManager.DestroyPOI(this.associatedPOI);
+                PointOfInterestEventManager.DisablePOI(this.associatedPOI);
             }
         }
 
