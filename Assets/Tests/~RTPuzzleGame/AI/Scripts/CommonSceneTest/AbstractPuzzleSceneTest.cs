@@ -86,6 +86,11 @@ namespace Tests
                 return false;
             }
 
+            public Vector3 CursorDisplacement()
+            {
+                throw new NotImplementedException();
+            }
+
             public bool InventoryButtonD()
             {
                 return false;

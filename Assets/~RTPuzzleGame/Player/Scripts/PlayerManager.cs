@@ -106,6 +106,10 @@ namespace RTPuzzle
         {
             return PlayerInputMoveManager.HasMoved;
         }
+        public bool IsCameraRotating()
+        {
+            return this.CameraOrientationManager.IsRotating;
+        }
         #endregion
 
         #region Data Retrieval

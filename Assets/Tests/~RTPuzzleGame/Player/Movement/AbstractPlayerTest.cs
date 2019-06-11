@@ -81,6 +81,11 @@ namespace Tests
             return false;
         }
 
+        public Vector3 CursorDisplacement()
+        {
+            return Vector3.zero;
+        }
+
         public bool InventoryButtonD()
         {
             return false;

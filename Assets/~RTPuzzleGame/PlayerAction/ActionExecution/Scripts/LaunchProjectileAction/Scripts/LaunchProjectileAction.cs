@@ -48,6 +48,7 @@ namespace RTPuzzle
             var launchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
@@ -63,7 +64,7 @@ namespace RTPuzzle
 
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
-               playerTransformScreen, gameInputManager, canvas);
+               playerTransformScreen, gameInputManager, canvas, PlayerManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
@@ -74,7 +75,7 @@ namespace RTPuzzle
 
             LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
         }
-        
+
 
         public override void Tick(float d)
         {
@@ -161,17 +162,19 @@ namespace RTPuzzle
     {
         private LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
         private GameInputManager GameInputManager;
+        private PlayerManager PlayerManager;
 
         private ThrowProjectileCursorType cursorObject;
         private Vector2 currentCursorScreenPosition;
 
         public LaunchProjectileScreenPositionManager(LaunchProjectileScreenPositionManagerComponent launchProjectileScreenPositionManagerComponent,
-            Vector2 currentCursorScreenPosition, GameInputManager GameInputManager, Canvas gameCanvas)
+            Vector2 currentCursorScreenPosition, GameInputManager GameInputManager, Canvas gameCanvas, PlayerManager playerManagerRef)
         {
             LaunchProjectileScreenPositionManagerComponent = launchProjectileScreenPositionManagerComponent;
             this.currentCursorScreenPosition = currentCursorScreenPosition;
             this.GameInputManager = GameInputManager;
             this.cursorObject = ThrowProjectileCursorType.Instanciate(gameCanvas.transform);
+            this.PlayerManager = playerManagerRef;
             UpdateCursorPosition();
         }
 
@@ -179,9 +182,12 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            var locomotionAxis = GameInputManager.CurrentInput.LocomotionAxis();
-            currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * Screen.width * LaunchProjectileScreenPositionManagerComponent.CursorSpeedScreenWidthPerCent * d);
-            UpdateCursorPosition();
+            if (!this.PlayerManager.IsCameraRotating())
+            {
+                var locomotionAxis = GameInputManager.CurrentInput.CursorDisplacement();
+                currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * Screen.width * LaunchProjectileScreenPositionManagerComponent.CursorSpeedScreenWidthPerCent * d);
+                UpdateCursorPosition();
+            }
         }
 
         private void UpdateCursorPosition()
@@ -463,7 +469,7 @@ namespace RTPuzzle
             */
         }
     }
-   
+
     class LaunchProjectilePathAnimationManager
     {
         #region External Dependencies

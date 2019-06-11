@@ -49,17 +49,14 @@ namespace CoreGame
 
             public Vector3 LocomotionAxis()
             {
-                if (Mathf.Abs(Input.GetAxis("Horizontal")) > float.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) > float.Epsilon)
+                if (Mathf.Abs(Input.GetAxis("Horizontal")) >= float.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) >= float.Epsilon)
                 {
                     //keyboard
                     var rawDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
                     if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
                     {
                         rawDirection = rawDirection.normalized;
-                        //var normalizedRawDirection = rawDirection.normalized;
-                        //  rawDirection = new Vector3(Mathf.Sign(rawDirection.x) * normalizedRawDirection.x, 0, Mathf.Sign(rawDirection.z) * normalizedRawDirection.z);
                     }
-
                     return rawDirection;
                 }
                 else
@@ -68,7 +65,21 @@ namespace CoreGame
                     return new Vector3(Input.GetAxis("Horizontal_PAD"), 0, Input.GetAxis("Vertical_PAD"));
                 }
             }
-
+            
+            public Vector3 CursorDisplacement()
+            {
+                if (Mathf.Abs(Input.GetAxis("Mouse X")) >= float.Epsilon || Mathf.Abs(Input.GetAxis("Mouse Y")) >= float.Epsilon)
+                {
+                    //keyboard
+                    return new Vector3(Input.GetAxis("Mouse X"),0, Input.GetAxis("Mouse Y"));
+                }
+                else
+                {
+                    //gamepad
+                    return new Vector3(Input.GetAxis("Horizontal_PAD"), 0, Input.GetAxis("Vertical_PAD"));
+                }
+            }
+            
             public float LeftRotationCameraDH()
             {
                 var buttonPress = (Input.GetButton("Camera_Rotation_Left") || Input.GetButtonDown("Camera_Rotation_Left"));
@@ -108,6 +119,7 @@ namespace CoreGame
     public interface XInput
     {
         Vector3 LocomotionAxis();
+        Vector3 CursorDisplacement();
         float LeftRotationCameraDH();
         float RightRotationCameraDH();
         bool ActionButtonDH();
