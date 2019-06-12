@@ -8,9 +8,6 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "LevelCompletionCondition", menuName = "Configuration/PuzzleGame/LevelConfiguration/LevelCompletion/LevelCompletionCondition", order = 1)]
     public class ConditionGraphEditorProfile : NodeEditorProfile
     {
-        public ConditionGraphEditorProfile()
-        {
-        }
 
         public bool Resolve(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)
         {

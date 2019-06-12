@@ -12,7 +12,6 @@ namespace RTPuzzle
         public BoolNodeEdge FirstBool;
         [SerializeField]
         public BoolNodeEdge SecondBool;
-
         [SerializeField]
         public BoolNodeEdge OutputBool;
 
@@ -42,10 +41,7 @@ namespace RTPuzzle
         {
             this.FirstBool.ComputeValue(ref conditionGraphResolutionInput);
             this.SecondBool.ComputeValue(ref conditionGraphResolutionInput);
-            /*
-            this.FirstBool.Value = ((BoolNodeEdge)this.FirstBool.BackwardConnectedNodeEdge).Value;
-            this.SecondBool.Value = ((BoolNodeEdge)this.SecondBool.BackwardConnectedNodeEdge).Value;
-            */
+
             if (this.ConditionType == ConditionType.AND)
             {
                 this.OutputBool.Value = this.FirstBool.GetValue() && this.SecondBool.GetValue();

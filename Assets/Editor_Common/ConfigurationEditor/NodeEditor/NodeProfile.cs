@@ -138,6 +138,7 @@ namespace NodeGraph
             nodeEditorProfileRef.OnDeletedNode(this);
             AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this));
             Directory.Delete(this.EdgesDirectoryPath);
+            EditorUtility.SetDirty(nodeEditorProfileRef);
         }
 
         protected void DeleteEdge(NodeEdgeProfile edgeToDelete)

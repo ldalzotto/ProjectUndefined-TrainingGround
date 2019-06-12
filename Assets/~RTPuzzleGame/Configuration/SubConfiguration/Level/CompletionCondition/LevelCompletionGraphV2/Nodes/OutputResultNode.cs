@@ -5,9 +5,10 @@ using NodeGraph;
 
 namespace RTPuzzle
 {
+    [System.Serializable]
     public class OutputResultNode : NodeProfile
     {
-
+        [SerializeField]
         private BoolNodeEdge ResultBool;
 
         public bool Resolve(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)

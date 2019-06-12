@@ -9,7 +9,9 @@ namespace RTPuzzle
     [System.Serializable]
     public class AITargetConditionNode : NodeProfile
     {
+        [SerializeField]
         private AITargetConditionEdge AITargetConditionEdge;
+        [SerializeField]
         private BoolNodeEdge ResultBool;
 
 #if UNITY_EDITOR

@@ -11,27 +11,41 @@ using UnityEditor;
 
 namespace NodeGraph
 {
-    [Serializable]
+    [System.Serializable]
     public abstract class NodeEditorProfile : SerializedScriptableObject
     {
+        [SerializeField]
         public string GraphTmpFolderPath;
+        [SerializeField]
         public string NodesTmpFolderPath;
 
+        [SerializeField]
         public Rect EditorBound = new Rect(new Vector2(0, 0), new Vector2(0, 0));
 
-        public Dictionary<int, NodeProfile> Nodes = new Dictionary<int, NodeProfile>();
+        [SerializeField]
+        public Dictionary<int, NodeProfile> Nodes;
 
+        [SerializeField]
         public Color SelectedBackgoundColor = new Color(0.63f, 1f, 0.95f);
+        [SerializeField]
         public Color SlectionRectangleColor = new Color(1f, 1f, 0f, 0.3f);
 
+        [SerializeField]
         public NodeEditorZoomProfile NodeEditorZoomProfile;
+        [SerializeField]
         public NodeEditorGridProfile NodeEditorGridProfile;
+        [SerializeField]
         public NodeEdtitorSelectionProfile NodeEdtitorSelectionProfile;
+        [SerializeField]
         public NodeCreationPickerProfile NodeCreationPickerProfile;
 
 #if UNITY_EDITOR
         public virtual void Init()
         {
+            if(this.Nodes == null)
+            {
+                this.Nodes = new Dictionary<int, NodeProfile>();
+            }
             if (string.IsNullOrEmpty(this.GraphTmpFolderPath))
             {
                 var graphTmpFolderFullPath = FileUtil.GetAssetDirectoryPath(this) + this.name + "_tmp";
@@ -77,6 +91,7 @@ namespace NodeGraph
                     this.Nodes.Add(castedNode.Id, castedNode);
                 }
             }
+            EditorUtility.SetDirty(this);
         }
 
         public void Drag(Vector2 delta)
@@ -114,7 +129,16 @@ namespace NodeGraph
         {
             this.Nodes.Remove(nodeProfile.Id);
         }
+        
+        protected override void OnAfterDeserialize()
+        {
+            base.OnAfterDeserialize();
+        }
 
+        protected override void OnBeforeSerialize()
+        {
+            base.OnBeforeSerialize();
+        }
 #endif
     }
 
