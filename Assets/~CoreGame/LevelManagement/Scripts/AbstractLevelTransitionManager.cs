@@ -37,7 +37,7 @@ namespace CoreGame
             this.OnLevelChange_IMPL();
 
             List<AsyncOperation> chunkOperations = null;
-            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE)
+            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE || LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE )
             {
                 chunkOperations = this.LevelManager.OnAdventureToPuzzleLevel(nextZone);
             }
@@ -78,7 +78,9 @@ namespace CoreGame
 
         enum LevelChangeType
         {
-            PUZZLE_TO_ADVENTURE, ADVENTURE_TO_PUZZLE
+            PUZZLE_TO_ADVENTURE,
+            ADVENTURE_TO_PUZZLE,
+            PUZZLE_TO_PUZZLE
         }
     }
 

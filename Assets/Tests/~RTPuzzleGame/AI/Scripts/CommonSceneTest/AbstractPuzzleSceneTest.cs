@@ -106,6 +106,11 @@ namespace Tests
                 return Vector3.zero;
             }
 
+            public bool PuzzleResetButton()
+            {
+                return false;
+            }
+
             public float RightRotationCameraDH()
             {
                 throw new NotImplementedException();

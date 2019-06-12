@@ -16,7 +16,7 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        private void Start()
+        public void Init()
         {
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             if (InstantProjectileHit)
@@ -28,7 +28,7 @@ namespace RTPuzzle
             }
         }
 
-        private void Update()
+        public void Tick()
         {
             if (TriggerGameOverEvent)
             {

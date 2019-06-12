@@ -25,6 +25,10 @@ namespace RTPuzzle
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
         private PlayerSelectionWheelManager PlayerSelectionWheelManager;
 
+        #region Level Reset Manager
+        private LevelResetManager LevelResetManager;
+        #endregion
+
         #region Camera Managers
         private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
@@ -40,6 +44,7 @@ namespace RTPuzzle
             #region External Dependencies
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
+            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
             this.playerRigidbody = GetComponent<Rigidbody>();
@@ -53,6 +58,7 @@ namespace RTPuzzle
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, this.playerRigidbody);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
+            LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
 
             CameraFollowManager = new CameraFollowManager(this.playerRigidbody.transform, cameraPivotPoint.transform, PlayerCommonComponents.CameraFollowManagerComponent);
             CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint.transform, gameInputManager, PlayerCommonComponents.CameraOrientationManagerComponent);
@@ -60,33 +66,36 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            #region Camera
-            CameraFollowManager.Tick(d);
-            CameraOrientationManager.Tick(d);
-            #endregion
-
-            PlayerBodyPhysicsEnvironment.Tick(d);
-
-            if (!PlayerActionManager.IsActionExecuting())
+            if (!LevelResetManager.Tick(d))
             {
-                if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
+                #region Camera
+                CameraFollowManager.Tick(d);
+                CameraOrientationManager.Tick(d);
+                #endregion
+
+                PlayerBodyPhysicsEnvironment.Tick(d);
+
+                if (!PlayerActionManager.IsActionExecuting())
                 {
-                    if (!PlayerActionManager.IsWheelEnabled())
+                    if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
                     {
-                        PlayerInputMoveManager.Tick(d);
-                    }
-                    else
-                    {
-                        PlayerInputMoveManager.ResetSpeed();
-                        PlayerSelectionWheelManager.TriggerActionOnInput();
+                        if (!PlayerActionManager.IsWheelEnabled())
+                        {
+                            PlayerInputMoveManager.Tick(d);
+                        }
+                        else
+                        {
+                            PlayerInputMoveManager.ResetSpeed();
+                            PlayerSelectionWheelManager.TriggerActionOnInput();
+                        }
                     }
                 }
+                else
+                {
+                    PlayerInputMoveManager.ResetSpeed();
+                }
+                PlayerAnimationDataManager.Tick(PlayerInputMoveManager.PlayerSpeedMagnitude);
             }
-            else
-            {
-                PlayerInputMoveManager.ResetSpeed();
-            }
-            PlayerAnimationDataManager.Tick(PlayerInputMoveManager.PlayerSpeedMagnitude);
         }
 
         public void FixedTick(float d)
@@ -168,6 +177,42 @@ namespace RTPuzzle
             }
         }
 
+    }
+    #endregion
+
+    #region Level Reset Manager
+    class LevelResetManager
+    {
+        private const float TIME_PUSHED_TO_RESET_S = 1f;
+        private IGameInputManager GameInputManager;
+        private PuzzleEventsManager PuzzleEventsManager;
+
+        public LevelResetManager(IGameInputManager gameInputManager, PuzzleEventsManager puzzleEventsManager)
+        {
+            GameInputManager = gameInputManager;
+            PuzzleEventsManager = puzzleEventsManager;
+        }
+
+        private float currentTimePressed = 0f;
+
+        public bool Tick(float d)
+        {
+            if (GameInputManager.CurrentInput.PuzzleResetButton())
+            {
+                currentTimePressed += d;
+                if (currentTimePressed >= TIME_PUSHED_TO_RESET_S)
+                {
+                    currentTimePressed = 0f;
+                    PuzzleEventsManager.PZ_EVT_LevelReseted();
+                    return true;
+                }
+            }
+            else
+            {
+                currentTimePressed = 0f;
+            }
+            return false;
+        }
     }
     #endregion
 }

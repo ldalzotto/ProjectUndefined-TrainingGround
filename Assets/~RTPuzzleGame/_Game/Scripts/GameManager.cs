@@ -30,6 +30,10 @@ namespace RTPuzzle
         private ObjectRepelContainerManager ObjectRepelContainerManager;
         private DottedLineRendererManager DottedLineRendererManager;
 
+#if UNITY_EDITOR
+        private EditorOnlyManagers EditorOnlyManagers;
+#endif
+
         private void Awake()
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
@@ -102,6 +106,11 @@ namespace RTPuzzle
             AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
+
+#if UNITY_EDITOR
+            EditorOnlyManagers = new EditorOnlyManagers();
+            EditorOnlyManagers.Init();
+#endif
         }
 
         private void Update()
@@ -139,6 +148,10 @@ namespace RTPuzzle
                 NpcInteractionRingRendererManager.Tick(d);
                 DottedLineRendererManager.Tick();
             }
+
+#if UNITY_EDITOR
+            EditorOnlyManagers.Tick(d);
+#endif
         }
 
         private void LateUpdate()
@@ -199,5 +212,23 @@ namespace RTPuzzle
         }
 
     }
+
+#if UNITY_EDITOR
+    public class EditorOnlyManagers
+    {
+        private PuzzleDebugModule PuzzleDebugModule;
+
+        public void Init()
+        {
+            PuzzleDebugModule = GameObject.FindObjectOfType<PuzzleDebugModule>();
+            PuzzleDebugModule.Init();
+        }
+
+        public void Tick(float d)
+        {
+            PuzzleDebugModule.Tick();
+        }
+    }
+#endif
 
 }

@@ -112,6 +112,11 @@ namespace CoreGame
             {
                 return Input.GetButton("TimeForward") || Input.GetButtonDown("TimeForward");
             }
+
+            public bool PuzzleResetButton()
+            {
+                return Input.GetButton("PuzzleReset");
+            }
         }
 
     }
@@ -128,5 +133,6 @@ namespace CoreGame
         bool CancelButtonD();
         bool CancelButtonDH();
         bool TimeForwardButtonDH();
+        bool PuzzleResetButton();
     }
 }

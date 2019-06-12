@@ -101,6 +101,11 @@ namespace Tests
             return locomotionAxisProvider.Invoke();
         }
 
+        public bool PuzzleResetButton()
+        {
+            return false;
+        }
+
         public float RightRotationCameraDH()
         {
             return 0f;

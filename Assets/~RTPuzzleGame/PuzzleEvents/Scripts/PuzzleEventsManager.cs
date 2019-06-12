@@ -95,24 +95,29 @@ namespace RTPuzzle
         public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
-            this.NPCAIManagerContainer.OnGameOver();
             this.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
         public void PZ_EVT_LevelCompleted()
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
-            this.NPCAIManagerContainer.OnGameOver();
             this.TimelinesEventManager.OnScenarioActionExecuted(new LevelCompletedTimelineAction(this.LevelManager.GetCurrentLevel()));
             this.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
         }
 
+        public void PZ_EVT_LevelReseted()
+        {
+            Debug.Log(MyLog.Format("PZ_EVT_LevelReseted"));
+            this.OnPuzzleToAdventureLevel(this.LevelManager.LevelID);
+        }
+
         private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
         {
+            this.NPCAIManagerContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
         }
-
+        
         #region Level Completion Events
         public void PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate()
         {
