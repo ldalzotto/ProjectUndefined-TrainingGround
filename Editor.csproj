@@ -246,6 +246,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AIModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\CreateBehavior.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\EditBehavior.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ContextMarkVisualFeedback\ExploreContextMark.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ExploreAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\AttractiveObjectModel.cs" />

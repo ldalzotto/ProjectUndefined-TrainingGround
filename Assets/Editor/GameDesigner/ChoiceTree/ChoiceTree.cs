@@ -28,6 +28,7 @@ namespace Editor_GameDesigner
             {"Puzzle//AttractiveObject//." + typeof(EditAttractiveObject).Name, typeof(EditAttractiveObject) },
             {"Puzzle//PlayerAction//." + typeof(ExplorePlayerActions).Name, typeof(ExplorePlayerActions) },
             {"Puzzle//PlayerAction//." + typeof(CreatePlayerActions).Name, typeof(CreatePlayerActions) },
+            {"Puzzle//ContextMark//." + typeof(ExploreContextMark).Name, typeof(ExploreContextMark) },
             {"Adventure//POI//." + typeof(CreatePOI).Name, typeof(CreatePOI) },
             {"Adventure//POI//." + typeof(EditPOI).Name, typeof(EditPOI) },
             {"Adventure//POI//." + typeof(POIModel).Name, typeof(POIModel) },
