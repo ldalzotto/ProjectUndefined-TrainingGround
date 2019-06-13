@@ -1,21 +1,16 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
+﻿using Editor_GameDesigner;
 using RTPuzzle;
 using System.Collections.Generic;
-using System.Linq;
-using Editor_GameDesigner;
-using CoreGame;
+using UnityEditor;
+using UnityEngine;
 
 namespace Editor_GameCustomEditors
 {
     [CustomEditor(typeof(NPCAIManager))]
-    public class NPCAIManagerCustomEditor : Editor
+    public class NPCAIManagerCustomEditor : AbstractGameCustomEditorWithLiveSelection<NPCAIManager, NPCAIManagerCustomEditorContext, AIComponentsConfiguration, EditBehavior>
     {
 
         public AIComponentsConfiguration AIComponentsConfiguration;
-        public AbstractAIComponents AIComponents;
-        public Dictionary<string, bool> ComponentGizmosEnabled = new Dictionary<string, bool>();
 
         private void OnEnable()
         {
@@ -24,82 +19,86 @@ namespace Editor_GameCustomEditors
                 AIComponentsConfiguration = AssetFinder.SafeSingleAssetFind<AIComponentsConfiguration>("t:" + typeof(AIComponentsConfiguration).Name);
                 if (AIComponentsConfiguration != null)
                 {
-                    AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
+                    AbstractAIComponents AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
                     if (AIComponents != null)
                     {
-                        foreach (var aiComponentField in AIComponents.GetType().GetFields())
+                        this.context = new NPCAIManagerCustomEditorContext();
+                        this.context.GenericPuzzleAIComponents = (GenericPuzzleAIComponents)AIComponents;
+
+                        this.drawModules = new List<GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>>()
                         {
-                            if (aiComponentField.FieldType.IsSubclassOf(typeof(AbstractAIComponent)))
-                            {
-                                ComponentGizmosEnabled[aiComponentField.Name] = true;
-                            }
-                        }
+                            new AIProjectileEscapeComponent(),
+                            new AIPatrolComponent(),
+                            new AIPlayerEscapeComponent(),
+                            new AITargetZoneComponent()
+                        };
                     }
-
                 }
             }
-        }
-
-        public override void OnInspectorGUI()
-        {
-            if (GUILayout.Button("OPEN CONFIGURATION"))
-            {
-                CoreGameConfigurationEditor.OpenToDesiredConfiguration<PuzzleGameConfigurationEditorV2>(typeof(AIComponentsConfiguration));
-            }
-            if (GUILayout.Button("EDIT IN DESIGNER"))
-            {
-                GameDesignerEditor.InitWithSelectedKey(typeof(EditBehavior));
-            }
-            base.OnInspectorGUI();
-        }
-
-        private void OnSceneGUI()
-        {
-
-            if (ComponentGizmosEnabled != null)
-            {
-                var oldGUiBackground = GUI.backgroundColor;
-                Handles.BeginGUI();
-                GUI.backgroundColor = new Color(oldGUiBackground.r, oldGUiBackground.g, oldGUiBackground.b, 0.5f);
-
-                GUILayout.BeginArea(new Rect(10, 10, 200, 600));
-                foreach (var key in ComponentGizmosEnabled.Keys.ToList())
-                {
-                    ComponentGizmosEnabled[key] = GUILayout.Toggle(ComponentGizmosEnabled[key], key, EditorStyles.miniButton);
-                }
-                GUILayout.EndArea();
-                Handles.EndGUI();
-
-
-                var npcAIManager = (NPCAIManager)target;
-                if (npcAIManager != null && AIComponentsConfiguration != null && AIComponents != null)
-                {
-                    var oldGizmoColor = Gizmos.color;
-                    var oldhandlesColor = Handles.color;
-
-                    var aiComponentsType = AIComponents.GetType();
-
-                    foreach (var aiComponentField in aiComponentsType.GetFields())
-                    {
-                        if (aiComponentField.FieldType.IsSubclassOf(typeof(AbstractAIComponent)))
-                        {
-                            if (ComponentGizmosEnabled.ContainsKey(aiComponentField.Name))
-                            {
-                                if (ComponentGizmosEnabled[aiComponentField.Name])
-                                {
-                                    ((AbstractAIComponent)aiComponentField.GetValue(AIComponents)).EditorGUI(npcAIManager.transform);
-                                }
-                            }
-                        }
-                    }
-                    Gizmos.color = oldGizmoColor;
-                    Handles.color = oldhandlesColor;
-                }
-
-
-            }
-
         }
 
     }
+
+    public class NPCAIManagerCustomEditorContext
+    {
+        public GenericPuzzleAIComponents GenericPuzzleAIComponents;
+    }
+
+    public class AIProjectileEscapeComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    {
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        {
+            Handles.color = Color.blue;
+            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Handles.color;
+            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistance, this.GetType().Name, labelStyle);
+            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistance);
+        }
+    }
+
+    public class AIPatrolComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    {
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        {
+            Handles.color = Color.magenta;
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Color.magenta;
+            Handles.Label(target.transform.position + (Vector3.up * context.GenericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance), "AI Patrol distance.", labelStyle);
+            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance);
+        }
+    }
+
+    public class AIPlayerEscapeComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    {
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        {
+            Handles.color = Color.yellow;
+
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Handles.color;
+
+            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance, nameof(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance), labelStyle);
+            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance);
+
+            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius, nameof(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius), labelStyle);
+            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius);
+
+            Handles.Label(target.transform.position + target.transform.forward * 4, "Escape angle.", labelStyle);
+            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
+            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
+        }
+    }
+
+    public class AITargetZoneComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    {
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        {
+            Handles.color = Color.green;
+            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Handles.color;
+            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance, nameof(context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance), labelStyle);
+            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance);
+        }
+    }
 }
+

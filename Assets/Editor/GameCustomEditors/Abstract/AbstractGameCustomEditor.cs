@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using System.Collections.Generic;
-using RTPuzzle;
+﻿using ConfigurationEditor;
 using Editor_GameDesigner;
-using CoreGame;
-using ConfigurationEditor;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 namespace Editor_GameCustomEditors
 {
@@ -29,6 +26,16 @@ namespace Editor_GameCustomEditors
                     GUI.backgroundColor = new Color(oldGUiBackground.r, oldGUiBackground.g, oldGUiBackground.b, 0.5f);
                     GUILayout.BeginArea(new Rect(10, 10, 200, 600));
 
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("*", EditorStyles.miniButtonLeft, GUILayout.Width(25f)))
+                    {
+                        this.SetAllModules(true);
+                    }
+                    if (GUILayout.Button("-", EditorStyles.miniButtonRight, GUILayout.Width(25f)))
+                    {
+                        this.SetAllModules(false);
+                    }
+                    GUILayout.EndHorizontal();
 
                     foreach (var module in this.drawModules)
                     {
@@ -46,12 +53,20 @@ namespace Editor_GameCustomEditors
                     }
                 }
 
-
                 Gizmos.color = oldGizmoColor;
                 GUI.backgroundColor = oldGUiBackground;
                 Handles.color = oldColor;
             }
         }
+
+        private void SetAllModules(bool value)
+        {
+            foreach (var module in this.drawModules)
+            {
+                module.SetEnabled(value);
+            }
+        }
+
     }
 
     public abstract class AbstractGameCustomEditorWithLiveSelection<T, C, CONF_TYPE, DESIGN_TYPE> : AbstractGameCustomEditor<T, C> where T : UnityEngine.Object

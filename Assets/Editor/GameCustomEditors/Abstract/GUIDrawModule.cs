@@ -12,6 +12,11 @@ namespace Editor_GameCustomEditors
 
         public bool Enabled { get => enabled; }
 
+        public void SetEnabled(bool value)
+        {
+            this.enabled = value;
+        }
+
         public void EditorGUI()
         {
             this.enabled = GUILayout.Toggle(enabled, this.GetType().Name, EditorStyles.miniButton);
