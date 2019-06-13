@@ -14,7 +14,6 @@ public class GameManagerPersistanceInstance : MonoBehaviour
         {
             Instance = this;
             Instantiate(GameManagerPersistancePrefab, transform);
-            GameObject.FindObjectOfType<PersistanceManager>().Init();
             DontDestroyOnLoad(gameObject);
         }
         else

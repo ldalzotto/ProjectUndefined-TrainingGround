@@ -109,6 +109,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelCompletionConditionCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelCompletionCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelHierarchyAdventureLink.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelHierarchyCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelSceneConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\PuzzleLevelCreationWizard\Modules\Level\LevelSceneCreation.cs" />

@@ -9,7 +9,8 @@ public enum LevelZonesID
     RTP_TEST = 3,
     RTP_EDITOR_TEST = 4,
     SEWER_ADVENTURE = 5,
-    RTP_PUZZLE_CREATION_TEST = 6
+    RTP_PUZZLE_CREATION_TEST = 6,
+    ADVENTURE_EDITOR_TEST = 8
 }
 
 public enum LevelZoneChunkID

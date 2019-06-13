@@ -1,4 +1,5 @@
 ﻿using ConfigurationEditor;
+using CoreGame;
 using OdinSerializer;
 using RTPuzzle;
 using System;
@@ -54,7 +55,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     {
         foreach (var mod in this.Modules.Values)
         {
-            if(mod is ICreateable createable)
+            if (mod is ICreateable createable)
             {
                 createable.InstanciateInEditor(this);
             }
@@ -89,7 +90,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         var assetsFolderIndex = this.tmpDirectoryInfo.FullName.IndexOf("Assets\\");
         this.projectRelativeTmpFolderPath = this.tmpDirectoryInfo.FullName.Substring(assetsFolderIndex);
 
-        foreach(var moduleConfiguration in this.ModulesConfiguration)
+        foreach (var moduleConfiguration in this.ModulesConfiguration)
         {
             this.InitModule(moduleConfiguration.ModuleType);
         }
@@ -100,8 +101,9 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
         this.creationWizardFeedLines.Clear();
     }
 
-    public void OnGenerationEnd() {
-        foreach(var module in this.Modules.Values)
+    public void OnGenerationEnd()
+    {
+        foreach (var module in this.Modules.Values)
         {
             module.OnGenerationEnd();
         }
@@ -116,7 +118,7 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     }
     public void AddToGeneratedObjects(UnityEngine.Object obj)
     {
-            this.creationWizardFeedLines.Add(new CreatedObjectFeedLine(AssetDatabase.GetAssetPath(obj)));
+        this.creationWizardFeedLines.Add(new CreatedObjectFeedLine(AssetDatabase.GetAssetPath(obj)));
     }
 
     public void GameConfigurationModified(UnityEngine.Object configuration, Enum key, UnityEngine.Object value)
@@ -128,6 +130,10 @@ public abstract class AbstractCreationWizardEditorProfile : SerializedScriptable
     public void AddedPlayerAction(PlayerActionId playerActionId, LevelConfiguration levelConfiguration, LevelZonesID levelZonesID)
     {
         this.creationWizardFeedLines.Add(new PlayerActionAddedFeedLine(levelConfiguration, playerActionId, levelZonesID));
+    }
+
+    public void LevelHierarchyAdded(LevelHierarchyConfiguration levelHierarchyConfiguration, LevelZonesID levelZonesID, LevelZoneChunkID addedChunkID) {
+        this.creationWizardFeedLines.Add(new LevelHierarchyAddFeedLine(levelHierarchyConfiguration, levelZonesID, addedChunkID));
     }
 
     private void InitModule(Type objType)
@@ -253,7 +259,7 @@ public class PlayerActionAddedFeedLine : ICreationWizardFeedLine
     }
 
     public LevelConfiguration LevelConfiguration { get => levelConfiguration; }
-    public PlayerActionId PlayerActionId { get => playerActionId;  }
+    public PlayerActionId PlayerActionId { get => playerActionId; }
     public LevelZonesID LevelZonesID { get => levelZonesID; }
 
     public void GUITick()
@@ -261,6 +267,37 @@ public class PlayerActionAddedFeedLine : ICreationWizardFeedLine
         EditorGUILayout.LabelField("Added player action ID : " + this.playerActionId.ToString());
         EditorGUI.indentLevel += 1;
         EditorGUILayout.ObjectField(this.levelConfiguration, typeof(LevelConfiguration), false);
+        EditorGUI.indentLevel -= 1;
+    }
+}
+
+[System.Serializable]
+public class LevelHierarchyAddFeedLine : ICreationWizardFeedLine
+{
+    [SerializeField]
+    private LevelHierarchyConfiguration levelHierarchyConfiguration;
+    [SerializeField]
+    private LevelZonesID levelZonesID;
+    [SerializeField]
+    private LevelZoneChunkID addedChunkID;
+
+    public LevelHierarchyAddFeedLine(LevelHierarchyConfiguration levelHierarchyConfiguration, LevelZonesID levelZonesID, LevelZoneChunkID addedChunkID)
+    {
+        this.levelHierarchyConfiguration = levelHierarchyConfiguration;
+        this.levelZonesID = levelZonesID;
+        this.addedChunkID = addedChunkID;
+    }
+
+    public LevelHierarchyConfiguration LevelHierarchyConfiguration { get => levelHierarchyConfiguration; }
+    public LevelZonesID LevelZonesID { get => levelZonesID; }
+    public LevelZoneChunkID AddedChunkID { get => addedChunkID; }
+
+    public void GUITick()
+    {
+        EditorGUILayout.LabelField("Added level chunk : " + this.addedChunkID.ToString());
+        EditorGUILayout.LabelField("To adventure level : " + this.levelZonesID.ToString());
+        EditorGUI.indentLevel += 1;
+        EditorGUILayout.ObjectField(this.levelHierarchyConfiguration, typeof(LevelHierarchyConfiguration), false);
         EditorGUI.indentLevel -= 1;
     }
 }

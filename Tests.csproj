@@ -83,6 +83,7 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AbstractPuzzleSceneTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\PuzzleSceneTestHelper.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestHelperMethods.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestPuzzleGameManager.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\LaunchProjectileTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PhysicsPlayerMovementTest.cs" />

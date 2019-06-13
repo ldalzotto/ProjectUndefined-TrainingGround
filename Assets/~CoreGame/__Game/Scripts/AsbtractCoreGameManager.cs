@@ -11,6 +11,7 @@ namespace CoreGame
 
         protected void OnAwake()
         {
+            GameObject.FindObjectOfType<PersistanceManager>().Init();
             this.ATimelinesManager = GameObject.FindObjectOfType<ATimelinesManager>();
             this.GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var Coroutiner = GameObject.FindObjectOfType<Coroutiner>();

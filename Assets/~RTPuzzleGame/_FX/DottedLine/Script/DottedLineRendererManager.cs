@@ -21,7 +21,7 @@ namespace RTPuzzle
         public Dictionary<int, DottedLine> DottedLines { get => dottedLines; }
 
 
-        public void Init()
+        public virtual void Init()
         {
             this.DottedLineManagerThreadObject = new DottedLineManagerThread(this.OnComputeBeziersInnerPointResponse);
             this.DottedLineManagerThread = new Thread(new ThreadStart(this.DottedLineManagerThreadObject.Main));
@@ -30,7 +30,7 @@ namespace RTPuzzle
             this.DottedLineManagerThread.Start();
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
             while (this.ComputeBeziersInnerPointResponses.Count > 0)
             {
@@ -48,7 +48,7 @@ namespace RTPuzzle
             }
         }
 
-        public void OnDottedLineDestroyed(DottedLine dottedLine)
+        public virtual void OnDottedLineDestroyed(DottedLine dottedLine)
         {
             if (this.dottedLines.ContainsKey(dottedLine.GetInstanceID()))
             {
@@ -58,17 +58,17 @@ namespace RTPuzzle
 
 
         #region External Events
-        public void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
+        public virtual void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
         {
             this.dottedLines[DottedLine.GetInstanceID()] = DottedLine;
             this.DottedLineManagerThreadObject.OnComputeBeziersInnerPointEvent(DottedLine.BuildComputeBeziersInnerPointEvent());
         }
-        public void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
+        public virtual void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
         {
             this.ComputeBeziersInnerPointResponses.Enqueue(ComputeBeziersInnerPointResponse);
         }
 
-        public void OnLevelExit()
+        public virtual void OnLevelExit()
         {
             this.ComputeBeziersInnerPointResponses.Clear();
             this.DottedLineManagerThread.Abort();

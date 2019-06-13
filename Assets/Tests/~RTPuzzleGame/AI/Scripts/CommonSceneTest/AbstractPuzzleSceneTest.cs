@@ -31,12 +31,6 @@ namespace Tests
 
                 var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
                 npcAIManager.AiID = choosenId;
-
-                //persistance
-                var persistanceManager = GameObject.FindObjectOfType<PersistanceManager>();
-                var persistanceManagerGO = persistanceManager.gameObject;
-                MonoBehaviour.DestroyImmediate(persistanceManager);
-                persistanceManagerGO.AddComponent<MockPersistanceManager>();
             };
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
@@ -162,6 +156,37 @@ namespace Tests
             {
                 return default(T);
             }
+        }
+
+        public class MockDottedLineRendererManager : DottedLineRendererManager
+        {
+            public override void Init()
+            {
+            }
+
+            public override void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
+            {
+                
+            }
+
+            public override void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
+            {
+                
+            }
+
+            public override void OnDottedLineDestroyed(DottedLine dottedLine)
+            {
+            
+            }
+
+            public override void OnLevelExit()
+            {
+            }
+
+            public override void Tick()
+            {
+            }
+
         }
     }
 }

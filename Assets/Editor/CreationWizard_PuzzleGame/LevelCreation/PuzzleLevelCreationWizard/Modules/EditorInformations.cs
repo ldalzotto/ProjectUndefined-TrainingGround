@@ -48,8 +48,8 @@ namespace Editor_PuzzleLevelCreationWizard
                 ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration),
                 ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration),
                 ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration)
-
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration),
+                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration))
             }
             .Find((s) => !string.IsNullOrEmpty(s));
         }
@@ -62,6 +62,8 @@ namespace Editor_PuzzleLevelCreationWizard
         public LevelZonesID LevelZonesID;
         [SearchableEnum]
         public LevelZoneChunkID LevelZoneChunkID;
+        [SearchableEnum]
+        public LevelZonesID AssociatedAdventureLevelID;
 
         public CommonGameConfigurations CommonGameConfigurations;
     }
