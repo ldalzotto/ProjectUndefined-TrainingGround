@@ -11,6 +11,7 @@ namespace RTPuzzle
 
     public enum RepelableObjectID
     {
-        CHEESE_SEWER_RTP_2
+        CHEESE_SEWER_RTP_2 = 0,
+        RTP_PUZZLE_CREATION_TEST = 1
     }
 }

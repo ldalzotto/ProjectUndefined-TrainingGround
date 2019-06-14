@@ -25,5 +25,8 @@ namespace Editor_MainGameCreationWizard
         public static string POIInherentData = "_PointOfInterestInherentData";
         public static string AttractiveObjectPrefab = "_AttractiveObject";
         public static string AttractiveObjectInherentData = "_AttractiveObjectInherentData";
+        public static string RepelableObjectInherentData = "_RepelableObjectInherentData";
+        public static string RepelableObjectPrefab = "_RepelableObjectPrefab";
+
     }
 }

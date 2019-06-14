@@ -140,6 +140,11 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectPrefabCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\RepelableObjectCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\RepelableObjectCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIPrefabCreation.cs" />
@@ -230,6 +235,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\ObjectRepelTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
@@ -268,6 +274,9 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ExploreProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ProjectileModel.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\RepelableObject\CreateRepelableObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\RepelableObject\EditRepelableObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\RepelableObject\ExploreRepelableObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\AddTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\CreateTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\EditTargetZone.cs" />

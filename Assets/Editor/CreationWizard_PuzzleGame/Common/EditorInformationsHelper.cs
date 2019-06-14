@@ -25,6 +25,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab, "TargetZoneBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLaunchProjectilePrefab, "GenericProjectilePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseAttractiveObjectPrefab, "GenericAttractiveObjectPrefab");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseRepelableObjectPrefab, "RepelObjectBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
@@ -116,6 +117,8 @@ namespace Editor_MainGameCreationWizard
         public PlayerActionConfiguration PlayerActionConfiguration;
         [ReadOnly]
         public AttractiveObjectConfiguration AttractiveObjectConfiguration;
+        [ReadOnly]
+        public RepelableObjectsConfiguration RepelableObjectsConfiguration;
     }
     
     [System.Serializable]
@@ -138,7 +141,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
         [ReadOnly]
-        public AttractiveObjectType BaseAttractiveObjectPrefab; 
+        public AttractiveObjectType BaseAttractiveObjectPrefab;
+        [ReadOnly]
+        public ObjectRepelType BaseRepelableObjectPrefab;
     }
 
     [System.Serializable]
@@ -207,5 +212,9 @@ namespace Editor_MainGameCreationWizard
         public string AttractiveObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionObjects/AttractiveObject/Prefab";
         [ReadOnly]
         public string AttractiveObjectInherantDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData";
+        [ReadOnly]
+        public string RepelableObjectInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjects/RepelableObjectsConfiguration/RepelableObjectsConfigurationData";
+        [ReadOnly]
+        public string RepelableObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionBehavior/Repel/Prefabs";
     }
 }
