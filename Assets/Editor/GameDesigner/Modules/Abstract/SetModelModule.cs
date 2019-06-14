@@ -26,7 +26,9 @@ namespace Editor_GameDesigner
 
         protected virtual void OnClick(GameObject currentSelectedObj)
         {
-           PrefabUtility.InstantiatePrefab(this.ModelObject, this.FindParent.Invoke(currentSelectedObj.GetComponent<T>()));
+            var parent = this.FindParent.Invoke(currentSelectedObj.GetComponent<T>());
+            PrefabUtility.InstantiatePrefab(this.ModelObject, parent);
+            EditorUtility.SetDirty(parent);
         }
 
         protected abstract Func<T, Transform> FindParent { get; }
