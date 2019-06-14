@@ -55,6 +55,10 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.DottedLineConfiguration.ConfigurationInherentData;
         }
 
+        public Dictionary<RepelableObjectID, RepelableObjectsInherentData> RepelableObjectsConfiguration()
+        {
+            return PuzzleGameConfiguration.RepelableObjectsConfiguration.ConfigurationInherentData;
+        }
     }
 
 

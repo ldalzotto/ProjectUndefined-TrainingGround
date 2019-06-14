@@ -24,6 +24,7 @@ public class PuzzleGameConfigurationEditorProfileV2 : TreeChoiceHeaderTab<IGener
             {typeof(ContextMarkVisualFeedbackConfiguration).Name, new GenericConfigurationEditor<AiID, ContextMarkVisualFeedbackInherentData>("t:" + typeof(ContextMarkVisualFeedbackConfiguration).Name) },
             {"FX//" + typeof(RangeTypeConfiguration).Name, new GenericConfigurationEditor<RangeTypeID, RangeTypeInherentConfigurationData>("t:" + typeof(RangeTypeConfiguration).Name) },
             {"FX//" + typeof(DottedLineConfiguration).Name, new GenericConfigurationEditor<DottedLineID, DottedLineInherentData>("t:" + typeof(DottedLineConfiguration).Name) },
+            {"InteractiveObjects//" + typeof(RepelableObjectsConfiguration).Name, new GenericConfigurationEditor<RepelableObjectID, RepelableObjectsInherentData>("t:" + typeof(RepelableObjectsConfiguration).Name) },
     };
 
     [SerializeField]

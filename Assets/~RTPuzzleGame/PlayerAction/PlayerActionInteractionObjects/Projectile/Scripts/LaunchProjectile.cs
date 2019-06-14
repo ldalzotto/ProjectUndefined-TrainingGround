@@ -47,6 +47,7 @@ namespace RTPuzzle
             this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             var ObjectRepelContainer = GameObject.FindObjectOfType<ObjectRepelContainer>();
             var ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
+            var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
             #region Internal Dependencies
@@ -59,7 +60,7 @@ namespace RTPuzzle
             this.transform.position = ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = ProjectilePath.Clone();
 
-            this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, ObjectRepelContainer, ObjectRepelContainerManager);
+            this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, ObjectRepelContainer, ObjectRepelContainerManager, PuzzleGameConfigurationManager, this);
             this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, transform, projectilePathDeepCopy);
 
         }
@@ -119,19 +120,30 @@ namespace RTPuzzle
 
     class SphereCollisionManager
     {
+        #region External Dependencies
         private NPCAIManagerContainer NPCAIManagerContainer;
         private ObjectRepelContainer ObjectRepelContainer;
         private ObjectRepelContainerManager ObjectRepelContainerManager;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        #endregion
 
+        private LaunchProjectile LaunchProjectileRef;
         private ProjectileInherentData LaunchProjectileInherentData;
 
         public SphereCollisionManager(ProjectileInherentData LaunchProjectileInherentData,
-            NPCAIManagerContainer NPCAIManagerContainer, ObjectRepelContainer ObjectRepelContainer, ObjectRepelContainerManager ObjectRepelContainerManager)
+            NPCAIManagerContainer NPCAIManagerContainer, ObjectRepelContainer ObjectRepelContainer,
+            ObjectRepelContainerManager ObjectRepelContainerManager,
+            PuzzleGameConfigurationManager PuzzleGameConfigurationManager, LaunchProjectile LaunchProjectileRef)
         {
-            this.LaunchProjectileInherentData = LaunchProjectileInherentData;
+            #region External Dependencies
             this.NPCAIManagerContainer = NPCAIManagerContainer;
             this.ObjectRepelContainer = ObjectRepelContainer;
             this.ObjectRepelContainerManager = ObjectRepelContainerManager;
+            this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
+            #endregion
+
+            this.LaunchProjectileInherentData = LaunchProjectileInherentData;
+            this.LaunchProjectileRef = LaunchProjectileRef;
         }
 
         public void OnGroundTriggerEnter(LaunchProjectile launchProjectileRef)
@@ -152,16 +164,17 @@ namespace RTPuzzle
             {
                 if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
-                    float remainingDistance = 13;
+                    //float travelDistance = 13;
+                    float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.RepelableObjectID].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileId);
                     var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - projectileTargetPosition), repelAbleObject.transform.up).normalized;
                     NavMeshHit navmeshHit;
-                    if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
                     {
                         this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
                     }
                     else
                     {
-                        if (NavMesh.Raycast(repelAbleObject.transform.position, repelAbleObject.transform.position + (projectionDirection * remainingDistance), out navmeshHit, NavMesh.AllAreas))
+                        if (NavMesh.Raycast(repelAbleObject.transform.position, repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, NavMesh.AllAreas))
                         {
                             this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
                         }

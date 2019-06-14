@@ -5,6 +5,8 @@ namespace RTPuzzle
 {
     public class ObjectRepelType : MonoBehaviour
     {
+        public RepelableObjectID RepelableObjectID;
+
         private Collider objectRepelCollider;
 
         public Collider ObjectRepelCollider { get => objectRepelCollider; }

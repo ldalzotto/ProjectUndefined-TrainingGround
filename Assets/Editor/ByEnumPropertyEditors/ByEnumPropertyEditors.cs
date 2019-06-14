@@ -14,8 +14,9 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
     public override void OnInspectorGUI()
     {
         ByEnumProperty<K, V> projectileEscapeRange = (ByEnumProperty<K, V>)target;
+        this.Init(projectileEscapeRange);
 
-        this.foldout = EditorGUILayout.Foldout(this.foldout, nameof(projectileEscapeRange), true);
+        this.foldout = EditorGUILayout.Foldout(this.foldout, target.name, true);
         if (this.foldout)
         {
             EditorGUILayout.BeginHorizontal();
@@ -47,7 +48,7 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
                 {
                     projectileEscapeRange.Values[key] = (V)((object)EditorGUILayout.FloatField(float.Parse(projectileEscapeRange.Values[key].ToString())));
                 }
-                if(GUILayout.Button("-", EditorStyles.miniButton, GUILayout.Width(20f)))
+                if (GUILayout.Button("-", EditorStyles.miniButton, GUILayout.Width(20f)))
                 {
                     projectileEscapeRange.Values.Remove(key);
                 }
@@ -61,6 +62,14 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
             }
         }
 
+    }
+
+    private void Init(ByEnumProperty<K, V> byEnumProperty)
+    {
+        if (byEnumProperty.Values == null)
+        {
+            byEnumProperty.Values = new System.Collections.Generic.Dictionary<K, V>();
+        }
     }
 
     private void DisplayEnumChoice()
@@ -84,3 +93,6 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
 public class ProjectileEscapeRangeCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileId, float> { }
 [CustomEditor(typeof(ProjectileEscapeSemiAngle))]
 public class ProjectileEscapeSemiAngleCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileId, float> { }
+[CustomEditor(typeof(RepelableObjectDistance))]
+public class RepelableObjectDistanceCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileId, float> { }
+
