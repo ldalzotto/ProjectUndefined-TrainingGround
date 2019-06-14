@@ -23,6 +23,7 @@ namespace Editor_GameDesigner
             {"Puzzle//TargetZone//." + typeof(ExploreTargetZone).Name, typeof(ExploreTargetZone) },
             {"Puzzle//Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
             {"Puzzle//Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
+            {"Puzzle//Projectile//." + typeof(ExploreProjectile).Name, typeof(ExploreProjectile) },
             {"Puzzle//AttractiveObject//." + typeof(AttractiveObjectModel).Name, typeof(AttractiveObjectModel) },
             {"Puzzle//AttractiveObject//." + typeof(CreateAttractiveObject).Name, typeof(CreateAttractiveObject) },
             {"Puzzle//AttractiveObject//." + typeof(EditAttractiveObject).Name, typeof(EditAttractiveObject) },
