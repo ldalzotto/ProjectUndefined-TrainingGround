@@ -27,6 +27,7 @@ namespace Editor_GameDesigner
             {"Puzzle//AttractiveObject//." + typeof(AttractiveObjectModel).Name, typeof(AttractiveObjectModel) },
             {"Puzzle//AttractiveObject//." + typeof(CreateAttractiveObject).Name, typeof(CreateAttractiveObject) },
             {"Puzzle//AttractiveObject//." + typeof(EditAttractiveObject).Name, typeof(EditAttractiveObject) },
+            {"Puzzle//AttractiveObject//." + typeof(ExploreAttractiveObject).Name, typeof(ExploreAttractiveObject) },
             {"Puzzle//PlayerAction//." + typeof(ExplorePlayerActions).Name, typeof(ExplorePlayerActions) },
             {"Puzzle//PlayerAction//." + typeof(CreatePlayerActions).Name, typeof(CreatePlayerActions) },
             {"Puzzle//ContextMark//." + typeof(ExploreContextMark).Name, typeof(ExploreContextMark) },

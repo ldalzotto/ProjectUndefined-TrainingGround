@@ -253,6 +253,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\AttractiveObjectModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\CreateAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\EditAttractiveObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\ExploreAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\AddEnvironmentModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
