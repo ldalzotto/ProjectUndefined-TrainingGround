@@ -39,7 +39,7 @@ namespace Editor_GameCustomEditors
 
                     foreach (var module in this.drawModules)
                     {
-                        module.EditorGUI();
+                        module.EditorGUI(this.context, targetZone);
                     }
                     GUILayout.EndArea();
                     Handles.EndGUI();

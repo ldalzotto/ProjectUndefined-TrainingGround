@@ -18,8 +18,7 @@ namespace Editor_GameCustomEditors
                 this.drawModules = new List<GUIDrawModule<LaunchProjectile, ProjectileCustomEditorContext>>()
                 {
                     new ProjectileThrowRange(),
-                    new ProjectileEffectRange(),
-                    new ProjectileEscapeAngle()
+                    new ProjectileEffectRange()
                 };
 
                 var launchProjectile = (LaunchProjectile)target;
@@ -64,18 +63,6 @@ namespace Editor_GameCustomEditors
             Handles.color = Color.red;
             Handles.Label(context.LaunchProjectile.transform.position + Vector3.up * context.ProjectileInherentData.EffectRange, nameof(context.ProjectileInherentData.EffectRange), MyEditorStyles.LabelRed);
             Handles.DrawWireDisc(context.LaunchProjectile.transform.position, Vector3.up, context.ProjectileInherentData.EffectRange);
-        }
-    }
-
-    class ProjectileEscapeAngle : GUIDrawModule<LaunchProjectile, ProjectileCustomEditorContext>
-    {
-        public override void SceneGUI(ProjectileCustomEditorContext context, LaunchProjectile target)
-        {
-            Handles.color = Color.yellow;
-            Handles.Label(context.LaunchProjectile.transform.position + Vector3.up * 5f, nameof(context.ProjectileInherentData.EscapeSemiAngle), MyEditorStyles.LabelYellow);
-            Handles.DrawWireArc(context.LaunchProjectile.transform.position, Vector3.up, context.LaunchProjectile.transform.forward, context.ProjectileInherentData.EscapeSemiAngle, 5f);
-            Handles.DrawWireArc(context.LaunchProjectile.transform.position, Vector3.up, context.LaunchProjectile.transform.forward, -context.ProjectileInherentData.EscapeSemiAngle, 5f);
-
         }
     }
 }

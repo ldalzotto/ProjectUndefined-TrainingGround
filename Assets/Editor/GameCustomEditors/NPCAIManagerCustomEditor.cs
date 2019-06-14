@@ -1,5 +1,6 @@
 ﻿using Editor_GameDesigner;
 using RTPuzzle;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -44,15 +45,29 @@ namespace Editor_GameCustomEditors
         public GenericPuzzleAIComponents GenericPuzzleAIComponents;
     }
 
-    public class AIProjectileEscapeComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    public class AIProjectileEscapeComponent : IDPickGUIModule<NPCAIManager, NPCAIManagerCustomEditorContext, LaunchProjectileId, float>
     {
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        public override Func<NPCAIManagerCustomEditorContext, ByEnumProperty<LaunchProjectileId, float>> GetByEnumProperty
+        {
+            get
+            {
+                return (NPCAIManagerCustomEditorContext NPCAIManagerCustomEditorContext) => NPCAIManagerCustomEditorContext.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2;
+            }
+        }
+
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target, LaunchProjectileId selectedKey)
         {
             Handles.color = Color.blue;
             GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
             labelStyle.normal.textColor = Handles.color;
-            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistance, this.GetType().Name, labelStyle);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistance);
+            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 
+                this.GetType().Name + "_" + selectedKey.ToString(), labelStyle);
+            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey]);
+
+            Handles.color = Color.yellow;
+            Handles.Label(target.transform.position + Vector3.up * 5f, nameof(context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2) + "_" + selectedKey.ToString(), MyEditorStyles.LabelYellow);
+            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 5f);
+            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 5f);
         }
     }
 

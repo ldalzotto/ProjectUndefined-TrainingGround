@@ -65,6 +65,7 @@
     <Compile Include="Assets\Editor\AI\AbstractAIComponentEditor.cs" />
     <Compile Include="Assets\Editor\AI\AiBehaviorInherentDataEditor.cs" />
     <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
+    <Compile Include="Assets\Editor\ByEnumPropertyEditors\ByEnumPropertyEditors.cs" />
     <Compile Include="Assets\Editor\Configuration\AdventureGame\AdventureGameConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\AdventureGame\StaticConfiguration\DiscussionRepertoireConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\Configuration\AdventureGameConfigurationEditorProfile.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\SearchablePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <None Include="Assets\Editor\Editor.asmdef" />

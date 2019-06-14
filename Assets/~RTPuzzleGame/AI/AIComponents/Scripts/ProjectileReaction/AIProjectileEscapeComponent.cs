@@ -9,7 +9,12 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIProjectileEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIProjectileEscapeComponent", order = 1)]
     public class AIProjectileEscapeComponent : AbstractAIComponent
     {
-        public float EscapeDistance;
+        [Inline(createSubIfAbsent: true, FileName = "EscapeDistance")]
+        public ProjectileEscapeRange EscapeDistanceV2;
+
+        [Inline(createSubIfAbsent: true, FileName = "EscapeSemiAngle")]
+        public ProjectileEscapeSemiAngle EscapeSemiAngleV2;
+
         protected override Type abstractManagerType => typeof(AbstractAIProjectileEscapeManager);
     }
 
@@ -49,9 +54,9 @@ namespace RTPuzzle
         }
 
         #region Internal Events
-        protected void OnDestinationSetFromProjectileContact()
+        protected void OnDestinationSetFromProjectileContact(LaunchProjectileId launchProjectileId)
         {
-            this.escapeDestinationManager.ResetDistanceComputation(this.AIProjectileEscapeComponent.EscapeDistance);
+            this.escapeDestinationManager.ResetDistanceComputation(this.AIProjectileEscapeComponent.EscapeDistanceV2.Values[launchProjectileId]);
         }
         #endregion
 
@@ -67,9 +72,13 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public float GetMaxEscapeDistance()
+        public float GetMaxEscapeDistance(LaunchProjectileId launchProjectileId)
         {
-            return this.AIProjectileEscapeComponent.EscapeDistance;
+            return this.AIProjectileEscapeComponent.EscapeDistanceV2.Values[launchProjectileId];
+        }
+        public float GetSemiAngle(LaunchProjectileId launchProjectileId)
+        {
+            return this.AIProjectileEscapeComponent.EscapeSemiAngleV2.Values[launchProjectileId];
         }
         #endregion
 
@@ -88,12 +97,12 @@ namespace RTPuzzle
             this.OnStateReset();
         }
 
-        public virtual void OnTriggerEnter(Vector3 impactPoint, ProjectileInherentData launchProjectileInherentData)
+        public virtual void OnTriggerEnter(Vector3 impactPoint, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterAIBehaviorEvent)
         {
             if (impactPoint != null)
             {
-                this.OnDestinationSetFromProjectileContact();
-                this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, launchProjectileInherentData.EscapeSemiAngle);
+                this.OnDestinationSetFromProjectileContact(projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId);
+                this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, this.AIProjectileEscapeComponent.EscapeSemiAngleV2.Values[projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId]);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation,
                         EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }

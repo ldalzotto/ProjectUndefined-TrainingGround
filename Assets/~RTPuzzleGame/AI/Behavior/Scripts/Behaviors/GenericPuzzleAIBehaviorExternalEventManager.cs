@@ -68,14 +68,16 @@ namespace RTPuzzle
                              this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {
                 this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(projectileTriggerEnterEvent.CollisionPosition,
-                    projectileTriggerEnterEvent.LaunchProjectileInherentData.EscapeSemiAngle, genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetMaxEscapeDistance()), genericAiBehavior);
+                         genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetSemiAngle(projectileTriggerEnterEvent.LaunchProjectileId), 
+                         genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)), 
+                         genericAiBehavior);
             }
             else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED)
                 && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                     || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
                 genericAiBehavior.ManagersStateReset();
-                genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent.LaunchProjectileInherentData);
+                genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent);
             }
         }
 
@@ -134,7 +136,7 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
-            if(!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
+            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
@@ -212,6 +214,7 @@ namespace RTPuzzle
     public class ProjectileTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
         private Vector3 collisionPosition;
+        private LaunchProjectileId launchProjectileId;
         private ProjectileInherentData launchProjectileInherentData;
 
         public ProjectileTriggerEnterAIBehaviorEvent(LaunchProjectile launchProjectile)
@@ -219,12 +222,14 @@ namespace RTPuzzle
             this.collisionPosition = launchProjectile.GetGroundCollisionTrackingCollider().transform.position;
             if (launchProjectile != null)
             {
+                this.launchProjectileId = launchProjectile.LaunchProjectileId;
                 launchProjectileInherentData = launchProjectile.LaunchProjectileInherentData;
             }
         }
 
         public Vector3 CollisionPosition { get => collisionPosition; }
         public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
+        public LaunchProjectileId LaunchProjectileId { get => launchProjectileId; }
     }
 
     public class EscapeWithoutTriggerStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
