@@ -267,6 +267,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ExploreProjectile.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ProjectileModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\AddTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\CreateTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\EditTargetZone.cs" />

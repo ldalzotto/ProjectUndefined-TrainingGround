@@ -1,6 +1,9 @@
 ﻿using ConfigurationEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace RTPuzzle
 {
@@ -37,6 +40,14 @@ namespace RTPuzzle
         public LaunchProjectile ProjectilePrefab { get => projectilePrefab; }
         public float ProjectileThrowRange { get => projectileThrowRange; }
         public GameObject ProjectileModelPrefab { get => projectileModelPrefab; }
+
+#if UNITY_EDITOR
+        public void SetProjectileModelPrefab(GameObject ProjectileModelPrefab)
+        {
+            this.projectileModelPrefab = ProjectileModelPrefab;
+            EditorUtility.SetDirty(this);
+        }
+#endif
 
         public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, LaunchProjectile projectilePrefab)
         {

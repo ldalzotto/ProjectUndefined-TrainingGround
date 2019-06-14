@@ -1,14 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using UnityEditor;
-using System;
+using UnityEngine;
 
 namespace Editor_GameDesigner
 {
     [System.Serializable]
     public abstract class SetModelModule<T> : IGameDesignerModule where T : UnityEngine.Object
     {
-        public GameObject ModelObject;
+        protected GameObject ModelObject;
 
         public void GUITick()
         {
@@ -20,22 +19,27 @@ namespace Editor_GameDesigner
             EditorGUI.BeginDisabledGroup(this.ModelObject == null || currentSelectedObj == null || currentSelectedObj.GetComponent<T>() == null);
             if (GUILayout.Button("SET MODEL"))
             {
-                PrefabUtility.InstantiatePrefab(this.ModelObject, this.FindParent.Invoke(currentSelectedObj.GetComponent<T>()) /*currentSelectedObj.FindChildObjectRecursively("Model").transform*/);
-
+                this.OnClick(currentSelectedObj);
             }
             EditorGUI.EndDisabledGroup();
         }
 
+        protected virtual void OnClick(GameObject currentSelectedObj)
+        {
+           PrefabUtility.InstantiatePrefab(this.ModelObject, this.FindParent.Invoke(currentSelectedObj.GetComponent<T>()));
+        }
+
         protected abstract Func<T, Transform> FindParent { get; }
+
 
         public void OnDisabled()
         {
-      
+
         }
 
-        public void OnEnabled()
+        public virtual void OnEnabled()
         {
-           
+
         }
     }
 }
