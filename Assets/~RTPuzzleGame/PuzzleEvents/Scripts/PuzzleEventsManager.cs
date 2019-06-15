@@ -13,6 +13,7 @@ namespace RTPuzzle
         private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
         private DottedLineRendererManager DottedLineRendererManager;
+        private GroundEffectsManagerV2 GroundEffectsManagerV2;
         #endregion
 
         public void Init()
@@ -24,6 +25,7 @@ namespace RTPuzzle
             this.TimelinesEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
+            this.GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
         }
 
         #region AI related events
@@ -116,6 +118,7 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
+            this.GroundEffectsManagerV2.OnLevelExit();
         }
         
         #region Level Completion Events

@@ -101,9 +101,18 @@ namespace RTPuzzle
                 }
             }
 
-            this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
-            this.BoxRangeBuffer.SetData(this.BoxRangeBufferValues);
-            this.RangeExecutionOrderBuffer.SetData(this.RangeExecutionOrderBufferDataValues);
+            if (this.CircleRangeBuffer.IsValid())
+            {
+                this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
+            }
+            if (this.BoxRangeBuffer.IsValid())
+            {
+                this.BoxRangeBuffer.SetData(this.BoxRangeBufferValues);
+            }
+            if (this.RangeExecutionOrderBuffer.IsValid())
+            {
+                this.RangeExecutionOrderBuffer.SetData(this.RangeExecutionOrderBufferDataValues);
+            }
 
             this.OnCommandBufferUpdate();
         }
@@ -126,6 +135,14 @@ namespace RTPuzzle
                     this.rangeEffectManagers[rangeType.RangeTypeID].OnRangeCreated(boxRangeType);
                 }
             }
+        }
+
+        internal void OnLevelExit()
+        {
+            //release buffers
+            this.CircleRangeBuffer.Release();
+            this.BoxRangeBuffer.Release();
+            this.RangeExecutionOrderBuffer.Release();
         }
 
         internal void OnRangeDestroy(RangeType rangeType)
