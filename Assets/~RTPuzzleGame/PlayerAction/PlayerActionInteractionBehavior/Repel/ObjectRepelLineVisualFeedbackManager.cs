@@ -132,9 +132,11 @@ namespace RTPuzzle
             if (repelableFeedbackLine != null && rangeType != null)
             {
                 var startObject = associatedObjectRepelType.GetParentObject();
+                var startObjectBound = startObject.GetAverageModelBoundLocalSpace();
+                var maxRadius = Mathf.Max(startObjectBound.SideDistances.x, startObjectBound.SideDistances.z) * 0.5f;
                 var startObjectTransform = IRenderBoundRetrievableStatic.FromIRenderBoundRetrievable(startObject).transform;
                 var projectedDirection = Vector3.ProjectOnPlane((startObjectTransform.position - rangeType.GetCenterWorldPos()), startObjectTransform.up).normalized;
-                var startPosition = associatedObjectRepelType.transform.position + IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(startObject);
+                var startPosition = associatedObjectRepelType.transform.position + IRenderBoundRetrievableStatic.GetRepelLineRenderPointLocalOffset(startObject) + (maxRadius * projectedDirection);
 
                 this.repelableFeedbackLine.Tick(d, startPosition, startPosition + (5f * projectedDirection));
             }

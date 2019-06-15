@@ -1,18 +1,23 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
     public interface IRenderBoundRetrievable
     {
-        Bounds GetAverageModelBoundLocalSpace();
+        ExtendedBounds GetAverageModelBoundLocalSpace();
     }
 
     public static class IRenderBoundRetrievableStatic
     {
-        public const float LineYPositionBoundsFactor = 1f;
         public static Vector3 GetLineRenderPointLocalOffset(IRenderBoundRetrievable iRenderBoundRetrievable)
         {
-            return (Vector3.up * iRenderBoundRetrievable.GetAverageModelBoundLocalSpace().max.y * LineYPositionBoundsFactor);// iRenderBoundRetrievable.GetAverageModelBoundLocalSpace();
+            return (Vector3.up * iRenderBoundRetrievable.GetAverageModelBoundLocalSpace().Bounds.max.y);
+        }
+
+        public static Vector3 GetRepelLineRenderPointLocalOffset(IRenderBoundRetrievable iRenderBoundRetrievable)
+        {
+            return (Vector3.up * iRenderBoundRetrievable.GetAverageModelBoundLocalSpace().Bounds.max.y * 0.15f);
         }
 
         public static MonoBehaviour FromIRenderBoundRetrievable(IRenderBoundRetrievable iRenderBoundRetrievable)

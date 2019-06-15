@@ -295,7 +295,7 @@ namespace RTPuzzle
         {
             return this.objectCollider;
         }
-        public Bounds GetAverageModelBoundLocalSpace()
+        public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
             return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
         }

@@ -1,11 +1,28 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace CoreGame
 {
+    public struct ExtendedBounds
+    {
+        private Bounds bounds;
+        public Bounds Bounds { get => bounds; }
+        public Vector3 SideDistances { get => sideDistances; }
+
+        public ExtendedBounds(Bounds bounds)
+        {
+            this.bounds = bounds;
+            this.sideDistances = new Vector3(Mathf.Abs(this.bounds.max.x - this.bounds.min.x),
+                        Mathf.Abs(this.bounds.max.y - this.bounds.min.y),
+                        Mathf.Abs(this.bounds.max.z - this.bounds.min.z));
+        }
+
+        private Vector3 sideDistances;
+
+    }
+
     public class BoundsHelper
     {
-        public static Bounds GetAverageRendererBounds(Renderer[] renderers)
+        public static ExtendedBounds GetAverageRendererBounds(Renderer[] renderers)
         {
             float maxXOffset = 0f;
             float maxYOffset = 0f;
@@ -14,7 +31,7 @@ namespace CoreGame
             float minXOffset = 0f;
             float minYOffset = 0f;
             float minZOffset = 0f;
-            
+
             for (var i = 0; i < renderers.Length; i++)
             {
                 if (i == 0)
@@ -64,8 +81,8 @@ namespace CoreGame
                     }
                 }
             }
-            return new Bounds(new Vector3((maxXOffset - minXOffset) / 2f, (maxYOffset - minYOffset) / 2f, (maxZOffset - minYOffset) / 2f),
-                                 new Vector3(maxXOffset - minXOffset, maxYOffset - minYOffset, maxZOffset - minYOffset));
+            return new ExtendedBounds(new Bounds(new Vector3((maxXOffset - minXOffset) / 2f, (maxYOffset - minYOffset) / 2f, (maxZOffset - minZOffset) / 2f),
+                                 new Vector3(maxXOffset - minXOffset, maxYOffset - minYOffset, maxZOffset - minZOffset)));
         }
     }
 

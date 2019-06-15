@@ -42,7 +42,7 @@ namespace RTPuzzle
         #endregion
 
         #region Properties
-        private Bounds AverageModeBounds;
+        private ExtendedBounds AverageModeBounds;
         #endregion
 
         public AttractiveObjectId AttractiveObjectId;
@@ -89,7 +89,7 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
-        public Bounds GetAverageModelBoundLocalSpace()
+        public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
             return this.AverageModeBounds;
         }

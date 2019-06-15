@@ -98,7 +98,7 @@ namespace RTPuzzle
 
         private void ComputePositionOffset(NPCAIManager npcAiManagerRef)
         {
-            ringPositionOffset = new Vector3(0, npcAiManagerRef.GetAverageModelBoundLocalSpace().max.y, 0);
+            ringPositionOffset = new Vector3(0, npcAiManagerRef.GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
         }
     }
 }
