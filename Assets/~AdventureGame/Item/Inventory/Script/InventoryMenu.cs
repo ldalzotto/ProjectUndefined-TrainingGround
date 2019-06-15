@@ -24,60 +24,67 @@ namespace AdventureGame
         private RectTransform InventoryMenuBodyCellContainer;
         private RectTransform InventoryMenuHead;
 
+        private bool hasBeenInit = false;
+
         public void Init()
         {
-            #region External Dependencies
-            var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            #endregion
-
-            InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform, InventoryDimensionsComponent);
-            InventoryCellContainer = new InventoryCellContainer(InventoryDimensionsComponent.MaxNumberOfItemPerRow, InventoryDimensionsComponent.DisplayedRowNb);
-            InventoryItemSelectedTrackerManager = new InventoryItemSelectedTrackerManager(GameInputManager, InventoryCellContainer, InventoryItemSelectedTrackerManagerComponent);
-
-            InventoryMenuBody = (RectTransform)transform.Find(INVENTORY_MENU_BODY_NAME);
-            InventoryMenuBodySelectionArea = (RectTransform)InventoryMenuBody.Find(INVENTORY_MENU_BODY_SELECTION_NAME);
-            InventoryMenuBodyCellContainer = (RectTransform)InventoryMenuBodySelectionArea.Find(INVENTORY_MENU_BODY_CELL_CONTAINER);
-            InventoryMenuHead = (RectTransform)transform.Find(INVENTORY_MENU_HEAD_NAME);
-
-            var bodyFullWidth = InventoryDimensionsComponent.ComputeInventoryWindowFullWidth();
-            var bodyFullHeight = InventoryDimensionsComponent.ComputeInventoryWindowFullHeight();
-
-            InventoryMenuBody.sizeDelta = new Vector2(bodyFullWidth, bodyFullHeight);
-            InventoryMenuBodySelectionArea.sizeDelta = new Vector2(
-                InventoryDimensionsComponent.ComputeInventoryWindowSelectionAreaWidth(),
-                InventoryDimensionsComponent.ComputeInventoryWindowSelectionAreaHeight());
-            InventoryMenuHead.localPosition = new Vector3(bodyFullWidth / 3, bodyFullHeight / 2, InventoryMenuHead.localPosition.z);
-
-
-            //initialize cells
-            InventoryMenuBodyCellContainer.localPosition = new Vector3(InventoryMenuBodySelectionArea.rect.xMin + InventoryDimensionsComponent.ItemIconWidth / 2, InventoryMenuBodySelectionArea.rect.yMax - (InventoryDimensionsComponent.ItemIconWidth / 2) - InventoryDimensionsComponent.ItemSelectionAreaBorder, 0);
-            for (var i = 0; i < InventoryDimensionsComponent.DisplayedRowNb * InventoryDimensionsComponent.MaxNumberOfItemPerRow; i++)
+            if (!hasBeenInit)
             {
-                var inventoryCell = Instantiate(PrefabContainer.Instance.InventoryMenuCellPrefab, InventoryMenuBodyCellContainer, false).GetComponent<InventoryCell>();
-                inventoryCell.Init();
-                ((RectTransform)inventoryCell.transform).sizeDelta = new Vector2(InventoryDimensionsComponent.ItemIconWidth, InventoryDimensionsComponent.ItemIconWidth);
+                #region External Dependencies
+                var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+                #endregion
 
-                var repeatedIndices = Mathf.Repeat(i, InventoryDimensionsComponent.MaxNumberOfItemPerRow);
-                var lineNb = Mathf.FloorToInt(i / InventoryDimensionsComponent.MaxNumberOfItemPerRow);
-                ((RectTransform)inventoryCell.transform).localPosition = new Vector3(
-                 InventoryDimensionsComponent.ItemSelectionAreaBorder + (repeatedIndices * InventoryDimensionsComponent.ItemIconWidth) + Mathf.Max(0f, (repeatedIndices) * InventoryDimensionsComponent.BetweenItemSpace),
-                  -lineNb * (InventoryDimensionsComponent.ItemIconWidth + InventoryDimensionsComponent.BetweenItemSpace),
-                    0);
-                InventoryCellContainer.Set(i, inventoryCell);
+                InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform, InventoryDimensionsComponent);
+                InventoryCellContainer = new InventoryCellContainer(InventoryDimensionsComponent.MaxNumberOfItemPerRow, InventoryDimensionsComponent.DisplayedRowNb);
+                InventoryItemSelectedTrackerManager = new InventoryItemSelectedTrackerManager(GameInputManager, InventoryCellContainer, InventoryItemSelectedTrackerManagerComponent);
+
+                InventoryMenuBody = (RectTransform)transform.Find(INVENTORY_MENU_BODY_NAME);
+                InventoryMenuBodySelectionArea = (RectTransform)InventoryMenuBody.Find(INVENTORY_MENU_BODY_SELECTION_NAME);
+                InventoryMenuBodyCellContainer = (RectTransform)InventoryMenuBodySelectionArea.Find(INVENTORY_MENU_BODY_CELL_CONTAINER);
+                InventoryMenuHead = (RectTransform)transform.Find(INVENTORY_MENU_HEAD_NAME);
+
+                var bodyFullWidth = InventoryDimensionsComponent.ComputeInventoryWindowFullWidth();
+                var bodyFullHeight = InventoryDimensionsComponent.ComputeInventoryWindowFullHeight();
+
+                InventoryMenuBody.sizeDelta = new Vector2(bodyFullWidth, bodyFullHeight);
+                InventoryMenuBodySelectionArea.sizeDelta = new Vector2(
+                    InventoryDimensionsComponent.ComputeInventoryWindowSelectionAreaWidth(),
+                    InventoryDimensionsComponent.ComputeInventoryWindowSelectionAreaHeight());
+                InventoryMenuHead.localPosition = new Vector3(bodyFullWidth / 3, bodyFullHeight / 2, InventoryMenuHead.localPosition.z);
+
+
+                //initialize cells
+                InventoryMenuBodyCellContainer.localPosition = new Vector3(InventoryMenuBodySelectionArea.rect.xMin + InventoryDimensionsComponent.ItemIconWidth / 2, InventoryMenuBodySelectionArea.rect.yMax - (InventoryDimensionsComponent.ItemIconWidth / 2) - InventoryDimensionsComponent.ItemSelectionAreaBorder, 0);
+                for (var i = 0; i < InventoryDimensionsComponent.DisplayedRowNb * InventoryDimensionsComponent.MaxNumberOfItemPerRow; i++)
+                {
+                    var inventoryCell = Instantiate(PrefabContainer.Instance.InventoryMenuCellPrefab, InventoryMenuBodyCellContainer, false).GetComponent<InventoryCell>();
+                    inventoryCell.Init();
+                    ((RectTransform)inventoryCell.transform).sizeDelta = new Vector2(InventoryDimensionsComponent.ItemIconWidth, InventoryDimensionsComponent.ItemIconWidth);
+
+                    var repeatedIndices = Mathf.Repeat(i, InventoryDimensionsComponent.MaxNumberOfItemPerRow);
+                    var lineNb = Mathf.FloorToInt(i / InventoryDimensionsComponent.MaxNumberOfItemPerRow);
+                    ((RectTransform)inventoryCell.transform).localPosition = new Vector3(
+                     InventoryDimensionsComponent.ItemSelectionAreaBorder + (repeatedIndices * InventoryDimensionsComponent.ItemIconWidth) + Mathf.Max(0f, (repeatedIndices) * InventoryDimensionsComponent.BetweenItemSpace),
+                      -lineNb * (InventoryDimensionsComponent.ItemIconWidth + InventoryDimensionsComponent.BetweenItemSpace),
+                        0);
+                    InventoryCellContainer.Set(i, inventoryCell);
+                }
+
+                InventoryItemSelectedTrackerManager.Init();
+
+                //position inventory at the bottom of the screen
+                var mainCanvasTransform = (RectTransform)transform.parent;
+                transform.localPosition = new Vector3(0f, (-bodyFullHeight - mainCanvasTransform.sizeDelta.y) / 2, InventoryMenuBody.position.z);
+
+                //initialize animations
+                InventoryAnimationManager.InitializeAnimations((RectTransform)transform);
+
+                InventoryMenuBody.gameObject.SetActive(true);
+                InventoryMenuHead.gameObject.SetActive(true);
+
+                hasBeenInit = true;
             }
-
-            InventoryItemSelectedTrackerManager.Init();
-
-            //position inventory at the bottom of the screen
-            var mainCanvasTransform = (RectTransform)transform.parent;
-            transform.localPosition = new Vector3(0f, (-bodyFullHeight - mainCanvasTransform.sizeDelta.y) / 2, InventoryMenuBody.position.z);
-
-            //initialize animations
-            InventoryAnimationManager.InitializeAnimations((RectTransform)transform);
-
-            InventoryMenuBody.gameObject.SetActive(true);
-            InventoryMenuHead.gameObject.SetActive(true);
-
+           
         }
 
         public void TickAnimation(float d)

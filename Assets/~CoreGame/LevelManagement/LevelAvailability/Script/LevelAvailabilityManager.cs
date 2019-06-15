@@ -16,19 +16,25 @@ namespace CoreGame
         public void Init()
         {
             this.LevelAvailabilityPersistanceManager = new LevelAvailabilityPersistanceManager();
-            var loadedLevelAvailability = this.LevelAvailabilityPersistanceManager.Load();
-            if (loadedLevelAvailability == null)
+
+            if (this.levelAvailability == null)
             {
-                this.levelAvailability = new LevelAvailability();
+                var loadedLevelAvailability = this.LevelAvailabilityPersistanceManager.Load();
+                if (loadedLevelAvailability == null)
+                {
+                    this.levelAvailability = new LevelAvailability();
+                }
+                else
+                {
+                    this.levelAvailability = loadedLevelAvailability;
+                }
             }
-            else
-            {
-                this.levelAvailability = loadedLevelAvailability;
-            }
+
             if (this.SynchLevelAvailabilityFromAllLevel())
             {
                 this.Persist();
             }
+            
         }
 
         private bool SynchLevelAvailabilityFromAllLevel()

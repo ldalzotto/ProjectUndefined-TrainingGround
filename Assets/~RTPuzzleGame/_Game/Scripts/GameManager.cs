@@ -121,6 +121,8 @@ namespace RTPuzzle
         {
             var d = Time.deltaTime;
 
+            this.BeforeTick(d);
+
             if (!GameOverManager.OnGameOver)
             {
                 PlayerActionManager.Tick(d);

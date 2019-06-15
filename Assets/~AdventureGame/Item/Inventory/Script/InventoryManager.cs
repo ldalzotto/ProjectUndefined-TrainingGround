@@ -11,7 +11,7 @@ namespace AdventureGame
     {
         private const string INVENTORY_ITEMS_CONTAINER_NAME = "InventoryItems";
 
-        private List<ItemID> holdItems = new List<ItemID>();
+        private List<ItemID> holdItems;
 
         #region External Dependencies
         private InventoryEventManager InventoryEventManager;
@@ -28,6 +28,7 @@ namespace AdventureGame
 
         public void Init()
         {
+            Debug.Log(MyLog.Format("Inventory init"));
             #region External dependencies
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
@@ -45,15 +46,21 @@ namespace AdventureGame
 
             InventoryPersister = new InventoryPersister();
 
-            var persistedHoldItems = InventoryPersister.Load();
-            if (persistedHoldItems == null)
+
+            if (this.holdItems == null)
             {
-                this.PersistCurrentItems();
+                this.holdItems = new List<ItemID>();
+                var persistedHoldItems = InventoryPersister.Load();
+                if (persistedHoldItems == null)
+                {
+                    this.PersistCurrentItems();
+                }
+                else
+                {
+                    PersistInputItems(persistedHoldItems);
+                }
             }
-            else
-            {
-                PersistInputItems(persistedHoldItems);
-            }
+
         }
 
         public void Tick(float d)
@@ -129,6 +136,7 @@ namespace AdventureGame
         }
 
         #endregion
+
 
         private void PersistInputItems(List<ItemID> persistedHoldItems)
         {

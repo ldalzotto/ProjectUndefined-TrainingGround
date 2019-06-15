@@ -23,21 +23,26 @@ namespace AdventureGame
         public override void Init()
         {
             this.GhostPOIManagerPersister = new GhostPOIManagerPersister();
-            var loadedGhostPOIS = this.GhostPOIManagerPersister.Load();
-            if (loadedGhostPOIS == null)
+
+            if (this.ghostPOIs == null)
             {
-                ghostPOIs = new Dictionary<PointOfInterestId, GhostPOI>();
-                var poiIds = Enum.GetValues(typeof(PointOfInterestId)).Cast<PointOfInterestId>();
-                foreach (var poiId in poiIds)
+                var loadedGhostPOIS = this.GhostPOIManagerPersister.Load();
+                if (loadedGhostPOIS == null)
                 {
-                    ghostPOIs.Add(poiId, new GhostPOI());
+                    ghostPOIs = new Dictionary<PointOfInterestId, GhostPOI>();
+                    var poiIds = Enum.GetValues(typeof(PointOfInterestId)).Cast<PointOfInterestId>();
+                    foreach (var poiId in poiIds)
+                    {
+                        ghostPOIs.Add(poiId, new GhostPOI());
+                    }
+                }
+                else
+                {
+                    this.ghostPOIs = loadedGhostPOIS;
                 }
             }
-            else
-            {
-                this.ghostPOIs = loadedGhostPOIS;
-            }
-            foreach(var ghostPOI in this.ghostPOIs.Values)
+
+            foreach (var ghostPOI in this.ghostPOIs.Values)
             {
                 ghostPOI.Init(this);
             }
@@ -65,7 +70,7 @@ namespace AdventureGame
         {
 
         }
-        
+
 
         public void OnGhostPOIChanged()
         {
@@ -185,7 +190,7 @@ namespace AdventureGame
             this.ghostsPOIManagerRef.OnGhostPOIChanged();
         }
 
-        
+
     }
 
     #region Context Action Synchronizer

@@ -148,6 +148,10 @@ namespace Tests
             
             }
 
+            public override void Tick(float d)
+            {
+            }
+
             public override void OnPersistRequested(Action persistAction)
             {
             }
@@ -163,7 +167,7 @@ namespace Tests
             public override void Init()
             {
             }
-
+            
             public override void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
             {
                 

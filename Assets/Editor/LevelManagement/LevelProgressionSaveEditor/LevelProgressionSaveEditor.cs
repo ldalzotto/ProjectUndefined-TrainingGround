@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using CoreGame;
-using UnityEngine.UIElements;
+﻿using CoreGame;
 using System.Collections.Generic;
-using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Editor_LevelProgressionSaveEditor
 {
@@ -28,14 +28,17 @@ namespace Editor_LevelProgressionSaveEditor
         private void OnEnable()
         {
             this.LevelAvailabilityPersistanceManager = new LevelAvailabilityPersistanceManager();
-            this.CurrentLevelAvailability = this.LevelAvailabilityPersistanceManager.Load();
+            var folderPath = Path.Combine(Application.persistentDataPath, LevelAvailabilityPersistanceManager.FolderName);
+            this.CurrentLevelAvailability = PersistanceManager.LoadStatic<LevelAvailability>(folderPath,
+              AbstractGamePersister<string>.GetDataPath(folderPath, LevelAvailabilityPersistanceManager.FileName, LevelAvailabilityPersistanceManager.FileExtension),
+              LevelAvailabilityPersistanceManager.FileName, LevelAvailabilityPersistanceManager.FileExtension, new BinaryFormatter());
             this.LevelChunkIDSearch = new RegexTextFinder();
         }
 
         private void OnGUI()
         {
             EditorGUILayout.BeginVertical();
-            EditorGUILayout.TextArea(this.LevelAvailabilityPersistanceManager.GetDataPath());
+          //  EditorGUILayout.TextArea(this.LevelAvailabilityPersistanceManager.GetDataPath());
 
             this.LevelChunkIDSearch.GUITick();
             Dictionary<LevelZoneChunkID, bool> newValuesToSet = null;
@@ -62,9 +65,9 @@ namespace Editor_LevelProgressionSaveEditor
                 }
             }
 
-            if(newValuesToSet != null)
+            if (newValuesToSet != null)
             {
-                foreach(var newValue in newValuesToSet)
+                foreach (var newValue in newValuesToSet)
                 {
                     this.CurrentLevelAvailability.LevelZoneChunkAvailability[newValue.Key] = newValue.Value;
                 }

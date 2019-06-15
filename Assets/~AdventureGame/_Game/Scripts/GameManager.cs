@@ -62,7 +62,9 @@ namespace AdventureGame
         void Update()
         {
             var d = Time.deltaTime;
-            
+
+            this.BeforeTick(d);
+
             AdventureLevelChunkFXTransitionManager.Tick(d);
             ContextActionWheelManager.Tick(d);
             ContextActionManager.Tick(d);

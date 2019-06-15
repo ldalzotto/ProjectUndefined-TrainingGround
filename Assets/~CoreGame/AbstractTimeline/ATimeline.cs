@@ -9,7 +9,6 @@ namespace CoreGame
     public interface ITimelineNodeManager
     {
         void Init();
-        void PersistAsync();
         void IncrementGraph(TimeLineAction executedTimelineAction);
 
     }
@@ -51,16 +50,19 @@ namespace CoreGame
             if (this.isPersisted)
             {
                 this.timelinePersister = new ATimelinePersister<NODE_KEY>(this.GetType());
-                var loadedNodes = this.timelinePersister.Load();
+                if(this.nodes.Count == 0)
+                {
+                    var loadedNodes = this.timelinePersister.Load();
 
-                if (loadedNodes == null)
-                {
-                    InitFromConfig();
-                    this.PersistAsync();
-                }
-                else
-                {
-                    this.nodes = loadedNodes;
+                    if (loadedNodes == null)
+                    {
+                        InitFromConfig();
+                        this.PersistAsync();
+                    }
+                    else
+                    {
+                        this.nodes = loadedNodes;
+                    }
                 }
             }
             else
@@ -94,7 +96,7 @@ namespace CoreGame
             }
         }
 
-        public void PersistAsync()
+        private void PersistAsync()
         {
             if (this.timelinePersister != null)
             {
