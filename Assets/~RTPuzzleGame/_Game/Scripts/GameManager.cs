@@ -29,6 +29,7 @@ namespace RTPuzzle
         private GameOverManager GameOverManager;
         private ObjectRepelContainerManager ObjectRepelContainerManager;
         private DottedLineRendererManager DottedLineRendererManager;
+        private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -70,6 +71,7 @@ namespace RTPuzzle
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
             ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
             DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
+            ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -103,6 +105,7 @@ namespace RTPuzzle
             NpcInteractionRingRendererManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             GameObject.FindObjectOfType<ObjectRepelContainer>().Init();
+            ObjectRepelLineVisualFeedbackManager.Init();
             ObjectRepelContainerManager.Init();
             AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
@@ -146,6 +149,7 @@ namespace RTPuzzle
                 RangeTypeContainer.Tick(d);
                 GroundEffectsManagerV2.Tick(d);
                 InRangeEffectManager.Tick(d);
+                ObjectRepelLineVisualFeedbackManager.Tick(d);
                 NpcInteractionRingRendererManager.Tick(d);
                 DottedLineRendererManager.Tick();
             }

@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -34,7 +33,12 @@ namespace RTPuzzle
         {
             while (this.ComputeBeziersInnerPointResponses.Count > 0)
             {
-                var ComputeBeziersInnerPointResponse = this.ComputeBeziersInnerPointResponses.Dequeue();
+                ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse;
+                lock (this.ComputeBeziersInnerPointResponses)
+                {
+                    ComputeBeziersInnerPointResponse = this.ComputeBeziersInnerPointResponses.Dequeue();
+                }
+
                 if (this.DottedLines.ContainsKey(ComputeBeziersInnerPointResponse.ID))
                 {
                     CombineInstance[] combine = new CombineInstance[ComputeBeziersInnerPointResponse.Transforms.Count];
@@ -65,12 +69,18 @@ namespace RTPuzzle
         }
         public virtual void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
         {
-            this.ComputeBeziersInnerPointResponses.Enqueue(ComputeBeziersInnerPointResponse);
+            lock (this.ComputeBeziersInnerPointResponses)
+            {
+                this.ComputeBeziersInnerPointResponses.Enqueue(ComputeBeziersInnerPointResponse);
+            }
         }
 
         public virtual void OnLevelExit()
         {
-            this.ComputeBeziersInnerPointResponses.Clear();
+            lock (this.ComputeBeziersInnerPointResponses)
+            {
+                this.ComputeBeziersInnerPointResponses.Clear();
+            }
             this.DottedLineManagerThread.Abort();
         }
         #endregion

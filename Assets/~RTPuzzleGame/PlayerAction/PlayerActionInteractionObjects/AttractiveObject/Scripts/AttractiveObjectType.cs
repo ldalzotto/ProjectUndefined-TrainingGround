@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public class AttractiveObjectType : MonoBehaviour
+    public class AttractiveObjectType : MonoBehaviour, IRenderBoundRetrievable
     {
 
         public static AttractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
@@ -89,7 +89,7 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
-        public Bounds GetAverageModelBound()
+        public Bounds GetAverageModelBoundLocalSpace()
         {
             return this.AverageModeBounds;
         }

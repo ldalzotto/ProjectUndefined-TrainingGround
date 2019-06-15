@@ -7,7 +7,10 @@ namespace RTPuzzle
     {
         public RepelableObjectID RepelableObjectID;
 
+        #region Internal Dependencies
         private Collider objectRepelCollider;
+        private IRenderBoundRetrievable parentObjectBounds;
+        #endregion
 
         public Collider ObjectRepelCollider { get => objectRepelCollider; }
 
@@ -16,6 +19,7 @@ namespace RTPuzzle
         public void Init()
         {
             this.objectRepelCollider = GetComponent<Collider>();
+            this.parentObjectBounds = GetComponentInParent<IRenderBoundRetrievable>();
         }
 
         public static ObjectRepelType FromCollisionType(CollisionType collisionType)
@@ -54,6 +58,13 @@ namespace RTPuzzle
             objectRepelTypeAnimationComponent.elapsedTime = 0.1f;
             this.Tick(0, 0);
         }
+
+        #region Data Retrieval
+        public IRenderBoundRetrievable GetParentObject()
+        {
+            return this.parentObjectBounds;
+        }
+        #endregion
     }
 
     public class ObjectRepelTypeAnimationComponent
@@ -62,5 +73,6 @@ namespace RTPuzzle
         public float elapsedTime;
         public BeziersControlPoints path;
     }
+
 }
 

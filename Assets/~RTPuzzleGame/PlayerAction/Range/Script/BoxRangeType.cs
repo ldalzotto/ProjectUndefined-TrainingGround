@@ -9,13 +9,11 @@ namespace RTPuzzle
         private BoxCollider BoxCollider;
         #endregion
 
-        public Vector3 WorldPositionCenter;
         public Vector3 LocalSize;
 
         public override void Init()
         {
             this.BoxCollider = GetComponent<BoxCollider>();
-            this.WorldPositionCenter = this.BoxCollider.center + this.transform.position;
             this.LocalSize = this.BoxCollider.size;
             base.Init();
         }
@@ -33,6 +31,11 @@ namespace RTPuzzle
         public override bool IsInside(Vector3 worldPointComparison)
         {
             return false;
+        }
+
+        public override Vector3 GetCenterWorldPos()
+        {
+            return this.BoxCollider.center + this.transform.position;
         }
     }
 

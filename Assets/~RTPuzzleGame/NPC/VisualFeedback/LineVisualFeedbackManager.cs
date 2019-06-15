@@ -4,7 +4,6 @@ namespace RTPuzzle
 {
     public class LineVisualFeedbackManager
     {
-        public const float LineYPositionBoundsFactor = 0.8f;
 
         #region External Dependencies
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
@@ -19,8 +18,7 @@ namespace RTPuzzle
             this.DottedLineContainer = GameObject.FindObjectOfType<DottedLineContainer>();
 
             //position calculation
-            var renderedBoundsOffset = nPCAIManagerRef.GetAverageRendererBoundsLocalSpace();
-            this.positionOffsetFromNPC = new Vector3(0, renderedBoundsOffset.max.y * LineYPositionBoundsFactor, 0);
+            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(nPCAIManagerRef);
         }
 
         private Vector3 positionOffsetFromNPC;
@@ -47,7 +45,7 @@ namespace RTPuzzle
             }
             this.AttractiveObjectId = attractiveObjectId;
             var attractiveObject = this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId);
-            this.targetWorldPositionOffset = new Vector3(0, attractiveObject.GetAverageModelBound().max.y * LineYPositionBoundsFactor, 0);
+            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(attractiveObject);
         }
         public void OnAttractiveObjectEnd()
         {

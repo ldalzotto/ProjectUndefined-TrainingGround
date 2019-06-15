@@ -9,7 +9,7 @@ using UnityEditor;
 namespace RTPuzzle
 {
 
-    public class NPCAIManager : MonoBehaviour
+    public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable
     {
 
         public const string AnimationName_OnHittedByProjectileFirstTime = "OnHittedByProjectileFirstTime";
@@ -295,7 +295,7 @@ namespace RTPuzzle
         {
             return this.objectCollider;
         }
-        public Bounds GetAverageRendererBoundsLocalSpace()
+        public Bounds GetAverageModelBoundLocalSpace()
         {
             return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
         }

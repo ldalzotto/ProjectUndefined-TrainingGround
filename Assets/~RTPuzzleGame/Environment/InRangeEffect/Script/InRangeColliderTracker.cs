@@ -8,13 +8,24 @@ namespace RTPuzzle
         private List<Renderer> involvedRenderers = new List<Renderer>();
 
         #region External Dependencies
-        private InRangeEffectManager InRangeEffectManager;
+        private RangeEventsManager RangeEventsManager;
         #endregion
+
+        #region Internal Dependencies
+        private CollisionType CollisionType;
+        private MonoBehaviour trackedObject;
+        #endregion
+
+        private Dictionary<RangeTypeID, bool> rangesInContact;
 
         public List<Renderer> InvolvedRenderers { get => involvedRenderers; }
 
         private void Start()
         {
+            #region External Dependencies
+            this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();
+            #endregion
+
             var r = this.GetAllowedRenderer();
             if (r != null)
             {
@@ -27,7 +38,9 @@ namespace RTPuzzle
                 involvedRenderers.AddRange(this.GetAllRenderersInChildrenFiltered(this.transform.parent));
             }
 
-            this.InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
+            this.CollisionType = GetComponent<CollisionType>();
+            this.rangesInContact = new Dictionary<RangeTypeID, bool>();
+            this.ResolveTrackedObject();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -35,7 +48,7 @@ namespace RTPuzzle
             var rangeType = RangeType.RetrieveFromCollisionType(other.GetComponent<CollisionType>());
             if (rangeType != null)
             {
-                this.InRangeEffectManager.OnInRangeAdd(this, rangeType);
+                this.RangeEventsManager.RANGE_EVT_InsideRangeTracker(this, rangeType);
             }
         }
 
@@ -44,10 +57,11 @@ namespace RTPuzzle
             var rangeType = RangeType.RetrieveFromCollisionType(other.GetComponent<CollisionType>());
             if (rangeType != null)
             {
-                this.InRangeEffectManager.OnInRangeRemove(this, rangeType);
+                this.RangeEventsManager.RANGE_EVT_OutsideRangeTracker(this, rangeType);
             }
         }
 
+        #region DataRetrieval
         private Renderer GetAllowedRenderer()
         {
             var r = this.GetComponent<Renderer>();
@@ -75,10 +89,31 @@ namespace RTPuzzle
             }
             return new List<Renderer>();
         }
+        #endregion
+
+        #region Tracked Object Retrieval
+        public ObjectRepelType GetTrackedRepelableObject()
+        {
+            if (this.trackedObject != null && this.trackedObject.GetType() == typeof(ObjectRepelType))
+            {
+                return (ObjectRepelType)this.trackedObject;
+            }
+            return null;
+        }
+        #endregion
 
         private bool FilterRendererToAllowed(Renderer r)
         {
             return (r != null && (r.GetType() == typeof(MeshRenderer) || r.GetType() == typeof(SkinnedMeshRenderer)));
         }
+
+        private void ResolveTrackedObject()
+        {
+            if (this.CollisionType.IsRepelable)
+            {
+                this.trackedObject = this.GetComponent<ObjectRepelType>();
+            }
+        }
     }
+
 }

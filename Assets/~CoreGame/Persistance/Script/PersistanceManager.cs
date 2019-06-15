@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -64,7 +63,8 @@ namespace CoreGame
                 {
                     this.persistThread.RunWorkerAsync(nextAction);
                 }
-            } else
+            }
+            else
             {
                 this.AutoSaveIcon.OnSaveEnd();
             }

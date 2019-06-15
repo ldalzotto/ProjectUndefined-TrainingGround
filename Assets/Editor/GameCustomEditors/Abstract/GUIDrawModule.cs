@@ -37,7 +37,11 @@ namespace Editor_GameCustomEditors
             var availableEnums = GetByEnumProperty.Invoke(context).Values.Keys.ToList();
             base.EditorGUI(context, target);
             this.selectedEnumIndex = EditorGUILayout.Popup(this.selectedEnumIndex, availableEnums.ConvertAll(e => e.ToString()).ToArray(), GUILayout.Width(30f));
-            this.selectedKey = availableEnums[this.selectedEnumIndex];
+            if(availableEnums.Count > 0)
+            {
+                this.selectedKey = availableEnums[this.selectedEnumIndex];
+            }
+           
             EditorGUILayout.EndHorizontal();
         }
 

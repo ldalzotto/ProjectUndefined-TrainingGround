@@ -11,7 +11,8 @@ namespace RTPuzzle
     public enum DottedLineID
     {
         PROJECTILE_POSITIONING,
-        ATTRACTIVE_OBJECT
+        ATTRACTIVE_OBJECT,
+        REPELABLE_OBJECT_FEEDBACK
     }
 
 }

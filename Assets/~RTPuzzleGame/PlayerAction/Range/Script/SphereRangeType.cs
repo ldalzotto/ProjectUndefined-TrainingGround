@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -50,14 +49,14 @@ namespace RTPuzzle
         {
             return this.sphereCollider.radius;
         }
-        public Vector3 GetCenterWorldPos()
-        {
-            return transform.TransformPoint(this.sphereCollider.center);
-        }
-
         public override Collider GetCollider()
         {
             return this.sphereCollider;
+        }
+
+        public override Vector3 GetCenterWorldPos()
+        {
+            return transform.TransformPoint(this.sphereCollider.center);
         }
     }
 }
