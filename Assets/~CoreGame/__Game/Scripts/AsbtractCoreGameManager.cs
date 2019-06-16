@@ -23,6 +23,10 @@ namespace CoreGame
             GameObject.FindObjectOfType<AGhostPOIManager>().Init();
             this.ATimelinesManager.Init();
             GameObject.FindObjectOfType<TimelinesEventManager>().Init();
+            GameObject.FindObjectOfType<LevelTransitionManager>().Init();
+            GameObject.FindObjectOfType<LevelManagerEventManager>().Init();
+            GameObject.FindObjectOfType<PlayerAdventurePositionManager>().Init();
+
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
         }
 

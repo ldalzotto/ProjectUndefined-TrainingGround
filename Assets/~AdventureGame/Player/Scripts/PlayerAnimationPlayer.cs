@@ -60,7 +60,10 @@ namespace AdventureGame
                 }
                 else if (sliceAnimations.Length == currentIndex + 1)
                 {
-                    sliceAnimation.AnimationEndCallback.Invoke();
+                    if (sliceAnimation.AnimationEndCallback != null)
+                    {
+                        sliceAnimation.AnimationEndCallback.Invoke();
+                    }
                 }
                 return null;
             });

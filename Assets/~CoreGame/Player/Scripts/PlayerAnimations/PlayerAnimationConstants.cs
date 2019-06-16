@@ -10,7 +10,7 @@ namespace CoreGame
         {
             private static Dictionary<PlayerBone, string> BoneNames = new Dictionary<PlayerBone, string>()
     {
-        {PlayerBone.HEAD, "Head_0"},
+        {PlayerBone.HEAD, "Head"},
         {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem_R" },
         {PlayerBone.RIGH_FINGERS, "Figers_R" },
         {PlayerBone.HOOD, "Hood"},

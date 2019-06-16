@@ -1,16 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CoreGame
 {
-    public abstract class AbstractLevelTransitionManager : MonoBehaviour
+    public class LevelTransitionManager : MonoBehaviour
     {
         #region External Dependencies
         private Coroutiner Coroutiner;
         private LevelManager LevelManager;
         private CoreConfigurationManager CoreConfigurationManager;
+        private LevelManagerEventManager LevelManagerEventManager;
         #endregion
         private bool isNewZoneLoading;
 
@@ -18,6 +19,7 @@ namespace CoreGame
         {
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.LevelManagerEventManager = GameObject.FindObjectOfType<LevelManagerEventManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
         }
 
@@ -34,16 +36,15 @@ namespace CoreGame
         private void OnLevelChange(LevelZonesID nextZone, LevelChangeType LevelChangeType)
         {
             isNewZoneLoading = true;
-            this.OnLevelChange_IMPL();
 
             List<AsyncOperation> chunkOperations = null;
-            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE || LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE )
+            if (LevelChangeType == LevelChangeType.ADVENTURE_TO_PUZZLE || LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
             {
-                chunkOperations = this.LevelManager.OnAdventureToPuzzleLevel(nextZone);
+                chunkOperations = this.LevelManagerEventManager.CORE_EVT_OnAdventureToPuzzleLevel(nextZone);
             }
             else
             {
-                chunkOperations = this.LevelManager.OnPuzzleToAdventureLevel(nextZone);
+                chunkOperations = this.LevelManagerEventManager.CORE_EVT_OnPuzzleToAdventureLevel(nextZone);
             }
 
             foreach (var chunkOperation in chunkOperations)
@@ -68,8 +69,6 @@ namespace CoreGame
             yield return null;
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextZoneSceneName));
         }
-
-        protected abstract void OnLevelChange_IMPL();
         #endregion
 
         #region Logical Conditions

@@ -10,7 +10,7 @@ namespace RTPuzzle
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
-        private AbstractLevelTransitionManager PuzzleLevelTransitionManager;
+        private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
@@ -21,7 +21,7 @@ namespace RTPuzzle
             this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
-            this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
+            this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();
             this.TimelinesEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();

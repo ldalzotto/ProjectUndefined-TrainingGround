@@ -41,7 +41,6 @@ namespace AdventureGame
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
 
             //initialization
-            GameObject.FindObjectOfType<AbstractLevelTransitionManager>().Init();
             AdventureLevelChunkFXTransitionManager.Init();
             PlayerManager.Init();
             StartCoroutine(PointOfInterestInitialisationAtEndOfFrame());

@@ -8,7 +8,7 @@ using UnityEngine.AI;
 namespace AdventureGame
 {
 
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : PlayerManagerType
     {
         private const string ObstacelOvercomeObjectName = "ObstacleOvercomeTrigger";
 
@@ -51,6 +51,15 @@ namespace AdventureGame
             InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             #endregion
 
+            #region Load Persisted Position
+            var playerPosition = GameObject.FindObjectOfType<PlayerAdventurePositionManager>().PlayerPositionBeforeLevelLoad;
+            if (playerPosition != null)
+            {
+                this.transform.position = playerPosition.GetPosition();
+                this.transform.rotation = playerPosition.GetQuaternion();
+            }
+            #endregion
+
             GameObject playerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
             BoxCollider obstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
             Animator playerAnimator = GetComponentInChildren<Animator>();
@@ -62,7 +71,7 @@ namespace AdventureGame
             SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
 
-            this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent);
+            this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
             this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerAIMoveManager = new PlayerAIMoveManager(playerRigidBody, playerAgent, transform, this);
@@ -246,6 +255,10 @@ namespace AdventureGame
             return PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest;
         }
 
+        public override PlayerPosition GetPlayerPosition()
+        {
+            return new PlayerPosition(this.transform.position, this.transform.rotation, this.CameraFollowManager.GetCameraPivotPointTransform().rotation);
+        }
     }
 
     #region Player Movement

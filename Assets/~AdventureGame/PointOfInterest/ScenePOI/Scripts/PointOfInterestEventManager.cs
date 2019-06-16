@@ -10,7 +10,7 @@ namespace AdventureGame
         private PlayerManager PlayerManager;
         private PointOfInterestManager PointOfInterestManager;
         private GhostsPOIManager GhostsPOIManager;
-        private AbstractLevelTransitionManager levelTransitionManager;
+        private LevelTransitionManager levelTransitionManager;
 
 
         public void Init()
@@ -18,16 +18,16 @@ namespace AdventureGame
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-            levelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>();
+            levelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();
         }
 
-        private AbstractLevelTransitionManager LevelTransitionManager
+        private LevelTransitionManager LevelTransitionManager
         {
             get
             {
                 if (levelTransitionManager == null)
                 {
-                    levelTransitionManager = GameObject.FindObjectOfType<AbstractLevelTransitionManager>(); ;
+                    levelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>(); ;
                 }
                 return levelTransitionManager;
             }
