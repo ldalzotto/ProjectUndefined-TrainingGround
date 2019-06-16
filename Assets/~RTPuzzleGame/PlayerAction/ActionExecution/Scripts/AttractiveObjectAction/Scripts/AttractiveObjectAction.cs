@@ -64,14 +64,18 @@ namespace RTPuzzle
         public override void Tick(float d)
         {
             this.AttractiveObjectPlayerAnimationManager.Tick(d);
-            this.AttractiveObjectInputManager.Tick();
-            if (this.AttractiveObjectInputManager.ActionButtonPressed)
+
+            if (!this.AttractiveObjectPlayerAnimationManager.IsOkInputAnimationRunning)
             {
-                this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionOKInput();
-            }
-            if (this.AttractiveObjectInputManager.ReturnButtonPressed)
-            {
-                this.OnEndAction();
+                this.AttractiveObjectInputManager.Tick();
+                if (this.AttractiveObjectInputManager.ActionButtonPressed)
+                {
+                    this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionOKInput();
+                }
+                if (this.AttractiveObjectInputManager.ReturnButtonPressed)
+                {
+                    this.OnEndAction();
+                }
             }
         }
 
@@ -106,6 +110,10 @@ namespace RTPuzzle
         private PlayerAnimationWithObjectManager PlayerObjectLayAnimationManager;
         private GameObject attractiveObjectInstance;
 
+        private bool isOkInputAnimationRunning = false;
+
+        public bool IsOkInputAnimationRunning { get => isOkInputAnimationRunning; }
+
         public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AttractiveObjectAction attractiveObjectActionRef)
         {
             this.attractiveObjectInstance = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectModelPrefab);
@@ -134,6 +142,7 @@ namespace RTPuzzle
 
         public void OnAttractiveObjectActionOKInput()
         {
+            this.isOkInputAnimationRunning = true;
             this.PlayerPocketObjectOutAnimationManager.Kill();
             this.PlayerObjectLayAnimationManager.Play();
         }
