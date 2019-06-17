@@ -1,10 +1,13 @@
-#ifndef WAVE_MOVEMENT
-#define WAVE_MOVEMENT
+#ifndef WATER_WAVE_MOVEMENT
+#define WATER_WAVE_MOVEMENT
+
+#include "Assets/_Shader/Wave/WaveMovement.cginc"
 
 sampler2D _WaveDisplacementTexture, _WaterWaveMap;
 float  _MaxAmplitude, _MaxSpeed, _MaxFrequency;
 
 void Displace(inout VertexInput v) {
+	/*
 	float2 tex = TRANSFORM_TEX(v.uv0, _MainTex);
 	float4 displacementSample = tex2Dlod(_WaveDisplacementTexture, float4(tex.xy, 0, 0));	
 	displacementSample -= 0.5; // [-0.5,0.5] range
@@ -12,14 +15,16 @@ void Displace(inout VertexInput v) {
 
 	float4 waterMapSample = tex2Dlod(_WaterWaveMap, float4(tex.xy, 0,0));
 
-	float theta = dot(displacementSample.xyz, v.vertex.xyz);
-	float amplitude = waterMapSample.r * _MaxAmplitude;
-	float speed  = waterMapSample.g * _MaxSpeed;
-	float frequency = waterMapSample.b * _MaxFrequency;
+	*/
+	WaveMovementDefinition waveDefinition;
 
-	v.vertex.xyz += v.normal *  amplitude * sin(theta * (2/ frequency) + (_Time.x* speed));
+	waveDefinition.waveDisplacementTexture = _WaveDisplacementTexture;
+	waveDefinition.waveMap = _WaterWaveMap;
+	waveDefinition.maxAmplitude = _MaxAmplitude;
+	waveDefinition.maxSpeed = _MaxSpeed;
+	waveDefinition.maxFrequency = _MaxFrequency;
+
+	v.vertex.xyz = WaveMovement(v, waveDefinition);
 }
 
-
-
-#endif // WAVE_MOVEMENT
+#endif // WATER_WAVE_MOVEMENT

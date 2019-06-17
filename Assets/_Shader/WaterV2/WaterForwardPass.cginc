@@ -8,7 +8,7 @@
 #include "UnityStandardConfig.cginc"
 #include "UnityStandardCore.cginc"
 #include "WaterWaveMovement.cginc"
-#include "FragmentFlatShade.cginc"
+#include "Assets/_Shader/Common/FragmentFlatShade.cginc"
 
 VertexOutputForwardBase waterVertBase (VertexInput v) {
 	Displace(v);
