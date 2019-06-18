@@ -1,4 +1,6 @@
-﻿public class NamingConventionHelper
+﻿using GameConfigurationID;
+
+public class NamingConventionHelper
 {
 
     public static string BuildName(string baseName, LevelZonesID levelZoneID, PrefixType prefixType, SufixType sufixType)

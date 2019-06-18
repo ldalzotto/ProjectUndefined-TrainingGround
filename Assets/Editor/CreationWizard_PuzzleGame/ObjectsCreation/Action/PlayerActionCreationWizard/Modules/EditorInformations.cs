@@ -5,6 +5,7 @@ using Editor_MainGameCreationWizard;
 using UnityEditor;
 using RTPuzzle;
 using CreationWizard;
+using GameConfigurationID;
 
 namespace Editor_PlayerActionCreationWizard
 {

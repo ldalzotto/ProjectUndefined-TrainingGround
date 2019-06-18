@@ -6,7 +6,8 @@
         "CoreGame",
         "Editor",
         "Editor_Common",
-        "OdinSerializer"
+        "OdinSerializer",
+        "GameConfigurationID"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

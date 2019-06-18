@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using GameConfigurationID;
 
 namespace CoreGame
 {
@@ -18,13 +19,13 @@ namespace CoreGame
             {
                 switch (timeline.GetTimelineID())
                 {
-                    case TimelineIDs.DISCUSSION_TIMELINE:
+                    case TimelineID.DISCUSSION_TIMELINE:
                         this.DiscussionTimeline = (ITimelineNodeManager)timeline;
                         break;
-                    case TimelineIDs.LEVEL_AVAILABILITY_TIMELINE:
+                    case TimelineID.LEVEL_AVAILABILITY_TIMELINE:
                         this.LevelAvailabilityTimeline = (ITimelineNodeManager)timeline;
                         break;
-                    case TimelineIDs.SCENARIO_TIMELINE:
+                    case TimelineID.SCENARIO_TIMELINE:
                         this.ScenarioTimeline = (ITimelineNodeManager)timeline;
                         break;
                 }

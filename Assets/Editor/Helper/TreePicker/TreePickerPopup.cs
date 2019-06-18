@@ -77,7 +77,10 @@ public class TreePickerPopup : PopupWindowContent
         EditorGUILayout.EndScrollView();
         if (EditorGUI.EndChangeCheck())
         {
-            this.repaintAction.Invoke();
+            if (this.repaintAction != null)
+            {
+                this.repaintAction.Invoke();
+            }
         }
     }
 

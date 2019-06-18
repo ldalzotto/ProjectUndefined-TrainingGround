@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace Tests
 
         protected override TestTimelineContext workflowActionPassedDataStruct => this.testTimelineContext;
 
-        protected override TimelineIDs TimelineID => TimelineIDs.TESTING_TIMELINE;
+        protected override TimelineID TimelineID => TimelineID.TESTING_TIMELINE;
 
         protected override bool isPersisted => false;
     }

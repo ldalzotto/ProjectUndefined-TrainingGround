@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using CoreGame;
+using GameConfigurationID;
 #if UNITY_EDITOR
 using UnityEditor;
 using NodeGraph_Editor;

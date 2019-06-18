@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameConfigurationID;
 
 namespace CoreGame
 {
@@ -9,7 +10,7 @@ namespace CoreGame
 
         private LevelAvailabilityManager LevelAvailabilityManager;
         protected override bool isPersisted => true;
-        protected override TimelineIDs TimelineID => TimelineIDs.LEVEL_AVAILABILITY_TIMELINE;
+        protected override TimelineID TimelineID => TimelineID.LEVEL_AVAILABILITY_TIMELINE;
 
         public override void Init()
         {

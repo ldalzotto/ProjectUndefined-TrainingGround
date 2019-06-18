@@ -2,6 +2,7 @@
 using System.Collections;
 using Editor_LevelAvailabilityNodeEditor;
 using CoreGame;
+using GameConfigurationID;
 
 namespace Editor_ScenarioNodeEditor
 {
@@ -10,7 +11,7 @@ namespace Editor_ScenarioNodeEditor
 
     public class ScenarioNodeEditorProfile : TimelineNodeEditorProfile
     {
-        public override TimelineIDs TimelineID => TimelineIDs.SCENARIO_TIMELINE;
+        public override TimelineID TimelineID => TimelineID.SCENARIO_TIMELINE;
     }
 
 }

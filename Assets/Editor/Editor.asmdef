@@ -5,7 +5,8 @@
         "AdventureGame",
         "PuzzleGame",
         "Editor_Common",
-        "OdinSerializer"
+        "OdinSerializer",
+        "GameConfigurationID"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

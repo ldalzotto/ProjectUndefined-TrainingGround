@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using ConfigurationEditor;
 using System.Collections.Generic;
+using GameConfigurationID;
 
 #if UNITY_EDITOR
 using UnityEditor;

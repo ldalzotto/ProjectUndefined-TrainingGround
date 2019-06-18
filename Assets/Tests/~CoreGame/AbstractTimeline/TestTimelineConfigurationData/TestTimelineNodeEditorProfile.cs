@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using Editor_LevelAvailabilityNodeEditor;
+using GameConfigurationID;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Tests
     [CreateAssetMenu(fileName = "TestTimelineNodeEditorProfile", menuName = "Test/CoreGame/AbstractTimeline/TestTimelineNodeEditorProfile", order = 1)]
     public class TestTimelineNodeEditorProfile : TimelineNodeEditorProfile
     {
-        public override TimelineIDs TimelineID => TimelineIDs.TESTING_TIMELINE;
+        public override TimelineID TimelineID => TimelineID.TESTING_TIMELINE;
     }
 
 }

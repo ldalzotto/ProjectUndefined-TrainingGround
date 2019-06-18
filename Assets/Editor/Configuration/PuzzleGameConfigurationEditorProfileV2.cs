@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ConfigurationEditor;
 using RTPuzzle;
 using System;
+using GameConfigurationID;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "PuzzleGameConfigurationEditorProfileV2", menuName = "Configuration/PuzzleGameConfigurationEditorProfileV2", order = 1)]

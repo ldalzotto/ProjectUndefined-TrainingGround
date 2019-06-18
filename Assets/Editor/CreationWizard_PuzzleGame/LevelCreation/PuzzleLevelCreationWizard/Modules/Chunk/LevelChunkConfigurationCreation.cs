@@ -4,6 +4,7 @@ using CoreGame;
 using Editor_MainGameCreationWizard;
 using UnityEditor;
 using System;
+using GameConfigurationID;
 
 namespace Editor_PuzzleLevelCreationWizard
 {

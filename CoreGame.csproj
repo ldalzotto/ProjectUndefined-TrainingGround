@@ -85,7 +85,6 @@
     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimelinePersister.cs" />
     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimelinesManager.cs" />
     <Compile Include="Assets\~CoreGame\AbstractTimeline\TimeLineAction.cs" />
-    <Compile Include="Assets\~CoreGame\AbstractTimeline\TimelineIDs.cs" />
     <Compile Include="Assets\~CoreGame\AI\NavMeshRayCaster.cs" />
     <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
@@ -98,7 +97,6 @@
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
-    <Compile Include="Assets\~CoreGame\Configuration\LevelZones.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />
@@ -764,6 +762,10 @@
     <ProjectReference Include="OdinSerializer.csproj">
       <Project>{A681D4DB-01A1-7910-AB52-5F994409AF08}</Project>
       <Name>OdinSerializer</Name>
+    </ProjectReference>
+    <ProjectReference Include="GameConfigurationID.csproj">
+      <Project>{E459BBE2-9160-77A5-DC93-1A3E692106CB}</Project>
+      <Name>GameConfigurationID</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

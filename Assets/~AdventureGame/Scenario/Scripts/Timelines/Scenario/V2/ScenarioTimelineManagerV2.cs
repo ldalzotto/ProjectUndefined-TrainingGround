@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace AdventureGame
@@ -8,7 +9,7 @@ namespace AdventureGame
     {
         protected override GhostsPOIManager workflowActionPassedDataStruct => GameObject.FindObjectOfType<GhostsPOIManager>();
 
-        protected override TimelineIDs TimelineID => TimelineIDs.SCENARIO_TIMELINE;
+        protected override TimelineID TimelineID => TimelineID.SCENARIO_TIMELINE;
 
         protected override bool isPersisted => true;
     }

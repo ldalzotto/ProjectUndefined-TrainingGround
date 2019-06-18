@@ -1,5 +1,6 @@
 ﻿using ConfigurationEditor;
 using CoreGame;
+using GameConfigurationID;
 using OdinSerializer;
 using RTPuzzle;
 using System;

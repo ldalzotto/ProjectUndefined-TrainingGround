@@ -1,4 +1,5 @@
-﻿using OdinSerializer;
+﻿using GameConfigurationID;
+using OdinSerializer;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace CoreGame
     }
     public abstract class ATimelineNodeManager : MonoBehaviour
     {
-        public abstract TimelineIDs GetTimelineID();
+        public abstract TimelineID GetTimelineID();
     }
 
     public abstract class TimelineNodeManagerV2<T, NODE_KEY> : ATimelineNodeManager, ITimelineNodeManager
@@ -25,8 +26,8 @@ namespace CoreGame
         #endregion
 
         #region Timeline ID
-        protected abstract TimelineIDs TimelineID { get; }
-        public override TimelineIDs GetTimelineID()
+        protected abstract TimelineID TimelineID { get; }
+        public override TimelineID GetTimelineID()
         {
             return this.TimelineID;
         }

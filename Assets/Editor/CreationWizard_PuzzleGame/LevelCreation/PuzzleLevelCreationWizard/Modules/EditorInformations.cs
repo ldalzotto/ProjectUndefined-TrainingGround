@@ -9,6 +9,7 @@ using System.Linq;
 using System;
 using CoreGame;
 using Editor_MainGameCreationWizard;
+using GameConfigurationID;
 
 namespace Editor_PuzzleLevelCreationWizard
 {

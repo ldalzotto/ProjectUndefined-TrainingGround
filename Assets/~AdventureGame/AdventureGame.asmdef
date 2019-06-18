@@ -4,7 +4,8 @@
         "CoreGame",
         "Unity.Postprocessing.Runtime",
         "Editor_Common",
-        "OdinSerializer"
+        "OdinSerializer",
+        "GameConfigurationID"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

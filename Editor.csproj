@@ -156,6 +156,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
+    <Compile Include="Assets\Editor\EnumGeneration\EnumGenerationTest.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditorProfile.cs" />
@@ -883,6 +884,10 @@
     <ProjectReference Include="OdinSerializer.csproj">
       <Project>{A681D4DB-01A1-7910-AB52-5F994409AF08}</Project>
       <Name>OdinSerializer</Name>
+    </ProjectReference>
+    <ProjectReference Include="GameConfigurationID.csproj">
+      <Project>{E459BBE2-9160-77A5-DC93-1A3E692106CB}</Project>
+      <Name>GameConfigurationID</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

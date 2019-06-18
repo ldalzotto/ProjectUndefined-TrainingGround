@@ -771,6 +771,10 @@
       <Project>{A681D4DB-01A1-7910-AB52-5F994409AF08}</Project>
       <Name>OdinSerializer</Name>
     </ProjectReference>
+    <ProjectReference Include="GameConfigurationID.csproj">
+      <Project>{E459BBE2-9160-77A5-DC93-1A3E692106CB}</Project>
+      <Name>GameConfigurationID</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
