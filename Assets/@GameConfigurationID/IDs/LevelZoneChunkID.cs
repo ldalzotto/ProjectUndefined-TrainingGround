@@ -11,6 +11,7 @@
 namespace GameConfigurationID {
   
   
+  [System.Serializable()]
   public enum LevelZoneChunkID {
     
     SEWER_RTP_1 = 0,

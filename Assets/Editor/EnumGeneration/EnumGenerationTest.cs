@@ -52,6 +52,7 @@ public class EnumGenerationTest : EditorWindow
         this.DoPickEnum();
         this.DoAddKey();
         this.DoRemoveKey();
+        this.DoRegenerateAll();
     }
 
     private Rect EnumChoiceDropdownButton;
@@ -80,7 +81,7 @@ public class EnumGenerationTest : EditorWindow
         {
             if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                this.RegenerateEnum(true, false);
+                this.RegenerateEnum(true, false, this.EnumType);
                 this.OnEnable();
             }
         }
@@ -110,26 +111,25 @@ public class EnumGenerationTest : EditorWindow
             {
                 if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
                 {
-                    this.RegenerateEnum(false, true);
+                    this.RegenerateEnum(false, true, this.EnumType);
                     this.OnEnable();
                 }
             }
 
         }
-
+        EditorGUILayout.Separator();
     }
 
-
-    private void RegenerateEnum(bool add, bool remove)
+    private void RegenerateEnum(bool add, bool remove, Type involedEnumType)
     {
         //build existing keys
         Dictionary<string, int> existingValues = new Dictionary<string, int>();
-        foreach (var genEnum in this.EnumType.GetEnumValues())
+        foreach (var genEnum in involedEnumType.GetEnumValues())
         {
             existingValues.Add(genEnum.ToString(), (int)genEnum);
         }
 
-        if ((add && !existingValues.ContainsKey(KeyName)) || (remove && existingValues.ContainsKey(KeyName)))
+        if ((add && !existingValues.ContainsKey(KeyName)) || (remove && existingValues.ContainsKey(KeyName)) || (!add && !remove))
         {
             var cUnit = new CodeCompileUnit();
 
@@ -137,7 +137,7 @@ public class EnumGenerationTest : EditorWindow
             cUnit.Namespaces.Add(emptyNamespace);
 
 
-            var enumTypeDeclaration = new CodeTypeDeclaration(this.EnumType.Name);
+            var enumTypeDeclaration = new CodeTypeDeclaration(involedEnumType.Name);
             enumTypeDeclaration.IsEnum = true;
             enumTypeDeclaration.CustomAttributes.Add(new CodeAttributeDeclaration("System.Serializable"));
 
@@ -181,7 +181,7 @@ public class EnumGenerationTest : EditorWindow
             lOptions.IndentString = "  "; // or "\t";
             lOptions.BlankLinesBetweenMembers = true;
             CSharpCodeProvider lCSharpCodeProvider = new CSharpCodeProvider();
-            using (StreamWriter lStreamWriter = new StreamWriter(Application.dataPath + "\\@GameConfigurationID\\IDs\\" + this.EnumType.Name + ".cs", false))
+            using (StreamWriter lStreamWriter = new StreamWriter(Application.dataPath + "\\@GameConfigurationID\\IDs\\" + involedEnumType.Name + ".cs", false))
             {
                 lCSharpCodeProvider.GenerateCodeFromCompileUnit(cUnit, lStreamWriter, lOptions);
             }
@@ -189,8 +189,23 @@ public class EnumGenerationTest : EditorWindow
         }
         else
         {
-            Debug.LogError("The name : " + this.KeyName + " already exist in enum : " + this.EnumType.Name);
+            Debug.LogError("The name : " + this.KeyName + " already exist in enum : " + involedEnumType.Name);
         }
     }
 
+
+    private void DoRegenerateAll()
+    {
+        EditorGUILayout.Separator();
+        if (GUILayout.Button("REGENERATE ALL"))
+        {
+            if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
+            {
+                foreach(var availableEnum in this.availableEnums)
+                {
+                    this.RegenerateEnum(false, false, availableEnum);
+                }
+            }
+        }
+    }
 }

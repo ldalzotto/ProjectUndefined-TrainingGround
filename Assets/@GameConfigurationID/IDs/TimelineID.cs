@@ -11,6 +11,7 @@
 namespace GameConfigurationID {
   
   
+  [System.Serializable()]
   public enum TimelineID {
     
     DISCUSSION_TIMELINE = 0,
