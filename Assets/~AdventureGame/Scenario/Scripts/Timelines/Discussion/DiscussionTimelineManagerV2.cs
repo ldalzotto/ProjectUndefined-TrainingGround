@@ -15,7 +15,8 @@ namespace AdventureGame
     public enum DiscussionTimelineNodeID
     {
         BouncerNoEntry = 0,
-        BouncerOK = 1
+        BouncerOK = 1,
+        SewerRTP1DoorText = 2
     }
 
 }

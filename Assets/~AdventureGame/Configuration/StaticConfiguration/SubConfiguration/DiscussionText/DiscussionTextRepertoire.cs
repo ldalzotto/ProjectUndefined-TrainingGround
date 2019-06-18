@@ -20,6 +20,7 @@ namespace AdventureGame
         BOUNCER_ALLOWED,
         PLAYER_TELL_AGE,
         PLAYER_AGE_CHOICE_17,
-        PLAYER_AGE_CHOICE_18
+        PLAYER_AGE_CHOICE_18,
+        SWER_RTP_1_DOOR
     }
 }

@@ -25,6 +25,11 @@ namespace AdventureGame
         SEWER_EXIT = 8,
         SEWER_TO_PUZZLE = 9,
         SEWER_TO_PUZZLE_2 = 12,
+
+        #region SEWER_LV1
+        SEWER_RTP_1_DOOR = 13,
+        #endregion
+
         RTP_PUZZLE_CREATION_TEST = 9999
     }
 

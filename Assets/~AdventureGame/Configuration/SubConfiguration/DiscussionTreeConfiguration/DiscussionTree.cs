@@ -128,7 +128,8 @@ namespace AdventureGame
         PLAYER_AGE_CHOICE,
         PLAYER_AGE_CHOICE_17,
         PLAYER_AGE_CHOICE_18,
-        BOUNCER_GET_OUT
+        BOUNCER_GET_OUT,
+        SWER_RTP_1_DOOR
     }
     
     #endregion
