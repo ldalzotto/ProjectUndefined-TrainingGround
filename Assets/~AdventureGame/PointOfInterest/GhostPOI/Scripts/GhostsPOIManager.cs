@@ -54,15 +54,15 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnPOICreated(PointOfInterestType pointOfInterestType)
+        public override void OnPOICreated(APointOfInterestType pointOfInterestType)
         {
-            pointOfInterestType.SyncPOIFromGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+            ((PointOfInterestType)pointOfInterestType).SyncPOIFromGhostPOI(GhostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
 
-        public void OnPOIDisabled(PointOfInterestType pointOfInterestType)
+        public override void OnPOIDisabled(APointOfInterestType pointOfInterestType)
         {
-            pointOfInterestType.SyncPointOfInterestModelStateToGhostPOI(GhostPOIs[pointOfInterestType.PointOfInterestId]);
+            ((PointOfInterestType)pointOfInterestType).SyncPointOfInterestModelStateToGhostPOI(GhostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
 

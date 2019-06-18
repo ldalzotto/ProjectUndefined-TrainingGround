@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -29,7 +30,7 @@ namespace AdventureGame
         [NonSerialized]
         private PlayerManagerEventHandler PlayerManagerEventHandler;
         [NonSerialized]
-        private PointOfInterestEventManager PointOfInterestEventManager;
+        private APointOfInterestEventManager PointOfInterestEventManager;
         #endregion
 
         #region Internal Dependecnies
@@ -66,7 +67,7 @@ namespace AdventureGame
         {
             #region External dependencies
             PlayerManagerEventHandler = GameObject.FindObjectOfType<PlayerManagerEventHandler>();
-            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             #endregion
             var cutsceneTimelineContextActionInput = (CutsceneTimelineActionInput)ContextActionInput;
             this.CutsceneTimelineActionInput = cutsceneTimelineContextActionInput;

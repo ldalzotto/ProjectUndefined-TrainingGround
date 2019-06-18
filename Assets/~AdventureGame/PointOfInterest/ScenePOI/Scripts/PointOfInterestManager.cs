@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,35 +8,14 @@ namespace AdventureGame
 
     public class PointOfInterestManager : MonoBehaviour
     {
+        
+        private PointOfInterestContainerManager PointOfInterestContainerManager;
+        private APointOfInterestEventManager PointOfInterestEventManager;
 
-        private PointOfInterestContainerManager pointOfInterestContainerManager;
-
-        private PointOfInterestContainerManager PointOfInterestContainerManager
+        public void Init()
         {
-            get
-            {
-                if (pointOfInterestContainerManager == null)
-                {
-                    pointOfInterestContainerManager = new PointOfInterestContainerManager(PointOfInterestEventManager);
-                }
-                return pointOfInterestContainerManager;
-            }
-        }
-
-        #region External Dependencies
-        private PointOfInterestEventManager pointOfInterestEventManager;
-        #endregion
-
-        private PointOfInterestEventManager PointOfInterestEventManager
-        {
-            get
-            {
-                if (pointOfInterestEventManager == null)
-                {
-                    pointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
-                }
-                return pointOfInterestEventManager;
-            }
+            this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
+            this.PointOfInterestContainerManager = new PointOfInterestContainerManager(this.PointOfInterestEventManager);
         }
 
         public void Tick(float d)
@@ -105,9 +85,9 @@ namespace AdventureGame
     class PointOfInterestContainerManager
     {
 
-        private PointOfInterestEventManager PointOfInterestEventManager;
+        private APointOfInterestEventManager PointOfInterestEventManager;
 
-        public PointOfInterestContainerManager(PointOfInterestEventManager pointOfInterestEventManager)
+        public PointOfInterestContainerManager(APointOfInterestEventManager pointOfInterestEventManager)
         {
             PointOfInterestEventManager = pointOfInterestEventManager;
         }
@@ -197,7 +177,7 @@ namespace AdventureGame
         {
             var allPois = activePointOfInterests.Concat(inactivePointOfInterest).ToList();
             allPois.RemoveAll(e => e == null);
-            PointOfInterestEventManager.DisablePOIs(allPois);
+            PointOfInterestEventManager.DisablePOIs(allPois.ConvertAll(p => (APointOfInterestType)p));
         }
     }
 

@@ -20,7 +20,7 @@ namespace AdventureGame
         [NonSerialized]
         private InventoryEventManager InventoryEventManager;
         [NonSerialized]
-        private PointOfInterestEventManager PointOfInterestEventManager;
+        private APointOfInterestEventManager PointOfInterestEventManager;
         #endregion
 
         #region Internal Dependencies
@@ -49,7 +49,7 @@ namespace AdventureGame
 
             #region External Dependencies
             InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
+            PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             var GameCanvas = GameObject.FindObjectOfType<Canvas>();
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion

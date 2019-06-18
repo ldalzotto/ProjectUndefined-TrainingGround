@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : PlayerManagerType
     {
 
         #region External Dependencies
@@ -30,7 +30,6 @@ namespace RTPuzzle
         #endregion
 
         #region Camera Managers
-        private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
         #endregion
 

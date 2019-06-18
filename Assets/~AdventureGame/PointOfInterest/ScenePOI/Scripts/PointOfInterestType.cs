@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 namespace AdventureGame
 {
 
-    public class PointOfInterestType : MonoBehaviour
+    public class PointOfInterestType : APointOfInterestType
     {
         public PointOfInterestId PointOfInterestId;
 
@@ -18,7 +19,7 @@ namespace AdventureGame
         #endregion
 
         #region External Dependencies
-        private PointOfInterestEventManager PointOfInterestEventManager;
+        private APointOfInterestEventManager PointOfInterestEventManager;
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
         #endregion
 
@@ -39,9 +40,10 @@ namespace AdventureGame
         }
         #endregion
 
-        public void Init()
+        public override void Init()
         {
             #region External Dependencies
+            this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
 
@@ -54,13 +56,9 @@ namespace AdventureGame
             this.PointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
         }
 
-        public void Init_EndOfFrame()
+        public override void Init_EndOfFrame()
         {
-            #region External Dependencies
-            PointOfInterestEventManager = GameObject.FindObjectOfType<PointOfInterestEventManager>();
-            #endregion
-
-            PointOfInterestEventManager.OnPOICreated(this);
+            this.PointOfInterestEventManager.OnPOICreated(this);
         }
 
         private void OnDrawGizmos()
@@ -104,13 +102,13 @@ namespace AdventureGame
             ghostPOI.PointOfInterestModelState = this.pointOfInterestModelState;
         }
 
-        public void OnPOIDisabled()
+        public override void OnPOIDisabled()
         {
             Debug.Log("Disabled By Player : " + PointOfInterestId.ToString());
             this.DisablePOI();
         }
 
-        public void OnPOIEnabled()
+        public override void OnPOIEnabled()
         {
             this.EnablePOI();
         }

@@ -48,6 +48,8 @@ namespace RTPuzzle
 
         private void Start()
         {
+            base.OnStart();
+
             Coroutiner.Instance.StartCoroutine(this.EndOfFixedUpdate());
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();

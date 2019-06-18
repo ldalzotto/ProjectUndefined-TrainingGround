@@ -27,12 +27,13 @@ namespace AdventureGame
 
         void Start()
         {
+            base.OnStart();
+
             var InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(true);
 
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
-            this.PointOfInterestInitialisation();
             PlayerManager = FindObjectOfType<PlayerManager>();
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
@@ -43,11 +44,10 @@ namespace AdventureGame
             //initialization
             AdventureLevelChunkFXTransitionManager.Init();
             PlayerManager.Init();
-            StartCoroutine(PointOfInterestInitialisationAtEndOfFrame());
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();
             InventoryManager.Init();
-            FindObjectOfType<PointOfInterestEventManager>().Init();
+            PointOfInterestManager.Init();
             GameObject.FindObjectOfType<AdventureEventManager>().Init();
 
             var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
@@ -100,30 +100,6 @@ namespace AdventureGame
             }
         }
 
-        private IEnumerator PointOfInterestInitialisationAtEndOfFrame()
-        {
-            yield return new WaitForEndOfFrame();
-            var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
-            if (allActivePOI != null)
-            {
-                for (var i = 0; i < allActivePOI.Length; i++)
-                {
-                    allActivePOI[i].Init_EndOfFrame();
-                }
-            }
-        }
-
-        private void PointOfInterestInitialisation()
-        {
-            var allActivePOI = GameObject.FindObjectsOfType<PointOfInterestType>();
-            if (allActivePOI != null)
-            {
-                for (var i = 0; i < allActivePOI.Length; i++)
-                {
-                    allActivePOI[i].Init();
-                }
-            }
-        }
 
     }
 

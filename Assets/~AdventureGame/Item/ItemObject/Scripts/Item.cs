@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -27,7 +28,7 @@ namespace AdventureGame
         {
             this.PointOfInterestType = GetComponent<PointOfInterestType>();
             this.PointOfInterestType.Init();
-            GameObject.FindObjectOfType<PointOfInterestEventManager>().OnPOICreated(this.PointOfInterestType);
+            GameObject.FindObjectOfType<PointOfInterestAdventureEventManager>().OnPOICreated(this.PointOfInterestType);
 
             var AdventureConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
 

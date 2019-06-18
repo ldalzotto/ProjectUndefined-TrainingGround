@@ -27,7 +27,6 @@ namespace AdventureGame
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
 
-        private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
@@ -253,19 +252,6 @@ namespace AdventureGame
         public PointOfInterestType GetCurrentTargetedPOI()
         {
             return PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest;
-        }
-
-        public override PlayerPosition GetPlayerPosition()
-        {
-            if (this.CameraFollowManager == null)
-            {
-                return new PlayerPosition(this.transform.position, this.transform.rotation, GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG).transform.rotation);
-            }
-            else
-            {
-                return new PlayerPosition(this.transform.position, this.transform.rotation, this.CameraFollowManager.GetCameraPivotPointTransform().rotation);
-            }
-
         }
     }
 
