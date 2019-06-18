@@ -11,6 +11,7 @@
 namespace GameConfigurationID {
   
   
+  [System.Serializable()]
   public enum LevelZonesID {
     
     LEVEL1 = 0,

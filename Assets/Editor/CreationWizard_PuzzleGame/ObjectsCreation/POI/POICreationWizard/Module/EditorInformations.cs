@@ -5,6 +5,7 @@ using Editor_MainGameCreationWizard;
 using UnityEditor;
 using System.Collections.Generic;
 using CreationWizard;
+using GameConfigurationID;
 
 namespace Editor_POICreationWizard
 {

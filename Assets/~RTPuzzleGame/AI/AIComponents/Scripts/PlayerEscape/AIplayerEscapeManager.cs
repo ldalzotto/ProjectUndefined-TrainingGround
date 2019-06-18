@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.AI;
 using System;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {

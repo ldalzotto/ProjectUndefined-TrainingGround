@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.AI;
 

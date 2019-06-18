@@ -3,6 +3,7 @@ using System.Collections;
 using OdinSerializer;
 using System;
 using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace CoreGame
 {

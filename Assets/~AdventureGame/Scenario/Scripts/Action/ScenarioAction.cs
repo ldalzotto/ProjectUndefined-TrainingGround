@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using UnityEngine;
+using GameConfigurationID;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

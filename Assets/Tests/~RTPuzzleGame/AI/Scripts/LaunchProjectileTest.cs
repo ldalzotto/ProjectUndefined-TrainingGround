@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using GameConfigurationID;
+using RTPuzzle;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;

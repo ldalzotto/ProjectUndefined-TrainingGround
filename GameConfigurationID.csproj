@@ -62,8 +62,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\@GameConfigurationID\IDs\AiID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\AttractiveObjectId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionTimelineNodeID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionTreeId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\DottedLineID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\LaunchProjectileId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\PlayerActionId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\PointOfInterestId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\RangeTypeID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\RepelableObjectID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\ScenarioTimelineNodeID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\SelectionWheelNodeConfigurationId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\TargetZoneID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TimelineID.cs" />
     <None Include="Assets\@GameConfigurationID\GameConfigurationID.asmdef" />
     <Reference Include="UnityEngine.AIModule">

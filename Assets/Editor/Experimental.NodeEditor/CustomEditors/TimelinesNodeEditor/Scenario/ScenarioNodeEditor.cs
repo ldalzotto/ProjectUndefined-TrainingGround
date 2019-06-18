@@ -1,5 +1,6 @@
 ﻿using AdventureGame;
 using Editor_LevelAvailabilityNodeEditor;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 

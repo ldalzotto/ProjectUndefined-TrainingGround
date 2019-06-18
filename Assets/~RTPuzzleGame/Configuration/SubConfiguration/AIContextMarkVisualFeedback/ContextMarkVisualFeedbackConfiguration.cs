@@ -1,6 +1,7 @@
 ﻿using ConfigurationEditor;
 using UnityEngine;
 using System.Collections;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {

@@ -1,4 +1,5 @@
 ﻿using ConfigurationEditor;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -7,12 +8,5 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "DottedLineConfiguration", menuName = "Configuration/PuzzleGame/DottedLineConfiguration/DottedLineConfiguration", order = 1)]
     public class DottedLineConfiguration : ConfigurationSerialization<DottedLineID, DottedLineInherentData>
     { }
-
-    public enum DottedLineID
-    {
-        PROJECTILE_POSITIONING,
-        ATTRACTIVE_OBJECT,
-        REPELABLE_OBJECT_FEEDBACK
-    }
 
 }

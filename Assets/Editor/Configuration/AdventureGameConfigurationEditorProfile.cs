@@ -1,5 +1,6 @@
 ﻿using AdventureGame;
 using ConfigurationEditor;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 

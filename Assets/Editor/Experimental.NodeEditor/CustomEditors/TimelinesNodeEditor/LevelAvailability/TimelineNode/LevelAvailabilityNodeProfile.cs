@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using NodeGraph;
 using System;
 using CoreGame;
+using GameConfigurationID;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {

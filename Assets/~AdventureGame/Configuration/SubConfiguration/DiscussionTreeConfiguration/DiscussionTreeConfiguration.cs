@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using ConfigurationEditor;
+using GameConfigurationID;
 
 namespace AdventureGame
 {
@@ -9,13 +10,6 @@ namespace AdventureGame
     public class DiscussionTreeConfiguration : ConfigurationSerialization<DiscussionTreeId, DiscussionTree>
     {
         
-    }
-
-    public enum DiscussionTreeId
-    {
-        BOUNCER_DISCUSSION_TREE,
-        BOUNCER_OK_DISCUSSION,
-        SEWER_RTP_1_DOOR
     }
 
 }

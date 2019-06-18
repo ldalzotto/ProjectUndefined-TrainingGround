@@ -89,7 +89,6 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIType\Scripts\AIType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehaviorExternalEventManager.cs" />

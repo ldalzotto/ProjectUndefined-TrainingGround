@@ -1,5 +1,6 @@
 ﻿using AdventureGame;
 using Editor_LevelAvailabilityNodeEditor;
+using GameConfigurationID;
 
 namespace Editor_ScenarioNodeEditor
 {

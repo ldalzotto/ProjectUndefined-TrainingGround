@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using RTPuzzle;
 using UnityEditor;
 using NodeGraph;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {

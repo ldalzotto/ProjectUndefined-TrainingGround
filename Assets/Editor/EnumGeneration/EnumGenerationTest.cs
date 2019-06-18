@@ -139,6 +139,7 @@ public class EnumGenerationTest : EditorWindow
 
             var enumTypeDeclaration = new CodeTypeDeclaration(this.EnumType.Name);
             enumTypeDeclaration.IsEnum = true;
+            enumTypeDeclaration.CustomAttributes.Add(new CodeAttributeDeclaration("System.Serializable"));
 
             //add existing entry
             foreach (var existingValue in existingValues)

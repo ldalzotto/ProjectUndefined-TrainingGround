@@ -1,6 +1,7 @@
 ﻿using AdventureGame;
 using Editor_LevelAvailabilityNodeEditor;
 using Editor_ScenarioNodeEditor;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 

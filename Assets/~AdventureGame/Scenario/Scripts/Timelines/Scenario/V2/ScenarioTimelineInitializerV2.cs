@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using CoreGame;
+using GameConfigurationID;
 
 namespace AdventureGame
 {

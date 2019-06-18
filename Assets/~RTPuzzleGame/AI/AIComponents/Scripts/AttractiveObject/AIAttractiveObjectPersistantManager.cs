@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameConfigurationID;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle

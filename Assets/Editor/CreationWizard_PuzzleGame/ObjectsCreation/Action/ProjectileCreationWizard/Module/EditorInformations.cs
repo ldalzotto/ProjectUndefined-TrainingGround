@@ -5,6 +5,7 @@ using UnityEditor;
 using RTPuzzle;
 using System.Collections.Generic;
 using CreationWizard;
+using GameConfigurationID;
 
 namespace Editor_ProjectileCreationWizard
 {

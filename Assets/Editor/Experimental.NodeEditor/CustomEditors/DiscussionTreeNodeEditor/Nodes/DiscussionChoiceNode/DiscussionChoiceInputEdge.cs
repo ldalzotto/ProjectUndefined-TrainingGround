@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AdventureGame;
+using GameConfigurationID;
 using NodeGraph;
 using NodeGraph_Editor;
 using UnityEngine;

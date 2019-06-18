@@ -13,11 +13,4 @@ namespace AdventureGame
         protected override bool isPersisted => true;
     }
 
-    public enum DiscussionTimelineNodeID
-    {
-        BouncerNoEntry = 0,
-        BouncerOK = 1,
-        SewerRTP1DoorText = 2
-    }
-
 }

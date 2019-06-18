@@ -1,4 +1,5 @@
-﻿using OdinSerializer;
+﻿using GameConfigurationID;
+using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

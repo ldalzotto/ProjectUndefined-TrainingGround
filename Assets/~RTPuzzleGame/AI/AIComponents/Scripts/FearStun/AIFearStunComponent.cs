@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using UnityEngine;
 
 #if UNITY_EDITOR

@@ -1,4 +1,5 @@
 ﻿using ConfigurationEditor;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +10,5 @@ namespace RTPuzzle
     public class AttractiveObjectConfiguration : ConfigurationSerialization<AttractiveObjectId, AttractiveObjectInherentConfigurationData>
     {    }
     
-    public enum AttractiveObjectId
-    {
-        CHEESE = 0,
-        EDITOR_TEST = 1,
-        CHEESE_SEWER_RTP_2 = 2
-    }
+ 
 }

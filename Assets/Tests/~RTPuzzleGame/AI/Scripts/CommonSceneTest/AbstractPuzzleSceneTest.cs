@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using RTPuzzle;
 using System;
 using System.Collections;

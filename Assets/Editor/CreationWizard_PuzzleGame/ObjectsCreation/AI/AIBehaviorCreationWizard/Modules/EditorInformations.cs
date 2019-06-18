@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using CreationWizard;
 using System.Linq;
 using System;
+using GameConfigurationID;
 
 namespace Editor_AIBehaviorCreationWizard
 {

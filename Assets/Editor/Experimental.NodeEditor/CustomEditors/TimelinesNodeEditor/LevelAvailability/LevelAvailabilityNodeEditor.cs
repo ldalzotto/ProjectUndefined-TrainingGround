@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using NodeGraph;
 using CoreGame;
+using GameConfigurationID;
 
 namespace Editor_LevelAvailabilityNodeEditor
 {

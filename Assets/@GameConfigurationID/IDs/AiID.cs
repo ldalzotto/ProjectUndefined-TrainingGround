@@ -1,6 +1,5 @@
-﻿namespace RTPuzzle
+﻿namespace GameConfigurationID
 {
-
     public enum AiID
     {
         MOUSE = 0,

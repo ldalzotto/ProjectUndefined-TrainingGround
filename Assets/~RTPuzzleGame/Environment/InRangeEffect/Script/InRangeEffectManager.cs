@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.Rendering;
 using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {

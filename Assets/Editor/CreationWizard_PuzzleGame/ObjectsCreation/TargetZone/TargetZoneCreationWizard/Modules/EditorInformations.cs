@@ -7,6 +7,7 @@ using CreationWizard;
 using RTPuzzle;
 using System.Linq;
 using System;
+using GameConfigurationID;
 
 namespace Editor_TargetZoneCreationWizard
 {

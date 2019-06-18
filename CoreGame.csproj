@@ -155,7 +155,6 @@
     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineInitializerV2.cs" />
     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\LevelAvailabilityTimelineManagerV2.cs" />
     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
-    <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineNode\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
     <Compile Include="Assets\~CoreGame\Timelines\TimelinesEventManager.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />

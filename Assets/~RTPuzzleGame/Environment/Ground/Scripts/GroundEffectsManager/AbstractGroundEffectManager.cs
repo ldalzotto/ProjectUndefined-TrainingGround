@@ -2,6 +2,7 @@
 using System.Collections;
 using CoreGame;
 using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {

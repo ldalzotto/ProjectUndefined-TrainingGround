@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
