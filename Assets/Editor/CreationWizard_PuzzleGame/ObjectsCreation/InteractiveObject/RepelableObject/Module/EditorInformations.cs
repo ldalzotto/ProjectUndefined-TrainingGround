@@ -48,6 +48,7 @@ namespace Editor_RepelableObjectCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
+        [CustomEnum(isCreateable: true)]
         public RepelableObjectID RepelableObjectID;
         public CommonGameConfigurations CommonGameConfigurations;
     }

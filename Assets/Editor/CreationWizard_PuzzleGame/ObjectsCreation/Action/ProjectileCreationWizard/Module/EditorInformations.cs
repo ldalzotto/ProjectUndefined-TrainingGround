@@ -48,6 +48,7 @@ namespace Editor_ProjectileCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
+        [CustomEnum(isCreateable: true)]
         public LaunchProjectileId LaunchProjectileId;
         public CommonGameConfigurations CommonGameConfigurations;
     }

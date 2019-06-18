@@ -69,7 +69,7 @@ namespace RTPuzzle
     [System.Serializable]
     public class PlayerActionIdWrapper
     {
-        [SearchableEnum]
+        [CustomEnum]
         public PlayerActionId playerActionId;
 
         public PlayerActionIdWrapper(PlayerActionId playerActionId)

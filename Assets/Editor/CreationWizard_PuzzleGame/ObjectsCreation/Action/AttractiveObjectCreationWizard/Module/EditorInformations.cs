@@ -59,6 +59,7 @@ namespace Editor_AttractiveObjectCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
+        [CustomEnum(isCreateable: true)]
         public AttractiveObjectId AttractiveObjectId;
         public GameObject AttractiveObjectModel;
         public CommonGameConfigurations CommonGameConfigurations;

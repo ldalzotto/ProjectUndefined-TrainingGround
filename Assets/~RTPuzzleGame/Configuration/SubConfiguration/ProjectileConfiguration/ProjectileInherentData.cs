@@ -28,9 +28,9 @@ namespace RTPuzzle
 
         [Header("Animation")]
 
-        [SearchableEnum]
+        [CustomEnum]
         public PlayerAnimatioNamesEnum PreActionAnimation;
-        [SearchableEnum]
+        [CustomEnum]
         public PlayerAnimatioNamesEnum PostActionAnimation;
 
         [DictionaryEnumSearch]

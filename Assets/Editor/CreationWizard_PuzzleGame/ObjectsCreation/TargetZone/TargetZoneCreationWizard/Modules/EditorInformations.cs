@@ -51,6 +51,7 @@ namespace Editor_TargetZoneCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
+        [CustomEnum(isCreateable: true)]
         public TargetZoneID TargetZoneID;
         public CommonGameConfigurations CommonGameConfigurations;
     }

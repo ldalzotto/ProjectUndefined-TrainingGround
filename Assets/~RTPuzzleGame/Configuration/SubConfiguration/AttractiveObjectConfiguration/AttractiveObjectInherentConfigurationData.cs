@@ -17,9 +17,9 @@ namespace RTPuzzle
 
         [Header("Animation")]
 
-        [SearchableEnum]
+        [CustomEnum]
         public PlayerAnimatioNamesEnum PreActionAnimation;
-        [SearchableEnum]
+        [CustomEnum]
         public PlayerAnimatioNamesEnum PostActionAnimation;
 
         public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)

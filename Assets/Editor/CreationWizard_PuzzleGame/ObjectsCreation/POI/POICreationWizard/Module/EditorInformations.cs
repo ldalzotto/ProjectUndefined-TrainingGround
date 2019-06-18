@@ -49,6 +49,7 @@ namespace Editor_POICreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
+        [CustomEnum(isCreateable: true)]
         public PointOfInterestId PointOfInterestID;
         public CommonGameConfigurations CommonGameConfigurations;
     }

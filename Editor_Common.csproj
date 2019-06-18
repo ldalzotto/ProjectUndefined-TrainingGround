@@ -74,7 +74,7 @@
     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeEdgeProfile.cs" />
     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeEditorProfile.cs" />
     <Compile Include="Assets\Editor_Common\ConfigurationEditor\NodeEditor\NodeProfile.cs" />
-    <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\SearchableEnum.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\CustomEnum.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\List\ReorderableListAttribute.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\Inline.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Property\ReadOnly.cs" />

@@ -12,9 +12,9 @@ namespace RTPuzzle
     [System.Serializable]
     public class AITargetConditionEdge : NodeEdgeProfile
     {
-        [SearchableEnum]
+        [CustomEnum]
         public AiID AiID;
-        [SearchableEnum]
+        [CustomEnum]
         public TargetZoneID TargetZoneID;
 
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() { };

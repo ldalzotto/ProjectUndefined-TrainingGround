@@ -50,6 +50,7 @@ namespace Editor_AICreationObjectCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
+        [CustomEnum(isCreateable: false)]
         public AiID AiID;
         public CommonGameConfigurations CommonGameConfigurations;
     }

@@ -16,7 +16,7 @@ namespace Editor_LevelAvailabilityNodeEditor
     [System.Serializable]
     public abstract class TimelineNodeProfile<NODE_KEY> : NodeProfile, TimelineNodeProfileDataRetrieval where NODE_KEY : Enum
     {
-        [SearchableEnum]
+        [CustomEnum(isCreateable: true)]
         public NODE_KEY TimelineNodeId;
         public List<TimelineActionToNodeEdgeV2> TransitionTimelineActionInputEdges = new List<TimelineActionToNodeEdgeV2>();
         public List<TimelineNodeEdgeProfile> TransitionTimelineActionOutputEdges = new List<TimelineNodeEdgeProfile>();

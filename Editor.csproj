@@ -156,7 +156,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
-    <Compile Include="Assets\Editor\EnumGeneration\EnumGenerationTest.cs" />
+    <Compile Include="Assets\Editor\EnumGeneration\EnumIDGeneration.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditorProfile.cs" />
@@ -301,8 +301,8 @@
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
-    <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\SearchablePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />

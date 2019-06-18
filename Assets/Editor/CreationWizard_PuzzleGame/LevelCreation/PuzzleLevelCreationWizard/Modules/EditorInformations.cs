@@ -59,11 +59,11 @@ namespace Editor_PuzzleLevelCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
-        [SearchableEnum]
+        [CustomEnum(isCreateable: true)]
         public LevelZonesID LevelZonesID;
-        [SearchableEnum]
+        [CustomEnum(isCreateable: true)]
         public LevelZoneChunkID LevelZoneChunkID;
-        [SearchableEnum]
+        [CustomEnum(isCreateable: true)]
         public LevelZonesID AssociatedAdventureLevelID;
 
         public CommonGameConfigurations CommonGameConfigurations;

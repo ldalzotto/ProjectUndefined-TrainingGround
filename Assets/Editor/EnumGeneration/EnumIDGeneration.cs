@@ -8,14 +8,21 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class EnumGenerationTest : EditorWindow
+public class EnumIDGeneration : EditorWindow
 {
     [MenuItem("Generation/IDGeneration")]
     static void Init()
     {
-
-        EnumGenerationTest window = (EnumGenerationTest)EditorWindow.GetWindow(typeof(EnumGenerationTest));
+        EnumIDGeneration window = (EnumIDGeneration)EditorWindow.GetWindow(typeof(EnumIDGeneration));
         window.Show();
+    }
+
+    public static void Init(Type initialEnumType)
+    {
+        EnumIDGeneration window = (EnumIDGeneration)EditorWindow.GetWindow(typeof(EnumIDGeneration));
+        window.Show();
+        window.OnEnable();
+        window.enumSelectionPicker.SetSelectedKey(initialEnumType.Name);
     }
 
     private TreePickerPopup enumSelectionPicker;
@@ -29,7 +36,7 @@ public class EnumGenerationTest : EditorWindow
     private List<string> selectedEnumPossibilitiesString;
     private Enum deletedEnum;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         this.availableEnums = AppDomain.CurrentDomain.GetAssemblies().ToList().SelectMany(l => l.GetTypes().ToList())
                 .Select(t => t).Where(t => t.IsEnum && t.Namespace == "GameConfigurationID")
@@ -87,7 +94,6 @@ public class EnumGenerationTest : EditorWindow
         }
         EditorGUILayout.Separator();
     }
-
 
     private Rect EnumDeletionDropdownButton;
 
@@ -201,7 +207,7 @@ public class EnumGenerationTest : EditorWindow
         {
             if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                foreach(var availableEnum in this.availableEnums)
+                foreach (var availableEnum in this.availableEnums)
                 {
                     this.RegenerateEnum(false, false, availableEnum);
                 }
