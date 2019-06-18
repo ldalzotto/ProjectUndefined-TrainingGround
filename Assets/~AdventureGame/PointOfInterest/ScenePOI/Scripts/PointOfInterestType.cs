@@ -15,7 +15,7 @@ namespace AdventureGame
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestContextDataContainer PointOfInterestContextData;
 
-        private PointOfInterestInherentData PointOfInterestInherentData;
+        private PointOfInterestInherentData pointOfInterestInherentData;
         #endregion
 
         #region External Dependencies
@@ -23,20 +23,23 @@ namespace AdventureGame
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
         #endregion
 
+        #region Internal Managers
         private ContextActionSynchronizerManager ContextActionSynchronizerManager;
         private POIMeshRendererManager POIMeshRendererManager;
-
+        private POIShowHideManager POIShowHideManager;
+        #endregion
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
+        public PointOfInterestInherentData PointOfInterestInherentData { get => pointOfInterestInherentData; }
 
         #region Data Retrieval
         public float GetMaxDistanceToInteractWithPlayer()
         {
-            return this.PointOfInterestInherentData.MaxDistanceToInteractWithPlayer;
+            return this.pointOfInterestInherentData.MaxDistanceToInteractWithPlayer;
         }
         public bool IsInteractionWithPlayerAllowed()
         {
-            return this.PointOfInterestInherentData.InteractionWithPlayerAllowed;
+            return this.pointOfInterestInherentData.InteractionWithPlayerAllowed;
         }
         #endregion
 
@@ -49,15 +52,17 @@ namespace AdventureGame
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
+            this.POIShowHideManager = new POIShowHideManager(this);
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.PointOfInterestContextData = transform.parent.GetComponentInChildren<PointOfInterestContextDataContainer>();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
-            this.PointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
+            this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
         }
 
         public override void Init_EndOfFrame()
         {
+            this.POIShowHideManager.OnPOIInit(this);
             this.PointOfInterestEventManager.OnPOICreated(this);
         }
 
@@ -165,5 +170,55 @@ namespace AdventureGame
         }
 
         public Renderer[] POIRenderers { get => pOIRenderers; }
+    }
+
+    class POIShowHideManager
+    {
+        #region External Dependencies
+        private LevelManager LevelManager;
+        #endregion
+
+        private GameObject poiModelObject;
+        private Collider poiCollider;
+
+        public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef)
+        {
+            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.poiModelObject = pointOfInterestTypeRef.transform.parent.gameObject.FindChildObjectRecursively("Model");
+            this.poiCollider = pointOfInterestTypeRef.GetComponent<Collider>();
+        }
+
+        public void OnPOIInit(PointOfInterestType pointOfInterestTypeRef)
+        {
+            if (pointOfInterestTypeRef.PointOfInterestId != PointOfInterestId.PLAYER)
+            {
+                if (this.LevelManager.CurrentLevelType == LevelType.PUZZLE)
+                {
+                    if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
+                    {
+                        this.Hide();
+                    }
+                }
+                else
+                {
+                    if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
+                    {
+                        this.Show();
+                    }
+                }
+            }
+        }
+
+        private void Show()
+        {
+            this.poiModelObject.SetActive(true);
+            this.poiCollider.enabled = true;
+        }
+
+        private void Hide()
+        {
+            this.poiModelObject.SetActive(false);
+            this.poiCollider.enabled = false;
+        }
     }
 }
