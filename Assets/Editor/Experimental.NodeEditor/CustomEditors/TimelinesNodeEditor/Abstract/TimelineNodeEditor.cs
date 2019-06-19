@@ -74,7 +74,7 @@ namespace Editor_LevelAvailabilityNodeEditor
                     TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY> createdNode = new TimelineNodeV2<TIMELINE_CONTEXT, NODE_KEY>(Transitions,
                        OnStartWorkflowAction,
                         OnExitWorkflowAction);
-
+                    
                     nodes.Add(timelineNode.TimelineNodeId, createdNode);
                 }
                 else

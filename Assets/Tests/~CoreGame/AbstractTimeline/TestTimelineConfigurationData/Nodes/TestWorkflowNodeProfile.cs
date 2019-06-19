@@ -5,7 +5,7 @@ using Editor_LevelAvailabilityNodeEditor;
 namespace Tests
 {
     [System.Serializable]
-    public class TestWorkflowNodeProfile : TimelineWorklowActionNodeProfile<TestWorkflowEdgeProfile, TestWorkflowAction>
+    public class TestWorkflowNodeProfile : TimelineWorklowActionTemplatedNodeProfile<TestWorkflowEdgeProfile, TestWorkflowAction>
     {
     }
 

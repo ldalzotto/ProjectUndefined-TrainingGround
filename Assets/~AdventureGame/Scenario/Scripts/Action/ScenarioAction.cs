@@ -154,6 +154,9 @@ namespace AdventureGame
             this.targetedPOI = targetedPOI;
         }
 
+        public CutsceneTimelineScenarioAction()
+        {
+        }
 
         public override bool Equals(object obj)
         {

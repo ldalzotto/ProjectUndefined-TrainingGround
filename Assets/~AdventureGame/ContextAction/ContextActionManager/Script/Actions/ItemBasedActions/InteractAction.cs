@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AdventureGame
 {
     [System.Serializable]
-    public class InteractAction : AContextAction
+    public class ItemInteractAction : AContextAction
     {
 
         [SerializeField]
@@ -15,7 +15,7 @@ namespace AdventureGame
         [NonSerialized]
         private bool InteractionResolved;
 
-        public InteractAction(ItemID involvedItem, AContextAction nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
+        public ItemInteractAction(ItemID involvedItem, AContextAction nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
         {
             this.involvedItem = involvedItem;
         }

@@ -1,11 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using GameConfigurationID;
 
 namespace AdventureGame
 {
+    public interface IContextActionDrawable
+    {
+#if UNITY_EDITOR
+        void ActionGUI();
+#endif
+    }
+
     [System.Serializable]
-    public abstract class AContextAction
+    public abstract class AContextAction : IContextActionDrawable
     {
         public abstract void FirstExecutionAction(AContextActionInput ContextActionInput);
         public abstract bool ComputeFinishedConditions();
@@ -69,6 +77,11 @@ namespace AdventureGame
             return GetType() == typeof(TalkAction);
         }
         #endregion
+
+#if UNITY_EDITOR
+        public virtual void ActionGUI() { }
+#endif
+
     }
 
     [System.Serializable]

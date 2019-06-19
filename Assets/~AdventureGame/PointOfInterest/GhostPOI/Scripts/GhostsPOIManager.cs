@@ -111,9 +111,14 @@ namespace AdventureGame
         }
 
         #region External Events
-        public void OnContextActionAdd(ItemID itemID, AContextAction contextActionToAdd)
+        public void OnContextActionAdd(AContextAction contextActionToAdd)
         {
-            contextActionSynchronizerManager.OnContextActionAdd(itemID, contextActionToAdd);
+            contextActionSynchronizerManager.OnContextActionAdd(contextActionToAdd);
+            this.OnGhostPOIChanged();
+        }
+        public void OnItemRelatedContextActionAdd(ItemID item, AContextAction contextActionToAdd)
+        {
+            contextActionSynchronizerManager.OnItemRelatedContextActionAdd(item, contextActionToAdd);
             this.OnGhostPOIChanged();
         }
 
@@ -144,7 +149,7 @@ namespace AdventureGame
         public void OnDiscussionTreeAdd(DiscussionTreeId discussionTreeId, AContextAction contextActionToAdd)
         {
             PointOfInterestScenarioState.DiscussionTreeID = discussionTreeId;
-            contextActionSynchronizerManager.OnDiscussionTreeAdd(contextActionToAdd);
+            contextActionSynchronizerManager.OnContextActionAdd(contextActionToAdd);
             this.OnGhostPOIChanged();
         }
         public void OnInteractableItemAdd(ItemID itemID)
@@ -168,7 +173,7 @@ namespace AdventureGame
 
         public void OnLevelZoneTransitionAdd(LevelZonesID levelZonesID, AContextAction contextActionToAdd)
         {
-            contextActionSynchronizerManager.OnLevelTransitionAdd(contextActionToAdd);
+            contextActionSynchronizerManager.OnContextActionAdd(contextActionToAdd);
             this.OnGhostPOIChanged();
         }
 
@@ -199,61 +204,41 @@ namespace AdventureGame
     class ContextActionSynchronizerManager
     {
         [SerializeField]
-        private Dictionary<string, AContextAction> contextActions = new Dictionary<string, AContextAction>();
+        private Dictionary<string, List<AContextAction>> contextActions = new Dictionary<string, List<AContextAction>>();
 
         public List<AContextAction> ContextActions
         {
             get
             {
-                return contextActions.Values.ToList();
+                return contextActions.Values.ToList().SelectMany(a => a).ToList();
             }
         }
 
-        public void OnContextActionAdd(ItemID itemId, AContextAction contextActionToAdd)
+        public void OnContextActionAdd(AContextAction contextActionToAdd)
         {
-            var key = itemId.ToString();
+            var key = contextActionToAdd.GetType().Name;
             ContextActionAddSilently(contextActionToAdd, key);
+        }
+
+        public void OnItemRelatedContextActionAdd(ItemID itemID, AContextAction contextActionToAdd)
+        {
+            ContextActionAddSilently(contextActionToAdd, itemID.ToString());
         }
 
         public void OnGrabbableItemRemoved(ItemID itemID)
         {
             contextActions.Remove(itemID.ToString());
         }
-
-        public void OnDiscussionTreeAdd(AContextAction contextActionToAdd)
-        {
-            var key = typeof(TalkAction).ToString();
-            ContextActionAddSilently(contextActionToAdd, key);
-        }
-
-        public void OnLevelTransitionAdd(AContextAction contextActionToAdd)
-        {
-            var key = typeof(LevelZoneTransitionAction).ToString();
-            ContextActionAddSilently(contextActionToAdd, key);
-        }
-
+        
         private void ContextActionAddSilently(AContextAction contextActionToAdd, string key)
         {
-            if (contextActions.ContainsKey(key))
+            if (!contextActions.ContainsKey(key))
             {
-                contextActions[key] = contextActionToAdd;
+                contextActions.Add(key, new List<AContextAction>());
             }
-            else
-            {
-                contextActions.Add(key, contextActionToAdd);
-            }
+            contextActions[key].Add(contextActionToAdd);
         }
-
-        public Dictionary<string, AContextAction> GetRawContextActions()
-        {
-            return contextActions;
-        }
-
-        public void ReplaceContextActions(Dictionary<string, AContextAction> contextActions)
-        {
-            this.contextActions = contextActions;
-        }
-
+        
     }
     #endregion
 

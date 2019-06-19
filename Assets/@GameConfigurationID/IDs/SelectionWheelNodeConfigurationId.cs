@@ -14,6 +14,12 @@ namespace GameConfigurationID {
   [System.Serializable()]
   public enum SelectionWheelNodeConfigurationId {
     
+    GRAB_CONTEXT_ACTION_WHEEL_CONFIG = 0,
+    
+    GIVE_CONTEXT_ACTION_WHEEL_CONFIG = 1,
+    
+    TALK_CONTEXT_ACTION_WHEEL_CONFIG = 2,
+    
     THROW_PLAYER_PUZZLE_WHEEL_CONFIG = 3,
     
     ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG = 4,

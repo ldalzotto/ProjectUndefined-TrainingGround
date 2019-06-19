@@ -1,6 +1,8 @@
 ﻿using CoreGame;
 using UnityEngine;
-
+#if UNITY_EDITOR
+using NodeGraph_Editor;
+#endif
 namespace AdventureGame
 {
     [System.Serializable]
@@ -40,6 +42,13 @@ namespace AdventureGame
         public override void Tick(float d)
         {
         }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.playerAnimationEnum = (PlayerAnimatioNamesEnum)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.playerAnimationEnum);
+        }
+#endif
     }
 
     public class AnimatorActionInput : AContextActionInput

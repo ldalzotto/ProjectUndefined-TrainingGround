@@ -28,11 +28,13 @@ public class MyColors
 {
     public static Color PaleBlue;
     public static Color Coral;
+    public static Color HotPink;
 
     static MyColors()
     {
         MyColors.PaleBlue = new Color(0.709f, 0.827f, 0.905f);
         MyColors.Coral = new Color(1f, 127f / 255f, 80f / 255f);
+        MyColors.HotPink = new Color(1f, 105f / 255f, 180f / 255f);
     }
 }
 

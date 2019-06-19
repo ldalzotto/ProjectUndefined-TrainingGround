@@ -7,7 +7,7 @@ using CoreGame;
 namespace Editor_LevelAvailabilityNodeEditor
 {
     [System.Serializable]
-    public class LevelUnlockWorklowActionV2 : TimelineWorklowActionNodeProfile<LevelAvailabilityLevelCompletedWorkflowActionEdge, LevelUnlockWorkflowActionV2>
+    public class LevelUnlockWorklowActionV2 : TimelineWorklowActionTemplatedNodeProfile<LevelAvailabilityLevelCompletedWorkflowActionEdge, LevelUnlockWorkflowActionV2>
     {
     }
 

@@ -191,35 +191,43 @@ namespace AdventureGame
 
         public void OnPOIInit(PointOfInterestType pointOfInterestTypeRef)
         {
-            if (pointOfInterestTypeRef.PointOfInterestId != PointOfInterestId.PLAYER)
+            if (this.LevelManager.CurrentLevelType == LevelType.PUZZLE)
             {
-                if (this.LevelManager.CurrentLevelType == LevelType.PUZZLE)
+                if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
                 {
-                    if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
-                    {
-                        this.Hide();
-                    }
+                    this.Hide();
                 }
-                else
+            }
+            else
+            {
+                if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
                 {
-                    if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
-                    {
-                        this.Show();
-                    }
+                    this.Show();
                 }
             }
         }
 
         private void Show()
         {
-            this.poiModelObject.SetActive(true);
-            this.poiCollider.enabled = true;
+            if (this.IsADisplayedPOI())
+            {
+                this.poiModelObject.SetActive(true);
+                this.poiCollider.enabled = true;
+            }
         }
 
         private void Hide()
         {
-            this.poiModelObject.SetActive(false);
-            this.poiCollider.enabled = false;
+            if (this.IsADisplayedPOI())
+            {
+                this.poiModelObject.SetActive(false);
+                this.poiCollider.enabled = false;
+            }
+        }
+
+        private bool IsADisplayedPOI()
+        {
+            return this.poiModelObject != null;
         }
     }
 }

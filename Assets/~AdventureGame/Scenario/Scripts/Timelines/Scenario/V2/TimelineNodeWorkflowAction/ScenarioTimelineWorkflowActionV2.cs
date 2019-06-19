@@ -45,7 +45,7 @@ namespace AdventureGame
                 }
                 action.SetNextContextAction(new GrabAction(this.itemInvolved, this.destroyPOIAtEnd, null));
                 action.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
-                foundedPoi.OnContextActionAdd(itemInvolved, action);
+                foundedPoi.OnItemRelatedContextActionAdd(itemInvolved, action);
             }
         }
 
@@ -115,7 +115,7 @@ namespace AdventureGame
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
             {
-                foundedPoi.OnContextActionAdd(this.itemInvolved, new GiveAction(this.itemInvolved, null));
+                foundedPoi.OnContextActionAdd(new GiveAction(this.itemInvolved, null));
             }
         }
 
@@ -249,9 +249,9 @@ namespace AdventureGame
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
             {
-                var action = new InteractAction(this.itemInvolved,
+                var action = new ItemInteractAction(this.itemInvolved,
                     new CutsceneTimelineAction(this.cutsceneId, null, this.destroyPOIAtEnd));
-                foundedPoi.OnContextActionAdd(this.itemInvolved, action);
+                foundedPoi.OnContextActionAdd(action);
             }
         }
 
@@ -326,7 +326,7 @@ namespace AdventureGame
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
             {
-                  foundedPoi.OnEnablePOI();
+                foundedPoi.OnEnablePOI();
             }
         }
 
@@ -337,4 +337,69 @@ namespace AdventureGame
         }
 #endif
     }
+
+    #region Non templated actions
+    [System.Serializable]
+    public class AddItemInteractionActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private ItemID itemInvolved;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+        [SerializeField]
+        public AContextAction ContextAction;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                this.ContextAction.ContextActionWheelNodeConfigurationId = contextActionWheelNodeConfigurationId;
+                foundedPoi.OnItemRelatedContextActionAdd(this.itemInvolved, this.ContextAction);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("to POI : ", string.Empty, this.poiInvolved);
+            this.itemInvolved = (ItemID)NodeEditorGUILayout.EnumField("with ITEM : ", string.Empty, this.itemInvolved);
+            this.contextActionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("wheel icon : ", string.Empty, this.contextActionWheelNodeConfigurationId);
+        }
+#endif
+
+    }
+
+    [System.Serializable]
+    public class AddContextActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+        [SerializeField]
+        public AContextAction ContextAction;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                this.ContextAction.ContextActionWheelNodeConfigurationId = contextActionWheelNodeConfigurationId;
+                foundedPoi.OnContextActionAdd(this.ContextAction);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("to POI : ", string.Empty, this.poiInvolved);
+            this.contextActionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("wheel icon : ", string.Empty, this.contextActionWheelNodeConfigurationId);
+        }
+#endif
+
+    }
+    #endregion
 }

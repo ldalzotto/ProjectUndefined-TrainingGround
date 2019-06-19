@@ -17,18 +17,20 @@ namespace Editor_ScenarioNodeEditor
             {"TimelineActions//CutsceneTimelineAction", typeof(CutsceneTimelineActionNodeProfile) },
             {"TimelineActions//GiveScenarioAction", typeof(GiveScenarioActionTimelineActionNodeProfile) },
             {"TimelineActions//LevelCompleted", typeof(LevelCompletedTimelineActionNodeProfile) },
-            {"WorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
-            {"WorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
-            {"WorkflowActions//AddItemInteractionAction", typeof(AddItemInteractionActionNodeProfile) },
-            {"WorkflowActions//AddPOItoItemInteraction", typeof(AddPOItoItemInteractionNodeProfile) },
-            {"WorkflowActions//RemovePOItoItemInteraction", typeof(RemovePOItoItemInteractionNodeProfile) },
-            {"WorkflowActions//AddTransitionLevel",typeof(AddTransitionLevelNodeProfile) },
-            {"WorkflowActions//AddReceivableItem",typeof(AddReceivableItemNodeProfile) },
-            {"WorkflowActions//RemoveReceivableItem",typeof(RemoveReceivableItemNodeProfile) },
-            {"WorkflowActions//AddItemGive",typeof(AddItemGiveNodeProfile) },
-            {"WorkflowActions//DisablePOI",typeof(DisablePOINodeProfile) },
-            {"WorkflowActions//EnablePOI",typeof(EnablePOINodeProfile) }
-
+            {"TemplatedWorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
+            {"TemplatedWorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
+            {"TemplatedWorkflowActions//AddItemInteractionAction", typeof(AddItemInteractionActionNodeProfile) },
+            {"TemplatedWorkflowActions//AddPOItoItemInteraction", typeof(AddPOItoItemInteractionNodeProfile) },
+            {"TemplatedWorkflowActions//RemovePOItoItemInteraction", typeof(RemovePOItoItemInteractionNodeProfile) },
+            {"TemplatedWorkflowActions//AddTransitionLevel",typeof(AddTransitionLevelNodeProfile) },
+            {"TemplatedWorkflowActions//AddReceivableItem",typeof(AddReceivableItemNodeProfile) },
+            {"TemplatedWorkflowActions//RemoveReceivableItem",typeof(RemoveReceivableItemNodeProfile) },
+            {"TemplatedWorkflowActions//AddItemGive",typeof(AddItemGiveNodeProfile) },
+            {"TemplatedWorkflowActions//DisablePOI",typeof(DisablePOINodeProfile) },
+            {"TemplatedWorkflowActions//EnablePOI",typeof(EnablePOINodeProfile) },
+            {"LinkedWorkflowActions//AddItemContextAction", typeof(AddItemContextActionNodeProfile) },
+            {"LinkedWorkflowActions//AddContextAction", typeof(AddContextActionNodeProfile) },
+            {"BaseContextAction//AnimatorAction", typeof(AnimatorContextActionNodeProfile) }
         };
     }
 }

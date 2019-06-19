@@ -1,6 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace AdventureGame
 {
@@ -36,13 +35,6 @@ namespace AdventureGame
             {SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG, new SelectionWheelNodeConfigurationData(typeof(GiveAction)) },
             {SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG, new SelectionWheelNodeConfigurationData(typeof(TalkAction)) }
             };
-    }
-
-    public enum SelectionWheelNodeConfigurationId
-    {
-        GRAB_CONTEXT_ACTION_WHEEL_CONFIG = 0,
-        GIVE_CONTEXT_ACTION_WHEEL_CONFIG = 1,
-        TALK_CONTEXT_ACTION_WHEEL_CONFIG = 2
     }
     #endregion
 }
