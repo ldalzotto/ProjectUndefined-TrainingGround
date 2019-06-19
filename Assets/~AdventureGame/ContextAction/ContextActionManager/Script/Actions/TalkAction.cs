@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using UnityEngine;
 
 namespace AdventureGame
@@ -7,6 +8,9 @@ namespace AdventureGame
     [System.Serializable]
     public class TalkAction : AContextAction
     {
+
+        [SerializeField]
+        public DiscussionTreeId DiscussionTreeId;
 
         #region External Event Dependencies
         [NonSerialized]
@@ -18,15 +22,16 @@ namespace AdventureGame
         [NonSerialized]
         private bool isConversationFinished;
         [NonSerialized]
+        private DiscussionTree readingDiscussionTree;
+        [NonSerialized]
         private DiscussionTreeNode currentDiscussionTreeNode;
         [NonSerialized]
         private DiscussionNodeId discussionChoiceMade;
-        [NonSerialized]
-        private TalkActionInput talkActionInput;
 
-        public TalkAction(AContextAction nextContextAction) : base(nextContextAction)
+
+        public TalkAction(DiscussionTreeId DiscussionTreeId, AContextAction nextContextAction) : base(nextContextAction)
         {
-
+            this.DiscussionTreeId = DiscussionTreeId;
         }
 
         public override void AfterFinishedEventProcessed()
@@ -43,11 +48,13 @@ namespace AdventureGame
         {
             DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.talkActionInput = (TalkActionInput)ContextActionInput;
+            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+
+            this.readingDiscussionTree = AdventureGameConfigurationManager.DiscussionTreeConf()[this.DiscussionTreeId];
             isConversationFinished = false;
             DiscussionEventHandler.InitializeEventHanlders(OnDiscussionNodeFinished, OnDiscussionTextNodeEnd, OnDiscussionChoiceNodeEnd);
 
-            OnNewCurrentNode(this.talkActionInput.DiscussionTree.GetRootNode());
+            OnNewCurrentNode(this.readingDiscussionTree.GetRootNode());
         }
 
         private void OnNewCurrentNode(DiscussionTreeNode newDiscussionNode)
@@ -65,7 +72,7 @@ namespace AdventureGame
             }
             else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
             {
-                DiscussionEventHandler.OnDiscussionChoiceStart(((DiscussionChoiceNode)currentDiscussionTreeNode).DiscussionChoices.ConvertAll(discussionChoice => (DiscussionChoice)this.talkActionInput.DiscussionTree.DiscussionNodes[discussionChoice]));
+                DiscussionEventHandler.OnDiscussionChoiceStart(((DiscussionChoiceNode)currentDiscussionTreeNode).DiscussionChoices.ConvertAll(discussionChoice => (DiscussionChoice)this.readingDiscussionTree.DiscussionNodes[discussionChoice]));
             }
 
         }
@@ -81,8 +88,7 @@ namespace AdventureGame
             if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
             {
                 var currentTextNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
-                var discussionTree = this.talkActionInput.DiscussionTree;
-                var nextNode = currentTextNode.GetNextNode(ref discussionTree);
+                var nextNode = currentTextNode.GetNextNode(ref this.readingDiscussionTree);
                 if (nextNode != null && nextNode.GetType() == typeof(DiscussionChoiceNode))
                 {
                     //choice node disaply
@@ -113,8 +119,7 @@ namespace AdventureGame
             else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
             {
                 var currentTextNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
-                var discussionTree = this.talkActionInput.DiscussionTree;
-                var nextNode = currentTextNode.GetNextNode(ref discussionTree);
+                var nextNode = currentTextNode.GetNextNode(ref this.readingDiscussionTree);
                 if (nextNode != null)
                 {
                     OnNewCurrentNode(nextNode);
@@ -128,8 +133,7 @@ namespace AdventureGame
             else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
             {
                 var currentChoiceNode = (DiscussionChoiceNode)currentDiscussionTreeNode;
-                var discussionTree = this.talkActionInput.DiscussionTree;
-                var nextNode = currentChoiceNode.GetNextNode(discussionChoiceMade, ref discussionTree);
+                var nextNode = currentChoiceNode.GetNextNode(discussionChoiceMade, ref this.readingDiscussionTree);
                 if (nextNode != null)
                 {
                     OnNewCurrentNode(nextNode);
@@ -142,24 +146,8 @@ namespace AdventureGame
             }
         }
 
-
-
         public override void Tick(float d)
         { }
 
-
-    }
-
-
-    public class TalkActionInput : AContextActionInput
-    {
-        private DiscussionTree discussionTree;
-
-        public TalkActionInput(DiscussionTree discussionTree)
-        {
-            this.discussionTree = discussionTree;
-        }
-
-        public DiscussionTree DiscussionTree { get => discussionTree; }
     }
 }

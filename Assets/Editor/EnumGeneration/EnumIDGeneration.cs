@@ -135,7 +135,7 @@ public class EnumIDGeneration : EditorWindow
             existingValues.Add(genEnum.ToString(), (int)genEnum);
         }
 
-        if ((add && !existingValues.ContainsKey(KeyName)) || (remove && existingValues.ContainsKey(KeyName)) || (!add && !remove))
+        if ((add && !existingValues.ContainsKey(KeyName)) || (remove && existingValues.ContainsKey(this.deletedEnum.ToString())) || (!add && !remove))
         {
             var cUnit = new CodeCompileUnit();
 

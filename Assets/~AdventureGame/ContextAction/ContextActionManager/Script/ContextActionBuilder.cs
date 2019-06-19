@@ -25,10 +25,6 @@ namespace AdventureGame
             {
                 return new GiveActionInput(playerManager.GetCurrentTargetedPOI(), playerManager.GetPlayerAnimator());
             }
-            else if (contextAction.GetType() == typeof(TalkAction))
-            {
-                return new TalkActionInput(playerManager.GetCurrentTargetedPOI().GetAssociatedDiscussionTree());
-            }
             else if (contextAction.GetType() == typeof(CutsceneTimelineAction))
             {
                 var targetedPOI = playerManager.GetCurrentTargetedPOI();
@@ -44,7 +40,7 @@ namespace AdventureGame
             }
             else
             {
-                Debug.LogError("The context action : " + contextAction.GetType() + " has no context action input builder implemented.");
+                Debug.LogWarning("The context action : " + contextAction.GetType() + " has no context action input builder implemented.");
                 return null;
             }
         }

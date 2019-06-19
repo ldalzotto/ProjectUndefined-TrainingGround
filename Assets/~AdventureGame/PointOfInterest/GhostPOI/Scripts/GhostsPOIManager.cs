@@ -118,13 +118,13 @@ namespace AdventureGame
         }
         public void OnItemRelatedContextActionAdd(ItemID item, AContextAction contextActionToAdd)
         {
-            contextActionSynchronizerManager.OnItemRelatedContextActionAdd(item, contextActionToAdd);
+            contextActionSynchronizerManager.OnContextActionAdd(item, contextActionToAdd);
             this.OnGhostPOIChanged();
         }
 
         public void OnGrabbableItemRemove(ItemID itemId)
         {
-            contextActionSynchronizerManager.OnGrabbableItemRemoved(itemId);
+            contextActionSynchronizerManager.OnContextActionremove(itemId);
             this.OnGhostPOIChanged();
         }
 
@@ -148,8 +148,12 @@ namespace AdventureGame
         }
         public void OnDiscussionTreeAdd(DiscussionTreeId discussionTreeId, AContextAction contextActionToAdd)
         {
-            PointOfInterestScenarioState.DiscussionTreeID = discussionTreeId;
-            contextActionSynchronizerManager.OnContextActionAdd(contextActionToAdd);
+            contextActionSynchronizerManager.OnContextActionAdd(discussionTreeId, contextActionToAdd);
+            this.OnGhostPOIChanged();
+        }
+        public void OnDiscussionTreeRemove(DiscussionTreeId discussionTreeId)
+        {
+            contextActionSynchronizerManager.OnContextActionremove(discussionTreeId);
             this.OnGhostPOIChanged();
         }
         public void OnInteractableItemAdd(ItemID itemID)
@@ -220,16 +224,16 @@ namespace AdventureGame
             ContextActionAddSilently(contextActionToAdd, key);
         }
 
-        public void OnItemRelatedContextActionAdd(ItemID itemID, AContextAction contextActionToAdd)
+        public void OnContextActionAdd(Enum key, AContextAction contextActionToAdd)
         {
-            ContextActionAddSilently(contextActionToAdd, itemID.ToString());
+            ContextActionAddSilently(contextActionToAdd, key.ToString());
         }
 
-        public void OnGrabbableItemRemoved(ItemID itemID)
+        public void OnContextActionremove(Enum key)
         {
-            contextActions.Remove(itemID.ToString());
+            contextActions.Remove(key.ToString());
         }
-        
+
         private void ContextActionAddSilently(AContextAction contextActionToAdd, string key)
         {
             if (!contextActions.ContainsKey(key))
@@ -238,7 +242,7 @@ namespace AdventureGame
             }
             contextActions[key].Add(contextActionToAdd);
         }
-        
+
     }
     #endregion
 

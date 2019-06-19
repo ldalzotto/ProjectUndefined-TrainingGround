@@ -6,7 +6,7 @@ using AdventureGame;
 namespace Editor_DiscussionTimelineNodeEditor
 {
     [System.Serializable]
-    public class ReplaceDiscussionTreeWorkflowActionEdge : TimelineWorklowActionEdgeV2<ReplaceDiscussionTreeV2>
+    public class AddDiscussionTreeWorkflowActionEdge : TimelineWorklowActionEdgeV2<AddDiscussionTreeV2>
     {
     }
 }

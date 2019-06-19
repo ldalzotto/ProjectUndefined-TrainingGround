@@ -184,8 +184,10 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\DiscussionTimelineNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\DiscussionTimelineNodeEditorProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineNode\DiscussionTimelineNodeProfile.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\ReplaceDiscussionTree\ReplaceDiscussionTreeWorkflowActionEdge.cs" />
-    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\ReplaceDiscussionTree\ReplaceDiscussionTreeWorkflowActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\AddDiscussionTree\AddDiscussionTreeWorkflowActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\AddDiscussionTree\AddDiscussionTreeWorkflowActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\RemoveDiscussionTree\RemoveDiscussionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Discussion\TimelineWorkflowActionNode\RemoveDiscussionTree\RemoveDiscussionTreeNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\LevelAvailabilityNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\LevelAvailabilityNodeEditorProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\LevelAvailability\TimelineActionsNode\LevelCompletedTimelineActionEdgeV2.cs" />

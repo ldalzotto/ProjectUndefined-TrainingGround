@@ -9,7 +9,7 @@ using NodeGraph_Editor;
 namespace AdventureGame
 {
     [System.Serializable]
-    public class ReplaceDiscussionTreeV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, DiscussionTimelineNodeID>
+    public class AddDiscussionTreeV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, DiscussionTimelineNodeID>
     {
         [SerializeField]
         private PointOfInterestId PointOfInterestId;
@@ -19,7 +19,7 @@ namespace AdventureGame
         public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, DiscussionTimelineNodeID> timelineNodeRefence)
         {
             var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
-            var talkAction = new TalkAction(null);
+            var talkAction = new TalkAction(this.DiscussionTreeId, null);
             talkAction.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
             if (selectedPOI != null)
             {
@@ -30,7 +30,33 @@ namespace AdventureGame
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("talking POI : ", string.Empty, this.PointOfInterestId);
+            this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
+            this.DiscussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("discussion tree : ", string.Empty, this.DiscussionTreeId);
+        }
+#endif
+    }
+
+    [System.Serializable]
+    public class RemoveDiscussionTreeV2 : TimelineNodeWorkflowActionV2<GhostsPOIManager, DiscussionTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId PointOfInterestId;
+        [SerializeField]
+        private DiscussionTreeId DiscussionTreeId;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, DiscussionTimelineNodeID> timelineNodeRefence)
+        {
+            var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
+            if (selectedPOI != null)
+            {
+                selectedPOI.OnDiscussionTreeRemove(DiscussionTreeId);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
             this.DiscussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("discussion tree : ", string.Empty, this.DiscussionTreeId);
         }
 #endif

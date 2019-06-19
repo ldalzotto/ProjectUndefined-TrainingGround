@@ -90,6 +90,8 @@ namespace Experimental.Editor_NodeEditor
                 //draw connections 
                 foreach (var node in this.nodeEditorProfile.Nodes.Values)
                 {
+                    node.InputEdges.RemoveAll(e => e == null);
+                    node.OutputEdges.RemoveAll(e => e == null);
                     foreach (var inputEdge in node.InputEdges)
                     {
                         inputEdge.GUIConnectionLines();

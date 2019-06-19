@@ -14,9 +14,10 @@ namespace Editor_DiscussionTimelineNodeEditor
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>()
         {
              {"TimelineStartNode", typeof(TimelineStartNodeProfile) },
-              {"TimelineNodes//DiscussionTimelineNode", typeof(DiscussionTimelineNodeProfile) },
+             {"TimelineNodes//DiscussionTimelineNode", typeof(DiscussionTimelineNodeProfile) },
              {"TimelineActions//GiveScenarioAction", typeof(GiveScenarioActionTimelineActionNodeProfile) },
-             {"WorkflowActions//ReplaceDiscussionTree", typeof(ReplaceDiscussionTreeWorkflowActionNodeProfile) },
+             {"WorkflowActions//AddDiscussionTree", typeof(AddDiscussionTreeWorkflowActionNodeProfile) },
+             {"WorkflowActions//RemoveDiscussionTree", typeof(RemoveDiscussionTreeNodeProfile) },
         };
     }
 

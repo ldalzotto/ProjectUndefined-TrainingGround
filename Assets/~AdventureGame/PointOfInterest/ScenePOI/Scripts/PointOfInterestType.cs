@@ -131,11 +131,6 @@ namespace AdventureGame
         }
         #endregion
 
-        public DiscussionTree GetAssociatedDiscussionTree()
-        {
-            return this.AdventureGameConfigurationManager.DiscussionTreeConf()[pointOfInterestScenarioState.DiscussionTreeID];
-        }
-
         public PointOfInterestContextDataContainer GetContextData()
         {
             return PointOfInterestContextData;
