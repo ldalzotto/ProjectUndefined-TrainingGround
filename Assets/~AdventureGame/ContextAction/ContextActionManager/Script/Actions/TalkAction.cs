@@ -2,6 +2,10 @@
 using System;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using NodeGraph_Editor;
+#endif
+
 namespace AdventureGame
 {
 
@@ -28,6 +32,12 @@ namespace AdventureGame
         [NonSerialized]
         private DiscussionNodeId discussionChoiceMade;
 
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.DiscussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("Discussion tree : ", string.Empty, this.DiscussionTreeId);
+        }
+#endif
 
         public TalkAction(DiscussionTreeId DiscussionTreeId, AContextAction nextContextAction) : base(nextContextAction)
         {
@@ -36,7 +46,6 @@ namespace AdventureGame
 
         public override void AfterFinishedEventProcessed()
         {
-
         }
 
         public override bool ComputeFinishedConditions()

@@ -37,5 +37,9 @@ namespace GameConfigurationID {
     Sewer_To_SewerRTP_2_Disabling = 10,
     
     SewerRTP2_Success = 11,
+    
+    SewerRTP1_DoorPOI = 12,
+    
+    SewerRTP1_DoorPOI_Open = 13,
   }
 }

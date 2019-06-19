@@ -401,5 +401,63 @@ namespace AdventureGame
 #endif
 
     }
+
+    [System.Serializable]
+    public class AddDiscussionActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+        [SerializeField]
+        private DiscussionTreeId discussionTreeId;
+        [SerializeField]
+        public AContextAction ContextAction;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                this.ContextAction.ContextActionWheelNodeConfigurationId = contextActionWheelNodeConfigurationId;
+                foundedPoi.OnDiscussionTreeAdd(this.discussionTreeId, this.ContextAction);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("to POI : ", string.Empty, this.poiInvolved);
+            this.discussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("with Discussion tree : ", string.Empty, this.discussionTreeId);
+            this.contextActionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("wheel icon : ", string.Empty, this.contextActionWheelNodeConfigurationId);
+        }
+#endif
+    }
+
+    [System.Serializable]
+    public class RemoveDiscussionActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private DiscussionTreeId discussionTreeId;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                foundedPoi.OnDiscussionTreeRemove(this.discussionTreeId);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("to POI : ", string.Empty, this.poiInvolved);
+            this.discussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("with Discussion tree : ", string.Empty, this.discussionTreeId);
+        }
+#endif
+    }
     #endregion
 }
