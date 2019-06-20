@@ -15,7 +15,8 @@ public class WaitEndOfCutscene : CustomYieldInstruction
     {
         get
         {
-            return (playableDirector.state == PlayState.Playing);
+          //  Debug.Log(MyLog.Format("Time : " + playableDirector.time + ", duration : " + playableDirector.duration));
+            return playableDirector.time < playableDirector.duration;
         }
     }
 }

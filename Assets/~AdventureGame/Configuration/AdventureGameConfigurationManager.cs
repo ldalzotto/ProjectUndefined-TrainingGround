@@ -24,6 +24,11 @@ namespace AdventureGame
             return AdventureGameConfiguration.DiscussionTreeConfiguration.ConfigurationInherentData;
         }
 
+        public Dictionary<CutsceneId, CutsceneInherentData> CutsceneConf()
+        {
+            return AdventureGameConfiguration.CutsceneConfiguration.ConfigurationInherentData;
+        }
+
     }
 
 }

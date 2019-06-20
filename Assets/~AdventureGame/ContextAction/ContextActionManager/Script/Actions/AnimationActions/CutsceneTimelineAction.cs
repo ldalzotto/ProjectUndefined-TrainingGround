@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -111,7 +112,7 @@ namespace AdventureGame
 
         private IEnumerator SetAgentDestination(Vector3 destination)
         {
-            yield return PlayerManagerEventHandler.StartCoroutine(PlayerManagerEventHandler.OnSetDestinationCoRoutine(destination));
+            yield return PlayerManagerEventHandler.StartCoroutine(PlayerManagerEventHandler.OnSetDestinationCoRoutine(destination, 1f));
             isAgentDestinationReached = true;
         }
 

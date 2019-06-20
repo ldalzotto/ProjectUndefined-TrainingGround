@@ -16,9 +16,13 @@ namespace AdventureGame
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         }
 
-        public IEnumerator OnSetDestinationCoRoutine(Vector3 destination)
+        public IEnumerator OnSetDestinationCoRoutine(Vector3 destination, float normalizedSpeed)
         {
-            return PlayerManager.SetAIDestinationCoRoutine(destination);
+            if(this.PlayerManager != null)
+            {
+                return PlayerManager.SetAIDestinationCoRoutine(destination, normalizedSpeed);
+            }
+            return null;
         }
 
     }

@@ -30,7 +30,9 @@ namespace AdventureGame
         private CameraOrientationManager CameraOrientationManager;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
-        private PlayerAIMoveManager PlayerAIMoveManager;
+        //Inter dependency
+        private PointOfInterestCutsceneController PointOfInterestCutsceneController;
+        // private PlayerAIMoveManager PlayerAIMoveManager;
         private PlayerObstacleOvercomeManager PlayerObstacleOvercomeManager;
 
         private PlayerPOITrackerManager PlayerPOITrackerManager;
@@ -59,6 +61,7 @@ namespace AdventureGame
             }
             #endregion
 
+            this.PointOfInterestCutsceneController = GetComponentInChildren<PointOfInterestCutsceneController>();
             GameObject playerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
             BoxCollider obstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
             Animator playerAnimator = GetComponentInChildren<Animator>();
@@ -73,7 +76,7 @@ namespace AdventureGame
             this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
             this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
-            this.PlayerAIMoveManager = new PlayerAIMoveManager(playerRigidBody, playerAgent, transform, this);
+            this.PointOfInterestCutsceneController.Init();
             this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
             this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, playerObject.transform);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
@@ -90,22 +93,22 @@ namespace AdventureGame
             CameraOrientationManager.Tick(d);
 
             var playerSpeedMagnitude = 0f;
-            if (!PlayerAIMoveManager.IsDirectedByAi)
+
+            if (!this.PointOfInterestCutsceneController.IsDirectedByCutscene())
             {
-                if (!IsAllowedToMove())
+                if (IsAllowedToMove())
                 {
-                    PlayerInputMoveManager.ResetSpeed();
+                    PlayerInputMoveManager.Tick(d);
                 }
                 else
                 {
-                    PlayerInputMoveManager.Tick(d);
+                    PlayerInputMoveManager.ResetSpeed();
                 }
                 playerSpeedMagnitude = PlayerInputMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
             }
             else
             {
-                PlayerAIMoveManager.Tick(d, PlayerCommonComponents.PlayerInputMoveManagerComponent.SpeedMultiplicationFactor, AIRotationSpeed);
-                playerSpeedMagnitude = PlayerAIMoveManager.PlayerSpeedProcessingInput.PlayerSpeedMagnitude;
+                playerSpeedMagnitude = this.PointOfInterestCutsceneController.Tick(d, PlayerCommonComponents.PlayerInputMoveManagerComponent.SpeedMultiplicationFactor, AIRotationSpeed);
             }
 
 
@@ -136,9 +139,13 @@ namespace AdventureGame
         {
             this.PlayerProceduralAnimationsManager.FickedTick(d);
 
-            if (!PlayerAIMoveManager.IsDirectedByAi)
+            if (!this.PointOfInterestCutsceneController.IsDirectedByCutscene())
             {
-                PlayerInputMoveManager.FixedTick(d);
+                this.PlayerInputMoveManager.FixedTick(d);
+            }
+            else
+            {
+                this.PointOfInterestCutsceneController.FixedTick(d);
             }
         }
 
@@ -173,7 +180,7 @@ namespace AdventureGame
 
         private bool IsAllowedToDoAnyInteractions()
         {
-            return !PlayerContextActionManager.IsActionExecuting && !PlayerPOIWheelTriggerManager.WheelEnabled && !PlayerInventoryTriggerManager.IsInventoryDisplayed;
+            return this.IsAllowedToMove() && !this.PointOfInterestCutsceneController.IsDirectedByCutscene();
         }
 
         private bool IsHeadRotatingTowardsPOI()
@@ -230,13 +237,9 @@ namespace AdventureGame
         {
             PlayerInventoryTriggerManager.OnInventoryDisabled();
         }
-        public void SetAIDestination(Vector3 destination)
+        public IEnumerator SetAIDestinationCoRoutine(Vector3 destination, float normalizedSpeed)
         {
-            StartCoroutine(PlayerAIMoveManager.SetDestination(destination));
-        }
-        public IEnumerator SetAIDestinationCoRoutine(Vector3 destination)
-        {
-            return PlayerAIMoveManager.SetDestination(destination);
+            return this.PointOfInterestCutsceneController.SetAIDestination(destination, normalizedSpeed);
         }
         #endregion
 
@@ -253,57 +256,10 @@ namespace AdventureGame
         {
             return PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest;
         }
+
     }
 
     #region Player Movement
-
-    class PlayerAIMoveManager
-    {
-        private Rigidbody PlayerRigidBody;
-        private NavMeshAgent playerAgent;
-        private Transform playerTransform;
-        private PlayerManager PlayerManagerRef;
-
-        public PlayerAIMoveManager(Rigidbody playerRigidBody, NavMeshAgent playerAgent, Transform playerTransform, PlayerManager playerManagerRef)
-        {
-            PlayerRigidBody = playerRigidBody;
-            this.playerAgent = playerAgent;
-            this.playerTransform = playerTransform;
-            PlayerManagerRef = playerManagerRef;
-        }
-
-        private bool isDirectedByAi;
-        private PlayerSpeedProcessingInput playerSpeedProcessingInput;
-
-        public bool IsDirectedByAi { get => isDirectedByAi; }
-        public PlayerSpeedProcessingInput PlayerSpeedProcessingInput { get => playerSpeedProcessingInput; }
-
-        public void Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
-        {
-            var playerSpeedMagnitude = 1;
-            if (playerAgent.velocity.normalized != Vector3.zero)
-            {
-                playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, Quaternion.LookRotation(playerAgent.velocity.normalized), d * AIRotationSpeed);
-            }
-
-            var playerMovementOrientation = (playerAgent.nextPosition - playerTransform.position).normalized;
-            playerSpeedProcessingInput = new PlayerSpeedProcessingInput(playerMovementOrientation, playerSpeedMagnitude);
-            playerAgent.speed = SpeedMultiplicationFactor;
-            PlayerRigidBody.transform.position = playerAgent.nextPosition;
-        }
-
-        public IEnumerator SetDestination(Vector3 destination)
-        {
-            isDirectedByAi = true;
-            playerAgent.nextPosition = playerTransform.position;
-            playerAgent.SetDestination(destination);
-            PlayerRigidBody.isKinematic = true;
-            yield return PlayerManagerRef.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
-            isDirectedByAi = false;
-            PlayerRigidBody.isKinematic = false;
-        }
-    }
-
 
     class PlayerObstacleOvercomeManager
     {

@@ -1,49 +1,37 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
     #region Player Movement
-    public class PlayerInputMoveManager
+    public abstract class PlayerMoveManager
     {
-
         private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
-
-        private Transform CameraPivotPoint;
-        private IGameInputManager GameInputManager;
-        private Rigidbody PlayerRigidBody;
-
+        protected Rigidbody PlayerRigidBody;
+        protected PlayerSpeedProcessingInput playerSpeedProcessingInput;
         private bool hasMoved;
         private float playerSpeedMagnitude;
 
-        public PlayerInputMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
+        public PlayerMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
         {
             this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
-            CameraPivotPoint = cameraPivotPoint;
-            GameInputManager = gameInputManager;
             PlayerRigidBody = playerRigidBody;
         }
-
-        private PlayerSpeedProcessingInput playerSpeedProcessingInput;
 
         public PlayerSpeedProcessingInput PlayerSpeedProcessingInput { get => playerSpeedProcessingInput; }
         public bool HasMoved { get => hasMoved; }
         public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; }
 
+        protected abstract PlayerSpeedProcessingInput ComputePlayerSpeedProcessingInput();
+
         public void Tick(float d)
         {
-            var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
-
-            var inputDisplacementVector = GameInputManager.CurrentInput.LocomotionAxis();
-            var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
-
-            var playerMovementOrientation = projectedDisplacement.normalized;
-            
-            playerSpeedMagnitude = inputDisplacementVector.sqrMagnitude;
+            this.playerSpeedProcessingInput = this.ComputePlayerSpeedProcessingInput();
+            this.playerSpeedMagnitude = playerSpeedProcessingInput.PlayerSpeedMagnitude;
             if (playerSpeedMagnitude > float.Epsilon)
             {
                 hasMoved = true;
             }
-            playerSpeedProcessingInput = new PlayerSpeedProcessingInput(playerMovementOrientation, playerSpeedMagnitude);
         }
 
         public void FixedTick(float d)
@@ -65,6 +53,32 @@ namespace CoreGame
                 }
             }
         }
+        
+    }
+
+    public class PlayerInputMoveManager : PlayerMoveManager
+    {
+        private Transform CameraPivotPoint;
+        private IGameInputManager GameInputManager;
+
+        public PlayerInputMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
+             : base(PlayerInputMoveManagerComponent, playerRigidBody)
+        {
+            CameraPivotPoint = cameraPivotPoint;
+            GameInputManager = gameInputManager;
+        }
+
+        protected override PlayerSpeedProcessingInput ComputePlayerSpeedProcessingInput()
+        {
+            var currentCameraAngle = CameraPivotPoint.transform.eulerAngles.y;
+
+            var inputDisplacementVector = GameInputManager.CurrentInput.LocomotionAxis();
+            var projectedDisplacement = Quaternion.Euler(0, currentCameraAngle, 0) * inputDisplacementVector;
+
+            var playerMovementOrientation = projectedDisplacement.normalized;
+
+            return new PlayerSpeedProcessingInput(playerMovementOrientation, inputDisplacementVector.sqrMagnitude);
+        }
 
         public void ResetSpeed()
         {
@@ -72,7 +86,7 @@ namespace CoreGame
             playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
         }
     }
-
+    
     [System.Serializable]
     public class PlayerInputMoveManagerComponent
     {

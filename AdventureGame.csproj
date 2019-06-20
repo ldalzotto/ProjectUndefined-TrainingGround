@@ -64,14 +64,22 @@
   <ItemGroup>
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\PrefabContainer.cs" />
+    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\Discussion\DicsussionTimelineBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\Discussion\DicsussionTimelineClip.cs" />
     <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderBehavior.cs" />
     <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\MoveDestinationAI\PlayerAIMoveToBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\MoveDestinationAI\PlayerAIMoveToClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\Warp\PlayerWarpBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\Warp\PlayerWarpClip.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneConfiguration.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\DiscussionTreeConfiguration\DiscussionTree.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\DiscussionTreeConfiguration\DiscussionTreeConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />
@@ -93,7 +101,8 @@
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionManager\Script\ContextActionManager.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelManager.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Cutscene.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\CutscenePlayerManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Debug\Script\AdventureDebugModule.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
@@ -119,6 +128,7 @@
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManagerEventHandler.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerObstacleOvercomeTriggerTracker.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\GhostPOI\Scripts\GhostsPOIManager.cs" />
+    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Cutscene\PointOfInterestCutsceneController.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestAdventureEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestContextData\DataTypes\CutsceneTimelinePOIData.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestContextData\PointOfInterestContextDataContainer.cs" />

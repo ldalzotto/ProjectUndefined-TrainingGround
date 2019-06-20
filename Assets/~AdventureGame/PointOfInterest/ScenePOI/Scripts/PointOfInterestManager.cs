@@ -80,6 +80,11 @@ namespace AdventureGame
             }
         }
 
+        public List<PointOfInterestType> GetAllPointOfInterests()
+        {
+            return this.PointOfInterestContainerManager.GetAllPointOfInterests();
+        }
+
         #endregion
     }
 

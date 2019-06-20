@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using System.Collections;
 using UnityEngine;
 
 namespace AdventureGame
@@ -15,6 +14,10 @@ namespace AdventureGame
         private DiscussionWindowManager DiscussionWindowManager;
         private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManager;
         private PointOfInterestManager PointOfInterestManager;
+
+#if UNITY_EDITOR
+        private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
+#endif
 
         private void Awake()
         {
@@ -43,6 +46,7 @@ namespace AdventureGame
 
             //initialization
             AdventureLevelChunkFXTransitionManager.Init();
+            GameObject.FindObjectOfType<CutscenePlayerManager>().Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();
@@ -55,6 +59,10 @@ namespace AdventureGame
             {
                 WayPointPathContainer.Init();
             }
+
+#if UNITY_EDITOR
+            this.EditorOnlyModules.Init();
+#endif
 
         }
 
@@ -72,6 +80,11 @@ namespace AdventureGame
             InventoryManager.Tick(d);
             DiscussionWindowManager.Tick(d);
             PointOfInterestManager.Tick(d);
+
+
+#if UNITY_EDITOR
+            this.EditorOnlyModules.Tick(d);
+#endif
         }
 
         private void FixedUpdate()
@@ -102,5 +115,23 @@ namespace AdventureGame
 
 
     }
+
+#if UNITY_EDITOR
+    class EditorOnlyModules
+    {
+        private AdventureDebugModule AdventureDebugModule;
+
+        public void Init()
+        {
+            this.AdventureDebugModule = GameObject.FindObjectOfType<AdventureDebugModule>();
+            this.AdventureDebugModule.Init();
+        }
+
+        public void Tick(float d)
+        {
+            this.AdventureDebugModule.Tick(d);
+        }
+    }
+#endif
 
 }

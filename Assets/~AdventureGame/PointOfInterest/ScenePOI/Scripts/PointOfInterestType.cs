@@ -16,6 +16,9 @@ namespace AdventureGame
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestContextDataContainer PointOfInterestContextData;
 
+        //Optional
+        private PointOfInterestCutsceneController pointOfInterestCutsceneController;
+
         private PointOfInterestInherentData pointOfInterestInherentData;
         #endregion
 
@@ -32,6 +35,7 @@ namespace AdventureGame
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
         public PointOfInterestInherentData PointOfInterestInherentData { get => pointOfInterestInherentData; }
+        public PointOfInterestCutsceneController PointOfInterestCutsceneController { get => pointOfInterestCutsceneController; }
 
         #region Data Retrieval
         public float GetMaxDistanceToInteractWithPlayer()
@@ -50,6 +54,7 @@ namespace AdventureGame
             this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             #endregion
+            this.pointOfInterestCutsceneController = transform.parent.GetComponentInChildren<PointOfInterestCutsceneController>();
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
