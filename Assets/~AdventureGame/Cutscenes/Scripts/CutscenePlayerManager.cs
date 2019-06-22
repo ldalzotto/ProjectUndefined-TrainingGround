@@ -31,6 +31,11 @@ namespace AdventureGame
         }
         #endregion
 
+        public IEnumerator PlayCutscene(CutsceneId cutsceneId)
+        {
+            yield return Coroutiner.Instance.StartCoroutine(this.PlayCutscene(this.AdventureGameConfigurationManager.CutsceneConf()[cutsceneId].PlayableAsset));
+        }
+
         private IEnumerator PlayCutscene(PlayableAsset playableAsset)
         {
             this.playableDirector.Stop();

@@ -133,13 +133,10 @@
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationPlayer.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManagerEventHandler.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerObstacleOvercomeTriggerTracker.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\GhostPOI\Scripts\GhostsPOIManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Cutscene\PointOfInterestCutsceneController.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestAdventureEventManager.cs" />
-    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestContextData\DataTypes\CutsceneTimelinePOIData.cs" />
-    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestContextData\PointOfInterestContextDataContainer.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestType.cs" />

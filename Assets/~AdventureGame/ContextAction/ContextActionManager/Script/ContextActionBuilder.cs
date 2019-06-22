@@ -28,7 +28,7 @@ namespace AdventureGame
             else if (contextAction.GetType() == typeof(CutsceneTimelineAction))
             {
                 var targetedPOI = playerManager.GetCurrentTargetedPOI();
-                return new CutsceneTimelineActionInput(targetedPOI, targetedPOI.GetContextData(), playerManager.transform);
+                return new CutsceneTimelineActionInput(targetedPOI);
             }
             else if (contextAction.GetType() == typeof(ItemInteractAction))
             {

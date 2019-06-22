@@ -63,7 +63,7 @@ namespace AdventureGame
             }
             #endregion
 
-            this.PointOfInterestCutsceneController = GetComponentInChildren<PointOfInterestCutsceneController>();
+            this.PointOfInterestCutsceneController = GetComponentInChildren<PointOfInterestType>().PointOfInterestCutsceneController;
             GameObject playerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
             BoxCollider obstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
             Animator playerAnimator = GetComponentInChildren<Animator>();
@@ -78,7 +78,6 @@ namespace AdventureGame
             this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
             this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
-            this.PointOfInterestCutsceneController.Init();
             this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
             this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, playerObject.transform);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);

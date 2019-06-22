@@ -14,7 +14,6 @@ namespace AdventureGame
         #region Internal Depencies
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
-        private PointOfInterestContextDataContainer PointOfInterestContextData;
 
         //Optional
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
@@ -60,10 +59,15 @@ namespace AdventureGame
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
             this.POIShowHideManager = new POIShowHideManager(this);
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
-            this.PointOfInterestContextData = transform.parent.GetComponentInChildren<PointOfInterestContextDataContainer>();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
             this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
+
+            if (this.pointOfInterestCutsceneController != null)
+            {
+                this.pointOfInterestCutsceneController.Init();
+            }
+
         }
 
         public override void Init_EndOfFrame()
@@ -135,11 +139,6 @@ namespace AdventureGame
             return transform.parent.gameObject;
         }
         #endregion
-
-        public PointOfInterestContextDataContainer GetContextData()
-        {
-            return PointOfInterestContextData;
-        }
 
         internal List<AContextAction> GetContextActions()
         {
