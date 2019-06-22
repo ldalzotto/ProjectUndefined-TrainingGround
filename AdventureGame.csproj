@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{F166990D-8474-7606-2C5D-4DD059FAED65}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -97,6 +98,11 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionMarker.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsType.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\Animation\PlayAnimationBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\Animation\PlayAnimationClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\CutsceneWorkflow\CutsceneEndBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\CutsceneWorkflow\CutsceneEndClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\CutsceneWorkflow\CutsceneWorkflowTrack.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\Discussion\DicsussionTimelineBehavior.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\Discussion\DicsussionTimelineClip.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerItemHold\PlayerItemHolderBehavior.cs" />

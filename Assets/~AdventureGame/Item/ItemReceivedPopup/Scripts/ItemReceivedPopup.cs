@@ -111,7 +111,7 @@ namespace AdventureGame
 
         public IEnumerator PlayClose()
         {
-            return AnimationPlayerHelper.Play(Animator, CLOSING_ANIMATION_NAME, 0, 0f);
+            return AnimationPlayerHelper.PlayAndWait(Animator, CLOSING_ANIMATION_NAME, 0, 0f);
         }
     }
     #endregion

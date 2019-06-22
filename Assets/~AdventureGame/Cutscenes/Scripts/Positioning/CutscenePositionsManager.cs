@@ -7,15 +7,11 @@ namespace AdventureGame
     public class CutscenePositionsManager : MonoBehaviour
     {
 
-        private Dictionary<CutsceneId, CutscenePositionsType> cutscenePositionsType;
+        private Dictionary<CutsceneId, CutscenePositionsType> cutscenePositionsType = new Dictionary<CutsceneId, CutscenePositionsType>();
 
-        public void Init()
+        public void AddPositions(CutscenePositionsType cutscenePositionsType)
         {
-            this.cutscenePositionsType = new Dictionary<CutsceneId, CutscenePositionsType>();
-            foreach (var cutscenePositionType in this.GetComponentsInChildren<CutscenePositionsType>())
-            {
-                this.cutscenePositionsType[cutscenePositionType.CutsceneId] = cutscenePositionType;
-            }
+            this.cutscenePositionsType[cutscenePositionsType.CutsceneId] = cutscenePositionsType;
         }
 
         public CutscenePositionMarker GetCutscenePosition(CutsceneId cutsceneId, CutscenePositionMarkerID cutscenePositionMarkerID)

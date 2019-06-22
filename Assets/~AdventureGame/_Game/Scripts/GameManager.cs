@@ -47,7 +47,6 @@ namespace AdventureGame
             //initialization
             AdventureLevelChunkFXTransitionManager.Init();
             GameObject.FindObjectOfType<CutscenePlayerManager>().Init();
-            GameObject.FindObjectOfType<CutscenePositionsManager>().Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();

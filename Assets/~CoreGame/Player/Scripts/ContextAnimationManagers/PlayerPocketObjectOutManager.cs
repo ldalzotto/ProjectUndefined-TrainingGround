@@ -33,7 +33,7 @@ namespace CoreGame
 
         public void Play()
         {
-            this.endCoroutine = Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.Play(this.playerAnimator, this.playerAnimationContextName, this.crossFadeTime, () =>
+            this.endCoroutine = Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(this.playerAnimator, this.playerAnimationContextName, this.crossFadeTime, () =>
             {
                 this.OnAnimationEnd();
                 return null;

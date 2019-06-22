@@ -51,7 +51,7 @@ namespace AdventureGame
         private static IEnumerator PlaySliceAnimation(Animator animator, SliceAnimation[] sliceAnimations, int currentIndex)
         {
             var sliceAnimation = sliceAnimations[currentIndex];
-            yield return AnimationPlayerHelper.Play(animator, sliceAnimation.PlayerAnimatioNamesEnum, sliceAnimation.CrossFadeDuration, animationEndCallback: () =>
+            yield return AnimationPlayerHelper.PlayAndWait(animator, sliceAnimation.PlayerAnimatioNamesEnum, sliceAnimation.CrossFadeDuration, animationEndCallback: () =>
             {
                 if (sliceAnimations.Length >= currentIndex + 2 && AnimationPlayerHelper.IsCurrentStateNameEquals(animator, sliceAnimations[currentIndex + 1].PlayerAnimatioNamesEnum))
                 {

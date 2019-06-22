@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using CoreGame;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,6 +14,7 @@ namespace AdventureGame
 
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
+        private Animator Animator;
         private POICutsceneMoveManager POICutsceneMoveManager;
 
         private Transform warpPosition;
@@ -30,6 +33,7 @@ namespace AdventureGame
 
             this.Rigidbody = GetComponentInParent<Rigidbody>();
             this.Agent = GetComponentInParent<NavMeshAgent>();
+            this.Animator = transform.parent.GetComponentInChildren<Animator>();
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
         }
 
@@ -59,6 +63,16 @@ namespace AdventureGame
             yield return this.POICutsceneMoveManager.SetDestination(destination, normalizedSpeed);
             //Force position to ensure the destination is correctly reached
             this.Warp(destination);
+        }
+
+        public IEnumerator PlayAnimationAndWait(PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
+        {
+            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, playerAnimatioNnamesEnum, crossFadeDuration, animationEndCallback);
+        }
+
+        public void PlayAnimation(PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration)
+        {
+            AnimationPlayerHelper.Play(this.Animator, playerAnimatioNnamesEnum, crossFadeDuration);
         }
     }
 

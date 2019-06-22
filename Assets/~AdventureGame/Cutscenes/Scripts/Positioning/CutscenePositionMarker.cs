@@ -15,9 +15,9 @@ namespace AdventureGame
         [Header("GIZMO")]
         public float DirectionLineLength = 10f;
 
-        private void OnDrawGizmos()
-        {
 #if UNITY_EDITOR
+        public void GizmoTick()
+        {
             var labelStyle = GUI.skin.GetStyle("Label");
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.normal.textColor = Color.yellow;
@@ -27,7 +27,7 @@ namespace AdventureGame
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(this.transform.position, 1f);
             Gizmos.DrawLine(this.transform.position, this.transform.position + (DirectionLineLength * this.transform.forward));
-#endif
         }
+#endif
     }
 }
