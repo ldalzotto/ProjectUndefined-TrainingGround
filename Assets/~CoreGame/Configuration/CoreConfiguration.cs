@@ -11,6 +11,7 @@ namespace CoreGame
         public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
         public LevelHierarchyConfiguration LevelHierarchyConfiguration;
         public TimelineConfiguration TimelineConfiguration;
+        public AnimationConfiguration AnimationConfiguration;
     }
 }
 

@@ -97,6 +97,8 @@
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />

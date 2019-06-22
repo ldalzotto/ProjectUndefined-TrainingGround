@@ -17,7 +17,8 @@ public class CoreGameConfigurationEditorProfile : TreeChoiceHeaderTab<IGenericCo
         {"LevelManagement//" + typeof(LevelZonesSceneConfiguration).Name, new GenericConfigurationEditor<LevelZonesID, LevelZonesSceneConfigurationData>("t:"+ typeof(LevelZonesSceneConfiguration).Name) },
         {"LevelManagement//" + typeof(ChunkZonesSceneConfiguration).Name, new GenericConfigurationEditor<LevelZoneChunkID, LevelZonesSceneConfigurationData>("t:"+ typeof(ChunkZonesSceneConfiguration).Name) },
         {"LevelManagement//" + typeof(LevelHierarchyConfiguration).Name, new GenericConfigurationEditor<LevelZonesID, LevelHierarchyConfigurationData>("t:"+ typeof(LevelHierarchyConfiguration).Name) },
-        {"Timeline//" + typeof(TimelineConfiguration).Name, new GenericConfigurationEditor<TimelineID, TimelineInitializerScriptableObject>("t:"+ typeof(TimelineConfiguration).Name) }
+        {"Timeline//" + typeof(TimelineConfiguration).Name, new GenericConfigurationEditor<TimelineID, TimelineInitializerScriptableObject>("t:"+ typeof(TimelineConfiguration).Name) },
+        {"Animation//" + typeof(AnimationConfiguration).Name, new GenericConfigurationEditor<AnimationID, AnimationConfigurationData>("t:"+ typeof(AnimationConfiguration).Name) }
     };
 
     [SerializeField]

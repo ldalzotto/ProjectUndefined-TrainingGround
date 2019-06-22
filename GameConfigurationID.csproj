@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\@GameConfigurationID\IDs\AiID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\AnimationID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\AnimationLayerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AttractiveObjectId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\CutsceneId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\CutscenePositionMarkerID.cs" />
