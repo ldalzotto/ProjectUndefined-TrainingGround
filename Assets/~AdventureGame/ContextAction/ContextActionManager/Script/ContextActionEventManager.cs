@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -10,7 +11,10 @@ namespace AdventureGame
         private ContextActionManager ContextActionManager;
         private PlayerManager PlayerManager;
         private InventoryManager InventoryManager;
+
+        private Dictionary<AContextAction, List<IContextActionDyamicWorkflowListener>> dynamicContextActionListeners;
         private TimelinesEventManager ScenarioTimelineEventManager;
+
 
         private void Start()
         {
@@ -18,6 +22,7 @@ namespace AdventureGame
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
             ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
+            this.dynamicContextActionListeners = new Dictionary<AContextAction, List<IContextActionDyamicWorkflowListener>>();
         }
 
         public void OnContextActionAdd(AContextAction contextAction)
@@ -37,7 +42,16 @@ namespace AdventureGame
                 Debug.LogError("An error occured while trying to execute ActionContext : " + contextAction.GetType() + " : " + e.Message, this);
                 Debug.LogError(e.GetBaseException().StackTrace);
             }
+        }
 
+        public void OnContextActionAdd(AContextAction contextAction, IContextActionDyamicWorkflowListener dynamicListener)
+        {
+            this.OnContextActionAdd(contextAction);
+            if (!this.dynamicContextActionListeners.ContainsKey(contextAction))
+            {
+                this.dynamicContextActionListeners[contextAction] = new List<IContextActionDyamicWorkflowListener>();
+            }
+            this.dynamicContextActionListeners[contextAction].Add(dynamicListener);
         }
 
         public void OnContextActionFinished(AContextAction finishedContextAction, AContextActionInput contextActionInput)
@@ -45,8 +59,21 @@ namespace AdventureGame
             PlayerManager.OnContextActionFinished();
             InventoryManager.OnContextActionFinished();
             ScenarioTimelineEventManager.OnScenarioActionExecuted(ContextActionBuilder.BuildScenarioAction(finishedContextAction, contextActionInput));
+            if (this.dynamicContextActionListeners.ContainsKey(finishedContextAction))
+            {
+                foreach (var listener in this.dynamicContextActionListeners[finishedContextAction])
+                {
+                    listener.OnContextActionFinished(finishedContextAction);
+                }
+                this.dynamicContextActionListeners.Remove(finishedContextAction);
+            }
         }
 
+    }
+
+    public interface IContextActionDyamicWorkflowListener
+    {
+        void OnContextActionFinished(AContextAction contextAction);
     }
 
 }

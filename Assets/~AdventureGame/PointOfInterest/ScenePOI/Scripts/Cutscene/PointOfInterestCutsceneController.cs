@@ -14,7 +14,7 @@ namespace AdventureGame
         private NavMeshAgent Agent;
         private POICutsceneMoveManager POICutsceneMoveManager;
 
-        private Vector3 warpPosition;
+        private Transform warpPosition;
 
         #region State 
         private bool askedForWarp;
@@ -42,20 +42,23 @@ namespace AdventureGame
         {
             if (this.askedForWarp)
             {
-                this.Rigidbody.MovePosition(this.warpPosition);
+                this.Rigidbody.MovePosition(this.warpPosition.position);
+                this.Rigidbody.MoveRotation(this.warpPosition.rotation);
                 this.askedForWarp = false;
             }
         }
 
-        public void Warp(Vector3 warpPosition)
+        public void Warp(Transform warpPosition)
         {
             this.askedForWarp = true;
             this.warpPosition = warpPosition;
         }
 
-        public IEnumerator SetAIDestination(Vector3 destination, float normalizedSpeed)
+        public IEnumerator SetAIDestination(Transform destination, float normalizedSpeed)
         {
             yield return this.POICutsceneMoveManager.SetDestination(destination, normalizedSpeed);
+            //Force position to ensure the destination is correctly reached
+            this.Warp(destination);
         }
     }
 
@@ -100,16 +103,18 @@ namespace AdventureGame
 
         }
 
-        public IEnumerator SetDestination(Vector3 destination, float normalizedSpeed)
+        public IEnumerator SetDestination(Transform destination, float normalizedSpeed)
         {
             isDirectedByAi = true;
             this.normalizedSpeedMagnitude = normalizedSpeed;
             playerAgent.nextPosition = this.PlayerRigidBody.transform.position;
-            playerAgent.SetDestination(destination);
+            playerAgent.SetDestination(destination.position);
             PlayerRigidBody.isKinematic = true;
+            //Let the AI move
             yield return Coroutiner.Instance.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
-            isDirectedByAi = false;
             PlayerRigidBody.isKinematic = false;
+            isDirectedByAi = false;
         }
     }
+
 }

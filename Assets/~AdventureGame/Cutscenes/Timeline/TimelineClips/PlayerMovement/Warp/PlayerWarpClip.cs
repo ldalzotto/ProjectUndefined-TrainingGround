@@ -10,10 +10,16 @@ namespace AdventureGame
 
         [CustomEnum()]
         public PointOfInterestId PointOfInterestId;
-        public Vector3 Destination;
+        [CustomEnum()]
+        public CutscenePositionMarkerID Destination;
+        [CustomEnum(isCreateable: true)]
+        public CutsceneId cutsceneId;
+
+        public CutsceneId CutsceneId { set => cutsceneId = value; }
+
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            PlayerWarpBehavior = new PlayerWarpBehavior(this.Destination, this.PointOfInterestId);
+            PlayerWarpBehavior = new PlayerWarpBehavior(this.Destination, this.cutsceneId, this.PointOfInterestId);
             return ScriptPlayable<PlayerWarpBehavior>.Create(graph, PlayerWarpBehavior);
         }
 

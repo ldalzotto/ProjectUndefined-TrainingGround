@@ -80,7 +80,7 @@ namespace AdventureGame
                     if (cutscenePOIDatas[i].CutsceneId == cutsceneId)
                     {
                         this.CutsceneTimelinePOIData = cutscenePOIDatas[i];
-                        PlayerManagerEventHandler.StartCoroutine(SetAgentDestination(CutsceneTimelinePOIData.PlayerStartingTransform.position));
+                        PlayerManagerEventHandler.StartCoroutine(SetAgentDestination(CutsceneTimelinePOIData.PlayerStartingTransform));
                         this.PlayerInitialPositionerManager = new PlayerInitialPositionerManager(cutsceneTimelineContextActionInput.PlayerTransform, CutsceneTimelinePOIData.PlayerStartingTransform);
                         break;
                     }
@@ -110,9 +110,9 @@ namespace AdventureGame
 
         }
 
-        private IEnumerator SetAgentDestination(Vector3 destination)
+        private IEnumerator SetAgentDestination(Transform destinationTransform)
         {
-            yield return PlayerManagerEventHandler.StartCoroutine(PlayerManagerEventHandler.OnSetDestinationCoRoutine(destination, 1f));
+            yield return PlayerManagerEventHandler.StartCoroutine(PlayerManagerEventHandler.OnSetDestinationCoRoutine(destinationTransform, 1f));
             isAgentDestinationReached = true;
         }
 

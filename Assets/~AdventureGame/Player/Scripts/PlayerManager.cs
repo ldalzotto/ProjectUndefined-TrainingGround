@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -237,7 +238,9 @@ namespace AdventureGame
         {
             PlayerInventoryTriggerManager.OnInventoryDisabled();
         }
-        public IEnumerator SetAIDestinationCoRoutine(Vector3 destination, float normalizedSpeed)
+
+        [Obsolete("Cutscene movement must be handled with the new system")]
+        public IEnumerator SetAIDestinationCoRoutine(Transform destination, float normalizedSpeed)
         {
             return this.PointOfInterestCutsceneController.SetAIDestination(destination, normalizedSpeed);
         }

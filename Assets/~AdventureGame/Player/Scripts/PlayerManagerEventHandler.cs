@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 namespace AdventureGame
@@ -16,9 +17,10 @@ namespace AdventureGame
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
         }
 
-        public IEnumerator OnSetDestinationCoRoutine(Vector3 destination, float normalizedSpeed)
+        [Obsolete("Cutscene movement must be handled with the new system")]
+        public IEnumerator OnSetDestinationCoRoutine(Transform destination, float normalizedSpeed)
         {
-            if(this.PlayerManager != null)
+            if (this.PlayerManager != null)
             {
                 return PlayerManager.SetAIDestinationCoRoutine(destination, normalizedSpeed);
             }

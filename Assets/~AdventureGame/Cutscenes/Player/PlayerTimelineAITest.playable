@@ -1,20 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8436863007938647244
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8560c37e07b20184898d98d878a0394e, type: 3}
-  m_Name: PlayerAIMoveToClip
-  m_EditorClassIdentifier: 
-  PointOfInterestId: 4
-  Destination: {x: -11.8, y: 2.8, z: -25.39}
-  NormalizedSpeedMagnitude: 1
 --- !u!114 &-8328905623167816308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -28,7 +13,8 @@ MonoBehaviour:
   m_Name: PlayerAIMoveToClip
   m_EditorClassIdentifier: 
   PointOfInterestId: 4
-  Destination: {x: -11.8, y: 2.8, z: -38.6}
+  cutsceneId: 2
+  cutscenePositionMarkerID: 2
   NormalizedSpeedMagnitude: 1
 --- !u!114 &-6696045663475219923
 MonoBehaviour:
@@ -45,6 +31,22 @@ MonoBehaviour:
   DiscussionTreeID: 0
   DicsussionTimelineBehavior:
     DiscussionTreeID: 0
+--- !u!114 &-4074055063584591779
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8560c37e07b20184898d98d878a0394e, type: 3}
+  m_Name: PlayerAIMoveToClip(Clone)
+  m_EditorClassIdentifier: 
+  PointOfInterestId: 4
+  cutsceneId: 2
+  cutscenePositionMarkerID: 0
+  NormalizedSpeedMagnitude: 1
 --- !u!114 &-3148709595946622767
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -67,10 +69,10 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 0.05
+    m_Start: 0.5833333333333334
     m_ClipIn: 0
-    m_Asset: {fileID: -8328905623167816308}
-    m_Duration: 1
+    m_Asset: {fileID: -6696045663475219923}
+    m_Duration: 0.06666666666666665
     m_TimeScale: 1
     m_ParentTrack: {fileID: -3148709595946622767}
     m_EaseInDuration: 0
@@ -98,62 +100,11 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: PlayerAIMoveToClip
-  - m_Version: 1
-    m_Start: 1.0666666666666667
-    m_ClipIn: 0
-    m_Asset: {fileID: -8436863007938647244}
-    m_Duration: 1
-    m_TimeScale: 1
-    m_ParentTrack: {fileID: -3148709595946622767}
-    m_EaseInDuration: 0
-    m_EaseOutDuration: 0
-    m_BlendInDuration: -1
-    m_BlendOutDuration: -1
-    m_MixInCurve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_MixOutCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_BlendInCurveMode: 0
-    m_BlendOutCurveMode: 0
-    m_ExposedParameterNames: []
-    m_AnimationCurves: {fileID: 0}
-    m_Recordable: 0
-    m_PostExtrapolationMode: 0
-    m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 0
-    m_PreExtrapolationTime: 0
-    m_DisplayName: PlayerAIMoveToClip
+    m_DisplayName: DicsussionTimelineClip
   - m_Version: 1
     m_Start: 0
     m_ClipIn: 0
-    m_Asset: {fileID: 3147511818336662599}
+    m_Asset: {fileID: -506735813340618314}
     m_Duration: 0.05
     m_TimeScale: 1
     m_ParentTrack: {fileID: -3148709595946622767}
@@ -163,16 +114,10 @@ MonoBehaviour:
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    m_MixOutCurve:
-      serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -181,13 +126,19 @@ MonoBehaviour:
         outWeight: 0
       - serializedVersion: 3
         time: 1
-        value: 0
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -202,10 +153,10 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: PlayerWarpClip
   - m_Version: 1
-    m_Start: 2.0833333333333335
+    m_Start: 0.05
     m_ClipIn: 0
-    m_Asset: {fileID: -6696045663475219923}
-    m_Duration: 1.4500000000000002
+    m_Asset: {fileID: 4030501434047985206}
+    m_Duration: 0.25
     m_TimeScale: 1
     m_ParentTrack: {fileID: -3148709595946622767}
     m_EaseInDuration: 0
@@ -214,49 +165,13 @@ MonoBehaviour:
     m_BlendOutDuration: -1
     m_MixInCurve:
       serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_MixOutCurve:
       serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
+      m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -269,9 +184,106 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: DicsussionTimelineClip
+    m_DisplayName: PlayerAIMoveToClip
+  - m_Version: 1
+    m_Start: 0.31666666666666665
+    m_ClipIn: 0
+    m_Asset: {fileID: -59341770935411271}
+    m_Duration: 0.25
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -3148709595946622767}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: PlayerAIMoveToClip
+  - m_Version: 1
+    m_Start: 0.6666666666666666
+    m_ClipIn: 0
+    m_Asset: {fileID: -4074055063584591779}
+    m_Duration: 0.25
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -3148709595946622767}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: -1
+    m_BlendOutDuration: -1
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: PlayerAIMoveToClip
   m_Markers:
     m_Objects: []
+--- !u!114 &-506735813340618314
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1784bb087311ff74dac058677e7fdb57, type: 3}
+  m_Name: PlayerWarpClip
+  m_EditorClassIdentifier: 
+  PointOfInterestId: 4
+  Destination: 2
+  cutsceneId: 2
+--- !u!114 &-59341770935411271
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8560c37e07b20184898d98d878a0394e, type: 3}
+  m_Name: PlayerAIMoveToClip(Clone)
+  m_EditorClassIdentifier: 
+  PointOfInterestId: 4
+  cutsceneId: 2
+  cutscenePositionMarkerID: 1
+  NormalizedSpeedMagnitude: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,4 +317,37 @@ MonoBehaviour:
   m_Name: PlayerWarpClip
   m_EditorClassIdentifier: 
   PointOfInterestId: 4
-  Destination: {x: -50, y: 2.5, z: 65}
+  Destination: 0
+  cutsceneId: 2
+--- !u!114 &4030501434047985206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8560c37e07b20184898d98d878a0394e, type: 3}
+  m_Name: PlayerAIMoveToClip
+  m_EditorClassIdentifier: 
+  PointOfInterestId: 4
+  cutsceneId: 2
+  cutscenePositionMarkerID: 0
+  NormalizedSpeedMagnitude: 1
+--- !u!114 &4292514556134272630
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8560c37e07b20184898d98d878a0394e, type: 3}
+  m_Name: PlayerAIMoveToClip(Clone)
+  m_EditorClassIdentifier: 
+  PointOfInterestId: 4
+  cutsceneId: 2
+  cutscenePositionMarkerID: 0
+  NormalizedSpeedMagnitude: 1

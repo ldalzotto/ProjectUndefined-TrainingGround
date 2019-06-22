@@ -10,14 +10,15 @@ namespace AdventureGame
 
         [CustomEnum()]
         public PointOfInterestId PointOfInterestId;
-        public Vector3 Destination;
+        public CutsceneId cutsceneId;
+        public CutscenePositionMarkerID cutscenePositionMarkerID;
 
         [Range(0f, 1f)]
         public float NormalizedSpeedMagnitude = 1f;
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)
         {
-            this.PlayerAIMoveToBehavior = new PlayerAIMoveToBehavior(this.Destination, this.NormalizedSpeedMagnitude, this.PointOfInterestId);
+            this.PlayerAIMoveToBehavior = new PlayerAIMoveToBehavior(this.cutsceneId, this.cutscenePositionMarkerID, this.NormalizedSpeedMagnitude, this.PointOfInterestId);
             return ScriptPlayable<PlayerAIMoveToBehavior>.Create(graph, this.PlayerAIMoveToBehavior);
         }
 

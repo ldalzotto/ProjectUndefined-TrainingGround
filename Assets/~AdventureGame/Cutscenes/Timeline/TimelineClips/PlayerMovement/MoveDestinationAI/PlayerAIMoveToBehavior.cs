@@ -9,12 +9,14 @@ namespace AdventureGame
     public class PlayerAIMoveToBehavior : PlayableBehaviour
     {
         private PointOfInterestId pointOfInterestId;
-        private Vector3 destination;
+        private CutsceneId cutsceneId;
+        private CutscenePositionMarkerID cutscenePositionMarkerID;
         private float normalizedSpeedMagnitude;
 
-        public PlayerAIMoveToBehavior(Vector3 destination, float normalizedSpeedMagnitude, PointOfInterestId pointOfInterestId)
+        public PlayerAIMoveToBehavior(CutsceneId cutsceneId, CutscenePositionMarkerID cutscenePositionMarkerID,  float normalizedSpeedMagnitude, PointOfInterestId pointOfInterestId)
         {
-            this.destination = destination;
+            this.cutscenePositionMarkerID = cutscenePositionMarkerID;
+            this.cutsceneId = cutsceneId;
             this.normalizedSpeedMagnitude = normalizedSpeedMagnitude;
             this.pointOfInterestId = pointOfInterestId;
         }
@@ -24,6 +26,7 @@ namespace AdventureGame
         }
 
         private PointOfInterestCutsceneController PointOfInterestCutsceneController;
+        private CutscenePositionsManager CutscenePositionsManager;
         private bool isMoving;
         private bool destinationReached;
         private PlayableDirector PlayableDirector;
@@ -35,6 +38,7 @@ namespace AdventureGame
             this.isMoving = false;
             var PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             this.PointOfInterestCutsceneController = PointOfInterestManager.GetActivePointOfInterest(this.pointOfInterestId).PointOfInterestCutsceneController;
+            this.CutscenePositionsManager = GameObject.FindObjectOfType<CutscenePositionsManager>();
 
             this.PlayableDirector = playable.GetGraph().GetResolver() as PlayableDirector;
         }
@@ -42,7 +46,7 @@ namespace AdventureGame
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
             base.OnBehaviourPlay(playable, info);
-            if (this.PointOfInterestCutsceneController != null)
+            if (this.PointOfInterestCutsceneController != null && this.CutscenePositionsManager != null)
             {
                 if (Coroutiner.Instance != null)
                 {
@@ -54,13 +58,14 @@ namespace AdventureGame
         private IEnumerator SetDestination()
         {
             this.isMoving = true;
-            yield return this.PointOfInterestCutsceneController.SetAIDestination(this.destination, this.normalizedSpeedMagnitude);
+            yield return this.PointOfInterestCutsceneController.SetAIDestination(this.CutscenePositionsManager.GetCutscenePosition(this.cutsceneId, this.cutscenePositionMarkerID).transform, this.normalizedSpeedMagnitude);
             this.destinationReached = true;
             this.PlayableDirector.Resume();
         }
 
         public override void OnBehaviourPause(Playable playable, FrameData info)
         {
+            Debug.Log(MyLog.Format("OnBehaviourPause"));
             base.OnBehaviourPause(playable, info);
             if (!this.destinationReached && this.isMoving)
             {

@@ -64,14 +64,6 @@
   <ItemGroup>
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\PrefabContainer.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\Discussion\DicsussionTimelineBehavior.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\Discussion\DicsussionTimelineClip.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderBehavior.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerItemHold\PlayerItemHolderClip.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\MoveDestinationAI\PlayerAIMoveToBehavior.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\MoveDestinationAI\PlayerAIMoveToClip.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\Warp\PlayerWarpBehavior.cs" />
-    <Compile Include="Assets\~AdventureGame\Animation\TimelineClips\PlayerMovement\Warp\PlayerWarpClip.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
@@ -102,6 +94,17 @@
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\ContextAction\ContextActionWheelManager\ContextActionWheelManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\CutscenePlayerManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionMarker.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsType.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\Discussion\DicsussionTimelineBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\Discussion\DicsussionTimelineClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerItemHold\PlayerItemHolderBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerItemHold\PlayerItemHolderClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerMovement\MoveDestinationAI\PlayerAIMoveToBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerMovement\MoveDestinationAI\PlayerAIMoveToClip.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerMovement\Warp\PlayerWarpBehavior.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Timeline\TimelineClips\PlayerMovement\Warp\PlayerWarpClip.cs" />
     <Compile Include="Assets\~AdventureGame\Debug\Script\AdventureDebugModule.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
@@ -150,6 +153,9 @@
     <None Include="Assets\~AdventureGame\Discussion\Font\LICENSE.txt" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
