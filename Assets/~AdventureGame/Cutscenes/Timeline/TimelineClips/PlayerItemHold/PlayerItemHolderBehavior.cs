@@ -1,7 +1,7 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.Playables;
-using static CoreGame.PlayerAnimationConstants;
+using static PlayerAnimationConstants;
 
 namespace AdventureGame
 {

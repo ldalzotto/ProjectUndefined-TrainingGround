@@ -9,7 +9,7 @@ namespace AdventureGame
         [CustomEnum()]
         public PointOfInterestId pointOfInterestId;
         [CustomEnum()]
-        public PlayerAnimatioNamesEnum animationId;
+        public AnimationID animationId;
         public PlayAnimationBehavior PlayAnimationBehavior;
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject owner)

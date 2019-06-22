@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using GameConfigurationID;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,9 +19,9 @@ namespace RTPuzzle
         [Header("Animation")]
 
         [CustomEnum]
-        public PlayerAnimatioNamesEnum PreActionAnimation;
+        public AnimationID PreActionAnimation;
         [CustomEnum]
-        public PlayerAnimatioNamesEnum PostActionAnimation;
+        public AnimationID PostActionAnimation;
 
         public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)
         {

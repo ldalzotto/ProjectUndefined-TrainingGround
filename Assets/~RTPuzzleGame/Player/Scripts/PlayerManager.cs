@@ -44,6 +44,7 @@ namespace RTPuzzle
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             #endregion
 
             this.playerRigidbody = GetComponent<Rigidbody>();
@@ -55,7 +56,7 @@ namespace RTPuzzle
             PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
-            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, this.playerRigidbody);
+            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
 

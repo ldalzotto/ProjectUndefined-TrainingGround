@@ -9,9 +9,9 @@ namespace AdventureGame
     public class PlayAnimationBehavior : PlayableBehaviour
     {
         private PointOfInterestId pointOfInterestId;
-        private PlayerAnimatioNamesEnum animationId;
+        private AnimationID animationId;
 
-        public PlayAnimationBehavior(PlayerAnimatioNamesEnum animationId, PointOfInterestId pointOfInterestId)
+        public PlayAnimationBehavior(AnimationID animationId, PointOfInterestId pointOfInterestId)
         {
             this.animationId = animationId;
             this.pointOfInterestId = pointOfInterestId;

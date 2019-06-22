@@ -51,6 +51,7 @@ namespace AdventureGame
             GameObject CameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             ContextActionWheelEventManager ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
             InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
+            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             #endregion
 
             #region Load Persisted Position
@@ -85,7 +86,7 @@ namespace AdventureGame
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
-            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, playerAnimator, playerRigidBody);
+            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, playerAnimator, playerRigidBody, coreConfigurationManager);
         }
 
         public void Tick(float d)

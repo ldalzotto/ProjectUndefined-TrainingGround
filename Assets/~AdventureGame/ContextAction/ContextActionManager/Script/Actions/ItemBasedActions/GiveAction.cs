@@ -3,7 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections;
 using UnityEngine;
-using static CoreGame.PlayerAnimationConstants;
+using static PlayerAnimationConstants;
 
 namespace AdventureGame
 {
@@ -60,8 +60,9 @@ namespace AdventureGame
             #region External Dependencies
             this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             #endregion
-            GiveActionAnimationManager = new GiveActionAnimationManager(itemGiven, AdventureGameConfigurationManager);
+            GiveActionAnimationManager = new GiveActionAnimationManager(itemGiven, AdventureGameConfigurationManager, animationConfiguration);
 
             //reset
             isActionEnded = false;
@@ -78,13 +79,13 @@ namespace AdventureGame
             }
             else
             {
-                Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(giveActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
-                {
-                    {
-                        this.OnGiveAnimationEnd();
-                        return null;
-                    }
-                }));
+                Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(giveActionInput.PlayerAnimator, animationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_ACTION_FORBIDDEN], 0f, () =>
+               {
+                   {
+                       this.OnGiveAnimationEnd();
+                       return null;
+                   }
+               }));
             }
         }
 
@@ -124,11 +125,13 @@ namespace AdventureGame
     {
         private ItemID ItemGiven;
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
+        private AnimationConfiguration AnimationConfiguration;
 
-        public GiveActionAnimationManager(ItemID itemGiven, AdventureGameConfigurationManager AdventureGameConfigurationManager)
+        public GiveActionAnimationManager(ItemID itemGiven, AdventureGameConfigurationManager AdventureGameConfigurationManager, AnimationConfiguration AnimationConfiguration)
         {
             ItemGiven = itemGiven;
             this.AdventureGameConfigurationManager = AdventureGameConfigurationManager;
+            this.AnimationConfiguration = AnimationConfiguration;
         }
 
         private Animator PlayerAnimator;
@@ -139,7 +142,7 @@ namespace AdventureGame
             this.PlayerAnimator = giveActionInput.PlayerAnimator;
 
             PlayerAnimator = giveActionInput.PlayerAnimator;
-            return PlayerAnimationPlayer.PlayItemGivenAnimation(giveActionInput.PlayerAnimator,
+            return PlayerAnimationPlayer.PlayItemGivenAnimation(giveActionInput.PlayerAnimator, this.AnimationConfiguration,
                 onItemShow: InstanciateDisplayedItem,
                 onAnimationEnd: () =>
                 {

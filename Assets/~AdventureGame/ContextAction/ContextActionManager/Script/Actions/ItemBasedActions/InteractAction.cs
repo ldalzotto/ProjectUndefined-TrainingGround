@@ -31,6 +31,10 @@ namespace AdventureGame
 
         public override void FirstExecutionAction(AContextActionInput ContextActionInput)
         {
+            #region External Dependencies
+            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            #endregion
+
             InteractionResolved = false;
 
             var interactActionInput = (InteractActionInput)ContextActionInput;
@@ -40,11 +44,11 @@ namespace AdventureGame
             }
             else
             {
-                interactActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.PlayAndWait(interactActionInput.PlayerAnimator, PlayerAnimatioNamesEnum.PLAYER_ACTION_FORBIDDEN, 0f, () =>
-                {
-                    this.OnInteractionResolved();
-                    return null;
-                }));
+                interactActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.PlayAndWait(interactActionInput.PlayerAnimator, animationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_ACTION_FORBIDDEN], 0f, () =>
+               {
+                   this.OnInteractionResolved();
+                   return null;
+               }));
                 //abort context action chain
                 SetNextContextAction(null);
             }

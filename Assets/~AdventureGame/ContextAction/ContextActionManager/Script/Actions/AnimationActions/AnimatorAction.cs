@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using UnityEngine;
+using GameConfigurationID;
 #if UNITY_EDITOR
 using NodeGraph_Editor;
 #endif
@@ -9,13 +10,13 @@ namespace AdventureGame
     public class AnimatorAction : AContextAction
     {
         [SerializeField]
-        private PlayerAnimatioNamesEnum playerAnimationEnum;
+        private AnimationID animationID;
         [SerializeField]
         private bool animationEnded;
 
-        public AnimatorAction(PlayerAnimatioNamesEnum playerAnimationEnum, AContextAction nextContextAction) : base(nextContextAction)
+        public AnimatorAction(AnimationID animationID, AContextAction nextContextAction) : base(nextContextAction)
         {
-            this.playerAnimationEnum = playerAnimationEnum;
+            this.animationID = animationID;
         }
 
         public override void AfterFinishedEventProcessed()
@@ -32,7 +33,7 @@ namespace AdventureGame
             animationEnded = false;
             var animatorActionInput = (AnimatorActionInput)ContextActionInput;
 
-            animatorActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.PlayAndWait(animatorActionInput.PlayerAnimator, playerAnimationEnum, 0f, () =>
+            animatorActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.PlayAndWait(animatorActionInput.PlayerAnimator, animatorActionInput.AnimationConfiguration.ConfigurationInherentData[this.animationID], 0f, () =>
             {
                 animationEnded = true;
                 return null;
@@ -46,7 +47,7 @@ namespace AdventureGame
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.playerAnimationEnum = (PlayerAnimatioNamesEnum)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.playerAnimationEnum);
+            this.animationID = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.animationID);
         }
 #endif
     }
@@ -55,14 +56,17 @@ namespace AdventureGame
     {
         private Animator playerAnimator;
         private PlayerManager playerManager;
+        private AnimationConfiguration animationConfiguration;
 
-        public AnimatorActionInput(Animator playerAnimator, PlayerManager playerManager)
+        public AnimatorActionInput(Animator playerAnimator, PlayerManager playerManager, AnimationConfiguration animationConfiguration)
         {
             this.playerAnimator = playerAnimator;
             this.playerManager = playerManager;
+            this.animationConfiguration = animationConfiguration;
         }
 
         public Animator PlayerAnimator { get => playerAnimator; }
         public PlayerManager PlayerManager { get => playerManager; }
+        public AnimationConfiguration AnimationConfiguration { get => animationConfiguration; }
     }
 }

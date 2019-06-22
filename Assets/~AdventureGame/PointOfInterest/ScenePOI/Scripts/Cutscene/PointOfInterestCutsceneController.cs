@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace AdventureGame
     {
         #region External Dependencies
         private CutscenePlayerManager CutscenePlayerManager;
+        private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
         private Rigidbody Rigidbody;
@@ -30,6 +32,7 @@ namespace AdventureGame
         public void Init()
         {
             this.CutscenePlayerManager = GameObject.FindObjectOfType<CutscenePlayerManager>();
+            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
 
             this.Rigidbody = GetComponentInParent<Rigidbody>();
             this.Agent = GetComponentInParent<NavMeshAgent>();
@@ -65,14 +68,14 @@ namespace AdventureGame
             this.Warp(destination);
         }
 
-        public IEnumerator PlayAnimationAndWait(PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
+        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
         {
-            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, playerAnimatioNnamesEnum, crossFadeDuration, animationEndCallback);
+            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
         }
 
-        public void PlayAnimation(PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration)
+        public void PlayAnimation(AnimationID animationID, float crossFadeDuration)
         {
-            AnimationPlayerHelper.Play(this.Animator, playerAnimatioNnamesEnum, crossFadeDuration);
+            AnimationPlayerHelper.Play(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
         }
     }
 

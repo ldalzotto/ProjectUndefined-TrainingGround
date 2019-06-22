@@ -3,6 +3,7 @@ using System.Collections;
 using RTPuzzle;
 using Editor_MainGameCreationWizard;
 using UnityEditor;
+using GameConfigurationID;
 
 namespace Editor_ProjectileCreationWizard
 {
@@ -17,10 +18,10 @@ namespace Editor_ProjectileCreationWizard
                  , editorProfile);
             this.AddToGameConfiguration(editorInformations.EditorInformationsData.LaunchProjectileId, editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration, editorProfile);
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>
-            {
+            { 
                 so.FindProperty("projectilePrefab").objectReferenceValue = projectilePrefabCreation.CreatedPrefab;
-                so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE;
-                so.FindProperty(nameof(this.CreatedObject.PostActionAnimation)).enumValueIndex = (int)PlayerAnimatioNamesEnum.PLAYER_ACTION_CA_PROJECTILE_THROW;
+                so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)AnimationID.PLAYER_ACTION_CA_PROJECTILE;
+                so.FindProperty(nameof(this.CreatedObject.PostActionAnimation)).enumValueIndex = (int)AnimationID.PLAYER_ACTION_CA_PROJECTILE_THROW;
             });
         }
     }

@@ -1,39 +1,42 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using UnityEngine;
-using static CoreGame.PlayerAnimationConstants;
+using static PlayerAnimationConstants;
 
 namespace CoreGame
 {
     public class PlayerAnimationWithObjectManager
     {
         private GameObject involvedObjectInstanciated;
+        AnimationConfiguration animationConfiguration;
+        AnimationID animationID;
         private Animator playerAnimator;
         private GameObject rightHandContext;
-        private PlayerAnimatioNamesEnum playerAnimationContextName;
         private float crossFadeTime;
         Action onAnimationEndAction;
         private bool destroyObjectOnEnd;
         private bool animationEnded;
         private Coroutine endCoroutine;
 
-        public PlayerAnimationWithObjectManager(GameObject involvedObjectInstanciated,
+        public PlayerAnimationWithObjectManager(GameObject involvedObjectInstanciated, AnimationConfiguration animationConfiguration, AnimationID animationID,
             Animator playerAnimator,
-            PlayerAnimatioNamesEnum playerAnimationContextName, float crossFadeTime,
+            float crossFadeTime,
             bool destroyObjectOnEnd,
             Action onAnimationEndAction)
         {
             this.involvedObjectInstanciated = involvedObjectInstanciated;
+            this.animationConfiguration = animationConfiguration;
+            this.animationID = animationID;
             this.playerAnimator = playerAnimator;
             this.destroyObjectOnEnd = destroyObjectOnEnd;
             this.rightHandContext = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, this.playerAnimator);
-            this.playerAnimationContextName = playerAnimationContextName;
             this.crossFadeTime = crossFadeTime;
             this.onAnimationEndAction = onAnimationEndAction;
         }
 
         public void Play()
         {
-            this.endCoroutine = Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(this.playerAnimator, this.playerAnimationContextName, this.crossFadeTime, () =>
+            this.endCoroutine = Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(this.playerAnimator, this.animationConfiguration.ConfigurationInherentData[this.animationID], this.crossFadeTime, () =>
             {
                 this.OnAnimationEnd();
                 return null;
@@ -88,7 +91,7 @@ namespace CoreGame
 
         private void SetContextActionAnimatorToListening()
         {
-            this.playerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_ACTION_LISTENING].AnimationName);
+            this.playerAnimator.Play(this.animationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_ACTION_LISTENING].AnimationName);
         }
     }
 }

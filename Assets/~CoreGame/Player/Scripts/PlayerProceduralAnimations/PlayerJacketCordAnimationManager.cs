@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameConfigurationID;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -18,13 +19,13 @@ namespace CoreGame
         private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
 
         public PlayerJacketCordAnimationManager(Animator playerAnimator, AnimationPositionTrackerManager chestPositionTrackerManager, PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent,
-            PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent)
+            PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, CoreConfigurationManager CoreConfigurationManager)
         {
             this.PlayerJacketCordAnimationManagerComponent = PlayerJacketCordAnimationManagerComponent;
             this.chestPositionTrackerManager = chestPositionTrackerManager;
             this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
 
-            this.standingState = new StandingState(playerAnimator, PlayerJacketCordAnimationManagerComponent);
+            this.standingState = new StandingState(playerAnimator, PlayerJacketCordAnimationManagerComponent, CoreConfigurationManager.AnimationConfiguration());
             this.standingState.onJustEnabled += () =>
             {
                 this.movingState.SetIsEnabled(false);
@@ -72,11 +73,13 @@ namespace CoreGame
         {
             private Animator playerAnimator;
             private PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent;
+            private AnimationConfiguration AnimationConfiguration;
 
-            public StandingState(Animator playerAnimator, PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent)
+            public StandingState(Animator playerAnimator, PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent, AnimationConfiguration AnimationConfiguration)
             {
                 this.playerAnimator = playerAnimator;
                 this.PlayerJacketCordAnimationManagerComponent = PlayerJacketCordAnimationManagerComponent;
+                this.AnimationConfiguration = AnimationConfiguration;
                 this.onJustEnabled += () =>
                 {
                     this.dampingEnded = false;
@@ -89,7 +92,7 @@ namespace CoreGame
             {
                 if (!this.dampingEnded)
                 {
-                    var jitterAnimationConstant = AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_JITTER_TREE];
+                    var jitterAnimationConstant = this.AnimationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_JACKET_CORD_JITTER_TREE];
                     if (!this.playerAnimator.GetCurrentAnimatorStateInfo(jitterAnimationConstant.GetLayerIndex(this.playerAnimator)).IsName(jitterAnimationConstant.AnimationName))
                     {
                         this.playerAnimator.Play(jitterAnimationConstant.AnimationName);
@@ -99,12 +102,12 @@ namespace CoreGame
                     if (evaluationPoint > 1)
                     {
                         this.dampingEnded = true;
-                        this.playerAnimator.SetFloat(AnimationConstants.PlayerAnimatorParametersName.JacketCordJitter, 0);
-                        this.playerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_JACKET_CORD_LISTENING].AnimationName);
+                        this.playerAnimator.SetFloat(PlayerAnimationConstants.PlayerAnimatorParametersName.JacketCordJitter, 0);
+                        this.playerAnimator.Play(this.AnimationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_JACKET_CORD_LISTENING].AnimationName);
                     }
                     else
                     {
-                        this.playerAnimator.SetFloat(AnimationConstants.PlayerAnimatorParametersName.JacketCordJitter, this.PlayerJacketCordAnimationManagerComponent.DampingCurve.Evaluate(evaluationPoint));
+                        this.playerAnimator.SetFloat(PlayerAnimationConstants.PlayerAnimatorParametersName.JacketCordJitter, this.PlayerJacketCordAnimationManagerComponent.DampingCurve.Evaluate(evaluationPoint));
                     }
 
                 }

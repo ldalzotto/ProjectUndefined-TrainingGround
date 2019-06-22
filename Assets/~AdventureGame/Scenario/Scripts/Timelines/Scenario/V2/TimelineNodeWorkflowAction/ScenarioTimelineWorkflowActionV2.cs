@@ -18,7 +18,7 @@ namespace AdventureGame
         [SerializeField]
         private bool destroyPOIAtEnd;
         [SerializeField]
-        private PlayerAnimatioNamesEnum playerAnimation = PlayerAnimatioNamesEnum.PLAYER_ACTION_GRAB_DOWN;
+        private AnimationID playerAnimation = AnimationID.PLAYER_ACTION_GRAB_DOWN;
         [SerializeField]
         private CutsceneId cutsceneId;
 
@@ -65,7 +65,7 @@ namespace AdventureGame
 
             if (this.isAnimation)
             {
-                this.playerAnimation = (PlayerAnimatioNamesEnum)NodeEditorGUILayout.EnumField("with ANIMATION : ", string.Empty, this.playerAnimation);
+                this.playerAnimation = (AnimationID)NodeEditorGUILayout.EnumField("with ANIMATION : ", string.Empty, this.playerAnimation);
             }
 
             if (this.isCutscene)

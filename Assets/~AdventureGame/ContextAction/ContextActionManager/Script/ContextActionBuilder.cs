@@ -7,7 +7,7 @@ namespace AdventureGame
     public class ContextActionBuilder
     {
 
-        public static AContextActionInput BuildContextActionInput(AContextAction contextAction, PlayerManager playerManager)
+        public static AContextActionInput BuildContextActionInput(AContextAction contextAction, PlayerManager playerManager, AnimationConfiguration animationConfiguration)
         {
             if (contextAction.GetType() == typeof(DummyContextAction))
             {
@@ -19,7 +19,7 @@ namespace AdventureGame
             }
             else if (contextAction.GetType() == typeof(AnimatorAction))
             {
-                return new AnimatorActionInput(playerManager.GetPlayerAnimator(), playerManager);
+                return new AnimatorActionInput(playerManager.GetPlayerAnimator(), playerManager, animationConfiguration);
             }
             else if (contextAction.GetType() == typeof(GiveAction))
             {

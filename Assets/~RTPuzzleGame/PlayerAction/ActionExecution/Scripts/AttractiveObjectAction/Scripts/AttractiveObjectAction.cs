@@ -41,13 +41,14 @@ namespace RTPuzzle
             this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             var playerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             #endregion
 
             var attractiveObjectInherentConfigurationData = puzzleConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerCollider());
-            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this);
+            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, animationConfiguration);
 
             this.attractiveObjectRange = SphereRangeType.Instanciate(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
         }
@@ -115,13 +116,14 @@ namespace RTPuzzle
 
         public bool IsOkInputAnimationRunning { get => isOkInputAnimationRunning; }
 
-        public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AttractiveObjectAction attractiveObjectActionRef)
+        public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData,
+                AttractiveObjectAction attractiveObjectActionRef, AnimationConfiguration animationConfiguration)
         {
             this.attractiveObjectInstance = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectModelPrefab);
             this.PlayerPocketObjectOutAnimationManager =
-                new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), attractiveObjectInherentConfigurationData.PreActionAnimation, 0f, false, null);
+                new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, animationConfiguration, attractiveObjectInherentConfigurationData.PreActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0f, false, null);
             this.PlayerObjectLayAnimationManager =
-                 new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, playerManagerDataRetriever.GetPlayerAnimator(), attractiveObjectInherentConfigurationData.PostActionAnimation, 0.05f, true, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
+                 new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, animationConfiguration, attractiveObjectInherentConfigurationData.PostActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0.05f, true, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
             this.PlayerPocketObjectOutAnimationManager.Play();
             this.Tick(0);
         }

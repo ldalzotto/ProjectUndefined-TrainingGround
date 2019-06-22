@@ -71,8 +71,8 @@
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
-    <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />
+    <Compile Include="Assets\~CoreGame\_Constants\PlayerAnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\SceneConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\StringConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />
@@ -138,7 +138,6 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerCommonComponents.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\ContextAnimationManagers\PlayerPocketObjectOutManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAdventurePositionManager.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\PlayerAnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAnimations\PlayerAnimationDataManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />

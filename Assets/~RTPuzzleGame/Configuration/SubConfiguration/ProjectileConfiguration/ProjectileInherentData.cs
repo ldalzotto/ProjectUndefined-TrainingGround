@@ -1,5 +1,6 @@
 ﻿using ConfigurationEditor;
 using UnityEngine;
+using GameConfigurationID;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -29,9 +30,9 @@ namespace RTPuzzle
         [Header("Animation")]
 
         [CustomEnum]
-        public PlayerAnimatioNamesEnum PreActionAnimation;
+        public AnimationID PreActionAnimation;
         [CustomEnum]
-        public PlayerAnimatioNamesEnum PostActionAnimation;
+        public AnimationID PostActionAnimation;
 
         [DictionaryEnumSearch]
         public float EffectRange { get => effectRange; }

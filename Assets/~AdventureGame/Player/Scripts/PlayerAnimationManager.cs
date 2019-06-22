@@ -1,7 +1,8 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections;
 using UnityEngine;
-using static CoreGame.PlayerAnimationConstants;
+using static PlayerAnimationConstants;
 
 namespace AdventureGame
 {
@@ -22,10 +23,11 @@ namespace AdventureGame
 
         private void Start()
         {
+            var AnimationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             var PlayerAnimator = GetComponentInChildren<Animator>();
 
             this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
-            this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this);
+            this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this, AnimationConfiguration);
 
             this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<FXContainerManager>(), PlayerAnimator);
         }
@@ -66,6 +68,7 @@ namespace AdventureGame
         private PlayerIdleAnimationManagerComponent PlayerIdleAnimationManagerComponent;
         private Animator PlayerAnimator;
         private PlayerAnimationManager PlayerManagerReference;
+        private AnimationConfiguration AnimationConfiguration;
 
         private float elapsedTime;
         private bool isIdlingAnimationRuning;
@@ -74,11 +77,12 @@ namespace AdventureGame
 
         public bool IsIdlingAnimationRuning { get => isIdlingAnimationRuning; }
 
-        public PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent playerIdleAnimationManagerComponent, Animator playerAnimator, PlayerAnimationManager playerManagerReference)
+        public PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent playerIdleAnimationManagerComponent, Animator playerAnimator, PlayerAnimationManager playerManagerReference, AnimationConfiguration AnimationConfiguration)
         {
-            PlayerIdleAnimationManagerComponent = playerIdleAnimationManagerComponent;
-            PlayerAnimator = playerAnimator;
-            PlayerManagerReference = playerManagerReference;
+            this.PlayerIdleAnimationManagerComponent = playerIdleAnimationManagerComponent;
+            this.PlayerAnimator = playerAnimator;
+            this.PlayerManagerReference = playerManagerReference;
+            this.AnimationConfiguration = AnimationConfiguration;
         }
 
         public void Tick(float delta, float unscaledSpeedMagnitude)
@@ -107,13 +111,13 @@ namespace AdventureGame
 
         private void SwitchToListeningAnimation()
         {
-            PlayerAnimator.Play(AnimationConstants.PlayerAnimationConstants[PlayerAnimatioNamesEnum.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
+            PlayerAnimator.Play(this.AnimationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
         }
 
         private IEnumerator PlayPlayerIdleSmokeAnimation()
         {
             isIdlingAnimationRuning = true;
-            yield return PlayerAnimationPlayer.PlayIdleSmokeAnimation(PlayerAnimator,
+            yield return PlayerAnimationPlayer.PlayIdleSmokeAnimation(PlayerAnimator, this.AnimationConfiguration,
                 onTriggerSmokeEffect: PlayerManagerReference.OnSpawnFireSmoke,
                 onAnimationEnd: null);
             ResetIdleTimer();

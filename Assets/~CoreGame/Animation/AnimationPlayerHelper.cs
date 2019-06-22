@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -27,10 +28,10 @@ namespace CoreGame
             }
         }
 
-        public static IEnumerator PlayAndWait(Animator animator, PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
+        public static IEnumerator PlayAndWait(Animator animator, AnimationConfigurationData animationConfigurationData, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
         {
-            var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
-            var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].GetLayerIndex(animator);
+            var animationName = animationConfigurationData.AnimationName;
+            var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
             return PlayAndWait(animator, animationName, animationLayerIndex, crossFadeDuration, animationEndCallback);
         }
 
@@ -41,18 +42,18 @@ namespace CoreGame
             animator.CrossFade(animationName, crossFadeDuration);
         }
 
-        public static void Play(Animator animator, PlayerAnimatioNamesEnum playerAnimatioNnamesEnum, float crossFadeDuration)
+        public static void Play(Animator animator, AnimationConfigurationData animationConfigurationData, float crossFadeDuration)
         {
-            var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
-            var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].GetLayerIndex(animator);
+            var animationName = animationConfigurationData.AnimationName;
+            var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
             Play(animator, animationName, animationLayerIndex, crossFadeDuration);
         }
 
 
-        public static bool IsCurrentStateNameEquals(Animator animator, PlayerAnimatioNamesEnum playerAnimatioNnamesEnum)
+        public static bool IsCurrentStateNameEquals(Animator animator, AnimationConfigurationData animationConfigurationData)
         {
-            var animationName = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].AnimationName;
-            var animationLayerIndex = AnimationConstants.PlayerAnimationConstants[playerAnimatioNnamesEnum].GetLayerIndex(animator);
+            var animationName = animationConfigurationData.AnimationName;
+            var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
             return animator.GetCurrentAnimatorStateInfo(animationLayerIndex).IsName(animationName);
         }
 

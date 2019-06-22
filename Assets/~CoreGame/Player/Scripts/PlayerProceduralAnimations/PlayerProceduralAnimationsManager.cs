@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using static CoreGame.PlayerAnimationConstants;
+using static PlayerAnimationConstants;
 
 namespace CoreGame
 {
@@ -18,11 +18,11 @@ namespace CoreGame
         private AnimationPositionTrackerManager HairObjectAnimationTracker;
         private AnimationPositionTrackerManager ChestObjectAnimationTracker;
 
-        public PlayerProceduralAnimationsManager(PlayerCommonComponents playerCommonComponents, Animator playerAnimator, Rigidbody playerRigidBody)
+        public PlayerProceduralAnimationsManager(PlayerCommonComponents playerCommonComponents, Animator playerAnimator, Rigidbody playerRigidBody, CoreConfigurationManager CoreConfigurationManager)
         {
             this.PlayerCommonComponents = playerCommonComponents;
 
-            var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(AnimationConstants.PlayerAnimationConstantsData.HAIR_OBJECT_NAME);
+            var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(PlayerAnimationConstants.HAIR_OBJECT_NAME);
             var chestObject = PlayerBoneRetriever.GetPlayerBone(PlayerBone.CHEST, playerAnimator);
 
             HairObjectAnimationTracker = new AnimationPositionTrackerManager(hairObject);
@@ -30,7 +30,7 @@ namespace CoreGame
 
             PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(HairObjectAnimationTracker, hairObject, this.PlayerCommonComponents.PlayerHairStrandAnimationManagerComponent);
             PlayerHoodAnimationManager = new PlayerHoodAnimationManager(this.PlayerCommonComponents.PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, playerAnimator).transform, playerRigidBody, this.PlayerCommonComponents.PlayerInputMoveManagerComponent);
-            PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(playerAnimator, ChestObjectAnimationTracker, this.PlayerCommonComponents.PlayerJacketCordAnimationManagerComponent, this.PlayerCommonComponents.PlayerInputMoveManagerComponent);
+            PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(playerAnimator, ChestObjectAnimationTracker, this.PlayerCommonComponents.PlayerJacketCordAnimationManagerComponent, this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CoreConfigurationManager);
         }
 
         public void FickedTick(float d)

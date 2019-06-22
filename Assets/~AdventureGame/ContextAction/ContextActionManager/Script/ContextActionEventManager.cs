@@ -7,21 +7,27 @@ namespace AdventureGame
 
     public class ContextActionEventManager : MonoBehaviour
     {
-
+        #region External Dependencies      
         private ContextActionManager ContextActionManager;
         private PlayerManager PlayerManager;
         private InventoryManager InventoryManager;
+        private TimelinesEventManager ScenarioTimelineEventManager;
+        private AnimationConfiguration AnimationConfiguration;
+        #endregion
 
         private Dictionary<AContextAction, List<IContextActionDyamicWorkflowListener>> dynamicContextActionListeners;
-        private TimelinesEventManager ScenarioTimelineEventManager;
 
 
         private void Start()
         {
-            ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
-            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-            ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
+            #region External Dependencies    
+            this.ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
+            this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            this.InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
+            this.ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
+            this.AnimationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            #endregion
+
             this.dynamicContextActionListeners = new Dictionary<AContextAction, List<IContextActionDyamicWorkflowListener>>();
         }
 
@@ -33,7 +39,7 @@ namespace AdventureGame
                 {
                     PlayerManager.OnContextActionAdded(contextAction);
                     InventoryManager.OnContextActionAdded();
-                    ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager));
+                    ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager, this.AnimationConfiguration));
                 }
                 //TODO send event to inventory to close if necessary
             }

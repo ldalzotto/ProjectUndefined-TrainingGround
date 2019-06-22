@@ -53,6 +53,7 @@ namespace RTPuzzle
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
@@ -71,7 +72,7 @@ namespace RTPuzzle
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
-            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), projectileInherentData);
+            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
 
             LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
@@ -413,18 +414,21 @@ namespace RTPuzzle
     #region Launch Projectile player animation manager
     class LaunchProjectilePlayerAnimationManager
     {
+        private AnimationConfiguration animationConfiguration;
+
         private Animator playerAnimator;
         private ProjectileInherentData ProjectileInherentData;
 
         private PlayerAnimationWithObjectManager ProjectileAnimationManager;
         private PlayerAnimationWithObjectManager ProjectileLaunchAnimationManager;
 
-        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, ProjectileInherentData ProjectileInherentData)
+        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, AnimationConfiguration animationConfiguration, ProjectileInherentData ProjectileInherentData)
         {
             this.playerAnimator = playerAnimator;
+            this.animationConfiguration = animationConfiguration;
             this.ProjectileInherentData = ProjectileInherentData;
 
-            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(MonoBehaviour.Instantiate(ProjectileInherentData.ProjectileModelPrefab), this.playerAnimator, this.ProjectileInherentData.PreActionAnimation, 0f, true,
+            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(MonoBehaviour.Instantiate(ProjectileInherentData.ProjectileModelPrefab), animationConfiguration, this.ProjectileInherentData.PreActionAnimation, this.playerAnimator, 0f, true,
                 onAnimationEndAction: null);
             this.ProjectileAnimationManager.Play();
         }
@@ -442,7 +446,7 @@ namespace RTPuzzle
             var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             MonoBehaviour.Destroy(sph.GetComponent<Collider>());
             #endregion
-            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.playerAnimator, this.ProjectileInherentData.PostActionAnimation, 0.1f, true,
+            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.animationConfiguration, this.ProjectileInherentData.PostActionAnimation, this.playerAnimator, 0.1f, true,
                 onAnimationEndAction: onAnimationEnd);
             this.ProjectileLaunchAnimationManager.Play();
         }
