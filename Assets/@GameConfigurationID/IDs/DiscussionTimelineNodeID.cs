@@ -13,9 +13,6 @@ namespace GameConfigurationID {
   
   [System.Serializable()]
   public enum DiscussionTimelineNodeID {
-    
-    BouncerNoEntry = 0,
-    
-    BouncerOK = 1,
+
   }
 }

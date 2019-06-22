@@ -13,11 +13,7 @@ namespace GameConfigurationID {
   
   [System.Serializable()]
   public enum DiscussionTreeId {
-    
-    BOUNCER_DISCUSSION_TREE = 0,
-    
-    BOUNCER_OK_DISCUSSION = 1,
-    
+        
     SEWER_RTP_1_DOOR = 2,
   }
 }

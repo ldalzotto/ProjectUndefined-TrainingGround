@@ -14,13 +14,6 @@ namespace AdventureGame
     
     public enum DisucssionSentenceTextId
     {
-        BOUNCER_FORBIDDEN_INTRODUCTION,
-        BOUNCER_ASK_AGE,
-        BOUNCER_GET_OUT,
-        BOUNCER_ALLOWED,
-        PLAYER_TELL_AGE,
-        PLAYER_AGE_CHOICE_17,
-        PLAYER_AGE_CHOICE_18,
-        SWER_RTP_1_DOOR
+        SWER_RTP_1_DOOR = 0
     }
 }

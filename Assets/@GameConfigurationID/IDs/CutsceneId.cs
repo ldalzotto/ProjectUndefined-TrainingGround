@@ -14,10 +14,6 @@ namespace GameConfigurationID {
   [System.Serializable()]
   public enum CutsceneId {
     
-    PLAYER_DUMPSTER_GRAB = 0,
-    
-    PLAYER_OPEN_SEWER = 1,
-    
-    AI_TEST = 2,
+
   }
 }

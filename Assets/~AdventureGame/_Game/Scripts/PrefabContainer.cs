@@ -22,10 +22,7 @@ namespace AdventureGame
 
         [Header("Item Grab Popup")]
         public ItemReceivedPopup ItemReceivedPopup;
-
-        [Header("Car Prefab")]
-        public CarManager CarManagerPrefab;
-
+        
         public static PrefabContainer Instance
         {
             get

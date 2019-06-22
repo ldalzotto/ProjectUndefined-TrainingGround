@@ -89,7 +89,7 @@ namespace Editor_LevelAvailabilityNodeEditor
 
             LevelAvailabilityTimelineInitializerV2.InitialNodes = initialNodes;
             LevelAvailabilityTimelineInitializerV2.Nodes = nodes;
-            Debug.Assert(LevelAvailabilityTimelineInitializerV2.InitialNodes.Count > 0);
+       //     Debug.Assert(LevelAvailabilityTimelineInitializerV2.InitialNodes.Count > 0);
 
             var generationPath = MyFileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + LevelAvailabilityTimelineInitializerV2.GetType().Name + ".asset";
             AssetDatabase.CreateAsset(LevelAvailabilityTimelineInitializerV2, generationPath);

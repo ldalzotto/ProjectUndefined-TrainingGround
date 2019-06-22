@@ -18,8 +18,5 @@ namespace GameConfigurationID {
     
     DUMMY_ITEM = 1,
     
-    ID_CARD = 2,
-    
-    CROWBAR = 5,
   }
 }

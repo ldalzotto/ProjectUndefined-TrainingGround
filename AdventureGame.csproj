@@ -126,8 +126,6 @@
     <Compile Include="Assets\~AdventureGame\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
     <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\AdventureLevelChunkFXTransitionManager.cs" />
     <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
-    <Compile Include="Assets\~AdventureGame\NPC\Car\Scripts\CarManager.cs" />
-    <Compile Include="Assets\~AdventureGame\NPC\Car\Scripts\CarSpawnerManager.cs" />
     <Compile Include="Assets\~AdventureGame\NPC\Scripts\NPCManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\Colliders\POITrackerCollider.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationManager.cs" />

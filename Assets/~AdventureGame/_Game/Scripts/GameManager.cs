@@ -53,13 +53,7 @@ namespace AdventureGame
             InventoryManager.Init();
             PointOfInterestManager.Init();
             GameObject.FindObjectOfType<AdventureEventManager>().Init();
-
-            var WayPointPathContainer = FindObjectOfType<WayPointPathContainer>();
-            if (WayPointPathContainer != null)
-            {
-                WayPointPathContainer.Init();
-            }
-
+            
 #if UNITY_EDITOR
             this.EditorOnlyModules.Init();
 #endif

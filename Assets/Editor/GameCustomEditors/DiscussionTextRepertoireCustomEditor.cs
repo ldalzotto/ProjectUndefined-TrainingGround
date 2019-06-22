@@ -23,7 +23,7 @@ namespace Editor_GameCustomEditors
             {
                 EditorUtility.SetDirty(DiscussionTestRepertoire);
             }
-            
+
         }
 
         private void OnEnable()
@@ -64,6 +64,18 @@ namespace Editor_GameCustomEditors
                         updated = true;
                     }
                 }
+
+                var involvedEnumValues = ((T[])Enum.GetValues(typeof(T))).ToList();
+
+                foreach (var alreadyPresentValue in this.values.Keys.ToList())
+                {
+                    if (!involvedEnumValues.Contains(alreadyPresentValue))
+                    {
+                        this.values.Remove(alreadyPresentValue);
+                        updated = true;
+                    }
+                }
+
                 if (updated)
                 {
                     this.OnValueChanged();

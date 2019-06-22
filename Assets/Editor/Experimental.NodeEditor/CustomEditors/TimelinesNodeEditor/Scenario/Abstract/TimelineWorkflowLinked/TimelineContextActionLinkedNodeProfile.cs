@@ -10,6 +10,7 @@ namespace Editor_ScenarioNodeEditor
     [System.Serializable]
     public abstract class TimelineContextActionLinkedNodeProfile<T, A> : TimelineWorklowActionTemplatedNodeProfile<T, A> where A : TimelineNodeWorkflowActionV2Drawable where T : TimelineWorklowActionEdgeV2<A>
     {
+        [SerializeField]
         private TimelineContextActionLinkedEdge AddContextActionLinkedEdge;
 
         public override List<NodeEdgeProfile> InitInputEdges()
