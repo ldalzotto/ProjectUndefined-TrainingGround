@@ -169,6 +169,7 @@
     <Compile Include="Assets\Test\IntersectionTest\Test_Sphere.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
+    <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\_Shader\Wave\WaveShaderPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\_Shader\Wave\WaveShader.shader" />
