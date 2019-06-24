@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -9,11 +10,11 @@ namespace AdventureGame
 
     public class PointOfInterestType : APointOfInterestType
     {
-        public const string MODEL_OBJECT_NAME = "Model";
-
         public PointOfInterestId PointOfInterestId;
 
         #region Internal Depencies
+        private PointOfInterestModelObjectType PointOfInterestModelObjectType;
+
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestAnimationPositioningState pointOfInterestAnimationPositioningState;
@@ -21,7 +22,6 @@ namespace AdventureGame
 
         #region Optional
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
-        private Animator pointOfInterestAnimator;
         #endregion
 
         private PointOfInterestInherentData pointOfInterestInherentData;
@@ -61,29 +61,27 @@ namespace AdventureGame
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             #endregion
-            this.pointOfInterestCutsceneController = transform.parent.GetComponentInChildren<PointOfInterestCutsceneController>();
-            var modelObject = transform.parent.gameObject.FindChildObjectRecursively(MODEL_OBJECT_NAME);
-            if (modelObject != null)
+
+            this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
+
+            this.PointOfInterestModelObjectType = transform.parent.GetComponentInChildren<PointOfInterestModelObjectType>();
+            if (this.PointOfInterestModelObjectType != null)
             {
-                this.pointOfInterestAnimator = modelObject.GetComponent<Animator>();
-                if (this.pointOfInterestAnimator == null)
-                {
-                    this.pointOfInterestAnimator = modelObject.GetComponentInChildren<Animator>();
-                }
+                this.PointOfInterestModelObjectType.Init();
             }
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
-            this.POIShowHideManager = new POIShowHideManager(this);
+            this.POIShowHideManager = new POIShowHideManager(this, this.PointOfInterestModelObjectType, this.IsGenericPOI);
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
-            this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
 
+            this.pointOfInterestCutsceneController = transform.parent.GetComponentInChildren<PointOfInterestCutsceneController>();
             if (this.pointOfInterestCutsceneController != null)
             {
-                this.pointOfInterestCutsceneController.Init();
+                this.pointOfInterestCutsceneController.Init(this.PointOfInterestModelObjectType);
             }
 
         }
@@ -114,6 +112,12 @@ namespace AdventureGame
         public bool IsInteractableWithItem(ItemID involvedItem)
         {
             return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligible(involvedItem);
+        }
+
+        //Is the POI visible on scene == not player and not item
+        private bool IsGenericPOI()
+        {
+            return this.PointOfInterestId != PointOfInterestId.PLAYER && !this.pointOfInterestInherentData.IsItem;
         }
         #endregion
 
@@ -185,7 +189,8 @@ namespace AdventureGame
 
         public override void SetAnimationPosition(AnimationID animationID)
         {
-            this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref this.pointOfInterestAnimator, this.CoreConfigurationManager.AnimationConfiguration());
+            Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
+            this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref this.PointOfInterestModelObjectType, this.CoreConfigurationManager.AnimationConfiguration());
         }
     }
 
@@ -205,21 +210,18 @@ namespace AdventureGame
     {
         #region External Dependencies
         private LevelManager LevelManager;
+        private PointOfInterestModelObjectType pointOfInterestModelObject;
         #endregion
 
-        private GameObject poiModelObject;
+        private Func<bool> IsGenericPOI;
         private Collider poiCollider;
-        private Collider[] modelColliders;
 
-        public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef)
+        public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectType pointOfInterestModelObject, Func<bool> IsGenericPOI)
         {
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.poiModelObject = pointOfInterestTypeRef.transform.parent.gameObject.FindChildObjectRecursively("Model");
-            if (this.poiModelObject != null)
-            {
-                this.modelColliders = this.poiModelObject.GetComponentsInChildren<Collider>();
-            }
             this.poiCollider = pointOfInterestTypeRef.GetComponent<Collider>();
+            this.pointOfInterestModelObject = pointOfInterestModelObject;
+            this.IsGenericPOI = IsGenericPOI;
         }
 
         public void OnPOIInit(PointOfInterestType pointOfInterestTypeRef)
@@ -242,57 +244,44 @@ namespace AdventureGame
             }
         }
 
-
         private void Show()
         {
-            if (this.IsADisplayedPOI())
+            if (this.IsPOICanBeHideable())
             {
-                this.poiModelObject.SetActive(true);
+                this.pointOfInterestModelObject.SetActive(true);
             }
         }
 
         private void Hide()
         {
-            if (this.IsADisplayedPOI())
+            if (this.IsPOICanBeHideable())
             {
-                this.poiModelObject.SetActive(false);
+                this.pointOfInterestModelObject.SetActive(false);
             }
         }
 
 
         private void DisablePhysicsInteraction()
         {
-            if (this.IsADisplayedPOI())
+            if (this.IsPOICanBeHideable())
             {
                 this.poiCollider.enabled = false;
-                if (this.modelColliders != null)
-                {
-                    foreach (var modelCollider in this.modelColliders)
-                    {
-                        modelCollider.enabled = false;
-                    }
-                }
+                this.pointOfInterestModelObject.SetAllColliders(false);
             }
         }
 
         private void EnablePhysicsInteraction()
         {
-            if (this.IsADisplayedPOI())
+            if (this.IsPOICanBeHideable())
             {
                 this.poiCollider.enabled = true;
-                if (this.modelColliders != null)
-                {
-                    foreach (var modelCollider in this.modelColliders)
-                    {
-                        modelCollider.enabled = true;
-                    }
-                }
+                this.pointOfInterestModelObject.SetAllColliders(true);
             }
         }
 
-        private bool IsADisplayedPOI()
+        private bool IsPOICanBeHideable()
         {
-            return this.poiModelObject != null;
+            return this.pointOfInterestModelObject != null && this.IsGenericPOI.Invoke();
         }
     }
 }

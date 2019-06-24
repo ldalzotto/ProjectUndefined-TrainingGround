@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class ComponentSearchExtensions
 {
@@ -23,6 +24,16 @@ public static class ComponentSearchExtensions
             }
         }
         return null;
+    }
+
+    public static List<GameObject> FindOneLevelDownChilds(this GameObject gameObject)
+    {
+        List<GameObject> returnValue = new List<GameObject>();
+        foreach (Transform childTransform in gameObject.transform)
+        {
+            returnValue.Add(childTransform.gameObject);
+        }
+        return returnValue;
     }
 
 }

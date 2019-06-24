@@ -13,10 +13,13 @@ namespace AdventureGame
         private CutscenePlayerManager CutscenePlayerManager;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
-
+        
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
-        private Animator Animator;
+
+        #region Internal Dependencies
+        private PointOfInterestModelObjectType PointOfInterestModelObjectTypeRef;
+        #endregion
 
         private POICutsceneMoveManager POICutsceneMoveManager;
 
@@ -28,14 +31,15 @@ namespace AdventureGame
         }
         #endregion
 
-        public void Init()
+        public void Init(PointOfInterestModelObjectType PointOfInterestModelObjectTypeRef)
         {
             this.CutscenePlayerManager = GameObject.FindObjectOfType<CutscenePlayerManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            
+            this.PointOfInterestModelObjectTypeRef = PointOfInterestModelObjectTypeRef;
 
             this.Rigidbody = GetComponentInParent<Rigidbody>();
             this.Agent = GetComponentInParent<NavMeshAgent>();
-            this.Animator = transform.parent.GetComponentInChildren<Animator>();
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
         }
 
@@ -59,14 +63,15 @@ namespace AdventureGame
 
         public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
         {
-            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
+            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectTypeRef.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
         }
 
         public void PlayAnimation(AnimationID animationID, float crossFadeDuration)
         {
-            AnimationPlayerHelper.Play(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
+            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectTypeRef.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
         }
     }
+
 
     class POICutsceneMoveManager
     {

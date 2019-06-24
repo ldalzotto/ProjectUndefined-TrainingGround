@@ -136,6 +136,7 @@
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Cutscene\PointOfInterestCutsceneController.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestAdventureEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestManager.cs" />
+    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestModelObjectType.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestType.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Action\ScenarioAction.cs" />

@@ -81,15 +81,15 @@ namespace AdventureGame
         [SerializeField]
         public AnimationID LastPlayedAnimation = AnimationID.NONE;
 
-        public void SyncPointOfInterestAnimationPositioningState(AnimationID animationID, ref Animator poiAnimator, AnimationConfiguration animationConfiguration)
+        public void SyncPointOfInterestAnimationPositioningState(AnimationID animationID, ref PointOfInterestModelObjectType pointOfInterestModelObjectType, AnimationConfiguration animationConfiguration)
         {
             this.LastPlayedAnimation = animationID;
             var animationConfigurationData = animationConfiguration.ConfigurationInherentData[animationID];
-            var layerIndex = animationConfigurationData.GetLayerIndex(poiAnimator);
-            poiAnimator.Play(animationConfigurationData.AnimationName, layerIndex);
-            poiAnimator.Update(0f);
-            float currentStateDuration = poiAnimator.GetCurrentAnimatorStateInfo(layerIndex).length;
-            poiAnimator.Update(currentStateDuration);
+            var layerIndex = animationConfigurationData.GetLayerIndex(pointOfInterestModelObjectType.Animator);
+            pointOfInterestModelObjectType.Animator.Play(animationConfigurationData.AnimationName, layerIndex);
+            pointOfInterestModelObjectType.Animator.Update(0f);
+            float currentStateDuration = pointOfInterestModelObjectType.Animator.GetCurrentAnimatorStateInfo(layerIndex).length;
+            pointOfInterestModelObjectType.Animator.Update(currentStateDuration);
         }
 
     }
