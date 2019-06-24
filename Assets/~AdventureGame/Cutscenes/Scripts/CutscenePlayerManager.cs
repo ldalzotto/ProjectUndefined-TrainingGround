@@ -41,6 +41,7 @@ namespace AdventureGame
             this.playableDirector.Stop();
             this.isCutscenePlaying = true;
             this.playableDirector.Play(playableAsset);
+            this.playableDirector.Evaluate();
             yield return new WaitEndOfCutscene(this.playableDirector);
             this.isCutscenePlaying = false;
             this.playableDirector.playableAsset = null;

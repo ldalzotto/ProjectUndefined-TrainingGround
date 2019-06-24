@@ -28,7 +28,7 @@ namespace AdventureGame
         {
             return AdventureGameConfiguration.CutsceneConfiguration.ConfigurationInherentData;
         }
-
+        
     }
 
 }

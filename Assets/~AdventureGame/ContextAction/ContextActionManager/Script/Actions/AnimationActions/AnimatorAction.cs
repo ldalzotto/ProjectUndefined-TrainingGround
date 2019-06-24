@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using UnityEngine;
 using GameConfigurationID;
+using System;
 #if UNITY_EDITOR
 using NodeGraph_Editor;
 #endif
@@ -11,7 +12,7 @@ namespace AdventureGame
     {
         [SerializeField]
         private AnimationID animationID;
-        [SerializeField]
+        [NonSerialized]
         private bool animationEnded;
 
         public AnimatorAction(AnimationID animationID, AContextAction nextContextAction) : base(nextContextAction)

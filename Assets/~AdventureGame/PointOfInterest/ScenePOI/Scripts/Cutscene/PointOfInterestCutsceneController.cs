@@ -17,9 +17,8 @@ namespace AdventureGame
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
         private Animator Animator;
-        private POICutsceneMoveManager POICutsceneMoveManager;
 
-        private Transform warpPosition;
+        private POICutsceneMoveManager POICutsceneMoveManager;
 
         #region State 
         private bool askedForWarp;
@@ -45,20 +44,10 @@ namespace AdventureGame
             return this.POICutsceneMoveManager.Tick(d, SpeedMultiplicationFactor, AIRotationSpeed);
         }
 
-        public void FixedTick(float d)
-        {
-            if (this.askedForWarp)
-            {
-                this.Rigidbody.MovePosition(this.warpPosition.position);
-                this.Rigidbody.MoveRotation(this.warpPosition.rotation);
-                this.askedForWarp = false;
-            }
-        }
-
         public void Warp(Transform warpPosition)
         {
-            this.askedForWarp = true;
-            this.warpPosition = warpPosition;
+            this.Agent.transform.position = warpPosition.position;
+            this.Agent.transform.rotation = warpPosition.rotation;
         }
 
         public IEnumerator SetAIDestination(Transform destination, float normalizedSpeed)

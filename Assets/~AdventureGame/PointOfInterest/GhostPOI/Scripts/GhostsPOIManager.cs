@@ -90,10 +90,13 @@ namespace AdventureGame
         private ContextActionSynchronizerManager contextActionSynchronizerManager;
         [SerializeField]
         private PointOfInterestModelState pointOfInterestModelState;
+        [SerializeField]
+        private PointOfInterestAnimationPositioningState pointOfInterestAnimationPositioningState;
 
         public PointOfInterestScenarioState PointOfInterestScenarioState1 { get => PointOfInterestScenarioState; }
         internal ContextActionSynchronizerManager ContextActionSynchronizerManager { get => contextActionSynchronizerManager; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; set => pointOfInterestModelState = value; }
+        public PointOfInterestAnimationPositioningState PointOfInterestAnimationPositioningState { get => pointOfInterestAnimationPositioningState; set => pointOfInterestAnimationPositioningState = value; }
 
         [NonSerialized]
         private GhostsPOIManager ghostsPOIManagerRef;
@@ -103,6 +106,7 @@ namespace AdventureGame
             PointOfInterestScenarioState = new PointOfInterestScenarioState();
             contextActionSynchronizerManager = new ContextActionSynchronizerManager();
             PointOfInterestModelState = new PointOfInterestModelState();
+            pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
         }
 
         public void Init(GhostsPOIManager ghostsPOIManagerRef)
@@ -190,6 +194,16 @@ namespace AdventureGame
         public void OnEnablePOI()
         {
             this.PointOfInterestModelState.OnPOIEnabled();
+            this.OnGhostPOIChanged();
+        }
+
+        public void OnAnimationPositioningPlayed(AnimationID lastAnimation)
+        {
+            if (this.pointOfInterestAnimationPositioningState == null)
+            {
+                this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
+            }
+            this.pointOfInterestAnimationPositioningState.LastPlayedAnimation = lastAnimation;
             this.OnGhostPOIChanged();
         }
 

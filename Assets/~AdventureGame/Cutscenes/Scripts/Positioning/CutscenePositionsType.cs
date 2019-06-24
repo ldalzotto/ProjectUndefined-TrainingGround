@@ -10,24 +10,32 @@ namespace AdventureGame
         public CutsceneId CutsceneId;
 
         private Dictionary<CutscenePositionMarkerID, CutscenePositionMarker> cutscenePositionMarkers;
+
         private bool hasBeenInit = false;
+        private bool hasBeenPopulated = false;
 
         private void Start()
         {
+            this.Init();
+        }
+
+        private void Init()
+        {
+            Debug.Log(MyLog.Format("CutscenePositionsTypeStart"));
             GameObject.FindObjectOfType<CutscenePositionsManager>().AddPositions(this);
         }
 
         public CutscenePositionMarker GetCutscenePosition(CutscenePositionMarkerID cutscenePositionMarkerID)
         {
-            if (!this.hasBeenInit)
+            if (!this.hasBeenPopulated)
             {
-                this.Init();
+                this.RetrievePositions();
             }
 
             return this.cutscenePositionMarkers[cutscenePositionMarkerID];
         }
 
-        private void Init()
+        private void RetrievePositions()
         {
             this.cutscenePositionMarkers = new Dictionary<CutscenePositionMarkerID, CutscenePositionMarker>();
             foreach (var cutscenePositionMarker in this.GetComponentsInChildren<CutscenePositionMarker>())

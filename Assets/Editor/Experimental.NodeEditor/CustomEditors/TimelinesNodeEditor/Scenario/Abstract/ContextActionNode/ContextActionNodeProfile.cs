@@ -13,8 +13,11 @@ namespace Editor_ScenarioNodeEditor
     [System.Serializable]
     public abstract class ContextActionNodeProfile<T, E> : NodeProfile, IContextActionNodeProfile where E : ContextActionEdge<T> where T : IContextActionDrawable
     {
+        [SerializeField]
         private ContextActionInputEdge contextActionInputEdge;
+        [SerializeField]
         private E contextActionEdge;
+        [SerializeField]
         private ContextActionOutputEdge contextActionOutputEdge;
 
         public IContextActionDrawable GetContextAction()
@@ -48,5 +51,5 @@ namespace Editor_ScenarioNodeEditor
             return base.NodeTitle().Replace("Profile", "").Replace("Node", "");
         }
     }
-    
+
 }

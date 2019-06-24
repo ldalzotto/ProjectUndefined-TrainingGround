@@ -28,12 +28,14 @@ namespace Editor_ScenarioNodeEditor
             {"TemplatedWorkflowActions//AddItemGive",typeof(AddItemGiveNodeProfile) },
             {"TemplatedWorkflowActions//DisablePOI",typeof(DisablePOINodeProfile) },
             {"TemplatedWorkflowActions//EnablePOI",typeof(EnablePOINodeProfile) },
+            {"TemplatedWorkflowActions//SetAnimationPosition",typeof(SetAnimationPositionNodeProfile) },
             {"LinkedWorkflowActions//AddItemContextAction", typeof(AddItemContextActionNodeProfile) },
             {"LinkedWorkflowActions//AddDiscussionContextAction", typeof(AddDiscussionActionNodeProfile) },
             {"LinkedWorkflowActions//RemoveDiscussionContextAction", typeof(RemoveDiscussionActionNodeProfile) },
             {"LinkedWorkflowActions//AddContextAction", typeof(AddContextActionNodeProfile) },
             {"BaseContextAction//AnimatorAction", typeof(AnimatorContextActionNodeProfile) },
-            {"BaseContextAction//TalkAction", typeof(TalkContextActionNodeProfile) }
+            {"BaseContextAction//TalkAction", typeof(TalkContextActionNodeProfile) },
+            {"BaseContextAction//CutsceneAction", typeof(CutsceneContextActionNodeProfile) }
         };
     }
 }

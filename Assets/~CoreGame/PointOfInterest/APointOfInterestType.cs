@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameConfigurationID;
 
 namespace CoreGame
 {
@@ -11,6 +12,7 @@ namespace CoreGame
 
         public abstract void OnPOIDisabled();
         public abstract void OnPOIEnabled();
+        public abstract void SetAnimationPosition(AnimationID animationID);
     }
 
 }

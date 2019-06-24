@@ -1,7 +1,7 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace AdventureGame
@@ -47,9 +47,9 @@ namespace AdventureGame
     {
         [SerializeField]
         private bool isDisabled;
-        
+
         public bool IsDisabled { get => isDisabled; set => isDisabled = value; }
-        
+
         public void SyncPointOfInterestModelState(Renderer[] scenePOIRenderers)
         {
             for (var i = 0; i < scenePOIRenderers.Length; i++)
@@ -69,7 +69,29 @@ namespace AdventureGame
             this.isDisabled = false;
         }
         #endregion
-        
+
+    }
+    #endregion
+
+    #region Animation Positioning state 
+    [System.Serializable]
+    public class PointOfInterestAnimationPositioningState
+    {
+
+        [SerializeField]
+        public AnimationID LastPlayedAnimation = AnimationID.NONE;
+
+        public void SyncPointOfInterestAnimationPositioningState(AnimationID animationID, ref Animator poiAnimator, AnimationConfiguration animationConfiguration)
+        {
+            this.LastPlayedAnimation = animationID;
+            var animationConfigurationData = animationConfiguration.ConfigurationInherentData[animationID];
+            var layerIndex = animationConfigurationData.GetLayerIndex(poiAnimator);
+            poiAnimator.Play(animationConfigurationData.AnimationName, layerIndex);
+            poiAnimator.Update(0f);
+            float currentStateDuration = poiAnimator.GetCurrentAnimatorStateInfo(layerIndex).length;
+            poiAnimator.Update(currentStateDuration);
+        }
+
     }
     #endregion
 }

@@ -338,6 +338,32 @@ namespace AdventureGame
 #endif
     }
 
+    [System.Serializable]
+    public class SetAnimationPositionActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private AnimationID animationID;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
+            if (foundedPoi != null)
+            {
+                foundedPoi.OnAnimationPositioningPlayed(this.animationID);
+            }
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("to POI : ", string.Empty, this.poiInvolved);
+            this.animationID = (AnimationID)NodeEditorGUILayout.EnumField("with animation : ", string.Empty, this.animationID);
+        }
+#endif
+    }
+
     #region Non templated actions
     [System.Serializable]
     public class AddItemInteractionActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
@@ -459,5 +485,6 @@ namespace AdventureGame
         }
 #endif
     }
+    
     #endregion
 }

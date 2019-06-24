@@ -4,6 +4,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using NodeGraph_Editor;
+#endif
+
 namespace AdventureGame
 {
 
@@ -28,7 +32,7 @@ namespace AdventureGame
         [NonSerialized]
         private APointOfInterestEventManager PointOfInterestEventManager;
         #endregion
-        
+
         public CutsceneId CutsceneId { get => cutsceneId; }
 
         public CutsceneTimelineAction(CutsceneId cutsceneId, AContextAction nextContextAction, bool destroyPOIAtEnd = false) : base(nextContextAction)
@@ -59,56 +63,26 @@ namespace AdventureGame
             #endregion
             var cutsceneTimelineContextActionInput = (CutsceneTimelineActionInput)ContextActionInput;
             this.CutsceneTimelineActionInput = cutsceneTimelineContextActionInput;
-
-
-            /*
-            if (cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer != null && cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer.CutsceneTimelinePOIDatas != null)
-            {
-                var cutscenePOIDatas = cutsceneTimelineContextActionInput.PointOfInterestContextDataContainer.CutsceneTimelinePOIDatas;
-                for (var i = 0; i < cutscenePOIDatas.Length; i++)
-                {
-                    if (cutscenePOIDatas[i].CutsceneId == cutsceneId)
-                    {
-                        this.CutsceneTimelinePOIData = cutscenePOIDatas[i];
-                        PlayerManagerEventHandler.StartCoroutine(SetAgentDestination(CutsceneTimelinePOIData.PlayerStartingTransform));
-                        this.PlayerInitialPositionerManager = new PlayerInitialPositionerManager(cutsceneTimelineContextActionInput.PlayerTransform, CutsceneTimelinePOIData.PlayerStartingTransform);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                //exit directly
-                isActionEnded = true;
-            }
-            */
-
         }
 
         public override void Tick(float d)
         {
-            /*
-            if (isAgentDestinationReached)
-            {
-                if (!this.PlayerInitialPositionerManager.IsTargetReached)
-                {
-                    this.PlayerInitialPositionerManager.Tick(d);
-                    if (this.PlayerInitialPositionerManager.IsTargetReached)
-                    {
-                        this.CutsceneTimelinePOIData.StartCoroutine(PlayCutscene(CutsceneTimelinePOIData.PlayableDirector));
-                    }
-                }
-            }
-            */
-
         }
-        
+
 
         private IEnumerator PlayCutscene()
         {
             yield return GameObject.FindObjectOfType<CutscenePlayerManager>().PlayCutscene(this.cutsceneId);
             isActionEnded = true;
         }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.cutsceneId = (CutsceneId)NodeEditorGUILayout.EnumField("Cutscene : ", string.Empty, this.cutsceneId);
+            this.DestroyPOIAtEnd = NodeEditorGUILayout.BoolField("Destroy POI at end : ", string.Empty, this.DestroyPOIAtEnd);
+        }
+#endif
 
     }
 
@@ -120,7 +94,7 @@ namespace AdventureGame
         {
             this.targetedPOI = targetedPOI;
         }
-        
+
         public PointOfInterestType TargetedPOI { get => targetedPOI; }
     }
 }

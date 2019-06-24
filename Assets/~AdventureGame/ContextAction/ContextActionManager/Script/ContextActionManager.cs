@@ -67,6 +67,7 @@ namespace AdventureGame
         #region External Events
         public void OnAddAction(AContextAction contextAction, AContextActionInput contextActionInput)
         {
+            contextAction.ResetState();
             contextAction.ContextActionInput = contextActionInput;
             contextAction.FirstExecutionAction(contextActionInput);
             ExecutedContextActions.Add(contextAction);

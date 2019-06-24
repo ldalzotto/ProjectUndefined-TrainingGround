@@ -41,5 +41,9 @@ namespace GameConfigurationID {
     PLAYER_JACKET_CORD_LISTENING = 12,
     
     PLAYER_JACKET_CORD_JITTER_TREE = 13,
+    
+    NONE = -1,
+    
+    SEWER_DOOR_OPEN = 14,
   }
 }

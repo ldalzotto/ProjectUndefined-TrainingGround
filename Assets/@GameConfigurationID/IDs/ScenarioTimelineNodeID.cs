@@ -23,5 +23,7 @@ namespace GameConfigurationID {
     SewerRTP1_DoorPOI = 12,
     
     SewerRTP1_DoorPOI_Open = 13,
+    
+    SewerRTP1_DoorPOI_Opening = 14,
   }
 }

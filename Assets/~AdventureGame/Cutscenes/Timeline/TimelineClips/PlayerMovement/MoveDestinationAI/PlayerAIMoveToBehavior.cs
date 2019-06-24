@@ -45,6 +45,7 @@ namespace AdventureGame
 
         public override void OnBehaviourPlay(Playable playable, FrameData info)
         {
+            Debug.Log(MyLog.Format("OnBehaviorPlay"));
             base.OnBehaviourPlay(playable, info);
             if (this.PointOfInterestCutsceneController != null && this.CutscenePositionsManager != null)
             {

@@ -203,6 +203,8 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\Abstract\TimelineWorkflowLinked\TimelineContextActionLinkedNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\AnimatorContextAction\AnimatorContextActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\AnimatorContextAction\AnimatorContextActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\CutsceneContextAction\CutsceneContextActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\CutsceneContextAction\CutsceneContextActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\TalkContextAction\TalkContextActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\TalkContextAction\TalkContextActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ScenarioNodeEditor.cs" />
@@ -244,6 +246,8 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemovePOItoItemInteraction\RemovePOItoItemInteractionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveReceivableItem\RemoveReceivableItemEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveReceivableItem\RemoveReceivableItemNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\SetAnimationPositionAction\SetAnimationPositionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\SetAnimationPositionAction\SetAnimationPositionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
     <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresher.cs" />

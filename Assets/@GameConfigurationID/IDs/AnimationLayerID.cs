@@ -23,5 +23,7 @@ namespace GameConfigurationID {
     Jacket_Cord = 3,
     
     Idle_Action_Override = 4,
+    
+    POICutscene = 5,
   }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace CoreGame
 {
@@ -21,5 +22,10 @@ namespace CoreGame
                 DisablePOI(POITobeDisabled);
             }
         }
+        public void SetAnimationPosition(AnimationID animationID, APointOfInterestType involvedPOI)
+        {
+            involvedPOI.SetAnimationPosition(animationID);
+        }
+
     }
 }

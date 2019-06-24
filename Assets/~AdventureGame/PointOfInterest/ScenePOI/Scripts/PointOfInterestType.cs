@@ -9,14 +9,20 @@ namespace AdventureGame
 
     public class PointOfInterestType : APointOfInterestType
     {
+        public const string MODEL_OBJECT_NAME = "Model";
+
         public PointOfInterestId PointOfInterestId;
 
         #region Internal Depencies
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
+        private PointOfInterestAnimationPositioningState pointOfInterestAnimationPositioningState;
 
-        //Optional
+
+        #region Optional
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
+        private Animator pointOfInterestAnimator;
+        #endregion
 
         private PointOfInterestInherentData pointOfInterestInherentData;
         #endregion
@@ -24,6 +30,7 @@ namespace AdventureGame
         #region External Dependencies
         private APointOfInterestEventManager PointOfInterestEventManager;
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
+        private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
         #region Internal Managers
@@ -52,13 +59,24 @@ namespace AdventureGame
             #region External Dependencies
             this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             #endregion
             this.pointOfInterestCutsceneController = transform.parent.GetComponentInChildren<PointOfInterestCutsceneController>();
+            var modelObject = transform.parent.gameObject.FindChildObjectRecursively(MODEL_OBJECT_NAME);
+            if (modelObject != null)
+            {
+                this.pointOfInterestAnimator = modelObject.GetComponent<Animator>();
+                if (this.pointOfInterestAnimator == null)
+                {
+                    this.pointOfInterestAnimator = modelObject.GetComponentInChildren<Animator>();
+                }
+            }
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
             this.POIShowHideManager = new POIShowHideManager(this);
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
+            this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
             this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
@@ -106,9 +124,15 @@ namespace AdventureGame
             ContextActionSynchronizerManager = ghostPOI.ContextActionSynchronizerManager;
             pointOfInterestModelState = ghostPOI.PointOfInterestModelState;
             this.pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
+            //disabling state
             if (ghostPOI.PointOfInterestModelState.IsDisabled)
             {
                 PointOfInterestEventManager.DisablePOI(this);
+            }
+            //animation positioning state
+            if (ghostPOI.PointOfInterestAnimationPositioningState != null && ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation != AnimationID.NONE)
+            {
+                PointOfInterestEventManager.SetAnimationPosition(ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation, this);
             }
         }
 
@@ -158,6 +182,11 @@ namespace AdventureGame
             pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
             this.gameObject.SetActive(true);
         }
+
+        public override void SetAnimationPosition(AnimationID animationID)
+        {
+            this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref this.pointOfInterestAnimator, this.CoreConfigurationManager.AnimationConfiguration());
+        }
     }
 
     class POIMeshRendererManager
@@ -180,11 +209,16 @@ namespace AdventureGame
 
         private GameObject poiModelObject;
         private Collider poiCollider;
+        private Collider[] modelColliders;
 
         public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef)
         {
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.poiModelObject = pointOfInterestTypeRef.transform.parent.gameObject.FindChildObjectRecursively("Model");
+            if (this.poiModelObject != null)
+            {
+                this.modelColliders = this.poiModelObject.GetComponentsInChildren<Collider>();
+            }
             this.poiCollider = pointOfInterestTypeRef.GetComponent<Collider>();
         }
 
@@ -196,6 +230,7 @@ namespace AdventureGame
                 {
                     this.Hide();
                 }
+                this.DisablePhysicsInteraction();
             }
             else
             {
@@ -203,15 +238,16 @@ namespace AdventureGame
                 {
                     this.Show();
                 }
+                this.EnablePhysicsInteraction();
             }
         }
+
 
         private void Show()
         {
             if (this.IsADisplayedPOI())
             {
                 this.poiModelObject.SetActive(true);
-                this.poiCollider.enabled = true;
             }
         }
 
@@ -220,7 +256,37 @@ namespace AdventureGame
             if (this.IsADisplayedPOI())
             {
                 this.poiModelObject.SetActive(false);
+            }
+        }
+
+
+        private void DisablePhysicsInteraction()
+        {
+            if (this.IsADisplayedPOI())
+            {
                 this.poiCollider.enabled = false;
+                if (this.modelColliders != null)
+                {
+                    foreach (var modelCollider in this.modelColliders)
+                    {
+                        modelCollider.enabled = false;
+                    }
+                }
+            }
+        }
+
+        private void EnablePhysicsInteraction()
+        {
+            if (this.IsADisplayedPOI())
+            {
+                this.poiCollider.enabled = true;
+                if (this.modelColliders != null)
+                {
+                    foreach (var modelCollider in this.modelColliders)
+                    {
+                        modelCollider.enabled = true;
+                    }
+                }
             }
         }
 

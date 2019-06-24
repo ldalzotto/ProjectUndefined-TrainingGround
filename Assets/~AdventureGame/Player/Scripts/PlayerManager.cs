@@ -144,10 +144,6 @@ namespace AdventureGame
             {
                 this.PlayerInputMoveManager.FixedTick(d);
             }
-            else
-            {
-                this.PointOfInterestCutsceneController.FixedTick(d);
-            }
         }
 
         public void LateTick(float d)

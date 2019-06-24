@@ -10,17 +10,20 @@ namespace AdventureGame
     {
         private PointOfInterestId pointOfInterestId;
         private AnimationID animationId;
+        private bool waitForEnd;
 
-        public PlayAnimationBehavior(AnimationID animationId, PointOfInterestId pointOfInterestId)
+        public PlayAnimationBehavior(AnimationID animationId, PointOfInterestId pointOfInterestId, bool waitForEnd)
         {
             this.animationId = animationId;
             this.pointOfInterestId = pointOfInterestId;
+            this.waitForEnd = waitForEnd;
         }
 
         public PlayAnimationBehavior()
         {
         }
 
+        private bool hasEnded = false;
         private PointOfInterestCutsceneController PointOfInterestCutsceneController;
         private PlayableDirector PlayableDirector;
 
@@ -37,7 +40,33 @@ namespace AdventureGame
             base.OnBehaviourPlay(playable, info);
             if (this.PointOfInterestCutsceneController != null)
             {
-                this.PointOfInterestCutsceneController.PlayAnimation(this.animationId, 0f);
+                if (!this.waitForEnd)
+                {
+                    this.PointOfInterestCutsceneController.PlayAnimation(this.animationId, 0f);
+                }
+                else
+                {
+                    Coroutiner.Instance.StartCoroutine(this.PlayAndWait());
+                }
+            }
+        }
+
+        private IEnumerator PlayAndWait()
+        {
+            yield return this.PointOfInterestCutsceneController.PlayAnimationAndWait(this.animationId, 0f, animationEndCallback: () =>
+            {
+                this.hasEnded = true;
+                this.PlayableDirector.Resume();
+                return null;
+            });
+        }
+
+        public override void OnBehaviourPause(Playable playable, FrameData info)
+        {
+            base.OnBehaviourPause(playable, info);
+            if (this.waitForEnd && !this.hasEnded)
+            {
+                this.PlayableDirector.Pause();
             }
         }
 
