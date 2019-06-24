@@ -31,6 +31,11 @@ namespace Editor_MainGameCreationWizard
 
             #region Adventure Common Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.CommonAdventureObjects, "CommonAdventureObjects");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.AdventureGameManagersNonPersistant, "_AdventureGameManagersNonPersistant");
+            
+
             #endregion
 
             foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleGameConfigurations.GetType().GetFields())
@@ -165,6 +170,12 @@ namespace Editor_MainGameCreationWizard
     {
         [ReadOnly]
         public GameObject BasePOIPrefab;
+        [ReadOnly]
+        public LevelManager BaseAdventureLevelDynamics;
+        [ReadOnly]
+        public GameObject CommonAdventureObjects;
+        [ReadOnly]
+        public GameObject AdventureGameManagersNonPersistant;
     }
 
     [System.Serializable]

@@ -1,7 +1,7 @@
 ﻿using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 
-namespace Editor_PuzzleLevelCreationWizard
+namespace Editor_AdventureBaseLevelCreationWizard
 {
     [System.Serializable]
     public class LevelHierarchyCreation : ALevelHierarchyCreation

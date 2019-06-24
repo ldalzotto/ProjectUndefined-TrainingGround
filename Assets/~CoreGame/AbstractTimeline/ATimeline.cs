@@ -80,7 +80,8 @@ namespace CoreGame
         public void IncrementGraph(TimeLineAction executedTimelineAction)
         {
             var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedTimelineAction);
-            AddToNodes(scenarioNodesIncrementation.nexNodes);
+           
+            //(0) -> Execution of exit first
             foreach (var oldnodeKey in scenarioNodesIncrementation.oldNodes)
             {
                 var oldNode = this.TimelineInitializer.GetNode(oldnodeKey);
@@ -90,6 +91,8 @@ namespace CoreGame
                     endAction.Execute(workflowActionPassedDataStruct, oldNode);
                 }
             }
+
+            AddToNodes(scenarioNodesIncrementation.nexNodes);
 
             if (scenarioNodesIncrementation != null && (scenarioNodesIncrementation.nexNodes.Count > 0 || scenarioNodesIncrementation.oldNodes.Count > 0))
             {

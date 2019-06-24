@@ -1,15 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
-using Editor_MainGameCreationWizard;
-using System;
+﻿using Editor_MainGameCreationWizard;
+using GameConfigurationID;
 using UnityEditor;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
     [System.Serializable]
-    public class LevelSceneConfigurationCreation : CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
+    public class LevelSceneConfigurationCreation : ALevelSceneConfigurationCreation //CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
     {
+        /*
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
@@ -25,6 +23,24 @@ namespace Editor_PuzzleLevelCreationWizard
             var sceneCreation = editorProfile.GetModule<LevelSceneCreation>();
             SerializableObjectHelper.Modify(this.CreatedObject, (so) => { so.FindProperty(nameof(this.CreatedObject.scene)).objectReferenceValue = sceneCreation.CreatedSceneAsset; });
         }
+        */
 
+        protected override LevelZonesID GetLevelZonesID(AbstractCreationWizardEditorProfile editorProfile)
+        {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
+            return editorInformationsData.LevelZonesID;
+        }
+
+        protected override CommonGameConfigurations GetCommonGameConfigurations(AbstractCreationWizardEditorProfile editorProfile)
+        {
+            var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
+            return editorInformationsData.CommonGameConfigurations;
+        }
+
+        protected override SceneAsset GetCreatedSceneAsset(AbstractCreationWizardEditorProfile editorProfile)
+        {
+            var sceneCreation = editorProfile.GetModule<LevelSceneCreation>();
+            return sceneCreation.CreatedSceneAsset;
+        }
     }
 }
