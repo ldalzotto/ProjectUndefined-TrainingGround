@@ -170,6 +170,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />
+    <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
     <Compile Include="Assets\Editor\EnumGeneration\EnumIDGeneration.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditor.cs" />
