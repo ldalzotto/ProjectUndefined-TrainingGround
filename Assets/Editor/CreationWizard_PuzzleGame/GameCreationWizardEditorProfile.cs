@@ -11,6 +11,7 @@ using Editor_POICreationWizard;
 using Editor_AttractiveObjectCreationWizard;
 using Editor_RepelableObjectCreationWizard;
 using Editor_AdventureBaseLevelCreationWizard;
+using Editor_LevelChunkCreationWizard;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "GameCreationWizardEditorProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile", order = 1)]
@@ -34,8 +35,10 @@ public class GameCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWiza
             {nameof(AttractiveObjectCreationWizard), new AttractiveObjectCreationWizard() },
             {nameof(POICreationWizard), new POICreationWizard() },
             {nameof(RepelableObjectCreationWizard), new RepelableObjectCreationWizard() },
-            {nameof(AdventureBaseLevelCreationWizard), new AdventureBaseLevelCreationWizard() }
-          
+            {nameof(AdventureBaseLevelCreationWizard), new AdventureBaseLevelCreationWizard() },
+            {nameof(LevelChunkCreationWizard), new LevelChunkCreationWizard() }
+            
+
         };
     }
 

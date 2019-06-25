@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Editor_LevelCreation;
 using UnityEditor;
-using UnityEditor.SceneManagement;
+using UnityEngine;
 
-namespace Editor_PuzzleLevelCreationWizard
+namespace Editor_LevelChunkCreationWizard
 {
     [System.Serializable]
     public class LevelChunkSceneCreation : CreateableSceneComponent
@@ -14,7 +12,7 @@ namespace Editor_PuzzleLevelCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var levelChunkPrefabCreation = editorProfile.GetModule<LevelChunkPrefabCreation>();
             this.CreateNewScene();
-            var scenePath = editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkScenePath + "/" + editorInformationsData.LevelZoneChunkID.ToString() + "_Chunk.unity";
+            var scenePath = LevelPathHelper.BuilChunkPath(editorInformationsData.CommonGameConfigurations.InstancePath.LevelBasePath, editorInformationsData.AssociatedAdventureLevelID, editorInformationsData.LevelZoneChunkID);
             if (this.SaveScene(scenePath))
             {
                 PrefabUtility.InstantiatePrefab(levelChunkPrefabCreation.CreatedPrefab);

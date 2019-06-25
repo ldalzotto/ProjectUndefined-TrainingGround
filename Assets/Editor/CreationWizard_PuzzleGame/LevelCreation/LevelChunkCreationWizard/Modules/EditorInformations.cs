@@ -1,17 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using CreationWizard;
-using RTPuzzle;
-using System.Linq;
-using System;
-using CoreGame;
+﻿using CreationWizard;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
-namespace Editor_PuzzleLevelCreationWizard
+namespace Editor_LevelChunkCreationWizard
 {
     [System.Serializable]
     public class EditorInformations : CreationModuleComponent
@@ -45,10 +39,16 @@ namespace Editor_PuzzleLevelCreationWizard
         public override string ComputeWarningState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();
+            string associatedPuzzleLevelWargning = string.Empty;
+            if (this.EditorInformationsData.AssociatedPuzzleLevelID != LevelZonesID.NONE)
+            {
+                associatedPuzzleLevelWargning = ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedPuzzleLevelID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration));
+            }
+
             return new List<string>() {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration),
+                associatedPuzzleLevelWargning,
+                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID,this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration)),
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration),
                 ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration))
             }
             .Find((s) => !string.IsNullOrEmpty(s));
@@ -59,9 +59,11 @@ namespace Editor_PuzzleLevelCreationWizard
     public class EditorInformationsData
     {
         [CustomEnum(isCreateable: true)]
-        public LevelZonesID LevelZonesID;
+        public LevelZoneChunkID LevelZoneChunkID;
         [CustomEnum(isCreateable: true)]
         public LevelZonesID AssociatedAdventureLevelID;
+        [CustomEnum(isCreateable: true)]
+        public LevelZonesID AssociatedPuzzleLevelID = LevelZonesID.NONE;
 
         public CommonGameConfigurations CommonGameConfigurations;
     }

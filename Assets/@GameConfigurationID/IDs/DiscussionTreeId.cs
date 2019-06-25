@@ -13,7 +13,7 @@ namespace GameConfigurationID {
   
   [System.Serializable()]
   public enum DiscussionTreeId {
-        
+    
     SEWER_RTP_1_DOOR = 2,
   }
 }

@@ -13,6 +13,5 @@ namespace GameConfigurationID {
   
   [System.Serializable()]
   public enum DiscussionTimelineNodeID {
-
   }
 }

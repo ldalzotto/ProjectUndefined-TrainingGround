@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Editor_MainGameCreationWizard;
 using UnityEditor;
 
-namespace Editor_PuzzleLevelCreationWizard
+namespace Editor_LevelChunkCreationWizard
 {
     [System.Serializable]
     public class LevelChunkPrefabCreation : CreateablePrefabComponent<LevelChunkType>
@@ -25,7 +25,7 @@ namespace Editor_PuzzleLevelCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdBaseChunk = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.BaseLevelChunkPrefab, editorProfile);
+            var createdBaseChunk = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.BaseLevelChunkPrefab, editorProfile);
             createdBaseChunk.LevelZoneChunkID = editorInformationsData.LevelZoneChunkID;
             PrefabUtility.SavePrefabAsset(createdBaseChunk.gameObject);
         }

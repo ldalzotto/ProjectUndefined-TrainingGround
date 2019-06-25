@@ -1,12 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
+﻿using CoreGame;
 using Editor_MainGameCreationWizard;
 using UnityEditor;
-using System;
-using GameConfigurationID;
 
-namespace Editor_PuzzleLevelCreationWizard
+namespace Editor_LevelChunkCreationWizard
 {
     [System.Serializable]
     public class LevelChunkConfigurationCreation : CreateableScriptableObjectComponent<LevelZonesSceneConfigurationData>
@@ -14,15 +10,8 @@ namespace Editor_PuzzleLevelCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var levelHierarchyCreation = editorProfile.GetModule<LevelHierarchyCreation>();
-
             this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData, editorProfile);
             this.AddToGameConfiguration(editorInformationsData.LevelZoneChunkID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, editorProfile);
-
-            var levelHierarchyCreationSerialized = new SerializedObject(levelHierarchyCreation.CreatedObject);
-            var levelHierarchy = new System.Collections.Generic.List<LevelZoneChunkID>() { editorInformationsData.LevelZoneChunkID };
-            SerializableObjectHelper.SetArray(levelHierarchy.ConvertAll(e => (Enum)e), levelHierarchyCreationSerialized.FindProperty(nameof(levelHierarchyCreation.CreatedObject.LevelHierarchy)));
-            levelHierarchyCreationSerialized.ApplyModifiedProperties();
         }
 
         public override void AfterGeneration(AbstractCreationWizardEditorProfile editorProfile)

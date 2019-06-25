@@ -1,6 +1,9 @@
 ﻿using CoreGame;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
+using System;
+using System.Collections.Generic;
+using UnityEditor;
 
 [System.Serializable]
 public abstract class ALevelHierarchyCreation : CreateableScriptableObjectComponent<LevelHierarchyConfigurationData>
@@ -15,5 +18,9 @@ public abstract class ALevelHierarchyCreation : CreateableScriptableObjectCompon
 
         this.GetCommonGameConfigurations(editorProfile).PuzzleGameConfigurations.LevelHierarchyConfiguration.SetEntry(this.GetLevelZonesID(editorProfile), generatedHierarchy);
         editorProfile.GameConfigurationModified(this.GetCommonGameConfigurations(editorProfile).PuzzleGameConfigurations.LevelHierarchyConfiguration, this.GetLevelZonesID(editorProfile), generatedHierarchy);
+
+        var generatedHierarchySerialized = new SerializedObject(generatedHierarchy);
+        SerializableObjectHelper.SetArray((new List<LevelZoneChunkID>()).ConvertAll(e => (Enum)e), generatedHierarchySerialized.FindProperty(nameof(generatedHierarchy.LevelHierarchy)));
+        generatedHierarchySerialized.ApplyModifiedProperties();
     }
 }

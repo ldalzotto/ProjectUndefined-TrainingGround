@@ -182,9 +182,7 @@ namespace Editor_MainGameCreationWizard
     public class InstacePath
     {
         [ReadOnly]
-        public string LevelScenePath = "Assets/_Scenes/RTPuzzles";
-        [ReadOnly]
-        public string LevelChunkScenePath = "Assets/_Scenes/RTPuzzles";
+        public string LevelBasePath = "Assets/_Scenes";
         [ReadOnly]
         public string LevelConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/LevelConfigurationData";
         [ReadOnly]

@@ -8,14 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID
-{
-
-
-    [System.Serializable()]
-    public enum CutsceneId
-    {
-        PLAYER_OPEN_SEWER_DOOR = 0
-
-    }
+namespace GameConfigurationID {
+  
+  
+  [System.Serializable()]
+  public enum CutsceneId {
+    
+    PLAYER_OPEN_SEWER_DOOR = 0,
+  }
 }

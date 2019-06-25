@@ -29,6 +29,10 @@ namespace CoreGame
         public void AddPuzzleChunkLevel(LevelZonesID levelZonesID, LevelZoneChunkID levelZoneChunkID)
         {
             var foundInherentData = this.ConfigurationInherentData[levelZonesID];
+            if(foundInherentData.LevelHierarchy == null)
+            {
+                foundInherentData.LevelHierarchy = new List<LevelZoneChunkID>();
+            }
             if (!foundInherentData.LevelHierarchy.Contains(levelZoneChunkID))
             {
                 foundInherentData.LevelHierarchy.Add(levelZoneChunkID);
@@ -39,6 +43,10 @@ namespace CoreGame
         public void RemovePuzzleChunkLevel(LevelZonesID levelZonesID, LevelZoneChunkID levelZoneChunkID)
         {
             var foundInherentData = this.ConfigurationInherentData[levelZonesID];
+            if (foundInherentData.LevelHierarchy == null)
+            {
+                foundInherentData.LevelHierarchy = new List<LevelZoneChunkID>();
+            }
             if (foundInherentData.LevelHierarchy.Contains(levelZoneChunkID))
             {
                 foundInherentData.LevelHierarchy.Remove(levelZoneChunkID);

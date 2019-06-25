@@ -17,5 +17,7 @@ namespace GameConfigurationID {
     SewersLV1_Unlock = 0,
     
     SewersLV2_Unlock = 1,
+    
+    _Level1_MainRoad_Unlock = 2,
   }
 }

@@ -18,12 +18,12 @@ namespace Editor_PuzzleLevelCreationWizard
            new CreationWizardOrderConfiguration(typeof(LevelCompletionConditionCreation), 2),
            new CreationWizardOrderConfiguration(typeof(PuzzleLevelDynamicsCreation), 3),
            new CreationWizardOrderConfiguration(typeof(LevelHierarchyCreation), 4),
-           new CreationWizardOrderConfiguration(typeof(LevelHierarchyAdventureLink), 5),
-           new CreationWizardOrderConfiguration(typeof(LevelSceneConfigurationCreation), 6, 0),
-           new CreationWizardOrderConfiguration(typeof(LevelChunkPrefabCreation), 7),
-           new CreationWizardOrderConfiguration(typeof(LevelChunkConfigurationCreation), 8, 1),
-           new CreationWizardOrderConfiguration(typeof(LevelSceneCreation), 9),
-           new CreationWizardOrderConfiguration(typeof(LevelChunkSceneCreation), 10)
+     //      new CreationWizardOrderConfiguration(typeof(LevelHierarchyAdventureLink), 5),
+           new CreationWizardOrderConfiguration(typeof(LevelSceneConfigurationCreation), 5, 0),
+    //       new CreationWizardOrderConfiguration(typeof(LevelChunkPrefabCreation), 7),
+      //     new CreationWizardOrderConfiguration(typeof(LevelChunkConfigurationCreation), 8, 1),
+           new CreationWizardOrderConfiguration(typeof(LevelSceneCreation), 6),
+        //   new CreationWizardOrderConfiguration(typeof(LevelChunkSceneCreation), 10)
         };
         public override List<CreationWizardOrderConfiguration> ModulesConfiguration => this.ModuleTypes_IMPL;
     }

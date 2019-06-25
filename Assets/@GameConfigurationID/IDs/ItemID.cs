@@ -17,6 +17,5 @@ namespace GameConfigurationID {
     NONE = 0,
     
     DUMMY_ITEM = 1,
-    
   }
 }

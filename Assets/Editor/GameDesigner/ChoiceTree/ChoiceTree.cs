@@ -11,6 +11,7 @@ namespace Editor_GameDesigner
             {"Level//."+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
             {"Level//."+typeof(CreateAdventureLevel).Name, typeof(CreateAdventureLevel) },
             {"Level//." + typeof(EditPuzzleLevel).Name, typeof(EditPuzzleLevel) },
+            {"Level//."+typeof(CreateChunk).Name, typeof(CreateChunk) },
             {"LevelChunk//Environmnent//." + typeof(AddEnvironmentModel).Name, typeof(AddEnvironmentModel) },
             {"Puzzle//AI//."+ typeof(CreateAI).Name, typeof(CreateAI) },
             {"Puzzle//AI//."+typeof(AddAI).Name, typeof(AddAI) },

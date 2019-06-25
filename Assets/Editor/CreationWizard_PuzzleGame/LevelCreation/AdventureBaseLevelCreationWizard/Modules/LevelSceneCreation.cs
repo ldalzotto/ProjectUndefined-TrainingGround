@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using Editor_LevelCreation;
+using System.IO;
+using UnityEditor;
 
 namespace Editor_AdventureBaseLevelCreationWizard
 {
@@ -9,7 +11,8 @@ namespace Editor_AdventureBaseLevelCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var adventureLevelDynamicsCreation = editorProfile.GetModule<AdventureLevelDynamicCreation>();
             this.CreateNewScene();
-            var scenePath = editorInformationsData.CommonGameConfigurations.InstancePath.LevelScenePath + "/" + editorInformationsData.LevelZonesID.ToString() + ".unity";
+
+            var scenePath = LevelPathHelper.BuildBaseLevelPath(editorInformationsData.CommonGameConfigurations.InstancePath.LevelBasePath, editorInformationsData.LevelZonesID, editorInformationsData.LevelZonesID);
             if (this.SaveScene(scenePath))
             {
                 PrefabUtility.InstantiatePrefab(editorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.GameManagerPersistanceInstance);

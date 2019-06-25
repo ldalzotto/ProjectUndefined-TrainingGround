@@ -19,5 +19,7 @@ namespace GameConfigurationID {
     SEWER_RTP_2 = 1,
     
     RTP_PUZZLE_CREATION_TEST_CHUNK = 2,
+    
+    _1_Town_MainRoad = 3,
   }
 }
