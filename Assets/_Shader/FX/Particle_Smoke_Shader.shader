@@ -2,19 +2,13 @@
 {
 	Properties
 	{
-		_Color("Color", Color) = (1,1,1,1)
 		_MainTex("Main Texture", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Metallic("Metallic", Range(0,1)) = 0.0
 
-		_MinimumNdotL("Minimum absolute NdotL", Range(0,1)) = 0.0
-				_FacingColorLerp("Facing Color Lerp", Range(0,1)) = 0.5
-			_MinimumNdotLFacingColor("Minimum NdotL facing color", Range(0,1)) = 0.5
-		_RimIntensity("Rim Intensity", float) = 1.0
+		_AlphaCutSmooth("Alpha Cut Smooth", Range(0.0,1.0)) = 0.05
 
-		_AlphaCutout("Alpha Cutout", Range(0.0,1.0)) = 0.0
-			_AlphaCutSmooth("Alpha Cut Smooth", Range(0.0,1.0)) = 0.05
-
+		_DeformationFactor("Deformation Factor", Range(0.0,5.0)) = 1.0
 
 	}
 		SubShader
@@ -23,7 +17,7 @@
 
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Wrapped vertex:vert fullforwardshadows alpha:blend
+			#pragma surface surf Standard vertex:vert fullforwardshadows alpha:blend
 
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
@@ -33,28 +27,10 @@
 
 			sampler2D _MainTex;
 
-			half _MinimumNdotL;
-			half _FacingColorLerp;
-			half _MinimumNdotLFacingColor;
-
-			//rim effect
-			half _RimIntensity;
-
-			UNITY_INSTANCING_BUFFER_START(Props)
-				fixed4 _Color;
-				half _AlphaCutout;
-			UNITY_INSTANCING_BUFFER_END(Props)
-
+		half _Glossiness;
+		half _Metallic;
+			half _DeformationFactor;
 			half _AlphaCutSmooth;
-			//light model
-			half4 LightingWrapped(SurfaceOutput s, half3 lightDir, half3 viewDir, half atten)
-			{
-				half4 wrappedLightColor = LightingWrappedCalculation(s.Normal, s.Alpha, lightDir, _LightColor0, _MinimumNdotL, atten);
-				if (dot(lightDir, s.Normal) > _MinimumNdotLFacingColor) {
-					wrappedLightColor.rgb = lerp(wrappedLightColor, dot(lightDir, s.Normal) *_LightColor0*atten, _FacingColorLerp).rgb;
-				}
-				return wrappedLightColor;
-			}
 
 			struct appdata
 			{
@@ -71,7 +47,7 @@
 				float3 viewDir;
 				float3 worldNormal;
 				float3 worldPos;
-				float4 vertexColor : COLOR;
+				float4 color : COLOR;
 				fixed samplexNoiseValue;
 				fixed4 custom;
 			};
@@ -80,28 +56,26 @@
 			void vert(inout appdata v, out Input o) {
 				UNITY_INITIALIZE_OUTPUT(Input, o);
 				float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
-				fixed3 randomNbparticleVector = fixed3(v.randomNbparticle.x, v.randomNbparticle.x, v.randomNbparticle.x);
+				fixed3 randomNbparticleVector = fixed3(v.randomNbparticle.x, v.randomNbparticle.x, v.randomNbparticle.x) ;
 				o.samplexNoiseValue = (snoise(worldPos * randomNbparticleVector / 2) + 1)*0.5;
 				o.custom = v.custom;
+				o.color = v.color;
 
-				v.vertex.xyz += (o.samplexNoiseValue / 2.3);
+				v.vertex.xyz += (o.samplexNoiseValue   * _DeformationFactor) ;
 			}
 
-			void surf(Input IN, inout SurfaceOutput o)
+			void surf(Input IN, inout SurfaceOutputStandard o)
 			{
-				fixed4 c = IN.vertexColor;
-				o.Albedo = c.rgb;
-
-
+				fixed4 c = IN.color;
+				o.Albedo = c.rgb; 
+				o.Metallic = _Metallic;
+				o.Smoothness = _Glossiness;
+				//noise
 				//rim effect
-				half nv = saturate(dot(IN.worldNormal, IN.viewDir));
-				nv = pow(nv, _RimIntensity);
-
 				half cutoutAlpha = IN.custom.x;
 				half maskA = smoothstep(cutoutAlpha - _AlphaCutSmooth, cutoutAlpha + _AlphaCutSmooth, IN.samplexNoiseValue);
-
-				//noise
-				o.Alpha = nv * maskA;
+				half nv = saturate(dot(IN.worldNormal, IN.viewDir));
+				o.Alpha = nv * maskA * IN.color.a;
 			}
 			ENDCG
 		}

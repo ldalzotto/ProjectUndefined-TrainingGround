@@ -32,6 +32,7 @@ namespace CoreGame
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
 
         }
+        
 
         protected void OnStart()
         {

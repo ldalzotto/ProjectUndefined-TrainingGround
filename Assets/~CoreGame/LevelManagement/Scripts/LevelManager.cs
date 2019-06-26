@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
+﻿using GameConfigurationID;
 using System.Collections.Generic;
-using System;
-using GameConfigurationID;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -30,10 +27,11 @@ namespace CoreGame
         {
             var LevelAvailabilityManager = GameObject.FindObjectOfType<LevelAvailabilityManager>();
             var CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            var LevelManagerEventManager = GameObject.FindObjectOfType<LevelManagerEventManager>();
 
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.currentLevelType = currentLevelType;
-            this.EnvironmentSceneLevelManager = new EnvironmentSceneLevelManager(LevelAvailabilityManager, this, CoreConfigurationManager);
+            this.EnvironmentSceneLevelManager = new EnvironmentSceneLevelManager(LevelAvailabilityManager, this, CoreConfigurationManager, LevelManagerEventManager);
         }
 
         #region External Event
@@ -62,14 +60,16 @@ namespace CoreGame
         #region External Dependencies
         private LevelAvailabilityManager LevelAvailabilityManager;
         private LevelManager LevelManagerRef;
+        private LevelManagerEventManager LevelManagerEventManager;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
-        public EnvironmentSceneLevelManager(LevelAvailabilityManager levelAvailabilityManager, LevelManager LevelManagerRef, CoreConfigurationManager CoreConfigurationManager)
+        public EnvironmentSceneLevelManager(LevelAvailabilityManager levelAvailabilityManager, LevelManager LevelManagerRef, CoreConfigurationManager CoreConfigurationManager, LevelManagerEventManager LevelManagerEventManager)
         {
             LevelAvailabilityManager = levelAvailabilityManager;
             this.LevelManagerRef = LevelManagerRef;
             this.CoreConfigurationManager = CoreConfigurationManager;
+            this.LevelManagerEventManager = LevelManagerEventManager;
 
             LoadAllLevels(this.LevelManagerRef.GetCurrentLevel());
         }
@@ -84,6 +84,7 @@ namespace CoreGame
                     var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
                     if (sceneLoadAsyncOperation != null)
                     {
+                        sceneLoadAsyncOperation.completed += (asyncOperation) => { this.LevelManagerEventManager.CORE_EVT_OnLevelChunkLoaded(levelChunk); };
                         sceneLoadOperations.Add(sceneLoadAsyncOperation);
                     }
                 }

@@ -27,6 +27,14 @@ namespace CoreGame
             return this.LevelManager.OnPuzzleToAdventureLevel(nextLevel);
         }
 
+        public void CORE_EVT_OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
+        {
+            foreach (var levelChunkType in GameObject.FindObjectsOfType<LevelChunkType>())
+            {
+                LevelChunkType.DestroyAllDestroyOnStartObjects();
+            }
+        }
+
     }
 
 }
