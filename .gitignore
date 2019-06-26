@@ -6,3 +6,7 @@ Library
 .vs
 Build
 Pristine
+*comp_dir*
+*comp_light*
+*ReflectionProbe-*
+*LightingData.asset*
