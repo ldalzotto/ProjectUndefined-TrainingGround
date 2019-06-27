@@ -8,22 +8,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum AnimationLayerID {
-    
-    Base_Layer = 0,
-    
-    Empty_Layer = 1,
-    
-    Context_Action_Override = 2,
-    
-    Jacket_Cord = 3,
-    
-    Idle_Action_Override = 4,
-    
-    POICutscene = 5,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum AnimationLayerID
+    {
+
+        Base_Layer = 0,
+
+        Empty_Layer = 1,
+
+        Context_Action_Override = 2,
+
+        Jacket_Cord = 3,
+
+        Idle_Action_Override = 4,
+
+        POICutscene = 5,
+
+        Pose_Override = 6,
+    }
 }

@@ -187,6 +187,7 @@
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryStandard.shader" />
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
+    <None Include="Assets\Test\WindTest\WindShaderTest.shader" />
     <None Include="Assets\Test\ParticleDeformation\ParticleDeformation.shader" />
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterShader.shader" />

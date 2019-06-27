@@ -8,42 +8,46 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum AnimationID {
-    
-    PLAYER_ACTION_GRAB_DOWN = 0,
-    
-    PLAYER_ACTION_FORBIDDEN = 1,
-    
-    PLAYER_ACTION_GIVE_OBJECT_0 = 2,
-    
-    PLAYER_ACTION_GIVE_OBJECT_1 = 3,
-    
-    PLAYER_ACTION_CA_POCKET_ITEM = 4,
-    
-    PLAYER_ACTION_CA_POCKET_ITEM_LAY = 5,
-    
-    PLAYER_ACTION_CA_PROJECTILE = 6,
-    
-    PLAYER_ACTION_CA_PROJECTILE_THROW = 7,
-    
-    PLAYER_ACTION_LISTENING = 8,
-    
-    PLAYER_IDLE_OVERRIDE_LISTENING = 9,
-    
-    PLAYER_IDLE_SMOKE_0 = 10,
-    
-    PLAYER_IDLE_SMOKE_1 = 11,
-    
-    PLAYER_JACKET_CORD_LISTENING = 12,
-    
-    PLAYER_JACKET_CORD_JITTER_TREE = 13,
-    
-    SEWER_DOOR_OPEN = 14,
-    
-    NONE = -1,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum AnimationID
+    {
+
+        PLAYER_ACTION_GRAB_DOWN = 0,
+
+        PLAYER_ACTION_FORBIDDEN = 1,
+
+        PLAYER_ACTION_GIVE_OBJECT_0 = 2,
+
+        PLAYER_ACTION_GIVE_OBJECT_1 = 3,
+
+        PLAYER_ACTION_CA_POCKET_ITEM = 4,
+
+        PLAYER_ACTION_CA_POCKET_ITEM_LAY = 5,
+
+        PLAYER_ACTION_CA_PROJECTILE = 6,
+
+        PLAYER_ACTION_CA_PROJECTILE_THROW = 7,
+
+        PLAYER_ACTION_LISTENING = 8,
+
+        PLAYER_IDLE_OVERRIDE_LISTENING = 9,
+
+        PLAYER_IDLE_SMOKE_0 = 10,
+
+        PLAYER_IDLE_SMOKE_1 = 11,
+
+        PLAYER_JACKET_CORD_LISTENING = 12,
+
+        PLAYER_JACKET_CORD_JITTER_TREE = 13,
+
+        SEWER_DOOR_OPEN = 14,
+
+        BACK_TO_WALL_POSE = 15,
+
+        NONE = -1,
+    }
 }
