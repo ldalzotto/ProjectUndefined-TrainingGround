@@ -10,6 +10,8 @@ namespace CoreGame
 
         public abstract void Init_EndOfFrame();
 
+        public abstract void Tick(float d);
+
         public abstract void OnPOIDisabled();
         public abstract void OnPOIEnabled();
         public abstract void SetAnimationPosition(AnimationID animationID);

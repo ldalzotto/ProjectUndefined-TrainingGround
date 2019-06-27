@@ -28,7 +28,7 @@ namespace AdventureGame
         public override void OnPlayableCreate(Playable playable)
         {
             base.OnPlayableCreate(playable);
-            this.PointOfInterestCutsceneController = GameObject.FindObjectOfType<PointOfInterestManager>().GetActivePointOfInterest(this.pointOfInterestId).PointOfInterestCutsceneController;
+            this.PointOfInterestCutsceneController = GameObject.FindObjectOfType<PointOfInterestManager>().GetActivePointOfInterest(this.pointOfInterestId).GetPointOfInterestCutsceneController();
             this.CutscenePositionsManager = GameObject.FindObjectOfType<CutscenePositionsManager>();
         }
 

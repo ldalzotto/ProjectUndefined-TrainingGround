@@ -13,14 +13,12 @@ namespace AdventureGame
     {
         private const string ObstacelOvercomeObjectName = "ObstacleOvercomeTrigger";
 
-        [Header("Player Movement")]
-        public float AIRotationSpeed;
-
         public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
         public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
         #region Player Common component
         private PlayerCommonComponents PlayerCommonComponents;
+        private DataComponentContainer PlayerDataComponentContainer;
         #endregion
 
         #region Animation Managers
@@ -32,7 +30,7 @@ namespace AdventureGame
 
         private PlayerInputMoveManager PlayerInputMoveManager;
         //Inter dependency
-        private PointOfInterestCutsceneController PointOfInterestCutsceneController;
+        private PointOfInterestType PointOfInterestType;
         // private PlayerAIMoveManager PlayerAIMoveManager;
         private PlayerObstacleOvercomeManager PlayerObstacleOvercomeManager;
 
@@ -63,7 +61,7 @@ namespace AdventureGame
             }
             #endregion
 
-            this.PointOfInterestCutsceneController = GetComponentInChildren<PointOfInterestType>().PointOfInterestCutsceneController;
+            this.PointOfInterestType = GetComponentInChildren<PointOfInterestType>();
             GameObject playerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
             BoxCollider obstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
             Animator playerAnimator = GetComponentInChildren<Animator>();
@@ -74,10 +72,12 @@ namespace AdventureGame
 
             SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
+            this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
+            this.PlayerDataComponentContainer.Init();
 
             this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
             this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, playerObject.transform);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
@@ -85,7 +85,7 @@ namespace AdventureGame
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
-            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, playerAnimator, playerRigidBody, coreConfigurationManager);
+            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), playerAnimator, playerRigidBody, coreConfigurationManager);
         }
 
         public void Tick(float d)
@@ -95,7 +95,7 @@ namespace AdventureGame
 
             var playerSpeedMagnitude = 0f;
 
-            if (!this.PointOfInterestCutsceneController.IsDirectedByCutscene())
+            if (!this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
             {
                 if (IsAllowedToMove())
                 {
@@ -109,7 +109,7 @@ namespace AdventureGame
             }
             else
             {
-                playerSpeedMagnitude = this.PointOfInterestCutsceneController.Tick(d, PlayerCommonComponents.PlayerInputMoveManagerComponent.SpeedMultiplicationFactor, AIRotationSpeed);
+                playerSpeedMagnitude = this.PointOfInterestType.GetPointOfInterestCutsceneController().GetCurrentNormalizedSpeedMagnitude();
             }
 
 
@@ -140,7 +140,7 @@ namespace AdventureGame
         {
             this.PlayerProceduralAnimationsManager.FickedTick(d);
 
-            if (!this.PointOfInterestCutsceneController.IsDirectedByCutscene())
+            if (!this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
             {
                 this.PlayerInputMoveManager.FixedTick(d);
             }
@@ -177,7 +177,7 @@ namespace AdventureGame
 
         private bool IsAllowedToDoAnyInteractions()
         {
-            return this.IsAllowedToMove() && !this.PointOfInterestCutsceneController.IsDirectedByCutscene();
+            return this.IsAllowedToMove() && !this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene();
         }
 
         private bool IsHeadRotatingTowardsPOI()
@@ -238,7 +238,7 @@ namespace AdventureGame
         [Obsolete("Cutscene movement must be handled with the new system")]
         public IEnumerator SetAIDestinationCoRoutine(Transform destination, float normalizedSpeed)
         {
-            return this.PointOfInterestCutsceneController.SetAIDestination(destination, normalizedSpeed);
+            return this.PointOfInterestType.GetPointOfInterestCutsceneController().SetAIDestination(destination, normalizedSpeed);
         }
         #endregion
 

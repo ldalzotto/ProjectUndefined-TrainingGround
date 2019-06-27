@@ -10,7 +10,7 @@ namespace AdventureGame
         public bool InteractionWithPlayerAllowed = true;
         public float MaxDistanceToInteractWithPlayer;
         public bool IsPersistantToPuzzle = false;
-        public bool IsItem = false;
+        public bool IsAlwaysDisplayed = false;
     }
 
 }

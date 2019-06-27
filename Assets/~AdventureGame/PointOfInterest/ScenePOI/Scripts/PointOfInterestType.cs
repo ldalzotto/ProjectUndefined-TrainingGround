@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -12,20 +11,22 @@ namespace AdventureGame
     {
         public PointOfInterestId PointOfInterestId;
 
-        #region Internal Depencies
-        private PointOfInterestModelObjectType PointOfInterestModelObjectType;
-
+        #region Ghost POI Persistance States
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestAnimationPositioningState pointOfInterestAnimationPositioningState;
+        #endregion
 
+        #region Modules
+        private PointOfInterestModules PointOfInteresetModules;
+        private PointOfInterestModulesEventManager PointOfInterestModulesEventManager;
+        #endregion
 
-        #region Optional
-        private PointOfInterestCutsceneController pointOfInterestCutsceneController;
+        #region Data Components
+        private DataComponentContainer pOIDataComponentContainer;
         #endregion
 
         private PointOfInterestInherentData pointOfInterestInherentData;
-        #endregion
 
         #region External Dependencies
         private APointOfInterestEventManager PointOfInterestEventManager;
@@ -36,12 +37,11 @@ namespace AdventureGame
         #region Internal Managers
         private ContextActionSynchronizerManager ContextActionSynchronizerManager;
         private POIMeshRendererManager POIMeshRendererManager;
-        private POIShowHideManager POIShowHideManager;
         #endregion
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
         public PointOfInterestInherentData PointOfInterestInherentData { get => pointOfInterestInherentData; }
-        public PointOfInterestCutsceneController PointOfInterestCutsceneController { get => pointOfInterestCutsceneController; }
+        public DataComponentContainer POIDataComponentContainer { get => pOIDataComponentContainer; }
 
         #region Data Retrieval
         public float GetMaxDistanceToInteractWithPlayer()
@@ -51,6 +51,10 @@ namespace AdventureGame
         public bool IsInteractionWithPlayerAllowed()
         {
             return this.pointOfInterestInherentData.InteractionWithPlayerAllowed;
+        }
+        public PointOfInterestCutsceneController GetPointOfInterestCutsceneController()
+        {
+            return this.PointOfInteresetModules.GetModule<PointOfInterestCutsceneController>();
         }
         #endregion
 
@@ -64,32 +68,30 @@ namespace AdventureGame
 
             this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
 
-            this.PointOfInterestModelObjectType = transform.parent.GetComponentInChildren<PointOfInterestModelObjectType>();
-            if (this.PointOfInterestModelObjectType != null)
-            {
-                this.PointOfInterestModelObjectType.Init();
-            }
+            this.pOIDataComponentContainer = this.transform.parent.GetComponentInChildren<DataComponentContainer>();
+            this.pOIDataComponentContainer.Init();
+
+            this.PointOfInteresetModules = transform.parent.GetComponentInChildren<PointOfInterestModules>();
+            this.PointOfInteresetModules.Init(this);
+            this.PointOfInterestModulesEventManager = new PointOfInterestModulesEventManager(this.PointOfInteresetModules);
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
-            this.POIShowHideManager = new POIShowHideManager(this, this.PointOfInterestModelObjectType, this.IsGenericPOI);
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
-
-            this.pointOfInterestCutsceneController = transform.parent.GetComponentInChildren<PointOfInterestCutsceneController>();
-            if (this.pointOfInterestCutsceneController != null)
-            {
-                this.pointOfInterestCutsceneController.Init(this.PointOfInterestModelObjectType);
-            }
-
         }
 
         public override void Init_EndOfFrame()
         {
-            this.POIShowHideManager.OnPOIInit(this);
+            this.PointOfInterestModulesEventManager.OnPOIInit();
             this.PointOfInterestEventManager.OnPOICreated(this);
+        }
+
+        public override void Tick(float d)
+        {
+            this.PointOfInteresetModules.Tick(d);
         }
 
         private void OnDrawGizmos()
@@ -112,12 +114,6 @@ namespace AdventureGame
         public bool IsInteractableWithItem(ItemID involvedItem)
         {
             return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligible(involvedItem);
-        }
-
-        //Is the POI visible on scene == not player and not item
-        private bool IsGenericPOI()
-        {
-            return this.PointOfInterestId != PointOfInterestId.PLAYER && !this.pointOfInterestInherentData.IsItem;
         }
         #endregion
 
@@ -190,7 +186,8 @@ namespace AdventureGame
         public override void SetAnimationPosition(AnimationID animationID)
         {
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
-            this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref this.PointOfInterestModelObjectType, this.CoreConfigurationManager.AnimationConfiguration());
+            var PointOfInterestModelObjectModule = this.PointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>();
+            this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref PointOfInterestModelObjectModule, this.CoreConfigurationManager.AnimationConfiguration());
         }
     }
 
@@ -206,82 +203,5 @@ namespace AdventureGame
         public Renderer[] POIRenderers { get => pOIRenderers; }
     }
 
-    class POIShowHideManager
-    {
-        #region External Dependencies
-        private LevelManager LevelManager;
-        private PointOfInterestModelObjectType pointOfInterestModelObject;
-        #endregion
 
-        private Func<bool> IsGenericPOI;
-        private Collider poiCollider;
-
-        public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectType pointOfInterestModelObject, Func<bool> IsGenericPOI)
-        {
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.poiCollider = pointOfInterestTypeRef.GetComponent<Collider>();
-            this.pointOfInterestModelObject = pointOfInterestModelObject;
-            this.IsGenericPOI = IsGenericPOI;
-        }
-
-        public void OnPOIInit(PointOfInterestType pointOfInterestTypeRef)
-        {
-            if (this.LevelManager.CurrentLevelType == LevelType.PUZZLE)
-            {
-                if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
-                {
-                    this.Hide();
-                }
-                this.DisablePhysicsInteraction();
-            }
-            else
-            {
-                if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
-                {
-                    this.Show();
-                }
-                this.EnablePhysicsInteraction();
-            }
-        }
-
-        private void Show()
-        {
-            if (this.IsPOICanBeHideable())
-            {
-                this.pointOfInterestModelObject.SetActive(true);
-            }
-        }
-
-        private void Hide()
-        {
-            if (this.IsPOICanBeHideable())
-            {
-                this.pointOfInterestModelObject.SetActive(false);
-            }
-        }
-
-
-        private void DisablePhysicsInteraction()
-        {
-            if (this.IsPOICanBeHideable())
-            {
-                this.poiCollider.enabled = false;
-                this.pointOfInterestModelObject.SetAllColliders(false);
-            }
-        }
-
-        private void EnablePhysicsInteraction()
-        {
-            if (this.IsPOICanBeHideable())
-            {
-                this.poiCollider.enabled = true;
-                this.pointOfInterestModelObject.SetAllColliders(true);
-            }
-        }
-
-        private bool IsPOICanBeHideable()
-        {
-            return this.pointOfInterestModelObject != null && this.IsGenericPOI.Invoke();
-        }
-    }
 }

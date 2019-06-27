@@ -7,21 +7,18 @@ using UnityEngine.AI;
 
 namespace AdventureGame
 {
-    public class PointOfInterestCutsceneController : MonoBehaviour
+    public class PointOfInterestCutsceneController : APointOfInterestModule
     {
         #region External Dependencies
         private CutscenePlayerManager CutscenePlayerManager;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
-        
+
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
 
-        #region Internal Dependencies
-        private PointOfInterestModelObjectType PointOfInterestModelObjectTypeRef;
-        #endregion
-
         private POICutsceneMoveManager POICutsceneMoveManager;
+        private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponentV2;
 
         #region State 
         private bool askedForWarp;
@@ -31,21 +28,22 @@ namespace AdventureGame
         }
         #endregion
 
-        public void Init(PointOfInterestModelObjectType PointOfInterestModelObjectTypeRef)
+        public override void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules)
         {
+            base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
+
             this.CutscenePlayerManager = GameObject.FindObjectOfType<CutscenePlayerManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            
-            this.PointOfInterestModelObjectTypeRef = PointOfInterestModelObjectTypeRef;
 
-            this.Rigidbody = GetComponentInParent<Rigidbody>();
-            this.Agent = GetComponentInParent<NavMeshAgent>();
+            this.Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();
+            this.Agent = pointOfInterestTypeRef.GetComponentInParent<NavMeshAgent>();
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
+            this.PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
         }
 
-        public float Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
+        public override void Tick(float d)
         {
-            return this.POICutsceneMoveManager.Tick(d, SpeedMultiplicationFactor, AIRotationSpeed);
+            this.POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.AIRotationSpeed);
         }
 
         public void Warp(Transform warpPosition)
@@ -63,12 +61,17 @@ namespace AdventureGame
 
         public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
         {
-            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectTypeRef.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
+            yield return AnimationPlayerHelper.PlayAndWait(this.pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>().Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
         }
 
         public void PlayAnimation(AnimationID animationID, float crossFadeDuration)
         {
-            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectTypeRef.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
+            AnimationPlayerHelper.Play(this.pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>().Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
+        }
+
+        public float GetCurrentNormalizedSpeedMagnitude()
+        {
+            return this.POICutsceneMoveManager.GetCurrentNormalizedSpeedMagnitude();
         }
     }
 
@@ -90,7 +93,7 @@ namespace AdventureGame
         public bool IsDirectedByAi { get => isDirectedByAi; }
 
 
-        public float Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
+        public void Tick(float d, float SpeedMultiplicationFactor, float AIRotationSpeed)
         {
             if (this.isDirectedByAi)
             {
@@ -105,18 +108,25 @@ namespace AdventureGame
                 var playerMovementOrientation = (playerAgent.nextPosition - this.PlayerRigidBody.transform.position).normalized;
                 playerAgent.speed = SpeedMultiplicationFactor * this.normalizedSpeedMagnitude;
                 PlayerRigidBody.transform.position = playerAgent.nextPosition;
+            }
+
+        }
+
+        public float GetCurrentNormalizedSpeedMagnitude()
+        {
+            if (this.isDirectedByAi)
+            {
                 return this.normalizedSpeedMagnitude;
             }
             else
             {
                 return 0f;
             }
-
         }
 
         public IEnumerator SetDestination(Transform destination, float normalizedSpeed)
         {
-            isDirectedByAi = true;
+            this.isDirectedByAi = true;
             this.normalizedSpeedMagnitude = normalizedSpeed;
             playerAgent.nextPosition = this.PlayerRigidBody.transform.position;
             playerAgent.SetDestination(destination.position);
@@ -124,7 +134,7 @@ namespace AdventureGame
             //Let the AI move
             yield return Coroutiner.Instance.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
             PlayerRigidBody.isKinematic = false;
-            isDirectedByAi = false;
+            this.isDirectedByAi = false;
         }
     }
 

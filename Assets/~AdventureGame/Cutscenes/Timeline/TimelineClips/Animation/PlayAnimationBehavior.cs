@@ -31,7 +31,7 @@ namespace AdventureGame
         {
             base.OnGraphStart(playable);
             var PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.PointOfInterestCutsceneController = PointOfInterestManager.GetActivePointOfInterest(this.pointOfInterestId).PointOfInterestCutsceneController;
+            this.PointOfInterestCutsceneController = PointOfInterestManager.GetActivePointOfInterest(this.pointOfInterestId).GetPointOfInterestCutsceneController();
             this.PlayableDirector = playable.GetGraph().GetResolver() as PlayableDirector;
         }
 

@@ -26,6 +26,40 @@ public static class ComponentSearchExtensions
         return null;
     }
 
+    public static GameObject FindChildObjectWithLevelLimit(this GameObject gameObject, string name, int maxLevelDownIncluded)
+    {
+        return FindChildObjectWithLevelLimit(gameObject, name, maxLevelDownIncluded, 0);
+    }
+
+    private static GameObject FindChildObjectWithLevelLimit(GameObject gameObject, string name, int maxLevelDownIncluded, int currentLevel)
+    {
+        if (currentLevel > maxLevelDownIncluded)
+        {
+            return null;
+        }
+
+        foreach (Transform childTransform in gameObject.transform)
+        {
+            if (childTransform.name == name)
+            {
+                return childTransform.gameObject;
+            }
+            else
+            {
+                if (childTransform.childCount > 0)
+                {
+                    var newCurrentLevel = currentLevel + 1;
+                    var recursiveResult = FindChildObjectWithLevelLimit(childTransform.gameObject, name, maxLevelDownIncluded, newCurrentLevel);
+                    if (recursiveResult != null)
+                    {
+                        return recursiveResult;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static List<GameObject> FindOneLevelDownChilds(this GameObject gameObject)
     {
         List<GameObject> returnValue = new List<GameObject>();

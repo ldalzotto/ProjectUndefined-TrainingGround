@@ -18,7 +18,7 @@ namespace CoreGame
         private AnimationPositionTrackerManager HairObjectAnimationTracker;
         private AnimationPositionTrackerManager ChestObjectAnimationTracker;
 
-        public PlayerProceduralAnimationsManager(PlayerCommonComponents playerCommonComponents, Animator playerAnimator, Rigidbody playerRigidBody, CoreConfigurationManager CoreConfigurationManager)
+        public PlayerProceduralAnimationsManager(PlayerCommonComponents playerCommonComponents, TransformMoveManagerComponentV2 playerInputMoveManagerComponentV2, Animator playerAnimator, Rigidbody playerRigidBody, CoreConfigurationManager CoreConfigurationManager)
         {
             this.PlayerCommonComponents = playerCommonComponents;
 
@@ -29,8 +29,8 @@ namespace CoreGame
             ChestObjectAnimationTracker = new AnimationPositionTrackerManager(chestObject);
 
             PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(HairObjectAnimationTracker, hairObject, this.PlayerCommonComponents.PlayerHairStrandAnimationManagerComponent);
-            PlayerHoodAnimationManager = new PlayerHoodAnimationManager(this.PlayerCommonComponents.PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, playerAnimator).transform, playerRigidBody, this.PlayerCommonComponents.PlayerInputMoveManagerComponent);
-            PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(playerAnimator, ChestObjectAnimationTracker, this.PlayerCommonComponents.PlayerJacketCordAnimationManagerComponent, this.PlayerCommonComponents.PlayerInputMoveManagerComponent, CoreConfigurationManager);
+            PlayerHoodAnimationManager = new PlayerHoodAnimationManager(this.PlayerCommonComponents.PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, playerAnimator).transform, playerRigidBody, playerInputMoveManagerComponentV2);
+            PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(playerAnimator, ChestObjectAnimationTracker, this.PlayerCommonComponents.PlayerJacketCordAnimationManagerComponent, playerInputMoveManagerComponentV2, CoreConfigurationManager);
         }
 
         public void FickedTick(float d)

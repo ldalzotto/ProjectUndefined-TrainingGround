@@ -13,7 +13,7 @@ namespace AdventureGame
         private CutscenePositionMarkerID cutscenePositionMarkerID;
         private float normalizedSpeedMagnitude;
 
-        public PlayerAIMoveToBehavior(CutsceneId cutsceneId, CutscenePositionMarkerID cutscenePositionMarkerID,  float normalizedSpeedMagnitude, PointOfInterestId pointOfInterestId)
+        public PlayerAIMoveToBehavior(CutsceneId cutsceneId, CutscenePositionMarkerID cutscenePositionMarkerID, float normalizedSpeedMagnitude, PointOfInterestId pointOfInterestId)
         {
             this.cutscenePositionMarkerID = cutscenePositionMarkerID;
             this.cutsceneId = cutsceneId;
@@ -37,7 +37,7 @@ namespace AdventureGame
             this.destinationReached = false;
             this.isMoving = false;
             var PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.PointOfInterestCutsceneController = PointOfInterestManager.GetActivePointOfInterest(this.pointOfInterestId).PointOfInterestCutsceneController;
+            this.PointOfInterestCutsceneController = PointOfInterestManager.GetActivePointOfInterest(this.pointOfInterestId).GetPointOfInterestCutsceneController();
             this.CutscenePositionsManager = GameObject.FindObjectOfType<CutscenePositionsManager>();
 
             this.PlayableDirector = playable.GetGraph().GetResolver() as PlayableDirector;

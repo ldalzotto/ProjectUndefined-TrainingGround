@@ -16,10 +16,10 @@ namespace CoreGame
     {
         private AnimationPositionTrackerManager chestPositionTrackerManager;
         private PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent;
-        private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
+        private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent;
 
         public PlayerJacketCordAnimationManager(Animator playerAnimator, AnimationPositionTrackerManager chestPositionTrackerManager, PlayerJacketCordAnimationManagerComponent PlayerJacketCordAnimationManagerComponent,
-            PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, CoreConfigurationManager CoreConfigurationManager)
+            TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent, CoreConfigurationManager CoreConfigurationManager)
         {
             this.PlayerJacketCordAnimationManagerComponent = PlayerJacketCordAnimationManagerComponent;
             this.chestPositionTrackerManager = chestPositionTrackerManager;

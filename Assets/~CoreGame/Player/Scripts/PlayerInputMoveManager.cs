@@ -6,13 +6,13 @@ namespace CoreGame
     #region Player Movement
     public abstract class PlayerMoveManager
     {
-        private PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent;
+        private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent;
         protected Rigidbody PlayerRigidBody;
         protected PlayerSpeedProcessingInput playerSpeedProcessingInput;
         private bool hasMoved;
         private float playerSpeedMagnitude;
 
-        public PlayerMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
+        public PlayerMoveManager(TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
         {
             this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
             PlayerRigidBody = playerRigidBody;
@@ -53,7 +53,7 @@ namespace CoreGame
                 }
             }
         }
-        
+
     }
 
     public class PlayerInputMoveManager : PlayerMoveManager
@@ -61,7 +61,7 @@ namespace CoreGame
         private Transform CameraPivotPoint;
         private IGameInputManager GameInputManager;
 
-        public PlayerInputMoveManager(PlayerInputMoveManagerComponent PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
+        public PlayerInputMoveManager(TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
              : base(PlayerInputMoveManagerComponent, playerRigidBody)
         {
             CameraPivotPoint = cameraPivotPoint;
@@ -85,12 +85,6 @@ namespace CoreGame
             playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
             playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
         }
-    }
-    
-    [System.Serializable]
-    public class PlayerInputMoveManagerComponent
-    {
-        public float SpeedMultiplicationFactor;
     }
 
     public class PlayerSpeedProcessingInput

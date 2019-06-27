@@ -69,11 +69,11 @@ namespace AdventureGame
             AdventureLevelChunkFXTransitionManager.Tick(d);
             ContextActionWheelManager.Tick(d);
             ContextActionManager.Tick(d);
+            PointOfInterestManager.Tick(d);
             PlayerManager.Tick(d);
             NPCManager.Tick(d);
             InventoryManager.Tick(d);
             DiscussionWindowManager.Tick(d);
-            PointOfInterestManager.Tick(d);
 
 
 #if UNITY_EDITOR

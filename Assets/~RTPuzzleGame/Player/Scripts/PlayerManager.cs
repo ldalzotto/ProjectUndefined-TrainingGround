@@ -19,6 +19,7 @@ namespace RTPuzzle
 
         #region Player Common component
         private PlayerCommonComponents PlayerCommonComponents;
+        private DataComponentContainer PlayerDataComponentContainer;
         #endregion
 
         private PlayerInputMoveManager PlayerInputMoveManager;
@@ -53,10 +54,13 @@ namespace RTPuzzle
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
-            PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerCommonComponents.PlayerInputMoveManagerComponent, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
+            this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
+            this.PlayerDataComponentContainer.Init();
+
+            PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, BodyGroundStickContactDistance);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
-            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, animator, this.playerRigidbody, coreConfigurationManager);
+            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
 
