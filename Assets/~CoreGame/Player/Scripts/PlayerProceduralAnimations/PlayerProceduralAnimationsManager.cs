@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using static PlayerAnimationConstants;
+using static AnimationConstants;
 
 namespace CoreGame
 {
@@ -22,14 +22,14 @@ namespace CoreGame
         {
             this.PlayerCommonComponents = playerCommonComponents;
 
-            var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(PlayerAnimationConstants.HAIR_OBJECT_NAME);
-            var chestObject = PlayerBoneRetriever.GetPlayerBone(PlayerBone.CHEST, playerAnimator);
+            var hairObject = playerRigidBody.gameObject.FindChildObjectRecursively(AnimationConstants.HAIR_OBJECT_NAME);
+            var chestObject = BipedBoneRetriever.GetPlayerBone(BipedBone.CHEST, playerAnimator);
 
             HairObjectAnimationTracker = new AnimationPositionTrackerManager(hairObject);
             ChestObjectAnimationTracker = new AnimationPositionTrackerManager(chestObject);
 
             PlayerHairStrandAnimationManager = new PlayerHairStrandAnimationManager(HairObjectAnimationTracker, hairObject, this.PlayerCommonComponents.PlayerHairStrandAnimationManagerComponent);
-            PlayerHoodAnimationManager = new PlayerHoodAnimationManager(this.PlayerCommonComponents.PlayerHoodAnimationManagerComponent, PlayerBoneRetriever.GetPlayerBone(PlayerBone.HOOD, playerAnimator).transform, playerRigidBody, playerInputMoveManagerComponentV2);
+            PlayerHoodAnimationManager = new PlayerHoodAnimationManager(this.PlayerCommonComponents.PlayerHoodAnimationManagerComponent, BipedBoneRetriever.GetPlayerBone(BipedBone.HOOD, playerAnimator).transform, playerRigidBody, playerInputMoveManagerComponentV2);
             PlayerJacketCordAnimationManager = new PlayerJacketCordAnimationManager(playerAnimator, ChestObjectAnimationTracker, this.PlayerCommonComponents.PlayerJacketCordAnimationManagerComponent, playerInputMoveManagerComponentV2, CoreConfigurationManager);
         }
 

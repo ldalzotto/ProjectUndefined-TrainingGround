@@ -22,7 +22,7 @@ namespace RTPuzzle
         {
             if (POITobeDisabled != null)
             {
-                POITobeDisabled.OnPOIDisabled();
+                POITobeDisabled.OnPOIDisabled(POITobeDisabled);
                 AGhostPOIManager.OnPOIDisabled(POITobeDisabled);
             }
         }

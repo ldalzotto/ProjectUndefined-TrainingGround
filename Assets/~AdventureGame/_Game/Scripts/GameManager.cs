@@ -91,6 +91,7 @@ namespace AdventureGame
         private void LateUpdate()
         {
             var d = Time.deltaTime;
+            PointOfInterestManager.LateTick(d);
             PlayerManager.LateTick(d);
         }
 

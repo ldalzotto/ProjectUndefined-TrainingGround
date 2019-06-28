@@ -12,7 +12,9 @@ namespace AdventureGame
         {
             {typeof(PointOfInterestModelObjectModule), 0 },
             {typeof(PointOfInterestCutsceneController), 1 },
-            {typeof(PointOfInterestSpecificBehaviorModule), 2 }
+            {typeof(PointOfInterestTrackerModule), 2 },
+            {typeof(PointOfInterestVisualMovementModule), 3 },
+            {typeof(PointOfInterestSpecificBehaviorModule), 4 }
         };
 
         #region Data Retrieval
@@ -51,6 +53,13 @@ namespace AdventureGame
             }
         }
 
+        public void LateTick(float d)
+        {
+            foreach (var pointOfInterestModule in this.pointOfInterestModules)
+            {
+                pointOfInterestModule.Value.LateTick(d);
+            }
+        }
     }
 
 }

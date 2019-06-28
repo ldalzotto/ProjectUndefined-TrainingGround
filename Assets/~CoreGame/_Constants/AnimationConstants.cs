@@ -2,24 +2,24 @@
 using UnityEngine;
 
 
-public static class PlayerAnimationConstants
+public static class AnimationConstants
 {
 
     public const string HAIR_OBJECT_NAME = "Hair";
 
     #region Bone Retriever
-    public class PlayerBoneRetriever
+    public class BipedBoneRetriever
     {
-        private static Dictionary<PlayerBone, string> BoneNames = new Dictionary<PlayerBone, string>()
+        private static Dictionary<BipedBone, string> BoneNames = new Dictionary<BipedBone, string>()
     {
-        {PlayerBone.HEAD, "Head"},
-        {PlayerBone.RIGHT_HAND_CONTEXT, "HoldItem_R" },
-        {PlayerBone.RIGH_FINGERS, "Figers_R" },
-        {PlayerBone.HOOD, "Hood"},
-        {PlayerBone.CHEST, "Chest"}
+        {BipedBone.HEAD, "Head"},
+        {BipedBone.RIGHT_HAND_CONTEXT, "HoldItem_R" },
+        {BipedBone.RIGH_FINGERS, "Figers_R" },
+        {BipedBone.HOOD, "Hood"},
+        {BipedBone.CHEST, "Chest"}
     };
 
-        public static GameObject GetPlayerBone(PlayerBone playerBone, Animator playerAnimator)
+        public static GameObject GetPlayerBone(BipedBone playerBone, Animator playerAnimator)
         {
             if (playerAnimator != null)
             {
@@ -30,7 +30,7 @@ public static class PlayerAnimationConstants
         }
     }
 
-    public enum PlayerBone
+    public enum BipedBone
     {
         HEAD, RIGHT_HAND_CONTEXT, RIGH_FINGERS, HOOD, CHEST
     }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using GameConfigurationID;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -17,9 +19,11 @@ namespace AdventureGame
         }
         
         public abstract void Tick(float d);
+        public virtual void LateTick(float d) { }
 
         #region External Events
         public virtual void OnPOIInit() { }
+        public virtual void OnPOIDisabled(APointOfInterestType pointOfInterestType) { }
         #endregion
     }
 

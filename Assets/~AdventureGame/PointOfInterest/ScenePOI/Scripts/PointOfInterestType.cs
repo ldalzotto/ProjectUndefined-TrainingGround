@@ -7,10 +7,8 @@ using UnityEngine;
 namespace AdventureGame
 {
 
-    public class PointOfInterestType : APointOfInterestType
+    public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission
     {
-        public PointOfInterestId PointOfInterestId;
-
         #region Ghost POI Persistance States
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
@@ -56,9 +54,17 @@ namespace AdventureGame
         {
             return this.PointOfInteresetModules.GetModule<PointOfInterestCutsceneController>();
         }
+        public PointOfInterestTrackerModule GetPointOfInterestTrackerModule()
+        {
+            return this.PointOfInteresetModules.GetModule<PointOfInterestTrackerModule>();
+        }
         public CoreConfigurationManager GetCoreConfigurationManager()
         {
             return this.CoreConfigurationManager;
+        }
+        public static PointOfInterestType FromCollisionType(CollisionType collisionType)
+        {
+            return collisionType.GetComponent<PointOfInterestType>();
         }
         #endregion
 
@@ -98,6 +104,11 @@ namespace AdventureGame
             this.PointOfInteresetModules.Tick(d);
         }
 
+        public void LateTick(float d)
+        {
+            this.PointOfInteresetModules.LateTick(d);
+        }
+
         private void OnDrawGizmos()
         {
             var labelStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
@@ -118,6 +129,14 @@ namespace AdventureGame
         public bool IsInteractableWithItem(ItemID involvedItem)
         {
             return pointOfInterestScenarioState != null && pointOfInterestScenarioState.InteractableItemsComponent != null && pointOfInterestScenarioState.InteractableItemsComponent.IsElligible(involvedItem);
+        }
+        public bool IsPlayer()
+        {
+            return this.PointOfInterestId == PointOfInterestId.PLAYER;
+        }
+        public bool IsVisualMovementAllowed()
+        {
+            return true;
         }
         #endregion
 
@@ -145,10 +164,14 @@ namespace AdventureGame
             ghostPOI.PointOfInterestModelState = this.pointOfInterestModelState;
         }
 
-        public override void OnPOIDisabled()
+        public override void OnPOIDisabled(APointOfInterestType disabledPointOfInterest)
         {
-            Debug.Log("Disabled By Player : " + PointOfInterestId.ToString());
-            this.DisablePOI();
+            if (this.PointOfInterestId == disabledPointOfInterest.PointOfInterestId)
+            {
+                Debug.Log("Disabled By Player : " + PointOfInterestId.ToString());
+                this.DisablePOI();
+            }
+            this.PointOfInterestModulesEventManager.OnPOIDisabled(disabledPointOfInterest);
         }
 
         public override void OnPOIEnabled()

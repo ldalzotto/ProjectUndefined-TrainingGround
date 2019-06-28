@@ -3,7 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections;
 using UnityEngine;
-using static PlayerAnimationConstants;
+using static AnimationConstants;
 
 namespace AdventureGame
 {
@@ -155,7 +155,7 @@ namespace AdventureGame
         {
             if (PlayerAnimator != null)
             {
-                var rightHandBoneTransform = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, PlayerAnimator).transform;
+                var rightHandBoneTransform = BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, PlayerAnimator).transform;
                 var scaleFactor = Vector3.one;
                 ComponentSearchHelper.ComputeScaleFactorRecursively(rightHandBoneTransform, PlayerAnimator.transform, ref scaleFactor);
                 DisplayedItemModel = GiveActionMiniatureInstanciate.Instance(this.AdventureGameConfigurationManager.ItemConf()[ItemGiven].ItemModel, rightHandBoneTransform, scaleFactor);

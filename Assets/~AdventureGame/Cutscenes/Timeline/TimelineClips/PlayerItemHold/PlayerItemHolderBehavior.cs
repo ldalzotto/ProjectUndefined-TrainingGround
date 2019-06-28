@@ -1,7 +1,7 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.Playables;
-using static PlayerAnimationConstants;
+using static AnimationConstants;
 
 namespace AdventureGame
 {
@@ -9,7 +9,7 @@ namespace AdventureGame
     [System.Serializable]
     public class PlayerItemHolderBehavior : PlayableBehaviour
     {
-        public PlayerBone PlayerBone;
+        public BipedBone PlayerBone;
         public ItemID HoldedItem;
 
         private Transform BoneTransformResolved;
@@ -33,7 +33,7 @@ namespace AdventureGame
                 var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
                 #endregion
                 var playerAnimator = PlayerManager.GetPlayerAnimator();
-                var boneObj = PlayerBoneRetriever.GetPlayerBone(PlayerBone, playerAnimator);
+                var boneObj = BipedBoneRetriever.GetPlayerBone(PlayerBone, playerAnimator);
                 if (boneObj != null)
                 {
                     BoneTransformResolved = boneObj.transform;

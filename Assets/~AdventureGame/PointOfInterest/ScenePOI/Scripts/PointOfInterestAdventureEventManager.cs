@@ -38,10 +38,12 @@ namespace AdventureGame
                 var POIToBeDisabledCasted = (PointOfInterestType)POITobeDisabled;
                 if (!LevelTransitionManager.IsNewZoneLoading())
                 {
-                    POIToBeDisabledCasted.OnPOIDisabled();
+                    foreach(var poi in this.PointOfInterestManager.GetAllPointOfInterests())
+                    {
+                        poi.OnPOIDisabled(POITobeDisabled);
+                    }
                 }
                 PointOfInterestManager.OnPOIDisabled(POIToBeDisabledCasted);
-                PlayerManager.OnPOIDestroyed(POIToBeDisabledCasted);
                 GhostsPOIManager.OnPOIDisabled(POIToBeDisabledCasted);
             }
         }

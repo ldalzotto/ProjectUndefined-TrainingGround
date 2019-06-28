@@ -71,8 +71,8 @@
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
+    <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />
-    <Compile Include="Assets\~CoreGame\_Constants\PlayerAnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\SceneConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\StringConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\TagConstants.cs" />

@@ -1,4 +1,8 @@
-﻿namespace AdventureGame
+﻿using System;
+using CoreGame;
+using GameConfigurationID;
+
+namespace AdventureGame
 {
     public class PointOfInterestModulesEventManager
     {
@@ -15,6 +19,14 @@
             foreach (var pointOfInterestModule in this.PointOfInterestModules.GetAllPointOfInterestModules())
             {
                 pointOfInterestModule.Value.OnPOIInit();
+            }
+        }
+
+        internal void OnPOIDisabled(APointOfInterestType pointOfInterestType)
+        {
+            foreach (var pointOfInterestModule in this.PointOfInterestModules.GetAllPointOfInterestModules())
+            {
+                pointOfInterestModule.Value.OnPOIDisabled(pointOfInterestType);
             }
         }
         #endregion

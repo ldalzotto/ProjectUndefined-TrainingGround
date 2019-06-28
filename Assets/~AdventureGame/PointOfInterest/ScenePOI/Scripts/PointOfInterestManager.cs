@@ -50,6 +50,14 @@ namespace AdventureGame
             }
         }
 
+        public void LateTick(float d)
+        {
+            foreach (var activePointOfInterest in this.GetAllActivePointOfInterest())
+            {
+                activePointOfInterest.LateTick(d);
+            }
+        }
+
         #region External Events
         public void OnPOICreated(PointOfInterestType POICreated)
         {
@@ -88,9 +96,7 @@ namespace AdventureGame
 
         public List<PointOfInterestType> GetAllActivePointOfInterest()
         {
-            var foundedPOIS = this.PointOfInterestContainerManager.GetAllInteractablePointOfInterest();
-            foundedPOIS.AddRange(this.PointOfInterestContainerManager.GetAllNonInteractablePointOfInterest());
-            return foundedPOIS;
+            return this.PointOfInterestContainerManager.GetAllInteractablePointOfInterest().Concat(this.PointOfInterestContainerManager.GetAllNonInteractablePointOfInterest()).ToList();
         }
 
         public List<PointOfInterestType> GetAllPointOfInterests()

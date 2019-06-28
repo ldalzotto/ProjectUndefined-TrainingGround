@@ -1,7 +1,7 @@
 ﻿using GameConfigurationID;
 using System;
 using UnityEngine;
-using static PlayerAnimationConstants;
+using static AnimationConstants;
 
 namespace CoreGame
 {
@@ -29,7 +29,7 @@ namespace CoreGame
             this.animationID = animationID;
             this.playerAnimator = playerAnimator;
             this.destroyObjectOnEnd = destroyObjectOnEnd;
-            this.rightHandContext = PlayerBoneRetriever.GetPlayerBone(PlayerBone.RIGHT_HAND_CONTEXT, this.playerAnimator);
+            this.rightHandContext = BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, this.playerAnimator);
             this.crossFadeTime = crossFadeTime;
             this.onAnimationEndAction = onAnimationEndAction;
         }

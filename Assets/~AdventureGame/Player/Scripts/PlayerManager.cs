@@ -5,16 +5,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using static AnimationConstants;
 
 namespace AdventureGame
 {
 
-    public class PlayerManager : PlayerManagerType
+    public class PlayerManager : PlayerManagerType, IVisualMovementPermission
     {
         private const string ObstacelOvercomeObjectName = "ObstacleOvercomeTrigger";
-
-        public PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
-        public PlayerPOIVisualHeadMovementComponent PlayerPOIVisualHeadMovementComponent;
 
         #region Player Common component
         private PlayerCommonComponents PlayerCommonComponents;
@@ -34,10 +32,10 @@ namespace AdventureGame
         // private PlayerAIMoveManager PlayerAIMoveManager;
         private PlayerObstacleOvercomeManager PlayerObstacleOvercomeManager;
 
-        private PlayerPOITrackerManager PlayerPOITrackerManager;
+        private PointOfInterestTrackerModule PointOfInterestTrackerModule;
         private PlayerPOIWheelTriggerManager PlayerPOIWheelTriggerManager;
 
-        private PlayerPOIVisualHeadMovementManager PlayerPOIVisualHeadMovementManager;
+        // private PlayerPOIVisualHeadMovementManager PlayerPOIVisualHeadMovementManager;
 
         private PlayerContextActionManager PlayerContextActionManager;
         private PlayerInventoryTriggerManager PlayerInventoryTriggerManager;
@@ -70,22 +68,29 @@ namespace AdventureGame
             playerAgent.updatePosition = false;
             playerAgent.updateRotation = false;
 
-            SphereCollider POITrackerCollider = transform.Find("POITracker").GetComponent<SphereCollider>();
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
             this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
             this.PlayerDataComponentContainer.Init();
 
+            #region Data Components
+            var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            var PlayerPOITrackerManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>();
+            #endregion
+
+            #region POI Modules
+            this.PointOfInterestTrackerModule = this.PointOfInterestType.GetPointOfInterestTrackerModule();
+            #endregion
+
             this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), CameraPivotPoint.transform, GameInputManager, playerRigidBody);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
-            this.PlayerPOITrackerManager = new PlayerPOITrackerManager(PlayerPOITrackerManagerComponent, POITrackerCollider, playerObject.transform);
-            this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, PlayerPOITrackerManager);
-            this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent);
+            this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.PointOfInterestTrackerModule);
+            //  this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent, playerAnimator);
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
-            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), playerAnimator, playerRigidBody, coreConfigurationManager);
+            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, playerAnimator, playerRigidBody, coreConfigurationManager);
         }
 
         public void Tick(float d)
@@ -112,15 +117,15 @@ namespace AdventureGame
                 playerSpeedMagnitude = this.PointOfInterestType.GetPointOfInterestCutsceneController().GetCurrentNormalizedSpeedMagnitude();
             }
 
+            PointOfInterestTrackerModule.Tick(d);
 
             if (IsAllowedToDoAnyInteractions())
             {
-                PlayerPOITrackerManager.Tick(d);
 
                 //if statement to avoid processing inpout at the same frame
                 if (!PlayerInventoryTriggerManager.Tick())
                 {
-                    PlayerPOIWheelTriggerManager.Tick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
+                    PlayerPOIWheelTriggerManager.Tick(d, PointOfInterestTrackerModule.NearestInRangePointOfInterest());
                 }
             }
 
@@ -149,24 +154,16 @@ namespace AdventureGame
         public void LateTick(float d)
         {
             this.PlayerProceduralAnimationsManager.LateTick(d);
-            if (IsHeadRotatingTowardsPOI())
-            {
-                PlayerPOIVisualHeadMovementManager.LateTick(d, PlayerPOITrackerManager.NearestInRangePointOfInterest);
-            }
-            else
-            {
-                PlayerPOIVisualHeadMovementManager.LateTickNoFollowing();
-            }
         }
 
         public void OnGizmoTick()
         {
             if (IsAllowedToDoAnyInteractions())
             {
-                PlayerPOITrackerManager.OnGizmoTick();
-                PlayerPOIWheelTriggerManager.GizmoTick(PlayerPOITrackerManager.NearestInRangePointOfInterest);
+                // PointOfInterestTrackerModule.OnGizmoTick();
+                // PlayerPOIWheelTriggerManager.GizmoTick(PointOfInterestTrackerModule.NearestInRangePointOfInterest());
             }
-            PlayerPOIVisualHeadMovementManager.GizmoTick();
+            // PlayerPOIVisualHeadMovementManager.GizmoTick();
         }
 
         #region Logical Conditions
@@ -180,7 +177,7 @@ namespace AdventureGame
             return this.IsAllowedToMove() && !this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene();
         }
 
-        private bool IsHeadRotatingTowardsPOI()
+        public bool IsVisualMovementAllowed()
         {
             return (!PlayerContextActionManager.IsActionExecuting || PlayerContextActionManager.IsTalkActionExecuting) && !PlayerAnimationManager.IsIdleAnimationRunnig();
         }
@@ -188,20 +185,6 @@ namespace AdventureGame
         #endregion
 
         #region External Events
-        public void TriggerEnter(Collider collider, CollisionType source)
-        {
-            if (source.IsPoi)
-            {
-                PlayerPOITrackerManager.OnObjectEnter(collider.gameObject);
-            }
-        }
-        public void TriggerExit(Collider collider, CollisionType source)
-        {
-            if (source.IsPoi)
-            {
-                PlayerPOITrackerManager.OnObjectExit(collider.gameObject);
-            }
-        }
         public void ObstacleOvercomeTriggerEnter(Collider collider)
         {
             if (IsAllowedToMove())
@@ -212,7 +195,7 @@ namespace AdventureGame
         public void OnContextActionAdded(AContextAction contextActionAdded)
         {
             PlayerContextActionManager.OnContextActionAdded(contextActionAdded);
-            PlayerPOIVisualHeadMovementManager.OnContextActionAdded();
+            // PlayerPOIVisualHeadMovementManager.OnContextActionAdded();
         }
         public void OnContextActionFinished()
         {
@@ -221,10 +204,6 @@ namespace AdventureGame
         public void OnWheelDisabled()
         {
             PlayerPOIWheelTriggerManager.OnWheelDisabled();
-        }
-        public void OnPOIDestroyed(PointOfInterestType pointOfInterestType)
-        {
-            PlayerPOITrackerManager.POIDeleted(pointOfInterestType);
         }
         public void OnInventoryEnabled()
         {
@@ -253,7 +232,7 @@ namespace AdventureGame
 
         public PointOfInterestType GetCurrentTargetedPOI()
         {
-            return PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest;
+            return PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest();
         }
 
     }
@@ -283,282 +262,23 @@ namespace AdventureGame
     #endregion
 
     #region POI
-    class PlayerPOITrackerManager
-    {
-        private PlayerPOITrackerManagerComponent PlayerPOITrackerManagerComponent;
-        private SphereCollider TrackerCollider;
-        private Transform PlayerTransform;
-        private List<PointOfInterestType> InRangePointOfInterests = new List<PointOfInterestType>();
-        private PointOfInterestType nearestInRangePointOfInterest;
-        private PointOfInterestType nearestInRangeInteractabledPointOfInterest;
-
-        public PointOfInterestType NearestInRangePointOfInterest { get => nearestInRangePointOfInterest; }
-        public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
-
-        public PlayerPOITrackerManager(PlayerPOITrackerManagerComponent playerPOITrackerManagerComponent, SphereCollider TrackerCollider, Transform PlayerTransform)
-        {
-            PlayerPOITrackerManagerComponent = playerPOITrackerManagerComponent;
-            this.TrackerCollider = TrackerCollider;
-            this.TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
-            this.PlayerTransform = PlayerTransform;
-        }
-
-        public void Tick(float d)
-        {
-            TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
-            nearestInRangePointOfInterest = GetNearestPOI();
-            nearestInRangeInteractabledPointOfInterest = null;
-            if (nearestInRangePointOfInterest != null)
-            {
-                if (Vector3.Distance(PlayerTransform.position, nearestInRangePointOfInterest.transform.position) <= nearestInRangePointOfInterest.GetMaxDistanceToInteractWithPlayer())
-                {
-                    nearestInRangeInteractabledPointOfInterest = nearestInRangePointOfInterest;
-                }
-            }
-        }
-
-        public void OnObjectEnter(GameObject obj)
-        {
-            var POIType = obj.GetComponent<PointOfInterestType>();
-            if (POIType != null)
-            {
-                InRangePointOfInterests.Add(POIType);
-            }
-        }
-        public void OnObjectExit(GameObject obj)
-        {
-            var POIType = obj.GetComponent<PointOfInterestType>();
-            if (POIType != null)
-            {
-                InRangePointOfInterests.Remove(POIType);
-            }
-        }
-
-        private PointOfInterestType GetNearestPOI()
-        {
-            PointOfInterestType nearestPoi = null;
-            foreach (var POI in InRangePointOfInterests)
-            {
-                if (nearestPoi == null)
-                {
-                    nearestPoi = POI;
-                }
-                else
-                {
-                    if (Vector3.Distance(POI.transform.position, TrackerCollider.transform.position) <= Vector3.Distance(nearestPoi.transform.position, TrackerCollider.transform.position))
-                    {
-                        nearestPoi = POI;
-                    }
-                }
-            }
-            return nearestPoi;
-        }
-
-        public void POIDeleted(PointOfInterestType deletedPOI)
-        {
-            if (InRangePointOfInterests.Contains(deletedPOI))
-            {
-                InRangePointOfInterests.Remove(deletedPOI);
-            }
-        }
-
-        public void OnGizmoTick()
-        {
-            if (PlayerPOITrackerManagerComponent != null && TrackerCollider != null)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(TrackerCollider.transform.position, PlayerPOITrackerManagerComponent.SphereDetectionRadius);
-                var labelStyle = GUI.skin.GetStyle("Label");
-                labelStyle.alignment = TextAnchor.MiddleCenter;
-                labelStyle.normal.textColor = Color.blue;
-#if UNITY_EDITOR
-                Handles.Label(TrackerCollider.transform.position + new Vector3(0, PlayerPOITrackerManagerComponent.SphereDetectionRadius, 0), "POI Trigger Sphere Detection", labelStyle);
-#endif
-            }
-        }
-    }
-
-    [System.Serializable]
-    public class PlayerPOITrackerManagerComponent
-    {
-        public float SphereDetectionRadius;
-    }
-
-    class PlayerPOIVisualHeadMovementManager
-    {
-        private PlayerPOIVisualHeadMovementComponent playerPOIVisualHeadMovementComponent;
-
-        private PointOfInterestType LastNearestPOI;
-        private List<Quaternion> InterpolatedBoneRotations = new List<Quaternion>();
-
-        private bool IsLookingToPOI;
-        private bool hasEndedSmoothingOut;
-
-        public PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent playerPOIVisualHeadMovementComponent)
-        {
-            this.playerPOIVisualHeadMovementComponent = playerPOIVisualHeadMovementComponent;
-            for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
-            {
-                InterpolatedBoneRotations.Add(Quaternion.identity);
-            }
-        }
-
-        public void LateTick(float d, PointOfInterestType NearestPOI)
-        {
-
-            LastNearestPOI = NearestPOI;
-            if (LastNearestPOI != null)
-            {
-                var beforeHeadMoveAngle = Vector3.Angle(playerPOIVisualHeadMovementComponent.HeadBone.forward, LastNearestPOI.transform.position - playerPOIVisualHeadMovementComponent.HeadBone.position);
-                if (beforeHeadMoveAngle <= playerPOIVisualHeadMovementComponent.POIDetectionAngleLimit)
-                {
-
-                    if (!IsLookingToPOI)
-                    {
-                        //first time looking
-                        ResetInterpolatedBoneRotationToActual();
-                    }
-
-                    IsLookingToPOI = true;
-                    hasEndedSmoothingOut = false;
-
-                    for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
-                    {
-                        var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
-
-                        // (1) - Target direction is the direction between bone and POI point.
-                        var targetDirection = (LastNearestPOI.transform.position - affectedBone.transform.position).normalized;
-
-                        // (2) - We clamp the bone rotation to a cone.
-                        var coneClampedRotation = QuaternionHelper.ConeReduction(playerPOIVisualHeadMovementComponent.HeadBone.forward, targetDirection, this.playerPOIVisualHeadMovementComponent.RotationAngleLimit);
-
-                        // (3) - We rotate the target direction to fit the cone constraint.
-                        var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
-
-                        /*
-                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (playerPOIVisualHeadMovementComponent.HeadBone.forward * 10), Color.blue);
-                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (targetDirection.normalized * 10), Color.green);
-                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (adjustedDirection.normalized * 10), Color.red);
-                        */
-
-                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
-                            playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
-                        InterpolatedBoneRotations[i] = affectedBone.rotation;
-                    }
-                }
-                else
-                {
-                    IsLookingToPOI = false;
-                    SmoothNoLookingTransition(d);
-                }
-            }
-            else
-            {
-                IsLookingToPOI = false;
-                SmoothNoLookingTransition(d);
-            }
-        }
-
-        private void SmoothNoLookingTransition(float d)
-        {
-            if (!hasEndedSmoothingOut)
-            {
-                for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
-                {
-                    var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
-                    var dotProductToTarget = Mathf.Abs(Quaternion.Dot(InterpolatedBoneRotations[i], affectedBone.rotation));
-
-                    //too much angle to smooth -> direct transition
-                    if (dotProductToTarget <= playerPOIVisualHeadMovementComponent.SmoothOutMaxDotProductLimit)
-                    {
-                        hasEndedSmoothingOut = true;
-                    }
-                    else if (dotProductToTarget <= 0.9999f)
-                    {
-                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], affectedBone.rotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
-                        InterpolatedBoneRotations[i] = affectedBone.rotation;
-                    }
-                    else
-                    {
-                        hasEndedSmoothingOut = true;
-                    }
-                }
-            }
-        }
-
-        public void LateTickNoFollowing()
-        {
-            ResetInterpolatedBoneRotationToActual();
-        }
-
-
-        private void ResetInterpolatedBoneRotationToActual()
-        {
-            for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
-            {
-                var affectedBone = playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i];
-                InterpolatedBoneRotations[i] = affectedBone.rotation;
-            }
-        }
-
-        public void OnContextActionAdded()
-        {
-            hasEndedSmoothingOut = false;
-        }
-
-        public void GizmoTick()
-        {
-            if (LastNearestPOI != null)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(LastNearestPOI.transform.position, 1f);
-
-                for (var i = 0; i < playerPOIVisualHeadMovementComponent.BonesThatReactToPOI.Length; i++)
-                {
-                    Gizmos.DrawLine(playerPOIVisualHeadMovementComponent.BonesThatReactToPOI[i].position, LastNearestPOI.transform.position);
-#if UNITY_EDITOR
-                    Handles.Label(LastNearestPOI.transform.position, "Targeted POI");
-#endif
-                }
-            }
-        }
-
-    }
-
-    [System.Serializable]
-    public class PlayerPOIVisualHeadMovementComponent
-    {
-        public Transform[] BonesThatReactToPOI;
-        public Transform HeadBone;
-        [Tooltip("This angle is the maximum value for the look system to be enabled. The angle is Ang(player forward, player to POI)")]
-        public float POIDetectionAngleLimit;
-        [Tooltip("This angle is the maximum angle where player actually rotate.")]
-        public float RotationAngleLimit;
-
-        public float SmoothMovementSpeed;
-        [Range(0.0f, 1.0f)]
-        [Tooltip("When head exits POI interest, indicates the minimum dot product from current head rotation and target to smooth out." +
-            "If calculated dot < SmoothOutMaxDotProductLimit -> no smooth out, head is instantly rotating towards animation rotation.")]
-        public float SmoothOutMaxDotProductLimit = 0.4f;
-    }
-
     class PlayerPOIWheelTriggerManager
     {
         private Transform PlayerTransform;
         private GameInputManager GameInputManager;
         private ContextActionWheelEventManager ContextActionWheelEventManager;
-        private PlayerPOITrackerManager PlayerPOITrackerManager;
+        private PointOfInterestTrackerModule PointOfInterestTrackerModule;
 
         private bool wheelEnabled;
 
         public bool WheelEnabled { get => wheelEnabled; }
 
-        public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelEventManager contextActionWheelEventManager, PlayerPOITrackerManager PlayerPOITrackerManager)
+        public PlayerPOIWheelTriggerManager(Transform playerTransform, GameInputManager gameInputManager, ContextActionWheelEventManager contextActionWheelEventManager, PointOfInterestTrackerModule pointOfInterestTrackerModule)
         {
             PlayerTransform = playerTransform;
             GameInputManager = gameInputManager;
             ContextActionWheelEventManager = contextActionWheelEventManager;
-            this.PlayerPOITrackerManager = PlayerPOITrackerManager;
+            this.PointOfInterestTrackerModule = pointOfInterestTrackerModule;
         }
 
         public void Tick(float d, PointOfInterestType nearestPOI)
@@ -567,9 +287,9 @@ namespace AdventureGame
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
-                    if (PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest != null)
+                    if (PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest() != null)
                     {
-                        Debug.Log(PlayerPOITrackerManager.NearestInRangeInteractabledPointOfInterest.name);
+                        Debug.Log(PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest().name);
                         wheelEnabled = true;
                         ContextActionWheelEventManager.OnWheelEnabled(nearestPOI.GetContextActions(), WheelTriggerSource.PLAYER);
                     }

@@ -16,7 +16,7 @@ namespace CoreGame
 
         public void Tick(float unscaledSpeedMagnitude)
         {
-            animator.SetFloat(PlayerAnimationConstants.PlayerAnimatorParametersName.Speed, unscaledSpeedMagnitude);
+            animator.SetFloat(AnimationConstants.PlayerAnimatorParametersName.Speed, unscaledSpeedMagnitude);
         }
 
     }

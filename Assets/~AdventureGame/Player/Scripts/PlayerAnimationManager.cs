@@ -2,7 +2,7 @@
 using GameConfigurationID;
 using System.Collections;
 using UnityEngine;
-using static PlayerAnimationConstants;
+using static AnimationConstants;
 
 namespace AdventureGame
 {
@@ -165,7 +165,7 @@ namespace AdventureGame
         #region Idle animations
         public void OnSpawnFireSmoke()
         {
-            CurrentEffectPlaying = FXContainerManager.TriggerFX(PrefabContainer.Instance.PlayerSmokeEffectPrefab, PlayerAnimationConstants.PlayerBoneRetriever.GetPlayerBone(PlayerBone.HEAD, PlayerAnimator).transform);
+            CurrentEffectPlaying = FXContainerManager.TriggerFX(PrefabContainer.Instance.PlayerSmokeEffectPrefab, AnimationConstants.BipedBoneRetriever.GetPlayerBone(BipedBone.HEAD, PlayerAnimator).transform);
         }
         #endregion
 
