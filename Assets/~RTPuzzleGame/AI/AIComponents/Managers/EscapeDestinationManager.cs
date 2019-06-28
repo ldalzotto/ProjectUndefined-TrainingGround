@@ -10,7 +10,7 @@ namespace RTPuzzle
     public class EscapeDestinationManager
     {
 
-        public const float DESTINATION_CALCUALTION_ROUNDING_DISTANCE = 0.001f;
+        public const float DESTINATION_CALCUALTION_ROUNDING_DISTANCE = 0.1f;
 
         private NavMeshAgent escapingAgent;
         private Nullable<Vector3> escapeDestination;
