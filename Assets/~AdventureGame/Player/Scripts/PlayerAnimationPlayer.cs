@@ -14,12 +14,12 @@ namespace AdventureGame
             {
                 new SliceAnimation()
                 {
-                    AnimationID = AnimationID.PLAYER_IDLE_SMOKE_0,
+                    AnimationID = AnimationID.IDLE_SMOKE_0,
                     CrossFadeDuration = 0f,
                     AnimationEndCallback = onTriggerSmokeEffect
                 }, new SliceAnimation()
                 {
-                    AnimationID = AnimationID.PLAYER_IDLE_SMOKE_1,
+                    AnimationID = AnimationID.IDLE_SMOKE_1,
                     CrossFadeDuration = 0f,
                     AnimationEndCallback = onAnimationEnd
                 }
@@ -31,13 +31,13 @@ namespace AdventureGame
             return PlaySlicesAnimation(animator, animationConfiguration, new SliceAnimation[] {
                 new SliceAnimation()
                 {
-                    AnimationID = AnimationID.PLAYER_ACTION_GIVE_OBJECT_0,
+                    AnimationID = AnimationID.ACTION_GIVE_OBJECT_0,
                     CrossFadeDuration = 0f,
                     AnimationEndCallback = onItemShow
                 },
                 new SliceAnimation()
                 {
-                    AnimationID = AnimationID.PLAYER_ACTION_GIVE_OBJECT_1,
+                    AnimationID = AnimationID.ACTION_GIVE_OBJECT_1,
                     CrossFadeDuration = 0f,
                     AnimationEndCallback = onAnimationEnd
                 }

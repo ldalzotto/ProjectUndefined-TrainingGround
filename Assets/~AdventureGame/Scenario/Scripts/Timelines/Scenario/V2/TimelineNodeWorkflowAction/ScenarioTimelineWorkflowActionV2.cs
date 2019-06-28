@@ -18,7 +18,7 @@ namespace AdventureGame
         [SerializeField]
         private bool destroyPOIAtEnd;
         [SerializeField]
-        private AnimationID playerAnimation = AnimationID.PLAYER_ACTION_GRAB_DOWN;
+        private AnimationID playerAnimation = AnimationID.ACTION_GRAB_DOWN;
         [SerializeField]
         private CutsceneId cutsceneId;
 

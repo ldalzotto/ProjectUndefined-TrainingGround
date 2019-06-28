@@ -91,7 +91,7 @@ namespace CoreGame
 
         private void SetContextActionAnimatorToListening()
         {
-            this.playerAnimator.Play(this.animationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_ACTION_LISTENING].AnimationName);
+            this.playerAnimator.Play(this.animationConfiguration.ConfigurationInherentData[AnimationID.ACTION_LISTENING].AnimationName);
         }
     }
 }

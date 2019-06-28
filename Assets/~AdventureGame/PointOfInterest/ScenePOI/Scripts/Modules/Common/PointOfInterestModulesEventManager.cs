@@ -14,10 +14,7 @@
         {
             foreach (var pointOfInterestModule in this.PointOfInterestModules.GetAllPointOfInterestModules())
             {
-                if (pointOfInterestModule.Key == typeof(PointOfInterestModelObjectModule))
-                {
-                    ((PointOfInterestModelObjectModule)pointOfInterestModule.Value).OnPOIInit();
-                }
+                pointOfInterestModule.Value.OnPOIInit();
             }
         }
         #endregion

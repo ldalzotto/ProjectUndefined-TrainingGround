@@ -79,7 +79,7 @@ namespace AdventureGame
             }
             else
             {
-                Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(giveActionInput.PlayerAnimator, animationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_ACTION_FORBIDDEN], 0f, () =>
+                Coroutiner.Instance.StartCoroutine(AnimationPlayerHelper.PlayAndWait(giveActionInput.PlayerAnimator, animationConfiguration.ConfigurationInherentData[AnimationID.ACTION_FORBIDDEN], 0f, () =>
                {
                    {
                        this.OnGiveAnimationEnd();

@@ -20,8 +20,8 @@ namespace Editor_ProjectileCreationWizard
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>
             { 
                 so.FindProperty("projectilePrefab").objectReferenceValue = projectilePrefabCreation.CreatedPrefab;
-                so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)AnimationID.PLAYER_ACTION_CA_PROJECTILE;
-                so.FindProperty(nameof(this.CreatedObject.PostActionAnimation)).enumValueIndex = (int)AnimationID.PLAYER_ACTION_CA_PROJECTILE_THROW;
+                so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_PROJECTILE;
+                so.FindProperty(nameof(this.CreatedObject.PostActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_PROJECTILE_THROW;
             });
         }
     }

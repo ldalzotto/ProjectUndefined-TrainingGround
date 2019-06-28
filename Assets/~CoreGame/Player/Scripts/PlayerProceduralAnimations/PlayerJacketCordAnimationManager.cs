@@ -103,7 +103,7 @@ namespace CoreGame
                     {
                         this.dampingEnded = true;
                         this.playerAnimator.SetFloat(PlayerAnimationConstants.PlayerAnimatorParametersName.JacketCordJitter, 0);
-                        this.playerAnimator.Play(this.AnimationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_JACKET_CORD_LISTENING].AnimationName);
+                        this.playerAnimator.Play(this.AnimationConfiguration.ConfigurationInherentData[AnimationID.ADDITIONAL_CONTEXT_ACTION_LISTENING].AnimationName);
                     }
                     else
                     {

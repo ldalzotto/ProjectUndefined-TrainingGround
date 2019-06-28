@@ -56,6 +56,10 @@ namespace AdventureGame
         {
             return this.PointOfInteresetModules.GetModule<PointOfInterestCutsceneController>();
         }
+        public CoreConfigurationManager GetCoreConfigurationManager()
+        {
+            return this.CoreConfigurationManager;
+        }
         #endregion
 
         public override void Init()

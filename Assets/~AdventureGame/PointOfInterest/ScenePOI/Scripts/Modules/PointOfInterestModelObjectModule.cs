@@ -33,6 +33,21 @@ namespace AdventureGame
                 this.animator = modelObject.GetComponentInChildren<Animator>();
             }
             this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>());
+            this.InitAnimation();
+        }
+
+        private void InitAnimation()
+        {
+            if (this.animator != null)
+            {
+                var animationConfiguration = this.pointOfInterestTypeRef.GetCoreConfigurationManager().AnimationConfiguration();
+                GenericAnimatorHelper.SetMovementLayer(this.animator, animationConfiguration, LevelType.ADVENTURE);
+            }
+        }
+
+        public override void OnPOIInit()
+        {
+            this.POIShowHideManager.OnPOIInit(this.pointOfInterestTypeRef);
         }
 
         public override void Tick(float d)
@@ -60,9 +75,6 @@ namespace AdventureGame
             }
         }
 
-        public void OnPOIInit()
-        {
-        }
         #endregion
     }
 

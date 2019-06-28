@@ -88,6 +88,7 @@
     <Compile Include="Assets\~CoreGame\AI\NavMeshRayCaster.cs" />
     <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
+    <Compile Include="Assets\~CoreGame\Animation\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />

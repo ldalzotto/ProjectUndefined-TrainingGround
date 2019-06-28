@@ -44,7 +44,7 @@ namespace AdventureGame
             }
             else
             {
-                interactActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.PlayAndWait(interactActionInput.PlayerAnimator, animationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_ACTION_FORBIDDEN], 0f, () =>
+                interactActionInput.PlayerManager.StartCoroutine(AnimationPlayerHelper.PlayAndWait(interactActionInput.PlayerAnimator, animationConfiguration.ConfigurationInherentData[AnimationID.ACTION_FORBIDDEN], 0f, () =>
                {
                    this.OnInteractionResolved();
                    return null;

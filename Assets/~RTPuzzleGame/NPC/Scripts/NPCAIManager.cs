@@ -13,10 +13,12 @@ namespace RTPuzzle
     public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable
     {
 
+        /*
         public const string AnimationName_OnHittedByProjectileFirstTime = "OnHittedByProjectileFirstTime";
         public const string AnimationName_OnHittedByProjectile2InARow = "OnHittedByProjectile2InARow";
         public const string AnimationName_Fear = "Fear";
         public const string AnimationName_FearListening = "FearListening";
+        */
 
         [Header("Debug")]
         public bool DebugEabled;
@@ -63,6 +65,8 @@ namespace RTPuzzle
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
@@ -81,9 +85,11 @@ namespace RTPuzzle
                 new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, targetZoneContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.AIDestimationMoveManagerComponent));
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
-            AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator);
+            AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
 
+            //Initialize movement animation
+            GenericAnimatorHelper.SetMovementLayer(animator, animationConfiguration, LevelType.PUZZLE);
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
         }
@@ -338,30 +344,32 @@ namespace RTPuzzle
     class AnimationVisualFeedbackManager
     {
         private Animator Animator;
+        private AnimationConfiguration AnimationConfiguration;
 
-        public AnimationVisualFeedbackManager(Animator animator)
+        public AnimationVisualFeedbackManager(Animator animator, AnimationConfiguration AnimationConfiguration)
         {
             Animator = animator;
+            this.AnimationConfiguration = AnimationConfiguration;
         }
 
         internal void OnHittedByProjectileFirstTime()
         {
-            this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectileFirstTime);
+            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.HITTED_BY_PROJECTILE_1ST], 0f);
         }
 
         internal void OnEscapeWithoutTargetStart()
         {
-            this.Animator.Play(NPCAIManager.AnimationName_OnHittedByProjectile2InARow);
+            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.HITTED_BY_PROJECTILE_2ND], 0f);
         }
 
         internal void OnAIFearedStunnedEnded()
         {
-            this.Animator.Play(NPCAIManager.AnimationName_FearListening);
+            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.POSE_OVERRIVE_LISTENING], 0f);
         }
 
         internal void OnAIFearedStunned()
         {
-            this.Animator.Play(NPCAIManager.AnimationName_Fear);
+            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.FEAR], 0f);
         }
     }
 }

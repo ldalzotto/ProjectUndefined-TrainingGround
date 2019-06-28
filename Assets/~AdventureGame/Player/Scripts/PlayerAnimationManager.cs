@@ -28,8 +28,9 @@ namespace AdventureGame
 
             this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
             this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this, AnimationConfiguration);
-
             this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<FXContainerManager>(), PlayerAnimator);
+
+            GenericAnimatorHelper.SetMovementLayer(PlayerAnimator, AnimationConfiguration, LevelType.ADVENTURE);
         }
 
 
@@ -111,7 +112,7 @@ namespace AdventureGame
 
         private void SwitchToListeningAnimation()
         {
-            PlayerAnimator.Play(this.AnimationConfiguration.ConfigurationInherentData[AnimationID.PLAYER_IDLE_OVERRIDE_LISTENING].AnimationName);
+            PlayerAnimator.Play(this.AnimationConfiguration.ConfigurationInherentData[AnimationID.ACTION_LISTENING].AnimationName);
         }
 
         private IEnumerator PlayPlayerIdleSmokeAnimation()

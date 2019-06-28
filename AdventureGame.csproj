@@ -138,10 +138,12 @@
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\Common\PointOfInterestModulesEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestCutsceneController.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestModelObjectModule.cs" />
+    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestSpecificBehaviorModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestAdventureEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestScenarioState.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\PointOfInterestType.cs" />
+    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\SpecificBehaviors\_1_Level_Girl_SpecificBehavior.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Action\ScenarioAction.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineInitializerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Discussion\DiscussionTimelineManagerV2.cs" />
