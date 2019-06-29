@@ -5,6 +5,6 @@ namespace AdventureGame
     [System.Serializable]
     public class PlayerPOITrackerManagerComponentV2 : ADataComponent
     {
-        public float SphereDetectionRadius;
+        public float SphereDetectionRadius = 25f;
     }
 }

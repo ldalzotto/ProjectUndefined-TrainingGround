@@ -23,7 +23,7 @@ namespace AdventureGame
         {
             base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
 
-            var modelObject = this.pointOfInterestTypeRef.transform.parent.gameObject.FindChildObjectWithLevelLimit("Model", 0);
+            var modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
 
             this.allColliders = modelObject.GetComponentsInChildren<Collider>();
             this.oneLevelDownChildObjects = modelObject.FindOneLevelDownChilds();

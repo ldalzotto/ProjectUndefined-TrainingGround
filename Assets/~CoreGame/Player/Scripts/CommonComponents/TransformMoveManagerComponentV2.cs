@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace CoreGame
+﻿namespace CoreGame
 {
     [System.Serializable]
     public class TransformMoveManagerComponentV2 : ADataComponent
     {
-        public float SpeedMultiplicationFactor;
-        public float AIRotationSpeed;
+        public float SpeedMultiplicationFactor = 20f;
+        public float AIRotationSpeed = 10f;
     }
 }

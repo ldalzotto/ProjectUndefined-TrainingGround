@@ -62,10 +62,7 @@ namespace AdventureGame
         {
             return this.CoreConfigurationManager;
         }
-        public static PointOfInterestType FromCollisionType(CollisionType collisionType)
-        {
-            return collisionType.GetComponent<PointOfInterestType>();
-        }
+ 
         #endregion
 
         public override void Init()

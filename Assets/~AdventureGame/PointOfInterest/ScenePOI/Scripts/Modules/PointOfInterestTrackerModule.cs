@@ -38,7 +38,7 @@ namespace AdventureGame
             {
                 if (collisionType.IsPoi)
                 {
-                    this.POITrackerManager.OnPOIObjectEnter(PointOfInterestType.FromCollisionType(collisionType));
+                    this.POITrackerManager.OnPOIObjectEnter(PointOfInterestTypeHelper.FromCollisionType(collisionType));
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace AdventureGame
             {
                 if (collisionType.IsPoi)
                 {
-                    this.POITrackerManager.OnPOIObjectExit(PointOfInterestType.FromCollisionType(collisionType));
+                    this.POITrackerManager.OnPOIObjectExit(PointOfInterestTypeHelper.FromCollisionType(collisionType));
                 }
             }
         }

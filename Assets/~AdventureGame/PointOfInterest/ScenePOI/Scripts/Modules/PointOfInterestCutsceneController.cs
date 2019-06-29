@@ -18,7 +18,10 @@ namespace AdventureGame
         private NavMeshAgent Agent;
 
         private POICutsceneMoveManager POICutsceneMoveManager;
+
+        #region Data Components Dependencies
         private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponentV2;
+        #endregion
 
         #region State 
         private bool askedForWarp;
@@ -32,13 +35,16 @@ namespace AdventureGame
         {
             base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
 
+            #region Data Components Dependencies
+            this.PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            #endregion
+            
             this.CutscenePlayerManager = GameObject.FindObjectOfType<CutscenePlayerManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
 
             this.Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();
             this.Agent = pointOfInterestTypeRef.GetComponentInParent<NavMeshAgent>();
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
-            this.PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
         }
 
         public override void Tick(float d)

@@ -286,6 +286,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AddPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\CreateInEditorModule.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditScriptableObjectModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\ExploreModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\SetModelModule.cs" />
@@ -312,6 +313,8 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\EditPOI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\ExplorePOI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\POIModel.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\POIModules\Common\EditorPOIModulesOperation.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\POIModules\POIModuleWizard.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ExploreProjectile.cs" />
