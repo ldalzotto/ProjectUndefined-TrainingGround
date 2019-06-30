@@ -29,7 +29,7 @@ namespace AdventureGame
             return animationEnded;
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             animationEnded = false;
             var animatorActionInput = (AnimatorActionInput)ContextActionInput;

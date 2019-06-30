@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using UnityEngine;
 
 namespace AdventureGame
@@ -18,7 +19,7 @@ namespace AdventureGame
             return elapsedTime >= 2f;
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             Debug.Log("DUMMY");
             var actionInput = ContextActionInput as DummyContextActionInput;

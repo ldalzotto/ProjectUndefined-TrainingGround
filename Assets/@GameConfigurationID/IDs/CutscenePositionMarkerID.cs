@@ -19,5 +19,7 @@ namespace GameConfigurationID {
     PLAYER_POSITION_2 = 1,
     
     PLAYER_POSITION_3 = 2,
+    
+    PLAYER_POSITION_4 = 3,
   }
 }

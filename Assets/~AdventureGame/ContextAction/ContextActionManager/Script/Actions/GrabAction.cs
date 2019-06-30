@@ -45,7 +45,7 @@ namespace AdventureGame
             return !isItemPopupOpen();
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
 
             #region External Dependencies

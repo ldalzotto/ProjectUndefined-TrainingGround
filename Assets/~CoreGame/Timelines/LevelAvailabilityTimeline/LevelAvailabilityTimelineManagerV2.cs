@@ -12,7 +12,7 @@ namespace CoreGame
         protected override bool isPersisted => true;
         protected override TimelineID TimelineID => TimelineID.LEVEL_AVAILABILITY_TIMELINE;
 
-        public override void Init()
+        public override void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null)
         {
             this.LevelAvailabilityManager = GameObject.FindObjectOfType<LevelAvailabilityManager>();
             base.Init();

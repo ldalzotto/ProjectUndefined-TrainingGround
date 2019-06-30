@@ -15,5 +15,7 @@ namespace GameConfigurationID {
   public enum CutsceneId {
     
     PLAYER_OPEN_SEWER_DOOR = 0,
+    
+    _1_Town_Introduction = 1,
   }
 }

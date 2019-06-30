@@ -1,6 +1,5 @@
 ﻿using GameConfigurationID;
 using OdinSerializer;
-using System;
 using System.Collections.Generic;
 
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace CoreGame
 {
     public interface ITimelineNodeManager
     {
-        void Init();
+        void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null);
         void IncrementGraph(TimeLineAction executedTimelineAction);
 
     }
@@ -42,16 +41,24 @@ namespace CoreGame
 
         public List<NODE_KEY> Nodes { get => nodes; }
 
-        public virtual void Init()
+        public virtual void Init(TimelineInitializerScriptableObject providedTimelineInitializer = null)
         {
-            #region External Dependencies
-            this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)GameObject.FindObjectOfType<CoreConfigurationManager>().TimelineConfiguration().ConfigurationInherentData[TimelineID];
-            #endregion
+            if (providedTimelineInitializer == null)
+            {
+                #region External Dependencies
+                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)GameObject.FindObjectOfType<CoreConfigurationManager>().TimelineConfiguration().ConfigurationInherentData[TimelineID];
+                #endregion
+            }
+            else
+            {
+                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)providedTimelineInitializer;
+            }
+
 
             if (this.isPersisted)
             {
                 this.timelinePersister = new ATimelinePersister<NODE_KEY>(this.GetType());
-                if(this.nodes.Count == 0)
+                if (this.nodes.Count == 0)
                 {
                     var loadedNodes = this.timelinePersister.Load();
 
@@ -80,7 +87,7 @@ namespace CoreGame
         public void IncrementGraph(TimeLineAction executedTimelineAction)
         {
             var scenarioNodesIncrementation = ComputeScenarioIncrementation(executedTimelineAction);
-           
+
             //(0) -> Execution of exit first
             foreach (var oldnodeKey in scenarioNodesIncrementation.oldNodes)
             {

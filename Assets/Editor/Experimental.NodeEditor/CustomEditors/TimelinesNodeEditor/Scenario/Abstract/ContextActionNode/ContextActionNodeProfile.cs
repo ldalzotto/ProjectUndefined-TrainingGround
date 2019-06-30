@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using CoreGame;
 using NodeGraph;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,11 @@ namespace Editor_ScenarioNodeEditor
 {
     public interface IContextActionNodeProfile
     {
-        IContextActionDrawable GetContextAction();
+        ISequencedActionDrawable GetContextAction();
     }
 
     [System.Serializable]
-    public abstract class ContextActionNodeProfile<T, E> : NodeProfile, IContextActionNodeProfile where E : ContextActionEdge<T> where T : IContextActionDrawable
+    public abstract class ContextActionNodeProfile<T, E> : NodeProfile, IContextActionNodeProfile where E : ContextActionEdge<T> where T : ISequencedActionDrawable
     {
         [SerializeField]
         private ContextActionInputEdge contextActionInputEdge;
@@ -20,7 +21,7 @@ namespace Editor_ScenarioNodeEditor
         [SerializeField]
         private ContextActionOutputEdge contextActionOutputEdge;
 
-        public IContextActionDrawable GetContextAction()
+        public ISequencedActionDrawable GetContextAction()
         {
             var nodeContextAction = this.contextActionEdge.ContextAction;
             var nextContextAction = this.contextActionInputEdge.GetAContextAction();

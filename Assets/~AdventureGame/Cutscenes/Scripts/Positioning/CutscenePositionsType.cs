@@ -6,7 +6,7 @@ namespace AdventureGame
 {
     public class CutscenePositionsType : MonoBehaviour
     {
-        [CustomEnum()]
+        [CustomEnum(isCreateable: true)]
         public CutsceneId CutsceneId;
 
         private Dictionary<CutscenePositionMarkerID, CutscenePositionMarker> cutscenePositionMarkers;

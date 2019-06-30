@@ -86,6 +86,8 @@
     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimelinePersister.cs" />
     <Compile Include="Assets\~CoreGame\AbstractTimeline\ATimelinesManager.cs" />
     <Compile Include="Assets\~CoreGame\AbstractTimeline\TimeLineAction.cs" />
+    <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedAction.cs" />
+    <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedActionManager.cs" />
     <Compile Include="Assets\~CoreGame\AI\NavMeshRayCaster.cs" />
     <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />

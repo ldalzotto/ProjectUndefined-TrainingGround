@@ -28,7 +28,7 @@ namespace AdventureGame
             return true;
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             var levelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();
             levelTransitionManager.OnAdventureToPuzzleLevel(nextZone);

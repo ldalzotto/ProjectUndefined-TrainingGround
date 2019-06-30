@@ -1,6 +1,7 @@
 ﻿using GameConfigurationID;
 using System;
 using UnityEngine;
+using CoreGame;
 
 #if UNITY_EDITOR
 using NodeGraph_Editor;
@@ -53,7 +54,7 @@ namespace AdventureGame
             return isConversationFinished;
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();

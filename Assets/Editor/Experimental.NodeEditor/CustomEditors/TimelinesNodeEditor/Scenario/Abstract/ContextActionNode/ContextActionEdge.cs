@@ -4,11 +4,12 @@ using NodeGraph;
 using AdventureGame;
 using System;
 using System.Collections.Generic;
+using CoreGame;
 
 namespace Editor_ScenarioNodeEditor
 {
     [System.Serializable]
-    public abstract class ContextActionEdge<T> : NodeEdgeProfile where T : IContextActionDrawable
+    public abstract class ContextActionEdge<T> : NodeEdgeProfile where T : ISequencedActionDrawable
     {
         [SerializeField]
         public T ContextAction;

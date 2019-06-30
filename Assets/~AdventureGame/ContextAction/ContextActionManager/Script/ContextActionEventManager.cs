@@ -31,15 +31,15 @@ namespace AdventureGame
             this.dynamicContextActionListeners = new Dictionary<AContextAction, List<IContextActionDyamicWorkflowListener>>();
         }
 
-        public void OnContextActionAdd(AContextAction contextAction)
+        public void OnContextActionAdd(SequencedAction contextAction)
         {
             try
             {
                 if (contextAction != null)
                 {
-                    PlayerManager.OnContextActionAdded(contextAction);
+                    PlayerManager.OnContextActionAdded((AContextAction)contextAction);
                     InventoryManager.OnContextActionAdded();
-                    ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput(contextAction, PlayerManager, this.AnimationConfiguration));
+                    ContextActionManager.OnAddAction(contextAction, ContextActionBuilder.BuildContextActionInput((AContextAction)contextAction, PlayerManager, this.AnimationConfiguration));
                 }
                 //TODO send event to inventory to close if necessary
             }
@@ -60,18 +60,21 @@ namespace AdventureGame
             this.dynamicContextActionListeners[contextAction].Add(dynamicListener);
         }
 
-        public void OnContextActionFinished(AContextAction finishedContextAction, AContextActionInput contextActionInput)
+        public void OnContextActionFinished(SequencedAction finishedContextAction, SequencedActionInput contextActionInput)
         {
+            AContextAction finishedContextActionCasted = (AContextAction) finishedContextAction;
+            AContextActionInput contextActionInputCasted = (AContextActionInput)contextActionInput;
+
             PlayerManager.OnContextActionFinished();
             InventoryManager.OnContextActionFinished();
-            ScenarioTimelineEventManager.OnScenarioActionExecuted(ContextActionBuilder.BuildScenarioAction(finishedContextAction, contextActionInput));
-            if (this.dynamicContextActionListeners.ContainsKey(finishedContextAction))
+            ScenarioTimelineEventManager.OnScenarioActionExecuted(ContextActionBuilder.BuildScenarioAction(finishedContextActionCasted, contextActionInputCasted));
+            if (this.dynamicContextActionListeners.ContainsKey(finishedContextActionCasted))
             {
-                foreach (var listener in this.dynamicContextActionListeners[finishedContextAction])
+                foreach (var listener in this.dynamicContextActionListeners[finishedContextActionCasted])
                 {
-                    listener.OnContextActionFinished(finishedContextAction);
+                    listener.OnContextActionFinished(finishedContextActionCasted);
                 }
-                this.dynamicContextActionListeners.Remove(finishedContextAction);
+                this.dynamicContextActionListeners.Remove(finishedContextActionCasted);
             }
         }
 

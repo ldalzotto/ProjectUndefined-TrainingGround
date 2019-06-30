@@ -54,7 +54,7 @@ namespace AdventureGame
             return isActionEnded;
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
 
             #region External Dependencies

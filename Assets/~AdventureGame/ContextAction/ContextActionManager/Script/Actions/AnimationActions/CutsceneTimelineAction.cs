@@ -55,7 +55,7 @@ namespace AdventureGame
             return isActionEnded;
         }
 
-        public override void FirstExecutionAction(AContextActionInput ContextActionInput)
+        public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             Coroutiner.Instance.StartCoroutine(this.PlayCutscene());
             #region External dependencies
