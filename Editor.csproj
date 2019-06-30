@@ -277,6 +277,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ObjectRepelTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\Material\HideIfDisabledDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />

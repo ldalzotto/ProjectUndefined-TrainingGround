@@ -1,5 +1,5 @@
 GIMP Palette
-Name: _1_town_palette
+Name: test
 Columns: 7
 #
 254  90  73 SunBlocker
@@ -10,4 +10,3 @@ Columns: 7
  98  82  50 Walls_Pipe
  91  34  17 Door
  14 146  11 Leaf
-124 146  35 Leaf_2

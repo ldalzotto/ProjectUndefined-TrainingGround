@@ -1,12 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEditor.UIElements;
+﻿using CoreGame;
+using Editor_LevelSceneLoader;
 using System;
-using CoreGame;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine;
+using UnityEngine.UIElements;
 using static VisualElementsHelper;
 
 namespace Editor_LevelSceneExplorer
@@ -16,7 +16,10 @@ namespace Editor_LevelSceneExplorer
         [MenuItem("Level/LevelSceneExplorer")]
         static void Init()
         {
-            LevelSceneExplorer window = (LevelSceneExplorer)EditorWindow.GetWindow(typeof(LevelSceneExplorer));
+            LevelSceneLoaderV2 LevelSceneLoaderV2Window = EditorWindow.GetWindow<LevelSceneLoaderV2>();
+            LevelSceneLoaderV2Window.Show();
+            LevelSceneExplorer window = EditorWindow.GetWindow<LevelSceneExplorer>(new Type[] { typeof(LevelSceneLoaderV2) });
+            //  LevelSceneExplorer window = (LevelSceneExplorer)EditorWindow.GetWindow(typeof(LevelSceneExplorer));
             window.Show();
         }
 
@@ -51,6 +54,7 @@ namespace Editor_LevelSceneExplorer
             //CONTENT
             this.DoDisplayLevels(boundingBox);
         }
+
         private void DoDisplayLevels(VisualElement container)
         {
             if (this.levelHierarchyConfiguration != null)
