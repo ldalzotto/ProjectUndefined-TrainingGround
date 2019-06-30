@@ -3,6 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using NodeGraph_Editor;
@@ -35,7 +36,7 @@ namespace AdventureGame
 
         public CutsceneId CutsceneId { get => cutsceneId; }
 
-        public CutsceneTimelineAction(CutsceneId cutsceneId, AContextAction nextContextAction, bool destroyPOIAtEnd = false) : base(nextContextAction)
+        public CutsceneTimelineAction(CutsceneId cutsceneId, List<SequencedAction> nextContextActions, bool destroyPOIAtEnd = false) : base(nextContextActions)
         {
             this.cutsceneId = cutsceneId;
             this.DestroyPOIAtEnd = destroyPOIAtEnd;
@@ -72,7 +73,7 @@ namespace AdventureGame
 
         private IEnumerator PlayCutscene()
         {
-            yield return GameObject.FindObjectOfType<CutscenePlayerManager>().PlayCutscene(this.cutsceneId);
+            yield return GameObject.FindObjectOfType<CutscenePlayerManagerV2>().PlayCutscene(this.cutsceneId);
             isActionEnded = true;
         }
 

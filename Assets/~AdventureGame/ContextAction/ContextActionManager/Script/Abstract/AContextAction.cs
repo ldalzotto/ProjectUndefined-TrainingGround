@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -12,7 +13,7 @@ namespace AdventureGame
         [SerializeField]
         protected SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
 
-        public AContextAction(SequencedAction nextAction) : base(nextAction)
+        public AContextAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
 

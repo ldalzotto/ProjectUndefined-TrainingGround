@@ -10,7 +10,8 @@ namespace AdventureGame
     public class PointOfInterestCutsceneController : APointOfInterestModule
     {
         #region External Dependencies
-        private CutscenePlayerManager CutscenePlayerManager;
+      //  private CutscenePlayerManager CutscenePlayerManager;
+        private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
@@ -27,7 +28,7 @@ namespace AdventureGame
         private bool askedForWarp;
         public bool IsDirectedByCutscene()
         {
-            return this.POICutsceneMoveManager.IsDirectedByAi || this.CutscenePlayerManager.IsCutscenePlaying;
+            return this.POICutsceneMoveManager.IsDirectedByAi || this.CutscenePlayerManagerV2.IsCutscenePlaying;
         }
         #endregion
 
@@ -39,7 +40,7 @@ namespace AdventureGame
             this.PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
             #endregion
             
-            this.CutscenePlayerManager = GameObject.FindObjectOfType<CutscenePlayerManager>();
+            this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
 
             this.Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();

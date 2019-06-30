@@ -32,6 +32,13 @@ namespace NodeGraph_Editor
             return retrunEnum;
         }
 
+        public static float FloatField(string label, string tooltip, float floatField)
+        {
+            CommonGUIContent.text = label;
+            CommonGUIContent.tooltip = tooltip;
+            return EditorGUILayout.FloatField(CommonGUIContent, floatField);
+        }
+
     }
 
 }

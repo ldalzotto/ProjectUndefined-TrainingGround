@@ -12,12 +12,12 @@ namespace AdventureGame
         [CustomEnum()]
         public CutsceneId cutsceneId;
         public bool play;
-
-        private CutscenePlayerManager CutscenePlayerManager;
+        
+        private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
 
         public void Init()
         {
-            this.CutscenePlayerManager = GameObject.FindObjectOfType<CutscenePlayerManager>();
+            this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
         }
 
         public void Tick(float d)
@@ -25,7 +25,7 @@ namespace AdventureGame
             if (this.play)
             {
                 this.play = false;
-                this.CutscenePlayerManager.OnCutsceneStart(this.cutsceneId);
+                this.CutscenePlayerManagerV2.OnCutsceneStart(this.cutsceneId);
             }
         }
     }

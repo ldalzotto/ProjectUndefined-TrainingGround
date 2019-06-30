@@ -25,7 +25,7 @@ namespace Editor_ScenarioNodeEditor
         {
             var nodeContextAction = this.contextActionEdge.ContextAction;
             var nextContextAction = this.contextActionInputEdge.GetAContextAction();
-            ((AContextAction)((object)nodeContextAction)).SetNextContextAction(nextContextAction);
+            ((AContextAction)((object)nodeContextAction)).SetNextContextAction(new List<SequencedAction>() { nextContextAction } );
             return nodeContextAction;
         }
 

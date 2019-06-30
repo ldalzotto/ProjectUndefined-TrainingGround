@@ -173,6 +173,7 @@
     <Compile Include="Assets\Editor\EditorTool\LightSettingsPaster.cs" />
     <Compile Include="Assets\Editor\EnumGeneration\EnumIDGeneration.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\ConditionNodeEditor.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\CutsceneNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\DiscussionTreeNodeEditorProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\DiscussionConnectionNodeEdge.cs" />

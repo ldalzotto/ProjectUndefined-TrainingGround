@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -15,7 +16,7 @@ namespace AdventureGame
         [NonSerialized]
         private bool InteractionResolved;
 
-        public ItemInteractAction(ItemID involvedItem, AContextAction nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
+        public ItemInteractAction(ItemID involvedItem, List<SequencedAction> nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
         {
             this.involvedItem = involvedItem;
         }

@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -12,7 +12,7 @@ namespace CoreGame
         private List<SequencedAction> CurrentNexActions = new List<SequencedAction>();
 
         protected abstract Action<SequencedAction> OnActionAdd { get; }
-        protected abstract Action<SequencedAction, SequencedActionInput> OnActionFinished { get;}
+        protected abstract Action<SequencedAction, SequencedActionInput> OnActionFinished { get; }
 
         public void Tick(float d)
         {
@@ -22,9 +22,9 @@ namespace CoreGame
                 if (action.IsFinished())
                 {
                     OnContextActionFinished(action);
-                    if (action.NextAction != null)
+                    if (action.NextActions != null)
                     {
-                        CurrentNexActions.Add(action.NextAction);
+                        CurrentNexActions.AddRange(action.NextActions);
                     }
                 }
             }
@@ -33,12 +33,15 @@ namespace CoreGame
             {
                 foreach (var nextContextAction in CurrentNexActions)
                 {
-                    OnActionAdd.Invoke(nextContextAction);
+                    if (OnActionAdd != null)
+                    {
+                        OnActionAdd.Invoke(nextContextAction);
+                    }
                 }
                 CurrentNexActions.Clear();
             }
         }
-        
+
         private void ProcessTick(float d, SequencedAction contextAction)
         {
             contextAction.OnTick(d, this.OnActionFinished);
@@ -55,7 +58,13 @@ namespace CoreGame
             yield return new WaitForEndOfFrame();
             ExecutedActions.Remove(contextAction);
             contextAction.ResetState();
+            if(ExecutedActions.Count == 0)
+            {
+                this.OnNoMoreActionToPlay();
+            }
         }
+
+        protected virtual void OnNoMoreActionToPlay() { }
         #endregion
 
         #region External Events

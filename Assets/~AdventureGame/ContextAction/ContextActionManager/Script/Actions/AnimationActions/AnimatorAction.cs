@@ -2,6 +2,7 @@
 using UnityEngine;
 using GameConfigurationID;
 using System;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using NodeGraph_Editor;
 #endif
@@ -15,7 +16,7 @@ namespace AdventureGame
         [NonSerialized]
         private bool animationEnded;
 
-        public AnimatorAction(AnimationID animationID, AContextAction nextContextAction) : base(nextContextAction)
+        public AnimatorAction(AnimationID animationID, List<SequencedAction> nextContextAction) : base(nextContextAction)
         {
             this.animationID = animationID;
         }

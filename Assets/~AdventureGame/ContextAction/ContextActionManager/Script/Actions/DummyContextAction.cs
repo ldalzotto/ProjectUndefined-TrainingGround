@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -12,7 +13,7 @@ namespace AdventureGame
         [NonSerialized]
         private float elapsedTime;
 
-        public DummyContextAction(AContextAction nextContextAction) : base(nextContextAction) { }
+        public DummyContextAction(List<SequencedAction> nextContextActions) : base(nextContextActions) { }
 
         public override bool ComputeFinishedConditions()
         {

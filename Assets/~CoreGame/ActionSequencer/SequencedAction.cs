@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace CoreGame
 {
@@ -20,16 +21,16 @@ namespace CoreGame
         public abstract void Tick(float d);
         
         [SerializeField]
-        private SequencedAction nextAction;
+        private List<SequencedAction> nextActions;
 
         #region Internal Dependencies
         [NonSerialized]
         private SequencedActionInput actionInput;
         #endregion
 
-        public SequencedAction(SequencedAction nextAction)
+        public SequencedAction(List<SequencedAction>  nextActions)
         {
-            this.nextAction = nextAction;
+            this.nextActions = nextActions;
         }
 
         public void OnTick(float d, Action<SequencedAction, SequencedActionInput> onActionFinished)
@@ -41,7 +42,10 @@ namespace CoreGame
                 if (ComputeFinishedConditions())
                 {
                     isFinished = true;
-                    onActionFinished.Invoke(this, actionInput);
+                    if (onActionFinished != null)
+                    {
+                        onActionFinished.Invoke(this, actionInput);
+                    }
                     AfterFinishedEventProcessed();
                 }
             }
@@ -50,11 +54,11 @@ namespace CoreGame
         private bool isFinished;
 
         public SequencedActionInput ActionInput { get => actionInput; set => actionInput = value; }
-        public SequencedAction NextAction { get => nextAction; }
+        public List<SequencedAction> NextActions { get => nextActions; }
 
-        public void SetNextContextAction(SequencedAction nextAction)
+        public void SetNextContextAction(List<SequencedAction> nextActions)
         {
-            this.nextAction = nextAction;
+            this.nextActions = nextActions;
         }
 
         public bool IsFinished()

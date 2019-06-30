@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using CoreGame;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using NodeGraph_Editor;
@@ -40,7 +41,7 @@ namespace AdventureGame
         }
 #endif
 
-        public TalkAction(DiscussionTreeId DiscussionTreeId, AContextAction nextContextAction) : base(nextContextAction)
+        public TalkAction(DiscussionTreeId DiscussionTreeId, List<SequencedAction> nextContextActions) : base(nextContextActions)
         {
             this.DiscussionTreeId = DiscussionTreeId;
         }

@@ -14,6 +14,7 @@ namespace AdventureGame
         private DiscussionWindowManager DiscussionWindowManager;
         private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManager;
         private PointOfInterestManager PointOfInterestManager;
+        private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
 
 #if UNITY_EDITOR
         private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
@@ -43,17 +44,18 @@ namespace AdventureGame
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
             AdventureLevelChunkFXTransitionManager = GameObject.FindObjectOfType<AdventureLevelChunkFXTransitionManager>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+            CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
 
             //initialization
             AdventureLevelChunkFXTransitionManager.Init();
-            GameObject.FindObjectOfType<CutscenePlayerManager>().Init();
+            CutscenePlayerManagerV2.Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();
             InventoryManager.Init();
             PointOfInterestManager.Init();
             GameObject.FindObjectOfType<AdventureEventManager>().Init();
-            
+
 #if UNITY_EDITOR
             this.EditorOnlyModules.Init();
 #endif
@@ -66,6 +68,7 @@ namespace AdventureGame
 
             this.BeforeTick(d);
 
+            CutscenePlayerManagerV2.Tick(d);
             AdventureLevelChunkFXTransitionManager.Tick(d);
             ContextActionWheelManager.Tick(d);
             ContextActionManager.Tick(d);
@@ -74,7 +77,6 @@ namespace AdventureGame
             NPCManager.Tick(d);
             InventoryManager.Tick(d);
             DiscussionWindowManager.Tick(d);
-
 
 #if UNITY_EDITOR
             this.EditorOnlyModules.Tick(d);

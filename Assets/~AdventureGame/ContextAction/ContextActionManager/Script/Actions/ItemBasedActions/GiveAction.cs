@@ -2,6 +2,7 @@
 using GameConfigurationID;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static AnimationConstants;
 
@@ -43,7 +44,7 @@ namespace AdventureGame
         }
         #endregion
 
-        public GiveAction(ItemID itemGiven, AContextAction nextAction) : base(nextAction)
+        public GiveAction(ItemID itemGiven, List<SequencedAction> nextContextActions) : base(nextContextActions)
         {
             this.itemGiven = itemGiven;
             contextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;

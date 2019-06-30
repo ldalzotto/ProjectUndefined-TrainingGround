@@ -1,5 +1,6 @@
 ﻿
 using CoreGame;
+using System.Collections.Generic;
 
 namespace AdventureGame
 {
@@ -8,7 +9,7 @@ namespace AdventureGame
     public class DummyTalkAction : AContextAction
     {
 
-        public DummyTalkAction(AContextAction nextContextAction) : base(nextContextAction) { }
+        public DummyTalkAction(List<SequencedAction> nextContextActions) : base(nextContextActions) { }
 
         public override void AfterFinishedEventProcessed()
         {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using CoreGame;
 using GameConfigurationID;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 using NodeGraph_Editor;
@@ -43,7 +44,7 @@ namespace AdventureGame
                 {
                     action = new CutsceneTimelineAction(this.cutsceneId, null, false);
                 }
-                action.SetNextContextAction(new GrabAction(this.itemInvolved, this.destroyPOIAtEnd, null));
+                action.SetNextContextAction(new List<SequencedAction>() { new GrabAction(this.itemInvolved, this.destroyPOIAtEnd, null) });
                 action.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
                 foundedPoi.OnItemRelatedContextActionAdd(itemInvolved, action);
             }
@@ -250,7 +251,7 @@ namespace AdventureGame
             if (foundedPoi != null)
             {
                 var action = new ItemInteractAction(this.itemInvolved,
-                    new CutsceneTimelineAction(this.cutsceneId, null, this.destroyPOIAtEnd));
+                  new List<SequencedAction>() { new CutsceneTimelineAction(this.cutsceneId, null, this.destroyPOIAtEnd) });
                 foundedPoi.OnContextActionAdd(action);
             }
         }
@@ -485,6 +486,6 @@ namespace AdventureGame
         }
 #endif
     }
-    
+
     #endregion
 }

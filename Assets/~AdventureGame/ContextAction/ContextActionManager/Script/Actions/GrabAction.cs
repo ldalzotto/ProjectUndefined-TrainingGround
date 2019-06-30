@@ -2,6 +2,7 @@
 using GameConfigurationID;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -34,7 +35,7 @@ namespace AdventureGame
         public PointOfInterestType AssociatedPOI { get => associatedPOI; }
         public ItemID ItemInvolved { get => itemInvolved; }
 
-        public GrabAction(ItemID itemId, bool deletePOIOnGrab, AContextAction nextAction) : base(nextAction)
+        public GrabAction(ItemID itemId, bool deletePOIOnGrab, List<SequencedAction> nextContextActions) : base(nextContextActions)
         {
             this.itemInvolved = itemId;
             this.deletePOIOnGrab = deletePOIOnGrab;
