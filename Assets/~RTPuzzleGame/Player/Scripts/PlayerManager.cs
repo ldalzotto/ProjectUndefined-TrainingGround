@@ -14,8 +14,8 @@ namespace RTPuzzle
         private Rigidbody playerRigidbody;
         private Collider playerCollier;
         #endregion
-
-        public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent;
+        
+        private PlayerPhysicsMovementComponent playerPhysicsMovementComponent;
 
         #region Player Common component
         private PlayerCommonComponents PlayerCommonComponents;
@@ -59,11 +59,11 @@ namespace RTPuzzle
 
             #region Data Components
             var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
-            this.PlayerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
+            this.playerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
             #endregion
 
             PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
-            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, PlayerPhysicsMovementComponent);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, playerPhysicsMovementComponent);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
@@ -83,9 +83,7 @@ namespace RTPuzzle
                 CameraFollowManager.Tick(d);
                 CameraOrientationManager.Tick(d);
                 #endregion
-
-                PlayerBodyPhysicsEnvironment.Tick(d);
-
+                
                 if (!PlayerActionManager.IsActionExecuting())
                 {
                     if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
@@ -145,7 +143,7 @@ namespace RTPuzzle
         }
         public Rigidbody PlayerRigidbody { get => playerRigidbody; }
         public Collider PlayerCollier { get => playerCollier; }
-
+        public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent { get => playerPhysicsMovementComponent;}
     }
 
     #region Player Action Selection Manager

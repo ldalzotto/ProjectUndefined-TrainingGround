@@ -15,14 +15,9 @@ namespace CoreGame
             SlopeVelocityAdjuster = new SlopeVelocityAdjuster(rigidbody);
         }
 
-        public void Tick(float d)
-        {
-            GroundRayCaster.Tick(d);
-        }
-
-
         public void FixedTick(float d)
         {
+            GroundRayCaster.FixedTick(d);
             if (GroundRayCaster.HasHitted())
             {
                 //slope velocity adjusted
@@ -47,7 +42,7 @@ namespace CoreGame
             this.collider = collider;
         }
 
-        public void Tick(float d)
+        public void FixedTick(float d)
         {
             PhysicsHelper.RaycastToDownVertically(collider, rigidbody, 1 << LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER), out hit);
         }
@@ -84,12 +79,11 @@ namespace CoreGame
         {
             if (Vector3.Distance(rigidbody.position, hitPosition) > PlayerPhysicsMovementComponent.MinimumDistanceToStick)
             {
-                Debug.Log("STICKED : " + Vector3.Distance(rigidbody.position, hitPosition));
-                rigidbody.MovePosition(hitPosition);
+                rigidbody.position = hitPosition;
             }
         }
     }
-    
+
     class SlopeVelocityAdjuster
     {
         private Rigidbody rigidbody;

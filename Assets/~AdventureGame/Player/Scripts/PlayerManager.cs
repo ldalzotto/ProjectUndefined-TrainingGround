@@ -91,7 +91,6 @@ namespace AdventureGame
         {
             CameraFollowManager.Tick(d);
             CameraOrientationManager.Tick(d);
-            PlayerBodyPhysicsEnvironment.Tick(d);
 
             var playerSpeedMagnitude = 0f;
 
