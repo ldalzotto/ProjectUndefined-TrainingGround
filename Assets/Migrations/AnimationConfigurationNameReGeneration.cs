@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿#if UNITY_EDITOR
+using CoreGame;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,3 +29,4 @@ public class AnimationConfigurationNameReGeneration : EditorWindow
         }
     }
 }
+#endif
