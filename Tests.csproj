@@ -90,7 +90,6 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PlayerMovementTestPosition.cs" />
     <Compile Include="Assets\Tests\Migration\PlayerPosition\PlayerPositionMigration.cs" />
     <None Include="Assets\Tests\Tests.asmdef" />
-    <None Include="Assets\Tests\Migration\PlayerPosition\SavedPosition.txt" />
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.8f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
     </Reference>

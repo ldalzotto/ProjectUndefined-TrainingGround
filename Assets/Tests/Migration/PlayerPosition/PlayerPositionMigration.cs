@@ -23,6 +23,7 @@ public class PlayerPositionMigration : EditorWindow
     }
 
     private const string positionFilePath = "C:\\Users\\Loic\\Documents\\projects\\SoulsLike\\No Entry_0.0.71_Reset\\Assets\\Tests\\Migration\\PlayerPosition\\SavedPosition.txt";
+    private RTPuzzle.PlayerManager puzzlePlayerPrefab;
 
     private void OnGUI()
     {
@@ -68,39 +69,48 @@ public class PlayerPositionMigration : EditorWindow
 
         if (GUILayout.Button("MIGRATE SCENES"))
         {
-            List<PlayerPositionBinarry> positionsToSave = null;
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            using (FileStream fileStream = File.Open(positionFilePath, FileMode.Open))
-            {
-                positionsToSave = (List<PlayerPositionBinarry>)binaryFormatter.Deserialize(fileStream);
-            }
+            this.puzzlePlayerPrefab = AssetFinder.SafeSingleAssetFind<RTPuzzle.PlayerManager>("PuzzlePlayer");
 
-            if (positionsToSave != null)
+            if (this.puzzlePlayerPrefab != null)
             {
-                for (var i = 9; i < 14; i++)
+                List<PlayerPositionBinarry> positionsToSave = null;
+                BinaryFormatter binaryFormatter = new BinaryFormatter();
+                using (FileStream fileStream = File.Open(positionFilePath, FileMode.Open))
                 {
-                    var scenePath = SceneUtility.GetScenePathByBuildIndex(i);
-                    EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
-                    var playerObject = GameObject.FindObjectOfType<RTPuzzle.PlayerManager>();
-                    if (playerObject != null)
-                    {
-                        foreach (var positionToSave in positionsToSave)
-                        {
-                            if (positionToSave.ScenePath == scenePath)
-                            {
-                                var formattedTransform = positionToSave.Transform.Format();
-                                playerObject.transform.position = formattedTransform.position;
-                                playerObject.transform.rotation = formattedTransform.rotation;
-                                playerObject.transform.localScale = formattedTransform.localScale;
+                    positionsToSave = (List<PlayerPositionBinarry>)binaryFormatter.Deserialize(fileStream);
+                }
 
-                                EditorUtility.SetDirty(playerObject);
-                                EditorSceneManager.SaveOpenScenes();
+                if (positionsToSave != null)
+                {
+                    for (var i = 9; i < 14; i++)
+                    {
+                        var scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+                        EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+                        var playerObject = GameObject.FindObjectOfType<RTPuzzle.PlayerManager>();
+                        if (playerObject != null)
+                        {
+                            MonoBehaviour.DestroyImmediate(playerObject);
+                        }
+                        else
+                        {
+                            foreach (var positionToSave in positionsToSave)
+                            {
+                                if (positionToSave.ScenePath == scenePath)
+                                {
+                                    var instanciatedPlayer = (GameObject)PrefabUtility.InstantiatePrefab(this.puzzlePlayerPrefab.gameObject);
+                                    var formattedTransform = positionToSave.Transform.Format();
+                                    instanciatedPlayer.transform.position = formattedTransform.position;
+                                    instanciatedPlayer.transform.rotation = formattedTransform.rotation;
+                                    instanciatedPlayer.transform.localScale = formattedTransform.localScale;
+
+                                    EditorUtility.SetDirty(instanciatedPlayer);
+                                    EditorSceneManager.SaveOpenScenes();
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
 
         if (GUILayout.Button("DELETE SAVED DATA"))
