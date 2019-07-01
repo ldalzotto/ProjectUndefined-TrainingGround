@@ -4,7 +4,6 @@ namespace CoreGame
 {
     public class PlayerBodyPhysicsEnvironment
     {
-
         private GroundRayCaster GroundRayCaster;
         private StickGroundBodyPositioner StickGroundBodyPositioner;
         private SlopeVelocityAdjuster SlopeVelocityAdjuster;
@@ -83,9 +82,9 @@ namespace CoreGame
 
         public void FixedTick(Vector3 hitPosition)
         {
-            if (Vector3.Distance(rigidbody.position, hitPosition) > PlayerPhysicsMovementComponent.ContactDistance)
+            if (Vector3.Distance(rigidbody.position, hitPosition) > PlayerPhysicsMovementComponent.MinimumDistanceToStick)
             {
-                Debug.Log("STICKED");
+                Debug.Log("STICKED : " + Vector3.Distance(rigidbody.position, hitPosition));
                 rigidbody.MovePosition(hitPosition);
             }
         }

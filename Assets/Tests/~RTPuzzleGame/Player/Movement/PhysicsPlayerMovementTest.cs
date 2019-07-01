@@ -17,10 +17,10 @@ namespace Tests
             var playerRigidBody = GameObject.FindObjectOfType<PlayerManagerDataRetriever>().GetPlayerRigidBody();
             var groundStickComponent = GameObject.FindObjectOfType<PlayerManager>().PlayerPhysicsMovementComponent;
             yield return new WaitForFixedUpdate();
-            playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.ContactDistance * 1.1f);
+            playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.MinimumDistanceToStick * 1.1f);
             yield return new WaitForFixedUpdate();
             var beforeStickPosition = playerRigidBody.transform.position;
-            playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.ContactDistance * 1.1f);
+            playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.MinimumDistanceToStick * 1.1f);
             yield return new WaitForFixedUpdate();
             Assert.AreEqual(beforeStickPosition, playerRigidBody.position);
         }
@@ -35,7 +35,7 @@ namespace Tests
             var playerCommonComponents = GameObject.FindObjectOfType<PlayerCommonComponents>();
             var playerDataComponents = GameObject.FindObjectOfType<PlayerManager>().GetComponentInChildren<DataComponentContainer>();
             yield return new WaitForFixedUpdate();
-            playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.ContactDistance * 1.1f);
+            playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.MinimumDistanceToStick * 1.1f);
             yield return new WaitForFixedUpdate();
             this.currentLocomotionAxisWorld = new Vector3(-1, 0, 0);
             yield return new WaitForFixedUpdate(); //take into account the input

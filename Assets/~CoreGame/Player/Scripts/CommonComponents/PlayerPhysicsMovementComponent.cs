@@ -6,6 +6,6 @@ namespace CoreGame
     [System.Serializable]
     public class PlayerPhysicsMovementComponent : ADataComponent
     {
-        public float ContactDistance = 1f;
+        public float MinimumDistanceToStick = 0.01f;
     }
 }
