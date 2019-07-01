@@ -118,6 +118,7 @@
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\BoundsHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\ComputeBufferHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />

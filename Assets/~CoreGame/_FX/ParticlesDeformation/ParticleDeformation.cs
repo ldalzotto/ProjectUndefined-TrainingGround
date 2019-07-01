@@ -105,8 +105,7 @@ namespace CoreGame
 
         private void OnDestroy()
         {
-            this.ParticleDeformationBuffer.Release();
-            this.ParticleDeformationBuffer.Dispose();
+            ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.ParticleDeformationBuffer);
         }
     }
 

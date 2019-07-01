@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -141,9 +142,9 @@ namespace RTPuzzle
         internal void OnLevelExit()
         {
             //release buffers
-            this.CircleRangeBuffer.Release();
-            this.BoxRangeBuffer.Release();
-            this.RangeExecutionOrderBuffer.Release();
+            ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.CircleRangeBuffer);
+            ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.BoxRangeBuffer);
+            ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.RangeExecutionOrderBuffer);
         }
 
         internal void OnRangeDestroy(RangeType rangeType)
@@ -153,6 +154,11 @@ namespace RTPuzzle
                 this.rangeEffectManagers[rangeType.RangeTypeID].OnRangeDestroyed();
                 this.rangeEffectManagers.Remove(rangeType.RangeTypeID);
             }
+        }
+
+        private void OnDestroy()
+        {
+            this.OnLevelExit();
         }
         #endregion
 
@@ -174,6 +180,7 @@ namespace RTPuzzle
                 this.command.DrawRenderer(meshToRender, this.MasterRangeMaterial);
             }
         }
+
     }
 
     struct RangeExecutionOrderBufferData
