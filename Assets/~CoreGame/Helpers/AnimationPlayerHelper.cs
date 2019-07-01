@@ -1,5 +1,4 @@
-﻿using GameConfigurationID;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 
@@ -32,7 +31,14 @@ namespace CoreGame
         {
             var animationName = animationConfigurationData.AnimationName;
             var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
-            return PlayAndWait(animator, animationName, animationLayerIndex, crossFadeDuration, animationEndCallback);
+            if (animationLayerIndex != -1)
+            {
+                return PlayAndWait(animator, animationName, animationLayerIndex, crossFadeDuration, animationEndCallback);
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
@@ -46,7 +52,10 @@ namespace CoreGame
         {
             var animationName = animationConfigurationData.AnimationName;
             var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
-            Play(animator, animationName, animationLayerIndex, crossFadeDuration);
+            if (animationLayerIndex != -1)
+            {
+                Play(animator, animationName, animationLayerIndex, crossFadeDuration);
+            }
         }
 
 
@@ -54,8 +63,16 @@ namespace CoreGame
         {
             var animationName = animationConfigurationData.AnimationName;
             var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
-            return animator.GetCurrentAnimatorStateInfo(animationLayerIndex).IsName(animationName);
+            if (animationLayerIndex != -1)
+            {
+                return animator.GetCurrentAnimatorStateInfo(animationLayerIndex).IsName(animationName);
+            }
+            else
+            {
+                return false;
+            }
         }
+
 
 
     }

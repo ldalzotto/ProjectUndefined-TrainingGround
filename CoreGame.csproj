@@ -89,9 +89,7 @@
     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedAction.cs" />
     <Compile Include="Assets\~CoreGame\ActionSequencer\SequencedActionManager.cs" />
     <Compile Include="Assets\~CoreGame\AI\NavMeshRayCaster.cs" />
-    <Compile Include="Assets\~CoreGame\Animation\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\FloatAnimation.cs" />
-    <Compile Include="Assets\~CoreGame\Animation\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
@@ -118,7 +116,9 @@
     <Compile Include="Assets\~CoreGame\DataComponent\DataComponentContainer.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\BoundsHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
