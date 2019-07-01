@@ -65,7 +65,7 @@ namespace AdventureGame
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
             this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
             this.PlayerDataComponentContainer.Init();
-             
+
             #region Data Components
             var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
             var PlayerPOITrackerManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>();
@@ -142,9 +142,10 @@ namespace AdventureGame
             if (!this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
             {
                 this.PlayerInputMoveManager.FixedTick(d);
+                //Physics is desabled when cutscene is playing to avoid conflicts with nav mesh agent
+                this.PlayerBodyPhysicsEnvironment.FixedTick(d);
             }
 
-            this.PlayerBodyPhysicsEnvironment.FixedTick(d);
         }
 
         public void LateTick(float d)

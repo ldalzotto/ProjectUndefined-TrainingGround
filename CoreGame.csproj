@@ -109,7 +109,6 @@
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TimelineConfiguration\TimelineConfiguration.cs" />
-    <Compile Include="Assets\~CoreGame\CustomYields\WaitEndOfCutscene.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForEndOfAnimation.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForListOfAsyncOperation.cs" />
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForNavAgentDestinationReached.cs" />
