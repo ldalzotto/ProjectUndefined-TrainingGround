@@ -15,7 +15,7 @@ namespace RTPuzzle
         private Collider playerCollier;
         #endregion
 
-        public BodyGroundStickContactDistance BodyGroundStickContactDistance;
+        public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent;
 
         #region Player Common component
         private PlayerCommonComponents PlayerCommonComponents;
@@ -47,7 +47,7 @@ namespace RTPuzzle
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             #endregion
-
+            
             this.playerRigidbody = GetComponent<Rigidbody>();
             this.playerCollier = GetComponent<Collider>();
             var animator = GetComponentInChildren<Animator>();
@@ -57,10 +57,15 @@ namespace RTPuzzle
             this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
             this.PlayerDataComponentContainer.Init();
 
-            PlayerInputMoveManager = new PlayerInputMoveManager(this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
-            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, BodyGroundStickContactDistance);
+            #region Data Components
+            var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            this.PlayerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
+            #endregion
+
+            PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, PlayerPhysicsMovementComponent);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
-            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>(), animator, this.playerRigidbody, coreConfigurationManager);
+            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
 

@@ -15,7 +15,7 @@ namespace Tests
         {
             yield return this.Before();
             var playerRigidBody = GameObject.FindObjectOfType<PlayerManagerDataRetriever>().GetPlayerRigidBody();
-            var groundStickComponent = GameObject.FindObjectOfType<PlayerManager>().BodyGroundStickContactDistance;
+            var groundStickComponent = GameObject.FindObjectOfType<PlayerManager>().PlayerPhysicsMovementComponent;
             yield return new WaitForFixedUpdate();
             playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.ContactDistance * 1.1f);
             yield return new WaitForFixedUpdate();
@@ -31,7 +31,7 @@ namespace Tests
             float slopeAngle = -45f;
             yield return this.Before(PlayerMovementTestPositionId.ON_SLOPE);
             var playerRigidBody = GameObject.FindObjectOfType<PlayerManagerDataRetriever>().GetPlayerRigidBody();
-            var groundStickComponent = GameObject.FindObjectOfType<PlayerManager>().BodyGroundStickContactDistance;
+            var groundStickComponent = GameObject.FindObjectOfType<PlayerManager>().PlayerPhysicsMovementComponent;
             var playerCommonComponents = GameObject.FindObjectOfType<PlayerCommonComponents>();
             var playerDataComponents = GameObject.FindObjectOfType<PlayerManager>().GetComponentInChildren<DataComponentContainer>();
             yield return new WaitForFixedUpdate();

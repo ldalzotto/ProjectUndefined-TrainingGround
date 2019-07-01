@@ -136,7 +136,6 @@
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationPlayer.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManager.cs" />
-    <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerObstacleOvercomeTriggerTracker.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\GhostPOI\Scripts\GhostsPOIManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\DataComponents\PlayerPOITrackerManagerComponentV2.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\DataComponents\PlayerPOIVisualMovementComponentV2.cs" />

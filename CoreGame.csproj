@@ -142,6 +142,7 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\CameraManagers\Follow\CameraFollowManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CameraManagers\Orientation\CameraOrientationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerCommonComponents.cs" />
+    <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerPhysicsMovementComponent.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV2.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\ContextAnimationManagers\PlayerPocketObjectOutManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAdventurePositionManager.cs" />

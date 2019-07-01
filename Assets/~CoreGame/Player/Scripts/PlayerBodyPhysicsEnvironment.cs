@@ -9,10 +9,10 @@ namespace CoreGame
         private StickGroundBodyPositioner StickGroundBodyPositioner;
         private SlopeVelocityAdjuster SlopeVelocityAdjuster;
 
-        public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, BodyGroundStickContactDistance BodyGroundStickContactDistance)
+        public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent)
         {
             GroundRayCaster = new GroundRayCaster(rigidbody, collider);
-            StickGroundBodyPositioner = new StickGroundBodyPositioner(BodyGroundStickContactDistance, rigidbody);
+            StickGroundBodyPositioner = new StickGroundBodyPositioner(PlayerPhysicsMovementComponent, rigidbody);
             SlopeVelocityAdjuster = new SlopeVelocityAdjuster(rigidbody);
         }
 
@@ -73,29 +73,24 @@ namespace CoreGame
     class StickGroundBodyPositioner
     {
         private Rigidbody rigidbody;
-        private BodyGroundStickContactDistance BodyGroundStickContactDistance;
+        private PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent;
 
-        public StickGroundBodyPositioner(BodyGroundStickContactDistance BodyGroundStickContactDistance, Rigidbody rigidbody)
+        public StickGroundBodyPositioner(PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent, Rigidbody rigidbody)
         {
             this.rigidbody = rigidbody;
-            this.BodyGroundStickContactDistance = BodyGroundStickContactDistance;
+            this.PlayerPhysicsMovementComponent = PlayerPhysicsMovementComponent;
         }
 
         public void FixedTick(Vector3 hitPosition)
         {
-            if (Vector3.Distance(rigidbody.position, hitPosition) > BodyGroundStickContactDistance.ContactDistance)
+            if (Vector3.Distance(rigidbody.position, hitPosition) > PlayerPhysicsMovementComponent.ContactDistance)
             {
+                Debug.Log("STICKED");
                 rigidbody.MovePosition(hitPosition);
             }
         }
     }
-
-    [System.Serializable]
-    public class BodyGroundStickContactDistance
-    {
-        public float ContactDistance;
-    }
-
+    
     class SlopeVelocityAdjuster
     {
         private Rigidbody rigidbody;

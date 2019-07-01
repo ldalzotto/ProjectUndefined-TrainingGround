@@ -1,18 +1,14 @@
 ﻿using CoreGame;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using static AnimationConstants;
 
 namespace AdventureGame
 {
 
     public class PlayerManager : PlayerManagerType, IVisualMovementPermission
     {
-        private const string ObstacelOvercomeObjectName = "ObstacleOvercomeTrigger";
 
         #region Player Common component
         private PlayerCommonComponents PlayerCommonComponents;
@@ -26,16 +22,14 @@ namespace AdventureGame
 
         private CameraOrientationManager CameraOrientationManager;
 
+        private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
+
         private PlayerInputMoveManager PlayerInputMoveManager;
         //Inter dependency
         private PointOfInterestType PointOfInterestType;
-        // private PlayerAIMoveManager PlayerAIMoveManager;
-        private PlayerObstacleOvercomeManager PlayerObstacleOvercomeManager;
 
         private PointOfInterestTrackerModule PointOfInterestTrackerModule;
         private PlayerPOIWheelTriggerManager PlayerPOIWheelTriggerManager;
-
-        // private PlayerPOIVisualHeadMovementManager PlayerPOIVisualHeadMovementManager;
 
         private PlayerContextActionManager PlayerContextActionManager;
         private PlayerInventoryTriggerManager PlayerInventoryTriggerManager;
@@ -61,9 +55,9 @@ namespace AdventureGame
 
             this.PointOfInterestType = GetComponentInChildren<PointOfInterestType>();
             GameObject playerObject = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG);
-            BoxCollider obstacleOvercomeCollider = gameObject.FindChildObjectRecursively(ObstacelOvercomeObjectName).GetComponent<BoxCollider>();
             Animator playerAnimator = GetComponentInChildren<Animator>();
             Rigidbody playerRigidBody = GetComponent<Rigidbody>();
+            Collider playerCollider = playerRigidBody.GetComponent<Collider>();
             NavMeshAgent playerAgent = GetComponent<NavMeshAgent>();
             playerAgent.updatePosition = false;
             playerAgent.updateRotation = false;
@@ -71,10 +65,11 @@ namespace AdventureGame
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
             this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
             this.PlayerDataComponentContainer.Init();
-
+             
             #region Data Components
             var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
             var PlayerPOITrackerManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>();
+            var PlayerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
             #endregion
 
             #region POI Modules
@@ -84,19 +79,19 @@ namespace AdventureGame
             this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
             this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
             this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
-            this.PlayerObstacleOvercomeManager = new PlayerObstacleOvercomeManager(playerRigidBody, obstacleOvercomeCollider);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.PointOfInterestTrackerModule);
-            //  this.PlayerPOIVisualHeadMovementManager = new PlayerPOIVisualHeadMovementManager(PlayerPOIVisualHeadMovementComponent, playerAnimator);
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
             this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, playerAnimator, playerRigidBody, coreConfigurationManager);
+            this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, playerCollider, PlayerPhysicsMovementComponent);
         }
 
         public void Tick(float d)
         {
             CameraFollowManager.Tick(d);
             CameraOrientationManager.Tick(d);
+            PlayerBodyPhysicsEnvironment.Tick(d);
 
             var playerSpeedMagnitude = 0f;
 
@@ -149,6 +144,8 @@ namespace AdventureGame
             {
                 this.PlayerInputMoveManager.FixedTick(d);
             }
+
+            this.PlayerBodyPhysicsEnvironment.FixedTick(d);
         }
 
         public void LateTick(float d)
@@ -158,11 +155,6 @@ namespace AdventureGame
 
         public void OnGizmoTick()
         {
-            if (IsAllowedToDoAnyInteractions())
-            {
-                // PointOfInterestTrackerModule.OnGizmoTick();
-                // PlayerPOIWheelTriggerManager.GizmoTick(PointOfInterestTrackerModule.NearestInRangePointOfInterest());
-            }
             // PlayerPOIVisualHeadMovementManager.GizmoTick();
         }
 
@@ -185,17 +177,9 @@ namespace AdventureGame
         #endregion
 
         #region External Events
-        public void ObstacleOvercomeTriggerEnter(Collider collider)
-        {
-            if (IsAllowedToMove())
-            {
-                PlayerObstacleOvercomeManager.ObstacleOvercomeTriggerEnter(collider);
-            }
-        }
         public void OnContextActionAdded(AContextAction contextActionAdded)
         {
             PlayerContextActionManager.OnContextActionAdded(contextActionAdded);
-            // PlayerPOIVisualHeadMovementManager.OnContextActionAdded();
         }
         public void OnContextActionFinished()
         {
@@ -236,30 +220,6 @@ namespace AdventureGame
         }
 
     }
-
-    #region Player Movement
-
-    class PlayerObstacleOvercomeManager
-    {
-        private Rigidbody playerRigidBody;
-        private BoxCollider obstacleOvercomeCollider;
-
-        public PlayerObstacleOvercomeManager(Rigidbody playerRigidBody, BoxCollider ObstacleOvercomeCollider)
-        {
-            this.playerRigidBody = playerRigidBody;
-            this.obstacleOvercomeCollider = ObstacleOvercomeCollider;
-        }
-
-        public void ObstacleOvercomeTriggerEnter(Collider collider)
-        {
-            if (obstacleOvercomeCollider.bounds.max.y >= collider.bounds.max.y)
-            {
-                var nexPosition = new Vector3(playerRigidBody.position.x, collider.bounds.max.y, playerRigidBody.position.z);
-                this.playerRigidBody.MovePosition(nexPosition);
-            }
-        }
-    }
-    #endregion
 
     #region POI
     class PlayerPOIWheelTriggerManager
