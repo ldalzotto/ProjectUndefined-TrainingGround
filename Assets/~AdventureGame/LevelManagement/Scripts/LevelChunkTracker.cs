@@ -1,12 +1,9 @@
 ﻿
 
-using UnityEngine;
-using System.Collections;
-using System;
 using CoreGame;
+using UnityEngine;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace AdventureGame
@@ -21,25 +18,36 @@ namespace AdventureGame
 
         public TransitionableLevelFXType TransitionableLevelFXType { get => transitionableLevelFXType; }
 
+        private bool hasBeenInit = false;
+
         internal void Init()
         {
+            Debug.Log("LevelChunkTracker Init : " + this.name);
             this.AdventureEventManager = GameObject.FindObjectOfType<AdventureEventManager>();
             this.transitionableLevelFXType = GetComponentInChildren<TransitionableLevelFXType>();
             this.transitionableLevelFXType.Init();
+            this.hasBeenInit = true;
         }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag == TagConstants.PLAYER_TAG)
+            if (hasBeenInit)
             {
-                this.AdventureEventManager.AD_EVT_OnChunkLevelEnter(this);
+                if (other.tag == TagConstants.PLAYER_TAG)
+                {
+                    this.AdventureEventManager.AD_EVT_OnChunkLevelEnter(this);
+                }
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.tag == TagConstants.PLAYER_TAG)
+            if (hasBeenInit)
             {
-                this.AdventureEventManager.AD_EVT_OnChunkLevelExit(this);
+                if (other.tag == TagConstants.PLAYER_TAG)
+                {
+                    this.AdventureEventManager.AD_EVT_OnChunkLevelExit(this);
+                }
             }
         }
 
