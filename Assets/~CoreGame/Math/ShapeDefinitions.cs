@@ -32,15 +32,14 @@ namespace CoreGame
         [SerializeField]
         public bool UseAngleDefinition = true;
         [SerializeField]
-        public Vector2 C1Angles;
-        [SerializeField]
-        public Vector2 C2Angles;
-        [SerializeField]
-        public Vector2 C3Angles;
-        [SerializeField]
-        public Vector2 C4Angles;
+        public Vector3 LocalStartAngleProjection;
         [SerializeField]
         public float FaceDistance;
+
+        public void SetLocalStartAngleProjection(Vector3 worldPositionPoint)
+        {
+            this.LocalStartAngleProjection = worldPositionPoint - this.WorldPosition;
+        }
     }
 
     [System.Serializable]

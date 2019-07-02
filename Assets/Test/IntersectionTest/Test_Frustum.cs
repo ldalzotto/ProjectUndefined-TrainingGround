@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -20,6 +21,12 @@ public class Test_Frustum : MonoBehaviour
     private Vector3 C7;
     private Vector3 C8;
 
+    #region Debug
+    private Vector3 debugPoint1;
+    private Vector3 debugPoint2;
+    private Vector3 debugPoint3;
+    #endregion
+
     private void Update()
     {
         this.LocalFrustumV2.WorldPosition = this.transform.position;
@@ -30,6 +37,8 @@ public class Test_Frustum : MonoBehaviour
         Vector3 diagDirection = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0);
         diagDirection.Scale(this.LocalFrustumV2.LossyScale);
         Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C1);
+
+        this.debugPoint2 = (diagDirection/2f) + this.LocalFrustumV2.WorldPosition;
 
         diagDirection = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0);
         diagDirection.Scale(this.LocalFrustumV2.LossyScale);
@@ -63,25 +72,30 @@ public class Test_Frustum : MonoBehaviour
         }
         else if (this.LocalFrustumV2.UseAngleDefinition)
         {
-            Vector3 baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width / 2, this.LocalFrustumV2.F1.Height / 2, 0);
-            Vector3 targetLocalPoint = baseLocalPoint + (Quaternion.Euler(this.LocalFrustumV2.C1Angles.y, this.LocalFrustumV2.C1Angles.x, 0f) * (Vector3.forward * this.LocalFrustumV2.FaceDistance));
+            Vector3 baseLocalPoint = (this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0));
+            baseLocalPoint /= 2f;
+            Vector3 targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
             targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
             Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C5);
 
+            this.debugPoint1 = baseLocalPoint + this.LocalFrustumV2.WorldPosition;
 
-            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width / 2, this.LocalFrustumV2.F1.Height / 2, 0);
-            targetLocalPoint = baseLocalPoint + (Quaternion.Euler(this.LocalFrustumV2.C2Angles.y, this.LocalFrustumV2.C2Angles.x, 0f) * (Vector3.forward * this.LocalFrustumV2.FaceDistance));
+            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0);
+            baseLocalPoint /= 2f;
+            targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
             targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
             Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C6);
 
 
-            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width / 2, -this.LocalFrustumV2.F1.Height / 2, 0);
-            targetLocalPoint = baseLocalPoint + (Quaternion.Euler(this.LocalFrustumV2.C3Angles.y, this.LocalFrustumV2.C3Angles.x, 0f) * (Vector3.forward * this.LocalFrustumV2.FaceDistance));
+            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, -this.LocalFrustumV2.F1.Height, 0);
+            baseLocalPoint /= 2f;
+            targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
             targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
             Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C7);
 
-            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width / 2, -this.LocalFrustumV2.F1.Height / 2, 0);
-            targetLocalPoint = baseLocalPoint + (Quaternion.Euler(this.LocalFrustumV2.C4Angles.y, this.LocalFrustumV2.C4Angles.x, 0f) * (Vector3.forward * this.LocalFrustumV2.FaceDistance));
+            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, -this.LocalFrustumV2.F1.Height, 0);
+            baseLocalPoint /= 2f;
+            targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
             targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
             Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C8);
 
@@ -193,6 +207,15 @@ public class Test_Frustum : MonoBehaviour
             Gizmos.color = Color.red;
         }
         Gizmos.DrawWireSphere(this.transform.position, 0.1f);
+        Gizmos.DrawWireSphere(this.transform.position + this.LocalFrustumV2.LocalStartAngleProjection, 0.1f);
+
+        Gizmos.color = MyColors.HotPink;
+        Gizmos.DrawWireSphere(this.debugPoint1, 0.1f);
+
+        Gizmos.color = MyColors.PaleBlue;
+        Gizmos.DrawWireSphere(this.debugPoint2, 0.1f);
+
+        Gizmos.color = oldGizmoColor;
 
     }
 
