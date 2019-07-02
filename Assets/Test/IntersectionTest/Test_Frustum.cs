@@ -72,32 +72,22 @@ public class Test_Frustum : MonoBehaviour
         }
         else if (this.LocalFrustumV2.UseAngleDefinition)
         {
+            /*
             Vector3 baseLocalPoint = (this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0));
             baseLocalPoint /= 2f;
             Vector3 targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
             targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
             Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C5);
+            */
+            Vector3 WorldStartAngleProjection;
+            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalFrustumV2.LocalStartAngleProjection, out WorldStartAngleProjection);
+            this.C5 = this.C1 + ((this.C1 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
 
-            this.debugPoint1 = baseLocalPoint + this.LocalFrustumV2.WorldPosition;
+            // this.debugPoint1 = baseLocalPoint + this.LocalFrustumV2.WorldPosition;
 
-            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0);
-            baseLocalPoint /= 2f;
-            targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
-            targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C6);
-
-
-            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, -this.LocalFrustumV2.F1.Height, 0);
-            baseLocalPoint /= 2f;
-            targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
-            targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C7);
-
-            baseLocalPoint = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, -this.LocalFrustumV2.F1.Height, 0);
-            baseLocalPoint /= 2f;
-            targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
-            targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C8);
+            this.C6 = this.C2 + ((this.C2 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
+            this.C7 = this.C3 + ((this.C3 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
+            this.C8 = this.C4 + ((this.C4 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
 
         }
 
