@@ -94,40 +94,8 @@ namespace CoreGame
         public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
         {
             bool pointInsideFrustum = false;
-            Vector3 rotatedFrustumCenter = frustum.Rotation * frustum.Center;
-            Vector3 diagDirection = new Vector3();
 
-            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(-frustum.F1.Width, frustum.F1.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C1);
-
-            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(frustum.F1.Width, frustum.F1.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C2);
-
-            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(frustum.F1.Width, -frustum.F1.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C3);
-
-            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(-frustum.F1.Width, -frustum.F1.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C4);
-
-            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(-frustum.F2.Width, frustum.F2.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C5);
-
-            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(frustum.F2.Width, frustum.F2.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C6);
-
-            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(frustum.F2.Width, -frustum.F2.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C7);
-
-            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(-frustum.F2.Width, -frustum.F2.Height, 0);
-            diagDirection.Scale(frustum.LossyScale);
-            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C8);
+            frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
 
             Vector3 normal = Vector3.zero;
 

@@ -30,7 +30,7 @@ namespace CoreGame
         [SerializeField]
         public FrustumFaceV2 F2;
         [SerializeField]
-        public bool UseAngleDefinition = true;
+        public bool UsePointDefinition = true;
         [SerializeField]
         public Vector3 LocalStartAngleProjection;
         [SerializeField]
@@ -39,6 +39,55 @@ namespace CoreGame
         public void SetLocalStartAngleProjection(Vector3 worldPositionPoint)
         {
             this.LocalStartAngleProjection = worldPositionPoint - this.WorldPosition;
+        }
+
+        public void CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
+        {
+            Vector3 rotatedFrustumCenter = this.Rotation * this.Center;
+
+            Vector3 diagDirection = this.F1.FaceOffsetFromCenter + new Vector3(-this.F1.Width, this.F1.Height, 0);
+            diagDirection.Scale(this.LossyScale);
+            Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C1);
+
+            diagDirection = this.F1.FaceOffsetFromCenter + new Vector3(this.F1.Width, this.F1.Height, 0);
+            diagDirection.Scale(this.LossyScale);
+            Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C2);
+
+            diagDirection = this.F1.FaceOffsetFromCenter + new Vector3(this.F1.Width, -this.F1.Height, 0);
+            diagDirection.Scale(this.LossyScale);
+            Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C3);
+
+            diagDirection = this.F1.FaceOffsetFromCenter + new Vector3(-this.F1.Width, -this.F1.Height, 0);
+            diagDirection.Scale(this.LossyScale);
+            Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C4);
+
+            if (this.UseFaceDefinition)
+            {
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C5);
+
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(this.F2.Width, this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C6);
+
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(this.F2.Width, -this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C7);
+
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, -this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.Rotation, rotatedFrustumCenter, diagDirection / 2f, out C8);
+            }
+            else
+            {
+                Vector3 WorldStartAngleProjection;
+                Intersection.BoxPointCalculationV2(this.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalStartAngleProjection, out WorldStartAngleProjection);
+                C5 = C1 + ((C1 - WorldStartAngleProjection) * this.FaceDistance);
+                C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
+                C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
+                C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
+            }
         }
     }
 

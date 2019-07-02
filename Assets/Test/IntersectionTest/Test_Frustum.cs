@@ -21,78 +21,14 @@ public class Test_Frustum : MonoBehaviour
     private Vector3 C7;
     private Vector3 C8;
 
-    #region Debug
-    private Vector3 debugPoint1;
-    private Vector3 debugPoint2;
-    private Vector3 debugPoint3;
-    #endregion
-
     private void Update()
     {
         this.LocalFrustumV2.WorldPosition = this.transform.position;
         this.LocalFrustumV2.Rotation = this.transform.rotation;
         this.LocalFrustumV2.LossyScale = this.transform.lossyScale;
-        Vector3 rotatedFrustumCenter = this.LocalFrustumV2.Rotation * this.LocalFrustumV2.Center;
 
-        Vector3 diagDirection = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0);
-        diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-        Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C1);
-
-        this.debugPoint2 = (diagDirection/2f) + this.LocalFrustumV2.WorldPosition;
-
-        diagDirection = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0);
-        diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-        Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C2);
-
-        diagDirection = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F1.Width, -this.LocalFrustumV2.F1.Height, 0);
-        diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-        Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C3);
-
-        diagDirection = this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, -this.LocalFrustumV2.F1.Height, 0);
-        diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-        Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C4);
-
-        if (this.LocalFrustumV2.UseFaceDefinition)
-        {
-            diagDirection = this.LocalFrustumV2.F2.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F2.Width, this.LocalFrustumV2.F2.Height, 0);
-            diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C5);
-
-            diagDirection = this.LocalFrustumV2.F2.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F2.Width, this.LocalFrustumV2.F2.Height, 0);
-            diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C6);
-
-            diagDirection = this.LocalFrustumV2.F2.FaceOffsetFromCenter + new Vector3(this.LocalFrustumV2.F2.Width, -this.LocalFrustumV2.F2.Height, 0);
-            diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C7);
-
-            diagDirection = this.LocalFrustumV2.F2.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F2.Width, -this.LocalFrustumV2.F2.Height, 0);
-            diagDirection.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, diagDirection / 2f, out this.C8);
-        }
-        else if (this.LocalFrustumV2.UseAngleDefinition)
-        {
-            /*
-            Vector3 baseLocalPoint = (this.LocalFrustumV2.F1.FaceOffsetFromCenter + new Vector3(-this.LocalFrustumV2.F1.Width, this.LocalFrustumV2.F1.Height, 0));
-            baseLocalPoint /= 2f;
-            Vector3 targetLocalPoint = baseLocalPoint + ((baseLocalPoint - this.LocalFrustumV2.LocalStartAngleProjection).normalized * this.LocalFrustumV2.FaceDistance);
-            targetLocalPoint.Scale(this.LocalFrustumV2.LossyScale);
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, this.LocalFrustumV2.Rotation, rotatedFrustumCenter, targetLocalPoint, out this.C5);
-            */
-            Vector3 WorldStartAngleProjection;
-            Intersection.BoxPointCalculationV2(this.LocalFrustumV2.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalFrustumV2.LocalStartAngleProjection, out WorldStartAngleProjection);
-            this.C5 = this.C1 + ((this.C1 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
-
-            // this.debugPoint1 = baseLocalPoint + this.LocalFrustumV2.WorldPosition;
-
-            this.C6 = this.C2 + ((this.C2 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
-            this.C7 = this.C3 + ((this.C3 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
-            this.C8 = this.C4 + ((this.C4 - WorldStartAngleProjection) * this.LocalFrustumV2.FaceDistance);
-
-        }
-
-
-
+        this.LocalFrustumV2.CalculateFrustumPoints(out this.C1, out this.C2, out this.C3, out this.C4, out this.C5, out this.C6, out this.C7, out this.C8);
+        
         #region FRUSTUM<->SPHERE
         //  bool pointInsideFrustum = false;
 
@@ -196,15 +132,8 @@ public class Test_Frustum : MonoBehaviour
         {
             Gizmos.color = Color.red;
         }
-        Gizmos.DrawWireSphere(this.transform.position, 0.1f);
+        Gizmos.DrawWireSphere(this.Test_Sphere.transform.position, 0.1f);
         Gizmos.DrawWireSphere(this.transform.position + this.LocalFrustumV2.LocalStartAngleProjection, 0.1f);
-
-        Gizmos.color = MyColors.HotPink;
-        Gizmos.DrawWireSphere(this.debugPoint1, 0.1f);
-
-        Gizmos.color = MyColors.PaleBlue;
-        Gizmos.DrawWireSphere(this.debugPoint2, 0.1f);
-
         Gizmos.color = oldGizmoColor;
 
     }
