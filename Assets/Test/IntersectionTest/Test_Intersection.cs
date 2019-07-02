@@ -6,18 +6,6 @@ public class Test_Intersection : MonoBehaviour
     public Test_Box Test_Box;
     public Vector3 Point;
     public Test_Sphere Test_Sphere;
-
-    /*
-    private void Update()
-    {
-        this.Point = transform.position;
-        if (Test_Box != null && this.Test_Sphere != null)
-        {
-                Intersection.BoxIntersectsSphereV2(this.Test_Box.BoxCollider, this.Test_Sphere.transform.position, this.Test_Sphere.Radius);
-            
-        }
-    }
-    */
     
     private void OnDrawGizmos()
     {

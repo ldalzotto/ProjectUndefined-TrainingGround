@@ -116,6 +116,7 @@
     <Compile Include="Assets\~CoreGame\DataComponent\DataComponentContainer.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
+    <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\BoundsHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\ComputeBufferHelper.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />
     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Math\ShapeDefinitions.cs" />
     <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\AbstractGamePersister.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
@@ -174,10 +176,12 @@
     <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Test_Box.cs" />
+    <Compile Include="Assets\Test\IntersectionTest\Test_Frustum.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Test_Intersection.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Test_Sphere.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
+    <None Include="Assets\_Shader\Test\SphereFrustum.shader" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\_Shader\Wave\WaveShaderPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />

@@ -7,23 +7,6 @@ namespace CoreGame
     public class Intersection
     {
 
-        public static void BoxPointCalculation(BoxCollider boxCollider, Vector3 diagonalDirection, out Vector3 C1)
-        {
-            C1 = (boxCollider.transform.position + boxCollider.transform.rotation * (diagonalDirection / 2f)) + (boxCollider.transform.rotation * boxCollider.center);
-        }
-
-        public static void BoxPointCalculationV2(Vector3 boxColliderWorldPosition, Quaternion boxColliderRotation, Vector3 rotatedBoxColliderCenter, Vector3 diagonalDirection, out Vector3 C1)
-        {
-            C1 = boxColliderWorldPosition + boxColliderRotation * (diagonalDirection / 2f) + rotatedBoxColliderCenter;
-            C1 = new Vector3((float)(System.Math.Round((double)C1.x, 3)), (float)(System.Math.Round((double)C1.y, 3)), (float)(System.Math.Round((double)C1.z, 3)));
-        }
-
-        public static void BoxDiagonalCalculation(BoxCollider boxCollider, Vector3 diagonalDirection, out Vector3 C1, out Vector3 C2)
-        {
-            BoxPointCalculation(boxCollider, -1 * diagonalDirection, out C1);
-            BoxPointCalculation(boxCollider, 1 * diagonalDirection, out C2);
-        }
-
         #region BOX<->SPHERE
 
         public static bool BoxIntersectsSphereV2(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
@@ -34,62 +17,62 @@ namespace CoreGame
             Vector3 boxColliderWorldPosition = boxCollider.transform.position;
             Quaternion boxColliderRotation = boxCollider.transform.rotation;
             Vector3 rotatedBoxColliderCenter = boxColliderRotation * boxCollider.center;
-            
+
             //TODO -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
             //TODO -> Also, order of faces can be sorted by distance check.
 
             SetVector(ref diagDirection, boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
             diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C1);
+            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C1);
 
             SetVector(ref diagDirection, boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
             diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C2);
+            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C2);
 
             SetVector(ref diagDirection, -boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
             diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C3);
+            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C3);
 
             SetVector(ref diagDirection, -boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
             diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C4);
+            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C4);
 
-            boxIntersectSphere = CubeFaceIntersectOrContainsSphere(C1, C2, C3, C4, SphereWorldPosition, SphereRadius);
-
+            //Face intersection
+            boxIntersectSphere = FaceIntersectOrContainsSphere(C1, C2, C3, C4, SphereWorldPosition, SphereRadius);
 
             if (!boxIntersectSphere)
             {
 
                 SetVector(ref diagDirection, boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
                 diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C5);
+                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C5);
 
                 SetVector(ref diagDirection, boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
                 diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C6);
+                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C6);
 
                 SetVector(ref diagDirection, -boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
                 diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C7);
+                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C7);
 
                 SetVector(ref diagDirection, -boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
                 diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection, out Vector3 C8);
+                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C8);
 
-                boxIntersectSphere = CubeFaceIntersectOrContainsSphere(C5, C6, C7, C8, SphereWorldPosition, SphereRadius);
+                boxIntersectSphere = FaceIntersectOrContainsSphere(C5, C6, C7, C8, SphereWorldPosition, SphereRadius);
 
                 if (!boxIntersectSphere)
                 {
-                    boxIntersectSphere = CubeFaceIntersectOrContainsSphere(C1, C2, C5, C6, SphereWorldPosition, SphereRadius);
+                    boxIntersectSphere = FaceIntersectOrContainsSphere(C1, C2, C5, C6, SphereWorldPosition, SphereRadius);
                     if (!boxIntersectSphere)
                     {
-                        boxIntersectSphere = CubeFaceIntersectOrContainsSphere(C3, C4, C7, C8, SphereWorldPosition, SphereRadius);
+                        boxIntersectSphere = FaceIntersectOrContainsSphere(C3, C4, C7, C8, SphereWorldPosition, SphereRadius);
                         if (!boxIntersectSphere)
                         {
-                            boxIntersectSphere = CubeFaceIntersectOrContainsSphere(C1, C5, C3, C7, SphereWorldPosition, SphereRadius);
+                            boxIntersectSphere = FaceIntersectOrContainsSphere(C1, C5, C3, C7, SphereWorldPosition, SphereRadius);
                             if (!boxIntersectSphere)
                             {
-                                boxIntersectSphere = CubeFaceIntersectOrContainsSphere(C2, C6, C4, C8, SphereWorldPosition, SphereRadius);
+                                boxIntersectSphere = FaceIntersectOrContainsSphere(C2, C6, C4, C8, SphereWorldPosition, SphereRadius);
                             }
                         }
                     }
@@ -99,7 +82,165 @@ namespace CoreGame
             return boxIntersectSphere;
         }
 
-        public static bool CubeFaceIntersectOrContainsSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
+        public static void BoxPointCalculationV2(Vector3 boxColliderWorldPosition, Quaternion boxColliderRotation, Vector3 rotatedBoxColliderCenter, Vector3 diagonalDirection, out Vector3 C1)
+        {
+            C1 = boxColliderWorldPosition + boxColliderRotation * (diagonalDirection) + rotatedBoxColliderCenter;
+            C1 = new Vector3((float)(System.Math.Round((double)C1.x, 3)), (float)(System.Math.Round((double)C1.y, 3)), (float)(System.Math.Round((double)C1.z, 3)));
+        }
+
+        #endregion
+
+        #region FRUSTUM<->POINT
+        public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
+        {
+            bool pointInsideFrustum = false;
+            Vector3 rotatedFrustumCenter = frustum.Rotation * frustum.Center;
+            Vector3 diagDirection = new Vector3();
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(-frustum.F1.Width, frustum.F1.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C1);
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(frustum.F1.Width, frustum.F1.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C2);
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(frustum.F1.Width, -frustum.F1.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C3);
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(-frustum.F1.Width, -frustum.F1.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C4);
+
+            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(-frustum.F2.Width, frustum.F2.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C5);
+
+            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(frustum.F2.Width, frustum.F2.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C6);
+
+            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(frustum.F2.Width, -frustum.F2.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C7);
+
+            diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(-frustum.F2.Width, -frustum.F2.Height, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C8);
+
+            Vector3 normal = Vector3.zero;
+
+            normal = -Vector3.Cross(C2 - C1, C3 - C1);
+            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0);
+
+            if (pointInsideFrustum)
+            {
+                normal = -Vector3.Cross(C5 - C1, C2 - C1);
+                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0);
+
+                if (pointInsideFrustum)
+                {
+                    normal = -Vector3.Cross(C6 - C2, C3 - C2);
+                    pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C2) >= 0);
+
+                    if (pointInsideFrustum)
+                    {
+                        normal = -Vector3.Cross(C7 - C3, C4 - C3);
+                        pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C3) >= 0);
+
+                        if (pointInsideFrustum)
+                        {
+                            normal = -Vector3.Cross(C8 - C4, C1 - C4);
+                            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C4) >= 0);
+
+                            if (pointInsideFrustum)
+                            {
+                                normal = -Vector3.Cross(C8 - C5, C6 - C5);
+                                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C5) >= 0);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return pointInsideFrustum;
+
+
+        }
+        #endregion
+
+        /*
+        #region FRUSTUM<->SPHERE
+
+        public static bool FrustumInteresectsSphere(FrustumV2 frustum, Vector3 SphereWorldPosition, float SphereRadius)
+        {
+            bool frustumIntersectSphere = false;
+            Vector3 rotatedFrustumCenter = frustum.Rotation * frustum.Center;
+            Vector3 diagDirection = new Vector3();
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(-frustum.F1.Width / 2, frustum.F1.Height / 2, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C1);
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(frustum.F1.Width / 2, frustum.F1.Height / 2, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C2);
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(frustum.F1.Width / 2, -frustum.F1.Height / 2, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C3);
+
+            diagDirection = frustum.F1.FaceOffsetFromCenter + new Vector3(-frustum.F1.Width / 2, -frustum.F1.Height / 2, 0);
+            diagDirection.Scale(frustum.LossyScale);
+            Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C4);
+            
+            frustumIntersectSphere = FaceIntersectOrContainsSphere(C1, C2, C3, C4, SphereWorldPosition, SphereRadius);
+            if (!frustumIntersectSphere)
+            {
+                diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(-frustum.F2.Width / 2, frustum.F2.Height / 2, 0);
+                diagDirection.Scale(frustum.LossyScale);
+                Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C5);
+
+                diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(frustum.F2.Width / 2, frustum.F2.Height / 2, 0);
+                diagDirection.Scale(frustum.LossyScale);
+                Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C6);
+
+                diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(frustum.F2.Width / 2, -frustum.F2.Height / 2, 0);
+                diagDirection.Scale(frustum.LossyScale);
+                Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C7);
+
+                diagDirection = frustum.F2.FaceOffsetFromCenter + new Vector3(-frustum.F2.Width / 2, -frustum.F2.Height / 2, 0);
+                diagDirection.Scale(frustum.LossyScale);
+                Intersection.BoxPointCalculationV2(frustum.WorldPosition, frustum.Rotation, rotatedFrustumCenter, diagDirection / 2f, out Vector3 C8);
+
+
+                frustumIntersectSphere = FaceIntersectOrContainsSphere(C1, C5, C6, C2, SphereWorldPosition, SphereRadius);
+                if (!frustumIntersectSphere)
+                {
+                    frustumIntersectSphere = FaceIntersectOrContainsSphere(C2, C6, C7, C3, SphereWorldPosition, SphereRadius);
+                    if (!frustumIntersectSphere)
+                    {
+                        frustumIntersectSphere = FaceIntersectOrContainsSphere(C4, C8, C7, C3, SphereWorldPosition, SphereRadius);
+                        if (!frustumIntersectSphere)
+                        {
+                            frustumIntersectSphere = FaceIntersectOrContainsSphere(C4, C1, C5, C8, SphereWorldPosition, SphereRadius);
+                            if (!frustumIntersectSphere)
+                            {
+                                frustumIntersectSphere = FaceIntersectOrContainsSphere(C5, C6, C7, C8, SphereWorldPosition, SphereRadius);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return frustumIntersectSphere;
+
+        }
+
+        #endregion
+        */
+        public static bool FaceIntersectOrContainsSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
             bool planeIntersected = false;
             bool edgeIntersectedOrContained = false;
@@ -143,11 +284,6 @@ namespace CoreGame
                     planeIntersected = Vector3.Dot(C2 - C1, C2 - C1) > Vector3.Dot(planeIntersectionPoint - C1, C2 - C1) && Vector3.Dot(planeIntersectionPoint - C1, C2 - C1) > 0
                         && Vector3.Dot(C3 - C1, C3 - C1) > Vector3.Dot(planeIntersectionPoint - C1, C3 - C1) && Vector3.Dot(planeIntersectionPoint - C1, C3 - C1) > 0;
                 }
-                /*
-                if (planeIntersected) { Gizmos.color = Color.green; }
-                else { Gizmos.color = Color.red; }
-                Gizmos.DrawWireSphere(planeIntersectionPoint, 0.1f);
-                */
             }
 
 
@@ -187,21 +323,9 @@ namespace CoreGame
                 contained = Vector3.Distance(lineOrigin, sphereCenterPoint) <= sphereRadius && Vector3.Distance(lineOrigin + (lineDirection * lineDistance), sphereCenterPoint) <= sphereRadius;
             }
 
-            /*
-            if (intersect || contained)
-            {
-                Gizmos.color = Color.green;
-            }
-            else
-            {
-                Gizmos.color = Color.red;
-            }
-            Gizmos.DrawWireSphere(lineOrigin, 0.1f);
-            Gizmos.DrawWireSphere(lineOrigin + (lineDirection * lineDistance), 0.1f);
-            */
-
             return intersect || contained;
         }
+
 
         private static void SetVector(ref Vector3 vector, float x, float y, float z)
         {
@@ -209,8 +333,12 @@ namespace CoreGame
             vector.y = y;
             vector.z = z;
         }
-
-        #endregion
+        private static void SetVector(ref Vector3 vector, Vector3 newVector)
+        {
+            vector.x = newVector.x;
+            vector.y = newVector.y;
+            vector.z = newVector.z;
+        }
 
     }
 
