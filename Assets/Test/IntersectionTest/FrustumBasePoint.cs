@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[ExecuteInEditMode]
 public class FrustumBasePoint : MonoBehaviour
 {
     public List<Test_Frustum> Test_Frustums;

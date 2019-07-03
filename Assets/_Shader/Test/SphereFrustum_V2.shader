@@ -5,14 +5,7 @@
 		_AuraTexture("Aura Texture", 2D) = "white" {}
 		_BaseColor("Color", Color) = (1,1,1,1)
 
-		_FC1("FC1", Vector) = (0,0,0,0)
-		_FC2("FC2", Vector) = (0,0,0,0)
-		_FC3("FC3", Vector) = (0,0,0,0)
-		_FC4("FC4", Vector) = (0,0,0,0)
-		_FC5("FC5", Vector) = (0,0,0,0)
-		_FC6("FC6", Vector) = (0,0,0,0)
-		_FC7("FC7", Vector) = (0,0,0,0)
-		_FC8("FC8", Vector) = (0,0,0,0)
+		_FrustumBufferDataBufferCount("_FrustumBufferDataBufferCount", Int) = 0
 
 		_SpherePosition("Sphere Position", Vector) = (0,0,0,0)
 		_SphereRadius("Sphere Radius", Float) = 0
@@ -46,14 +39,14 @@
 
 			struct FrustumBufferData
 			{
-				float4 FC1;
-				float4 FC2;
-				float4 FC3;
-				float4 FC4;
-				float4 FC5;
-				float4 FC6;
-				float4 FC7;
-				float4 FC8;
+				float3 FC1;
+				float3 FC2;
+				float3 FC3;
+				float3 FC4;
+				float3 FC5;
+				float3 FC6;
+				float3 FC7;
+				float3 FC8;
 			};
 
 			sampler2D _AuraTexture;
@@ -62,6 +55,7 @@
 			
 
 			uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
+			int _FrustumBufferDataBufferCount;
 
 			float4 _SpherePosition;
 			float _SphereRadius;
@@ -99,8 +93,13 @@
 		
 			fixed4 frag(v2f i) : SV_Target
 			{
+				int isInside = (distance(i.worldPos, _SpherePosition) <= _SphereRadius);
+				int isInsideFrustum = 0;
+				for (int index = 0; index < _FrustumBufferDataBufferCount; index++) {
+					isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(i.worldPos, FrustumBufferDataBuffer[index]);
+				}
 				//return _BaseColor * (  (distance(i.worldPos, _SpherePosition) <= _SphereRadius) && (PointInsideFrustum(i.worldPos, _FC1, _FC2, _FC3, _FC4, _FC5, _FC6, _FC7, _FC8) == 0));
-				return fixed4(0,0,0,0);
+				return _BaseColor * (isInside && !isInsideFrustum);
 		    }
 	ENDCG
 	}
