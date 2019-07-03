@@ -180,6 +180,7 @@
     <Compile Include="Assets\Test\IntersectionTest\Test_Frustum.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Test_Intersection.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Test_Sphere.cs" />
+    <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\Test\SphereFrustum.shader" />

@@ -1,4 +1,4 @@
-﻿Shader "Custom/Test/SphereFrustum"
+﻿Shader "Custom/Test/SphereFrustumV2"
 {
 	Properties
 	{
@@ -43,18 +43,25 @@
 				float4 worldPos: TEXCOORD1;
 			};
 
+
+			struct FrustumBufferData
+			{
+				float4 FC1;
+				float4 FC2;
+				float4 FC3;
+				float4 FC4;
+				float4 FC5;
+				float4 FC6;
+				float4 FC7;
+				float4 FC8;
+			};
+
 			sampler2D _AuraTexture;
 			float4 _AuraTexture_ST;
 			float4 _BaseColor;
 			
-			float4 _FC1;
-			float4 _FC2;
-			float4	_FC3;
-			float4	_FC4;
-			float4	_FC5;
-			float4	_FC6;
-			float4	_FC7;
-			float4	_FC8;
+
+			uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
 
 			float4 _SpherePosition;
 			float _SphereRadius;
@@ -70,6 +77,17 @@
 					);
 			}
 
+			int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
+				float crossSign = sign(dot(frustumBufferData.FC5 - frustumBufferData.FC1, cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC4 - frustumBufferData.FC1)));
+				return ((dot(crossSign*cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1), comparisonPoint - frustumBufferData.FC1) >= 0)
+					&& dot(crossSign*cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1), comparisonPoint - frustumBufferData.FC1) >= 0
+					&& dot(crossSign*cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2), comparisonPoint - frustumBufferData. FC2) >= 0
+					&& dot(crossSign*cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3), comparisonPoint - frustumBufferData.FC3) >= 0
+					&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4), comparisonPoint - frustumBufferData.FC4) >= 0
+					&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5), comparisonPoint - frustumBufferData.FC5) >= 0
+					);
+			}
+
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -81,7 +99,8 @@
 		
 			fixed4 frag(v2f i) : SV_Target
 			{
-				return _BaseColor * (  (distance(i.worldPos, _SpherePosition) <= _SphereRadius) && (PointInsideFrustum(i.worldPos, _FC1, _FC2, _FC3, _FC4, _FC5, _FC6, _FC7, _FC8) == 0));
+				//return _BaseColor * (  (distance(i.worldPos, _SpherePosition) <= _SphereRadius) && (PointInsideFrustum(i.worldPos, _FC1, _FC2, _FC3, _FC4, _FC5, _FC6, _FC7, _FC8) == 0));
+				return fixed4(0,0,0,0);
 		    }
 	ENDCG
 	}

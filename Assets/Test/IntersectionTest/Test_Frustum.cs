@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -28,7 +27,7 @@ public class Test_Frustum : MonoBehaviour
         this.LocalFrustumV2.LossyScale = this.transform.lossyScale;
 
         this.LocalFrustumV2.CalculateFrustumPoints(out this.C1, out this.C2, out this.C3, out this.C4, out this.C5, out this.C6, out this.C7, out this.C8);
-        
+
         #region FRUSTUM<->SPHERE
         //  bool pointInsideFrustum = false;
 
@@ -111,6 +110,9 @@ public class Test_Frustum : MonoBehaviour
             this.ComparisonTestMaterial.SetVector("_FC6", C6);
             this.ComparisonTestMaterial.SetVector("_FC7", C7);
             this.ComparisonTestMaterial.SetVector("_FC8", C8);
+
+            this.ComparisonTestMaterial.SetVector("_SpherePosition", this.Test_Sphere.transform.position);
+            this.ComparisonTestMaterial.SetFloat("_SphereRadius", this.Test_Sphere.Radius);
         }
     }
 
@@ -122,7 +124,7 @@ public class Test_Frustum : MonoBehaviour
         DrawFace(C4, C8, C7, C3);
         DrawFace(C4, C1, C5, C8);
         DrawFace(C5, C6, C7, C8);
-
+        
         var oldGizmoColor = Gizmos.color;
         if (pointInsideFrustum)
         {
