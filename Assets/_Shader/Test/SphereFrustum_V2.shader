@@ -3,12 +3,10 @@
 	Properties
 	{
 		_AuraTexture("Aura Texture", 2D) = "white" {}
-		_BaseColor("Color", Color) = (1,1,1,1)
 
 		_FrustumBufferDataBufferCount("_FrustumBufferDataBufferCount", Int) = 0
+		_FrustumProjectionPointBufferCount("_FrustumProjectionPointBufferCount", Int) = 0
 
-		_SpherePosition("Sphere Position", Vector) = (0,0,0,0)
-		_SphereRadius("Sphere Radius", Float) = 0
 	}
 		SubShader
 	{
@@ -47,6 +45,14 @@
 				float3 FC6;
 				float3 FC7;
 				float3 FC8;
+				int FrustumProjectionPointBufferDataIndex;
+			};
+
+			struct FrustumProjectionPointBufferData
+			{
+				float3 WorldPosition;
+				float Radius;
+				float4 BaseColor;
 			};
 
 			sampler2D _AuraTexture;
@@ -55,10 +61,10 @@
 			
 
 			uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
-			int _FrustumBufferDataBufferCount;
+			uniform StructuredBuffer<FrustumProjectionPointBufferData> FrustumProjectionPointBufferDataBuffer;
 
-			float4 _SpherePosition;
-			float _SphereRadius;
+			int _FrustumBufferDataBufferCount;
+			int _FrustumProjectionPointBufferCount;
 
 			int PointInsideFrustum(float3 comparisonPoint, float3 FC1, float3 FC2, float3 FC3, float3 FC4, float3 FC5, float3 FC6, float3 FC7, float3 FC8) {
 				float crossSign = sign(dot(FC5 - FC1, cross(FC2 - FC1, FC4 - FC1)));
@@ -93,13 +99,23 @@
 		
 			fixed4 frag(v2f i) : SV_Target
 			{
-				int isInside = (distance(i.worldPos, _SpherePosition) <= _SphereRadius);
-				int isInsideFrustum = 0;
-				for (int index = 0; index < _FrustumBufferDataBufferCount; index++) {
-					isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(i.worldPos, FrustumBufferDataBuffer[index]);
+				fixed4 returnColor = fixed4(0,0,0,0);
+				for (int projectionPointIndex = 0; projectionPointIndex < _FrustumProjectionPointBufferCount; projectionPointIndex++) {
+
+					int isInside = (distance(i.worldPos, FrustumProjectionPointBufferDataBuffer[projectionPointIndex].WorldPosition) <= FrustumProjectionPointBufferDataBuffer[projectionPointIndex].Radius);
+					int isInsideFrustum = 0;
+					for (int index = 0; index < _FrustumBufferDataBufferCount; index++) {
+						if (FrustumBufferDataBuffer[index].FrustumProjectionPointBufferDataIndex == projectionPointIndex) {
+							isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(i.worldPos, FrustumBufferDataBuffer[index]);
+						}
+					}
+
+					returnColor = saturate((returnColor + (FrustumProjectionPointBufferDataBuffer[projectionPointIndex].BaseColor * (isInside && !isInsideFrustum)))*0.5);
 				}
-				//return _BaseColor * (  (distance(i.worldPos, _SpherePosition) <= _SphereRadius) && (PointInsideFrustum(i.worldPos, _FC1, _FC2, _FC3, _FC4, _FC5, _FC6, _FC7, _FC8) == 0));
-				return _BaseColor * (isInside && !isInsideFrustum);
+				return returnColor;
+				if (returnColor.a == 0) {
+					discard;
+				}
 		    }
 	ENDCG
 	}

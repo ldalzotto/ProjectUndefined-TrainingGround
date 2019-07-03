@@ -176,6 +176,7 @@
     <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\Test\IntersectionTest\FrustumBasePoint.cs" />
+    <Compile Include="Assets\Test\IntersectionTest\MiniGame\DynamicComputeBufferManager.cs" />
     <Compile Include="Assets\Test\IntersectionTest\MiniGame\GroundObstacleRendererManager.cs" />
     <Compile Include="Assets\Test\IntersectionTest\MiniGame\IntersectionTestGameManager.cs" />
     <Compile Include="Assets\Test\IntersectionTest\MiniGame\SquareObstacle.cs" />

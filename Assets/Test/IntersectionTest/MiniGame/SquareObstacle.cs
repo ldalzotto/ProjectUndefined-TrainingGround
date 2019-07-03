@@ -15,7 +15,7 @@ public class SquareObstacle : MonoBehaviour
         return null;
     }
     
-    public List<FrustumBufferData> ComputeOcclusionFrustums(Vector3 worldPositionStartAngleDefinition)
+    public List<FrustumBufferData> ComputeOcclusionFrustums(Vector3 worldPositionStartAngleDefinition, int basePositionBufferIndex)
     {
         List<FrustumBufferData> frustumBufferDatas = new List<FrustumBufferData>();
 
@@ -23,10 +23,10 @@ public class SquareObstacle : MonoBehaviour
         this.LocalFrustumV2.WorldPosition = this.transform.position;
         this.LocalFrustumV2.LossyScale = this.transform.lossyScale;
 
-        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 0, 0), 1);
-        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 0, 0), -1);
-        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 90, 0), 1);
-        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 90, 0), -1);
+        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 0, 0), 1, basePositionBufferIndex);
+        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 0, 0), -1, basePositionBufferIndex);
+        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 90, 0), 1, basePositionBufferIndex);
+        ComputeSideFrustum(frustumBufferDatas, Quaternion.Euler(0, 90, 0), -1, basePositionBufferIndex);
 
         /*
         this.LocalFrustumV2.F1.FaceOffsetFromCenter.z = -1;
@@ -52,11 +52,11 @@ public class SquareObstacle : MonoBehaviour
         return frustumBufferDatas;
     }
 
-    private void ComputeSideFrustum(List<FrustumBufferData> frustumBufferDatas, Quaternion sideDeltaRotation, float zPositionOffset)
+    private void ComputeSideFrustum(List<FrustumBufferData> frustumBufferDatas, Quaternion sideDeltaRotation, float zPositionOffset, int basePositionBufferIndex)
     {
         this.LocalFrustumV2.F1.FaceOffsetFromCenter.z = zPositionOffset;
         this.LocalFrustumV2.Rotation = this.transform.rotation * sideDeltaRotation;
         this.LocalFrustumV2.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-        frustumBufferDatas.Add(new FrustumBufferData(C1, C2, C3, C4, C5, C6, C7, C8));
+        frustumBufferDatas.Add(new FrustumBufferData(C1, C2, C3, C4, C5, C6, C7, C8, basePositionBufferIndex));
     }
 }
