@@ -19,6 +19,15 @@ public class IntersectionTestGameManager : MonoBehaviour
                 testSphere.Init();
             }
         }
+
+        var obstacles = GameObject.FindObjectsOfType<SquareObstacle>();
+        if (obstacles != null)
+        {
+            foreach (var obstacle in obstacles)
+            {
+                obstacle.Init();
+            }
+        }
     }
 
     void Update()

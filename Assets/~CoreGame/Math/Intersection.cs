@@ -102,32 +102,32 @@ namespace CoreGame
             Vector3 normal = Vector3.zero;
 
             normal = crossSign * Vector3.Cross(C2 - C1, C3 - C1);
-            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0);
+            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0) && (Vector3.Dot(normal, C5 - C1) > 0);
 
             if (pointInsideFrustum)
             {
                 normal = crossSign * Vector3.Cross(C5 - C1, C2 - C1);
-                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0);
+                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0) && (Vector3.Dot(normal, C4 - C1) > 0);
 
                 if (pointInsideFrustum)
                 {
                     normal = crossSign * Vector3.Cross(C6 - C2, C3 - C2);
-                    pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C2) >= 0);
+                    pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C2) >= 0) && (Vector3.Dot(normal, C1 - C2) > 0);
 
                     if (pointInsideFrustum)
                     {
                         normal = crossSign * Vector3.Cross(C7 - C3, C4 - C3);
-                        pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C3) >= 0);
+                        pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C3) >= 0) && (Vector3.Dot(normal, C2 - C3) > 0);
 
                         if (pointInsideFrustum)
                         {
                             normal = crossSign * Vector3.Cross(C8 - C4, C1 - C4);
-                            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C4) >= 0);
+                            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C4) >= 0) && (Vector3.Dot(normal, C3 - C4) > 0);
 
                             if (pointInsideFrustum)
                             {
                                 normal = crossSign * Vector3.Cross(C8 - C5, C6 - C5);
-                                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C5) >= 0);
+                                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C5) >= 0) && (Vector3.Dot(normal, C1 - C5) > 0);
                             }
                         }
                     }
