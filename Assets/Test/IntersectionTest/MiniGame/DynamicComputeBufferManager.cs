@@ -41,7 +41,10 @@ public class DynamicComputeBufferManager<T> where T : struct
             }
         }
 
-        this.material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
+        if (!string.IsNullOrEmpty(this.materialCountPropertyName))
+        {
+            this.material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
+        }
         this.customComputeBuffer.SetData(this.computeBufferData);
     }
 

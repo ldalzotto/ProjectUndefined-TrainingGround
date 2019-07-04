@@ -4,12 +4,18 @@ using UnityEngine;
 public class GroundObstacleRendererManager : MonoBehaviour
 {
 
+    #region External Dependencies
+    private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
+    private ObstaclesListenerManager ObstaclesListenerManager;
+    #endregion
+
     public Material GroundFrustumMaterial;
 
-    private List<Test_Sphere> SphereTrackers;
-
-    private DynamicComputeBufferManager<FrustumBufferData> FrustumBufferManager;
+    private DynamicComputeBufferManager<FrustumPointsWorldPositions> FrustumBufferManager;
     private DynamicComputeBufferManager<FrustumProjectionPointBufferData> FrustumProjectionPointBufferManager;
+    private DynamicComputeBufferManager<FrustumPositionToProjectionPositionLinkTable> FrustumPositionToProjectionPositionLinkTableBufferManager;
+
+    private List<FrustumPositionToProjectionPositionLinkTable> frustumBufferLinkDatas;
 
     private List<Color> Colors = new List<Color>() {
         Color.green,
@@ -19,76 +25,73 @@ public class GroundObstacleRendererManager : MonoBehaviour
 
     public void Init()
     {
-        this.SphereTrackers = new List<Test_Sphere>();
-        this.FrustumBufferManager = new DynamicComputeBufferManager<FrustumBufferData>(FrustumBufferData.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", ref this.GroundFrustumMaterial);
+        this.ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
+        this.ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
+
+        this.FrustumBufferManager = new DynamicComputeBufferManager<FrustumPointsWorldPositions>(FrustumPointsWorldPositions.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", ref this.GroundFrustumMaterial);
         this.FrustumProjectionPointBufferManager = new DynamicComputeBufferManager<FrustumProjectionPointBufferData>(FrustumProjectionPointBufferData.GetByteSize(), "FrustumProjectionPointBufferDataBuffer", "_FrustumProjectionPointBufferCount", ref this.GroundFrustumMaterial);
+        this.FrustumPositionToProjectionPositionLinkTableBufferManager =
+            new DynamicComputeBufferManager<FrustumPositionToProjectionPositionLinkTable>(FrustumPositionToProjectionPositionLinkTable.GetByteSize(), "FrustumPositionToProjectionPositionLinkTableBuffer", string.Empty, ref this.GroundFrustumMaterial);
+        this.frustumBufferLinkDatas = new List<FrustumPositionToProjectionPositionLinkTable>();
     }
 
-    #region External Event
-    public void OntestSphereCreation(Test_Sphere Test_Sphere)
-    {
-        this.SphereTrackers.Add(Test_Sphere);
-    }
-    #endregion
 
     public void Tick(float d)
     {
         this.FrustumProjectionPointBufferManager.Tick(d, (List<FrustumProjectionPointBufferData> frustumProjectionPointBufferDatas) =>
         {
-            foreach (var testSphere in this.SphereTrackers)
+            foreach (var testSphere in this.ObstaclesListenerManager.GetAllObstacleListeners())
             {
-                frustumProjectionPointBufferDatas.Add(new FrustumProjectionPointBufferData(testSphere.transform.position, testSphere.Radius, this.Colors[this.SphereTrackers.IndexOf(testSphere)]));
+                frustumProjectionPointBufferDatas.Add(new FrustumProjectionPointBufferData(testSphere.transform.position, testSphere.Radius, this.Colors[this.ObstaclesListenerManager.GetAllObstacleListeners().IndexOf(testSphere)]));
             }
         });
-        this.FrustumBufferManager.Tick(d, (List<FrustumBufferData> frustumBufferDatas) =>
+
+        this.frustumBufferLinkDatas.Clear();
+        this.FrustumBufferManager.Tick(d, (List<FrustumPointsWorldPositions> frustumBufferDatas) =>
         {
-            foreach (var testSphere in this.SphereTrackers)
+            foreach (var testSphere in this.ObstaclesListenerManager.GetAllObstacleListeners())
             {
-                var FrustumProjectionPointBufferDataIndex = this.SphereTrackers.IndexOf(testSphere);
                 foreach (var nearObstable in testSphere.NearSquereObstacles)
                 {
-                    frustumBufferDatas.AddRange(nearObstable.ComputeOcclusionFrustums(testSphere.transform.position, FrustumProjectionPointBufferDataIndex));
+                    var frustumCalculationResults = this.ObstacleFrustumCalculationManager.GetResult(testSphere, nearObstable).CalculatedFrustumPositions;
+                    frustumBufferDatas.AddRange(frustumCalculationResults);
+
+                    var obstacleListenerIndex = this.ObstaclesListenerManager.GetAllObstacleListeners().IndexOf(testSphere);
+                    for (var i = 0; i < frustumCalculationResults.Count; i++)
+                    {
+                        frustumBufferLinkDatas.Add(new FrustumPositionToProjectionPositionLinkTable(obstacleListenerIndex));
+                    }
                 }
             }
         });
-        
+        this.FrustumPositionToProjectionPositionLinkTableBufferManager.Tick(d, (List<FrustumPositionToProjectionPositionLinkTable> frustumBufferLinkDatasToSet) =>
+        {
+            frustumBufferLinkDatasToSet.AddRange(frustumBufferLinkDatas);
+        });
+
     }
 
     private void OnApplicationQuit()
     {
         this.FrustumBufferManager.Dispose();
+        this.FrustumProjectionPointBufferManager.Dispose();
+        this.FrustumPositionToProjectionPositionLinkTableBufferManager.Dispose();
     }
 }
 
 [System.Serializable]
-public struct FrustumBufferData
+public struct FrustumPositionToProjectionPositionLinkTable
 {
-    public Vector3 FC1;
-    public Vector3 FC2;
-    public Vector3 FC3;
-    public Vector3 FC4;
-    public Vector3 FC5;
-    public Vector3 FC6;
-    public Vector3 FC7;
-    public Vector3 FC8;
     public int FrustumProjectionPointBufferDataIndex;
 
-    public FrustumBufferData(Vector3 fC1, Vector3 fC2, Vector3 fC3, Vector3 fC4, Vector3 fC5, Vector3 fC6, Vector3 fC7, Vector3 fC8, int FrustumProjectionPointBufferDataIndex)
+    public FrustumPositionToProjectionPositionLinkTable(int frustumProjectionPointBufferDataIndex)
     {
-        FC1 = fC1;
-        FC2 = fC2;
-        FC3 = fC3;
-        FC4 = fC4;
-        FC5 = fC5;
-        FC6 = fC6;
-        FC7 = fC7;
-        FC8 = fC8;
-        this.FrustumProjectionPointBufferDataIndex = FrustumProjectionPointBufferDataIndex;
+        FrustumProjectionPointBufferDataIndex = frustumProjectionPointBufferDataIndex;
     }
-    
+
     public static int GetByteSize()
     {
-        return (8 * 3 * sizeof(float)) + (1 * sizeof(int));
+        return (1) * sizeof(int);
     }
 }
 

@@ -5,7 +5,7 @@ public class Test_Intersection : MonoBehaviour
 {
     public Test_Box Test_Box;
     public Vector3 Point;
-    public Test_Sphere Test_Sphere;
+    public ObstacleListener Test_Sphere;
     
     private void OnDrawGizmos()
     {

@@ -45,6 +45,9 @@
 				float3 FC6;
 				float3 FC7;
 				float3 FC8;
+			};
+
+			struct FrustumPositionToProjectionPositionLinkTableBufferData {
 				int FrustumProjectionPointBufferDataIndex;
 			};
 
@@ -61,6 +64,7 @@
 			
 
 			uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
+			uniform StructuredBuffer<FrustumPositionToProjectionPositionLinkTableBufferData> FrustumPositionToProjectionPositionLinkTableBuffer;
 			uniform StructuredBuffer<FrustumProjectionPointBufferData> FrustumProjectionPointBufferDataBuffer;
 
 			int _FrustumBufferDataBufferCount;
@@ -90,10 +94,7 @@
 						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5), frustumBufferData.FC1 - frustumBufferData.FC5) > 0
 					);
 			}
-
-
-
-
+			
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -111,7 +112,7 @@
 					int isInside = (distance(i.worldPos, FrustumProjectionPointBufferDataBuffer[projectionPointIndex].WorldPosition) <= FrustumProjectionPointBufferDataBuffer[projectionPointIndex].Radius);
 					int isInsideFrustum = 0;
 					for (int index = 0; index < _FrustumBufferDataBufferCount; index++) {
-						if (FrustumBufferDataBuffer[index].FrustumProjectionPointBufferDataIndex == projectionPointIndex) {
+						if (FrustumPositionToProjectionPositionLinkTableBuffer[index].FrustumProjectionPointBufferDataIndex == projectionPointIndex) {
 							isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(i.worldPos, FrustumBufferDataBuffer[index]);
 						}
 					}

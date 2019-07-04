@@ -6,7 +6,7 @@ public class Test_Frustum : MonoBehaviour
 {
     public FrustumV2 LocalFrustumV2;
 
-    public Test_Sphere Test_Sphere;
+    public ObstacleListener Test_Sphere;
 
     private bool pointInsideFrustum = false;
 

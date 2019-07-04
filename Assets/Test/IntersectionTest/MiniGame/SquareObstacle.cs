@@ -10,7 +10,7 @@ public class SquareObstacle : MonoBehaviour
     public bool DebugGizmo;
     public bool DebugIntersection;
     public Transform IntersectionPoint;
-    private List<FrustumBufferData> FrustumToDisplay;
+    private List<FrustumPointsWorldPositions> FrustumToDisplay;
 #endif
 
     public static SquareObstacle FromCollisionType(CollisionType collisionType)
@@ -26,13 +26,13 @@ public class SquareObstacle : MonoBehaviour
     {
         this.FaceFrustums = new List<FrustumV2>();
 
-        this.CreateAnnAddFrustum(Quaternion.Euler(0, 0, 0), 1);
-        this.CreateAnnAddFrustum(Quaternion.Euler(0, 0, 0), -1);
-        this.CreateAnnAddFrustum(Quaternion.Euler(0, 90, 0), 1);
-        this.CreateAnnAddFrustum(Quaternion.Euler(0, 90, 0), -1);
+        this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), 1);
+        this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), -1);
+        this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), 1);
+        this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), -1);
     }
 
-    private void CreateAnnAddFrustum(Quaternion deltaRotation, float F1FaceZOffset)
+    private void CreateAndAddFrustum(Quaternion deltaRotation, float F1FaceZOffset)
     {
         var frustum = new FrustumV2();
         frustum.FaceDistance = 9999f;
@@ -46,9 +46,23 @@ public class SquareObstacle : MonoBehaviour
         this.FaceFrustums.Add(frustum);
     }
 
-    public List<FrustumBufferData> ComputeOcclusionFrustums(Vector3 worldPositionStartAngleDefinition, int basePositionBufferIndex)
+    public List<FrustumPointsWorldPositions> ComputeOcclusionFrustums(Vector3 worldPositionStartAngleDefinition)
     {
-        List<FrustumBufferData> frustumBufferDatas = new List<FrustumBufferData>();
+
+#if UNITY_EDITOR
+        if (this.DebugGizmo)
+        {
+            if (this.FrustumToDisplay == null)
+            {
+                FrustumToDisplay = new List<FrustumPointsWorldPositions>();
+            } else
+            {
+                this.FrustumToDisplay.Clear();
+            }
+        }
+#endif
+
+        List<FrustumPointsWorldPositions> frustumPointsWorldPositions = new List<FrustumPointsWorldPositions>();
 
         foreach (var faceFrustum in this.FaceFrustums)
         {
@@ -56,24 +70,20 @@ public class SquareObstacle : MonoBehaviour
             faceFrustum.WorldRotation = this.transform.rotation;
             faceFrustum.LossyScale = this.transform.lossyScale;
             faceFrustum.SetLocalStartAngleProjection(worldPositionStartAngleDefinition);
-            this.ComputeSideFrustum(frustumBufferDatas, faceFrustum, basePositionBufferIndex);
+            this.ComputeSideFrustum(frustumPointsWorldPositions, faceFrustum);
         }
 
-        return frustumBufferDatas;
+        return frustumPointsWorldPositions;
     }
 
-    private void ComputeSideFrustum(List<FrustumBufferData> frustumBufferDatas, FrustumV2 frustum, int basePositionBufferIndex)
+    private void ComputeSideFrustum(List<FrustumPointsWorldPositions> frustumBufferDatas, FrustumV2 frustum)
     {
         frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-        frustumBufferDatas.Add(new FrustumBufferData(C1, C2, C3, C4, C5, C6, C7, C8, basePositionBufferIndex));
+        frustumBufferDatas.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
 #if UNITY_EDITOR
         if (this.DebugGizmo)
         {
-            if (this.FrustumToDisplay == null)
-            {
-                FrustumToDisplay = new List<FrustumBufferData>();
-            }
-            FrustumToDisplay.Add(new FrustumBufferData(C1, C2, C3, C4, C5, C6, C7, C8, basePositionBufferIndex));
+            FrustumToDisplay.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
         }
 #endif
     }
@@ -111,7 +121,6 @@ public class SquareObstacle : MonoBehaviour
                     this.DrawFace(Frustum.FC4, Frustum.FC8, Frustum.FC5, Frustum.FC1);
                     this.DrawFace(Frustum.FC5, Frustum.FC6, Frustum.FC7, Frustum.FC8);
                 }
-                FrustumToDisplay.Clear();
             }
 
             Gizmos.color = oldGizmoColor;
@@ -126,4 +135,35 @@ public class SquareObstacle : MonoBehaviour
         Gizmos.DrawLine(C4, C1);
     }
 #endif
+}
+
+[System.Serializable]
+public struct FrustumPointsWorldPositions
+{
+    public Vector3 FC1;
+    public Vector3 FC2;
+    public Vector3 FC3;
+    public Vector3 FC4;
+    public Vector3 FC5;
+    public Vector3 FC6;
+    public Vector3 FC7;
+    public Vector3 FC8;
+
+    public FrustumPointsWorldPositions(Vector3 fC1, Vector3 fC2, Vector3 fC3, Vector3 fC4, Vector3 fC5, Vector3 fC6, Vector3 fC7, Vector3 fC8)
+    {
+        FC1 = fC1;
+        FC2 = fC2;
+        FC3 = fC3;
+        FC4 = fC4;
+        FC5 = fC5;
+        FC6 = fC6;
+        FC7 = fC7;
+        FC8 = fC8;
+    }
+
+    public static int GetByteSize()
+    {
+        return (8 * 3 * sizeof(float));
+    }
+
 }

@@ -4,35 +4,30 @@ public class IntersectionTestGameManager : MonoBehaviour
 {
 
     private GroundObstacleRendererManager GroundObstacleRendererManager;
+    private SquareObstaclesManager SquareObstaclesManager;
+    private ObstaclesListenerManager ObstaclesListenerManager;
+    private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
 
     void Start()
     {
         GroundObstacleRendererManager = GameObject.FindObjectOfType<GroundObstacleRendererManager>();
+        this.ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
+        this.SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
+        this.ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
 
-        GroundObstacleRendererManager.Init();
 
-        var testSpheres = GameObject.FindObjectsOfType<Test_Sphere>();
-        if (testSpheres != null)
-        {
-            foreach (var testSphere in testSpheres)
-            {
-                testSphere.Init();
-            }
-        }
-
-        var obstacles = GameObject.FindObjectsOfType<SquareObstacle>();
-        if (obstacles != null)
-        {
-            foreach (var obstacle in obstacles)
-            {
-                obstacle.Init();
-            }
-        }
+        this.ObstacleFrustumCalculationManager.Init();
+        this.GroundObstacleRendererManager.Init();
+        this.ObstaclesListenerManager.Init();
+        this.SquareObstaclesManager.Init();
     }
 
     void Update()
     {
         float d = Time.deltaTime;
+
+        ObstaclesListenerManager.Tick(d);
+        this.ObstacleFrustumCalculationManager.Tick(d);
         GroundObstacleRendererManager.Tick(d);
     }
 }
