@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class SquareObstacle : MonoBehaviour
 {
+    [Tooltip("Avoid tracking of value every frame. But obstacle frustum will never be updated")]
+    public bool IsStatic = true;
     private List<FrustumV2> FaceFrustums;
+
+    #region Internal Managers
+    private SquareObstacleChangeTracker SquareObstacleChangeTracker;
+    #endregion
 
 #if UNITY_EDITOR
     public bool DebugGizmo;
@@ -25,11 +31,24 @@ public class SquareObstacle : MonoBehaviour
     public void Init()
     {
         this.FaceFrustums = new List<FrustumV2>();
+        this.SquareObstacleChangeTracker = new SquareObstacleChangeTracker(this);
 
         this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), 1);
         this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), -1);
         this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), 1);
         this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), -1);
+    }
+
+    public bool Tick(float d)
+    {
+        if (this.IsStatic)
+        {
+            return false;
+        }
+        else
+        {
+            return this.SquareObstacleChangeTracker.Tick(d);
+        }
     }
 
     private void CreateAndAddFrustum(Quaternion deltaRotation, float F1FaceZOffset)
@@ -55,7 +74,8 @@ public class SquareObstacle : MonoBehaviour
             if (this.FrustumToDisplay == null)
             {
                 FrustumToDisplay = new List<FrustumPointsWorldPositions>();
-            } else
+            }
+            else
             {
                 this.FrustumToDisplay.Clear();
             }
@@ -166,4 +186,34 @@ public struct FrustumPointsWorldPositions
         return (8 * 3 * sizeof(float));
     }
 
+}
+
+class SquareObstacleChangeTracker
+{
+    private SquareObstacle SquareObstacleRef;
+
+    public SquareObstacleChangeTracker(SquareObstacle squareObstacleRef)
+    {
+        SquareObstacleRef = squareObstacleRef;
+    }
+
+    private Vector3 lastFramePosition;
+    private Quaternion lastFrameRotation;
+    private Vector3 lastFrameScale;
+
+    public bool Tick(float d)
+    {
+        bool hasChanged = false;
+        if (this.lastFramePosition != this.SquareObstacleRef.transform.position ||
+            this.lastFrameRotation != this.SquareObstacleRef.transform.rotation ||
+            this.lastFrameScale != this.SquareObstacleRef.transform.lossyScale)
+        {
+            Debug.Log("HasChanged");
+            hasChanged = true;
+        }
+        this.lastFramePosition = this.SquareObstacleRef.transform.position;
+        this.lastFrameRotation = this.SquareObstacleRef.transform.rotation;
+        this.lastFrameScale = this.SquareObstacleRef.transform.lossyScale;
+        return hasChanged;
+    }
 }

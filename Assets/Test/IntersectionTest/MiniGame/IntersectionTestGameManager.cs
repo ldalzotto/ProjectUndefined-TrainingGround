@@ -27,6 +27,8 @@ public class IntersectionTestGameManager : MonoBehaviour
         float d = Time.deltaTime;
 
         ObstaclesListenerManager.Tick(d);
+        SquareObstaclesManager.Tick(d);
+
         this.ObstacleFrustumCalculationManager.Tick(d);
         GroundObstacleRendererManager.Tick(d);
     }

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class ObstacleFrustumCalculationManager : MonoBehaviour
 {
+    #region External Dependencies
+    private SquareObstaclesManager SquareObstaclesManager;
+    #endregion
+
     private Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>> calculationResults;
 
     public Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>> CalculationResults { get => calculationResults; }
 
     public void Init()
     {
+        this.SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
+
         this.calculationResults = new Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>>();
     }
 
@@ -39,7 +45,9 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
 
     public void Tick(float d)
     {
-        foreach (var obstacleListener in this.calculationResults.Keys.ToList())
+        #region Change Detection
+        var calculationResultsKeys = this.calculationResults.Keys.ToList();
+        foreach (var obstacleListener in calculationResultsKeys)
         {
             if (obstacleListener.HasPositionChanged())
             {
@@ -47,6 +55,19 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
                 this.UpdateSquareObstaclesOfListener(obstacleListener);
             }
         }
+
+        foreach (var changedObstacles in this.SquareObstaclesManager.LastFrameChangedObstacles)
+        {
+            foreach (var obstacleListener in calculationResultsKeys)
+            {
+                if (this.calculationResults[obstacleListener].ContainsKey(changedObstacles))
+                {
+                    this.calculationResults[obstacleListener][changedObstacles].AskCalculation();
+                }
+            }
+        }
+
+        #endregion
 
         foreach (var obstacleListener in this.calculationResults.Keys)
         {
