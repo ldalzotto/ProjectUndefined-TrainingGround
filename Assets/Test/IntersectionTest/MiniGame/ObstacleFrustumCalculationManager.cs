@@ -61,7 +61,6 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
         {
             if (obstacleListener.HasPositionChanged())
             {
-                this.calculationResults[obstacleListener] = new Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>();
                 this.UpdateSquareObstaclesOfListener(obstacleListener);
             }
         }

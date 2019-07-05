@@ -240,7 +240,6 @@ class SquareObstacleChangeTracker
             this.lastFrameRotation != this.SquareObstacleRef.transform.rotation ||
             this.lastFrameScale != this.SquareObstacleRef.transform.lossyScale)
         {
-            Debug.Log("HasChanged");
             hasChanged = true;
         }
         this.lastFramePosition = this.SquareObstacleRef.transform.position;
