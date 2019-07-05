@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class ObstacleFrustumCalculationManager : MonoBehaviour
 {
@@ -9,11 +11,19 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
     #endregion
 
     private Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>> calculationResults;
-
     public Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>> CalculationResults { get => calculationResults; }
+
+    private ObstacleFrustumCalculationThread ObstacleFrustumCalculationThreadObject;
+    private Thread ObstacleFrustumCalculationThread;
 
     public void Init()
     {
+        this.ObstacleFrustumCalculationThreadObject = new ObstacleFrustumCalculationThread();
+        this.ObstacleFrustumCalculationThread = new Thread(new ThreadStart(this.ObstacleFrustumCalculationThreadObject.Main));
+        this.ObstacleFrustumCalculationThread.IsBackground = true;
+        this.ObstacleFrustumCalculationThread.Name = "ObstacleFrustumCalculationThread";
+        this.ObstacleFrustumCalculationThread.Start();
+
         this.SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
 
         this.calculationResults = new Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>>();
@@ -75,7 +85,8 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
             {
                 if (frustumCalculationEntry.Value.CalculationAsked())
                 {
-                    frustumCalculationEntry.Value.SetResult(frustumCalculationEntry.Key.ComputeOcclusionFrustums(obstacleListener.transform.position));
+                    this.ObstacleFrustumCalculationThreadObject.CalculationRequested(frustumCalculationEntry.Value);
+                  //  frustumCalculationEntry.Value.SetResult(frustumCalculationEntry.Key.ComputeOcclusionFrustums(obstacleListener.transform.position));
                 }
             }
         }
@@ -102,8 +113,15 @@ public class SquareObstacleFrustumCalculationResult
     private bool calculationAsked;
 
     #region References
-    private ObstacleListener ObstacleListenerRef;
-    private SquareObstacle SquareObstacleRef;
+    private ObstacleListener obstacleListenerRef;
+    private SquareObstacle squareObstacleRef;
+    #endregion
+
+    #region Calculation Input
+    private Vector3 worldPositionStartAngleDefinition;
+    private Vector3 obstaclePosition;
+    private Quaternion obstacleRotation;
+    private Vector3 obstacleLossyScale;
     #endregion
 
     #region Logical Conditions
@@ -115,11 +133,16 @@ public class SquareObstacleFrustumCalculationResult
 
     public SquareObstacleFrustumCalculationResult(ObstacleListener obstacleListenerRef, SquareObstacle squareObstacleRef)
     {
-        ObstacleListenerRef = obstacleListenerRef;
-        SquareObstacleRef = squareObstacleRef;
+        this.obstacleListenerRef = obstacleListenerRef;
+        this.squareObstacleRef = squareObstacleRef;
+        this.calculatedFrustumPositions = new List<FrustumPointsWorldPositions>();
     }
 
     public List<FrustumPointsWorldPositions> CalculatedFrustumPositions { get => calculatedFrustumPositions; }
+    public Vector3 ObstaclePosition { get => obstaclePosition; }
+    public Quaternion ObstacleRotation { get => obstacleRotation;  }
+    public Vector3 ObstacleLossyScale { get => obstacleLossyScale;  }
+    public Vector3 WorldPositionStartAngleDefinition { get => worldPositionStartAngleDefinition; }
 
     public void SetResult(List<FrustumPointsWorldPositions> calculatedFrustumBufferData)
     {
@@ -130,5 +153,84 @@ public class SquareObstacleFrustumCalculationResult
     public void AskCalculation()
     {
         this.calculationAsked = true;
+        this.worldPositionStartAngleDefinition = this.obstacleListenerRef.transform.position;
+        this.obstaclePosition = this.squareObstacleRef.transform.position;
+        this.obstacleRotation = this.squareObstacleRef.transform.rotation;
+        this.obstacleLossyScale = this.squareObstacleRef.transform.lossyScale;
+    }
+
+    public void DoCalculationFromDedicateThread()
+    {
+        this.SetResult(this.squareObstacleRef.ComputeOcclusionFrustums_FromDedicatedThread(this));
+    }
+
+    public override bool Equals(object obj)
+    {
+        var result = obj as SquareObstacleFrustumCalculationResult;
+        return result != null &&
+               EqualityComparer<ObstacleListener>.Default.Equals(obstacleListenerRef, result.obstacleListenerRef) &&
+               EqualityComparer<SquareObstacle>.Default.Equals(squareObstacleRef, result.squareObstacleRef);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -92224167;
+        hashCode = hashCode * -1521134295 + EqualityComparer<ObstacleListener>.Default.GetHashCode(obstacleListenerRef);
+        hashCode = hashCode * -1521134295 + EqualityComparer<SquareObstacle>.Default.GetHashCode(squareObstacleRef);
+        return hashCode;
     }
 }
+
+#region Threading
+public class ObstacleFrustumCalculationThread
+{
+    private CustomSampler sampler;
+
+    public ObstacleFrustumCalculationThread()
+    {
+        this.sampler = CustomSampler.Create("ObstacleFrustumCalculationThread");
+    }
+
+    public void CalculationRequested(SquareObstacleFrustumCalculationResult SquareObstacleFrustumCalculationResult)
+    {
+        lock (this.frustumCalculations)
+        {
+            this.frustumCalculations[SquareObstacleFrustumCalculationResult.GetHashCode()] = SquareObstacleFrustumCalculationResult;
+        }
+    }
+
+    private Dictionary<int, SquareObstacleFrustumCalculationResult> frustumCalculations = new Dictionary<int, SquareObstacleFrustumCalculationResult>();
+
+    public void Main()
+    {
+        Profiler.BeginThreadProfiling("My threads", "ObstacleFrustumCalculationThread");
+        while (true)
+        {
+            while (this.frustumCalculations.Count > 0)
+            {
+                this.sampler.Begin();
+                DoCalculation();
+                this.sampler.End();
+            }
+        }
+    }
+
+    private void DoCalculation()
+    {
+        SquareObstacleFrustumCalculationResult calculation = null;
+        lock (this.frustumCalculations)
+        {
+            var e = this.frustumCalculations.Keys.GetEnumerator();
+            e.MoveNext();
+            var key = e.Current;
+            calculation = this.frustumCalculations[key];
+            this.frustumCalculations.Remove(key);
+        }
+
+        if (calculation != null)
+        {
+            calculation.DoCalculationFromDedicateThread();
+        }
+    }
+}
+#endregion

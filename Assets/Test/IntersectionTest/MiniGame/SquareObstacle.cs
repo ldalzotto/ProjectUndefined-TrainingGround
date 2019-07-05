@@ -96,6 +96,38 @@ public class SquareObstacle : MonoBehaviour
         return frustumPointsWorldPositions;
     }
 
+    public List<FrustumPointsWorldPositions> ComputeOcclusionFrustums_FromDedicatedThread(SquareObstacleFrustumCalculationResult obstacleCalucation)
+    {
+
+#if UNITY_EDITOR
+        if (this.DebugGizmo)
+        {
+            if (this.FrustumToDisplay == null)
+            {
+                FrustumToDisplay = new List<FrustumPointsWorldPositions>();
+            }
+            else
+            {
+                this.FrustumToDisplay.Clear();
+            }
+        }
+#endif
+
+        List<FrustumPointsWorldPositions> frustumPointsWorldPositions = new List<FrustumPointsWorldPositions>();
+
+        foreach (var faceFrustum in this.FaceFrustums)
+        {
+            faceFrustum.WorldPosition = obstacleCalucation.ObstaclePosition;
+            faceFrustum.WorldRotation = obstacleCalucation.ObstacleRotation;
+            faceFrustum.LossyScale = obstacleCalucation.ObstacleLossyScale;
+            faceFrustum.SetLocalStartAngleProjection(obstacleCalucation.WorldPositionStartAngleDefinition);
+            this.ComputeSideFrustum(frustumPointsWorldPositions, faceFrustum);
+        }
+
+        return frustumPointsWorldPositions;
+    }
+
+
     private void ComputeSideFrustum(List<FrustumPointsWorldPositions> frustumBufferDatas, FrustumV2 frustum)
     {
         frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);

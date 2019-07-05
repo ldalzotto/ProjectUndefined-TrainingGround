@@ -54,6 +54,7 @@ public class GroundObstacleRendererManager : MonoBehaviour
                 foreach (var nearObstable in testSphere.NearSquereObstacles)
                 {
                     var frustumCalculationResults = this.ObstacleFrustumCalculationManager.GetResult(testSphere, nearObstable).CalculatedFrustumPositions;
+
                     frustumBufferDatas.AddRange(frustumCalculationResults);
 
                     var obstacleListenerIndex = this.ObstaclesListenerManager.GetAllObstacleListeners().IndexOf(testSphere);
@@ -61,6 +62,7 @@ public class GroundObstacleRendererManager : MonoBehaviour
                     {
                         frustumBufferLinkDatas.Add(new FrustumPositionToProjectionPositionLinkTable(obstacleListenerIndex));
                     }
+
                 }
             }
         });
@@ -68,7 +70,7 @@ public class GroundObstacleRendererManager : MonoBehaviour
         {
             frustumBufferLinkDatasToSet.AddRange(frustumBufferLinkDatas);
         });
-
+        
     }
 
     private void OnApplicationQuit()
