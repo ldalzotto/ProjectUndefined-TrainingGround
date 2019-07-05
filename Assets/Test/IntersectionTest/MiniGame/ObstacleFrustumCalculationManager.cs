@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -53,6 +54,33 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
     }
     #endregion
 
+    #region Logical Conditions
+    public bool IsPointSeenByListener(ObstacleListener ObstacleListener, Vector3 worldPositionPoint)
+    {
+        if (Vector3.Distance(ObstacleListener.transform.position, worldPositionPoint) <= ObstacleListener.Radius)
+        {
+            foreach (var obstacleResultEntry in this.calculationResults[ObstacleListener].Values)
+            {
+                bool pointContainedInOcclusionFrustum = false;
+                foreach (var calculatedFrustumPosition in obstacleResultEntry.CalculatedFrustumPositions)
+                {
+                    pointContainedInOcclusionFrustum = pointContainedInOcclusionFrustum || Intersection.PointInsideFrustum(calculatedFrustumPosition, worldPositionPoint);
+                }
+
+                if (pointContainedInOcclusionFrustum)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    #endregion
+
     public void Tick(float d)
     {
         #region Change Detection
@@ -85,7 +113,7 @@ public class ObstacleFrustumCalculationManager : MonoBehaviour
                 if (frustumCalculationEntry.Value.CalculationAsked())
                 {
                     this.ObstacleFrustumCalculationThreadObject.CalculationRequested(frustumCalculationEntry.Value);
-                  //  frustumCalculationEntry.Value.SetResult(frustumCalculationEntry.Key.ComputeOcclusionFrustums(obstacleListener.transform.position));
+                    //  frustumCalculationEntry.Value.SetResult(frustumCalculationEntry.Key.ComputeOcclusionFrustums(obstacleListener.transform.position));
                 }
             }
         }
@@ -139,8 +167,8 @@ public class SquareObstacleFrustumCalculationResult
 
     public List<FrustumPointsWorldPositions> CalculatedFrustumPositions { get => calculatedFrustumPositions; }
     public Vector3 ObstaclePosition { get => obstaclePosition; }
-    public Quaternion ObstacleRotation { get => obstacleRotation;  }
-    public Vector3 ObstacleLossyScale { get => obstacleLossyScale;  }
+    public Quaternion ObstacleRotation { get => obstacleRotation; }
+    public Vector3 ObstacleLossyScale { get => obstacleLossyScale; }
     public Vector3 WorldPositionStartAngleDefinition { get => worldPositionStartAngleDefinition; }
 
     public void SetResult(List<FrustumPointsWorldPositions> calculatedFrustumBufferData)

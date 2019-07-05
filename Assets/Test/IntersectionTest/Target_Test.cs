@@ -4,12 +4,17 @@ public class Target_Test : MonoBehaviour
 {
 
     public ObstacleListener Enemy;
-
+    private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
     private bool isSeen;
+
+    private void Start()
+    {
+        this.ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
+    }
 
     private void Update()
     {
-        this.isSeen = this.Enemy.CanSee(this.transform.position);
+        this.isSeen = this.ObstacleFrustumCalculationManager.IsPointSeenByListener(this.Enemy, this.transform.position);
     }
 
     private void OnDrawGizmos()

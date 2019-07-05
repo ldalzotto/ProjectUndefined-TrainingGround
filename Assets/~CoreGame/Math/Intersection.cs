@@ -91,16 +91,25 @@ namespace CoreGame
         #endregion
 
         #region FRUSTUM<->POINT
+        //This method trigger frustum points recalculation
         public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
+        {
+            frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
+            return PointInsideFrustumComputation(worldPositionPoint, C1, C2, C3, C4, C5, C6, C7, C8);
+        }
+
+        public static bool PointInsideFrustum(FrustumPointsWorldPositions FrustumPointsWorldPositions, Vector3 worldPositionPoint)
+        {
+            return PointInsideFrustumComputation(worldPositionPoint, FrustumPointsWorldPositions.FC1, FrustumPointsWorldPositions.FC2, FrustumPointsWorldPositions.FC3
+                , FrustumPointsWorldPositions.FC4, FrustumPointsWorldPositions.FC5, FrustumPointsWorldPositions.FC6, FrustumPointsWorldPositions.FC7, FrustumPointsWorldPositions.FC8);
+        }
+
+        private static bool PointInsideFrustumComputation(Vector3 worldPositionPoint, Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 C5, Vector3 C6, Vector3 C7, Vector3 C8)
         {
             bool pointInsideFrustum = false;
 
-            frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-
             float crossSign = Mathf.Sign(Vector3.Dot(C5 - C1, Vector3.Cross(C2 - C1, C4 - C1)));
-
             Vector3 normal = Vector3.zero;
-
             normal = crossSign * Vector3.Cross(C2 - C1, C3 - C1);
             pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0) && (Vector3.Dot(normal, C5 - C1) > 0);
 
@@ -135,9 +144,9 @@ namespace CoreGame
             }
 
             return pointInsideFrustum;
-
-
         }
+
+
         #endregion
 
         /*
