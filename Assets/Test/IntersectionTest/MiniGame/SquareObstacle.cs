@@ -39,6 +39,18 @@ public class SquareObstacle : MonoBehaviour
         this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), -1);
     }
 
+    #region Logical Conditions
+    public bool IsWorldPositionPointContainedInOcclusionFrustum(Vector3 comparisonWorldPoint)
+    {
+        bool isIsideOcclusionFrustum = false;
+        foreach (var faceFrustum in this.FaceFrustums)
+        {
+            isIsideOcclusionFrustum = isIsideOcclusionFrustum || Intersection.PointInsideFrustum(faceFrustum, comparisonWorldPoint);
+        }
+        return isIsideOcclusionFrustum;
+    }
+    #endregion
+
     public bool Tick(float d)
     {
         if (this.IsStatic)
@@ -57,8 +69,6 @@ public class SquareObstacle : MonoBehaviour
         frustum.FaceDistance = 9999f;
         frustum.F1.Width = 1f;
         frustum.F1.Height = 100f;
-        frustum.UseFaceDefinition = false;
-        frustum.UsePointDefinition = true;
         frustum.WorldRotation = this.transform.rotation;
         frustum.DeltaRotation = deltaRotation;
         frustum.F1.FaceOffsetFromCenter.z = F1FaceZOffset;

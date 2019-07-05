@@ -33,6 +33,24 @@ public class ObstacleListener : MonoBehaviour
     {
         return this.ObstacleListenerChangePositionTracker.HasChanged;
     }
+
+    public bool CanSee(Vector3 worldPositionTarget)
+    {
+
+        bool canSee = Vector3.Distance(this.transform.position, worldPositionTarget) <= this.Radius;
+        if (canSee)
+        {
+            foreach (var nearObstacle in this.nearSquereObstacles)
+            {
+                canSee = !nearObstacle.IsWorldPositionPointContainedInOcclusionFrustum(worldPositionTarget);
+                if (!canSee)
+                {
+                    return canSee;
+                }
+            }
+        }
+        return canSee;
+    }
     #endregion
 
     private void OnDrawGizmos()

@@ -27,11 +27,7 @@ namespace CoreGame
         [SerializeField]
         public FrustumFaceV2 F1;
         [SerializeField]
-        public bool UseFaceDefinition = true;
-        [SerializeField]
         public FrustumFaceV2 F2;
-        [SerializeField]
-        public bool UsePointDefinition = true;
         [SerializeField]
         public Vector3 LocalStartAngleProjection;
         [SerializeField]
@@ -75,6 +71,15 @@ namespace CoreGame
             diagDirection.Scale(this.LossyScale);
             Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C4);
 
+            //Projection point calculation
+            Vector3 WorldStartAngleProjection;
+            Intersection.BoxPointCalculationV2(this.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalStartAngleProjection, out WorldStartAngleProjection);
+            C5 = C1 + ((C1 - WorldStartAngleProjection) * this.FaceDistance);
+            C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
+            C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
+            C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
+
+            /*
             if (this.UseFaceDefinition)
             {
                 diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, this.F2.Height, 0);
@@ -95,13 +100,8 @@ namespace CoreGame
             }
             else
             {
-                Vector3 WorldStartAngleProjection;
-                Intersection.BoxPointCalculationV2(this.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalStartAngleProjection, out WorldStartAngleProjection);
-                C5 = C1 + ((C1 - WorldStartAngleProjection) * this.FaceDistance);
-                C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
-                C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
-                C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
-            }
+            */
+            // }
         }
     }
 
