@@ -2,8 +2,7 @@
 
 namespace CoreGame
 {
-
-
+    
     public class Intersection
     {
 

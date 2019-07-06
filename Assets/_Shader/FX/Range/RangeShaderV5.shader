@@ -4,6 +4,8 @@
 	{
 		_AuraTexture("Aura Texture", 2D) = "white" {}
 		_CountSize("Count Size", int) = 0
+		_FrustumBufferDataBufferCount("_FrustumBufferDataBufferCount", Int) = 0
+		_RangeToFrustumBufferLinkCount("_RangeToFrustumBufferLinkCount", Int) = 0
 	}
 		SubShader
 	{
@@ -19,6 +21,8 @@
 
 
 			#include "UnityCG.cginc"
+			#include "RangeShaderV5_StructDefinition.cginc"
+
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -31,38 +35,17 @@
 				float4 worldPos: TEXCOORD1;
 			};
 
-			struct CircleRangeBufferData {
-				float3 CenterWorldPosition;
-				float Radius;
-				float4 AuraColor;
-				float AuraTextureAlbedoBoost;
-				float AuraAnimationSpeed;
-			};
-
-			struct RangeExecutionOrderBufferData
-			{
-				int IsSphere;
-				int IsCube;
-				int Index;
-			};
-
-			struct BoxRangeBufferData
-			{
-				float3 Forward;
-				float3 Up;
-				float3 Right;
-				float3 Center;
-				float3 LocalSize;
-				float4 AuraColor;
-				float AuraTextureAlbedoBoost;
-				float AuraAnimationSpeed;
-			};
-
 			uniform StructuredBuffer<RangeExecutionOrderBufferData> RangeExecutionOrderBuffer;
 			int _CountSize;
 
 			uniform StructuredBuffer<CircleRangeBufferData> CircleRangeBuffer;
 			uniform StructuredBuffer<BoxRangeBufferData> BoxRangeBuffer;
+
+			uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
+			int _FrustumBufferDataBufferCount;
+
+			uniform StructuredBuffer<RangeToFrustumBufferLink> RangeToFrustumBufferLinkBuffer;
+			int _RangeToFrustumBufferLinkCount;
 
 			sampler2D _AuraTexture;
 			float4 _AuraTexture_ST;
@@ -94,6 +77,41 @@
 				return 0;
 			}
 
+			int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
+				float crossSign = sign(dot(frustumBufferData.FC5 - frustumBufferData.FC1, cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC4 - frustumBufferData.FC1)));
+				return
+					//Begin Check if normals are inside
+					(
+						dot(crossSign*cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1), comparisonPoint - frustumBufferData.FC1) >= 0
+						&& dot(crossSign*cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1), comparisonPoint - frustumBufferData.FC1) >= 0
+						&& dot(crossSign*cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2), comparisonPoint - frustumBufferData.FC2) >= 0
+						&& dot(crossSign*cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3), comparisonPoint - frustumBufferData.FC3) >= 0
+						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4), comparisonPoint - frustumBufferData.FC4) >= 0
+						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5), comparisonPoint - frustumBufferData.FC5) >= 0
+						)
+					//End Check if normals are inside
+					//Begin Checking if frustum angle is != 0 -> causing weird artifacts
+					&&
+					(
+						dot(crossSign*cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1), frustumBufferData.FC5 - frustumBufferData.FC1) > 0
+						&& dot(crossSign*cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1), frustumBufferData.FC4 - frustumBufferData.FC1) > 0
+						&& dot(crossSign*cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2), frustumBufferData.FC1 - frustumBufferData.FC2) > 0
+						&& dot(crossSign*cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3), frustumBufferData.FC2 - frustumBufferData.FC3) > 0
+						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4), frustumBufferData.FC3 - frustumBufferData.FC4) > 0
+						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5), frustumBufferData.FC1 - frustumBufferData.FC5) > 0
+						);
+			}
+
+			int PointIsOccludedByFrustum(float3 comparisonPoint, int circleBufferDataIndex) {
+				int isInsideFrustum = 0;
+				for (int index = 0; index < _RangeToFrustumBufferLinkCount; index++) {
+					if (RangeToFrustumBufferLinkBuffer[index].RangeIndex == circleBufferDataIndex) {
+						isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
+					}
+				}
+				return isInsideFrustum;
+			}
+
 			fixed4 frag(v2f i) : SV_Target
 			{
 
@@ -107,11 +125,15 @@
 						CircleRangeBufferData rangeBuffer = CircleRangeBuffer[executionOrder.Index];
 						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
 						if (calcDistance <= rangeBuffer.Radius) {
-							fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
-							fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost);
-							computeCol = saturate((computeCol + newCol)*0.5);
-							returnCol = computeCol;
+				
+							if ( (rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0) ) {
+								fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
+								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost);
+								computeCol = saturate((computeCol + newCol)*0.5);
+								returnCol = computeCol;
+							}
+
 						}
 					}
 					else {

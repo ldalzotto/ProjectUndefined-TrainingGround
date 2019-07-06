@@ -29,6 +29,9 @@ namespace RTPuzzle
         private ObjectRepelContainerManager ObjectRepelContainerManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
+        private ObstaclesListenerManager ObstaclesListenerManager;
+        private SquareObstaclesManager SquareObstaclesManager;
+        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -72,6 +75,9 @@ namespace RTPuzzle
             ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
             DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
             ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
+            ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
+            SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
+            ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -110,6 +116,10 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
 
+            ObstacleFrustumCalculationManager.Init();
+            ObstaclesListenerManager.Init();
+            SquareObstaclesManager.Init();
+
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -126,6 +136,11 @@ namespace RTPuzzle
             {
                 PlayerActionManager.Tick(d);
                 PlayerManager.Tick(d);
+                
+                ObstaclesListenerManager.Tick(d);
+                SquareObstaclesManager.Tick(d);
+                ObstacleFrustumCalculationManager.Tick(d);
+                
                 TimeFlowManager.Tick(d);
                 GameOverManager.Tick(d);
                 CooldownFeedManager.Tick(d);

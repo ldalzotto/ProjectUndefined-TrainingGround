@@ -2,15 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace RTPuzzle
 {
     public class DottedLineRendererManager : MonoBehaviour
     {
         private DottedLineManagerThread DottedLineManagerThreadObject;
-        private Thread DottedLineManagerThread;
 
         public Mesh DiamondMesh;
         private Queue<ComputeBeziersInnerPointResponse> ComputeBeziersInnerPointResponses = new Queue<ComputeBeziersInnerPointResponse>();
@@ -23,10 +22,6 @@ namespace RTPuzzle
         public virtual void Init()
         {
             this.DottedLineManagerThreadObject = new DottedLineManagerThread(this.OnComputeBeziersInnerPointResponse);
-            this.DottedLineManagerThread = new Thread(new ThreadStart(this.DottedLineManagerThreadObject.Main));
-            this.DottedLineManagerThread.IsBackground = true;
-            this.DottedLineManagerThread.Name = "DottedLineManagerThread";
-            this.DottedLineManagerThread.Start();
         }
 
         public virtual void Tick()
@@ -81,7 +76,6 @@ namespace RTPuzzle
             {
                 this.ComputeBeziersInnerPointResponses.Clear();
             }
-            this.DottedLineManagerThread.Abort();
         }
         #endregion
     }
@@ -89,50 +83,33 @@ namespace RTPuzzle
     public class DottedLineManagerThread
     {
         private Action<ComputeBeziersInnerPointResponse> SendComputeBeziersInnerPointResponse;
-        private CustomSampler sampler;
 
         public DottedLineManagerThread(Action<ComputeBeziersInnerPointResponse> sendComputeBeziersInnerPointResponse)
         {
             SendComputeBeziersInnerPointResponse = sendComputeBeziersInnerPointResponse;
-            this.sampler = CustomSampler.Create("DottedLineManagerThreadTick");
         }
 
-        private Dictionary<int, ComputeBeziersInnerPointEvent> computeBeziersInnerPointEvents = new Dictionary<int, ComputeBeziersInnerPointEvent>();
+        private Dictionary<int, CancellationTokenSource> computeBeziersInnerPointTasks = new Dictionary<int, CancellationTokenSource>();
 
         public void OnComputeBeziersInnerPointEvent(ComputeBeziersInnerPointEvent ComputeBeziersInnerPointEvent)
         {
-            lock (this.computeBeziersInnerPointEvents)
-            {
-                this.computeBeziersInnerPointEvents[ComputeBeziersInnerPointEvent.ID] = ComputeBeziersInnerPointEvent;
-            }
-        }
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
 
-        public void Main()
-        {
-            Profiler.BeginThreadProfiling("My threads", "DottedLineManagerThread");
-            while (true)
+            lock (this.computeBeziersInnerPointTasks)
             {
-                while (this.computeBeziersInnerPointEvents.Count > 0)
+                if (this.computeBeziersInnerPointTasks.ContainsKey(ComputeBeziersInnerPointEvent.ID))
                 {
-                    this.sampler.Begin();
-                    ComputeEvent();
-                    this.sampler.End();
+                    this.computeBeziersInnerPointTasks[ComputeBeziersInnerPointEvent.ID].Cancel();
                 }
+                this.computeBeziersInnerPointTasks[ComputeBeziersInnerPointEvent.ID] = tokenSource;
             }
+
+            Task.Factory.StartNew(() => this.ComputeEvent(ComputeBeziersInnerPointEvent), token);
         }
 
-        private void ComputeEvent()
+        private void ComputeEvent(ComputeBeziersInnerPointEvent ComputeBeziersInnerPointEvent)
         {
-            ComputeBeziersInnerPointEvent ComputeBeziersInnerPointEvent = null;
-            lock (this.computeBeziersInnerPointEvents)
-            {
-                var e = this.computeBeziersInnerPointEvents.Keys.GetEnumerator();
-                e.MoveNext();
-                var key = e.Current;
-                ComputeBeziersInnerPointEvent = this.computeBeziersInnerPointEvents[key];
-                this.computeBeziersInnerPointEvents.Remove(key);
-            }
-
             var ComputeBeziersInnerPointEventResponse = new ComputeBeziersInnerPointResponse();
             ComputeBeziersInnerPointEventResponse.ID = ComputeBeziersInnerPointEvent.ID;
             ComputeBeziersInnerPointEventResponse.Transforms = new List<Matrix4x4>();
@@ -142,6 +119,11 @@ namespace RTPuzzle
             {
                 Vector3 worldPosition = ComputeBeziersInnerPointEvent.BeziersControlPoints.ResolvePoint((float)i / (float)pointNumber);
                 ComputeBeziersInnerPointEventResponse.Transforms.Add(Matrix4x4.TRS(worldPosition, Quaternion.identity, ComputeBeziersInnerPointEvent.MeshScale));
+            }
+
+            lock (this.computeBeziersInnerPointTasks)
+            {
+                this.computeBeziersInnerPointTasks.Remove(ComputeBeziersInnerPointEvent.ID);
             }
 
             this.SendComputeBeziersInnerPointResponse.Invoke(ComputeBeziersInnerPointEventResponse);

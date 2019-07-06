@@ -1,7 +1,9 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Rendering;
 
 namespace RTPuzzle
@@ -13,6 +15,8 @@ namespace RTPuzzle
 
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private ObstaclesListenerManager ObstaclesListenerManager;
+        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         #endregion
 
         private CommandBuffer command;
@@ -38,11 +42,18 @@ namespace RTPuzzle
         private List<RangeExecutionOrderBufferData> RangeExecutionOrderBufferDataValues = new List<RangeExecutionOrderBufferData>();
         private ComputeBuffer RangeExecutionOrderBuffer;
 
+        private DynamicComputeBufferManager<FrustumPointsWorldPositions> FrustumBufferManager;
+        private DynamicComputeBufferManager<RangeToFrustumBufferLink> RangeToFrustumBufferLinkManager;
+        private List<RangeToFrustumBufferLink> RangeToFrustumBufferLinkValues = new List<RangeToFrustumBufferLink>();
+        private Dictionary<ObstacleListener, List<int>> ComputedFrustumPointsWorldPositionsIndexes = new Dictionary<ObstacleListener, List<int>>();
+
         public void Init()
         {
 
             #region External Dependencies
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
+            ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
             #endregion
 
             var camera = Camera.main;
@@ -68,10 +79,14 @@ namespace RTPuzzle
             this.RangeExecutionOrderBuffer = new ComputeBuffer(this.rangeEffectRenderOrder.Count, 3 * sizeof(int));
             this.RangeExecutionOrderBuffer.SetData(this.RangeExecutionOrderBufferDataValues);
             this.MasterRangeMaterial.SetBuffer("RangeExecutionOrderBuffer", this.RangeExecutionOrderBuffer);
+
+            this.FrustumBufferManager = new DynamicComputeBufferManager<FrustumPointsWorldPositions>(FrustumPointsWorldPositions.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", ref this.MasterRangeMaterial);
+            this.RangeToFrustumBufferLinkManager = new DynamicComputeBufferManager<RangeToFrustumBufferLink>(RangeToFrustumBufferLink.GetByteSize(), "RangeToFrustumBufferLinkBuffer", "_RangeToFrustumBufferLinkCount", ref this.MasterRangeMaterial);
         }
 
         public void Tick(float d)
         {
+            Profiler.BeginSample("GroundEffectsManagerV2Tick");
             this.RenderedRenderers.Clear();
             foreach (var groundEffectManager in this.rangeEffectManagers.Values)
             {
@@ -85,6 +100,30 @@ namespace RTPuzzle
             this.CircleRangeBufferValues.Clear();
             this.BoxRangeBufferValues.Clear();
             this.RangeExecutionOrderBufferDataValues.Clear();
+            this.RangeToFrustumBufferLinkValues.Clear();
+            this.ComputedFrustumPointsWorldPositionsIndexes.Clear();
+
+            Profiler.BeginSample("FrustumBufferManagerTick");
+            this.FrustumBufferManager.Tick(d, (List<FrustumPointsWorldPositions> frustumBufferDatas) =>
+            {
+                foreach (var testSphere in this.ObstaclesListenerManager.GetAllObstacleListeners())
+                {
+                    int startIndex = frustumBufferDatas.Count;
+                    foreach (var nearObstable in testSphere.NearSquereObstacles)
+                    {
+                        var frustumCalculationResults = this.ObstacleFrustumCalculationManager.GetResult(testSphere, nearObstable).CalculatedFrustumPositions;
+                        frustumBufferDatas.AddRange(frustumCalculationResults);
+                    }
+                    if (startIndex != frustumBufferDatas.Count)
+                    {
+                        this.ComputedFrustumPointsWorldPositionsIndexes[testSphere] = Enumerable.Range(startIndex, frustumBufferDatas.Count - 1).ToList();
+                    }
+                }
+            });
+            Profiler.EndSample();
+
+
+            Profiler.BeginSample("RangeBufferManagerTick");
             foreach (var rangeEffectId in this.rangeEffectRenderOrder)
             {
                 if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
@@ -92,8 +131,18 @@ namespace RTPuzzle
                     var rangeEffectManager = this.rangeEffectManagers[rangeEffectId];
                     if (rangeEffectManager.GetType() == typeof(SphereGroundEffectManager))
                     {
-                        this.CircleRangeBufferValues.Add(((SphereGroundEffectManager)rangeEffectManager).ToSphereBuffer());
+                        var SphereGroundEffectManager = (SphereGroundEffectManager)rangeEffectManager;
+                        var circleRangeBufferData = SphereGroundEffectManager.ToSphereBuffer();
+                        this.CircleRangeBufferValues.Add(circleRangeBufferData);
                         this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(1, 0, this.CircleRangeBufferValues.Count - 1));
+
+                        if (circleRangeBufferData.OccludedByFrustums == 1)
+                        {
+                            foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[SphereGroundEffectManager.AssociatedRange.ObstacleListener])
+                            {
+                                this.RangeToFrustumBufferLinkValues.Add(new RangeToFrustumBufferLink(this.CircleRangeBufferValues.Count - 1, computedFrustumPointsWorldPositionsIndexe));
+                            }
+                        }
                     }
                     else if (rangeEffectManager.GetType() == typeof(BoxGroundEffectManager))
                     {
@@ -102,6 +151,7 @@ namespace RTPuzzle
                     }
                 }
             }
+            Profiler.EndSample();
 
             if (this.CircleRangeBuffer.IsValid())
             {
@@ -116,7 +166,14 @@ namespace RTPuzzle
                 this.RangeExecutionOrderBuffer.SetData(this.RangeExecutionOrderBufferDataValues);
             }
 
+            this.RangeToFrustumBufferLinkManager.Tick(d, (List<RangeToFrustumBufferLink> RangeToFrustumBufferLinkDatas) =>
+            {
+                RangeToFrustumBufferLinkDatas.AddRange(this.RangeToFrustumBufferLinkValues);
+            });
+
             this.OnCommandBufferUpdate();
+
+            Profiler.EndSample();
         }
 
         #region External events
@@ -145,6 +202,7 @@ namespace RTPuzzle
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.CircleRangeBuffer);
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.BoxRangeBuffer);
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.RangeExecutionOrderBuffer);
+            this.FrustumBufferManager.Dispose();
         }
 
         internal void OnRangeDestroy(RangeType rangeType)
@@ -194,6 +252,23 @@ namespace RTPuzzle
             IsSphere = isSphere;
             IsCube = isCube;
             Index = index;
+        }
+    }
+
+    struct RangeToFrustumBufferLink
+    {
+        public int RangeIndex;
+        public int FrustumIndex;
+
+        public RangeToFrustumBufferLink(int rangeIndex, int frustumIndex)
+        {
+            RangeIndex = rangeIndex;
+            FrustumIndex = frustumIndex;
+        }
+
+        public static int GetByteSize()
+        {
+            return (1 + 1) * sizeof(int);
         }
     }
 }

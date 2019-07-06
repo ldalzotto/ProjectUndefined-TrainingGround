@@ -164,6 +164,11 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\ContextMarkVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\LineVisualFeedbackManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleFrustumCalculationManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstaclesListenerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstacle.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\AttractiveObjectAction\Scripts\AttractiveObjectAction.cs" />

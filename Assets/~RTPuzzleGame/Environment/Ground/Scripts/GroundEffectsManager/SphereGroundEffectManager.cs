@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -24,9 +23,19 @@ namespace RTPuzzle
             }
             CircleRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
             CircleRangeBufferData.AuraAnimationSpeed = 20f;
+
+            if (this.associatedRange.IsOccludedByFrustum())
+            {
+                CircleRangeBufferData.OccludedByFrustums = 1;
+            }
+            else
+            {
+                CircleRangeBufferData.OccludedByFrustums = 0;
+            }
+
             return CircleRangeBufferData;
         }
-        
+
     }
 
     public struct CircleRangeBufferData
@@ -37,9 +46,11 @@ namespace RTPuzzle
         public float AuraTextureAlbedoBoost;
         public float AuraAnimationSpeed;
 
+        public int OccludedByFrustums;
+
         public static int GetByteSize()
         {
-            return (3 + 1 + 4 + 1 + 1) * sizeof(float);
+            return ((3 + 1 + 4 + 1 + 1) * sizeof(float)) + ((1) * sizeof(int));
         }
     }
 }

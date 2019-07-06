@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
-using System.Collections.Generic;
+﻿using CoreGame;
 using GameConfigurationID;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -22,6 +21,7 @@ namespace RTPuzzle
         protected bool isAttractiveObjectRangeEnabled;
 
         public bool IsAttractiveObjectRangeEnabled { get => isAttractiveObjectRangeEnabled; }
+        public T AssociatedRange { get => associatedRange; }
 
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
@@ -66,7 +66,7 @@ namespace RTPuzzle
                 }
             }
         }
-        
+
     }
 
 }

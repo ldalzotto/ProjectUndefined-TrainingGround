@@ -15,13 +15,19 @@ namespace RTPuzzle
         protected RangeTypeContainer rangeTypeContainer;
         #endregion
 
+        #region Internal Managers
+        protected ObstacleListener obstacleListener;
+        #endregion
+
         public RangeTypeID RangeTypeID { get => rangeTypeID; set => rangeTypeID = value; }
+        public ObstacleListener ObstacleListener { get => obstacleListener;  }
 
         public virtual void Init()
         {
             this.rangeTypeContainer = GameObject.FindObjectOfType<RangeTypeContainer>();
             this.rangeTypeInherentConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().RangeTypeConfiguration()[this.rangeTypeID];
             rangeTypeContainer.AddRange(this);
+            this.obstacleListener = GetComponent<ObstacleListener>();
         }
 
         private void OnDestroy()
@@ -54,6 +60,10 @@ namespace RTPuzzle
         public bool IsRangeConfigurationDefined()
         {
             return this.rangeTypeInherentConfigurationData != null;
+        }
+        public bool IsOccludedByFrustum()
+        {
+            return this.obstacleListener != null && this.obstacleListener.IsListenerHaveObstaclesNearby();
         }
         #endregion
     }

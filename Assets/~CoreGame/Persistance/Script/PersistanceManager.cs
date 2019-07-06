@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace CoreGame
@@ -26,7 +26,7 @@ namespace CoreGame
                 this.PersistanceManagerThreadObject = new PersistanceManagerThreadObject(OnNoMorePersistanceProcessingCallback: this.OnNoMorePersistanceProcessing);
             }
         }
-
+        
         public virtual void Tick(float d)
         {
             if (this.NoMorePersistanceEvent)
@@ -77,7 +77,7 @@ namespace CoreGame
 
     class PersistanceManagerThreadObject
     {
-        private Thread peristanceManagerThread;
+        private bool executingActions;
         private Queue<Action> persistQueueActions;
 
         private Action OnNoMorePersistanceProcessingCallback;
@@ -85,9 +85,6 @@ namespace CoreGame
         public PersistanceManagerThreadObject(Action OnNoMorePersistanceProcessingCallback)
         {
             this.persistQueueActions = new Queue<Action>();
-            this.peristanceManagerThread = new Thread(new ThreadStart(this.Main));
-            this.peristanceManagerThread.IsBackground = true;
-            this.peristanceManagerThread.Start();
             this.OnNoMorePersistanceProcessingCallback = OnNoMorePersistanceProcessingCallback;
         }
 
@@ -97,42 +94,48 @@ namespace CoreGame
             {
                 this.persistQueueActions.Enqueue(persistAction);
             }
-        }
 
-        private int lastFrameCount = 0;
-
-        private void Main()
-        {
-            while (true)
+            if (!this.executingActions)
             {
-                int queueCount;
-                lock (persistQueueActions)
-                {
-                    queueCount = persistQueueActions.Count;
-                }
-
-                if (queueCount > 0)
-                {
-                    Action nextAction;
-                    lock (this.persistQueueActions)
-                    {
-                        nextAction = this.persistQueueActions.Dequeue();
-                    }
-
-                    if (nextAction != null)
-                    {
-                        nextAction.Invoke();
-                    }
-                }
-
-                if (this.lastFrameCount != 0 && queueCount == 0)
-                {
-                    this.OnNoMorePersistanceProcessingCallback.Invoke();
-                }
-
-                this.lastFrameCount = queueCount;
+                this.executingActions = true;
+                this.ProcessNextAction();
             }
         }
+
+        private void ProcessNextAction()
+        {
+            Action nextAction;
+            lock (this.persistQueueActions)
+            {
+                nextAction = this.persistQueueActions.Dequeue();
+            }
+            Task.Factory.StartNew(() => this.DoTask(nextAction));
+        }
+
+        private void DoTask(Action action)
+        {
+            action.Invoke();
+
+            bool processNextAction = false;
+            lock (this.persistQueueActions)
+            {
+                if (this.persistQueueActions.Count != 0)
+                {
+                    processNextAction = true;
+                }
+            }
+
+            if (processNextAction)
+            {
+                this.ProcessNextAction();
+            }
+            else
+            {
+                this.OnNoMorePersistanceProcessingCallback.Invoke();
+                this.executingActions = false;
+            }
+        }
+
     }
 
 }

@@ -17,7 +17,13 @@ namespace RTPuzzle
             this.originPositionProvider = originPositionProvider;
             this.sphereCollider = GetComponent<SphereCollider>();
             this.sphereCollider.radius = sphereRadius;
+            
             base.Init();
+
+            if (this.obstacleListener != null)
+            {
+                this.obstacleListener.Radius = sphereRadius;
+            }
             if (this.IsRangeConfigurationDefined())
             {
                 this.rangeTypeInherentConfigurationData.RangeColorProvider = rangeColorProvider;
@@ -38,6 +44,10 @@ namespace RTPuzzle
             if (this.originPositionProvider != null)
             {
                 transform.position = this.originPositionProvider.Invoke();
+            }
+            if (this.obstacleListener != null)
+            {
+                this.obstacleListener.Tick(d);
             }
         }
 

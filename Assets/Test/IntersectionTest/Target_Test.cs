@@ -2,6 +2,7 @@
 
 public class Target_Test : MonoBehaviour
 {
+    /*
 
     public ObstacleListener Enemy;
     private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
@@ -33,4 +34,5 @@ public class Target_Test : MonoBehaviour
 
         Gizmos.color = oldGizmoColor;
     }
+    */
 }
