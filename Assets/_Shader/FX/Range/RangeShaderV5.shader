@@ -116,7 +116,10 @@
 				for (int index = 0; index < _RangeToFrustumBufferLinkCount; index++) {
 					if (RangeToFrustumBufferLinkBuffer[index].RangeIndex == circleBufferDataIndex) {
 
-						isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
+						isInsideFrustum = PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
+						if (isInsideFrustum) {
+							break;
+						}
 					}
 				}
 				return isInsideFrustum;

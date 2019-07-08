@@ -137,8 +137,7 @@ namespace RTPuzzle
             return frustumPointsWorldPositions;
 
         }
-
-
+        
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {

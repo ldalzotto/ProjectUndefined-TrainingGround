@@ -61,7 +61,7 @@ namespace RTPuzzle
                 if (squareObstacle != null)
                 {
                     Debug.Log("ObstacleListener");
-                    this.nearSquereObstacles.Add(squareObstacle);
+                    this.AddNearSquareObstacle(squareObstacle);
                     this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, squareObstacle);
                 }
             }
@@ -75,10 +75,29 @@ namespace RTPuzzle
                 var squareObstacle = SquareObstacle.FromCollisionType(collisionType);
                 if (squareObstacle != null)
                 {
-                    this.nearSquereObstacles.Remove(squareObstacle);
+                    this.RemoveNearSquareObstacle(squareObstacle);
                     this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, squareObstacle);
                 }
             }
+        }
+
+        private void AddNearSquareObstacle(SquareObstacle squareObstacle)
+        {
+            this.nearSquereObstacles.Add(squareObstacle);
+            this.SortObstaclesByDistance();
+        }
+
+        private void RemoveNearSquareObstacle(SquareObstacle squareObstacle)
+        {
+            this.nearSquereObstacles.Remove(squareObstacle);
+            this.SortObstaclesByDistance();
+        }
+
+        //Nearest obstacles are sorted by distance in order to do intersection calculation from the nearest to the farest frustum.
+        //Nearest frustum has more chance to oclcude a wider space than a farest
+        private void SortObstaclesByDistance()
+        {
+            this.nearSquereObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.transform.position, this.transform.position).CompareTo(Vector3.Distance(o2.transform.position, this.transform.position)); });
         }
     }
 

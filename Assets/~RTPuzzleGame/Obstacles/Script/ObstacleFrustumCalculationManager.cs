@@ -106,8 +106,7 @@ namespace RTPuzzle
             }
 
             #endregion
-
-            //TODO -> Optimisation
+            
             List<SquareObstacleFrustumCalculationResult> batchedSquareObstacleFrustumCalculationResult = null;
             foreach (var obstacleListener in this.calculationResults.Keys)
             {
@@ -248,11 +247,6 @@ namespace RTPuzzle
             Task.Run(() => this.DoCalculation(SquareObstacleFrustumCalculationResults));
         }
 
-        public void CalculationRequested(SquareObstacleFrustumCalculationResult SquareObstacleFrustumCalculationResult)
-        {
-            Task.Run(() => this.DoCalculation(SquareObstacleFrustumCalculationResult));
-        }
-        
         private void DoCalculation(SquareObstacleFrustumCalculationResult[]  calculations)
         {
             foreach (var calculation in calculations)
