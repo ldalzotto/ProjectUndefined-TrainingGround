@@ -20,6 +20,7 @@ namespace RTPuzzle
         public bool DebugIntersection;
         public Transform IntersectionPoint;
         private List<FrustumPointsWorldPositions> FrustumToDisplay;
+        private Dictionary<FrustumV2, NormalGizmo> FrustumFacesNormal;
 #endif
 
         public static SquareObstacle FromCollisionType(CollisionType collisionType)
@@ -37,9 +38,9 @@ namespace RTPuzzle
             this.SquareObstacleChangeTracker = new SquareObstacleChangeTracker(this);
 
             this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), 1);
-            this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), -1);
+            this.CreateAndAddFrustum(Quaternion.Euler(0, 180, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), 1);
-            this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), -1);
+            this.CreateAndAddFrustum(Quaternion.Euler(0, -90, 0), 1);
         }
 
         #region Logical Conditions
@@ -71,42 +72,11 @@ namespace RTPuzzle
             var frustum = new FrustumV2();
             frustum.FaceDistance = 9999f;
             frustum.F1.Width = 1f;
-            frustum.F1.Height = 100f;
+            frustum.F1.Height = 1f;
             frustum.WorldRotation = this.transform.rotation;
             frustum.DeltaRotation = deltaRotation;
             frustum.F1.FaceOffsetFromCenter.z = F1FaceZOffset;
             this.FaceFrustums.Add(frustum);
-        }
-
-        public List<FrustumPointsWorldPositions> ComputeOcclusionFrustums(Vector3 worldPositionStartAngleDefinition)
-        {
-
-#if UNITY_EDITOR
-            if (this.DebugGizmo)
-            {
-                if (this.FrustumToDisplay == null)
-                {
-                    FrustumToDisplay = new List<FrustumPointsWorldPositions>();
-                }
-                else
-                {
-                    this.FrustumToDisplay.Clear();
-                }
-            }
-#endif
-
-            List<FrustumPointsWorldPositions> frustumPointsWorldPositions = new List<FrustumPointsWorldPositions>();
-
-            foreach (var faceFrustum in this.FaceFrustums)
-            {
-                faceFrustum.WorldPosition = this.transform.position;
-                faceFrustum.WorldRotation = this.transform.rotation;
-                faceFrustum.LossyScale = this.transform.lossyScale;
-                faceFrustum.SetLocalStartAngleProjection(worldPositionStartAngleDefinition);
-                this.ComputeSideFrustum(frustumPointsWorldPositions, faceFrustum);
-            }
-
-            return frustumPointsWorldPositions;
         }
 
         public List<FrustumPointsWorldPositions> ComputeOcclusionFrustums_FromDedicatedThread(SquareObstacleFrustumCalculationResult obstacleCalucation)
@@ -123,10 +93,18 @@ namespace RTPuzzle
                 {
                     this.FrustumToDisplay.Clear();
                 }
+                if (this.FrustumFacesNormal == null)
+                {
+                    this.FrustumFacesNormal = new Dictionary<FrustumV2, NormalGizmo>();
+                }
+                else
+                {
+                    this.FrustumFacesNormal.Clear();
+                }
             }
 #endif
-
             List<FrustumPointsWorldPositions> frustumPointsWorldPositions = new List<FrustumPointsWorldPositions>();
+
 
             foreach (var faceFrustum in this.FaceFrustums)
             {
@@ -134,24 +112,32 @@ namespace RTPuzzle
                 faceFrustum.WorldRotation = obstacleCalucation.ObstacleRotation;
                 faceFrustum.LossyScale = obstacleCalucation.ObstacleLossyScale;
                 faceFrustum.SetLocalStartAngleProjection(obstacleCalucation.WorldPositionStartAngleDefinition);
-                this.ComputeSideFrustum(frustumPointsWorldPositions, faceFrustum);
+
+                faceFrustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
+
+                Vector3 frontFaceNormal = Vector3.Cross(C2 - C1, C4 - C1).normalized;
+                
+                if (Vector3.Dot(frontFaceNormal, C1 - obstacleCalucation.WorldPositionStartAngleDefinition) < 0)
+                {
+                    continue;
+                }
+
+                frustumPointsWorldPositions.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
+#if UNITY_EDITOR
+                if (this.DebugGizmo)
+                {
+                    FrustumToDisplay.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
+                    this.FrustumFacesNormal.Add(faceFrustum, new NormalGizmo(frontFaceNormal, C1));
+                }
+#endif
             }
+
+            Debug.Log(frustumPointsWorldPositions.Count);
 
             return frustumPointsWorldPositions;
+
         }
 
-
-        private void ComputeSideFrustum(List<FrustumPointsWorldPositions> frustumBufferDatas, FrustumV2 frustum)
-        {
-            frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-            frustumBufferDatas.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
-#if UNITY_EDITOR
-            if (this.DebugGizmo)
-            {
-                FrustumToDisplay.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
-            }
-#endif
-        }
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
@@ -177,15 +163,52 @@ namespace RTPuzzle
 
                 if (this.FrustumToDisplay != null)
                 {
+
+                    int counter = 0;
                     foreach (var Frustum in FrustumToDisplay)
                     {
+                        if (counter == 0) { Gizmos.color = Color.red; }
+                        else if (counter == 1) { Gizmos.color = Color.green; }
+                        else if (counter == 2) { Gizmos.color = Color.blue; }
+                        else if (counter == 3) { Gizmos.color = Color.yellow; }
+
                         this.DrawFace(Frustum.FC1, Frustum.FC2, Frustum.FC3, Frustum.FC4);
                         this.DrawFace(Frustum.FC1, Frustum.FC5, Frustum.FC6, Frustum.FC2);
                         this.DrawFace(Frustum.FC2, Frustum.FC6, Frustum.FC7, Frustum.FC3);
                         this.DrawFace(Frustum.FC3, Frustum.FC7, Frustum.FC8, Frustum.FC4);
                         this.DrawFace(Frustum.FC4, Frustum.FC8, Frustum.FC5, Frustum.FC1);
                         this.DrawFace(Frustum.FC5, Frustum.FC6, Frustum.FC7, Frustum.FC8);
+
+                        counter++;
                     }
+                }
+
+                if (this.FrustumFacesNormal != null)
+                {
+                    int counter = 0;
+                    foreach (var FrustumFaceNormal in this.FrustumFacesNormal)
+                    {
+                        if (counter == 0) { Gizmos.color = Color.red; }
+                        else if (counter == 1) { Gizmos.color = Color.green; }
+                        else if (counter == 2) { Gizmos.color = Color.blue; }
+                        else if (counter == 3) { Gizmos.color = Color.yellow; }
+                        Gizmos.DrawLine(FrustumFaceNormal.Value.StartPoint, FrustumFaceNormal.Value.StartPoint + FrustumFaceNormal.Value.NormalizedNormal);
+                        counter++;
+                    }
+                }
+
+                if (this.DebugIntersection && this.FaceFrustums != null)
+                {
+                    if (this.IsWorldPositionPointContainedInOcclusionFrustum(this.IntersectionPoint.transform.position))
+                    {
+                        Gizmos.color = Color.green;
+                    }
+                    else
+                    {
+                        Gizmos.color = Color.red;
+                    }
+
+                    Gizmos.DrawWireSphere(this.IntersectionPoint.transform.position, 1f);
                 }
 
                 Gizmos.color = oldGizmoColor;
@@ -230,4 +253,18 @@ namespace RTPuzzle
             return hasChanged;
         }
     }
+
+#if UNITY_EDITOR
+    class NormalGizmo
+    {
+        public Vector3 NormalizedNormal;
+        public Vector3 StartPoint;
+
+        public NormalGizmo(Vector3 normalizedNormal, Vector3 startPoint)
+        {
+            NormalizedNormal = normalizedNormal;
+            StartPoint = startPoint;
+        }
+    }
+#endif
 }

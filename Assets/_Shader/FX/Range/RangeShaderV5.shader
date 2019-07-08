@@ -79,33 +79,43 @@
 
 			int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
 				float crossSign = sign(dot(frustumBufferData.FC5 - frustumBufferData.FC1, cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC4 - frustumBufferData.FC1)));
-				return
-					//Begin Check if normals are inside
-					(
-						dot(crossSign*cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1), comparisonPoint - frustumBufferData.FC1) >= 0
-						&& dot(crossSign*cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1), comparisonPoint - frustumBufferData.FC1) >= 0
-						&& dot(crossSign*cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2), comparisonPoint - frustumBufferData.FC2) >= 0
-						&& dot(crossSign*cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3), comparisonPoint - frustumBufferData.FC3) >= 0
-						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4), comparisonPoint - frustumBufferData.FC4) >= 0
-						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5), comparisonPoint - frustumBufferData.FC5) >= 0
-						)
-					//End Check if normals are inside
-					//Begin Checking if frustum angle is != 0 -> causing weird artifacts
-					&&
-					(
-						dot(crossSign*cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1), frustumBufferData.FC5 - frustumBufferData.FC1) > 0
-						&& dot(crossSign*cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1), frustumBufferData.FC4 - frustumBufferData.FC1) > 0
-						&& dot(crossSign*cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2), frustumBufferData.FC1 - frustumBufferData.FC2) > 0
-						&& dot(crossSign*cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3), frustumBufferData.FC2 - frustumBufferData.FC3) > 0
-						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4), frustumBufferData.FC3 - frustumBufferData.FC4) > 0
-						&& dot(crossSign*cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5), frustumBufferData.FC1 - frustumBufferData.FC5) > 0
-						);
+				float3 normal = crossSign * cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1);
+				int pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC1) >= 0 && dot(normal, frustumBufferData.FC5 - frustumBufferData.FC1) > 0;
+
+				if (pointInsideFrustum) {
+					normal = crossSign * cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1);
+					pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC1) >= 0 && dot(normal, frustumBufferData.FC4 - frustumBufferData.FC1) > 0;
+					
+					if (pointInsideFrustum) {
+						normal = crossSign * cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2);
+						pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC2) >= 0 && dot(normal, frustumBufferData.FC1 - frustumBufferData.FC2) > 0;
+
+						if (pointInsideFrustum) {
+							normal = crossSign * cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3);
+							pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC3) >= 0 && dot(normal, frustumBufferData.FC2 - frustumBufferData.FC3) > 0;
+
+							if (pointInsideFrustum) {
+								normal = crossSign * cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4);
+								pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC4) >= 0 && dot(normal, frustumBufferData.FC3 - frustumBufferData.FC4) > 0;
+
+								if (pointInsideFrustum) {
+									normal = crossSign * cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5);
+									pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC5) >= 0 && dot(normal, frustumBufferData.FC1 - frustumBufferData.FC5) > 0;
+								}
+							}
+						}
+
+					}
+				}
+
+				return pointInsideFrustum;
 			}
 
 			int PointIsOccludedByFrustum(float3 comparisonPoint, int circleBufferDataIndex) {
 				int isInsideFrustum = 0;
 				for (int index = 0; index < _RangeToFrustumBufferLinkCount; index++) {
 					if (RangeToFrustumBufferLinkBuffer[index].RangeIndex == circleBufferDataIndex) {
+
 						isInsideFrustum = isInsideFrustum || PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
 					}
 				}

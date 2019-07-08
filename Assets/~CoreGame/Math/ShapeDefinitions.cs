@@ -78,30 +78,6 @@ namespace CoreGame
             C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
             C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
             C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
-
-            /*
-            if (this.UseFaceDefinition)
-            {
-                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, this.F2.Height, 0);
-                diagDirection.Scale(this.LossyScale);
-                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C5);
-
-                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(this.F2.Width, this.F2.Height, 0);
-                diagDirection.Scale(this.LossyScale);
-                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C6);
-
-                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(this.F2.Width, -this.F2.Height, 0);
-                diagDirection.Scale(this.LossyScale);
-                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C7);
-
-                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, -this.F2.Height, 0);
-                diagDirection.Scale(this.LossyScale);
-                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C8);
-            }
-            else
-            {
-            */
-            // }
         }
     }
 

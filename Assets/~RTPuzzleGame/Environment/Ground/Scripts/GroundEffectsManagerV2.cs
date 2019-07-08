@@ -116,7 +116,7 @@ namespace RTPuzzle
                     }
                     if (startIndex != frustumBufferDatas.Count)
                     {
-                        this.ComputedFrustumPointsWorldPositionsIndexes[testSphere] = Enumerable.Range(startIndex, frustumBufferDatas.Count - 1).ToList();
+                        this.ComputedFrustumPointsWorldPositionsIndexes[testSphere] = Enumerable.Range(startIndex, frustumBufferDatas.Count).ToList();
                     }
                 }
             });
