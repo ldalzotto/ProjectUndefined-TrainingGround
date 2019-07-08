@@ -8,8 +8,8 @@ namespace Editor_GameDesigner
     {
 
         protected GameObject currentSelectedObjet;
-        private T prefabToAdd;
-        public void GUITick()
+        protected T prefabToAdd;
+        public virtual void GUITick()
         {
             this.currentSelectedObjet = GameDesignerHelper.GetCurrentSceneSelectedObject();
             this.prefabToAdd = (T)EditorGUILayout.ObjectField(this.prefabToAdd, typeof(T), false);
@@ -18,7 +18,19 @@ namespace Editor_GameDesigner
             {
                 if (this.prefabToAdd != null)
                 {
-                    PrefabUtility.InstantiatePrefab(this.prefabToAdd, this.ParentGameObject.Invoke().transform);
+                    var parent = this.ParentGameObject.Invoke();
+                    if (parent != null)
+                    {
+                        PrefabUtility.InstantiatePrefab(this.prefabToAdd, this.ParentGameObject.Invoke().transform);
+                    }
+                    else
+                    {
+                        Debug.LogError("Parent not found.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Prefab not set.");
                 }
             }
             EditorGUI.EndDisabledGroup();

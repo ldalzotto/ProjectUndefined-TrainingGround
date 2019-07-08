@@ -63,23 +63,26 @@ namespace Editor_LevelSceneExplorer
                 {
                     if (this.levelZonesSceneConfiguration != null && this.levelZonesSceneConfiguration.ConfigurationInherentData.ContainsKey(levelZoneId))
                     {
-                        var sceneName = this.levelZonesSceneConfiguration.GetSceneName(levelZoneId);
-                        var sceneAssetObject = this.BuildObjectField(typeof(SceneAsset), this.levelZonesSceneConfiguration.ConfigurationInherentData[levelZoneId].scene);
-                        var sceneLine = this.Layout_ContentLine(container, new Label(sceneName), sceneAssetObject);
-
-                        var chunkLines = new List<LevelLine>();
-                        var levelLineToAdd = new LevelLine(sceneLine, sceneName, chunkLines);
-                        foreach (var chunkZoneId in this.levelHierarchyConfiguration.ConfigurationInherentData[levelZoneId].LevelHierarchy)
+                        var sceneName = this.levelZonesSceneConfiguration.GetSceneNameSafe(levelZoneId);
+                        if (!string.IsNullOrEmpty(sceneName))
                         {
-                            if (this.chunkZonesSceneConfiguration != null)
+                            var sceneAssetObject = this.BuildObjectField(typeof(SceneAsset), this.levelZonesSceneConfiguration.ConfigurationInherentData[levelZoneId].scene);
+                            var sceneLine = this.Layout_ContentLine(container, new Label(sceneName), sceneAssetObject);
+
+                            var chunkLines = new List<LevelLine>();
+                            var levelLineToAdd = new LevelLine(sceneLine, sceneName, chunkLines);
+                            foreach (var chunkZoneId in this.levelHierarchyConfiguration.ConfigurationInherentData[levelZoneId].LevelHierarchy)
                             {
-                                var chunkSceneName = this.chunkZonesSceneConfiguration.GetSceneName(chunkZoneId);
-                                var chunkSceneAssetObject = this.BuildObjectField(typeof(SceneAsset), this.chunkZonesSceneConfiguration.ConfigurationInherentData[chunkZoneId].scene);
-                                var chunkLine = this.Layout_ContentLine(container, VisualElementWithStyle(new Label(chunkSceneName), IndentLabelStyle(10)), chunkSceneAssetObject);
-                                chunkLines.Add(new LevelLine(chunkLine, chunkSceneName));
+                                if (this.chunkZonesSceneConfiguration != null)
+                                {
+                                    var chunkSceneName = this.chunkZonesSceneConfiguration.GetSceneName(chunkZoneId);
+                                    var chunkSceneAssetObject = this.BuildObjectField(typeof(SceneAsset), this.chunkZonesSceneConfiguration.ConfigurationInherentData[chunkZoneId].scene);
+                                    var chunkLine = this.Layout_ContentLine(container, VisualElementWithStyle(new Label(chunkSceneName), IndentLabelStyle(10)), chunkSceneAssetObject);
+                                    chunkLines.Add(new LevelLine(chunkLine, chunkSceneName));
+                                }
                             }
+                            this.levelLines.Add(levelLineToAdd);
                         }
-                        this.levelLines.Add(levelLineToAdd);
                     }
                 }
             }

@@ -15,6 +15,18 @@ namespace CoreGame
             return ConfigurationInherentData[levelZonesID].sceneName;
         }
 
+#if UNITY_EDITOR
+        public string GetSceneNameSafe(LevelZonesID levelZonesID)
+        {
+            ConfigurationInherentData.TryGetValue(levelZonesID, out LevelZonesSceneConfigurationData configurationData);
+            if(configurationData != null)
+            {
+                return configurationData.sceneName;
+            }
+            return string.Empty;
+        }
+#endif
+
     }
 }
 

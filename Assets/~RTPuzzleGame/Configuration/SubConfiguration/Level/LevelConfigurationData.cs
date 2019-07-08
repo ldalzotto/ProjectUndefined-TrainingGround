@@ -13,7 +13,7 @@ namespace RTPuzzle
     public class LevelConfigurationData : ScriptableObject
     {
         [SerializeField]
-        private float availableTimeAmount;
+        private float availableTimeAmount = 20f;
 
         [SerializeField]
         public List<PlayerActionIdWrapper> playerActionIds = new List<PlayerActionIdWrapper>();

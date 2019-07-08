@@ -21,5 +21,9 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION_TEST_CHUNK = 2,
     
     _1_Town_MainRoad = 3,
+    
+    RTP_PUZZLE_CREATION_TEST = 4,
+    
+    RTP_TEST_OBSTACLES = 5,
   }
 }
