@@ -16,11 +16,15 @@ namespace RTPuzzle
             this.obstacleListener.Init();
             this.obstacleListener.Radius = associatedRangeType.GetRadiusRange();
         }
-        
+
         #region Logical Conditions
         public bool IsListenerHaveObstaclesNearby()
         {
             return this.obstacleListener.IsListenerHaveObstaclesNearby();
+        }
+        public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint)
+        {
+            return this.obstacleListener.IsPointOccludedByObstacles(worldPositionPoint);
         }
         #endregion
 

@@ -110,11 +110,14 @@ namespace RTPuzzle
         /// <summary>
         /// Reseting all manager state. This is called before enabling a manager.
         /// </summary>
-        public void ManagersStateReset()
+        public void ManagersStateReset(List<InterfaceAIManager> exceptions = null)
         {
             foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
             {
-                aiManager.OnStateReset();
+                if ((exceptions == null) || (exceptions != null && !exceptions.Contains(aiManager)))
+                {
+                    aiManager.OnStateReset();
+                }
             }
         }
 

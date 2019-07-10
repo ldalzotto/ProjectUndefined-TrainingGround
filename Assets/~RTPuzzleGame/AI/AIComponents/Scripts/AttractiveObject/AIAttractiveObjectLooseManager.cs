@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GameConfigurationID;
+using UnityEngine;
 using UnityEngine.AI;
-using GameConfigurationID;
 
 namespace RTPuzzle
 {
@@ -23,7 +22,7 @@ namespace RTPuzzle
 
         public override void OnTriggerExit(AttractiveObjectType attractiveObjectType)
         {
-            if (this.involvedAttractiveObject != null && 
+            if (this.involvedAttractiveObject != null &&
                 attractiveObjectType.AttractiveObjectId == this.involvedAttractiveObject.AttractiveObjectId)
             {
                 this.OnStateReset();

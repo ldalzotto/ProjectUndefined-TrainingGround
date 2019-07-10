@@ -100,7 +100,12 @@ namespace RTPuzzle
         }
         public bool IsInside(Vector3 worldPointComparison)
         {
-            return this.rangeType.IsInside(worldPointComparison);
+            bool isInsideRange = this.rangeType.IsInside(worldPointComparison);
+            if (this.rangeObstacleListener != null)
+            {
+                isInsideRange = isInsideRange && !this.rangeObstacleListener.IsPointOccludedByObstacles(worldPointComparison);
+            }
+            return isInsideRange;
         }
         #endregion
 

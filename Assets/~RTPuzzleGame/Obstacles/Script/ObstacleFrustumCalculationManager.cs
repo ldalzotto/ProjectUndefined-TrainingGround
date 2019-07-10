@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,6 +61,13 @@ namespace RTPuzzle
         {
             if (Vector3.Distance(ObstacleListener.transform.position, worldPositionPoint) <= ObstacleListener.Radius)
             {
+                //If calculation is waiting, we trigger sync calculation
+                if (this.calculationResults[ObstacleListener].Values.Count == 0 || this.calculationResults[ObstacleListener].Values.ToList().Select(result => result).Where(result => result.CalculationAsked()).Count() > 0)
+                {
+                    Debug.Log(MyLog.Format("Forced obstacle listener calculation : " + ObstacleListener.name));
+                    this.UpdateSquareObstaclesOfListener(ObstacleListener, async: false);
+                }
+
                 foreach (var obstacleResultEntry in this.calculationResults[ObstacleListener].Values)
                 {
                     bool pointContainedInOcclusionFrustum = false;
@@ -106,7 +112,7 @@ namespace RTPuzzle
             }
 
             #endregion
-            
+
             List<SquareObstacleFrustumCalculationResult> batchedSquareObstacleFrustumCalculationResult = null;
             foreach (var obstacleListener in this.calculationResults.Keys)
             {
@@ -139,7 +145,7 @@ namespace RTPuzzle
 
         }
 
-        private void UpdateSquareObstaclesOfListener(ObstacleListener obstacleListener)
+        private void UpdateSquareObstaclesOfListener(ObstacleListener obstacleListener, bool async = true)
         {
             foreach (var nearObstacle in obstacleListener.NearSquereObstacles)
             {
@@ -148,6 +154,10 @@ namespace RTPuzzle
                     this.calculationResults[obstacleListener][nearObstacle] = new SquareObstacleFrustumCalculationResult(obstacleListener, nearObstacle);
                 }
                 this.calculationResults[obstacleListener][nearObstacle].AskCalculation();
+                if (!async)
+                {
+                    this.calculationResults[obstacleListener][nearObstacle].DoCalculationFromDedicateThread();
+                }
             }
         }
 
@@ -247,7 +257,7 @@ namespace RTPuzzle
             Task.Run(() => this.DoCalculation(SquareObstacleFrustumCalculationResults));
         }
 
-        private void DoCalculation(SquareObstacleFrustumCalculationResult[]  calculations)
+        private void DoCalculation(SquareObstacleFrustumCalculationResult[] calculations)
         {
             foreach (var calculation in calculations)
             {

@@ -69,8 +69,8 @@ namespace RTPuzzle
                              this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {
                 this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(projectileTriggerEnterEvent.CollisionPosition,
-                         genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetSemiAngle(projectileTriggerEnterEvent.LaunchProjectileId), 
-                         genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)), 
+                         genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetSemiAngle(projectileTriggerEnterEvent.LaunchProjectileId),
+                         genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)),
                          genericAiBehavior);
             }
             else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED)
@@ -113,8 +113,13 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
-                genericAiBehavior.ManagersStateReset();
+                bool aiAttractiveObjectManagerEnabledBeforeEventProcessing = genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
+
+                if (!aiAttractiveObjectManagerEnabledBeforeEventProcessing && genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
+                {
+                    genericAiBehavior.ManagersStateReset(exceptions: new List<InterfaceAIManager>() { genericAiBehavior.AIAttractiveObjectManager() });
+                }
             }
         }
 
@@ -122,16 +127,17 @@ namespace RTPuzzle
         {
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
             {
-                // Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
+              //   Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
 
-                // If the attractive module is disabled, we reset state
-                // This is to be sure that other states are cleared
-                if (!genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
-                {
-                    genericAiBehavior.ManagersStateReset();
-                }
-
+                bool aiAttractiveObjectManagerEnabledBeforeEventProcessing = genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
+
+                // If the attractive module is enabled after event processing, we reset state
+                // This is to be sure that other states are cleared
+                if (!aiAttractiveObjectManagerEnabledBeforeEventProcessing && genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
+                {
+                    genericAiBehavior.ManagersStateReset(exceptions: new List<InterfaceAIManager>() { genericAiBehavior.AIAttractiveObjectManager() });
+                }
             }
         }
 

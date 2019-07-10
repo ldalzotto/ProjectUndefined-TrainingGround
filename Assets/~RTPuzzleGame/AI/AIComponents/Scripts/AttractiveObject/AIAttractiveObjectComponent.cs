@@ -12,9 +12,7 @@ namespace RTPuzzle
     {
         protected override Type abstractManagerType => typeof(AbstractAIAttractiveObjectManager);
     }
-
-
-
+    
     public abstract class AbstractAIAttractiveObjectManager : InterfaceAIManager
     {
 
@@ -74,9 +72,15 @@ namespace RTPuzzle
 
         protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
-            this.attractionPosition = attractivePosition;
-            this.involvedAttractiveObject = attractiveObjectType;
-            this.SetIsAttracted(true);
+            if (!this.IsInfluencedByAttractiveObject())
+            {
+                if (attractiveObjectType.IsInRangeOf(this.selfAgent.transform.position))
+                {
+                    this.attractionPosition = attractivePosition;
+                    this.involvedAttractiveObject = attractiveObjectType;
+                    this.SetIsAttracted(true);
+                }
+            }
         }
 
         protected void SetIsAttracted(bool value)
@@ -116,9 +120,10 @@ namespace RTPuzzle
         }
         protected bool IsInfluencedByAttractiveObject()
         {
-            return this.isAttracted || this.HasSensedThePresenceOfAnAttractiveObject();
+            return this.isAttracted || this.involvedAttractiveObject != null;
         }
-        public bool HasSensedThePresenceOfAnAttractiveObject()
+
+        private bool HasSensedThePresenceOfAnAttractiveObject()
         {
             return (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
         }

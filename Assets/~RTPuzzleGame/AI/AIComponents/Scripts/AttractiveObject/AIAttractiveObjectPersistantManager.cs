@@ -8,9 +8,9 @@ namespace RTPuzzle
     public class AIAttractiveObjectPersistantManager : AbstractAIAttractiveObjectManager
     {
 
-        public AIAttractiveObjectPersistantManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager puzzleEventsManager) : base(selfAgent, aiID,puzzleEventsManager)
-        {}
-        
+        public AIAttractiveObjectPersistantManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager puzzleEventsManager) : base(selfAgent, aiID, puzzleEventsManager)
+        { }
+
         public override void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
             SetAttractedObject(attractivePosition, attractiveObjectType);
@@ -20,7 +20,7 @@ namespace RTPuzzle
         {
             SetAttractedObject(attractivePosition, attractiveObjectType);
         }
-        
+
         public override void OnTriggerExit(AttractiveObjectType attractiveObjectType)
         {
         }
