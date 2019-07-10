@@ -116,7 +116,7 @@ namespace RTPuzzle
                 faceFrustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
 
                 Vector3 frontFaceNormal = Vector3.Cross(C2 - C1, C4 - C1).normalized;
-                
+
                 if (Vector3.Dot(frontFaceNormal, C1 - obstacleCalucation.WorldPositionStartAngleDefinition) < 0)
                 {
                     continue;
@@ -132,12 +132,12 @@ namespace RTPuzzle
 #endif
             }
 
-            Debug.Log(frustumPointsWorldPositions.Count);
+            // Debug.Log(frustumPointsWorldPositions.Count);
 
             return frustumPointsWorldPositions;
 
         }
-        
+
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {

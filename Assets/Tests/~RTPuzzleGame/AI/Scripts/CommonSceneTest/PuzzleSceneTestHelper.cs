@@ -11,9 +11,9 @@ namespace Tests
 {
     class PuzzleSceneTestHelper
     {
-        public static LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, AITestPositionID projectilePoistion, LaunchProjectileContainerManager launchProjectileContainerManager)
+        public static LaunchProjectile SpawnProjectile(ProjectileInherentData projectileInherentData, TestPositionID projectilePoistion, LaunchProjectileContainerManager launchProjectileContainerManager)
         {
-            var projectilePosition = GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == projectilePoistion).First().transform.position;
+            var projectilePosition = GameObject.FindObjectsOfType<TestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == projectilePoistion).First().transform.position;
             return SpawnProjectile(projectileInherentData, projectilePosition, launchProjectileContainerManager);
         }
 
@@ -30,14 +30,14 @@ namespace Tests
             return launchProjectile;
         }
 
-        public static Transform FindAITestPosition(AITestPositionID aITestPositionID)
+        public static Transform FindTestPosition(TestPositionID aITestPositionID)
         {
-            return GameObject.FindObjectsOfType<AITestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform;
+            return GameObject.FindObjectsOfType<TestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform;
         }
 
-        public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, AITestPositionID aITestPositionID)
+        public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, TestPositionID aITestPositionID)
         {
-            var attractiveObjectSpawnPosition = FindAITestPosition(aITestPositionID).position;
+            var attractiveObjectSpawnPosition = FindTestPosition(aITestPositionID).position;
             return SpawnAttractiveObject(attractiveObjectInherentConfigurationData, attractiveObjectSpawnPosition);
         }
 
