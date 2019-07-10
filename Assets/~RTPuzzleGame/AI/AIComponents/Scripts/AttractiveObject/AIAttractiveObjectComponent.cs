@@ -12,7 +12,9 @@ namespace RTPuzzle
     {
         protected override Type abstractManagerType => typeof(AbstractAIAttractiveObjectManager);
     }
-    
+
+
+
     public abstract class AbstractAIAttractiveObjectManager : InterfaceAIManager
     {
 
@@ -44,6 +46,9 @@ namespace RTPuzzle
 
         public virtual void OnDestinationReached()
         {
+            //This is not completely accurate accurate -> we check if a single point is contained in a range. (which is usually the center of agent)
+            //Or, the AIAttractive objet range may physically be inside AI box collider range and not in center.
+            //In such a case, the AI will be condirerd out of AI attractive.
             if (!this.HasSensedThePresenceOfAnAttractiveObject())
             {
                 this.OnStateReset();
@@ -72,14 +77,11 @@ namespace RTPuzzle
 
         protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
         {
-            if (!this.IsInfluencedByAttractiveObject())
+            if (attractiveObjectType.IsInRangeOf(this.selfAgent.transform.position))
             {
-                if (attractiveObjectType.IsInRangeOf(this.selfAgent.transform.position))
-                {
-                    this.attractionPosition = attractivePosition;
-                    this.involvedAttractiveObject = attractiveObjectType;
-                    this.SetIsAttracted(true);
-                }
+                this.attractionPosition = attractivePosition;
+                this.involvedAttractiveObject = attractiveObjectType;
+                this.SetIsAttracted(true);
             }
         }
 
@@ -122,9 +124,11 @@ namespace RTPuzzle
         {
             return this.isAttracted || this.involvedAttractiveObject != null;
         }
-
         private bool HasSensedThePresenceOfAnAttractiveObject()
         {
+            //This is not completely accurate accurate -> we check if a single point is contained in a range. (which is usually the center of agent)
+            //Or, the AIAttractive objet range may physically be inside AI box collider range and not in center.
+            //In such a case, the AI will be condirerd out of AI attractive.
             return (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
         }
         #endregion

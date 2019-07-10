@@ -127,7 +127,7 @@ namespace RTPuzzle
         {
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
             {
-              //   Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
+                //   Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
 
                 bool aiAttractiveObjectManagerEnabledBeforeEventProcessing = genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);

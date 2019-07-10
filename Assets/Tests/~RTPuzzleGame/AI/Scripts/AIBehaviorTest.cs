@@ -540,6 +540,7 @@ namespace Tests
             Assert.IsNull(attractiveObjectType);
         }
 
+        //Ai is following attractive object position
         [UnityTest]
         public IEnumerator AI_AttractiveObject_OnStay_AIFollowPosition()
         {
@@ -775,6 +776,7 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is too far from attractive object zone.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+            yield return new WaitForEndOfFrame(); //We wait to the end of frame in order to not take into account the natural movement of AI
             attractiveObjectType.transform.position = mouseTestAIManager.transform.position;
             yield return new WaitForFixedUpdate();
             Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI has entered the attractive object zone.");
@@ -854,6 +856,7 @@ namespace Tests
         public IEnumerator AI_ProjectileReceived_SecondTimeInTargetZone_WhenDestinationReached_WhenThereIsStillEscapeDistanceToTravel_StillEscape_Test()
         {
             yield return this.AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(SceneConstants.OneAIForcedTargetZone, 9999f);
+            Debug.Break();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 20f);
