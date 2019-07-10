@@ -191,10 +191,12 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\BoxRangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\SphereRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\BoxRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\RangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\SphereRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneContainer.cs" />

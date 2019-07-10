@@ -25,11 +25,11 @@ namespace RTPuzzle
         private PlayerOrientationManager PlayerOrientationManager;
         private LaunchProjectilePathAnimationManager LaunchProjectilePathAnimationManager;
 
-        private SphereRangeType projectileSphereRange;
+        private RangeTypeObject projectileSphereRange;
 
         private bool isActionFinished = false;
 
-        public SphereRangeType ProjectileSphereRange { get => projectileSphereRange; }
+        public RangeTypeObject ProjectileSphereRange { get => projectileSphereRange; }
 
         public override bool FinishedCondition()
         {
@@ -62,7 +62,7 @@ namespace RTPuzzle
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
             var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
-            this.projectileSphereRange = SphereRangeType.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.projectileSphereRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
 
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
@@ -234,7 +234,7 @@ namespace RTPuzzle
         private ProjectileInherentData projectileInherentData;
         private PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer;
         private LaunchProjectileAction launchProjectileActionRef;
-        private SphereRangeType projectileCursorRange;
+        private RangeTypeObject projectileCursorRange;
 
         private Vector3 currentCursorWorldPosition;
 
@@ -271,7 +271,7 @@ namespace RTPuzzle
                     {
                         MonoBehaviour.DestroyImmediate(this.projectileCursorRange.gameObject);
                     }
-                    this.projectileCursorRange = SphereRangeType.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.projectileInherentData.EffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
+                    this.projectileCursorRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.projectileInherentData.EffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
                 }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;

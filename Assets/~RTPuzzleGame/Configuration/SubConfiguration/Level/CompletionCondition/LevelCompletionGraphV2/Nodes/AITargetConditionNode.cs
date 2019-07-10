@@ -40,7 +40,7 @@ namespace RTPuzzle
 
         public void Resolve(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)
         {
-            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.TargetZoneContainer.GetTargetZone(this.AITargetConditionEdge.TargetZoneID).TargetZoneTriggerType.TargetZoneTriggerCollider;
+            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.TargetZoneContainer.GetTargetZone(this.AITargetConditionEdge.TargetZoneID).TargetZoneTriggerType.GetTargetZoneTriggerCollider();
             var involvedAI = ConditionGraphResolutionInput.NPCAIManagerContainer.GetNPCAiManager(this.AITargetConditionEdge.AiID).GetCollider();
             this.ResultBool.Value = (bool)involvedTargetZoneTriggerCollider.bounds.Intersects(involvedAI.bounds);
         }

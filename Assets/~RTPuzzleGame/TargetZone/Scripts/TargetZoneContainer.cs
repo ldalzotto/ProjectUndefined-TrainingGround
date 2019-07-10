@@ -33,7 +33,7 @@ namespace RTPuzzle
             var i = 0;
             foreach (var targetZone in targetZones.Values)
             {
-                foundColliders[i] = targetZone.TargetZoneTriggerType.TargetZoneTriggerCollider;
+                foundColliders[i] = targetZone.TargetZoneTriggerType.GetTargetZoneTriggerCollider();
                 i++;
             }
             return foundColliders;

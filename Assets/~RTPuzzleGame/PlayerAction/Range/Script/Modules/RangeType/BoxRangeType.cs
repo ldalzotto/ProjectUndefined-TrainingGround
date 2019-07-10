@@ -11,11 +11,11 @@ namespace RTPuzzle
 
         public Vector3 LocalSize;
 
-        public override void Init()
+        public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             this.BoxCollider = GetComponent<BoxCollider>();
             this.LocalSize = this.BoxCollider.size;
-            base.Init();
+            base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
         }
         
         public override Collider GetCollider()

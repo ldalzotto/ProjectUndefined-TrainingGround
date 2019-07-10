@@ -6,9 +6,9 @@ using GameConfigurationID;
 
 namespace RTPuzzle
 {
-    public class RangeTypeContainer : MonoBehaviour
+    public class RangeTypeObjectContainer : MonoBehaviour
     {
-        private Dictionary<RangeTypeID, RangeType> rangeTypes = new Dictionary<RangeTypeID, RangeType>();
+        private Dictionary<RangeTypeID, RangeTypeObject> rangeTypes = new Dictionary<RangeTypeID, RangeTypeObject>();
 
         #region External Dependencies
         private RangeEventsManager RangeEventsManager;
@@ -20,16 +20,16 @@ namespace RTPuzzle
         }
 
         #region External events
-        public void AddRange(RangeType rangeType)
+        public void AddRange(RangeTypeObject rangeTypeObject)
         {
-            this.rangeTypes[rangeType.RangeTypeID] = rangeType;
-            this.RangeEventsManager.RANGE_EVT_Range_Created(rangeType);
+            this.rangeTypes[rangeTypeObject.RangeType.RangeTypeID] = rangeTypeObject;
+            this.RangeEventsManager.RANGE_EVT_Range_Created(rangeTypeObject);
         }
-        internal void RemoveRange(RangeType rangeType)
+        internal void RemoveRange(RangeTypeObject rangeTypeObject)
         {
-            if (this.rangeTypes.Remove(rangeType.RangeTypeID))
+            if (this.rangeTypes.Remove(rangeTypeObject.RangeType.RangeTypeID))
             {
-                this.RangeEventsManager.RANGE_EVT_Range_Destroy(rangeType);
+                this.RangeEventsManager.RANGE_EVT_Range_Destroy(rangeTypeObject);
             }
         }
         #endregion

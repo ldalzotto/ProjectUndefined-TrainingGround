@@ -28,7 +28,7 @@ namespace RTPuzzle
         public CooldownFeedLineType CooldownFeedLineType;
 
         [Header("Ranges prefab")]
-        public SphereRangeType BaseSphereRangePrefab;
+        public RangeTypeObject BaseSphereRangePrefab;
 
         [Header("Visual Feedback")]
         public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;

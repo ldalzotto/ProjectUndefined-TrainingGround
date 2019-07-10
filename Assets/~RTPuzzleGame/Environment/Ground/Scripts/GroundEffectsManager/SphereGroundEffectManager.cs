@@ -11,7 +11,7 @@ namespace RTPuzzle
         public CircleRangeBufferData ToSphereBuffer()
         {
             CircleRangeBufferData CircleRangeBufferData = new CircleRangeBufferData();
-            CircleRangeBufferData.CenterWorldPosition = this.associatedRange.GetCenterWorldPos();
+            CircleRangeBufferData.CenterWorldPosition = this.AssociatedRangeObject.RangeType.GetCenterWorldPos();
             CircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
@@ -24,7 +24,7 @@ namespace RTPuzzle
             CircleRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
             CircleRangeBufferData.AuraAnimationSpeed = 20f;
 
-            if (this.associatedRange.IsOccludedByFrustum())
+            if (this.AssociatedRangeObject.IsOccludedByFrustum())
             {
                 CircleRangeBufferData.OccludedByFrustums = 1;
             }

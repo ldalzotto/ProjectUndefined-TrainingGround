@@ -19,7 +19,7 @@ namespace RTPuzzle
 
         private bool isActionOver;
         private AttractiveObjectId attractiveObjectId;
-        private SphereRangeType attractiveObjectRange;
+        private RangeTypeObject attractiveObjectRange;
 
         public AttractiveObjectAction(AttractiveObjectActionInherentData attractiveObjectActionInherentData) : base(attractiveObjectActionInherentData)
         {
@@ -50,7 +50,7 @@ namespace RTPuzzle
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerCollider());
             this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, animationConfiguration);
 
-            this.attractiveObjectRange = SphereRangeType.Instanciate(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
+            this.attractiveObjectRange = RangeTypeObject.Instanciate(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
         }
 
         public override void GizmoTick()

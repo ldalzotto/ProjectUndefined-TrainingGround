@@ -11,11 +11,11 @@ namespace RTPuzzle
         public BoxRangeBufferData ToBoxBuffer()
         {
             var boxRangeBufferData = new BoxRangeBufferData();
-            boxRangeBufferData.Forward = this.associatedRange.transform.forward;
-            boxRangeBufferData.Up = this.associatedRange.transform.up;
-            boxRangeBufferData.Right = this.associatedRange.transform.right;
-            boxRangeBufferData.Center = this.associatedRange.GetCenterWorldPos();
-            boxRangeBufferData.LocalSize = this.associatedRange.LocalSize;
+            boxRangeBufferData.Forward = this.AssociatedRangeObject.transform.forward;
+            boxRangeBufferData.Up = this.AssociatedRangeObject.transform.up;
+            boxRangeBufferData.Right = this.AssociatedRangeObject.transform.right;
+            boxRangeBufferData.Center = this.AssociatedRangeObject.RangeType.GetCenterWorldPos();
+            boxRangeBufferData.LocalSize = ((BoxRangeType)this.AssociatedRangeObject.RangeType).LocalSize;
 
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {

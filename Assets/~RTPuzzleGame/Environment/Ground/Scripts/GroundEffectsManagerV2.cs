@@ -138,7 +138,7 @@ namespace RTPuzzle
 
                         if (circleRangeBufferData.OccludedByFrustums == 1)
                         {
-                            foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[SphereGroundEffectManager.AssociatedRange.ObstacleListener])
+                            foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[SphereGroundEffectManager.AssociatedRangeObject.RangeObstacleListener.ObstacleListener])
                             {
                                 this.RangeToFrustumBufferLinkValues.Add(new RangeToFrustumBufferLink(this.CircleRangeBufferValues.Count - 1, computedFrustumPointsWorldPositionsIndexe));
                             }
@@ -177,21 +177,21 @@ namespace RTPuzzle
         }
 
         #region External events
-        public void OnRangeAdded(RangeType rangeType)
+        public void OnRangeAdded(RangeTypeObject rangeTypeObject)
         {
-            if (rangeType.IsRangeConfigurationDefined())
+            if (rangeTypeObject.RangeType.IsRangeConfigurationDefined())
             {
-                if (rangeType.GetType() == typeof(SphereRangeType))
+                if (rangeTypeObject.RangeType.GetType() == typeof(SphereRangeType))
                 {
-                    var sphereRangeType = (SphereRangeType)rangeType;
-                    this.rangeEffectManagers[rangeType.RangeTypeID] = (IAbstractGroundEffectManager)new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeType.RangeTypeID]);
-                    this.rangeEffectManagers[rangeType.RangeTypeID].OnRangeCreated(sphereRangeType);
+                    var sphereRangeType = (SphereRangeType)rangeTypeObject.RangeType;
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID] = (IAbstractGroundEffectManager)new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].OnRangeCreated(rangeTypeObject);
                 }
-                else if (rangeType.GetType() == typeof(BoxRangeType))
+                else if (rangeTypeObject.RangeType.GetType() == typeof(BoxRangeType))
                 {
-                    var boxRangeType = (BoxRangeType)rangeType;
-                    this.rangeEffectManagers[rangeType.RangeTypeID] = (IAbstractGroundEffectManager)new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeType.RangeTypeID]);
-                    this.rangeEffectManagers[rangeType.RangeTypeID].OnRangeCreated(boxRangeType);
+                    var boxRangeType = (BoxRangeType)rangeTypeObject.RangeType;
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID] = (IAbstractGroundEffectManager)new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].OnRangeCreated(rangeTypeObject);
                 }
             }
         }
@@ -205,12 +205,12 @@ namespace RTPuzzle
             this.FrustumBufferManager.Dispose();
         }
 
-        internal void OnRangeDestroy(RangeType rangeType)
+        internal void OnRangeDestroy(RangeTypeObject rangeTypeObject)
         {
-            if (rangeType.IsRangeConfigurationDefined())
+            if (rangeTypeObject.IsRangeConfigurationDefined())
             {
-                this.rangeEffectManagers[rangeType.RangeTypeID].OnRangeDestroyed();
-                this.rangeEffectManagers.Remove(rangeType.RangeTypeID);
+                this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].OnRangeDestroyed();
+                this.rangeEffectManagers.Remove(rangeTypeObject.RangeType.RangeTypeID);
             }
         }
 

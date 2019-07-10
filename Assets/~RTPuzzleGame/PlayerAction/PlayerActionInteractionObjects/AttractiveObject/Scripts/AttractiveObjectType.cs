@@ -39,7 +39,7 @@ namespace RTPuzzle
         }
 
         #region Internal Dependencies
-        private SphereRangeType sphereRange;
+        private RangeTypeObject sphereRange;
         #endregion
 
         #region Properties
@@ -55,8 +55,8 @@ namespace RTPuzzle
             var attractiveObjectContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
             #endregion
 
-            this.sphereRange = GetComponentInChildren<SphereRangeType>();
-            this.sphereRange.Init(attractiveObjectInherentConfigurationData.EffectRange);
+            this.sphereRange = GetComponentInChildren<RangeTypeObject>();
+            this.sphereRange.Init(new RangeTypeObjectInitializer(sphereRadius: attractiveObjectInherentConfigurationData.EffectRange));
 
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
 

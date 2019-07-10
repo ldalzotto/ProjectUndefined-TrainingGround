@@ -8,15 +8,18 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        private Collider targetZoneTriggerCollider;
+        private RangeTypeObject RangeTypeObject;
 
-        public Collider TargetZoneTriggerCollider { get => targetZoneTriggerCollider; }
+        public Collider GetTargetZoneTriggerCollider()
+        {
+            return this.RangeTypeObject.RangeType.GetCollider();
+        }
 
         public void Init()
         {
-            this.targetZoneTriggerCollider = GetComponent<Collider>();
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            GetComponent<BoxRangeType>().Init();
+            this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();
+            this.RangeTypeObject.Init(null);
         }
 
         private void OnTriggerEnter(Collider other)

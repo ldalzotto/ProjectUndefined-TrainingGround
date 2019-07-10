@@ -24,7 +24,7 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<ObstaclesListenerManager>().OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
-            this.ObstacleListenerChangePositionTracker = new ObstacleListenerChangePositionTracker(this.transform);
+            this.ObstacleListenerChangePositionTracker = new ObstacleListenerChangePositionTracker(this);
         }
 
         public void Tick(float d)
@@ -52,7 +52,7 @@ namespace RTPuzzle
             Gizmos.DrawWireSphere(this.transform.position, this.Radius);
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void OnRangeTriggerEnter(Collider other)
         {
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
@@ -67,7 +67,7 @@ namespace RTPuzzle
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        public void OnRangeTriggerExit(Collider other)
         {
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
@@ -103,11 +103,11 @@ namespace RTPuzzle
 
     class ObstacleListenerChangePositionTracker
     {
-        private Transform objectTransform;
+        private ObstacleListener trackedObject;
 
-        public ObstacleListenerChangePositionTracker(Transform objectTransform)
+        public ObstacleListenerChangePositionTracker(ObstacleListener trackedObject)
         {
-            this.objectTransform = objectTransform;
+            this.trackedObject = trackedObject;
             this.hasChanged = true;
         }
 
@@ -119,11 +119,11 @@ namespace RTPuzzle
         public void Tick(float d)
         {
             this.hasChanged = false;
-            if (this.lastFramePosition != this.objectTransform.position)
+            if (this.lastFramePosition != this.trackedObject.transform.position)
             {
                 this.hasChanged = true;
             }
-            this.lastFramePosition = this.objectTransform.position;
+            this.lastFramePosition = this.trackedObject.transform.position;
         }
     }
 }

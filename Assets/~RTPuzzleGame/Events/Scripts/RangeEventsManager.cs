@@ -19,16 +19,16 @@ namespace RTPuzzle
         }
 
         #region Workflow
-        public void RANGE_EVT_Range_Created(RangeType rangeType)
+        public void RANGE_EVT_Range_Created(RangeTypeObject rangeTypeObject)
         {
-            this.GroundEffectsManagerV2.OnRangeAdded(rangeType);
+            this.GroundEffectsManagerV2.OnRangeAdded(rangeTypeObject);
         }
 
-        public void RANGE_EVT_Range_Destroy(RangeType rangeType)
+        public void RANGE_EVT_Range_Destroy(RangeTypeObject rangeTypeObject)
         {
-            this.GroundEffectsManagerV2.OnRangeDestroy(rangeType);
-            this.InRangeEffectManager.OnRangeDestroy(rangeType);
-            this.ObjectRepelLineVisualFeedbackManager.OnRangeDestroyed(rangeType);
+            this.GroundEffectsManagerV2.OnRangeDestroy(rangeTypeObject);
+            this.InRangeEffectManager.OnRangeDestroy(rangeTypeObject.RangeType);
+            this.ObjectRepelLineVisualFeedbackManager.OnRangeDestroyed(rangeTypeObject.RangeType);
         }
         #endregion
 

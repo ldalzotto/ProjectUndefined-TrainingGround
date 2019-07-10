@@ -10,29 +10,14 @@ namespace RTPuzzle
         private RangeTypeID rangeTypeID;
 
         protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
-
-        #region External dependencies
-        protected RangeTypeContainer rangeTypeContainer;
-        #endregion
-
-        #region Internal Managers
-        protected ObstacleListener obstacleListener;
-        #endregion
+        protected RangeTypeObject RangeTypeObjectRef;
 
         public RangeTypeID RangeTypeID { get => rangeTypeID; set => rangeTypeID = value; }
-        public ObstacleListener ObstacleListener { get => obstacleListener;  }
 
-        public virtual void Init()
+        public virtual void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
-            this.rangeTypeContainer = GameObject.FindObjectOfType<RangeTypeContainer>();
             this.rangeTypeInherentConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().RangeTypeConfiguration()[this.rangeTypeID];
-            rangeTypeContainer.AddRange(this);
-            this.obstacleListener = GetComponent<ObstacleListener>();
-        }
-
-        private void OnDestroy()
-        {
-            rangeTypeContainer.RemoveRange(this);
+            this.RangeTypeObjectRef = RangeTypeObjectRef;
         }
 
         public virtual void Tick(float d) { }
@@ -50,7 +35,16 @@ namespace RTPuzzle
             }
             return null;
         }
-        
+
+        private void OnTriggerEnter(Collider other)
+        {
+            this.RangeTypeObjectRef.OnRangeTriggerEnter(other);
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            this.RangeTypeObjectRef.OnRangeTriggerExit(other);
+        }
 
         #region Logical conditions
         public bool IsInRangeEffectEnabled()
@@ -60,10 +54,6 @@ namespace RTPuzzle
         public bool IsRangeConfigurationDefined()
         {
             return this.rangeTypeInherentConfigurationData != null;
-        }
-        public bool IsOccludedByFrustum()
-        {
-            return this.obstacleListener != null && this.obstacleListener.IsListenerHaveObstaclesNearby();
         }
         #endregion
     }

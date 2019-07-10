@@ -11,10 +11,6 @@ namespace RTPuzzle
         public void Init()
         {
             this.obstacleListeners = new List<ObstacleListener>();
-            foreach (var obstacleListener in GameObject.FindObjectsOfType<ObstacleListener>().ToList())
-            {
-                obstacleListener.Init();
-            }
         }
 
         public void OnObstacleListenerCreation(ObstacleListener obstacleListener)

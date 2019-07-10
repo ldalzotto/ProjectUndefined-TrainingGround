@@ -23,7 +23,7 @@ namespace RTPuzzle
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
-        private RangeTypeContainer RangeTypeContainer;
+        private RangeTypeObjectContainer RangeTypeContainer;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
         private GameOverManager GameOverManager;
         private ObjectRepelContainerManager ObjectRepelContainerManager;
@@ -69,7 +69,7 @@ namespace RTPuzzle
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
-            RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeContainer>();
+            RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
             ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
@@ -87,6 +87,11 @@ namespace RTPuzzle
 
             //Initialisations
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
+            
+            ObstacleFrustumCalculationManager.Init();
+            ObstaclesListenerManager.Init();
+            SquareObstaclesManager.Init();
+
             GroundEffectsManagerV2.Init();
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             RangeTypeContainer.Init();
@@ -115,11 +120,6 @@ namespace RTPuzzle
             AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
-
-            ObstacleFrustumCalculationManager.Init();
-            ObstaclesListenerManager.Init();
-            SquareObstaclesManager.Init();
-
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();

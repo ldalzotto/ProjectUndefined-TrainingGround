@@ -7,21 +7,21 @@ namespace RTPuzzle
 {
     public interface IAbstractGroundEffectManager
     {
-        void OnRangeCreated(RangeType rangeType);
+        void OnRangeCreated(RangeTypeObject rangeTypeObject);
         void Tick(float d);
         void MeshToRender(ref HashSet<MeshRenderer> renderers, GroundEffectType[] affectedGroundEffectsType);
         void OnRangeDestroyed();
     }
 
-    public abstract class AbstractGroundEffectManager<T> : IAbstractGroundEffectManager where T : RangeType
+    public abstract class AbstractGroundEffectManager<T> : IAbstractGroundEffectManager
     {
-        protected T associatedRange;
+        private RangeTypeObject associatedRangeObject;
         protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
         protected FloatAnimation rangeAnimation;
         protected bool isAttractiveObjectRangeEnabled;
 
         public bool IsAttractiveObjectRangeEnabled { get => isAttractiveObjectRangeEnabled; }
-        public T AssociatedRange { get => associatedRange; }
+        public RangeTypeObject AssociatedRangeObject { get => associatedRangeObject; }
 
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
@@ -37,10 +37,10 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeCreated(RangeType rangeType)
+        public void OnRangeCreated(RangeTypeObject rangeTypeObject)
         {
-            this.associatedRange = (T)rangeType;
-            this.rangeAnimation = new FloatAnimation(rangeType.GetRadiusRange(), rangeTypeInherentConfigurationData.RangeAnimationSpeed, 0f);
+            this.associatedRangeObject = rangeTypeObject;
+            this.rangeAnimation = new FloatAnimation(this.associatedRangeObject.RangeType.GetRadiusRange(), rangeTypeInherentConfigurationData.RangeAnimationSpeed, 0f);
             this.isAttractiveObjectRangeEnabled = true;
             this.Tick(0);
         }
@@ -52,7 +52,7 @@ namespace RTPuzzle
 
         public RangeTypeID GetRangeTypeID()
         {
-            return this.associatedRange.RangeTypeID;
+            return this.associatedRangeObject.RangeType.RangeTypeID;
         }
 
         public void MeshToRender(ref HashSet<MeshRenderer> renderers, GroundEffectType[] affectedGroundEffectsType)
@@ -60,7 +60,7 @@ namespace RTPuzzle
             foreach (var affectedGroundEffectType in affectedGroundEffectsType)
             {
                 if (affectedGroundEffectType.MeshRenderer.isVisible
-                    && this.associatedRange.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
+                    && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                 {
                     renderers.Add(affectedGroundEffectType.MeshRenderer);
                 }
