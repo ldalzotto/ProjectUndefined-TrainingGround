@@ -202,7 +202,10 @@ namespace RTPuzzle
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.CircleRangeBuffer);
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.BoxRangeBuffer);
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.RangeExecutionOrderBuffer);
-            this.FrustumBufferManager.Dispose();
+            if (this.FrustumBufferManager != null)
+            {
+                this.FrustumBufferManager.Dispose();
+            }
         }
 
         internal void OnRangeDestroy(RangeTypeObject rangeTypeObject)

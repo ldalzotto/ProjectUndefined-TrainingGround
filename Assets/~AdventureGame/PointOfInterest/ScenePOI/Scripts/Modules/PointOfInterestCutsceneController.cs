@@ -20,6 +20,10 @@ namespace AdventureGame
 
         private POICutsceneMoveManager POICutsceneMoveManager;
 
+        #region Module Dependencies
+        private PointOfInterestModelObjectModule PointOfInterestModelObjectModule;
+        #endregion
+
         #region Data Components Dependencies
         private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponentV2;
         #endregion
@@ -32,14 +36,14 @@ namespace AdventureGame
         }
         #endregion
 
-        public override void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules)
+        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
-            base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
-
             #region Data Components Dependencies
             this.PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
             #endregion
-            
+
+            this.PointOfInterestModelObjectModule = PointOfInterestModelObjectModule;
+
             this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
 
@@ -48,7 +52,7 @@ namespace AdventureGame
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
         }
 
-        public override void Tick(float d)
+        public void Tick(float d)
         {
             this.POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.AIRotationSpeed);
         }
@@ -68,12 +72,12 @@ namespace AdventureGame
 
         public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
         {
-            yield return AnimationPlayerHelper.PlayAndWait(this.pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>().Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
+            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
         }
 
         public void PlayAnimation(AnimationID animationID, float crossFadeDuration)
         {
-            AnimationPlayerHelper.Play(this.pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>().Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
+            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
         }
 
         public float GetCurrentNormalizedSpeedMagnitude()

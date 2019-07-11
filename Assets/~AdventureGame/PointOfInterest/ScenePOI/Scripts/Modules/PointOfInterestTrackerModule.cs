@@ -12,10 +12,8 @@ namespace AdventureGame
     {
         private POITrackerManager POITrackerManager;
 
-        public override void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules)
+        public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
-            base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
-
             var trackerCollider = GetComponent<SphereCollider>();
             this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>(), trackerCollider);
 
@@ -26,7 +24,7 @@ namespace AdventureGame
         public PointOfInterestType NearestInRangeInteractabledPointOfInterest() { return this.POITrackerManager.NearestInRangeInteractabledPointOfInterest; }
         #endregion
 
-        public override void Tick(float d)
+        public void Tick(float d)
         {
             this.POITrackerManager.Tick(d);
         }
@@ -55,7 +53,7 @@ namespace AdventureGame
             }
         }
 
-        public override void OnPOIDisabled(APointOfInterestType pointOfInterestType)
+        public void OnPOIDisabled(APointOfInterestType pointOfInterestType)
         {
             this.POITrackerManager.OnPOIObjectExit((PointOfInterestType)pointOfInterestType);
         }

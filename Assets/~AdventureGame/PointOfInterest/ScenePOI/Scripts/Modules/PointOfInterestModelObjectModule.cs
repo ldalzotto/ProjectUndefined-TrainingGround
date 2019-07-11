@@ -11,6 +11,7 @@ namespace AdventureGame
         private List<GameObject> oneLevelDownChildObjects;
         private Collider[] allColliders;
         private Animator animator;
+        private PointOfInterestType pointOfInterestTypeRef;
 
         public Animator Animator { get => animator; }
         #endregion
@@ -19,10 +20,9 @@ namespace AdventureGame
         private POIShowHideManager POIShowHideManager;
         #endregion
 
-        public override void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules)
+        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
-            base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
-
+            this.pointOfInterestTypeRef = pointOfInterestTypeRef;
             var modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
 
             this.allColliders = modelObject.GetComponentsInChildren<Collider>();
@@ -32,7 +32,7 @@ namespace AdventureGame
             {
                 this.animator = modelObject.GetComponentInChildren<Animator>();
             }
-            this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>());
+            this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
             this.InitAnimation();
         }
 
@@ -45,13 +45,9 @@ namespace AdventureGame
             }
         }
 
-        public override void OnPOIInit()
+        public void OnPOIInit()
         {
             this.POIShowHideManager.OnPOIInit(this.pointOfInterestTypeRef);
-        }
-
-        public override void Tick(float d)
-        {
         }
 
         #region External Events

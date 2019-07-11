@@ -18,36 +18,29 @@ namespace AdventureGame
         private PointOfInterestVisualMovementManager PointOfInterestVisualMovementManager;
         private IVisualMovementPermission IVisualMovementPermission;
 
-        public override void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules)
+        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule, PointOfInterestTrackerModule PointOfInterestTrackerModule)
         {
-            base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
-
             #region Data Component Dependencies
             var PlayerPOIVisualMovementComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOIVisualMovementComponentV2>();
             #endregion
 
             #region Other Modules Dependencies
-            var PointOfInterestModelObjectModule = pointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>();
-            this.PointOfInterestTrackerModule = pointOfInteresetModules.GetModule<PointOfInterestTrackerModule>();
+            this.PointOfInterestTrackerModule = PointOfInterestTrackerModule;
             #endregion
 
             this.PointOfInterestVisualMovementManager = new PointOfInterestVisualMovementManager(PlayerPOIVisualMovementComponentV2, PointOfInterestModelObjectModule.Animator);
 
-            if (this.pointOfInterestTypeRef.IsPlayer())
+            if (pointOfInterestTypeRef.IsPlayer())
             {
-                this.IVisualMovementPermission = (IVisualMovementPermission)GameObject.FindObjectOfType<PlayerManager>();
+                this.IVisualMovementPermission = GameObject.FindObjectOfType<PlayerManager>();
             }
             else
             {
-                this.IVisualMovementPermission = (IVisualMovementPermission)this.pointOfInterestTypeRef;
+                this.IVisualMovementPermission = pointOfInterestTypeRef;
             }
         }
-
-        public override void Tick(float d)
-        {
-        }
-
-        public override void LateTick(float d)
+        
+        public void LateTick(float d)
         {
             if (this.IVisualMovementPermission.IsVisualMovementAllowed())
             {

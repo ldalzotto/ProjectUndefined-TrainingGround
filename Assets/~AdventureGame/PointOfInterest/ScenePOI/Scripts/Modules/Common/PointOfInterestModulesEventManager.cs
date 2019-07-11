@@ -1,6 +1,4 @@
-﻿using System;
-using CoreGame;
-using GameConfigurationID;
+﻿using CoreGame;
 
 namespace AdventureGame
 {
@@ -16,18 +14,12 @@ namespace AdventureGame
         #region External Events
         public void OnPOIInit()
         {
-            foreach (var pointOfInterestModule in this.PointOfInterestModules.GetAllPointOfInterestModules())
-            {
-                pointOfInterestModule.Value.OnPOIInit();
-            }
+            this.PointOfInterestModules.PointOfInterestModelObjectModule.IfNotNull((pointOfInterestModelObjectModule) => pointOfInterestModelObjectModule.OnPOIInit());
         }
 
         internal void OnPOIDisabled(APointOfInterestType pointOfInterestType)
         {
-            foreach (var pointOfInterestModule in this.PointOfInterestModules.GetAllPointOfInterestModules())
-            {
-                pointOfInterestModule.Value.OnPOIDisabled(pointOfInterestType);
-            }
+            this.PointOfInterestModules.PointOfInterestTrackerModule.IfNotNull((pointOfInterestTrackerModule) => pointOfInterestTrackerModule.OnPOIDisabled(pointOfInterestType));
         }
         #endregion
     }

@@ -1,33 +1,36 @@
 ﻿using GameConfigurationID;
-using System.Collections.Generic;
 
 namespace AdventureGame
 {
     public class PointOfInterestSpecificBehaviorModule : APointOfInterestModule
     {
-        private static Dictionary<PointOfInterestId, PointOfInterestSpecificBehavior> specificBehaviors = new Dictionary<PointOfInterestId, PointOfInterestSpecificBehavior>()
-        {
-            {PointOfInterestId._1_Town_Girl,  new _1_Level_Girl_SpecificBehavior() }
-        };
 
         private PointOfInterestSpecificBehavior PointOfInterestSpecificBehavior;
 
-        public override void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules)
+        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
-            base.Init(pointOfInterestTypeRef, pointOfInteresetModules);
-            this.PointOfInterestSpecificBehavior = specificBehaviors[pointOfInterestTypeRef.PointOfInterestId];
-            this.PointOfInterestSpecificBehavior.Init(this, pointOfInterestTypeRef, pointOfInteresetModules);
+            switch (pointOfInterestTypeRef.PointOfInterestId)
+            {
+                case PointOfInterestId._1_Town_Girl:
+                    this.PointOfInterestSpecificBehavior = new _1_Level_Girl_SpecificBehavior();
+                    ((_1_Level_Girl_SpecificBehavior)this.PointOfInterestSpecificBehavior).Init(PointOfInterestModelObjectModule, pointOfInterestTypeRef);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        public override void Tick(float d)
+        public void Tick(float d)
         {
-            this.PointOfInterestSpecificBehavior.Tick(d);
+            if (this.PointOfInterestSpecificBehavior != null)
+            {
+                this.PointOfInterestSpecificBehavior.Tick(d);
+            }
         }
     }
 
     public interface PointOfInterestSpecificBehavior
     {
-        void Init(PointOfInterestSpecificBehaviorModule associatedModule, PointOfInterestType pointOfInterestTypeRef, PointOfInterestModules pointOfInteresetModules);
         void Tick(float d);
     }
 

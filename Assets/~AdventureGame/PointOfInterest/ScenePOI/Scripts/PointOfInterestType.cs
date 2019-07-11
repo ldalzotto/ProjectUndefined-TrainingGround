@@ -52,11 +52,11 @@ namespace AdventureGame
         }
         public PointOfInterestCutsceneController GetPointOfInterestCutsceneController()
         {
-            return this.PointOfInteresetModules.GetModule<PointOfInterestCutsceneController>();
+            return this.PointOfInteresetModules.PointOfInterestCutsceneController;
         }
         public PointOfInterestTrackerModule GetPointOfInterestTrackerModule()
         {
-            return this.PointOfInteresetModules.GetModule<PointOfInterestTrackerModule>();
+            return this.PointOfInteresetModules.PointOfInterestTrackerModule;
         }
         public CoreConfigurationManager GetCoreConfigurationManager()
         {
@@ -210,7 +210,7 @@ namespace AdventureGame
         public override void SetAnimationPosition(AnimationID animationID)
         {
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
-            var PointOfInterestModelObjectModule = this.PointOfInteresetModules.GetModule<PointOfInterestModelObjectModule>();
+            var PointOfInterestModelObjectModule = this.PointOfInteresetModules.PointOfInterestModelObjectModule;
             this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref PointOfInterestModelObjectModule, this.CoreConfigurationManager.AnimationConfiguration());
         }
     }
