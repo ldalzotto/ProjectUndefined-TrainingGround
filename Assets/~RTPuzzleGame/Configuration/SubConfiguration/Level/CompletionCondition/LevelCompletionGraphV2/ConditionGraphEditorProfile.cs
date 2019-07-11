@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using NodeGraph;
+﻿using NodeGraph;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -31,15 +30,15 @@ namespace RTPuzzle
     public class LevelCompletionConditionResolutionInput
     {
         private NPCAIManagerContainer nPCAIManagerContainer;
-        private TargetZoneContainer targetZoneContainer;
+        private InteractiveObjectContainer interactiveObjectContainer;
 
-        public LevelCompletionConditionResolutionInput(NPCAIManagerContainer nPCAIManagerContainer, TargetZoneContainer targetZoneContainer)
+        public LevelCompletionConditionResolutionInput(NPCAIManagerContainer nPCAIManagerContainer, InteractiveObjectContainer interactiveObjectContainer)
         {
             this.nPCAIManagerContainer = nPCAIManagerContainer;
-            this.targetZoneContainer = targetZoneContainer;
+            this.interactiveObjectContainer = interactiveObjectContainer;
         }
 
         public NPCAIManagerContainer NPCAIManagerContainer { get => nPCAIManagerContainer; }
-        public TargetZoneContainer TargetZoneContainer { get => targetZoneContainer; }
+        public InteractiveObjectContainer InteractiveObjectContainer { get => interactiveObjectContainer; }
     }
 }

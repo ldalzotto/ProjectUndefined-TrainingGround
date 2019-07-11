@@ -18,6 +18,7 @@ namespace RTPuzzle
         #region Specific Containers
         private Dictionary<AttractiveObjectId, AttractiveObjectTypeModule> attractiveObjectContainer;
         private List<ObjectRepelTypeModule> objectsRepelable;
+        private Dictionary<TargetZoneID, TargetZoneObjectModule> targetZones;
         #endregion
 
         #region Data Retrieval
@@ -25,7 +26,8 @@ namespace RTPuzzle
         {
             return this.attractiveObjectContainer[attractiveObjectId];
         }
-        public List<ObjectRepelTypeModule> ObjectsRepelable { get => objectsRepelable;  }
+        public List<ObjectRepelTypeModule> ObjectsRepelable { get => objectsRepelable; }
+        public Dictionary<TargetZoneID, TargetZoneObjectModule> TargetZones { get => targetZones; }
         #endregion
 
         public void Init()
@@ -35,6 +37,7 @@ namespace RTPuzzle
             this.interactiveObjects = new List<InteractiveObjectType>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectTypeModule>();
             this.objectsRepelable = new List<ObjectRepelTypeModule>();
+            this.targetZones = new Dictionary<TargetZoneID, TargetZoneObjectModule>();
 
             var allStartInteractiveObjects = GameObject.FindObjectsOfType<InteractiveObjectType>();
             if (allStartInteractiveObjects != null)
@@ -79,9 +82,16 @@ namespace RTPuzzle
             this.interactiveObjects.Add(interactiveObject);
             interactiveObject.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.Add(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule));
             interactiveObject.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Add(ObjectRepelTypeModule));
+            interactiveObject.TargetZoneObjectModule.IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Add(TargetZoneObjectModule.TargetZoneID, TargetZoneObjectModule));
         }
 
         public void OnInteractiveObjectDestroyed(InteractiveObjectType interactiveObject)
+        {
+            OnInteractiveObjectDestroyedLogic(interactiveObject);
+            MonoBehaviour.Destroy(interactiveObject.gameObject);
+        }
+
+        private void OnInteractiveObjectDestroyedLogic(InteractiveObjectType interactiveObject)
         {
             this.interactiveObjects.Remove(interactiveObject);
 
@@ -95,10 +105,25 @@ namespace RTPuzzle
             #endregion
 
             interactiveObject.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Remove(ObjectRepelTypeModule));
+            interactiveObject.TargetZoneObjectModule.IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
 
-            MonoBehaviour.Destroy(interactiveObject.gameObject);
+            #region LevelCompletionTriggerModule
+            interactiveObject.LevelCompletionTriggerModule.IfNotNull((LevelCompletionTriggerModule LevelCompletionTriggerModule) =>
+            {
+                LevelCompletionTriggerModule.OnInteractiveObjectDestroyed();
+            });
+            #endregion
         }
-        #endregion
 
-    }
+
+#if UNITY_EDITOR
+        public void TEST_OnInteractiveObjectDestroyed(InteractiveObjectType interactiveObject)
+        {
+            this.OnInteractiveObjectDestroyedLogic(interactiveObject);
+            MonoBehaviour.DestroyImmediate(interactiveObject.gameObject);
+        }
+#endif
+            #endregion
+
+        }
 }

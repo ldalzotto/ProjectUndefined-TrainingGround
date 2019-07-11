@@ -6,15 +6,15 @@ using System;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditTargetZone : EditScriptableObjectModule<TargetZone>
+    public class EditTargetZone : EditScriptableObjectModule<TargetZoneObjectModule>
     {
         private TargetZonesConfiguration TargetZonesConfiguration;
 
-        protected override Func<TargetZone, ScriptableObject> scriptableObjectResolver
+        protected override Func<TargetZoneObjectModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (TargetZone TargetZone) =>
+                return (TargetZoneObjectModule TargetZone) =>
                 {
                     if(this.TargetZonesConfiguration != null && TargetZonesConfiguration.ConfigurationInherentData.ContainsKey(TargetZone.TargetZoneID))
                     {

@@ -93,7 +93,6 @@ namespace RTPuzzle
             GroundEffectsManagerV2.Init();
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             InteractiveObjectContainer.Init();
-            GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init(gameInputManager);
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);

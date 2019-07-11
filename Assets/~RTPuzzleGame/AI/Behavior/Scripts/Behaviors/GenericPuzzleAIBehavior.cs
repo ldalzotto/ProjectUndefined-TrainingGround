@@ -40,18 +40,18 @@ namespace RTPuzzle
         #endregion
 
         public GenericPuzzleAIBehavior(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
-            PuzzleEventsManager PuzzleEventsManager, TargetZoneContainer TargetZoneContainer,
+            PuzzleEventsManager PuzzleEventsManager, InteractiveObjectContainer InteractiveObjectContainer,
             AiID aiID, Collider aiCollider, PlayerManagerDataRetriever playerManagerDataRetriever,
             AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent) : base(selfAgent, aIComponents, new GenericPuzzleAIBehaviorExternalEventManager(), OnFOVChange, ForceUpdateAIBehavior)
         {
             Func<AIRandomPatrolComponentMananger> aiPatrolComponentManagerSetterOperation = () => { return new AIRandomPatrolComponentMananger(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager); };
-            Func<AIProjectileWithCollisionEscapeManager> AIEscapeWithoutTriggerManagerSetterOperation = () => { return new AIProjectileWithCollisionEscapeManager(selfAgent, aIComponents.AIProjectileEscapeWithCollisionComponent, aIFOVManager, PuzzleEventsManager, aiID, TargetZoneContainer.GetTargetZonesTriggerColliders, AIDestimationMoveManagerComponent); };
+            Func<AIProjectileWithCollisionEscapeManager> AIEscapeWithoutTriggerManagerSetterOperation = () => { return new AIProjectileWithCollisionEscapeManager(selfAgent, aIComponents.AIProjectileEscapeWithCollisionComponent, aIFOVManager, PuzzleEventsManager, aiID, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, AIDestimationMoveManagerComponent); };
             Func<AIEscapeWithoutTriggerManager> AIProjectileEscapeWithoutCollisionManagerSetterOperation = () => { return new AIEscapeWithoutTriggerManager(selfAgent, aIFOVManager, PuzzleEventsManager, aiID, AIDestimationMoveManagerComponent); };
             Func<AIFearStunManager> AIFearStunManagerSetterOperation = () => { return new AIFearStunManager(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, this.aIFOVManager, aiID); };
             Func<AIAttractiveObjectPersistantManager> AIAttractiveObjectPersistantSetterOperation = () => { return new AIAttractiveObjectPersistantManager(selfAgent, aiID, PuzzleEventsManager); };
             Func<AIAttractiveObjectLooseManager> AIAttractiveObjectLooseSetterOperation = () => { return new AIAttractiveObjectLooseManager(selfAgent, aiID, PuzzleEventsManager); };
             Func<AITargetZoneManager> AITargetZoneManagerSetterOperation = () => { return new AITargetZoneManager(selfAgent, aiCollider, aIComponents.AITargetZoneComponent, this.aIFOVManager, aiID); };
-            Func<AIPlayerEscapeManager> AIPlayerEscapeManagerSetterOperation = () => { return new AIPlayerEscapeManager(selfAgent, this.puzzleAIBehaviorExternalEventManager, playerManagerDataRetriever, aIComponents.AIPlayerEscapeComponent, this.AIFOVManager, TargetZoneContainer.GetTargetZonesTriggerColliders, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent); };
+            Func<AIPlayerEscapeManager> AIPlayerEscapeManagerSetterOperation = () => { return new AIPlayerEscapeManager(selfAgent, this.puzzleAIBehaviorExternalEventManager, playerManagerDataRetriever, aIComponents.AIPlayerEscapeComponent, this.AIFOVManager, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent); };
 
             Func<Type, InterfaceAIManager> ForAllAIManagerTypesOperation = (Type managerType) => AIManagerTypeSafeOperation.ForAllAIManagerTypes(managerType, aiPatrolComponentManagerSetterOperation,
                 AIEscapeWithoutTriggerManagerSetterOperation, AIProjectileEscapeWithoutCollisionManagerSetterOperation, AIFearStunManagerSetterOperation,
@@ -99,7 +99,7 @@ namespace RTPuzzle
                 }
                 else if (collisionType.IsTargetZone)
                 {
-                    this.ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(TargetZone.FromCollisionType(collisionType)));
+                    this.ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneObjectModule.FromCollisionType(collisionType)));
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace RTPuzzle
                 }
                 else if (collisionType.IsTargetZone)
                 {
-                    this.ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(TargetZone.FromCollisionType(collisionType)));
+                    this.ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(TargetZoneObjectModule.FromCollisionType(collisionType)));
                 }
             }
         }

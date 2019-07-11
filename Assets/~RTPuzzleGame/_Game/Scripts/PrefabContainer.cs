@@ -15,7 +15,7 @@ namespace RTPuzzle
 
         [Header("RT Puzzle Target Zone Prefab")]
         [Space(20)]
-        public TargetZone TargetZonePrefab;
+        public InteractiveObjectType TargetZonePrefab;
 
 
         [Header("Puzzle attracitve objects prefabs")]

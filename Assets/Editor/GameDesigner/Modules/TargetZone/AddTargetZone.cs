@@ -7,7 +7,7 @@ using System;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class AddTargetZone : AddPrefabModule<TargetZone>
+    public class AddTargetZone : AddPrefabModule<TargetZoneObjectModule>
     {
         protected override Func<GameObject> ParentGameObject
         {

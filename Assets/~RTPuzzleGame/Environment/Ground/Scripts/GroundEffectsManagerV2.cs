@@ -146,6 +146,7 @@ namespace RTPuzzle
                     }
                     else if (rangeEffectManager.GetType() == typeof(BoxGroundEffectManager))
                     {
+                        Debug.Log(rangeEffectId);
                         this.BoxRangeBufferValues.Add(((BoxGroundEffectManager)rangeEffectManager).ToBoxBuffer());
                         this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(0, 1, this.BoxRangeBufferValues.Count - 1));
                     }

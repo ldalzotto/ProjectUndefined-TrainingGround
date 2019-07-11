@@ -342,26 +342,26 @@ namespace RTPuzzle
 
     public class TargetZoneTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
-        private TargetZone targetZone;
+        private TargetZoneObjectModule targetZone;
 
-        public TargetZoneTriggerEnterAIBehaviorEvent(TargetZone targetZone)
+        public TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneObjectModule targetZone)
         {
             this.targetZone = targetZone;
         }
 
-        public TargetZone TargetZone { get => targetZone; }
+        public TargetZoneObjectModule TargetZone { get => targetZone; }
     }
 
     public class TargetZoneTriggerStayAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
-        private TargetZone targetZone;
+        private TargetZoneObjectModule targetZone;
 
-        public TargetZoneTriggerStayAIBehaviorEvent(TargetZone targetZone)
+        public TargetZoneTriggerStayAIBehaviorEvent(TargetZoneObjectModule targetZone)
         {
             this.targetZone = targetZone;
         }
 
-        public TargetZone TargetZone { get => targetZone; }
+        public TargetZoneObjectModule TargetZone { get => targetZone; }
     }
 
     public class PlayerEscapeStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent

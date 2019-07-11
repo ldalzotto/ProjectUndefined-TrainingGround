@@ -144,7 +144,7 @@ namespace RTPuzzle
             if (behaviorType == typeof(GenericPuzzleAIBehavior))
             {
                 return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.TargetZoneContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
             }
             return null;
         }
@@ -175,7 +175,7 @@ namespace RTPuzzle
         public Action<FOV> OnFOVChange;
         public PuzzleEventsManager PuzzleEventsManager;
         public PlayerManagerDataRetriever PlayerManagerDataRetriever;
-        public TargetZoneContainer TargetZoneContainer;
+        public InteractiveObjectContainer InteractiveObjectContainer;
         public AiID aiID;
         public Collider aiCollider;
         public Action ForceUpdateAIBehavior;
@@ -183,14 +183,14 @@ namespace RTPuzzle
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents,
             Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
-            TargetZoneContainer TargetZoneContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
+            InteractiveObjectContainer InteractiveObjectContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = aIComponents;
             OnFOVChange = onFOVChange;
             PuzzleEventsManager = puzzleEventsManager;
             this.PlayerManagerDataRetriever = PlayerManagerDataRetriever;
-            this.TargetZoneContainer = TargetZoneContainer;
+            this.InteractiveObjectContainer = InteractiveObjectContainer;
             this.aiID = aiID;
             this.aiCollider = aiCollider;
             this.ForceUpdateAIBehavior = ForceUpdateAIBehavior;

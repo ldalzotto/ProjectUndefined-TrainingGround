@@ -8,9 +8,9 @@ using UnityEditor;
 namespace Editor_TargetZoneCreationWizard
 {
     [System.Serializable]
-    public class TargetZonePrefabCreation : CreateablePrefabComponent<TargetZone>
+    public class TargetZonePrefabCreation : CreateablePrefabComponent<TargetZoneObjectModule>
     {
-        public override Func<AbstractCreationWizardEditorProfile, TargetZone> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, TargetZoneObjectModule> BasePrefabProvider
         {
             get
             {

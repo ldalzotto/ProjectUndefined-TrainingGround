@@ -142,7 +142,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public LevelChunkType BaseLevelChunkPrefab;
         [ReadOnly]
-        public TargetZone BaseTargetZonePrefab;
+        public TargetZoneObjectModule BaseTargetZonePrefab;
         [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
         [ReadOnly]

@@ -154,8 +154,10 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AttractiveObjectModule\AttractiveObjectTypeModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LevelCompletionTriggerModule\LevelCompletionTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectRepelModule\ObjectRepelTypeModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\TargetZoneObjectModule\TargetZoneObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
@@ -199,9 +201,7 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZone.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneTriggerType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneHelper.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />

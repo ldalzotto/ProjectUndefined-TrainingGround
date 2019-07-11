@@ -46,9 +46,9 @@ namespace Tests
             return AttractiveObjectTypeModule.Instanciate(worldPosition, null, attractiveObjectInherentConfigurationData);
         }
 
-        public static TargetZone FindTargetZone(TargetZoneID targetZoneID)
+        public static TargetZoneObjectModule FindTargetZone(TargetZoneID targetZoneID)
         {
-            return GameObject.FindObjectsOfType<TargetZone>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();
+            return GameObject.FindObjectsOfType<TargetZoneObjectModule>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();
         }
 
         public static AttractiveObjectInherentConfigurationData CreateAttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime)
@@ -124,9 +124,9 @@ namespace Tests
 
         #region TargetZone
         public static IEnumerator TargetZoneYield(TargetZoneInherentData targetZoneInherentData, Vector3 targetZonePosition,
-            Func<TargetZone, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached)
+            Func<InteractiveObjectType, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached)
         {
-            var targetZone = TargetZone.Instanciate(targetZoneInherentData, targetZonePosition);
+            var targetZone = TargetZoneObjectModule.Instanciate(targetZoneInherentData, targetZonePosition);
             yield return new WaitForFixedUpdate();
             if (OnTargetZoneSpawn != null)
             {

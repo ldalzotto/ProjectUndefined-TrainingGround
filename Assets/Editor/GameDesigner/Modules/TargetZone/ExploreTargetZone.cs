@@ -10,8 +10,8 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class ExploreTargetZone : ExploreModule
     {
-        private List<TargetZone> TargetZones = new List<TargetZone>();
-        private Dictionary<TargetZone, Editor> TargetZonesEditor = new Dictionary<TargetZone, Editor>();
+        private List<TargetZoneObjectModule> TargetZones = new List<TargetZoneObjectModule>();
+        private Dictionary<TargetZoneObjectModule, Editor> TargetZonesEditor = new Dictionary<TargetZoneObjectModule, Editor>();
 
         public override void GUITick()
         {
@@ -21,7 +21,7 @@ namespace Editor_GameDesigner
         public override void OnEnabled()
         {
             base.OnEnabled();
-            this.TargetZones = GameObject.FindObjectsOfType<TargetZone>().ToList();
+            this.TargetZones = GameObject.FindObjectsOfType<TargetZoneObjectModule>().ToList();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace RTPuzzle
         #region External Dependencies
         private NavMeshAgent agent;
         private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
-        private TargetZoneContainer targetZoneContainer;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         #region Internal Dependencies
@@ -31,7 +31,7 @@ namespace RTPuzzle
             this.agent = agent;
             this.aiCollider = aiCollider;
 
-            this.targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.AIFOVManager = AIFOVManager;
             this.aITargetZoneComponent = aITargetZoneComponent;
@@ -79,7 +79,7 @@ namespace RTPuzzle
             isEscapingFromTargetZone = false;
         }
 
-        public override void TriggerTargetZoneEscape(TargetZone targetZone)
+        public override void TriggerTargetZoneEscape(TargetZoneObjectModule targetZone)
         {
             Debug.Log(Time.frameCount + "Target zone trigger : " + targetZone.TargetZoneID);
 
@@ -104,9 +104,9 @@ namespace RTPuzzle
              );
         }
 
-        private TargetZone IsAIOverlappingWithATargetZone()
+        private TargetZoneObjectModule IsAIOverlappingWithATargetZone()
         {
-            var overlappingTargetZones = this.targetZoneContainer.GetAllTargetZonesWhereDistanceCheckOverlaps(this.aiCollider.bounds);
+            var overlappingTargetZones = TargetZoneHelper.GetAllTargetZonesWhereDistanceCheckOverlaps(this.aiCollider.bounds, this.InteractiveObjectContainer);
             if (overlappingTargetZones != null && overlappingTargetZones.Count > 0)
             {
                 return overlappingTargetZones[0];

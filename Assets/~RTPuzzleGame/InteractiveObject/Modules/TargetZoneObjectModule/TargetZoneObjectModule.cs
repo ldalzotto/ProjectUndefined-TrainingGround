@@ -7,57 +7,55 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public class TargetZone : MonoBehaviour
+    public class TargetZoneObjectModule : InteractiveObjectModule
     {
         [CustomEnum]
         public TargetZoneID TargetZoneID;
 
         #region Internal Dependencies
         private SphereCollider zoneDistanceDetectionCollider;
-        private TargetZoneTriggerType targetZoneTriggerType;
+        #endregion
+
+        #region Module Dependencies
+        private LevelCompletionTriggerModule levelCompletionTriggerModule;
         #endregion
 
         #region Data Retrieval
         public Collider ZoneDistanceDetectionCollider { get => zoneDistanceDetectionCollider; }
-        public TargetZoneTriggerType TargetZoneTriggerType { get => targetZoneTriggerType; }
+        public LevelCompletionTriggerModule LevelCompletionTriggerModule { get => levelCompletionTriggerModule; }
 
-        public static TargetZone FromCollisionType(CollisionType collisionType)
+        public static TargetZoneObjectModule FromCollisionType(CollisionType collisionType)
         {
-            return collisionType.GetComponent<TargetZone>();
+            return collisionType.GetComponent<TargetZoneObjectModule>();
         }
-
         #endregion
 
         #region State
         private bool hasInit;
         #endregion
 
-        public void Init()
+        public void Init(LevelCompletionTriggerModule levelCompletionTriggerModule)
         {
             var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            this.Init(gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]);
+            this.Init(levelCompletionTriggerModule, gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]);
         }
 
-        public void Init(TargetZoneInherentData targetZoneInherentData)
+        public void Init(LevelCompletionTriggerModule levelCompletionTriggerModule, TargetZoneInherentData targetZoneInherentData)
         {
             if (!this.hasInit)
             {
-                var targetZoneContainer = GameObject.FindObjectOfType<TargetZoneContainer>();
+                this.levelCompletionTriggerModule = levelCompletionTriggerModule;
                 this.zoneDistanceDetectionCollider = GetComponent<SphereCollider>();
-                this.targetZoneTriggerType = GetComponentInChildren<TargetZoneTriggerType>();
-                targetZoneTriggerType.Init();
-                targetZoneContainer.Add(this);
-
                 this.zoneDistanceDetectionCollider.radius = targetZoneInherentData.AIDistanceDetection;
 
                 this.hasInit = true;
             }
         }
 
-        public static TargetZone Instanciate(TargetZoneInherentData targetZoneInherentData, Vector3 worldPosition)
+        public static InteractiveObjectType Instanciate(TargetZoneInherentData targetZoneInherentData, Vector3 worldPosition)
         {
             var targetZone = MonoBehaviour.Instantiate(PrefabContainer.Instance.TargetZonePrefab);
-            targetZone.Init(targetZoneInherentData);
+            targetZone.Init(InputAttractiveObjectInherentConfigurationData: null, targetZoneInherentData: targetZoneInherentData);
             targetZone.transform.position = worldPosition;
             return targetZone;
         }
