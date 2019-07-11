@@ -153,6 +153,12 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AttractiveObjectModule\AttractiveObjectTypeModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectRepelModule\ObjectRepelTypeModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />
@@ -179,13 +185,8 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelLineVisualFeedbackManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsContainerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsTimerContainerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsInstanciatedParent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Common\IRenderBoundRetrievable.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectile.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />

@@ -35,15 +35,15 @@ namespace Tests
             return GameObject.FindObjectsOfType<TestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform;
         }
 
-        public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, TestPositionID aITestPositionID)
+        public static InteractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, TestPositionID aITestPositionID)
         {
             var attractiveObjectSpawnPosition = FindTestPosition(aITestPositionID).position;
             return SpawnAttractiveObject(attractiveObjectInherentConfigurationData, attractiveObjectSpawnPosition);
         }
 
-        public static AttractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition)
+        public static InteractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition)
         {
-            return AttractiveObjectType.Instanciate(worldPosition, null, attractiveObjectInherentConfigurationData);
+            return AttractiveObjectTypeModule.Instanciate(worldPosition, null, attractiveObjectInherentConfigurationData);
         }
 
         public static TargetZone FindTargetZone(TargetZoneID targetZoneID)
@@ -55,7 +55,7 @@ namespace Tests
         {
             var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
             var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId.CHEESE];
-            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AttractiveObjectModelPrefab, randomAttractiveObjectInherentData.AttractiveObjectPrefab);
+            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AttractiveObjectModelPrefab, randomAttractiveObjectInherentData.AttractiveInteractiveObjectPrefab);
             return attractiveObjectInherentConfigurationData;
         }
 
@@ -85,7 +85,7 @@ namespace Tests
 
         #region Attractive Object
         public static IEnumerator AttractiveObjectYield(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition,
-                    Func<AttractiveObjectType, IEnumerator> OnAttractiveObjectSpawn, Func<IEnumerator> OnAttractiveObjectDestroyed)
+                    Func<InteractiveObjectType, IEnumerator> OnAttractiveObjectSpawn, Func<IEnumerator> OnAttractiveObjectDestroyed)
         {
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData,worldPosition);
             yield return new WaitForFixedUpdate();

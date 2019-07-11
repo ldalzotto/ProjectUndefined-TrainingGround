@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -36,6 +37,10 @@ namespace RTPuzzle
         public void OnRangeTriggerExit(Collider other)
         {
             this.obstacleListener.OnRangeTriggerExit(other);
+        }
+        public void OnRangeObstacleListenerDestroyed(RangeType rangeType)
+        {
+            this.obstacleListener.OnObstacleListenerDestroyed();
         }
         #endregion
     }

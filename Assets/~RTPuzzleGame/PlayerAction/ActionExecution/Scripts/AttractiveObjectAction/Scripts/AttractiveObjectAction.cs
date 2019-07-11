@@ -8,7 +8,9 @@ namespace RTPuzzle
     public class AttractiveObjectAction : RTPPlayerAction
     {
         #region External Dependencies
-        private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
+        private AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent;
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         #region Internal Managers
@@ -38,13 +40,14 @@ namespace RTPuzzle
 
             #region External Dependencies
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
+            this.AttractiveObjectsInstanciatedParent = GameObject.FindObjectOfType<AttractiveObjectsInstanciatedParent>();
             var playerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
-            var attractiveObjectInherentConfigurationData = puzzleConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
+            var attractiveObjectInherentConfigurationData = PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerCollider());
@@ -91,7 +94,7 @@ namespace RTPuzzle
             var objectSpawnPosition = this.AttractiveObjectGroundPositioner.GetAttractiveObjectSpawnPosition();
             if (objectSpawnPosition.HasValue)
             {
-                this.AttractiveObjectsContainerManager.OnAttractiveObjectActionExecuted(objectSpawnPosition.Value, ((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId);
+                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, ((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId, this.PuzzleGameConfigurationManager, this.AttractiveObjectsInstanciatedParent);
             }
 
             this.OnEndAction();
@@ -100,7 +103,7 @@ namespace RTPuzzle
         private void OnEndAction()
         {
             this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionEnd();
-            MonoBehaviour.Destroy(this.attractiveObjectRange.gameObject);
+            this.attractiveObjectRange.OnRangeDestroyed();
             this.isActionOver = true;
         }
         #endregion

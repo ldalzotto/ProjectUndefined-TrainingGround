@@ -20,7 +20,7 @@ namespace Editor_GameDesigner
         public override void OnEnabled()
         {
             base.OnEnabled();
-            var foundObjectRepelType = GameObject.FindObjectsOfType<ObjectRepelType>();
+            var foundObjectRepelType = GameObject.FindObjectsOfType<ObjectRepelTypeModule>();
             if (foundObjectRepelType != null)
             {
                 this.RepelableObjectsInherentDatas = foundObjectRepelType.ToList().ConvertAll(r => this.commonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration.ConfigurationInherentData[r.RepelableObjectID]);

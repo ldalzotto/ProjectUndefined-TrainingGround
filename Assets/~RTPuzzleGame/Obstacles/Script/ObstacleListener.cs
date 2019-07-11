@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -16,15 +17,25 @@ namespace RTPuzzle
 
         #region External Dependencies
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
+        private ObstaclesListenerManager ObstaclesListenerManager;
         #endregion
 
         public void Init()
         {
-            this.nearSquereObstacles = new List<SquareObstacle>();
-            GameObject.FindObjectOfType<ObstaclesListenerManager>().OnObstacleListenerCreation(this);
+            #region External Dependencies
             this.ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
+            this.ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
+            #endregion
+
+            this.nearSquereObstacles = new List<SquareObstacle>();
+            this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
             this.ObstacleListenerChangePositionTracker = new ObstacleListenerChangePositionTracker(this);
+        }
+
+        public void OnObstacleListenerDestroyed()
+        {
+            this.ObstaclesListenerManager.OnObstacleListenerDestroyed(this);
         }
 
         public void Tick(float d)

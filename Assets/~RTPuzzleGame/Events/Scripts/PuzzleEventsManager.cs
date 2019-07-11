@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using CoreGame;
+﻿using CoreGame;
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -52,11 +52,11 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
         }
-        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectType attractiveObject, AiID aiID)
+        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectTypeModule attractiveObject, AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart(attractiveObject);
         }
-        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectType involvedAttractiveObject, AiID aiID)
+        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectTypeModule involvedAttractiveObject, AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
         }
@@ -95,6 +95,26 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Attractive Objects Event
+        public void PZ_EVT_AttractiveObject_TpeDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
+        {
+            this.NPCAIManagerContainer.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
+        }
+
+        public void PZ_EVT_AttractiveObject_OnPlayerActionExecuted(RaycastHit attractiveObjectWorldPositionHit, AttractiveObjectId attractiveObjectId,
+                            PuzzleGameConfigurationManager puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent)
+        {
+            AttractiveObjectTypeModuleEventHandling.OnAttractiveObjectActionExecuted(attractiveObjectWorldPositionHit, attractiveObjectId, puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent);
+        }
+        #endregion
+
+        #region RepelableObject Events
+        public void PZ_EVT_RepelableObject_OnObjectRepelled(ObjectRepelTypeModule objectRepelType, Vector3 targetWorldPosition)
+        {
+            ObjectRepelTypeModuleEventHandling.OnObjectRepelRepelled(objectRepelType, targetWorldPosition);
+        }
+        #endregion
+
         public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
@@ -121,7 +141,7 @@ namespace RTPuzzle
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
             this.GroundEffectsManagerV2.OnLevelExit();
         }
-        
+
         #region Level Completion Events
         public void PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate()
         {

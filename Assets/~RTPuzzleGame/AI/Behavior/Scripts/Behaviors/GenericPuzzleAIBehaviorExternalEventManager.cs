@@ -288,56 +288,56 @@ namespace RTPuzzle
     public class AttractiveObjectTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
         private Vector3 attractivePosition;
-        private AttractiveObjectType attractiveObjectType;
+        private AttractiveObjectTypeModule attractiveObjectType;
 
-        public AttractiveObjectTriggerEnterAIBehaviorEvent(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
+        public AttractiveObjectTriggerEnterAIBehaviorEvent(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
         {
             this.attractivePosition = attractivePosition;
             this.attractiveObjectType = attractiveObjectType;
         }
 
         public Vector3 AttractivePosition { get => attractivePosition; }
-        public AttractiveObjectType AttractiveObjectType { get => attractiveObjectType; }
+        public AttractiveObjectTypeModule AttractiveObjectType { get => attractiveObjectType; }
     }
 
     public class AttractiveObjectTriggerStayAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
         private Vector3 attractivePosition;
-        private AttractiveObjectType attractiveObjectType;
+        private AttractiveObjectTypeModule attractiveObjectType;
 
-        public AttractiveObjectTriggerStayAIBehaviorEvent(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
+        public AttractiveObjectTriggerStayAIBehaviorEvent(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
         {
             this.attractivePosition = attractivePosition;
             this.attractiveObjectType = attractiveObjectType;
         }
 
         public Vector3 AttractivePosition { get => attractivePosition; }
-        public AttractiveObjectType AttractiveObjectType { get => attractiveObjectType; }
+        public AttractiveObjectTypeModule AttractiveObjectType { get => attractiveObjectType; }
     }
 
     public class AttractiveObjectTriggerExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
 
-        private AttractiveObjectType attractiveObjectType;
+        private AttractiveObjectTypeModule attractiveObjectType;
 
-        public AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectType attractiveObjectType)
+        public AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectTypeModule attractiveObjectType)
         {
             this.attractiveObjectType = attractiveObjectType;
         }
 
-        public AttractiveObjectType AttractiveObjectType { get => attractiveObjectType; }
+        public AttractiveObjectTypeModule AttractiveObjectType { get => attractiveObjectType; }
     }
 
     public class AttractiveObectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
-        private AttractiveObjectType destroyedAttractiveObject;
+        private AttractiveObjectTypeModule destroyedAttractiveObject;
 
-        public AttractiveObectDestroyedAIBehaviorEvent(AttractiveObjectType destroyedAttractiveObject)
+        public AttractiveObectDestroyedAIBehaviorEvent(AttractiveObjectTypeModule destroyedAttractiveObject)
         {
             this.destroyedAttractiveObject = destroyedAttractiveObject;
         }
 
-        public AttractiveObjectType DestroyedAttractiveObject { get => destroyedAttractiveObject; }
+        public AttractiveObjectTypeModule DestroyedAttractiveObject { get => destroyedAttractiveObject; }
     }
 
     public class TargetZoneTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent

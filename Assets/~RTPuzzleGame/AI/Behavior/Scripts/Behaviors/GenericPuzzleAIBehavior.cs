@@ -84,7 +84,7 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public override void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        public override void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
         {
             this.ReceiveEvent(new AttractiveObectDestroyedAIBehaviorEvent(attractiveObjectToDestroy));
         }
@@ -95,7 +95,7 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(collider.transform.position, AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(collider.transform.position, AttractiveObjectTypeModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
                 else if (collisionType.IsTargetZone)
                 {
@@ -111,7 +111,7 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(collider.transform.position, AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(collider.transform.position, AttractiveObjectTypeModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
                 else if (collisionType.IsTargetZone)
                 {
@@ -127,7 +127,7 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectType.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectTypeModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
             }
         }

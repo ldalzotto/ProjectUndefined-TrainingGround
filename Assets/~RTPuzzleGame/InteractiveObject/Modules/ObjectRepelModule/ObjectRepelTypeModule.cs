@@ -4,30 +4,33 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObjectRepelType : MonoBehaviour
+    public class ObjectRepelTypeModule : InteractiveObjectModule
     {
         public RepelableObjectID RepelableObjectID;
 
+        #region Module Dependencies
+        private ModelObjectModule ModelObjectModule;
+        #endregion
+
         #region Internal Dependencies
         private Collider objectRepelCollider;
-        private IRenderBoundRetrievable parentObjectBounds;
         #endregion
 
         public Collider ObjectRepelCollider { get => objectRepelCollider; }
 
         private ObjectRepelTypeAnimationComponent objectRepelTypeAnimationComponent = new ObjectRepelTypeAnimationComponent();
 
-        public void Init()
+        public void Init(ModelObjectModule ModelObjectModule)
         {
+            this.ModelObjectModule = ModelObjectModule;
             this.objectRepelCollider = GetComponent<Collider>();
-            this.parentObjectBounds = GetComponentInParent<IRenderBoundRetrievable>();
         }
 
-        public static ObjectRepelType FromCollisionType(CollisionType collisionType)
+        public static ObjectRepelTypeModule FromCollisionType(CollisionType collisionType)
         {
             if (collisionType.IsRepelable)
             {
-                return collisionType.GetComponent<ObjectRepelType>();
+                return collisionType.GetComponent<ObjectRepelTypeModule>();
             }
             return null;
         }
@@ -61,9 +64,9 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
-        public IRenderBoundRetrievable GetParentObject()
+        public IRenderBoundRetrievable GetModelBounds()
         {
-            return this.parentObjectBounds;
+            return this.ModelObjectModule;
         }
         #endregion
     }
@@ -75,5 +78,13 @@ namespace RTPuzzle
         public BeziersControlPoints path;
     }
 
+    public static class ObjectRepelTypeModuleEventHandling
+    {
+        public static void OnObjectRepelRepelled(ObjectRepelTypeModule objectRepelType, Vector3 targetWorldPosition)
+        {
+            Debug.Log(MyLog.Format(Vector3.Distance(objectRepelType.transform.position, targetWorldPosition)));
+            objectRepelType.OnObjectRepelRepelled(BeziersControlPoints.Build(objectRepelType.transform.position, targetWorldPosition, objectRepelType.transform.up, BeziersControlPointsShape.CURVED));
+        }
+    }
 }
 

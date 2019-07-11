@@ -146,9 +146,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
         [ReadOnly]
-        public AttractiveObjectType BaseAttractiveObjectPrefab;
+        public AttractiveObjectTypeModule BaseAttractiveObjectPrefab;
         [ReadOnly]
-        public ObjectRepelType BaseRepelableObjectPrefab;
+        public ObjectRepelTypeModule BaseRepelableObjectPrefab;
     }
 
     [System.Serializable]

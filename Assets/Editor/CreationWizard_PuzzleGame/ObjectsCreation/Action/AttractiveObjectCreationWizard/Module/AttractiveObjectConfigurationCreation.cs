@@ -14,12 +14,12 @@ namespace Editor_AttractiveObjectCreationWizard
             var attractiveObjectPrefabCreation = editorProfile.GetModule<AttractiveObjectPrefabCreation>();
             this.CreateAsset(editorInfomrationsData.CommonGameConfigurations.InstancePath.AttractiveObjectInherantDataPath, editorInfomrationsData.AttractiveObjectId.ToString() + NameConstants.AttractiveObjectInherentData, editorProfile);
             this.AddToGameConfiguration(editorInfomrationsData.AttractiveObjectId, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration, editorProfile);
-            this.CreatedObject.AttractiveObjectPrefab = attractiveObjectPrefabCreation.CreatedPrefab;
+            this.CreatedObject.AttractiveInteractiveObjectPrefab = attractiveObjectPrefabCreation.CreatedPrefab;
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>
             {
                 so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_POCKET_ITEM;
                 so.FindProperty(nameof(this.CreatedObject.PostActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_POCKET_ITEM_LAY;
-                so.FindProperty(nameof(this.CreatedObject.AttractiveObjectPrefab)).objectReferenceValue = attractiveObjectPrefabCreation.CreatedPrefab;
+                so.FindProperty(nameof(this.CreatedObject.AttractiveInteractiveObjectPrefab)).objectReferenceValue = attractiveObjectPrefabCreation.CreatedPrefab;
                 so.FindProperty(nameof(this.CreatedObject.AttractiveObjectModelPrefab)).objectReferenceValue = editorInfomrationsData.AttractiveObjectModel;
             });
         }

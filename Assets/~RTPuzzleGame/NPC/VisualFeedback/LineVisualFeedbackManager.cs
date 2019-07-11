@@ -7,14 +7,14 @@ namespace RTPuzzle
     {
 
         #region External Dependencies
-        private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private DottedLineContainer DottedLineContainer;
         #endregion
 
         public LineVisualFeedbackManager(NPCAIManager nPCAIManagerRef)
         {
-            this.AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
+            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.DottedLineContainer = GameObject.FindObjectOfType<DottedLineContainer>();
 
@@ -32,7 +32,7 @@ namespace RTPuzzle
         {
             if (this.AttractiveObjectDottedLine != null)
             {
-                var attractiveObject = this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId);
+                var attractiveObject = this.InteractiveObjectContainer.GetAttractiveObjectType(AttractiveObjectId);
                 this.AttractiveObjectDottedLine.Tick(d, npcAIBoundsCenterWorldPosition + this.positionOffsetFromNPC, attractiveObject.transform.position + this.targetWorldPositionOffset);
             }
         }
@@ -45,8 +45,8 @@ namespace RTPuzzle
                 this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID.ATTRACTIVE_OBJECT, this.PuzzleGameConfigurationManager, this.DottedLineContainer);
             }
             this.AttractiveObjectId = attractiveObjectId;
-            var attractiveObject = this.AttractiveObjectsContainerManager.GetAttractiveObjectType(AttractiveObjectId);
-            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(attractiveObject);
+            var attractiveObject = this.InteractiveObjectContainer.GetAttractiveObjectType(AttractiveObjectId);
+            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(attractiveObject.GetModel());
         }
         public void OnAttractiveObjectEnd()
         {

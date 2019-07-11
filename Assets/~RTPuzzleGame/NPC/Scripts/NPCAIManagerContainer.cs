@@ -22,7 +22,7 @@ namespace RTPuzzle
                 npcAiManager.OnGameOver();
             }
         }
-        internal void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        internal void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
         {
             foreach (var npcAiManager in npcAiManagers.Values)
             {

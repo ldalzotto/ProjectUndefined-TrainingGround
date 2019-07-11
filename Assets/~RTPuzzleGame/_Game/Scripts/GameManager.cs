@@ -22,16 +22,15 @@ namespace RTPuzzle
         private LaunchProjectileContainerManager LaunchProjectileContainerManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
-        private AttractiveObjectsContainerManager AttractiveObjectsContainerManager;
-        private RangeTypeObjectContainer RangeTypeContainer;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
         private GameOverManager GameOverManager;
-        private ObjectRepelContainerManager ObjectRepelContainerManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
         private ObstaclesListenerManager ObstaclesListenerManager;
         private SquareObstaclesManager SquareObstaclesManager;
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
+        private InteractiveObjectContainer InteractiveObjectContainer;
+        private RangeTypeObjectContainer RangeTypeContainer;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -65,14 +64,13 @@ namespace RTPuzzle
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
             GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
             InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
+            RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
+            InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
-            AttractiveObjectsContainerManager = GameObject.FindObjectOfType<AttractiveObjectsContainerManager>();
-            RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
-            ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
             DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
             ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
             ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
@@ -87,14 +85,14 @@ namespace RTPuzzle
 
             //Initialisations
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
-            
+
             ObstacleFrustumCalculationManager.Init();
             ObstaclesListenerManager.Init();
             SquareObstaclesManager.Init();
 
             GroundEffectsManagerV2.Init();
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
-            RangeTypeContainer.Init();
+            InteractiveObjectContainer.Init();
             GameObject.FindObjectOfType<TargetZoneContainer>().Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init(gameInputManager);
@@ -110,14 +108,10 @@ namespace RTPuzzle
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
-            AttractiveObjectsContainerManager.Init();
             GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
             NpcInteractionRingRendererManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
-            GameObject.FindObjectOfType<ObjectRepelContainer>().Init();
             ObjectRepelLineVisualFeedbackManager.Init();
-            ObjectRepelContainerManager.Init();
-            AttractiveObjectsContainerManager.InitStaticInitials();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
 #if UNITY_EDITOR
@@ -136,11 +130,11 @@ namespace RTPuzzle
             {
                 PlayerActionManager.Tick(d);
                 PlayerManager.Tick(d);
-                
+
                 ObstaclesListenerManager.Tick(d);
                 SquareObstaclesManager.Tick(d);
                 ObstacleFrustumCalculationManager.Tick(d);
-                
+
                 TimeFlowManager.Tick(d);
                 GameOverManager.Tick(d);
                 CooldownFeedManager.Tick(d);
@@ -152,10 +146,10 @@ namespace RTPuzzle
                 {
                     NPCAIManagerContainer.EnableAgents();
                     NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                    InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());
+
                     LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                     PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                    AttractiveObjectsContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
-                    ObjectRepelContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                 }
                 else
                 {

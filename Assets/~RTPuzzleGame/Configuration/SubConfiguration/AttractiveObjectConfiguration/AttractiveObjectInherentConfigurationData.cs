@@ -14,7 +14,7 @@ namespace RTPuzzle
         public float EffectRange;
         public float EffectiveTime;
         public GameObject AttractiveObjectModelPrefab;
-        public AttractiveObjectType AttractiveObjectPrefab;
+        public InteractiveObjectType AttractiveInteractiveObjectPrefab;
 
         [Header("Animation")]
 
@@ -23,17 +23,17 @@ namespace RTPuzzle
         [CustomEnum]
         public AnimationID PostActionAnimation;
 
-        public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)
+        public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, InteractiveObjectType AttractiveInteractiveObjectPrefab)
         {
-            this.Init(effectRange, effectiveTime, AttractiveObjectModelPrefab, AttractiveObjectPrefab);
+            this.Init(effectRange, effectiveTime, AttractiveObjectModelPrefab, AttractiveInteractiveObjectPrefab);
         }
 
-        public void Init(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, AttractiveObjectType AttractiveObjectPrefab)
+        public void Init(float effectRange, float effectiveTime, GameObject AttractiveObjectModelPrefab, InteractiveObjectType AttractiveInteractiveObjectPrefab)
         {
             EffectRange = effectRange;
             EffectiveTime = effectiveTime;
             this.AttractiveObjectModelPrefab = AttractiveObjectModelPrefab;
-            this.AttractiveObjectPrefab = AttractiveObjectPrefab;
+            this.AttractiveInteractiveObjectPrefab = AttractiveInteractiveObjectPrefab;
         }
 
     }

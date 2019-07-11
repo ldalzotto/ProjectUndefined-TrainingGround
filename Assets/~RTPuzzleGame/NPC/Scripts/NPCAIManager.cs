@@ -248,7 +248,7 @@ namespace RTPuzzle
             ));
         }
 
-        internal void OnAIAttractedStart(AttractiveObjectType attractiveObject)
+        internal void OnAIAttractedStart(AttractiveObjectTypeModule attractiveObject)
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectStart(attractiveObject.AttractiveObjectId);
             this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ATTRACTED_START, this.AiID);
@@ -258,7 +258,7 @@ namespace RTPuzzle
             this.LineVisualFeedbackManager.OnAttractiveObjectEnd();
             this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
         }
-        public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        public void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
         {
             this.puzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }

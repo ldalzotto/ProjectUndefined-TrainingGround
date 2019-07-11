@@ -30,7 +30,7 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        protected AttractiveObjectType involvedAttractiveObject;
+        protected AttractiveObjectTypeModule involvedAttractiveObject;
 
         public AbstractAIAttractiveObjectManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
         {
@@ -40,15 +40,12 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public abstract void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType);
-        public abstract void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType);
-        public abstract void OnTriggerExit(AttractiveObjectType attractiveObjectType);
+        public abstract void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
+        public abstract void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
+        public abstract void OnTriggerExit(AttractiveObjectTypeModule attractiveObjectType);
 
         public virtual void OnDestinationReached()
         {
-            //This is not completely accurate accurate -> we check if a single point is contained in a range. (which is usually the center of agent)
-            //Or, the AIAttractive objet range may physically be inside AI box collider range and not in center.
-            //In such a case, the AI will be condirerd out of AI attractive.
             if (!this.HasSensedThePresenceOfAnAttractiveObject())
             {
                 this.OnStateReset();
@@ -66,7 +63,7 @@ namespace RTPuzzle
             this.involvedAttractiveObject = null;
         }
 
-        public void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy)
+        public void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
         {
             if (this.IsDestructedAttractiveObjectEqualsToCurrent(attractiveObjectToDestroy))
             {
@@ -75,9 +72,11 @@ namespace RTPuzzle
         }
         #endregion
 
-        protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectType attractiveObjectType)
+        protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
         {
-            if (attractiveObjectType.IsInRangeOf(this.selfAgent.transform.position))
+            //We only check if the center point is not occluded by obstacles. Range intersection is already done in the physics step (that leads to this event).
+            //This is not completely accurate accurate -> we check if a single point is not occluded.
+            if (!attractiveObjectType.SphereRange.IsOccluded(this.selfAgent.transform.position))
             {
                 this.attractionPosition = attractivePosition;
                 this.involvedAttractiveObject = attractiveObjectType;
@@ -115,7 +114,7 @@ namespace RTPuzzle
             return this.IsInfluencedByAttractiveObject();
         }
 
-        private bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectType attractiveObjectToDestroy)
+        private bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectTypeModule attractiveObjectToDestroy)
         {
             return (this.involvedAttractiveObject != null &&
                 attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());
@@ -126,10 +125,7 @@ namespace RTPuzzle
         }
         private bool HasSensedThePresenceOfAnAttractiveObject()
         {
-            //This is not completely accurate accurate -> we check if a single point is contained in a range. (which is usually the center of agent)
-            //Or, the AIAttractive objet range may physically be inside AI box collider range and not in center.
-            //In such a case, the AI will be condirerd out of AI attractive.
-            return (this.involvedAttractiveObject != null && this.involvedAttractiveObject.IsInRangeOf(this.selfAgent.transform.position));
+            return (this.involvedAttractiveObject != null && !this.involvedAttractiveObject.SphereRange.IsOccluded(this.selfAgent.transform.position));
         }
         #endregion
     }

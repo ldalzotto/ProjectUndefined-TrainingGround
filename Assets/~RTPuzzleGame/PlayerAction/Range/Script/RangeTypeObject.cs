@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using UnityEngine;
 
@@ -17,24 +18,21 @@ namespace RTPuzzle
         #endregion
 
         #region External Dependencies 
-        protected RangeTypeObjectContainer rangeTypeContainer;
+        private RangeEventsManager RangeEventsManager;
         #endregion
 
         public void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer)
         {
             #region External Dependencies
-            this.rangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
+            this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();
             #endregion
 
             this.PopulateModules();
 
-            this.rangeType.Init(RangeTypeObjectInitializer, this);
-            if (this.rangeObstacleListener != null)
-            {
-                this.rangeObstacleListener.Init(this.rangeType);
-            }
-
-            this.rangeTypeContainer.AddRange(this);
+            this.rangeType.IfNotNull((RangeType rangeType) => rangeType.Init(RangeTypeObjectInitializer, this));
+            this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.Init(this.rangeType));
+            
+            this.RangeEventsManager.RANGE_EVT_Range_Created(this);
         }
 
         private void PopulateModules()
@@ -67,6 +65,16 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region External Events
+        public void OnRangeDestroyed()
+        {
+            this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.OnRangeObstacleListenerDestroyed(this.rangeType));
+
+            this.RangeEventsManager.RANGE_EVT_Range_Destroy(this);
+            MonoBehaviour.Destroy(this.gameObject);
+        }
+        #endregion
+
         #region Data Setter
         public void SetRangeID(RangeTypeID rangeTypeID)
         {
@@ -84,11 +92,6 @@ namespace RTPuzzle
             return sphereRangeTypeObject;
         }
 
-        private void OnDestroy()
-        {
-            this.rangeTypeContainer.RemoveRange(this);
-        }
-
         #region Logical Conditions
         public bool IsOccludedByFrustum()
         {
@@ -98,14 +101,18 @@ namespace RTPuzzle
         {
             return this.rangeType.IsRangeConfigurationDefined();
         }
-        public bool IsInside(Vector3 worldPointComparison)
+        public bool IsInsideAndNotOccluded(Vector3 worldPointComparison)
         {
             bool isInsideRange = this.rangeType.IsInside(worldPointComparison);
             if (this.rangeObstacleListener != null)
             {
-                isInsideRange = isInsideRange && !this.rangeObstacleListener.IsPointOccludedByObstacles(worldPointComparison);
+                isInsideRange = isInsideRange && !this.IsOccluded(worldPointComparison);
             }
             return isInsideRange;
+        }
+        public bool IsOccluded(Vector3 worldPointComparison)
+        {
+            return this.rangeObstacleListener != null && this.rangeObstacleListener.IsPointOccludedByObstacles(worldPointComparison);
         }
         #endregion
 

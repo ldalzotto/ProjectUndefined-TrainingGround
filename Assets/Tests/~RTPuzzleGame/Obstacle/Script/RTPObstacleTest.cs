@@ -34,7 +34,7 @@ namespace Tests
         private bool TestIntersection(RangeTypeObject RangeTypeObject, TestPositionID testPosition)
         {
             var position = PuzzleSceneTestHelper.FindTestPosition(testPosition).position;
-            return RangeTypeObject.IsInside(position);
+            return RangeTypeObject.IsInsideAndNotOccluded(position);
         }
 
     }

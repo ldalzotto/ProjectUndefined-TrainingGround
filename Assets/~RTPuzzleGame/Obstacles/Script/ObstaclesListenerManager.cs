@@ -18,6 +18,11 @@ namespace RTPuzzle
             this.obstacleListeners.Add(obstacleListener);
         }
 
+        public void OnObstacleListenerDestroyed(ObstacleListener obstacleListener)
+        {
+            this.obstacleListeners.Remove(obstacleListener);
+        }
+
         #region Data Retrieval
         public List<ObstacleListener> GetAllObstacleListeners()
         {

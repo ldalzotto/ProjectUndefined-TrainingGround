@@ -28,7 +28,7 @@ namespace Editor_GameDesigner
             var levelConfiguraiton = AssetFinder.SafeSingleAssetFind<LevelConfiguration>("t:" + typeof(LevelConfiguration).Name);
 
             this.AttractiveObjectInherentConfigurationDatas.Clear();
-            var attractiveObjects = GameObject.FindObjectsOfType<AttractiveObjectType>();
+            var attractiveObjects = GameObject.FindObjectsOfType<AttractiveObjectTypeModule>();
             if (attractiveObjects != null)
             {
                 this.AttractiveObjectInherentConfigurationDatas.AddRange(

@@ -18,7 +18,7 @@ namespace RTPuzzle
         void OnTriggerExit(Collider collider);
 
         void OnDestinationReached();
-        void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy);
+        void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy);
 #if UNITY_EDITOR
         AbstractAIComponents AIComponents { get; set; }
 #endif
@@ -137,7 +137,7 @@ namespace RTPuzzle
                 aiManager.OnDestinationReached();
             }
         }
-        public virtual void OnAttractiveObjectDestroyed(AttractiveObjectType attractiveObjectToDestroy) { }
+        public virtual void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy) { }
 
         public static IPuzzleAIBehavior<AbstractAIComponents> BuildAIBehaviorFromType(Type behaviorType, AIBheaviorBuildInputData aIBheaviorBuildInputData)
         {

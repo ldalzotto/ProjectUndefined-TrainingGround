@@ -46,8 +46,8 @@ namespace RTPuzzle
             #region External Dependencies
             var npcAiManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
-            var ObjectRepelContainer = GameObject.FindObjectOfType<ObjectRepelContainer>();
-            var ObjectRepelContainerManager = GameObject.FindObjectOfType<ObjectRepelContainerManager>();
+            var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
@@ -61,7 +61,7 @@ namespace RTPuzzle
             this.transform.position = ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = ProjectilePath.Clone();
 
-            this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, ObjectRepelContainer, ObjectRepelContainerManager, PuzzleGameConfigurationManager, this);
+            this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, InteractiveObjectContainer, PuzzleGameConfigurationManager, PuzzleEventsManager, this);
             this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, transform, projectilePathDeepCopy);
 
         }
@@ -123,24 +123,26 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NPCAIManagerContainer NPCAIManagerContainer;
-        private ObjectRepelContainer ObjectRepelContainer;
-        private ObjectRepelContainerManager ObjectRepelContainerManager;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         private LaunchProjectile LaunchProjectileRef;
         private ProjectileInherentData LaunchProjectileInherentData;
 
         public SphereCollisionManager(ProjectileInherentData LaunchProjectileInherentData,
-            NPCAIManagerContainer NPCAIManagerContainer, ObjectRepelContainer ObjectRepelContainer,
-            ObjectRepelContainerManager ObjectRepelContainerManager,
-            PuzzleGameConfigurationManager PuzzleGameConfigurationManager, LaunchProjectile LaunchProjectileRef)
+            NPCAIManagerContainer NPCAIManagerContainer,
+            InteractiveObjectContainer InteractiveObjectContainer,
+            PuzzleGameConfigurationManager PuzzleGameConfigurationManager,
+            PuzzleEventsManager PuzzleEventsManager, 
+            LaunchProjectile LaunchProjectileRef)
         {
             #region External Dependencies
             this.NPCAIManagerContainer = NPCAIManagerContainer;
-            this.ObjectRepelContainer = ObjectRepelContainer;
-            this.ObjectRepelContainerManager = ObjectRepelContainerManager;
+            this.InteractiveObjectContainer = InteractiveObjectContainer;
             this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
+            this.PuzzleEventsManager = PuzzleEventsManager;
             #endregion
 
             this.LaunchProjectileInherentData = LaunchProjectileInherentData;
@@ -161,7 +163,7 @@ namespace RTPuzzle
             #endregion
 
             #region Repel objects
-            foreach (var repelAbleObject in this.ObjectRepelContainer.ObjectsRepelable)
+            foreach (var repelAbleObject in this.InteractiveObjectContainer.ObjectsRepelable)
             {
                 if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
                 {
@@ -171,13 +173,13 @@ namespace RTPuzzle
                     NavMeshHit navmeshHit;
                     if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
                     {
-                        this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
+                        this.PuzzleEventsManager.PZ_EVT_RepelableObject_OnObjectRepelled(repelAbleObject, navmeshHit.position);
                     }
                     else
                     {
                         if (NavMesh.Raycast(repelAbleObject.transform.position, repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, NavMesh.AllAreas))
                         {
-                            this.ObjectRepelContainerManager.OnObjectRepelRepelled(repelAbleObject, navmeshHit.position);
+                            this.PuzzleEventsManager.PZ_EVT_RepelableObject_OnObjectRepelled(repelAbleObject, navmeshHit.position);
                         }
                     }
                 }

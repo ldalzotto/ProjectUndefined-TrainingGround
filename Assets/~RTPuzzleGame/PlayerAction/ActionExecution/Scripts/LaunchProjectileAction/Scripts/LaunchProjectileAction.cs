@@ -121,8 +121,7 @@ namespace RTPuzzle
         #region Internal Events
         public void OnExit()
         {
-            MonoBehaviour.Destroy(this.projectileSphereRange.gameObject);
-            // PuzzleEventsManager.PZ_EVT_ThrowProjectile_PlayerAction_End();
+            this.projectileSphereRange.OnRangeDestroyed();
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
             LaunchProjectilePlayerAnimationManager.OnExit();
@@ -277,7 +276,7 @@ namespace RTPuzzle
                 currentCursorWorldPosition = hit.point;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
-                if (this.launchProjectileActionRef.ProjectileSphereRange.IsInside(currentCursorWorldPosition))
+                if (this.launchProjectileActionRef.ProjectileSphereRange.IsInsideAndNotOccluded(currentCursorWorldPosition))
                 {
                     SetIsCursorInRange(true);
                 }
@@ -291,7 +290,7 @@ namespace RTPuzzle
             {
                 if (isCursorPositioned)
                 {
-                    MonoBehaviour.Destroy(this.projectileCursorRange.gameObject);
+                    this.projectileCursorRange.OnRangeDestroyed();
                 }
                 isCursorPositioned = false;
                 SetIsCursorInRange(false);
@@ -336,7 +335,7 @@ namespace RTPuzzle
         {
             if (this.projectileCursorRange != null)
             {
-                MonoBehaviour.Destroy(this.projectileCursorRange.gameObject);
+                this.projectileCursorRange.OnRangeDestroyed();
             }
         }
 

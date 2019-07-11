@@ -7,15 +7,16 @@ using UnityEngine;
 namespace Editor_AttractiveObjectCreationWizard
 {
     [System.Serializable]
-    public class AttractiveObjectPrefabCreation : CreateablePrefabComponent<AttractiveObjectType>
+    public class AttractiveObjectPrefabCreation : CreateablePrefabComponent<InteractiveObjectType>
     {
-        public override Func<AbstractCreationWizardEditorProfile, AttractiveObjectType> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, InteractiveObjectType> BasePrefabProvider
         {
             get
             {
                 return (AbstractCreationWizardEditorProfile editorProfile) =>
                 {
-                    return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseAttractiveObjectPrefab;
+                    //TODO
+                    return null;// editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseAttractiveObjectPrefab;
                 };
             }
         }
@@ -24,7 +25,7 @@ namespace Editor_AttractiveObjectCreationWizard
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.AttractiveObjectPrefabPath, editorInformationsData.AttractiveObjectId.ToString() + NameConstants.AttractiveObjectPrefab, editorProfile);
-            this.CreatedPrefab.AttractiveObjectId = editorInformationsData.AttractiveObjectId;
+            this.CreatedPrefab.GetComponentInChildren<AttractiveObjectTypeModule>().AttractiveObjectId = editorInformationsData.AttractiveObjectId;
             PrefabUtility.SavePrefabAsset(this.CreatedPrefab.gameObject);
         }
     }

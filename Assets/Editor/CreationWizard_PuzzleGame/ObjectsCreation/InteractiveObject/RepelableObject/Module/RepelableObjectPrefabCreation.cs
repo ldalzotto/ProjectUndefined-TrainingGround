@@ -6,9 +6,9 @@ using UnityEditor;
 namespace Editor_RepelableObjectCreationWizard
 {
     [System.Serializable]
-    public class RepelableObjectPrefabCreation : CreateablePrefabComponent<ObjectRepelType>
+    public class RepelableObjectPrefabCreation : CreateablePrefabComponent<ObjectRepelTypeModule>
     {
-        public override Func<AbstractCreationWizardEditorProfile, ObjectRepelType> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, ObjectRepelTypeModule> BasePrefabProvider
         {
             get
             {

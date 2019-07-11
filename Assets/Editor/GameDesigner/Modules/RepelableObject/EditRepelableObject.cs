@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditRepelableObject : EditScriptableObjectModule<ObjectRepelType>
+    public class EditRepelableObject : EditScriptableObjectModule<ObjectRepelTypeModule>
     {
-        protected override Func<ObjectRepelType, ScriptableObject> scriptableObjectResolver
+        protected override Func<ObjectRepelTypeModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (ObjectRepelType ObjectRepelType) => this.RepelableObjectsConfiguration.ConfigurationInherentData[ObjectRepelType.RepelableObjectID];
+                return (ObjectRepelTypeModule ObjectRepelType) => this.RepelableObjectsConfiguration.ConfigurationInherentData[ObjectRepelType.RepelableObjectID];
             }
         }
 

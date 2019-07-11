@@ -56,7 +56,7 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.IsPatrolling());
             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(1000, 0.02f), mouseTestAIManager.transform.position,
-                OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObjectType) =>
+                OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObjectType) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsPatrolling());
                     Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
@@ -495,7 +495,7 @@ namespace Tests
                     Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 0.2f), mouseTestAIManager.transform.position,
-                        OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObjectType) =>
+                        OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObjectType) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
@@ -569,7 +569,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 170f);
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 0.2f), mouseTestAIManager.transform.position,
-                OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+                OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
@@ -613,7 +613,7 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 0.2f), mouseTestAIManager.transform.position,
-               OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+               OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                {
                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
@@ -655,7 +655,7 @@ namespace Tests
             var fearTime = 0.05f;
             ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 0.2f), mouseTestAIManager.transform.position,
-             OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+             OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
              {
                  Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
                  Assert.IsFalse(mouseAIBheavior.IsFeared());
@@ -696,7 +696,7 @@ namespace Tests
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 1f), mouseTestAIManager.transform.position,
-            OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+            OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
             {
                 Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
                 Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
@@ -740,7 +740,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             float attractiveRange = 10f;
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(attractiveRange, 0.2f), mouseTestAIManager.transform.position,
-                OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObjectType) =>
+                OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObjectType) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
                     TestHelperMethods.SetAgentPosition(mouseTestAIManager.GetAgent(), mouseTestAIManager.transform.position + new Vector3(attractiveRange * 2, 0f, 0f));
@@ -1111,7 +1111,7 @@ namespace Tests
 
                     var currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                     return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(300, 0.15f), mouseTestAIManager.transform.position,
-                        OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+                        OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
                             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
@@ -1192,7 +1192,7 @@ namespace Tests
                     Assert.IsTrue(mouseAIBheavior.IsFeared());
                     Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
                     return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999, 0.1f), mouseTestAIManager.transform.position,
-                        OnAttractiveObjectSpawn: (AttractiveObjectType attractiveObject) =>
+                        OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsFeared());
                             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
