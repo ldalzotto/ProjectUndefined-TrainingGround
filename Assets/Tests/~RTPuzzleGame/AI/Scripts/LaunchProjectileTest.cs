@@ -9,6 +9,7 @@ namespace Tests
 {
     class LaunchProjectileTest : AbstractPuzzleSceneTest
     {
+
         [UnityTest]
         public IEnumerator LaunchProjectile_WhenProjectileHit_AIFOVIsReducedBasedOnAgentPosition_Test()
         {

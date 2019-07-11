@@ -20,19 +20,13 @@ namespace Tests
             yield return this.Before(sceneName, AiID.MOUSE_TEST);
         }
 
+        private AiID chosenId;
+
         public IEnumerator Before(string sceneName, AiID choosenId)
         {
+            this.chosenId = choosenId;
             this.mockPuzzleEventsManagerTest = null;
-            SceneManager.sceneLoaded += (Scene scene, LoadSceneMode loadSceneMode) =>
-            {
-                var puzzleEventManagerObject = GameObject.FindObjectOfType<PuzzleEventsManager>().gameObject;
-                var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
-                this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
-                this.mockPuzzleEventsManagerTest.ClearCalls();
-
-                var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
-                npcAIManager.AiID = choosenId;
-            };
+            SceneManager.sceneLoaded += this.OnSceneLoadCallBack;
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
 
@@ -51,6 +45,19 @@ namespace Tests
             {
                 PuzzleSceneTestHelper.InitializeAIComponents(npcAimanager.GetAIBehavior().AIComponents);
             });
+
+            SceneManager.sceneLoaded -= this.OnSceneLoadCallBack;
+        }
+
+        private void OnSceneLoadCallBack(Scene scene, LoadSceneMode loadSceneMode)
+        {
+            var puzzleEventManagerObject = GameObject.FindObjectOfType<PuzzleEventsManager>().gameObject;
+            var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
+            this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
+            this.mockPuzzleEventsManagerTest.ClearCalls();
+
+            var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
+            npcAIManager.AiID = this.chosenId;
         }
 
         class MockedInputManager : IGameInputManager

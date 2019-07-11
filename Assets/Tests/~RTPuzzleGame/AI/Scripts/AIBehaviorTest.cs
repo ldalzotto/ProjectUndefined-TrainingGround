@@ -856,7 +856,6 @@ namespace Tests
         public IEnumerator AI_ProjectileReceived_SecondTimeInTargetZone_WhenDestinationReached_WhenThereIsStillEscapeDistanceToTravel_StillEscape_Test()
         {
             yield return this.AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(SceneConstants.OneAIForcedTargetZone, 9999f);
-            Debug.Break();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 20f);
