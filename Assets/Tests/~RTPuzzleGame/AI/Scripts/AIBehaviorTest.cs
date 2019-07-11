@@ -803,6 +803,44 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
         }
 
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_WhenOccludedByObstacle_MustNotAttract_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZoneObstacles);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            TestHelperMethods.SetAgentPosition(mouseTestAIManager.GetAgent(), PuzzleSceneTestHelper.FindTestPosition(TestPositionID.OBSTACLE_LISTENER_POSITION_1).transform.position);
+            yield return null;
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must not be attracted by attractive object because it is occluded.");
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+            TestHelperMethods.SetAgentPosition(mouseTestAIManager.GetAgent(), PuzzleSceneTestHelper.FindTestPosition(TestPositionID.OBSTACLE_LISTENER_POSITION_2).transform.position);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must be attracted by attractive object because it is not occluded.");
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+        }
+
+        [UnityTest]
+        public IEnumerator AI_AttractiveObject_WhenOccludedByObstacle_MustNotAttract_PreciseCalculation_Test()
+        {
+            yield return this.Before(SceneConstants.OneAINoTargetZoneObstacles);
+            var attractiveObjectInherentConfigurationData = PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 99f);
+            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            TestHelperMethods.SetAgentPosition(mouseTestAIManager.GetAgent(), PuzzleSceneTestHelper.FindTestPosition(TestPositionID.OBSTACLE_LISTENER_POSITION_1).transform.position);
+            yield return null;
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            yield return new WaitForFixedUpdate();
+            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must not be attracted by attractive object because it is occluded.");
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+            TestHelperMethods.SetAgentPosition(mouseTestAIManager.GetAgent(), PuzzleSceneTestHelper.FindTestPosition(TestPositionID.OBSTACLE_LISTENER_POSITION_3).transform.position);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must be attracted by attractive object because it is not occluded. (Only AI transform position is taken into account.)");
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
+        }
+
         #region AI_ProjectileReceived_WhenDestinationReached_WhenThereIsStillEscapeDistanceToTravel
 
         private IEnumerator SetupProjectileReceived_ThenDestinationReached_WhenThereIsStillEscapeDistanceToTravel(string sceneId)
