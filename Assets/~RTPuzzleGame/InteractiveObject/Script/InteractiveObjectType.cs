@@ -18,7 +18,7 @@ namespace RTPuzzle
         public ObjectRepelTypeModule ObjectRepelTypeModule { get => objectRepelTypeModule; set => objectRepelTypeModule = value; }
         #endregion
 
-        public void Init()
+        public void Init(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null)
         {
             #region External Dependencies
             var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -37,7 +37,17 @@ namespace RTPuzzle
             }
 
             this.ModelObjectModule.IfNotNull((ModelObjectModule modelObjectModule) => modelObjectModule.Init());
-            this.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Init(puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], this.ModelObjectModule));
+            this.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) =>
+            {
+                if (InputAttractiveObjectInherentConfigurationData == null)
+                {
+                    attractiveObjectTypeModule.Init(puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], this.ModelObjectModule);
+                } else
+                {
+                    attractiveObjectTypeModule.Init(InputAttractiveObjectInherentConfigurationData, this.ModelObjectModule);
+                }
+            }
+            );
             this.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule objectRepelTypeModule) => objectRepelTypeModule.Init(this.ModelObjectModule));
 
             interactiveObjectContainer.OnInteractiveObjectAdded(this);

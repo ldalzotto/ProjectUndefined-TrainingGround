@@ -23,7 +23,7 @@ namespace RTPuzzle
             }
 
             attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init();
+            attractiveObject.Init(attractiveObjectInherentConfigurationData);
             return attractiveObject;
         }
 
