@@ -35,7 +35,7 @@ namespace RTPuzzle
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
         {
-        //    Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
+            Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
             EventTypeCheck<EscapeWithoutTriggerStartAIBehaviorEvent>(genericAiBehavior, externalEvent, EscapeWithoutTrigger_Start);
@@ -66,7 +66,7 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
             // If the player is already escaping without taking into account colliders
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIEscapeWithoutTriggerManager(), EvaluationType.EXCLUDED) &&
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIEscapeWithoutTriggerManager()) &&
                              this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
             {
                 this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(projectileTriggerEnterEvent.CollisionPosition,
@@ -74,7 +74,7 @@ namespace RTPuzzle
                          genericAiBehavior.AIProjectileEscapeWithCollisionManager().GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)),
                          genericAiBehavior);
             }
-            else if ((!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIProjectileEscapeWithCollisionManager(), EvaluationType.EXCLUDED)
+            else if ((genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIProjectileEscapeWithCollisionManager())
                 && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                     || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
@@ -111,7 +111,7 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerEnterAIBehaviorEvent attractiveObjectTriggerEnterAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager()))
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIAttractiveObjectManager()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
@@ -121,7 +121,7 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerStayAIBehaviorEvent attractiveObjectTriggerStayAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIAttractiveObjectManager()))
             {
                 //Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
@@ -131,12 +131,15 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIAttractiveObjectManager()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
-                genericAiBehavior.SetManagerState(null);
-                genericAiBehavior.ForceUpdateAIBehavior.Invoke();
+                if (!genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
+                {
+                    genericAiBehavior.SetManagerState(null);
+                    genericAiBehavior.ForceUpdateAIBehavior.Invoke();
+                }
             }
         }
 
@@ -149,7 +152,7 @@ namespace RTPuzzle
 
         private void TargetZone_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerEnterAIBehaviorEvent targetZoneTriggerEnterAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AITargetZoneManager()))
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager()))
             {
                 if (targetZoneTriggerEnterAIBehaviorEvent.TargetZone != null)
                 {
@@ -168,7 +171,7 @@ namespace RTPuzzle
 
         private void TargetZone_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerStayAIBehaviorEvent targetZoneTriggerStayAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AITargetZoneManager()))
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager()))
             {
                 if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                 {
@@ -186,7 +189,7 @@ namespace RTPuzzle
 
         private void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, PlayerEscapeStartAIBehaviorEvent playerEscapeStartAIBehaviorEvent)
         {
-            if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED)
+            if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIPlayerEscapeManager())
                  || genericAiBehavior.DoesEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
             {
                 if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)

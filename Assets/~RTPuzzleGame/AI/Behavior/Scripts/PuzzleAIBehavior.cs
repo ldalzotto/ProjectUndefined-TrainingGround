@@ -60,9 +60,14 @@ namespace RTPuzzle
         #endregion
 
         #region AI Manager Availability
-        public bool EvaluateAIManagerAvailabilityToTheFirst(in InterfaceAIManager aiManager, EvaluationType evaluationType = EvaluationType.INCLUDED)
+        public bool IsManagerAllowedToBeActive(in InterfaceAIManager aiManager)
         {
-            return this.aIBehaviorManagerContainer.EvaluateAIManagerAvailabilityToTheFirst(aiManager, evaluationType);
+            if (this.currentManagerState == null)
+            {
+                return true;
+            }
+
+            return this.aIBehaviorManagerContainer.GetAIManagerIndex(aiManager) <= this.aIBehaviorManagerContainer.GetAIManagerIndex(this.currentManagerState);
         }
         #endregion
 

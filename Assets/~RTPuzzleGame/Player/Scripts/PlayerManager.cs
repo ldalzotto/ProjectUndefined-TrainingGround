@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
@@ -13,6 +14,7 @@ namespace RTPuzzle
         #region Internal Components
         private Rigidbody playerRigidbody;
         private Collider playerCollier;
+        private NavMeshAgent navMeshAgent;
         #endregion
         
         private PlayerPhysicsMovementComponent playerPhysicsMovementComponent;
@@ -51,6 +53,7 @@ namespace RTPuzzle
             this.playerRigidbody = GetComponent<Rigidbody>();
             this.playerCollier = GetComponent<Collider>();
             var animator = GetComponentInChildren<Animator>();
+            this.navMeshAgent = GetComponent<NavMeshAgent>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
@@ -144,6 +147,7 @@ namespace RTPuzzle
         public Rigidbody PlayerRigidbody { get => playerRigidbody; }
         public Collider PlayerCollier { get => playerCollier; }
         public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent { get => playerPhysicsMovementComponent;}
+        public NavMeshAgent NavMeshAgent { get => navMeshAgent;  }
     }
 
     #region Player Action Selection Manager

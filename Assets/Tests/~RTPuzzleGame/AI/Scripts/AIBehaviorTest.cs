@@ -296,12 +296,14 @@ namespace Tests
 
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_FirstTimeIntoTargetZoneDistanceCheck()
-        {
+        { 
             yield return this.Before(SceneConstants.OneAIForcedTargetZone);
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 110f);
+            var playerManager = GameObject.FindObjectOfType<PlayerManager>();
+            playerManager.transform.position = new Vector3(9999, 999, 999);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 20f);
             yield return null;
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
             var firstProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_1, launchProjectileContainerManager);
@@ -319,7 +321,7 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone(), "AI should escape from target zone when target zone distance check is triggered.");
             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "AI should not escape form projectile because target zone is cancelling it.");
             Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
-            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
+            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() != currentFOVSum, "The AI FOV must be reseted before processing target zone event.");
         }
 
         [UnityTest]
@@ -1023,8 +1025,10 @@ namespace Tests
                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
+
                             //Event if not interrupted by projectile, FOV is still reduced to take the projectile into account.
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVAngleSum);
+                            currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                             return null;
                         },
                         OnDistanceReached: () =>
