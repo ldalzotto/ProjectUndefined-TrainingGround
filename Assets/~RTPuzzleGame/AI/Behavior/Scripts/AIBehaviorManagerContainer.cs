@@ -8,7 +8,7 @@ namespace RTPuzzle
 {
     public class AIBehaviorManagerContainer
     {
-
+        
         private SortedList<int, InterfaceAIManager> aIManagersByExecutionOrder;
         private Dictionary<Type, InterfaceAIManager> aIManagersManagerType;
 
@@ -17,7 +17,7 @@ namespace RTPuzzle
         public AIBehaviorManagerContainer(SortedList<int, InterfaceAIManager> aIManagersByExecutionOrder)
         {
             this.aIManagersByExecutionOrder = aIManagersByExecutionOrder;
-
+            
             this.aIManagersManagerType = new Dictionary<Type, InterfaceAIManager>();
             foreach (var aiManager in this.aIManagersByExecutionOrder.Values)
             {

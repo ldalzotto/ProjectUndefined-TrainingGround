@@ -96,7 +96,7 @@ namespace Tests
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
-                });
+                }); 
         }
 
         [UnityTest]

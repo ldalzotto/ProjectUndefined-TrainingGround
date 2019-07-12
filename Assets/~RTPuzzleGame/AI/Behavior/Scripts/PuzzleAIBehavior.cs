@@ -1,6 +1,7 @@
 ﻿using GameConfigurationID;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using static RTPuzzle.AIBehaviorManagerContainer;
@@ -45,6 +46,7 @@ namespace RTPuzzle
         protected PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager;
         protected Dictionary<Type, List<Func<bool>>> aiBehaviorExternalEventInterruptionMatrix;
         protected AIBehaviorManagerContainer aIBehaviorManagerContainer;
+        protected InterfaceAIManager currentManagerState;
         #endregion
 
         #region Data retrieval
@@ -85,32 +87,48 @@ namespace RTPuzzle
             this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
         }
 
+        protected void AfterChildInit()
+        {
+            this.currentManagerState = this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values.Last();
+        }
+
         public Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
         {
+
             // (1) - Call the BeforeManagersUpdate callbacks.
             foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
             {
                 aiManager.BeforeManagersUpdate(d, timeAttenuationFactor);
             }
 
-            // (2) - Computing the first enabled AI Manager next position.
-            var orderedAIManagers = this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values;
-            foreach (var aiManager in orderedAIManagers)
+            // (2) - If nothing has been detected active. Fallback to the last ai manager. 
+            if (this.currentManagerState == null || !this.currentManagerState.IsManagerEnabled())
             {
-                if (aiManager.IsManagerEnabled())
-                {
-                    return aiManager.OnManagerTick(d, timeAttenuationFactor);
-                }
+                this.currentManagerState = this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values.Last();
             }
 
-            // (3) - If nothing has been detected active. Fallback to the last ai manager.
-            return orderedAIManagers[orderedAIManagers.Count - 1].OnManagerTick(d, timeAttenuationFactor);
+            // (3) - Computing the first enabled AI Manager next position.
+            return this.currentManagerState.OnManagerTick(d, timeAttenuationFactor);
+        }
+
+        public void SetManagerState(InterfaceAIManager newManagetState)
+        {
+            if (newManagetState == null)
+            {
+                this.ManagersStateReset();
+                this.currentManagerState = newManagetState;
+            }
+            else if (newManagetState != this.currentManagerState && newManagetState.IsManagerEnabled())
+            {
+                this.ManagersStateReset(new List<InterfaceAIManager>() { newManagetState });
+                this.currentManagerState = newManagetState;
+            }
         }
 
         /// <summary>
         /// Reseting all manager state. This is called before enabling a manager.
         /// </summary>
-        public void ManagersStateReset(List<InterfaceAIManager> exceptions = null)
+        private void ManagersStateReset(List<InterfaceAIManager> exceptions = null)
         {
             foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
             {

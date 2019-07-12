@@ -35,6 +35,7 @@ namespace RTPuzzle
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
         {
+        //    Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
             EventTypeCheck<EscapeWithoutTriggerStartAIBehaviorEvent>(genericAiBehavior, externalEvent, EscapeWithoutTrigger_Start);
@@ -77,33 +78,33 @@ namespace RTPuzzle
                 && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                     || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
             {
-                genericAiBehavior.ManagersStateReset();
                 genericAiBehavior.AIProjectileEscapeWithCollisionManager().OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent);
+                genericAiBehavior.SetManagerState(genericAiBehavior.AIProjectileEscapeWithCollisionManager());
             }
         }
 
         private void EscapeWithoutTrigger_Start(GenericPuzzleAIBehavior genericAiBehavior, EscapeWithoutTriggerStartAIBehaviorEvent escapeWithoutTriggerStartAIBehaviorEvent)
         {
             Debug.Log(MyLog.Format("AI - EscapeWithoutTrigger_Start"));
-            genericAiBehavior.ManagersStateReset();
             genericAiBehavior.AIEscapeWithoutTriggerManager().OnEscapeStart(escapeWithoutTriggerStartAIBehaviorEvent);
+            genericAiBehavior.SetManagerState(genericAiBehavior.AIEscapeWithoutTriggerManager());
         }
 
         private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
         {
-            genericAiBehavior.ManagersStateReset();
             genericAiBehavior.AIFearStunManager().OnFearStarted(fearedStartAIBehaviorEvent);
+            genericAiBehavior.SetManagerState(genericAiBehavior.AIFearStunManager());
         }
 
         private void Feared_Forced(GenericPuzzleAIBehavior genericAiBehavior, FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent)
         {
-            genericAiBehavior.ManagersStateReset();
             genericAiBehavior.AIFearStunManager().OnFearedForced(fearedForcedAIBehaviorEvent);
+            genericAiBehavior.SetManagerState(genericAiBehavior.AIFearStunManager());
         }
 
         private void Feared_End(GenericPuzzleAIBehavior genericAiBehavior, FearedEndAIBehaviorEvent fearedEndAIBehaviorEvent)
         {
-            genericAiBehavior.ManagersStateReset();
+            genericAiBehavior.SetManagerState(null);
             // to not have inactive frame.
             genericAiBehavior.ForceUpdateAIBehavior.Invoke();
         }
@@ -113,13 +114,8 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
-                bool aiAttractiveObjectManagerEnabledBeforeEventProcessing = genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
-
-                if (!aiAttractiveObjectManagerEnabledBeforeEventProcessing && genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
-                {
-                    genericAiBehavior.ManagersStateReset(exceptions: new List<InterfaceAIManager>() { genericAiBehavior.AIAttractiveObjectManager() });
-                }
+                genericAiBehavior.SetManagerState(genericAiBehavior.AIAttractiveObjectManager());
             }
         }
 
@@ -128,16 +124,8 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIAttractiveObjectManager(), EvaluationType.EXCLUDED))
             {
                 //Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
-
-                bool aiAttractiveObjectManagerEnabledBeforeEventProcessing = genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled();
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
-
-                // If the attractive module is enabled after event processing, we reset state
-                // This is to be sure that other states are cleared
-                if (!aiAttractiveObjectManagerEnabledBeforeEventProcessing && genericAiBehavior.AIAttractiveObjectManager().IsManagerEnabled())
-                {
-                    genericAiBehavior.ManagersStateReset(exceptions: new List<InterfaceAIManager>() { genericAiBehavior.AIAttractiveObjectManager() });
-                }
+                genericAiBehavior.SetManagerState(genericAiBehavior.AIAttractiveObjectManager());
             }
         }
 
@@ -147,6 +135,8 @@ namespace RTPuzzle
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
                 genericAiBehavior.AIAttractiveObjectManager().OnTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.SetManagerState(null);
+                genericAiBehavior.ForceUpdateAIBehavior.Invoke();
             }
         }
 
@@ -170,8 +160,8 @@ namespace RTPuzzle
                     }
 
                     Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerEnter"));
-                    genericAiBehavior.ManagersStateReset();
                     genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.AITargetZoneManager());
                 }
             }
         }
@@ -188,8 +178,8 @@ namespace RTPuzzle
                 if (targetZoneTriggerStayAIBehaviorEvent.TargetZone != null)
                 {
                     Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerStay"));
-                    genericAiBehavior.ManagersStateReset();
                     genericAiBehavior.AITargetZoneManager().TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.AITargetZoneManager());
                 }
             }
         }
@@ -199,7 +189,6 @@ namespace RTPuzzle
             if (!genericAiBehavior.EvaluateAIManagerAvailabilityToTheFirst(genericAiBehavior.AIPlayerEscapeManager(), EvaluationType.EXCLUDED)
                  || genericAiBehavior.DoesEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
             {
-                genericAiBehavior.ManagersStateReset();
                 if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                 {
                     Debug.Log(MyLog.Format("AI - Player escape without colliders."));
@@ -211,6 +200,7 @@ namespace RTPuzzle
                 {
                     Debug.Log(MyLog.Format("AI - Player escape with colliders."));
                     genericAiBehavior.AIPlayerEscapeManager().OnPlayerEscapeStart();
+                    genericAiBehavior.SetManagerState(genericAiBehavior.AIPlayerEscapeManager());
                 }
 
             }

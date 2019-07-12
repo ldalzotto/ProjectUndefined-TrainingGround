@@ -57,7 +57,7 @@ namespace RTPuzzle
                 AIEscapeWithoutTriggerManagerSetterOperation, AIProjectileEscapeWithoutCollisionManagerSetterOperation, AIFearStunManagerSetterOperation,
                 AIAttractiveObjectPersistantSetterOperation, AIAttractiveObjectLooseSetterOperation, AITargetZoneManagerSetterOperation, AIPlayerEscapeManagerSetterOperation);
 
-            aIBehaviorManagerContainer = new AIBehaviorManagerContainer(new SortedList<int, InterfaceAIManager>() {
+            this.aIBehaviorManagerContainer = new AIBehaviorManagerContainer(new SortedList<int, InterfaceAIManager>() {
                  { 1, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIFearStunComponent.SelectedManagerType)},
                  { 2, ForAllAIManagerTypesOperation.Invoke(aIComponents.AIEscapeWithoutTriggerComponent.SelectedManagerType)},
                  { 3, ForAllAIManagerTypesOperation.Invoke(aIComponents.AITargetZoneComponent.SelectedManagerType)},
@@ -81,6 +81,7 @@ namespace RTPuzzle
                 }
             };
 
+            this.AfterChildInit();
         }
 
         #region External Events
@@ -171,13 +172,7 @@ namespace RTPuzzle
 
         public void DebugGUITick()
         {
-            GUILayout.Label("StunFeared : " + this.AIFearStunManager().IsManagerEnabled());
-            GUILayout.Label("EscapingWithoutTarget : " + this.AIEscapeWithoutTriggerManager().IsManagerEnabled());
-            GUILayout.Label("EscapingFromTargetZone : " + this.AITargetZoneManager().IsManagerEnabled());
-            GUILayout.Label("Escaping from player : " + this.AIPlayerEscapeManager().IsManagerEnabled());
-            GUILayout.Label("ProjEscapingWithTarget : " + this.AIProjectileEscapeWithCollisionManager().IsManagerEnabled());
-            GUILayout.Label("Attracted : " + this.AIAttractiveObjectManager().IsManagerEnabled());
-            GUILayout.Label("Patrolling : " + this.AIPatrolComponentManager().IsManagerEnabled());
+            GUILayout.Label("State : " + this.currentManagerState.GetType().Name);
         }
 
         public override string ToString()
