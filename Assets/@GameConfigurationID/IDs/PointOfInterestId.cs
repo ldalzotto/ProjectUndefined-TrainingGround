@@ -8,30 +8,30 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID
-{
-
-
-    [System.Serializable()]
-    public enum PointOfInterestId
-    {
-
-        NONE = 0,
-
-        PLAYER = 4,
-
-        SEWER_ENTRANCE = 7,
-
-        SEWER_EXIT = 8,
-
-        SEWER_TO_PUZZLE = 9,
-
-        SEWER_TO_PUZZLE_2 = 12,
-
-        SEWER_RTP_1_DOOR = 13,
-
-        _1_Town_Girl = 14,
-
-        RTP_PUZZLE_CREATION_TEST = 9999,
-    }
+namespace GameConfigurationID {
+  
+  
+  [System.Serializable()]
+  public enum PointOfInterestId {
+    
+    NONE = 0,
+    
+    PLAYER = 4,
+    
+    SEWER_ENTRANCE = 7,
+    
+    SEWER_EXIT = 8,
+    
+    SEWER_TO_PUZZLE = 9,
+    
+    SEWER_TO_PUZZLE_2 = 12,
+    
+    SEWER_RTP_1_DOOR = 13,
+    
+    _1_Town_Girl = 14,
+    
+    RTP_PUZZLE_CREATION_TEST = 9999,
+    
+    _1_Town_Bouncer = 10000,
+  }
 }

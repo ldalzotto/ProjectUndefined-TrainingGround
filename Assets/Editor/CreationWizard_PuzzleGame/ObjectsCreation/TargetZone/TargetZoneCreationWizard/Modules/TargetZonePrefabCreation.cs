@@ -16,7 +16,8 @@ namespace Editor_TargetZoneCreationWizard
             {
                 return (AbstractCreationWizardEditorProfile editorProfile) =>
                  {
-                     return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab;
+                     return null;
+                  //   return editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab;
                  };
             }
         }

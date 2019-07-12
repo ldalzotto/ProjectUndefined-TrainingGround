@@ -14,6 +14,7 @@ namespace AdventureGame
     
     public enum DisucssionSentenceTextId
     {
-        SWER_RTP_1_DOOR = 0
+        SWER_RTP_1_DOOR = 0,
+        _1_Town_Bouncer_AskID = 1
     }
 }

@@ -15,6 +15,7 @@ namespace Experimental.Editor_NodeEditor
             {typeof(CutsceneWarpNode).Name, typeof(CutsceneWarpNode)},
             {typeof(CutsceneMoveNode).Name, typeof(CutsceneMoveNode)},
             {typeof(CutsceneAnimationNode).Name, typeof(CutsceneAnimationNode)},
+            {typeof(CutsceneDiscussionNode).Name, typeof(CutsceneDiscussionNode)},
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

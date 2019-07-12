@@ -22,9 +22,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule, "PuzzleDebugModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseTargetZonePrefab, "TargetZoneBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLaunchProjectilePrefab, "GenericProjectilePrefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseAttractiveObjectPrefab, "GenericAttractiveObjectPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseRepelableObjectPrefab, "RepelObjectBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
@@ -142,11 +140,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public LevelChunkType BaseLevelChunkPrefab;
         [ReadOnly]
-        public TargetZoneObjectModule BaseTargetZonePrefab;
-        [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
-        [ReadOnly]
-        public AttractiveObjectTypeModule BaseAttractiveObjectPrefab;
         [ReadOnly]
         public ObjectRepelTypeModule BaseRepelableObjectPrefab;
     }
