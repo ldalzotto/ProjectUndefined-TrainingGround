@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
-using System;
+﻿using CoreGame;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AdventureGame
 {
@@ -28,8 +26,11 @@ namespace AdventureGame
         #region External Events
         public void OnChunkLevelEnter(LevelChunkTracker nextLevelChunkTracker)
         {
-            this.currentInsideTracker.Add(nextLevelChunkTracker);
-            this.CurrentTransitionableLevelFXTypeManager.OnChunkLevelEnter(nextLevelChunkTracker);
+            if (!this.currentInsideTracker.Contains(nextLevelChunkTracker))
+            {
+                this.currentInsideTracker.Add(nextLevelChunkTracker);
+                this.CurrentTransitionableLevelFXTypeManager.OnChunkLevelEnter(nextLevelChunkTracker);
+            }
         }
 
         public void OnChunkLevelExit(LevelChunkTracker levelChunkTracker)
