@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static RTPuzzle.AIBehaviorManagerContainer;
 
 namespace RTPuzzle
 {
@@ -76,7 +75,7 @@ namespace RTPuzzle
             }
             else if ((genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIProjectileEscapeManager)
                 && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
-                    || genericAiBehavior.DoesEventInteruptManager(projectileTriggerEnterEvent.GetType()))
+                    || genericAiBehavior.IsProjectileTriggerAllowedToInterruptOtherStates())
             {
                 genericAiBehavior.AIProjectileEscapeManager.OnTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent);
                 genericAiBehavior.SetManagerState(genericAiBehavior.AIProjectileEscapeManager);
@@ -190,7 +189,7 @@ namespace RTPuzzle
         private void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, PlayerEscapeStartAIBehaviorEvent playerEscapeStartAIBehaviorEvent)
         {
             if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.PlayerEscapeManager)
-                 || genericAiBehavior.DoesEventInteruptManager(playerEscapeStartAIBehaviorEvent.GetType()))
+                 || genericAiBehavior.IsPlayerEscapeAllowedToInterruptOtherStates())
             {
                 if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                 {

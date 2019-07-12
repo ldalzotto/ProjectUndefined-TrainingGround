@@ -61,22 +61,19 @@ namespace RTPuzzle
                  { 7, this.aIPatrolComponentManager }
             });
 
-            this.aiBehaviorExternalEventInterruptionMatrix = new Dictionary<Type, List<Func<bool>>>() {
-                { typeof(ProjectileTriggerEnterAIBehaviorEvent), new List<Func<bool>>(){
-                                this.aIAttractiveObjectManager.IsManagerEnabled,
-                                this.aITargetZoneManager.IsManagerEnabled,
-                                this.playerEscapeManager.IsManagerEnabled }
-                },
-                {
-                    //PlayerEscapeStart event interrupt target zone escape
-                  typeof(PlayerEscapeStartAIBehaviorEvent), new List<Func<bool>>(){
-                            this.aITargetZoneManager.IsManagerEnabled
-                  }
-                }
-            };
-
             this.AfterChildInit();
         }
+
+        #region Logical Conditions
+        public bool IsProjectileTriggerAllowedToInterruptOtherStates()
+        {
+            return this.aIAttractiveObjectManager.IsManagerEnabled() || this.aITargetZoneManager.IsManagerEnabled() || this.playerEscapeManager.IsManagerEnabled();
+        }
+        public bool IsPlayerEscapeAllowedToInterruptOtherStates()
+        {
+            return this.aITargetZoneManager.IsManagerEnabled();
+        }
+        #endregion
 
         protected override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
