@@ -57,6 +57,11 @@ namespace RTPuzzle
 #endif
         public Action ForceUpdateAIBehavior { get => forceUpdateAIBehavior; }
         public AIFOVManager AIFOVManager { get => aIFOVManager; }
+
+        protected List<InterfaceAIManager> GetAllManagers()
+        {
+            return this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values.ToList();
+        }
         #endregion
 
         #region AI Manager Availability
@@ -99,12 +104,8 @@ namespace RTPuzzle
 
         public Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
         {
-
             // (1) - Call the BeforeManagersUpdate callbacks.
-            foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
-            {
-                aiManager.BeforeManagersUpdate(d, timeAttenuationFactor);
-            }
+            this.BeforeManagersUpdate(d, timeAttenuationFactor);
 
             // (2) - If nothing has been detected active. Fallback to the last ai manager. 
             if (this.currentManagerState == null || !this.currentManagerState.IsManagerEnabled())
@@ -115,6 +116,8 @@ namespace RTPuzzle
             // (3) - Computing the first enabled AI Manager next position.
             return this.currentManagerState.OnManagerTick(d, timeAttenuationFactor);
         }
+
+        protected abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 
         public void SetManagerState(InterfaceAIManager newManagetState)
         {
@@ -135,7 +138,7 @@ namespace RTPuzzle
         /// </summary>
         private void ManagersStateReset(List<InterfaceAIManager> exceptions = null)
         {
-            foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
+            foreach (var aiManager in this.GetAllManagers())
             {
                 if ((exceptions == null) || (exceptions != null && !exceptions.Contains(aiManager)))
                 {
@@ -153,13 +156,8 @@ namespace RTPuzzle
         public abstract void OnTriggerStay(Collider collider);
         public abstract void OnTriggerExit(Collider collider);
 
-        public virtual void OnDestinationReached()
-        {
-            foreach (var aiManager in this.aIBehaviorManagerContainer.GetAllAIManagers())
-            {
-                aiManager.OnDestinationReached();
-            }
-        }
+        public abstract void OnDestinationReached();
+
         public virtual void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy) { }
 
         public static IPuzzleAIBehavior<AbstractAIComponents> BuildAIBehaviorFromType(Type behaviorType, AIBheaviorBuildInputData aIBheaviorBuildInputData)

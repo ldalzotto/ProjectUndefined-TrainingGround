@@ -898,7 +898,7 @@ namespace Tests
             yield return this.AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(SceneConstants.OneAIForcedTargetZone, 9999f);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 20f);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 100f);
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
             Debug.Log("Destination before AI update : " + mouseTestAIManager.GetAgent().destination);

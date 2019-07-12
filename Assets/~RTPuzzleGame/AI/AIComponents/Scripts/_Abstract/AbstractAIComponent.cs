@@ -64,4 +64,15 @@ namespace RTPuzzle
         }
     }
 
+    public static class AbstractAIComponentExtensions
+    {
+        public static void IfSelectedTypeDefined<T>(this T AbstractAIComponent, Action<Type> actionToExecute) where T : AbstractAIComponent
+        {
+            if (AbstractAIComponent != null && AbstractAIComponent.SelectedManagerType != null)
+            {
+                actionToExecute.Invoke(AbstractAIComponent.SelectedManagerType);
+            }
+        }
+    }
+
 }

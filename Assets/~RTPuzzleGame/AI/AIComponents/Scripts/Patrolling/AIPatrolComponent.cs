@@ -40,7 +40,7 @@ namespace RTPuzzle
         {
             return this.IsPatrolling();
         }
-
+        
     }
 
 }
