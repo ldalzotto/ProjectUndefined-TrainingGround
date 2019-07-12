@@ -102,7 +102,7 @@ namespace RTPuzzle
             this.RangeExecutionOrderBufferDataValues.Clear();
             this.RangeToFrustumBufferLinkValues.Clear();
             this.ComputedFrustumPointsWorldPositionsIndexes.Clear();
-
+            
             Profiler.BeginSample("FrustumBufferManagerTick");
             this.FrustumBufferManager.Tick(d, (List<FrustumPointsWorldPositions> frustumBufferDatas) =>
             {
@@ -121,7 +121,6 @@ namespace RTPuzzle
                 }
             });
             Profiler.EndSample();
-
 
             Profiler.BeginSample("RangeBufferManagerTick");
             foreach (var rangeEffectId in this.rangeEffectRenderOrder)
@@ -205,6 +204,10 @@ namespace RTPuzzle
             if (this.FrustumBufferManager != null)
             {
                 this.FrustumBufferManager.Dispose();
+            }
+            if (this.RangeToFrustumBufferLinkManager != null)
+            {
+                this.RangeToFrustumBufferLinkManager.Dispose();
             }
         }
 

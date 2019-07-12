@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,24 +28,28 @@ namespace CoreGame
 
         public void Tick(float d, Action<List<T>> bufferDataSetter)
         {
-            this.computeBufferData.Clear();
-            bufferDataSetter.Invoke(this.computeBufferData);
-
-            if (this.customComputeBuffer.count != this.computeBufferData.Count)
+            if (this.customComputeBuffer != null && this.customComputeBuffer.IsValid())
             {
-                if (this.computeBufferData.Count != 0)
+                this.computeBufferData.Clear();
+                bufferDataSetter.Invoke(this.computeBufferData);
+
+                if (this.customComputeBuffer.count != this.computeBufferData.Count)
                 {
-                    this.Dispose();
-                    this.customComputeBuffer = new ComputeBuffer(this.computeBufferData.Count, this.objectByteSize);
-                    this.material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
+                    if (this.computeBufferData.Count != 0)
+                    {
+                        this.Dispose();
+                        this.customComputeBuffer = new ComputeBuffer(this.computeBufferData.Count, this.objectByteSize);
+                        this.material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
+                    }
                 }
+
+                if (!string.IsNullOrEmpty(this.materialCountPropertyName))
+                {
+                    this.material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
+                }
+                this.customComputeBuffer.SetData(this.computeBufferData);
             }
 
-            if (!string.IsNullOrEmpty(this.materialCountPropertyName))
-            {
-                this.material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
-            }
-            this.customComputeBuffer.SetData(this.computeBufferData);
         }
 
         public void Dispose()

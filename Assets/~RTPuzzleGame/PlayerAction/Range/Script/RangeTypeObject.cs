@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -21,17 +22,22 @@ namespace RTPuzzle
         private RangeEventsManager RangeEventsManager;
         #endregion
 
-        public void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer)
+        #region Event Managements
+        private List<RangeTypeObjectEventListener> eventListenersFromExterior;
+        #endregion
+
+        public void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
         {
             #region External Dependencies
             this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();
             #endregion
 
+            this.eventListenersFromExterior = eventListenersFromExterior;
             this.PopulateModules();
 
             this.rangeType.IfNotNull((RangeType rangeType) => rangeType.Init(RangeTypeObjectInitializer, this));
             this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.Init(this.rangeType));
-            
+
             this.RangeEventsManager.RANGE_EVT_Range_Created(this);
         }
 
@@ -55,12 +61,26 @@ namespace RTPuzzle
             {
                 this.rangeObstacleListener.OnRangeTriggerEnter(other);
             }
+            if (this.eventListenersFromExterior != null)
+            {
+                foreach (var listener in this.eventListenersFromExterior)
+                {
+                    listener.OnRangeTriggerEnter(other);
+                }
+            }
         }
         public void OnRangeTriggerExit(Collider other)
         {
             if (this.rangeObstacleListener != null)
             {
                 this.rangeObstacleListener.OnRangeTriggerExit(other);
+            }
+            if (this.eventListenersFromExterior != null)
+            {
+                foreach (var listener in this.eventListenersFromExterior)
+                {
+                    listener.OnRangeTriggerExit(other);
+                }
             }
         }
         #endregion
@@ -130,5 +150,11 @@ namespace RTPuzzle
             OriginPositionProvider = originPositionProvider;
             RangeColorProvider = rangeColorProvider;
         }
+    }
+
+    public interface RangeTypeObjectEventListener
+    {
+        void OnRangeTriggerEnter(Collider other);
+        void OnRangeTriggerExit(Collider other);
     }
 }

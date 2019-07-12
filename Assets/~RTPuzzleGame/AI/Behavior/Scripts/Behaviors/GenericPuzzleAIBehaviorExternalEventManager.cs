@@ -34,7 +34,7 @@ namespace RTPuzzle
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
         {
-            Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
+           // Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
             EventTypeCheck<EscapeWithoutTriggerStartAIBehaviorEvent>(genericAiBehavior, externalEvent, EscapeWithoutTrigger_Start);

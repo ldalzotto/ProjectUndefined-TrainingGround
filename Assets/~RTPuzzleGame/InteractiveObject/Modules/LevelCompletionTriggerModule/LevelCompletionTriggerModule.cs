@@ -1,9 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class LevelCompletionTriggerModule : InteractiveObjectModule
+    public class LevelCompletionTriggerModule : InteractiveObjectModule, RangeTypeObjectEventListener
     {
         #region External dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -20,7 +20,7 @@ namespace RTPuzzle
         {
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();
-            this.RangeTypeObject.Init(null);
+            this.RangeTypeObject.Init(null, eventListenersFromExterior: new List<RangeTypeObjectEventListener>() { this });
         }
 
         public void OnInteractiveObjectDestroyed()
@@ -28,13 +28,13 @@ namespace RTPuzzle
             this.RangeTypeObject.OnRangeDestroyed();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void OnRangeTriggerEnter(Collider other)
         {
             Debug.Log(MyLog.Format("LevelCompletionTriggerModule OnTriggerEnter"));
             AskForLevelCompletionCalculation(other);
         }
 
-        private void OnTriggerExit(Collider other)
+        public void OnRangeTriggerExit(Collider other)
         {
             AskForLevelCompletionCalculation(other);
         }
@@ -47,6 +47,7 @@ namespace RTPuzzle
                 this.PuzzleEventsManager.PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate();
             }
         }
+
     }
 
 }
