@@ -31,7 +31,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.CommonAdventureObjects, "CommonAdventureObjects");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.AdventureGameManagersNonPersistant, "_AdventureGameManagersNonPersistant");
-            
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePointOfInterestTrackerModule, "BasePOITrackerModule");
 
             #endregion
 
@@ -186,6 +186,8 @@ namespace Editor_MainGameCreationWizard
         public GameObject CommonAdventureObjects;
         [ReadOnly]
         public GameObject AdventureGameManagersNonPersistant;
+        [ReadOnly]
+        public PointOfInterestTrackerModule BasePointOfInterestTrackerModule;
     }
 
     [System.Serializable]

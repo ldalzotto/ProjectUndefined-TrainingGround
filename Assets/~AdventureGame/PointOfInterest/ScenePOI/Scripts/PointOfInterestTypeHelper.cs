@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using UnityEngine;
 
 namespace AdventureGame
@@ -13,6 +14,11 @@ namespace AdventureGame
         public static GameObject GetModelObject(PointOfInterestType pointOfInterestType)
         {
             return pointOfInterestType.transform.parent.gameObject.FindChildObjectWithLevelLimit(PointOfInterestTypeConstants.MODEL_OBJECT_NAME, 0);
+        }
+
+        public static object GetPointOfInterestModules(object pointOfInterestType)
+        {
+            throw new NotImplementedException();
         }
 
         public static PointOfInterestModules GetPointOfInterestModules(PointOfInterestType pointOfInterestType)

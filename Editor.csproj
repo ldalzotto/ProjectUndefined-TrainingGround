@@ -291,6 +291,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Helpers\GameDesignerHelper.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AddPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\BaseModuleWizardModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\CreateInEditorModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditScriptableObjectModule.cs" />
