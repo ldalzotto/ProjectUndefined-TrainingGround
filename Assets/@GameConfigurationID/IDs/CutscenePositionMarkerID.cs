@@ -21,5 +21,9 @@ namespace GameConfigurationID {
     PLAYER_POSITION_3 = 2,
     
     PLAYER_POSITION_4 = 3,
+    
+    _1_Town_Thief_Spawn = 4,
+    
+    _1_Town_Thief_Position1 = 5,
   }
 }

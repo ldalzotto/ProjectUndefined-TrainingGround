@@ -30,6 +30,9 @@ namespace AdventureGame
 
         #region State 
         private bool askedForWarp;
+        private bool isAnimationPlaying;
+        public bool IsAnimationPlaying { get => isAnimationPlaying; }
+
         public bool IsDirectedByCutscene()
         {
             return this.POICutsceneMoveManager.IsDirectedByAi || this.CutscenePlayerManagerV2.IsCutscenePlaying;
@@ -72,7 +75,9 @@ namespace AdventureGame
 
         public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
         {
+            this.isAnimationPlaying = true;
             yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
+            this.isAnimationPlaying = false;
         }
 
         public void PlayAnimation(AnimationID animationID, float crossFadeDuration)

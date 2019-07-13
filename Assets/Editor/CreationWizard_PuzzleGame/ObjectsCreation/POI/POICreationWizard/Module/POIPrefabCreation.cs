@@ -25,7 +25,10 @@ namespace Editor_POICreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var createdPOI = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.POIPrefabPath, editorInformationsData.PointOfInterestID.ToString() + NameConstants.POIPrefab, editorProfile);
             createdPOI.GetComponentInChildren<PointOfInterestType>().PointOfInterestId = editorInformationsData.PointOfInterestID;
-            PrefabUtility.SavePrefabAsset(createdPOI.gameObject);
+            var savedPrefab = PrefabUtility.SavePrefabAsset(createdPOI.gameObject);
+
+            var pointOfInterestInherentData = editorProfile.GetModule<POIConfigurationCreation>().CreatedObject;
+            SerializableObjectHelper.Modify(pointOfInterestInherentData, (so) => so.FindProperty(nameof(pointOfInterestInherentData.PointOfInterestPrefab)).objectReferenceValue = savedPrefab);
         }
     }
 }

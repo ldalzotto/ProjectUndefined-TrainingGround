@@ -33,5 +33,7 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION_TEST = 9999,
     
     _1_Town_Bouncer = 10000,
+    
+    _1_Town_Thief = 10001,
   }
 }

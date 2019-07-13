@@ -171,7 +171,9 @@ namespace AdventureGame
 
         public bool IsVisualMovementAllowed()
         {
-            return (!PlayerContextActionManager.IsActionExecuting || PlayerContextActionManager.IsTalkActionExecuting) && !PlayerAnimationManager.IsIdleAnimationRunnig();
+            return (!PlayerContextActionManager.IsActionExecuting || PlayerContextActionManager.IsTalkActionExecuting)
+                        && !PlayerAnimationManager.IsIdleAnimationRunnig() 
+                        && this.PointOfInterestType.IsVisualMovementAllowed();
         }
 
         #endregion

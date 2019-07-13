@@ -62,8 +62,16 @@ namespace AdventureGame
         {
             return this.CoreConfigurationManager;
         }
- 
+
         #endregion
+
+        public static void Instanciate(PointOfInterestId pointOfInterestId)
+        {
+            var poiInstanciated = MonoBehaviour.Instantiate(GameObject.FindObjectOfType<AdventureGameConfigurationManager>().POIConf()[pointOfInterestId].PointOfInterestPrefab, GameObject.FindObjectOfType<LevelManager>().transform);
+            var pointOfInterestTypeInstanciated = poiInstanciated.GetComponentInChildren<PointOfInterestType>();
+            pointOfInterestTypeInstanciated.Init();
+            pointOfInterestTypeInstanciated.Init_EndOfFrame();
+        }
 
         public override void Init()
         {
@@ -133,7 +141,8 @@ namespace AdventureGame
         }
         public bool IsVisualMovementAllowed()
         {
-            return true;
+            return (this.PointOfInteresetModules.PointOfInterestCutsceneController != null && !this.PointOfInteresetModules.PointOfInterestCutsceneController.IsAnimationPlaying) 
+                    || this.PointOfInteresetModules.PointOfInterestCutsceneController == null;
         }
         #endregion
 
