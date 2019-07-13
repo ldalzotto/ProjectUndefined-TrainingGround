@@ -24,7 +24,7 @@ namespace AdventureGame
         private CutsceneActionConnectionEdge outputCutsceneConnectionEdge;
         [SerializeField]
         private CutsceneWorkflowAbortEdge workflowNodeReferenceEdge;
-        
+
         [SerializeField]
         protected E actionEdge;
 
@@ -43,8 +43,8 @@ namespace AdventureGame
                     nexLevelnode.BuildAction();
                 }
                 this.GetAction().SetNextContextAction(nexLevelnodes.ConvertAll(n => n.GetAction()));
-                this.AfterActionInitialized();
             }
+            this.AfterActionInitialized();
         }
 
         public virtual void AfterActionInitialized() { }

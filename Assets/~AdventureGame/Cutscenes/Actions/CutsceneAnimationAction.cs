@@ -3,6 +3,7 @@ using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Collections;
 
 #if UNITY_EDITOR
 using NodeGraph_Editor;
@@ -21,11 +22,18 @@ namespace AdventureGame
         [SerializeField]
         public AnimationID AnimationId;
 
+        [SerializeField]
+        public bool InfiniteLoop = false;
+
         [NonSerialized]
         private bool animationEnded = false;
 
         [NonSerialized]
         private Coroutine animationCoroutine;
+        [NonSerialized]
+        private CutsceneActionInput actionInput;
+        [NonSerialized]
+        private PointOfInterestCutsceneController pointOfInterestCutsceneController;
 
         public CutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
@@ -44,13 +52,26 @@ namespace AdventureGame
         {
             this.animationEnded = false;
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
-            var cutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
+            this.actionInput = cutsceneActionInput;
+            this.pointOfInterestCutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
+            Coroutiner.Instance.StartCoroutine(this.PlayAnimation(this.pointOfInterestCutsceneController));
+        }
 
+        private IEnumerator PlayAnimation(PointOfInterestCutsceneController cutsceneController)
+        {
             this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.AnimationId, 0f, animationEndCallback: () =>
-              {
-                  this.animationEnded = true;
-                  return null;
-              }));
+            {
+                if (this.InfiniteLoop)
+                {
+                    return this.PlayAnimation(cutsceneController);
+                }
+                else
+                {
+                    this.animationEnded = true;
+                    return null;
+                }
+            }));
+            yield return this.animationCoroutine;
         }
 
         public override void Tick(float d)
@@ -65,6 +86,7 @@ namespace AdventureGame
             {
                 Coroutiner.Instance.StopCoroutine(this.animationCoroutine);
                 this.animationCoroutine = null;
+                this.pointOfInterestCutsceneController.StopAnimation(this.AnimationId);
             }
         }
 
@@ -73,6 +95,7 @@ namespace AdventureGame
         {
             this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
+            this.InfiniteLoop = (bool)NodeEditorGUILayout.BoolField("Infinite loop : ", string.Empty, this.InfiniteLoop);
         }
 #endif
     }

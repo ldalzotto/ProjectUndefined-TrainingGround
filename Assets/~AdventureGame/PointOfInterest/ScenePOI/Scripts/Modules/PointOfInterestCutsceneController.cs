@@ -10,7 +10,7 @@ namespace AdventureGame
     public class PointOfInterestCutsceneController : APointOfInterestModule
     {
         #region External Dependencies
-      //  private CutscenePlayerManager CutscenePlayerManager;
+        //  private CutscenePlayerManager CutscenePlayerManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
@@ -19,6 +19,7 @@ namespace AdventureGame
         private NavMeshAgent Agent;
 
         private POICutsceneMoveManager POICutsceneMoveManager;
+        private PlayerAnimationDataManager PlayerAnimationDataManager;
 
         #region Module Dependencies
         private PointOfInterestModelObjectModule PointOfInterestModelObjectModule;
@@ -53,11 +54,18 @@ namespace AdventureGame
             this.Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();
             this.Agent = pointOfInterestTypeRef.GetComponentInParent<NavMeshAgent>();
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
+
+            if (!pointOfInterestTypeRef.IsPlayer())
+            {
+                this.PlayerAnimationDataManager = new PlayerAnimationDataManager(this.PointOfInterestModelObjectModule.Animator);
+            }
         }
 
         public void Tick(float d)
         {
             this.POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.AIRotationSpeed);
+
+            this.PlayerAnimationDataManager.IfNotNull((PlayerAnimationDataManager) => PlayerAnimationDataManager.Tick(this.GetCurrentNormalizedSpeedMagnitude()));
         }
 
         public void Warp(Transform warpPosition)
@@ -77,6 +85,12 @@ namespace AdventureGame
         {
             this.isAnimationPlaying = true;
             yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
+            this.isAnimationPlaying = false;
+        }
+
+        public void StopAnimation(AnimationID animationID)
+        {
+            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);
             this.isAnimationPlaying = false;
         }
 

@@ -125,7 +125,7 @@ namespace AdventureGame
 
             PlayerAnimationManager.PlayerAnimationDataManager.Tick(playerSpeedMagnitude);
 
-            if (PlayerContextActionManager.IsActionExecuting || playerSpeedMagnitude > float.Epsilon)
+            if (PlayerContextActionManager.IsActionExecuting || playerSpeedMagnitude > float.Epsilon || this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
             {
                 PlayerAnimationManager.OnIdleAnimationReset();
             }

@@ -13,13 +13,6 @@ namespace RTPuzzle
     public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable
     {
 
-        /*
-        public const string AnimationName_OnHittedByProjectileFirstTime = "OnHittedByProjectileFirstTime";
-        public const string AnimationName_OnHittedByProjectile2InARow = "OnHittedByProjectile2InARow";
-        public const string AnimationName_Fear = "Fear";
-        public const string AnimationName_FearListening = "FearListening";
-        */
-
         [Header("Debug")]
         public bool DebugEabled;
 
