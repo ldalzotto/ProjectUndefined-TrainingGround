@@ -28,6 +28,7 @@ namespace Editor_MainGameCreationWizard
         public static string AttractiveObjectInherentData = "_AttractiveObjectInherentData";
         public static string RepelableObjectInherentData = "_RepelableObjectInherentData";
         public static string RepelableObjectPrefab = "_RepelableObjectPrefab";
+        public static string AnimationConfigurationdata = "_AnimationData";
 
     }
 }

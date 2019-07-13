@@ -23,7 +23,6 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLaunchProjectilePrefab, "GenericProjectilePrefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseRepelableObjectPrefab, "RepelObjectBasePrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
@@ -55,6 +54,16 @@ namespace Editor_MainGameCreationWizard
                     configurationFieldInfo.SetValue(CommonGameConfigurations.AdventureGameConfigurations, configurationObject);
                 }
             }
+
+            foreach (var configurationFieldInfo in CommonGameConfigurations.CoreGameConfigurations.GetType().GetFields())
+            {
+                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.CoreGameConfigurations);
+                if (configurationObject == null)
+                {
+                    AssetFinder.SafeSingleAssetFind(ref configurationObject, "t:" + configurationFieldInfo.FieldType.Name);
+                    configurationFieldInfo.SetValue(CommonGameConfigurations.CoreGameConfigurations, configurationObject);
+                }
+            }
         }
 
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
@@ -62,6 +71,7 @@ namespace Editor_MainGameCreationWizard
 
             return NonNullityFieldCheck(CommonGameConfigurations.PuzzleGameConfigurations)
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureGameConfigurations))
+                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.CoreGameConfigurations))
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs))
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleAICommonPrefabs))
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureCommonPrefabs))
@@ -81,6 +91,7 @@ namespace Editor_MainGameCreationWizard
     [System.Serializable]
     public class CommonGameConfigurations
     {
+        public CoreGameConfigurations CoreGameConfigurations;
         public PuzzleGameConfigurations PuzzleGameConfigurations;
         public AdventureGameConfigurations AdventureGameConfigurations;
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
@@ -97,6 +108,13 @@ namespace Editor_MainGameCreationWizard
             this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
             this.InstancePath = new InstacePath();
         }
+    }
+
+    [System.Serializable]
+    public class CoreGameConfigurations
+    {
+        [ReadOnly]
+        public AnimationConfiguration AnimationConfiguration;
     }
 
     [System.Serializable]
@@ -141,8 +159,6 @@ namespace Editor_MainGameCreationWizard
         public LevelChunkType BaseLevelChunkPrefab;
         [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
-        [ReadOnly]
-        public ObjectRepelTypeModule BaseRepelableObjectPrefab;
     }
 
     [System.Serializable]
@@ -219,5 +235,7 @@ namespace Editor_MainGameCreationWizard
         public string RepelableObjectInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjects/RepelableObjectsConfiguration/RepelableObjectsConfigurationData";
         [ReadOnly]
         public string RepelableObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionBehavior/Repel/Prefabs";
+        [ReadOnly]
+        public string AnimationConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/AnimationConfiguration/AnimationConfigurationData";
     }
 }

@@ -154,6 +154,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\AnimationCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\AnimationCreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\AnimationConfigurationDataCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectPrefabCreation.cs" />
@@ -299,6 +303,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ContextMarkVisualFeedback\ExploreContextMark.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ExploreAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Animation\CreateAnimation.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\AttractiveObjectModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\CreateAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\EditAttractiveObject.cs" />

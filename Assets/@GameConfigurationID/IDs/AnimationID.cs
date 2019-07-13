@@ -56,8 +56,10 @@ namespace GameConfigurationID {
     
     POSE_OVERRIVE_LISTENING = 21,
     
+    _1_Town_Bouncer_PlayerExamination = 22,
+    
     NONE = -1,
     
-    _1_Town_Bouncer_PlayerExamination = 22,
+    EDITOR_TEST = 23,
   }
 }

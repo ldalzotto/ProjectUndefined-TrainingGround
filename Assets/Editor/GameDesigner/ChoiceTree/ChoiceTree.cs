@@ -7,7 +7,6 @@ namespace Editor_GameDesigner
     {
         private Dictionary<string, Type> Modules = new Dictionary<string, Type>()
         {
-            {"Puzzle//Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
             {"Level//."+typeof(CreatePuzzleLevel).Name, typeof(CreatePuzzleLevel) },
             {"Level//."+typeof(CreateAdventureLevel).Name, typeof(CreateAdventureLevel) },
             {"Level//." + typeof(EditPuzzleLevel).Name, typeof(EditPuzzleLevel) },
@@ -20,6 +19,7 @@ namespace Editor_GameDesigner
             {"Puzzle//AI//." + typeof(ExploreAI).Name, typeof(ExploreAI) },
             {"Puzzle//AI//Behavior//."+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
             {"Puzzle//AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
+            {"Puzzle//Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
             {"Puzzle//TargetZone//." + typeof(CreateTargetZone).Name, typeof(CreateTargetZone) },
             {"Puzzle//TargetZone//." + typeof(EditTargetZone).Name, typeof(EditTargetZone) },
             {"Puzzle//TargetZone//." + typeof(AddTargetZone).Name, typeof(AddTargetZone) },
@@ -42,7 +42,8 @@ namespace Editor_GameDesigner
             {"Adventure//POI//." + typeof(EditPOI).Name, typeof(EditPOI) },
             {"Adventure//POI//." + typeof(POIModel).Name, typeof(POIModel) },
             {"Adventure//POI//." + typeof(ExplorePOI).Name, typeof(ExplorePOI) },
-            {"Adventure//POI//Modules//." + typeof(POIModuleWizard).Name, typeof(POIModuleWizard) }
+            {"Adventure//POI//Modules//." + typeof(POIModuleWizard).Name, typeof(POIModuleWizard) },
+            {"Core//Animation//." + typeof(CreateAnimation).Name, typeof(CreateAnimation) }
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

@@ -13,7 +13,8 @@ namespace Editor_RepelableObjectCreationWizard
             get
             {
                 return (AbstractCreationWizardEditorProfile editorProfile) =>
-                    editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseRepelableObjectPrefab;
+                    null;
+                    //editorProfile.GetModule<EditorInformations>().EditorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseRepelableObjectPrefab;
             }
         }
 
