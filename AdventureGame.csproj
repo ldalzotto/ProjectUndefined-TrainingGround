@@ -99,6 +99,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneItemHoldAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneMoveAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWarpAction.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWorkflowAbortAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutscenePlayerManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\CutsceneGraph.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\Abstract\ACutsceneEdge.cs" />
@@ -107,12 +108,14 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneDiscussionEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneMoveEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWarpEdge.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWorkflowAbortEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\Abstract\ACutsceneNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneAnimationNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneDiscussionNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneMoveNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneStartNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWarpNode.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWorkflowAbortNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionMarker.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsType.cs" />

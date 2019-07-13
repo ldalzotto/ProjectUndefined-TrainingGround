@@ -21,6 +21,11 @@ namespace AdventureGame
         {
             this.associatedAction.ActionGUI();
         }
+
+        protected override Color EdgeColor()
+        {
+            return Color.yellow;
+        }
 #endif
     }
 

@@ -11,11 +11,12 @@ namespace Experimental.Editor_NodeEditor
         protected override Type NodeEditorProfileType => typeof(CutsceneGraph);
 
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>() {
-            {typeof(CutsceneStartNode).Name,  typeof(CutsceneStartNode)},
             {typeof(CutsceneWarpNode).Name, typeof(CutsceneWarpNode)},
             {typeof(CutsceneMoveNode).Name, typeof(CutsceneMoveNode)},
             {typeof(CutsceneAnimationNode).Name, typeof(CutsceneAnimationNode)},
             {typeof(CutsceneDiscussionNode).Name, typeof(CutsceneDiscussionNode)},
+            {typeof(CutsceneStartNode).Name,  typeof(CutsceneStartNode)},
+            {typeof(CutsceneWorkflowAbortNode).Name,  typeof(CutsceneWorkflowAbortNode)},
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

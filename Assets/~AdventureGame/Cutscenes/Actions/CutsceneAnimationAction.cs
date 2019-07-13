@@ -24,6 +24,9 @@ namespace AdventureGame
         [NonSerialized]
         private bool animationEnded = false;
 
+        [NonSerialized]
+        private Coroutine animationCoroutine;
+
         public CutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
@@ -43,16 +46,26 @@ namespace AdventureGame
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
             var cutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
 
-            Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.AnimationId, 0f, animationEndCallback: () =>
-            {
-                this.animationEnded = true;
-                return null;
-            }));
+            this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.AnimationId, 0f, animationEndCallback: () =>
+              {
+                  this.animationEnded = true;
+                  return null;
+              }));
         }
 
         public override void Tick(float d)
         {
 
+        }
+
+        public override void Interupt()
+        {
+            base.Interupt();
+            if (this.animationCoroutine != null)
+            {
+                Coroutiner.Instance.StopCoroutine(this.animationCoroutine);
+                this.animationCoroutine = null;
+            }
         }
 
 #if UNITY_EDITOR

@@ -32,6 +32,11 @@ namespace AdventureGame
             this.startEdge = CutsceneActionConnectionEdge.CreateNodeEdge<CutsceneActionConnectionEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() { this.startEdge };
         }
+
+        protected override Color NodeColor()
+        {
+            return Color.green;
+        }
 #endif
     }
 }

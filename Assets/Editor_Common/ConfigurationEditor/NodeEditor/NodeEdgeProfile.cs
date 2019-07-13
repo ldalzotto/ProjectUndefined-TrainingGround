@@ -24,6 +24,7 @@ namespace NodeGraph
 #if UNITY_EDITOR
         public Rect Bounds;
         public NodeEdgeType NodeEdgeType;
+
         protected virtual Color EdgeColor()
         {
             return Color.gray;

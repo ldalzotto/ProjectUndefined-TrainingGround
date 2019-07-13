@@ -10,6 +10,14 @@ namespace NodeGraph_Editor
     {
         public static GUIContent CommonGUIContent = new GUIContent();
 
+        public static void LabelField(string label)
+        {
+            CommonGUIContent.text = label;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(CommonGUIContent, GUILayout.Width(label.Length * 7f));
+            EditorGUILayout.EndHorizontal();
+        }
+
         public static Enum EnumField(string label, string tooltip, Enum enumField)
         {
             CommonGUIContent.text = label;

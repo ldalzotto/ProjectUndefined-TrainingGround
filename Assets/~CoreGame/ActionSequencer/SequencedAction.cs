@@ -51,6 +51,11 @@ namespace CoreGame
             }
         }
 
+        public virtual void Interupt()
+        {
+            this.isFinished = true;
+        }
+
         private bool isFinished;
 
         public SequencedActionInput ActionInput { get => actionInput; set => actionInput = value; }
