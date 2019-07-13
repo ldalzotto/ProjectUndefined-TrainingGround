@@ -134,7 +134,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\AttractiveObjectCreationWizard\AttractiveObjectCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\AttractiveObjectCreationWizard\AttractiveObjectCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\AttractiveObjectCreationWizard\Module\AttractiveObjectConfigurationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\AttractiveObjectCreationWizard\Module\AttractiveObjectPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\AttractiveObjectCreationWizard\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\Modules\PlayerActionInherentDataCreation.cs" />
@@ -158,6 +157,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\AnimationCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\AnimationConfigurationDataCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\InteractiveObjectCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\InteractiveObjectCreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\Module\InteractiveObjectPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectPrefabCreation.cs" />
@@ -310,6 +313,9 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\EditAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\ExploreAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\CreateInteractiveObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\EditorInteractiveObjectModulesOperation.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\InteractiveObjectModuleWizard.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\AddEnvironmentModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateAdventureLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />

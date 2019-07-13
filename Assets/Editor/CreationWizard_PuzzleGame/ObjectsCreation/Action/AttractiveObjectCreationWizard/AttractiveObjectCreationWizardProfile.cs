@@ -9,8 +9,7 @@ namespace Editor_AttractiveObjectCreationWizard
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {
             new CreationWizardOrderConfiguration(typeof(EditorInformations), -1),
-            new CreationWizardOrderConfiguration(typeof(AttractiveObjectPrefabCreation), 0),
-            new CreationWizardOrderConfiguration(typeof(AttractiveObjectConfigurationCreation), 1)
+            new CreationWizardOrderConfiguration(typeof(AttractiveObjectConfigurationCreation), 0)
         };
 
         public override List<CreationWizardOrderConfiguration> ModulesConfiguration => this.ModuleTypes_IMPL;

@@ -29,9 +29,9 @@ namespace Editor_GameDesigner
         private PointOfInterestTrackerModule BasePOITrackerModule;
         #endregion
 
-        protected abstract void OnEdit(T PointOfInterestType, Type selectedType);
+        protected abstract void OnEdit(T RootModuleObject, Type selectedType);
         protected abstract string POIModuleDescription(Type selectedType);
-        protected abstract List<ABSTRACT_MODULE> GetModules(T PointOfInterestType);
+        protected abstract List<ABSTRACT_MODULE> GetModules(T RootModuleObject);
 
         public void GUITick()
         {

@@ -80,7 +80,7 @@ namespace Editor_GameDesigner
                                   EditorPOIModulesOperation.RemoveDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
                               }
                           }
-                          );
+               );
         }
 
         protected override string POIModuleDescription(Type selectedType)

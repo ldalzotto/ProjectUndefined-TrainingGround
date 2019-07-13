@@ -23,7 +23,12 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLaunchProjectilePrefab, "GenericProjectilePrefab");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseInteractiveObjectTypePrefab, "BaseInteractiveObjectPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
+            #endregion
+
+            #region Puzzle Interactive Object Modules Prefabs
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseModelObjectModule, "BaseModelObjectModule");
             #endregion
 
             #region Adventure Common Prefabs
@@ -32,7 +37,6 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.CommonAdventureObjects, "CommonAdventureObjects");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.AdventureGameManagersNonPersistant, "_AdventureGameManagersNonPersistant");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePointOfInterestTrackerModule, "BasePOITrackerModule");
-
             #endregion
 
             foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleGameConfigurations.GetType().GetFields())
@@ -92,20 +96,26 @@ namespace Editor_MainGameCreationWizard
     public class CommonGameConfigurations
     {
         public CoreGameConfigurations CoreGameConfigurations;
-        public PuzzleGameConfigurations PuzzleGameConfigurations;
+
         public AdventureGameConfigurations AdventureGameConfigurations;
+        public AdventureCommonPrefabs AdventureCommonPrefabs;
+
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
         public PuzzleAICommonPrefabs PuzzleAICommonPrefabs;
-        public AdventureCommonPrefabs AdventureCommonPrefabs;
+        public PuzzleGameConfigurations PuzzleGameConfigurations;
+        public PuzzleInteractiveObjectModulePrefabs PuzzleInteractiveObjectModulePrefabs;
+
         public InstacePath InstancePath;
 
         public CommonGameConfigurations()
         {
+            this.CoreGameConfigurations = new CoreGameConfigurations();
             this.PuzzleGameConfigurations = new PuzzleGameConfigurations();
             this.AdventureGameConfigurations = new AdventureGameConfigurations();
             this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
             this.PuzzleAICommonPrefabs = new PuzzleAICommonPrefabs();
             this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
+            this.PuzzleInteractiveObjectModulePrefabs = new PuzzleInteractiveObjectModulePrefabs();
             this.InstancePath = new InstacePath();
         }
     }
@@ -159,6 +169,15 @@ namespace Editor_MainGameCreationWizard
         public LevelChunkType BaseLevelChunkPrefab;
         [ReadOnly]
         public LaunchProjectile BaseLaunchProjectilePrefab;
+        [ReadOnly]
+        public InteractiveObjectType BaseInteractiveObjectTypePrefab;
+    }
+
+    [System.Serializable]
+    public class PuzzleInteractiveObjectModulePrefabs
+    {
+        [ReadOnly]
+        public ModelObjectModule BaseModelObjectModule;
     }
 
     [System.Serializable]
@@ -230,8 +249,6 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public string POIInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestConfiguration/Data";
         [ReadOnly]
-        public string AttractiveObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionObjects/AttractiveObject/Prefab";
-        [ReadOnly]
         public string AttractiveObjectInherantDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData";
         [ReadOnly]
         public string RepelableObjectInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjects/RepelableObjectsConfiguration/RepelableObjectsConfigurationData";
@@ -239,5 +256,7 @@ namespace Editor_MainGameCreationWizard
         public string RepelableObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionBehavior/Repel/Prefabs";
         [ReadOnly]
         public string AnimationConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/AnimationConfiguration/AnimationConfigurationData";
+        [ReadOnly]
+        public string InteractiveObjectPrefabPath = "Assets/~RTPuzzleGame/InteractiveObject/Prefabs";
     }
 }
