@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEditor.IMGUI.Controls;
 using System.Linq;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEditor.IMGUI.Controls;
+using UnityEngine;
 
 public class TreePickerPopup : PopupWindowContent
 {
@@ -67,7 +66,7 @@ public class TreePickerPopup : PopupWindowContent
         this.searchString = this.treeSearchField.OnGUI(this.searchString);
         if (EditorGUI.EndChangeCheck())
         {
-            this.searchRegex = new Regex(this.searchString);
+            this.searchRegex = new Regex(this.searchString, RegexOptions.IgnoreCase);
         }
         EditorGUILayout.Space();
 
@@ -113,13 +112,23 @@ public class TreePickerPopup : PopupWindowContent
                     if (GUILayout.Button(k.Key.ToString().Insert(0, this.SpaceFromIndentLevel()), this.selectedStyle))
                     {
                         this.selectedKey = k.Value.Key;
-                        if(this.OnSelectionChange != null)
+                        if (this.OnSelectionChange != null)
                         {
                             this.OnSelectionChange.Invoke();
                         }
                     }
                     EditorGUILayout.EndHorizontal();
                     GUI.backgroundColor = oldBackgroundColor;
+                }
+            }
+            else
+            {
+                if (k.Value.ChildNodes.Count > 0)
+                {
+                    var oldBackgroundColor = GUI.backgroundColor;
+                    this.currentIndentLevel += 1;
+                    this.GUITreeDictionary(k.Value.ChildNodes);
+                    this.currentIndentLevel -= 1;
                 }
             }
         }

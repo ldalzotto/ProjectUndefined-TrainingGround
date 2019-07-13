@@ -43,7 +43,6 @@ namespace Editor_GameDesigner
             {"Adventure//POI//." + typeof(POIModel).Name, typeof(POIModel) },
             {"Adventure//POI//." + typeof(ExplorePOI).Name, typeof(ExplorePOI) },
             {"Adventure//POI//Modules//." + typeof(POIModuleWizard).Name, typeof(POIModuleWizard) }
-
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;
