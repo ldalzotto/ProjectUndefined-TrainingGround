@@ -33,9 +33,32 @@ namespace Editor_GameDesigner
             this.selectedModuleIndex = EditorGUILayout.Popup(this.selectedModuleIndex, this.AvailableModules.ConvertAll(t => t.Name).ToArray());
 
             EditorGUILayout.BeginHorizontal();
+            bool newAdd = GUILayout.Toggle(this.add, "ADD", EditorStyles.miniButtonLeft);
+            bool newRemove = GUILayout.Toggle(this.remove, "REMOVE", EditorStyles.miniButtonRight);
 
-            this.add = EditorGUILayout.Toggle(new GUIContent("ADD"), this.add, EditorStyles.miniButtonLeft);
-            this.remove = EditorGUILayout.Toggle(new GUIContent("REMOVE"), this.remove, EditorStyles.miniButtonRight);
+            if (newAdd && newRemove)
+            {
+                if (this.add && !this.remove)
+                {
+                    this.add = false;
+                    this.remove = true;
+                }
+                else if (!this.add && this.remove)
+                {
+                    this.add = true;
+                    this.remove = false;
+                }
+                else
+                {
+                    this.add = newAdd;
+                    this.remove = newRemove;
+                }
+            }
+            else
+            {
+                this.add = newAdd;
+                this.remove = newRemove;
+            }
 
             EditorGUILayout.EndHorizontal();
 
@@ -69,71 +92,71 @@ namespace Editor_GameDesigner
 
         private void OnEdit(PointOfInterestType PointOfInterestType, Type selectedType)
         {
-            if (selectedType == typeof(PointOfInterestModelObjectModule))
-            {
-                if (this.add)
-                {
-                    EditorPOIModulesOperation.AddModule<PointOfInterestModelObjectModule>(PointOfInterestType);
-                }
-                else
-                {
-                    EditorPOIModulesOperation.RemoveModule<PointOfInterestModelObjectModule>(PointOfInterestType);
-                }
-            }
-            else if (selectedType == typeof(PointOfInterestCutsceneController))
-            {
-                if (this.add)
-                {
-                    EditorPOIModulesOperation.AddModule<PointOfInterestCutsceneController>(PointOfInterestType);
-                    EditorPOIModulesOperation.AddDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
-                }
-                else
-                {
-                    EditorPOIModulesOperation.RemoveModule<PointOfInterestCutsceneController>(PointOfInterestType);
-                    EditorPOIModulesOperation.RemoveDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
-                }
-            }
-            else if (selectedType == typeof(PointOfInterestSpecificBehaviorModule))
-            {
-                if (this.add)
-                {
-                    EditorPOIModulesOperation.AddModule<PointOfInterestSpecificBehaviorModule>(PointOfInterestType);
-                }
-                else
-                {
-                    EditorPOIModulesOperation.RemoveModule<PointOfInterestSpecificBehaviorModule>(PointOfInterestType);
-                }
-            }
-            else if (selectedType == typeof(PointOfInterestVisualMovementModule))
-            {
-                if (this.add)
-                {
-                    this.OnEdit(PointOfInterestType, typeof(PointOfInterestModelObjectModule));
-                    this.OnEdit(PointOfInterestType, typeof(PointOfInterestTrackerModule));
-                    EditorPOIModulesOperation.AddModule<PointOfInterestVisualMovementModule>(PointOfInterestType);
-                    EditorPOIModulesOperation.AddDataComponent<PlayerPOIVisualMovementComponentV2>(PointOfInterestType);
-                }
-                else
-                {
-                    EditorPOIModulesOperation.RemoveModule<PointOfInterestVisualMovementModule>(PointOfInterestType);
-                    EditorPOIModulesOperation.RemoveDataComponent<PlayerPOIVisualMovementComponentV2>(PointOfInterestType);
-                }
-            }
-            else if (selectedType == typeof(PointOfInterestTrackerModule))
-            {
-                if (this.add)
-                {
-                    EditorPOIModulesOperation.AddPrefabModule(PointOfInterestType, this.BasePOITrackerModule);
-                    EditorPOIModulesOperation.AddDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
-                }
-                else
-                {
-                    EditorPOIModulesOperation.RemovePrefabModule<PointOfInterestTrackerModule>(PointOfInterestType);
-                    EditorPOIModulesOperation.RemoveDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
-                }
-            }
-
-
+            this.POIModuleSwitch(selectedType,
+                 PointOfInterestModelObjectModuleAction: () =>
+                 {
+                     if (this.add)
+                     {
+                         EditorPOIModulesOperation.AddModule<PointOfInterestModelObjectModule>(PointOfInterestType);
+                     }
+                     else
+                     {
+                         EditorPOIModulesOperation.RemoveModule<PointOfInterestModelObjectModule>(PointOfInterestType);
+                     }
+                 },
+                 PointOfInterestCutsceneControllerAction: () =>
+                 {
+                     if (this.add)
+                     {
+                         EditorPOIModulesOperation.AddModule<PointOfInterestCutsceneController>(PointOfInterestType);
+                         EditorPOIModulesOperation.AddDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
+                     }
+                     else
+                     {
+                         EditorPOIModulesOperation.RemoveModule<PointOfInterestCutsceneController>(PointOfInterestType);
+                         EditorPOIModulesOperation.RemoveDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
+                     }
+                 },
+                 PointOfInterestSpecificBehaviorModuleAction: () =>
+                 {
+                     if (this.add)
+                     {
+                         EditorPOIModulesOperation.AddModule<PointOfInterestSpecificBehaviorModule>(PointOfInterestType);
+                     }
+                     else
+                     {
+                         EditorPOIModulesOperation.RemoveModule<PointOfInterestSpecificBehaviorModule>(PointOfInterestType);
+                     }
+                 },
+                 PointOfInterestVisualMovementModuleAction: () =>
+                 {
+                     if (this.add)
+                     {
+                         this.OnEdit(PointOfInterestType, typeof(PointOfInterestModelObjectModule));
+                         this.OnEdit(PointOfInterestType, typeof(PointOfInterestTrackerModule));
+                         EditorPOIModulesOperation.AddModule<PointOfInterestVisualMovementModule>(PointOfInterestType);
+                         EditorPOIModulesOperation.AddDataComponent<PlayerPOIVisualMovementComponentV2>(PointOfInterestType);
+                     }
+                     else
+                     {
+                         EditorPOIModulesOperation.RemoveModule<PointOfInterestVisualMovementModule>(PointOfInterestType);
+                         EditorPOIModulesOperation.RemoveDataComponent<PlayerPOIVisualMovementComponentV2>(PointOfInterestType);
+                     }
+                 },
+                 PointOfInterestTrackerModuleAction: () =>
+                 {
+                     if (this.add)
+                     {
+                         EditorPOIModulesOperation.AddPrefabModule(PointOfInterestType, this.BasePOITrackerModule);
+                         EditorPOIModulesOperation.AddDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
+                     }
+                     else
+                     {
+                         EditorPOIModulesOperation.RemovePrefabModule<PointOfInterestTrackerModule>(PointOfInterestType);
+                         EditorPOIModulesOperation.RemoveDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
+                     }
+                 }
+                 );
         }
 
         private void DoModuleListing(PointOfInterestType pointOfInterestType)
@@ -149,7 +172,7 @@ namespace Editor_GameDesigner
             {
                 foreach (var foundedModule in foundedModules)
                 {
-                    if (GUILayout.Button(foundedModule.GetType().Name))
+                    if (GUILayout.Button(new GUIContent(foundedModule.GetType().Name, this.POIModuleDescription(foundedModule.GetType()))))
                     {
                         this.selectedModuleIndex = this.AvailableModules.IndexOf(foundedModule.GetType());
                     }
@@ -170,6 +193,45 @@ namespace Editor_GameDesigner
 
         public void OnDisabled()
         {
+        }
+
+        private void POIModuleSwitch(Type selectedType, Action PointOfInterestModelObjectModuleAction, Action PointOfInterestCutsceneControllerAction,
+            Action PointOfInterestSpecificBehaviorModuleAction, Action PointOfInterestVisualMovementModuleAction,
+            Action PointOfInterestTrackerModuleAction)
+        {
+            if (selectedType == typeof(PointOfInterestModelObjectModule))
+            {
+                PointOfInterestModelObjectModuleAction.Invoke();
+            }
+            else if (selectedType == typeof(PointOfInterestCutsceneController))
+            {
+                PointOfInterestCutsceneControllerAction.Invoke();
+            }
+            else if (selectedType == typeof(PointOfInterestSpecificBehaviorModule))
+            {
+                PointOfInterestSpecificBehaviorModuleAction.Invoke();
+            }
+            else if (selectedType == typeof(PointOfInterestVisualMovementModule))
+            {
+                PointOfInterestVisualMovementModuleAction.Invoke();
+            }
+            else if (selectedType == typeof(PointOfInterestTrackerModule))
+            {
+                PointOfInterestTrackerModuleAction.Invoke();
+            }
+        }
+
+        private string POIModuleDescription(Type selectedType)
+        {
+            string returnDescription = string.Empty;
+            this.POIModuleSwitch(selectedType,
+                    PointOfInterestModelObjectModuleAction: () => { returnDescription = "Model object definition."; },
+                    PointOfInterestCutsceneControllerAction: () => { returnDescription = "Allow the POI to be controlled by cutscene system."; },
+                    PointOfInterestSpecificBehaviorModuleAction: () => { returnDescription = "Adding specific behavior to POI."; },
+                    PointOfInterestVisualMovementModuleAction: () => { returnDescription = "Allow the POI to animate visual movement over nearest POI."; },
+                    PointOfInterestTrackerModuleAction: () => { returnDescription = "Track and store nearest POI."; }
+                );
+            return returnDescription;
         }
     }
 }
