@@ -14,6 +14,7 @@ using Editor_AdventureBaseLevelCreationWizard;
 using Editor_LevelChunkCreationWizard;
 using Editor_AnimationCreationWizard;
 using Editor_InteractiveObjectCreationWizard;
+using Editor_DiscussionTreeCreationWizard;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "GameCreationWizardEditorProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile", order = 1)]
@@ -40,7 +41,9 @@ public class GameCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWiza
             {nameof(AdventureBaseLevelCreationWizard), new AdventureBaseLevelCreationWizard() },
             {nameof(LevelChunkCreationWizard), new LevelChunkCreationWizard() },
             {nameof(AnimationCreationWizard), new AnimationCreationWizard() },
-            {nameof(InteractiveObjectCreationWizard), new InteractiveObjectCreationWizard() }
+            {nameof(InteractiveObjectCreationWizard), new InteractiveObjectCreationWizard() },
+            {nameof(DiscussionTreeCreationWizard), new DiscussionTreeCreationWizard() },
+
         };
     }
 

@@ -45,6 +45,7 @@ namespace Editor_GameDesigner
             {"Adventure//POI//." + typeof(POIModel).Name, typeof(POIModel) },
             {"Adventure//POI//." + typeof(ExplorePOI).Name, typeof(ExplorePOI) },
             {"Adventure//POI//Modules//." + typeof(POIModuleWizard).Name, typeof(POIModuleWizard) },
+            {"Adventure//Discussion//Modules//." + typeof(CreateDiscussionTree).Name, typeof(CreateDiscussionTree) },
             {"Core//Animation//." + typeof(CreateAnimation).Name, typeof(CreateAnimation) }
         };
 

@@ -15,7 +15,6 @@ namespace Editor_DiscussionTreeNodeEditor
         }
 
         public DiscussionStartEdge DiscussionStartEdge;
-        public DiscussionTreeId DiscussionTreeId;
 
         public override List<NodeEdgeProfile> InitOutputEdges()
         {
@@ -26,7 +25,6 @@ namespace Editor_DiscussionTreeNodeEditor
         protected override void NodeGUI(ref NodeEditorProfile nodeEditorProfileRef)
         {
             base.NodeGUI(ref nodeEditorProfileRef);
-            this.DiscussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("Tree ID : ", string.Empty, this.DiscussionTreeId);
         }
 
         protected override Color NodeColor()

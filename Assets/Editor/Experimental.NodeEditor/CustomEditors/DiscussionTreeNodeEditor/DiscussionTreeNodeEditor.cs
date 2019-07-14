@@ -29,7 +29,7 @@ namespace Editor_DiscussionTreeNodeEditor
             if (GUILayout.Button("GENERATE", GUILayout.Width(75f)))
             {
                 var discussionTree = (DiscussionTree)DiscussionTree.CreateInstance(typeof(DiscussionTree).Name);
-
+                var discussionTreeId = ((DiscussionTreeNodeEditorProfile)this.nodeEditorProfile).DiscussionTreeID;
 
                 var allNodes = this.nodeEditorProfile.Nodes.Values.ToList();
                 var startNode = (DiscussionStartNodeProfile)allNodes.Find(nodeProfile => (nodeProfile as DiscussionStartNodeProfile) != null);
@@ -66,10 +66,10 @@ namespace Editor_DiscussionTreeNodeEditor
                 }
                 discussionTree.DiscussionNodes.Add(DiscussionNodeId.NONE, null);
 
-                var creationAssetPath = MyFileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + startNode.DiscussionTreeId.ToString() + "_DiscussionTree.asset";
+                var creationAssetPath = MyFileUtil.GetAssetDirectoryPath(this.nodeEditorProfile) + discussionTreeId.ToString() + "_DiscussionTree.asset";
                 AssetDatabase.CreateAsset(discussionTree, creationAssetPath);
                 var DiscussionTreeConfiguration = AssetFinder.SafeSingleAssetFind<DiscussionTreeConfiguration>("t:" + typeof(DiscussionTreeConfiguration).Name);
-                DiscussionTreeConfiguration.SetEntry(startNode.DiscussionTreeId, (DiscussionTree)AssetDatabase.LoadAssetAtPath(creationAssetPath, typeof(DiscussionTree)));
+                DiscussionTreeConfiguration.SetEntry(discussionTreeId, (DiscussionTree)AssetDatabase.LoadAssetAtPath(creationAssetPath, typeof(DiscussionTree)));
             }
         }
     }

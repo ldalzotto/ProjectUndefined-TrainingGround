@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using GameConfigurationID;
 using NodeGraph;
 using UnityEditor;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace Editor_DiscussionTreeNodeEditor
     [CreateAssetMenu(fileName = "DiscussionTreeNodeEditor", menuName = "Configuration/AdventureGame/DiscussionConfiguration/DiscussionTreeNodeEditor", order = 1)]
     public class DiscussionTreeNodeEditorProfile : NodeEditorProfile
     {
+        [SerializeField]
+        public DiscussionTreeId DiscussionTreeID;
 
         public static void Init(NodeEditorProfile nodeEditorProfile)
         {

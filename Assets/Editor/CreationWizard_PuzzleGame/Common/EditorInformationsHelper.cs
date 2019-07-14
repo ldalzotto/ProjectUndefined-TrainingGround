@@ -202,6 +202,8 @@ namespace Editor_MainGameCreationWizard
     {
         [ReadOnly]
         public PointOfInterestConfiguration PointOfInterestConfiguration;
+        [ReadOnly]
+        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
     }
 
     [System.Serializable]
@@ -268,5 +270,7 @@ namespace Editor_MainGameCreationWizard
         public string AnimationConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/AnimationConfiguration/AnimationConfigurationData";
         [ReadOnly]
         public string InteractiveObjectPrefabPath = "Assets/~RTPuzzleGame/InteractiveObject/Prefabs";
+        [ReadOnly]
+        public string DiscussionTreePath = "Assets/Editor/Configuration/AdventureGame/DiscussionConfiguration";
     }
 }
