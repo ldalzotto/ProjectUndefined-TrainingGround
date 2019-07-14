@@ -3,6 +3,7 @@ using CreationWizard;
 using Editor_AttractiveObjectCreationWizard;
 using Editor_MainGameCreationWizard;
 using Editor_RepelableObjectCreationWizard;
+using Editor_TargetZoneCreationWizard;
 using RTPuzzle;
 using System;
 using System.Collections.Generic;
@@ -92,6 +93,43 @@ namespace Editor_GameDesigner
                        }
                        EditorInteractiveObjectModulesOperation.RemovePrefabModule<AttractiveObjectTypeModule>(InteractiveObjectType);
                    }
+               },
+               TargetZoneObjectModuleAction: () =>
+               {
+                   if (this.add)
+                   {
+                       var targetZoneObjectModule = EditorInteractiveObjectModulesOperation.AddPrefabModule(InteractiveObjectType, this.CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseTargetZoneObjectModule);
+                       targetZoneObjectModule.TargetZoneID = this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.TargetZoneID;
+                       EditorUtility.SetDirty(this.currentSelectedObjet);
+                   }
+                   else if (this.remove)
+                   {
+                       if (this.deepDeletion)
+                       {
+                           //Get ID
+                           var TargetZoneModule = InteractiveObjectType.GetComponentInChildren<TargetZoneObjectModule>();
+                           if (TargetZoneModule != null)
+                           {
+                               var TargetZoneID = TargetZoneModule.TargetZoneID;
+
+                               //configuration deletion
+                               AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZonesConfiguration.ConfigurationInherentData[TargetZoneID]));
+                               this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZonesConfiguration.ClearEntry(TargetZoneID);
+                           }
+                       }
+                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<TargetZoneObjectModule>(InteractiveObjectType);
+                   }
+               },
+               LevelCompletionTriggerAction: () =>
+               {
+                   if (this.add)
+                   {
+                       EditorInteractiveObjectModulesOperation.AddPrefabModule(InteractiveObjectType, this.CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLevelCompletionTriggerModule);
+                   }
+                   else if (this.remove)
+                   {
+                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<LevelCompletionTriggerModule>(InteractiveObjectType);
+                   }
                }
              );
         }
@@ -143,7 +181,14 @@ namespace Editor_GameDesigner
                         this.PrefabEditConditionWithID<AttractiveObjectCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.AttractiveObjectId"),
                             this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId,
                             this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration, ref allowedToEdit);
-                    }
+                    },
+                    TargetZoneObjectModuleAction: () =>
+                    {
+                        this.PrefabEditConditionWithID<TargetZoneCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.TargetZoneID"),
+                           this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.TargetZoneID,
+                           this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZonesConfiguration, ref allowedToEdit);
+                    },
+                    LevelCompletionTriggerAction: () => allowedToEdit = true
                 );
             return allowedToEdit;
         }
@@ -154,12 +199,15 @@ namespace Editor_GameDesigner
             this.InteractiveObjectModuleSwitch(selectedType,
                     InteractiveObjectModuleAction: () => { returnDescription = "Model object definition."; },
                     ObjectRepelTypeModuleAction: () => { returnDescription = "Allow the object to be repelled by projectile."; },
-                    AttractiveObjectTypeAction: () => { returnDescription = "Attract AI when on range."; }
+                    AttractiveObjectTypeAction: () => { returnDescription = "Attract AI when on range."; },
+                    TargetZoneObjectModuleAction: () => { returnDescription = "Definie a zone for AI to reach to complete level."; },
+                    LevelCompletionTriggerAction: () => { returnDescription = "Trigger Zone used to trigger end of puzzle level event."; }
                 );
             return returnDescription;
         }
 
-        private void InteractiveObjectModuleSwitch(Type selectedType, Action InteractiveObjectModuleAction, Action ObjectRepelTypeModuleAction, Action AttractiveObjectTypeAction)
+        private void InteractiveObjectModuleSwitch(Type selectedType, Action InteractiveObjectModuleAction, Action ObjectRepelTypeModuleAction, Action AttractiveObjectTypeAction, Action TargetZoneObjectModuleAction,
+                Action LevelCompletionTriggerAction)
         {
             if (selectedType == typeof(ModelObjectModule))
             {
@@ -172,6 +220,14 @@ namespace Editor_GameDesigner
             else if (selectedType == typeof(AttractiveObjectTypeModule))
             {
                 AttractiveObjectTypeAction.Invoke();
+            }
+            else if (selectedType == typeof(TargetZoneObjectModule))
+            {
+                TargetZoneObjectModuleAction.Invoke();
+            }
+            else if (selectedType == typeof(LevelCompletionTriggerModule))
+            {
+                LevelCompletionTriggerAction.Invoke();
             }
         }
     }

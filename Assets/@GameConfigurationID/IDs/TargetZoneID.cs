@@ -21,5 +21,7 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION_TEST = 2,
     
     SEWER_RTP_2_TARGET_ZONE = 3,
+    
+    INTERACTION_TEST = 4,
   }
 }

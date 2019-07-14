@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using AdventureGame;
 using CoreGame;
-using RTPuzzle;
-using UnityEngine.EventSystems;
 using CreationWizard;
+using RTPuzzle;
 using System.Collections.Generic;
-using ConfigurationEditor;
 using System.Linq;
-using AdventureGame;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Editor_MainGameCreationWizard
 {
@@ -31,6 +29,8 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseModelObjectModule, "BaseModelObjectModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseObjectRepelTypeModule, "BaseObjectRepelModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseAttractiveObjectModule, "BaseAttractiveObjectModule");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseTargetZoneObjectModule, "BaseTargetZoneModule");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLevelCompletionTriggerModule, "BaseLevelCompletionTriggerModule");
             #endregion
 
             #region Adventure Common Prefabs
@@ -153,7 +153,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public RepelableObjectsConfiguration RepelableObjectsConfiguration;
     }
-    
+
     [System.Serializable]
     public class PuzzleLevelCommonPrefabs
     {
@@ -184,6 +184,10 @@ namespace Editor_MainGameCreationWizard
         public ObjectRepelTypeModule BaseObjectRepelTypeModule;
         [ReadOnly]
         public AttractiveObjectTypeModule BaseAttractiveObjectModule;
+        [ReadOnly]
+        public TargetZoneObjectModule BaseTargetZoneObjectModule;
+        [ReadOnly]
+        public LevelCompletionTriggerModule BaseLevelCompletionTriggerModule;
     }
 
     [System.Serializable]

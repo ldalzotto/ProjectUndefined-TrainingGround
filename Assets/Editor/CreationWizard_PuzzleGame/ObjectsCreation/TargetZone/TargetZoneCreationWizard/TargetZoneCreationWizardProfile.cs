@@ -11,8 +11,7 @@ namespace Editor_TargetZoneCreationWizard
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {
             new CreationWizardOrderConfiguration( typeof(EditorInformations), -1),
-            new CreationWizardOrderConfiguration( typeof(TargetZoneConfigurationCreation), 0),
-            new CreationWizardOrderConfiguration(typeof(TargetZonePrefabCreation), 1)
+            new CreationWizardOrderConfiguration( typeof(TargetZoneConfigurationCreation), 0)
         };
         public override List<CreationWizardOrderConfiguration> ModulesConfiguration => this.ModuleTypes_IMPL;
     }

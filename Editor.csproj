@@ -172,7 +172,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZoneConfigurationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZonePrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\EditorTool\CustomIcon.cs" />

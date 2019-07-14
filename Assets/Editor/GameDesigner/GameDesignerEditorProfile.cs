@@ -37,5 +37,7 @@ namespace Editor_GameDesigner
         public RepelableObjectID RepelableObjectID;
         [CustomEnum()]
         public AttractiveObjectId AttractiveObjectId;
+        [CustomEnum()]
+        public TargetZoneID TargetZoneID;
     }
 }
