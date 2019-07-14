@@ -12,9 +12,10 @@ namespace RTPuzzle
 
     public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable
     {
-
+#if UNITY_EDITOR
         [Header("Debug")]
         public bool DebugEabled;
+#endif
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
