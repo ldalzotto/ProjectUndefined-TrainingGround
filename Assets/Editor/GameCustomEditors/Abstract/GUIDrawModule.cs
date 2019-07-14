@@ -34,13 +34,18 @@ namespace Editor_GameCustomEditors
         public override void EditorGUI(C context, T target)
         {
             EditorGUILayout.BeginHorizontal();
-            var availableEnums = GetByEnumProperty.Invoke(context).Values.Keys.ToList();
-            base.EditorGUI(context, target);
-            this.selectedEnumIndex = EditorGUILayout.Popup(this.selectedEnumIndex, availableEnums.ConvertAll(e => e.ToString()).ToArray(), GUILayout.Width(30f));
-            if(availableEnums.Count > 0)
+            var byEnumProperty = GetByEnumProperty.Invoke(context);
+            if (byEnumProperty != null)
             {
-                this.selectedKey = availableEnums[this.selectedEnumIndex];
+                var availableEnums = byEnumProperty.Values.Keys.ToList();
+                base.EditorGUI(context, target);
+                this.selectedEnumIndex = EditorGUILayout.Popup(this.selectedEnumIndex, availableEnums.ConvertAll(e => e.ToString()).ToArray(), GUILayout.Width(30f));
+                if (availableEnums.Count > 0)
+                {
+                    this.selectedKey = availableEnums[this.selectedEnumIndex];
+                }
             }
+          
            
             EditorGUILayout.EndHorizontal();
         }

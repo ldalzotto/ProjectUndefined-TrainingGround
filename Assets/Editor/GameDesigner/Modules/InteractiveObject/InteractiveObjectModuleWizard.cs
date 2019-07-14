@@ -13,6 +13,9 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class InteractiveObjectModuleWizard : BaseModuleWizardModule<InteractiveObjectType, InteractiveObjectModule>
     {
+        [SerializeField]
+        private bool deepDeletion = false;
+
         protected override List<InteractiveObjectModule> GetModules(InteractiveObjectType RootModuleObject)
         {
             return RootModuleObject.GetComponentsInChildren<InteractiveObjectModule>().ToList();
@@ -42,7 +45,20 @@ namespace Editor_GameDesigner
                    }
                    else if (this.remove)
                    {
+                       if (this.deepDeletion)
+                       {
+                           //Get ID
+                           var RetrievedObjectRepelTypeModule = InteractiveObjectType.GetComponentInChildren<ObjectRepelTypeModule>();
+                           if (RetrievedObjectRepelTypeModule != null)
+                           {
+                               var ojectRepelID = RetrievedObjectRepelTypeModule.RepelableObjectID;
 
+                               //configuration deletion
+                               AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this.CommonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration.ConfigurationInherentData[ojectRepelID]));
+                               this.CommonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration.ClearEntry(ojectRepelID);
+                           }
+                       }
+                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<ObjectRepelTypeModule>(InteractiveObjectType);
                    }
                }
              );
@@ -75,6 +91,12 @@ namespace Editor_GameDesigner
                         {
                             allowedToEdit = true;
                         }
+
+                        if (this.remove)
+                        {
+                            this.deepDeletion = GUILayout.Toggle(this.deepDeletion, "Deep deletion", EditorStyles.miniButton, GUILayout.Width(150f));
+                        }
+
                         EditorGUILayout.Separator();
                     }
                 );

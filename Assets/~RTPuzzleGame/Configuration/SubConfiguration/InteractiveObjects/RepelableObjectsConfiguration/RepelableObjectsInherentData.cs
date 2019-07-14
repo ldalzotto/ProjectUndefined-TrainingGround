@@ -13,7 +13,14 @@ namespace RTPuzzle
 
         public float GetRepelableObjectDistance(LaunchProjectileId launchProjectileId)
         {
-            return this.RepelableObjectDistance.Values[launchProjectileId];
+            if (this.RepelableObjectDistance != null && this.RepelableObjectDistance.Values.ContainsKey(launchProjectileId))
+            {
+                return this.RepelableObjectDistance.Values[launchProjectileId];
+            }
+            else
+            {
+                return 0f; 
+            }
         }
     }
 }
