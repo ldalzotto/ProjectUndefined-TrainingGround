@@ -11,7 +11,7 @@ public class InlinePropertyDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         Inline byEnumProperty = (Inline)attribute;
-
+        
         EditorGUI.PropertyField(position, property);
 
         if (property.objectReferenceValue != null)

@@ -284,6 +284,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ObjectRepelTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />

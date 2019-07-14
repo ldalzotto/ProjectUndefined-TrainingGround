@@ -1,13 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using RTPuzzle;
+﻿using CreationWizard;
 using Editor_MainGameCreationWizard;
-using System.Collections.Generic;
-using CreationWizard;
-using System.Linq;
-using System;
 using GameConfigurationID;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 
 namespace Editor_AIBehaviorCreationWizard
 {

@@ -16,8 +16,7 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
     {
         ByEnumProperty<K, V> projectileEscapeRange = (ByEnumProperty<K, V>)target;
         this.Init(projectileEscapeRange);
-
-
+        
         this.foldout = EditorGUILayout.Foldout(this.foldout, target.name, true);
 
         if (this.foldout)

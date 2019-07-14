@@ -29,5 +29,7 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION = 6,
     
     MOUSE_SEWER_RTP_2 = 7,
+    
+    EDITOR_TEST = 8,
   }
 }
