@@ -1,4 +1,5 @@
-﻿using CreationWizard;
+﻿using ConfigurationEditor;
+using CreationWizard;
 using Editor_AttractiveObjectCreationWizard;
 using Editor_MainGameCreationWizard;
 using Editor_RepelableObjectCreationWizard;
@@ -69,6 +70,10 @@ namespace Editor_GameDesigner
                        var attractiveObjectTypeModule = EditorInteractiveObjectModulesOperation.AddPrefabModule(InteractiveObjectType, this.CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseAttractiveObjectModule);
                        attractiveObjectTypeModule.AttractiveObjectId = this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId;
                        EditorUtility.SetDirty(this.currentSelectedObjet);
+
+                       var configurationToModify = this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData[this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId];
+                       configurationToModify.AttractiveInteractiveObjectPrefab = AssetDatabase.LoadAssetAtPath<InteractiveObjectType>(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(InteractiveObjectType));
+                       EditorUtility.SetDirty(configurationToModify);
                    }
                    else if (this.remove)
                    {
@@ -91,6 +96,37 @@ namespace Editor_GameDesigner
              );
         }
 
+        private void PrefabEditConditionWithID<CREATION_WIZARD>(SerializedProperty idSerializedProperty, Enum idProfileField, IConfigurationSerialization configuration, ref bool allowedToEdit)
+        {
+            EditorGUILayout.Separator();
+            EditorGUILayout.PropertyField(idSerializedProperty);
+            if (GUILayout.Button("CREATE ID BASED ON OBJECT NAME"))
+            {
+                string preFilledName = this.currentSelectedObjet.name.Substring(0, this.currentSelectedObjet.name.LastIndexOf("_"));
+                EnumIDGeneration.Init(idProfileField.GetType(), preFilledName);
+            }
+            string isError = ErrorHelper.NotAlreadyPresentInConfiguration(idProfileField, configuration.GetKeys(), nameof(configuration));
+            if (!string.IsNullOrEmpty(isError))
+            {
+                EditorGUILayout.HelpBox(isError, MessageType.Error);
+                if (GUILayout.Button("CREATE IN EDITOR"))
+                {
+                    GameCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
+                }
+            }
+            else
+            {
+                allowedToEdit = true;
+            }
+
+            if (this.remove)
+            {
+                this.deepDeletion = GUILayout.Toggle(this.deepDeletion, "Deep deletion", EditorStyles.miniButton, GUILayout.Width(150f));
+            }
+
+            EditorGUILayout.Separator();
+        }
+
         protected override bool AdditionalEditCondition(Type selectedType)
         {
             bool allowedToEdit = false;
@@ -98,63 +134,15 @@ namespace Editor_GameDesigner
                     InteractiveObjectModuleAction: () => allowedToEdit = true,
                     ObjectRepelTypeModuleAction: () =>
                     {
-                        EditorGUILayout.Separator();
-                        EditorGUILayout.PropertyField(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.RepelableObjectID"));
-                        if (GUILayout.Button("CREATE ID BASED ON OBJECT NAME"))
-                        {
-                            string preFilledName = this.currentSelectedObjet.name.Substring(0, this.currentSelectedObjet.name.LastIndexOf("_"));
-                            EnumIDGeneration.Init(this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.RepelableObjectID.GetType(), preFilledName);
-                        }
-                        string isError = ErrorHelper.NotAlreadyPresentInConfiguration(this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.RepelableObjectID, this.CommonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e), nameof(this.CommonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration));
-                        if (!string.IsNullOrEmpty(isError))
-                        {
-                            EditorGUILayout.HelpBox(isError, MessageType.Error);
-                            if (GUILayout.Button("CREATE IN EDITOR"))
-                            {
-                                GameCreationWizard.InitWithSelected(typeof(RepelableObjectCreationWizard).Name);
-                            }
-                        }
-                        else
-                        {
-                            allowedToEdit = true;
-                        }
-
-                        if (this.remove)
-                        {
-                            this.deepDeletion = GUILayout.Toggle(this.deepDeletion, "Deep deletion", EditorStyles.miniButton, GUILayout.Width(150f));
-                        }
-
-                        EditorGUILayout.Separator();
+                        this.PrefabEditConditionWithID<RepelableObjectCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.RepelableObjectID"),
+                            this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.RepelableObjectID,
+                            this.CommonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration, ref allowedToEdit);
                     },
                     AttractiveObjectTypeAction: () =>
                     {
-                        EditorGUILayout.Separator();
-                        EditorGUILayout.PropertyField(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.AttractiveObjectId"));
-                        if (GUILayout.Button("CREATE ID BASED ON OBJECT NAME"))
-                        {
-                            string preFilledName = this.currentSelectedObjet.name.Substring(0, this.currentSelectedObjet.name.LastIndexOf("_"));
-                            EnumIDGeneration.Init(this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId.GetType(), preFilledName);
-                        }
-                        string isError = ErrorHelper.NotAlreadyPresentInConfiguration(this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId, this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e), nameof(this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration));
-                        if (!string.IsNullOrEmpty(isError))
-                        {
-                            EditorGUILayout.HelpBox(isError, MessageType.Error);
-                            if (GUILayout.Button("CREATE IN EDITOR"))
-                            {
-                                GameCreationWizard.InitWithSelected(typeof(AttractiveObjectCreationWizard).Name);
-                            }
-                        }
-                        else
-                        {
-                            allowedToEdit = true;
-                        }
-
-                        if (this.remove)
-                        {
-                            this.deepDeletion = GUILayout.Toggle(this.deepDeletion, "Deep deletion", EditorStyles.miniButton, GUILayout.Width(150f));
-                        }
-
-                        EditorGUILayout.Separator();
+                        this.PrefabEditConditionWithID<AttractiveObjectCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.AttractiveObjectId"),
+                            this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId,
+                            this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration, ref allowedToEdit);
                     }
                 );
             return allowedToEdit;
