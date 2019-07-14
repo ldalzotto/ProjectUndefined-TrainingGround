@@ -50,7 +50,7 @@ namespace NodeGraph
             return 20f;
         }
 
-        public void GUIEdgeRectangles(Rect parentNodeRect)
+        public void GUIEdgeRectangles(Rect parentNodeRect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             var oldBackground = GUI.backgroundColor;
             if (this.IsSelected)
@@ -65,7 +65,7 @@ namespace NodeGraph
             EditorGUI.BeginChangeCheck();
 
             var verticalBound = EditorGUILayout.BeginVertical(GUI.skin.box);
-            this.GUI_Impl(this.Bounds);
+            this.GUI_Impl(this.Bounds, ref nodeEditorProfileRef);
             EditorGUILayout.EndVertical();
 
             this.Bounds.position = verticalBound.position + parentNodeRect.position;
@@ -147,7 +147,7 @@ namespace NodeGraph
             this.selectedColor = selectionColor;
         }
 
-        protected virtual void GUI_Impl(Rect rect) { GUILayout.Label(""); }
+        protected virtual void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef) { GUILayout.Label(""); }
 
         public void ClearConnections()
         {

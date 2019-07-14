@@ -57,7 +57,7 @@ namespace Editor_LevelAvailabilityNodeEditor
         protected override void NodeGUI(ref NodeEditorProfile nodeEditorProfileRef)
         {
             EditorGUILayout.BeginHorizontal();
-            this.InputNodeConnectionEdge.GUIEdgeRectangles(this.OffsettedBounds);
+            this.InputNodeConnectionEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("+", EditorStyles.miniButton, GUILayout.Width(20f)))
@@ -75,8 +75,8 @@ namespace Editor_LevelAvailabilityNodeEditor
             for (var i = 0; i < TransitionTimelineActionInputEdges.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                this.TransitionTimelineActionInputEdges[i].GUIEdgeRectangles(this.OffsettedBounds);
-                this.TransitionTimelineActionOutputEdges[i].GUIEdgeRectangles(this.OffsettedBounds);
+                this.TransitionTimelineActionInputEdges[i].GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
+                this.TransitionTimelineActionOutputEdges[i].GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
                 EditorGUILayout.EndHorizontal();
             }
             DrawWorkflowActionEdges(ref nodeEditorProfileRef, ref this.OnStartWorkflowActionEdges, "On Start");
@@ -111,7 +111,7 @@ namespace Editor_LevelAvailabilityNodeEditor
 
             foreach (var OnStartWorkflowActionEdge in workflowActionEdges)
             {
-                OnStartWorkflowActionEdge.GUIEdgeRectangles(this.OffsettedBounds);
+                OnStartWorkflowActionEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
             }
         }
 

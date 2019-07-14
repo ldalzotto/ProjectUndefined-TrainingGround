@@ -100,11 +100,11 @@ namespace NodeGraph
                 EditorGUILayout.BeginHorizontal();
                 if (i < this.InputEdges.Count)
                 {
-                    this.InputEdges[i].GUIEdgeRectangles(this.offsettedBounds);
+                    this.InputEdges[i].GUIEdgeRectangles(this.offsettedBounds, ref nodeEditorProfileRef);
                 }
                 if (i < this.OutputEdges.Count)
                 {
-                    this.OutputEdges[i].GUIEdgeRectangles(this.offsettedBounds);
+                    this.OutputEdges[i].GUIEdgeRectangles(this.offsettedBounds, ref nodeEditorProfileRef);
                 }
                 EditorGUILayout.EndHorizontal();
             }

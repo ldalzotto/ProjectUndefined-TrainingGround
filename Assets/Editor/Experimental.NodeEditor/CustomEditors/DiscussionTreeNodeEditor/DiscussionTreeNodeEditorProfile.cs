@@ -21,14 +21,15 @@ namespace Editor_DiscussionTreeNodeEditor
             window.Show();
         }
 
-        public static DiscussionTextRepertoire DiscussionTextRepertoire;
+        [SerializeField]
+        public DiscussionTextRepertoire DiscussionTextRepertoire;
 
         public override void Init()
         {
             base.Init();
-            DiscussionTreeNodeEditorProfile.DiscussionTextRepertoire = AssetFinder.SafeSingleAssetFind<DiscussionTextRepertoire>("t:" + typeof(DiscussionTextRepertoire).Name);
+            this.DiscussionTextRepertoire = AssetFinder.SafeSingleAssetFind<DiscussionTextRepertoire>("t:" + typeof(DiscussionTextRepertoire).Name);
         }
-        
-        
+
+
     }
 }

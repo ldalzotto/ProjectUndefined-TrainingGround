@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AdventureGame;
+using ConfigurationEditor;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +20,10 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
             lineNB += 1;
         }
         if (searchableEnum.IsSearchable)
+        {
+            lineNB += 1;
+        }
+        if (searchableEnum.ChoosedOpenRepertoire)
         {
             lineNB += 1;
         }
@@ -68,6 +74,17 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                 if (GUI.Button(lineRect, "Create ID"))
                 {
                     EnumIDGeneration.Init(targetEnum.GetType());
+                }
+                currentLineNB += 1;
+            }
+
+            if (searchableEnum.ChoosedOpenRepertoire)
+            {
+                Rect lineRect = this.GetRectFromLineNb(currentLineNB, position);
+
+                if (GUI.Button(lineRect, "Open Repertoire"))
+                {
+                    ConfigurationInspector.OpenConfigurationEditor(typeof(DiscussionTextRepertoire));
                 }
                 currentLineNB += 1;
             }

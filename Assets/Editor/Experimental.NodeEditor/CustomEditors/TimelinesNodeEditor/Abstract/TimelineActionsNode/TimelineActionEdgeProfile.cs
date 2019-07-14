@@ -19,7 +19,7 @@ namespace Editor_LevelAvailabilityNodeEditor
             typeof(T)
         };
 
-        protected override void GUI_Impl(Rect rect)
+        protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             if (this.TimelineAction == null)
             {

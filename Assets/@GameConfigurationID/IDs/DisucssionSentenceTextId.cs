@@ -12,16 +12,10 @@ namespace GameConfigurationID {
   
   
   [System.Serializable()]
-  public enum TimelineID {
+  public enum DisucssionSentenceTextId {
     
-    DISCUSSION_TIMELINE = 0,
+    SWER_RTP_1_DOOR = 0,
     
-    SCENARIO_TIMELINE = 1,
-    
-    LEVEL_AVAILABILITY_TIMELINE = 2,
-    
-    CUTSCENE_TIMELINE = 3,
-    
-    TESTING_TIMELINE = 99999,
+    _1_Town_Bouncer_AskID = 1,
   }
 }

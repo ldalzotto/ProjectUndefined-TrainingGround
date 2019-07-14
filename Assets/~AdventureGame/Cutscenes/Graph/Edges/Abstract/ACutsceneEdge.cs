@@ -17,7 +17,7 @@ namespace AdventureGame
         public T AssociatedAction { get => associatedAction; }
 
 #if UNITY_EDITOR
-        protected override void GUI_Impl(Rect rect)
+        protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             this.associatedAction.ActionGUI();
         }

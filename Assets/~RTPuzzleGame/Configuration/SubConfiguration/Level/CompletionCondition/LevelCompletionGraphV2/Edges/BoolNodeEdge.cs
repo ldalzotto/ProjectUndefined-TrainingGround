@@ -15,7 +15,7 @@ namespace RTPuzzle
         };
 
 #if UNITY_EDITOR
-        protected override void GUI_Impl(Rect rect)
+        protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             if (this.Value == null)
             {

@@ -34,8 +34,8 @@ namespace GameConfigurationID {
     
     _1_Town = 9,
     
-    NONE = -1,
-    
     RTP_TEST_OBSTACLES = 10,
+    
+    NONE = -1,
   }
 }

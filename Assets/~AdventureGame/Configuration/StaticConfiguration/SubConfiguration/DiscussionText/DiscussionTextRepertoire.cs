@@ -2,6 +2,7 @@
 using UnityEditor;
 using OdinSerializer;
 using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace AdventureGame
 {
@@ -12,9 +13,4 @@ namespace AdventureGame
         public Dictionary<DisucssionSentenceTextId, string> SentencesText = new Dictionary<DisucssionSentenceTextId, string>();
     }
     
-    public enum DisucssionSentenceTextId
-    {
-        SWER_RTP_1_DOOR = 0,
-        _1_Town_Bouncer_AskID = 1
-    }
 }

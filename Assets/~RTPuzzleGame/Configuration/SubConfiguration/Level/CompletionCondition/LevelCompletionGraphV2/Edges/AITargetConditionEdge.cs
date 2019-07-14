@@ -21,7 +21,7 @@ namespace RTPuzzle
 
 #if UNITY_EDITOR
         private Editor cachedEditor;
-        protected override void GUI_Impl(Rect rect)
+        protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             var so = new SerializedObject(this);
             EditorGUILayout.PropertyField(so.FindProperty(nameof(this.AiID)));

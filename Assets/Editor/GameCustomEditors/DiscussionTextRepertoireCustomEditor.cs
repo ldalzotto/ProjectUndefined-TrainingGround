@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using System.Linq;

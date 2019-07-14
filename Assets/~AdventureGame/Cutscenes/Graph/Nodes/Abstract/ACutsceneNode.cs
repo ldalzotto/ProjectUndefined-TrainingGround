@@ -92,14 +92,14 @@ namespace AdventureGame
         protected override void NodeGUI(ref NodeEditorProfile nodeEditorProfileRef)
         {
             EditorGUILayout.BeginHorizontal();
-            this.inputCutsceneConnectionEdge.GUIEdgeRectangles(this.OffsettedBounds);
-            this.outputCutsceneConnectionEdge.GUIEdgeRectangles(this.OffsettedBounds);
+            this.inputCutsceneConnectionEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
+            this.outputCutsceneConnectionEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
             EditorGUILayout.EndHorizontal();
-            this.actionEdge.GUIEdgeRectangles(this.OffsettedBounds);
+            this.actionEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
             if (this.DisplayWorkflowEdge())
             {
                 EditorGUILayout.BeginHorizontal();
-                this.workflowNodeReferenceEdge.GUIEdgeRectangles(this.OffsettedBounds);
+                this.workflowNodeReferenceEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
                 EditorGUILayout.EndHorizontal();
             }
         }

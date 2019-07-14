@@ -117,22 +117,5 @@ namespace AdventureGame
             return discussionTreeRef.DiscussionNodes[nextNode];
         }
     }
-
-    #region Discussion Tree Workflow
-
-    public enum DiscussionNodeId
-    {
-        NONE = 0,
-        BOUNCER_FORBIDDEN_INTRODUCTION,
-        BOUNCER_ASK_AGE,
-        BOUNCER_OK_INTRODUCTION,
-        PLAYER_AGE_CHOICE,
-        PLAYER_AGE_CHOICE_17,
-        PLAYER_AGE_CHOICE_18,
-        BOUNCER_GET_OUT,
-        SWER_RTP_1_DOOR
-    }
     
-    #endregion
-
 }

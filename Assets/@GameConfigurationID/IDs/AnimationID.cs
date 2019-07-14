@@ -58,8 +58,8 @@ namespace GameConfigurationID {
     
     _1_Town_Bouncer_PlayerExamination = 22,
     
-    NONE = -1,
-    
     EDITOR_TEST = 23,
+    
+    NONE = -1,
   }
 }

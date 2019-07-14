@@ -16,17 +16,21 @@ namespace Editor_DiscussionTreeNodeEditor
             typeof(DiscussionConnectionNodeEdge)
         };
 
+        [CustomEnum(isCreateable: true)]
         public DiscussionNodeId DiscussionNodeId;
+        [CustomEnum(isCreateable: true, choosedOpenRepertoire: true)]
         public DisucssionSentenceTextId DisplayedText;
         public PointOfInterestId Talker;
 
-        protected override void GUI_Impl(Rect rect)
+        protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             EditorGUILayout.BeginVertical();
             this.DiscussionNodeId = (DiscussionNodeId)NodeEditorGUILayout.EnumField("Node : ", string.Empty, this.DiscussionNodeId);
             this.DisplayedText = (DisucssionSentenceTextId)NodeEditorGUILayout.EnumField("Text : ", string.Empty, this.DisplayedText);
             this.Talker = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.Talker);
             EditorGUILayout.EndVertical();
+            EditorGUILayout.Separator();
+            EditorGUILayout.HelpBox(((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.SentencesText[this.DisplayedText], MessageType.None);
         }
 
         protected override Color EdgeColor()

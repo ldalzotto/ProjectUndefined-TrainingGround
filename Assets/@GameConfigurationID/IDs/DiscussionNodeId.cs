@@ -12,16 +12,24 @@ namespace GameConfigurationID {
   
   
   [System.Serializable()]
-  public enum TimelineID {
+  public enum DiscussionNodeId {
     
-    DISCUSSION_TIMELINE = 0,
+    NONE = 0,
     
-    SCENARIO_TIMELINE = 1,
+    BOUNCER_FORBIDDEN_INTRODUCTION = 1,
     
-    LEVEL_AVAILABILITY_TIMELINE = 2,
+    BOUNCER_ASK_AGE = 2,
     
-    CUTSCENE_TIMELINE = 3,
+    BOUNCER_OK_INTRODUCTION = 3,
     
-    TESTING_TIMELINE = 99999,
+    PLAYER_AGE_CHOICE = 4,
+    
+    PLAYER_AGE_CHOICE_17 = 5,
+    
+    PLAYER_AGE_CHOICE_18 = 6,
+    
+    BOUNCER_GET_OUT = 7,
+    
+    SWER_RTP_1_DOOR = 9,
   }
 }

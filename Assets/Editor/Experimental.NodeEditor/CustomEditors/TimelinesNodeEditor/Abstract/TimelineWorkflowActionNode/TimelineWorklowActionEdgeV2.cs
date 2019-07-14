@@ -13,7 +13,7 @@ namespace Editor_LevelAvailabilityNodeEditor
         public T WorkflowAction;
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>();
 
-        protected override void GUI_Impl(Rect rect)
+        protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             this.WorkflowAction.ActionGUI();
         }

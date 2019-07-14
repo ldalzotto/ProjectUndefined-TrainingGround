@@ -29,6 +29,7 @@ namespace CoreGame
             castedWindow.GetTreePicker().Init(() => { window.Repaint(); });
             if (!castedWindow.GetTreePicker().SetSelectedKey(configurationDataType))
             {
+                Debug.Log("CLOSE");
                 window.Close();
                 return false;
             }

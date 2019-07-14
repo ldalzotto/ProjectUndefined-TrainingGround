@@ -47,6 +47,13 @@ namespace NodeGraph_Editor
             return EditorGUILayout.FloatField(CommonGUIContent, floatField);
         }
 
+        public static int IntField(string label, string tooltip, int intField)
+        {
+            CommonGUIContent.text = label;
+            CommonGUIContent.tooltip = tooltip;
+            return EditorGUILayout.IntField(CommonGUIContent, intField);
+        }
+
     }
 
 }

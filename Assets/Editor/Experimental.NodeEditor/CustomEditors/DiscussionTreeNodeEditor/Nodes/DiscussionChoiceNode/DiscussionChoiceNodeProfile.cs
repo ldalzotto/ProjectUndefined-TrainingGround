@@ -52,10 +52,10 @@ namespace Editor_DiscussionTreeNodeEditor
             }
             EditorGUILayout.EndHorizontal();
 
-            this.DiscussionChoiceInputEdge.GUIEdgeRectangles(this.OffsettedBounds);
+            this.DiscussionChoiceInputEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
             foreach(var choiceEdge in this.ChoicesEdge)
             {
-                choiceEdge.GUIEdgeRectangles(this.OffsettedBounds);
+                choiceEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
             }
         }
 
