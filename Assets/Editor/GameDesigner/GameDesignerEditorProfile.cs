@@ -35,5 +35,7 @@ namespace Editor_GameDesigner
     {
         [CustomEnum()]
         public RepelableObjectID RepelableObjectID;
+        [CustomEnum()]
+        public AttractiveObjectId AttractiveObjectId;
     }
 }
