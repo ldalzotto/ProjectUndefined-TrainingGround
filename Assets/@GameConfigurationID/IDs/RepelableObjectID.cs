@@ -19,5 +19,7 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION_TEST = 1,
     
     CHEESE_SEWER_RTP_2_1 = 2,
+    
+    INTERACTION_TEST = 3,
   }
 }

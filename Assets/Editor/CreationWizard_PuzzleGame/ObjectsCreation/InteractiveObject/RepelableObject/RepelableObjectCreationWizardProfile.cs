@@ -9,8 +9,7 @@ namespace Editor_RepelableObjectCreationWizard
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {
             new CreationWizardOrderConfiguration(typeof(EditorInformations), -1),
-            new CreationWizardOrderConfiguration(typeof(RepelableObjectPrefabCreation), 0),
-            new CreationWizardOrderConfiguration(typeof(RepelableObjectConfigurationCreation), 1)
+            new CreationWizardOrderConfiguration(typeof(RepelableObjectConfigurationCreation), 0)
         };
 
         public override List<CreationWizardOrderConfiguration> ModulesConfiguration => this.ModuleTypes_IMPL;

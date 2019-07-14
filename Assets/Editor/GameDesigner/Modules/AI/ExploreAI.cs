@@ -13,7 +13,7 @@ namespace Editor_GameDesigner
         private List<NPCAIManager> NPCAIManagers = new List<NPCAIManager>();
         private Dictionary<NPCAIManager, Editor> NPCAIManagersEditor = new Dictionary<NPCAIManager, Editor>();
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("AI : ", this.NPCAIManagers, ref this.NPCAIManagersEditor);
         }

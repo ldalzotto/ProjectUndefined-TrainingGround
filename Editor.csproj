@@ -163,7 +163,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\Module\InteractiveObjectPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectConfigurationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\Module\RepelableObjectPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\RepelableObjectCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObject\RepelableObject\RepelableObjectCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\EditorInformations.cs" />

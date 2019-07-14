@@ -6,7 +6,7 @@ namespace Editor_GameDesigner
 {
     public class CreateInEditorModule<CREATION_WIZARD> : IGameDesignerModule
     {
-        public void GUITick()
+        public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             if (GUILayout.Button("CREATE IN EDITOR"))
             {

@@ -61,7 +61,7 @@ namespace Editor_GameDesigner
                 if (this.GameDesignerEditorProfile.CurrentGameDesignerModule != null)
                 {
                     this.GameDesignerEditorProfile.ScrollPosition = EditorGUILayout.BeginScrollView(this.GameDesignerEditorProfile.ScrollPosition);
-                    this.GameDesignerEditorProfile.CurrentGameDesignerModule.GUITick();
+                    this.GameDesignerEditorProfile.CurrentGameDesignerModule.GUITick(ref this.GameDesignerEditorProfile);
                     EditorGUILayout.EndScrollView();
                 }
                 EditorGUILayout.EndVertical();

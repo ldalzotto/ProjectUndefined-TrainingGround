@@ -9,7 +9,7 @@ namespace Editor_GameDesigner
 
         protected GameObject currentSelectedObjet;
         protected T prefabToAdd;
-        public virtual void GUITick()
+        public virtual void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.currentSelectedObjet = GameDesignerHelper.GetCurrentSceneSelectedObject();
             this.prefabToAdd = (T)EditorGUILayout.ObjectField(this.prefabToAdd, typeof(T), false);

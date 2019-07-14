@@ -9,7 +9,7 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class CreateAdventureLevel : IGameDesignerModule
     {
-        public void GUITick()
+        public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             if (GUILayout.Button("CREATE LEVEL IN EDITOR"))
             {

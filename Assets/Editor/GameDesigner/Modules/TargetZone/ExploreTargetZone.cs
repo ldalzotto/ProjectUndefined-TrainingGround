@@ -13,7 +13,7 @@ namespace Editor_GameDesigner
         private List<TargetZoneObjectModule> TargetZones = new List<TargetZoneObjectModule>();
         private Dictionary<TargetZoneObjectModule, Editor> TargetZonesEditor = new Dictionary<TargetZoneObjectModule, Editor>();
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("Target zones : ", this.TargetZones,ref this.TargetZonesEditor);
         }

@@ -29,6 +29,7 @@ namespace Editor_MainGameCreationWizard
 
             #region Puzzle Interactive Object Modules Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseModelObjectModule, "BaseModelObjectModule");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseObjectRepelTypeModule, "BaseObjectRepelModule");
             #endregion
 
             #region Adventure Common Prefabs
@@ -178,6 +179,8 @@ namespace Editor_MainGameCreationWizard
     {
         [ReadOnly]
         public ModelObjectModule BaseModelObjectModule;
+        [ReadOnly]
+        public ObjectRepelTypeModule BaseObjectRepelTypeModule;
     }
 
     [System.Serializable]

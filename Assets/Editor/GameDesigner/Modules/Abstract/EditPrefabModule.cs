@@ -7,7 +7,7 @@ namespace Editor_GameDesigner
     public abstract class EditPrefabModule<T> : IGameDesignerModule where T : UnityEngine.Object
     {
         protected GameObject currentSelectedObjet;
-        public virtual void GUITick()
+        public virtual void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.currentSelectedObjet = GameDesignerHelper.GetCurrentSceneSelectedObject();
             EditorGUI.BeginDisabledGroup(this.IsDisabled());

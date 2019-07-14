@@ -9,7 +9,7 @@ namespace Editor_GameDesigner
     {
         protected GameObject ModelObject;
 
-        public void GUITick()
+        public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
 
             var currentSelectedObj = GameDesignerHelper.GetCurrentSceneSelectedObject();

@@ -14,7 +14,7 @@ namespace Editor_GameDesigner
         private Dictionary<ProjectileInherentData, Editor> ProjectileDatasEditor = new Dictionary<ProjectileInherentData, Editor>();
 
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("Projectiles : ", this.ProjectileDatas, ref this.ProjectileDatasEditor);
         }

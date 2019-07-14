@@ -25,6 +25,15 @@ public class EnumIDGeneration : EditorWindow
         window.enumSelectionPicker.SetSelectedKey(initialEnumType.Name);
     }
 
+    public static void Init(Type initialEnumType, string initialEnumName)
+    {
+        EnumIDGeneration window = (EnumIDGeneration)EditorWindow.GetWindow(typeof(EnumIDGeneration));
+        window.Show();
+        window.OnEnable();
+        window.enumSelectionPicker.SetSelectedKey(initialEnumType.Name);
+        window.KeyName = initialEnumName;
+    }
+
     private TreePickerPopup enumSelectionPicker;
     private List<Type> availableEnums;
     private List<string> availableEnumTypesString;

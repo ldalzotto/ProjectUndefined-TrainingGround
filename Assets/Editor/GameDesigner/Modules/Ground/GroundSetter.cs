@@ -8,7 +8,7 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class GroundEffectAdd : IGameDesignerModule
     {
-        public void GUITick()
+        public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             var obj = Selection.activeObject as GameObject;
             if (obj != null && obj.scene == null)

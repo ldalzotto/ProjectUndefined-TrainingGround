@@ -20,20 +20,20 @@ namespace Editor_GameDesigner
         [SerializeField]
         private int selectedModuleIndex;
 
+        protected GameDesignerEditorProfile GameDesignerEditorProfile;
+        protected SerializedObject GameDesignerEditorProfileSO;
+
         [SerializeField]
         protected bool add;
         [SerializeField]
         protected bool remove;
 
-        #region Base Prefabs
-        private PointOfInterestTrackerModule BasePOITrackerModule;
-        #endregion
-
         protected abstract void OnEdit(T RootModuleObject, Type selectedType);
         protected abstract string POIModuleDescription(Type selectedType);
         protected abstract List<ABSTRACT_MODULE> GetModules(T RootModuleObject);
+        protected virtual bool AdditionalEditCondition(Type selectedType) { return true; }
 
-        public void GUITick()
+        public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             if (this.CommonGameConfigurations == null)
             {
@@ -41,8 +41,23 @@ namespace Editor_GameDesigner
                 EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations);
             }
 
+            if (this.GameDesignerEditorProfile == null)
+            {
+                this.GameDesignerEditorProfile = GameDesignerEditorProfile;
+                this.GameDesignerEditorProfileSO = new SerializedObject(this.GameDesignerEditorProfile);
+            }
+
             this.currentSelectedObjet = GameDesignerHelper.GetCurrentSceneSelectedObject();
             this.selectedModuleIndex = EditorGUILayout.Popup(this.selectedModuleIndex, this.AvailableModules.ConvertAll(t => t.Name).ToArray());
+            EditorGUILayout.HelpBox(this.POIModuleDescription(this.AvailableModules[this.selectedModuleIndex]), MessageType.None);
+
+            T selectedPointOfIterestType = null;
+            if (this.currentSelectedObjet != null)
+            {
+                selectedPointOfIterestType = this.currentSelectedObjet.GetComponent<T>();
+            }
+
+            bool additionalEditAllowed = this.AdditionalEditCondition(this.AvailableModules[this.selectedModuleIndex]);
 
             EditorGUILayout.BeginHorizontal();
             bool newAdd = GUILayout.Toggle(this.add, "ADD", EditorStyles.miniButtonLeft);
@@ -75,13 +90,7 @@ namespace Editor_GameDesigner
             EditorGUILayout.EndHorizontal();
 
 
-            T selectedPointOfIterestType = null;
-            if (this.currentSelectedObjet != null)
-            {
-                selectedPointOfIterestType = this.currentSelectedObjet.GetComponent<T>();
-            }
-
-            EditorGUI.BeginDisabledGroup(this.IsDisabled());
+            EditorGUI.BeginDisabledGroup(this.IsDisabled() || !additionalEditAllowed);
             if (GUILayout.Button("EDIT"))
             {
                 this.OnEnabled();
@@ -131,7 +140,6 @@ namespace Editor_GameDesigner
         public void OnEnabled()
         {
             this.AvailableModules = TypeHelper.GetAllTypeAssignableFrom(typeof(ABSTRACT_MODULE)).ToList();
-            this.BasePOITrackerModule = AssetFinder.SafeSingleAssetFind<PointOfInterestTrackerModule>("BasePOITrackerModule");
         }
 
         public void OnDisabled()

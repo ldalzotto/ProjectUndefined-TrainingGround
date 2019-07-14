@@ -13,7 +13,7 @@ namespace Editor_GameDesigner
 
         protected abstract Func<C, ScriptableObject> scriptableObjectResolver { get; }
 
-        public void GUITick()
+        public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.OnEnabled();
             var rawSelectedObj = GameDesignerHelper.GetCurrentSceneSelectedObject();

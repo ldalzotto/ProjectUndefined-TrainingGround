@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using OdinSerializer;
+using GameConfigurationID;
 
 namespace Editor_GameDesigner
 {
@@ -11,6 +12,7 @@ namespace Editor_GameDesigner
         public GameDesignerTreePickerProfile GameDesignerTreePickerProfile;
         public IGameDesignerModule CurrentGameDesignerModule;
         public Vector2 ScrollPosition;
+        public InteractiveObjectModuleWizardID InteractiveObjectModuleWizardID;
         public void ChangeCurrentModule(IGameDesignerModule nextModule)
         {
             if (this.CurrentGameDesignerModule != null)
@@ -28,4 +30,10 @@ namespace Editor_GameDesigner
         public string SelectedKey;
     }
 
+    [System.Serializable]
+    public class InteractiveObjectModuleWizardID
+    {
+        [CustomEnum()]
+        public RepelableObjectID RepelableObjectID;
+    }
 }

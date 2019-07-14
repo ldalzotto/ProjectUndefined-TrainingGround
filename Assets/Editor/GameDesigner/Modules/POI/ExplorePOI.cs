@@ -13,7 +13,7 @@ namespace Editor_GameDesigner
         private List<PointOfInterestType> PöintOfInterests = new List<PointOfInterestType>();
         private Dictionary<PointOfInterestType, Editor> PöintOfInterestsEditor = new Dictionary<PointOfInterestType, Editor>();
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("POI : ", this.PöintOfInterests, ref this.PöintOfInterestsEditor);
         }

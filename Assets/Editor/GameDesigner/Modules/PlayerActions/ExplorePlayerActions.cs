@@ -16,7 +16,7 @@ namespace Editor_GameDesigner
         private List<PlayerActionInherentData> levelPlayerActionInherentDatas;
         private Dictionary<PlayerActionInherentData, Editor> playerActionsCachedEditors;
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("Player actions : ", this.levelPlayerActionInherentDatas, ref this.playerActionsCachedEditors);
         }

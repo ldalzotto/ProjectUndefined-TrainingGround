@@ -12,7 +12,7 @@ namespace Editor_GameDesigner
         private List<RepelableObjectsInherentData> RepelableObjectsInherentDatas = new List<RepelableObjectsInherentData>();
         private Dictionary<RepelableObjectsInherentData, Editor> RepelableObjectsInherentDatasEditor = new Dictionary<RepelableObjectsInherentData, Editor>();
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("Repelable objects : ",this.RepelableObjectsInherentDatas, ref this.RepelableObjectsInherentDatasEditor);
         }

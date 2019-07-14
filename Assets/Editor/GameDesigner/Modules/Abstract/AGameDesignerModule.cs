@@ -7,7 +7,7 @@ namespace Editor_GameDesigner
     {
         void OnEnabled();
         void OnDisabled();
-        void GUITick();
+        void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile);
     }
 }
 

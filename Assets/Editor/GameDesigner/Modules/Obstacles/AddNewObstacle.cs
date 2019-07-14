@@ -27,9 +27,9 @@ namespace Editor_GameDesigner
             }
         }
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
-            base.GUITick();
+            base.GUITick(ref GameDesignerEditorProfile);
             if (this.prefabToAdd == null)
             {
                 this.prefabToAdd = AssetFinder.SafeSingleAssetFind<SquareObstacle>("BaseSquareObstaclePrefab");

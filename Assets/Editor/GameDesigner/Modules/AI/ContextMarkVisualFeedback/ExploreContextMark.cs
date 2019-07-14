@@ -12,7 +12,7 @@ namespace Editor_GameDesigner
         private List<ContextMarkVisualFeedbackInherentData> ContextMarkVisualFeedbackInherentData = new List<ContextMarkVisualFeedbackInherentData>();
         private Dictionary<ContextMarkVisualFeedbackInherentData, Editor> ContextMarkVisualFeedbackInherentEditor = new Dictionary<ContextMarkVisualFeedbackInherentData, Editor>();
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("Context Mark : ", this.ContextMarkVisualFeedbackInherentData, ref this.ContextMarkVisualFeedbackInherentEditor);
         }

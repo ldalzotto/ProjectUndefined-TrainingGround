@@ -14,7 +14,7 @@ namespace Editor_GameDesigner
         private List<AttractiveObjectInherentConfigurationData> AttractiveObjectInherentConfigurationDatas = new List<AttractiveObjectInherentConfigurationData>();
         private Dictionary<AttractiveObjectInherentConfigurationData, Editor> AttractiveObjectInherentConfigurationDatasEditor = new Dictionary<AttractiveObjectInherentConfigurationData, Editor>();
 
-        public override void GUITick()
+        public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.DisplayObjects("Attractive objects : ", this.AttractiveObjectInherentConfigurationDatas, ref this.AttractiveObjectInherentConfigurationDatasEditor);
         }

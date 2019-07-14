@@ -11,7 +11,7 @@ namespace Editor_GameDesigner
     {
 
         protected CommonGameConfigurations commonGameConfigurations;
-        public abstract void GUITick();
+        public abstract void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile);
 
         public void OnDisabled()
         {
