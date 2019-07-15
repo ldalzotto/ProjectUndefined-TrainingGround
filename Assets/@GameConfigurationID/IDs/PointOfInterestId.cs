@@ -35,5 +35,9 @@ namespace GameConfigurationID {
     _1_Town_Bouncer = 10000,
     
     _1_Town_Thief = 10001,
+    
+    _1_Town_GardenDoor = 10002,
+    
+    _1_Town_GardenWatchman = 10003,
   }
 }
