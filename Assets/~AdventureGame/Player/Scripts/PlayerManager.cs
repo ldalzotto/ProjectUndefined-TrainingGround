@@ -119,7 +119,7 @@ namespace AdventureGame
                 //if statement to avoid processing inpout at the same frame
                 if (!PlayerInventoryTriggerManager.Tick())
                 {
-                    PlayerPOIWheelTriggerManager.Tick(d, PointOfInterestTrackerModule.NearestInRangePointOfInterest());
+                    PlayerPOIWheelTriggerManager.Tick(d, PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest());
                 }
             }
 

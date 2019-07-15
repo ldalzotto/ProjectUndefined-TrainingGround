@@ -20,7 +20,6 @@ namespace AdventureGame
         }
 
         #region Data Retrieval
-        public PointOfInterestType NearestInRangePointOfInterest() { return this.POITrackerManager.NearestInRangePointOfInterest; }
         public PointOfInterestType NearestInRangeInteractabledPointOfInterest() { return this.POITrackerManager.NearestInRangeInteractabledPointOfInterest; }
         #endregion
 
@@ -66,10 +65,8 @@ namespace AdventureGame
         private SphereCollider TrackerCollider;
         private Transform ReferenceTransform;
         private List<PointOfInterestType> InRangePointOfInterests = new List<PointOfInterestType>();
-        private PointOfInterestType nearestInRangePointOfInterest;
         private PointOfInterestType nearestInRangeInteractabledPointOfInterest;
-
-        public PointOfInterestType NearestInRangePointOfInterest { get => nearestInRangePointOfInterest; }
+        
         public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
 
         public POITrackerManager(PointOfInterestType PointOfInterestTypeRef, PlayerPOITrackerManagerComponentV2 playerPOITrackerManagerComponent, SphereCollider TrackerCollider)
@@ -84,15 +81,7 @@ namespace AdventureGame
         public void Tick(float d)
         {
             TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
-            nearestInRangePointOfInterest = GetNearestPOI();
-            nearestInRangeInteractabledPointOfInterest = null;
-            if (nearestInRangePointOfInterest != null)
-            {
-                if (Vector3.Distance(ReferenceTransform.position, nearestInRangePointOfInterest.transform.position) <= this.PointOfInterestTypeRef.GetMaxDistanceToInteractWithPlayer())
-                {
-                    nearestInRangeInteractabledPointOfInterest = nearestInRangePointOfInterest;
-                }
-            }
+            nearestInRangeInteractabledPointOfInterest = GetNearestPOIInteractable();
         }
 
         public void OnPOIObjectEnter(PointOfInterestType pointOfInterestType)
@@ -111,24 +100,25 @@ namespace AdventureGame
             }
         }
 
-        private PointOfInterestType GetNearestPOI()
+        private PointOfInterestType GetNearestPOIInteractable()
         {
-            PointOfInterestType nearestPoi = null;
+            this.InRangePointOfInterests.Sort((p1, p2) =>
+            {
+                return Vector3.Distance(p1.transform.position, TrackerCollider.transform.position).CompareTo(Vector3.Distance(p2.transform.position, TrackerCollider.transform.position));
+            });
+
+            //the first is the nearest
+            PointOfInterestType nearestInteractivePoi = null;
             foreach (var POI in InRangePointOfInterests)
             {
-                if (nearestPoi == null)
+                if(Vector3.Angle(this.PointOfInterestTypeRef.transform.forward, POI.transform.position - this.PointOfInterestTypeRef.transform.position) <= this.PointOfInterestTypeRef.PointOfInterestInherentData.POIDetectionAngleLimit)
                 {
-                    nearestPoi = POI;
-                }
-                else
-                {
-                    if (Vector3.Distance(POI.transform.position, TrackerCollider.transform.position) <= Vector3.Distance(nearestPoi.transform.position, TrackerCollider.transform.position))
-                    {
-                        nearestPoi = POI;
-                    }
+                    nearestInteractivePoi = POI;
+                    break;
                 }
             }
-            return nearestPoi;
+            
+            return nearestInteractivePoi;
         }
 
         public void POIDeleted(PointOfInterestType deletedPOI)

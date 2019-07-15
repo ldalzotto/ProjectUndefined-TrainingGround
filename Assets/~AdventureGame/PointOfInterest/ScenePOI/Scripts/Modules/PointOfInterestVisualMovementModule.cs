@@ -39,7 +39,7 @@ namespace AdventureGame
                 this.IVisualMovementPermission = pointOfInterestTypeRef;
             }
         }
-        
+
         public void LateTick(float d)
         {
             if (this.IVisualMovementPermission.IsVisualMovementAllowed())
@@ -65,7 +65,7 @@ namespace AdventureGame
         private List<Transform> bonesThatReactToPOI;
         private Transform headBone;
 
-        private PointOfInterestType LastNearestPOI;
+        private PointOfInterestType LastNearestInteractablePOI;
         private List<Quaternion> InterpolatedBoneRotations = new List<Quaternion>();
 
         private bool IsLookingToPOI;
@@ -85,52 +85,42 @@ namespace AdventureGame
             }
         }
 
-        public void LateTick(float d, PointOfInterestType NearestPOI)
+        public void LateTick(float d, PointOfInterestType NearestInteractablePOI)
         {
-            LastNearestPOI = NearestPOI;
-            if (LastNearestPOI != null)
+            LastNearestInteractablePOI = NearestInteractablePOI;
+            if (LastNearestInteractablePOI != null)
             {
-                var beforeHeadMoveAngle = Vector3.Angle(this.headBone.forward, LastNearestPOI.transform.position - this.headBone.position);
-                if (beforeHeadMoveAngle <= playerPOIVisualHeadMovementComponent.POIDetectionAngleLimit)
+                if (!IsLookingToPOI)
                 {
-
-                    if (!IsLookingToPOI)
-                    {
-                        //first time looking
-                        ResetInterpolatedBoneRotationToActual();
-                    }
-
-                    IsLookingToPOI = true;
-                    hasEndedSmoothingOut = false;
-
-                    for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
-                    {
-                        var affectedBone = this.bonesThatReactToPOI[i];
-
-                        // (1) - Target direction is the direction between bone and POI point.
-                        var targetDirection = (LastNearestPOI.transform.position - affectedBone.transform.position).normalized;
-
-                        // (2) - We clamp the bone rotation to a cone.
-                        var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.playerPOIVisualHeadMovementComponent.RotationAngleLimit);
-
-                        // (3) - We rotate the target direction to fit the cone constraint.
-                        var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
-
-                        /*
-                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (playerPOIVisualHeadMovementComponent.HeadBone.forward * 10), Color.blue);
-                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (targetDirection.normalized * 10), Color.green);
-                        Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (adjustedDirection.normalized * 10), Color.red);
-                        */
-
-                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
-                            playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
-                        InterpolatedBoneRotations[i] = affectedBone.rotation;
-                    }
+                    //first time looking
+                    ResetInterpolatedBoneRotationToActual();
                 }
-                else
+
+                IsLookingToPOI = true;
+                hasEndedSmoothingOut = false;
+
+                for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
                 {
-                    IsLookingToPOI = false;
-                    SmoothNoLookingTransition(d);
+                    var affectedBone = this.bonesThatReactToPOI[i];
+
+                    // (1) - Target direction is the direction between bone and POI point.
+                    var targetDirection = (LastNearestInteractablePOI.transform.position - affectedBone.transform.position).normalized;
+
+                    // (2) - We clamp the bone rotation to a cone.
+                    var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.playerPOIVisualHeadMovementComponent.RotationAngleLimit);
+
+                    // (3) - We rotate the target direction to fit the cone constraint.
+                    var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
+
+                    /*
+                    Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (playerPOIVisualHeadMovementComponent.HeadBone.forward * 10), Color.blue);
+                    Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (targetDirection.normalized * 10), Color.green);
+                    Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (adjustedDirection.normalized * 10), Color.red);
+                    */
+
+                    affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
+                        playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
+                    InterpolatedBoneRotations[i] = affectedBone.rotation;
                 }
             }
             else
@@ -194,16 +184,16 @@ namespace AdventureGame
 
         public void GizmoTick()
         {
-            if (LastNearestPOI != null)
+            if (LastNearestInteractablePOI != null)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(LastNearestPOI.transform.position, 1f);
+                Gizmos.DrawWireSphere(LastNearestInteractablePOI.transform.position, 1f);
 
                 for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
                 {
-                    Gizmos.DrawLine(this.bonesThatReactToPOI[i].position, LastNearestPOI.transform.position);
+                    Gizmos.DrawLine(this.bonesThatReactToPOI[i].position, LastNearestInteractablePOI.transform.position);
 #if UNITY_EDITOR
-                    Handles.Label(LastNearestPOI.transform.position, "Targeted POI");
+                    Handles.Label(LastNearestInteractablePOI.transform.position, "Targeted POI");
 #endif
                 }
             }

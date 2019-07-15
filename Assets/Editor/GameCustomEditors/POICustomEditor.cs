@@ -17,7 +17,7 @@ namespace Editor_GameCustomEditors
             {
                 var poiConfiguration = AssetFinder.SafeSingleAssetFind<PointOfInterestConfiguration>("t:" + typeof(PointOfInterestConfiguration).Name);
                 this.drawModules = new List<GUIDrawModule<PointOfInterestType, POICustomEditorContext>>() {
-                    new POIInteractionDistance()
+                    new POIInteraction()
                 };
                 this.context = new POICustomEditorContext();
                 this.context.PointOfInterestInherentData = poiConfiguration.ConfigurationInherentData[((PointOfInterestType)target).PointOfInterestId];
@@ -30,7 +30,7 @@ namespace Editor_GameCustomEditors
         public PointOfInterestInherentData PointOfInterestInherentData;
     }
 
-    class POIInteractionDistance : GUIDrawModule<PointOfInterestType, POICustomEditorContext>
+    class POIInteraction : GUIDrawModule<PointOfInterestType, POICustomEditorContext>
     {
         public override void SceneGUI(POICustomEditorContext context, PointOfInterestType target)
         {
@@ -38,6 +38,11 @@ namespace Editor_GameCustomEditors
             var maxDistanceInteraction = context.PointOfInterestInherentData.MaxDistanceToInteract;
             Handles.Label(target.transform.position + Vector3.up * maxDistanceInteraction, nameof(context.PointOfInterestInherentData.MaxDistanceToInteract), MyEditorStyles.LabelYellow);
             Handles.DrawWireDisc(target.transform.position, Vector3.up, maxDistanceInteraction);
+
+            Handles.color = Color.green;
+            Handles.Label(target.transform.position + Vector3.up * 5f, nameof(context.PointOfInterestInherentData.POIDetectionAngleLimit), MyEditorStyles.LabelGreen);
+            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.PointOfInterestInherentData.POIDetectionAngleLimit, 5f);
+            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.PointOfInterestInherentData.POIDetectionAngleLimit, 5f);
         }
     }
 }

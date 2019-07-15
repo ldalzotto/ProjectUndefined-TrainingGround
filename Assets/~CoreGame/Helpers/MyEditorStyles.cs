@@ -8,12 +8,15 @@ public class MyEditorStyles
     public static GUIStyle LabelYellow;
     public static GUIStyle LabelMagenta;
     public static GUIStyle LabelBlue;
+    public static GUIStyle LabelGreen;
+
     static MyEditorStyles()
     {
         MyEditorStyles.LabelRed = BuildLabelStyle(Color.red);
         MyEditorStyles.LabelYellow = BuildLabelStyle(Color.yellow);
         MyEditorStyles.LabelMagenta = BuildLabelStyle(Color.magenta);
         MyEditorStyles.LabelBlue = BuildLabelStyle(Color.blue);
+        MyEditorStyles.LabelGreen = BuildLabelStyle(Color.green);
     }
 
     public static GUIStyle BuildLabelStyle(Color color)

@@ -9,8 +9,6 @@ namespace AdventureGame
     {
         [Tooltip("The bone that is having visual movmenet")]
         public BipedBone MovingBone = BipedBone.HEAD;
-        [Tooltip("This angle is the maximum value for the look system to be enabled. The angle is Ang(player forward, player to POI)")]
-        public float POIDetectionAngleLimit = 90f;
         [Tooltip("This angle is the maximum angle where player actually rotate.")]
         public float RotationAngleLimit = 55f;
 
