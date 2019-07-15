@@ -35,8 +35,8 @@ namespace Editor_GameCustomEditors
         public override void SceneGUI(POICustomEditorContext context, PointOfInterestType target)
         {
             Handles.color = Color.yellow;
-            var maxDistanceInteraction = context.PointOfInterestInherentData.MaxDistanceToInteractWithPlayer;
-            Handles.Label(target.transform.position + Vector3.up * maxDistanceInteraction, nameof(context.PointOfInterestInherentData.MaxDistanceToInteractWithPlayer), MyEditorStyles.LabelYellow);
+            var maxDistanceInteraction = context.PointOfInterestInherentData.MaxDistanceToInteract;
+            Handles.Label(target.transform.position + Vector3.up * maxDistanceInteraction, nameof(context.PointOfInterestInherentData.MaxDistanceToInteract), MyEditorStyles.LabelYellow);
             Handles.DrawWireDisc(target.transform.position, Vector3.up, maxDistanceInteraction);
         }
     }

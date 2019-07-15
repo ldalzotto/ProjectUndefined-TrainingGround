@@ -15,7 +15,7 @@ namespace AdventureGame
         public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
             var trackerCollider = GetComponent<SphereCollider>();
-            this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>(), trackerCollider);
+            this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef, pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>(), trackerCollider);
 
         }
 
@@ -61,6 +61,7 @@ namespace AdventureGame
 
     class POITrackerManager
     {
+        private PointOfInterestType PointOfInterestTypeRef;
         private PlayerPOITrackerManagerComponentV2 PlayerPOITrackerManagerComponent;
         private SphereCollider TrackerCollider;
         private Transform ReferenceTransform;
@@ -71,8 +72,9 @@ namespace AdventureGame
         public PointOfInterestType NearestInRangePointOfInterest { get => nearestInRangePointOfInterest; }
         public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
 
-        public POITrackerManager(PlayerPOITrackerManagerComponentV2 playerPOITrackerManagerComponent, SphereCollider TrackerCollider)
+        public POITrackerManager(PointOfInterestType PointOfInterestTypeRef, PlayerPOITrackerManagerComponentV2 playerPOITrackerManagerComponent, SphereCollider TrackerCollider)
         {
+            this.PointOfInterestTypeRef = PointOfInterestTypeRef;
             PlayerPOITrackerManagerComponent = playerPOITrackerManagerComponent;
             this.TrackerCollider = TrackerCollider;
             this.TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
@@ -86,7 +88,7 @@ namespace AdventureGame
             nearestInRangeInteractabledPointOfInterest = null;
             if (nearestInRangePointOfInterest != null)
             {
-                if (Vector3.Distance(ReferenceTransform.position, nearestInRangePointOfInterest.transform.position) <= nearestInRangePointOfInterest.GetMaxDistanceToInteractWithPlayer())
+                if (Vector3.Distance(ReferenceTransform.position, nearestInRangePointOfInterest.transform.position) <= this.PointOfInterestTypeRef.GetMaxDistanceToInteractWithPlayer())
                 {
                     nearestInRangeInteractabledPointOfInterest = nearestInRangePointOfInterest;
                 }

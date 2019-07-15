@@ -44,7 +44,7 @@ namespace AdventureGame
         #region Data Retrieval
         public float GetMaxDistanceToInteractWithPlayer()
         {
-            return this.pointOfInterestInherentData.MaxDistanceToInteractWithPlayer;
+            return this.pointOfInterestInherentData.MaxDistanceToInteract;
         }
         public bool IsInteractionWithPlayerAllowed()
         {

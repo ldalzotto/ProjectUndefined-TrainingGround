@@ -44,7 +44,7 @@ namespace AdventureGame
         {
             if (this.IVisualMovementPermission.IsVisualMovementAllowed())
             {
-                this.PointOfInterestVisualMovementManager.LateTick(d, this.PointOfInterestTrackerModule.NearestInRangePointOfInterest());
+                this.PointOfInterestVisualMovementManager.LateTick(d, this.PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest());
             }
             else
             {
