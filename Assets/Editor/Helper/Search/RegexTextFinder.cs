@@ -21,7 +21,7 @@ public class RegexTextFinder
         this.searchText = this.searchField.OnGUI(this.searchText);
         if (EditorGUI.EndChangeCheck())
         {
-            this.regex = new Regex(this.searchText);
+            this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
         }
 
     }

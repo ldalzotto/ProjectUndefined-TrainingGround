@@ -272,5 +272,7 @@ namespace Editor_MainGameCreationWizard
         public string InteractiveObjectPrefabPath = "Assets/~RTPuzzleGame/InteractiveObject/Prefabs";
         [ReadOnly]
         public string DiscussionTreePath = "Assets/Editor/Configuration/AdventureGame/DiscussionConfiguration";
+        [ReadOnly]
+        public string CutsceneGraphPath = "Assets/~AdventureGame/Configuration/SubConfiguration/CutsceneConfiguration/CutsceneConfigurationData";
     }
 }
