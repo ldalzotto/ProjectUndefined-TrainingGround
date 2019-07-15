@@ -61,5 +61,7 @@ namespace GameConfigurationID {
     EDITOR_TEST = 23,
     
     NONE = -1,
+    
+    _1_Town_Thief_StealIDCard = 24,
   }
 }

@@ -17,7 +17,5 @@ namespace GameConfigurationID {
     SEWER_RTP_1_DOOR = 2,
     
     _1_Town_Bouncer_AskID = 3,
-    
-    EDITOR_CREATION_TEST = 4,
   }
 }
