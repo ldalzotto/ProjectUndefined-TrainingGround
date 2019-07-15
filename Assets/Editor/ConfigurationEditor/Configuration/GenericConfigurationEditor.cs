@@ -14,6 +14,7 @@ namespace ConfigurationEditor
     [System.Serializable]
     public class GenericConfigurationEditor<K, DATA> : IGenericConfigurationEditor where K : Enum where DATA : ScriptableObject
     {
+        [SerializeField]
         private ConfigurationSerialization<K, DATA> LaunchProjectileInherentDataConfiguration;
 
         [SerializeField]
@@ -22,7 +23,7 @@ namespace ConfigurationEditor
         public GenericConfigurationEditor(string assetSearchFilter)
         {
             this.assetSearchFilter = assetSearchFilter;
-        }
+        } 
 
         #region Projectile dictionary configuration
         [SerializeField]

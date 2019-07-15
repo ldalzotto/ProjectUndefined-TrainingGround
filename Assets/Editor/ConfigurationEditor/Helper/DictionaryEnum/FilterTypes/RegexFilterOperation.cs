@@ -36,7 +36,6 @@ namespace ConfigurationEditor
                 var nextRegexString = EditorGUILayout.TextField(this.regexString, EditorStyles.textField);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    ConfigurationEditorUndoHelper.RecordUndo();
                     this.regexString = nextRegexString;
                     this.regex = new Regex(this.regexString);
                 }

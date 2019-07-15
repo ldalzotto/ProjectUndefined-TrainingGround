@@ -27,14 +27,12 @@ namespace ConfigurationEditor
             EditorGUILayout.BeginHorizontal(this.paginationStyle, GUILayout.Width(100));
             if (GUILayout.Button(new GUIContent("◄"), EditorStyles.miniButton))
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.currentPageSelected -= 1;
                 this.currentPageSelected = Mathf.Max(this.currentPageSelected, 0);
             }
             GUILayout.Label(this.currentPageSelected.ToString(), EditorStyles.miniLabel);
             if (GUILayout.Button(new GUIContent("►"), EditorStyles.miniButton))
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.currentPageSelected += 1;
                 this.currentPageSelected = Mathf.Max(this.currentPageSelected, 0);
             }
@@ -42,7 +40,6 @@ namespace ConfigurationEditor
             var maxElementPerPage = EditorGUILayout.IntField(new GUIContent("Max nb per page : "), this.maxElementPerPage);
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.maxElementPerPage = maxElementPerPage;
             }
             EditorGUILayout.EndHorizontal();

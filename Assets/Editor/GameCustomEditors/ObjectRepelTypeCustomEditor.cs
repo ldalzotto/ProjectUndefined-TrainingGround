@@ -10,7 +10,7 @@ namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(ObjectRepelTypeModule))]
-    public class ObjectRepelTypeCustomEditor : AbstractGameCustomEditorWithLiveSelection<ObjectRepelTypeModule, ObjectRepelTypeCustomEditorContext, RepelableObjectsConfiguration, EditRepelableObject>
+    public class ObjectRepelTypeCustomEditor : AbstractGameCustomEditorWithLiveSelection<ObjectRepelTypeModule, ObjectRepelTypeCustomEditorContext, RepelableObjectsConfigurationModule, EditRepelableObject>
     {
         private void OnEnable()
         {

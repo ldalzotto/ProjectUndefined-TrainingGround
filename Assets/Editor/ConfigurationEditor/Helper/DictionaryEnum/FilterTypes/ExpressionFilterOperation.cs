@@ -77,7 +77,6 @@ namespace ConfigurationEditor
             {
                 if (nextFrameCompareExpression != this.compareExpression)
                 {
-                    ConfigurationEditorUndoHelper.RecordUndo();
                     this.compareExpression = nextFrameCompareExpression;
                     this.expressionEvaluation = new ExpressionEval(this.compareExpression);
                 }

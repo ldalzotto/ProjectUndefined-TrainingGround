@@ -277,7 +277,6 @@ namespace ConfigurationEditor
             string keySearchString = this.keySearchField.OnGUI(this.keySearchString);
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.keySearchString = keySearchString;
                 this.UpdateSearchStringRegex();
             }
@@ -296,7 +295,6 @@ namespace ConfigurationEditor
             bool forceLookAll = GUILayout.Toggle(this.forceLookOfAll, new GUIContent("L*", "Show all elements detail."), EditorStyles.miniButtonRight);
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 if (forceLookAll)
                 {
                     this.valuesToLook = dictionaryEditorValues.Keys.ToList();
@@ -334,7 +332,6 @@ namespace ConfigurationEditor
             var searchFilterFoldout = EditorGUILayout.Foldout(this.searchFilterFoldout, "Filters", true, EditorStyles.foldout);
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.searchFilterFoldout = searchFilterFoldout;
             }
             EditorGUILayout.EndHorizontal();

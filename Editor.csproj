@@ -66,15 +66,6 @@
     <Compile Include="Assets\Editor\AI\AiBehaviorInherentDataEditor.cs" />
     <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
     <Compile Include="Assets\Editor\ByEnumPropertyEditors\ByEnumPropertyEditors.cs" />
-    <Compile Include="Assets\Editor\Configuration\AdventureGame\AdventureGameConfigurationEditor.cs" />
-    <Compile Include="Assets\Editor\Configuration\AdventureGame\StaticConfiguration\DiscussionRepertoireConfigurationEditor.cs" />
-    <Compile Include="Assets\Editor\Configuration\AdventureGameConfigurationEditorProfile.cs" />
-    <Compile Include="Assets\Editor\Configuration\CoreGame\CoreGameConfigurationEditor.cs" />
-    <Compile Include="Assets\Editor\Configuration\CoreGameConfigurationEditorProfile.cs" />
-    <Compile Include="Assets\Editor\Configuration\PuzzleGame\PuzzleGameConfigurationEditorV2.cs" />
-    <Compile Include="Assets\Editor\Configuration\PuzzleGameConfigurationEditorProfileV2.cs" />
-    <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorUndoHelper.cs" />
-    <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationEditorWindowV2.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
@@ -298,6 +289,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AddPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\BaseModuleWizardModule.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\ConfigurationModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\CreateInEditorModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\EditScriptableObjectModule.cs" />
@@ -315,6 +307,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\CreateAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\EditAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\ExploreAttractiveObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\Configurations\ConfigurationsModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Discussion\CreateDiscussionTree.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\CreateInteractiveObject.cs" />

@@ -105,7 +105,7 @@ namespace ConfigurationEditor
             {
                 containsValuesReorderable = new FilterFoldableReordableList<FilterElement>(this.containsValues, true, true, true, true, "Contains : ", 1,
                             (Rect rect, int index, bool isActive, bool isFocused) => { FilterElement.DrawElement(rect, this.containsValues[index]); },
-                            ConfigurationEditorUndoHelper.RecordUndo);
+                            null);
             }
             if (excludedValues == null)
             {
@@ -115,7 +115,7 @@ namespace ConfigurationEditor
             {
                 excludedValuesReorderable = new FilterFoldableReordableList<FilterElement>(this.excludedValues, true, true, true, true, "Exclude : ", 1,
                   (Rect rect, int index, bool isActive, bool isFocused) => { FilterElement.DrawElement(rect, this.excludedValues[index]); },
-                  ConfigurationEditorUndoHelper.RecordUndo);
+                  null);
             }
 
         }
@@ -129,7 +129,6 @@ namespace ConfigurationEditor
             var typeFolded = EditorGUILayout.Foldout(this.typeFolded, typeof(T).ToString(), true, EditorStyles.foldout);
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.typeFolded = typeFolded;
             }
             if (this.typeFolded)

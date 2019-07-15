@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Editor_GameCustomEditors
 {
     [CustomEditor(typeof(NPCAIManager))]
-    public class NPCAIManagerCustomEditor : AbstractGameCustomEditorWithLiveSelection<NPCAIManager, NPCAIManagerCustomEditorContext, AIComponentsConfiguration, EditBehavior>
+    public class NPCAIManagerCustomEditor : AbstractGameCustomEditorWithLiveSelection<NPCAIManager, NPCAIManagerCustomEditorContext, AIComponentsConfigurationModule, EditBehavior>
     {
 
         public AIComponentsConfiguration AIComponentsConfiguration;

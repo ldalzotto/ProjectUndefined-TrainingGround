@@ -87,7 +87,10 @@ namespace ConfigurationEditor
                 var displayed = EditorGUI.Foldout(foldoutRect, this.Displayed, listTitle, true);
                 if (EditorGUI.EndChangeCheck())
                 {
-                    undoRegisterAction.Invoke();
+                    if (undoRegisterAction != null)
+                    {
+                        undoRegisterAction.Invoke();
+                    }
                     this.isFilterEnabled = isFilterEnabled;
                     this.Displayed = displayed;
                 }

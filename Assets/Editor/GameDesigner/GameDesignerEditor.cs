@@ -1,23 +1,30 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-using System;
+using UnityEngine;
 
 namespace Editor_GameDesigner
 {
     public class GameDesignerEditor : EditorWindow
     {
+        public const string GameDesignerProfilePath = "Assets/Editor/GameDesigner";
+
         [MenuItem("GameDesigner/GameDesignerEditor")]
         static void Init()
         {
-            GameDesignerEditor window = (GameDesignerEditor)EditorWindow.GetWindow(typeof(GameDesignerEditor));
+            var instanceIndex = GameDesignerWindowManager.GetGameDesignerEditorInstance();
+            GameDesignerEditor window = GameDesignerWindowManager.gameDesignerEditors[instanceIndex];
+            window.InitEditorData(instanceIndex);
+            window.ChoiceTree.Init(() => { window.Repaint(); });
             window.Show();
         }
 
         public static void InitWithSelectedKey(Type designerModuleType)
         {
-            GameDesignerEditor window = (GameDesignerEditor)EditorWindow.GetWindow(typeof(GameDesignerEditor));
-            window.InitEditorData();
+            var instanceIndex = GameDesignerWindowManager.GetGameDesignerEditorInstance();
+            GameDesignerEditor window = GameDesignerWindowManager.gameDesignerEditors[instanceIndex];
+            window.InitEditorData(instanceIndex);
             window.ChoiceTree.Init(() => { window.Repaint(); });
             window.ChoiceTree.SetSelectedKey(designerModuleType);
             window.Show();
@@ -27,11 +34,27 @@ namespace Editor_GameDesigner
 
         public GameDesignerChoiceTree ChoiceTree;
 
-        public void InitEditorData()
+        public void InitEditorData(int instanceIndex)
         {
             if (this.GameDesignerEditorProfile == null)
             {
-                this.GameDesignerEditorProfile = AssetFinder.SafeSingleAssetFind<GameDesignerEditorProfile>("t:" + typeof(GameDesignerEditorProfile).Name);
+                var GameDesignerEditorProfiles = AssetFinder.SafeAssetFind<GameDesignerEditorProfile>("t:" + typeof(GameDesignerEditorProfile).Name);
+                foreach (var GameDesignerEditorProfile in GameDesignerEditorProfiles)
+                {
+                    if (GameDesignerEditorProfile.GameDesignerProfileInstanceIndex == instanceIndex)
+                    {
+                        this.GameDesignerEditorProfile = GameDesignerEditorProfile;
+                        break;
+                    }
+                }
+
+                if (this.GameDesignerEditorProfile == null)
+                {
+                    var CreatedGameDesignerEditorProfile = (GameDesignerEditorProfile)GameDesignerEditorProfile.CreateInstance(typeof(GameDesignerEditorProfile));
+                    CreatedGameDesignerEditorProfile.GameDesignerProfileInstanceIndex = instanceIndex;
+                    AssetDatabase.CreateAsset(CreatedGameDesignerEditorProfile, GameDesignerProfilePath + "/GameDesignerEditorProfile_" + instanceIndex + ".asset");
+                    this.GameDesignerEditorProfile = CreatedGameDesignerEditorProfile;
+                }
             }
             if (this.GameDesignerEditorProfile != null)
             {
@@ -45,12 +68,15 @@ namespace Editor_GameDesigner
 
         private void OnGUI()
         {
-
-            this.InitEditorData();
             if (this.GameDesignerEditorProfile != null)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.BeginVertical(GUILayout.Width(200f));
+
+                if (this.ChoiceTree == null)
+                {
+                    this.ChoiceTree = new GameDesignerChoiceTree(this.GameDesignerEditorProfile);
+                }
                 if (this.ChoiceTree != null)
                 {
                     this.ChoiceTree.GUITick(() => { this.Repaint(); });
@@ -80,4 +106,49 @@ namespace Editor_GameDesigner
         }
     }
 
+
+    public static class GameDesignerWindowManager
+    {
+
+        public static Dictionary<int, GameDesignerEditor> gameDesignerEditors;
+
+        public static int GetGameDesignerEditorInstance()
+        {
+            if (gameDesignerEditors == null)
+            {
+                gameDesignerEditors = new Dictionary<int, GameDesignerEditor>();
+
+                var GameDesignerEditorProfiles = AssetFinder.SafeAssetFind<GameDesignerEditorProfile>("t:" + typeof(GameDesignerEditorProfile).Name);
+                foreach (var GameDesignerEditorProfile in GameDesignerEditorProfiles)
+                {
+                    gameDesignerEditors[GameDesignerEditorProfile.GameDesignerProfileInstanceIndex] = null;
+                }
+            }
+
+            int pickedIndex = 0;
+            if (gameDesignerEditors.Count > 0) 
+            {
+                var maxIndex = gameDesignerEditors.Keys.ToList().Max();
+                bool hasFoundPick = false;
+                for (var i = 0; i < maxIndex; i++)
+                {
+                    if (!gameDesignerEditors.ContainsKey(i) || gameDesignerEditors[i] == null)
+                    {
+                        pickedIndex = i;
+                        hasFoundPick = true;
+                        break;
+                    }
+                }
+
+                if (!hasFoundPick)
+                {
+                    pickedIndex = maxIndex + 1;
+                }
+            }
+
+            gameDesignerEditors[pickedIndex] = (GameDesignerEditor)EditorWindow.CreateInstance(typeof(GameDesignerEditor));
+            return pickedIndex;
+        }
+
+    }
 }

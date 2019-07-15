@@ -9,7 +9,7 @@ namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(LaunchProjectile))]
-    public class LaunchProjectileCustomEditor : AbstractGameCustomEditorWithLiveSelection<LaunchProjectile, ProjectileCustomEditorContext, ProjectileConfiguration, EditProjectile>
+    public class LaunchProjectileCustomEditor : AbstractGameCustomEditorWithLiveSelection<LaunchProjectile, ProjectileCustomEditorContext, ProjectileConfigurationModule, EditProjectile>
     {
         private void OnEnable()
         {

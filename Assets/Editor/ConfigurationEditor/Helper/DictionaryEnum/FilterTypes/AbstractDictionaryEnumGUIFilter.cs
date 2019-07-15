@@ -63,7 +63,6 @@ namespace ConfigurationEditor
             var isFilterEnabled = EditorGUILayout.Toggle(this.isFilterEnabled, this.filterEnabledToggleStyle, GUILayout.Width(10), GUILayout.Height(10));
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.SetIsFilterEnabled(isFilterEnabled);
             }
 
@@ -77,7 +76,6 @@ namespace ConfigurationEditor
             var filterFoldout = EditorGUILayout.Foldout(this.filterFoldout, foldoutHeader, true, this.filterFoldoutStyle);
             if (EditorGUI.EndChangeCheck())
             {
-                ConfigurationEditorUndoHelper.RecordUndo();
                 this.filterFoldout = filterFoldout;
             }
             EditorGUILayout.EndHorizontal();

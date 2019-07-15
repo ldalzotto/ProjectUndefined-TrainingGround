@@ -9,6 +9,7 @@ namespace Editor_GameDesigner
     [CreateAssetMenu(fileName = "GameDesignerEditorProfile", menuName = "GameDesigner/GameDesignerEditorProfile", order = 1)]
     public class GameDesignerEditorProfile : SerializedScriptableObject
     {
+        public int GameDesignerProfileInstanceIndex = 0;
         public GameDesignerTreePickerProfile GameDesignerTreePickerProfile;
         public IGameDesignerModule CurrentGameDesignerModule;
         public Vector2 ScrollPosition;

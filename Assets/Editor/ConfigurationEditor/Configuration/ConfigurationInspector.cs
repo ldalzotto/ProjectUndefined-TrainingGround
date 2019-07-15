@@ -4,6 +4,7 @@ using UnityEditor;
 using RTPuzzle;
 using CoreGame;
 using System;
+using Editor_GameDesigner;
 
 namespace ConfigurationEditor
 {
@@ -21,16 +22,7 @@ namespace ConfigurationEditor
 
         public static void OpenConfigurationEditor(Type targetType)
         {
-            if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration<PuzzleGameConfigurationEditorV2>(targetType))
-            {
-                if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration<CoreGameConfigurationEditor>(targetType))
-                {
-                    if (!CoreGameConfigurationEditor.OpenToDesiredConfiguration<AdventureGameConfigurationEditor>(targetType))
-                    {
-                        Debug.LogError("Configuration not found.");
-                    }
-                }
-            }
+            GameDesignerEditor.InitWithSelectedKey(targetType);
         }
     }
 

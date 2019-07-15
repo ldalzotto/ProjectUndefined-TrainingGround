@@ -8,7 +8,7 @@ namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(PointOfInterestType))]
-    public class POICustomEditor : AbstractGameCustomEditorWithLiveSelection<PointOfInterestType, POICustomEditorContext, PointOfInterestConfiguration, EditPOI>
+    public class POICustomEditor : AbstractGameCustomEditorWithLiveSelection<PointOfInterestType, POICustomEditorContext, PointOfInterestConfigurationModule, EditPOI>
     {
 
         private void OnEnable()

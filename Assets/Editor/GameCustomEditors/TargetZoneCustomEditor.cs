@@ -10,7 +10,7 @@ namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(TargetZoneObjectModule))]
-    public class TargetZoneCustomEditor : AbstractGameCustomEditorWithLiveSelection<TargetZoneObjectModule, TargetZoneCustomEditorContext, TargetZonesConfiguration, EditTargetZone>
+    public class TargetZoneCustomEditor : AbstractGameCustomEditorWithLiveSelection<TargetZoneObjectModule, TargetZoneCustomEditorContext, TargetZonesConfigurationModule, EditTargetZone>
     {
         
         private void OnEnable()

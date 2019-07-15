@@ -1,5 +1,6 @@
 ﻿using AdventureGame;
 using ConfigurationEditor;
+using Editor_GameDesigner;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -84,7 +85,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
                 if (GUI.Button(lineRect, "Open Repertoire"))
                 {
-                    ConfigurationInspector.OpenConfigurationEditor(typeof(DiscussionTextRepertoire));
+                    ConfigurationInspector.OpenConfigurationEditor(typeof(DiscussionRepertoireConfigurationModule));
                 }
                 currentLineNB += 1;
             }

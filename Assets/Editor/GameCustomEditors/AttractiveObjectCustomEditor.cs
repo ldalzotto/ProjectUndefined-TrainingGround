@@ -8,7 +8,7 @@ namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(AttractiveObjectTypeModule))]
-    public class AttractiveObjectCustomEditor : AbstractGameCustomEditorWithLiveSelection<AttractiveObjectTypeModule, AttractiveObjectCustomEditorContext, AttractiveObjectConfiguration, EditAttractiveObject>
+    public class AttractiveObjectCustomEditor : AbstractGameCustomEditorWithLiveSelection<AttractiveObjectTypeModule, AttractiveObjectCustomEditorContext, AttractiveObjectConfigurationModule, EditAttractiveObject>
     {
         private void OnEnable()
         {

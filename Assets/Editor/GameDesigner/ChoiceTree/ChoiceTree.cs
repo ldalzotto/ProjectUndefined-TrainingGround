@@ -46,9 +46,30 @@ namespace Editor_GameDesigner
             {"Adventure//POI//." + typeof(ExplorePOI).Name, typeof(ExplorePOI) },
             {"Adventure//POI//Modules//." + typeof(POIModuleWizard).Name, typeof(POIModuleWizard) },
             {"Adventure//Discussion//Modules//." + typeof(CreateDiscussionTree).Name, typeof(CreateDiscussionTree) },
-            {"Core//Animation//." + typeof(CreateAnimation).Name, typeof(CreateAnimation) }
+            {"Core//Animation//." + typeof(CreateAnimation).Name, typeof(CreateAnimation) },
+            {"Configuration//." + typeof(CutsceneConfigurationModule).Name, typeof(CutsceneConfigurationModule) },
+            {"Configuration//." + typeof(DiscussionTreeConfigurationModule).Name, typeof(DiscussionTreeConfigurationModule) },
+            {"Configuration//." + typeof(ItemConfigurationModule).Name, typeof(ItemConfigurationModule) },
+            {"Configuration//." + typeof(PointOfInterestConfigurationModule).Name, typeof(PointOfInterestConfigurationModule) },
+            {"Configuration//." + typeof(AnimationConfigurationModule).Name, typeof(AnimationConfigurationModule) },
+            {"Configuration//." + typeof(ChunkZonesSceneConfigurationModule).Name, typeof(ChunkZonesSceneConfigurationModule) },
+            {"Configuration//." + typeof(LevelHierarchyConfigurationModule).Name, typeof(LevelHierarchyConfigurationModule) },
+            {"Configuration//." + typeof(LevelZonesSceneConfigurationModule).Name, typeof(LevelZonesSceneConfigurationModule) },
+            {"Configuration//." + typeof(TimelineConfigurationModule).Name, typeof(TimelineConfigurationModule) },
+            {"Configuration//." + typeof(AIComponentsConfigurationModule).Name, typeof(AIComponentsConfigurationModule) },
+            {"Configuration//." + typeof(ContextMarkVisualFeedbackConfigurationModule).Name, typeof(ContextMarkVisualFeedbackConfigurationModule) },
+            {"Configuration//." + typeof(AttractiveObjectConfigurationModule).Name, typeof(AttractiveObjectConfigurationModule) },
+            {"Configuration//." + typeof(DottedLineConfigurationModule).Name, typeof(DottedLineConfigurationModule) },
+            {"Configuration//." + typeof(RepelableObjectsConfigurationModule).Name, typeof(RepelableObjectsConfigurationModule) },
+            {"Configuration//." + typeof(LevelConfigurationModule).Name, typeof(LevelConfigurationModule) },
+            {"Configuration//." + typeof(PlayerActionConfigurationModule).Name, typeof(PlayerActionConfigurationModule) },
+            {"Configuration//." + typeof(ProjectileConfigurationModule).Name, typeof(ProjectileConfigurationModule) },
+            {"Configuration//." + typeof(RangeTypeConfigurationModule).Name, typeof(RangeTypeConfigurationModule) },
+            {"Configuration//." + typeof(SelectionWheelNodeConfigurationModule).Name, typeof(SelectionWheelNodeConfigurationModule) },
+            {"Configuration//." + typeof(TargetZonesConfigurationModule).Name, typeof(TargetZonesConfigurationModule) },
+            {"Configuration//." + typeof(DiscussionRepertoireConfigurationModule).Name, typeof(DiscussionRepertoireConfigurationModule) },
         };
-
+        
         public override Dictionary<string, Type> Configurations => this.Modules;
 
         private GameDesignerEditorProfile GameDesignerEditorProfileRef;
