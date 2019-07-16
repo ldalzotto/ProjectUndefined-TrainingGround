@@ -18,7 +18,7 @@ namespace Experimental.Editor_NodeEditor
             {typeof(CutsceneStartNode).Name,  typeof(CutsceneStartNode)},
             {typeof(CutsceneWorkflowAbortNode).Name,  typeof(CutsceneWorkflowAbortNode)},
             {typeof(CutsceneSpawnPOINode).Name,  typeof(CutsceneSpawnPOINode)},
-            
+            {typeof(CutsceneCameraFollowNode).Name,  typeof(CutsceneCameraFollowNode)},
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

@@ -58,6 +58,7 @@ namespace AdventureGame
             InventoryManager.Init();
             PointOfInterestManager.Init();
             GameObject.FindObjectOfType<AdventureEventManager>().Init();
+            GameObject.FindObjectOfType<CutsceneGlobalController>().Init();
 
 #if UNITY_EDITOR
             this.EditorOnlyModules.Init();

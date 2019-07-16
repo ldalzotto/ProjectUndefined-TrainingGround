@@ -26,13 +26,16 @@ namespace AdventureGame
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePositionsManager CutscenePositionsManager;
         private ContextActionEventManager ContextActionEventManager;
+        private CutsceneGlobalController CutsceneGlobalController;
         #endregion
+
         public void Init()
         {
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             this.CutscenePositionsManager = GameObject.FindObjectOfType<CutscenePositionsManager>();
             this.ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
+            this.CutsceneGlobalController = GameObject.FindObjectOfType<CutsceneGlobalController>();
         }
 
         #region state
@@ -53,9 +56,12 @@ namespace AdventureGame
         {
             this.isCutscenePlaying = true;
             var cutsceneGraph = this.AdventureGameConfigurationManager.CutsceneConf()[cutsceneId].CutsceneGraph;
-            this.currentInput = new CutsceneActionInput(cutsceneId, this.PointOfInterestManager, this.CutscenePositionsManager, this.ContextActionEventManager, this.AdventureGameConfigurationManager);
+            this.currentInput = new CutsceneActionInput(cutsceneId, this.PointOfInterestManager, this.CutscenePositionsManager, this.ContextActionEventManager, this.AdventureGameConfigurationManager, this.CutsceneGlobalController);
             this.OnAddAction(cutsceneGraph.GetRootAction(), this.currentInput);
             yield return new WaitUntil(() => { return this.isCutscenePlaying; });
+
+            //Reset some state to ensure that nothing wroong persist
+            this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);
         }
 
         protected override void OnNoMoreActionToPlay()

@@ -10,15 +10,17 @@ namespace AdventureGame
         private CutscenePositionsManager cutscenePositionsManager;
         private ContextActionEventManager contextActionEventManager;
         private AdventureGameConfigurationManager adventureGameConfigurationManager;
+        private CutsceneGlobalController cutsceneGlobalController;
 
         public CutsceneActionInput(CutsceneId cutsceneId, PointOfInterestManager pointOfInterestManager,
-            CutscenePositionsManager cutscenePositionsManager, ContextActionEventManager contextActionEventManager, AdventureGameConfigurationManager AdventureGameConfigurationManager)
+            CutscenePositionsManager cutscenePositionsManager, ContextActionEventManager contextActionEventManager, AdventureGameConfigurationManager AdventureGameConfigurationManager, CutsceneGlobalController CutsceneGlobalController)
         {
             this.cutsceneId = cutsceneId;
             this.pointOfInterestManager = pointOfInterestManager;
             this.cutscenePositionsManager = cutscenePositionsManager;
             this.contextActionEventManager = contextActionEventManager;
             this.adventureGameConfigurationManager = AdventureGameConfigurationManager;
+            this.cutsceneGlobalController = CutsceneGlobalController;
         }
 
         public CutsceneId CutsceneId { get => cutsceneId; }
@@ -26,5 +28,6 @@ namespace AdventureGame
         public PointOfInterestManager PointOfInterestManager { get => pointOfInterestManager; }
         public ContextActionEventManager ContextActionEventManager { get => contextActionEventManager; }
         public AdventureGameConfigurationManager AdventureGameConfigurationManager { get => adventureGameConfigurationManager; }
+        public CutsceneGlobalController CutsceneGlobalController { get => cutsceneGlobalController;  }
     }
 }
