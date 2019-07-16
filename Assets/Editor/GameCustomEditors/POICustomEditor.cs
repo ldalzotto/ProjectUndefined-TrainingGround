@@ -43,6 +43,7 @@ namespace Editor_GameCustomEditors
             Handles.Label(target.transform.position + Vector3.up * 5f, nameof(context.PointOfInterestInherentData.POIDetectionAngleLimit), MyEditorStyles.LabelGreen);
             Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.PointOfInterestInherentData.POIDetectionAngleLimit, 5f);
             Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.PointOfInterestInherentData.POIDetectionAngleLimit, 5f);
+            
         }
     }
 }

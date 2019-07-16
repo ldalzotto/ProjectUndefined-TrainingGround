@@ -32,10 +32,6 @@ namespace RTPuzzle
         private LevelResetManager LevelResetManager;
         #endregion
 
-        #region Camera Managers
-        private CameraOrientationManager CameraOrientationManager;
-        #endregion
-
         #region Animation Managers
         private PlayerAnimationDataManager PlayerAnimationDataManager;
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
@@ -71,10 +67,7 @@ namespace RTPuzzle
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
-
-            CameraFollowManager = new CameraFollowManager(this.playerRigidbody.transform, cameraPivotPoint.transform, PlayerCommonComponents.CameraFollowManagerComponent);
-            CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint.transform, gameInputManager, PlayerCommonComponents.CameraOrientationManagerComponent);
-
+            
             GenericAnimatorHelper.SetMovementLayer(animator, coreConfigurationManager.AnimationConfiguration(), LevelType.PUZZLE);
         }
 
@@ -82,10 +75,6 @@ namespace RTPuzzle
         {
             if (!LevelResetManager.Tick(d))
             {
-                #region Camera
-                CameraFollowManager.Tick(d);
-                CameraOrientationManager.Tick(d);
-                #endregion
                 
                 if (!PlayerActionManager.IsActionExecuting())
                 {
@@ -126,10 +115,6 @@ namespace RTPuzzle
         public bool HasPlayerMovedThisFrame()
         {
             return PlayerInputMoveManager.HasMoved;
-        }
-        public bool IsCameraRotating()
-        {
-            return this.CameraOrientationManager.IsRotating;
         }
         #endregion
 

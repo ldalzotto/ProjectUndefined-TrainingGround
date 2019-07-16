@@ -51,14 +51,11 @@ namespace CoreGame
         public Vector3Binarry Position;
         [SerializeField]
         public QuaternionBinarry Quaternion;
-        [SerializeField]
-        public QuaternionBinarry CameraPivotPointQuaternion;
 
-        public PlayerPosition(Vector3 position, Quaternion quaternion, Quaternion cameraPivotPointQuaterion)
+        public PlayerPosition(Vector3 position, Quaternion quaternion)
         {
             Position = new Vector3Binarry(position);
             Quaternion = new QuaternionBinarry(quaternion);
-            CameraPivotPointQuaternion = new QuaternionBinarry(cameraPivotPointQuaterion);
         }
 
         public Vector3 GetPosition()
@@ -69,11 +66,6 @@ namespace CoreGame
         public Quaternion GetQuaternion()
         {
             return new Quaternion(Quaternion.x, Quaternion.y, Quaternion.z, Quaternion.w);
-        }
-
-        public Quaternion GetCameraQuaternion()
-        {
-            return new Quaternion(CameraPivotPointQuaternion.x, CameraPivotPointQuaternion.y, CameraPivotPointQuaternion.z, CameraPivotPointQuaternion.w);
         }
     }
 

@@ -19,9 +19,7 @@ namespace AdventureGame
         private PlayerAnimationManager PlayerAnimationManager;
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
-
-        private CameraOrientationManager CameraOrientationManager;
-
+        
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
@@ -75,9 +73,7 @@ namespace AdventureGame
             #region POI Modules
             this.PointOfInterestTrackerModule = this.PointOfInterestType.GetPointOfInterestTrackerModule();
             #endregion
-
-            this.CameraFollowManager = new CameraFollowManager(playerObject.transform, CameraPivotPoint.transform, this.PlayerCommonComponents.CameraFollowManagerComponent, playerPosition);
-            this.CameraOrientationManager = new CameraOrientationManager(CameraPivotPoint.transform, GameInputManager, this.PlayerCommonComponents.CameraOrientationManagerComponent);
+            
             this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.PointOfInterestTrackerModule);
             this.PlayerContextActionManager = new PlayerContextActionManager();
@@ -89,9 +85,6 @@ namespace AdventureGame
 
         public void Tick(float d)
         {
-            CameraFollowManager.Tick(d);
-            CameraOrientationManager.Tick(d);
-
             var playerSpeedMagnitude = 0f;
 
             if (!this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())

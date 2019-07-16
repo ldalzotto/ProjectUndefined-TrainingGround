@@ -93,6 +93,7 @@
     <Compile Include="Assets\~CoreGame\Animation\Light\Flicker\LightFlickerAnimation.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
+    <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
@@ -144,8 +145,6 @@
     <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\PersistanceManager.cs" />
     <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\CameraManagers\Follow\CameraFollowManager.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\CameraManagers\Orientation\CameraOrientationManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerCommonComponents.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerPhysicsMovementComponent.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV2.cs" />

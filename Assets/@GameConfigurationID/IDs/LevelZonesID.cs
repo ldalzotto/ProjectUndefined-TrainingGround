@@ -37,5 +37,7 @@ namespace GameConfigurationID {
     RTP_TEST_OBSTACLES = 10,
     
     NONE = -1,
+    
+    _1_Town_StartTutorial = 11,
   }
 }

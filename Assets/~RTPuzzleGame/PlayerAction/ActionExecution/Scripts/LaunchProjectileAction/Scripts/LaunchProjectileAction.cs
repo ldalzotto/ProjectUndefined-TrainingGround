@@ -49,7 +49,7 @@ namespace RTPuzzle
             var launchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            var CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
             var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
@@ -66,7 +66,7 @@ namespace RTPuzzle
 
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
-               playerTransformScreen, gameInputManager, canvas, PlayerManager);
+               playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
@@ -163,19 +163,19 @@ namespace RTPuzzle
     {
         private LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
         private GameInputManager GameInputManager;
-        private PlayerManager PlayerManager;
+        private CameraMovementManager CameraMovementManager;
 
         private ThrowProjectileCursorType cursorObject;
         private Vector2 currentCursorScreenPosition;
 
         public LaunchProjectileScreenPositionManager(LaunchProjectileScreenPositionManagerComponent launchProjectileScreenPositionManagerComponent,
-            Vector2 currentCursorScreenPosition, GameInputManager GameInputManager, Canvas gameCanvas, PlayerManager playerManagerRef)
+            Vector2 currentCursorScreenPosition, GameInputManager GameInputManager, Canvas gameCanvas, CameraMovementManager CameraMovementManager)
         {
             LaunchProjectileScreenPositionManagerComponent = launchProjectileScreenPositionManagerComponent;
             this.currentCursorScreenPosition = currentCursorScreenPosition;
             this.GameInputManager = GameInputManager;
             this.cursorObject = ThrowProjectileCursorType.Instanciate(gameCanvas.transform);
-            this.PlayerManager = playerManagerRef;
+            this.CameraMovementManager = CameraMovementManager;
             UpdateCursorPosition();
         }
 
@@ -183,7 +183,7 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            if (!this.PlayerManager.IsCameraRotating())
+            if (!this.CameraMovementManager.IsCameraRotating())
             {
                 var locomotionAxis = GameInputManager.CurrentInput.CursorDisplacement();
                 currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * Screen.width * LaunchProjectileScreenPositionManagerComponent.CursorSpeedScreenWidthPerCent * d);

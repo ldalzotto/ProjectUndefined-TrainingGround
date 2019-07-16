@@ -31,6 +31,7 @@ namespace RTPuzzle
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
         private RangeTypeObjectContainer RangeTypeContainer;
+        private CameraMovementManager CameraMovementManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -76,6 +77,7 @@ namespace RTPuzzle
             ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
             SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
             ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
+            CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -86,6 +88,7 @@ namespace RTPuzzle
             //Initialisations
             GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
 
+            CameraMovementManager.Init();
             ObstacleFrustumCalculationManager.Init();
             ObstaclesListenerManager.Init();
             SquareObstaclesManager.Init();
@@ -129,6 +132,7 @@ namespace RTPuzzle
             {
                 PlayerActionManager.Tick(d);
                 PlayerManager.Tick(d);
+                CameraMovementManager.Tick(d);
 
                 ObstaclesListenerManager.Tick(d);
                 SquareObstaclesManager.Tick(d);
