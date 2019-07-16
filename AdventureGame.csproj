@@ -96,6 +96,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneActionInput.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneAnimationAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneCameraFollowAction.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneCameraRotationAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneDiscussionAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneItemHoldAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneMoveAction.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneActionConnectionEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneAnimationEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneCameraFollowEdge.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneCameraRotationEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneDiscussionEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneMoveEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneSpawnPOIEdge.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\Abstract\ACutsceneNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneAnimationNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneCameraFollowNode.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneCameraRotationNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneDiscussionNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneMoveNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneSpawnPOINode.cs" />

@@ -31,6 +31,10 @@ namespace CoreGame
         {
             this.CameraFollowManager.SetCameraFollowTarget(followTarget);
         }
+        public void SetTargetAngle(float targetAngle)
+        {
+            this.CameraOrientationManager.SetTargetAngle(targetAngle);
+        }
         #endregion
 
         #region Logical conditions
@@ -94,8 +98,11 @@ namespace CoreGame
         private Transform cameraPivotPoint;
         private IGameInputManager gameInputManager;
 
+        private float targetAngle;
+
         #region State
         private bool isRotating = false;
+        private bool isRotatingTowardsAtarget = false;
         #endregion
 
         public CameraOrientationManager(Transform cameraPivotPoint, IGameInputManager gameInputManager, CameraOrientationManagerComponent CameraOrientationManagerComponent)
@@ -109,13 +116,38 @@ namespace CoreGame
 
         public void Tick(float d)
         {
-            var rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * this.CameraOrientationManagerComponent.CameraRotationSpeed, 0);
-            this.isRotating = false;
-            if (Mathf.Abs(rotationVector.y) >= float.Epsilon)
+            Vector3 rotationVector;
+            if (this.isRotatingTowardsAtarget)
+            {
+                float initialY = this.cameraPivotPoint.transform.rotation.eulerAngles.y;
+                float deltaAngle = Mathf.Lerp(initialY, this.targetAngle, 0.1f) - initialY;
+                rotationVector = new Vector3(0, Mathf.Abs(deltaAngle) * Mathf.Sign(this.targetAngle - initialY), 0);
+            }
+            else
+            {
+                rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * this.CameraOrientationManagerComponent.CameraRotationSpeed, 0);
+            }
+            
+            if (Mathf.Abs(rotationVector.y) <= 0.001)
+            {
+                if (this.isRotatingTowardsAtarget)
+                {
+                    cameraPivotPoint.eulerAngles = new Vector3(0, this.targetAngle, 0);
+                }
+                this.isRotatingTowardsAtarget = false;
+                this.isRotating = false;
+            }
+            else
             {
                 this.isRotating = true;
+                cameraPivotPoint.eulerAngles += rotationVector;
             }
-            cameraPivotPoint.eulerAngles += rotationVector;
+        }
+
+        public void SetTargetAngle(float targetAngle)
+        {
+            this.targetAngle = targetAngle;
+            this.isRotatingTowardsAtarget = true;
         }
     }
 }

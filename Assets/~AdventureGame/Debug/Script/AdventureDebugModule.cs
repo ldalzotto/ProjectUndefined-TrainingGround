@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace AdventureGame
@@ -18,13 +19,19 @@ namespace AdventureGame
         public PointOfInterestId poiToFollow;
         public bool follow;
 
+        [Header("Camera Rotation")]
+        public float targetAngle;
+        public bool targetRotation;
+
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CutsceneGlobalController CutsceneGlobalController;
+        private CameraMovementManager CameraMovementManager;
 
         public void Init()
         {
             this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             this.CutsceneGlobalController = GameObject.FindObjectOfType<CutsceneGlobalController>();
+            this.CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
         }
 
         public void Tick(float d)
@@ -38,6 +45,11 @@ namespace AdventureGame
             {
                 this.follow = false;
                 this.CutsceneGlobalController.SetCameraFollow(this.poiToFollow);
+            }
+            if (this.targetRotation)
+            {
+                this.targetRotation = false;
+                this.CameraMovementManager.SetTargetAngle(this.targetAngle);
             }
         }
     }

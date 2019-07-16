@@ -26,6 +26,10 @@ namespace AdventureGame
                 this.CameraMovementManager.SetCameraFollowTarget(poiToFollow.GetRootObject().transform);
             }
         }
+        public void SetCameraTargetAngle(float targetAngle)
+        {
+            this.CameraMovementManager.SetTargetAngle(targetAngle);
+        }
         #endregion
     }
 }
