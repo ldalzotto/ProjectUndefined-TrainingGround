@@ -15,11 +15,9 @@ namespace RTPuzzle
 
         [Inline(createSubIfAbsent: true, FileName = "EscapeSemiAngle")]
         public ProjectileEscapeSemiAngle EscapeSemiAngleV2;
-
-        protected override Type abstractManagerType => typeof(AbstractAIProjectileEscapeManager);
     }
 
-    public abstract class AbstractAIProjectileEscapeManager : MonoBehaviour, InterfaceAIManager
+    public abstract class AbstractAIProjectileEscapeManager : AbstractAIManager, InterfaceAIManager
     {
         protected AiID aiID;
         #region External Dependencies

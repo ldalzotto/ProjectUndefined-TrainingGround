@@ -17,6 +17,7 @@ namespace Editor_GameDesigner
             {"Puzzle//AI//."+typeof(AddAI).Name, typeof(AddAI) },
             {"Puzzle//AI//." + typeof(AIModel).Name, typeof(AIModel) },
             {"Puzzle//AI//." + typeof(ExploreAI).Name, typeof(ExploreAI) },
+            {"Puzzle//AI//." + typeof(AIManagerModuleWizard).Name, typeof(AIManagerModuleWizard) },
             {"Puzzle//AI//Behavior//."+typeof(CreateBehavior).Name, typeof(CreateBehavior) },
             {"Puzzle//AI//Behavior//."+typeof(EditBehavior).Name, typeof(EditBehavior) },
             {"Puzzle//Environment//." + typeof(GroundEffectAdd).Name, typeof(GroundEffectAdd) },
@@ -69,7 +70,7 @@ namespace Editor_GameDesigner
             {"Configuration//." + typeof(TargetZonesConfigurationModule).Name, typeof(TargetZonesConfigurationModule) },
             {"Configuration//." + typeof(DiscussionRepertoireConfigurationModule).Name, typeof(DiscussionRepertoireConfigurationModule) },
         };
-        
+
         public override Dictionary<string, Type> Configurations => this.Modules;
 
         private GameDesignerEditorProfile GameDesignerEditorProfileRef;

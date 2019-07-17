@@ -10,11 +10,9 @@ namespace RTPuzzle
         public float EscapeDistance;
         public float PlayerDetectionRadius;
         public float EscapeSemiAngle;
-
-        protected override Type abstractManagerType => typeof(AbstractPlayerEscapeManager);
     }
 
-    public abstract class AbstractPlayerEscapeManager : MonoBehaviour, InterfaceAIManager
+    public abstract class AbstractPlayerEscapeManager : AbstractAIManager, InterfaceAIManager
     {
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 

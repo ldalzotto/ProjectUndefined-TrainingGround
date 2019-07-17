@@ -8,11 +8,9 @@ namespace RTPuzzle
     public class AITargetZoneComponent : AbstractAIComponent
     {
         public float TargetZoneEscapeDistance;
-
-        protected override Type abstractManagerType => typeof(AbstractAITargetZoneManager);
     }
 
-    public abstract class AbstractAITargetZoneManager : MonoBehaviour, InterfaceAIManager
+    public abstract class AbstractAITargetZoneManager : AbstractAIManager, InterfaceAIManager
     {
         #region State
         protected bool isEscapingFromTargetZone;

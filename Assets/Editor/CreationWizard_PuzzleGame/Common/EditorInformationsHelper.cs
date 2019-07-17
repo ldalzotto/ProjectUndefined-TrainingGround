@@ -33,6 +33,17 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLevelCompletionTriggerModule, "BaseLevelCompletionTriggerModule");
             #endregion
 
+            #region Puzzle AI managers prefabs  
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectLooseManager, "AIAttractiveObjects_Loose");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectPersistantManager, "AIAttractiveObjects_Persistant");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIEscapeWithoutTriggerManager, "AIEscapeWithoutTrigger");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIFearStunManager, "AIFear");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIRandomPatrolComponentMananger, "AIPatrol_Random");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerEscapeManager, "AIPlayerEscape");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIProjectileWithCollisionEscapeManager, "AIProjectileEscape");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AITargetZoneEscapeManager, "AITargetZoneEscape");
+            #endregion
+
             #region Adventure Common Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
@@ -195,6 +206,24 @@ namespace Editor_MainGameCreationWizard
     {
         [ReadOnly]
         public NPCAIManager AIBasePrefab;
+
+        [ReadOnly]
+        public AIAttractiveObjectLooseManager AIAttractiveObjectLooseManager;
+        [ReadOnly]
+        public AIAttractiveObjectPersistantManager AIAttractiveObjectPersistantManager;
+        [ReadOnly]
+        public AIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager;
+        [ReadOnly]
+        public AIFearStunManager AIFearStunManager;
+        [ReadOnly]
+        public AIRandomPatrolComponentMananger AIRandomPatrolComponentMananger;
+        [ReadOnly]
+        public AIPlayerEscapeManager AIPlayerEscapeManager;
+        [ReadOnly]
+        public AIProjectileWithCollisionEscapeManager AIProjectileWithCollisionEscapeManager;
+        [ReadOnly]
+        public AITargetZoneEscapeManager AITargetZoneEscapeManager;
+
     }
 
     [System.Serializable]

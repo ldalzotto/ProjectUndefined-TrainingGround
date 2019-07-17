@@ -14,11 +14,9 @@ namespace RTPuzzle
     {
         public float FOVSumThreshold;
         public float TimeWhileBeginFeared;
-
-        protected override Type abstractManagerType => typeof(AbstractAIFearStunManager);
     }
 
-    public abstract class AbstractAIFearStunManager : MonoBehaviour, InterfaceAIManager
+    public abstract class AbstractAIFearStunManager : AbstractAIManager, InterfaceAIManager
     {
         protected AiID AiID;
 

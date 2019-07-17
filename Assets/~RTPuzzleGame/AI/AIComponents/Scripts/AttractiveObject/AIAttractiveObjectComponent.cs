@@ -10,12 +10,9 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIAttractiveObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIAttractiveObjectComponent", order = 1)]
     public class AIAttractiveObjectComponent : AbstractAIComponent
     {
-        protected override Type abstractManagerType => typeof(AbstractAIAttractiveObjectManager);
     }
-
-
-
-    public abstract class AbstractAIAttractiveObjectManager : MonoBehaviour, InterfaceAIManager
+    
+    public abstract class AbstractAIAttractiveObjectManager : AbstractAIManager, InterfaceAIManager
     {
 
         protected NavMeshAgent selfAgent;

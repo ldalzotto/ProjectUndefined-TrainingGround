@@ -76,11 +76,14 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
         {
-            Handles.color = Color.magenta;
-            var labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.normal.textColor = Color.magenta;
-            Handles.Label(target.transform.position + (Vector3.up * context.GenericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance), "AI Patrol distance.", labelStyle);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance);
+            if (context.GenericPuzzleAIComponents.AIRandomPatrolComponent != null)
+            {
+                Handles.color = Color.magenta;
+                var labelStyle = new GUIStyle(EditorStyles.label);
+                labelStyle.normal.textColor = Color.magenta;
+                Handles.Label(target.transform.position + (Vector3.up * context.GenericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance), "AI Patrol distance.", labelStyle);
+                Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance);
+            }
         }
     }
 
@@ -88,20 +91,23 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
         {
-            Handles.color = Color.yellow;
+            if(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent != null)
+            {
+                Handles.color = Color.yellow;
 
-            var labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.normal.textColor = Handles.color;
+                var labelStyle = new GUIStyle(EditorStyles.label);
+                labelStyle.normal.textColor = Handles.color;
 
-            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance, nameof(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance), labelStyle);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance);
+                Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance, nameof(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance), labelStyle);
+                Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance);
 
-            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius, nameof(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius), labelStyle);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius);
+                Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius, nameof(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius), labelStyle);
+                Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius);
 
-            Handles.Label(target.transform.position + target.transform.forward * 4, "Escape angle.", labelStyle);
-            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
-            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
+                Handles.Label(target.transform.position + target.transform.forward * 4, "Escape angle.", labelStyle);
+                Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
+                Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
+            }
         }
     }
 
@@ -109,11 +115,14 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
         {
-            Handles.color = Color.green;
-            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.normal.textColor = Handles.color;
-            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance, nameof(context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance), labelStyle);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance);
+            if(context.GenericPuzzleAIComponents.AITargetZoneComponent != null)
+            {
+                Handles.color = Color.green;
+                GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+                labelStyle.normal.textColor = Handles.color;
+                Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance, nameof(context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance), labelStyle);
+                Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance);
+            }
         }
     }
 }

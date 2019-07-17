@@ -8,11 +8,10 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIPatrolComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIPatrolComponent", order = 1)]
     public class AIPatrolComponent : AbstractAIComponent
     {
-        protected override Type abstractManagerType => typeof(AbstractAIPatrolComponentManager);
         public float MaxDistance;
     }
 
-    public abstract class AbstractAIPatrolComponentManager : MonoBehaviour, InterfaceAIManager
+    public abstract class AbstractAIPatrolComponentManager : AbstractAIManager, InterfaceAIManager
     {
         #region External Dependencies
         protected NavMeshAgent patrollingAgent;
