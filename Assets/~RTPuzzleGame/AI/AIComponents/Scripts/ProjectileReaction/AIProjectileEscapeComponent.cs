@@ -19,7 +19,7 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIProjectileEscapeManager);
     }
 
-    public abstract class AbstractAIProjectileEscapeManager : InterfaceAIManager
+    public abstract class AbstractAIProjectileEscapeManager : MonoBehaviour, InterfaceAIManager
     {
         protected AiID aiID;
         #region External Dependencies
@@ -42,7 +42,7 @@ namespace RTPuzzle
         protected abstract Action<NavMeshRaycastStrategy> DestinationCalulationMethod { get; }
         #endregion
 
-        protected AbstractAIProjectileEscapeManager(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID,
+        protected void BaseInit(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID,
             AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
@@ -53,7 +53,7 @@ namespace RTPuzzle
             this.puzzleEventsManager = puzzleEventsManager;
             this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
         }
-
+        
         #region Internal Events
         protected void OnDestinationSetFromProjectileContact(LaunchProjectileId launchProjectileId)
         {
@@ -98,7 +98,7 @@ namespace RTPuzzle
             this.OnStateReset();
         }
 
-        public virtual void OnTriggerEnter(Vector3 impactPoint, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterAIBehaviorEvent)
+        public virtual void ComponentTriggerEnter(Vector3 impactPoint, ProjectileTriggerEnterAIBehaviorEvent projectileTriggerEnterAIBehaviorEvent)
         {
             if (impactPoint != null)
             {
@@ -130,7 +130,7 @@ namespace RTPuzzle
             this.escapeDestinationManager.OnStateReset();
         }
         public abstract void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile);
-        public virtual void OnTriggerExit(Collider collider, CollisionType collisionType)
+        public virtual void ComponentTriggerExit(Collider collider, CollisionType collisionType)
         {
             this.SetIsEscapingFromProjectile(false);
         }

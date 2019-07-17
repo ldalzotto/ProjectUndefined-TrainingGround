@@ -6,7 +6,7 @@ using UnityEngine.AI;
 namespace RTPuzzle
 {
 
-    public class AITargetZoneManager : AbstractAITargetZoneManager
+    public class AITargetZoneEscapeManager : AbstractAITargetZoneManager
     {
         private AiID aiID;
         private Collider aiCollider;
@@ -26,7 +26,8 @@ namespace RTPuzzle
         private EscapeDestinationManager EscapeDestinationManager;
         #endregion
 
-        public AITargetZoneManager(NavMeshAgent agent, Collider aiCollider, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager, AiID aiID)
+
+        public void Init(NavMeshAgent agent, Collider aiCollider, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager, AiID aiID)
         {
             this.agent = agent;
             this.aiCollider = aiCollider;
@@ -38,7 +39,7 @@ namespace RTPuzzle
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
             this.aiID = aiID;
         }
-
+        
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             return this.EscapeDestinationManager.Tick();

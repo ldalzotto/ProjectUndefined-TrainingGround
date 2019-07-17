@@ -20,7 +20,7 @@ namespace RTPuzzle
         #region State
         private bool isEscaping;
 
-        public AIEscapeWithoutTriggerManager(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AiID aiID, AIDestimationMoveManagerComponent playerAIDestimationMoveManagerComponent)
+        public void Init(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AiID aiID, AIDestimationMoveManagerComponent playerAIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             AIFOVManager = aIFOVManager;
@@ -29,6 +29,7 @@ namespace RTPuzzle
             this.playerAIDestimationMoveManagerComponent = playerAIDestimationMoveManagerComponent;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
         }
+        
         #endregion
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)

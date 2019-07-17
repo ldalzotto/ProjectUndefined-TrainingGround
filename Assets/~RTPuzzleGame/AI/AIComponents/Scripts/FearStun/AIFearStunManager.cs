@@ -17,16 +17,15 @@ namespace RTPuzzle
         private NavMeshAgent currentAgent;
         private AIFearStunComponent AIFearStunComponent;
 
-
-        public AIFearStunManager(NavMeshAgent currentAgent, AIFearStunComponent aIFearStunComponent, PuzzleEventsManager PuzzleEventsManager, AIFOVManager aiFovManager, AiID AiID)
-                : base(AiID, PuzzleEventsManager)
+        public void Init(NavMeshAgent currentAgent, AIFearStunComponent aIFearStunComponent, PuzzleEventsManager PuzzleEventsManager, AIFOVManager aiFovManager, AiID AiID)
         {
+            this.BaseInit(AiID, PuzzleEventsManager);
             this.currentAgent = currentAgent;
             AIFearStunComponent = aIFearStunComponent;
             this.aiFovManager = aiFovManager;
             this.AIFearTimeCounterManager = new AIFearTimeCounterManager();
         }
-
+        
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
             if (!this.isFeared)

@@ -12,7 +12,7 @@ namespace RTPuzzle
         public float MaxDistance;
     }
 
-    public abstract class AbstractAIPatrolComponentManager : InterfaceAIManager
+    public abstract class AbstractAIPatrolComponentManager : MonoBehaviour, InterfaceAIManager
     {
         #region External Dependencies
         protected NavMeshAgent patrollingAgent;
@@ -21,7 +21,7 @@ namespace RTPuzzle
 
         protected AIPatrolComponent AIPatrolComponent;
 
-        protected AbstractAIPatrolComponentManager(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager)
+        protected void BaseInit(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager)
         {
             this.patrollingAgent = patrollingAgent;
             AIPatrolComponent = aIPatrolComponent;

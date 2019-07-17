@@ -33,7 +33,7 @@ namespace RTPuzzle
         protected EscapeDestinationManager escapeDestinationManager;
         #endregion
 
-        public AIPlayerEscapeManager(NavMeshAgent selfAgent, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager,
+        public void Init(NavMeshAgent selfAgent, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager,
             PlayerManagerDataRetriever playerManagerDataRetriever, AIPlayerEscapeComponent aIPlayerEscapeComponent, AIFOVManager aIFOVManager, Func<Collider[]> targetZoneTriggerColliderProvider, AiID aiID,
             PuzzleEventsManager puzzleEventsManager, AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent)
         {

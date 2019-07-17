@@ -11,8 +11,9 @@ namespace RTPuzzle
         private bool isMovingTowardsDestination;
         private NavMeshHit[] navMeshHits = new NavMeshHit[8];
 
-        public AIRandomPatrolComponentMananger(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager) : base(patrollingAgent, AIRandomPatrolComponent, aIFOVManager)
+        public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager)
         {
+            this.BaseInit(patrollingAgent, AIRandomPatrolComponent, aIFOVManager);
         }
 
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)

@@ -18,7 +18,7 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIFearStunManager);
     }
 
-    public abstract class AbstractAIFearStunManager : InterfaceAIManager
+    public abstract class AbstractAIFearStunManager : MonoBehaviour, InterfaceAIManager
     {
         protected AiID AiID;
 
@@ -30,7 +30,7 @@ namespace RTPuzzle
         protected PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        protected AbstractAIFearStunManager(AiID aiID, PuzzleEventsManager puzzleEventsManager)
+        protected void BaseInit(AiID aiID, PuzzleEventsManager puzzleEventsManager)
         {
             AiID = aiID;
             PuzzleEventsManager = puzzleEventsManager;

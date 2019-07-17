@@ -83,11 +83,11 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIPatrolComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIRandomPatrolComponentMananger.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIPlayerEscapeComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIplayerEscapeManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIPlayerEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileEscapeComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileEscapeManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileWithCollisionEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />

@@ -32,7 +32,7 @@ namespace RTPuzzle
     /// All change of AI behaviors are handles by the <see cref="PuzzleAIBehaviorExternalEventManager"/> where all events are processed.
     /// </summary>
     /// <typeparam name="C"></typeparam>
-    public abstract class PuzzleAIBehavior<C> : IPuzzleAIBehavior<C> where C : AbstractAIComponents
+    public abstract class PuzzleAIBehavior<C> : MonoBehaviour, IPuzzleAIBehavior<C> where C : AbstractAIComponents
     {
         protected C aIComponents;
 
@@ -84,7 +84,7 @@ namespace RTPuzzle
 
         protected AIFOVManager aIFOVManager;
 
-        public PuzzleAIBehavior(NavMeshAgent selfAgent, C AIComponents,
+        protected void BaseInit(NavMeshAgent selfAgent, C AIComponents,
             PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
         {
             this.selfAgent = selfAgent;
@@ -158,16 +158,6 @@ namespace RTPuzzle
         public abstract void OnDestinationReached();
 
         public virtual void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy) { }
-
-        public static IPuzzleAIBehavior<AbstractAIComponents> BuildAIBehaviorFromType(Type behaviorType, AIBheaviorBuildInputData aIBheaviorBuildInputData)
-        {
-            if (behaviorType == typeof(GenericPuzzleAIBehavior))
-            {
-                return new GenericPuzzleAIBehavior(aIBheaviorBuildInputData.selfAgent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
-            }
-            return null;
-        }
         
     }
 

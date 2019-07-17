@@ -12,7 +12,7 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAITargetZoneManager);
     }
 
-    public abstract class AbstractAITargetZoneManager : InterfaceAIManager
+    public abstract class AbstractAITargetZoneManager : MonoBehaviour, InterfaceAIManager
     {
         #region State
         protected bool isEscapingFromTargetZone;

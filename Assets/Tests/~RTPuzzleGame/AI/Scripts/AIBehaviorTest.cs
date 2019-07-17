@@ -1147,6 +1147,7 @@ namespace Tests
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
+            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), mouseTestAIManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
@@ -1154,8 +1155,10 @@ namespace Tests
                     Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
+                    interactiveObjectContainer.TEST_OnInteractiveObjectDestroyed(targetZone);
+
                     var currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
-                    return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(300, 0.15f), mouseTestAIManager.transform.position,
+                    return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999999, 999f), mouseTestAIManager.transform.position,
                         OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());

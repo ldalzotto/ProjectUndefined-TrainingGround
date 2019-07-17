@@ -15,7 +15,7 @@ namespace RTPuzzle
 
 
 
-    public abstract class AbstractAIAttractiveObjectManager : InterfaceAIManager
+    public abstract class AbstractAIAttractiveObjectManager : MonoBehaviour, InterfaceAIManager
     {
 
         protected NavMeshAgent selfAgent;
@@ -32,7 +32,7 @@ namespace RTPuzzle
 
         protected AttractiveObjectTypeModule involvedAttractiveObject;
 
-        public AbstractAIAttractiveObjectManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
+        protected void BaseInit(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
         {
             this.selfAgent = selfAgent;
             this.aiID = aiID;
@@ -40,9 +40,9 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public abstract void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
-        public abstract void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
-        public abstract void OnTriggerExit(AttractiveObjectTypeModule attractiveObjectType);
+        public abstract void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
+        public abstract void ComponentTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
+        public abstract void ComponentTriggerExit(AttractiveObjectTypeModule attractiveObjectType);
 
         public virtual void OnDestinationReached()
         {

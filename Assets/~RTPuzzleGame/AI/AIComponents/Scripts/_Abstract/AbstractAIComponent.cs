@@ -28,7 +28,7 @@ namespace RTPuzzle
                  Func<AIFearStunManager> AIFearStunManagerOperation,
                  Func<AIAttractiveObjectPersistantManager> AIAttractiveObjectPersistantOperation,
                  Func<AIAttractiveObjectLooseManager> AIAttractiveObjectLooseOperation,
-                 Func<AITargetZoneManager> AITargetZoneManagerOperation,
+                 Func<AITargetZoneEscapeManager> AITargetZoneManagerOperation,
                  Func<AIPlayerEscapeManager> AIPlayerEscapeManagerOperation)
         {
             var aiRandomPatrolComponentManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
@@ -43,7 +43,7 @@ namespace RTPuzzle
             if (AIAttractiveObjectPersistantManager != null) { return AIAttractiveObjectPersistantManager; }
             var AIAttractiveObjectLooseOperationManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectLooseManager), AIAttractiveObjectLooseOperation);
             if (AIAttractiveObjectLooseOperationManager != null) { return AIAttractiveObjectLooseOperationManager; }
-            var AITargetZoneManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneManager), AITargetZoneManagerOperation);
+            var AITargetZoneManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneEscapeManager), AITargetZoneManagerOperation);
             if (AITargetZoneManager != null) { return AITargetZoneManager; }
             var AIPlayerEscapeManager = InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIPlayerEscapeManager), AIPlayerEscapeManagerOperation);
             if (AIPlayerEscapeManager != null) { return AIPlayerEscapeManager; }

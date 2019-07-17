@@ -6,21 +6,23 @@ namespace RTPuzzle
 {
     public class AIAttractiveObjectLooseManager : AbstractAIAttractiveObjectManager
     {
-        public AIAttractiveObjectLooseManager(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager) : base(selfAgent, aiID, PuzzleEventsManager)
+
+        public void Init(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
         {
+            this.BaseInit(selfAgent, aiID, PuzzleEventsManager);
         }
 
-        public override void OnTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
-        {
-            SetAttractedObject(attractivePosition, attractiveObjectType);
-        }
-
-        public override void OnTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
+        public override void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
         {
             SetAttractedObject(attractivePosition, attractiveObjectType);
         }
 
-        public override void OnTriggerExit(AttractiveObjectTypeModule attractiveObjectType)
+        public override void ComponentTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
+        {
+            SetAttractedObject(attractivePosition, attractiveObjectType);
+        }
+
+        public override void ComponentTriggerExit(AttractiveObjectTypeModule attractiveObjectType)
         {
             if (this.involvedAttractiveObject != null &&
                 attractiveObjectType.AttractiveObjectId == this.involvedAttractiveObject.AttractiveObjectId)

@@ -11,7 +11,7 @@ namespace RTPuzzle
         protected override Type abstractManagerType => typeof(AbstractAIEscapeWithoutTriggerManager);
     }
 
-    public abstract class AbstractAIEscapeWithoutTriggerManager : InterfaceAIManager
+    public abstract class AbstractAIEscapeWithoutTriggerManager : MonoBehaviour, InterfaceAIManager
     {
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 
