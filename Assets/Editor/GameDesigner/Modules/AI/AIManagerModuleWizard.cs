@@ -20,6 +20,7 @@ namespace Editor_GameDesigner
         {
             AIManagerTypeSafeOperation.ForAllAIManagerTypes(selectedType,
                 AIRandomPatrolComponentManangerOperation: () => { this.ProcessAIManagerEdit("AIRandomPatrolComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIRandomPatrolComponentMananger, typeof(AIRandomPatrolComponentMananger)); },
+                AIScriptedPatrolComponentManagerOperation: () => { this.ProcessAIManagerEdit("AIRandomPatrolComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIScriptedPatrolComponentManager, typeof(AIScriptedPatrolComponentManager)); },
                 AIProjectileEscapeWithCollisionManagerOperation: () => { this.ProcessAIManagerEdit("AIProjectileEscapeWithCollisionComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIProjectileWithCollisionEscapeManager, typeof(AIProjectileWithCollisionEscapeManager)); },
                 AIEscapeWithoutTriggerManagerOperation: () => { this.ProcessAIManagerEdit("AIEscapeWithoutTriggerComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIEscapeWithoutTriggerManager, typeof(AIEscapeWithoutTriggerManager)); },
                 AIFearStunManagerOperation: () => { this.ProcessAIManagerEdit("AIFearStunComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIFearStunManager, typeof(AIFearStunManager)); },
@@ -81,6 +82,7 @@ namespace Editor_GameDesigner
             string description = string.Empty;
             AIManagerTypeSafeOperation.ForAllAIManagerTypes(selectedType,
                     AIRandomPatrolComponentManangerOperation: () => { description = "Random patrolling."; },
+                    AIScriptedPatrolComponentManagerOperation: () => { description = "Scripted patrolling."; },
                     AIProjectileEscapeWithCollisionManagerOperation: () => { description = "Reduce FOV when a projectile is near."; },
                     AIEscapeWithoutTriggerManagerOperation: () => { description = "Reduce FOV while not taking into account physics obstacles entity."; },
                     AIFearStunManagerOperation: () => { description = "Block any movement when FOV sum values are below a threshold."; },

@@ -40,6 +40,10 @@ namespace RTPuzzle
                 AIRandomPatrolComponentMananger.Init(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager);
                 this.aIPatrolComponentManager = AIRandomPatrolComponentMananger;
             });
+            this.GetComponentInChildren<AIScriptedPatrolComponentManager>().IfNotNull(AIScriptedPatrolComponentManager =>
+            {
+                this.aIPatrolComponentManager = AIScriptedPatrolComponentManager;
+            });
             this.GetComponentInChildren<AIProjectileWithCollisionEscapeManager>().IfNotNull(AIProjectileWithCollisionEscapeManager =>
             {
                 AIProjectileWithCollisionEscapeManager.Init(selfAgent, aIComponents.AIProjectileEscapeWithCollisionComponent, aIFOVManager, PuzzleEventsManager, aiID, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, AIDestimationMoveManagerComponent);

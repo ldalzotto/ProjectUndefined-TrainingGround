@@ -39,6 +39,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIEscapeWithoutTriggerManager, "AIEscapeWithoutTrigger");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIFearStunManager, "AIFear");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIRandomPatrolComponentMananger, "AIPatrol_Random");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIScriptedPatrolComponentManager, "AIPatrol_Scripted");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerEscapeManager, "AIPlayerEscape");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIProjectileWithCollisionEscapeManager, "AIProjectileEscape");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AITargetZoneEscapeManager, "AITargetZoneEscape");
@@ -217,6 +218,8 @@ namespace Editor_MainGameCreationWizard
         public AIFearStunManager AIFearStunManager;
         [ReadOnly]
         public AIRandomPatrolComponentMananger AIRandomPatrolComponentMananger;
+        [ReadOnly]
+        public AIScriptedPatrolComponentManager AIScriptedPatrolComponentManager;
         [ReadOnly]
         public AIPlayerEscapeManager AIPlayerEscapeManager;
         [ReadOnly]

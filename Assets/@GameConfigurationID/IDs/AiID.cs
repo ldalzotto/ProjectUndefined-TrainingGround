@@ -31,5 +31,7 @@ namespace GameConfigurationID {
     MOUSE_SEWER_RTP_2 = 7,
     
     EDITOR_TEST = 8,
+    
+    _1_Town_GardenWatchman = 9,
   }
 }

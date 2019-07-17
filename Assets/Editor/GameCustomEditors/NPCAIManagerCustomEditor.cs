@@ -52,23 +52,30 @@ namespace Editor_GameCustomEditors
         {
             get
             {
-                return (NPCAIManagerCustomEditorContext NPCAIManagerCustomEditorContext) => NPCAIManagerCustomEditorContext.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2;
+                return (NPCAIManagerCustomEditorContext NPCAIManagerCustomEditorContext) =>
+                {
+                    if(NPCAIManagerCustomEditorContext.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent == null) { return null; }
+                    return NPCAIManagerCustomEditorContext.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2;
+                };
             }
         }
 
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target, LaunchProjectileId selectedKey)
         {
-            Handles.color = Color.blue;
-            GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.normal.textColor = Handles.color;
-            Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 
-                this.GetType().Name + "_" + selectedKey.ToString(), labelStyle);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey]);
+            if (context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent != null)
+            {
+                Handles.color = Color.blue;
+                GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+                labelStyle.normal.textColor = Handles.color;
+                Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey],
+                    this.GetType().Name + "_" + selectedKey.ToString(), labelStyle);
+                Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey]);
 
-            Handles.color = Color.yellow;
-            Handles.Label(target.transform.position + Vector3.up * 5f, nameof(context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2) + "_" + selectedKey.ToString(), MyEditorStyles.LabelYellow);
-            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 5f);
-            Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 5f);
+                Handles.color = Color.yellow;
+                Handles.Label(target.transform.position + Vector3.up * 5f, nameof(context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2) + "_" + selectedKey.ToString(), MyEditorStyles.LabelYellow);
+                Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 5f);
+                Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, -context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[selectedKey], 5f);
+            }
         }
     }
 
@@ -91,7 +98,7 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
         {
-            if(context.GenericPuzzleAIComponents.AIPlayerEscapeComponent != null)
+            if (context.GenericPuzzleAIComponents.AIPlayerEscapeComponent != null)
             {
                 Handles.color = Color.yellow;
 
@@ -115,7 +122,7 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
         {
-            if(context.GenericPuzzleAIComponents.AITargetZoneComponent != null)
+            if (context.GenericPuzzleAIComponents.AITargetZoneComponent != null)
             {
                 Handles.color = Color.green;
                 GUIStyle labelStyle = new GUIStyle(EditorStyles.label);

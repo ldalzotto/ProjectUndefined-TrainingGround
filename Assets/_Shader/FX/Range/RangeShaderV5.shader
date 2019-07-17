@@ -6,6 +6,7 @@
 		_CountSize("Count Size", int) = 0
 		_FrustumBufferDataBufferCount("_FrustumBufferDataBufferCount", Int) = 0
 		_RangeToFrustumBufferLinkCount("_RangeToFrustumBufferLinkCount", Int) = 0
+		_AlbedoBoost("Albedo Boost", Float) = 1.0
 	}
 		SubShader
 	{
@@ -49,6 +50,7 @@
 
 			sampler2D _AuraTexture;
 			float4 _AuraTexture_ST;
+			float _AlbedoBoost;
 
 			v2f vert(appdata v)
 			{
@@ -142,7 +144,7 @@
 							if ( (rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0) ) {
 								fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
 								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost);
+								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
 								computeCol = saturate((computeCol + newCol)*0.5);
 								returnCol = computeCol;
 							}
@@ -154,7 +156,7 @@
 						if (BoxIntersectsPoint(rangeBuffer, i.worldPos) == 1) {
 							fixed4 newCol = rangeBuffer.AuraColor;
 							fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost);
+							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
 							computeCol = saturate((computeCol + newCol)*0.5);
 							returnCol = computeCol;
 						}

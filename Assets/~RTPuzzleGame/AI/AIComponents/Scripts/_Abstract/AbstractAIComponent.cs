@@ -16,6 +16,7 @@ namespace RTPuzzle
     {
         public static void ForAllAIManagerTypes(Type managerType,
                  Action AIRandomPatrolComponentManangerOperation,
+                 Action AIScriptedPatrolComponentManagerOperation,
                  Action AIProjectileEscapeWithCollisionManagerOperation,
                  Action AIEscapeWithoutTriggerManagerOperation,
                  Action AIFearStunManagerOperation,
@@ -25,6 +26,7 @@ namespace RTPuzzle
                  Action AIPlayerEscapeManagerOperation)
         {
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIScriptedPatrolComponentManager), AIScriptedPatrolComponentManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIEscapeWithoutTriggerManager), AIEscapeWithoutTriggerManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
