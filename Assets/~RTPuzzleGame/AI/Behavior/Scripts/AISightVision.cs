@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RTPuzzle
 {
     public class AISightVision : MonoBehaviour
     {
-        private RangeTypeObject sightVisionRange;
+        private List<RangeTypeObject>  sightVisionRange;
 
         #region DEBUG
         private Transform playerTransform;
@@ -15,14 +17,20 @@ namespace RTPuzzle
         {
             this.playerTransform = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform;
 
-            this.sightVisionRange = GetComponentInChildren<RangeTypeObject>();
+            this.sightVisionRange = GetComponentsInChildren<RangeTypeObject>().ToList();
 
-            this.sightVisionRange.Init(new RangeTypeObjectInitializer(20f));
+            foreach(var range in this.sightVisionRange)
+            {
+                range.Init(new RangeTypeObjectInitializer(30f));
+            }
         }
 
         public void Tick(float d)
         {
-            this.sightVisionRange.Tick(d);
+            foreach (var range in this.sightVisionRange)
+            {
+                range.Tick(d);
+            }
         }
     }
 }

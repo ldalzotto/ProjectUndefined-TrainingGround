@@ -23,7 +23,7 @@ namespace RTPuzzle
         private GroundEffectType[] AffectedGroundEffectsType;
         private HashSet<MeshRenderer> RenderedRenderers = new HashSet<MeshRenderer>();
 
-        private Dictionary<RangeTypeID, IAbstractGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, IAbstractGroundEffectManager>();
+        private Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>> rangeEffectManagers = new Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>>();
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
             RangeTypeID.SIGHT_VISION,
@@ -89,7 +89,7 @@ namespace RTPuzzle
         {
             Profiler.BeginSample("GroundEffectsManagerV2Tick");
             this.RenderedRenderers.Clear();
-            foreach (var groundEffectManager in this.rangeEffectManagers.Values)
+            foreach (var groundEffectManager in this.rangeEffectManagers.Values.SelectMany(kv => kv.Values))
             {
                 if (groundEffectManager != null)
                 {
@@ -103,7 +103,7 @@ namespace RTPuzzle
             this.RangeExecutionOrderBufferDataValues.Clear();
             this.RangeToFrustumBufferLinkValues.Clear();
             this.ComputedFrustumPointsWorldPositionsIndexes.Clear();
-            
+
             Profiler.BeginSample("FrustumBufferManagerTick");
             this.FrustumBufferManager.Tick(d, (List<FrustumPointsWorldPositions> frustumBufferDatas) =>
             {
@@ -128,26 +128,28 @@ namespace RTPuzzle
             {
                 if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
                 {
-                    var rangeEffectManager = this.rangeEffectManagers[rangeEffectId];
-                    if (rangeEffectManager.GetType() == typeof(SphereGroundEffectManager))
+                    foreach (var rangeEffectManager in this.rangeEffectManagers[rangeEffectId].Values)
                     {
-                        var SphereGroundEffectManager = (SphereGroundEffectManager)rangeEffectManager;
-                        var circleRangeBufferData = SphereGroundEffectManager.ToSphereBuffer();
-                        this.CircleRangeBufferValues.Add(circleRangeBufferData);
-                        this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(1, 0, this.CircleRangeBufferValues.Count - 1));
-
-                        if (circleRangeBufferData.OccludedByFrustums == 1)
+                        if (rangeEffectManager.GetType() == typeof(SphereGroundEffectManager))
                         {
-                            foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[SphereGroundEffectManager.AssociatedRangeObject.RangeObstacleListener.ObstacleListener])
+                            var SphereGroundEffectManager = (SphereGroundEffectManager)rangeEffectManager;
+                            var circleRangeBufferData = SphereGroundEffectManager.ToSphereBuffer();
+                            this.CircleRangeBufferValues.Add(circleRangeBufferData);
+                            this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(1, 0, this.CircleRangeBufferValues.Count - 1));
+
+                            if (circleRangeBufferData.OccludedByFrustums == 1)
                             {
-                                this.RangeToFrustumBufferLinkValues.Add(new RangeToFrustumBufferLink(this.CircleRangeBufferValues.Count - 1, computedFrustumPointsWorldPositionsIndexe));
+                                foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[SphereGroundEffectManager.AssociatedRangeObject.RangeObstacleListener.ObstacleListener])
+                                {
+                                    this.RangeToFrustumBufferLinkValues.Add(new RangeToFrustumBufferLink(this.CircleRangeBufferValues.Count - 1, computedFrustumPointsWorldPositionsIndexe));
+                                }
                             }
                         }
-                    }
-                    else if (rangeEffectManager.GetType() == typeof(BoxGroundEffectManager))
-                    {
-                        this.BoxRangeBufferValues.Add(((BoxGroundEffectManager)rangeEffectManager).ToBoxBuffer());
-                        this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(0, 1, this.BoxRangeBufferValues.Count - 1));
+                        else if (rangeEffectManager.GetType() == typeof(BoxGroundEffectManager))
+                        {
+                            this.BoxRangeBufferValues.Add(((BoxGroundEffectManager)rangeEffectManager).ToBoxBuffer());
+                            this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(0, 1, this.BoxRangeBufferValues.Count - 1));
+                        }
                     }
                 }
             }
@@ -181,17 +183,24 @@ namespace RTPuzzle
         {
             if (rangeTypeObject.RangeType.IsRangeConfigurationDefined())
             {
+                if (!this.rangeEffectManagers.ContainsKey(rangeTypeObject.RangeType.RangeTypeID))
+                {
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID] = new Dictionary<int, IAbstractGroundEffectManager>();
+                }
+
                 if (rangeTypeObject.RangeType.GetType() == typeof(SphereRangeType))
                 {
                     var sphereRangeType = (SphereRangeType)rangeTypeObject.RangeType;
-                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID] = (IAbstractGroundEffectManager)new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
-                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].OnRangeCreated(rangeTypeObject);
+                    var addedRange = (IAbstractGroundEffectManager)new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), addedRange);
+                    addedRange.OnRangeCreated(rangeTypeObject);
                 }
                 else if (rangeTypeObject.RangeType.GetType() == typeof(BoxRangeType))
                 {
                     var boxRangeType = (BoxRangeType)rangeTypeObject.RangeType;
-                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID] = (IAbstractGroundEffectManager)new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
-                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].OnRangeCreated(rangeTypeObject);
+                    var addedRange = (IAbstractGroundEffectManager)new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
+                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), addedRange);
+                    addedRange.OnRangeCreated(rangeTypeObject);
                 }
             }
         }
@@ -216,7 +225,7 @@ namespace RTPuzzle
         {
             if (rangeTypeObject.IsRangeConfigurationDefined())
             {
-                this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].OnRangeDestroyed();
+                this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID][rangeTypeObject.GetInstanceID()].OnRangeDestroyed();
                 this.rangeEffectManagers.Remove(rangeTypeObject.RangeType.RangeTypeID);
             }
         }
@@ -236,7 +245,10 @@ namespace RTPuzzle
             {
                 if (this.rangeEffectManagers.ContainsKey(rangeEffectId))
                 {
-                    this.rangeEffectManagers[rangeEffectId].MeshToRender(ref this.RenderedRenderers, this.AffectedGroundEffectsType);
+                    foreach (var rangeEffectManager in this.rangeEffectManagers[rangeEffectId].Values)
+                    {
+                        rangeEffectManager.MeshToRender(ref this.RenderedRenderers, this.AffectedGroundEffectsType);
+                    }
                 }
             }
 
