@@ -26,6 +26,7 @@ namespace RTPuzzle
         private Dictionary<RangeTypeID, IAbstractGroundEffectManager> rangeEffectManagers = new Dictionary<RangeTypeID, IAbstractGroundEffectManager>();
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
+            RangeTypeID.SIGHT_VISION,
             RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
             RangeTypeID.ATTRACTIVE_OBJECT,
             RangeTypeID.LAUNCH_PROJECTILE,

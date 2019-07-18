@@ -12,6 +12,8 @@ namespace RTPuzzle
         {
             CircleRangeBufferData CircleRangeBufferData = new CircleRangeBufferData();
             CircleRangeBufferData.CenterWorldPosition = this.AssociatedRangeObject.RangeType.GetCenterWorldPos();
+            CircleRangeBufferData.WorldRangeForward = this.AssociatedRangeObject.transform.forward;
+
             CircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
@@ -32,6 +34,15 @@ namespace RTPuzzle
             {
                 CircleRangeBufferData.OccludedByFrustums = 0;
             }
+            
+            if (this.AssociatedRangeObject.IsContrainedByAngles())
+            {
+                CircleRangeBufferData.MaxAngleLimitationRad = this.AssociatedRangeObject.RangeAngleLimitationModule.MaxAngleRad;
+            }
+            else
+            {
+                CircleRangeBufferData.MaxAngleLimitationRad = 0;
+            }
 
             return CircleRangeBufferData;
         }
@@ -41,16 +52,17 @@ namespace RTPuzzle
     public struct CircleRangeBufferData
     {
         public Vector3 CenterWorldPosition;
+        public Vector3 WorldRangeForward;
         public float Radius;
         public Vector4 AuraColor;
         public float AuraTextureAlbedoBoost;
         public float AuraAnimationSpeed;
-
         public int OccludedByFrustums;
+        public float MaxAngleLimitationRad;
 
         public static int GetByteSize()
         {
-            return ((3 + 1 + 4 + 1 + 1) * sizeof(float)) + ((1) * sizeof(int));
+            return ((3 + 3 + 1 + 4 + 1 + 1 + 1) * sizeof(float)) + ((1) * sizeof(int));
         }
     }
 }

@@ -24,6 +24,7 @@ namespace RTPuzzle
         #region Internal Dependencies
         private NavMeshAgent agent;
         private Collider objectCollider;
+        private AISightVision AISightVision;
         #endregion
 
         #region AI Behavior Components
@@ -64,6 +65,9 @@ namespace RTPuzzle
 
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
+            this.AISightVision = GetComponentInChildren<AISightVision>();
+            this.AISightVision.Init();
+
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
             agent.updateRotation = false;
@@ -75,7 +79,7 @@ namespace RTPuzzle
 
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-
+            
            this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.AIDestimationMoveManagerComponent);
          ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
@@ -100,6 +104,7 @@ namespace RTPuzzle
 
         internal void TickAlways(in float d, in float timeAttenuationFactor)
         {
+            this.AISightVision.Tick(d);
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);

@@ -79,6 +79,15 @@
 				return 0;
 			}
 
+			/*
+ *     C5----C6
+ *    / |    /|
+ *   C1----C2 |
+ *   |  C8  | C7
+ *   | /    |/     C3->C7  Forward
+ *   C4----C3
+ */
+
 			int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
 				float crossSign = sign(dot(frustumBufferData.FC5 - frustumBufferData.FC1, cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC4 - frustumBufferData.FC1)));
 				float3 normal = crossSign * cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1);
@@ -127,6 +136,14 @@
 				return isInsideFrustum;
 			}
 
+			int PointInsideAngleRestrictionV2(float3 rangeCenterPoint, float3 worldRangeForward, float3 comparisonPoint, float maxAngleLimitationRad) {
+				float3 from = normalize(worldRangeForward);
+				float3 to = normalize(comparisonPoint - rangeCenterPoint);
+				float angleValue = (2 - (dot(from, to) + 1)) * 0.5 * 3.141592;
+
+				return angleValue <= maxAngleLimitationRad;
+			}
+
 			fixed4 frag(v2f i) : SV_Target
 			{
 
@@ -140,15 +157,19 @@
 						CircleRangeBufferData rangeBuffer = CircleRangeBuffer[executionOrder.Index];
 						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
 						if (calcDistance <= rangeBuffer.Radius) {
-				
-							if ( (rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0) ) {
-								fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
-								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-								computeCol = saturate((computeCol + newCol)*0.5);
-								returnCol = computeCol;
-							}
 
+							if ((rangeBuffer.MaxAngleLimitationRad > 0 && PointInsideAngleRestrictionV2(rangeBuffer.CenterWorldPosition, rangeBuffer.WorldRangeForward, i.worldPos, rangeBuffer.MaxAngleLimitationRad))
+										|| rangeBuffer.MaxAngleLimitationRad == 0) {
+
+								if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0)) {
+									fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
+									fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+									newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
+									computeCol = saturate((computeCol + newCol)*0.5);
+									returnCol = computeCol;
+								}
+
+							}
 						}
 					}
 					else {

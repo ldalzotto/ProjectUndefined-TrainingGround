@@ -3,11 +3,13 @@
 
 struct CircleRangeBufferData {
 	float3 CenterWorldPosition;
+	float3 WorldRangeForward;
 	float Radius;
 	float4 AuraColor;
 	float AuraTextureAlbedoBoost;
 	float AuraAnimationSpeed;
 	int OccludedByFrustums;
+	float MaxAngleLimitationRad;
 };
 
 struct RangeExecutionOrderBufferData

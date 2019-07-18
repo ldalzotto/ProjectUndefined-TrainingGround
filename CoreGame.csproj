@@ -179,6 +179,7 @@
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Target_Test.cs" />
     <Compile Include="Assets\Test\IntersectionTest\Test_Box.cs" />
+    <Compile Include="Assets\Test\ShaderVectorTest.cs" />
     <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
@@ -202,6 +203,7 @@
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
     <None Include="Assets\Test\WindTest\WindShaderTest.shader" />
+    <None Include="Assets\Test\ShaderVectorAngleTest\VectorAngleTest.shader" />
     <None Include="Assets\Test\ParticleDeformation\ParticleDeformation.shader" />
     <None Include="Assets\_Shader\FX\Particle_Smoke_Shader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterShader.shader" />

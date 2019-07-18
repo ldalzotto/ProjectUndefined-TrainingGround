@@ -92,6 +92,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AISightVision.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehaviorExternalEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\ExternalEvent\PuzzleAIBehaviorExternalEventManager.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeAngleLimitation\RangeAngleLimitationModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\BoxRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\RangeType.cs" />
