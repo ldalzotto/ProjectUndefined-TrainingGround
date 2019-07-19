@@ -9,17 +9,19 @@ namespace CoreGame
         private ComputeBuffer customComputeBuffer;
         private List<T> computeBufferData;
 
+        private BufferReAllocateStrategy BufferReAllocateStrategy;
         private Material material;
         private string materialPropertyName;
         private string materialCountPropertyName;
         private int objectByteSize;
 
-        public DynamicComputeBufferManager(int objectByteSize, string materialPropertyName, string materialCountPropertyName, ref Material material)
+        public DynamicComputeBufferManager(int objectByteSize, string materialPropertyName, string materialCountPropertyName, ref Material material , BufferReAllocateStrategy BufferReAllocateStrategy = BufferReAllocateStrategy.NONE)
         {
             this.objectByteSize = objectByteSize;
             this.materialPropertyName = materialPropertyName;
             this.materialCountPropertyName = materialCountPropertyName;
             this.material = material;
+            this.BufferReAllocateStrategy = BufferReAllocateStrategy;
 
             this.customComputeBuffer = new ComputeBuffer(1, objectByteSize);
             this.computeBufferData = new List<T>();
@@ -33,7 +35,8 @@ namespace CoreGame
                 this.computeBufferData.Clear();
                 bufferDataSetter.Invoke(this.computeBufferData);
 
-                if (this.customComputeBuffer.count != this.computeBufferData.Count)
+                if ( (this.BufferReAllocateStrategy == BufferReAllocateStrategy.NONE && this.customComputeBuffer.count != this.computeBufferData.Count) 
+                      || (this.BufferReAllocateStrategy == BufferReAllocateStrategy.SUPERIOR_ONLY && this.computeBufferData.Count > this.customComputeBuffer.count ))
                 {
                     if (this.computeBufferData.Count != 0)
                     {
@@ -56,6 +59,12 @@ namespace CoreGame
         {
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.customComputeBuffer);
         }
+    }
+
+    public enum BufferReAllocateStrategy
+    {
+        NONE = 0,
+        SUPERIOR_ONLY = 1
     }
 
 }

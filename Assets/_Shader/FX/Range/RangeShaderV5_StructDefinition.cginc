@@ -13,9 +13,7 @@ struct CircleRangeBufferData {
 
 struct RangeExecutionOrderBufferData
 {
-	int IsSphere;
-	int IsCube;
-	int IsFrustum;
+	int RangeType;
 	int Index;
 };
 
@@ -62,6 +60,7 @@ struct FrustumBufferData
 
 struct RangeToFrustumBufferLink {
 	int RangeIndex;
+	int RangeType;
 	int FrustumIndex;
 };
 #endif

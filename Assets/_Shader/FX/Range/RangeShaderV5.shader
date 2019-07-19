@@ -135,10 +135,10 @@
 					frustumBufferData.FC5, frustumBufferData.FC6, frustumBufferData.FC7, frustumBufferData.FC8);
 			}
 
-			int PointIsOccludedByFrustum(float3 comparisonPoint, int circleBufferDataIndex) {
+			int PointIsOccludedByFrustum(float3 comparisonPoint, RangeExecutionOrderBufferData rangeExecutionOrderBufferData) {
 				int isInsideFrustum = 0;
 				for (int index = 0; index < _RangeToFrustumBufferLinkCount; index++) {
-					if (RangeToFrustumBufferLinkBuffer[index].RangeIndex == circleBufferDataIndex) {
+					if (RangeToFrustumBufferLinkBuffer[index].RangeIndex == rangeExecutionOrderBufferData.Index && RangeToFrustumBufferLinkBuffer[index].RangeType == rangeExecutionOrderBufferData.RangeType) {
 
 						isInsideFrustum = PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
 						if (isInsideFrustum) {
@@ -166,12 +166,12 @@
 			for (int index = 0; index < _CountSize; index++) {
 				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[index];
 
-					if (executionOrder.IsSphere == 1) {
+					if (executionOrder.RangeType == 0) {
 						CircleRangeBufferData rangeBuffer = CircleRangeBuffer[executionOrder.Index];
 						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
 						if (calcDistance <= rangeBuffer.Radius) {
 
-								if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0)) {
+								if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)) {
 									fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
 									fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
 									newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
@@ -181,11 +181,11 @@
 
 						}
 					}
-					else if (executionOrder.IsFrustum) {
+					else if (executionOrder.RangeType == 2) {
 						FrustumRangeBufferData rangeBuffer = FrustumRangeBuffer[executionOrder.Index];
 						if (PointInsideFrustumV2(i.worldPos, rangeBuffer)) {
 
-							if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0)) {
+							if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)) {
 								fixed4 newCol = rangeBuffer.AuraColor;
 								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
 								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
