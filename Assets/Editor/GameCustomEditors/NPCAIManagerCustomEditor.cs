@@ -22,9 +22,11 @@ namespace Editor_GameCustomEditors
                 if (AIComponentsConfiguration != null)
                 {
                     AbstractAIComponents AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
+                    this.context = new NPCAIManagerCustomEditorContext();
+                    this.context.AISightVision = (target as NPCAIManager).GetComponentInChildren<AISightVision>();
+
                     if (AIComponents != null)
                     {
-                        this.context = new NPCAIManagerCustomEditorContext();
                         this.context.GenericPuzzleAIComponents = (GenericPuzzleAIComponents)AIComponents;
 
                         this.drawModules = new List<GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>>()
@@ -32,7 +34,8 @@ namespace Editor_GameCustomEditors
                             new AIProjectileEscapeComponent(),
                             new AIPatrolComponent(),
                             new AIPlayerEscapeComponent(),
-                            new AITargetZoneComponent()
+                            new AITargetZoneComponent(),
+                            new AISightComponent()
                         };
                     }
                 }
@@ -44,6 +47,7 @@ namespace Editor_GameCustomEditors
     public class NPCAIManagerCustomEditorContext
     {
         public GenericPuzzleAIComponents GenericPuzzleAIComponents;
+        public AISightVision AISightVision;
     }
 
     public class AIProjectileEscapeComponent : IDPickGUIModule<NPCAIManager, NPCAIManagerCustomEditorContext, LaunchProjectileId, float>
@@ -129,6 +133,18 @@ namespace Editor_GameCustomEditors
                 labelStyle.normal.textColor = Handles.color;
                 Handles.Label(target.transform.position + Vector3.up * context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance, nameof(context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance), labelStyle);
                 Handles.DrawWireDisc(target.transform.position, Vector3.up, context.GenericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance);
+            }
+        }
+    }
+
+    public class AISightComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    {
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        {
+            if(context.AISightVision != null)
+            {
+                Handles.color = MyColors.HotPink;
+                context.AISightVision.HandlesTick();
             }
         }
     }

@@ -37,10 +37,13 @@ namespace RTPuzzle
             this.FaceFrustums = new List<FrustumV2>();
             this.SquareObstacleChangeTracker = new SquareObstacleChangeTracker(this);
 
+            //Create frustum for all sides -> occlusions are only calculated for facing frustums.
             this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(0, 180, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(0, 90, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(0, -90, 0), 1);
+            this.CreateAndAddFrustum(Quaternion.Euler(90, 0, 0), 1);
+            this.CreateAndAddFrustum(Quaternion.Euler(-90, 0, 0), 1);
         }
 
         #region Logical Conditions

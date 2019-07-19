@@ -22,6 +22,9 @@ namespace RTPuzzle
 
         public virtual void Tick(float d) { }
 
+#if UNITY_EDITOR
+        public virtual void HandlesDraw() { }
+#endif
         public abstract bool IsInside(Vector3 worldPointComparison);
         public abstract Collider GetCollider();
         public abstract float GetRadiusRange();
