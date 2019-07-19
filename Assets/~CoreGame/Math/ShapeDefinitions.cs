@@ -19,9 +19,9 @@ namespace CoreGame
         [SerializeField]
         public Vector3 WorldPosition;
         [SerializeField]
-        private Quaternion worldRotation;
+        public Quaternion WorldRotation;
         [SerializeField]
-        public Quaternion DeltaRotation;
+        public Quaternion DeltaRotation = Quaternion.identity;
         [SerializeField]
         public Vector3 LossyScale;
         [SerializeField]
@@ -33,7 +33,9 @@ namespace CoreGame
         [SerializeField]
         public float FaceDistance;
 
-        public Quaternion WorldRotation { set => worldRotation = value; }
+        [SerializeField]
+        public FrustumCalculationType FrustumCalculationType = FrustumCalculationType.PROJECTION;
+        
 
         public FrustumV2()
         {
@@ -41,14 +43,26 @@ namespace CoreGame
             this.F2 = new FrustumFaceV2();
         }
 
-        public void SetLocalStartAngleProjection(Vector3 worldPositionPoint)
+        public void SetCalculationDataForFaceBasedCalculation(Vector3 frustumWorldPosition, Quaternion frustumWorldRotation, Vector3 frustumLossyScale)
         {
-            this.LocalStartAngleProjection = worldPositionPoint - this.WorldPosition;
+            this.WorldPosition = frustumWorldPosition;
+            this.WorldRotation = frustumWorldRotation;
+            this.LossyScale = frustumLossyScale;
+            this.FrustumCalculationType = FrustumCalculationType.FACE;
         }
 
+        public void SetCalculationDataForPointProjection(Vector3 worldPositionPoint, Vector3 frustumWorldPosition, Quaternion frustumWorldRotation, Vector3 frustumLossyScale)
+        {
+            this.WorldPosition = frustumWorldPosition;
+            this.WorldRotation = frustumWorldRotation;
+            this.LossyScale = frustumLossyScale;
+            this.LocalStartAngleProjection = worldPositionPoint - this.WorldPosition;
+            this.FrustumCalculationType = FrustumCalculationType.PROJECTION;
+        }
+        
         public Quaternion GetRotation()
         {
-            return this.worldRotation * this.DeltaRotation;
+            return this.WorldRotation * this.DeltaRotation;
         }
 
         public void CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
@@ -71,14 +85,37 @@ namespace CoreGame
             diagDirection.Scale(this.LossyScale);
             Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C4);
 
-            //Projection point calculation
-            Vector3 WorldStartAngleProjection;
-            Intersection.BoxPointCalculationV2(this.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalStartAngleProjection, out WorldStartAngleProjection);
-            C5 = C1 + ((C1 - WorldStartAngleProjection) * this.FaceDistance);
-            C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
-            C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
-            C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
+            if (this.FrustumCalculationType == FrustumCalculationType.FACE)
+            {
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C5);
+
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(this.F2.Width, this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C6);
+
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(this.F2.Width, -this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C7);
+
+                diagDirection = this.F2.FaceOffsetFromCenter + new Vector3(-this.F2.Width, -this.F2.Height, 0);
+                diagDirection.Scale(this.LossyScale);
+                Intersection.BoxPointCalculationV2(this.WorldPosition, this.GetRotation(), rotatedFrustumCenter, diagDirection / 2f, out C8);
+            }
+            else
+            {
+                //Projection point calculation
+                Vector3 WorldStartAngleProjection;
+                Intersection.BoxPointCalculationV2(this.WorldPosition, Quaternion.identity, rotatedFrustumCenter, this.LocalStartAngleProjection, out WorldStartAngleProjection);
+                C5 = C1 + ((C1 - WorldStartAngleProjection) * this.FaceDistance);
+                C6 = C2 + ((C2 - WorldStartAngleProjection) * this.FaceDistance);
+                C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
+                C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
+            }
+            
         }
+        
     }
 
     [System.Serializable]
@@ -90,6 +127,12 @@ namespace CoreGame
         public float Height;
         [SerializeField]
         public float Width;
+    }
+
+    [System.Serializable]
+    public enum FrustumCalculationType
+    {
+        FACE, PROJECTION
     }
 
 }

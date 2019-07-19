@@ -11,13 +11,11 @@ namespace RTPuzzle
         #region Modules
         private RangeType rangeType;
         private RangeObstacleListener rangeObstacleListener;
-        private RangeAngleLimitationModule rangeAngleLimitationModule;
         #endregion
 
         #region Data Retrieval
         public RangeType RangeType { get => rangeType; }
         public RangeObstacleListener RangeObstacleListener { get => rangeObstacleListener; }
-        public RangeAngleLimitationModule RangeAngleLimitationModule { get => rangeAngleLimitationModule; }
         #endregion
 
         #region External Dependencies 
@@ -48,7 +46,6 @@ namespace RTPuzzle
             #region Modules
             this.rangeType = GetComponentInChildren<RangeType>();
             this.rangeObstacleListener = GetComponentInChildren<RangeObstacleListener>();
-            this.rangeAngleLimitationModule = GetComponentInChildren<RangeAngleLimitationModule>();
             #endregion
         }
 
@@ -116,10 +113,6 @@ namespace RTPuzzle
         }
 
         #region Logical Conditions
-        public bool IsContrainedByAngles()
-        {
-            return this.rangeAngleLimitationModule != null && this.rangeAngleLimitationModule.HasAngleLimitation();
-        }
         public bool IsOccludedByFrustum()
         {
             return this.rangeObstacleListener != null && this.rangeObstacleListener.ObstacleListener.IsListenerHaveObstaclesNearby();
@@ -131,10 +124,6 @@ namespace RTPuzzle
         public bool IsInsideAndNotOccluded(Vector3 worldPointComparison)
         {
             bool isInsideRange = this.rangeType.IsInside(worldPointComparison);
-            if (this.IsContrainedByAngles() && isInsideRange)
-            {
-                isInsideRange = isInsideRange && this.rangeAngleLimitationModule.IsInside(worldPointComparison);
-            }
             if (this.rangeObstacleListener != null && isInsideRange)
             {
                 isInsideRange = isInsideRange && !this.IsOccluded(worldPointComparison);

@@ -66,7 +66,7 @@ namespace RTPuzzle
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
             this.AISightVision = GetComponentInChildren<AISightVision>();
-            this.AISightVision.Init();
+            this.AISightVision.IfNotNull(AISightVision => AISightVision.Init());
 
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
@@ -79,11 +79,11 @@ namespace RTPuzzle
 
             AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
-            
-           this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
+
+            this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.AIDestimationMoveManagerComponent);
-         ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                 aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
+            ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
             NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
@@ -102,9 +102,9 @@ namespace RTPuzzle
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
         }
 
-        internal void TickAlways(in float d, in float timeAttenuationFactor)
+        internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            this.AISightVision.Tick(d);
+            this.AISightVision.IfNotNull(AISightVision => AISightVision.Tick(d));
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);

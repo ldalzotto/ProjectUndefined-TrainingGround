@@ -19,7 +19,7 @@ namespace RTPuzzle
         public bool DebugGizmo;
         public bool DebugIntersection;
         public Transform IntersectionPoint;
-        private List<FrustumPointsWorldPositions> FrustumToDisplay;
+        private List<FrustumPointsPositions> FrustumToDisplay;
         private Dictionary<FrustumV2, NormalGizmo> FrustumFacesNormal;
 #endif
 
@@ -79,7 +79,7 @@ namespace RTPuzzle
             this.FaceFrustums.Add(frustum);
         }
 
-        public List<FrustumPointsWorldPositions> ComputeOcclusionFrustums_FromDedicatedThread(SquareObstacleFrustumCalculationResult obstacleCalucation)
+        public List<FrustumPointsPositions> ComputeOcclusionFrustums_FromDedicatedThread(SquareObstacleFrustumCalculationResult obstacleCalucation)
         {
 
 #if UNITY_EDITOR
@@ -87,7 +87,7 @@ namespace RTPuzzle
             {
                 if (this.FrustumToDisplay == null)
                 {
-                    FrustumToDisplay = new List<FrustumPointsWorldPositions>();
+                    FrustumToDisplay = new List<FrustumPointsPositions>();
                 }
                 else
                 {
@@ -103,15 +103,12 @@ namespace RTPuzzle
                 }
             }
 #endif
-            List<FrustumPointsWorldPositions> frustumPointsWorldPositions = new List<FrustumPointsWorldPositions>();
+            List<FrustumPointsPositions> frustumPointsWorldPositions = new List<FrustumPointsPositions>();
 
 
             foreach (var faceFrustum in this.FaceFrustums)
             {
-                faceFrustum.WorldPosition = obstacleCalucation.ObstaclePosition;
-                faceFrustum.WorldRotation = obstacleCalucation.ObstacleRotation;
-                faceFrustum.LossyScale = obstacleCalucation.ObstacleLossyScale;
-                faceFrustum.SetLocalStartAngleProjection(obstacleCalucation.WorldPositionStartAngleDefinition);
+                faceFrustum.SetCalculationDataForPointProjection(obstacleCalucation.WorldPositionStartAngleDefinition, obstacleCalucation.ObstaclePosition, obstacleCalucation.ObstacleRotation, obstacleCalucation.ObstacleLossyScale);
 
                 faceFrustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
 
@@ -122,18 +119,16 @@ namespace RTPuzzle
                     continue;
                 }
 
-                frustumPointsWorldPositions.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
+                frustumPointsWorldPositions.Add(new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8));
 #if UNITY_EDITOR
                 if (this.DebugGizmo)
                 {
-                    FrustumToDisplay.Add(new FrustumPointsWorldPositions(C1, C2, C3, C4, C5, C6, C7, C8));
+                    FrustumToDisplay.Add(new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8));
                     this.FrustumFacesNormal.Add(faceFrustum, new NormalGizmo(frontFaceNormal, C1));
                 }
 #endif
             }
-
-            // Debug.Log(frustumPointsWorldPositions.Count);
-
+            
             return frustumPointsWorldPositions;
 
         }

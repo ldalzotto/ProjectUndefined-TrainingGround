@@ -147,6 +147,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\AbstractGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\BoxGroundEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\FrustumGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\SphereGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
@@ -197,9 +198,9 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileContainerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeAngleLimitation\RangeAngleLimitationModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\BoxRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\FrustumRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\RangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\SphereRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObject.cs" />

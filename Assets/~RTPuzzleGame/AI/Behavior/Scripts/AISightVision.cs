@@ -9,14 +9,8 @@ namespace RTPuzzle
     {
         private List<RangeTypeObject>  sightVisionRange;
 
-        #region DEBUG
-        private Transform playerTransform;
-        #endregion
-
         public void Init()
         {
-            this.playerTransform = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform;
-
             this.sightVisionRange = GetComponentsInChildren<RangeTypeObject>().ToList();
 
             foreach(var range in this.sightVisionRange)

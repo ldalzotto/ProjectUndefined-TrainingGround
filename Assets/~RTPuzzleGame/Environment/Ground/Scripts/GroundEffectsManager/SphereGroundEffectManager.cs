@@ -34,15 +34,6 @@ namespace RTPuzzle
             {
                 CircleRangeBufferData.OccludedByFrustums = 0;
             }
-            
-            if (this.AssociatedRangeObject.IsContrainedByAngles())
-            {
-                CircleRangeBufferData.MaxAngleLimitationRad = this.AssociatedRangeObject.RangeAngleLimitationModule.MaxAngleRad;
-            }
-            else
-            {
-                CircleRangeBufferData.MaxAngleLimitationRad = 0;
-            }
 
             return CircleRangeBufferData;
         }
@@ -58,11 +49,10 @@ namespace RTPuzzle
         public float AuraTextureAlbedoBoost;
         public float AuraAnimationSpeed;
         public int OccludedByFrustums;
-        public float MaxAngleLimitationRad;
 
         public static int GetByteSize()
         {
-            return ((3 + 3 + 1 + 4 + 1 + 1 + 1) * sizeof(float)) + ((1) * sizeof(int));
+            return ((3 + 3 + 1 + 4 + 1 + 1) * sizeof(float)) + ((1) * sizeof(int));
         }
     }
 }

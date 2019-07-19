@@ -136,7 +136,7 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
     <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />
-    <Compile Include="Assets\~CoreGame\Math\FrustumPointsWorldPositions.cs" />
+    <Compile Include="Assets\~CoreGame\Math\FrustumPointsPositions.cs" />
     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Math\ShapeDefinitions.cs" />

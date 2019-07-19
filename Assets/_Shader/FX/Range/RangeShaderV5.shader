@@ -41,7 +41,8 @@
 
 			uniform StructuredBuffer<CircleRangeBufferData> CircleRangeBuffer;
 			uniform StructuredBuffer<BoxRangeBufferData> BoxRangeBuffer;
-
+			uniform StructuredBuffer<FrustumRangeBufferData> FrustumRangeBuffer;
+			
 			uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
 			int _FrustumBufferDataBufferCount;
 
@@ -88,30 +89,31 @@
  *   C4----C3
  */
 
-			int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
-				float crossSign = sign(dot(frustumBufferData.FC5 - frustumBufferData.FC1, cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC4 - frustumBufferData.FC1)));
-				float3 normal = crossSign * cross(frustumBufferData.FC2 - frustumBufferData.FC1, frustumBufferData.FC3 - frustumBufferData.FC1);
-				int pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC1) >= 0 && dot(normal, frustumBufferData.FC5 - frustumBufferData.FC1) > 0;
+			int PointInsideFrustumV2(float3 comparisonPoint, float3 FC1, float3 FC2, float3 FC3, float3 FC4, float3 FC5, float3 FC6, float3 FC7, float3 FC8) {
+
+				float crossSign = sign(dot(FC5 - FC1, cross(FC2 - FC1, FC4 - FC1)));
+				float3 normal = crossSign * cross(FC2 - FC1, FC3 - FC1);
+				int pointInsideFrustum = dot(normal, comparisonPoint - FC1) >= 0 && dot(normal, FC5 - FC1) > 0;
 
 				if (pointInsideFrustum) {
-					normal = crossSign * cross(frustumBufferData.FC5 - frustumBufferData.FC1, frustumBufferData.FC2 - frustumBufferData.FC1);
-					pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC1) >= 0 && dot(normal, frustumBufferData.FC4 - frustumBufferData.FC1) > 0;
-					
+					normal = crossSign * cross(FC5 - FC1, FC2 - FC1);
+					pointInsideFrustum = dot(normal, comparisonPoint - FC1) >= 0 && dot(normal, FC4 - FC1) > 0;
+
 					if (pointInsideFrustum) {
-						normal = crossSign * cross(frustumBufferData.FC6 - frustumBufferData.FC2, frustumBufferData.FC3 - frustumBufferData.FC2);
-						pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC2) >= 0 && dot(normal, frustumBufferData.FC1 - frustumBufferData.FC2) > 0;
+						normal = crossSign * cross(FC6 - FC2, FC3 - FC2);
+						pointInsideFrustum = dot(normal, comparisonPoint - FC2) >= 0 && dot(normal, FC1 - FC2) > 0;
 
 						if (pointInsideFrustum) {
-							normal = crossSign * cross(frustumBufferData.FC7 - frustumBufferData.FC3, frustumBufferData.FC4 - frustumBufferData.FC3);
-							pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC3) >= 0 && dot(normal, frustumBufferData.FC2 - frustumBufferData.FC3) > 0;
+							normal = crossSign * cross(FC7 - FC3, FC4 - FC3);
+							pointInsideFrustum = dot(normal, comparisonPoint - FC3) >= 0 && dot(normal, FC2 - FC3) > 0;
 
 							if (pointInsideFrustum) {
-								normal = crossSign * cross(frustumBufferData.FC8 - frustumBufferData.FC4, frustumBufferData.FC1 - frustumBufferData.FC4);
-								pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC4) >= 0 && dot(normal, frustumBufferData.FC3 - frustumBufferData.FC4) > 0;
+								normal = crossSign * cross(FC8 - FC4, FC1 - FC4);
+								pointInsideFrustum = dot(normal, comparisonPoint - FC4) >= 0 && dot(normal, FC3 - FC4) > 0;
 
 								if (pointInsideFrustum) {
-									normal = crossSign * cross(frustumBufferData.FC8 - frustumBufferData.FC5, frustumBufferData.FC6 - frustumBufferData.FC5);
-									pointInsideFrustum = dot(normal, comparisonPoint - frustumBufferData.FC5) >= 0 && dot(normal, frustumBufferData.FC1 - frustumBufferData.FC5) > 0;
+									normal = crossSign * cross(FC8 - FC5, FC6 - FC5);
+									pointInsideFrustum = dot(normal, comparisonPoint - FC5) >= 0 && dot(normal, FC1 - FC5) > 0;
 								}
 							}
 						}
@@ -120,6 +122,17 @@
 				}
 
 				return pointInsideFrustum;
+			}
+
+
+			int PointInsideFrustumV2(float3 comparisonPoint, FrustumRangeBufferData frustumRangeBufferData) {
+				return PointInsideFrustumV2(comparisonPoint, frustumRangeBufferData.FC1, frustumRangeBufferData.FC2, frustumRangeBufferData.FC3, frustumRangeBufferData.FC4,
+					frustumRangeBufferData.FC5, frustumRangeBufferData.FC6, frustumRangeBufferData.FC7, frustumRangeBufferData.FC8);
+			}
+
+			int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
+				return PointInsideFrustumV2(comparisonPoint, frustumBufferData.FC1, frustumBufferData.FC2, frustumBufferData.FC3, frustumBufferData.FC4,
+					frustumBufferData.FC5, frustumBufferData.FC6, frustumBufferData.FC7, frustumBufferData.FC8);
 			}
 
 			int PointIsOccludedByFrustum(float3 comparisonPoint, int circleBufferDataIndex) {
@@ -158,9 +171,6 @@
 						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
 						if (calcDistance <= rangeBuffer.Radius) {
 
-							if ((rangeBuffer.MaxAngleLimitationRad > 0 && PointInsideAngleRestrictionV2(rangeBuffer.CenterWorldPosition, rangeBuffer.WorldRangeForward, i.worldPos, rangeBuffer.MaxAngleLimitationRad))
-										|| rangeBuffer.MaxAngleLimitationRad == 0) {
-
 								if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0)) {
 									fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
 									fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
@@ -169,7 +179,20 @@
 									returnCol = computeCol;
 								}
 
+						}
+					}
+					else if (executionOrder.IsFrustum) {
+						FrustumRangeBufferData rangeBuffer = FrustumRangeBuffer[executionOrder.Index];
+						if (PointInsideFrustumV2(i.worldPos, rangeBuffer)) {
+
+							if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder.Index)) || (rangeBuffer.OccludedByFrustums == 0)) {
+								fixed4 newCol = rangeBuffer.AuraColor;
+								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
+								computeCol = saturate((computeCol + newCol)*0.5);
+								returnCol = computeCol;
 							}
+
 						}
 					}
 					else {

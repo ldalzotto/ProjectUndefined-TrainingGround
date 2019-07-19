@@ -4,7 +4,7 @@ using System.Collections;
 namespace CoreGame
 {
     [System.Serializable]
-    public struct FrustumPointsWorldPositions
+    public struct FrustumPointsPositions
     {
         public Vector3 FC1;
         public Vector3 FC2;
@@ -15,7 +15,7 @@ namespace CoreGame
         public Vector3 FC7;
         public Vector3 FC8;
 
-        public FrustumPointsWorldPositions(Vector3 fC1, Vector3 fC2, Vector3 fC3, Vector3 fC4, Vector3 fC5, Vector3 fC6, Vector3 fC7, Vector3 fC8)
+        public FrustumPointsPositions(Vector3 fC1, Vector3 fC2, Vector3 fC3, Vector3 fC4, Vector3 fC5, Vector3 fC6, Vector3 fC7, Vector3 fC8)
         {
             FC1 = fC1;
             FC2 = fC2;

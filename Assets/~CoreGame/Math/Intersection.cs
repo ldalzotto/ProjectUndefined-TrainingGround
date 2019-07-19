@@ -97,7 +97,7 @@ namespace CoreGame
             return PointInsideFrustumComputation(worldPositionPoint, C1, C2, C3, C4, C5, C6, C7, C8);
         }
 
-        public static bool PointInsideFrustum(FrustumPointsWorldPositions FrustumPointsWorldPositions, Vector3 worldPositionPoint)
+        public static bool PointInsideFrustum(FrustumPointsPositions FrustumPointsWorldPositions, Vector3 worldPositionPoint)
         {
             return PointInsideFrustumComputation(worldPositionPoint, FrustumPointsWorldPositions.FC1, FrustumPointsWorldPositions.FC2, FrustumPointsWorldPositions.FC3
                 , FrustumPointsWorldPositions.FC4, FrustumPointsWorldPositions.FC5, FrustumPointsWorldPositions.FC6, FrustumPointsWorldPositions.FC7, FrustumPointsWorldPositions.FC8);

@@ -165,7 +165,7 @@ namespace RTPuzzle
 
     public class SquareObstacleFrustumCalculationResult
     {
-        private List<FrustumPointsWorldPositions> calculatedFrustumPositions;
+        private List<FrustumPointsPositions> calculatedFrustumPositions;
         private bool calculationAsked;
 
         #region References
@@ -191,16 +191,16 @@ namespace RTPuzzle
         {
             this.obstacleListenerRef = obstacleListenerRef;
             this.squareObstacleRef = squareObstacleRef;
-            this.calculatedFrustumPositions = new List<FrustumPointsWorldPositions>();
+            this.calculatedFrustumPositions = new List<FrustumPointsPositions>();
         }
 
-        public List<FrustumPointsWorldPositions> CalculatedFrustumPositions { get => calculatedFrustumPositions; }
+        public List<FrustumPointsPositions> CalculatedFrustumPositions { get => calculatedFrustumPositions; }
         public Vector3 ObstaclePosition { get => obstaclePosition; }
         public Quaternion ObstacleRotation { get => obstacleRotation; }
         public Vector3 ObstacleLossyScale { get => obstacleLossyScale; }
         public Vector3 WorldPositionStartAngleDefinition { get => worldPositionStartAngleDefinition; }
 
-        public void SetResult(List<FrustumPointsWorldPositions> calculatedFrustumBufferData)
+        public void SetResult(List<FrustumPointsPositions> calculatedFrustumBufferData)
         {
             this.calculatedFrustumPositions = calculatedFrustumBufferData;
             this.calculationAsked = false;
