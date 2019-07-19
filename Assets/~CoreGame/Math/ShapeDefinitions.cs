@@ -16,12 +16,15 @@ namespace CoreGame
     {
         [SerializeField]
         public Vector3 Center;
+        [HideInInspector]
         [SerializeField]
         public Vector3 WorldPosition;
+        [HideInInspector]
         [SerializeField]
         public Quaternion WorldRotation;
         [SerializeField]
         public Quaternion DeltaRotation = Quaternion.identity;
+        [HideInInspector]
         [SerializeField]
         public Vector3 LossyScale;
         [SerializeField]

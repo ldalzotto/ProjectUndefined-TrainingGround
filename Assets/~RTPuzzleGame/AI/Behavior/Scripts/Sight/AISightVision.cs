@@ -13,7 +13,7 @@ namespace RTPuzzle
 
             foreach (var range in this.sightVisionRange)
             {
-                range.Init(new RangeTypeObjectInitializer(30f));
+                range.Init(new RangeTypeObjectInitializer());
             }
         }
 
