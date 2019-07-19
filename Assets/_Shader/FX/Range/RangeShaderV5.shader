@@ -6,7 +6,9 @@
 		_CountSize("Count Size", int) = 0
 		_FrustumBufferDataBufferCount("_FrustumBufferDataBufferCount", Int) = 0
 		_RangeToFrustumBufferLinkCount("_RangeToFrustumBufferLinkCount", Int) = 0
+
 		_AlbedoBoost("Albedo Boost", Float) = 1.0
+		_RangeMixFactor("Range Mix Factor", Range(0.0, 1.0)) = 0.5
 	}
 		SubShader
 	{
@@ -51,7 +53,9 @@
 
 			sampler2D _AuraTexture;
 			float4 _AuraTexture_ST;
+
 			float _AlbedoBoost;
+			float _RangeMixFactor;
 
 			v2f vert(appdata v)
 			{
@@ -160,7 +164,6 @@
 			fixed4 frag(v2f i) : SV_Target
 			{
 
-			fixed4 returnCol = fixed4(0,0,0,0);
 			fixed4 computeCol = fixed4(0,0,0,0);
 
 			for (int index = 0; index < _CountSize; index++) {
@@ -175,8 +178,7 @@
 									fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
 									fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
 									newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-									computeCol = saturate((computeCol + newCol)*0.5);
-									returnCol = computeCol;
+									computeCol = lerp(computeCol, newCol, _RangeMixFactor);
 								}
 
 						}
@@ -189,8 +191,7 @@
 								fixed4 newCol = rangeBuffer.AuraColor;
 								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
 								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-								computeCol = saturate((computeCol + newCol)*0.5);
-								returnCol = computeCol;
+								computeCol = lerp(computeCol, newCol, _RangeMixFactor);
 							}
 
 						}
@@ -201,17 +202,16 @@
 							fixed4 newCol = rangeBuffer.AuraColor;
 							fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
 							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-							computeCol = saturate((computeCol + newCol)*0.5);
-							returnCol = computeCol;
+							computeCol = lerp(computeCol, newCol, _RangeMixFactor);
 						}
 					}
 			}
 
-			if (returnCol.a == 0) {
+			if (computeCol.a == 0) {
 				discard;
 			}
 
-			return returnCol;
+			return saturate(computeCol);
 		}
 	ENDCG
 	}

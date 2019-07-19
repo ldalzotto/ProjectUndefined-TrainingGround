@@ -93,7 +93,7 @@ namespace RTPuzzle
             ObstaclesListenerManager.Init();
             SquareObstaclesManager.Init();
 
-            GroundEffectsManagerV2.Init();
+            GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
             GameObject.FindObjectOfType<RangeEventsManager>().Init();
             InteractiveObjectContainer.Init();
             PlayerManagerDataRetriever.Init();

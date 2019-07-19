@@ -21,6 +21,9 @@ namespace RTPuzzle
         [SerializeField]
         public LevelCompletionInherentData LevelCompletionInherentData;
 
+        [SerializeField]
+        public LevelRangeEffectInherentData LevelRangeEffectInherentData;
+
         private List<RTPPlayerAction> playerActions;
 
         public void Init(PlayerActionConfiguration playerActionConfiguration)
@@ -90,6 +93,13 @@ namespace RTPuzzle
         }
     }
 
+    [System.Serializable]
+    public class LevelRangeEffectInherentData
+    {
+        public float DeltaIntensity = 0;
+        [Range(-0.5f, 0.5f)]
+        public float DeltaMixFactor = 0;
+    }
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(LevelConfigurationData))]
@@ -100,6 +110,7 @@ namespace RTPuzzle
             LevelConfigurationData myTarget = (LevelConfigurationData)target;
             EditorGUILayout.PropertyField(serializedObject.FindProperty("availableTimeAmount"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("playerActionIds"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelRangeEffectInherentData"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("LevelCompletionInherentData"));
 
             if (myTarget.LevelCompletionInherentData != null)
@@ -108,6 +119,7 @@ namespace RTPuzzle
                 Editor.CreateEditor(myTarget.LevelCompletionInherentData).OnInspectorGUI();
                 EditorGUI.indentLevel -= 1;
             }
+            
 
             serializedObject.ApplyModifiedProperties();
         }
