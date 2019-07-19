@@ -115,10 +115,11 @@ namespace RTPuzzle
             Profiler.BeginSample("FrustumBufferManagerTick");
             this.FrustumBufferManager.Tick(d, (List<FrustumPointsPositions> frustumBufferDatas) =>
             {
+                //(WARNING) - Obstacle frustum calculation for display is multithreaded. Thus, calculation result may not be available even though the obstacle has been detected
                 foreach (var testSphere in this.ObstaclesListenerManager.GetAllObstacleListeners())
                 {
                     int startIndex = frustumBufferDatas.Count;
-                    foreach (var nearObstable in testSphere.NearSquereObstacles)
+                    foreach (var nearObstable in testSphere.NearSquareObstacles)
                     {
                         var frustumCalculationResults = this.ObstacleFrustumCalculationManager.GetResult(testSphere, nearObstable).CalculatedFrustumPositions;
                         frustumBufferDatas.AddRange(frustumCalculationResults);
@@ -131,6 +132,7 @@ namespace RTPuzzle
             });
             Profiler.EndSample();
 
+            #region RangeBufferManagerTick 
             Profiler.BeginSample("RangeBufferManagerTick");
             foreach (var rangeEffectId in this.rangeEffectRenderOrder)
             {
@@ -138,25 +140,18 @@ namespace RTPuzzle
                 {
                     foreach (var rangeEffectManager in this.rangeEffectManagers[rangeEffectId].Values)
                     {
+
                         if (rangeEffectManager.GetType() == typeof(SphereGroundEffectManager))
                         {
                             var SphereGroundEffectManager = (SphereGroundEffectManager)rangeEffectManager;
                             var circleRangeBufferData = SphereGroundEffectManager.ToSphereBuffer();
                             this.CircleRangeBufferValues.Add(circleRangeBufferData);
-                            this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(1, 0,0, this.CircleRangeBufferValues.Count - 1));
-
-                            if (circleRangeBufferData.OccludedByFrustums == 1)
-                            {
-                                foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[SphereGroundEffectManager.AssociatedRangeObject.RangeObstacleListener.ObstacleListener])
-                                {
-                                    this.RangeToFrustumBufferLinkValues.Add(new RangeToFrustumBufferLink(this.CircleRangeBufferValues.Count - 1, computedFrustumPointsWorldPositionsIndexe));
-                                }
-                            }
+                            this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(1, 0, 0, this.CircleRangeBufferValues.Count - 1));
                         }
                         else if (rangeEffectManager.GetType() == typeof(BoxGroundEffectManager))
                         {
                             this.BoxRangeBufferValues.Add(((BoxGroundEffectManager)rangeEffectManager).ToBoxBuffer());
-                            this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(0, 1,0, this.BoxRangeBufferValues.Count - 1));
+                            this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(0, 1, 0, this.BoxRangeBufferValues.Count - 1));
                         }
                         else if (rangeEffectManager.GetType() == typeof(FrustumGroundEffectManager))
                         {
@@ -164,10 +159,15 @@ namespace RTPuzzle
                             var frustumRangeBufferData = FrustumGroundEffectManager.ToFrustumBuffer();
                             this.FrustumRangeBufferValues.Add(frustumRangeBufferData);
                             this.RangeExecutionOrderBufferDataValues.Add(new RangeExecutionOrderBufferData(0, 0, 1, this.FrustumRangeBufferValues.Count - 1));
+                        }
 
-                            if (frustumRangeBufferData.OccludedByFrustums == 1)
+                        //Range to obstacle occlusion frustum link
+                        if (rangeEffectManager.GetAssociatedRangeObject().IsOccludedByFrustum())
+                        {
+                            //(WARNING) - Obstacle frustum calculation for display is multithreaded. Thus, calculation result may not be available even though the obstacle has been detected
+                            if (this.ComputedFrustumPointsWorldPositionsIndexes.ContainsKey(rangeEffectManager.GetAssociatedRangeObject().RangeObstacleListener.ObstacleListener))
                             {
-                                foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[FrustumGroundEffectManager.AssociatedRangeObject.RangeObstacleListener.ObstacleListener])
+                                foreach (var computedFrustumPointsWorldPositionsIndexe in this.ComputedFrustumPointsWorldPositionsIndexes[rangeEffectManager.GetAssociatedRangeObject().RangeObstacleListener.ObstacleListener])
                                 {
                                     this.RangeToFrustumBufferLinkValues.Add(new RangeToFrustumBufferLink(this.FrustumRangeBufferValues.Count - 1, computedFrustumPointsWorldPositionsIndexe));
                                 }
@@ -177,7 +177,9 @@ namespace RTPuzzle
                 }
             }
             Profiler.EndSample();
+            #endregion
 
+            #region Buffer data set
             if (this.CircleRangeBuffer.IsValid())
             {
                 this.CircleRangeBuffer.SetData(this.CircleRangeBufferValues);
@@ -201,6 +203,7 @@ namespace RTPuzzle
             });
 
             this.OnCommandBufferUpdate();
+            #endregion
 
             Profiler.EndSample();
         }
@@ -271,7 +274,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        internal void OnCommandBufferUpdate()
+        private void OnCommandBufferUpdate()
         {
             this.command.Clear();
             this.MasterRangeMaterial.SetInt("_CountSize", this.RangeExecutionOrderBufferDataValues.Count);

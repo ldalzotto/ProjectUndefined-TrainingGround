@@ -10,7 +10,7 @@ namespace RTPuzzle
 
         public FrustumRangeBufferData ToFrustumBuffer()
         {
-            var FrustumRangeBufferData = ((FrustumRangeType)this.AssociatedRangeObject.RangeType).GetFrustumRangeBufferData();
+            var FrustumRangeBufferData = ((FrustumRangeType)this.GetAssociatedRangeObject().RangeType).GetFrustumRangeBufferData();
 
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
@@ -24,7 +24,7 @@ namespace RTPuzzle
             FrustumRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
             FrustumRangeBufferData.AuraAnimationSpeed = 20f;
 
-            if (this.AssociatedRangeObject.IsOccludedByFrustum())
+            if (this.GetAssociatedRangeObject().IsOccludedByFrustum())
             {
                 FrustumRangeBufferData.OccludedByFrustums = 1;
             }

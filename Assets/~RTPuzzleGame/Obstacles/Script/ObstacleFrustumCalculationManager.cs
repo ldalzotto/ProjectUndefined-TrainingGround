@@ -147,7 +147,7 @@ namespace RTPuzzle
 
         private void UpdateSquareObstaclesOfListener(ObstacleListener obstacleListener, bool async = true)
         {
-            foreach (var nearObstacle in obstacleListener.NearSquereObstacles)
+            foreach (var nearObstacle in obstacleListener.NearSquareObstacles)
             {
                 if (!this.calculationResults[obstacleListener].ContainsKey(nearObstacle))
                 {

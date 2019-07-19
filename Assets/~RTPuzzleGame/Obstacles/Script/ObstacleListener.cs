@@ -8,8 +8,8 @@ namespace RTPuzzle
     {
         public float Radius;
 
-        private List<SquareObstacle> nearSquereObstacles;
-        public List<SquareObstacle> NearSquereObstacles { get => nearSquereObstacles; }
+        private List<SquareObstacle> nearSquareObstacles;
+        public List<SquareObstacle> NearSquareObstacles { get => nearSquareObstacles; }
 
         #region Internal Managers
         private ObstacleListenerChangePositionTracker ObstacleListenerChangePositionTracker;
@@ -27,7 +27,7 @@ namespace RTPuzzle
             this.ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
             #endregion
 
-            this.nearSquereObstacles = new List<SquareObstacle>();
+            this.nearSquareObstacles = new List<SquareObstacle>();
             this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
             this.ObstacleListenerChangePositionTracker = new ObstacleListenerChangePositionTracker(this);
@@ -50,7 +50,7 @@ namespace RTPuzzle
         }
         public bool IsListenerHaveObstaclesNearby()
         {
-            return this.nearSquereObstacles.Count > 0;
+            return this.nearSquareObstacles.Count > 0;
         }
         public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint)
         {
@@ -71,7 +71,6 @@ namespace RTPuzzle
                 var squareObstacle = SquareObstacle.FromCollisionType(collisionType);
                 if (squareObstacle != null)
                 {
-                    Debug.Log("ObstacleListener");
                     this.AddNearSquareObstacle(squareObstacle);
                     this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, squareObstacle);
                 }
@@ -94,13 +93,13 @@ namespace RTPuzzle
 
         private void AddNearSquareObstacle(SquareObstacle squareObstacle)
         {
-            this.nearSquereObstacles.Add(squareObstacle);
+            this.nearSquareObstacles.Add(squareObstacle);
             this.SortObstaclesByDistance();
         }
 
         private void RemoveNearSquareObstacle(SquareObstacle squareObstacle)
         {
-            this.nearSquereObstacles.Remove(squareObstacle);
+            this.nearSquareObstacles.Remove(squareObstacle);
             this.SortObstaclesByDistance();
         }
 
@@ -108,7 +107,7 @@ namespace RTPuzzle
         //Nearest frustum has more chance to oclcude a wider space than a farest
         private void SortObstaclesByDistance()
         {
-            this.nearSquereObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.transform.position, this.transform.position).CompareTo(Vector3.Distance(o2.transform.position, this.transform.position)); });
+            this.nearSquareObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.transform.position, this.transform.position).CompareTo(Vector3.Distance(o2.transform.position, this.transform.position)); });
         }
     }
 

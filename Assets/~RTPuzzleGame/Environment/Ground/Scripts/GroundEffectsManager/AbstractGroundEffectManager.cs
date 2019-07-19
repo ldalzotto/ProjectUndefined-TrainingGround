@@ -10,6 +10,7 @@ namespace RTPuzzle
         void OnRangeCreated(RangeTypeObject rangeTypeObject);
         void Tick(float d);
         void MeshToRender(ref HashSet<MeshRenderer> renderers, GroundEffectType[] affectedGroundEffectsType);
+        RangeTypeObject GetAssociatedRangeObject();
         void OnRangeDestroyed();
     }
 
@@ -21,7 +22,10 @@ namespace RTPuzzle
         protected bool isAttractiveObjectRangeEnabled;
 
         public bool IsAttractiveObjectRangeEnabled { get => isAttractiveObjectRangeEnabled; }
-        public RangeTypeObject AssociatedRangeObject { get => associatedRangeObject; }
+        public RangeTypeObject GetAssociatedRangeObject()
+        {
+            return associatedRangeObject;
+        }
 
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
