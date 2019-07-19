@@ -27,7 +27,8 @@ namespace Editor_GameDesigner
                 AIAttractiveObjectPersistantOperation: () => { this.ProcessAIManagerEdit("AIAttractiveObjectComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectPersistantManager, typeof(AIAttractiveObjectPersistantManager)); },
                 AIAttractiveObjectLooseOperation: () => { this.ProcessAIManagerEdit("AIAttractiveObjectComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectLooseManager, typeof(AIAttractiveObjectLooseManager)); },
                 AITargetZoneManagerOperation: () => { this.ProcessAIManagerEdit("AITargetZoneComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AITargetZoneEscapeManager, typeof(AITargetZoneEscapeManager)); },
-                AIPlayerEscapeManagerOperation: () => { this.ProcessAIManagerEdit("AIPlayerEscapeComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerEscapeManager, typeof(AIPlayerEscapeManager)); }
+                AIPlayerEscapeManagerOperation: () => { this.ProcessAIManagerEdit("AIPlayerEscapeComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerEscapeManager, typeof(AIPlayerEscapeManager)); },
+                AISightVisionOperation: () => { this.ProcessAISightVisionEdit(); }
             );
         }
 
@@ -77,6 +78,25 @@ namespace Editor_GameDesigner
             }
         }
 
+        private void ProcessAISightVisionEdit()
+        {
+            if (this.add)
+            {
+                if (this.currentSelectedObjet.GetComponentInChildren<AISightVision>() == null)
+                {
+                    var aiManagerContainer = this.currentSelectedObjet.FindChildObjectRecursively("AIManagerComponents");
+                    PrefabUtility.InstantiatePrefab(this.CommonGameConfigurations.PuzzleAICommonPrefabs.AISightVision, aiManagerContainer.transform);
+                }
+            }
+            else if (this.remove)
+            {
+                if (this.currentSelectedObjet.GetComponentInChildren<AISightVision>() != null)
+                {
+                    MonoBehaviour.DestroyImmediate(this.currentSelectedObjet.GetComponentInChildren<AISightVision>());
+                }
+            }
+        }
+
         protected override string POIModuleDescription(Type selectedType)
         {
             string description = string.Empty;
@@ -89,7 +109,8 @@ namespace Editor_GameDesigner
                     AIAttractiveObjectPersistantOperation: () => { description = "Move to the nearest attractive point in range.\nOnce targeted, the movement is never cancelled by this component."; },
                     AIAttractiveObjectLooseOperation: () => { description = "Move to the nearest attractive point in range.\nOnce targeted, the movement is cancelled if the AI exit attractive object range."; },
                     AITargetZoneManagerOperation: () => { description = "Detect weather the AI is in the selected target zone or not."; },
-                    AIPlayerEscapeManagerOperation: () => { description = "Reduce FOV when the player is near."; }
+                    AIPlayerEscapeManagerOperation: () => { description = "Reduce FOV when the player is near."; },
+                    AISightVisionOperation: () => { description = "The sight vision of prefab."; }
                 );
             return description;
         }

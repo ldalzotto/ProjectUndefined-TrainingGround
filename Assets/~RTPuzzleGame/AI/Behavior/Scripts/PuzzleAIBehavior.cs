@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,6 +84,7 @@ namespace RTPuzzle
         #endregion
 
         protected AIFOVManager aIFOVManager;
+        protected AISightVision aiSightVision;
 
         protected void BaseInit(NavMeshAgent selfAgent, C AIComponents,
             PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
@@ -94,6 +96,11 @@ namespace RTPuzzle
             this.OnFOVChange = OnFOVChange;
             this.forceUpdateAIBehavior = ForceUpdateAIBehavior;
             this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
+
+            this.GetComponentInChildren<AISightVision>().IfNotNull(AISightVision => {
+                this.aiSightVision = AISightVision;
+                this.aiSightVision.Init();
+            });
         }
 
         protected void AfterChildInit()
@@ -103,6 +110,8 @@ namespace RTPuzzle
 
         public Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
         {
+            this.aiSightVision.Tick(d);
+
             // (1) - Call the BeforeManagersUpdate callbacks.
             this.BeforeManagersUpdate(d, timeAttenuationFactor);
 

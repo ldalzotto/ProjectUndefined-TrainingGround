@@ -92,11 +92,11 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AISightVision.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehaviorExternalEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\ExternalEvent\PuzzleAIBehaviorExternalEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\PuzzleAIBehavior.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Sight\AISightVision.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\StateTracker\BehaviorStateTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\StateTracker\BehaviorStateTrackerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\StateTracker\EscapeWhileIgnoringTargetZoneTracker.cs" />

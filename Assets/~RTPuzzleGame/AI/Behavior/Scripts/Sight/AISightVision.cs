@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RTPuzzle
 {
-    public class AISightVision : MonoBehaviour
+    public class AISightVision : AbstractAIManager
     {
         private List<RangeTypeObject>  sightVisionRange;
 

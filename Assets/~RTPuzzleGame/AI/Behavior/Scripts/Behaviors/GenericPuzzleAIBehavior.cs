@@ -78,7 +78,7 @@ namespace RTPuzzle
                 AIPlayerEscapeManager.Init(selfAgent, this.puzzleAIBehaviorExternalEventManager, playerManagerDataRetriever, aIComponents.AIPlayerEscapeComponent, this.AIFOVManager, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent);
                 this.playerEscapeManager = AIPlayerEscapeManager;
             });
-            
+
             var dic = new Dictionary<int, InterfaceAIManager>()
             {
                  { 1, this.aIFearStunManager },

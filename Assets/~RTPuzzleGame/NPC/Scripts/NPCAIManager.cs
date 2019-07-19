@@ -24,7 +24,6 @@ namespace RTPuzzle
         #region Internal Dependencies
         private NavMeshAgent agent;
         private Collider objectCollider;
-        private AISightVision AISightVision;
         #endregion
 
         #region AI Behavior Components
@@ -65,8 +64,6 @@ namespace RTPuzzle
 
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
-            this.AISightVision = GetComponentInChildren<AISightVision>();
-            this.AISightVision.IfNotNull(AISightVision => AISightVision.Init());
 
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
@@ -104,7 +101,6 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            this.AISightVision.IfNotNull(AISightVision => AISightVision.Tick(d));
             NPCAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
