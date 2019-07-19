@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using static RTPuzzle.AIBehaviorManagerContainer;
 
 namespace RTPuzzle
 {
     public interface IPuzzleAIBehavior<out C> where C : AbstractAIComponents
     {
-        Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor);
+        Nullable<Vector3> TickAI(float d, float timeAttenuationFactor);
         void EndOfFixedTick();
         void TickGizmo();
         void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent);
@@ -97,7 +96,8 @@ namespace RTPuzzle
             this.forceUpdateAIBehavior = ForceUpdateAIBehavior;
             this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
 
-            this.GetComponentInChildren<AISightVision>().IfNotNull(AISightVision => {
+            this.GetComponentInChildren<AISightVision>().IfNotNull(AISightVision =>
+            {
                 this.aiSightVision = AISightVision;
                 this.aiSightVision.Init();
             });
@@ -108,9 +108,9 @@ namespace RTPuzzle
             this.currentManagerState = this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values.Last();
         }
 
-        public Nullable<Vector3> TickAI(in float d, in float timeAttenuationFactor)
+        public Nullable<Vector3> TickAI(float d, float timeAttenuationFactor)
         {
-            this.aiSightVision.Tick(d);
+            this.aiSightVision.IfNotNull(aiSightVision => aiSightVision.Tick(d));
 
             // (1) - Call the BeforeManagersUpdate callbacks.
             this.BeforeManagersUpdate(d, timeAttenuationFactor);
@@ -167,7 +167,7 @@ namespace RTPuzzle
         public abstract void OnDestinationReached();
 
         public virtual void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy) { }
-        
+
     }
 
     public struct AIBheaviorBuildInputData
