@@ -8,9 +8,9 @@ namespace RTPuzzle
     {
         [SerializeField]
         private FrustumV2 frustum;
-        
+
         private BoxCollider boxCollider;
-        
+
         private Nullable<FrustumPointsPositions> frustumPointsLocalPositions;
         private FrustumPointsPositions frustumPointsWorldPositions;
 
@@ -57,6 +57,8 @@ namespace RTPuzzle
         {
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
             this.boxCollider = GetComponent<BoxCollider>();
+            this.boxCollider.center = new Vector3(0, 0, this.frustum.F2.FaceOffsetFromCenter.z / 4f);
+            this.boxCollider.size = new Vector3(Mathf.Max(this.frustum.F1.Width, this.frustum.F2.Width), Math.Max(this.frustum.F1.Height, this.frustum.F2.Height), this.frustum.F2.FaceOffsetFromCenter.z / 2f);
         }
 
         public override Vector3 GetCenterWorldPos()
@@ -71,7 +73,8 @@ namespace RTPuzzle
 
         public override float GetRadiusRange()
         {
-            return this.frustum.F2.FaceOffsetFromCenter.z;
+            float diagonalDistance = Vector3.Distance(Vector3.zero, new Vector3(0, this.boxCollider.size.y / 2f, this.boxCollider.size.z));
+            return Mathf.Max(this.boxCollider.size.z, this.boxCollider.size.x / 2f, this.boxCollider.size.y / 2f, diagonalDistance);
         }
 
         public override bool IsInside(Vector3 worldPointComparison)
@@ -91,6 +94,7 @@ namespace RTPuzzle
 
         private void OnDrawGizmos()
         {
+            this.DoCalculation();
             var worldPosFrustum = GetFrustumPointsWorldPositions();
 
             this.DrawFace(worldPosFrustum.FC1, worldPosFrustum.FC2, worldPosFrustum.FC3, worldPosFrustum.FC4);
@@ -99,7 +103,7 @@ namespace RTPuzzle
             this.DrawFace(worldPosFrustum.FC3, worldPosFrustum.FC7, worldPosFrustum.FC8, worldPosFrustum.FC4);
             this.DrawFace(worldPosFrustum.FC4, worldPosFrustum.FC8, worldPosFrustum.FC5, worldPosFrustum.FC1);
             this.DrawFace(worldPosFrustum.FC5, worldPosFrustum.FC6, worldPosFrustum.FC7, worldPosFrustum.FC8);
- 
+
         }
 
         private void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)
