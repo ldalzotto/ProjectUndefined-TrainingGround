@@ -68,23 +68,17 @@
 			int BoxDirectionIntersectsPoint(float3 WorldBoxDirection, float3 WorldBoxCenterPosition, float LocalDirectionSize, float3 pointWorldPosition) {
 				float3 startPoint = WorldBoxCenterPosition - (WorldBoxDirection * (LocalDirectionSize*0.5));
 				float3 endPoint = WorldBoxCenterPosition + (WorldBoxDirection * (LocalDirectionSize*0.5));
-				if (dot(endPoint - startPoint, endPoint - startPoint) > dot(pointWorldPosition - startPoint, endPoint - startPoint) && dot(pointWorldPosition - startPoint, endPoint - startPoint) > 0) {
-					return 1;
-				}
-				return 0;
+				return (dot(endPoint - startPoint, endPoint - startPoint) > dot(pointWorldPosition - startPoint, endPoint - startPoint)) && dot(pointWorldPosition - startPoint, endPoint - startPoint) > 0;
 			}
 			
 			int BoxIntersectsPoint(BoxRangeBufferData boxRangeBufferData, float3 pointWorldPosition) {
-		
-				if (BoxDirectionIntersectsPoint(boxRangeBufferData.Forward, boxRangeBufferData.Center, boxRangeBufferData.LocalSize.z, pointWorldPosition) == 1
-					&& BoxDirectionIntersectsPoint(boxRangeBufferData.Up, boxRangeBufferData.Center, boxRangeBufferData.LocalSize.y, pointWorldPosition) == 1
-					&& BoxDirectionIntersectsPoint(boxRangeBufferData.Right, boxRangeBufferData.Center, boxRangeBufferData.LocalSize.x, pointWorldPosition) == 1) {
-					return 1;
-				}
-				return 0;
+				return (BoxDirectionIntersectsPoint(boxRangeBufferData.Forward, boxRangeBufferData.Center, boxRangeBufferData.LocalSize.z, pointWorldPosition)
+				      + BoxDirectionIntersectsPoint(boxRangeBufferData.Up, boxRangeBufferData.Center, boxRangeBufferData.LocalSize.y, pointWorldPosition)
+					  + BoxDirectionIntersectsPoint(boxRangeBufferData.Right, boxRangeBufferData.Center, boxRangeBufferData.LocalSize.x, pointWorldPosition)) 
+						 == 3;
 			}
 
-			/*
+/*
  *     C5----C6
  *    / |    /|
  *   C1----C2 |
@@ -96,38 +90,22 @@
 			int PointInsideFrustumV2(float3 comparisonPoint, float3 FC1, float3 FC2, float3 FC3, float3 FC4, float3 FC5, float3 FC6, float3 FC7, float3 FC8) {
 
 				float crossSign = sign(dot(FC5 - FC1, cross(FC2 - FC1, FC4 - FC1)));
-				float3 normal = crossSign * cross(FC2 - FC1, FC3 - FC1);
-				int pointInsideFrustum = dot(normal, comparisonPoint - FC1) >= 0 && dot(normal, FC5 - FC1) > 0;
 
-				if (pointInsideFrustum) {
-					normal = crossSign * cross(FC5 - FC1, FC2 - FC1);
-					pointInsideFrustum = dot(normal, comparisonPoint - FC1) >= 0 && dot(normal, FC4 - FC1) > 0;
+				float3 normal1 = crossSign * cross(FC2 - FC1, FC3 - FC1);
+				float3 normal2 = crossSign * cross(FC5 - FC1, FC2 - FC1);
+				float3 normal3 = crossSign * cross(FC6 - FC2, FC3 - FC2);
+				float3 normal4 = crossSign * cross(FC7 - FC3, FC4 - FC3);
+				float3 normal5 = crossSign * cross(FC8 - FC4, FC1 - FC4);
+				float3 normal6 = crossSign * cross(FC8 - FC5, FC6 - FC5);
 
-					if (pointInsideFrustum) {
-						normal = crossSign * cross(FC6 - FC2, FC3 - FC2);
-						pointInsideFrustum = dot(normal, comparisonPoint - FC2) >= 0 && dot(normal, FC1 - FC2) > 0;
-
-						if (pointInsideFrustum) {
-							normal = crossSign * cross(FC7 - FC3, FC4 - FC3);
-							pointInsideFrustum = dot(normal, comparisonPoint - FC3) >= 0 && dot(normal, FC2 - FC3) > 0;
-
-							if (pointInsideFrustum) {
-								normal = crossSign * cross(FC8 - FC4, FC1 - FC4);
-								pointInsideFrustum = dot(normal, comparisonPoint - FC4) >= 0 && dot(normal, FC3 - FC4) > 0;
-
-								if (pointInsideFrustum) {
-									normal = crossSign * cross(FC8 - FC5, FC6 - FC5);
-									pointInsideFrustum = dot(normal, comparisonPoint - FC5) >= 0 && dot(normal, FC1 - FC5) > 0;
-								}
-							}
-						}
-
-					}
-				}
-
-				return pointInsideFrustum;
+				return ( (dot(normal1, comparisonPoint - FC1) >= 0) * (dot(normal1, FC5 - FC1) > 0) *
+						 (dot(normal2, comparisonPoint - FC1) >= 0) * (dot(normal2, FC4 - FC1) > 0) *
+						 (dot(normal3, comparisonPoint - FC2) >= 0) * (dot(normal3, FC1 - FC2) > 0) *
+						 (dot(normal4, comparisonPoint - FC3) >= 0) * (dot(normal4, FC2 - FC3) > 0) *
+						 (dot(normal5, comparisonPoint - FC4) >= 0) * (dot(normal5, FC3 - FC4) > 0) *
+						 (dot(normal6, comparisonPoint - FC5) >= 0) * (dot(normal6, FC1 - FC5) > 0) 
+					  );
 			}
-
 
 			int PointInsideFrustumV2(float3 comparisonPoint, FrustumRangeBufferData frustumRangeBufferData) {
 				return PointInsideFrustumV2(comparisonPoint, frustumRangeBufferData.FC1, frustumRangeBufferData.FC2, frustumRangeBufferData.FC3, frustumRangeBufferData.FC4,
@@ -141,14 +119,9 @@
 
 			int PointIsOccludedByFrustum(float3 comparisonPoint, RangeExecutionOrderBufferData rangeExecutionOrderBufferData) {
 				int isInsideFrustum = 0;
-				for (int index = 0; index < _RangeToFrustumBufferLinkCount; index++) {
-					if (RangeToFrustumBufferLinkBuffer[index].RangeIndex == rangeExecutionOrderBufferData.Index && RangeToFrustumBufferLinkBuffer[index].RangeType == rangeExecutionOrderBufferData.RangeType) {
-
-						isInsideFrustum = PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
-						if (isInsideFrustum) {
-							break;
-						}
-					}
+				for (int index = 0; (index < _RangeToFrustumBufferLinkCount) && (isInsideFrustum == 0); index++) {
+					isInsideFrustum = (RangeToFrustumBufferLinkBuffer[index].RangeIndex == rangeExecutionOrderBufferData.Index) * (RangeToFrustumBufferLinkBuffer[index].RangeType == rangeExecutionOrderBufferData.RangeType)
+						* PointInsideFrustumV2(comparisonPoint, FrustumBufferDataBuffer[RangeToFrustumBufferLinkBuffer[index].FrustumIndex]);
 				}
 				return isInsideFrustum;
 			}
@@ -157,7 +130,6 @@
 				float3 from = normalize(worldRangeForward);
 				float3 to = normalize(comparisonPoint - rangeCenterPoint);
 				float angleValue = (2 - (dot(from, to) + 1)) * 0.5 * 3.141592;
-
 				return angleValue <= maxAngleLimitationRad;
 			}
 
@@ -172,38 +144,24 @@
 					if (executionOrder.RangeType == 0) {
 						CircleRangeBufferData rangeBuffer = CircleRangeBuffer[executionOrder.Index];
 						float calcDistance = abs(distance(i.worldPos, rangeBuffer.CenterWorldPosition));
-						if (calcDistance <= rangeBuffer.Radius) {
-
-								if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)) {
-									fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
-									fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-									newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-									computeCol = lerp(computeCol, newCol, _RangeMixFactor);
-								}
-
-						}
+						fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
+						fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+						newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
+						computeCol = lerp(computeCol, newCol, _RangeMixFactor * (calcDistance <= rangeBuffer.Radius) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)));
 					}
 					else if (executionOrder.RangeType == 2) {
 						FrustumRangeBufferData rangeBuffer = FrustumRangeBuffer[executionOrder.Index];
-						if (PointInsideFrustumV2(i.worldPos, rangeBuffer)) {
-
-							if ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)) {
-								fixed4 newCol = rangeBuffer.AuraColor;
-								fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-								newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-								computeCol = lerp(computeCol, newCol, _RangeMixFactor);
-							}
-
-						}
+						fixed4 newCol = rangeBuffer.AuraColor;
+						fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+						newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
+						computeCol = lerp(computeCol, newCol, _RangeMixFactor * PointInsideFrustumV2(i.worldPos, rangeBuffer) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(i.worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)));
 					}
 					else {
 						BoxRangeBufferData rangeBuffer = BoxRangeBuffer[executionOrder.Index];
-						if (BoxIntersectsPoint(rangeBuffer, i.worldPos) == 1) {
-							fixed4 newCol = rangeBuffer.AuraColor;
-							fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
-							newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
-							computeCol = lerp(computeCol, newCol, _RangeMixFactor);
-						}
+						fixed4 newCol = rangeBuffer.AuraColor;
+						fixed4 patternColor = tex2D(_AuraTexture, float2(i.worldPos.x, i.worldPos.z)*2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
+						newCol = saturate(newCol + patternColor * rangeBuffer.AuraTextureAlbedoBoost) * _AlbedoBoost;
+						computeCol = lerp(computeCol, newCol, _RangeMixFactor * BoxIntersectsPoint(rangeBuffer, i.worldPos));
 					}
 			}
 
