@@ -23,6 +23,10 @@ namespace RTPuzzle
         {
             return this.obstacleListener.IsListenerHaveObstaclesNearby();
         }
+        public bool IsBoxOccludedByObstacles(BoxCollider boxCollider)
+        {
+            return this.obstacleListener.IsBoxOccludedByObstacles(boxCollider);
+        }
         public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint)
         {
             return this.obstacleListener.IsPointOccludedByObstacles(worldPositionPoint);

@@ -61,12 +61,7 @@ namespace RTPuzzle
         {
             if (Vector3.Distance(ObstacleListener.transform.position, worldPositionPoint) <= ObstacleListener.Radius)
             {
-                //If calculation is waiting, we trigger sync calculation
-                if (this.calculationResults[ObstacleListener].Values.Count == 0 || this.calculationResults[ObstacleListener].Values.ToList().Select(result => result).Where(result => result.CalculationAsked()).Count() > 0)
-                {
-                    //Debug.Log(MyLog.Format("Forced obstacle listener calculation : " + ObstacleListener.name));
-                    this.UpdateSquareObstaclesOfListener(ObstacleListener, async: false);
-                }
+                ForceCalculationIfNecessary(ObstacleListener);
 
                 foreach (var obstacleResultEntry in this.calculationResults[ObstacleListener].Values)
                 {
@@ -84,6 +79,58 @@ namespace RTPuzzle
             }
 
             return false;
+        }
+
+        //A boxcollider is considered occluded by obstacles if it's eight corner points are occluded by obstacle frustums
+        public bool IsPointOccludedByObstacles(ObstacleListener ObstacleListener, BoxCollider boxCollider)
+        {
+            this.ForceCalculationIfNecessary(ObstacleListener);
+
+            Intersection.ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            var boxPointsOcclusionStatus = new List<BoxPointOccludedStatus>() {
+                new BoxPointOccludedStatus(BC1),new BoxPointOccludedStatus(BC2),new BoxPointOccludedStatus(BC3),new BoxPointOccludedStatus(BC4),new BoxPointOccludedStatus(BC5),new BoxPointOccludedStatus(BC6)
+                ,new BoxPointOccludedStatus(BC7),new BoxPointOccludedStatus(BC8)
+            };
+
+            foreach (var obstacleResultEntry in this.calculationResults[ObstacleListener].Values)
+            {
+                foreach (var calculatedFrustumPosition in obstacleResultEntry.CalculatedFrustumPositions)
+                {
+                    foreach (var boxPointOcclusionStatus in boxPointsOcclusionStatus)
+                    {
+                        if (!boxPointOcclusionStatus.IsOccluded && Intersection.PointInsideFrustum(calculatedFrustumPosition, boxPointOcclusionStatus.WorldPos))
+                        {
+                            boxPointOcclusionStatus.IsOccluded = true;
+                        }
+                    }
+                }
+            }
+
+            foreach (var boxPointOcclusionStatus in boxPointsOcclusionStatus)
+            {
+                //At least one point is not occluded -> box is visible
+                if (!boxPointOcclusionStatus.IsOccluded)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        class BoxPointOccludedStatus
+        {
+            private Vector3 worldPos;
+            private bool isOccluded;
+
+            public BoxPointOccludedStatus(Vector3 worldPos)
+            {
+                this.worldPos = worldPos;
+                this.isOccluded = false;
+            }
+
+            public Vector3 WorldPos { get => worldPos; }
+            public bool IsOccluded { get => isOccluded; set => isOccluded = value; }
         }
         #endregion
 
@@ -161,6 +208,15 @@ namespace RTPuzzle
             }
         }
 
+        private void ForceCalculationIfNecessary(ObstacleListener ObstacleListener)
+        {
+            //If calculation is waiting, we trigger sync calculation
+            if (this.calculationResults[ObstacleListener].Values.Count == 0 || this.calculationResults[ObstacleListener].Values.ToList().Select(result => result).Where(result => result.CalculationAsked()).Count() > 0)
+            {
+                //Debug.Log(MyLog.Format("Forced obstacle listener calculation : " + ObstacleListener.name));
+                this.UpdateSquareObstaclesOfListener(ObstacleListener, async: false);
+            }
+        }
     }
 
     public class SquareObstacleFrustumCalculationResult

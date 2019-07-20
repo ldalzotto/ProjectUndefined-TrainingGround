@@ -327,14 +327,20 @@ namespace RTPuzzle
         private const string ANIM_SpeedParameter = "Speed";
         private Animator NPCAnimator;
 
+        private bool isAnimatorPlayingAnimatorController = false;
+
         public NPCAnimationDataManager(Animator nPCAnimator)
         {
             NPCAnimator = nPCAnimator;
+            isAnimatorPlayingAnimatorController = this.NPCAnimator.runtimeAnimatorController != null;
         }
 
         public void Tick(float timeAttenuation)
         {
-            this.NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
+            if (isAnimatorPlayingAnimatorController)
+            {
+                this.NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
+            }
         }
 
     }

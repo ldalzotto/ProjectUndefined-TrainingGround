@@ -177,8 +177,6 @@
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
-    <Compile Include="Assets\Test\IntersectionTest\Target_Test.cs" />
-    <Compile Include="Assets\Test\IntersectionTest\Test_Box.cs" />
     <Compile Include="Assets\Test\ShaderVectorTest.cs" />
     <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />

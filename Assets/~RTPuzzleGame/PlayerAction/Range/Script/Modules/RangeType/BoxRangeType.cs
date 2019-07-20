@@ -28,6 +28,11 @@ namespace RTPuzzle
             return Mathf.Max(this.BoxCollider.bounds.size.x, this.BoxCollider.bounds.size.y, this.BoxCollider.bounds.size.z);
         }
 
+        public override bool IsInside(BoxCollider boxCollider)
+        {
+            return false;
+        }
+
         public override bool IsInside(Vector3 worldPointComparison)
         {
             return false;

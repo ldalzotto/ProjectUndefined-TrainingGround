@@ -38,7 +38,7 @@ namespace CoreGame
 
         [SerializeField]
         public FrustumCalculationType FrustumCalculationType = FrustumCalculationType.PROJECTION;
-        
+
 
         public FrustumV2()
         {
@@ -62,12 +62,12 @@ namespace CoreGame
             this.LocalStartAngleProjection = worldPositionPoint - this.WorldPosition;
             this.FrustumCalculationType = FrustumCalculationType.PROJECTION;
         }
-        
+
         public Quaternion GetRotation()
         {
             return this.WorldRotation * this.DeltaRotation;
         }
-
+        
         public void CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
         {
             Vector3 rotatedFrustumCenter = this.GetRotation() * this.Center;
@@ -116,9 +116,9 @@ namespace CoreGame
                 C7 = C3 + ((C3 - WorldStartAngleProjection) * this.FaceDistance);
                 C8 = C4 + ((C4 - WorldStartAngleProjection) * this.FaceDistance);
             }
-            
+
         }
-        
+
     }
 
     [System.Serializable]
@@ -137,5 +137,4 @@ namespace CoreGame
     {
         FACE, PROJECTION
     }
-
 }

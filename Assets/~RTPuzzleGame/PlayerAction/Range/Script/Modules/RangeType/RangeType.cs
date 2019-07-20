@@ -26,6 +26,7 @@ namespace RTPuzzle
         public virtual void HandlesDraw() { }
 #endif
         public abstract bool IsInside(Vector3 worldPointComparison);
+        public abstract bool IsInside(BoxCollider boxCollider);
         public abstract Collider GetCollider();
         public abstract float GetRadiusRange();
         public abstract Vector3 GetCenterWorldPos();

@@ -3,6 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace RTPuzzle
 {
@@ -121,6 +122,18 @@ namespace RTPuzzle
         {
             return this.rangeType.IsRangeConfigurationDefined();
         }
+        public bool IsInsideAndNotOccluded(BoxCollider boxCollider)
+        {
+            Profiler.BeginSample("ObstacleIsInsideAndNotOccluded");
+            bool isInsideRange = this.rangeType.IsInside(boxCollider);
+            if (this.rangeObstacleListener != null && isInsideRange)
+            {
+                isInsideRange = isInsideRange && !this.IsOccluded(boxCollider);
+            }
+            Profiler.EndSample();
+            return isInsideRange;
+        }
+
         public bool IsInsideAndNotOccluded(Vector3 worldPointComparison)
         {
             bool isInsideRange = this.rangeType.IsInside(worldPointComparison);
@@ -129,6 +142,11 @@ namespace RTPuzzle
                 isInsideRange = isInsideRange && !this.IsOccluded(worldPointComparison);
             }
             return isInsideRange;
+        }
+
+        public bool IsOccluded(BoxCollider boxCollider)
+        {
+            return this.rangeObstacleListener != null && this.rangeObstacleListener.IsBoxOccludedByObstacles(boxCollider);
         }
         public bool IsOccluded(Vector3 worldPointComparison)
         {

@@ -41,6 +41,11 @@ namespace RTPuzzle
             }
         }
 
+        public override bool IsInside(BoxCollider boxCollider)
+        {
+            return false;
+        }
+
         public override bool IsInside(Vector3 worldPointComparison)
         {
             return Vector3.Distance(this.GetCenterWorldPos(), worldPointComparison) <= this.sphereCollider.radius;

@@ -32,7 +32,7 @@ namespace RTPuzzle
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
             this.ObstacleListenerChangePositionTracker = new ObstacleListenerChangePositionTracker(this);
         }
-
+        
         public void OnObstacleListenerDestroyed()
         {
             this.ObstaclesListenerManager.OnObstacleListenerDestroyed(this);
@@ -56,6 +56,11 @@ namespace RTPuzzle
         {
             return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, worldPositionPoint);
         }
+        internal bool IsBoxOccludedByObstacles(BoxCollider boxCollider)
+        {
+            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider);
+        }
+
         #endregion
 
         private void OnDrawGizmos()

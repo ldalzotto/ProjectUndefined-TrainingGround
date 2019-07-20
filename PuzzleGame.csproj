@@ -207,6 +207,9 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneHelper.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\FrustumPlaneIntersectionTest.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\FrustumPlaneIntersectionTestV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\LineObjTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />

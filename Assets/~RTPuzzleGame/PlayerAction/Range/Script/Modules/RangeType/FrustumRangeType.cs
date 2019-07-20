@@ -81,6 +81,11 @@ namespace RTPuzzle
             return Mathf.Max(this.boxCollider.size.z, this.boxCollider.size.x / 2f, this.boxCollider.size.y / 2f, diagonalDistance);
         }
 
+        public override bool IsInside(BoxCollider boxCollider)
+        {
+            return Intersection.FrustumBoxIntersection(this.GetFrustumPointsWorldPositions(), boxCollider) || Intersection.BoxEntirelyContainedInFrustum(this.GetFrustumPointsWorldPositions(), boxCollider);
+        }
+
         public override bool IsInside(Vector3 worldPointComparison)
         {
             return Intersection.PointInsideFrustum(this.frustumPointsWorldPositions, worldPointComparison);
