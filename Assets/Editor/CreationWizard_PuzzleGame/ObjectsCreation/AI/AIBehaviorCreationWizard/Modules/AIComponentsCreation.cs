@@ -44,6 +44,10 @@ namespace Editor_AIBehaviorCreationWizard
 
         public override void InstanciateInEditor(AbstractCreationWizardEditorProfile editorProfile)
         {
+            if (this.AIComponentsType == null)
+            {
+                this.AIComponentsType = TypeHelper.GetAllTypeAssignableFrom(typeof(AbstractAIComponents)).ToList();
+            }
             this.CreatedObject = (AbstractAIComponents)ScriptableObject.CreateInstance(this.AIComponentsType[this.selectedType].Name);
             this.isNew = true;
         }
