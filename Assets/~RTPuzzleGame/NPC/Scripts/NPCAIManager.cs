@@ -334,7 +334,7 @@ namespace RTPuzzle
 
         public void Tick(float timeAttenuation)
         {
-            NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
+            this.NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
         }
 
     }

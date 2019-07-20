@@ -86,6 +86,7 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\LaunchProjectileTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\SceneMock.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\TestPosition.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\Environment\Ground\GroundEffectManagerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleInitializerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />

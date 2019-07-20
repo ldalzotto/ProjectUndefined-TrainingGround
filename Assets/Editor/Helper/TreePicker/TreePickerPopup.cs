@@ -144,6 +144,7 @@ public class TreePickerPopup : PopupWindowContent
         if (this.treeSearchField == null)
         {
             this.treeSearchField = new SearchField();
+            this.treeSearchField.SetFocus();
         }
         if (this.searchRegex == null)
         {

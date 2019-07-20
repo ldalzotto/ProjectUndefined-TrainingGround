@@ -19,5 +19,7 @@ namespace GameConfigurationID {
     EDITOR_TEST = 1,
     
     CHEESE_SEWER_RTP_2 = 2,
+    
+    RTP_TEST_RangeEffectManager = 3,
   }
 }

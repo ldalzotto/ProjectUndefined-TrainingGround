@@ -30,7 +30,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
         }
         return EditorGUI.GetPropertyHeight(property) * lineNB;
     }
-
+    
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         CustomEnum searchableEnum = (CustomEnum)attribute;

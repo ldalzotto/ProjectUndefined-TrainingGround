@@ -34,6 +34,7 @@ public class EnumSearchGUIWindow : EditorWindow
             if (this.searchField == null)
             {
                 this.searchField = new SearchField();
+                this.searchField.SetFocus();
             }
             if (this.searchFieldStyle == null)
             {

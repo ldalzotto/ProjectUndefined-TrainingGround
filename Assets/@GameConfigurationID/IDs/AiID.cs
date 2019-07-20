@@ -33,5 +33,7 @@ namespace GameConfigurationID {
     EDITOR_TEST = 8,
     
     _1_Town_GardenWatchman = 9,
+    
+    RTP_TEST_RangeEffectManager = 10,
   }
 }

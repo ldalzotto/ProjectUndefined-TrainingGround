@@ -19,7 +19,6 @@ namespace Editor_LevelSceneExplorer
             LevelSceneLoaderV2 LevelSceneLoaderV2Window = EditorWindow.GetWindow<LevelSceneLoaderV2>();
             LevelSceneLoaderV2Window.Show();
             LevelSceneExplorer window = EditorWindow.GetWindow<LevelSceneExplorer>(new Type[] { typeof(LevelSceneLoaderV2) });
-            //  LevelSceneExplorer window = (LevelSceneExplorer)EditorWindow.GetWindow(typeof(LevelSceneExplorer));
             window.Show();
         }
 
@@ -43,6 +42,8 @@ namespace Editor_LevelSceneExplorer
             searchBar.style.height = 15;
             searchBar.style.justifyContent = Justify.Center;
             searchBar.RegisterValueChangedCallback(this.OnSearchChange);
+            searchBar.focusable = true;
+            searchBar.Focus();
             root.Add(searchBar);
 
             var scrollView = new ScrollView(ScrollViewMode.Vertical);

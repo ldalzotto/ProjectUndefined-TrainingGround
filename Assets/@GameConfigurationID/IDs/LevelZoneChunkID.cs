@@ -25,5 +25,7 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION_TEST = 4,
     
     RTP_TEST_OBSTACLES = 5,
+    
+    RTP_TEST_RangeEffectManager = 6,
   }
 }
