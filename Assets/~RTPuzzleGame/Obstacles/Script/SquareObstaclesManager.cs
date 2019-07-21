@@ -9,11 +9,7 @@ namespace RTPuzzle
 
         private List<SquareObstacle> squareObstacles;
         private List<SquareObstacle> lastFrameChangedObstacles;
-
-        #region Data Retrieval
-        public List<SquareObstacle> LastFrameChangedObstacles { get => lastFrameChangedObstacles; }
-        #endregion
-
+        
         public void Init()
         {
             this.squareObstacles = GameObject.FindObjectsOfType<SquareObstacle>().ToList();
@@ -34,6 +30,13 @@ namespace RTPuzzle
                     this.lastFrameChangedObstacles.Add(squareObstacle);
                 }
             }
+        }
+
+        public List<SquareObstacle> ConsumeLastFrameChangedObstacles()
+        {
+            var returnList = new List<SquareObstacle>(this.lastFrameChangedObstacles);
+            this.lastFrameChangedObstacles.Clear();
+            return returnList;
         }
     }
 }

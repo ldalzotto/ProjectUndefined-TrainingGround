@@ -147,7 +147,7 @@ namespace RTPuzzle
                 }
             }
 
-            foreach (var changedObstacles in this.SquareObstaclesManager.LastFrameChangedObstacles)
+            foreach (var changedObstacles in this.SquareObstaclesManager.ConsumeLastFrameChangedObstacles())
             {
                 foreach (var obstacleListener in calculationResultsKeys)
                 {
@@ -264,6 +264,7 @@ namespace RTPuzzle
 
         public void AskCalculation()
         {
+            Debug.Log(MyLog.Format("ObstacleFrustumCalculation asked. Listener : " + this.obstacleListenerRef.name + " obstacle : " + this.squareObstacleRef.name));
             this.calculationAsked = true;
             this.worldPositionStartAngleDefinition = this.obstacleListenerRef.transform.position;
             this.obstaclePosition = this.squareObstacleRef.transform.position;
