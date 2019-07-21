@@ -47,8 +47,10 @@ namespace RTPuzzle
         }
 
         #region Logical Conditions
+        
         public bool IsWorldPositionPointContainedInOcclusionFrustum(Vector3 comparisonWorldPoint)
         {
+            #warning PointInsideFrustum trigger frustum points recalculation
             bool isIsideOcclusionFrustum = false;
             foreach (var faceFrustum in this.FaceFrustums)
             {

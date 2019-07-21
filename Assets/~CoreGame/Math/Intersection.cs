@@ -22,19 +22,13 @@ namespace CoreGame
                 || FaceIntersectOrContainsSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
                 || FaceIntersectOrContainsSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
         }
-
-        public static void BoxPointCalculationV2(Vector3 boxColliderWorldPosition, Quaternion boxColliderRotation, Vector3 rotatedBoxColliderCenter, Vector3 diagonalDirection, out Vector3 C1)
-        {
-            C1 = boxColliderWorldPosition + boxColliderRotation * (diagonalDirection) + rotatedBoxColliderCenter;
-            C1 = new Vector3((float)(System.Math.Round((double)C1.x, 3)), (float)(System.Math.Round((double)C1.y, 3)), (float)(System.Math.Round((double)C1.z, 3)));
-        }
-
         #endregion
 
         #region FRUSTUM<->POINT
-        //This method trigger frustum points recalculation
+        
         public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
         {
+            #warning PointInsideFrustum trigger frustum points recalculation
             frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
             return PointInsideFrustumComputation(worldPositionPoint, C1, C2, C3, C4, C5, C6, C7, C8);
         }
