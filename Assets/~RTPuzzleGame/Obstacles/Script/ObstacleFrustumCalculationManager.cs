@@ -65,15 +65,12 @@ namespace RTPuzzle
 
                 foreach (var obstacleResultEntry in this.calculationResults[ObstacleListener].Values)
                 {
-                    bool pointContainedInOcclusionFrustum = false;
                     foreach (var calculatedFrustumPosition in obstacleResultEntry.CalculatedFrustumPositions)
                     {
-                        pointContainedInOcclusionFrustum = pointContainedInOcclusionFrustum || Intersection.PointInsideFrustum(calculatedFrustumPosition, worldPositionPoint);
-                    }
-
-                    if (pointContainedInOcclusionFrustum)
-                    {
-                        return true;
+                        if(Intersection.PointInsideFrustum(calculatedFrustumPosition, worldPositionPoint))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
