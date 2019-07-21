@@ -5,80 +5,22 @@ namespace CoreGame
 
     public class Intersection
     {
-
+        
         #region BOX<->SPHERE
 
         public static bool BoxIntersectsSphereV2(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
         {
-            bool boxIntersectSphere = false;
-            Vector3 diagDirection = new Vector3();
-            Vector3 boxColliderSize = boxCollider.size;
-            Vector3 boxColliderWorldPosition = boxCollider.transform.position;
-            Quaternion boxColliderRotation = boxCollider.transform.rotation;
-            Vector3 rotatedBoxColliderCenter = boxColliderRotation * boxCollider.center;
-
             //TODO -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
             //TODO -> Also, order of faces can be sorted by distance check.
-
-            SetVector(ref diagDirection, boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C1);
-
-            SetVector(ref diagDirection, boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C2);
-
-            SetVector(ref diagDirection, -boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C3);
-
-            SetVector(ref diagDirection, -boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            diagDirection.Scale(boxCollider.transform.lossyScale);
-            BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C4);
+            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
             //Face intersection
-            boxIntersectSphere = FaceIntersectOrContainsSphere(C1, C2, C3, C4, SphereWorldPosition, SphereRadius);
-
-            if (!boxIntersectSphere)
-            {
-
-                SetVector(ref diagDirection, boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-                diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C5);
-
-                SetVector(ref diagDirection, boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-                diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C6);
-
-                SetVector(ref diagDirection, -boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-                diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C7);
-
-                SetVector(ref diagDirection, -boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-                diagDirection.Scale(boxCollider.transform.lossyScale);
-                BoxPointCalculationV2(boxColliderWorldPosition, boxColliderRotation, rotatedBoxColliderCenter, diagDirection / 2f, out Vector3 C8);
-
-                boxIntersectSphere = FaceIntersectOrContainsSphere(C5, C6, C7, C8, SphereWorldPosition, SphereRadius);
-
-                if (!boxIntersectSphere)
-                {
-                    boxIntersectSphere = FaceIntersectOrContainsSphere(C1, C2, C5, C6, SphereWorldPosition, SphereRadius);
-                    if (!boxIntersectSphere)
-                    {
-                        boxIntersectSphere = FaceIntersectOrContainsSphere(C3, C4, C7, C8, SphereWorldPosition, SphereRadius);
-                        if (!boxIntersectSphere)
-                        {
-                            boxIntersectSphere = FaceIntersectOrContainsSphere(C1, C5, C3, C7, SphereWorldPosition, SphereRadius);
-                            if (!boxIntersectSphere)
-                            {
-                                boxIntersectSphere = FaceIntersectOrContainsSphere(C2, C6, C4, C8, SphereWorldPosition, SphereRadius);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return boxIntersectSphere;
+            return FaceIntersectOrContainsSphere(BC6, BC8, BC5, BC7, SphereWorldPosition, SphereRadius)
+                || FaceIntersectOrContainsSphere(BC2, BC4, BC1, BC3, SphereWorldPosition, SphereRadius)
+                || FaceIntersectOrContainsSphere(BC6, BC8, BC2, BC4, SphereWorldPosition, SphereRadius)
+                || FaceIntersectOrContainsSphere(BC5, BC7, BC1, BC3, SphereWorldPosition, SphereRadius)
+                || FaceIntersectOrContainsSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
+                || FaceIntersectOrContainsSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
         }
 
         public static void BoxPointCalculationV2(Vector3 boxColliderWorldPosition, Quaternion boxColliderRotation, Vector3 rotatedBoxColliderCenter, Vector3 diagonalDirection, out Vector3 C1)
@@ -145,27 +87,18 @@ namespace CoreGame
             return pointInsideFrustum;
         }
 
-
-
+        
         public static bool FaceIntersectOrContainsSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
             bool planeIntersected = false;
             bool edgeIntersectedOrContained = false;
 
             // (1) - We check if edges cross the sphere or are fully contained inside
-            edgeIntersectedOrContained = LineSphereIntersection(C1, (C2 - C1).normalized, Vector3.Distance(C2, C1), SphereWorldPosition, SphereRadius);
-            if (!edgeIntersectedOrContained)
-            {
-                edgeIntersectedOrContained = LineSphereIntersection(C1, (C3 - C1).normalized, Vector3.Distance(C3, C1), SphereWorldPosition, SphereRadius);
-            }
-            if (!edgeIntersectedOrContained)
-            {
-                edgeIntersectedOrContained = LineSphereIntersection(C3, (C4 - C3).normalized, Vector3.Distance(C4, C3), SphereWorldPosition, SphereRadius);
-            }
-            if (!edgeIntersectedOrContained)
-            {
-                edgeIntersectedOrContained = LineSphereIntersection(C2, (C4 - C2).normalized, Vector3.Distance(C4, C2), SphereWorldPosition, SphereRadius);
-            }
+            edgeIntersectedOrContained 
+                = LineSphereIntersection(C1, (C2 - C1).normalized, Vector3.Distance(C2, C1), SphereWorldPosition, SphereRadius)
+               || LineSphereIntersection(C1, (C3 - C1).normalized, Vector3.Distance(C3, C1), SphereWorldPosition, SphereRadius)
+               || LineSphereIntersection(C3, (C4 - C3).normalized, Vector3.Distance(C4, C3), SphereWorldPosition, SphereRadius)
+               || LineSphereIntersection(C2, (C4 - C2).normalized, Vector3.Distance(C4, C2), SphereWorldPosition, SphereRadius);
 
             // (2) - If edges doesn't cross the sphere, we try to find the intersection from sphere to cube face plane //http://www.ambrsoft.com/TrigoCalc/Sphere/SpherePlaneIntersection_.htm
             // Intersection is valid only if intercention circle center is contained insibe cube face https://math.stackexchange.com/a/190373
@@ -192,8 +125,6 @@ namespace CoreGame
                         && Vector3.Dot(C3 - C1, C3 - C1) > Vector3.Dot(planeIntersectionPoint - C1, C3 - C1) && Vector3.Dot(planeIntersectionPoint - C1, C3 - C1) > 0;
                 }
             }
-
-
 
             return (planeIntersected || edgeIntersectedOrContained);
         }
@@ -240,7 +171,7 @@ namespace CoreGame
         public static bool BoxEntirelyContainedInFrustum(FrustumPointsPositions frustumPoints, BoxCollider boxCollider)
         {
             ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
-            return (PointInsideFrustumComputation(BC1, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8 )
+            return (PointInsideFrustumComputation(BC1, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
                 && PointInsideFrustumComputation(BC2, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
                 && PointInsideFrustumComputation(BC3, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
                 && PointInsideFrustumComputation(BC4, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
@@ -263,15 +194,6 @@ namespace CoreGame
             return true;
         }
         #endregion
-
-        /*
- *     C5----C6
- *    / |    /|
- *   C1----C2 |
- *   |  C8  | C7   
- *   | /    |/     C3->C7  Forward
- *   C4----C3     
- */
 
         public static bool LineFrustumIntersection(Vector3 lineOrigin, Vector3 lineEnd, FrustumPointsPositions frustumPoints)
         {
@@ -304,18 +226,6 @@ namespace CoreGame
             }
             return true;
         }
-
-        /*
-        private static bool SegmentAccuratePlaneIntersectionOrContains(Vector3 segmentStart, Vector3 segmentEnd, Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 insideNormal)
-        {
-            if(!SegmentAccuratePlaneIntersection(segmentStart, segmentEnd, C1, C2, C3, C4, insideNormal))
-            {
-                return Vector3.Dot(insideNormal, segmentStart - C1) >= 0 && Vector3.Dot(insideNormal, segmentEnd - C1) >= 0;
-            }
-
-            return true;
-        }
-        */
 
         //http://geomalgorithms.com/a05-_intersect-1.html
         /*
@@ -369,7 +279,6 @@ namespace CoreGame
             }
 
             //If lines extremities are in the inside normal side
-            // intersectOrContain = Vector3.Dot(insideNormal, (C1 - segmentStart).normalized) >= 0 && Vector3.Dot(insideNormal, (C1 - segmentEnd).normalized) >= 0;
 
             float sI = N / D;
             if (sI < 0 || sI > 1)
@@ -379,21 +288,12 @@ namespace CoreGame
 
             Vector3 I = segmentStart + (sI * u);
 
-          //  Gizmos.DrawWireSphere(I, 0.3f);
-
-
-
             //If the intersection point is outside of the plane
             //We project intersection point to normal
             Vector3 normal12 = Vector3.Cross(C2 - C1, insideNormal);
             Vector3 normal23 = Vector3.Cross(C3 - C2, insideNormal);
             Vector3 normal34 = Vector3.Cross(C4 - C3, insideNormal);
             Vector3 normal41 = Vector3.Cross(C1 - C4, insideNormal);
-
-          //  Gizmos.DrawLine(C1, C1 + normal12.normalized);
-         //   Gizmos.DrawLine(C2, C2 + normal23.normalized);
-          //  Gizmos.DrawLine(C3, C3 + normal34.normalized);
-          //  Gizmos.DrawLine(C4, C4 + normal41.normalized);
 
             if (Vector3.Dot(normal12, I - C1) < 0 || Vector3.Dot(normal23, I - C2) < 0 || Vector3.Dot(normal34, I - C3) < 0 || Vector3.Dot(normal41, I - C4) < 0)
             {
@@ -402,60 +302,35 @@ namespace CoreGame
 
             return true;
         }
-
-
-        private static void SetVector(ref Vector3 vector, float x, float y, float z)
-        {
-            vector.x = x;
-            vector.y = y;
-            vector.z = z;
-        }
-        private static void SetVector(ref Vector3 vector, Vector3 newVector)
-        {
-            vector.x = newVector.x;
-            vector.y = newVector.y;
-            vector.z = newVector.z;
-        }
-
+        
         public static void ExtractBoxColliderWorldPoints(BoxCollider boxCollider, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
         {
             Vector3 diagDirection = Vector3.zero;
             Vector3 boxColliderSize = boxCollider.size;
 
-            SetVector(ref diagDirection, -boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-            C1 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
+            C1 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-            C2 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
+            C2 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, -boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-            C3 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
+            C3 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-            C4 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
+            C4 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, -boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            C5 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
+            C5 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            C6 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
+            C6 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, -boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            C7 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
+            C7 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            SetVector(ref diagDirection, boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            C8 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f);
-
-            /*
-            Gizmos.DrawWireSphere(C1, 0.2f);
-            Gizmos.DrawWireSphere(C2, 0.2f);
-            Gizmos.DrawWireSphere(C3, 0.2f);
-            Gizmos.DrawWireSphere(C4, 0.2f);
-            Gizmos.DrawWireSphere(C5, 0.2f);
-            Gizmos.DrawWireSphere(C6, 0.2f);
-            Gizmos.DrawWireSphere(C7, 0.2f);
-            Gizmos.DrawWireSphere(C8, 0.2f);
-            */
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
+            C8 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
         }
 
