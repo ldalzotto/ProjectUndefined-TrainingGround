@@ -18,16 +18,21 @@ public class WaitForEndOfAnimation : CustomYieldInstruction
     {
         get
         {
-            var currentAnimatorStateInfo = animator.GetCurrentAnimatorStateInfo(animatorLayer);
-            var nexAnimatorStateInfo = animator.GetNextAnimatorStateInfo(animatorLayer);
-            bool currentAnimatorStateIsCorrectName = currentAnimatorStateInfo.IsName(animationName);
-            bool nextAnimatorStateIsCorrectName = nexAnimatorStateInfo.IsName(animationName);
-
-            return currentAnimatorStateIsCorrectName || nextAnimatorStateIsCorrectName;
-
-
-            //            return currentAnimatorStateIsCorrectName || nextAnimatorStateIsCorrectName;
-            //  (animator.GetCurrentAnimatorStateInfo(animatorLayer).normalizedTime < 1);
+            return IsAnimationPlaying(this.animator, this.animationName, this.animatorLayer);
         }
+    }
+
+    public static bool IsAnimationPlaying(Animator animator, string animationName, int animatorLayer)
+    {
+        var currentAnimatorStateInfo = animator.GetCurrentAnimatorStateInfo(animatorLayer);
+        var nexAnimatorStateInfo = animator.GetNextAnimatorStateInfo(animatorLayer);
+        bool currentAnimatorStateIsCorrectName = currentAnimatorStateInfo.IsName(animationName);
+        bool nextAnimatorStateIsCorrectName = nexAnimatorStateInfo.IsName(animationName);
+
+        return currentAnimatorStateIsCorrectName || nextAnimatorStateIsCorrectName;
+
+
+        //            return currentAnimatorStateIsCorrectName || nextAnimatorStateIsCorrectName;
+        //  (animator.GetCurrentAnimatorStateInfo(animatorLayer).normalizedTime < 1);
     }
 }

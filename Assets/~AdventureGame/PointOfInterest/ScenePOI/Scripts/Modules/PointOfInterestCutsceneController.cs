@@ -10,7 +10,6 @@ namespace AdventureGame
     public class PointOfInterestCutsceneController : APointOfInterestModule
     {
         #region External Dependencies
-        //  private CutscenePlayerManager CutscenePlayerManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
@@ -95,11 +94,17 @@ namespace AdventureGame
         }
 
         /*
-        public void PlayAnimation(AnimationID animationID, float crossFadeDuration)
+        public void PlayAnimation(AnimationID animationID, float crossFadeDuration, bool updateModelImmediately = false)
         {
-            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
+            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
         }
         */
+
+        public bool IsSpecifiedAnimationPlaying(AnimationID animationID)
+        {
+            var animationConfiguration = this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID];
+            return WaitForEndOfAnimation.IsAnimationPlaying(this.PointOfInterestModelObjectModule.Animator, animationConfiguration.AnimationName, animationConfiguration.GetLayerIndex(this.PointOfInterestModelObjectModule.Animator));
+        }
 
         public float GetCurrentNormalizedSpeedMagnitude()
         {
@@ -166,6 +171,7 @@ namespace AdventureGame
             //Let the AI move
             yield return Coroutiner.Instance.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
             PlayerRigidBody.isKinematic = false;
+            playerAgent.ResetPath();
             this.isDirectedByAi = false;
         }
     }

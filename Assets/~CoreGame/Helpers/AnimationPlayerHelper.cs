@@ -47,18 +47,22 @@ namespace CoreGame
 
 
 
-        public static void Play(Animator animator, string animationName, int animationlayerIndex, float crossFadeDuration)
+        public static void Play(Animator animator, string animationName, int animationlayerIndex, float crossFadeDuration, bool updateModelImmediately = false)
         {
             animator.CrossFade(animationName, crossFadeDuration);
+            if (updateModelImmediately)
+            {
+                animator.Update(0f);
+            }
         }
 
-        public static void Play(Animator animator, AnimationConfigurationData animationConfigurationData, float crossFadeDuration)
+        public static void Play(Animator animator, AnimationConfigurationData animationConfigurationData, float crossFadeDuration, bool updateModelImmediately = false)
         {
             var animationName = animationConfigurationData.AnimationName;
             var animationLayerIndex = animationConfigurationData.GetLayerIndex(animator);
             if (animationLayerIndex != -1)
             {
-                Play(animator, animationName, animationLayerIndex, crossFadeDuration);
+                Play(animator, animationName, animationLayerIndex, crossFadeDuration, updateModelImmediately);
             }
         }
 

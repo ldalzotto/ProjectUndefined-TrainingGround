@@ -64,8 +64,10 @@ namespace GameConfigurationID {
     
     _1_Town_Thief_ArriveFromAbove = 25,
     
+    _1_Town_Thief_EscapeTroughGardenFence = 26,
+    
     NONE = -1,
     
-    _1_Town_Thief_EscapeTroughGardenFence = 26,
+    _1_Town_Thief_EscapeHandWave = 27,
   }
 }
