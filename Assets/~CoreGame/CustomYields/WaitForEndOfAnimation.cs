@@ -6,33 +6,32 @@ public class WaitForEndOfAnimation : CustomYieldInstruction
     private Animator animator;
     private int animatorLayer;
     private string animationName;
+    private bool framePerfectEndDetection;
 
-    public WaitForEndOfAnimation(Animator animator, string animationName, int animatorLayer)
+    public WaitForEndOfAnimation(Animator animator, string animationName, int animatorLayer, bool framePerfectEndDetection = false)
     {
         this.animator = animator;
         this.animationName = animationName;
         this.animatorLayer = animatorLayer;
+        this.framePerfectEndDetection = framePerfectEndDetection;
     }
 
     public override bool keepWaiting
     {
         get
         {
-            return IsAnimationPlaying(this.animator, this.animationName, this.animatorLayer);
+            var currentAnimatorStateInfo = animator.GetCurrentAnimatorStateInfo(animatorLayer);
+            var nexAnimatorStateInfo = animator.GetNextAnimatorStateInfo(animatorLayer);
+            bool currentAnimatorStateIsCorrectName = currentAnimatorStateInfo.IsName(animationName);
+            bool nextAnimatorStateIsCorrectName = nexAnimatorStateInfo.IsName(animationName);
+
+            bool isCurrentAnimationEndedFramePerfrect = true;
+            if (this.framePerfectEndDetection)
+            {
+                isCurrentAnimationEndedFramePerfrect = currentAnimatorStateInfo.normalizedTime <= 1 - (Time.deltaTime * 2 / currentAnimatorStateInfo.length);
+            }
+
+            return (currentAnimatorStateIsCorrectName && isCurrentAnimationEndedFramePerfrect) || nextAnimatorStateIsCorrectName;
         }
-    }
-
-    public static bool IsAnimationPlaying(Animator animator, string animationName, int animatorLayer)
-    {
-        var currentAnimatorStateInfo = animator.GetCurrentAnimatorStateInfo(animatorLayer);
-        var nexAnimatorStateInfo = animator.GetNextAnimatorStateInfo(animatorLayer);
-        bool currentAnimatorStateIsCorrectName = currentAnimatorStateInfo.IsName(animationName);
-        bool nextAnimatorStateIsCorrectName = nexAnimatorStateInfo.IsName(animationName);
-
-        return currentAnimatorStateIsCorrectName || nextAnimatorStateIsCorrectName;
-
-
-        //            return currentAnimatorStateIsCorrectName || nextAnimatorStateIsCorrectName;
-        //  (animator.GetCurrentAnimatorStateInfo(animatorLayer).normalizedTime < 1);
     }
 }

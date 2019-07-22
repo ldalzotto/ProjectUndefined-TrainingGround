@@ -24,11 +24,13 @@ namespace AdventureGame
         private void Awake()
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
-
+            this.AfterGameManagerPersistanceInstanceInitialization();
             //Level chunk initialization
             base.OnAwake();
             GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
         }
+
+        protected virtual void AfterGameManagerPersistanceInstanceInitialization() { }
 
         void Start()
         {

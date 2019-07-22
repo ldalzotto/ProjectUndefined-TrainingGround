@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Tests\~AdventureGame\Common\TestAdventureGameManager.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\AbstractTimelineTest.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionEdgeProfile.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionNodeProfile.cs" />

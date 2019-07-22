@@ -16,7 +16,8 @@ public static class AnimationConstants
         {BipedBone.RIGHT_HAND_CONTEXT, "HoldItem_R" },
         {BipedBone.RIGH_FINGERS, "Figers_R" },
         {BipedBone.HOOD, "Hood"},
-        {BipedBone.CHEST, "Chest"}
+        {BipedBone.CHEST, "Chest"},
+        {BipedBone.ROOT, "Root"}
     };
 
         public static GameObject GetPlayerBone(BipedBone playerBone, Animator playerAnimator)
@@ -32,7 +33,7 @@ public static class AnimationConstants
 
     public enum BipedBone
     {
-        HEAD, RIGHT_HAND_CONTEXT, RIGH_FINGERS, HOOD, CHEST
+        HEAD, RIGHT_HAND_CONTEXT, RIGH_FINGERS, HOOD, CHEST, ROOT
     }
     #endregion
 

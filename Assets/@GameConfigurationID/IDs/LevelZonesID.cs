@@ -38,8 +38,10 @@ namespace GameConfigurationID {
     
     _1_Town_StartTutorial = 11,
     
+    RTP_TEST_RangeEffectManager = 12,
+    
     NONE = -1,
     
-    RTP_TEST_RangeEffectManager = 12,
+    ADVENTURE_AnimationCutsceneTimelineTest = 13,
   }
 }

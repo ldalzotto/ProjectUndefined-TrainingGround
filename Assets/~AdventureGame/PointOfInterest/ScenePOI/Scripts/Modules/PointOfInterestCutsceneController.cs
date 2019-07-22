@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using static AnimationConstants;
 
 namespace AdventureGame
 {
@@ -80,30 +81,22 @@ namespace AdventureGame
             this.Warp(destination);
         }
 
-        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately = false)
+        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately, bool framePerfectEndDetection, bool warpAgentToRootBoneAtEndOfAnimation)
         {
             this.isAnimationPlaying = true;
-            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately);
+            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately, framePerfectEndDetection);
             this.isAnimationPlaying = false;
+
+            if (warpAgentToRootBoneAtEndOfAnimation)
+            {
+                this.Warp(BipedBoneRetriever.GetPlayerBone(BipedBone.ROOT, this.PointOfInterestModelObjectModule.Animator).transform);
+            }
         }
 
         public void StopAnimation(AnimationID animationID)
         {
             AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);
             this.isAnimationPlaying = false;
-        }
-
-        /*
-        public void PlayAnimation(AnimationID animationID, float crossFadeDuration, bool updateModelImmediately = false)
-        {
-            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
-        }
-        */
-
-        public bool IsSpecifiedAnimationPlaying(AnimationID animationID)
-        {
-            var animationConfiguration = this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID];
-            return WaitForEndOfAnimation.IsAnimationPlaying(this.PointOfInterestModelObjectModule.Animator, animationConfiguration.AnimationName, animationConfiguration.GetLayerIndex(this.PointOfInterestModelObjectModule.Animator));
         }
 
         public float GetCurrentNormalizedSpeedMagnitude()

@@ -58,7 +58,7 @@ namespace CoreGame
                 this.OnNoMoreActionToPlay();
             }
         }
-
+        
         private void ProcessTick(float d, SequencedAction contextAction)
         {
             contextAction.OnTick(d, this.OnActionFinished);
