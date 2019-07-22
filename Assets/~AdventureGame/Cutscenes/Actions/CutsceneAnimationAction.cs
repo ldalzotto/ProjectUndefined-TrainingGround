@@ -24,6 +24,8 @@ namespace AdventureGame
 
         [SerializeField]
         public bool InfiniteLoop = false;
+        [SerializeField]
+        public bool PlayImmediately = false;
 
         [NonSerialized]
         private bool animationEnded = false;
@@ -70,7 +72,7 @@ namespace AdventureGame
                     this.animationEnded = true;
                     return null;
                 }
-            }));
+            }, this.PlayImmediately));
             yield return this.animationCoroutine;
         }
 
@@ -96,6 +98,7 @@ namespace AdventureGame
             this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
             this.InfiniteLoop = (bool)NodeEditorGUILayout.BoolField("Infinite loop : ", string.Empty, this.InfiniteLoop);
+            this.PlayImmediately = (bool)NodeEditorGUILayout.BoolField("Update model positions on start : ", string.Empty, this.PlayImmediately);
         }
 #endif
     }

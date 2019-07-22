@@ -9,6 +9,7 @@ namespace CoreGame
     {
 
         private List<SequencedAction> ExecutedActions = new List<SequencedAction>();
+        private List<SequencedAction> FinishedActions = new List<SequencedAction>();
         private List<SequencedAction> CurrentNexActions = new List<SequencedAction>();
 
         protected abstract Action<SequencedAction> OnActionAdd { get; }
@@ -21,15 +22,23 @@ namespace CoreGame
                 ProcessTick(d, action);
                 if (action.IsFinished())
                 {
-                    OnContextActionFinished(action);
-                    if (action.NextActions != null)
-                    {
-                        CurrentNexActions.AddRange(action.NextActions);
-                    }
+                    FinishedActions.Add(action);
                 }
             }
 
-            if (CurrentNexActions.Count >= 0)
+            foreach (var finishedAction in FinishedActions)
+            {
+                if (finishedAction.NextActions != null)
+                {
+                    CurrentNexActions.AddRange(finishedAction.NextActions);
+                }
+                finishedAction.ResetState();
+                ExecutedActions.Remove(finishedAction);
+            }
+
+            FinishedActions.Clear();
+
+            if (CurrentNexActions.Count > 0)
             {
                 foreach (var nextContextAction in CurrentNexActions)
                 {
@@ -39,6 +48,14 @@ namespace CoreGame
                     }
                 }
                 CurrentNexActions.Clear();
+
+                //first tick for removing at the same frame if necessary
+                this.Tick(0f);
+            }
+
+            if (ExecutedActions.Count == 0)
+            {
+                this.OnNoMoreActionToPlay();
             }
         }
 
@@ -48,22 +65,6 @@ namespace CoreGame
         }
 
         #region Internal Events
-        private void OnContextActionFinished(SequencedAction contextAction)
-        {
-            StartCoroutine(RemoveContextAction(contextAction));
-        }
-
-        IEnumerator RemoveContextAction(SequencedAction contextAction)
-        {
-            yield return new WaitForEndOfFrame();
-            ExecutedActions.Remove(contextAction);
-            contextAction.ResetState();
-            if(ExecutedActions.Count == 0)
-            {
-                this.OnNoMoreActionToPlay();
-            }
-        }
-
         protected virtual void OnNoMoreActionToPlay() { }
         #endregion
 

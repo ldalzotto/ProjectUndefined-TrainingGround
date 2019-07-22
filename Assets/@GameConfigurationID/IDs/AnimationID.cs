@@ -60,8 +60,12 @@ namespace GameConfigurationID {
     
     EDITOR_TEST = 23,
     
+    _1_Town_Thief_StealIDCard = 24,
+    
+    _1_Town_Thief_ArriveFromAbove = 25,
+    
     NONE = -1,
     
-    _1_Town_Thief_StealIDCard = 24,
+    _1_Town_Thief_EscapeTroughGardenFence = 26,
   }
 }

@@ -81,10 +81,10 @@ namespace AdventureGame
             this.Warp(destination);
         }
 
-        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback)
+        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately = false)
         {
             this.isAnimationPlaying = true;
-            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback);
+            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately);
             this.isAnimationPlaying = false;
         }
 
@@ -94,10 +94,12 @@ namespace AdventureGame
             this.isAnimationPlaying = false;
         }
 
+        /*
         public void PlayAnimation(AnimationID animationID, float crossFadeDuration)
         {
             AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration);
         }
+        */
 
         public float GetCurrentNormalizedSpeedMagnitude()
         {
