@@ -64,9 +64,14 @@ namespace AdventureGame
             PointOfInterestContainerManager.OnPOICreated(POICreated);
         }
 
-        public void OnPOIDisabled(PointOfInterestType POITobeDestroyed)
+        public void OnPOIDisabled(PointOfInterestType POITobeDisabled)
         {
-            PointOfInterestContainerManager.OnPOIDisabled(POITobeDestroyed);
+            PointOfInterestContainerManager.OnPOIDisabled(POITobeDisabled);
+        }
+
+        public void OnPOIDestroyed(PointOfInterestType POITobeDestroyed)
+        {
+            PointOfInterestContainerManager.OnPOIDestroyed(POITobeDestroyed);
         }
 
         public void OnPOIEnabled(PointOfInterestType POITobeEnabled)
@@ -134,6 +139,18 @@ namespace AdventureGame
 
         }
 
+        public void OnPOIDestroyed(PointOfInterestType POIToBeDestroyed)
+        {
+            if (POIToBeDestroyed.IsInteractionWithPlayerAllowed())
+            {
+                interactablePointOfInterests.Remove(POIToBeDestroyed);
+            }
+            else
+            {
+                nonInteractablePointOfInterest.Remove(POIToBeDestroyed);
+            }
+        }
+
         public void OnPOIDisabled(PointOfInterestType POITobeDisabled)
         {
             if (POITobeDisabled.IsInteractionWithPlayerAllowed())
@@ -146,6 +163,7 @@ namespace AdventureGame
             }
             this.disabledPointOfInterest.Add(POITobeDisabled);
         }
+        
 
         public void OnPOIEnabled(PointOfInterestType POITobeEnabled)
         {

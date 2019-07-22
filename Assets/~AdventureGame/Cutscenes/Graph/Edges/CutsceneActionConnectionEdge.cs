@@ -13,7 +13,7 @@ namespace AdventureGame
 #if UNITY_EDITOR
         protected override Color EdgeColor()
         {
-            return MyColors.PaleBlue;
+            return Color.red;
         }
 #endif
     }

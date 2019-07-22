@@ -18,6 +18,11 @@ namespace RTPuzzle
             this.AGhostPOIManager.OnPOICreated(POICreated);
         }
 
+        public override void OnPOIDestroyed(APointOfInterestType POIToDestroy)
+        {
+            this.DisablePOI(POIToDestroy);
+        }
+
         public override void DisablePOI(APointOfInterestType POITobeDisabled)
         {
             if (POITobeDisabled != null)

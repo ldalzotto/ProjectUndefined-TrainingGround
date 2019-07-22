@@ -8,28 +8,35 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum DiscussionNodeId {
-    
-    NONE = 0,
-    
-    BOUNCER_FORBIDDEN_INTRODUCTION = 1,
-    
-    BOUNCER_ASK_AGE = 2,
-    
-    BOUNCER_OK_INTRODUCTION = 3,
-    
-    PLAYER_AGE_CHOICE = 4,
-    
-    PLAYER_AGE_CHOICE_17 = 5,
-    
-    PLAYER_AGE_CHOICE_18 = 6,
-    
-    BOUNCER_GET_OUT = 7,
-    
-    SWER_RTP_1_DOOR = 9,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum DiscussionNodeId
+    {
+
+        NONE = 0,
+
+        BOUNCER_FORBIDDEN_INTRODUCTION = 1,
+
+        BOUNCER_ASK_AGE = 2,
+
+        BOUNCER_OK_INTRODUCTION = 3,
+
+        PLAYER_AGE_CHOICE = 4,
+
+        PLAYER_AGE_CHOICE_17 = 5,
+
+        PLAYER_AGE_CHOICE_18 = 6,
+
+        BOUNCER_GET_OUT = 7,
+
+        SWER_RTP_1_DOOR = 9,
+
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_1 = 10,
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_2 = 11,
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_3 = 12,
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_4 = 13,
+    }
 }

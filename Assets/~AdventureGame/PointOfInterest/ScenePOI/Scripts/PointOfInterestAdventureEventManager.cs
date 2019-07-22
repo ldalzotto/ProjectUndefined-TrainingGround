@@ -31,6 +31,22 @@ namespace AdventureGame
             base.EnablePOI(POIToEnable);
         }
 
+        public override void OnPOIDestroyed(APointOfInterestType POIToDestroy)
+        {
+            if (POIToDestroy != null)
+            {
+                var POIToBeDisabledCasted = (PointOfInterestType)POIToDestroy;
+                if (!LevelTransitionManager.IsNewZoneLoading())
+                {
+                    foreach (var poi in this.PointOfInterestManager.GetAllPointOfInterests())
+                    {
+                            poi.OnPOIDestroyed(POIToDestroy);
+                    }
+                }
+                PointOfInterestManager.OnPOIDestroyed(POIToBeDisabledCasted);
+            }
+        }
+
         public override void DisablePOI(APointOfInterestType POITobeDisabled)
         {
             if (POITobeDisabled != null)
@@ -38,7 +54,7 @@ namespace AdventureGame
                 var POIToBeDisabledCasted = (PointOfInterestType)POITobeDisabled;
                 if (!LevelTransitionManager.IsNewZoneLoading())
                 {
-                    foreach(var poi in this.PointOfInterestManager.GetAllPointOfInterests())
+                    foreach (var poi in this.PointOfInterestManager.GetAllPointOfInterests())
                     {
                         poi.OnPOIDisabled(POITobeDisabled);
                     }
@@ -47,6 +63,7 @@ namespace AdventureGame
                 GhostsPOIManager.OnPOIDisabled(POIToBeDisabledCasted);
             }
         }
+
 
     }
 

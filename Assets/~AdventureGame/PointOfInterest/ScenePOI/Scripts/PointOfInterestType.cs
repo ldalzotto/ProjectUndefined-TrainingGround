@@ -73,6 +73,12 @@ namespace AdventureGame
             pointOfInterestTypeInstanciated.Init_EndOfFrame();
         }
 
+        public void DestroyWithoutSave()
+        {
+            this.PointOfInterestEventManager.OnPOIDestroyed(this);
+            MonoBehaviour.Destroy(this.GetRootObject());
+        }
+
         public override void Init()
         {
             #region External Dependencies
@@ -180,6 +186,11 @@ namespace AdventureGame
             this.PointOfInterestModulesEventManager.OnPOIDisabled(disabledPointOfInterest);
         }
 
+        public override void OnPOIDestroyed(APointOfInterestType poiToBeDestroyed)
+        {
+            this.PointOfInterestModulesEventManager.OnPOIDisabled(poiToBeDestroyed);
+        }
+
         public override void OnPOIEnabled()
         {
             this.EnablePOI();
@@ -212,6 +223,7 @@ namespace AdventureGame
         private void EnablePOI()
         {
             pointOfInterestModelState.OnPOIEnabled();
+            pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
             pointOfInterestModelState.SyncPointOfInterestModelState(POIMeshRendererManager.POIRenderers);
             this.gameObject.SetActive(true);
         }

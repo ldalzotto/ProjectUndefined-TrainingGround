@@ -8,14 +8,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum DisucssionSentenceTextId {
-    
-    SWER_RTP_1_DOOR = 0,
-    
-    _1_Town_Bouncer_AskID = 1,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum DisucssionSentenceTextId
+    {
+
+        SWER_RTP_1_DOOR = 0,
+
+        _1_Town_Bouncer_AskID = 1,
+
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_1 = 2,
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_2 = 3,
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_3 = 4,
+        _1_Town_GardenWatchman_Forbidden_NodeEditor_4 = 5,
+    }
 }

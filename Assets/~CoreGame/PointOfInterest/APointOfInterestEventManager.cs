@@ -9,6 +9,7 @@ namespace CoreGame
     {
         public abstract void Init();
         public abstract void OnPOICreated(APointOfInterestType POICreated);
+        public abstract void OnPOIDestroyed(APointOfInterestType POIToDestroy);
         public abstract void DisablePOI(APointOfInterestType POITobeDisabled);
         
         public virtual void EnablePOI(APointOfInterestType POIToEnable)
