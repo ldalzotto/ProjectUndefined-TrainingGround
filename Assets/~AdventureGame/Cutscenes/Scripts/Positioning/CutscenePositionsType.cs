@@ -10,8 +10,7 @@ namespace AdventureGame
         public CutsceneId CutsceneId;
 
         private Dictionary<CutscenePositionMarkerID, CutscenePositionMarker> cutscenePositionMarkers;
-
-        private bool hasBeenInit = false;
+        
         private bool hasBeenPopulated = false;
 
         private void Start()
