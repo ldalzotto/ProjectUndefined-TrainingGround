@@ -12,8 +12,8 @@ namespace AdventureGame
             switch (pointOfInterestTypeRef.PointOfInterestId)
             {
                 case PointOfInterestId._1_Town_Girl:
-                    this.PointOfInterestSpecificBehavior = new _1_Level_Girl_SpecificBehavior();
-                    ((_1_Level_Girl_SpecificBehavior)this.PointOfInterestSpecificBehavior).Init(PointOfInterestModelObjectModule, pointOfInterestTypeRef);
+                   // this.PointOfInterestSpecificBehavior = new _1_Level_Girl_SpecificBehavior();
+                   // ((_1_Level_Girl_SpecificBehavior)this.PointOfInterestSpecificBehavior).Init(PointOfInterestModelObjectModule, pointOfInterestTypeRef);
                     break;
                 default:
                     break;

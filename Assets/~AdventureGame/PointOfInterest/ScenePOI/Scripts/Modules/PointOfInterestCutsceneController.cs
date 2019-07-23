@@ -69,6 +69,7 @@ namespace AdventureGame
 
         public void Warp(Transform warpPosition)
         {
+            this.Agent.Warp(warpPosition.position);
             this.Agent.transform.position = warpPosition.position;
             this.Agent.transform.rotation = warpPosition.rotation;
         }
@@ -146,7 +147,7 @@ namespace AdventureGame
                             this.currentPathTotalDistance += Vector3.Distance(pathCorners[i - 1], pathCorners[i]);
                         }
                     }
-                    var distanceAttanuationFacotr = this.speedFactorOverDistance.Evaluate(1 - (this.playerAgent.remainingDistance / this.currentPathTotalDistance));
+                    var distanceAttanuationFacotr = this.speedFactorOverDistance.Evaluate( Mathf.Clamp01(1 - (this.playerAgent.remainingDistance / this.currentPathTotalDistance)) );
                     playerAgent.speed *= distanceAttanuationFacotr;
                     this.distanceAttenuatedNormalizedSpeedMagnitude *= distanceAttanuationFacotr;
                 }
