@@ -12,14 +12,16 @@ namespace CoreGame
         private GameInputManager GameInputManager;
         private PersistanceManager PersistanceManager;
         protected AGhostPOIManager AGhostPOIManager;
+        private LevelChunkFXTransitionManager LevelChunkFXTransitionManager;
 
-        protected void OnAwake()
+        protected void OnAwake(LevelType levelType)
         {
             this.PersistanceManager = GameObject.FindObjectOfType<PersistanceManager>();
             this.ATimelinesManager = GameObject.FindObjectOfType<ATimelinesManager>();
             this.GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.AGhostPOIManager = GameObject.FindObjectOfType<AGhostPOIManager>();
+            this.LevelChunkFXTransitionManager = GameObject.FindObjectOfType<LevelChunkFXTransitionManager>();
 
             this.PersistanceManager.Init();
             this.GameInputManager.Init();
@@ -31,9 +33,10 @@ namespace CoreGame
             GameObject.FindObjectOfType<LevelManagerEventManager>().Init();
             GameObject.FindObjectOfType<PlayerAdventurePositionManager>().Init();
             GameObject.FindObjectOfType<APointOfInterestEventManager>().Init();
+            GameObject.FindObjectOfType<LevelManager>().Init(levelType);
+            this.LevelChunkFXTransitionManager.Init();
 
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
-
         }
 
 
@@ -46,6 +49,7 @@ namespace CoreGame
         protected void BeforeTick(float d)
         {
             this.PersistanceManager.Tick(d);
+            this.LevelChunkFXTransitionManager.Tick(d);
         }
 
         private IEnumerator InitializeTimelinesAtEndOfFrame()

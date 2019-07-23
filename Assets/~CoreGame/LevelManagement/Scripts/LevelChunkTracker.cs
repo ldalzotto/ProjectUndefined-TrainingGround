@@ -1,18 +1,14 @@
-﻿
-
-using CoreGame;
-using GameConfigurationID;
-using UnityEngine;
+﻿using UnityEngine;
 
 #if UNITY_EDITOR
 #endif
 
-namespace AdventureGame
+namespace CoreGame
 {
     public class LevelChunkTracker : MonoBehaviour
     {
-        #region External dependencies
-        private AdventureEventManager AdventureEventManager;
+        #region External Dependencies
+        private LevelManagerEventManager LevelManagerEventManager;
         #endregion
 
         #region Internal Dependencies
@@ -25,37 +21,33 @@ namespace AdventureGame
         public TransitionableLevelFXType TransitionableLevelFXType { get => transitionableLevelFXType; }
         public LevelChunkType AssociatedLevelChunkType { get => associatedLevelChunkType; set => associatedLevelChunkType = value; }
         #endregion
-        private bool hasBeenInit = false;
+
+        private bool hasInit;
 
         internal void Init()
         {
+            this.LevelManagerEventManager = GameObject.FindObjectOfType<LevelManagerEventManager>();
+
             Debug.Log("LevelChunkTracker Init : " + this.name);
-            this.AdventureEventManager = GameObject.FindObjectOfType<AdventureEventManager>();
             this.associatedLevelChunkType = GetComponent<LevelChunkType>();
             this.transitionableLevelFXType = GetComponentInChildren<TransitionableLevelFXType>();
             this.transitionableLevelFXType.Init();
-            this.hasBeenInit = true;
+            hasInit = true;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (hasBeenInit)
+            if (other.tag == TagConstants.PLAYER_TAG)
             {
-                if (other.tag == TagConstants.PLAYER_TAG)
-                {
-                    this.AdventureEventManager.AD_EVT_OnChunkLevelEnter(this);
-                }
+                this.LevelManagerEventManager.CORE_EVT_OnChunkLevelEnter(this);
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (hasBeenInit)
+            if (other.tag == TagConstants.PLAYER_TAG)
             {
-                if (other.tag == TagConstants.PLAYER_TAG)
-                {
-                    this.AdventureEventManager.AD_EVT_OnChunkLevelExit(this);
-                }
+                this.LevelManagerEventManager.CORE_EVT_OnChunkLevelExit(this);
             }
         }
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AdventureGame
+namespace CoreGame
 {
-    public class AdventureLevelChunkFXTransitionManager : MonoBehaviour
+    public class LevelChunkFXTransitionManager : MonoBehaviour
     {
 
         private CurrentTransitionableLevelFXTypeManager CurrentTransitionableLevelFXTypeManager;
@@ -14,11 +14,6 @@ namespace AdventureGame
 
         public void Init()
         {
-            var levelChunkTrackers = GameObject.FindObjectsOfType<LevelChunkTracker>();
-            foreach (var levelChunkTracker in levelChunkTrackers)
-            {
-                levelChunkTracker.Init();
-            }
             this.CurrentTransitionableLevelFXTypeManager = new CurrentTransitionableLevelFXTypeManager(this);
             this.FXTransitionAnimationManager = new FXTransitionAnimationManager();
         }
@@ -64,9 +59,9 @@ namespace AdventureGame
 
     class CurrentTransitionableLevelFXTypeManager
     {
-        private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManagerRef;
+        private LevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManagerRef;
 
-        public CurrentTransitionableLevelFXTypeManager(AdventureLevelChunkFXTransitionManager adventureLevelChunkFXTransitionManagerRef)
+        public CurrentTransitionableLevelFXTypeManager(LevelChunkFXTransitionManager adventureLevelChunkFXTransitionManagerRef)
         {
             AdventureLevelChunkFXTransitionManagerRef = adventureLevelChunkFXTransitionManagerRef;
         }

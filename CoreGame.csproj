@@ -130,6 +130,8 @@
     <Compile Include="Assets\~CoreGame\Helpers\SerializationHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
+    <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkFXTransitionManager.cs" />
+    <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkType.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelTransitionManager.cs" />

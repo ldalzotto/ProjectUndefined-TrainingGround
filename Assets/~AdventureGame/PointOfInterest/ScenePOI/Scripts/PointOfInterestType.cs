@@ -179,7 +179,7 @@ namespace AdventureGame
             {
                 PointOfInterestEventManager.SetAnimationPosition(ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation, this);
             }
-
+            
             if (ghostPOI.PointOfInterestLevelPositioningState != null && ghostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID == this.LevelManager.CurrentLevelZoneChunkID)
             {
                 PointOfInterestEventManager.SetPosition(this, ghostPOI.PointOfInterestLevelPositioningState.TransformBinarry.Format());

@@ -38,7 +38,6 @@ namespace CoreGame
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.currentLevelType = currentLevelType;
             this.EnvironmentSceneLevelManager = new EnvironmentSceneLevelManager(LevelAvailabilityManager, this, CoreConfigurationManager, LevelManagerEventManager);
-
         }
 
         #region External Event
@@ -52,6 +51,7 @@ namespace CoreGame
         }
         public void OnChunkLevelEnter(LevelChunkType NextLevelChunk)
         {
+            Debug.Log(MyLog.Format("LevelManager OnChunkLevelEnter"));
             this.currentLevelZoneChunkID = NextLevelChunk.LevelZoneChunkID;
         }
 

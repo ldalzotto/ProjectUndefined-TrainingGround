@@ -14,10 +14,10 @@ namespace CoreGame
                 MonoBehaviour.Destroy(objectToDestroy);
             }
         }
-        
-        public BoxCollider GetCollider()
+
+        private void Start()
         {
-            return this.GetComponent<BoxCollider>();
+            this.GetComponent<LevelChunkTracker>().Init();
         }
     }
 

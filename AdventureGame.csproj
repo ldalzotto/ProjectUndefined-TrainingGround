@@ -144,7 +144,6 @@
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowManager.cs" />
-    <Compile Include="Assets\~AdventureGame\Event\AdventureEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryManager.cs" />
@@ -152,8 +151,6 @@
     <Compile Include="Assets\~AdventureGame\Item\ItemObject\GiveActionMiniature\Scripts\GiveActionMiniatureInstanciate.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemObject\Scripts\Item.cs" />
     <Compile Include="Assets\~AdventureGame\Item\ItemReceivedPopup\Scripts\ItemReceivedPopup.cs" />
-    <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\AdventureLevelChunkFXTransitionManager.cs" />
-    <Compile Include="Assets\~AdventureGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
     <Compile Include="Assets\~AdventureGame\NPC\Scripts\NPCManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationPlayer.cs" />

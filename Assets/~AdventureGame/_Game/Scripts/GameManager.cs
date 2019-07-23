@@ -13,11 +13,9 @@ namespace AdventureGame
         private NPCManager NPCManager;
         private InventoryManager InventoryManager;
         private DiscussionWindowManager DiscussionWindowManager;
-        private AdventureLevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManager;
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CameraMovementManager CameraMovementManager;
-        private LevelManager LevelManager;
 
 #if UNITY_EDITOR
         private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
@@ -27,10 +25,7 @@ namespace AdventureGame
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
             this.AfterGameManagerPersistanceInstanceInitialization();
-            //Level chunk initialization
-            base.OnAwake();
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.LevelManager.Init(LevelType.ADVENTURE);
+            base.OnAwake(LevelType.ADVENTURE);
         }
 
         protected virtual void AfterGameManagerPersistanceInstanceInitialization() { }
@@ -40,7 +35,7 @@ namespace AdventureGame
             base.OnStart();
             
             //load dynamic POI
-            var allLoadedLevelChunkID = this.LevelManager.AllLoadedLevelZonesChunkID;
+            var allLoadedLevelChunkID = GameObject.FindObjectOfType<LevelManager>().AllLoadedLevelZonesChunkID;
             var allActivePOIIds = GameObject.FindObjectsOfType<APointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestId);
             foreach (var elligiblePOIIdTo in this.AGhostPOIManager.GetAllPOIIdElligibleToBeDynamicallyInstanciated(allLoadedLevelChunkID))
             {
@@ -59,21 +54,18 @@ namespace AdventureGame
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
             DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
-            AdventureLevelChunkFXTransitionManager = GameObject.FindObjectOfType<AdventureLevelChunkFXTransitionManager>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
 
             //initialization
             CameraMovementManager.Init();
-            AdventureLevelChunkFXTransitionManager.Init();
             CutscenePlayerManagerV2.Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();
             InventoryManager.Init();
             PointOfInterestManager.Init();
-            GameObject.FindObjectOfType<AdventureEventManager>().Init();
             GameObject.FindObjectOfType<CutsceneGlobalController>().Init();
 
 #if UNITY_EDITOR
@@ -89,7 +81,6 @@ namespace AdventureGame
             this.BeforeTick(d);
 
             CutscenePlayerManagerV2.Tick(d);
-            AdventureLevelChunkFXTransitionManager.Tick(d);
             ContextActionWheelManager.Tick(d);
             ContextActionManager.Tick(d);
             PointOfInterestManager.Tick(d);
