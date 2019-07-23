@@ -29,6 +29,7 @@ namespace AdventureGame
         private CutsceneGlobalController CutsceneGlobalController;
         private GhostsPOIManager GhostsPOIManager;
         private LevelManager LevelManager;
+        private CutsceneEventManager CutsceneEventManager;
         #endregion
 
         public void Init()
@@ -40,6 +41,7 @@ namespace AdventureGame
             this.CutsceneGlobalController = GameObject.FindObjectOfType<CutsceneGlobalController>();
             this.GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.CutsceneEventManager = GameObject.FindObjectOfType<CutsceneEventManager>();
         }
 
         #region state
@@ -62,6 +64,7 @@ namespace AdventureGame
             var cutsceneGraph = this.AdventureGameConfigurationManager.CutsceneConf()[cutsceneId].CutsceneGraph;
             this.currentInput = new CutsceneActionInput(cutsceneId, this.PointOfInterestManager, this.CutscenePositionsManager,
                 this.ContextActionEventManager, this.AdventureGameConfigurationManager, this.CutsceneGlobalController, this.GhostsPOIManager, this.LevelManager);
+            this.CutsceneEventManager.OnCutscneStarted(cutsceneId);
             this.OnAddAction(cutsceneGraph.GetRootAction(), this.currentInput);
             yield return new WaitUntil(() => { return this.isCutscenePlaying; });
 

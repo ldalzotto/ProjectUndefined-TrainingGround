@@ -49,7 +49,7 @@ namespace AdventureGame
 
                 if (WheelActivityManager.TickCancelInput())
                 {
-                    SleepWheel();
+                    ContextActionWheelEventManager.OnWheelDisabled();
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace AdventureGame
         private IEnumerator TriggerContextAction(AContextAction contextAction)
         {
             yield return new WaitForEndOfFrame();
-            SleepWheel();
+            ContextActionWheelEventManager.OnWheelDisabled();
             ContextActionEventManager.OnContextActionAdd(contextAction);
         }
 
@@ -80,9 +80,7 @@ namespace AdventureGame
         }
         public void SleepWheel()
         {
-            ContextActionWheel.Exit();
             WheelActivityManager.SleepWheel();
-            ContextActionWheelEventManager.OnWheelDisabled();
             PointOnInteresetSelectedEffectManager.OnWheelDisabled();
         }
         #endregion

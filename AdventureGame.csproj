@@ -106,6 +106,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWarpAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWorkflowAbortAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\CutsceneEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutsceneGlobalController.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutscenePlayerManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\CutsceneGraph.cs" />
