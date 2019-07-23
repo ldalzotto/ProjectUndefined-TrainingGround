@@ -190,7 +190,9 @@ namespace RTPuzzle
 
         private void TargetZone_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerStayAIBehaviorEvent targetZoneTriggerStayAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsEscapeFromTargetZoneEnabled() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager))
+            if (genericAiBehavior.IsEscapeFromTargetZoneEnabled() 
+                        && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.AITargetZoneManager) 
+                        && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager))
             {
                 if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
                 {

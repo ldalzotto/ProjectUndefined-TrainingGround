@@ -73,6 +73,15 @@ namespace RTPuzzle
 
             return this.aIBehaviorManagerContainer.GetAIManagerIndex(aiManager) <= this.aIBehaviorManagerContainer.GetAIManagerIndex(this.currentManagerState);
         }
+        public bool IsCurrentManagerEquals(in InterfaceAIManager aiManager)
+        {
+            if (this.currentManagerState == null)
+            {
+                return true;
+            }
+
+            return this.aIBehaviorManagerContainer.GetAIManagerIndex(aiManager) == this.aIBehaviorManagerContainer.GetAIManagerIndex(this.currentManagerState);
+        }
         #endregion
 
         #region External Events
