@@ -69,8 +69,5 @@ namespace GameConfigurationID {
     NONE = -1,
     
     _1_Town_Thief_EscapeHandWave = 27,
-
-    RotateLeft = 28,
-        RotateRight = 29,
     }
 }
