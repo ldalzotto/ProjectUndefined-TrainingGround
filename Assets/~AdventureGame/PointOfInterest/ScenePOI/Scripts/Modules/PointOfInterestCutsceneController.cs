@@ -147,9 +147,12 @@ namespace AdventureGame
                             this.currentPathTotalDistance += Vector3.Distance(pathCorners[i - 1], pathCorners[i]);
                         }
                     }
-                    var distanceAttanuationFacotr = this.speedFactorOverDistance.Evaluate( Mathf.Clamp01(1 - (this.playerAgent.remainingDistance / this.currentPathTotalDistance)) );
-                    playerAgent.speed *= distanceAttanuationFacotr;
-                    this.distanceAttenuatedNormalizedSpeedMagnitude *= distanceAttanuationFacotr;
+                    else
+                    {
+                        var distanceAttanuationFacotr = this.speedFactorOverDistance.Evaluate(Mathf.Clamp01(1 - (this.playerAgent.remainingDistance / this.currentPathTotalDistance)));
+                        playerAgent.speed *= distanceAttanuationFacotr;
+                        this.distanceAttenuatedNormalizedSpeedMagnitude *= distanceAttanuationFacotr;
+                    }
                 }
 
                 PlayerRigidBody.transform.position = playerAgent.nextPosition;
