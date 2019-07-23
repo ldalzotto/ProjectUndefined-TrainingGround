@@ -22,7 +22,7 @@ namespace Experimental.Editor_NodeEditor
             {typeof(CutsceneCameraRotationNode).Name,  typeof(CutsceneCameraRotationNode)},
             {typeof(CutsceneDestroyPOINode).Name,  typeof(CutsceneDestroyPOINode)},
             {typeof(CutsceneWorkflowWaitForSecondsNode).Name,  typeof(CutsceneWorkflowWaitForSecondsNode)},
-            
+            {typeof(CutscenePersistPOINode).Name,  typeof(CutscenePersistPOINode)},
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

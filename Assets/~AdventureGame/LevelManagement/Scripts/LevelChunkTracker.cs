@@ -1,6 +1,7 @@
 ﻿
 
 using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -14,16 +15,23 @@ namespace AdventureGame
         private AdventureEventManager AdventureEventManager;
         #endregion
 
+        #region Internal Dependencies
+        private LevelChunkType associatedLevelChunkType;
+        #endregion
+
         private TransitionableLevelFXType transitionableLevelFXType;
 
+        #region Data Retrieval
         public TransitionableLevelFXType TransitionableLevelFXType { get => transitionableLevelFXType; }
-
+        public LevelChunkType AssociatedLevelChunkType { get => associatedLevelChunkType; set => associatedLevelChunkType = value; }
+        #endregion
         private bool hasBeenInit = false;
 
         internal void Init()
         {
             Debug.Log("LevelChunkTracker Init : " + this.name);
             this.AdventureEventManager = GameObject.FindObjectOfType<AdventureEventManager>();
+            this.associatedLevelChunkType = GetComponent<LevelChunkType>();
             this.transitionableLevelFXType = GetComponentInChildren<TransitionableLevelFXType>();
             this.transitionableLevelFXType.Init();
             this.hasBeenInit = true;

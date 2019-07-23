@@ -13,6 +13,7 @@ namespace AdventureGame
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestAnimationPositioningState pointOfInterestAnimationPositioningState;
+        private PointOfInterestLevelPositioningState pointOfInterestLevelPositioningState;
         #endregion
 
         #region Modules
@@ -27,6 +28,7 @@ namespace AdventureGame
         private PointOfInterestInherentData pointOfInterestInherentData;
 
         #region External Dependencies
+        private LevelManager LevelManager;
         private APointOfInterestEventManager PointOfInterestEventManager;
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
         private CoreConfigurationManager CoreConfigurationManager;
@@ -65,15 +67,21 @@ namespace AdventureGame
 
         #endregion
 
-        public static void Instanciate(PointOfInterestId pointOfInterestId)
+        public static PointOfInterestType Instanciate(PointOfInterestId pointOfInterestId)
         {
             var poiInstanciated = MonoBehaviour.Instantiate(GameObject.FindObjectOfType<AdventureGameConfigurationManager>().POIConf()[pointOfInterestId].PointOfInterestPrefab, GameObject.FindObjectOfType<LevelManager>().transform);
             var pointOfInterestTypeInstanciated = poiInstanciated.GetComponentInChildren<PointOfInterestType>();
             pointOfInterestTypeInstanciated.Init();
+            return pointOfInterestTypeInstanciated;
+        }
+
+        public static void InstanciateNow(PointOfInterestId pointOfInterestId)
+        {
+            var pointOfInterestTypeInstanciated = Instanciate(pointOfInterestId);
             pointOfInterestTypeInstanciated.Init_EndOfFrame();
         }
 
-        public void DestroyWithoutSave()
+        public void DestroyWithoutSync()
         {
             this.PointOfInterestEventManager.OnPOIDestroyed(this);
             MonoBehaviour.Destroy(this.GetRootObject());
@@ -82,6 +90,7 @@ namespace AdventureGame
         public override void Init()
         {
             #region External Dependencies
+            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
@@ -100,6 +109,7 @@ namespace AdventureGame
             this.POIMeshRendererManager = new POIMeshRendererManager(GetRenderers(true));
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
+            this.pointOfInterestLevelPositioningState = new PointOfInterestLevelPositioningState();
 
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
         }
@@ -147,7 +157,7 @@ namespace AdventureGame
         }
         public bool IsVisualMovementAllowed()
         {
-            return (this.PointOfInteresetModules.PointOfInterestCutsceneController != null && !this.PointOfInteresetModules.PointOfInterestCutsceneController.IsAnimationPlaying) 
+            return (this.PointOfInteresetModules.PointOfInterestCutsceneController != null && !this.PointOfInteresetModules.PointOfInterestCutsceneController.IsAnimationPlaying)
                     || this.PointOfInteresetModules.PointOfInterestCutsceneController == null;
         }
         #endregion
@@ -168,6 +178,11 @@ namespace AdventureGame
             if (ghostPOI.PointOfInterestAnimationPositioningState != null && ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation != AnimationID.NONE)
             {
                 PointOfInterestEventManager.SetAnimationPosition(ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation, this);
+            }
+
+            if (ghostPOI.PointOfInterestLevelPositioningState != null && ghostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID == this.LevelManager.CurrentLevelZoneChunkID)
+            {
+                PointOfInterestEventManager.SetPosition(this, ghostPOI.PointOfInterestLevelPositioningState.TransformBinarry.Format());
             }
         }
 
@@ -233,6 +248,13 @@ namespace AdventureGame
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
             var PointOfInterestModelObjectModule = this.PointOfInteresetModules.PointOfInterestModelObjectModule;
             this.pointOfInterestAnimationPositioningState.SyncPointOfInterestAnimationPositioningState(animationID, ref PointOfInterestModelObjectModule, this.CoreConfigurationManager.AnimationConfiguration());
+        }
+
+        public override void SetPosition(TransformBinarryFormatted position)
+        {
+            this.GetRootObject().transform.position = position.position;
+            this.GetRootObject().transform.rotation = position.rotation;
+            this.GetRootObject().transform.localScale = position.localScale;
         }
     }
 

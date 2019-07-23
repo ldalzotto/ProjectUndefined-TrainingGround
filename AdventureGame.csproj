@@ -101,6 +101,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneDiscussionAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneItemHoldAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneMoveAction.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutscenePersistPOIAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneSpawnPOIAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWarpAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWorkflowAbortAction.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneDestroyPOIEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneDiscussionEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneMoveEdge.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutscenePersistPOIEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneSpawnPOIEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWarpEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWorkflowAbortEdge.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneDestroyPOINode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneDiscussionNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneMoveNode.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutscenePersistPOINode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneSpawnPOINode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneStartNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWarpNode.cs" />

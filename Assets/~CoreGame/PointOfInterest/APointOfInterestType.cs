@@ -18,6 +18,7 @@ namespace CoreGame
         public abstract void OnPOIDestroyed(APointOfInterestType poiToBeDestroyed);
         public abstract void OnPOIEnabled();
         public abstract void SetAnimationPosition(AnimationID animationID);
+        public abstract void SetPosition(TransformBinarryFormatted position);
     }
 
 }

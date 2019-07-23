@@ -11,9 +11,12 @@ namespace AdventureGame
         private ContextActionEventManager contextActionEventManager;
         private AdventureGameConfigurationManager adventureGameConfigurationManager;
         private CutsceneGlobalController cutsceneGlobalController;
+        private GhostsPOIManager ghostsPOIManager;
+        private LevelManager levelManager;
 
         public CutsceneActionInput(CutsceneId cutsceneId, PointOfInterestManager pointOfInterestManager,
-            CutscenePositionsManager cutscenePositionsManager, ContextActionEventManager contextActionEventManager, AdventureGameConfigurationManager AdventureGameConfigurationManager, CutsceneGlobalController CutsceneGlobalController)
+            CutscenePositionsManager cutscenePositionsManager, ContextActionEventManager contextActionEventManager, AdventureGameConfigurationManager AdventureGameConfigurationManager, CutsceneGlobalController CutsceneGlobalController,
+            GhostsPOIManager ghostsPOIManager, LevelManager levelManager)
         {
             this.cutsceneId = cutsceneId;
             this.pointOfInterestManager = pointOfInterestManager;
@@ -21,6 +24,8 @@ namespace AdventureGame
             this.contextActionEventManager = contextActionEventManager;
             this.adventureGameConfigurationManager = AdventureGameConfigurationManager;
             this.cutsceneGlobalController = CutsceneGlobalController;
+            this.ghostsPOIManager = ghostsPOIManager;
+            this.levelManager = levelManager;
         }
 
         public CutsceneId CutsceneId { get => cutsceneId; }
@@ -29,5 +34,7 @@ namespace AdventureGame
         public ContextActionEventManager ContextActionEventManager { get => contextActionEventManager; }
         public AdventureGameConfigurationManager AdventureGameConfigurationManager { get => adventureGameConfigurationManager; }
         public CutsceneGlobalController CutsceneGlobalController { get => cutsceneGlobalController;  }
+        public GhostsPOIManager GhostsPOIManager { get => ghostsPOIManager;}
+        public LevelManager LevelManager { get => levelManager;  }
     }
 }

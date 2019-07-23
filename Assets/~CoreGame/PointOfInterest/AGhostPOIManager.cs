@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace CoreGame
 {
@@ -8,5 +10,6 @@ namespace CoreGame
         public abstract void Init();
         public abstract void OnPOICreated(APointOfInterestType pointOfInterestType);
         public abstract void OnPOIDisabled(APointOfInterestType pointOfInterestType);
+        public abstract List<PointOfInterestId> GetAllPOIIdElligibleToBeDynamicallyInstanciated(List<LevelZoneChunkID>  levelZoneChunkIDs);
     }
 }

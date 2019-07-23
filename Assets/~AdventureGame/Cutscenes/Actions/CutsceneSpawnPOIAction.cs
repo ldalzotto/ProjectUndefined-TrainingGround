@@ -35,7 +35,7 @@ namespace AdventureGame
 
             if (cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId) == null)
             {
-                PointOfInterestType.Instanciate(this.PointOfInterestId);
+                PointOfInterestType.InstanciateNow(this.PointOfInterestId);
             }
 
             var cutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();

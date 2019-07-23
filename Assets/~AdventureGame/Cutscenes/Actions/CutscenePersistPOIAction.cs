@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using NodeGraph_Editor;
@@ -9,12 +10,13 @@ using NodeGraph_Editor;
 namespace AdventureGame
 {
     [System.Serializable]
-    public class CutsceneDestroyPOIAction : SequencedAction
+    public class CutscenePersistPOIAction : SequencedAction
     {
         [CustomEnum()]
+        [SerializeField]
         public PointOfInterestId PointOfInterestId;
 
-        public CutsceneDestroyPOIAction(List<SequencedAction> nextActions) : base(nextActions)
+        public CutscenePersistPOIAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
 
@@ -30,17 +32,18 @@ namespace AdventureGame
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
-
-            var selectedPOI = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId);
-            if (selectedPOI != null)
+            var ghostPOI = cutsceneActionInput.GhostsPOIManager.GetGhostPOI(this.PointOfInterestId);
+            if (ghostPOI != null)
             {
-                selectedPOI.DestroyWithoutSync();
+                var pointOfInterestType = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId);
+                ghostPOI.OnPositionChanged(pointOfInterestType.GetRootObject().transform, cutsceneActionInput.LevelManager.CurrentLevelZoneChunkID);
             }
-            
         }
+
 
         public override void Tick(float d)
         {
+
         }
 
 #if UNITY_EDITOR

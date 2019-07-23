@@ -21,6 +21,7 @@ namespace AdventureGame
 
         public override void OnPOICreated(APointOfInterestType POICreated)
         {
+
             GhostsPOIManager.OnPOICreated(POICreated);
             PointOfInterestManager.OnPOICreated((PointOfInterestType)POICreated);
         }

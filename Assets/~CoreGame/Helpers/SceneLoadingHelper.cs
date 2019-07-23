@@ -6,7 +6,7 @@ namespace CoreGame
 {
     public class SceneLoadingHelper
     {
-        public static AsyncOperation SceneLoadWithoutDuplicates(string sceneToLoadName)
+        public static AsyncOperation SceneLoadWithoutDuplicates(string sceneToLoadName, bool async = true)
         {
             bool loadScene = true;
             int sceneCount = SceneManager.sceneCount;
@@ -20,7 +20,13 @@ namespace CoreGame
             if (loadScene)
             {
                 Debug.Log(MyLog.Format("Load : " + sceneToLoadName));
-                return SceneManager.LoadSceneAsync(sceneToLoadName, LoadSceneMode.Additive);
+                if (async)
+                {
+                    return SceneManager.LoadSceneAsync(sceneToLoadName, LoadSceneMode.Additive);
+                } else
+                {
+                    SceneManager.LoadScene(sceneToLoadName, LoadSceneMode.Additive);
+                }
             }
             return null;
         }

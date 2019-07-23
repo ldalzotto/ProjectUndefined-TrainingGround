@@ -28,5 +28,10 @@ namespace CoreGame
             involvedPOI.SetAnimationPosition(animationID);
         }
 
+        public void SetPosition(APointOfInterestType involvedPOI, TransformBinarryFormatted position)
+        {
+            involvedPOI.SetPosition(position);
+        }
+
     }
 }

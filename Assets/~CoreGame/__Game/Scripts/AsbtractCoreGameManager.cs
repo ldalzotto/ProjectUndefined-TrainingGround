@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace CoreGame
@@ -10,6 +11,7 @@ namespace CoreGame
         private ATimelinesManager ATimelinesManager;
         private GameInputManager GameInputManager;
         private PersistanceManager PersistanceManager;
+        protected AGhostPOIManager AGhostPOIManager;
 
         protected void OnAwake()
         {
@@ -17,22 +19,23 @@ namespace CoreGame
             this.ATimelinesManager = GameObject.FindObjectOfType<ATimelinesManager>();
             this.GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
+            this.AGhostPOIManager = GameObject.FindObjectOfType<AGhostPOIManager>();
 
             this.PersistanceManager.Init();
             this.GameInputManager.Init();
             GameObject.FindObjectOfType<LevelAvailabilityManager>().Init();
-            GameObject.FindObjectOfType<AGhostPOIManager>().Init();
+            this.AGhostPOIManager.Init();
             this.ATimelinesManager.Init();
             GameObject.FindObjectOfType<TimelinesEventManager>().Init();
             GameObject.FindObjectOfType<LevelTransitionManager>().Init();
             GameObject.FindObjectOfType<LevelManagerEventManager>().Init();
             GameObject.FindObjectOfType<PlayerAdventurePositionManager>().Init();
             GameObject.FindObjectOfType<APointOfInterestEventManager>().Init();
-           
+
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
 
         }
-        
+
 
         protected void OnStart()
         {
@@ -76,7 +79,7 @@ namespace CoreGame
             }
         }
 
-       
+
 
     }
 }

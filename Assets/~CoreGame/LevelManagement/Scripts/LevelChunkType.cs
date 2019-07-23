@@ -14,7 +14,11 @@ namespace CoreGame
                 MonoBehaviour.Destroy(objectToDestroy);
             }
         }
-
+        
+        public BoxCollider GetCollider()
+        {
+            return this.GetComponent<BoxCollider>();
+        }
     }
 
 }

@@ -30,6 +30,7 @@ namespace CoreGame
         public void CORE_EVT_OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
         {
             LevelChunkType.DestroyAllDestroyOnStartObjects();
+            this.LevelManager.OnLevelChunkLoaded(levelZoneChunkID);
         }
 
     }

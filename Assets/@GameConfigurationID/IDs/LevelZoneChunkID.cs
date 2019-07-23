@@ -29,5 +29,7 @@ namespace GameConfigurationID {
     RTP_TEST_RangeEffectManager = 6,
     
     ADVENTURE_AnimationCutsceneTimelineTest = 7,
+
+    NONE = 8,
   }
 }

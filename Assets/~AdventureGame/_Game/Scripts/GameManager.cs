@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using System.Linq;
 using UnityEngine;
 
 namespace AdventureGame
@@ -16,6 +17,7 @@ namespace AdventureGame
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CameraMovementManager CameraMovementManager;
+        private LevelManager LevelManager;
 
 #if UNITY_EDITOR
         private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
@@ -27,7 +29,8 @@ namespace AdventureGame
             this.AfterGameManagerPersistanceInstanceInitialization();
             //Level chunk initialization
             base.OnAwake();
-            GameObject.FindObjectOfType<LevelManager>().Init(LevelType.ADVENTURE);
+            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.LevelManager.Init(LevelType.ADVENTURE);
         }
 
         protected virtual void AfterGameManagerPersistanceInstanceInitialization() { }
@@ -35,6 +38,17 @@ namespace AdventureGame
         void Start()
         {
             base.OnStart();
+            
+            //load dynamic POI
+            var allLoadedLevelChunkID = this.LevelManager.AllLoadedLevelZonesChunkID;
+            var allActivePOIIds = GameObject.FindObjectsOfType<APointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestId);
+            foreach (var elligiblePOIIdTo in this.AGhostPOIManager.GetAllPOIIdElligibleToBeDynamicallyInstanciated(allLoadedLevelChunkID))
+            {
+                if (!allActivePOIIds.Contains(elligiblePOIIdTo))
+                {
+                    PointOfInterestType.Instanciate(elligiblePOIIdTo);
+                }
+            }
 
             var InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(true);

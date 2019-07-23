@@ -94,4 +94,27 @@ namespace AdventureGame
 
     }
     #endregion
+
+    #region Level Positioning State
+    [System.Serializable]
+    public class PointOfInterestLevelPositioningState
+    {
+        [SerializeField]
+        public LevelZoneChunkID LevelZoneChunkID;
+        [SerializeField]
+        public TransformBinarry TransformBinarry;
+
+        public PointOfInterestLevelPositioningState()
+        {
+            this.LevelZoneChunkID = LevelZoneChunkID.NONE;
+        }
+
+        public void SyncPointOfInterestLevelPositioning(LevelZoneChunkID levelZoneChunkID, ref PointOfInterestModelObjectModule pointOfInterestModelObjectModule)
+        {
+            this.LevelZoneChunkID = levelZoneChunkID;
+            this.TransformBinarry = new TransformBinarry(pointOfInterestModelObjectModule.transform);
+        }
+
+    }
+    #endregion
 }

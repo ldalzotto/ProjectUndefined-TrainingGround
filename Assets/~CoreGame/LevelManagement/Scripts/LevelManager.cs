@@ -11,9 +11,15 @@ namespace CoreGame
 
         [SerializeField]
         private LevelZonesID levelID;
+        [SerializeField]
+        private LevelZoneChunkID currentLevelZoneChunkID = LevelZoneChunkID.NONE;
+        [SerializeField]
+        private List<LevelZoneChunkID> allLoadedLevelZonesChunkID;
 
         public LevelType CurrentLevelType { get => currentLevelType; }
         public LevelZonesID LevelID { get => levelID; set => levelID = value; }
+        public List<LevelZoneChunkID> AllLoadedLevelZonesChunkID { get => allLoadedLevelZonesChunkID; }
+        public LevelZoneChunkID CurrentLevelZoneChunkID { get => currentLevelZoneChunkID; }
 
         #region External Dependencies
         private Coroutiner Coroutiner;
@@ -32,6 +38,7 @@ namespace CoreGame
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.currentLevelType = currentLevelType;
             this.EnvironmentSceneLevelManager = new EnvironmentSceneLevelManager(LevelAvailabilityManager, this, CoreConfigurationManager, LevelManagerEventManager);
+
         }
 
         #region External Event
@@ -42,6 +49,16 @@ namespace CoreGame
         internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
         {
             return this.EnvironmentSceneLevelManager.OnPuzzleToAdventureLevel(nextPuzzleLevel);
+        }
+        public void OnChunkLevelEnter(LevelChunkType NextLevelChunk)
+        {
+            this.currentLevelZoneChunkID = NextLevelChunk.LevelZoneChunkID;
+        }
+
+        public void OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)
+        {
+            if (this.allLoadedLevelZonesChunkID == null) { this.allLoadedLevelZonesChunkID = new List<LevelZoneChunkID>(); }
+            this.allLoadedLevelZonesChunkID.Add(levelZoneChunkID);
         }
         #endregion
 
@@ -71,21 +88,25 @@ namespace CoreGame
             this.CoreConfigurationManager = CoreConfigurationManager;
             this.LevelManagerEventManager = LevelManagerEventManager;
 
-            LoadAllLevels(this.LevelManagerRef.GetCurrentLevel());
+            LoadAllLevels(this.LevelManagerRef.GetCurrentLevel(), async: false);
         }
 
-        private List<AsyncOperation> LoadAllLevels(LevelZonesID levelZonesID)
+        private List<AsyncOperation> LoadAllLevels(LevelZonesID levelZonesID, bool async = true)
         {
             List<AsyncOperation> sceneLoadOperations = new List<AsyncOperation>();
             foreach (var levelChunk in this.CoreConfigurationManager.LevelHierarchyConfiguration().GetLevelHierarchy(levelZonesID))
             {
                 if (this.LevelAvailabilityManager.IsLevelAvailable(levelChunk))
                 {
-                    var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk));
+                    var sceneLoadAsyncOperation = SceneLoadingHelper.SceneLoadWithoutDuplicates(this.CoreConfigurationManager.ChunkZonesSceneConfiguration().GetSceneName(levelChunk), async);
                     if (sceneLoadAsyncOperation != null)
                     {
                         sceneLoadAsyncOperation.completed += (asyncOperation) => { this.LevelManagerEventManager.CORE_EVT_OnLevelChunkLoaded(levelChunk); };
                         sceneLoadOperations.Add(sceneLoadAsyncOperation);
+                    }
+                    else if (!async)
+                    {
+                        this.LevelManagerEventManager.CORE_EVT_OnLevelChunkLoaded(levelChunk);
                     }
                 }
             }
