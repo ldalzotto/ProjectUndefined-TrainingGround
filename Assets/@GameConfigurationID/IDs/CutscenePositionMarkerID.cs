@@ -35,5 +35,6 @@ namespace GameConfigurationID
         _1_Town_Thief_Position_3 = 7,
         _1_Town_Thief_Position_4 = 8,
         _1_Town_Thief_Position_5 = 9,
+        _1_Town_Thief_Position_6 = 11,
     }
 }

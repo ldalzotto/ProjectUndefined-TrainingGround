@@ -193,11 +193,6 @@ namespace AdventureGame
             PlayerInventoryTriggerManager.OnInventoryDisabled();
         }
 
-        [Obsolete("Cutscene movement must be handled with the new system")]
-        public IEnumerator SetAIDestinationCoRoutine(Transform destination, float normalizedSpeed)
-        {
-            return this.PointOfInterestType.GetPointOfInterestCutsceneController().SetAIDestination(destination, normalizedSpeed);
-        }
         #endregion
 
         public Animator GetPlayerAnimator()

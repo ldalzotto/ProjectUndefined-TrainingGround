@@ -30,8 +30,6 @@ namespace AdventureGame
         public float CrossFade = 0f;
         [SerializeField]
         private bool FramePerfectEndDetection = false;
-        [SerializeField]
-        private bool WarpAgentToRootBoneAtEndOfAnimation = false;
 
         [NonSerialized]
         private bool animationEnded = false;
@@ -78,7 +76,7 @@ namespace AdventureGame
                     this.animationEnded = true;
                     return null;
                 }
-            }, this.PlayImmediately, this.FramePerfectEndDetection, this.WarpAgentToRootBoneAtEndOfAnimation));
+            }, this.PlayImmediately, this.FramePerfectEndDetection));
             yield return this.animationCoroutine;
         }
 
@@ -106,7 +104,6 @@ namespace AdventureGame
             this.InfiniteLoop = (bool)NodeEditorGUILayout.BoolField("Infinite loop : ", string.Empty, this.InfiniteLoop);
             this.PlayImmediately = (bool)NodeEditorGUILayout.BoolField("Update model positions on start : ", string.Empty, this.PlayImmediately);
             this.FramePerfectEndDetection = (bool)NodeEditorGUILayout.BoolField("Frame perfect end detection : ", string.Empty, this.FramePerfectEndDetection);
-            this.WarpAgentToRootBoneAtEndOfAnimation = (bool)NodeEditorGUILayout.BoolField("Warp to root at end : ", string.Empty, this.WarpAgentToRootBoneAtEndOfAnimation);
         }
 #endif
     }

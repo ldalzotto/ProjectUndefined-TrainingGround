@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using static AnimationConstants;
 
 namespace AdventureGame
 {
@@ -74,23 +73,18 @@ namespace AdventureGame
             this.Agent.transform.rotation = warpPosition.rotation;
         }
 
-        public IEnumerator SetAIDestination(Transform destination, float normalizedSpeed)
+        public IEnumerator SetAIDestination(Transform destination, float normalizedSpeed, AnimationCurve speedFactorOverDistance)
         {
-            yield return this.POICutsceneMoveManager.SetDestination(destination, normalizedSpeed);
+            yield return this.POICutsceneMoveManager.SetDestination(destination, normalizedSpeed, speedFactorOverDistance);
             //Force position to ensure the destination is correctly reached
             this.Warp(destination);
         }
 
-        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately, bool framePerfectEndDetection, bool warpAgentToRootBoneAtEndOfAnimation)
+        public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately, bool framePerfectEndDetection)
         {
             this.isAnimationPlaying = true;
             yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately, framePerfectEndDetection);
             this.isAnimationPlaying = false;
-
-            if (warpAgentToRootBoneAtEndOfAnimation)
-            {
-                this.Warp(BipedBoneRetriever.GetPlayerBone(BipedBone.ROOT, this.PointOfInterestModelObjectModule.Animator).transform);
-            }
         }
 
         public void StopAnimation(AnimationID animationID)
@@ -119,6 +113,9 @@ namespace AdventureGame
 
         private bool isDirectedByAi;
         private float normalizedSpeedMagnitude = 1f;
+        private float distanceAttenuatedNormalizedSpeedMagnitude;
+        private AnimationCurve speedFactorOverDistance;
+        private float currentPathTotalDistance;
 
         public bool IsDirectedByAi { get => isDirectedByAi; }
 
@@ -137,6 +134,23 @@ namespace AdventureGame
 
                 var playerMovementOrientation = (playerAgent.nextPosition - this.PlayerRigidBody.transform.position).normalized;
                 playerAgent.speed = SpeedMultiplicationFactor * this.normalizedSpeedMagnitude;
+                this.distanceAttenuatedNormalizedSpeedMagnitude = this.normalizedSpeedMagnitude;
+
+                if (this.speedFactorOverDistance != null)
+                {
+                    if (this.currentPathTotalDistance == 0f)
+                    {
+                        var pathCorners = this.playerAgent.path.corners;
+                        for (var i = 1; i < pathCorners.Length; i++)
+                        {
+                            this.currentPathTotalDistance += Vector3.Distance(pathCorners[i - 1], pathCorners[i]);
+                        }
+                    }
+                    var distanceAttanuationFacotr = this.speedFactorOverDistance.Evaluate(1 - (this.playerAgent.remainingDistance / this.currentPathTotalDistance));
+                    playerAgent.speed *= distanceAttanuationFacotr;
+                    this.distanceAttenuatedNormalizedSpeedMagnitude *= distanceAttanuationFacotr;
+                }
+
                 PlayerRigidBody.transform.position = playerAgent.nextPosition;
             }
 
@@ -146,7 +160,7 @@ namespace AdventureGame
         {
             if (this.isDirectedByAi)
             {
-                return this.normalizedSpeedMagnitude;
+                return this.distanceAttenuatedNormalizedSpeedMagnitude;
             }
             else
             {
@@ -154,10 +168,12 @@ namespace AdventureGame
             }
         }
 
-        public IEnumerator SetDestination(Transform destination, float normalizedSpeed)
+        public IEnumerator SetDestination(Transform destination, float normalizedSpeed, AnimationCurve speedFactorOverDistance)
         {
+            this.currentPathTotalDistance = 0f;
             this.isDirectedByAi = true;
             this.normalizedSpeedMagnitude = normalizedSpeed;
+            this.speedFactorOverDistance = speedFactorOverDistance;
             playerAgent.nextPosition = this.PlayerRigidBody.transform.position;
             playerAgent.SetDestination(destination.position);
             PlayerRigidBody.isKinematic = true;
