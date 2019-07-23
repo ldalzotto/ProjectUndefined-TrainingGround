@@ -88,6 +88,13 @@ namespace AdventureGame
             this.isAnimationPlaying = false;
         }
 
+        public void Play(AnimationID animationID, float crossFadeDuration, bool updateModelImmediately)
+        {
+            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
+        }
+
+        // public void Play()
+
         public void StopAnimation(AnimationID animationID)
         {
             AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);

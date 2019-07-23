@@ -16,6 +16,10 @@ namespace AdventureGame
         [SerializeField]
         public PointOfInterestId PointOfInterestId;
 
+        [CustomEnum()]
+        [SerializeField]
+        public AnimationID PoseAnimationID = AnimationID.NONE;
+
         public CutscenePersistPOIAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
@@ -36,7 +40,14 @@ namespace AdventureGame
             if (ghostPOI != null)
             {
                 var pointOfInterestType = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId);
+                var pointOfInterestCutsceneController = pointOfInterestType.GetPointOfInterestCutsceneController();
+
                 ghostPOI.OnPositionChanged(pointOfInterestType.GetRootObject().transform, cutsceneActionInput.LevelManager.CurrentLevelZoneChunkID);
+
+                if(this.PoseAnimationID!= AnimationID.NONE)
+                {
+                    ghostPOI.OnAnimationPositioningPlayed(this.PoseAnimationID);
+                }               
             }
         }
 
@@ -50,6 +61,7 @@ namespace AdventureGame
         public override void ActionGUI()
         {
             this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
+            this.PoseAnimationID = (AnimationID)NodeEditorGUILayout.EnumField("Pose animation ID : ", string.Empty, this.PoseAnimationID);
         }
 #endif
     }

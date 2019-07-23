@@ -11,14 +11,14 @@ namespace CoreGame
         [CustomEnum(isCreateable: true)]
         public AnimationLayerID AnimationLayer;
 
-        public string GetLayerName()
-        {
-            return this.AnimationLayer.ToString();
-        }
-
         public int GetLayerIndex(Animator animator)
         {
-            return animator.GetLayerIndex(this.GetLayerName());
+            return AnimationConfigurationData.GetLayerIndex(this.AnimationLayer, animator);
+        }
+
+        public static int GetLayerIndex(AnimationLayerID AnimationLayer, Animator animator)
+        {
+            return animator.GetLayerIndex(AnimationLayer.ToString());
         }
     }
 

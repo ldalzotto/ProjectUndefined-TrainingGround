@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections;
+using UnityEditor;
 
 #if UNITY_EDITOR
 using NodeGraph_Editor;
@@ -23,6 +24,8 @@ namespace AdventureGame
         public AnimationID AnimationId;
 
         [SerializeField]
+        public bool WaitForEnd = true;
+        [SerializeField]
         public bool InfiniteLoop = false;
         [SerializeField]
         public bool PlayImmediately = false;
@@ -40,7 +43,7 @@ namespace AdventureGame
         private CutsceneActionInput actionInput;
         [NonSerialized]
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
-
+        
         public CutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
@@ -60,7 +63,17 @@ namespace AdventureGame
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
             this.actionInput = cutsceneActionInput;
             this.pointOfInterestCutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
-            Coroutiner.Instance.StartCoroutine(this.PlayAnimation(this.pointOfInterestCutsceneController));
+
+            if (this.WaitForEnd)
+            {
+                Coroutiner.Instance.StartCoroutine(this.PlayAnimation(this.pointOfInterestCutsceneController));
+            }
+            else
+            {
+                this.animationEnded = true;
+                this.pointOfInterestCutsceneController.Play(this.AnimationId, this.CrossFade, this.PlayImmediately);
+            }
+
         }
 
         private IEnumerator PlayAnimation(PointOfInterestCutsceneController cutsceneController)
@@ -100,10 +113,14 @@ namespace AdventureGame
         {
             this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
+            this.WaitForEnd = (bool)NodeEditorGUILayout.BoolField("Wait for end : ", string.Empty, this.WaitForEnd);
             this.CrossFade = NodeEditorGUILayout.FloatField("Crossfade : ", string.Empty, this.CrossFade);
-            this.InfiniteLoop = (bool)NodeEditorGUILayout.BoolField("Infinite loop : ", string.Empty, this.InfiniteLoop);
             this.PlayImmediately = (bool)NodeEditorGUILayout.BoolField("Update model positions on start : ", string.Empty, this.PlayImmediately);
+
+            EditorGUI.BeginDisabledGroup(!this.WaitForEnd);
+            this.InfiniteLoop = (bool)NodeEditorGUILayout.BoolField("Infinite loop : ", string.Empty, this.InfiniteLoop);
             this.FramePerfectEndDetection = (bool)NodeEditorGUILayout.BoolField("Frame perfect end detection : ", string.Empty, this.FramePerfectEndDetection);
+            EditorGUI.EndDisabledGroup();
         }
 #endif
     }
