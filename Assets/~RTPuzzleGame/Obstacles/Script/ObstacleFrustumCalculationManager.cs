@@ -261,7 +261,7 @@ namespace RTPuzzle
 
         public void AskCalculation()
         {
-            Debug.Log(MyLog.Format("ObstacleFrustumCalculation asked. Listener : " + this.obstacleListenerRef.name + " obstacle : " + this.squareObstacleRef.name));
+           // Debug.Log(MyLog.Format("ObstacleFrustumCalculation asked. Listener : " + this.obstacleListenerRef.name + " obstacle : " + this.squareObstacleRef.name));
             this.calculationAsked = true;
             this.worldPositionStartAngleDefinition = this.obstacleListenerRef.transform.position;
             this.obstaclePosition = this.squareObstacleRef.transform.position;

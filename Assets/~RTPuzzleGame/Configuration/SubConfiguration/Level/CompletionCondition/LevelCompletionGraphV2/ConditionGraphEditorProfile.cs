@@ -31,14 +31,17 @@ namespace RTPuzzle
     {
         private NPCAIManagerContainer nPCAIManagerContainer;
         private InteractiveObjectContainer interactiveObjectContainer;
+        private PlayerManagerDataRetriever playerManagerDataRetriever;
 
-        public LevelCompletionConditionResolutionInput(NPCAIManagerContainer nPCAIManagerContainer, InteractiveObjectContainer interactiveObjectContainer)
+        public LevelCompletionConditionResolutionInput(NPCAIManagerContainer nPCAIManagerContainer, InteractiveObjectContainer interactiveObjectContainer, PlayerManagerDataRetriever playerManagerDataRetriever)
         {
             this.nPCAIManagerContainer = nPCAIManagerContainer;
             this.interactiveObjectContainer = interactiveObjectContainer;
+            this.playerManagerDataRetriever = playerManagerDataRetriever;
         }
 
         public NPCAIManagerContainer NPCAIManagerContainer { get => nPCAIManagerContainer; }
         public InteractiveObjectContainer InteractiveObjectContainer { get => interactiveObjectContainer; }
+        public PlayerManagerDataRetriever PlayerManagerDataRetriever { get => playerManagerDataRetriever; }
     }
 }

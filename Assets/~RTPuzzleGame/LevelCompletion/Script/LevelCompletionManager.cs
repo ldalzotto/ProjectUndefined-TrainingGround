@@ -23,13 +23,15 @@ namespace RTPuzzle
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.FXContainerManager = GameObject.FindObjectOfType<FXContainerManager>();
             #endregion
 
             this.currentLevelConfiguration = PuzzleGameConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()];
-            this.levelCompletionConditionResolutionInput = new LevelCompletionConditionResolutionInput(NPCAIManagerContainer, InteractiveObjectContainer);
+            this.levelCompletionConditionResolutionInput = new LevelCompletionConditionResolutionInput(NPCAIManagerContainer, InteractiveObjectContainer, PlayerManagerDataRetriever);
         }
 
         internal void ConditionRecalculationEvaluate()

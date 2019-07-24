@@ -41,8 +41,8 @@ namespace RTPuzzle
 
         private void AskForLevelCompletionCalculation(Collider other)
         {
-            var npcAiManager = NPCAIManager.FromCollisionType(other.GetComponent<CollisionType>());
-            if (npcAiManager != null)
+            var CollisionType = other.GetComponent<CollisionType>();
+            if (CollisionType != null && (CollisionType.IsAI || CollisionType.IsPlayer))
             {
                 this.PuzzleEventsManager.PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate();
             }

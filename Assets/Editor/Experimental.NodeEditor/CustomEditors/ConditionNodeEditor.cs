@@ -14,7 +14,8 @@ namespace Experimental.Editor_NodeEditor
             { typeof(AndNode).Name, typeof(AndNode) },
             { typeof(OrNode).Name, typeof(OrNode) },
             {typeof(OutputResultNode).Name, typeof(OutputResultNode) },
-            {typeof(AITargetConditionNode).Name, typeof(AITargetConditionNode) }
+            {typeof(AITargetConditionNode).Name, typeof(AITargetConditionNode) },
+            {typeof(PlayerTargetConditionNode).Name, typeof(PlayerTargetConditionNode) }
         };
 
         protected override Type NodeEditorProfileType => typeof(ConditionGraphEditorProfile);

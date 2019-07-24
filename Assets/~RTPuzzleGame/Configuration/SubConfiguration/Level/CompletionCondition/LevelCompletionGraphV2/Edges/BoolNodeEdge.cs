@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using NodeGraph;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
-using NodeGraph;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -42,6 +41,10 @@ namespace RTPuzzle
             if (this.BackwardConnectedNodeEdges[0].NodeProfileRef.GetType() == typeof(AITargetConditionNode))
             {
                 ((AITargetConditionNode)this.BackwardConnectedNodeEdges[0].NodeProfileRef).Resolve(ref ConditionGraphResolutionInput);
+            }
+            else if (this.BackwardConnectedNodeEdges[0].NodeProfileRef.GetType() == typeof(PlayerTargetConditionNode))
+            {
+                ((PlayerTargetConditionNode)this.BackwardConnectedNodeEdges[0].NodeProfileRef).Resolve(ref ConditionGraphResolutionInput);
             }
             else if (this.BackwardConnectedNodeEdges[0].NodeProfileRef.GetType().IsSubclassOf(typeof(ALogicExecutionNode)))
             {
