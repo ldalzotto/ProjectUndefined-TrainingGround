@@ -19,5 +19,6 @@ namespace RTPuzzle
         public AIAttractiveObjectComponent AIAttractiveObjectComponent;
         public AIFearStunComponent AIFearStunComponent;
         public AIPlayerEscapeComponent AIPlayerEscapeComponent;
+        public AIPlayerAttractiveComponent AIPlayerAttractiveComponent;
     }
 }

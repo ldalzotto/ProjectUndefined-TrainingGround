@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\~RTPuzzleGame\_Collision\Scripts\CollisionTypeHelper.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\_Collision\Scripts\PuzzleLogic\RootPuzzleLogicCollider.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\DottedLineContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\DottedLineRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\LineTypes\DottedLine.cs" />
@@ -84,6 +85,8 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIPatrolComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIRandomPatrolComponentMananger.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIScriptedPatrolComponentManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerAttractive\AIPlayerAttractiveComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerAttractive\AIPlayerAttractiveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIPlayerEscapeComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIPlayerEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileEscapeComponent.cs" />

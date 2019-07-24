@@ -23,5 +23,7 @@ namespace GameConfigurationID {
     SEWER_RTP_2_TARGET_ZONE = 3,
     
     INTERACTION_TEST = 4,
+    
+    _1_Town_StartTutorial = 5,
   }
 }

@@ -13,10 +13,10 @@ namespace RTPuzzle
 
         #region Internal Components
         private Rigidbody playerRigidbody;
-        private Collider playerCollier;
         private NavMeshAgent navMeshAgent;
+        private RootPuzzleLogicCollider rootPuzzleLogicCollider;
         #endregion
-        
+
         private PlayerPhysicsMovementComponent playerPhysicsMovementComponent;
 
         #region Player Common component
@@ -47,14 +47,15 @@ namespace RTPuzzle
             #endregion
             
             this.playerRigidbody = GetComponent<Rigidbody>();
-            this.playerCollier = GetComponent<Collider>();
             var animator = GetComponentInChildren<Animator>();
             this.navMeshAgent = GetComponent<NavMeshAgent>();
+            this.rootPuzzleLogicCollider = GetComponentInChildren<RootPuzzleLogicCollider>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
             this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
             this.PlayerDataComponentContainer.Init();
+            this.rootPuzzleLogicCollider.Init();
 
             #region Data Components
             var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
@@ -62,7 +63,7 @@ namespace RTPuzzle
             #endregion
 
             PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
-            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.playerCollier, playerPhysicsMovementComponent);
+            PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.rootPuzzleLogicCollider.GetRootCollider(), playerPhysicsMovementComponent);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
@@ -130,7 +131,7 @@ namespace RTPuzzle
             return PlayerInputMoveManager.PlayerSpeedMagnitude;
         }
         public Rigidbody PlayerRigidbody { get => playerRigidbody; }
-        public Collider PlayerCollier { get => playerCollier; }
+        public Collider PlayerPuzzleLogicRootCollier { get => this.rootPuzzleLogicCollider.GetRootCollider(); }
         public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent { get => playerPhysicsMovementComponent;}
         public NavMeshAgent NavMeshAgent { get => navMeshAgent;  }
     }

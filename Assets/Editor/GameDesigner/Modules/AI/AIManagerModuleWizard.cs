@@ -28,7 +28,8 @@ namespace Editor_GameDesigner
                 AIAttractiveObjectLooseOperation: () => { this.ProcessAIManagerEdit("AIAttractiveObjectComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectLooseManager, typeof(AIAttractiveObjectLooseManager)); },
                 AITargetZoneManagerOperation: () => { this.ProcessAIManagerEdit("AITargetZoneComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AITargetZoneEscapeManager, typeof(AITargetZoneEscapeManager)); },
                 AIPlayerEscapeManagerOperation: () => { this.ProcessAIManagerEdit("AIPlayerEscapeComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerEscapeManager, typeof(AIPlayerEscapeManager)); },
-                AISightVisionOperation: () => { this.ProcessAISightVisionEdit(); }
+                AISightVisionOperation: () => { this.ProcessAISightVisionEdit(); },
+                AIPlayerAttractiveOperation: () => { this.ProcessAIManagerEdit("AIPlayerAttractiveComponent", this.CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerAttractiveManager, typeof(AIPlayerAttractiveManager)); }
             );
         }
 
@@ -110,7 +111,8 @@ namespace Editor_GameDesigner
                     AIAttractiveObjectLooseOperation: () => { description = "Move to the nearest attractive point in range.\nOnce targeted, the movement is cancelled if the AI exit attractive object range."; },
                     AITargetZoneManagerOperation: () => { description = "Detect weather the AI is in the selected target zone or not."; },
                     AIPlayerEscapeManagerOperation: () => { description = "Reduce FOV when the player is near."; },
-                    AISightVisionOperation: () => { description = "The sight vision of prefab."; }
+                    AISightVisionOperation: () => { description = "The sight vision of prefab."; },
+                    AIPlayerAttractiveOperation: () => { description = "Moving to player strategy."; }
                 );
             return description;
         }

@@ -19,7 +19,9 @@ namespace RTPuzzle
             {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 7 },
             {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 8 },
             {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 9 },
-            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 10 }
+            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 10 },
+            {typeof(SightInRangeEnterAIBehaviorEvent).Name, 11 },
+            {typeof(SightInRangeExitAIBehaviorEvent).Name, 12 }
         };
 
         private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
@@ -48,6 +50,8 @@ namespace RTPuzzle
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
             EventTypeCheck<PlayerEscapeStartAIBehaviorEvent>(genericAiBehavior, externalEvent, PlayerEscape_Start);
+            EventTypeCheck<SightInRangeEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, SightInRange_Enter);
+            EventTypeCheck<SightInRangeExitAIBehaviorEvent>(genericAiBehavior, externalEvent, SightInRange_Exit);
         }
 
         private void EventTypeCheck<T>(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent ev, Action<GenericPuzzleAIBehavior, T> processEventAction) where T : PuzzleAIBehaviorExternalEvent
@@ -190,8 +194,8 @@ namespace RTPuzzle
 
         private void TargetZone_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerStayAIBehaviorEvent targetZoneTriggerStayAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsEscapeFromTargetZoneEnabled() 
-                        && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.AITargetZoneManager) 
+            if (genericAiBehavior.IsEscapeFromTargetZoneEnabled()
+                        && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.AITargetZoneManager)
                         && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager))
             {
                 if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
@@ -230,6 +234,25 @@ namespace RTPuzzle
                     }
 
                 }
+            }
+        }
+
+        private void SightInRange_Enter(GenericPuzzleAIBehavior genericAiBehavior, SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
+        {
+            if (genericAiBehavior.IsPlayerAttractiveEnabled())
+            {
+                if (genericAiBehavior.AIPlayerAttractiveManager.OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
+                {
+                    genericAiBehavior.SetManagerState(genericAiBehavior.AIPlayerAttractiveManager);
+                }
+            }
+        }
+
+        private void SightInRange_Exit(GenericPuzzleAIBehavior genericAiBehavior, SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
+        {
+            if (genericAiBehavior.IsPlayerAttractiveEnabled())
+            {
+                genericAiBehavior.AIPlayerAttractiveManager.OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
             }
         }
 
@@ -394,6 +417,30 @@ namespace RTPuzzle
 
         public Vector3 PlayerPosition { get => playerPosition; }
         public AIPlayerEscapeComponent AIPlayerEscapeComponent { get => aIPlayerEscapeComponent; }
+    }
+
+    public class SightInRangeEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        private ColliderWithCollisionType colliderWithCollisionType;
+
+        public SightInRangeEnterAIBehaviorEvent(ColliderWithCollisionType colliderWithCollisionType)
+        {
+            this.colliderWithCollisionType = colliderWithCollisionType;
+        }
+
+        public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
+    }
+
+    public class SightInRangeExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        private ColliderWithCollisionType colliderWithCollisionType;
+
+        public SightInRangeExitAIBehaviorEvent(ColliderWithCollisionType colliderWithCollisionType)
+        {
+            this.colliderWithCollisionType = colliderWithCollisionType;
+        }
+
+        public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
     }
 
 }

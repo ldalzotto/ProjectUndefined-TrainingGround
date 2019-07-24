@@ -5,8 +5,9 @@ public class CollisionType : MonoBehaviour
 {
     [Header("Adventure")]
     public bool IsPoi;
-    
+
     [Header("RT_Puzzle")]
+    public bool IsPlayer = false;
     public bool IsRTAttractiveObject = false;
     public bool IsAI = false;
     public bool IsTargetZone = false;

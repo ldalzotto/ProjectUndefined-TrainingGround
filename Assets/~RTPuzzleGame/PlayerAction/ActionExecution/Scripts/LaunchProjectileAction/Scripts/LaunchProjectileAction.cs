@@ -139,8 +139,8 @@ namespace RTPuzzle
                     {
                         //LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition()
                         ResetCoolDown();
-                        var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerCollider().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
-                                             this.PlayerManagerDataRetriever.GetPlayerCollider().transform.up, BeziersControlPointsShape.CURVED);
+                        var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
+                                             this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().transform.up, BeziersControlPointsShape.CURVED);
                         ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
                     }
                    );
@@ -502,7 +502,7 @@ namespace RTPuzzle
         {
             if (this.ProjectilePath != null)
             {
-                this.ProjectilePath.Tick(d, this.PlayerManagerDataRetriever.GetPlayerCollider().bounds.center, this.LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
+                this.ProjectilePath.Tick(d, this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, this.LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
             }
         }
 

@@ -24,7 +24,8 @@ namespace RTPuzzle
                  Action AIAttractiveObjectLooseOperation,
                  Action AITargetZoneManagerOperation,
                  Action AIPlayerEscapeManagerOperation,
-                 Action AISightVisionOperation)
+                 Action AISightVisionOperation,
+                 Action AIPlayerAttractiveOperation)
         {
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIScriptedPatrolComponentManager), AIScriptedPatrolComponentManagerOperation);
@@ -36,6 +37,7 @@ namespace RTPuzzle
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneEscapeManager), AITargetZoneManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIPlayerEscapeManager), AIPlayerEscapeManagerOperation);
             InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AISightVision), AISightVisionOperation);
+            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIPlayerAttractiveManager), AIPlayerAttractiveOperation);
         }
 
         private static void InvokeIfNotNullAndTypeCorresponds(Type managerType, Type comparedType, Action action)

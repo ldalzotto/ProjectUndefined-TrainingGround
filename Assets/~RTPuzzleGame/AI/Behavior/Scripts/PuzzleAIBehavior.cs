@@ -108,7 +108,7 @@ namespace RTPuzzle
             this.GetComponentInChildren<AISightVision>().IfNotNull(AISightVision =>
             {
                 this.aiSightVision = AISightVision;
-                this.aiSightVision.Init();
+                this.aiSightVision.Init(puzzleAIBehaviorExternalEventManager);
             });
         }
 

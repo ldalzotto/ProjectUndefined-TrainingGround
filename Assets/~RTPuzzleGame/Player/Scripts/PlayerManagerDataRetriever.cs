@@ -26,9 +26,9 @@ namespace RTPuzzle
         {
             return this.GetPlayerTransform().position;
         }
-        public Collider GetPlayerCollider()
+        public Collider GetPlayerPuzzleLogicRootCollier()
         {
-            return PlayerManager.PlayerCollier;
+            return PlayerManager.PlayerPuzzleLogicRootCollier;
         }
 
         public Animator GetPlayerAnimator()

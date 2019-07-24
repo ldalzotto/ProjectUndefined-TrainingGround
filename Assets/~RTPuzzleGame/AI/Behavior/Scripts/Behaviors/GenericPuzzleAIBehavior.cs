@@ -17,6 +17,7 @@ namespace RTPuzzle
         private AbstractAIFearStunManager aIFearStunManager;
         private AbstractAIAttractiveObjectManager aIAttractiveObjectManager;
         private AbstractPlayerEscapeManager playerEscapeManager;
+        private AIPlayerAttractiveManager aIPlayerAttractiveManager;
 
         #region Data Retrieval
         public AbstractAIPatrolComponentManager AIPatrolComponentManager { get => aIPatrolComponentManager; }
@@ -26,6 +27,7 @@ namespace RTPuzzle
         public AbstractAIFearStunManager AIFearStunManager { get => aIFearStunManager; }
         public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; }
         public AbstractPlayerEscapeManager PlayerEscapeManager { get => playerEscapeManager; }
+        public AIPlayerAttractiveManager AIPlayerAttractiveManager { get => aIPlayerAttractiveManager; }
         #endregion
 
         public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
@@ -74,9 +76,15 @@ namespace RTPuzzle
                 AITargetZoneEscapeManager.Init(selfAgent, aiCollider, aIComponents.AITargetZoneComponent, this.aIFOVManager, aiID);
                 this.aITargetZoneManager = AITargetZoneEscapeManager;
             });
-            this.GetComponentInChildren<AIPlayerEscapeManager>().IfNotNull(AIPlayerEscapeManager => {
+            this.GetComponentInChildren<AIPlayerEscapeManager>().IfNotNull(AIPlayerEscapeManager =>
+            {
                 AIPlayerEscapeManager.Init(selfAgent, this.puzzleAIBehaviorExternalEventManager, playerManagerDataRetriever, aIComponents.AIPlayerEscapeComponent, this.AIFOVManager, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent);
                 this.playerEscapeManager = AIPlayerEscapeManager;
+            });
+            this.GetComponentInChildren<AIPlayerAttractiveManager>().IfNotNull(AIPlayerAttractiveManager =>
+            {
+                AIPlayerAttractiveManager.Init(this.aiSightVision);
+                this.aIPlayerAttractiveManager = AIPlayerAttractiveManager;
             });
 
             var dic = new Dictionary<int, InterfaceAIManager>()
@@ -86,8 +94,9 @@ namespace RTPuzzle
                  { 3, this.aITargetZoneManager },
                  { 4, this.playerEscapeManager },
                  { 5, this.aIProjectileEscapeManager },
-                 { 6, this.aIAttractiveObjectManager },
-                 { 7, this.aIPatrolComponentManager }
+                 { 6, this.aIPlayerAttractiveManager},
+                 { 7, this.aIAttractiveObjectManager },
+                 { 8, this.aIPatrolComponentManager }
             };
             this.aIBehaviorManagerContainer = new AIBehaviorManagerContainer(new SortedList<int, InterfaceAIManager>(
                 dic.Select(s => s).Where(s => s.Value != null).ToDictionary(s => s.Key, s => s.Value)
@@ -103,11 +112,13 @@ namespace RTPuzzle
         {
             return (this.IsAttractiveObjectsEnabled() && this.aIAttractiveObjectManager.IsManagerEnabled())
                         || (this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled())
-                        || (this.IsPlayerEscapeEnabled() && this.playerEscapeManager.IsManagerEnabled());
+                        || (this.IsPlayerEscapeEnabled() && this.playerEscapeManager.IsManagerEnabled()
+                        || (this.IsPlayerAttractiveEnabled() && this.aIPlayerAttractiveManager.IsManagerEnabled()));
         }
         public bool IsPlayerEscapeAllowedToInterruptOtherStates()
         {
-            return (this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled());
+            return ((this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled())
+                  || (this.IsPlayerAttractiveEnabled() && this.aIPlayerAttractiveManager.IsManagerEnabled()));
         }
         #endregion
 
@@ -125,6 +136,7 @@ namespace RTPuzzle
             this.aITargetZoneManager.IfNotNull((aITargetZoneManager) => aITargetZoneManager.OnDestinationReached());
             this.aIAttractiveObjectManager.IfNotNull((aIAttractiveObjectManager) => aIAttractiveObjectManager.OnDestinationReached());
             this.playerEscapeManager.IfNotNull((playerEscapeManager) => playerEscapeManager.OnDestinationReached());
+            this.aIPlayerAttractiveManager.IfNotNull((aIPlayerAttractiveManager) => aIPlayerAttractiveManager.OnDestinationReached());
 
             if (!this.IsFeared() && !this.IsEscapingWithoutTarget() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectileWithTargetZones() && !this.IsEscapingFromPlayer())
             {
@@ -206,6 +218,7 @@ namespace RTPuzzle
         public bool IsAttractiveObjectsEnabled() { return this.aIAttractiveObjectManager != null; }
         public bool IsEscapeFromTargetZoneEnabled() { return this.aITargetZoneManager != null; }
         public bool IsPlayerEscapeEnabled() { return this.playerEscapeManager != null; }
+        public bool IsPlayerAttractiveEnabled() { return this.aIPlayerAttractiveManager != null; }
         #endregion
 
         #region State Retrieval
@@ -216,6 +229,7 @@ namespace RTPuzzle
         public bool IsEscapingFromExitZone() { if (this.IsEscapeFromTargetZoneEnabled()) { return this.aITargetZoneManager.IsManagerEnabled(); } else { return false; } }
         public bool IsInfluencedByAttractiveObject() { if (this.IsAttractiveObjectsEnabled()) { return this.aIAttractiveObjectManager.IsManagerEnabled(); } else { return false; } }
         public bool IsEscapingFromPlayer() { if (this.IsPlayerEscapeEnabled()) { return this.playerEscapeManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsAttractedFromPlayer() { if (this.IsPlayerAttractiveEnabled()) { return this.aIPlayerAttractiveManager.IsManagerEnabled(); } else { return false; } }
         #endregion
 
         public void DebugGUITick()
