@@ -30,7 +30,7 @@ namespace AdventureGame
 
         public SequencedAction GetAction()
         {
-            return actionEdge.AssociatedAction;
+            return actionEdge.associatedAction;
         }
 
         public void BuildAction()

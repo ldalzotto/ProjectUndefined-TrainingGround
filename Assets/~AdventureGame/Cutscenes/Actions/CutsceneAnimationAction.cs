@@ -16,22 +16,15 @@ namespace AdventureGame
     public class CutsceneAnimationAction : SequencedAction
     {
         [CustomEnum()]
-        [SerializeField]
         public PointOfInterestId PointOfInterestId;
 
         [CustomEnum()]
-        [SerializeField]
         public AnimationID AnimationId;
-
-        [SerializeField]
+        
         public bool SkipToNextNode = false;
-        [SerializeField]
         public bool InfiniteLoop = false;
-        [SerializeField]
         public bool PlayImmediately = false;
-        [SerializeField]
         public float CrossFade = 0f;
-        [SerializeField]
         private bool FramePerfectEndDetection = false;
 
         [NonSerialized]

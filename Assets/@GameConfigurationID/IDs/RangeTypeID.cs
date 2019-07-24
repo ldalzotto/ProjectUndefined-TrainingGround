@@ -8,23 +8,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID
-{
-
-
-    [System.Serializable()]
-    public enum RangeTypeID
-    {
-
-        LAUNCH_PROJECTILE = 0,
-
-        LAUNCH_PROJECTILE_CURSOR = 1,
-
-        ATTRACTIVE_OBJECT = 2,
-
-        ATTRACTIVE_OBJECT_ACTIVE = 3,
-
-        TARGET_ZONE = 4,
-        SIGHT_VISION = 5,
-    }
+namespace GameConfigurationID {
+  
+  
+  [System.Serializable()]
+  public enum RangeTypeID {
+    
+    LAUNCH_PROJECTILE = 0,
+    
+    LAUNCH_PROJECTILE_CURSOR = 1,
+    
+    ATTRACTIVE_OBJECT = 2,
+    
+    ATTRACTIVE_OBJECT_ACTIVE = 3,
+    
+    TARGET_ZONE = 4,
+    
+    SIGHT_VISION = 5,
+  }
 }

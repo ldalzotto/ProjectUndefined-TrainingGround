@@ -16,7 +16,7 @@ namespace AdventureGame
             {
                 actionsToAbort.AddRange(this.actionEdge.BackwardConnectedNodeEdges.ConvertAll(e => ((ICutsceneNode)e.NodeProfileRef).GetAction()));
             }
-            this.actionEdge.AssociatedAction.SequencedActionsToInterrupt = actionsToAbort;
+            this.actionEdge.associatedAction.SequencedActionsToInterrupt = actionsToAbort;
         }
 
 #if UNITY_EDITOR

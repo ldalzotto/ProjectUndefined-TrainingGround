@@ -3,6 +3,7 @@ using CoreGame;
 using GameConfigurationID;
 using RTPuzzle;
 using UnityEditor;
+using UnityEngine;
 
 namespace Editor_GameDesigner
 {
@@ -29,7 +30,9 @@ namespace Editor_GameDesigner
 
     public class DiscussionRepertoireConfigurationModule : IGameDesignerModule
     {
+        [SerializeField]
         private DiscussionTextRepertoire DiscussionTextRepertoire;
+        [SerializeField]
         private Editor CachedEditor;
 
         public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)

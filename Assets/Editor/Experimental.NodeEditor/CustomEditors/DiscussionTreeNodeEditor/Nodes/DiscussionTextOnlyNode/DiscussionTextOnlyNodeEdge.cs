@@ -30,7 +30,12 @@ namespace Editor_DiscussionTreeNodeEditor
             this.Talker = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.Talker);
             EditorGUILayout.EndVertical();
             EditorGUILayout.Separator();
-            EditorGUILayout.HelpBox(((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.SentencesText[this.DisplayedText], MessageType.None);
+
+            if (((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.SentencesText.ContainsKey(this.DisplayedText))
+            {
+                EditorGUILayout.HelpBox(((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.SentencesText[this.DisplayedText], MessageType.None);
+            }
+           
         }
 
         protected override Color EdgeColor()

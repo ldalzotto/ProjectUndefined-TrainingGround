@@ -8,19 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID
-{
-
-
-    [System.Serializable()]
-    public enum CutsceneId
-    {
-
-        PLAYER_OPEN_SEWER_DOOR = 0,
-
-        _1_Town_Introduction = 1,
-
-        ADVENTURE_TEST_AnimationCutsceneTimeline = 2,
-
-    }
+namespace GameConfigurationID {
+  
+  
+  [System.Serializable()]
+  public enum CutsceneId {
+    
+    PLAYER_OPEN_SEWER_DOOR = 0,
+    
+    _1_Town_Introduction = 1,
+    
+    ADVENTURE_TEST_AnimationCutsceneTimeline = 2,
+  }
 }

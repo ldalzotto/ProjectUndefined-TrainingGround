@@ -21,7 +21,7 @@ namespace GameConfigurationID {
     Context_Action_Override = 2,
     
     Additional_Action_Override = 3,
-
+    
     POICutscene = 5,
     
     Pose_Override = 6,

@@ -11,14 +11,17 @@ namespace Editor_GameCustomEditors
     [CustomEditor(typeof(DiscussionTextRepertoire))]
     public class DiscussionTextRepertoireCustomEditor : Editor
     {
+        private RegexTextFinder SentenceSearch;
         private TextDictionaryGUI<DisucssionSentenceTextId> SentecesGUI;
 
         public override void OnInspectorGUI()
         {
             DiscussionTextRepertoire DiscussionTestRepertoire = (DiscussionTextRepertoire)target;
 
+            this.SentenceSearch.GUITick();
+
             EditorGUI.BeginChangeCheck();
-            this.SentecesGUI.GUiTick();
+            this.SentecesGUI.GUiTick(ref this.SentenceSearch);
             EditorGUILayout.Separator();
             if (EditorGUI.EndChangeCheck())
             {
@@ -31,6 +34,7 @@ namespace Editor_GameCustomEditors
         {
             DiscussionTextRepertoire DiscussionTestRepertoire = (DiscussionTextRepertoire)target;
             this.SentecesGUI = new TextDictionaryGUI<DisucssionSentenceTextId>(ref DiscussionTestRepertoire.SentencesText, "Discussion Sentences : ");
+            this.SentenceSearch = new RegexTextFinder();
         }
     }
 
@@ -48,7 +52,7 @@ namespace Editor_GameCustomEditors
             this.title = title;
         }
 
-        public void GUiTick()
+        public void GUiTick(ref RegexTextFinder SentenceSearch)
         {
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField(this.title);
@@ -87,10 +91,12 @@ namespace Editor_GameCustomEditors
             this.scrollPosition = EditorGUILayout.BeginScrollView(this.scrollPosition);
             foreach (var alphabeticalOrderedEnum in alphabeticalOrderedEnums)
             {
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField(alphabeticalOrderedEnum.ToString());
-                values[alphabeticalOrderedEnum] = EditorGUILayout.TextField(values[alphabeticalOrderedEnum]);
-                EditorGUILayout.EndHorizontal();
+                if(SentenceSearch.IsMatchingWith(alphabeticalOrderedEnum.ToString()))
+                {
+                    EditorGUILayout.LabelField(alphabeticalOrderedEnum.ToString());
+                    values[alphabeticalOrderedEnum] = EditorGUILayout.TextArea(values[alphabeticalOrderedEnum]);
+                }
+       
             }
             EditorGUILayout.EndScrollView();
 

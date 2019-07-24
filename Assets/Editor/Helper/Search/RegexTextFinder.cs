@@ -13,6 +13,7 @@ public class RegexTextFinder
     public RegexTextFinder()
     {
         this.searchField = new SearchField();
+        this.searchField.SetFocus();
     }
 
     public void GUITick()

@@ -9,12 +9,9 @@ namespace AdventureGame
     [System.Serializable]
     public abstract class ACutsceneEdge<T> : NodeEdgeProfile where T : SequencedAction
     {
-        [SerializeField]
-        private T associatedAction;
+        public T associatedAction;
 
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>();
-
-        public T AssociatedAction { get => associatedAction; }
 
 #if UNITY_EDITOR
         protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
