@@ -25,5 +25,9 @@ namespace GameConfigurationID {
     SewerRTP1_DoorPOI_Open = 13,
     
     SewerRTP1_DoorPOI_Opening = 14,
+    
+    _1_Town_AfterStartCutscene = 15,
+    
+    _1_Town_BeforeStartCutscene = 16,
   }
 }

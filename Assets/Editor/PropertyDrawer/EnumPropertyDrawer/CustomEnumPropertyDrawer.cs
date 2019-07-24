@@ -85,7 +85,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
                 if (GUI.Button(lineRect, "Open Repertoire"))
                 {
-                    ConfigurationInspector.OpenConfigurationEditor(typeof(DiscussionRepertoireConfigurationModule));
+                    ConfigurationInspector.OpenTextRepertoireAtID(targetEnum.ToString());
                 }
                 currentLineNB += 1;
             }

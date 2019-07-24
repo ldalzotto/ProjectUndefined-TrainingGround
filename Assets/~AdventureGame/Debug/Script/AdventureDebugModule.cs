@@ -39,7 +39,7 @@ namespace AdventureGame
             if (this.play)
             {
                 this.play = false;
-                this.CutscenePlayerManagerV2.OnCutsceneStart(this.cutsceneId);
+                this.CutscenePlayerManagerV2.ManualCutsceneStart(this.cutsceneId);
             }
             if (this.follow)
             {

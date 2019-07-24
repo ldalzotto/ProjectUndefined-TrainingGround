@@ -50,13 +50,19 @@ namespace AdventureGame
         #endregion
 
         #region External Event
-        public void OnCutsceneStart(CutsceneId cutsceneId)
+        public void ManualCutsceneStart(CutsceneId cutsceneId)
         {
-            Coroutiner.Instance.StartCoroutine(this.PlayCutscene(cutsceneId));
+            Coroutiner.Instance.StartCoroutine(this.ManualPlayCutscene(cutsceneId));
         }
         #endregion
 
         private CutsceneActionInput currentInput;
+
+        private IEnumerator ManualPlayCutscene(CutsceneId cutsceneId)
+        {
+            yield return this.PlayCutscene(cutsceneId);
+            this.ContextActionEventManager.OnContextActionFinished(new CutsceneTimelineAction(cutsceneId, null, false), new CutsceneTimelineActionInput(null));
+        }
 
         public IEnumerator PlayCutscene(CutsceneId cutsceneId)
         {
@@ -66,7 +72,7 @@ namespace AdventureGame
                 this.ContextActionEventManager, this.AdventureGameConfigurationManager, this.CutsceneGlobalController, this.GhostsPOIManager, this.LevelManager);
             this.CutsceneEventManager.OnCutscneStarted(cutsceneId);
             this.OnAddAction(cutsceneGraph.GetRootAction(), this.currentInput);
-            yield return new WaitUntil(() => { return this.isCutscenePlaying; });
+            yield return new WaitUntil(() => { return !this.isCutscenePlaying; });
 
             //Reset some state to ensure that nothing wroong persist
             this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);

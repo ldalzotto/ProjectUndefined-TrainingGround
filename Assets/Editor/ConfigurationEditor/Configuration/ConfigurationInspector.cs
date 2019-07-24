@@ -5,6 +5,8 @@ using RTPuzzle;
 using CoreGame;
 using System;
 using Editor_GameDesigner;
+using GameConfigurationID;
+using AdventureGame;
 
 namespace ConfigurationEditor
 {
@@ -23,6 +25,12 @@ namespace ConfigurationEditor
         public static void OpenConfigurationEditor(Type targetType)
         {
             GameDesignerEditor.InitWithSelectedKey(targetType);
+        }
+
+        public static void OpenTextRepertoireAtID(string DisucssionSentenceTextId)
+        {
+            DiscussionTextRepertoire.EditorTemporaryChosenId = DisucssionSentenceTextId;
+            GameDesignerEditor.InitWithSelectedKey(typeof(DiscussionRepertoireConfigurationModule));
         }
     }
 

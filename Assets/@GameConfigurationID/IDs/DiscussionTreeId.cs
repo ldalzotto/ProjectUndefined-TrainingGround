@@ -19,5 +19,7 @@ namespace GameConfigurationID {
     _1_Town_Bouncer_AskID = 3,
     
     _1_Town_GardenWatchman_Forbidden = 4,
+    
+    _1_Town_Girl_ToParkInfiltration = 5,
   }
 }

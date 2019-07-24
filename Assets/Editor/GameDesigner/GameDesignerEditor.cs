@@ -20,7 +20,7 @@ namespace Editor_GameDesigner
             window.Show();
         }
 
-        public static void InitWithSelectedKey(Type designerModuleType)
+        public static GameDesignerEditor InitWithSelectedKey(Type designerModuleType)
         {
             var instanceIndex = GameDesignerWindowManager.GetGameDesignerEditorInstance();
             GameDesignerEditor window = GameDesignerWindowManager.gameDesignerEditors[instanceIndex];
@@ -28,11 +28,17 @@ namespace Editor_GameDesigner
             window.ChoiceTree.Init(() => { window.Repaint(); });
             window.ChoiceTree.SetSelectedKey(designerModuleType);
             window.Show();
+            return window;
         }
 
         private GameDesignerEditorProfile GameDesignerEditorProfile;
 
         public GameDesignerChoiceTree ChoiceTree;
+
+        public IGameDesignerModule GetCrrentGameDesignerModule()
+        {
+            return this.GameDesignerEditorProfile.CurrentGameDesignerModule;
+        }
 
         public void InitEditorData(int instanceIndex)
         {

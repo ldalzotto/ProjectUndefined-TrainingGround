@@ -35,6 +35,7 @@ namespace Editor_GameCustomEditors
             DiscussionTextRepertoire DiscussionTestRepertoire = (DiscussionTextRepertoire)target;
             this.SentecesGUI = new TextDictionaryGUI<DisucssionSentenceTextId>(ref DiscussionTestRepertoire.SentencesText, "Discussion Sentences : ");
             this.SentenceSearch = new RegexTextFinder();
+            this.SentenceSearch.SetSearchTest(DiscussionTextRepertoire.EditorTemporaryChosenId);
         }
     }
 

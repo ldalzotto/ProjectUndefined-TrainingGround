@@ -27,6 +27,12 @@ public class RegexTextFinder
 
     }
 
+    public void SetSearchTest(string searchText)
+    {
+        this.searchText = searchText;
+        this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+    }
+
     public bool IsMatchingWith(string comparisonString)
     {
         return string.IsNullOrEmpty(this.searchText) || this.regex.Match(comparisonString).Success;

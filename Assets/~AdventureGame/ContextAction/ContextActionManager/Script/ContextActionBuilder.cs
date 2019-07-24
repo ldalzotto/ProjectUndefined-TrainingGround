@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace AdventureGame
@@ -73,7 +74,7 @@ namespace AdventureGame
             {
                 var cutsceneTimelineAction = (CutsceneTimelineAction)contextAction;
                 var cutsceneTimelineActionInput = (CutsceneTimelineActionInput)contextActionInput;
-                return new CutsceneTimelineScenarioAction(cutsceneTimelineAction.CutsceneId, cutsceneTimelineActionInput.TargetedPOI.PointOfInterestId);
+                return new CutsceneTimelineScenarioAction(cutsceneTimelineAction.CutsceneId, cutsceneTimelineActionInput.TargetedPOI == null ? PointOfInterestId.NONE : cutsceneTimelineActionInput.TargetedPOI.PointOfInterestId);
             }
             else
             {
