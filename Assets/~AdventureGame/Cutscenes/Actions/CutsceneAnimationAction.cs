@@ -24,7 +24,7 @@ namespace AdventureGame
         public AnimationID AnimationId;
 
         [SerializeField]
-        public bool WaitForEnd = true;
+        public bool SkipToNextNode = false;
         [SerializeField]
         public bool InfiniteLoop = false;
         [SerializeField]
@@ -64,14 +64,14 @@ namespace AdventureGame
             this.actionInput = cutsceneActionInput;
             this.pointOfInterestCutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
 
-            if (this.WaitForEnd)
-            {
-                Coroutiner.Instance.StartCoroutine(this.PlayAnimation(this.pointOfInterestCutsceneController));
-            }
-            else
+            if (this.SkipToNextNode)
             {
                 this.animationEnded = true;
                 this.pointOfInterestCutsceneController.Play(this.AnimationId, this.CrossFade, this.PlayImmediately);
+            }
+            else
+            {
+                Coroutiner.Instance.StartCoroutine(this.PlayAnimation(this.pointOfInterestCutsceneController));
             }
 
         }
@@ -113,11 +113,11 @@ namespace AdventureGame
         {
             this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
-            this.WaitForEnd = (bool)NodeEditorGUILayout.BoolField("Wait for end : ", string.Empty, this.WaitForEnd);
+            this.SkipToNextNode = (bool)NodeEditorGUILayout.BoolField("Skip immediately : ", string.Empty, this.SkipToNextNode);
             this.CrossFade = NodeEditorGUILayout.FloatField("Crossfade : ", string.Empty, this.CrossFade);
             this.PlayImmediately = (bool)NodeEditorGUILayout.BoolField("Update model positions on start : ", string.Empty, this.PlayImmediately);
 
-            EditorGUI.BeginDisabledGroup(!this.WaitForEnd);
+            EditorGUI.BeginDisabledGroup(this.SkipToNextNode);
             this.InfiniteLoop = (bool)NodeEditorGUILayout.BoolField("Infinite loop : ", string.Empty, this.InfiniteLoop);
             this.FramePerfectEndDetection = (bool)NodeEditorGUILayout.BoolField("Frame perfect end detection : ", string.Empty, this.FramePerfectEndDetection);
             EditorGUI.EndDisabledGroup();
