@@ -66,5 +66,11 @@ namespace RTPuzzle
         public void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
         }
+
+#if UNITY_EDITOR
+        #region Test data retrieval
+        public ColliderWithCollisionType GetCurrentTarget() { return this.currentTarget; }
+        #endregion
+#endif
     }
 }

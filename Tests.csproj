@@ -77,6 +77,7 @@
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\TimelineActions\TestTimelineAction.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\WorkflowActions\TestWorkflowAction.cs" />
     <Compile Include="Assets\Tests\~CoreGame\Intersection\IntersectionTests.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\_1_Town_StartTutorial_AIBehaviorTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIAgentAlgorithmTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIBehaviorTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\AIFOVManagerTest.cs" />

@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Tests
 {
@@ -76,7 +75,7 @@ namespace Tests
 
         public static void SetAIEscapeSemiAngle(AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
         {
-            if(abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
+            if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
             {
                 GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
                 genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeSemiAngleV2.Values[LaunchProjectileId.TEST] = escapeSemiAngle;
@@ -87,7 +86,7 @@ namespace Tests
         public static IEnumerator AttractiveObjectYield(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition,
                     Func<InteractiveObjectType, IEnumerator> OnAttractiveObjectSpawn, Func<IEnumerator> OnAttractiveObjectDestroyed)
         {
-            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData,worldPosition);
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, worldPosition);
             yield return new WaitForFixedUpdate();
             if (OnAttractiveObjectSpawn != null)
             {
@@ -242,7 +241,10 @@ namespace Tests
 
                 genericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance = 15f;
 
-                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = 25f;
+                if (genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null)
+                {
+                    genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = 25f;
+                }
 
                 genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;
 

@@ -20,7 +20,7 @@ namespace Tests
             yield return this.Before(sceneName, AiID.MOUSE_TEST);
         }
 
-        private AiID chosenId;
+        protected AiID chosenId;
 
         public IEnumerator Before(string sceneName, AiID choosenId)
         {

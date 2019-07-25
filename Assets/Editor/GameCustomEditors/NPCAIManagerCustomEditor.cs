@@ -66,7 +66,8 @@ namespace Editor_GameCustomEditors
 
         public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target, LaunchProjectileId selectedKey)
         {
-            if (context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent != null && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null)
+            if (context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent != null && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null
+                    && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values.ContainsKey(selectedKey))
             {
                 Handles.color = Color.blue;
                 GUIStyle labelStyle = new GUIStyle(EditorStyles.label);

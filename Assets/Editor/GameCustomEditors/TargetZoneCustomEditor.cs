@@ -71,7 +71,10 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneObjectModule target)
         {
-            HandlesHelper.DrawBoxCollider(context.TargetZoneTriggerType.GetComponentInChildren<BoxCollider>(), target.transform, Color.blue, this.GetType().Name, MyEditorStyles.LabelBlue);
+            if (context.TargetZoneTriggerType != null)
+            {
+                HandlesHelper.DrawBoxCollider(context.TargetZoneTriggerType.GetComponentInChildren<BoxCollider>(), target.transform, Color.blue, this.GetType().Name, MyEditorStyles.LabelBlue);
+            }
         }
     }
 

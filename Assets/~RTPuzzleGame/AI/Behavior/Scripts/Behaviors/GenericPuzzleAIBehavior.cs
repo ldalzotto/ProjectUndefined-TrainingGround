@@ -27,7 +27,7 @@ namespace RTPuzzle
         public AbstractAIFearStunManager AIFearStunManager { get => aIFearStunManager; }
         public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; }
         public AbstractPlayerEscapeManager PlayerEscapeManager { get => playerEscapeManager; }
-        public AIMoveTowardPlayerManager AIPlayerAttractiveManager { get => aIMoveTowardPlayerManager; }
+        public AIMoveTowardPlayerManager AIPlayerMoveTowardPlayerManager { get => aIMoveTowardPlayerManager; }
         #endregion
 
         public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,

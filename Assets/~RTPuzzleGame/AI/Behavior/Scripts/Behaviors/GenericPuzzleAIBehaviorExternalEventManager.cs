@@ -241,9 +241,9 @@ namespace RTPuzzle
         {
             if (genericAiBehavior.IsMovignTowardPlayerEnabled())
             {
-                if (genericAiBehavior.AIPlayerAttractiveManager.OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
+                if (genericAiBehavior.AIPlayerMoveTowardPlayerManager.OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
                 {
-                    genericAiBehavior.SetManagerState(genericAiBehavior.AIPlayerAttractiveManager);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.AIPlayerMoveTowardPlayerManager);
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace RTPuzzle
         {
             if (genericAiBehavior.IsMovignTowardPlayerEnabled())
             {
-                genericAiBehavior.AIPlayerAttractiveManager.OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
+                genericAiBehavior.AIPlayerMoveTowardPlayerManager.OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
             }
         }
 

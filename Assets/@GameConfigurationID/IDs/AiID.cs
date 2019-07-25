@@ -35,5 +35,7 @@ namespace GameConfigurationID {
     _1_Town_GardenWatchman = 9,
     
     RTP_TEST_RangeEffectManager = 10,
+    
+    _1_Town_StartTutorial_AITest = 11,
   }
 }
