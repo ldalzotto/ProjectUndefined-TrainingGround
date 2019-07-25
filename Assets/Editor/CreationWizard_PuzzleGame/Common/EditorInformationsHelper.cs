@@ -44,7 +44,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIProjectileWithCollisionEscapeManager, "AIProjectileEscape");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AITargetZoneEscapeManager, "AITargetZoneEscape");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AISightVision, "_BaseAISightVisionPrefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerAttractiveManager, "AIPlayerAttractive");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIMoveTowardPlayerManager, "AIMoveTowardPlayer");
             #endregion
 
             #region Adventure Common Prefabs
@@ -231,7 +231,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public AISightVision AISightVision;
         [ReadOnly]
-        public AIPlayerAttractiveManager AIPlayerAttractiveManager;
+        public AIMoveTowardPlayerManager AIMoveTowardPlayerManager;
 
     }
 

@@ -239,7 +239,7 @@ namespace RTPuzzle
 
         private void SightInRange_Enter(GenericPuzzleAIBehavior genericAiBehavior, SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsPlayerAttractiveEnabled())
+            if (genericAiBehavior.IsMovignTowardPlayerEnabled())
             {
                 if (genericAiBehavior.AIPlayerAttractiveManager.OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
                 {
@@ -250,7 +250,7 @@ namespace RTPuzzle
 
         private void SightInRange_Exit(GenericPuzzleAIBehavior genericAiBehavior, SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsPlayerAttractiveEnabled())
+            if (genericAiBehavior.IsMovignTowardPlayerEnabled())
             {
                 genericAiBehavior.AIPlayerAttractiveManager.OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
             }

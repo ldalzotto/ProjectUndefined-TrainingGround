@@ -17,7 +17,7 @@ namespace RTPuzzle
         private AbstractAIFearStunManager aIFearStunManager;
         private AbstractAIAttractiveObjectManager aIAttractiveObjectManager;
         private AbstractPlayerEscapeManager playerEscapeManager;
-        private AIPlayerAttractiveManager aIPlayerAttractiveManager;
+        private AIMoveTowardPlayerManager aIMoveTowardPlayerManager;
 
         #region Data Retrieval
         public AbstractAIPatrolComponentManager AIPatrolComponentManager { get => aIPatrolComponentManager; }
@@ -27,7 +27,7 @@ namespace RTPuzzle
         public AbstractAIFearStunManager AIFearStunManager { get => aIFearStunManager; }
         public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; }
         public AbstractPlayerEscapeManager PlayerEscapeManager { get => playerEscapeManager; }
-        public AIPlayerAttractiveManager AIPlayerAttractiveManager { get => aIPlayerAttractiveManager; }
+        public AIMoveTowardPlayerManager AIPlayerAttractiveManager { get => aIMoveTowardPlayerManager; }
         #endregion
 
         public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
@@ -81,10 +81,10 @@ namespace RTPuzzle
                 AIPlayerEscapeManager.Init(selfAgent, this.puzzleAIBehaviorExternalEventManager, playerManagerDataRetriever, aIComponents.AIPlayerEscapeComponent, this.AIFOVManager, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent);
                 this.playerEscapeManager = AIPlayerEscapeManager;
             });
-            this.GetComponentInChildren<AIPlayerAttractiveManager>().IfNotNull(AIPlayerAttractiveManager =>
+            this.GetComponentInChildren<AIMoveTowardPlayerManager>().IfNotNull(AIMoveTowardPlayerManager =>
             {
-                AIPlayerAttractiveManager.Init(this.aiSightVision);
-                this.aIPlayerAttractiveManager = AIPlayerAttractiveManager;
+                AIMoveTowardPlayerManager.Init(this.aiSightVision);
+                this.aIMoveTowardPlayerManager = AIMoveTowardPlayerManager;
             });
 
             var dic = new Dictionary<int, InterfaceAIManager>()
@@ -94,7 +94,7 @@ namespace RTPuzzle
                  { 3, this.aITargetZoneManager },
                  { 4, this.playerEscapeManager },
                  { 5, this.aIProjectileEscapeManager },
-                 { 6, this.aIPlayerAttractiveManager},
+                 { 6, this.aIMoveTowardPlayerManager},
                  { 7, this.aIAttractiveObjectManager },
                  { 8, this.aIPatrolComponentManager }
             };
@@ -113,12 +113,12 @@ namespace RTPuzzle
             return (this.IsAttractiveObjectsEnabled() && this.aIAttractiveObjectManager.IsManagerEnabled())
                         || (this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled())
                         || (this.IsPlayerEscapeEnabled() && this.playerEscapeManager.IsManagerEnabled()
-                        || (this.IsPlayerAttractiveEnabled() && this.aIPlayerAttractiveManager.IsManagerEnabled()));
+                        || (this.IsMovignTowardPlayerEnabled() && this.aIMoveTowardPlayerManager.IsManagerEnabled()));
         }
         public bool IsPlayerEscapeAllowedToInterruptOtherStates()
         {
             return ((this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled())
-                  || (this.IsPlayerAttractiveEnabled() && this.aIPlayerAttractiveManager.IsManagerEnabled()));
+                  || (this.IsMovignTowardPlayerEnabled() && this.aIMoveTowardPlayerManager.IsManagerEnabled()));
         }
         #endregion
 
@@ -136,7 +136,7 @@ namespace RTPuzzle
             this.aITargetZoneManager.IfNotNull((aITargetZoneManager) => aITargetZoneManager.OnDestinationReached());
             this.aIAttractiveObjectManager.IfNotNull((aIAttractiveObjectManager) => aIAttractiveObjectManager.OnDestinationReached());
             this.playerEscapeManager.IfNotNull((playerEscapeManager) => playerEscapeManager.OnDestinationReached());
-            this.aIPlayerAttractiveManager.IfNotNull((aIPlayerAttractiveManager) => aIPlayerAttractiveManager.OnDestinationReached());
+            this.aIMoveTowardPlayerManager.IfNotNull((aIPlayerAttractiveManager) => aIPlayerAttractiveManager.OnDestinationReached());
 
             if (!this.IsFeared() && !this.IsEscapingWithoutTarget() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectileWithTargetZones() && !this.IsEscapingFromPlayer())
             {
@@ -218,7 +218,7 @@ namespace RTPuzzle
         public bool IsAttractiveObjectsEnabled() { return this.aIAttractiveObjectManager != null; }
         public bool IsEscapeFromTargetZoneEnabled() { return this.aITargetZoneManager != null; }
         public bool IsPlayerEscapeEnabled() { return this.playerEscapeManager != null; }
-        public bool IsPlayerAttractiveEnabled() { return this.aIPlayerAttractiveManager != null; }
+        public bool IsMovignTowardPlayerEnabled() { return this.aIMoveTowardPlayerManager != null; }
         #endregion
 
         #region State Retrieval
@@ -229,7 +229,7 @@ namespace RTPuzzle
         public bool IsEscapingFromExitZone() { if (this.IsEscapeFromTargetZoneEnabled()) { return this.aITargetZoneManager.IsManagerEnabled(); } else { return false; } }
         public bool IsInfluencedByAttractiveObject() { if (this.IsAttractiveObjectsEnabled()) { return this.aIAttractiveObjectManager.IsManagerEnabled(); } else { return false; } }
         public bool IsEscapingFromPlayer() { if (this.IsPlayerEscapeEnabled()) { return this.playerEscapeManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsAttractedFromPlayer() { if (this.IsPlayerAttractiveEnabled()) { return this.aIPlayerAttractiveManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsMovingTowardPlayer() { if (this.IsMovignTowardPlayerEnabled()) { return this.aIMoveTowardPlayerManager.IsManagerEnabled(); } else { return false; } }
         #endregion
 
         public void DebugGUITick()

@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RTPuzzle
 {
-    public class AIPlayerAttractiveManager : AbstractAIManager, InterfaceAIManager
+    public class AIMoveTowardPlayerManager : AbstractAIManager, InterfaceAIManager
     {
         private AISightVision AISightVision;
 
@@ -11,8 +10,6 @@ namespace RTPuzzle
         protected bool playerInSight;
         protected ColliderWithCollisionType currentTarget;
         #endregion
-
-        protected AttractiveObjectTypeModule involvedAttractiveObject;
 
         public void Init(AISightVision AISightVision)
         {
