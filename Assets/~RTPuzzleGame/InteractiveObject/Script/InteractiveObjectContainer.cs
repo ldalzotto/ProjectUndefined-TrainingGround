@@ -80,9 +80,44 @@ namespace RTPuzzle
         public void OnInteractiveObjectAdded(InteractiveObjectType interactiveObject)
         {
             this.interactiveObjects.Add(interactiveObject);
-            interactiveObject.GetModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.Add(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule));
-            interactiveObject.GetModule<ObjectRepelTypeModule>().IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Add(ObjectRepelTypeModule));
-            interactiveObject.GetModule<TargetZoneObjectModule>().IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Add(TargetZoneObjectModule.TargetZoneID, TargetZoneObjectModule));
+        }
+
+        public void OnModuleEnabled(InteractiveObjectModule enabledModule)
+        {
+            if (enabledModule.GetType() == typeof(AttractiveObjectTypeModule))
+            {
+                var AttractiveObjectTypeModule = ((AttractiveObjectTypeModule)enabledModule);
+                this.attractiveObjectContainer.Add(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule);
+            }
+            else if (enabledModule.GetType() == typeof(ObjectRepelTypeModule))
+            {
+                var ObjectRepelTypeModule = ((ObjectRepelTypeModule)enabledModule);
+                this.objectsRepelable.Add(ObjectRepelTypeModule);
+            }
+            else if (enabledModule.GetType() == typeof(TargetZoneObjectModule))
+            {
+                var TargetZoneObjectModule = ((TargetZoneObjectModule)enabledModule);
+                this.targetZones.Add(TargetZoneObjectModule.TargetZoneID, TargetZoneObjectModule);
+            }
+        }
+
+        public void OnModuleDisabled(InteractiveObjectModule enabledModule)
+        {
+            if (enabledModule.GetType() == typeof(AttractiveObjectTypeModule))
+            {
+                var AttractiveObjectTypeModule = ((AttractiveObjectTypeModule)enabledModule);
+                this.attractiveObjectContainer.Remove(AttractiveObjectTypeModule.AttractiveObjectId);
+            }
+            else if (enabledModule.GetType() == typeof(ObjectRepelTypeModule))
+            {
+                var ObjectRepelTypeModule = ((ObjectRepelTypeModule)enabledModule);
+                this.objectsRepelable.Remove(ObjectRepelTypeModule);
+            }
+            else if (enabledModule.GetType() == typeof(TargetZoneObjectModule))
+            {
+                var TargetZoneObjectModule = ((TargetZoneObjectModule)enabledModule);
+                this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID);
+            }
         }
 
         public void OnInteractiveObjectDestroyed(InteractiveObjectType interactiveObject)

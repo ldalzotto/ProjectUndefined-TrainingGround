@@ -11,20 +11,12 @@ namespace RTPuzzle
         #region Modules
         private Dictionary<Type, InteractiveObjectModule> enabledModules;
         private Dictionary<Type, InteractiveObjectModule> disabledModules;
-
-        /*
-        private ModelObjectModule modelObjectModule;
-        private AttractiveObjectTypeModule attractiveObjectTypeModule;
-        private ObjectRepelTypeModule objectRepelTypeModule;
-        private LevelCompletionTriggerModule levelCompletionTriggerModule;
-        private TargetZoneObjectModule targetZoneObjectModule;
-        private LaunchProjectileModule launchProjectileModule;
-        */
         #endregion
 
 
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
 
@@ -59,7 +51,7 @@ namespace RTPuzzle
         {
             #region External Dependencies
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
             this.PopulateModules(initialDisabledModulesType);
@@ -75,7 +67,7 @@ namespace RTPuzzle
             });
             this.InitializeProjectileModule(InteractiveObjectInitializationObject);
 
-            interactiveObjectContainer.OnInteractiveObjectAdded(this);
+            this.InteractiveObjectContainer.OnInteractiveObjectAdded(this);
         }
 
         private void InitializeAttractiveObjectTypeModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
@@ -115,12 +107,12 @@ namespace RTPuzzle
             {
                 foreach (var interactiveObjectModule in retrievedInteractiveObjectModules)
                 {
-                    interactiveObjectModule.IfTypeEqual((AttractiveObjectTypeModule interactiveObjectModule2) => this.enabledModules[typeof(AttractiveObjectTypeModule)] = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((ModelObjectModule interactiveObjectModule2) => this.enabledModules[typeof(ModelObjectModule)] = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((ObjectRepelTypeModule interactiveObjectModule2) => this.enabledModules[typeof(ObjectRepelTypeModule)] = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((LevelCompletionTriggerModule interactiveObjectModule2) => this.enabledModules[typeof(LevelCompletionTriggerModule)] = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((TargetZoneObjectModule interactiveObjectModule2) => this.enabledModules[typeof(TargetZoneObjectModule)] = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((LaunchProjectileModule launchProjectileModule2) => this.enabledModules[typeof(LaunchProjectileModule)] = launchProjectileModule2);
+                    interactiveObjectModule.IfTypeEqual((AttractiveObjectTypeModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
+                    interactiveObjectModule.IfTypeEqual((ModelObjectModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
+                    interactiveObjectModule.IfTypeEqual((ObjectRepelTypeModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
+                    interactiveObjectModule.IfTypeEqual((LevelCompletionTriggerModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
+                    interactiveObjectModule.IfTypeEqual((TargetZoneObjectModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
+                    interactiveObjectModule.IfTypeEqual((LaunchProjectileModule launchProjectileModule2) => this.EnableModuleOnInit(launchProjectileModule2));
                 }
             }
 
@@ -151,7 +143,14 @@ namespace RTPuzzle
                 m.gameObject.SetActive(false);
                 this.enabledModules.Remove(moduleType);
                 this.disabledModules[moduleType] = m;
+                this.InteractiveObjectContainer.OnModuleDisabled(m);
             });
+        }
+
+        private void EnableModuleOnInit(InteractiveObjectModule moduleToEnable)
+        {
+            this.enabledModules[moduleToEnable.GetType()] = moduleToEnable;
+            this.InteractiveObjectContainer.OnModuleEnabled(moduleToEnable);
         }
 
         private void EnableModule(Type moduleType)
@@ -161,7 +160,9 @@ namespace RTPuzzle
                 m.gameObject.SetActive(true);
                 this.disabledModules.Remove(moduleType);
                 this.enabledModules[moduleType] = m;
+                this.InteractiveObjectContainer.OnModuleEnabled(m);
             });
+
         }
 
         public void EnableProjectileModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
