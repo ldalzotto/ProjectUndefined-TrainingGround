@@ -270,7 +270,7 @@ namespace Tests
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 90f);
             if (projectileEscapeDistance != null)
             {
-                ((GenericPuzzleAIComponents)mouseTestAIManager.GetAIBehavior().AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = projectileEscapeDistance.Value;
+                PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(mouseTestAIManager.GetAIBehavior().AIComponents, projectileEscapeDistance.Value);
             }
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
             var secondProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_2);
@@ -847,7 +847,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 179.5f);
             //high projectile escape distance
-            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = 9999f;
+            PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(mouseAIBheavior.AIComponents, 9999f);
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
             //wide angle to avoid navmesh ray cast to hit the same point.
@@ -1201,7 +1201,7 @@ namespace Tests
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 1f);
             mouseTestAIManager.GetAgent().Warp(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PITFAL_Z_POSITION_FAR_EDGE).transform.position);
             ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.FOVSumThreshold = 0f;
-            ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = 5f;
+            PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(mouseAIBheavior.AIComponents, 5f);
             yield return null;
             Assert.IsFalse(mouseAIBheavior.IsFeared());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
@@ -1529,7 +1529,7 @@ namespace Tests
 
             PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents), 99999f, 90f, 0.2f);
             playerManager.transform.position = new Vector3(999, 999, 999);
-            ((GenericPuzzleAIComponents)mouseTestAIManager.GetAIBehavior().AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = 999f;
+            PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(mouseTestAIManager.GetAIBehavior().AIComponents, 999f);
 
             yield return PuzzleSceneTestHelper.EscapeFromPlayerIgnoreTargetYield(playerManager, mouseTestAIManager,
                 PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position + (Vector3.right * 0.1f),

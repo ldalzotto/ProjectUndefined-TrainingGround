@@ -25,7 +25,7 @@ namespace Tests
             projectileBezierPath.P3 = projectilePosition;
             var launchProjectileAttractiveObject = LaunchProjectileModule.InstanciateV2(projectileInherentData, projectileBezierPath, parentTransform);
             launchProjectileAttractiveObject.transform.position = projectilePosition;
-            launchProjectileAttractiveObject.GetModule<LaunchProjectileModule>().LaunchProjectileId = LaunchProjectileId.TEST;
+            launchProjectileAttractiveObject.GetModule<LaunchProjectileModule>().LaunchProjectileId = LaunchProjectileId.TEST_PROJECTILE_EXPLODE;
             return launchProjectileAttractiveObject;
         }
 
@@ -68,7 +68,7 @@ namespace Tests
         public static ProjectileInherentData CreateProjectileInherentData(float effectRange, float travelDistancePerSeconds)
         {
             var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
-            var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[LaunchProjectileId.STONE];
+            var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[LaunchProjectileId.TEST_PROJECTILE_EXPLODE];
             projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefabV2, true, false);
             return projectileData;
         }
@@ -78,7 +78,16 @@ namespace Tests
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
             {
                 GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
-                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeSemiAngleV2.Values[LaunchProjectileId.TEST] = escapeSemiAngle;
+                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeSemiAngleV2.Values[LaunchProjectileId.TEST_PROJECTILE_EXPLODE] = escapeSemiAngle;
+            }
+        }
+
+        public static void SetAIEscapeDistanceFromProjectile(AbstractAIComponents abstractAIComponents, float escapeDistance)
+        {
+            if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
+            {
+                GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
+                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST_PROJECTILE_EXPLODE] = escapeDistance;
             }
         }
 
@@ -243,7 +252,7 @@ namespace Tests
 
                 if (genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null)
                 {
-                    genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = 25f;
+                    PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(genericPuzzleAIComponents, 25f);
                 }
 
                 genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;

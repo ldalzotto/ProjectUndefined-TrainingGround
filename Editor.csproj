@@ -273,6 +273,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\AttractiveObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\DiscussionTextRepertoireCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />

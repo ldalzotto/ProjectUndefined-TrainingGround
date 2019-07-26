@@ -2,6 +2,7 @@
 using CreationWizard;
 using Editor_AttractiveObjectCreationWizard;
 using Editor_MainGameCreationWizard;
+using Editor_ProjectileCreationWizard;
 using Editor_RepelableObjectCreationWizard;
 using Editor_TargetZoneCreationWizard;
 using RTPuzzle;
@@ -214,7 +215,7 @@ namespace Editor_GameDesigner
                     LevelCompletionTriggerAction: () => allowedToEdit = true,
                     LaunchProjectileModuleAction: () =>
                     {
-                        this.PrefabEditConditionWithID<LaunchProjectileModule>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.LaunchProjectileId"),
+                        this.PrefabEditConditionWithID<ProjectileCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.LaunchProjectileId"),
                             this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.LaunchProjectileId,
                             this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration, ref allowedToEdit);
                     }
