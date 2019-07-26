@@ -1,6 +1,7 @@
 ﻿using ConfigurationEditor;
 using UnityEngine;
 using GameConfigurationID;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,9 +21,9 @@ namespace RTPuzzle
 
         [SerializeField]
         private float travelDistancePerSeconds;
-
+        
         [SerializeField]
-        private LaunchProjectile projectilePrefab;
+        private InteractiveObjectType projectilePrefabV2;
 
         [SerializeField]
         private GameObject projectileModelPrefab;
@@ -38,9 +39,9 @@ namespace RTPuzzle
         public float EffectRange { get => effectRange; }
         [DictionaryEnumSearch]
         public float TravelDistancePerSeconds { get => travelDistancePerSeconds; }
-        public LaunchProjectile ProjectilePrefab { get => projectilePrefab; }
         public float ProjectileThrowRange { get => projectileThrowRange; }
         public GameObject ProjectileModelPrefab { get => projectileModelPrefab; }
+        public InteractiveObjectType ProjectilePrefabV2 { get => projectilePrefabV2; set => projectilePrefabV2 = value; }
 
 #if UNITY_EDITOR
         public void SetProjectileModelPrefab(GameObject ProjectileModelPrefab)
@@ -50,12 +51,12 @@ namespace RTPuzzle
         }
 #endif
 
-        public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, LaunchProjectile projectilePrefab)
+        public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab)
         {
             this.effectRange = effectRange;
             this.projectileThrowRange = projectileThrowRange;
             this.travelDistancePerSeconds = travelDistancePerSeconds;
-            this.projectilePrefab = projectilePrefab;
+            this.projectilePrefabV2 = projectilePrefab;
         }
 
         #region Debug purposes

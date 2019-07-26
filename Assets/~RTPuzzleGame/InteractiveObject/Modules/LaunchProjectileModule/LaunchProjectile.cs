@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class LaunchProjectile : MonoBehaviour
+    public class LaunchProjectile : InteractiveObjectModule
     {
         public LaunchProjectileId LaunchProjectileId;
         private ProjectileInherentData launchProjectileInherentData;
@@ -20,6 +20,7 @@ namespace RTPuzzle
 
         #region External Dependencies
         private LaunchProjectileEventManager LaunchProjectileEventManager;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         #region Data Retrieval
@@ -32,20 +33,20 @@ namespace RTPuzzle
             return this.LaunchProjectileMovementManager.GetTargetPosition();
         }
         #endregion
-
-        public static LaunchProjectile Instantiate(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform)
+        
+        public static InteractiveObjectType InstanciateV2(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform)
         {
-            var launchProjectile = MonoBehaviour.Instantiate(LaunchProjectileInherentData.ProjectilePrefab, parentTransform);
-            launchProjectile.Init(LaunchProjectileInherentData, ProjectilePath);
-            return launchProjectile;
+            var launchProjectileInteractiveObjet = MonoBehaviour.Instantiate(LaunchProjectileInherentData.ProjectilePrefabV2, parentTransform);
+            launchProjectileInteractiveObjet.Init(projectileInherentData: LaunchProjectileInherentData, projectilePath: ProjectilePath);
+            return launchProjectileInteractiveObjet;
         }
 
-
-        public void Init(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath)
+        public void Init(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
         {
             #region External Dependencies
             var npcAiManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
+            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -57,12 +58,11 @@ namespace RTPuzzle
             #endregion
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
-            //    sphereCollider.radius = 1f;// this.launchProjectileInherentData.EffectRange;
-            this.transform.position = ProjectilePath.ResolvePoint(0.1f);
+            baseObjectTransform.position = ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = ProjectilePath.Clone();
 
             this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, InteractiveObjectContainer, PuzzleGameConfigurationManager, PuzzleEventsManager, this);
-            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, transform, projectilePathDeepCopy);
+            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, baseObjectTransform, projectilePathDeepCopy);
 
         }
 
@@ -80,6 +80,7 @@ namespace RTPuzzle
         public void OnGroundTriggerEnter()
         {
             SphereCollisionManager.OnGroundTriggerEnter(this);
+            this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.GetComponentInParent<InteractiveObjectType>());
         }
         #endregion
 
@@ -135,7 +136,7 @@ namespace RTPuzzle
             NPCAIManagerContainer NPCAIManagerContainer,
             InteractiveObjectContainer InteractiveObjectContainer,
             PuzzleGameConfigurationManager PuzzleGameConfigurationManager,
-            PuzzleEventsManager PuzzleEventsManager, 
+            PuzzleEventsManager PuzzleEventsManager,
             LaunchProjectile LaunchProjectileRef)
         {
             #region External Dependencies
@@ -185,8 +186,6 @@ namespace RTPuzzle
                 }
             }
             #endregion
-
-            MonoBehaviour.Destroy(launchProjectileRef.gameObject);
         }
     }
 }

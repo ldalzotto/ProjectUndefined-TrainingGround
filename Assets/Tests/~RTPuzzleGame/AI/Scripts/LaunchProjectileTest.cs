@@ -14,13 +14,12 @@ namespace Tests
         public IEnumerator LaunchProjectile_WhenProjectileHit_AIFOVIsReducedBasedOnAgentPosition_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, launchProjectileContainerManager);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
@@ -33,14 +32,13 @@ namespace Tests
         public IEnumerator LaunchProjectile_WhenProjectileHit_AtLowerProjectileCollisionSphere_AIFOVIsReducedBasedOnAgentPosition_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, launchProjectileContainerManager);
-            lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back - new Vector3(0, lpTest.GetGroundCollisionTrackingCollider().bounds.min.y / 2, 0);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
+          //  lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back - new Vector3(0, lpTest.LaunchProjectileModule.GetGroundCollisionTrackingCollider().bounds.min.y / 2, 0);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
@@ -53,14 +51,13 @@ namespace Tests
         public IEnumerator LaunchProjectile_WhenProjectileHit_AtUpperProjectileCollisionSphere_AIFOVIsReducedBasedOnAgentPosition_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, launchProjectileContainerManager);
-            lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back + new Vector3(0, lpTest.GetGroundCollisionTrackingCollider().bounds.max.y / 2, 0);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
+         //   lpTest.transform.position = mouseTestAIManager.GetAgent().transform.position + Vector3.back + new Vector3(0, lpTest.LaunchProjectileModule.GetGroundCollisionTrackingCollider().bounds.max.y / 2, 0);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();

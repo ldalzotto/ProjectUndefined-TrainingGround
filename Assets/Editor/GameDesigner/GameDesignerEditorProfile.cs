@@ -14,6 +14,7 @@ namespace Editor_GameDesigner
         public IGameDesignerModule CurrentGameDesignerModule;
         public Vector2 ScrollPosition;
         public InteractiveObjectModuleWizardID InteractiveObjectModuleWizardID;
+
         public void ChangeCurrentModule(IGameDesignerModule nextModule)
         {
             if (this.CurrentGameDesignerModule != null)
@@ -38,6 +39,8 @@ namespace Editor_GameDesigner
         public RepelableObjectID RepelableObjectID;
         [CustomEnum()]
         public AttractiveObjectId AttractiveObjectId;
+        [CustomEnum()]
+        public LaunchProjectileId LaunchProjectileId;
         [CustomEnum()]
         public TargetZoneID TargetZoneID;
     }

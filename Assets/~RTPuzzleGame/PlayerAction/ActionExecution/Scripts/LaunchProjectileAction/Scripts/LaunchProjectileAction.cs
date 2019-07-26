@@ -52,8 +52,8 @@ namespace RTPuzzle
             var CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
@@ -70,7 +70,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
-            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, launchProjectileContainerManager, PuzzleGameConfigurationManager);
+            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, interactiveObjectContainer.transform, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
@@ -349,19 +349,19 @@ namespace RTPuzzle
         private GameInputManager GameInputManager;
         private LaunchProjectileEventManager LaunchProjectileEventManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
-        private LaunchProjectileContainerManager launchProjectileContainerManager;
+        private Transform parentProjectileTransform;
 
         public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileEventManager LaunchProjectileEventManager,
-            LaunchProjectileContainerManager launchProjectileContainerManager, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
+            Transform parentProjectileTransform, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
             this.LaunchProjectileEventManager = LaunchProjectileEventManager;
-            this.launchProjectileContainerManager = launchProjectileContainerManager;
+            this.parentProjectileTransform = parentProjectileTransform;
             this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
         }
 
-        private LaunchProjectile currentProjectile;
+        private InteractiveObjectType currentProjectile;
 
         public void Tick(float d, ref LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager)
         {
@@ -373,8 +373,7 @@ namespace RTPuzzle
 
         public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, BeziersControlPoints throwProjectilePath)
         {
-            currentProjectile = LaunchProjectile.Instantiate(PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId], throwProjectilePath, launchProjectileContainerManager.transform);
-            LaunchProjectileEventManager.OnLaunchProjectileSpawn(currentProjectile);
+            currentProjectile = LaunchProjectile.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId], throwProjectilePath, parentProjectileTransform);
             LaunchProjectileRTPActionRef.OnExit();
         }
 

@@ -83,7 +83,7 @@ namespace Tests
             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(1000, 0.1f), mouseTestAIManager.transform.position,
-                OnProjectileSpawn: (LaunchProjectile projectile) =>
+                OnProjectileSpawn: (InteractiveObjectType projectile) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsPatrolling());
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
@@ -143,7 +143,7 @@ namespace Tests
                     Assert.IsTrue(currentFOVSum < 360f);
                     return null;
                 },
-                OnSecondProjectileSpawned: (LaunchProjectile projectile) =>
+                OnSecondProjectileSpawned: (InteractiveObjectType projectile) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsPatrolling());
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
@@ -197,7 +197,6 @@ namespace Tests
         public IEnumerator AI_ProjectileReceived_Nominal_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 90f);
@@ -207,7 +206,7 @@ namespace Tests
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
             // (2) - Wait for projectile to be processed by physics engine. The AI must be in escape from projectile state.
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been hit, no more patrolling.");
@@ -225,14 +224,13 @@ namespace Tests
         public IEnumerator AI_ProjectileReceived_WhenDestinationReached_NoMoreEscape_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 90f);
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
             yield return new WaitForFixedUpdate();
             //projectile taken into account
             yield return new WaitForEndOfFrame();
@@ -249,14 +247,13 @@ namespace Tests
         private IEnumerator AI_ProjectileReceived_FirstTimeNotIntoTargetZone(string sceneName, AiID aiID)
         {
             yield return this.Before(sceneName, aiID);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(aiID);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 90f);
             yield return null;
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
-            var firstProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_1, launchProjectileContainerManager);
+            var firstProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_1);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
             var aiDestination = mouseTestAIManager.GetAgent().destination;
@@ -268,7 +265,6 @@ namespace Tests
         private IEnumerator AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(string sceneName, float? projectileEscapeDistance)
         {
             yield return this.AI_ProjectileReceived_FirstTimeNotIntoTargetZone(sceneName, AiID.MOUSE_TEST);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 90f);
@@ -277,7 +273,7 @@ namespace Tests
                 ((GenericPuzzleAIComponents)mouseTestAIManager.GetAIBehavior().AIComponents).AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileId.TEST] = projectileEscapeDistance.Value;
             }
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
-            var secondProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_2, launchProjectileContainerManager);
+            var secondProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_2);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
             var aiDestination = mouseTestAIManager.GetAgent().destination;
@@ -298,7 +294,6 @@ namespace Tests
         public IEnumerator AI_ProjectileReceived_FirstTimeIntoTargetZoneDistanceCheck()
         { 
             yield return this.Before(SceneConstants.OneAIForcedTargetZone);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
@@ -306,7 +301,7 @@ namespace Tests
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 20f);
             yield return null;
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
-            var firstProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_1, launchProjectileContainerManager);
+            var firstProj = PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_1);
             var currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
             firstProj.transform.position = mouseTestAIManager.transform.position + new Vector3(-0.1f, 0, 0);
             Assert.IsTrue(currentFOVSum == 360f);
@@ -337,7 +332,7 @@ namespace Tests
             Assert.IsFalse(mouseAIBheavior.IsFeared());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
-                OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsFeared());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
@@ -359,7 +354,7 @@ namespace Tests
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position,
-                 OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                 OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                  {
                      Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                      Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
@@ -403,14 +398,14 @@ namespace Tests
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position,
-                 OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                 OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                  {
                      Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                      Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
                      Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                      currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                      return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position,
-                         OnProjectileSpawn: (LaunchProjectile launchProjectile) =>
+                         OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                          {
                              Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                              Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
@@ -443,7 +438,7 @@ namespace Tests
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 30f), mouseTestAIManager.transform.position,
-                OnProjectileSpawn: (LaunchProjectile launchProjectile) =>
+                OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
@@ -490,7 +485,7 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
 
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position,
-                OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                     Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
@@ -578,7 +573,7 @@ namespace Tests
                     Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position,
-                        OnProjectileSpawn: (LaunchProjectile projectile) =>
+                        OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
                             Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
@@ -848,7 +843,6 @@ namespace Tests
         private IEnumerator SetupProjectileReceived_ThenDestinationReached_WhenThereIsStillEscapeDistanceToTravel(string sceneId)
         {
             yield return this.Before(sceneId);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 179.5f);
@@ -858,7 +852,7 @@ namespace Tests
             Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
             //wide angle to avoid navmesh ray cast to hit the same point.
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
             yield return new WaitForFixedUpdate();
             //projectile taken into account
             yield return new WaitForEndOfFrame();
@@ -899,7 +893,6 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 100f);
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
             Debug.Log("Destination before AI update : " + mouseTestAIManager.GetAgent().destination);
             yield return null;
@@ -911,7 +904,7 @@ namespace Tests
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
             var currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
             Debug.Log(MyLog.Format(mouseAIBheavior.AIFOVManager.GetFOVAngleSum()));
-            PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_2, launchProjectileContainerManager);
+            PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_2);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
             var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
@@ -982,7 +975,7 @@ namespace Tests
                     //Target zone is destroyed to simulate the fact that the AI is exiting the target zone
                     interactiveObjectContainer.TEST_OnInteractiveObjectDestroyed(targetZone);
                     return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(1000f, 1), mouseTestAIManager.transform.position,
-                        OnProjectileSpawn: (LaunchProjectile projectile) =>
+                        OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
                             Assert.AreEqual(1, this.MockPuzzleEventsManagerTest.AiHittedByProjectileCallCount);
                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
@@ -1019,7 +1012,7 @@ namespace Tests
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     var currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                     return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(1000f, 1), mouseTestAIManager.transform.position,
-                        OnProjectileSpawn: (LaunchProjectile projectile) =>
+                        OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
                             Assert.AreEqual(1, this.MockPuzzleEventsManagerTest.AiHittedByProjectileCallCount);
                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
@@ -1076,7 +1069,7 @@ namespace Tests
                             currentFOVnalgeSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                             return null;
                         },
-                        OnSecondProjectileSpawned: (LaunchProjectile projectile) =>
+                        OnSecondProjectileSpawned: (InteractiveObjectType projectile) =>
                         {
                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
@@ -1181,8 +1174,7 @@ namespace Tests
         public IEnumerator AI_FearStun_WhenReceivingAProjectile_IsFeared()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 0.5f);
@@ -1190,7 +1182,7 @@ namespace Tests
             ((GenericPuzzleAIComponents)mouseAIBheavior.AIComponents).AIFearStunComponent.TimeWhileBeginFeared = fearTime;
 
             var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f);
-            var projectileSpanwed = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, launchProjectileContainerManager);
+            var projectileSpanwed = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.transform.position, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
 
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
@@ -1214,7 +1206,7 @@ namespace Tests
             Assert.IsFalse(mouseAIBheavior.IsFeared());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 30f), mouseTestAIManager.transform.position - Vector3.forward,
-                OnProjectileSpawn: (LaunchProjectile lauinchProjectile) =>
+                OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsFeared());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
@@ -1284,7 +1276,7 @@ namespace Tests
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 1), mouseTestAIManager.transform.position,
-                        OnProjectileSpawn: (LaunchProjectile projectile) =>
+                        OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsFeared());
                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
@@ -1326,7 +1318,7 @@ namespace Tests
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return PuzzleSceneTestHelper.ProjectileIngoreTargetYield(PuzzleSceneTestHelper.CreateProjectileInherentData(999f, 1), mouseTestAIManager.transform.position,
                        OnBeforeSecondProjectileSpawn: null,
-                       OnSecondProjectileSpawned: (LaunchProjectile projectile) =>
+                       OnSecondProjectileSpawned: (InteractiveObjectType projectile) =>
                        {
                            Assert.IsTrue(mouseAIBheavior.IsFeared());
                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
@@ -1527,8 +1519,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants.OneAIForcedTargetZone);
             yield return null;
-
-            var launchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
+            
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
@@ -1622,7 +1613,7 @@ namespace Tests
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 170f);
 
             yield return PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(999f, 999999f), mouseTestAIManager.transform.position,
-                OnProjectileSpawn: (LaunchProjectile launchProjectile) =>
+                OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
@@ -1705,7 +1696,7 @@ namespace Tests
                     Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
                     return null;
                 },
-                OnSecondProjectileSpawned: (LaunchProjectile launchProjectile) =>
+                OnSecondProjectileSpawned: (InteractiveObjectType launchProjectile) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsFeared());
                     Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());

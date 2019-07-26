@@ -32,7 +32,7 @@ namespace Tests
             var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
             var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
             PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 10f), mouseTestAIManager.transform.position,
-                OnProjectileSpawn: (LaunchProjectile LaunchProjectile) =>
+                OnProjectileSpawn: (InteractiveObjectType LaunchProjectile) =>
                 {
                     Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);
                     return null;

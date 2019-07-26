@@ -12,6 +12,7 @@ namespace RTPuzzle
         private ObjectRepelTypeModule objectRepelTypeModule;
         private LevelCompletionTriggerModule levelCompletionTriggerModule;
         private TargetZoneObjectModule targetZoneObjectModule;
+        private LaunchProjectile launchProjectileModule;
         #endregion
 
         #region Data Retrieval
@@ -20,28 +21,19 @@ namespace RTPuzzle
         public ObjectRepelTypeModule ObjectRepelTypeModule { get => objectRepelTypeModule; }
         public LevelCompletionTriggerModule LevelCompletionTriggerModule { get => levelCompletionTriggerModule; }
         public TargetZoneObjectModule TargetZoneObjectModule { get => targetZoneObjectModule; }
+        public LaunchProjectile LaunchProjectileModule { get => launchProjectileModule; }
         #endregion
 
         public void Init(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
-                                TargetZoneInherentData targetZoneInherentData = null)
+                                TargetZoneInherentData targetZoneInherentData = null,
+                                ProjectileInherentData projectileInherentData = null, BeziersControlPoints projectilePath = null)
         {
             #region External Dependencies
             var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
-            var retrievedInteractiveObjectModules = this.GetComponentsInChildren<InteractiveObjectModule>();
-            if (retrievedInteractiveObjectModules != null)
-            {
-                foreach (var interactiveObjectModule in retrievedInteractiveObjectModules)
-                {
-                    interactiveObjectModule.IfTypeEqual((AttractiveObjectTypeModule interactiveObjectModule2) => this.attractiveObjectTypeModule = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((ModelObjectModule interactiveObjectModule2) => this.modelObjectModule = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((ObjectRepelTypeModule interactiveObjectModule2) => this.objectRepelTypeModule = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((LevelCompletionTriggerModule interactiveObjectModule2) => this.levelCompletionTriggerModule = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((TargetZoneObjectModule interactiveObjectModule2) => this.targetZoneObjectModule = interactiveObjectModule2);
-                }
-            }
+            this.PopulateModules();
 
             this.ModelObjectModule.IfNotNull((ModelObjectModule modelObjectModule) => modelObjectModule.Init());
             this.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) =>
@@ -63,14 +55,37 @@ namespace RTPuzzle
                 if (targetZoneInherentData == null) { targetZoneObjectModule.Init(this.levelCompletionTriggerModule); }
                 else { targetZoneObjectModule.Init(this.levelCompletionTriggerModule, targetZoneInherentData); }
             });
+            this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) =>
+            {
+                if (projectileInherentData == null) { launchProjectileModule.Init(puzzleGameConfigurationManager.ProjectileConf()[this.launchProjectileModule.LaunchProjectileId], projectilePath, this.transform); }
+                else { launchProjectileModule.Init(projectileInherentData, projectilePath, this.transform); }
+            });
 
             interactiveObjectContainer.OnInteractiveObjectAdded(this);
+        }
+
+        private void PopulateModules()
+        {
+            var retrievedInteractiveObjectModules = this.GetComponentsInChildren<InteractiveObjectModule>();
+            if (retrievedInteractiveObjectModules != null)
+            {
+                foreach (var interactiveObjectModule in retrievedInteractiveObjectModules)
+                {
+                    interactiveObjectModule.IfTypeEqual((AttractiveObjectTypeModule interactiveObjectModule2) => this.attractiveObjectTypeModule = interactiveObjectModule2);
+                    interactiveObjectModule.IfTypeEqual((ModelObjectModule interactiveObjectModule2) => this.modelObjectModule = interactiveObjectModule2);
+                    interactiveObjectModule.IfTypeEqual((ObjectRepelTypeModule interactiveObjectModule2) => this.objectRepelTypeModule = interactiveObjectModule2);
+                    interactiveObjectModule.IfTypeEqual((LevelCompletionTriggerModule interactiveObjectModule2) => this.levelCompletionTriggerModule = interactiveObjectModule2);
+                    interactiveObjectModule.IfTypeEqual((TargetZoneObjectModule interactiveObjectModule2) => this.targetZoneObjectModule = interactiveObjectModule2);
+                    interactiveObjectModule.IfTypeEqual((LaunchProjectile launchProjectileModule2) => this.launchProjectileModule = launchProjectileModule2);
+                }
+            }
         }
 
         public void Tick(float d, float timeAttenuationFactor)
         {
             this.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
             this.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
+            this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
         }
 
     }

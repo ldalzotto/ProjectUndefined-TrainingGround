@@ -131,7 +131,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\PlayerActionCreationWizard\PlayerActionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\ProjectileCreationWizard\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\ProjectileCreationWizard\Module\ProjectileConfigurationDataCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\ProjectileCreationWizard\Module\ProjectilePrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\ProjectileCreationWizard\ProjectileCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Action\ProjectileCreationWizard\ProjectileCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIBehaviorCreationWizard\AIBehaviorCreationWizard.cs" />

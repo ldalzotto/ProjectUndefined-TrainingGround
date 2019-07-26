@@ -19,7 +19,6 @@ namespace RTPuzzle
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
         private InRangeEffectManager InRangeEffectManager;
-        private LaunchProjectileContainerManager LaunchProjectileContainerManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
@@ -65,7 +64,6 @@ namespace RTPuzzle
             InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
             RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
             InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            LaunchProjectileContainerManager = GameObject.FindObjectOfType<LaunchProjectileContainerManager>();
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
@@ -101,7 +99,6 @@ namespace RTPuzzle
             GameOverManager.Init();
             GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
             PlayerActionManager.Init();
-            LaunchProjectileContainerManager.Init();
             GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
             InRangeEffectManager.Init();
             CooldownFeedManager.Init();
@@ -149,7 +146,6 @@ namespace RTPuzzle
                     NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                     InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());
 
-                    LaunchProjectileContainerManager.Tick(d, TimeFlowManager.GetTimeAttenuation());
                     PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                 }
                 else

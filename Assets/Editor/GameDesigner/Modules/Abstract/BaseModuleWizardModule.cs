@@ -20,7 +20,9 @@ namespace Editor_GameDesigner
         [SerializeField]
         private int selectedModuleIndex;
 
+        [SerializeField]
         protected GameDesignerEditorProfile GameDesignerEditorProfile;
+
         protected SerializedObject GameDesignerEditorProfileSO;
 
         [SerializeField]
@@ -44,6 +46,10 @@ namespace Editor_GameDesigner
             if (this.GameDesignerEditorProfile == null)
             {
                 this.GameDesignerEditorProfile = GameDesignerEditorProfile;
+            }
+
+            if(this.GameDesignerEditorProfileSO == null)
+            {
                 this.GameDesignerEditorProfileSO = new SerializedObject(this.GameDesignerEditorProfile);
             }
 
@@ -104,6 +110,8 @@ namespace Editor_GameDesigner
                 this.DoModuleListing(selectedPointOfIterestType);
             }
 
+            this.GameDesignerEditorProfileSO.ApplyModifiedProperties();
+            this.GameDesignerEditorProfileSO.Update();
         }
 
         private bool IsDisabled()
@@ -127,6 +135,7 @@ namespace Editor_GameDesigner
                     if (GUILayout.Button(new GUIContent(foundedModule.GetType().Name, this.POIModuleDescription(foundedModule.GetType()))))
                     {
                         this.selectedModuleIndex = this.AvailableModules.IndexOf(foundedModule.GetType());
+
                     }
                 }
             }

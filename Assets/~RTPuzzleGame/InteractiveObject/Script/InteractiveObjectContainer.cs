@@ -123,7 +123,7 @@ namespace RTPuzzle
             MonoBehaviour.DestroyImmediate(interactiveObject.gameObject);
         }
 #endif
-            #endregion
+        #endregion
 
-        }
+    }
 }

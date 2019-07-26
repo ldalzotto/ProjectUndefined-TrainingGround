@@ -73,7 +73,7 @@ namespace Editor_GameDesigner
                        EditorUtility.SetDirty(this.currentSelectedObjet);
 
                        var configurationToModify = this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData[this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.AttractiveObjectId];
-                       configurationToModify.AttractiveInteractiveObjectPrefab = AssetDatabase.LoadAssetAtPath<InteractiveObjectType>(PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(InteractiveObjectType));
+                       configurationToModify.AttractiveInteractiveObjectPrefab = AssetFinder.SafeSingleAssetFind<InteractiveObjectType>(InteractiveObjectType.gameObject.name);
                        EditorUtility.SetDirty(configurationToModify);
                    }
                    else if (this.remove)
@@ -129,6 +129,29 @@ namespace Editor_GameDesigner
                    else if (this.remove)
                    {
                        EditorInteractiveObjectModulesOperation.RemovePrefabModule<LevelCompletionTriggerModule>(InteractiveObjectType);
+                   }
+               },
+               LaunchProjectileModuleAction: () =>
+               {
+                   if (this.add)
+                   {
+                       var launchProjectileModule = EditorInteractiveObjectModulesOperation.AddPrefabModule(InteractiveObjectType, this.CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLaunchProjectileModule);
+                       launchProjectileModule.LaunchProjectileId = this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.LaunchProjectileId;
+
+                       var configurationToModify = this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration.ConfigurationInherentData[this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.LaunchProjectileId];
+                       configurationToModify.ProjectilePrefabV2 = AssetFinder.SafeSingleAssetFind<InteractiveObjectType>(InteractiveObjectType.gameObject.name);
+                       EditorUtility.SetDirty(configurationToModify);
+                   }
+                   else if (this.remove)
+                   {
+                       if (this.deepDeletion)
+                       {
+                           var launchProjectileId = this.currentSelectedObjet.GetComponentInChildren<LaunchProjectile>().LaunchProjectileId;
+                           //configuration deletion
+                           AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration.ConfigurationInherentData[launchProjectileId]));
+                           this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration.ClearEntry(launchProjectileId);
+                       }
+                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<LaunchProjectile>(InteractiveObjectType);
                    }
                }
              );
@@ -188,7 +211,13 @@ namespace Editor_GameDesigner
                            this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.TargetZoneID,
                            this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZonesConfiguration, ref allowedToEdit);
                     },
-                    LevelCompletionTriggerAction: () => allowedToEdit = true
+                    LevelCompletionTriggerAction: () => allowedToEdit = true,
+                    LaunchProjectileModuleAction: () =>
+                    {
+                        this.PrefabEditConditionWithID<LaunchProjectile>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.LaunchProjectileId"),
+                            this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.LaunchProjectileId,
+                            this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration, ref allowedToEdit);
+                    }
                 );
             return allowedToEdit;
         }
@@ -201,13 +230,14 @@ namespace Editor_GameDesigner
                     ObjectRepelTypeModuleAction: () => { returnDescription = "Allow the object to be repelled by projectile."; },
                     AttractiveObjectTypeAction: () => { returnDescription = "Attract AI when on range."; },
                     TargetZoneObjectModuleAction: () => { returnDescription = "Definie a zone for AI to reach to complete level."; },
-                    LevelCompletionTriggerAction: () => { returnDescription = "Trigger Zone used to trigger end of puzzle level event."; }
+                    LevelCompletionTriggerAction: () => { returnDescription = "Trigger Zone used to trigger end of puzzle level event."; },
+                    LaunchProjectileModuleAction: () => { returnDescription = "Projectile following a path and do action on contact."; }
                 );
             return returnDescription;
         }
 
         private void InteractiveObjectModuleSwitch(Type selectedType, Action InteractiveObjectModuleAction, Action ObjectRepelTypeModuleAction, Action AttractiveObjectTypeAction, Action TargetZoneObjectModuleAction,
-                Action LevelCompletionTriggerAction)
+                Action LevelCompletionTriggerAction, Action LaunchProjectileModuleAction)
         {
             if (selectedType == typeof(ModelObjectModule))
             {
@@ -228,6 +258,10 @@ namespace Editor_GameDesigner
             else if (selectedType == typeof(LevelCompletionTriggerModule))
             {
                 LevelCompletionTriggerAction.Invoke();
+            }
+            else if (selectedType == typeof(LaunchProjectile))
+            {
+                LaunchProjectileModuleAction.Invoke();
             }
         }
     }
