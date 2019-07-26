@@ -36,6 +36,11 @@ namespace RTPuzzle
             return null;
         }
 
+        public T GetDisabledModule<T>() where T : InteractiveObjectModule
+        {
+            return this.GetDisabledModule(typeof(T)) as T;
+        }
+
         private InteractiveObjectModule GetDisabledModule(Type moduleType)
         {
             this.disabledModules.TryGetValue(moduleType, out InteractiveObjectModule returnModule);

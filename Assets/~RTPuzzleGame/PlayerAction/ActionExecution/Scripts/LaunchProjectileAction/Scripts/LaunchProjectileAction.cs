@@ -75,7 +75,7 @@ namespace RTPuzzle
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
-                         projectileInherentData);
+                         projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
@@ -244,6 +244,7 @@ namespace RTPuzzle
         private RangeTypeObject projectileCursorRange;
 
         private Vector3 currentCursorWorldPosition;
+        private float effectiveEffectRange;
 
         private bool isCursorPositioned;
         private bool isCursorInRange;
@@ -257,13 +258,23 @@ namespace RTPuzzle
         }
 
         public LaunchProjectileRayPositionerManager(Camera camera, Vector2 cursorScreenPositionAtInit, LaunchProjectileAction launchProjectileAction,
-                PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer, ProjectileInherentData projectileInherentData)
+                PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer, ProjectileInherentData projectileInherentData,
+                PuzzleGameConfigurationManager puzzleGameConfigurationManager, InteractiveObjectType projectileInteractiveObject)
         {
             this.camera = camera;
             this.launchProjectileActionRef = launchProjectileAction;
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.PuzzleStaticConfigurationContainer = PuzzleStaticConfigurationContainer;
             this.projectileInherentData = projectileInherentData;
+
+            if (this.projectileInherentData.isExploding)
+            {
+                this.effectiveEffectRange = this.projectileInherentData.EffectRange;
+            }
+            else if (this.projectileInherentData.isPersistingToAttractiveObject)
+            {
+                projectileInteractiveObject.GetDisabledModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule) => this.effectiveEffectRange = puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[AttractiveObjectTypeModule.AttractiveObjectId].EffectRange);
+            }
         }
 
         public void Tick(float d, Vector2 currentScreenPositionPoint)
@@ -278,7 +289,7 @@ namespace RTPuzzle
                     {
                         MonoBehaviour.DestroyImmediate(this.projectileCursorRange.gameObject);
                     }
-                    this.projectileCursorRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.projectileInherentData.EffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
+                    this.projectileCursorRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.effectiveEffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
                 }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;
