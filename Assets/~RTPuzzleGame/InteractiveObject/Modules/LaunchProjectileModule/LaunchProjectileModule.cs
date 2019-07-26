@@ -1,5 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +15,7 @@ namespace RTPuzzle
 
         #region Internal Dependencies
         private LaunchProjectileGroundColliderTracker LaunchProjectileGroundColliderTracker;
+        private InteractiveObjectType ParentInteractiveObjectTypeRef;
         #endregion
 
         private LaunchProjectileMovementManager LaunchProjectileMovementManager;
@@ -34,10 +37,10 @@ namespace RTPuzzle
         }
         #endregion
 
-        public static InteractiveObjectType InstanciateV2(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform)
+        public static InteractiveObjectType InstanciateV2(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform, List<Type> disabledInteractiveModules = null)
         {
             var launchProjectileInteractiveObjet = MonoBehaviour.Instantiate(LaunchProjectileInherentData.ProjectilePrefabV2, parentTransform);
-            launchProjectileInteractiveObjet.Init(new InteractiveObjectInitializationObject(ProjectileInherentData: LaunchProjectileInherentData, ProjectilePath: ProjectilePath));
+            launchProjectileInteractiveObjet.Init(new InteractiveObjectInitializationObject(ProjectileInherentData: LaunchProjectileInherentData, ProjectilePath: ProjectilePath), disabledInteractiveModules);
             return launchProjectileInteractiveObjet;
         }
 
@@ -53,6 +56,7 @@ namespace RTPuzzle
             #endregion
 
             #region Internal Dependencies
+            this.ParentInteractiveObjectTypeRef = this.GetComponentInParent<InteractiveObjectType>();
             this.LaunchProjectileGroundColliderTracker = this.GetComponentInChildren<LaunchProjectileGroundColliderTracker>();
             this.LaunchProjectileGroundColliderTracker.Init(this);
             #endregion
@@ -79,8 +83,19 @@ namespace RTPuzzle
         #region External Events
         public void OnGroundTriggerEnter()
         {
-            SphereCollisionManager.OnGroundTriggerEnter(this);
-            this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.GetComponentInParent<InteractiveObjectType>());
+            //We move the projectile to its final position
+            this.ParentInteractiveObjectTypeRef.transform.position = this.GetTargetPosition();
+            if (this.launchProjectileInherentData.isExploding)
+            {
+                SphereCollisionManager.OnProjectileExplode(this);
+                this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.ParentInteractiveObjectTypeRef);
+            }
+            else
+            {
+                this.ParentInteractiveObjectTypeRef.DisableModule(this.GetType());
+                this.ParentInteractiveObjectTypeRef.EnableAttractiveObjectTypeModule();
+            }
+
         }
         #endregion
 
@@ -150,14 +165,12 @@ namespace RTPuzzle
             this.LaunchProjectileRef = LaunchProjectileRef;
         }
 
-        public void OnGroundTriggerEnter(LaunchProjectileModule launchProjectileRef)
+        public void OnProjectileExplode(LaunchProjectileModule launchProjectileRef)
         {
-            var projectileTargetPosition = launchProjectileRef.GetTargetPosition();
-
             #region AI escape
             foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {
-                if (Intersection.BoxIntersectsSphereV2(npcAIManager.GetCollider() as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
+                if (Intersection.BoxIntersectsSphereV2(npcAIManager.GetCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.EffectRange))
                 {
                     npcAIManager.OnProjectileTriggerEnter(launchProjectileRef);
                 }
@@ -167,11 +180,11 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.InteractiveObjectContainer.ObjectsRepelable)
             {
-                if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, projectileTargetPosition, LaunchProjectileInherentData.EffectRange))
+                if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.EffectRange))
                 {
                     //float travelDistance = 13;
                     float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.RepelableObjectID].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileId);
-                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - projectileTargetPosition), repelAbleObject.transform.up).normalized;
+                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - launchProjectileRef.transform.position), repelAbleObject.transform.up).normalized;
                     NavMeshHit navmeshHit;
                     if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
                     {

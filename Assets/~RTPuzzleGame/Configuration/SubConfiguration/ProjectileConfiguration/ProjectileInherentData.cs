@@ -1,7 +1,5 @@
-﻿using ConfigurationEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using GameConfigurationID;
-using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,18 +11,25 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "ProjectileInherentData", menuName = "Configuration/PuzzleGame/ProjectileConfiguration/ProjectileInherentData", order = 1)]
     public class ProjectileInherentData : ScriptableObject
     {
-        [SerializeField]
-        private float effectRange;
 
         [SerializeField]
-        private float projectileThrowRange;
+        public float ProjectileThrowRange;
 
         [SerializeField]
-        private float travelDistancePerSeconds;
+        public float TravelDistancePerSeconds;
+
+        [SerializeField]
+        public InteractiveObjectType ProjectilePrefabV2;
+
+        [SerializeField]
+        public bool isExploding;
+
+        [SerializeField]
+        public bool isPersistingToAttractiveObject;
+
+        [SerializeField]
+        public float EffectRange;
         
-        [SerializeField]
-        private InteractiveObjectType projectilePrefabV2;
-
         [Header("Animation")]
 
         [CustomEnum]
@@ -32,26 +37,50 @@ namespace RTPuzzle
         [CustomEnum]
         public AnimationID PostActionAnimation;
 
-        [DictionaryEnumSearch]
-        public float EffectRange { get => effectRange; }
-        [DictionaryEnumSearch]
-        public float TravelDistancePerSeconds { get => travelDistancePerSeconds; }
-        public float ProjectileThrowRange { get => projectileThrowRange; }
-        public InteractiveObjectType ProjectilePrefabV2 { get => projectilePrefabV2; set => projectilePrefabV2 = value; }
-
-        public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab)
+        public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab, bool isExploding, bool isPersistingToAttractiveObject)
         {
-            this.effectRange = effectRange;
-            this.projectileThrowRange = projectileThrowRange;
-            this.travelDistancePerSeconds = travelDistancePerSeconds;
-            this.projectilePrefabV2 = projectilePrefab;
+            this.EffectRange = effectRange;
+            this.ProjectileThrowRange = projectileThrowRange;
+            this.TravelDistancePerSeconds = travelDistancePerSeconds;
+            this.ProjectilePrefabV2 = projectilePrefab;
+            this.isExploding = isExploding;
+            this.isPersistingToAttractiveObject = isPersistingToAttractiveObject;
         }
 
         #region Debug purposes
         public void SetTravelDistanceDebug(float value)
         {
-            travelDistancePerSeconds = value;
+            TravelDistancePerSeconds = value;
         }
         #endregion
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(ProjectileInherentData))]
+    public class CustomProjectileInherentDataEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            var ProjectileInherentDataTarget = (ProjectileInherentData)target;
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.ProjectilePrefabV2)));
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.ProjectileThrowRange)));
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.TravelDistancePerSeconds)));
+
+            EditorGUILayout.Separator();
+            EditorGUILayout.LabelField("Behavior : ");
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.isExploding)));
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.isPersistingToAttractiveObject)));
+
+            EditorGUILayout.Separator();
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.EffectRange)));
+
+            EditorGUILayout.Separator();
+            EditorGUILayout.LabelField("Animation : ");
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.PreActionAnimation)));
+            EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.PostActionAnimation)));
+
+            this.serializedObject.ApplyModifiedProperties();
+        }
+    }
+#endif
 }

@@ -25,7 +25,7 @@ namespace Tests
             projectileBezierPath.P3 = projectilePosition;
             var launchProjectileAttractiveObject = LaunchProjectileModule.InstanciateV2(projectileInherentData, projectileBezierPath, parentTransform);
             launchProjectileAttractiveObject.transform.position = projectilePosition;
-            launchProjectileAttractiveObject.LaunchProjectileModule.LaunchProjectileId = LaunchProjectileId.TEST;
+            launchProjectileAttractiveObject.GetModule<LaunchProjectileModule>().LaunchProjectileId = LaunchProjectileId.TEST;
             return launchProjectileAttractiveObject;
         }
 
@@ -69,7 +69,7 @@ namespace Tests
         {
             var projectileData = ScriptableObject.CreateInstance<ProjectileInherentData>();
             var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[LaunchProjectileId.STONE];
-            projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefabV2);
+            projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefabV2, true, false);
             return projectileData;
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CoreGame
 {
@@ -18,6 +19,20 @@ namespace CoreGame
             {
                 action.Invoke((COMPARISON_TYPE)input);
             }
+        }
+
+        public static void IfNotNullAndTypeNotContainedInList<T>(this T input, List<Type> containedTypeList, Action<T> action)
+        {
+            input.IfNotNull((i) =>
+            {
+                containedTypeList.IfNotNull((l) =>
+                {
+                    if (!containedTypeList.Contains(i.GetType()))
+                    {
+                        action.Invoke(input);
+                    }
+                });
+            });
         }
     }
 }

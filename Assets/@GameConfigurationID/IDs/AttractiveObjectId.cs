@@ -21,5 +21,7 @@ namespace GameConfigurationID {
     CHEESE_SEWER_RTP_2 = 2,
     
     RTP_TEST_RangeEffectManager = 3,
+    
+    _1_Town_StartTutorial_Speaker = 4,
   }
 }

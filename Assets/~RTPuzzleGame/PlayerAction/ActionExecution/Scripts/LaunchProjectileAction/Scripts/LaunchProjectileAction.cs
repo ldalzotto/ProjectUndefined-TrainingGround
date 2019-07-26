@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -67,9 +68,9 @@ namespace RTPuzzle
 
             var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
             this.projectileSphereRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
-            this.projectileObject = LaunchProjectileModule.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[this.projectileId], null, interactiveObjectContainer.transform);
-            //we disable the projectile module
-            this.projectileObject.DisableModule(this.projectileObject.LaunchProjectileModule);
+            this.projectileObject = LaunchProjectileModule.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[this.projectileId], null, interactiveObjectContainer.transform, new List<Type>() {
+                typeof(LaunchProjectileModule), typeof(AttractiveObjectTypeModule)
+            });
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
@@ -142,7 +143,6 @@ namespace RTPuzzle
                 this.LaunchProjectilePlayerAnimationManager.PlayThrowProjectileAnimation(
                     onAnimationEnd: () =>
                     {
-                        //LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition()
                         ResetCoolDown();
                         var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
                                              this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().transform.up, BeziersControlPointsShape.CURVED);
@@ -233,10 +233,13 @@ namespace RTPuzzle
     #region Launch projectile ray manager
     class LaunchProjectileRayPositionerManager
     {
-        private Camera camera;
+        #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
-        private ProjectileInherentData projectileInherentData;
         private PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer;
+        #endregion
+
+        private Camera camera;
+        private ProjectileInherentData projectileInherentData;
         private LaunchProjectileAction launchProjectileActionRef;
         private RangeTypeObject projectileCursorRange;
 

@@ -60,7 +60,7 @@ namespace RTPuzzle
             List<InteractiveObjectType> interactiveObjectsToRemove = null;
             foreach (var interactiveObject in interactiveObjects)
             {
-                if (interactiveObject.AttractiveObjectTypeModule != null && interactiveObject.AttractiveObjectTypeModule.IsAskingToBeDestroyed())
+                if (interactiveObject.GetModule<AttractiveObjectTypeModule>() != null && interactiveObject.GetModule<AttractiveObjectTypeModule>().IsAskingToBeDestroyed())
                 {
                     if (interactiveObjectsToRemove == null) { interactiveObjectsToRemove = new List<InteractiveObjectType>(); }
                     interactiveObjectsToRemove.Add(interactiveObject);
@@ -80,9 +80,9 @@ namespace RTPuzzle
         public void OnInteractiveObjectAdded(InteractiveObjectType interactiveObject)
         {
             this.interactiveObjects.Add(interactiveObject);
-            interactiveObject.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.Add(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule));
-            interactiveObject.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Add(ObjectRepelTypeModule));
-            interactiveObject.TargetZoneObjectModule.IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Add(TargetZoneObjectModule.TargetZoneID, TargetZoneObjectModule));
+            interactiveObject.GetModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.Add(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule));
+            interactiveObject.GetModule<ObjectRepelTypeModule>().IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Add(ObjectRepelTypeModule));
+            interactiveObject.GetModule<TargetZoneObjectModule>().IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Add(TargetZoneObjectModule.TargetZoneID, TargetZoneObjectModule));
         }
 
         public void OnInteractiveObjectDestroyed(InteractiveObjectType interactiveObject)
@@ -96,7 +96,7 @@ namespace RTPuzzle
             this.interactiveObjects.Remove(interactiveObject);
 
             #region AttractiveObjectTypeModule
-            interactiveObject.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) =>
+            interactiveObject.GetModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) =>
             {
                 this.attractiveObjectContainer.Remove(AttractiveObjectTypeModule.AttractiveObjectId);
                 AttractiveObjectTypeModule.SphereRange.OnRangeDestroyed();
@@ -104,11 +104,11 @@ namespace RTPuzzle
             });
             #endregion
 
-            interactiveObject.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Remove(ObjectRepelTypeModule));
-            interactiveObject.TargetZoneObjectModule.IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
+            interactiveObject.GetModule<ObjectRepelTypeModule>().IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Remove(ObjectRepelTypeModule));
+            interactiveObject.GetModule<TargetZoneObjectModule>().IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
 
             #region LevelCompletionTriggerModule
-            interactiveObject.LevelCompletionTriggerModule.IfNotNull((LevelCompletionTriggerModule LevelCompletionTriggerModule) =>
+            interactiveObject.GetModule<LevelCompletionTriggerModule>().IfNotNull((LevelCompletionTriggerModule LevelCompletionTriggerModule) =>
             {
                 LevelCompletionTriggerModule.OnInteractiveObjectDestroyed();
             });
