@@ -23,5 +23,7 @@ namespace GameConfigurationID {
     RTP_PUZZLE_CREATION_TEST = 3,
     
     SEWER_RTP_2_STONE_PROJECTILE = 4,
+    
+    _1_Town_StartTurorial_SpeakerProjectile = 5,
   }
 }

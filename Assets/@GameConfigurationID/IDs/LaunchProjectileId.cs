@@ -23,5 +23,7 @@ namespace GameConfigurationID {
     SEWER_RTP_2_STONE = 3,
     
     TEST = 4,
+    
+    _1_Town_StartTutorial_Speaker = 5,
   }
 }

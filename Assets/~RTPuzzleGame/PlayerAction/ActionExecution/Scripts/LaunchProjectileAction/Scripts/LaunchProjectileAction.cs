@@ -77,7 +77,7 @@ namespace RTPuzzle
                          projectileInherentData);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, PuzzleGameConfigurationManager);
-            LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
+            LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData, this.projectileObject);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
             LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
@@ -390,16 +390,22 @@ namespace RTPuzzle
 
         private GameInputManager GameInputManager;
         private LaunchProjectileAction LaunchProjectileAction;
-        public LauncheProjectileActionExitManager(GameInputManager gameInputManager, LaunchProjectileAction LaunchProjectileActionRef)
+        private InteractiveObjectContainer InteractiveObjectContainer;
+        private InteractiveObjectType projectileObjectRef;
+
+        public LauncheProjectileActionExitManager(GameInputManager gameInputManager, LaunchProjectileAction LaunchProjectileActionRef, InteractiveObjectType projectileObjectRef, InteractiveObjectContainer InteractiveObjectContainer)
         {
             GameInputManager = gameInputManager;
             this.LaunchProjectileAction = LaunchProjectileActionRef;
+            this.InteractiveObjectContainer = InteractiveObjectContainer;
+            this.projectileObjectRef = projectileObjectRef;
         }
 
         public bool Tick()
         {
             if (IsExitRequested())
             {
+                this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.projectileObjectRef);
                 LaunchProjectileAction.OnExit();
                 return true;
             }

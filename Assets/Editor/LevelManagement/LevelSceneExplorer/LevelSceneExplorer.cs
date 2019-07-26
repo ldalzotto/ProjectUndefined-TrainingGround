@@ -19,6 +19,7 @@ namespace Editor_LevelSceneExplorer
             LevelSceneLoaderV2 LevelSceneLoaderV2Window = EditorWindow.GetWindow<LevelSceneLoaderV2>();
             LevelSceneLoaderV2Window.Show();
             LevelSceneExplorer window = EditorWindow.GetWindow<LevelSceneExplorer>(new Type[] { typeof(LevelSceneLoaderV2) });
+            window.minSize = new Vector2(300, 400);
             window.Show();
         }
 
