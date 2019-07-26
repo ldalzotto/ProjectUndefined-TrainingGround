@@ -25,6 +25,8 @@ namespace RTPuzzle
         private PlayerOrientationManager PlayerOrientationManager;
         private LaunchProjectilePathAnimationManager LaunchProjectilePathAnimationManager;
 
+        private LaunchProjectileId projectileId;
+        private InteractiveObjectType projectileObject;
         private RangeTypeObject projectileSphereRange;
 
         private bool isActionFinished = false;
@@ -61,20 +63,23 @@ namespace RTPuzzle
             playerTransformScreen.y = camera.pixelHeight - playerTransformScreen.y;
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
+            this.projectileId = ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId;
+
             var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
             this.projectileSphereRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
-
+            this.projectileObject = LaunchProjectile.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[this.projectileId], null, interactiveObjectContainer.transform);
+            //we disable the projectile module
+            this.projectileObject.DisableModule(this.projectileObject.LaunchProjectileModule);
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
-            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, interactiveObjectContainer.transform, PuzzleGameConfigurationManager);
+            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, PuzzleGameConfigurationManager);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this);
-            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData);
+            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData, this.projectileObject);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
-
             LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
         }
 
@@ -141,7 +146,7 @@ namespace RTPuzzle
                         ResetCoolDown();
                         var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
                                              this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().transform.up, BeziersControlPointsShape.CURVED);
-                        ThrowProjectileManager.OnLaunchProjectileSpawn(((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId, throwPorjectilePath);
+                        ThrowProjectileManager.OnLaunchProjectileSpawn(this.projectileId, throwPorjectilePath);
                     }
                    );
             }
@@ -349,19 +354,18 @@ namespace RTPuzzle
         private GameInputManager GameInputManager;
         private LaunchProjectileEventManager LaunchProjectileEventManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
-        private Transform parentProjectileTransform;
+        private InteractiveObjectType projectileObjectRef;
 
         public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileEventManager LaunchProjectileEventManager,
-            Transform parentProjectileTransform, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
+            InteractiveObjectType projectileObjectRef, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
             this.LaunchProjectileEventManager = LaunchProjectileEventManager;
-            this.parentProjectileTransform = parentProjectileTransform;
+            this.projectileObjectRef = projectileObjectRef;
             this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
         }
 
-        private InteractiveObjectType currentProjectile;
 
         public void Tick(float d, ref LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager)
         {
@@ -373,7 +377,7 @@ namespace RTPuzzle
 
         public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, BeziersControlPoints throwProjectilePath)
         {
-            currentProjectile = LaunchProjectile.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId], throwProjectilePath, parentProjectileTransform);
+            this.projectileObjectRef.EnableProjectileModule(new InteractiveObjectInitializationObject(ProjectilePath: throwProjectilePath, ProjectileInherentData: PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId]));
             LaunchProjectileRTPActionRef.OnExit();
         }
 
@@ -414,19 +418,21 @@ namespace RTPuzzle
     {
         private AnimationConfiguration animationConfiguration;
 
+        private InteractiveObjectType projectileObjectRef;
         private Animator playerAnimator;
         private ProjectileInherentData ProjectileInherentData;
 
         private PlayerAnimationWithObjectManager ProjectileAnimationManager;
         private PlayerAnimationWithObjectManager ProjectileLaunchAnimationManager;
 
-        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, AnimationConfiguration animationConfiguration, ProjectileInherentData ProjectileInherentData)
+        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, AnimationConfiguration animationConfiguration, ProjectileInherentData ProjectileInherentData, InteractiveObjectType projectileObject)
         {
+            this.projectileObjectRef = projectileObject;
             this.playerAnimator = playerAnimator;
             this.animationConfiguration = animationConfiguration;
             this.ProjectileInherentData = ProjectileInherentData;
 
-            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(MonoBehaviour.Instantiate(ProjectileInherentData.ProjectileModelPrefab), animationConfiguration, this.ProjectileInherentData.PreActionAnimation, this.playerAnimator, 0f, true,
+            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(this.projectileObjectRef.gameObject, animationConfiguration, this.ProjectileInherentData.PreActionAnimation, this.playerAnimator, 0f, false,
                 onAnimationEndAction: null);
             this.ProjectileAnimationManager.Play();
         }
@@ -440,11 +446,7 @@ namespace RTPuzzle
         public void PlayThrowProjectileAnimation(Action onAnimationEnd)
         {
             this.ProjectileAnimationManager.KillSilently();
-            #region TO DELETE
-            var sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            MonoBehaviour.Destroy(sph.GetComponent<Collider>());
-            #endregion
-            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(sph, this.animationConfiguration, this.ProjectileInherentData.PostActionAnimation, this.playerAnimator, 0.1f, true,
+            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(this.projectileObjectRef.gameObject, this.animationConfiguration, this.ProjectileInherentData.PostActionAnimation, this.playerAnimator, 0.1f, false,
                 onAnimationEndAction: onAnimationEnd);
             this.ProjectileLaunchAnimationManager.Play();
         }
@@ -463,13 +465,6 @@ namespace RTPuzzle
         public void OnExit()
         {
             this.ProjectileAnimationManager.Kill();
-
-            /*
-            if (this.ProjectileLaunchAnimationManager != null)
-            {
-                this.ProjectileLaunchAnimationManager.Kill();
-            }
-            */
         }
     }
 

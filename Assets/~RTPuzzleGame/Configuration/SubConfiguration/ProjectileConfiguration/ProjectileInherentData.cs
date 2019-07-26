@@ -25,9 +25,6 @@ namespace RTPuzzle
         [SerializeField]
         private InteractiveObjectType projectilePrefabV2;
 
-        [SerializeField]
-        private GameObject projectileModelPrefab;
-
         [Header("Animation")]
 
         [CustomEnum]
@@ -40,16 +37,7 @@ namespace RTPuzzle
         [DictionaryEnumSearch]
         public float TravelDistancePerSeconds { get => travelDistancePerSeconds; }
         public float ProjectileThrowRange { get => projectileThrowRange; }
-        public GameObject ProjectileModelPrefab { get => projectileModelPrefab; }
         public InteractiveObjectType ProjectilePrefabV2 { get => projectilePrefabV2; set => projectilePrefabV2 = value; }
-
-#if UNITY_EDITOR
-        public void SetProjectileModelPrefab(GameObject ProjectileModelPrefab)
-        {
-            this.projectileModelPrefab = ProjectileModelPrefab;
-            EditorUtility.SetDirty(this);
-        }
-#endif
 
         public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab)
         {

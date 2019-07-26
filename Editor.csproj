@@ -331,7 +331,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ExploreProjectile.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ProjectileModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\RepelableObject\CreateRepelableObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\RepelableObject\EditRepelableObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\RepelableObject\ExploreRepelableObject.cs" />

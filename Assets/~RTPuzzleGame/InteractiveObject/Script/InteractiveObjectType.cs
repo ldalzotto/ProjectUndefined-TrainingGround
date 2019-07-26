@@ -15,6 +15,11 @@ namespace RTPuzzle
         private LaunchProjectile launchProjectileModule;
         #endregion
 
+        #region External Dependencies
+        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        #endregion
+
+
         #region Data Retrieval
         public ModelObjectModule ModelObjectModule { get => modelObjectModule; }
         public AttractiveObjectTypeModule AttractiveObjectTypeModule { get => attractiveObjectTypeModule; }
@@ -24,12 +29,10 @@ namespace RTPuzzle
         public LaunchProjectile LaunchProjectileModule { get => launchProjectileModule; }
         #endregion
 
-        public void Init(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
-                                TargetZoneInherentData targetZoneInherentData = null,
-                                ProjectileInherentData projectileInherentData = null, BeziersControlPoints projectilePath = null)
+        public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
             #region External Dependencies
-            var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
@@ -37,31 +40,39 @@ namespace RTPuzzle
 
             this.ModelObjectModule.IfNotNull((ModelObjectModule modelObjectModule) => modelObjectModule.Init());
             this.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) =>
+            {
+                if (InteractiveObjectInitializationObject.InputAttractiveObjectInherentConfigurationData == null)
                 {
-                    if (InputAttractiveObjectInherentConfigurationData == null)
-                    {
-                        attractiveObjectTypeModule.Init(puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], this.ModelObjectModule);
-                    }
-                    else
-                    {
-                        attractiveObjectTypeModule.Init(InputAttractiveObjectInherentConfigurationData, this.ModelObjectModule);
-                    }
+                    attractiveObjectTypeModule.Init(this.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], this.ModelObjectModule);
                 }
+                else
+                {
+                    attractiveObjectTypeModule.Init(InteractiveObjectInitializationObject.InputAttractiveObjectInherentConfigurationData, this.ModelObjectModule);
+                }
+            }
             );
             this.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule objectRepelTypeModule) => objectRepelTypeModule.Init(this.ModelObjectModule));
             this.LevelCompletionTriggerModule.IfNotNull((LevelCompletionTriggerModule levelCompletionTriggerModule) => levelCompletionTriggerModule.Init());
             this.TargetZoneObjectModule.IfNotNull((TargetZoneObjectModule targetZoneObjectModule) =>
             {
-                if (targetZoneInherentData == null) { targetZoneObjectModule.Init(this.levelCompletionTriggerModule); }
-                else { targetZoneObjectModule.Init(this.levelCompletionTriggerModule, targetZoneInherentData); }
+                if (InteractiveObjectInitializationObject.TargetZoneInherentData == null) { targetZoneObjectModule.Init(this.levelCompletionTriggerModule); }
+                else { targetZoneObjectModule.Init(this.levelCompletionTriggerModule, InteractiveObjectInitializationObject.TargetZoneInherentData); }
             });
-            this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) =>
-            {
-                if (projectileInherentData == null) { launchProjectileModule.Init(puzzleGameConfigurationManager.ProjectileConf()[this.launchProjectileModule.LaunchProjectileId], projectilePath, this.transform); }
-                else { launchProjectileModule.Init(projectileInherentData, projectilePath, this.transform); }
-            });
+            InitializeProjectileModule(InteractiveObjectInitializationObject);
 
             interactiveObjectContainer.OnInteractiveObjectAdded(this);
+        }
+
+        private void InitializeProjectileModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
+        {
+            this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) =>
+            {
+                if (InteractiveObjectInitializationObject.ProjectilePath != null)
+                {
+                    if (InteractiveObjectInitializationObject.ProjectileInherentData == null) { launchProjectileModule.Init(this.PuzzleGameConfigurationManager.ProjectileConf()[this.launchProjectileModule.LaunchProjectileId], InteractiveObjectInitializationObject.ProjectilePath, this.transform); }
+                    else { launchProjectileModule.Init(InteractiveObjectInitializationObject.ProjectileInherentData, InteractiveObjectInitializationObject.ProjectilePath, this.transform); }
+                }
+            });
         }
 
         private void PopulateModules()
@@ -88,6 +99,33 @@ namespace RTPuzzle
             this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
         }
 
+        public void DisableModule<T>(T module) where T : InteractiveObjectModule
+        {
+            module.gameObject.SetActive(false);
+        }
+
+        public void EnableProjectileModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
+        {
+            this.launchProjectileModule.gameObject.SetActive(true);
+            this.InitializeProjectileModule(InteractiveObjectInitializationObject);
+        }
+    }
+
+    public class InteractiveObjectInitializationObject
+    {
+        public AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
+        public TargetZoneInherentData TargetZoneInherentData;
+        public ProjectileInherentData ProjectileInherentData;
+        public BeziersControlPoints ProjectilePath;
+
+        public InteractiveObjectInitializationObject(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
+            TargetZoneInherentData TargetZoneInherentData = null, ProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null)
+        {
+            this.InputAttractiveObjectInherentConfigurationData = InputAttractiveObjectInherentConfigurationData;
+            this.TargetZoneInherentData = TargetZoneInherentData;
+            this.ProjectileInherentData = ProjectileInherentData;
+            this.ProjectilePath = ProjectilePath;
+        }
     }
 
 }

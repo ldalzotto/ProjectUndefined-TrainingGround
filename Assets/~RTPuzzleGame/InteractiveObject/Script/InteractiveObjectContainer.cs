@@ -44,7 +44,7 @@ namespace RTPuzzle
             {
                 foreach (var interactiveObject in allStartInteractiveObjects)
                 {
-                    interactiveObject.Init();
+                    interactiveObject.Init(new InteractiveObjectInitializationObject());
                 }
             }
         }

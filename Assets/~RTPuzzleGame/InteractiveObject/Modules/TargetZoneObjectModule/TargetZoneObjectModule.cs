@@ -55,7 +55,7 @@ namespace RTPuzzle
         public static InteractiveObjectType Instanciate(TargetZoneInherentData targetZoneInherentData, Vector3 worldPosition)
         {
             var targetZone = MonoBehaviour.Instantiate(PrefabContainer.Instance.TargetZonePrefab);
-            targetZone.Init(InputAttractiveObjectInherentConfigurationData: null, targetZoneInherentData: targetZoneInherentData);
+            targetZone.Init(new InteractiveObjectInitializationObject(TargetZoneInherentData : targetZoneInherentData));
             targetZone.transform.position = worldPosition;
             return targetZone;
         }
