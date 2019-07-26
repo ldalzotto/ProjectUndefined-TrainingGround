@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class LaunchProjectile : InteractiveObjectModule
+    public class LaunchProjectileModule : InteractiveObjectModule
     {
         public LaunchProjectileId LaunchProjectileId;
         private ProjectileInherentData launchProjectileInherentData;
@@ -71,9 +71,9 @@ namespace RTPuzzle
             LaunchProjectileMovementManager.Tick(d, timeAttenuationFactor);
         }
 
-        public static LaunchProjectile GetFromCollisionType(CollisionType collisionType)
+        public static LaunchProjectileModule GetFromCollisionType(CollisionType collisionType)
         {
-            return collisionType.GetComponent<LaunchProjectile>();
+            return collisionType.GetComponent<LaunchProjectileModule>();
         }
 
         #region External Events
@@ -129,7 +129,7 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        private LaunchProjectile LaunchProjectileRef;
+        private LaunchProjectileModule LaunchProjectileRef;
         private ProjectileInherentData LaunchProjectileInherentData;
 
         public SphereCollisionManager(ProjectileInherentData LaunchProjectileInherentData,
@@ -137,7 +137,7 @@ namespace RTPuzzle
             InteractiveObjectContainer InteractiveObjectContainer,
             PuzzleGameConfigurationManager PuzzleGameConfigurationManager,
             PuzzleEventsManager PuzzleEventsManager,
-            LaunchProjectile LaunchProjectileRef)
+            LaunchProjectileModule LaunchProjectileRef)
         {
             #region External Dependencies
             this.NPCAIManagerContainer = NPCAIManagerContainer;
@@ -150,9 +150,10 @@ namespace RTPuzzle
             this.LaunchProjectileRef = LaunchProjectileRef;
         }
 
-        public void OnGroundTriggerEnter(LaunchProjectile launchProjectileRef)
+        public void OnGroundTriggerEnter(LaunchProjectileModule launchProjectileRef)
         {
             var projectileTargetPosition = launchProjectileRef.GetTargetPosition();
+
             #region AI escape
             foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {

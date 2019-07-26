@@ -8,7 +8,7 @@ namespace RTPuzzle
         {
         }
   
-        public void OnProjectileGroundTriggerEnter(LaunchProjectile launchProjectile)
+        public void OnProjectileGroundTriggerEnter(LaunchProjectileModule launchProjectile)
         {
             Debug.Log(MyLog.Format("Projectile trigger enter"));
             launchProjectile.OnGroundTriggerEnter();

@@ -6,14 +6,14 @@ using System;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditProjectile : EditScriptableObjectModule<LaunchProjectile>
+    public class EditProjectile : EditScriptableObjectModule<LaunchProjectileModule>
     {
         private ProjectileConfiguration projectileConfiguration;
-        protected override Func<LaunchProjectile, ScriptableObject> scriptableObjectResolver
+        protected override Func<LaunchProjectileModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (LaunchProjectile LaunchProjectile) =>
+                return (LaunchProjectileModule LaunchProjectile) =>
                 {
                     if (projectileConfiguration != null && projectileConfiguration.ConfigurationInherentData.ContainsKey(LaunchProjectile.LaunchProjectileId))
                     {

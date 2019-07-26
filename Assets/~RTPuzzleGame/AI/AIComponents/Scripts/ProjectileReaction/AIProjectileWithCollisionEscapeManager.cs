@@ -41,7 +41,7 @@ namespace RTPuzzle
             this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
         };
 
-        public override void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile)
+        public override void OnLaunchProjectileDestroyed(LaunchProjectileModule launchProjectile)
         {
         }
     }

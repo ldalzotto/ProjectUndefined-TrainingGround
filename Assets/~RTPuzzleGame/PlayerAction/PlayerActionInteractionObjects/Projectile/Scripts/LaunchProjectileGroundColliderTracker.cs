@@ -8,14 +8,14 @@ namespace RTPuzzle
 
         #region External Dependencies
         private LaunchProjectileEventManager LaunchProjectileEventManager;
-        private LaunchProjectile LaunchProjectileRef;
+        private LaunchProjectileModule LaunchProjectileRef;
         #endregion
 
         private Collider sphereCollider;
 
         public Collider SphereCollider { get => sphereCollider; }
 
-        public void Init(LaunchProjectile LaunchProjectileRef)
+        public void Init(LaunchProjectileModule LaunchProjectileRef)
         {
             this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             this.LaunchProjectileRef = LaunchProjectileRef;

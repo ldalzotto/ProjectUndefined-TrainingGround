@@ -146,12 +146,12 @@ namespace Editor_GameDesigner
                    {
                        if (this.deepDeletion)
                        {
-                           var launchProjectileId = this.currentSelectedObjet.GetComponentInChildren<LaunchProjectile>().LaunchProjectileId;
+                           var launchProjectileId = this.currentSelectedObjet.GetComponentInChildren<LaunchProjectileModule>().LaunchProjectileId;
                            //configuration deletion
                            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration.ConfigurationInherentData[launchProjectileId]));
                            this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration.ClearEntry(launchProjectileId);
                        }
-                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<LaunchProjectile>(InteractiveObjectType);
+                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<LaunchProjectileModule>(InteractiveObjectType);
                    }
                }
              );
@@ -214,7 +214,7 @@ namespace Editor_GameDesigner
                     LevelCompletionTriggerAction: () => allowedToEdit = true,
                     LaunchProjectileModuleAction: () =>
                     {
-                        this.PrefabEditConditionWithID<LaunchProjectile>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.LaunchProjectileId"),
+                        this.PrefabEditConditionWithID<LaunchProjectileModule>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.LaunchProjectileId"),
                             this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.LaunchProjectileId,
                             this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration, ref allowedToEdit);
                     }
@@ -259,7 +259,7 @@ namespace Editor_GameDesigner
             {
                 LevelCompletionTriggerAction.Invoke();
             }
-            else if (selectedType == typeof(LaunchProjectile))
+            else if (selectedType == typeof(LaunchProjectileModule))
             {
                 LaunchProjectileModuleAction.Invoke();
             }

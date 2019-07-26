@@ -127,7 +127,7 @@ namespace RTPuzzle
             this.SetIsEscapingFromProjectile(false);
             this.escapeDestinationManager.OnStateReset();
         }
-        public abstract void OnLaunchProjectileDestroyed(LaunchProjectile launchProjectile);
+        public abstract void OnLaunchProjectileDestroyed(LaunchProjectileModule launchProjectile);
         public virtual void ComponentTriggerExit(Collider collider, CollisionType collisionType)
         {
             this.SetIsEscapingFromProjectile(false);

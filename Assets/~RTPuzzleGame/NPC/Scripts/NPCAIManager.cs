@@ -177,7 +177,7 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnProjectileTriggerEnter(LaunchProjectile launchProjectile)
+        public void OnProjectileTriggerEnter(LaunchProjectileModule launchProjectile)
         {
             this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
         }

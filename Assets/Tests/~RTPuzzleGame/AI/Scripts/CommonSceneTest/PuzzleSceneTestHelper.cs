@@ -23,7 +23,7 @@ namespace Tests
             projectileBezierPath.P1 = projectilePosition;
             projectileBezierPath.P2 = projectilePosition;
             projectileBezierPath.P3 = projectilePosition;
-            var launchProjectileAttractiveObject = LaunchProjectile.InstanciateV2(projectileInherentData, projectileBezierPath, parentTransform);
+            var launchProjectileAttractiveObject = LaunchProjectileModule.InstanciateV2(projectileInherentData, projectileBezierPath, parentTransform);
             launchProjectileAttractiveObject.transform.position = projectilePosition;
             launchProjectileAttractiveObject.LaunchProjectileModule.LaunchProjectileId = LaunchProjectileId.TEST;
             return launchProjectileAttractiveObject;

@@ -8,20 +8,20 @@ using System.Collections.Generic;
 namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(LaunchProjectile))]
-    public class LaunchProjectileCustomEditor : AbstractGameCustomEditorWithLiveSelection<LaunchProjectile, ProjectileCustomEditorContext, ProjectileConfigurationModule, EditProjectile>
+    [CustomEditor(typeof(LaunchProjectileModule))]
+    public class LaunchProjectileCustomEditor : AbstractGameCustomEditorWithLiveSelection<LaunchProjectileModule, ProjectileCustomEditorContext, ProjectileConfigurationModule, EditProjectile>
     {
         private void OnEnable()
         {
             if (target != null)
             {
-                this.drawModules = new List<GUIDrawModule<LaunchProjectile, ProjectileCustomEditorContext>>()
+                this.drawModules = new List<GUIDrawModule<LaunchProjectileModule, ProjectileCustomEditorContext>>()
                 {
                     new ProjectileThrowRange(),
                     new ProjectileEffectRange()
                 };
 
-                var launchProjectile = (LaunchProjectile)target;
+                var launchProjectile = (LaunchProjectileModule)target;
                 this.context = new ProjectileCustomEditorContext();
                 this.context.PlayerObject = GameObject.FindObjectOfType<PlayerManager>();
                 this.context.LaunchProjectile = launchProjectile;
@@ -37,13 +37,13 @@ namespace Editor_GameCustomEditors
     public class ProjectileCustomEditorContext
     {
         public PlayerManager PlayerObject;
-        public LaunchProjectile LaunchProjectile;
+        public LaunchProjectileModule LaunchProjectile;
         public ProjectileInherentData ProjectileInherentData;
     }
 
-    class ProjectileThrowRange : GUIDrawModule<LaunchProjectile, ProjectileCustomEditorContext>
+    class ProjectileThrowRange : GUIDrawModule<LaunchProjectileModule, ProjectileCustomEditorContext>
     {
-        public override void SceneGUI(ProjectileCustomEditorContext context, LaunchProjectile target)
+        public override void SceneGUI(ProjectileCustomEditorContext context, LaunchProjectileModule target)
         {
             Handles.color = Color.magenta;
             var position = context.LaunchProjectile.transform.position;
@@ -56,9 +56,9 @@ namespace Editor_GameCustomEditors
         }
     }
 
-    class ProjectileEffectRange : GUIDrawModule<LaunchProjectile, ProjectileCustomEditorContext>
+    class ProjectileEffectRange : GUIDrawModule<LaunchProjectileModule, ProjectileCustomEditorContext>
     {
-        public override void SceneGUI(ProjectileCustomEditorContext context, LaunchProjectile target)
+        public override void SceneGUI(ProjectileCustomEditorContext context, LaunchProjectileModule target)
         {
             Handles.color = Color.red;
             Handles.Label(context.LaunchProjectile.transform.position + Vector3.up * context.ProjectileInherentData.EffectRange, nameof(context.ProjectileInherentData.EffectRange), MyEditorStyles.LabelRed);

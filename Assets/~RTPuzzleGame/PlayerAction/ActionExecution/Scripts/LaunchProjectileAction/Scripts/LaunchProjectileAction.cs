@@ -67,7 +67,7 @@ namespace RTPuzzle
 
             var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
             this.projectileSphereRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
-            this.projectileObject = LaunchProjectile.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[this.projectileId], null, interactiveObjectContainer.transform);
+            this.projectileObject = LaunchProjectileModule.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[this.projectileId], null, interactiveObjectContainer.transform);
             //we disable the projectile module
             this.projectileObject.DisableModule(this.projectileObject.LaunchProjectileModule);
 

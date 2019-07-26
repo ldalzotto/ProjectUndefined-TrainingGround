@@ -12,7 +12,7 @@ namespace RTPuzzle
         private ObjectRepelTypeModule objectRepelTypeModule;
         private LevelCompletionTriggerModule levelCompletionTriggerModule;
         private TargetZoneObjectModule targetZoneObjectModule;
-        private LaunchProjectile launchProjectileModule;
+        private LaunchProjectileModule launchProjectileModule;
         #endregion
 
         #region External Dependencies
@@ -26,7 +26,7 @@ namespace RTPuzzle
         public ObjectRepelTypeModule ObjectRepelTypeModule { get => objectRepelTypeModule; }
         public LevelCompletionTriggerModule LevelCompletionTriggerModule { get => levelCompletionTriggerModule; }
         public TargetZoneObjectModule TargetZoneObjectModule { get => targetZoneObjectModule; }
-        public LaunchProjectile LaunchProjectileModule { get => launchProjectileModule; }
+        public LaunchProjectileModule LaunchProjectileModule { get => launchProjectileModule; }
         #endregion
 
         public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
@@ -65,7 +65,7 @@ namespace RTPuzzle
 
         private void InitializeProjectileModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
-            this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) =>
+            this.LaunchProjectileModule.IfNotNull((LaunchProjectileModule launchProjectileModule) =>
             {
                 if (InteractiveObjectInitializationObject.ProjectilePath != null)
                 {
@@ -87,7 +87,7 @@ namespace RTPuzzle
                     interactiveObjectModule.IfTypeEqual((ObjectRepelTypeModule interactiveObjectModule2) => this.objectRepelTypeModule = interactiveObjectModule2);
                     interactiveObjectModule.IfTypeEqual((LevelCompletionTriggerModule interactiveObjectModule2) => this.levelCompletionTriggerModule = interactiveObjectModule2);
                     interactiveObjectModule.IfTypeEqual((TargetZoneObjectModule interactiveObjectModule2) => this.targetZoneObjectModule = interactiveObjectModule2);
-                    interactiveObjectModule.IfTypeEqual((LaunchProjectile launchProjectileModule2) => this.launchProjectileModule = launchProjectileModule2);
+                    interactiveObjectModule.IfTypeEqual((LaunchProjectileModule launchProjectileModule2) => this.launchProjectileModule = launchProjectileModule2);
                 }
             }
         }
@@ -96,7 +96,7 @@ namespace RTPuzzle
         {
             this.AttractiveObjectTypeModule.IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
             this.ObjectRepelTypeModule.IfNotNull((ObjectRepelTypeModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
-            this.LaunchProjectileModule.IfNotNull((LaunchProjectile launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
+            this.LaunchProjectileModule.IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
         }
 
         public void DisableModule<T>(T module) where T : InteractiveObjectModule

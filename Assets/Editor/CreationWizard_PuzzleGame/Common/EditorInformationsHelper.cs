@@ -202,7 +202,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public LevelCompletionTriggerModule BaseLevelCompletionTriggerModule;
         [ReadOnly]
-        public LaunchProjectile BaseLaunchProjectileModule;
+        public LaunchProjectileModule BaseLaunchProjectileModule;
     }
 
     [System.Serializable]
