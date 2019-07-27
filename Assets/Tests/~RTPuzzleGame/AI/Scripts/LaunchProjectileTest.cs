@@ -18,8 +18,8 @@ namespace Tests
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f, LaunchProjectileId.TEST_PROJECTILE_EXPLODE);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
@@ -36,8 +36,8 @@ namespace Tests
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f, LaunchProjectileId.TEST_PROJECTILE_EXPLODE);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
@@ -54,8 +54,8 @@ namespace Tests
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f);
-            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back, GameObject.FindObjectOfType<InteractiveObjectContainer>().transform);
+            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f, LaunchProjectileId.TEST_PROJECTILE_EXPLODE);
+            var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();

@@ -41,6 +41,10 @@ namespace RTPuzzle
 
         private Vector3 lastSuccessfulWorldDestination;
 
+        private int lastFrameSuccessfulNextDestinationFrameNb;
+        private Vector3 lastFrameSuccessfulNextDestination;
+        private Vector3? manuallyCalculatedVelocity;
+
         #region External Events
         public void SetDestination(Vector3 worldDestination)
         {
@@ -59,24 +63,54 @@ namespace RTPuzzle
                 //We manually calculate next position to avoid a frame where AI is standing still
                 if (objectAgent.transform.position == objectAgent.nextPosition)
                 {
-                    Debug.Log(MyLog.Format("NextPosition calculation"));
-                    NavMeshHit pathHit;
-                    objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
-                    objectAgent.nextPosition = pathHit.position;
+                    this.ManuallyUpdateAgent();
+                    //objectAgent.transform.rotation = Quaternion.LookRotation(objectAgent.transform.position - objectAgent.nextPosition, objectAgent.transform.up);
                 }
                 this.lastSuccessfulWorldDestination = worldDestination;
+                this.lastFrameSuccessfulNextDestinationFrameNb = Time.frameCount;
+                this.lastFrameSuccessfulNextDestination = objectAgent.nextPosition;
             }
+            else
+            {
+                //The built in unity has not done is job of updating AI destination se we update it oursleves
+                if (!objectAgent.isStopped && objectAgent.hasPath && objectAgent.pathEndPosition != objectAgent.nextPosition && this.lastFrameSuccessfulNextDestinationFrameNb != Time.frameCount
+                        && objectAgent.nextPosition == this.lastFrameSuccessfulNextDestination //To prevent manually calculating when ai has reached destination and not moving
+                        && objectAgent.velocity == this.manuallyCalculatedVelocity)
+                {
+                    this.ManuallyUpdateAgent();
+                    this.lastFrameSuccessfulNextDestinationFrameNb = Time.frameCount;
+                    this.lastFrameSuccessfulNextDestination = objectAgent.nextPosition;
+                }
+            }
+        }
+
+        private void ManuallyUpdateAgent()
+        {
+            Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
+            NavMeshHit pathHit;
+            objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
+            if (this.CurrentTimeAttenuated > 0)
+            {
+                this.manuallyCalculatedVelocity = (pathHit.position - objectAgent.transform.position) / this.CurrentTimeAttenuated;
+                objectAgent.velocity = this.manuallyCalculatedVelocity.Value;
+            }
+            objectAgent.nextPosition = pathHit.position;
         }
 
         private void UpdateAgentTransform()
         {
+            // We use either manually calculated velocity or calculated by unity
+            Vector3 velocityUsed = this.manuallyCalculatedVelocity.HasValue ? this.manuallyCalculatedVelocity.Value : this.objectAgent.velocity;
+            this.manuallyCalculatedVelocity = null;
+
             // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
-            if (Vector3.Distance(Vector3.zero, (objectAgent.velocity / AIDestimationMoveManagerComponent.SpeedMultiplicationFactor)) >= AIDestimationMoveManagerComponent.RotationFollow_VelocityThreshold)
+            if (Vector3.Distance(Vector3.zero, (velocityUsed / AIDestimationMoveManagerComponent.SpeedMultiplicationFactor)) >= AIDestimationMoveManagerComponent.RotationFollow_VelocityThreshold)
             {
-                objectTransform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(objectAgent.velocity.normalized, Vector3.up));
+                objectTransform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(velocityUsed.normalized, Vector3.up));
             }
 
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
+            //  Debug.Log(MyLog.Format("AGENT MOVE : old " + objectTransform.position.ToString("F4") + " new " + objectAgent.nextPosition.ToString("F4")));
             objectTransform.position = objectAgent.nextPosition;
         }
 
@@ -86,6 +120,7 @@ namespace RTPuzzle
         }
         public void DisableAgent()
         {
+            // Debug.Log(MyLog.Format("Agent disabled"));
             objectAgent.isStopped = true;
             objectAgent.nextPosition = objectAgent.transform.position;
         }

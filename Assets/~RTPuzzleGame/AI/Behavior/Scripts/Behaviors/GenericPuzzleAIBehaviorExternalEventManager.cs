@@ -241,6 +241,7 @@ namespace RTPuzzle
         {
             if (genericAiBehavior.IsMovignTowardPlayerEnabled())
             {
+                Debug.Log(MyLog.Format("AI - Sight in range enter."));
                 if (genericAiBehavior.AIPlayerMoveTowardPlayerManager.OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
                 {
                     genericAiBehavior.SetManagerState(genericAiBehavior.AIPlayerMoveTowardPlayerManager);
@@ -252,6 +253,7 @@ namespace RTPuzzle
         {
             if (genericAiBehavior.IsMovignTowardPlayerEnabled())
             {
+                Debug.Log(MyLog.Format("AI - Sight in range exit."));
                 genericAiBehavior.AIPlayerMoveTowardPlayerManager.OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
             }
         }

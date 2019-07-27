@@ -23,5 +23,7 @@ namespace GameConfigurationID {
     RTP_TEST_RangeEffectManager = 3,
     
     _1_Town_StartTutorial_Speaker = 4,
+    
+    TEST_PROJECTILE_TOATTRACTIVE = 5,
   }
 }

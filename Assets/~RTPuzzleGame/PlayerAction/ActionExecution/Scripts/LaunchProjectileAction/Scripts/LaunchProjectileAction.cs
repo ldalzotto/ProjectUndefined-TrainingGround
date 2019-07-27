@@ -68,9 +68,7 @@ namespace RTPuzzle
 
             var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
             this.projectileSphereRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
-            this.projectileObject = LaunchProjectileModule.InstanciateV2(PuzzleGameConfigurationManager.ProjectileConf()[this.projectileId], null, interactiveObjectContainer.transform, new List<Type>() {
-                typeof(LaunchProjectileModule), typeof(AttractiveObjectTypeModule)
-            });
+            this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(projectileInherentData, interactiveObjectContainer);
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
@@ -391,7 +389,7 @@ namespace RTPuzzle
 
         public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, BeziersControlPoints throwProjectilePath)
         {
-            this.projectileObjectRef.EnableProjectileModule(new InteractiveObjectInitializationObject(ProjectilePath: throwProjectilePath, ProjectileInherentData: PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId]));
+            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref this.projectileObjectRef, throwProjectilePath, PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId]);
             LaunchProjectileRTPActionRef.OnExit();
         }
 
@@ -560,6 +558,21 @@ namespace RTPuzzle
     }
     #endregion
 
+    #region Projectile instanciation helper
+    public class ProjectileActionInstanciationHelper
+    {
+        public static InteractiveObjectType CreateProjectileAtStart(ProjectileInherentData ProjectileInherentData, InteractiveObjectContainer interactiveObjectContainer)
+        {
+            return LaunchProjectileModule.InstanciateV2(ProjectileInherentData, null, interactiveObjectContainer.transform, new List<Type>() {
+                typeof(LaunchProjectileModule), typeof(AttractiveObjectTypeModule)
+            });
+        }
 
+        public static void OnProjectileSpawn(ref InteractiveObjectType projectileObjectRef, BeziersControlPoints throwProjectilePath, ProjectileInherentData ProjectileInherentData)
+        {
+            projectileObjectRef.EnableProjectileModule(new InteractiveObjectInitializationObject(ProjectilePath: throwProjectilePath, ProjectileInherentData: ProjectileInherentData));
+        }
+    }
+    #endregion
 }
 
