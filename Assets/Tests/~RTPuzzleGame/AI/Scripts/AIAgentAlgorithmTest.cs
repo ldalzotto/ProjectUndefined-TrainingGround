@@ -20,6 +20,7 @@ namespace Tests
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
             yield return new WaitForEndOfFrame();
             Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);
+            Assert.IsTrue(mouseTestAIManager.GetNPCAIDestinationMoveManager().ManuallyCalculatedVelocity.HasValue);
         }
 
         [UnityTest]
@@ -35,6 +36,7 @@ namespace Tests
                 OnProjectileSpawn: (InteractiveObjectType LaunchProjectile) =>
                 {
                     Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);
+                    Assert.IsTrue(mouseTestAIManager.GetNPCAIDestinationMoveManager().ManuallyCalculatedVelocity.HasValue);
                     return null;
                 },
                 OnDistanceReached: null);

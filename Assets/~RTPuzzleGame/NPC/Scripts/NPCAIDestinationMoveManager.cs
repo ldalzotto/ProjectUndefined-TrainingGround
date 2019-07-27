@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    class NPCAIDestinationMoveManager
+    public class NPCAIDestinationMoveManager
     {
         private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
         private NavMeshAgent objectAgent;
@@ -45,6 +45,8 @@ namespace RTPuzzle
         private Vector3 lastFrameSuccessfulNextDestination;
         private Vector3? manuallyCalculatedVelocity;
 
+        public Vector3? ManuallyCalculatedVelocity { get => manuallyCalculatedVelocity; }
+
         #region External Events
         public void SetDestination(Vector3 worldDestination)
         {
@@ -69,18 +71,6 @@ namespace RTPuzzle
                 this.lastSuccessfulWorldDestination = worldDestination;
                 this.lastFrameSuccessfulNextDestinationFrameNb = Time.frameCount;
                 this.lastFrameSuccessfulNextDestination = objectAgent.nextPosition;
-            }
-            else
-            {
-                //The built in unity has not done is job of updating AI destination se we update it oursleves
-                if (!objectAgent.isStopped && objectAgent.hasPath && objectAgent.pathEndPosition != objectAgent.nextPosition && this.lastFrameSuccessfulNextDestinationFrameNb != Time.frameCount
-                        && objectAgent.nextPosition == this.lastFrameSuccessfulNextDestination //To prevent manually calculating when ai has reached destination and not moving
-                        && objectAgent.velocity == this.manuallyCalculatedVelocity)
-                {
-                    this.ManuallyUpdateAgent();
-                    this.lastFrameSuccessfulNextDestinationFrameNb = Time.frameCount;
-                    this.lastFrameSuccessfulNextDestination = objectAgent.nextPosition;
-                }
             }
         }
 

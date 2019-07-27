@@ -37,6 +37,10 @@ namespace RTPuzzle
             if (collisionType == null) { return null; }
             return collisionType.GetComponent<NPCAIManager>();
         }
+
+#if UNITY_EDITOR
+        public NPCAIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
+#endif
         #endregion
 
         public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
