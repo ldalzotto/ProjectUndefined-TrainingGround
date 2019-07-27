@@ -60,6 +60,10 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.RepelableObjectsConfiguration.ConfigurationInherentData;
         }
+        public Dictionary<DisarmObjectID, DisarmObjectInherentData> DisarmObjectsConfiguration()
+        {
+            return PuzzleGameConfiguration.DisarmObjectConfiguration.ConfigurationInherentData;
+        }
     }
 
 

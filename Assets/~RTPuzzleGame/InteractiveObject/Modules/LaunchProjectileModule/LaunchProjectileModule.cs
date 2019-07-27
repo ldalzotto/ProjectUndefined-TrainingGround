@@ -37,10 +37,10 @@ namespace RTPuzzle
         }
         #endregion
 
-        public static InteractiveObjectType InstanciateV2(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform, List<Type> disabledInteractiveModules = null)
+        public static InteractiveObjectType InstanciateV2(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform, List<Type> exclusiveInitialEnabledModules = null)
         {
             var launchProjectileInteractiveObjet = MonoBehaviour.Instantiate(LaunchProjectileInherentData.ProjectilePrefabV2, parentTransform);
-            launchProjectileInteractiveObjet.Init(new InteractiveObjectInitializationObject(ProjectileInherentData: LaunchProjectileInherentData, ProjectilePath: ProjectilePath), disabledInteractiveModules);
+            launchProjectileInteractiveObjet.Init(new InteractiveObjectInitializationObject(ProjectileInherentData: LaunchProjectileInherentData, ProjectilePath: ProjectilePath), exclusiveInitialEnabledModules);
             return launchProjectileInteractiveObjet;
         }
 

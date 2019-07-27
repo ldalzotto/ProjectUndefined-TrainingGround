@@ -28,9 +28,10 @@ namespace Editor_GameDesigner
             {"Puzzle//Projectile//." + typeof(CreateProjectile).Name, typeof(CreateProjectile) },
             {"Puzzle//Projectile//." + typeof(EditProjectile).Name, typeof(EditProjectile) },
             {"Puzzle//Projectile//." + typeof(ExploreProjectile).Name, typeof(ExploreProjectile) },
+            {"Puzzle//DisarmObject//."  + typeof(CreateDisarmObject).Name, typeof(CreateDisarmObject) },
+            {"Puzzle//DisarmObject//."  + typeof(EditDisarmObject).Name, typeof(EditDisarmObject) },
             {"Puzzle//InteractiveObject//." + typeof(CreateInteractiveObject).Name, typeof(CreateInteractiveObject) },
             {"Puzzle//InteractiveObject//." + typeof(InteractiveObjectModuleWizard).Name, typeof(InteractiveObjectModuleWizard) },
-            {"Puzzle//AttractiveObject//." + typeof(AttractiveObjectModel).Name, typeof(AttractiveObjectModel) },
             {"Puzzle//AttractiveObject//." + typeof(CreateAttractiveObject).Name, typeof(CreateAttractiveObject) },
             {"Puzzle//AttractiveObject//." + typeof(EditAttractiveObject).Name, typeof(EditAttractiveObject) },
             {"Puzzle//AttractiveObject//." + typeof(ExploreAttractiveObject).Name, typeof(ExploreAttractiveObject) },
@@ -68,6 +69,8 @@ namespace Editor_GameDesigner
             {"Configuration//." + typeof(SelectionWheelNodeConfigurationModule).Name, typeof(SelectionWheelNodeConfigurationModule) },
             {"Configuration//." + typeof(TargetZonesConfigurationModule).Name, typeof(TargetZonesConfigurationModule) },
             {"Configuration//." + typeof(DiscussionRepertoireConfigurationModule).Name, typeof(DiscussionRepertoireConfigurationModule) },
+            {"Configuration//." + typeof(DisarmObjectConfigurationModule).Name, typeof(DisarmObjectConfigurationModule) },
+            
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

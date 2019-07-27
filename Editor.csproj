@@ -146,6 +146,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\AnimationCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\AnimationConfigurationDataCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DisarmObject\DisarmObjectCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DisarmObject\DisarmObjectCreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DisarmObject\Module\DisarmObjectConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DisarmObject\Module\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DiscussionTree\DiscussionTreeCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DiscussionTree\DiscussionTreeCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DiscussionTree\Module\DiscussionTreeDataCreation.cs" />
@@ -272,6 +276,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\AttractiveObjectCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\DisarmObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\DiscussionTextRepertoireCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
@@ -306,11 +311,12 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ExploreAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Animation\CreateAnimation.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\AttractiveObjectModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\CreateAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\EditAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\ExploreAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Configurations\ConfigurationsModule.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\DisarmObject\CreateDisarmObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\DisarmObject\EditDisarmObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Discussion\CreateDiscussionTree.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\CreateInteractiveObject.cs" />

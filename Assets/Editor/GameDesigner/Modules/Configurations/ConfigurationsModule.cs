@@ -27,6 +27,7 @@ namespace Editor_GameDesigner
     public class RangeTypeConfigurationModule : ConfigurationModule<RangeTypeConfiguration, RangeTypeID, RangeTypeInherentConfigurationData> { }
     public class SelectionWheelNodeConfigurationModule : ConfigurationModule<RTPuzzle.SelectionWheelNodeConfiguration, SelectionWheelNodeConfigurationId, RTPuzzle.SelectionWheelNodeConfigurationData> { }
     public class TargetZonesConfigurationModule : ConfigurationModule<TargetZonesConfiguration, TargetZoneID, TargetZoneInherentData> { }
+    public class DisarmObjectConfigurationModule : ConfigurationModule<DisarmObjectConfiguration, DisarmObjectID, DisarmObjectInherentData> { }
 
     public class DiscussionRepertoireConfigurationModule : IGameDesignerModule
     {

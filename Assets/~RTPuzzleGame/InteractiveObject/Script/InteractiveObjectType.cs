@@ -67,6 +67,7 @@ namespace RTPuzzle
             this.InitializeLevelCompletionTriggerModule();
             this.InitializeTargetZoneObjectModule(InteractiveObjectInitializationObject);
             this.InitializeProjectileModule(InteractiveObjectInitializationObject);
+            this.InitializeDisarmObjectModule(InteractiveObjectInitializationObject);
 
 
             this.InteractiveObjectContainer.OnInteractiveObjectAdded(this);
@@ -87,6 +88,7 @@ namespace RTPuzzle
                     interactiveObjectModule.IfTypeEqual((LevelCompletionTriggerModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
                     interactiveObjectModule.IfTypeEqual((TargetZoneObjectModule interactiveObjectModule2) => this.EnableModuleOnInit(interactiveObjectModule2));
                     interactiveObjectModule.IfTypeEqual((LaunchProjectileModule launchProjectileModule2) => this.EnableModuleOnInit(launchProjectileModule2));
+                    interactiveObjectModule.IfTypeEqual((DisarmObjectModule disarmObjectModule) => this.EnableModuleOnInit(disarmObjectModule));
                 }
             }
 
@@ -156,10 +158,21 @@ namespace RTPuzzle
             });
         }
 
+        private void InitializeDisarmObjectModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
+        {
+            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) =>
+            {
+                    if (InteractiveObjectInitializationObject.DisarmObjectInherentData == null) { disarmObjectModule.Init(this.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[disarmObjectModule.DisarmObjectID]); }
+                    else { disarmObjectModule.Init(InteractiveObjectInitializationObject.DisarmObjectInherentData); }
+            });
+            
+        }
+
         #endregion
 
         public void Tick(float d, float timeAttenuationFactor)
         {
+            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.Tick(d, timeAttenuationFactor));
             this.GetModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<ObjectRepelTypeModule>().IfNotNull((ObjectRepelTypeModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
@@ -205,6 +218,7 @@ namespace RTPuzzle
                 else if (disabledModule == typeof(LevelCompletionTriggerModule)) { this.InitializeLevelCompletionTriggerModule(); }
                 else if (disabledModule == typeof(TargetZoneObjectModule)) { this.InitializeTargetZoneObjectModule(InteractiveObjectInitializationObject); }
                 else if (disabledModule == typeof(LaunchProjectileModule)) { this.InitializeProjectileModule(InteractiveObjectInitializationObject); }
+                else if (disabledModule == typeof(DisarmObjectModule)) { this.InitializeDisarmObjectModule(InteractiveObjectInitializationObject); }
             }
         }
 
@@ -226,15 +240,17 @@ namespace RTPuzzle
         public AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
         public TargetZoneInherentData TargetZoneInherentData;
         public ProjectileInherentData ProjectileInherentData;
+        public DisarmObjectInherentData DisarmObjectInherentData;
         public BeziersControlPoints ProjectilePath;
 
         public InteractiveObjectInitializationObject(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
-            TargetZoneInherentData TargetZoneInherentData = null, ProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null)
+            TargetZoneInherentData TargetZoneInherentData = null, ProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null, DisarmObjectInherentData DisarmObjectInherentData = null)
         {
             this.InputAttractiveObjectInherentConfigurationData = InputAttractiveObjectInherentConfigurationData;
             this.TargetZoneInherentData = TargetZoneInherentData;
             this.ProjectileInherentData = ProjectileInherentData;
             this.ProjectilePath = ProjectilePath;
+            this.DisarmObjectInherentData = DisarmObjectInherentData;
         }
     }
 

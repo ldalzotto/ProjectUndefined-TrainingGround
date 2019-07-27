@@ -18,5 +18,6 @@ namespace RTPuzzle
         public RangeTypeConfiguration RangeTypeConfiguration;
         public DottedLineConfiguration DottedLineConfiguration;
         public RepelableObjectsConfiguration RepelableObjectsConfiguration;
+        public DisarmObjectConfiguration DisarmObjectConfiguration;
     }
 }

@@ -31,6 +31,7 @@ namespace Editor_MainGameCreationWizard
         public static string AnimationConfigurationdata = "_AnimationData";
         public static string InteractiveObject = "_Interactive";
         public static string DiscussionNodeEditorObject = "_NodeEditor";
+        public static string DisarmObjectInherentData = "_DisarmObjectInherentData";
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ConfigurationEditor;
 using CreationWizard;
 using Editor_AttractiveObjectCreationWizard;
+using Editor_DisarmObjectCreationWizard;
 using Editor_MainGameCreationWizard;
 using Editor_ProjectileCreationWizard;
 using Editor_RepelableObjectCreationWizard;
@@ -154,6 +155,29 @@ namespace Editor_GameDesigner
                        }
                        EditorInteractiveObjectModulesOperation.RemovePrefabModule<LaunchProjectileModule>(InteractiveObjectType);
                    }
+               },
+               DisarmObjectModuleAction: () =>
+               {
+                   if (this.add)
+                   {
+                       var disarmObjectModule = EditorInteractiveObjectModulesOperation.AddPrefabModule(InteractiveObjectType, this.CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseDisarmObjectModule);
+                       disarmObjectModule.DisarmObjectID = this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.DisarmObjectID;
+
+                       var configurationToModify = this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ConfigurationInherentData[this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.DisarmObjectID];
+                       configurationToModify.DisarmObjectPrefab = AssetFinder.SafeSingleAssetFind<InteractiveObjectType>(InteractiveObjectType.gameObject.name);
+                       EditorUtility.SetDirty(configurationToModify);
+                   }
+                   else if (this.remove)
+                   {
+                       if (this.deepDeletion)
+                       {
+                           var disarmObjectID = this.currentSelectedObjet.GetComponentInChildren<DisarmObjectModule>().DisarmObjectID;
+                           //configuration deletion
+                           AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ConfigurationInherentData[disarmObjectID]));
+                           this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ClearEntry(disarmObjectID);
+                       }
+                       EditorInteractiveObjectModulesOperation.RemovePrefabModule<LaunchProjectileModule>(InteractiveObjectType);
+                   }
                }
              );
         }
@@ -218,6 +242,12 @@ namespace Editor_GameDesigner
                         this.PrefabEditConditionWithID<ProjectileCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.LaunchProjectileId"),
                             this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.LaunchProjectileId,
                             this.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration, ref allowedToEdit);
+                    },
+                    DisarmObjectModuleAction: () =>
+                    {
+                        this.PrefabEditConditionWithID<DisarmObjectCreationWizard>(this.GameDesignerEditorProfileSO.FindProperty("InteractiveObjectModuleWizardID.DisarmObjectID"),
+                                                   this.GameDesignerEditorProfile.InteractiveObjectModuleWizardID.DisarmObjectID,
+                                                   this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration, ref allowedToEdit);
                     }
                 );
             return allowedToEdit;
@@ -232,13 +262,14 @@ namespace Editor_GameDesigner
                     AttractiveObjectTypeAction: () => { returnDescription = "Attract AI when on range."; },
                     TargetZoneObjectModuleAction: () => { returnDescription = "Definie a zone for AI to reach to complete level."; },
                     LevelCompletionTriggerAction: () => { returnDescription = "Trigger Zone used to trigger end of puzzle level event."; },
-                    LaunchProjectileModuleAction: () => { returnDescription = "Projectile following a path and do action on contact."; }
+                    LaunchProjectileModuleAction: () => { returnDescription = "Projectile following a path and do action on contact."; },
+                    DisarmObjectModuleAction: () => { returnDescription = "The object can be deleted by AI."; }
                 );
             return returnDescription;
         }
 
         private void InteractiveObjectModuleSwitch(Type selectedType, Action InteractiveObjectModuleAction, Action ObjectRepelTypeModuleAction, Action AttractiveObjectTypeAction, Action TargetZoneObjectModuleAction,
-                Action LevelCompletionTriggerAction, Action LaunchProjectileModuleAction)
+                Action LevelCompletionTriggerAction, Action LaunchProjectileModuleAction, Action DisarmObjectModuleAction)
         {
             if (selectedType == typeof(ModelObjectModule))
             {
@@ -264,6 +295,11 @@ namespace Editor_GameDesigner
             {
                 LaunchProjectileModuleAction.Invoke();
             }
+            else if (selectedType == typeof(DisarmObjectModule))
+            {
+                DisarmObjectModuleAction.Invoke();
+            }
+
         }
     }
 }

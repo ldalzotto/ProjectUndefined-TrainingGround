@@ -43,5 +43,7 @@ namespace Editor_GameDesigner
         public LaunchProjectileId LaunchProjectileId;
         [CustomEnum()]
         public TargetZoneID TargetZoneID;
+        [CustomEnum()]
+        public DisarmObjectID DisarmObjectID;
     }
 }

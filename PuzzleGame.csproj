@@ -115,6 +115,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\Matrix\RepelableObjectDistance.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AttractiveObjectModule\AttractiveObjectTypeModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\DisarmObjectModule\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LaunchProjectileModule\LaunchProjectileModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LevelCompletionTriggerModule\LevelCompletionTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />
