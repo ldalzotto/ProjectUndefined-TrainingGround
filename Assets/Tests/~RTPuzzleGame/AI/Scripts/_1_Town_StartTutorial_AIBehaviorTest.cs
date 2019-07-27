@@ -78,7 +78,8 @@ namespace Tests
                        {
                            NavMeshHit hit;
                            NavMesh.SamplePosition(playerManagerDataRetriever.GetPlayerRigidBody().position, out hit, 1f, NavMesh.AllAreas);
-                           return PuzzleSceneTestHelper.MovePlayerAndWaitForFixed(new Vector3(999f, 0f, 9999f),
+                           Debug.Log(MyLog.Format(aiManager.GetAgent().destination.ToString("F4")));
+                           return PuzzleSceneTestHelper.MovePlayerAndWaitForFixed(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.MOVE_TOWARDS_PLAYER_OUTOFSIGHT).position,
                                     OnPlayerMoved: () =>
                                     {
                                         //Destination is keeped
@@ -164,7 +165,7 @@ namespace Tests
                 OnProjectileSpawn: null,
                 OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                 {
-                 //   Debug.Break();
+                    //   Debug.Break();
                     Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
                     Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
 

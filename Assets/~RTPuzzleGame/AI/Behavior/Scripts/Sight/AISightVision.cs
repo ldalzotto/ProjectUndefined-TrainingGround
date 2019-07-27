@@ -104,6 +104,7 @@ namespace RTPuzzle
             {
                 if (this.lastFramePosition.ContainsKey(trackedCollider))
                 {
+                    Debug.Log(MyLog.Format(this.lastFramePosition[trackedCollider].ToString("F4") + "  " + trackedCollider.collider.transform.position.ToString("F4")));
                     if (this.lastFramePosition[trackedCollider] != trackedCollider.collider.transform.position)
                     {
                         this.SetIsInside(trackedCollider, sightVisionRange.IsInsideAndNotOccluded((BoxCollider)trackedCollider.collider));
@@ -149,7 +150,7 @@ namespace RTPuzzle
         #region External Event
         public void OnTargetTriggerExit(ColliderWithCollisionType ColliderWithCollisionType)
         {
-            this.IsInside[ColliderWithCollisionType] = false;
+            this.SetIsInside(ColliderWithCollisionType, false);
         }
         #endregion
     }
