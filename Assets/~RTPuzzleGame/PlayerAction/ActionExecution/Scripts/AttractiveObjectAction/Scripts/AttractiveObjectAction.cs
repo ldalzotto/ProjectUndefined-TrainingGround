@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -11,6 +12,7 @@ namespace RTPuzzle
         private AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private PuzzleEventsManager PuzzleEventsManager;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         #region Internal Managers
@@ -22,6 +24,7 @@ namespace RTPuzzle
         private bool isActionOver;
         private AttractiveObjectId attractiveObjectId;
         private RangeTypeObject attractiveObjectRange;
+        private InteractiveObjectType attractiveObject;
 
         public AttractiveObjectAction(AttractiveObjectActionInherentData attractiveObjectActionInherentData) : base(attractiveObjectActionInherentData)
         {
@@ -45,13 +48,15 @@ namespace RTPuzzle
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
             var attractiveObjectInherentConfigurationData = PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
+            this.attractiveObject = AttractiveObjectTypeModule.Instanciate(Vector3.zero, this.AttractiveObjectsInstanciatedParent.transform, attractiveObjectInherentConfigurationData, new List<Type>() { typeof(ModelObjectModule) });
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerPuzzleLogicRootCollier());
-            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, animationConfiguration);
+            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, animationConfiguration, this.attractiveObject);
 
             this.attractiveObjectRange = RangeTypeObject.Instanciate(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
         }
@@ -79,6 +84,7 @@ namespace RTPuzzle
                 }
                 if (this.AttractiveObjectInputManager.ReturnButtonPressed)
                 {
+                    this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.attractiveObject);
                     this.OnEndAction();
                 }
             }
@@ -94,7 +100,8 @@ namespace RTPuzzle
             var objectSpawnPosition = this.AttractiveObjectGroundPositioner.GetAttractiveObjectSpawnPosition();
             if (objectSpawnPosition.HasValue)
             {
-                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, ((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId, this.PuzzleGameConfigurationManager, this.AttractiveObjectsInstanciatedParent);
+                this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject(InputAttractiveObjectInherentConfigurationData: PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId]));
+                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, this.attractiveObject, this.PuzzleGameConfigurationManager, this.AttractiveObjectsInstanciatedParent);
             }
 
             this.OnEndAction();
@@ -113,20 +120,18 @@ namespace RTPuzzle
     {
         private PlayerAnimationWithObjectManager PlayerPocketObjectOutAnimationManager;
         private PlayerAnimationWithObjectManager PlayerObjectLayAnimationManager;
-        private GameObject attractiveObjectInstance;
 
         private bool isOkInputAnimationRunning = false;
 
         public bool IsOkInputAnimationRunning { get => isOkInputAnimationRunning; }
 
         public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData,
-                AttractiveObjectAction attractiveObjectActionRef, AnimationConfiguration animationConfiguration)
+                AttractiveObjectAction attractiveObjectActionRef, AnimationConfiguration animationConfiguration, InteractiveObjectType attractiveObjectRef)
         {
-            this.attractiveObjectInstance = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveObjectModelPrefab);
             this.PlayerPocketObjectOutAnimationManager =
-                new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, animationConfiguration, attractiveObjectInherentConfigurationData.PreActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0f, false, null);
+                new PlayerAnimationWithObjectManager(attractiveObjectRef.gameObject, animationConfiguration, attractiveObjectInherentConfigurationData.PreActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0f, false, null);
             this.PlayerObjectLayAnimationManager =
-                 new PlayerAnimationWithObjectManager(this.attractiveObjectInstance, animationConfiguration, attractiveObjectInherentConfigurationData.PostActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0.05f, true, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
+                 new PlayerAnimationWithObjectManager(attractiveObjectRef.gameObject, animationConfiguration, attractiveObjectInherentConfigurationData.PostActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0.05f, false, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
             this.PlayerPocketObjectOutAnimationManager.Play();
             this.Tick(0);
         }
@@ -140,10 +145,6 @@ namespace RTPuzzle
         public void OnAttractiveObjectActionEnd()
         {
             this.PlayerPocketObjectOutAnimationManager.Kill();
-            if (this.attractiveObjectInstance != null)
-            {
-                MonoBehaviour.Destroy(this.attractiveObjectInstance);
-            }
         }
 
         public void OnAttractiveObjectActionOKInput()

@@ -101,10 +101,10 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }
 
-        public void PZ_EVT_AttractiveObject_OnPlayerActionExecuted(RaycastHit attractiveObjectWorldPositionHit, AttractiveObjectId attractiveObjectId,
+        public void PZ_EVT_AttractiveObject_OnPlayerActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject, 
                             PuzzleGameConfigurationManager puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent)
         {
-            AttractiveObjectTypeModuleEventHandling.OnAttractiveObjectActionExecuted(attractiveObjectWorldPositionHit, attractiveObjectId, puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent);
+            AttractiveObjectTypeModuleEventHandling.OnAttractiveObjectActionExecuted(attractiveObjectWorldPositionHit, attractiveObject, puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent);
         }
         #endregion
 

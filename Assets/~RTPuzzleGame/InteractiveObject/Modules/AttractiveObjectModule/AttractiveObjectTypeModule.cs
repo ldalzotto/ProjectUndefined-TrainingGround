@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using GameConfigurationID;
+using System.Collections.Generic;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,7 +12,7 @@ namespace RTPuzzle
     public class AttractiveObjectTypeModule : InteractiveObjectModule
     {
 
-        public static InteractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData)
+        public static InteractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, List<Type> exclusiveInitialEnabledModules)
         {
             InteractiveObjectType attractiveObject = null;
             if (parent != null)
@@ -23,7 +25,7 @@ namespace RTPuzzle
             }
 
             attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init(new InteractiveObjectInitializationObject(InputAttractiveObjectInherentConfigurationData: attractiveObjectInherentConfigurationData));
+            attractiveObject.Init(new InteractiveObjectInitializationObject(InputAttractiveObjectInherentConfigurationData: attractiveObjectInherentConfigurationData), exclusiveInitialEnabledModules);
             return attractiveObject;
         }
 
@@ -116,13 +118,13 @@ namespace RTPuzzle
 
     public static class AttractiveObjectTypeModuleEventHandling
     {
-        public static void OnAttractiveObjectActionExecuted(RaycastHit attractiveObjectWorldPositionHit, AttractiveObjectId attractiveObjectId, 
+        public static void OnAttractiveObjectActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject, 
                     PuzzleGameConfigurationManager puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent)
         {
-            var attractiveObjectInherentConfigurationData = puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectId];
-            var instanciatedAttractiveObject = AttractiveObjectTypeModule.Instanciate(attractiveObjectWorldPositionHit.point, AttractiveObjectsInstanciatedParent.transform, attractiveObjectInherentConfigurationData);
+            attractiveObject.transform.position = attractiveObjectWorldPositionHit.point;
+
             //TODO make the rotation relative to the player
-            instanciatedAttractiveObject.transform.LookAt(instanciatedAttractiveObject.transform.position + Vector3.forward);
+            attractiveObject.transform.LookAt(attractiveObject.transform.position + Vector3.forward);
         }
     }
 }
