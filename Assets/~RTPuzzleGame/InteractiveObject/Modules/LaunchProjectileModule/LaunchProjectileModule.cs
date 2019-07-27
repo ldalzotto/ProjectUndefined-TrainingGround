@@ -92,8 +92,8 @@ namespace RTPuzzle
             }
             else
             {
+                this.ParentInteractiveObjectTypeRef.EnableAllDisabledModules(new InteractiveObjectInitializationObject());
                 this.ParentInteractiveObjectTypeRef.DisableModule(this.GetType());
-                this.ParentInteractiveObjectTypeRef.EnableAttractiveObjectTypeModule();
             }
 
         }
