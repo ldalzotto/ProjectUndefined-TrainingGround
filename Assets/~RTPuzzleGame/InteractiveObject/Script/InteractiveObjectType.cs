@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -52,14 +53,14 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, List<Type> initialDisabledModulesType = null)
+        public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, List<Type> exclusiveInitialEnabledModules = null)
         {
             #region External Dependencies
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
-            this.PopulateModules(initialDisabledModulesType);
+            this.PopulateModules(exclusiveInitialEnabledModules);
 
             this.GetModule<ModelObjectModule>().IfNotNull((ModelObjectModule modelObjectModule) => modelObjectModule.Init());
             this.InitializeAttractiveObjectTypeModule(InteractiveObjectInitializationObject);
@@ -103,7 +104,7 @@ namespace RTPuzzle
             });
         }
 
-        private void PopulateModules(List<Type> initialDisabledModulesType)
+        private void PopulateModules(List<Type> exclusiveInitialEnabledModules)
         {
             this.enabledModules = new Dictionary<Type, InteractiveObjectModule>();
             this.disabledModules = new Dictionary<Type, InteractiveObjectModule>();
@@ -121,14 +122,13 @@ namespace RTPuzzle
                 }
             }
 
-            if (initialDisabledModulesType != null)
+            if (exclusiveInitialEnabledModules != null)
             {
-                foreach (var initialDisabledModuleType in initialDisabledModulesType)
+                foreach(var enabledModulesEntry in this.enabledModules.Keys.ToList())
                 {
-                    var foundedActiveModule = this.GetModule(initialDisabledModuleType);
-                    if (foundedActiveModule != null)
+                    if (!exclusiveInitialEnabledModules.Contains(enabledModulesEntry))
                     {
-                        this.DisableModule(initialDisabledModuleType);
+                        this.DisableModule(enabledModulesEntry);
                     }
                 }
             }

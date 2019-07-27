@@ -564,7 +564,7 @@ namespace RTPuzzle
         public static InteractiveObjectType CreateProjectileAtStart(ProjectileInherentData ProjectileInherentData, InteractiveObjectContainer interactiveObjectContainer)
         {
             return LaunchProjectileModule.InstanciateV2(ProjectileInherentData, null, interactiveObjectContainer.transform, new List<Type>() {
-                typeof(LaunchProjectileModule), typeof(AttractiveObjectTypeModule)
+                typeof(ModelObjectModule)
             });
         }
 
