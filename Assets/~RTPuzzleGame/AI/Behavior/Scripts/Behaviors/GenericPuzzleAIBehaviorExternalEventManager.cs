@@ -16,12 +16,14 @@ namespace RTPuzzle
             {typeof(TargetZoneTriggerStayAIBehaviorEvent).Name, 4 },
             {typeof(TargetZoneTriggerEnterAIBehaviorEvent).Name, 5 },
             {typeof(ProjectileTriggerEnterAIBehaviorEvent).Name, 6 },
-            {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 7 },
-            {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 8 },
-            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 9 },
-            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 10 },
-            {typeof(SightInRangeEnterAIBehaviorEvent).Name, 11 },
-            {typeof(SightInRangeExitAIBehaviorEvent).Name, 12 }
+            {typeof(DisarmingObjectEnterAIbehaviorEvent).Name, 7 },
+            {typeof(DisarmingObjectExitAIbehaviorEvent).Name, 8 },
+            {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 9 },
+            {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 10 },
+            {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 11 },
+            {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 12 },
+            {typeof(SightInRangeEnterAIBehaviorEvent).Name, 13 },
+            {typeof(SightInRangeExitAIBehaviorEvent).Name, 14 }
         };
 
         private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
@@ -52,6 +54,8 @@ namespace RTPuzzle
             EventTypeCheck<PlayerEscapeStartAIBehaviorEvent>(genericAiBehavior, externalEvent, PlayerEscape_Start);
             EventTypeCheck<SightInRangeEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, SightInRange_Enter);
             EventTypeCheck<SightInRangeExitAIBehaviorEvent>(genericAiBehavior, externalEvent, SightInRange_Exit);
+            EventTypeCheck<DisarmingObjectEnterAIbehaviorEvent>(genericAiBehavior, externalEvent, DisarmingObject_Enter);
+            EventTypeCheck<DisarmingObjectExitAIbehaviorEvent>(genericAiBehavior, externalEvent, DisarmingObject_Exit);
         }
 
         private void EventTypeCheck<T>(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent ev, Action<GenericPuzzleAIBehavior, T> processEventAction) where T : PuzzleAIBehaviorExternalEvent
@@ -258,6 +262,34 @@ namespace RTPuzzle
             }
         }
 
+        private void DisarmingObject_Enter(GenericPuzzleAIBehavior genericAiBehavior, DisarmingObjectEnterAIbehaviorEvent disarmingObjectEnterAIbehaviorEvent)
+        {
+            if (genericAiBehavior.IsDisarmingObjectEnabled())
+            {
+                if (!genericAiBehavior.IsDisarmingObject() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIDisarmObjectManager))
+                {
+                    genericAiBehavior.AIDisarmObjectManager.OnDisarmingObjectStart(disarmingObjectEnterAIbehaviorEvent.DisarmObjectModule);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.AIDisarmObjectManager);
+                }
+
+            }
+        }
+
+        private void DisarmingObject_Exit(GenericPuzzleAIBehavior genericAiBehavior, DisarmingObjectExitAIbehaviorEvent disarmingObjectExitAIbehaviorEvent)
+        {
+            if (genericAiBehavior.IsDisarmingObjectEnabled())
+            {
+                if (genericAiBehavior.IsDisarmingObject())
+                {
+                    genericAiBehavior.AIDisarmObjectManager.OnDisarmingObjectExit(disarmingObjectExitAIbehaviorEvent.DisarmObjectModule);
+                    if (!genericAiBehavior.IsDisarmingObject())
+                    {
+                        genericAiBehavior.SetManagerState(null);
+                    }
+                }
+            }
+        }
+
     }
 
     public class ProjectileTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
@@ -443,6 +475,26 @@ namespace RTPuzzle
         }
 
         public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
+    }
+
+    public class DisarmingObjectEnterAIbehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        public DisarmObjectModule DisarmObjectModule;
+
+        public DisarmingObjectEnterAIbehaviorEvent(DisarmObjectModule disarmObjectModule)
+        {
+            DisarmObjectModule = disarmObjectModule;
+        }
+    }
+
+    public class DisarmingObjectExitAIbehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        public DisarmObjectModule DisarmObjectModule;
+
+        public DisarmingObjectExitAIbehaviorEvent(DisarmObjectModule disarmObjectModule)
+        {
+            DisarmObjectModule = disarmObjectModule;
+        }
     }
 
 }

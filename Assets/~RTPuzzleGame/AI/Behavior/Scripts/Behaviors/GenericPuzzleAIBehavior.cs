@@ -18,6 +18,7 @@ namespace RTPuzzle
         private AbstractAIAttractiveObjectManager aIAttractiveObjectManager;
         private AbstractPlayerEscapeManager playerEscapeManager;
         private AIMoveTowardPlayerManager aIMoveTowardPlayerManager;
+        private AbstractAIDisarmObjectManager aIDisarmObjectManager;
 
         #region Data Retrieval
         public AbstractAIPatrolComponentManager AIPatrolComponentManager { get => aIPatrolComponentManager; }
@@ -28,6 +29,7 @@ namespace RTPuzzle
         public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; }
         public AbstractPlayerEscapeManager PlayerEscapeManager { get => playerEscapeManager; }
         public AIMoveTowardPlayerManager AIPlayerMoveTowardPlayerManager { get => aIMoveTowardPlayerManager; }
+        public AbstractAIDisarmObjectManager AIDisarmObjectManager { get => aIDisarmObjectManager; }
         #endregion
 
         public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
@@ -86,6 +88,11 @@ namespace RTPuzzle
                 AIMoveTowardPlayerManager.Init(this.aiSightVision);
                 this.aIMoveTowardPlayerManager = AIMoveTowardPlayerManager;
             });
+            this.GetComponentInChildren<AIDisarmObjectManager>().IfNotNull(AIDisarmObjectManager =>
+            {
+                AIDisarmObjectManager.Init();
+                this.aIDisarmObjectManager = AIDisarmObjectManager;
+            });
 
             var dic = new Dictionary<int, InterfaceAIManager>()
             {
@@ -95,8 +102,9 @@ namespace RTPuzzle
                  { 4, this.playerEscapeManager },
                  { 5, this.aIProjectileEscapeManager },
                  { 6, this.aIMoveTowardPlayerManager},
-                 { 7, this.aIAttractiveObjectManager },
-                 { 8, this.aIPatrolComponentManager }
+                 { 7, this.aIDisarmObjectManager },
+                 { 8, this.aIAttractiveObjectManager },
+                 { 9, this.aIPatrolComponentManager }
             };
             this.aIBehaviorManagerContainer = new AIBehaviorManagerContainer(new SortedList<int, InterfaceAIManager>(
                 dic.Select(s => s).Where(s => s.Value != null).ToDictionary(s => s.Key, s => s.Value)
@@ -219,6 +227,7 @@ namespace RTPuzzle
         public bool IsEscapeFromTargetZoneEnabled() { return this.aITargetZoneManager != null; }
         public bool IsPlayerEscapeEnabled() { return this.playerEscapeManager != null; }
         public bool IsMovignTowardPlayerEnabled() { return this.aIMoveTowardPlayerManager != null; }
+        public bool IsDisarmingObjectEnabled() { return this.aIDisarmObjectManager != null; }
         #endregion
 
         #region State Retrieval
@@ -230,6 +239,7 @@ namespace RTPuzzle
         public bool IsInfluencedByAttractiveObject() { if (this.IsAttractiveObjectsEnabled()) { return this.aIAttractiveObjectManager.IsManagerEnabled(); } else { return false; } }
         public bool IsEscapingFromPlayer() { if (this.IsPlayerEscapeEnabled()) { return this.playerEscapeManager.IsManagerEnabled(); } else { return false; } }
         public bool IsMovingTowardPlayer() { if (this.IsMovignTowardPlayerEnabled()) { return this.aIMoveTowardPlayerManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsDisarmingObject() { if (this.IsDisarmingObjectEnabled()) { return this.aIDisarmObjectManager.IsManagerEnabled(); } else { return false; } }
         #endregion
 
         public void DebugGUITick()

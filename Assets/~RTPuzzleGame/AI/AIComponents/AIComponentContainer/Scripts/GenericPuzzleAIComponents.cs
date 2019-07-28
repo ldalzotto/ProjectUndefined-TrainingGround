@@ -36,5 +36,7 @@ namespace RTPuzzle
         public AIPlayerEscapeComponent AIPlayerEscapeComponent;
         
         public AIMoveTowardPlayerComponent AIMoveTowardPlayerComponent;
+        
+        public AIDisarmObjectComponent AIDisarmObjectComponent;
     }
 }

@@ -270,6 +270,15 @@ namespace RTPuzzle
             // empty tick to immediately choose the next position
             this.ForceTickAI();
         }
+
+        public void OnDisarmObjectTriggerEnter(DisarmObjectModule disarmObjectModule)
+        {
+            this.puzzleAIBehavior.ReceiveEvent(new DisarmingObjectEnterAIbehaviorEvent(disarmObjectModule));
+        }
+        public void OnDisarmObjectTriggerExit(DisarmObjectModule disarmObjectModule)
+        {
+            this.puzzleAIBehavior.ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(disarmObjectModule));
+        }
         #endregion
 
         #region Internal Events

@@ -76,6 +76,8 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\InterfaceAIManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIDisarmObject\AIDisarmObjectComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AIDisarmObject\AIDisarmObjectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectLooseManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\AttractiveObject\AIAttractiveObjectPersistantManager.cs" />

@@ -31,6 +31,7 @@ namespace Editor_GameDesigner
 {typeof(AIProjectileWithCollisionEscapeManager),"Reduce FOV when a projectile is near."},
 {typeof(AITargetZoneEscapeManager),"Detect weather the AI is in the selected target zone or not."},
 {typeof(AIManagerModuleWizardConstants),""},
+{typeof(AIDisarmObjectManager),""},
 };
         
         public static System.Collections.Generic.Dictionary<System.Type, string> AIManagerAssociatedComponent = new Dictionary<Type, string>(){
@@ -46,6 +47,7 @@ namespace Editor_GameDesigner
 {typeof(AIProjectileWithCollisionEscapeManager),"AIProjectileEscapeWithCollisionComponent"},
 {typeof(AITargetZoneEscapeManager),"AITargetZoneComponent"},
 {typeof(AIManagerModuleWizardConstants),"AIModuleTestComponent"},
+{typeof(AIDisarmObjectManager),"AIDisarmObjectComponent"},
 };
     }
 }

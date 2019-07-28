@@ -52,5 +52,8 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public AIMoveTowardPlayerManager AIMoveTowardPlayerManager;
+        
+        [ReadOnly()]
+        public AIDisarmObjectManager AIDisarmObjectManager;
     }
 }
