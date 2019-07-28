@@ -70,6 +70,7 @@
     <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PrefabContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\AbstractAIComponents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\GenericPuzzleAIComponents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Managers\EscapeDestinationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIComponent.cs" />

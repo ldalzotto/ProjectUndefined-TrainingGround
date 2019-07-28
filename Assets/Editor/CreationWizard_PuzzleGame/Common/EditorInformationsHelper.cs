@@ -35,17 +35,27 @@ namespace Editor_MainGameCreationWizard
             #endregion
 
             #region Puzzle AI managers prefabs  
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectLooseManager, "AIAttractiveObjects_Loose");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIAttractiveObjectPersistantManager, "AIAttractiveObjects_Persistant");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIEscapeWithoutTriggerManager, "AIEscapeWithoutTrigger");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIFearStunManager, "AIFear");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIRandomPatrolComponentMananger, "AIPatrol_Random");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIScriptedPatrolComponentManager, "AIPatrol_Scripted");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIPlayerEscapeManager, "AIPlayerEscape");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIProjectileWithCollisionEscapeManager, "AIProjectileEscape");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AITargetZoneEscapeManager, "AITargetZoneEscape");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AISightVision, "_BaseAISightVisionPrefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIMoveTowardPlayerManager, "AIMoveTowardPlayer");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIprefab");
+            foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleAICommonPrefabs.GetType().GetFields())
+            {
+
+                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleAICommonPrefabs);
+                if (configurationObject == null)
+                {
+
+                    foreach (var foundAsset in AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name))
+                    {
+                        if (foundAsset.GetType() == typeof(GameObject))
+                        {
+                            var retrievedComp = ((GameObject)foundAsset).GetComponent(configurationFieldInfo.FieldType);
+                            if (typeof(AbstractAIManager).IsAssignableFrom(retrievedComp.GetType()))
+                            {
+                                configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleAICommonPrefabs, retrievedComp);
+                            }
+                        }
+                    }
+                }
+            }
             #endregion
 
             #region Adventure Common Prefabs
@@ -85,6 +95,7 @@ namespace Editor_MainGameCreationWizard
                     configurationFieldInfo.SetValue(CommonGameConfigurations.CoreGameConfigurations, configurationObject);
                 }
             }
+
         }
 
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
@@ -207,37 +218,6 @@ namespace Editor_MainGameCreationWizard
         public LaunchProjectileModule BaseLaunchProjectileModule;
         [ReadOnly]
         public DisarmObjectModule BaseDisarmObjectModule;
-    }
-
-    [System.Serializable]
-    public class PuzzleAICommonPrefabs
-    {
-        [ReadOnly]
-        public NPCAIManager AIBasePrefab;
-
-        [ReadOnly]
-        public AIAttractiveObjectLooseManager AIAttractiveObjectLooseManager;
-        [ReadOnly]
-        public AIAttractiveObjectPersistantManager AIAttractiveObjectPersistantManager;
-        [ReadOnly]
-        public AIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager;
-        [ReadOnly]
-        public AIFearStunManager AIFearStunManager;
-        [ReadOnly]
-        public AIRandomPatrolComponentMananger AIRandomPatrolComponentMananger;
-        [ReadOnly]
-        public AIScriptedPatrolComponentManager AIScriptedPatrolComponentManager;
-        [ReadOnly]
-        public AIPlayerEscapeManager AIPlayerEscapeManager;
-        [ReadOnly]
-        public AIProjectileWithCollisionEscapeManager AIProjectileWithCollisionEscapeManager;
-        [ReadOnly]
-        public AITargetZoneEscapeManager AITargetZoneEscapeManager;
-        [ReadOnly]
-        public AISightVision AISightVision;
-        [ReadOnly]
-        public AIMoveTowardPlayerManager AIMoveTowardPlayerManager;
-
     }
 
     [System.Serializable]

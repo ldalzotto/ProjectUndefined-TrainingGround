@@ -29,7 +29,7 @@ namespace Editor_AIBehaviorCreationWizard
             this.InitProperties();
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(this.EditorInformationsData)), true);
         }
-
+        
         public override string ComputeErrorState(AbstractCreationWizardEditorProfile editorProfile)
         {
             this.InitProperties();

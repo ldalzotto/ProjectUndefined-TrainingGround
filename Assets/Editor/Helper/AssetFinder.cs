@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 
@@ -61,6 +62,11 @@ public class AssetFinder
 
         return new List<T>();
 
+    }
+
+    public static List<UnityEngine.Object> SafeAssetFind(string filter)
+    {
+        return SafeAssetFind<UnityEngine.Object>(filter);
     }
 }
 

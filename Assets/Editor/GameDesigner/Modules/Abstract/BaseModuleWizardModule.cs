@@ -148,7 +148,7 @@ namespace Editor_GameDesigner
 
         public void OnEnabled()
         {
-            this.AvailableModules = TypeHelper.GetAllTypeAssignableFrom(typeof(ABSTRACT_MODULE)).ToList();
+            this.AvailableModules = TypeHelper.GetAllTypeAssignableFrom(typeof(ABSTRACT_MODULE)).ToList().Select(m => m).Where(m => !m.IsAbstract).ToList();
         }
 
         public void OnDisabled()

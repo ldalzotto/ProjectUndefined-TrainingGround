@@ -12,35 +12,10 @@ namespace RTPuzzle
     {
     }
 
-    public class AIManagerTypeSafeOperation
+    public static class AIManagerTypeOperation
     {
-        public static void ForAllAIManagerTypes(Type managerType,
-                 Action AIRandomPatrolComponentManangerOperation,
-                 Action AIScriptedPatrolComponentManagerOperation,
-                 Action AIProjectileEscapeWithCollisionManagerOperation,
-                 Action AIEscapeWithoutTriggerManagerOperation,
-                 Action AIFearStunManagerOperation,
-                 Action AIAttractiveObjectPersistantOperation,
-                 Action AIAttractiveObjectLooseOperation,
-                 Action AITargetZoneManagerOperation,
-                 Action AIPlayerEscapeManagerOperation,
-                 Action AISightVisionOperation,
-                 Action AIMoveTowardPlayerOperation)
-        {
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIRandomPatrolComponentMananger), AIRandomPatrolComponentManangerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIScriptedPatrolComponentManager), AIScriptedPatrolComponentManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIProjectileWithCollisionEscapeManager), AIProjectileEscapeWithCollisionManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIEscapeWithoutTriggerManager), AIEscapeWithoutTriggerManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIFearStunManager), AIFearStunManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectPersistantManager), AIAttractiveObjectPersistantOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIAttractiveObjectLooseManager), AIAttractiveObjectLooseOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AITargetZoneEscapeManager), AITargetZoneManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIPlayerEscapeManager), AIPlayerEscapeManagerOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AISightVision), AISightVisionOperation);
-            InvokeIfNotNullAndTypeCorresponds(managerType, typeof(AIMoveTowardPlayerManager), AIMoveTowardPlayerOperation);
-        }
-
-        private static void InvokeIfNotNullAndTypeCorresponds(Type managerType, Type comparedType, Action action)
+       
+        public static void InvokeIfNotNullAndTypeCorresponds(Type managerType, Type comparedType, Action action)
         {
             if (managerType == comparedType)
             {
