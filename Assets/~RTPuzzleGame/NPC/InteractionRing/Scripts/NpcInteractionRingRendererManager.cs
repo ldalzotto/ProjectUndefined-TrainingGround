@@ -46,7 +46,7 @@ namespace RTPuzzle
             this.interactionRingBuffer = new CommandBuffer();
             this.interactionRingBuffer.name = "Interaction Ring Render";
 
-            this.mainCamera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.interactionRingBuffer);
+            this.mainCamera.AddCommandBuffer(CameraEvent.AfterEverything, this.interactionRingBuffer);
         }
 
         private CommandBuffer interactionRingBuffer;
