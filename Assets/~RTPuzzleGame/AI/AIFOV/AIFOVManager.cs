@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -58,19 +59,19 @@ namespace RTPuzzle
             return navMeshHits;
         }
 
-        public List<FOVSlice> IntersectFOV_FromEscapeDirection(Vector3 from, Vector3 to, float escapeSemiAngle)
+        public List<StartEndSlice> IntersectFOV_FromEscapeDirection(Vector3 from, Vector3 to, float escapeSemiAngle)
         {
             var localEscapeDirection = (to - from).normalized;
             var worldEscapeDirectionAngle = FOVLocalToWorldTransformations.AngleFromDirectionInFOVSpace(localEscapeDirection);
             return this.IntersectFOV(worldEscapeDirectionAngle - escapeSemiAngle, worldEscapeDirectionAngle + escapeSemiAngle);
         }
 
-        public List<FOVSlice> IntersectFOV(float beginAngle, float endAngle)
+        public List<StartEndSlice> IntersectFOV(float beginAngle, float endAngle)
         {
             Debug.Log("Intersect FOV. Intersection angle : " + beginAngle + " , " + endAngle);
             var inputSlices = CutInputAnglesToSlice(beginAngle, endAngle);
 
-            var newSlices = new List<FOVSlice>();
+            var newSlices = new List<StartEndSlice>();
             foreach (var fovSlice in aiFov.FovSlices)
             {
                 foreach (var inputSlice in inputSlices)
@@ -88,7 +89,7 @@ namespace RTPuzzle
             return newSlices;
         }
 
-        public static FOVSlice IntersectSlice(FOVSlice sourceSlice, FOVSlice newSlice)
+        public static StartEndSlice IntersectSlice(StartEndSlice sourceSlice, StartEndSlice newSlice)
         {
             if (sourceSlice.Up())
             {
@@ -106,11 +107,11 @@ namespace RTPuzzle
                     {
                         if (newSlice.Up())
                         {
-                            return new FOVSlice(newSlice.BeginAngleIncluded, sourceSlice.EndAngleExcluded);
+                            return new StartEndSlice(newSlice.BeginAngleIncluded, sourceSlice.EndAngleExcluded);
                         }
                         else
                         {
-                            return new FOVSlice(sourceSlice.EndAngleExcluded, newSlice.BeginAngleIncluded);
+                            return new StartEndSlice(sourceSlice.EndAngleExcluded, newSlice.BeginAngleIncluded);
                         }
 
                     }
@@ -119,11 +120,11 @@ namespace RTPuzzle
                 {
                     if (newSlice.Up())
                     {
-                        return new FOVSlice(sourceSlice.BeginAngleIncluded, newSlice.EndAngleExcluded);
+                        return new StartEndSlice(sourceSlice.BeginAngleIncluded, newSlice.EndAngleExcluded);
                     }
                     else
                     {
-                        return new FOVSlice(newSlice.EndAngleExcluded, sourceSlice.BeginAngleIncluded);
+                        return new StartEndSlice(newSlice.EndAngleExcluded, sourceSlice.BeginAngleIncluded);
                     }
                 }
                 else
@@ -147,11 +148,11 @@ namespace RTPuzzle
                     {
                         if (newSlice.Up())
                         {
-                            return new FOVSlice(newSlice.BeginAngleIncluded, sourceSlice.BeginAngleIncluded);
+                            return new StartEndSlice(newSlice.BeginAngleIncluded, sourceSlice.BeginAngleIncluded);
                         }
                         else
                         {
-                            return new FOVSlice(sourceSlice.BeginAngleIncluded, newSlice.BeginAngleIncluded);
+                            return new StartEndSlice(sourceSlice.BeginAngleIncluded, newSlice.BeginAngleIncluded);
                         }
 
                     }
@@ -160,11 +161,11 @@ namespace RTPuzzle
                 {
                     if (newSlice.Up())
                     {
-                        return new FOVSlice(sourceSlice.EndAngleExcluded, newSlice.EndAngleExcluded);
+                        return new StartEndSlice(sourceSlice.EndAngleExcluded, newSlice.EndAngleExcluded);
                     }
                     else
                     {
-                        return new FOVSlice(newSlice.EndAngleExcluded, sourceSlice.EndAngleExcluded);
+                        return new StartEndSlice(newSlice.EndAngleExcluded, sourceSlice.EndAngleExcluded);
                     }
                 }
                 else
@@ -177,10 +178,10 @@ namespace RTPuzzle
         public static float[] CalculateAnglesForRayCast(int sampleNB, FOV aiFov, bool withRandomness)
         {
             //(0) converting down slices
-            List<FOVSlice> rawFOV = ConvertDownSlices(aiFov);
+            List<StartEndSlice> rawFOV = ConvertDownSlices(aiFov);
 
             //(1) mapping raw data
-            var mappedFOVSlices = new List<FOVSlice>();
+            var mappedFOVSlices = new List<StartEndSlice>();
             for (var i = 0; i < rawFOV.Count; i++)
             {
                 var currentFovSlice = rawFOV[i];
@@ -190,7 +191,7 @@ namespace RTPuzzle
                     deltaBetweenSlices = mappedFOVSlices[i - 1].EndAngleExcluded;
                 }
                 var deltaForCurrentSlice = currentFovSlice.EndAngleExcluded - currentFovSlice.BeginAngleIncluded;
-                mappedFOVSlices.Add(new FOVSlice(deltaBetweenSlices, deltaForCurrentSlice + deltaBetweenSlices));
+                mappedFOVSlices.Add(new StartEndSlice(deltaBetweenSlices, deltaForCurrentSlice + deltaBetweenSlices));
             }
 
             //(2) Total angle range
@@ -237,7 +238,7 @@ namespace RTPuzzle
         public static float[] GetEndAnglesForRayCast(FOV aiFov)
         {
             //(0) Merge adjacent FOV range
-            List<FOVSlice> mergedFOVSlices = MergeAdjacentFOVRange(aiFov.FovSlices);
+            List<StartEndSlice> mergedFOVSlices = MergeAdjacentFOVRange(aiFov.FovSlices);
 
             //(1) Set end angles
             var anglesRayCast = new float[mergedFOVSlices.Count * 2];
@@ -250,9 +251,9 @@ namespace RTPuzzle
             return anglesRayCast;
         }
 
-        private static List<FOVSlice> MergeAdjacentFOVRange(List<FOVSlice> rawFOV)
+        private static List<StartEndSlice> MergeAdjacentFOVRange(List<StartEndSlice> rawFOV)
         {
-            var mergedFOVSlices = new List<FOVSlice>();
+            var mergedFOVSlices = new List<StartEndSlice>();
             if (rawFOV.Count > 1)
             {
                 for (var i = 0; i < rawFOV.Count; i++)
@@ -261,7 +262,7 @@ namespace RTPuzzle
                     {
                         if (rawFOV[i - 1].EndAngleExcluded == rawFOV[i].BeginAngleIncluded)
                         {
-                            mergedFOVSlices.Add(new FOVSlice(rawFOV[i - 1].BeginAngleIncluded, rawFOV[i].EndAngleExcluded));
+                            mergedFOVSlices.Add(new StartEndSlice(rawFOV[i - 1].BeginAngleIncluded, rawFOV[i].EndAngleExcluded));
                         }
                         else
                         {
@@ -283,14 +284,14 @@ namespace RTPuzzle
             return mergedFOVSlices;
         }
 
-        private static List<FOVSlice> ConvertDownSlices(FOV aiFov)
+        private static List<StartEndSlice> ConvertDownSlices(FOV aiFov)
         {
-            var rawFOV = new List<FOVSlice>();
+            var rawFOV = new List<StartEndSlice>();
             foreach (var fovSlice in aiFov.FovSlices)
             {
                 if (fovSlice.Down())
                 {
-                    rawFOV.Add(new FOVSlice(fovSlice.EndAngleExcluded, fovSlice.BeginAngleIncluded));
+                    rawFOV.Add(new StartEndSlice(fovSlice.EndAngleExcluded, fovSlice.BeginAngleIncluded));
                 }
                 else
                 {
@@ -301,30 +302,30 @@ namespace RTPuzzle
             return rawFOV;
         }
 
-        private static List<FOVSlice> CutInputAnglesToSlice(float beginAngle, float endAngle)
+        private static List<StartEndSlice> CutInputAnglesToSlice(float beginAngle, float endAngle)
         {
-            List<FOVSlice> cuttendSlices = new List<FOVSlice>();
+            List<StartEndSlice> cuttendSlices = new List<StartEndSlice>();
             if (beginAngle < 0)
             {
                 if (endAngle > 0)
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, 360f));
-                    cuttendSlices.Add(new FOVSlice(0f, endAngle));
+                    cuttendSlices.Add(new StartEndSlice(beginAngle + 360f, 360f));
+                    cuttendSlices.Add(new StartEndSlice(0f, endAngle));
                 }
                 else
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle + 360f, endAngle + 360f));
+                    cuttendSlices.Add(new StartEndSlice(beginAngle + 360f, endAngle + 360f));
                 }
             }
             else if (beginAngle == 0f)
             {
                 if (endAngle < 0)
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle + 360f));
+                    cuttendSlices.Add(new StartEndSlice(beginAngle, endAngle + 360f));
                 }
                 else
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
+                    cuttendSlices.Add(new StartEndSlice(beginAngle, endAngle));
                 }
 
             }
@@ -332,12 +333,12 @@ namespace RTPuzzle
             {
                 if (endAngle < 0f)
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, 0f));
-                    cuttendSlices.Add(new FOVSlice(360f, endAngle + 360f));
+                    cuttendSlices.Add(new StartEndSlice(beginAngle, 0f));
+                    cuttendSlices.Add(new StartEndSlice(360f, endAngle + 360f));
                 }
                 else
                 {
-                    cuttendSlices.Add(new FOVSlice(beginAngle, endAngle));
+                    cuttendSlices.Add(new StartEndSlice(beginAngle, endAngle));
                 }
             }
             return cuttendSlices;
@@ -404,20 +405,20 @@ namespace RTPuzzle
 
     public class FOV
     {
-        private List<FOVSlice> fovSlices;
+        private List<StartEndSlice> fovSlices;
         private Action<FOV> onFOVChange;
 
         public FOV(Action<FOV> onFovChange)
         {
             this.onFOVChange = onFovChange;
-            fovSlices = new List<FOVSlice>() {
-              new FOVSlice(0f, 360f)
+            fovSlices = new List<StartEndSlice>() {
+              new StartEndSlice(0f, 360f)
             };
         }
 
-        public List<FOVSlice> FovSlices { get => fovSlices; }
+        public List<StartEndSlice> FovSlices { get => fovSlices; }
 
-        public void ReplaceFovSlices(List<FOVSlice> fovSclices)
+        public void ReplaceFovSlices(List<StartEndSlice> fovSclices)
         {
             this.fovSlices = fovSclices;
             if (this.onFOVChange != null)
@@ -428,7 +429,7 @@ namespace RTPuzzle
 
         public float GetSumOfAvailableAngleDeg()
         {
-            return fovSlices.ConvertAll((FOVSlice slice) => slice.AngleDiffNotSigned()).Sum();
+            return fovSlices.ConvertAll((StartEndSlice slice) => slice.AngleDiffNotSigned()).Sum();
         }
 
         public override string ToString()
@@ -439,84 +440,6 @@ namespace RTPuzzle
                 str += fovSlice.ToString();
             }
             return str;
-        }
-    }
-
-    public class FOVSlice
-    {
-        private float beginAngleIncluded;
-        private float endAngleExcluded;
-
-        public FOVSlice(float beginAngleIncluded, float endAngleExcluded)
-        {
-            this.beginAngleIncluded = beginAngleIncluded;
-            this.endAngleExcluded = endAngleExcluded;
-        }
-
-        public float BeginAngleIncluded { get => beginAngleIncluded; }
-        public float EndAngleExcluded { get => endAngleExcluded; }
-
-        public bool Up()
-        {
-            return beginAngleIncluded <= endAngleExcluded;
-        }
-
-        public bool Down()
-        {
-            return beginAngleIncluded >= endAngleExcluded;
-        }
-
-        public bool Contains(float a)
-        {
-            if (Up())
-            {
-                if (endAngleExcluded == 360f)
-                {
-                    return a >= beginAngleIncluded && a <= endAngleExcluded;
-                }
-                else
-                {
-                    return a >= beginAngleIncluded && a < endAngleExcluded;
-                }
-            }
-            else
-            {
-                if (endAngleExcluded == 360f)
-                {
-                    return a <= beginAngleIncluded && a >= endAngleExcluded;
-                }
-                else
-                {
-                    return a < beginAngleIncluded && a >= endAngleExcluded;
-                }
-            }
-
-        }
-
-        public float AngleDiffNotSigned()
-        {
-            return Mathf.Abs(endAngleExcluded - beginAngleIncluded);
-        }
-
-        public override string ToString()
-        {
-            return "b : " + beginAngleIncluded + " e : " + endAngleExcluded;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var slice = obj as FOVSlice;
-            return slice != null &&
-                   beginAngleIncluded == slice.beginAngleIncluded &&
-                   endAngleExcluded == slice.endAngleExcluded;
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = -8683044;
-            hashCode = hashCode * -1521134295 + beginAngleIncluded.GetHashCode();
-            hashCode = hashCode * -1521134295 + endAngleExcluded.GetHashCode();
-            return hashCode;
         }
     }
 

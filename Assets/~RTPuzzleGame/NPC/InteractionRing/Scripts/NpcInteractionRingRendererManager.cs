@@ -46,7 +46,7 @@ namespace RTPuzzle
             this.interactionRingBuffer = new CommandBuffer();
             this.interactionRingBuffer.name = "Interaction Ring Render";
 
-            this.mainCamera.AddCommandBuffer(CameraEvent.AfterEverything, this.interactionRingBuffer);
+            this.mainCamera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.interactionRingBuffer);
         }
 
         private CommandBuffer interactionRingBuffer;
@@ -56,9 +56,9 @@ namespace RTPuzzle
             this.interactionRingBuffer.Clear();
             if (activeNpcInteractionRings.Count > 0)
             {
+                var materialProperty = new MaterialPropertyBlock();
                 foreach (var interactionRing in activeNpcInteractionRings)
                 {
-                    var materialProperty = new MaterialPropertyBlock();
                     materialProperty.SetTexture("_MainTex", interactionRing.RingTexture);
                     this.interactionRingBuffer.DrawMesh(interactionRing.MeshFilter.mesh, interactionRing.MeshRenderer.localToWorldMatrix, NpcInteractionRingCommandBufferManagerComponent.shaderInteractionRingMaterial, 0, 0, materialProperty);
                 }

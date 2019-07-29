@@ -9,13 +9,18 @@ namespace RTPuzzle
         [CustomEnum()]
         public DisarmObjectID DisarmObjectID;
 
+        #region Module Dependencies
+        private ModelObjectModule ModelObjectModule;
+        #endregion
+
         private DisarmObjectInherentData DisarmObjectInherentConfigurationData;
 
         private List<NPCAIManager> AiThatCanInteract;
         private float elapsedTime;
 
-        public void Init(DisarmObjectInherentData DisarmObjectInherentConfigurationData)
+        public void Init(ModelObjectModule ModelObjectModule, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
         {
+            this.ModelObjectModule = ModelObjectModule;
             this.DisarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
             this.AiThatCanInteract = new List<NPCAIManager>();
 
@@ -34,6 +39,10 @@ namespace RTPuzzle
         public float GetDisarmPercentage01()
         {
             return this.elapsedTime / this.DisarmObjectInherentConfigurationData.DisarmTime;
+        }
+        public Vector3 GetProgressBarDisplayPosition()
+        {
+            return this.transform.position + IRenderBoundRetrievableStatic.GetDisarmProgressBarLocalOffset(this.ModelObjectModule);
         }
         #endregion
 

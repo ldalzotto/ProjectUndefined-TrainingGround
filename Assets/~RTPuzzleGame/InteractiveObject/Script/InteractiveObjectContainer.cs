@@ -9,6 +9,7 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
+        private DisarmObjectProgressBarRendererManager DisarmObjectProgressBarRendererManager;
         #endregion
 
         #region Generic Container
@@ -29,11 +30,13 @@ namespace RTPuzzle
         }
         public List<ObjectRepelTypeModule> ObjectsRepelable { get => objectsRepelable; }
         public Dictionary<TargetZoneID, TargetZoneObjectModule> TargetZones { get => targetZones; }
+        public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
         #endregion
 
         public void Init()
         {
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.DisarmObjectProgressBarRendererManager = GameObject.FindObjectOfType<DisarmObjectProgressBarRendererManager>();
 
             this.interactiveObjects = new List<InteractiveObjectType>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectTypeModule>();
@@ -155,7 +158,11 @@ namespace RTPuzzle
 
             interactiveObject.GetModule<ObjectRepelTypeModule>().IfNotNull((ObjectRepelTypeModule ObjectRepelTypeModule) => this.objectsRepelable.Remove(ObjectRepelTypeModule));
             interactiveObject.GetModule<TargetZoneObjectModule>().IfNotNull((TargetZoneObjectModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
-            interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => this.disarmObjectModules.Remove(DisarmObjectModule));
+            interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) =>
+            {
+                this.DisarmObjectProgressBarRendererManager.OnDisarmObjectDestroyed(DisarmObjectModule);
+                this.disarmObjectModules.Remove(DisarmObjectModule);
+            });
 
             #region LevelCompletionTriggerModule
             interactiveObject.GetModule<LevelCompletionTriggerModule>().IfNotNull((LevelCompletionTriggerModule LevelCompletionTriggerModule) =>

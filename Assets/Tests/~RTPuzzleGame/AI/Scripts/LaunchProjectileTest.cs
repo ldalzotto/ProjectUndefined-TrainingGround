@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using RTPuzzle;
 using System.Collections;
 using UnityEngine;
@@ -24,8 +25,8 @@ namespace Tests
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
             Assert.AreEqual(2, fov.FovSlices.Count);
-            Assert.AreEqual(new FOVSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
-            Assert.AreEqual(new FOVSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
+            Assert.AreEqual(new StartEndSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
+            Assert.AreEqual(new StartEndSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
         }
 
         [UnityTest] //this test is when projectile is not perfectly aligned with AI
@@ -42,8 +43,8 @@ namespace Tests
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
             Assert.AreEqual(2, fov.FovSlices.Count);
-            Assert.AreEqual(new FOVSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
-            Assert.AreEqual(new FOVSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
+            Assert.AreEqual(new StartEndSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
+            Assert.AreEqual(new StartEndSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
         }
 
         [UnityTest] //this test is when projectile is not perfectly aligned with AI
@@ -60,8 +61,8 @@ namespace Tests
             yield return new WaitForEndOfFrame();
             var fov = (mouseTestAIManager.GetAIBehavior() as GenericPuzzleAIBehavior).GetFOV();
             Assert.AreEqual(2, fov.FovSlices.Count);
-            Assert.AreEqual(new FOVSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
-            Assert.AreEqual(new FOVSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
+            Assert.AreEqual(new StartEndSlice(360 - projectileSemiAngle, 360), fov.FovSlices[0], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
+            Assert.AreEqual(new StartEndSlice(0, projectileSemiAngle), fov.FovSlices[1], "The FOV reduction should exctly be equal to (projectileSemiAngle * 2) on a plane.");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -54,19 +55,7 @@ namespace RTPuzzle
         #region External Events
         public void OnFOVChanged(FOV newFOV)
         {
-
-            var colors = npcInteractionRingType.RingTexture.GetPixels();
-            for (var i = 0; i < colors.Length; i++)
-            {
-                colors[i] = npcInteractionRingType.UnavailableColor;
-            }
-
-            foreach (var fovSlice in newFOV.FovSlices)
-            {
-                ComputeColorsPixel(fovSlice.BeginAngleIncluded, fovSlice.EndAngleExcluded, ref colors);
-            }
-            npcInteractionRingType.RingTexture.SetPixels(colors);
-            npcInteractionRingType.RingTexture.Apply(false);
+            ProceduralTextureHelper.SetTextureSliceColor(npcInteractionRingType.RingTexture, newFOV.FovSlices, npcInteractionRingType.AvailableColor, npcInteractionRingType.UnavailableColor);
 
             //display or hide ring
             if (newFOV.GetSumOfAvailableAngleDeg() < 360f)
@@ -83,17 +72,6 @@ namespace RTPuzzle
         public void Tick(float d)
         {
             npcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
-        }
-
-        private void ComputeColorsPixel(float beginAngle, float endAngle, ref Color[] colors)
-        {
-            var beginAngleInt = Mathf.RoundToInt(beginAngle);
-            var endAngleInt = Mathf.RoundToInt(endAngle);
-
-            for (var i = beginAngleInt; i < endAngleInt; i++)
-            {
-                colors[i] = npcInteractionRingType.AvailableColor;
-            }
         }
 
         private void ComputePositionOffset(NPCAIManager npcAiManagerRef)

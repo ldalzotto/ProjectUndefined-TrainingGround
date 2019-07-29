@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using RTPuzzle;
 using System.Collections;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Tests
             // (3) - The AI is in a patrolling state
             Assert.IsTrue(mouseAIBheavior.IsPatrolling());
             // (4) - The AI FOV is not modified for patrolling
-            Assert.AreEqual(new FOVSlice(0, 360), mouseAIBheavior.GetFOV().FovSlices[0]);
+            Assert.AreEqual(new StartEndSlice(0, 360), mouseAIBheavior.GetFOV().FovSlices[0]);
             var beforeReachDestination = mouseTestAIManager.GetAgent().destination;
             // (5) - The AI has reached the position
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
@@ -929,8 +930,8 @@ namespace Tests
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, aiPosition);
             yield return null;
             var aiFov = mouseAIBheavior.GetFOV();
-            Assert.AreEqual(new FOVSlice(360f - targetEscapeSemiAngle, 360f), aiFov.FovSlices[0]);
-            Assert.AreEqual(new FOVSlice(0f, targetEscapeSemiAngle), aiFov.FovSlices[1]);
+            Assert.AreEqual(new StartEndSlice(360f - targetEscapeSemiAngle, 360f), aiFov.FovSlices[0]);
+            Assert.AreEqual(new StartEndSlice(0f, targetEscapeSemiAngle), aiFov.FovSlices[1]);
         }
 
         [UnityTest]
@@ -949,11 +950,11 @@ namespace Tests
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, PuzzleSceneTestHelper.FindTestPosition(TestPositionID.FAR_AWAY_POSITION_1).position);
             yield return null;
             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone(), "AI should still escape as there are distance to cross.");
-            Assert.AreNotEqual(new FOVSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0], "AI fov must not be resetted after destination reached and still distance to cross.");
+            Assert.AreNotEqual(new StartEndSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0], "AI fov must not be resetted after destination reached and still distance to cross.");
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
             yield return null;
             Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone(), "AI should stop escape when destination is reached.");
-            Assert.AreEqual(new FOVSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0]);
+            Assert.AreEqual(new StartEndSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0]);
         }
 
         [UnityTest]

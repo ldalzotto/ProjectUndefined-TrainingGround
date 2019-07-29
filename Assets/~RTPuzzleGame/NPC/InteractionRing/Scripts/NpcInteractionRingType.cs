@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -31,7 +32,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.ringTexture = new Texture2D(360, 1, TextureFormat.RGB24, false);
+            this.ringTexture = ProceduralTextureHelper.CreateSliceTexture(360);
             this.meshRenderer = GetComponentInChildren<MeshRenderer>();
             this.meshFilter = GetComponentInChildren<MeshFilter>();
         }

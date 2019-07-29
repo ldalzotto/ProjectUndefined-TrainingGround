@@ -22,6 +22,7 @@ namespace RTPuzzle
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
+        private DisarmObjectProgressBarRendererManager DisarmObjectProgressBarRendererManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
@@ -67,6 +68,7 @@ namespace RTPuzzle
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
+            DisarmObjectProgressBarRendererManager = GameObject.FindObjectOfType<DisarmObjectProgressBarRendererManager>();
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
             DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
             ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
@@ -106,7 +108,9 @@ namespace RTPuzzle
             TimeFlowPlayPauseManager.Init();
             GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
             GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
+            //TODO here
             NpcInteractionRingRendererManager.Init();
+            DisarmObjectProgressBarRendererManager.Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             ObjectRepelLineVisualFeedbackManager.Init();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
@@ -158,6 +162,7 @@ namespace RTPuzzle
                 InRangeEffectManager.Tick(d);
                 ObjectRepelLineVisualFeedbackManager.Tick(d);
                 NpcInteractionRingRendererManager.Tick(d);
+                DisarmObjectProgressBarRendererManager.Tick(d);
                 DottedLineRendererManager.Tick();
             }
 

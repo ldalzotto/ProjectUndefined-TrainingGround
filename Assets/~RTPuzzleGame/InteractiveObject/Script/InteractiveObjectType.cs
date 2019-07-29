@@ -13,7 +13,7 @@ namespace RTPuzzle
         private Dictionary<Type, InteractiveObjectModule> enabledModules;
         private Dictionary<Type, InteractiveObjectModule> disabledModules;
         #endregion
-        
+
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
@@ -72,7 +72,7 @@ namespace RTPuzzle
 
             this.InteractiveObjectContainer.OnInteractiveObjectAdded(this);
         }
-        
+
         private void PopulateModules(List<Type> exclusiveInitialEnabledModules)
         {
             this.enabledModules = new Dictionary<Type, InteractiveObjectModule>();
@@ -162,10 +162,10 @@ namespace RTPuzzle
         {
             this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) =>
             {
-                    if (InteractiveObjectInitializationObject.DisarmObjectInherentData == null) { disarmObjectModule.Init(this.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[disarmObjectModule.DisarmObjectID]); }
-                    else { disarmObjectModule.Init(InteractiveObjectInitializationObject.DisarmObjectInherentData); }
+                if (InteractiveObjectInitializationObject.DisarmObjectInherentData == null) { disarmObjectModule.Init(this.GetModule<ModelObjectModule>(), this.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[disarmObjectModule.DisarmObjectID]); }
+                else { disarmObjectModule.Init(this.GetModule<ModelObjectModule>(), InteractiveObjectInitializationObject.DisarmObjectInherentData); }
             });
-            
+
         }
 
         #endregion
@@ -212,8 +212,8 @@ namespace RTPuzzle
             foreach (var disabledModule in this.disabledModules.Keys.ToList())
             {
                 this.EnableModule(disabledModule);
-                if(disabledModule == typeof(ModelObjectModule)) { this.InitializeModelObjectModule(); }
-                else if(disabledModule == typeof(AttractiveObjectTypeModule)) { this.InitializeAttractiveObjectTypeModule(InteractiveObjectInitializationObject); }
+                if (disabledModule == typeof(ModelObjectModule)) { this.InitializeModelObjectModule(); }
+                else if (disabledModule == typeof(AttractiveObjectTypeModule)) { this.InitializeAttractiveObjectTypeModule(InteractiveObjectInitializationObject); }
                 else if (disabledModule == typeof(ObjectRepelTypeModule)) { this.IntitializeObjectRepelTypeModule(); }
                 else if (disabledModule == typeof(LevelCompletionTriggerModule)) { this.InitializeLevelCompletionTriggerModule(); }
                 else if (disabledModule == typeof(TargetZoneObjectModule)) { this.InitializeTargetZoneObjectModule(InteractiveObjectInitializationObject); }

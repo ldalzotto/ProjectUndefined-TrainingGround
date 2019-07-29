@@ -126,6 +126,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\ProceduralTextureHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SerializationHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Math\ShapeDefinitions.cs" />
+    <Compile Include="Assets\~CoreGame\Math\Types\StartEndSlice.cs" />
     <Compile Include="Assets\~CoreGame\Path\BeziersControlPoints.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\AbstractGamePersister.cs" />
     <Compile Include="Assets\~CoreGame\Persistance\Script\AutoSaveIcon.cs" />
