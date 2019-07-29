@@ -11,10 +11,12 @@ namespace RTPuzzle
         public float DisarmInteractionRange = 2.5f;
         public InteractiveObjectType DisarmObjectPrefab;
 
-        public DisarmObjectInherentData(float DisarmTime)
+        public void Init(float DisarmTime, float DisarmInteractionRange, InteractiveObjectType DisarmObjectPrefab)
         {
             this.DisarmTime = DisarmTime;
+            this.DisarmInteractionRange = DisarmInteractionRange;
+            this.DisarmObjectPrefab = DisarmObjectPrefab;
         }
-        
+                
     }
 }

@@ -47,6 +47,11 @@ namespace Tests
             return AttractiveObjectTypeModule.Instanciate(worldPosition, null, attractiveObjectInherentConfigurationData, null);
         }
 
+        public static InteractiveObjectType SpawnAIDisarmObject(DisarmObjectInherentData disarmObjectInherentData, Vector3 worldPosition)
+        {
+            return DisarmObjectModule.Instanciate(worldPosition, disarmObjectInherentData);
+        }
+
         public static void SetAttractiveObjectConfigurationData(AttractiveObjectId attractiveObjectId, float effectRange, float effectiveTime)
         {
             var attractiveObjectConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[attractiveObjectId];
@@ -80,6 +85,14 @@ namespace Tests
             var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[baseProjectileIDForPrefab];
             projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefabV2, isExploding, isPersistingToAttractiveObject);
             return projectileData;
+        }
+
+        public static DisarmObjectInherentData CreateDisarmObjectInherentData(float DisarmTime, float DisarmInteractionRange, DisarmObjectID disarmObjectID)
+        {
+            var disarmObjectData = ScriptableObject.CreateInstance<DisarmObjectInherentData>();
+            var foundDisarmObjectConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().DisarmObjectsConfiguration()[disarmObjectID];
+            disarmObjectData.Init(DisarmTime, DisarmInteractionRange, foundDisarmObjectConfiguration.DisarmObjectPrefab);
+            return disarmObjectData;
         }
 
         public static void SetAIEscapeSemiAngle(AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
@@ -317,6 +330,25 @@ namespace Tests
                     return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, nPCAIManager, OnBeforeSettingPosition, OnSamePositionSetted, null);
                 },
                 OnDistanceReached: OnDestinationReached);
+        }
+        #endregion
+
+        #region AI disarm object
+        public static IEnumerator DisarmObjectYield(DisarmObjectInherentData disarmObjectInherentData, Vector3 worldPosition, Func<InteractiveObjectType, IEnumerator> OnDisarmObjectSpawn, 
+                    Func<InteractiveObjectType, IEnumerator> OnDisarmTimerOver)
+        {
+            var disarmObject = SpawnAIDisarmObject(disarmObjectInherentData, worldPosition);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
+            if (OnDisarmObjectSpawn != null)
+            {
+                yield return OnDisarmObjectSpawn.Invoke(disarmObject);
+            }
+            if (OnDisarmTimerOver != null)
+            {
+                yield return new WaitForSeconds(disarmObjectInherentData.DisarmTime);
+                yield return OnDisarmTimerOver.Invoke(disarmObject);
+            }
         }
         #endregion
 

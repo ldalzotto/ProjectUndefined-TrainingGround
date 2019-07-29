@@ -18,6 +18,14 @@ namespace RTPuzzle
         private List<NPCAIManager> AiThatCanInteract;
         private float elapsedTime;
 
+        public static InteractiveObjectType Instanciate(Vector3 worldPosition, DisarmObjectInherentData DisarmObjectInherentData)
+        {
+            InteractiveObjectType createdDisarmObject = MonoBehaviour.Instantiate(DisarmObjectInherentData.DisarmObjectPrefab);
+            createdDisarmObject.Init(new InteractiveObjectInitializationObject(DisarmObjectInherentData: DisarmObjectInherentData));
+            createdDisarmObject.transform.position = worldPosition;
+            return createdDisarmObject;
+        }
+
         public void Init(ModelObjectModule ModelObjectModule, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
         {
             this.ModelObjectModule = ModelObjectModule;
