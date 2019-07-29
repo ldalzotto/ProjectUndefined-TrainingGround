@@ -126,7 +126,11 @@ namespace RTPuzzle
             var newDestination = puzzleAIBehavior.TickAI(d, timeAttenuationFactor);
             if (newDestination.HasValue)
             {
-                SetDestinationWithCoroutineReached(newDestination.Value);
+                this.SetDestination(newDestination.Value);
+            }
+            else
+            {
+                this.StopAgent();
             }
         }
 
@@ -186,9 +190,14 @@ namespace RTPuzzle
             this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
         }
 
-        private void SetDestinationWithCoroutineReached(Vector3 destination)
+        private void SetDestination(Vector3 destination)
         {
             AIDestinationMoveManager.SetDestination(destination);
+        }
+
+        private void StopAgent()
+        {
+            AIDestinationMoveManager.StopAgent();
         }
 
         public void EnableAgent()

@@ -11,6 +11,8 @@ namespace RTPuzzle
         private bool isMovingTowardsDestination;
         private NavMeshHit[] navMeshHits = new NavMeshHit[8];
 
+        private Vector3? currentDestination;
+
         public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager)
         {
             this.BaseInit(patrollingAgent, AIRandomPatrolComponent, aIFOVManager);
@@ -20,9 +22,9 @@ namespace RTPuzzle
         {
             if (!isMovingTowardsDestination)
             {
-                return SetRandomDestination();
+                this.currentDestination = SetRandomDestination();
             }
-            return null;
+            return this.currentDestination.Value;
         }
 
         private Nullable<Vector3> SetRandomDestination()

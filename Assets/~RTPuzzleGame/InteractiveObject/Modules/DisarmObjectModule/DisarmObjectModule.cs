@@ -23,6 +23,20 @@ namespace RTPuzzle
             this.elapsedTime = 0f;
         }
 
+        #region Logical Conditions
+        public bool IsAskingToBeDestroyed()
+        {
+            return (this.elapsedTime >= this.DisarmObjectInherentConfigurationData.DisarmTime);
+        }
+        #endregion
+
+        #region Data Retrieval
+        public float GetDisarmPercentage01()
+        {
+            return this.elapsedTime / this.DisarmObjectInherentConfigurationData.DisarmTime;
+        }
+        #endregion
+
         public void Tick(float d, float timeAttenuationFactor)
         {
         }
@@ -55,6 +69,7 @@ namespace RTPuzzle
                 npcAIManager.OnDisarmObjectTriggerExit(this);
             }
         }
+
     }
 }
 

@@ -12,7 +12,7 @@ namespace RTPuzzle
 {
     using System;
     using UnityEngine;
-
+    using UnityEngine.AI;
 
     public class AIDisarmObjectManager : AbstractAIDisarmObjectManager
     {
@@ -23,11 +23,15 @@ namespace RTPuzzle
         private DisarmObjectModule disarmingObject;
         #endregion
 
+        private NavMeshAgent agent;
+
         #region External Events
         public override void OnDisarmingObjectStart(DisarmObjectModule disarmingObject)
         {
             this.disarmingObject = disarmingObject;
             this.isDisarmingObject = true;
+            //Make agent to look at object
+            this.agent.transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(this.disarmingObject.transform.position - this.agent.transform.position, this.agent.transform.up));
         }
         public override void OnDisarmingObjectExit(DisarmObjectModule disarmingObject)
         {
@@ -39,8 +43,9 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init()
+        public void Init(NavMeshAgent agent)
         {
+            this.agent = agent;
         }
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
@@ -55,7 +60,7 @@ namespace RTPuzzle
         public override Nullable<Vector3> OnManagerTick(float d, float timeAttenuationFactor)
         {
             this.disarmingObject.IncreaseTimeElapsedBy(d * timeAttenuationFactor);
-            return this.disarmingObject.transform.position;
+            return null; //don't move while disarming
         }
 
         public override void OnDestinationReached()

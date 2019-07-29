@@ -90,7 +90,7 @@ namespace RTPuzzle
             });
             this.GetComponentInChildren<AIDisarmObjectManager>().IfNotNull(AIDisarmObjectManager =>
             {
-                AIDisarmObjectManager.Init();
+                AIDisarmObjectManager.Init(selfAgent);
                 this.aIDisarmObjectManager = AIDisarmObjectManager;
             });
 

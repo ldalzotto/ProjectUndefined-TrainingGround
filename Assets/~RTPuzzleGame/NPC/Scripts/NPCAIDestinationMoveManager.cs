@@ -74,9 +74,19 @@ namespace RTPuzzle
             }
         }
 
+        public void StopAgent()
+        {
+            if (this.objectAgent.hasPath)
+            {
+                this.objectAgent.ResetPath();
+                this.objectAgent.isStopped = true;
+                this.OnDestinationReachedEvent.Invoke();
+            }
+        }
+
         private void ManuallyUpdateAgent()
         {
-           // Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
+            // Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
             NavMeshHit pathHit;
             objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
             if (this.CurrentTimeAttenuated > 0)

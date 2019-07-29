@@ -34,7 +34,6 @@ namespace RTPuzzle
             this.ringTexture = new Texture2D(360, 1, TextureFormat.RGB24, false);
             this.meshRenderer = GetComponentInChildren<MeshRenderer>();
             this.meshFilter = GetComponentInChildren<MeshFilter>();
-       //     this.meshRenderer.material.mainTexture = this.ringTexture;
         }
 
         #region External Events

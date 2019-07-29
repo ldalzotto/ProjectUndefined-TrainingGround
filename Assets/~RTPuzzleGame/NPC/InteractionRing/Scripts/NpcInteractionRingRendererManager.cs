@@ -56,7 +56,6 @@ namespace RTPuzzle
             this.interactionRingBuffer.Clear();
             if (activeNpcInteractionRings.Count > 0)
             {
-                //activeNpcInteractionRings.Sort((NpcInteractionRingType r1, NpcInteractionRingType r2) => Vector3.Distance(mainCamera.transform.position, r1.transform.position) >= Vector3.Distance(mainCamera.transform.position, r2.transform.position) ? 0 : 1);
                 foreach (var interactionRing in activeNpcInteractionRings)
                 {
                     var materialProperty = new MaterialPropertyBlock();

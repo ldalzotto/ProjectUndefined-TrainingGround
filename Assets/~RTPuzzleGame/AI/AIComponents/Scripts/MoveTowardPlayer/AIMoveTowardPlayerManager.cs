@@ -9,6 +9,7 @@ namespace RTPuzzle
         #region State
         protected bool playerInSight;
         protected ColliderWithCollisionType currentTarget;
+        private Vector3? currentDestination;
         #endregion
 
         public void Init(AISightVision AISightVision)
@@ -25,6 +26,7 @@ namespace RTPuzzle
         public virtual void OnStateReset()
         {
             this.playerInSight = false;
+            this.currentDestination = null;
         }
 
         #endregion
@@ -53,14 +55,14 @@ namespace RTPuzzle
         {
             if (this.playerInSight && this.currentTarget != null)
             {
-                return this.currentTarget.collider.transform.position;
+                this.currentDestination = this.currentTarget.collider.transform.position;
             }
-            return null;
+            return this.currentDestination;
         }
 
         public bool IsManagerEnabled()
         {
-            return this.playerInSight;
+            return this.playerInSight || (this.currentDestination != null && this.currentDestination.HasValue);
         }
 
         public void BeforeManagersUpdate(float d, float timeAttenuationFactor)
