@@ -75,7 +75,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
-            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, PuzzleGameConfigurationManager);
+            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, PuzzleGameConfigurationManager, playerTransform);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData, this.projectileObject);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
@@ -367,15 +367,17 @@ namespace RTPuzzle
         private LaunchProjectileEventManager LaunchProjectileEventManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private InteractiveObjectType projectileObjectRef;
+        private Transform playerTransform;
 
         public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileEventManager LaunchProjectileEventManager,
-            InteractiveObjectType projectileObjectRef, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
+            InteractiveObjectType projectileObjectRef, PuzzleGameConfigurationManager PuzzleGameConfigurationManager, Transform playerTransform)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
             this.LaunchProjectileEventManager = LaunchProjectileEventManager;
             this.projectileObjectRef = projectileObjectRef;
             this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
+            this.playerTransform = playerTransform;
         }
 
 
@@ -389,6 +391,7 @@ namespace RTPuzzle
 
         public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, BeziersControlPoints throwProjectilePath)
         {
+            this.projectileObjectRef.transform.rotation = Quaternion.LookRotation(this.playerTransform.forward, this.playerTransform.up);
             ProjectileActionInstanciationHelper.OnProjectileSpawn(ref this.projectileObjectRef, throwProjectilePath, PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId]);
             LaunchProjectileRTPActionRef.OnExit();
         }
