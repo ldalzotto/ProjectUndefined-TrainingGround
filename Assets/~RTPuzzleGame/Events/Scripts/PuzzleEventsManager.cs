@@ -70,6 +70,16 @@ namespace RTPuzzle
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
         }
+
+        public void PZ_EVT_AI_DisarmObject_Start(AiID aiID, DisarmObjectID disarmObjectID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart();
+        }
+
+        public void PZ_EVT_AI_DisarmObject_End(AiID aiID, DisarmObjectID disarmObjectID)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectEnd();
+        }
         #endregion
 
         #region Escape without target zone events

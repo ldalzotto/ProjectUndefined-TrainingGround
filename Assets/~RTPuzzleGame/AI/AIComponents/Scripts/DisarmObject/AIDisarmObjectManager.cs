@@ -10,6 +10,7 @@
 
 namespace RTPuzzle
 {
+    using GameConfigurationID;
     using System;
     using UnityEngine;
     using UnityEngine.AI;
@@ -21,8 +22,10 @@ namespace RTPuzzle
 
         #region External Dependencies
         private DisarmObjectModule disarmingObject;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
+        private AiID aiID;
         private NavMeshAgent agent;
 
         #region External Events
@@ -32,20 +35,25 @@ namespace RTPuzzle
             this.isDisarmingObject = true;
             //Make agent to look at object
             this.agent.transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(this.disarmingObject.transform.position - this.agent.transform.position, this.agent.transform.up));
+            this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_Start(this.aiID, disarmingObject.DisarmObjectID);
         }
+
         public override void OnDisarmingObjectExit(DisarmObjectModule disarmingObject)
         {
             if (this.disarmingObject == disarmingObject)
             {
                 this.disarmingObject = null;
                 this.isDisarmingObject = false;
+                this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_End(this.aiID, disarmingObject.DisarmObjectID);
             }
         }
         #endregion
 
-        public void Init(NavMeshAgent agent)
+        public void Init(NavMeshAgent agent, PuzzleEventsManager PuzzleEventsManager, AiID aiID)
         {
             this.agent = agent;
+            this.aiID = aiID;
+            this.PuzzleEventsManager = PuzzleEventsManager;
         }
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)

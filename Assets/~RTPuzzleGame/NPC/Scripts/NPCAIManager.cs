@@ -52,7 +52,7 @@ namespace RTPuzzle
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
-        private PlayerAnimationDataManager NPCPAnimationDataManager;
+        private NPCAIAnimationManager NPCAIAnimationManager;
 
         public void Init()
         {
@@ -89,10 +89,8 @@ namespace RTPuzzle
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
-            this.NPCPAnimationDataManager = new PlayerAnimationDataManager(animator);
+            NPCAIAnimationManager = new NPCAIAnimationManager(animator, animationConfiguration);
 
-            //Initialize movement animation
-            GenericAnimatorHelper.SetMovementLayer(animator, animationConfiguration, LevelType.PUZZLE);
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
         }
@@ -106,7 +104,7 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            NPCPAnimationDataManager.Tick(timeAttenuationFactor);
+            NPCAIAnimationManager.TickAlways(d, timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
@@ -301,6 +299,15 @@ namespace RTPuzzle
         public void OnDisarmObjectTriggerExit(DisarmObjectModule disarmObjectModule)
         {
             this.puzzleAIBehavior.ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(disarmObjectModule));
+        }
+
+        public void OnDisarmObjectStart()
+        {
+            this.NPCAIAnimationManager.OnDisarmObjectStart();
+        }
+        public void OnDisarmObjectEnd()
+        {
+            this.NPCAIAnimationManager.OnDisarmObjectEnd();
         }
         #endregion
 

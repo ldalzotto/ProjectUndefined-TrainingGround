@@ -192,6 +192,7 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIAnimationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\NPCAIManagerContainer.cs" />
