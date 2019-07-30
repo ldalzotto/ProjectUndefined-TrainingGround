@@ -6,7 +6,7 @@ using System;
 using NodeGraph_Editor;
 #endif
 
-namespace AdventureGame
+namespace CoreGame
 {
     [System.Serializable]
     public class CutsceneWorkflowAbortAction : SequencedAction

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace AdventureGame
+namespace CoreGame
 {
     public interface ICutsceneNode
     {
@@ -102,6 +102,8 @@ namespace AdventureGame
                 this.workflowNodeReferenceEdge.GUIEdgeRectangles(this.OffsettedBounds, ref nodeEditorProfileRef);
                 EditorGUILayout.EndHorizontal();
             }
+
+
         }
 
 

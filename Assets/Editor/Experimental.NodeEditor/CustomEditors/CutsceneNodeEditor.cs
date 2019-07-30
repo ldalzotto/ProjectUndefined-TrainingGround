@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using CoreGame;
 using NodeGraph;
 using System;
 using System.Collections.Generic;

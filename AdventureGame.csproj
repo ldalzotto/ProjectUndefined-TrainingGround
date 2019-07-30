@@ -104,14 +104,11 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutscenePersistPOIAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneSpawnPOIAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWarpAction.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWorkflowAbortAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutsceneEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutsceneGlobalController.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutscenePlayerManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\CutsceneGraph.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\Abstract\ACutsceneEdge.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneActionConnectionEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneAnimationEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneCameraFollowEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneCameraRotationEdge.cs" />
@@ -121,9 +118,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutscenePersistPOIEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneSpawnPOIEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWarpEdge.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWorkflowAbortEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneWorkflowWaitForSecondsEdge.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\Abstract\ACutsceneNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneAnimationNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneCameraFollowNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneCameraRotationNode.cs" />
@@ -132,7 +127,6 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneMoveNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutscenePersistPOINode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneSpawnPOINode.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneStartNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWarpNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWorkflowAbortNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWorkflowWaitForSecondsNode.cs" />

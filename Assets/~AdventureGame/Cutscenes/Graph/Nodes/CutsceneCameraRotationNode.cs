@@ -1,4 +1,6 @@
-﻿namespace AdventureGame
+﻿using CoreGame;
+
+namespace AdventureGame
 {
     [System.Serializable]
     public class CutsceneCameraRotationNode : ACutsceneNode<CutsceneCameraRotationAction, CutsceneCameraRotationEdge>

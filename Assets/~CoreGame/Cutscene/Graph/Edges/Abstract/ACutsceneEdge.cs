@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AdventureGame
+namespace CoreGame
 {
     [System.Serializable]
     public abstract class ACutsceneEdge<T> : NodeEdgeProfile where T : SequencedAction

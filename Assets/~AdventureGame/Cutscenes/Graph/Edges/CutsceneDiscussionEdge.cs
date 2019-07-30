@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CoreGame;
 
 namespace AdventureGame
 {
