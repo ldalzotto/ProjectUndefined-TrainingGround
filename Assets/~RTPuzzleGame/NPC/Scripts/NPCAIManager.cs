@@ -78,7 +78,7 @@ namespace RTPuzzle
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
-            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, transform, this.SendOnDestinationReachedEvent);
+            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
             this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
@@ -162,6 +162,19 @@ namespace RTPuzzle
             labelStyle.normal.textColor = Color.magenta;
             Handles.Label(transform.position + new Vector3(0, 3f, 0), AiID.ToString(), labelStyle);
             Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AI", true);
+
+            var oldGizmoColor = Gizmos.color;
+            Gizmos.color = Color.yellow;
+            if (this.agent != null && this.agent.hasPath)
+            {
+                Vector3 startPoint = this.agent.path.corners[0];
+                for(var i = 1; i< this.agent.path.corners.Length; i++)
+                {
+                    Gizmos.DrawLine(startPoint, this.agent.path.corners[i]);
+                    startPoint = this.agent.path.corners[i];
+                }
+            }
+            Gizmos.color = oldGizmoColor;
 #endif
         }
 

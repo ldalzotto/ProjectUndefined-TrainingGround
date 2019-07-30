@@ -8,14 +8,12 @@ namespace RTPuzzle
     {
         private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
         private NavMeshAgent objectAgent;
-        private Transform objectTransform;
         private Action OnDestinationReachedEvent;
 
-        public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Transform objectTransform, Action OnDestinationReachedEvent)
+        public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
         {
             AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
             this.objectAgent = objectAgent;
-            this.objectTransform = objectTransform;
             this.OnDestinationReachedEvent = OnDestinationReachedEvent;
         }
 
@@ -43,9 +41,6 @@ namespace RTPuzzle
 
         private int lastFrameSuccessfulNextDestinationFrameNb;
         private Vector3 lastFrameSuccessfulNextDestination;
-        private Vector3? manuallyCalculatedVelocity;
-
-        public Vector3? ManuallyCalculatedVelocity { get => manuallyCalculatedVelocity; }
 
         #region External Events
         public void SetDestination(Vector3 worldDestination)
@@ -86,32 +81,38 @@ namespace RTPuzzle
 
         private void ManuallyUpdateAgent()
         {
-            // Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
+            Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
             NavMeshHit pathHit;
             objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
             if (this.CurrentTimeAttenuated > 0)
             {
-                this.manuallyCalculatedVelocity = (pathHit.position - objectAgent.transform.position) / this.CurrentTimeAttenuated;
-                objectAgent.velocity = this.manuallyCalculatedVelocity.Value;
+                objectAgent.velocity = (pathHit.position - objectAgent.transform.position) / this.CurrentTimeAttenuated;
             }
             objectAgent.nextPosition = pathHit.position;
         }
 
         private void UpdateAgentTransform()
         {
-            // We use either manually calculated velocity or calculated by unity
-            Vector3 velocityUsed = this.manuallyCalculatedVelocity.HasValue ? this.manuallyCalculatedVelocity.Value : this.objectAgent.velocity;
-            this.manuallyCalculatedVelocity = null;
-
-            // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
-            if (Vector3.Distance(Vector3.zero, (velocityUsed / AIDestimationMoveManagerComponent.SpeedMultiplicationFactor)) >= AIDestimationMoveManagerComponent.RotationFollow_VelocityThreshold)
-            {
-                objectTransform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(velocityUsed.normalized, Vector3.up));
-            }
-
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
             //  Debug.Log(MyLog.Format("AGENT MOVE : old " + objectTransform.position.ToString("F4") + " new " + objectAgent.nextPosition.ToString("F4")));
-            objectTransform.position = objectAgent.nextPosition;
+            objectAgent.transform.position = objectAgent.nextPosition;
+
+
+            // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
+            if (this.objectAgent.hasPath && !this.objectAgent.isStopped)
+            {
+                //if target is too close, we look to destination
+                float distanceToDestination = Vector3.Distance(this.objectAgent.transform.position, this.objectAgent.destination);
+
+                if (this.objectAgent.transform.position != this.objectAgent.destination && distanceToDestination <= 5f)
+                {
+                    this.objectAgent.transform.rotation = Quaternion.LookRotation((this.objectAgent.destination - this.objectAgent.transform.position), Vector3.up);
+                }
+                else
+                {
+                    this.objectAgent.transform.rotation = Quaternion.LookRotation((this.objectAgent.path.corners[1] - this.objectAgent.path.corners[0]).normalized, Vector3.up);
+                }
+            }
         }
 
         public void EnableAgent()
@@ -131,10 +132,6 @@ namespace RTPuzzle
     [System.Serializable]
     public class AIDestimationMoveManagerComponent
     {
-        [Tooltip("This value is the minimum value of speed, starting from the transform rotation will follow the agent direction. If this value were not " +
-            "present, the precission loss of agent speed calculation would cause the rotation to go crazy when speed is very low.")]
-        [Range(0, 1)]
-        public float RotationFollow_VelocityThreshold;
         public float SpeedMultiplicationFactor;
     }
 }

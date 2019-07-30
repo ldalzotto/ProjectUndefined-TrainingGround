@@ -74,7 +74,7 @@ namespace AdventureGame
             this.OnAddAction(cutsceneGraph.GetRootAction(), this.currentInput);
             yield return new WaitUntil(() => { return !this.isCutscenePlaying; });
 
-            //Reset some state to ensure that nothing wroong persist
+            //Reset some state to ensure that nothing wrong persist
             this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);
         }
 
