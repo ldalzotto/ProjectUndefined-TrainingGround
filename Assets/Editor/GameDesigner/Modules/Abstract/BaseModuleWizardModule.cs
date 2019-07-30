@@ -163,7 +163,7 @@ namespace Editor_GameDesigner
             {
                 PointOfInterestModelObjectModuleAction.Invoke();
             }
-            else if (selectedType == typeof(PointOfInterestCutsceneController))
+            else if (selectedType == typeof(PointOfInterestCutsceneControllerModule))
             {
                 PointOfInterestCutsceneControllerAction.Invoke();
             }

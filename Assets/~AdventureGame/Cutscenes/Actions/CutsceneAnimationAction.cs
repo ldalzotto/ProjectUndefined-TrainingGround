@@ -25,7 +25,7 @@ namespace AdventureGame
         public bool InfiniteLoop = false;
         public bool PlayImmediately = false;
         public float CrossFade = 0f;
-        private bool FramePerfectEndDetection = false;
+        public bool FramePerfectEndDetection = false;
 
         [NonSerialized]
         private bool animationEnded = false;
@@ -35,7 +35,7 @@ namespace AdventureGame
         [NonSerialized]
         private CutsceneActionInput actionInput;
         [NonSerialized]
-        private PointOfInterestCutsceneController pointOfInterestCutsceneController;
+        private AbstractCutsceneController pointOfInterestCutsceneController;
         
         public CutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
@@ -69,7 +69,7 @@ namespace AdventureGame
 
         }
 
-        private IEnumerator PlayAnimation(PointOfInterestCutsceneController cutsceneController)
+        private IEnumerator PlayAnimation(AbstractCutsceneController cutsceneController)
         {
             this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.AnimationId, this.CrossFade, animationEndCallback: () =>
             {

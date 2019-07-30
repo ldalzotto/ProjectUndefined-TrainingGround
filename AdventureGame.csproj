@@ -156,7 +156,7 @@
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\Common\APointOfInterestModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\Common\PointOfInterestModules.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\Common\PointOfInterestModulesEventManager.cs" />
-    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestCutsceneController.cs" />
+    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestCutsceneControllerModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestModelObjectModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestSpecificBehaviorModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\Modules\PointOfInterestTrackerModule.cs" />

@@ -1,26 +1,13 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System;
 using System.Collections;
 using UnityEngine;
 
 namespace AdventureGame
 {
-    public class CutscenePlayerManagerV2 : SequencedActionManager
+    
+    public class CutscenePlayerManagerV2 : AbstractCutscenePlayerManager
     {
-        protected override Action<SequencedAction> OnActionAdd
-        {
-            get
-            {
-                return (SequencedAction SequencedAction) =>
-                {
-                    this.OnAddAction(SequencedAction, this.currentInput);
-                };
-            }
-        }
-
-        protected override Action<SequencedAction, SequencedActionInput> OnActionFinished => null;
-
         #region External Dependencies
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
         private PointOfInterestManager PointOfInterestManager;
@@ -42,12 +29,19 @@ namespace AdventureGame
             this.GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.CutsceneEventManager = GameObject.FindObjectOfType<CutsceneEventManager>();
+            this.BaseInit(this.OnCutsceneStart, this.OnCutsceneEnd);
         }
 
-        #region state
-        private bool isCutscenePlaying = false;
-        public bool IsCutscenePlaying { get => isCutscenePlaying; }
-        #endregion
+        private void OnCutsceneStart()
+        {
+            this.CutsceneEventManager.OnCutscneStarted();
+        }
+
+        private void OnCutsceneEnd()
+        {
+            //Reset some state to ensure that nothing wrong persist
+            this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);
+        }
 
         #region External Event
         public void ManualCutsceneStart(CutsceneId cutsceneId)
@@ -55,8 +49,6 @@ namespace AdventureGame
             Coroutiner.Instance.StartCoroutine(this.ManualPlayCutscene(cutsceneId));
         }
         #endregion
-
-        private CutsceneActionInput currentInput;
 
         private IEnumerator ManualPlayCutscene(CutsceneId cutsceneId)
         {
@@ -66,21 +58,10 @@ namespace AdventureGame
 
         public IEnumerator PlayCutscene(CutsceneId cutsceneId)
         {
-            this.isCutscenePlaying = true;
             var cutsceneGraph = this.AdventureGameConfigurationManager.CutsceneConf()[cutsceneId].CutsceneGraph;
-            this.currentInput = new CutsceneActionInput(cutsceneId, this.PointOfInterestManager, this.CutscenePositionsManager,
+            var cutsceneInput = new CutsceneActionInput(cutsceneId, this.PointOfInterestManager, this.CutscenePositionsManager,
                 this.ContextActionEventManager, this.AdventureGameConfigurationManager, this.CutsceneGlobalController, this.GhostsPOIManager, this.LevelManager);
-            this.CutsceneEventManager.OnCutscneStarted(cutsceneId);
-            this.OnAddAction(cutsceneGraph.GetRootAction(), this.currentInput);
-            yield return new WaitUntil(() => { return !this.isCutscenePlaying; });
-
-            //Reset some state to ensure that nothing wrong persist
-            this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);
-        }
-
-        protected override void OnNoMoreActionToPlay()
-        {
-            this.isCutscenePlaying = false;
+            yield return base.PlayCutscene(cutsceneGraph, cutsceneInput);
         }
     }
 

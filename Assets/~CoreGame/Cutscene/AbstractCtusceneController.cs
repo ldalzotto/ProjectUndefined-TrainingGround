@@ -7,23 +7,19 @@ using UnityEngine.AI;
 
 namespace AdventureGame
 {
-    /*
-    public class AbstractCutsceneController 
+    public abstract class AbstractCutsceneController
     {
         #region External Dependencies
-        private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
+        private AbstractCutscenePlayerManager CutscenePlayerManagerV2;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
+        private Animator Animator;
 
         private POICutsceneMoveManager POICutsceneMoveManager;
         private PlayerAnimationDataManager PlayerAnimationDataManager;
-
-        #region Module Dependencies
-        private PointOfInterestModelObjectModule PointOfInterestModelObjectModule;
-        #endregion
 
         #region Data Components Dependencies
         private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponentV2;
@@ -40,25 +36,22 @@ namespace AdventureGame
         }
         #endregion
 
-        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
+        protected void BaseInit(TransformMoveManagerComponentV2 transformMoveManagerComponent, AbstractCutscenePlayerManager cutscenePlayerManager,
+            Rigidbody rigidBody, NavMeshAgent agent, Animator animator, PlayerAnimationDataManager playerAnimationDataManager = null)
         {
             #region Data Components Dependencies
-            this.PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            this.PlayerInputMoveManagerComponentV2 = transformMoveManagerComponent;
             #endregion
 
-            this.PointOfInterestModelObjectModule = PointOfInterestModelObjectModule;
-
-            this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
+            this.CutscenePlayerManagerV2 = cutscenePlayerManager;
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
 
-            this.Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();
-            this.Agent = pointOfInterestTypeRef.GetComponentInParent<NavMeshAgent>();
+            this.Rigidbody = rigidBody;
+            this.Agent = agent;
+            this.Animator = animator;
             this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
 
-            if (!pointOfInterestTypeRef.IsPlayer())
-            {
-                this.PlayerAnimationDataManager = new PlayerAnimationDataManager(this.PointOfInterestModelObjectModule.Animator);
-            }
+            this.PlayerAnimationDataManager = playerAnimationDataManager;
         }
 
         public void Tick(float d)
@@ -85,18 +78,18 @@ namespace AdventureGame
         public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately, bool framePerfectEndDetection)
         {
             this.isAnimationPlaying = true;
-            yield return AnimationPlayerHelper.PlayAndWait(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately, framePerfectEndDetection);
+            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately, framePerfectEndDetection);
             this.isAnimationPlaying = false;
         }
 
         public void Play(AnimationID animationID, float crossFadeDuration, bool updateModelImmediately)
         {
-            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
+            AnimationPlayerHelper.Play(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
         }
 
         public void StopAnimation(AnimationID animationID)
         {
-            AnimationPlayerHelper.Play(this.PointOfInterestModelObjectModule.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);
+            AnimationPlayerHelper.Play(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);
             this.isAnimationPlaying = false;
         }
 
@@ -194,5 +187,4 @@ namespace AdventureGame
             this.isDirectedByAi = false;
         }
     }
-    */
 }

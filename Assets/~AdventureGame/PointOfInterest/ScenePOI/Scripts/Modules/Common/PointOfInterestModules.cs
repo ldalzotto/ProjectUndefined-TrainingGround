@@ -7,14 +7,14 @@ namespace AdventureGame
     {
 
         private PointOfInterestModelObjectModule pointOfInterestModelObjectModule;
-        private PointOfInterestCutsceneController pointOfInterestCutsceneController;
+        private PointOfInterestCutsceneControllerModule pointOfInterestCutsceneController;
         private PointOfInterestTrackerModule pointOfInterestTrackerModule;
         private PointOfInterestVisualMovementModule pointOfInterestVisualMovementModule;
         private PointOfInterestSpecificBehaviorModule pointOfInterestSpecificBehaviorModule;
 
         #region Data Retrieval
         public PointOfInterestModelObjectModule PointOfInterestModelObjectModule { get => pointOfInterestModelObjectModule; }
-        public PointOfInterestCutsceneController PointOfInterestCutsceneController { get => pointOfInterestCutsceneController; }
+        public PointOfInterestCutsceneControllerModule PointOfInterestCutsceneController { get => pointOfInterestCutsceneController; }
         public PointOfInterestTrackerModule PointOfInterestTrackerModule { get => pointOfInterestTrackerModule; }
         public PointOfInterestVisualMovementModule PointOfInterestVisualMovementModule { get => pointOfInterestVisualMovementModule; }
         public PointOfInterestSpecificBehaviorModule PointOfInterestSpecificBehaviorModule { get => pointOfInterestSpecificBehaviorModule; }
@@ -28,7 +28,7 @@ namespace AdventureGame
                 foreach (var retrievedPointOfInterestModule in retrievedPointOfInterestModules)
                 {
                     retrievedPointOfInterestModule.IfTypeEqual((PointOfInterestModelObjectModule retrievedPointOfInterestModule2) => this.pointOfInterestModelObjectModule = retrievedPointOfInterestModule2);
-                    retrievedPointOfInterestModule.IfTypeEqual((PointOfInterestCutsceneController retrievedPointOfInterestModule2) => this.pointOfInterestCutsceneController = retrievedPointOfInterestModule2);
+                    retrievedPointOfInterestModule.IfTypeEqual((PointOfInterestCutsceneControllerModule retrievedPointOfInterestModule2) => this.pointOfInterestCutsceneController = retrievedPointOfInterestModule2);
                     retrievedPointOfInterestModule.IfTypeEqual((PointOfInterestTrackerModule retrievedPointOfInterestModule2) => this.pointOfInterestTrackerModule = retrievedPointOfInterestModule2);
                     retrievedPointOfInterestModule.IfTypeEqual((PointOfInterestVisualMovementModule retrievedPointOfInterestModule2) => this.pointOfInterestVisualMovementModule = retrievedPointOfInterestModule2);
                     retrievedPointOfInterestModule.IfTypeEqual((PointOfInterestSpecificBehaviorModule retrievedPointOfInterestModule2) => this.pointOfInterestSpecificBehaviorModule = retrievedPointOfInterestModule2);

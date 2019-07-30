@@ -32,12 +32,12 @@ namespace Editor_GameDesigner
                           {
                               if (this.add)
                               {
-                                  EditorPOIModulesOperation.AddModule<PointOfInterestCutsceneController>(PointOfInterestType);
+                                  EditorPOIModulesOperation.AddModule<PointOfInterestCutsceneControllerModule>(PointOfInterestType);
                                   EditorPOIModulesOperation.AddDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
                               }
                               else
                               {
-                                  EditorPOIModulesOperation.RemoveModule<PointOfInterestCutsceneController>(PointOfInterestType);
+                                  EditorPOIModulesOperation.RemoveModule<PointOfInterestCutsceneControllerModule>(PointOfInterestType);
                                   EditorPOIModulesOperation.RemoveDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
                               }
                           },
@@ -105,7 +105,7 @@ namespace Editor_GameDesigner
             {
                 PointOfInterestModelObjectModuleAction.Invoke();
             }
-            else if (selectedType == typeof(PointOfInterestCutsceneController))
+            else if (selectedType == typeof(PointOfInterestCutsceneControllerModule))
             {
                 PointOfInterestCutsceneControllerAction.Invoke();
             }

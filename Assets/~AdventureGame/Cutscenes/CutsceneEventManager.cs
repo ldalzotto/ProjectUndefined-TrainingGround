@@ -16,7 +16,7 @@ namespace AdventureGame
             this.ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
         }
 
-        public void OnCutscneStarted(CutsceneId CutsceneId)
+        public void OnCutscneStarted()
         {
             this.InventoryEventManager.OnInventoryDisabled();
             this.ContextActionWheelEventManager.OnWheelDisabled();

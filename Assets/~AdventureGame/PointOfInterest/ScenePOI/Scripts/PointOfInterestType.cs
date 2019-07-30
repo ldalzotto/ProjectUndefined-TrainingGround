@@ -52,9 +52,9 @@ namespace AdventureGame
         {
             return this.pointOfInterestInherentData.InteractionWithPlayerAllowed;
         }
-        public PointOfInterestCutsceneController GetPointOfInterestCutsceneController()
+        public AbstractCutsceneController GetPointOfInterestCutsceneController()
         {
-            return this.PointOfInteresetModules.PointOfInterestCutsceneController;
+            return this.PointOfInteresetModules.PointOfInterestCutsceneController.GetCutsceneController();
         }
         public PointOfInterestTrackerModule GetPointOfInterestTrackerModule()
         {
@@ -157,7 +157,9 @@ namespace AdventureGame
         }
         public bool IsVisualMovementAllowed()
         {
-            return (this.PointOfInteresetModules.PointOfInterestCutsceneController != null && !this.PointOfInteresetModules.PointOfInterestCutsceneController.IsAnimationPlaying)
+            return (this.PointOfInteresetModules.PointOfInterestCutsceneController != null
+                                && this.PointOfInteresetModules.PointOfInterestCutsceneController.GetCutsceneController() != null
+                                && !this.PointOfInteresetModules.PointOfInterestCutsceneController.GetCutsceneController().IsAnimationPlaying)
                     || this.PointOfInteresetModules.PointOfInterestCutsceneController == null;
         }
         #endregion
@@ -179,7 +181,7 @@ namespace AdventureGame
             {
                 PointOfInterestEventManager.SetAnimationPosition(ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation, this);
             }
-            
+
             if (ghostPOI.PointOfInterestLevelPositioningState != null && ghostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID == this.LevelManager.CurrentLevelZoneChunkID)
             {
                 PointOfInterestEventManager.SetPosition(this, ghostPOI.PointOfInterestLevelPositioningState.TransformBinarry.Format());
