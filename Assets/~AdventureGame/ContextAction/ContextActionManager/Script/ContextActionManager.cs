@@ -1,24 +1,34 @@
 ﻿using CoreGame;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
 {
-    public class ContextActionManager : SequencedActionManager
+    public class ContextActionManager : MonoBehaviour
     {
         #region External Dependencies
         private ContextActionEventManager ContextActionEventManager;
         #endregion
 
-        protected override Action<SequencedAction> OnActionAdd => ContextActionEventManager.OnContextActionAdd;
-
-        protected override Action<SequencedAction, SequencedActionInput> OnActionFinished => ContextActionEventManager.OnContextActionFinished;
+        private SequencedActionManager SequencedActionManager;
 
         private void Start()
         {
             ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
+
+            this.SequencedActionManager = new SequencedActionManager(OnActionAdd: ContextActionEventManager.OnContextActionAdd, OnActionFinished: ContextActionEventManager.OnContextActionFinished);
         }
+
+        public void Tick(float d)
+        {
+            this.SequencedActionManager.Tick(d);
+        }
+
+        #region External Events
+        public void OnAddAction(SequencedAction action, SequencedActionInput actionInput)
+        {
+            this.SequencedActionManager.OnAddAction(action, actionInput);
+        }
+        #endregion
     }
 }

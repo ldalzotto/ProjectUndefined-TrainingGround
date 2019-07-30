@@ -1,19 +1,25 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CoreGame
 {
-    public abstract class SequencedActionManager : MonoBehaviour
+    public class SequencedActionManager
     {
 
         private List<SequencedAction> ExecutedActions = new List<SequencedAction>();
         private List<SequencedAction> FinishedActions = new List<SequencedAction>();
         private List<SequencedAction> CurrentNexActions = new List<SequencedAction>();
 
-        protected abstract Action<SequencedAction> OnActionAdd { get; }
-        protected abstract Action<SequencedAction, SequencedActionInput> OnActionFinished { get; }
+        private Action<SequencedAction> OnActionAdd;
+        private Action<SequencedAction, SequencedActionInput> OnActionFinished;
+        private Action OnNoMoreActionToPlay;
+
+        public SequencedActionManager(Action<SequencedAction> OnActionAdd, Action<SequencedAction, SequencedActionInput> OnActionFinished, Action OnNoMoreActionToPlay = null)
+        {
+            this.OnActionAdd = OnActionAdd;
+            this.OnActionFinished = OnActionFinished;
+            this.OnNoMoreActionToPlay = OnNoMoreActionToPlay;
+        }
 
         public void Tick(float d)
         {
@@ -55,18 +61,17 @@ namespace CoreGame
 
             if (ExecutedActions.Count == 0)
             {
-                this.OnNoMoreActionToPlay();
+                if (this.OnNoMoreActionToPlay != null)
+                {
+                    this.OnNoMoreActionToPlay.Invoke();
+                }
             }
         }
-        
+
         private void ProcessTick(float d, SequencedAction contextAction)
         {
             contextAction.OnTick(d, this.OnActionFinished);
         }
-
-        #region Internal Events
-        protected virtual void OnNoMoreActionToPlay() { }
-        #endregion
 
         #region External Events
         public void OnAddAction(SequencedAction action, SequencedActionInput actionInput)
