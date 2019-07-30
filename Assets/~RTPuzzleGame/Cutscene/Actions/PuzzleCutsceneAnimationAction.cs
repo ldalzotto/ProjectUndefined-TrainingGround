@@ -7,27 +7,27 @@ using UnityEditor;
 using NodeGraph_Editor;
 #endif
 
-namespace AdventureGame
+namespace RTPuzzle
 {
     [System.Serializable]
-    public class CutsceneAnimationAction : AbstractCutsceneAnimationAction
+    public class PuzzleCutsceneAnimationAction : AbstractCutsceneAnimationAction
     {
         [CustomEnum()]
-        public PointOfInterestId PointOfInterestId;
+        public AiID AiID;
 
-        public CutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
+        public PuzzleCutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
 
         protected override AbstractCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
         {
-            return ((CutsceneActionInput)ContextActionInput).PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
+            return ((PuzzleCutsceneActionInput)ContextActionInput).NPCAIManagerContainer.GetNPCAiManager(this.AiID).NPCCutsceneController;
         }
 
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
+            this.AiID = (AiID)NodeEditorGUILayout.EnumField("AI : ", string.Empty, this.AiID);
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
             this.SkipToNextNode = (bool)NodeEditorGUILayout.BoolField("Skip immediately : ", string.Empty, this.SkipToNextNode);
             this.CrossFade = NodeEditorGUILayout.FloatField("Crossfade : ", string.Empty, this.CrossFade);

@@ -162,6 +162,14 @@ namespace AdventureGame
                                 && !this.PointOfInteresetModules.PointOfInterestCutsceneController.GetCutsceneController().IsAnimationPlaying)
                     || this.PointOfInteresetModules.PointOfInterestCutsceneController == null;
         }
+        public bool IsDirectedByCutscene()
+        {
+            if (this.PointOfInteresetModules.PointOfInterestCutsceneController != null)
+            {
+                return this.PointOfInteresetModules.PointOfInterestCutsceneController.IsDirectedByCutscene();
+            }
+            return false;
+        }
         #endregion
 
         #region External Events

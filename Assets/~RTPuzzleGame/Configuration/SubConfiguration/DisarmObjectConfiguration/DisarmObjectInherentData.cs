@@ -11,6 +11,9 @@ namespace RTPuzzle
         public float DisarmInteractionRange = 2.5f;
         public InteractiveObjectType DisarmObjectPrefab;
 
+        [CustomEnum()]
+        public PuzzleCutsceneId PlayedCutsceneOnDisarm;
+
         public void Init(float DisarmTime, float DisarmInteractionRange, InteractiveObjectType DisarmObjectPrefab)
         {
             this.DisarmTime = DisarmTime;

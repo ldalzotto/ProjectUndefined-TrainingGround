@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,7 +25,7 @@ namespace RTPuzzle
         protected NavMeshAgent escapingAgent;
         protected AIFOVManager AIFOVManager;
         protected PuzzleEventsManager puzzleEventsManager;
-        private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent;
         #endregion
 
         #region Internal Dependencies
@@ -41,7 +42,7 @@ namespace RTPuzzle
         #endregion
 
         protected void BaseInit(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID,
-            AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
+            AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             this.AIFOVManager = aIFOVManager;

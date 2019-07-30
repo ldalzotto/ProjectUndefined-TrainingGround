@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,7 +40,16 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsAskingToBeDestroyed()
         {
-            return (this.elapsedTime >= this.DisarmObjectInherentConfigurationData.DisarmTime);
+            if (this.elapsedTime >= this.DisarmObjectInherentConfigurationData.DisarmTime)
+            {
+                if (this.DisarmObjectCutscenePlayer != null)
+                {
+                    this.DisarmObjectCutscenePlayer.InterruptAllActions();
+                    this.DisarmObjectCutscenePlayer = null;
+                }
+                return true;
+            }
+            return false;
         }
         #endregion
 
@@ -54,8 +64,11 @@ namespace RTPuzzle
         }
         #endregion
 
+        private SequencedActionManager DisarmObjectCutscenePlayer;
+
         public void Tick(float d, float timeAttenuationFactor)
         {
+            this.DisarmObjectCutscenePlayer.IfNotNull(DisarmObjectCutscenePlayer => DisarmObjectCutscenePlayer.Tick(d * timeAttenuationFactor));
         }
 
         #region External Event
@@ -73,6 +86,20 @@ namespace RTPuzzle
                 var npcAIManager = NPCAIManager.FromCollisionType(collisionType);
                 this.AiThatCanInteract.Add(npcAIManager);
                 npcAIManager.OnDisarmObjectTriggerEnter(this);
+                this.DisarmObjectCutscenePlayer = new SequencedActionManager(
+                    OnActionAdd: (action) =>
+                    {
+                        this.DisarmObjectCutscenePlayer.OnAddAction(action, new PuzzleCutsceneActionInput(this.DisarmObjectInherentConfigurationData.PlayedCutsceneOnDisarm, GameObject.FindObjectOfType<LevelManager>(), GameObject.FindObjectOfType<NPCAIManagerContainer>()));
+                    },
+                    OnActionFinished: null,
+                    OnNoMoreActionToPlay: () =>
+                    {
+                        this.DisarmObjectCutscenePlayer.InterruptAllActions();
+                        this.DisarmObjectCutscenePlayer = null;
+                    });
+                ;
+                this.DisarmObjectCutscenePlayer.OnAddAction(GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleCutsceneConfiguration()[this.DisarmObjectInherentConfigurationData.PlayedCutsceneOnDisarm].PuzzleCutsceneGraph.GetRootAction(),
+                           new PuzzleCutsceneActionInput(this.DisarmObjectInherentConfigurationData.PlayedCutsceneOnDisarm, GameObject.FindObjectOfType<LevelManager>(), GameObject.FindObjectOfType<NPCAIManagerContainer>()));
             }
         }
 

@@ -64,6 +64,11 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.DisarmObjectConfiguration.ConfigurationInherentData;
         }
+
+        public Dictionary<PuzzleCutsceneId, PuzzleCutsceneInherentData> PuzzleCutsceneConfiguration()
+        {
+            return PuzzleGameConfiguration.PuzzleCutsceneConfiguration.ConfigurationInherentData;
+        }
     }
 
 

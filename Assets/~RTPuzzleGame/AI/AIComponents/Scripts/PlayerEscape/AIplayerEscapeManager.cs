@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.AI;
 using System;
 using GameConfigurationID;
+using CoreGame;
 
 namespace RTPuzzle
 {
@@ -13,7 +14,7 @@ namespace RTPuzzle
         private AIFOVManager aIFOVManager;
         private Func<Collider[]> targetZoneTriggerColliderProvider;
         private PuzzleEventsManager puzzleEventsManager;
-        private AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent;
         #endregion
 
         private AiID aiID;
@@ -35,7 +36,7 @@ namespace RTPuzzle
 
         public void Init(NavMeshAgent selfAgent, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager,
             PlayerManagerDataRetriever playerManagerDataRetriever, AIPlayerEscapeComponent aIPlayerEscapeComponent, AIFOVManager aIFOVManager, Func<Collider[]> targetZoneTriggerColliderProvider, AiID aiID,
-            PuzzleEventsManager puzzleEventsManager, AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent)
+            PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent)
         {
             this.selfAgent = selfAgent;
             this.puzzleAIBehaviorExternalEventManager = puzzleAIBehaviorExternalEventManager;

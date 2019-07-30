@@ -6,6 +6,10 @@ namespace AdventureGame
 {
     public class PointOfInterestCutsceneControllerModule : APointOfInterestModule
     {
+        #region External Dependencies
+        private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
+        #endregion
+
         private PointOfInterestCutsceneController pointOfInterestCutsceneController;
 
         #region Data Retrieval
@@ -15,9 +19,17 @@ namespace AdventureGame
         }
         #endregion
 
+        #region Logical Condition
+        public bool IsDirectedByCutscene()
+        {
+            return this.pointOfInterestCutsceneController.IsAnimationPlaying || this.CutscenePlayerManagerV2.IsCutscenePlaying;
+        }
+        #endregion
+
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
-            this.pointOfInterestCutsceneController = new PointOfInterestCutsceneController(pointOfInterestTypeRef, GameObject.FindObjectOfType<CutscenePlayerManagerV2>(), PointOfInterestModelObjectModule);
+            this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
+            this.pointOfInterestCutsceneController = new PointOfInterestCutsceneController(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
         }
 
         public void Tick(float d)
@@ -28,7 +40,7 @@ namespace AdventureGame
 
     class PointOfInterestCutsceneController : AbstractCutsceneController
     {
-        public PointOfInterestCutsceneController(PointOfInterestType pointOfInterestTypeRef, CutscenePlayerManagerV2 cutscenePlayerManagerV2, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
+        public PointOfInterestCutsceneController(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
             #region Data Components Dependencies
             var PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
@@ -45,7 +57,7 @@ namespace AdventureGame
                 PlayerAnimationDataManager = new PlayerAnimationDataManager(Animator);
             }
 
-            base.BaseInit(PlayerInputMoveManagerComponentV2, cutscenePlayerManagerV2, Rigidbody, Agent, Animator, PlayerAnimationDataManager);
+            base.BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV2, PlayerAnimationDataManager);
         }
     }
 }

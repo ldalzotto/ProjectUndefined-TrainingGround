@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.AI;
 using GameConfigurationID;
+using CoreGame;
 
 namespace RTPuzzle
 {
@@ -12,7 +13,7 @@ namespace RTPuzzle
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager puzzleEventsManager;
         private AiID aiID;
-        private AIDestimationMoveManagerComponent playerAIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV2 playerAIDestimationMoveManagerComponent;
         #endregion
 
         private EscapeDestinationManager escapeDestinationManager;
@@ -20,7 +21,7 @@ namespace RTPuzzle
         #region State
         private bool isEscaping;
 
-        public void Init(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AiID aiID, AIDestimationMoveManagerComponent playerAIDestimationMoveManagerComponent)
+        public void Init(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AiID aiID, TransformMoveManagerComponentV2 playerAIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             AIFOVManager = aIFOVManager;

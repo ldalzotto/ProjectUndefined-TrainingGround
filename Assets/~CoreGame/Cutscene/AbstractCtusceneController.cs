@@ -5,12 +5,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace AdventureGame
+namespace CoreGame
 {
     public abstract class AbstractCutsceneController
     {
         #region External Dependencies
-        private AbstractCutscenePlayerManager CutscenePlayerManagerV2;
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
@@ -29,35 +28,33 @@ namespace AdventureGame
         private bool askedForWarp;
         private bool isAnimationPlaying;
         public bool IsAnimationPlaying { get => isAnimationPlaying; }
-
-        public bool IsDirectedByCutscene()
-        {
-            return this.POICutsceneMoveManager.IsDirectedByAi || this.CutscenePlayerManagerV2.IsCutscenePlaying;
-        }
+        public bool IsDirectedByAi() { return this.POICutsceneMoveManager.IsDirectedByAi; } 
         #endregion
 
-        protected void BaseInit(TransformMoveManagerComponentV2 transformMoveManagerComponent, AbstractCutscenePlayerManager cutscenePlayerManager,
-            Rigidbody rigidBody, NavMeshAgent agent, Animator animator, PlayerAnimationDataManager playerAnimationDataManager = null)
+        protected void BaseInit(Rigidbody rigidBody, NavMeshAgent agent, Animator animator, TransformMoveManagerComponentV2 transformMoveManagerComponent = null, PlayerAnimationDataManager playerAnimationDataManager = null)
         {
             #region Data Components Dependencies
             this.PlayerInputMoveManagerComponentV2 = transformMoveManagerComponent;
             #endregion
-
-            this.CutscenePlayerManagerV2 = cutscenePlayerManager;
+            
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
 
             this.Rigidbody = rigidBody;
             this.Agent = agent;
             this.Animator = animator;
-            this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
+
+            //If we want the controller to not move agent/rb
+            if(this.PlayerInputMoveManagerComponentV2 != null)
+            {
+                this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
+            }
 
             this.PlayerAnimationDataManager = playerAnimationDataManager;
         }
 
         public void Tick(float d)
         {
-            this.POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.AIRotationSpeed);
-
+            this.POICutsceneMoveManager.IfNotNull((POICutsceneMoveManager) => POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.AIRotationSpeed));
             this.PlayerAnimationDataManager.IfNotNull((PlayerAnimationDataManager) => PlayerAnimationDataManager.Tick(this.GetCurrentNormalizedSpeedMagnitude()));
         }
 

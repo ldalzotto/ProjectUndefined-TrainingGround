@@ -87,7 +87,7 @@ namespace AdventureGame
         {
             var playerSpeedMagnitude = 0f;
 
-            if (!this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
+            if (!this.PointOfInterestType.IsDirectedByCutscene())
             {
                 if (IsAllowedToMove())
                 {
@@ -118,7 +118,7 @@ namespace AdventureGame
 
             PlayerAnimationManager.PlayerAnimationDataManager.Tick(playerSpeedMagnitude);
 
-            if (PlayerContextActionManager.IsActionExecuting || playerSpeedMagnitude > float.Epsilon || this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
+            if (PlayerContextActionManager.IsActionExecuting || playerSpeedMagnitude > float.Epsilon || this.PointOfInterestType.IsDirectedByCutscene())
             {
                 PlayerAnimationManager.OnIdleAnimationReset();
             }
@@ -132,7 +132,7 @@ namespace AdventureGame
         {
             this.PlayerProceduralAnimationsManager.FickedTick(d);
 
-            if (!this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene())
+            if (!this.PointOfInterestType.IsDirectedByCutscene())
             {
                 this.PlayerInputMoveManager.FixedTick(d);
                 //Physics is desabled when cutscene is playing to avoid conflicts with nav mesh agent
@@ -159,7 +159,7 @@ namespace AdventureGame
 
         private bool IsAllowedToDoAnyInteractions()
         {
-            return this.IsAllowedToMove() && !this.PointOfInterestType.GetPointOfInterestCutsceneController().IsDirectedByCutscene();
+            return this.IsAllowedToMove() && !this.PointOfInterestType.IsDirectedByCutscene();
         }
 
         public bool IsVisualMovementAllowed()

@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Editor_GameDesigner
 {
     public class CutsceneConfigurationModule : ConfigurationModule<CutsceneConfiguration, CutsceneId, CutsceneInherentData> { }
+    public class PuzzleCutsceneConfigurationModule : ConfigurationModule<PuzzleCutsceneConfiguration, PuzzleCutsceneId, PuzzleCutsceneInherentData> { }
     public class DiscussionTreeConfigurationModule : ConfigurationModule<DiscussionTreeConfiguration, DiscussionTreeId, DiscussionTree> { }
     public class ItemConfigurationModule : ConfigurationModule<ItemConfiguration, ItemID, ItemInherentData> { }
     public class PointOfInterestConfigurationModule : ConfigurationModule<PointOfInterestConfiguration, PointOfInterestId, PointOfInterestInherentData> { }

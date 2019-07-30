@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -146,6 +147,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\Matrices\ProjectileEscapeSemiAngle.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ProjectileConfiguration\ProjectileInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PuzzleCutsceneConfiguration\PuzzleCutsceneConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PuzzleCutsceneConfiguration\PuzzleCutsceneInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
@@ -154,6 +157,11 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\TargetZonesConfiguration\TargetZonesConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneActionInput.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneAnimationAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleCutsceneAnimationEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleCutsceneAnimationNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\PuzzleCutsceneGraph.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\DisarmObject\DisarmObjectProgressBarRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\DisarmObject\DisarmObjectProgressBarType.cs" />

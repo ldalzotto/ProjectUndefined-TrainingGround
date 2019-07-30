@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,11 +7,11 @@ namespace RTPuzzle
 {
     public class NPCAIDestinationMoveManager
     {
-        private AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent;
         private NavMeshAgent objectAgent;
         private Action OnDestinationReachedEvent;
 
-        public NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
+        public NPCAIDestinationMoveManager(TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
         {
             AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
             this.objectAgent = objectAgent;
@@ -127,11 +128,5 @@ namespace RTPuzzle
         }
 
         #endregion
-    }
-
-    [System.Serializable]
-    public class AIDestimationMoveManagerComponent
-    {
-        public float SpeedMultiplicationFactor;
     }
 }

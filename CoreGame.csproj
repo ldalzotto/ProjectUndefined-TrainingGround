@@ -116,6 +116,7 @@
     <Compile Include="Assets\~CoreGame\CustomYields\WaitForTransformPositionReached.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCtusceneController.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCutscenePlayerManager.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractCutsceneAnimationAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowAbortAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\AbstractCutsceneGraph.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Abstract\ACutsceneEdge.cs" />

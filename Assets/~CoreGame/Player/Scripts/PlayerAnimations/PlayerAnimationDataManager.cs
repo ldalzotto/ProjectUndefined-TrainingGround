@@ -12,11 +12,14 @@ namespace CoreGame
         public PlayerAnimationDataManager(Animator animator)
         {
             this.animator = animator;
-            foreach (var animatorParameter in this.animator.parameters)
+            if (this.animator != null)
             {
-                if (animatorParameter.name == AnimationConstants.PlayerAnimatorParametersName.Speed)
+                foreach (var animatorParameter in this.animator.parameters)
                 {
-                    this.updateSpeed = true;
+                    if (animatorParameter.name == AnimationConstants.PlayerAnimatorParametersName.Speed)
+                    {
+                        this.updateSpeed = true;
+                    }
                 }
             }
         }

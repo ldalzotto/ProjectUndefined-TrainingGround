@@ -35,7 +35,7 @@ namespace RTPuzzle
         public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
             PuzzleEventsManager PuzzleEventsManager, InteractiveObjectContainer InteractiveObjectContainer,
             AiID aiID, Collider aiCollider, PlayerManagerDataRetriever playerManagerDataRetriever,
-            AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
+            TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent)
         {
             this.BaseInit(selfAgent, aIComponents, new GenericPuzzleAIBehaviorExternalEventManager(), OnFOVChange, ForceUpdateAIBehavior);
 

@@ -37,23 +37,24 @@ namespace RTPuzzle
             if (collisionType == null) { return null; }
             return collisionType.GetComponent<NPCAIManager>();
         }
+        public NPCCutsceneController NPCCutsceneController { get => nPCCutsceneController; }
 
 #if UNITY_EDITOR
         public NPCAIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
 #endif
         #endregion
 
-        public AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent;
-
+        private TransformMoveManagerComponentV2 aIDestimationMoveManagerComponentV2;
         private NPCAIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
         private IPuzzleAIBehavior<AbstractAIComponents> puzzleAIBehavior;
-        private NPCAnimationDataManager NPCAnimationDataManager;
         private NpcInteractionRingManager NpcFOVRingManager;
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
+        private PlayerAnimationDataManager NPCPAnimationDataManager;
+        private NPCCutsceneController nPCCutsceneController;
 
         public void Init()
         {
@@ -66,8 +67,10 @@ namespace RTPuzzle
             var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
+            var rigidBody = GetComponent<Rigidbody>();
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
+            this.aIDestimationMoveManagerComponentV2 = GetComponent<TransformMoveManagerComponentV2>();
 
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
@@ -78,17 +81,18 @@ namespace RTPuzzle
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
-            AIDestinationMoveManager = new NPCAIDestinationMoveManager(AIDestimationMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
+            AIDestinationMoveManager = new NPCAIDestinationMoveManager(aIDestimationMoveManagerComponentV2, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
             this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
-            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.AIDestimationMoveManagerComponent);
+            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.aIDestimationMoveManagerComponentV2);
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
                     aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
-            NPCAnimationDataManager = new NPCAnimationDataManager(animator);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
+            this.NPCPAnimationDataManager = new PlayerAnimationDataManager(animator);
+            this.nPCCutsceneController = new NPCCutsceneController(rigidBody, agent, animator);
 
             //Initialize movement animation
             GenericAnimatorHelper.SetMovementLayer(animator, animationConfiguration, LevelType.PUZZLE);
@@ -105,7 +109,8 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            NPCAnimationDataManager.Tick(timeAttenuationFactor);
+            nPCCutsceneController.Tick(d);
+            NPCPAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
@@ -168,7 +173,7 @@ namespace RTPuzzle
             if (this.agent != null && this.agent.hasPath)
             {
                 Vector3 startPoint = this.agent.path.corners[0];
-                for(var i = 1; i< this.agent.path.corners.Length; i++)
+                for (var i = 1; i < this.agent.path.corners.Length; i++)
                 {
                     Gizmos.DrawLine(startPoint, this.agent.path.corners[i]);
                     startPoint = this.agent.path.corners[i];
@@ -357,29 +362,6 @@ namespace RTPuzzle
         }
     }
 
-    class NPCAnimationDataManager
-    {
-        private const string ANIM_SpeedParameter = "Speed";
-        private Animator NPCAnimator;
-
-        private bool isAnimatorPlayingAnimatorController = false;
-
-        public NPCAnimationDataManager(Animator nPCAnimator)
-        {
-            NPCAnimator = nPCAnimator;
-            isAnimatorPlayingAnimatorController = this.NPCAnimator.runtimeAnimatorController != null;
-        }
-
-        public void Tick(float timeAttenuation)
-        {
-            if (isAnimatorPlayingAnimatorController)
-            {
-                this.NPCAnimator.SetFloat(ANIM_SpeedParameter, timeAttenuation);
-            }
-        }
-
-    }
-
     class AnimationVisualFeedbackManager
     {
         private Animator Animator;
@@ -409,6 +391,14 @@ namespace RTPuzzle
         internal void OnAIFearedStunned()
         {
             AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.FEAR], 0f);
+        }
+    }
+
+    public class NPCCutsceneController : AbstractCutsceneController
+    {
+        public NPCCutsceneController(Rigidbody rigidbody, NavMeshAgent agent, Animator animator)
+        {
+            base.BaseInit(rigidbody, agent, animator);
         }
     }
 }

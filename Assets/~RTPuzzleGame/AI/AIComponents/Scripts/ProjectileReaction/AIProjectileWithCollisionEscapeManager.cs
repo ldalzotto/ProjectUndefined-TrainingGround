@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,7 +15,7 @@ namespace RTPuzzle
 
         public void Init(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
                 AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<Collider[]> targetZoneTriggerColliderProvider,
-                AIDestimationMoveManagerComponent AIDestimationMoveManagerComponent)
+                TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent)
         {
             this.BaseInit(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent, PuzzleEventsManager, AIDestimationMoveManagerComponent);
             this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
