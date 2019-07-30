@@ -21,7 +21,8 @@ namespace RTPuzzle
 
         protected override AbstractCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
         {
-            return ((PuzzleCutsceneActionInput)ContextActionInput).NPCAIManagerContainer.GetNPCAiManager(this.AiID).NPCCutsceneController;
+            return null;
+           // return ((PuzzleCutsceneActionInput)ContextActionInput).NPCAIManagerContainer.GetNPCAiManager(this.AiID).NPCCutsceneController;
         }
 
 #if UNITY_EDITOR

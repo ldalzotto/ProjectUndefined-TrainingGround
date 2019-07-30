@@ -37,7 +37,6 @@ namespace RTPuzzle
             if (collisionType == null) { return null; }
             return collisionType.GetComponent<NPCAIManager>();
         }
-        public NPCCutsceneController NPCCutsceneController { get => nPCCutsceneController; }
 
 #if UNITY_EDITOR
         public NPCAIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
@@ -54,7 +53,6 @@ namespace RTPuzzle
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
         private PlayerAnimationDataManager NPCPAnimationDataManager;
-        private NPCCutsceneController nPCCutsceneController;
 
         public void Init()
         {
@@ -92,7 +90,6 @@ namespace RTPuzzle
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
             this.NPCPAnimationDataManager = new PlayerAnimationDataManager(animator);
-            this.nPCCutsceneController = new NPCCutsceneController(rigidBody, agent, animator);
 
             //Initialize movement animation
             GenericAnimatorHelper.SetMovementLayer(animator, animationConfiguration, LevelType.PUZZLE);
@@ -109,7 +106,6 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            nPCCutsceneController.Tick(d);
             NPCPAnimationDataManager.Tick(timeAttenuationFactor);
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
@@ -391,14 +387,6 @@ namespace RTPuzzle
         internal void OnAIFearedStunned()
         {
             AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.FEAR], 0f);
-        }
-    }
-
-    public class NPCCutsceneController : AbstractCutsceneController
-    {
-        public NPCCutsceneController(Rigidbody rigidbody, NavMeshAgent agent, Animator animator)
-        {
-            base.BaseInit(rigidbody, agent, animator);
         }
     }
 }

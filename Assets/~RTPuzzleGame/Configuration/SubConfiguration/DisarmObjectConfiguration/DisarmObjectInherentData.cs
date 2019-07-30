@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using GameConfigurationID;
+﻿using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -11,8 +11,11 @@ namespace RTPuzzle
         public float DisarmInteractionRange = 2.5f;
         public InteractiveObjectType DisarmObjectPrefab;
 
+        [Header("Animations")]
         [CustomEnum()]
-        public PuzzleCutsceneId PlayedCutsceneOnDisarm;
+        public AnimationID StartInteractAnimation;
+        [CustomEnum()]
+        public AnimationID OnInteractingLoopAnimation;
 
         public void Init(float DisarmTime, float DisarmInteractionRange, InteractiveObjectType DisarmObjectPrefab)
         {
@@ -20,6 +23,6 @@ namespace RTPuzzle
             this.DisarmInteractionRange = DisarmInteractionRange;
             this.DisarmObjectPrefab = DisarmObjectPrefab;
         }
-                
+
     }
 }
