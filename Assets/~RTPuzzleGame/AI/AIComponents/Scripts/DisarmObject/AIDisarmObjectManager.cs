@@ -35,12 +35,12 @@ namespace RTPuzzle
             this.isDisarmingObject = true;
             //Make agent to look at object
             this.agent.transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(this.disarmingObject.transform.position - this.agent.transform.position, this.agent.transform.up));
-            this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_Start(this.aiID, disarmingObject.DisarmObjectID);
+            this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_Start(this.aiID, disarmingObject);
         }
 
         public override void OnDisarmingObjectExit(DisarmObjectModule disarmingObject)
         {
-            if (this.disarmingObject == disarmingObject)
+            if (this.disarmingObject != null && this.disarmingObject == disarmingObject)
             {
                 this.disarmingObject = null;
                 this.isDisarmingObject = false;
@@ -62,12 +62,16 @@ namespace RTPuzzle
 
         public override bool IsManagerEnabled()
         {
-            return this.disarmingObject != null && this.isDisarmingObject;
+            return (this.disarmingObject != null && this.isDisarmingObject);
         }
 
         public override Nullable<Vector3> OnManagerTick(float d, float timeAttenuationFactor)
         {
             this.disarmingObject.IncreaseTimeElapsedBy(d * timeAttenuationFactor);
+            if (this.disarmingObject.IsAskingToBeDestroyed())
+            {
+                this.OnDisarmingObjectExit(this.disarmingObject);
+            }
             return null; //don't move while disarming
         }
 

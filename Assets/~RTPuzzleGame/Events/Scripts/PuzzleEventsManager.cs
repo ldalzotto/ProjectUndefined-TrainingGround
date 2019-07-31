@@ -71,9 +71,9 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
         }
 
-        public void PZ_EVT_AI_DisarmObject_Start(AiID aiID, DisarmObjectID disarmObjectID)
+        public void PZ_EVT_AI_DisarmObject_Start(AiID aiID, DisarmObjectModule disarmObjectModule)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart();
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart(disarmObjectModule);
         }
 
         public void PZ_EVT_AI_DisarmObject_End(AiID aiID, DisarmObjectID disarmObjectID)

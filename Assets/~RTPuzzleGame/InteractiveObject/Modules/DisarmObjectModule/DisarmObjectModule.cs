@@ -13,10 +13,12 @@ namespace RTPuzzle
         private ModelObjectModule ModelObjectModule;
         #endregion
 
-        private DisarmObjectInherentData DisarmObjectInherentConfigurationData;
+        private DisarmObjectInherentData disarmObjectInherentConfigurationData;
 
         private List<NPCAIManager> AiThatCanInteract;
         private float elapsedTime;
+
+        public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
 
         public static InteractiveObjectType Instanciate(Vector3 worldPosition, DisarmObjectInherentData DisarmObjectInherentData)
         {
@@ -29,24 +31,24 @@ namespace RTPuzzle
         public void Init(ModelObjectModule ModelObjectModule, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
         {
             this.ModelObjectModule = ModelObjectModule;
-            this.DisarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
+            this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
             this.AiThatCanInteract = new List<NPCAIManager>();
 
-            this.GetComponent<SphereCollider>().radius = this.DisarmObjectInherentConfigurationData.DisarmInteractionRange;
+            this.GetComponent<SphereCollider>().radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
             this.elapsedTime = 0f;
         }
 
         #region Logical Conditions
         public bool IsAskingToBeDestroyed()
         {
-            return (this.elapsedTime >= this.DisarmObjectInherentConfigurationData.DisarmTime);
+            return (this.elapsedTime >= this.disarmObjectInherentConfigurationData.DisarmTime);
         }
         #endregion
 
         #region Data Retrieval
         public float GetDisarmPercentage01()
         {
-            return this.elapsedTime / this.DisarmObjectInherentConfigurationData.DisarmTime;
+            return this.elapsedTime / this.disarmObjectInherentConfigurationData.DisarmTime;
         }
         public Vector3 GetProgressBarDisplayPosition()
         {

@@ -301,9 +301,9 @@ namespace RTPuzzle
             this.puzzleAIBehavior.ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(disarmObjectModule));
         }
 
-        public void OnDisarmObjectStart()
+        public void OnDisarmObjectStart(DisarmObjectModule disarmObjectModule)
         {
-            this.NPCAIAnimationManager.OnDisarmObjectStart();
+            this.NPCAIAnimationManager.OnDisarmObjectStart(disarmObjectModule);
         }
         public void OnDisarmObjectEnd()
         {
