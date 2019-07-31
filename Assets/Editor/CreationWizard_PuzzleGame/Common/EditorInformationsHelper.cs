@@ -32,6 +32,7 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLevelCompletionTriggerModule, "BaseLevelCompletionTriggerModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLaunchProjectileModule, "BaseLaunchProjectileModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseDisarmObjectModule, "BaseDisarmObjectModule");
+            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseActionInteractableObjectModule, "BaseActionInteractableObjectModule");
             #endregion
 
             #region Puzzle AI managers prefabs  
@@ -180,6 +181,8 @@ namespace Editor_MainGameCreationWizard
         public RepelableObjectsConfiguration RepelableObjectsConfiguration;
         [ReadOnly]
         public DisarmObjectConfiguration DisarmObjectConfiguration;
+        [ReadOnly]
+        public ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
     }
 
     [System.Serializable]
@@ -218,6 +221,8 @@ namespace Editor_MainGameCreationWizard
         public LaunchProjectileModule BaseLaunchProjectileModule;
         [ReadOnly]
         public DisarmObjectModule BaseDisarmObjectModule;
+        [ReadOnly]
+        public ActionInteractableObjectModule BaseActionInteractableObjectModule;
     }
 
     [System.Serializable]
@@ -279,6 +284,8 @@ namespace Editor_MainGameCreationWizard
         public string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/Prefab";
         [ReadOnly]
         public string DisarmObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/DisarmObjectConfiguration/Data";
+        [ReadOnly]
+        public string ActionInteractableObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ActionInteractableObjectConfiguration/Data";
         [ReadOnly]
         public string PlayerActionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/PlayerActionConfiguration/PlayerActionInherentData/Data";
         [ReadOnly]

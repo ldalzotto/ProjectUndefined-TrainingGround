@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\@GameConfigurationID\IDs\ActionInteractableObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AiID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AnimationID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AnimationLayerID.cs" />

@@ -69,6 +69,12 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.PuzzleCutsceneConfiguration.ConfigurationInherentData;
         }
+
+        public Dictionary<ActionInteractableObjectID, ActionInteractableObjectInherentData> ActionInteractableObjectConfiguration()
+        {
+            return PuzzleGameConfiguration.ActionInteractableObjectConfiguration.ConfigurationInherentData;
+        }
+
     }
 
 

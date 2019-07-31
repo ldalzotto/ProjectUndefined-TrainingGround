@@ -1,21 +1,21 @@
-﻿using Editor_MainGameCreationWizard;
-using System.Collections.Generic;
-using UnityEngine;
-using Editor_PuzzleLevelCreationWizard;
-using Editor_AICreationObjectCreationWizard;
+﻿using Editor_ActionInteractableObjectCreationWizard;
+using Editor_AdventureBaseLevelCreationWizard;
 using Editor_AIBehaviorCreationWizard;
-using Editor_TargetZoneCreationWizard;
-using Editor_ProjectileCreationWizard;
+using Editor_AICreationObjectCreationWizard;
+using Editor_AnimationCreationWizard;
+using Editor_AttractiveObjectCreationWizard;
+using Editor_DisarmObjectCreationWizard;
+using Editor_DiscussionTreeCreationWizard;
+using Editor_InteractiveObjectCreationWizard;
+using Editor_LevelChunkCreationWizard;
 using Editor_PlayerActionCreationWizard;
 using Editor_POICreationWizard;
-using Editor_AttractiveObjectCreationWizard;
+using Editor_ProjectileCreationWizard;
+using Editor_PuzzleLevelCreationWizard;
 using Editor_RepelableObjectCreationWizard;
-using Editor_AdventureBaseLevelCreationWizard;
-using Editor_LevelChunkCreationWizard;
-using Editor_AnimationCreationWizard;
-using Editor_InteractiveObjectCreationWizard;
-using Editor_DiscussionTreeCreationWizard;
-using Editor_DisarmObjectCreationWizard;
+using Editor_TargetZoneCreationWizard;
+using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "GameCreationWizardEditorProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile", order = 1)]
@@ -45,6 +45,7 @@ public class GameCreationWizardEditorProfile : TreeChoiceHeaderTab<ICreationWiza
             {nameof(InteractiveObjectCreationWizard), new InteractiveObjectCreationWizard() },
             {nameof(DiscussionTreeCreationWizard), new DiscussionTreeCreationWizard() },
             {nameof(DisarmObjectCreationWizard), new DisarmObjectCreationWizard() },
+            {nameof(ActionInteractableObjectCreationWizard), new ActionInteractableObjectCreationWizard() },
         };
     }
 

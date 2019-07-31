@@ -112,6 +112,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIComponentsConfiguration\AIBehaviorInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIComponentsConfiguration\AIComponentsConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackConfiguration.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AttractiveObjectModule\AttractiveObjectTypeModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\DisarmObjectModule\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LaunchProjectileModule\LaunchProjectileModule.cs" />

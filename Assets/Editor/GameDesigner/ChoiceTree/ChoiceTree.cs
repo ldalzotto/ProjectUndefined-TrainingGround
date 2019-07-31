@@ -71,7 +71,8 @@ namespace Editor_GameDesigner
             {"Configuration//." + typeof(DiscussionRepertoireConfigurationModule).Name, typeof(DiscussionRepertoireConfigurationModule) },
             {"Configuration//." + typeof(DisarmObjectConfigurationModule).Name, typeof(DisarmObjectConfigurationModule) },
             {"Configuration//." + typeof(PuzzleCutsceneConfigurationModule).Name, typeof(PuzzleCutsceneConfigurationModule) },
-
+            {"Configuration//." + typeof(ActionInteractableObjectConfigurationModule).Name, typeof(ActionInteractableObjectConfigurationModule) },
+            {"Configuration//." + typeof(EditActionInteractableObject).Name, typeof(EditActionInteractableObject) },
         };
 
         public override Dictionary<string, Type> Configurations => this.Modules;

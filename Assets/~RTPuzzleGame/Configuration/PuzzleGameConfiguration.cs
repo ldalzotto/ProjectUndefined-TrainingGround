@@ -20,5 +20,6 @@ namespace RTPuzzle
         public RepelableObjectsConfiguration RepelableObjectsConfiguration;
         public DisarmObjectConfiguration DisarmObjectConfiguration;
         public PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
+        public ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
     }
 }

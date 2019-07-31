@@ -45,5 +45,8 @@ namespace Editor_GameDesigner
         public TargetZoneID TargetZoneID;
         [CustomEnum()]
         public DisarmObjectID DisarmObjectID;
+        [CustomEnum()]
+        public ActionInteractableObjectID ActionInteractableObjectID;
+        
     }
 }
