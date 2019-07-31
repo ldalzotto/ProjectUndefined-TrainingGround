@@ -31,7 +31,7 @@ namespace RTPuzzle
         public void OnCurrentNodeSelected()
         {
             var selectedAction = PlayerActionManager.GetCurrentSelectedAction();
-            if (!selectedAction.IsOnCoolDown())
+            if (selectedAction.CanBeExecuted())
             {
                 OnRTPPlayerActionStart(selectedAction);
             }

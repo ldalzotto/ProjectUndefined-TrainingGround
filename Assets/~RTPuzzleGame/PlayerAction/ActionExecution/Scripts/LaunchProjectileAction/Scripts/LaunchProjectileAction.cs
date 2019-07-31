@@ -141,7 +141,7 @@ namespace RTPuzzle
                 this.LaunchProjectilePlayerAnimationManager.PlayThrowProjectileAnimation(
                     onAnimationEnd: () =>
                     {
-                        ResetCoolDown();
+                        this.PlayerActionConsumed();
                         var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
                                              this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().transform.up, BeziersControlPointsShape.CURVED);
                         ThrowProjectileManager.OnLaunchProjectileSpawn(this.projectileId, throwPorjectilePath);

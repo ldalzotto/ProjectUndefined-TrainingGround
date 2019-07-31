@@ -295,6 +295,10 @@ namespace RTPuzzle
         public override bool IsOnCoolDown => playerAction.IsOnCoolDown();
 
         public override float GetRemainingCooldownTime => playerAction.GetCooldownRemainingTime();
+
+        public override int GetRemainingExecutionAmount => playerAction.RemainingExecutionAmout;
+
+        public override bool CanNodeBeExecuted => playerAction.CanBeExecuted();
     }
     #endregion
 }

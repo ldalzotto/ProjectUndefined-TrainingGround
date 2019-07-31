@@ -231,6 +231,8 @@ namespace AdventureGame
 
         public override bool IsOnCoolDown => false;
         public override float GetRemainingCooldownTime => 0f;
+        public override int GetRemainingExecutionAmount => -2;
+        public override bool CanNodeBeExecuted => true;
     }
     #endregion
 }

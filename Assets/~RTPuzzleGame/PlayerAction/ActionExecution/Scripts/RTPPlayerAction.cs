@@ -14,14 +14,18 @@ namespace RTPuzzle
         protected PlayerActionInherentData playerActionInherentData;
 
         private float onCooldownTimeElapsed;
+        //-1 is infinite
+        private int remainingExecutionAmout;
 
         private CooldownEventTrackerManager CooldownEventTrackerManager;
+
 
         protected RTPPlayerAction(PlayerActionInherentData playerActionInherentData)
         {
             this.playerActionInherentData = playerActionInherentData;
             //on init, it it available
             this.onCooldownTimeElapsed = this.playerActionInherentData.CoolDownTime * 2;
+            this.remainingExecutionAmout = playerActionInherentData.ExecutionAmount;
         }
 
         public virtual void FirstExecution()
@@ -38,17 +42,25 @@ namespace RTPuzzle
                 this.CooldownEventTrackerManager.Tick(this);
             }
         }
-
-        protected void ResetCoolDown()
+        
+        protected void PlayerActionConsumed()
         {
             onCooldownTimeElapsed = 0f;
             this.CooldownEventTrackerManager.ResetCoolDown();
+            if (this.remainingExecutionAmout > 0)
+            {
+                this.remainingExecutionAmout -= 1;
+            }
         }
 
         #region Logical Conditions
         public bool IsOnCoolDown()
         {
             return onCooldownTimeElapsed < this.playerActionInherentData.CoolDownTime;
+        }
+        public bool CanBeExecuted()
+        {
+            return !this.IsOnCoolDown() && this.remainingExecutionAmout != 0;
         }
         #endregion
 
@@ -61,6 +73,8 @@ namespace RTPuzzle
         {
             return this.playerActionInherentData.ActionWheelNodeConfigurationId;
         }
+
+        public int RemainingExecutionAmout { get => remainingExecutionAmout; }
         #endregion
     }
 

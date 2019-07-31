@@ -105,7 +105,7 @@ namespace RTPuzzle
             }
 
             this.OnEndAction();
-            ResetCoolDown();
+            this.PlayerActionConsumed();
         }
         private void OnEndAction()
         {

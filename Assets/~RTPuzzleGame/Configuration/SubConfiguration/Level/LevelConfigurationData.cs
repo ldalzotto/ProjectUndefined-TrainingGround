@@ -1,4 +1,5 @@
 ﻿using GameConfigurationID;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
@@ -24,6 +25,7 @@ namespace RTPuzzle
         [SerializeField]
         public LevelRangeEffectInherentData LevelRangeEffectInherentData;
 
+        [NonSerialized]
         private List<RTPPlayerAction> playerActions;
 
         public void Init(PlayerActionConfiguration playerActionConfiguration)

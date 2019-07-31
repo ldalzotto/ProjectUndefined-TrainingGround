@@ -211,13 +211,13 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\LaunchProjectileAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\LaunchProjectileAction\Scripts\ThrowProjectileCursorType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionConfigurationManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelLineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsInstanciatedParent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Common\IRenderBoundRetrievable.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\BoxRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\FrustumRangeType.cs" />
