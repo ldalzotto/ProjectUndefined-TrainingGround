@@ -21,9 +21,9 @@ namespace RTPuzzle
 
         private CommandBuffer command;
         private GroundEffectType[] AffectedGroundEffectsType;
-        private HashSet<MeshRenderer> RenderedRenderers = new HashSet<MeshRenderer>();
+        private HashSet<MeshRenderer> RenderedRenderers;
 
-        private Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>> rangeEffectManagers = new Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>>();
+        private Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>> rangeEffectManagers;
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
             RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
@@ -34,22 +34,22 @@ namespace RTPuzzle
             RangeTypeID.TARGET_ZONE
         };
 
-        private List<CircleRangeBufferData> circleRangeBufferValues = new List<CircleRangeBufferData>();
+        private List<CircleRangeBufferData> circleRangeBufferValues;
         private DynamicComputeBufferManager<CircleRangeBufferData> CircleRangeBuffer;
 
-        private List<BoxRangeBufferData> boxRangeBufferValues = new List<BoxRangeBufferData>();
+        private List<BoxRangeBufferData> boxRangeBufferValues;
         private DynamicComputeBufferManager<BoxRangeBufferData> BoxRangeBuffer;
 
-        private List<FrustumRangeBufferData> frustumRangeBufferValues = new List<FrustumRangeBufferData>();
+        private List<FrustumRangeBufferData> frustumRangeBufferValues;
         private DynamicComputeBufferManager<FrustumRangeBufferData> FrustumRangeBuffer;
 
-        private List<RangeExecutionOrderBufferData> rangeExecutionOrderBufferDataValues = new List<RangeExecutionOrderBufferData>();
+        private List<RangeExecutionOrderBufferData> rangeExecutionOrderBufferDataValues;
         private DynamicComputeBufferManager<RangeExecutionOrderBufferData> RangeExecutionOrderBuffer;
 
         private DynamicComputeBufferManager<FrustumPointsPositions> FrustumBufferManager;
         private DynamicComputeBufferManager<RangeToFrustumBufferLink> RangeToFrustumBufferLinkManager;
-        private List<RangeToFrustumBufferLink> rangeToFrustumBufferLinkValues = new List<RangeToFrustumBufferLink>();
-        private Dictionary<ObstacleListener, List<int>> ComputedFrustumPointsWorldPositionsIndexes = new Dictionary<ObstacleListener, List<int>>();
+        private List<RangeToFrustumBufferLink> rangeToFrustumBufferLinkValues;
+        private Dictionary<ObstacleListener, List<int>> ComputedFrustumPointsWorldPositionsIndexes;
 
 #if UNITY_EDITOR
         //buffer values data retrieval
@@ -62,6 +62,17 @@ namespace RTPuzzle
 
         public void Init(LevelZonesID currentLevelID)
         {
+            #region Init Values
+            this.RenderedRenderers = new HashSet<MeshRenderer>();
+            this.rangeEffectManagers = new Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>>();
+            this.circleRangeBufferValues = new List<CircleRangeBufferData>();
+            this.boxRangeBufferValues = new List<BoxRangeBufferData>();
+            this.frustumRangeBufferValues = new List<FrustumRangeBufferData>();
+            this.rangeExecutionOrderBufferDataValues = new List<RangeExecutionOrderBufferData>();
+            this.rangeToFrustumBufferLinkValues = new List<RangeToFrustumBufferLink>();
+            this.ComputedFrustumPointsWorldPositionsIndexes = new Dictionary<ObstacleListener, List<int>>();
+            #endregion
+
             #region External Dependencies
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();

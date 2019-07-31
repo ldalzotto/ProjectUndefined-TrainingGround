@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using UnityEngine;
 
 namespace AdventureGame
@@ -19,7 +20,7 @@ namespace AdventureGame
         public PointOfInterestVisualMovementModule PointOfInterestVisualMovementModule { get => pointOfInterestVisualMovementModule; }
         public PointOfInterestSpecificBehaviorModule PointOfInterestSpecificBehaviorModule { get => pointOfInterestSpecificBehaviorModule; }
         #endregion
-
+        
         public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
             var retrievedPointOfInterestModules = this.transform.GetComponentsInChildren<APointOfInterestModule>();

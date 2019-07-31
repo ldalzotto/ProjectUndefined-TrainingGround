@@ -159,16 +159,16 @@ namespace RTPuzzle
         {
             this.NPCAIManagerContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
-            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
             this.GroundEffectsManagerV2.OnLevelExit();
+            this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
         }
 
         private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)
         {
             this.NPCAIManagerContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
-            this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
             this.GroundEffectsManagerV2.OnLevelExit();
+            this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
         }
 
         #region Level Completion Events

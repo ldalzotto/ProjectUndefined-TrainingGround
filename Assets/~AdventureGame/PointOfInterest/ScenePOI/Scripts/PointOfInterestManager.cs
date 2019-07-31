@@ -78,11 +78,6 @@ namespace AdventureGame
         {
             PointOfInterestContainerManager.OnPOIEnabled(POITobeEnabled);
         }
-
-        public void OnActualZoneSwitched()
-        {
-            PointOfInterestContainerManager.DestroyAllPOI();
-        }
         #endregion
 
         #region Data Retrieval
@@ -219,13 +214,6 @@ namespace AdventureGame
             return returnList;
         }
         #endregion
-
-        public void DestroyAllPOI()
-        {
-            var allPois = interactablePointOfInterests.Concat(nonInteractablePointOfInterest).ToList();
-            allPois.RemoveAll(e => e == null);
-            PointOfInterestEventManager.DisablePOIs(allPois.ConvertAll(p => (APointOfInterestType)p));
-        }
     }
 
 }

@@ -22,6 +22,13 @@ namespace AdventureGame
 
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
+            // This means that the POI has been persisted across scenes
+            // We reactivate POI to let ghost POI manager sync re disable it
+            if (this.POIShowHideManager != null)
+            {
+                this.POIShowHideManager.ShowModelAndEnablePhysics();
+            }
+
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
             var modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
 
@@ -70,7 +77,6 @@ namespace AdventureGame
                 }
             }
         }
-
         #endregion
     }
 
@@ -150,6 +156,12 @@ namespace AdventureGame
         private bool IsPOICanBeHideable()
         {
             return this.PointOfInterestModelObjectModule != null && !this.PointOfInterestTypeRef.PointOfInterestInherentData.IsAlwaysDisplayed;
+        }
+        
+        public void ShowModelAndEnablePhysics()
+        {
+            this.Show();
+            this.EnablePhysicsInteraction();
         }
     }
 
