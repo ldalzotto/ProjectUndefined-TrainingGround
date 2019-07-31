@@ -24,6 +24,11 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.TargetZonesConfiguration.ConfigurationInherentData;
         }
 
+        public Dictionary<PlayerActionId, PlayerActionInherentData> PlayerActionConfiguration()
+        {
+            return PuzzleGameConfiguration.PlayerActionConfiguration.ConfigurationInherentData;
+        }
+
         public Dictionary<AttractiveObjectId, AttractiveObjectInherentConfigurationData> AttractiveObjectsConfiguration()
         {
             return PuzzleGameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData;

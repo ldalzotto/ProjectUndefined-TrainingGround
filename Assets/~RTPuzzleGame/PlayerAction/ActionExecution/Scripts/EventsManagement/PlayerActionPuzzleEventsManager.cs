@@ -38,6 +38,14 @@ namespace RTPuzzle
             }
           );
         }
+        public void OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
+        {
+            this.PlayerActionManager.AddActionToAvailable(actionInteractableObjectModule.AssociatedPlayerAction);
+        }
+        public void OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
+        {
+            this.PlayerActionManager.RemoveActionToAvailable(actionInteractableObjectModule.AssociatedPlayerAction);
+        }
         #endregion
 
         private void RTPActionValidation(Action<RTPPlayerAction> ifValidatedAction)

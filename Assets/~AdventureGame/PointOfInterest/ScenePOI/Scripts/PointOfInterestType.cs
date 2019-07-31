@@ -89,6 +89,8 @@ namespace AdventureGame
 
         public override void Init()
         {
+            Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
+
             #region External Dependencies
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
@@ -111,7 +113,6 @@ namespace AdventureGame
             this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
             this.pointOfInterestLevelPositioningState = new PointOfInterestLevelPositioningState();
 
-            Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
         }
 
         public override void Init_EndOfFrame()

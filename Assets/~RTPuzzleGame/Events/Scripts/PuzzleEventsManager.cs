@@ -125,6 +125,17 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Player action management event
+        public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
+        {
+            this.PlayerActionPuzzleEventsManager.OnActionInteractableEnter(actionInteractableObjectModule);
+        }
+        public void PZ_EVT_OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
+        {
+            this.PlayerActionPuzzleEventsManager.OnActionInteractableExit(actionInteractableObjectModule);
+        }
+        #endregion
+
         public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
@@ -141,7 +152,7 @@ namespace RTPuzzle
         public void PZ_EVT_LevelReseted()
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelReseted"));
-            this.OnPuzzleToAdventureLevel(this.LevelManager.LevelID);
+            this.OnPuzzleToPuzzleLevel(this.LevelManager.LevelID);
         }
 
         private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
@@ -149,6 +160,14 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
+            this.GroundEffectsManagerV2.OnLevelExit();
+        }
+
+        private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)
+        {
+            this.NPCAIManagerContainer.OnGameOver();
+            this.DottedLineRendererManager.OnLevelExit();
+            this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
             this.GroundEffectsManagerV2.OnLevelExit();
         }
 

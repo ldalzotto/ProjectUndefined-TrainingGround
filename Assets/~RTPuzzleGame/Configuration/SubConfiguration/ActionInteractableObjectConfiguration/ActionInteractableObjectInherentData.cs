@@ -8,6 +8,8 @@ namespace RTPuzzle
     public class ActionInteractableObjectInherentData : ScriptableObject
     {
         public float InteractionRange;
+        [CustomEnum()]
+        public PlayerActionId PlayerActionId;
         public InteractiveObjectType ActionInteractableObjectPrefab;
 
         public void Init(float InteractionRange)

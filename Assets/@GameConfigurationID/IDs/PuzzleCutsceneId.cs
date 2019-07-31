@@ -14,6 +14,6 @@ namespace GameConfigurationID
     public enum PuzzleCutsceneId
     {
         NONE = 0,
-        _1_Town_GardenWatchman_BreakSpeaker = 1,
+        _1_Town_GardenDoor_InteractiveAction = 1,
     }
 }

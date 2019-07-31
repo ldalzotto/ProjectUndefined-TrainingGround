@@ -33,6 +33,10 @@ namespace CoreGame
         {
             OnLevelChange(nextZone, LevelChangeType.PUZZLE_TO_ADVENTURE);
         }
+        public void OnPuzzleToPuzzleLevel(LevelZonesID nextZone)
+        {
+            OnLevelChange(nextZone, LevelChangeType.PUZZLE_TO_PUZZLE);
+        }
 
         private void OnLevelChange(LevelZonesID nextZone, LevelChangeType LevelChangeType)
         {

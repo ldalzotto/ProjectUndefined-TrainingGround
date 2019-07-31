@@ -6,8 +6,6 @@ public class ProjectileInherentDataCutsomEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        this.DrawHeader();
-
         var ProjectileInherentDataTarget = (ProjectileInherentData)target;
         EditorGUI.BeginDisabledGroup(true);
         EditorGUILayout.ObjectField("Script : ", MonoScript.FromScriptableObject(ProjectileInherentDataTarget), typeof(MonoScript), false);

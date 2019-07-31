@@ -25,5 +25,7 @@ namespace GameConfigurationID {
     SEWER_RTP_2_STONE_PROJECTILE = 4,
     
     _1_Town_StartTurorial_SpeakerProjectile = 5,
+    
+    _1_Town_StartTutorial_GardenDoorIntreaction = 6,
   }
 }

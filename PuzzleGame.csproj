@@ -161,6 +161,7 @@
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneActionInput.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneAnimationAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\CutsceneControllers\PuzzleCutsceneController.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleCutsceneAnimationEdge.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleCutsceneAnimationNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\PuzzleCutsceneGraph.cs" />

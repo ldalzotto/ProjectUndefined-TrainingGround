@@ -17,6 +17,7 @@ namespace RTPuzzle
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
 
@@ -57,6 +58,7 @@ namespace RTPuzzle
             #region External Dependencies
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
 
             this.PopulateModules(exclusiveInitialEnabledModules);
@@ -173,8 +175,8 @@ namespace RTPuzzle
         {
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule ActionInteractableObjectModule) =>
             {
-                if (InteractiveObjectInitializationObject.ActionInteractableObjectInherentData == null) { ActionInteractableObjectModule.Init(this.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[ActionInteractableObjectModule.ActionInteractableObjectID]); }
-                else { ActionInteractableObjectModule.Init(InteractiveObjectInitializationObject.ActionInteractableObjectInherentData); }
+                if (InteractiveObjectInitializationObject.ActionInteractableObjectInherentData == null) { ActionInteractableObjectModule.Init(this.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[ActionInteractableObjectModule.ActionInteractableObjectID], this.PuzzleGameConfigurationManager, this.PuzzleEventsManager); }
+                else { ActionInteractableObjectModule.Init(InteractiveObjectInitializationObject.ActionInteractableObjectInherentData, this.PuzzleGameConfigurationManager, this.PuzzleEventsManager); }
             });
         }
 

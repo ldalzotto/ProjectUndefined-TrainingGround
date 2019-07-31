@@ -80,6 +80,14 @@ namespace RTPuzzle
         {
             PLayerSelectionWheelManager.OnWheelSleep();
         }
+        public void AddActionToAvailable(RTPPlayerAction rTPPlayerActionToAdd)
+        {
+            this.PlayerActionsAvailableManager.AddActionToAvailable(rTPPlayerActionToAdd);
+        }
+        public void RemoveActionToAvailable(RTPPlayerAction rTPPlayerActionToRemove)
+        {
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(rTPPlayerActionToRemove);
+        }
         #endregion
 
         #region Logical Conditions
@@ -204,6 +212,15 @@ namespace RTPuzzle
                     availableAction.CoolDownTick(d * timeAttenuation);
                 }
             }
+        }
+
+        public void AddActionToAvailable(RTPPlayerAction rTPPlayerActionToAdd)
+        {
+            this.currentAvailableActions.Add(rTPPlayerActionToAdd);
+        }
+        public void RemoveActionToAvailable(RTPPlayerAction rTPPlayerActionToRemove)
+        {
+            this.currentAvailableActions.Remove(rTPPlayerActionToRemove);
         }
 
         public List<RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }
