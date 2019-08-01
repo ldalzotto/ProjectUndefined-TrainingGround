@@ -156,7 +156,7 @@ namespace Editor_GameDesigner
         }
 
         private void POIModuleSwitch(Type selectedType, Action PointOfInterestModelObjectModuleAction, Action PointOfInterestCutsceneControllerAction,
-            Action PointOfInterestSpecificBehaviorModuleAction, Action PointOfInterestVisualMovementModuleAction,
+            Action PointOfInterestVisualMovementModuleAction,
             Action PointOfInterestTrackerModuleAction)
         {
             if (selectedType == typeof(PointOfInterestModelObjectModule))
@@ -166,10 +166,6 @@ namespace Editor_GameDesigner
             else if (selectedType == typeof(PointOfInterestCutsceneControllerModule))
             {
                 PointOfInterestCutsceneControllerAction.Invoke();
-            }
-            else if (selectedType == typeof(PointOfInterestSpecificBehaviorModule))
-            {
-                PointOfInterestSpecificBehaviorModuleAction.Invoke();
             }
             else if (selectedType == typeof(PointOfInterestVisualMovementModule))
             {

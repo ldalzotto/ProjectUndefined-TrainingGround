@@ -41,17 +41,6 @@ namespace Editor_GameDesigner
                                   EditorPOIModulesOperation.RemoveDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
                               }
                           },
-                          PointOfInterestSpecificBehaviorModuleAction: () =>
-                          {
-                              if (this.add)
-                              {
-                                  EditorPOIModulesOperation.AddModule<PointOfInterestSpecificBehaviorModule>(PointOfInterestType);
-                              }
-                              else
-                              {
-                                  EditorPOIModulesOperation.RemoveModule<PointOfInterestSpecificBehaviorModule>(PointOfInterestType);
-                              }
-                          },
                           PointOfInterestVisualMovementModuleAction: () =>
                           {
                               if (this.add)
@@ -89,7 +78,6 @@ namespace Editor_GameDesigner
             this.POIModuleSwitch(selectedType,
                     PointOfInterestModelObjectModuleAction: () => { returnDescription = "Model object definition."; },
                     PointOfInterestCutsceneControllerAction: () => { returnDescription = "Allow the POI to be controlled by cutscene system."; },
-                    PointOfInterestSpecificBehaviorModuleAction: () => { returnDescription = "Adding specific behavior to POI."; },
                     PointOfInterestVisualMovementModuleAction: () => { returnDescription = "Allow the POI to animate visual movement over nearest POI."; },
                     PointOfInterestTrackerModuleAction: () => { returnDescription = "Track and store nearest POI."; }
                 );
@@ -98,7 +86,7 @@ namespace Editor_GameDesigner
 
 
         private void POIModuleSwitch(Type selectedType, Action PointOfInterestModelObjectModuleAction, Action PointOfInterestCutsceneControllerAction,
-                Action PointOfInterestSpecificBehaviorModuleAction, Action PointOfInterestVisualMovementModuleAction,
+                Action PointOfInterestVisualMovementModuleAction,
                 Action PointOfInterestTrackerModuleAction)
         {
             if (selectedType == typeof(PointOfInterestModelObjectModule))
@@ -108,10 +96,6 @@ namespace Editor_GameDesigner
             else if (selectedType == typeof(PointOfInterestCutsceneControllerModule))
             {
                 PointOfInterestCutsceneControllerAction.Invoke();
-            }
-            else if (selectedType == typeof(PointOfInterestSpecificBehaviorModule))
-            {
-                PointOfInterestSpecificBehaviorModuleAction.Invoke();
             }
             else if (selectedType == typeof(PointOfInterestVisualMovementModule))
             {
