@@ -25,7 +25,7 @@ namespace Editor_LevelChunkCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdBaseChunk = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.BaseLevelChunkPrefab, editorProfile);
+            var createdBaseChunk = this.Create(InstancePath.LevelChunkBaseLevelPrefabPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.BaseLevelChunkPrefab, editorProfile);
             createdBaseChunk.LevelZoneChunkID = editorInformationsData.LevelZoneChunkID;
             PrefabUtility.SavePrefabAsset(createdBaseChunk.gameObject);
         }

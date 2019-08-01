@@ -1,4 +1,5 @@
 ﻿using Editor_LevelCreation;
+using Editor_MainGameCreationWizard;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace Editor_LevelChunkCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var levelChunkPrefabCreation = editorProfile.GetModule<LevelChunkPrefabCreation>();
             this.CreateNewScene();
-            var scenePath = LevelPathHelper.BuilChunkPath(editorInformationsData.CommonGameConfigurations.InstancePath.LevelBasePath, editorInformationsData.AssociatedAdventureLevelID, editorInformationsData.LevelZoneChunkID);
+            var scenePath = LevelPathHelper.BuilChunkPath(InstancePath.LevelBasePath, editorInformationsData.AssociatedAdventureLevelID, editorInformationsData.LevelZoneChunkID);
             if (this.SaveScene(scenePath))
             {
                 PrefabUtility.InstantiatePrefab(levelChunkPrefabCreation.CreatedPrefab);

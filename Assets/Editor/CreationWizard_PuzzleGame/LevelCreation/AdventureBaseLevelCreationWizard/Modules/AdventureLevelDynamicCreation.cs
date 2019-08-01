@@ -25,7 +25,7 @@ namespace Editor_AdventureBaseLevelCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdLevelManager = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.PuzzleLevelDynamicsPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.AdventureLevelDynamics, editorProfile);
+            var createdLevelManager = this.Create(InstancePath.PuzzleLevelDynamicsPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.AdventureLevelDynamics, editorProfile);
             createdLevelManager.LevelID = editorInformationsData.LevelZonesID;
             PrefabUtility.SavePrefabAsset(createdLevelManager.gameObject);
         }

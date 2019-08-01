@@ -23,7 +23,6 @@ public class AIComponentGeneration : EditorWindow
     private const string AIModuleWizardConstant = "Assets/Editor/GameDesigner/Modules/AI/AIModuleWizard/AIManagerModuleWizardConstants.cs";
     private const string AICommonPrefabsPath = "Assets/Editor/CreationWizard_PuzzleGame/Common/PuzzleAICommonPrefabs.cs";
 
-
     private string AIComponentBaseName;
 
     private DirectoryInfo componentDirectory;
@@ -74,7 +73,7 @@ public class AIComponentGeneration : EditorWindow
         componentClass.BaseTypes.Add(typeof(AbstractAIComponent).Name);
         componentClass.CustomAttributes.Add(new CodeAttributeDeclaration("Serializable"));
 
-        componentClass.CustomAttributes.Add(GenereacteCreateAssetMenuAttribute(componentClass.Name, "Configuration/PuzzleGame/AIComponentsConfiguration/" + componentClass.Name));
+        componentClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(componentClass.Name, "Configuration/PuzzleGame/AIComponentsConfiguration/" + componentClass.Name));
 
         this.abstractManagerClass = new CodeTypeDeclaration("Abstract" + this.AIComponentBaseName + "Manager");
         abstractManagerClass.IsClass = true;
@@ -212,7 +211,7 @@ public class AIComponentGeneration : EditorWindow
         genericPuzzleAIComponentsClass.BaseTypes.Add(typeof(AbstractAIComponents).Name);
 
         genericPuzzleAIComponentsClass.CustomAttributes.Add(new CodeAttributeDeclaration("Serializable"));
-        genericPuzzleAIComponentsClass.CustomAttributes.Add(this.GenereacteCreateAssetMenuAttribute(typeof(GenericPuzzleAIComponents).Name, "Configuration/PuzzleGame/AIComponentsConfiguration/GenericPuzzleAIComponents"));
+        genericPuzzleAIComponentsClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(typeof(GenericPuzzleAIComponents).Name, "Configuration/PuzzleGame/AIComponentsConfiguration/GenericPuzzleAIComponents"));
 
         foreach (var GenericPuzzleAIComponentsField in typeof(GenericPuzzleAIComponents).GetFields())
         {
@@ -263,7 +262,7 @@ public class AIComponentGeneration : EditorWindow
                  .GroupBy(kv => kv.Key)
                 .ToDictionary(kv => kv.Key, kv => kv.First().Value);
         //Add new the new component
-        AIManagerDescriptionMessageField.InitExpression = new CodeSnippetExpression("new Dictionary<Type, string>()" + FormatDictionaryToCodeSnippet(AIManagerDescriptionMessageDic));
+        AIManagerDescriptionMessageField.InitExpression = new CodeSnippetExpression("new Dictionary<Type, string>()" + CodeGenerationHelper.FormatDictionaryToCodeSnippet(AIManagerDescriptionMessageDic));
 
         AIManagerModuleWizardConstantsClass.Members.Add(AIManagerDescriptionMessageField);
 
@@ -275,7 +274,7 @@ public class AIComponentGeneration : EditorWindow
                .Union(new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("typeof(" + this.managerClass.Name + ")", "\"" + this.componentClass.Name + "\"") }) //Add the newly created comonent
                  .GroupBy(kv => kv.Key)
                .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        AIManagerAssociatedComponentField.InitExpression = new CodeSnippetExpression("new Dictionary<Type, string>()" + FormatDictionaryToCodeSnippet(AIManagerAssociatedComponentFieldDic));
+        AIManagerAssociatedComponentField.InitExpression = new CodeSnippetExpression("new Dictionary<Type, string>()" + CodeGenerationHelper.FormatDictionaryToCodeSnippet(AIManagerAssociatedComponentFieldDic));
 
         AIManagerModuleWizardConstantsClass.Members.Add(AIManagerAssociatedComponentField);
 
@@ -298,19 +297,8 @@ public class AIComponentGeneration : EditorWindow
         CodeCompileUnit compileUnity = new CodeCompileUnit();
         CodeNamespace samples = new CodeNamespace(typeof(PuzzleAICommonPrefabs).Namespace);
         samples.Imports.Add(new CodeNamespaceImport("RTPuzzle"));
-        var aiCommonPrefabClass = new CodeTypeDeclaration(typeof(PuzzleAICommonPrefabs).Name);
-        aiCommonPrefabClass.IsClass = true;
-        aiCommonPrefabClass.TypeAttributes = System.Reflection.TypeAttributes.Public;
-        aiCommonPrefabClass.CustomAttributes.Add(new CodeAttributeDeclaration("System.Serializable"));
 
-
-        foreach (var PuzzleAICommonPrefabsField in typeof(PuzzleAICommonPrefabs).GetFields())
-        {
-            var addedField = new CodeMemberField(PuzzleAICommonPrefabsField.FieldType.Name, PuzzleAICommonPrefabsField.Name);
-            addedField.Attributes = MemberAttributes.Public;
-            addedField.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
-            aiCommonPrefabClass.Members.Add(addedField);
-        }
+        var aiCommonPrefabClass = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(PuzzleAICommonPrefabs));
 
         //add new manager
         if (typeof(PuzzleAICommonPrefabs).GetFields().ToList().Select(f => f).Where(f => f.FieldType.Name == this.managerClass.Name).ToList().Count() == 0)
@@ -334,28 +322,4 @@ public class AIComponentGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-
-    #region Helper    
-    private CodeAttributeDeclaration GenereacteCreateAssetMenuAttribute(string filename, string menuName)
-    {
-        var createAssetMenuAttribute = new CodeAttributeDeclaration("CreateAssetMenu");
-        createAssetMenuAttribute.Arguments.Add(new CodeAttributeArgument("fileName", new CodePrimitiveExpression(filename)));
-        createAssetMenuAttribute.Arguments.Add(new CodeAttributeArgument("menuName", new CodePrimitiveExpression(menuName)));
-        createAssetMenuAttribute.Arguments.Add(new CodeAttributeArgument("order", new CodePrimitiveExpression(1)));
-        return createAssetMenuAttribute;
-    }
-
-    private string FormatDictionaryToCodeSnippet(Dictionary<string, string> dic)
-    {
-        string snippetString = "{\n";
-        foreach (var dicEntry in dic)
-        {
-            snippetString += "{" + dicEntry.Key + "," + dicEntry.Value + "},\n";
-        }
-        snippetString += "}";
-        return snippetString;
-    }
-
-
-    #endregion
 }

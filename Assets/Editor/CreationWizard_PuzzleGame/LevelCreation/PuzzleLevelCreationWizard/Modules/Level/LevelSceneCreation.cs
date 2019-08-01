@@ -5,6 +5,7 @@ using UnityEditor.SceneManagement;
 using System;
 using System.Collections.Generic;
 using Editor_LevelCreation;
+using Editor_MainGameCreationWizard;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
@@ -17,7 +18,7 @@ namespace Editor_PuzzleLevelCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var puzzleLevelDynamicsCreation = editorProfile.GetModule<PuzzleLevelDynamicsCreation>();
             this.CreateNewScene();
-            var scenePath = LevelPathHelper.BuildBaseLevelPath(editorInformationsData.CommonGameConfigurations.InstancePath.LevelBasePath, editorInformationsData.AssociatedAdventureLevelID, editorInformationsData.LevelZonesID);
+            var scenePath = LevelPathHelper.BuildBaseLevelPath(InstancePath.LevelBasePath, editorInformationsData.AssociatedAdventureLevelID, editorInformationsData.LevelZonesID);
             if (this.SaveScene(scenePath))
             {
                 PrefabUtility.InstantiatePrefab(editorInformationsData.CommonGameConfigurations.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements);

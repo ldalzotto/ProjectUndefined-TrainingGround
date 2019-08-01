@@ -11,7 +11,7 @@ namespace Editor_AttractiveObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(editorInfomrationsData.CommonGameConfigurations.InstancePath.AttractiveObjectInherantDataPath, editorInfomrationsData.AttractiveObjectId.ToString() + NameConstants.AttractiveObjectInherentData, editorProfile);
+            this.CreateAsset(InstancePath.AttractiveObjectInherantDataPath, editorInfomrationsData.AttractiveObjectId.ToString() + NameConstants.AttractiveObjectInherentData, editorProfile);
             this.AddToGameConfiguration(editorInfomrationsData.AttractiveObjectId, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration, editorProfile);
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>
             {

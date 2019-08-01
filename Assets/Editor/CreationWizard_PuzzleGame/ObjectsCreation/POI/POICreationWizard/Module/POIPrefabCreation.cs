@@ -23,7 +23,7 @@ namespace Editor_POICreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdPOI = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.POIPrefabPath, editorInformationsData.PointOfInterestID.ToString() + NameConstants.POIPrefab, editorProfile);
+            var createdPOI = this.Create(InstancePath.POIPrefabPath, editorInformationsData.PointOfInterestID.ToString() + NameConstants.POIPrefab, editorProfile);
             createdPOI.GetComponentInChildren<PointOfInterestType>().PointOfInterestId = editorInformationsData.PointOfInterestID;
             var savedPrefab = PrefabUtility.SavePrefabAsset(createdPOI.gameObject);
 

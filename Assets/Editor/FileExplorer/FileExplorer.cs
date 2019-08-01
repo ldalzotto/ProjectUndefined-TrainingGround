@@ -39,10 +39,10 @@ public class FileExplorer : EditorWindow
         }
 
         this.FileExplorerEditorProfile.FoundedFolders.Clear();
-        this.FileExplorerEditorProfile.FoundedFolders.Add("Interactive objects : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(this.CommonGameConfigurations.InstancePath.InteractiveObjectPrefabPath, typeof(DefaultAsset)));
-        this.FileExplorerEditorProfile.FoundedFolders.Add("POI : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(this.CommonGameConfigurations.InstancePath.POIPrefabPath, typeof(DefaultAsset)));
-        this.FileExplorerEditorProfile.FoundedFolders.Add("Cutscenes : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(this.CommonGameConfigurations.InstancePath.CutsceneGraphPath, typeof(DefaultAsset)));
-        this.FileExplorerEditorProfile.FoundedFolders.Add("AI : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(this.CommonGameConfigurations.InstancePath.AIPrefabPaths, typeof(DefaultAsset)));
+        this.FileExplorerEditorProfile.FoundedFolders.Add("Interactive objects : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(InstancePath.InteractiveObjectPrefabPath, typeof(DefaultAsset)));
+        this.FileExplorerEditorProfile.FoundedFolders.Add("POI : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(InstancePath.POIPrefabPath, typeof(DefaultAsset)));
+        this.FileExplorerEditorProfile.FoundedFolders.Add("Cutscenes : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(InstancePath.CutsceneGraphPath, typeof(DefaultAsset)));
+        this.FileExplorerEditorProfile.FoundedFolders.Add("AI : ", (DefaultAsset)AssetDatabase.LoadAssetAtPath(InstancePath.AIPrefabPaths, typeof(DefaultAsset)));
     }
 
     private RegexTextFinder FileRegexSearch;

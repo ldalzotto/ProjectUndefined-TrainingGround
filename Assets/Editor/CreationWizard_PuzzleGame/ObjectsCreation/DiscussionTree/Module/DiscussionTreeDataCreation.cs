@@ -10,7 +10,7 @@ namespace Editor_DiscussionTreeCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdDiscussionTreeNodeEditorProfile = this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.DiscussionTreePath,
+            var createdDiscussionTreeNodeEditorProfile = this.CreateAsset(InstancePath.DiscussionTreePath,
                     editorInformationsData.DiscussionTreeId.ToString() + NameConstants.DiscussionNodeEditorObject, editorProfile);
             createdDiscussionTreeNodeEditorProfile.DiscussionTreeID = editorInformationsData.DiscussionTreeId;
             EditorUtility.SetDirty(createdDiscussionTreeNodeEditorProfile);

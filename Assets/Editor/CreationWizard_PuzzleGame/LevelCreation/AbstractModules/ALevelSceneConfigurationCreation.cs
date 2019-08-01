@@ -13,7 +13,7 @@ public abstract class ALevelSceneConfigurationCreation : CreateableScriptableObj
 
     public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
     {
-        var levelZoneConfiguration = this.CreateAsset(GetCommonGameConfigurations(editorProfile).InstancePath.LevelZoneSceneConfigurationDataPath, GetLevelZonesID(editorProfile) + NameConstants.LevelSceneConfigurationData, editorProfile);
+        var levelZoneConfiguration = this.CreateAsset(InstancePath.LevelZoneSceneConfigurationDataPath, GetLevelZonesID(editorProfile) + NameConstants.LevelSceneConfigurationData, editorProfile);
 
         GetCommonGameConfigurations(editorProfile).PuzzleGameConfigurations.LevelZonesSceneConfiguration.SetEntry(GetLevelZonesID(editorProfile), levelZoneConfiguration);
         editorProfile.GameConfigurationModified(GetCommonGameConfigurations(editorProfile).PuzzleGameConfigurations.LevelZonesSceneConfiguration, GetLevelZonesID(editorProfile), levelZoneConfiguration);

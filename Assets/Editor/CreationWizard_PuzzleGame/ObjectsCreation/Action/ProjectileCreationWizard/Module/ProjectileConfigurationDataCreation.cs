@@ -13,7 +13,7 @@ namespace Editor_ProjectileCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>();
-            this.CreateAsset(editorInformations.EditorInformationsData.CommonGameConfigurations.InstancePath.ProjectileInherentDataPath, editorInformations.EditorInformationsData.LaunchProjectileId.ToString() + NameConstants.ProjectileInherentData
+            this.CreateAsset(InstancePath.ProjectileInherentDataPath, editorInformations.EditorInformationsData.LaunchProjectileId.ToString() + NameConstants.ProjectileInherentData
                  , editorProfile);
             this.AddToGameConfiguration(editorInformations.EditorInformationsData.LaunchProjectileId, editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration, editorProfile);
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>

@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using Editor_MainGameCreationWizard;
+using RTPuzzle;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +39,7 @@ namespace Editor_GameDesigner
         private void ProcessAIManagerEdit(string aiComponentFieldName, AbstractAIManager aiComponentBasePrefab, Type aiManagerType)
         {
             var aiID = this.currentSelectedObjet.GetComponent<NPCAIManager>().AiID;
-            var componentsFolderPath = this.CommonGameConfigurations.InstancePath.AIBehaviorConfigurationPath + "/" + aiID.ToString() + "_Components";
+            var componentsFolderPath = InstancePath.AIBehaviorConfigurationPath + "/" + aiID.ToString() + "_Components";
             if (this.add)
             {
 

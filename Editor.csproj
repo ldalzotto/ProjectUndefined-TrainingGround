@@ -66,7 +66,9 @@
     <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
     <Compile Include="Assets\Editor\ByEnumPropertyEditors\ByEnumPropertyEditors.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\AIComponentGeneration\AIComponentGeneration.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\CodeGenerationHelper.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\EnumGeneration\EnumIDGeneration.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\PuzzleIdentifiedObjectGeneration\PuzzleIdentifiedObjectGeneration.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
@@ -93,10 +95,13 @@
     <Compile Include="Assets\Editor\CreationWizard\Constants\ErrorMessages.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\InstancePath.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleAICommonPrefabs.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleGameConfigurations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfileChoiceTree.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelHierarchyCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelSceneConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\AdventureBaseLevelCreationWizard.cs" />
@@ -298,6 +303,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTreeConstant.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Helpers\GameDesignerHelper.cs" />
@@ -383,7 +389,12 @@
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerConfigurationCreation\Create${baseName}.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizard.cs.txt" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>

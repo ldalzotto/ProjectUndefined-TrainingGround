@@ -31,7 +31,7 @@ namespace Editor_AICreationObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdAI = this.Create(editorInformationsData.CommonGameConfigurations.InstancePath.AIPrefabPaths, editorInformationsData.AiID.ToString() + NameConstants.BaseAIPrefab + "V2", editorProfile);
+            var createdAI = this.Create(InstancePath.AIPrefabPaths, editorInformationsData.AiID.ToString() + NameConstants.BaseAIPrefab + "V2", editorProfile);
             createdAI.AiID = editorInformationsData.AiID;
             PrefabUtility.SavePrefabAsset(createdAI.gameObject);
         }

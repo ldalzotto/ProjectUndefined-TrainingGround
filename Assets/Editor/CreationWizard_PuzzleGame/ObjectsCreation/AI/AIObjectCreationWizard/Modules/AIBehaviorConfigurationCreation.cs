@@ -12,7 +12,7 @@ namespace Editor_AICreationObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(editorInformationsData.CommonGameConfigurations.InstancePath.AIBehaviorConfigurationPath, editorInformationsData.AiID.ToString() + NameConstants.AIBehavior, editorProfile);
+            this.CreateAsset(InstancePath.AIBehaviorConfigurationPath, editorInformationsData.AiID.ToString() + NameConstants.AIBehavior, editorProfile);
             this.AddToGameConfiguration(editorInformationsData.AiID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration, editorProfile);
         }
     }

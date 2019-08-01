@@ -133,9 +133,7 @@ namespace Editor_MainGameCreationWizard
         public PuzzleAICommonPrefabs PuzzleAICommonPrefabs;
         public PuzzleGameConfigurations PuzzleGameConfigurations;
         public PuzzleInteractiveObjectModulePrefabs PuzzleInteractiveObjectModulePrefabs;
-
-        public InstacePath InstancePath;
-
+        
         public CommonGameConfigurations()
         {
             this.CoreGameConfigurations = new CoreGameConfigurations();
@@ -145,7 +143,6 @@ namespace Editor_MainGameCreationWizard
             this.PuzzleAICommonPrefabs = new PuzzleAICommonPrefabs();
             this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
             this.PuzzleInteractiveObjectModulePrefabs = new PuzzleInteractiveObjectModulePrefabs();
-            this.InstancePath = new InstacePath();
         }
     }
 
@@ -156,34 +153,6 @@ namespace Editor_MainGameCreationWizard
         public AnimationConfiguration AnimationConfiguration;
     }
 
-    [System.Serializable]
-    public class PuzzleGameConfigurations
-    {
-        [ReadOnly]
-        public LevelConfiguration LevelConfiguration;
-        [ReadOnly]
-        public LevelZonesSceneConfiguration LevelZonesSceneConfiguration;
-        [ReadOnly]
-        public LevelHierarchyConfiguration LevelHierarchyConfiguration;
-        [ReadOnly]
-        public ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
-        [ReadOnly]
-        public AIComponentsConfiguration AIComponentsConfiguration;
-        [ReadOnly]
-        public TargetZonesConfiguration TargetZonesConfiguration;
-        [ReadOnly]
-        public ProjectileConfiguration ProjectileConfiguration;
-        [ReadOnly]
-        public PlayerActionConfiguration PlayerActionConfiguration;
-        [ReadOnly]
-        public AttractiveObjectConfiguration AttractiveObjectConfiguration;
-        [ReadOnly]
-        public RepelableObjectsConfiguration RepelableObjectsConfiguration;
-        [ReadOnly]
-        public DisarmObjectConfiguration DisarmObjectConfiguration;
-        [ReadOnly]
-        public ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
-    }
 
     [System.Serializable]
     public class PuzzleLevelCommonPrefabs
@@ -247,64 +216,5 @@ namespace Editor_MainGameCreationWizard
         public GameObject AdventureGameManagersNonPersistant;
         [ReadOnly]
         public PointOfInterestTrackerModule BasePointOfInterestTrackerModule;
-    }
-
-    [System.Serializable]
-    public class InstacePath
-    {
-        [ReadOnly]
-        public string LevelBasePath = "Assets/_Scenes";
-        [ReadOnly]
-        public string LevelConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/LevelConfigurationData";
-        [ReadOnly]
-        public string LevelCompletionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/CompletionConfiguration/Data";
-        [ReadOnly]
-        public string LevelCompletionConditionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/CompletionCondition/Data";
-        [ReadOnly]
-        public string PuzzleLevelDynamicsPath = "Assets/~CoreGame/LevelManagement/Prefab";
-        [ReadOnly]
-        public string PuzzleLevelHierarchyDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelHierarchyConfiguration/LevelHierarchyConfigurationData";
-        [ReadOnly]
-        public string LevelZoneSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelZonesSceneConfiguration/LevelZonesSceneConfigurationData";
-        [ReadOnly]
-        public string LevelZoneChunkSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/ChunkZonesSceneConfiguration/ChunkZonesSceneConfigurationData";
-        [ReadOnly]
-        public string LevelChunkBaseLevelPrefabPath = "Assets/~CoreGame/LevelManagement/Prefab";
-        [ReadOnly]
-        public string AIPrefabPaths = "Assets/~RTPuzzleGame/AI/Prefabs";
-        [ReadOnly]
-        public string AIBehaviorConfigurationPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AIComponentsConfiguration/Configuration";
-        [ReadOnly]
-        public string TargetZoneConfigurationDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/TargetZonesConfiguration/Data";
-        [ReadOnly]
-        public string TargetZonePrefabPath = "Assets/~RTPuzzleGame/TargetZone/Prefab";
-        [ReadOnly]
-        public string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ProjectileConfiguration/Data";
-        [ReadOnly]
-        public string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/Prefab";
-        [ReadOnly]
-        public string DisarmObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/DisarmObjectConfiguration/Data";
-        [ReadOnly]
-        public string ActionInteractableObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ActionInteractableObjectConfiguration/Data";
-        [ReadOnly]
-        public string PlayerActionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/PlayerActionConfiguration/PlayerActionInherentData/Data";
-        [ReadOnly]
-        public string POIPrefabPath = "Assets/~AdventureGame/PointOfInterest/ScenePOI/Items";
-        [ReadOnly]
-        public string POIInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestConfiguration/Data";
-        [ReadOnly]
-        public string AttractiveObjectInherantDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData";
-        [ReadOnly]
-        public string RepelableObjectInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjects/RepelableObjectsConfiguration/RepelableObjectsConfigurationData";
-        [ReadOnly]
-        public string RepelableObjectPrefabPath = "Assets/~RTPuzzleGame/PlayerAction/PlayerActionInteractionBehavior/Repel/Prefabs";
-        [ReadOnly]
-        public string AnimationConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/AnimationConfiguration/AnimationConfigurationData";
-        [ReadOnly]
-        public string InteractiveObjectPrefabPath = "Assets/~RTPuzzleGame/InteractiveObject/Prefabs";
-        [ReadOnly]
-        public string DiscussionTreePath = "Assets/Editor/Configuration/AdventureGame/DiscussionConfiguration";
-        [ReadOnly]
-        public string CutsceneGraphPath = "Assets/~AdventureGame/Configuration/SubConfiguration/CutsceneConfiguration/CutsceneConfigurationData";
     }
 }

@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
+﻿using ConfigurationEditor;
 using System;
 using System.Collections.Generic;
-using ConfigurationEditor;
 
 namespace CreationWizard
 {
@@ -26,10 +23,10 @@ namespace CreationWizard
             }
             return string.Empty;
         }
-        
+
         public static string AlreadyPresentInConfigurationV2(Enum key, IConfigurationSerialization configuration)
         {
-            if (configuration.GetKeys().Contains(key))
+            if (configuration != null && configuration.GetKeys().Contains(key))
             {
                 return ErrorMessages.GetConfigurationOverriteMessage(key, configuration.GetType().Name);
             }

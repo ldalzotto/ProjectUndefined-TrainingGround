@@ -55,7 +55,7 @@ namespace Editor_AIBehaviorCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var createdAIComponents = this.CreateAsset(editorInformations.CommonGameConfigurations.InstancePath.AIBehaviorConfigurationPath, editorInformations.AiID.ToString() + NameConstants.AIComponents, editorProfile);
+            var createdAIComponents = this.CreateAsset(InstancePath.AIBehaviorConfigurationPath, editorInformations.AiID.ToString() + NameConstants.AIComponents, editorProfile);
             this.CreatedObject = createdAIComponents;
 
             var aiBehavrioConfiguration = editorInformations.CommonGameConfigurations.PuzzleGameConfigurations.AIComponentsConfiguration.ConfigurationInherentData[editorInformations.AiID];
@@ -63,7 +63,7 @@ namespace Editor_AIBehaviorCreationWizard
             aiBehavrioConfigurationSerialized.FindProperty(nameof(aiBehavrioConfiguration.AIComponents)).objectReferenceValue= createdAIComponents;
             aiBehavrioConfigurationSerialized.ApplyModifiedProperties();
 
-            var componentsFolderPath = editorInformations.CommonGameConfigurations.InstancePath.AIBehaviorConfigurationPath + "/" + editorInformations.AiID.ToString() + "_Components";
+            var componentsFolderPath = InstancePath.AIBehaviorConfigurationPath + "/" + editorInformations.AiID.ToString() + "_Components";
             this.CreateFolderIfNecessary(componentsFolderPath);
 
             var createdAIComponentsSerialied = new SerializedObject(createdAIComponents);
