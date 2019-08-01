@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace RTPuzzle
 {
     public class InteractiveObjectType : MonoBehaviour
     {
+        [CustomEnum()]
+        public InteractiveObjectID InteractiveObjectID;
 
         #region Modules
         private Dictionary<Type, InteractiveObjectModule> enabledModules;

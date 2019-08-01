@@ -20,8 +20,9 @@ namespace Editor_InteractiveObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.Create(InstancePath.InteractiveObjectPrefabPath, editorInformations.ObjectName + NameConstants.InteractiveObject + editorInformations.ObjectDominantPrefix,
+            var interactiveObject = this.Create(InstancePath.InteractiveObjectPrefabPath, editorInformations.InteractiveObjectID.ToString() + NameConstants.InteractiveObject + editorInformations.ObjectDominantPrefix,
                     editorProfile);
+            interactiveObject.InteractiveObjectID = editorInformations.InteractiveObjectID;
             PrefabUtility.SavePrefabAsset(this.CreatedPrefab.gameObject);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using CreationWizard;
 using Editor_MainGameCreationWizard;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEditor;
 
@@ -30,7 +31,6 @@ namespace Editor_InteractiveObjectCreationWizard
             this.InitProperties();
             return new List<string>() {
                 EditorInformationsHelper.ComputeErrorState(ref this.EditorInformationsData.CommonGameConfigurations),
-                ErrorHelper.NonNullity(this.EditorInformationsData.ObjectName, nameof(this.EditorInformationsData.ObjectName)),
                 ErrorHelper.NonNullity(this.EditorInformationsData.ObjectDominantPrefix, nameof(this.EditorInformationsData.ObjectDominantPrefix))
             }.Find(s => !string.IsNullOrEmpty(s));
         }
@@ -45,7 +45,8 @@ namespace Editor_InteractiveObjectCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
-        public string ObjectName;
+        [CustomEnum()]
+        public InteractiveObjectID InteractiveObjectID;
         public string ObjectDominantPrefix;
         public CommonGameConfigurations CommonGameConfigurations;
     }

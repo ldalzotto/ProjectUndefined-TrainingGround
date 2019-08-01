@@ -13,7 +13,7 @@ namespace RTPuzzle
         #endregion
 
         #region Generic Container
-        private List<InteractiveObjectType> interactiveObjects;
+        private Dictionary<InteractiveObjectID, List<InteractiveObjectType>> interactiveObjects;
         #endregion
 
         #region Specific Containers
@@ -38,7 +38,7 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.DisarmObjectProgressBarRendererManager = GameObject.FindObjectOfType<DisarmObjectProgressBarRendererManager>();
 
-            this.interactiveObjects = new List<InteractiveObjectType>();
+            this.interactiveObjects = new Dictionary<InteractiveObjectID, List<InteractiveObjectType>>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectTypeModule>();
             this.objectsRepelable = new List<ObjectRepelTypeModule>();
             this.targetZones = new Dictionary<TargetZoneID, TargetZoneObjectModule>();
@@ -56,21 +56,28 @@ namespace RTPuzzle
 
         public void Tick(float d, float timeAttenuationFactor)
         {
-            foreach (var interactiveObject in interactiveObjects)
+            foreach (var idAssociatedInteractiveObjects in interactiveObjects.Values)
             {
-                interactiveObject.Tick(d, timeAttenuationFactor);
+                foreach (var interactiveObject in idAssociatedInteractiveObjects)
+                {
+                    interactiveObject.Tick(d, timeAttenuationFactor);
+                }
             }
 
             //After Tick
             List<InteractiveObjectType> interactiveObjectsToRemove = null;
-            foreach (var interactiveObject in interactiveObjects)
+
+            foreach (var idAssociatedInteractiveObjects in interactiveObjects.Values)
             {
-                if ((interactiveObject.GetModule<AttractiveObjectTypeModule>() != null && interactiveObject.GetModule<AttractiveObjectTypeModule>().IsAskingToBeDestroyed())
+                foreach (var interactiveObject in idAssociatedInteractiveObjects)
+                {
+                    if ((interactiveObject.GetModule<AttractiveObjectTypeModule>() != null && interactiveObject.GetModule<AttractiveObjectTypeModule>().IsAskingToBeDestroyed())
                     || (interactiveObject.GetModule<DisarmObjectModule>() != null && interactiveObject.GetModule<DisarmObjectModule>().IsAskingToBeDestroyed())
                    )
-                {
-                    if (interactiveObjectsToRemove == null) { interactiveObjectsToRemove = new List<InteractiveObjectType>(); }
-                    interactiveObjectsToRemove.Add(interactiveObject);
+                    {
+                        if (interactiveObjectsToRemove == null) { interactiveObjectsToRemove = new List<InteractiveObjectType>(); }
+                        interactiveObjectsToRemove.Add(interactiveObject);
+                    }
                 }
             }
 
@@ -86,7 +93,11 @@ namespace RTPuzzle
         #region External Event
         public void OnInteractiveObjectAdded(InteractiveObjectType interactiveObject)
         {
-            this.interactiveObjects.Add(interactiveObject);
+            if (!this.interactiveObjects.ContainsKey(interactiveObject.InteractiveObjectID))
+            {
+                this.interactiveObjects.Add(interactiveObject.InteractiveObjectID, new List<InteractiveObjectType>());
+            }
+            this.interactiveObjects[interactiveObject.InteractiveObjectID].Add(interactiveObject);
         }
 
         public void OnModuleEnabled(InteractiveObjectModule enabledModule)
@@ -145,7 +156,11 @@ namespace RTPuzzle
 
         private void OnInteractiveObjectDestroyedLogic(InteractiveObjectType interactiveObject)
         {
-            this.interactiveObjects.Remove(interactiveObject);
+            this.interactiveObjects[interactiveObject.InteractiveObjectID].Remove(interactiveObject);
+            if (this.interactiveObjects[interactiveObject.InteractiveObjectID].Count == 0)
+            {
+                this.interactiveObjects.Remove(interactiveObject.InteractiveObjectID);
+            }
 
             #region AttractiveObjectTypeModule
             interactiveObject.GetModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule AttractiveObjectTypeModule) =>
