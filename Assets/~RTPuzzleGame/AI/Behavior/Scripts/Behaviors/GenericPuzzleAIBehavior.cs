@@ -155,7 +155,7 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public override void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
+        public override void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {
             this.ReceiveEvent(new AttractiveObectDestroyedAIBehaviorEvent(attractiveObjectToDestroy));
         }
@@ -166,11 +166,11 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(collider.transform.position, AttractiveObjectTypeModule.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(collider.transform.position, AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
                 else if (collisionType.IsTargetZone)
                 {
-                    this.ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneObjectModule.FromCollisionType(collisionType)));
+                    this.ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneModule.FromCollisionType(collisionType)));
                 }
             }
         }
@@ -182,11 +182,11 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(collider.transform.position, AttractiveObjectTypeModule.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(collider.transform.position, AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
                 else if (collisionType.IsTargetZone)
                 {
-                    this.ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(TargetZoneObjectModule.FromCollisionType(collisionType)));
+                    this.ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(TargetZoneModule.FromCollisionType(collisionType)));
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace RTPuzzle
             {
                 if (collisionType.IsRTAttractiveObject)
                 {
-                    this.ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectTypeModule.GetAttractiveObjectFromCollisionType(collisionType)));
+                    this.ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
             }
         }

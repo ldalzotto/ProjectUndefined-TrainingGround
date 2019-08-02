@@ -21,13 +21,13 @@ namespace Editor_GameDesigner
     public class ContextMarkVisualFeedbackConfigurationModule : ConfigurationModule<ContextMarkVisualFeedbackConfiguration, AiID, ContextMarkVisualFeedbackInherentData> { }
     public class AttractiveObjectConfigurationModule : ConfigurationModule<AttractiveObjectConfiguration, AttractiveObjectId, AttractiveObjectInherentConfigurationData> { }
     public class DottedLineConfigurationModule : ConfigurationModule<DottedLineConfiguration, DottedLineID, DottedLineInherentData> { }
-    public class RepelableObjectsConfigurationModule : ConfigurationModule<RepelableObjectsConfiguration, RepelableObjectID, RepelableObjectsInherentData> { }
+    public class RepelableObjectsConfigurationModule : ConfigurationModule<ObjectRepelConfiguration, ObjectRepelID, ObjectRepelInherentData> { }
     public class LevelConfigurationModule : ConfigurationModule<LevelConfiguration, LevelZonesID, LevelConfigurationData> { }
     public class PlayerActionConfigurationModule : ConfigurationModule<PlayerActionConfiguration, PlayerActionId, PlayerActionInherentData> { }
-    public class ProjectileConfigurationModule : ConfigurationModule<ProjectileConfiguration, LaunchProjectileId, ProjectileInherentData> { }
+    public class LaunchProjectileConfigurationModule : ConfigurationModule<LaunchProjectileConfiguration, LaunchProjectileID, LaunchProjectileInherentData> { }
     public class RangeTypeConfigurationModule : ConfigurationModule<RangeTypeConfiguration, RangeTypeID, RangeTypeInherentConfigurationData> { }
     public class SelectionWheelNodeConfigurationModule : ConfigurationModule<RTPuzzle.SelectionWheelNodeConfiguration, SelectionWheelNodeConfigurationId, RTPuzzle.SelectionWheelNodeConfigurationData> { }
-    public class TargetZonesConfigurationModule : ConfigurationModule<TargetZonesConfiguration, TargetZoneID, TargetZoneInherentData> { }
+    public class TargetZoneConfigurationModule : ConfigurationModule<TargetZoneConfiguration, TargetZoneID, TargetZoneInherentData> { }
     public class DisarmObjectConfigurationModule : ConfigurationModule<DisarmObjectConfiguration, DisarmObjectID, DisarmObjectInherentData> { }
     public class ActionInteractableObjectConfigurationModule : ConfigurationModule<ActionInteractableObjectConfiguration, ActionInteractableObjectID, ActionInteractableObjectInherentData> { }
 

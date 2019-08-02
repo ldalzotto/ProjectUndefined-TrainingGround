@@ -4,8 +4,8 @@ using GameConfigurationID;
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ProjectileInherentData", menuName = "Configuration/PuzzleGame/ProjectileConfiguration/ProjectileInherentData", order = 1)]
-    public class ProjectileInherentData : ScriptableObject
+    [CreateAssetMenu(fileName = "LaunchProjectileInherentData", menuName = "Configuration/PuzzleGame/LaunchProjectileConfiguration/LaunchProjectileInherentData", order = 1)]
+    public class LaunchProjectileInherentData : ScriptableObject
     {
 
         [SerializeField]

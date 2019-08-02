@@ -5,13 +5,13 @@ using UnityEngine;
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "RepelableObjectsInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjects/RepelableObjetsConfiguration/RepelableObjectsInherentData", order = 1)]
-    public class RepelableObjectsInherentData : SerializedScriptableObject
+    [CreateAssetMenu(fileName = "ObjectRepelInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjects/ObjectRpelConfiguration/ObjectRepelInherentData", order = 1)]
+    public class ObjectRepelInherentData : SerializedScriptableObject
     {
         [Inline(createSubIfAbsent: true, FileName = "RepelableObjectDistance")]
         public RepelableObjectDistance RepelableObjectDistance;
 
-        public float GetRepelableObjectDistance(LaunchProjectileId launchProjectileId)
+        public float GetRepelableObjectDistance(LaunchProjectileID launchProjectileId)
         {
             if (this.RepelableObjectDistance != null && this.RepelableObjectDistance.Values.ContainsKey(launchProjectileId))
             {

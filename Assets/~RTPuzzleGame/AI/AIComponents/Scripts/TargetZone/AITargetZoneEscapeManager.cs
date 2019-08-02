@@ -80,7 +80,7 @@ namespace RTPuzzle
             isEscapingFromTargetZone = false;
         }
 
-        public override void TriggerTargetZoneEscape(TargetZoneObjectModule targetZone)
+        public override void TriggerTargetZoneEscape(TargetZoneModule targetZone)
         {
             Debug.Log(Time.frameCount + "Target zone trigger : " + targetZone.TargetZoneID);
 
@@ -105,7 +105,7 @@ namespace RTPuzzle
              );
         }
 
-        private TargetZoneObjectModule IsAIOverlappingWithATargetZone()
+        private TargetZoneModule IsAIOverlappingWithATargetZone()
         {
             var overlappingTargetZones = TargetZoneHelper.GetAllTargetZonesWhereDistanceCheckOverlaps(this.aiCollider.bounds, this.InteractiveObjectContainer);
             if (overlappingTargetZones != null && overlappingTargetZones.Count > 0)

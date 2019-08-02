@@ -9,8 +9,8 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class ExploreRepelableObject : ExploreModule
     {
-        private List<RepelableObjectsInherentData> RepelableObjectsInherentDatas = new List<RepelableObjectsInherentData>();
-        private Dictionary<RepelableObjectsInherentData, Editor> RepelableObjectsInherentDatasEditor = new Dictionary<RepelableObjectsInherentData, Editor>();
+        private List<ObjectRepelInherentData> RepelableObjectsInherentDatas = new List<ObjectRepelInherentData>();
+        private Dictionary<ObjectRepelInherentData, Editor> RepelableObjectsInherentDatasEditor = new Dictionary<ObjectRepelInherentData, Editor>();
 
         public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
@@ -20,10 +20,10 @@ namespace Editor_GameDesigner
         public override void OnEnabled()
         {
             base.OnEnabled();
-            var foundObjectRepelType = GameObject.FindObjectsOfType<ObjectRepelTypeModule>();
+            var foundObjectRepelType = GameObject.FindObjectsOfType<ObjectRepelModule>();
             if (foundObjectRepelType != null)
             {
-                this.RepelableObjectsInherentDatas = foundObjectRepelType.ToList().ConvertAll(r => this.commonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration.ConfigurationInherentData[r.RepelableObjectID]);
+                this.RepelableObjectsInherentDatas = foundObjectRepelType.ToList().ConvertAll(r => this.commonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[r.ObjectRepelID]);
             }
         }
     }

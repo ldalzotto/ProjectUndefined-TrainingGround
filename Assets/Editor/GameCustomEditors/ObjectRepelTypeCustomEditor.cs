@@ -9,18 +9,18 @@ using UnityEngine;
 namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(ObjectRepelTypeModule))]
-    public class ObjectRepelTypeCustomEditor : AbstractGameCustomEditorWithLiveSelection<ObjectRepelTypeModule, ObjectRepelTypeCustomEditorContext, RepelableObjectsConfigurationModule, EditRepelableObject>
+    [CustomEditor(typeof(ObjectRepelModule))]
+    public class ObjectRepelTypeCustomEditor : AbstractGameCustomEditorWithLiveSelection<ObjectRepelModule, ObjectRepelTypeCustomEditorContext, RepelableObjectsConfigurationModule, EditRepelableObject>
     {
         private void OnEnable()
         {
             if (target != null)
             {
-                var repelableObjectsConfiguration = AssetFinder.SafeSingleAssetFind<RepelableObjectsConfiguration>("t:" + typeof(RepelableObjectsConfiguration));
+                var repelableObjectsConfiguration = AssetFinder.SafeSingleAssetFind<ObjectRepelConfiguration>("t:" + typeof(ObjectRepelConfiguration));
                 this.context = new ObjectRepelTypeCustomEditorContext();
-                this.context.RepelableObjectsInherentData = repelableObjectsConfiguration.ConfigurationInherentData[((ObjectRepelTypeModule)this.target).RepelableObjectID];
+                this.context.RepelableObjectsInherentData = repelableObjectsConfiguration.ConfigurationInherentData[((ObjectRepelModule)this.target).ObjectRepelID];
 
-                this.drawModules = new List<GUIDrawModule<ObjectRepelTypeModule, ObjectRepelTypeCustomEditorContext>>() {
+                this.drawModules = new List<GUIDrawModule<ObjectRepelModule, ObjectRepelTypeCustomEditorContext>>() {
                     new ObjectRepelDistanceComponent()
                 };
             }
@@ -30,12 +30,12 @@ namespace Editor_GameCustomEditors
 
     public class ObjectRepelTypeCustomEditorContext
     {
-        public RepelableObjectsInherentData RepelableObjectsInherentData;
+        public ObjectRepelInherentData RepelableObjectsInherentData;
     }
 
-    public class ObjectRepelDistanceComponent : IDPickGUIModule<ObjectRepelTypeModule, ObjectRepelTypeCustomEditorContext, LaunchProjectileId, float>
+    public class ObjectRepelDistanceComponent : IDPickGUIModule<ObjectRepelModule, ObjectRepelTypeCustomEditorContext, LaunchProjectileID, float>
     {
-        public override Func<ObjectRepelTypeCustomEditorContext, ByEnumProperty<LaunchProjectileId, float>> GetByEnumProperty
+        public override Func<ObjectRepelTypeCustomEditorContext, ByEnumProperty<LaunchProjectileID, float>> GetByEnumProperty
         {
             get
             {
@@ -43,7 +43,7 @@ namespace Editor_GameCustomEditors
             }
         }
 
-        public override void SceneGUI(ObjectRepelTypeCustomEditorContext context, ObjectRepelTypeModule target, LaunchProjectileId key)
+        public override void SceneGUI(ObjectRepelTypeCustomEditorContext context, ObjectRepelModule target, LaunchProjectileID key)
         {
             Handles.color = Color.yellow;
             Handles.Label(target.transform.position + Vector3.up * context.RepelableObjectsInherentData.GetRepelableObjectDistance(key), nameof(context.RepelableObjectsInherentData.RepelableObjectDistance), MyEditorStyles.LabelYellow);

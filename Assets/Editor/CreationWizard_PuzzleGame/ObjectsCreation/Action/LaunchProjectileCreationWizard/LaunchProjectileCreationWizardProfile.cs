@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Editor_ProjectileCreationWizard
+namespace Editor_LaunchProjectileCreationWizard
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "ProjectileCreationWizardProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile/Action/Projectile/ProjectileCreationWizardProfile", order = 1)]
-    public class ProjectileCreationWizardProfile : AbstractCreationWizardEditorProfile
+    [CreateAssetMenu(fileName = "LaunchProjectileCreationWizardProfile", menuName = "CreationWizard/GameCreationWizardEditorProfile/Action/LaunchProjectile/LaunchProjectileCreationWizardProfile", order = 1)]
+    public class LaunchProjectileCreationWizardProfile : AbstractCreationWizardEditorProfile
     {
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {
             new CreationWizardOrderConfiguration(typeof(EditorInformations), -1),

@@ -7,21 +7,21 @@ using UnityEngine;
 namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(AttractiveObjectTypeModule))]
-    public class AttractiveObjectCustomEditor : AbstractGameCustomEditorWithLiveSelection<AttractiveObjectTypeModule, AttractiveObjectCustomEditorContext, AttractiveObjectConfigurationModule, EditAttractiveObject>
+    [CustomEditor(typeof(AttractiveObjectModule))]
+    public class AttractiveObjectCustomEditor : AbstractGameCustomEditorWithLiveSelection<AttractiveObjectModule, AttractiveObjectCustomEditorContext, AttractiveObjectConfigurationModule, EditAttractiveObject>
     {
         private void OnEnable()
         {
             if (this.target != null)
             {
-                this.drawModules = new List<GUIDrawModule<AttractiveObjectTypeModule, AttractiveObjectCustomEditorContext>>()
+                this.drawModules = new List<GUIDrawModule<AttractiveObjectModule, AttractiveObjectCustomEditorContext>>()
                 {
                     new EffectRange()
                 };
                 this.context = new AttractiveObjectCustomEditorContext();
                 this.context.AttractiveObjectInherentConfigurationData = AssetFinder.SafeSingleAssetFind<AttractiveObjectConfiguration>("t:" + typeof(AttractiveObjectConfiguration).Name)
-                    .ConfigurationInherentData[((AttractiveObjectTypeModule)this.target).AttractiveObjectId];
-                this.context.AttractiveObjectType = (AttractiveObjectTypeModule)this.target;
+                    .ConfigurationInherentData[((AttractiveObjectModule)this.target).AttractiveObjectId];
+                this.context.AttractiveObjectType = (AttractiveObjectModule)this.target;
             }
         }
     }
@@ -29,12 +29,12 @@ namespace Editor_GameCustomEditors
     public class AttractiveObjectCustomEditorContext
     {
         public AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData;
-        public AttractiveObjectTypeModule AttractiveObjectType;
+        public AttractiveObjectModule AttractiveObjectType;
     }
 
-    class EffectRange : GUIDrawModule<AttractiveObjectTypeModule, AttractiveObjectCustomEditorContext>
+    class EffectRange : GUIDrawModule<AttractiveObjectModule, AttractiveObjectCustomEditorContext>
     {
-        public override void SceneGUI(AttractiveObjectCustomEditorContext context, AttractiveObjectTypeModule target)
+        public override void SceneGUI(AttractiveObjectCustomEditorContext context, AttractiveObjectModule target)
         {
             Handles.color = Color.magenta;
             var position = context.AttractiveObjectType.transform.position;

@@ -19,7 +19,7 @@ namespace RTPuzzle
         void OnTriggerExit(Collider collider);
 
         void OnDestinationReached();
-        void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy);
+        void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy);
 #if UNITY_EDITOR
         AbstractAIComponents AIComponents { get; set; }
 #endif
@@ -175,7 +175,7 @@ namespace RTPuzzle
 
         public abstract void OnDestinationReached();
 
-        public virtual void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy) { }
+        public virtual void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy) { }
 
     }
 

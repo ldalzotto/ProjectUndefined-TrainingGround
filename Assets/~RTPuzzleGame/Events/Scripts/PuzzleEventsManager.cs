@@ -52,11 +52,11 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
         }
-        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectTypeModule attractiveObject, AiID aiID)
+        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectModule attractiveObject, AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart(attractiveObject);
         }
-        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectTypeModule involvedAttractiveObject, AiID aiID)
+        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectModule involvedAttractiveObject, AiID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
         }
@@ -106,7 +106,7 @@ namespace RTPuzzle
         #endregion
 
         #region Attractive Objects Event
-        public void PZ_EVT_AttractiveObject_TpeDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
+        public void PZ_EVT_AttractiveObject_TpeDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {
             this.NPCAIManagerContainer.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }
@@ -119,7 +119,7 @@ namespace RTPuzzle
         #endregion
 
         #region RepelableObject Events
-        public void PZ_EVT_RepelableObject_OnObjectRepelled(ObjectRepelTypeModule objectRepelType, Vector3 targetWorldPosition)
+        public void PZ_EVT_RepelableObject_OnObjectRepelled(ObjectRepelModule objectRepelType, Vector3 targetWorldPosition)
         {
             ObjectRepelTypeModuleEventHandling.OnObjectRepelRepelled(objectRepelType, targetWorldPosition);
         }

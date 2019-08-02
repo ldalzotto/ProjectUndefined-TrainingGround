@@ -32,10 +32,10 @@ namespace Editor_MainGameCreationWizard
         public RTPuzzle.AIComponentsConfiguration AIComponentsConfiguration;
         
         [ReadOnly()]
-        public RTPuzzle.TargetZonesConfiguration TargetZonesConfiguration;
+        public RTPuzzle.TargetZoneConfiguration TargetZoneConfiguration;
         
         [ReadOnly()]
-        public RTPuzzle.ProjectileConfiguration ProjectileConfiguration;
+        public RTPuzzle.LaunchProjectileConfiguration LaunchProjectileConfiguration;
         
         [ReadOnly()]
         public RTPuzzle.PlayerActionConfiguration PlayerActionConfiguration;
@@ -44,7 +44,7 @@ namespace Editor_MainGameCreationWizard
         public RTPuzzle.AttractiveObjectConfiguration AttractiveObjectConfiguration;
         
         [ReadOnly()]
-        public RTPuzzle.RepelableObjectsConfiguration RepelableObjectsConfiguration;
+        public RTPuzzle.ObjectRepelConfiguration ObjectRepelConfiguration;
         
         [ReadOnly()]
         public RTPuzzle.DisarmObjectConfiguration DisarmObjectConfiguration;

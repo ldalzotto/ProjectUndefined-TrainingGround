@@ -11,6 +11,7 @@ namespace ConfigurationEditor
     {
 #if UNITY_EDITOR
         void ClearEntry(Enum key);
+        ScriptableObject GetEntry(Enum key);
         void SetEntry(Enum key, ScriptableObject value);
         List<Enum> GetKeys();
 #endif
@@ -34,6 +35,12 @@ namespace ConfigurationEditor
             var castedKey = (K)key;
             var castedValue = (V)value;
             this.SetEntry(castedKey, castedValue);
+        }
+
+        public ScriptableObject GetEntry(Enum key)
+        {
+            var castedKey = (K)key; 
+            return this.ConfigurationInherentData[castedKey];
         }
 
         private void ClearEntry(K key)

@@ -1,12 +1,12 @@
 ﻿using RTPuzzle;
 using UnityEditor;
 
-[CustomEditor(typeof(ProjectileInherentData))]
+[CustomEditor(typeof(LaunchProjectileInherentData))]
 public class ProjectileInherentDataCutsomEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        var ProjectileInherentDataTarget = (ProjectileInherentData)target;
+        var ProjectileInherentDataTarget = (LaunchProjectileInherentData)target;
         EditorGUI.BeginDisabledGroup(true);
         EditorGUILayout.ObjectField("Script : ", MonoScript.FromScriptableObject(ProjectileInherentDataTarget), typeof(MonoScript), false);
         EditorGUI.EndDisabledGroup();

@@ -50,9 +50,9 @@ namespace Editor_GameCustomEditors
         public AISightVision AISightVision;
     }
 
-    public class AIProjectileEscapeComponent : IDPickGUIModule<NPCAIManager, NPCAIManagerCustomEditorContext, LaunchProjectileId, float>
+    public class AIProjectileEscapeComponent : IDPickGUIModule<NPCAIManager, NPCAIManagerCustomEditorContext, LaunchProjectileID, float>
     {
-        public override Func<NPCAIManagerCustomEditorContext, ByEnumProperty<LaunchProjectileId, float>> GetByEnumProperty
+        public override Func<NPCAIManagerCustomEditorContext, ByEnumProperty<LaunchProjectileID, float>> GetByEnumProperty
         {
             get
             {
@@ -64,7 +64,7 @@ namespace Editor_GameCustomEditors
             }
         }
 
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target, LaunchProjectileId selectedKey)
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target, LaunchProjectileID selectedKey)
         {
             if (context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent != null && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null
                     && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values.ContainsKey(selectedKey))

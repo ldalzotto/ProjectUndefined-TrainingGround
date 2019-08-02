@@ -12,7 +12,7 @@ namespace GameConfigurationID {
   
   
   [System.Serializable()]
-  public enum RepelableObjectID {
+  public enum ObjectRepelID {
     
     CHEESE_SEWER_RTP_2 = 0,
     

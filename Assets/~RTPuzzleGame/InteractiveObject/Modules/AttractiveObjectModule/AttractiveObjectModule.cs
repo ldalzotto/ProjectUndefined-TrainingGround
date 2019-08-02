@@ -9,7 +9,7 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public class AttractiveObjectTypeModule : InteractiveObjectModule
+    public class AttractiveObjectModule : InteractiveObjectModule
     {
 
         public static InteractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, List<Type> exclusiveInitialEnabledModules)
@@ -29,12 +29,12 @@ namespace RTPuzzle
             return attractiveObject;
         }
 
-        public static AttractiveObjectTypeModule GetAttractiveObjectFromCollisionType(CollisionType collisionType)
+        public static AttractiveObjectModule GetAttractiveObjectFromCollisionType(CollisionType collisionType)
         {
             var sphereRange = RangeType.RetrieveFromCollisionType(collisionType);
             if (sphereRange != null)
             {
-                return sphereRange.GetComponentInParent<AttractiveObjectTypeModule>();
+                return sphereRange.GetComponentInParent<AttractiveObjectModule>();
             }
             return null;
         }

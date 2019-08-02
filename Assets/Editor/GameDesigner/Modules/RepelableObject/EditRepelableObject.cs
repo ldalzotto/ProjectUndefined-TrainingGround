@@ -5,21 +5,21 @@ using UnityEngine;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditRepelableObject : EditScriptableObjectModule<ObjectRepelTypeModule>
+    public class EditRepelableObject : EditScriptableObjectModule<ObjectRepelModule>
     {
-        protected override Func<ObjectRepelTypeModule, ScriptableObject> scriptableObjectResolver
+        protected override Func<ObjectRepelModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (ObjectRepelTypeModule ObjectRepelType) => this.RepelableObjectsConfiguration.ConfigurationInherentData[ObjectRepelType.RepelableObjectID];
+                return (ObjectRepelModule ObjectRepelType) => this.RepelableObjectsConfiguration.ConfigurationInherentData[ObjectRepelType.ObjectRepelID];
             }
         }
 
-        private RepelableObjectsConfiguration RepelableObjectsConfiguration;
+        private ObjectRepelConfiguration RepelableObjectsConfiguration;
 
         public override void OnEnabled()
         {
-            this.RepelableObjectsConfiguration = AssetFinder.SafeSingleAssetFind<RepelableObjectsConfiguration>("t:" + typeof(RepelableObjectsConfiguration).Name);
+            this.RepelableObjectsConfiguration = AssetFinder.SafeSingleAssetFind<ObjectRepelConfiguration>("t:" + typeof(ObjectRepelConfiguration).Name);
         }
     }
 }

@@ -9,15 +9,15 @@ using Editor_GameDesigner;
 namespace Editor_GameCustomEditors
 {
     [ExecuteInEditMode]
-    [CustomEditor(typeof(TargetZoneObjectModule))]
-    public class TargetZoneCustomEditor : AbstractGameCustomEditorWithLiveSelection<TargetZoneObjectModule, TargetZoneCustomEditorContext, TargetZonesConfigurationModule, EditTargetZone>
+    [CustomEditor(typeof(TargetZoneModule))]
+    public class TargetZoneCustomEditor : AbstractGameCustomEditorWithLiveSelection<TargetZoneModule, TargetZoneCustomEditorContext, TargetZoneConfigurationModule, EditTargetZone>
     {
         
         private void OnEnable()
         {
             if (target != null)
             {
-                this.drawModules = new List<GUIDrawModule<TargetZoneObjectModule, TargetZoneCustomEditorContext>>()
+                this.drawModules = new List<GUIDrawModule<TargetZoneModule, TargetZoneCustomEditorContext>>()
                 {
                     new AIDistanceDetection(),
                     new EscapeFOVSemiAngle(),
@@ -25,10 +25,10 @@ namespace Editor_GameCustomEditors
                 };
 
                 this.context = new TargetZoneCustomEditorContext();
-                var targetZone = (TargetZoneObjectModule)target;
+                var targetZone = (TargetZoneModule)target;
                 if (this.context.TargetZonesConfiguration == null)
                 {
-                    this.context.TargetZonesConfiguration = AssetFinder.SafeSingleAssetFind<TargetZonesConfiguration>("t:" + typeof(TargetZonesConfiguration));
+                    this.context.TargetZonesConfiguration = AssetFinder.SafeSingleAssetFind<TargetZoneConfiguration>("t:" + typeof(TargetZoneConfiguration));
                     if (this.context.TargetZonesConfiguration != null)
                     {
                         this.context.TargetZoneInherentData = this.context.TargetZonesConfiguration.ConfigurationInherentData[targetZone.TargetZoneID];
@@ -41,14 +41,14 @@ namespace Editor_GameCustomEditors
 
     public class TargetZoneCustomEditorContext
     {
-        public TargetZonesConfiguration TargetZonesConfiguration;
+        public TargetZoneConfiguration TargetZonesConfiguration;
         public TargetZoneInherentData TargetZoneInherentData;
         public LevelCompletionTriggerModule TargetZoneTriggerType; 
     }
 
-    internal class AIDistanceDetection : GUIDrawModule<TargetZoneObjectModule, TargetZoneCustomEditorContext>
+    internal class AIDistanceDetection : GUIDrawModule<TargetZoneModule, TargetZoneCustomEditorContext>
     {
-        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneObjectModule targetZone)
+        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneModule targetZone)
         {
             Handles.color = Color.red;
             Handles.Label(targetZone.transform.position + Vector3.up * context.TargetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
@@ -56,9 +56,9 @@ namespace Editor_GameCustomEditors
         }
     }
 
-    class EscapeFOVSemiAngle : GUIDrawModule<TargetZoneObjectModule, TargetZoneCustomEditorContext>
+    class EscapeFOVSemiAngle : GUIDrawModule<TargetZoneModule, TargetZoneCustomEditorContext>
     {
-        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneObjectModule targetZone)
+        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneModule targetZone)
         {
             Handles.color = Color.yellow;
             Handles.Label(targetZone.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
@@ -67,9 +67,9 @@ namespace Editor_GameCustomEditors
         }
     }
 
-    class TriggerZone : GUIDrawModule<TargetZoneObjectModule, TargetZoneCustomEditorContext>
+    class TriggerZone : GUIDrawModule<TargetZoneModule, TargetZoneCustomEditorContext>
     {
-        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneObjectModule target)
+        public override void SceneGUI(TargetZoneCustomEditorContext context, TargetZoneModule target)
         {
             if (context.TargetZoneTriggerType != null)
             {

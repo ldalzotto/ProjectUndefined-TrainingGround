@@ -34,33 +34,17 @@ public class EnumIDGeneration : EditorWindow
         window.KeyName = initialEnumName;
     }
 
-    private TreePickerPopup enumSelectionPicker;
-    private List<Type> availableEnums;
-    private List<string> availableEnumTypesString;
-    private Type EnumType;
-
-
-    private TreePickerPopup enumDeletionPicker;
-    private List<Enum> selectedEnumPossibilities;
-    private List<string> selectedEnumPossibilitiesString;
-    private Enum deletedEnum;
+    private EnumPicker enumSelectionPicker;
+    private ButtonTreePickerGUI enumDeletionPicker;
 
     public void OnEnable()
     {
-        this.availableEnums = AppDomain.CurrentDomain.GetAssemblies().ToList().SelectMany(l => l.GetTypes().ToList())
-                .Select(t => t).Where(t => t.IsEnum && t.Namespace == "GameConfigurationID")
-                .ToList();
-        this.availableEnumTypesString = this.availableEnums.ConvertAll(t => t.Name);
-        this.enumSelectionPicker = new TreePickerPopup(this.availableEnumTypesString, this.OnEnumSelected, string.Empty);
+        this.enumSelectionPicker = new EnumPicker("GameConfigurationID", this.OnEnumSelected);
     }
 
     private void OnEnumSelected()
     {
-        this.EnumType = this.availableEnums[this.availableEnumTypesString.IndexOf(this.enumSelectionPicker.SelectedKey)];
-
-        this.selectedEnumPossibilities = Enum.GetValues(this.EnumType).Cast<Enum>().ToList();
-        this.selectedEnumPossibilitiesString = this.selectedEnumPossibilities.ConvertAll(e => e.ToString());
-        this.enumDeletionPicker = new TreePickerPopup(this.selectedEnumPossibilitiesString, () => { this.deletedEnum = this.selectedEnumPossibilities[this.selectedEnumPossibilitiesString.IndexOf(this.enumDeletionPicker.SelectedKey)]; }, string.Empty);
+        this.enumDeletionPicker = new ButtonTreePickerGUI(Enum.GetValues(this.enumSelectionPicker.EnumType).Cast<Enum>().ToList().ConvertAll(e => e.ToString()), null);
     }
 
     private void OnGUI()
@@ -71,19 +55,10 @@ public class EnumIDGeneration : EditorWindow
         this.DoRegenerateAll();
     }
 
-    private Rect EnumChoiceDropdownButton;
 
     private void DoPickEnum()
     {
-        if (EditorGUILayout.DropdownButton(new GUIContent(this.enumSelectionPicker.SelectedKey), FocusType.Keyboard))
-        {
-            this.enumSelectionPicker.WindowDimensions = new Vector2(EnumChoiceDropdownButton.width, 250f);
-            PopupWindow.Show(EnumChoiceDropdownButton, this.enumSelectionPicker);
-        }
-        if (Event.current.type == EventType.Repaint)
-        {
-            this.EnumChoiceDropdownButton = GUILayoutUtility.GetLastRect();
-        }
+        this.enumSelectionPicker.OnGUI();
     }
 
     private string KeyName;
@@ -93,11 +68,11 @@ public class EnumIDGeneration : EditorWindow
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("ADD : ");
         this.KeyName = EditorGUILayout.TextField(this.KeyName);
-        if (GUILayout.Button("GENERATE") && this.EnumType != null)
+        if (GUILayout.Button("GENERATE") && this.enumSelectionPicker.EnumType != null)
         {
             if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                this.RegenerateEnum(true, false, this.EnumType);
+                this.RegenerateEnum(true, false, this.enumSelectionPicker.EnumType);
                 this.OnEnable();
             }
         }
@@ -112,21 +87,13 @@ public class EnumIDGeneration : EditorWindow
         EditorGUILayout.LabelField("REMOVE : ");
         if (this.enumDeletionPicker != null)
         {
-            if (EditorGUILayout.DropdownButton(new GUIContent(this.enumDeletionPicker.SelectedKey), FocusType.Keyboard))
-            {
-                this.enumDeletionPicker.WindowDimensions = new Vector2(EnumDeletionDropdownButton.width, 250f);
-                PopupWindow.Show(EnumDeletionDropdownButton, this.enumDeletionPicker);
-            }
-            if (Event.current.type == EventType.Repaint)
-            {
-                this.EnumDeletionDropdownButton = GUILayoutUtility.GetLastRect();
-            }
+            this.enumDeletionPicker.OnGUI();
 
             if (GUILayout.Button("GENERATE"))
             {
                 if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
                 {
-                    this.RegenerateEnum(false, true, this.EnumType);
+                    this.RegenerateEnum(false, true, this.enumSelectionPicker.EnumType);
                     this.OnEnable();
                 }
             }
@@ -144,7 +111,7 @@ public class EnumIDGeneration : EditorWindow
             existingValues.Add(genEnum.ToString(), (int)genEnum);
         }
 
-        if ((add && !existingValues.ContainsKey(KeyName)) || (remove && existingValues.ContainsKey(this.deletedEnum.ToString())) || (!add && !remove))
+        if ((add && !existingValues.ContainsKey(KeyName)) || (remove && existingValues.ContainsKey(this.enumDeletionPicker.GetSelectedKey())) || (!add && !remove))
         {
             var cUnit = new CodeCompileUnit();
 
@@ -160,7 +127,7 @@ public class EnumIDGeneration : EditorWindow
             foreach (var existingValue in existingValues)
             {
                 bool skip = false;
-                if (remove && existingValue.Key == this.deletedEnum.ToString())
+                if (remove && existingValue.Key == this.enumDeletionPicker.GetSelectedKey())
                 {
                     skip = true;
                 }
@@ -216,7 +183,7 @@ public class EnumIDGeneration : EditorWindow
         {
             if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                foreach (var availableEnum in this.availableEnums)
+                foreach (var availableEnum in this.enumSelectionPicker.AvailableEnums)
                 {
                     this.RegenerateEnum(false, false, availableEnum);
                 }

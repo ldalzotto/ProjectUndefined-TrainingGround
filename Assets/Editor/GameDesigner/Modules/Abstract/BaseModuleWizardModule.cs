@@ -35,6 +35,10 @@ namespace Editor_GameDesigner
         protected abstract List<ABSTRACT_MODULE> GetModules(T RootModuleObject);
         protected virtual bool AdditionalEditCondition(Type selectedType) { return true; }
 
+        public bool Add { get => add; }
+        public bool Remove { get => remove; }
+        public GameObject CurrentSelectedObjet { get => currentSelectedObjet; }
+
         public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             if (this.CommonGameConfigurations == null)
@@ -48,7 +52,7 @@ namespace Editor_GameDesigner
                 this.GameDesignerEditorProfile = GameDesignerEditorProfile;
             }
 
-            if(this.GameDesignerEditorProfileSO == null)
+            if (this.GameDesignerEditorProfileSO == null)
             {
                 this.GameDesignerEditorProfileSO = new SerializedObject(this.GameDesignerEditorProfile);
             }

@@ -1,4 +1,5 @@
 ﻿using RTPuzzle;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,19 +8,19 @@ namespace Editor_GameDesigner
     public static class EditorInteractiveObjectModulesOperation
     {
 
-        public static T AddPrefabModule<T>(InteractiveObjectType interactiveObjectType, T modulePrefab) where T : InteractiveObjectModule
+        public static InteractiveObjectModule AddPrefabModule(InteractiveObjectType interactiveObjectType, InteractiveObjectModule modulePrefab) 
         {
-            T foundPrefabModule = interactiveObjectType.GetComponentInChildren<T>();
+            InteractiveObjectModule foundPrefabModule = (InteractiveObjectModule)interactiveObjectType.GetComponentInChildren(modulePrefab.GetType());
             if (foundPrefabModule == null)
             {
-                return (T)PrefabUtility.InstantiatePrefab(modulePrefab, interactiveObjectType.transform);
+                return (InteractiveObjectModule)PrefabUtility.InstantiatePrefab(modulePrefab, interactiveObjectType.transform);
             }
             return foundPrefabModule;
         }
 
-        public static void RemovePrefabModule<T>(InteractiveObjectType interactiveObjectType) where T : InteractiveObjectModule
+        public static void RemovePrefabModule(InteractiveObjectType interactiveObjectType, Type moduleType)
         {
-            T foundPrefabModule = interactiveObjectType.GetComponentInChildren<T>();
+            InteractiveObjectModule foundPrefabModule = (InteractiveObjectModule)interactiveObjectType.GetComponentInChildren(moduleType);
             if (foundPrefabModule != null)
             {
                 MonoBehaviour.DestroyImmediate(foundPrefabModule.gameObject);

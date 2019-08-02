@@ -105,8 +105,8 @@ namespace RTPuzzle
         public void Tick(float d, float timeAttenuationFactor)
         {
             this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.Tick(d, timeAttenuationFactor));
-            this.GetModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
-            this.GetModule<ObjectRepelTypeModule>().IfNotNull((ObjectRepelTypeModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
+            this.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
+            this.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.Tick(d, timeAttenuationFactor));
         }
@@ -154,13 +154,13 @@ namespace RTPuzzle
     {
         public AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
         public TargetZoneInherentData TargetZoneInherentData;
-        public ProjectileInherentData ProjectileInherentData;
+        public LaunchProjectileInherentData ProjectileInherentData;
         public DisarmObjectInherentData DisarmObjectInherentData;
         public BeziersControlPoints ProjectilePath;
         public ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
 
         public InteractiveObjectInitializationObject(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
-            TargetZoneInherentData TargetZoneInherentData = null, ProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null, DisarmObjectInherentData DisarmObjectInherentData = null,
+            TargetZoneInherentData TargetZoneInherentData = null, LaunchProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null, DisarmObjectInherentData DisarmObjectInherentData = null,
             ActionInteractableObjectInherentData ActionInteractableObjectInherentData = null)
         {
             this.InputAttractiveObjectInherentConfigurationData = InputAttractiveObjectInherentConfigurationData;

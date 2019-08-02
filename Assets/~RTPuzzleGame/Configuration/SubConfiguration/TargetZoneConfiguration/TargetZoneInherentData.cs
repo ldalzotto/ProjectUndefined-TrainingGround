@@ -3,7 +3,7 @@
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "TargetZoneInherentData", menuName = "Configuration/PuzzleGame/TargetZonesConfiguration/TargetZoneInherentData", order = 1)]
+    [CreateAssetMenu(fileName = "TargetZoneInherentData", menuName = "Configuration/PuzzleGame/TargetZoneConfiguration/TargetZoneInherentData", order = 1)]
     public class TargetZoneInherentData : ScriptableObject
     {
         [SerializeField]

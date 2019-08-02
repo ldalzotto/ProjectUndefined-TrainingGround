@@ -17,7 +17,7 @@ namespace RTPuzzle
         #endregion
 
         public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
-        public abstract void TriggerTargetZoneEscape(TargetZoneObjectModule targetZone);
+        public abstract void TriggerTargetZoneEscape(TargetZoneModule targetZone);
         public abstract void OnDestinationReached();
         public abstract void OnStateReset();
 

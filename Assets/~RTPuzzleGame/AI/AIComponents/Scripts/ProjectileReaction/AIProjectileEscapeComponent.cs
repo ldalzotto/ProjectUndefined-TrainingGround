@@ -54,7 +54,7 @@ namespace RTPuzzle
         }
         
         #region Internal Events
-        protected void OnDestinationSetFromProjectileContact(LaunchProjectileId launchProjectileId)
+        protected void OnDestinationSetFromProjectileContact(LaunchProjectileID launchProjectileId)
         {
             this.escapeDestinationManager.ResetDistanceComputation(this.AIProjectileEscapeComponent.EscapeDistanceV2.Values[launchProjectileId]);
         }
@@ -72,11 +72,11 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public float GetMaxEscapeDistance(LaunchProjectileId launchProjectileId)
+        public float GetMaxEscapeDistance(LaunchProjectileID launchProjectileId)
         {
             return this.AIProjectileEscapeComponent.EscapeDistanceV2.Values[launchProjectileId];
         }
-        public float GetSemiAngle(LaunchProjectileId launchProjectileId)
+        public float GetSemiAngle(LaunchProjectileID launchProjectileId)
         {
             return this.AIProjectileEscapeComponent.EscapeSemiAngleV2.Values[launchProjectileId];
         }

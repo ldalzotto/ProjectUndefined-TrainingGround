@@ -36,11 +36,11 @@ namespace Editor_GameDesigner
     public class InteractiveObjectModuleWizardID
     {
         [CustomEnum()]
-        public RepelableObjectID RepelableObjectID;
+        public ObjectRepelID ObjectRepelID;
         [CustomEnum()]
         public AttractiveObjectId AttractiveObjectId;
         [CustomEnum()]
-        public LaunchProjectileId LaunchProjectileId;
+        public LaunchProjectileID LaunchProjectileId;
         [CustomEnum()]
         public TargetZoneID TargetZoneID;
         [CustomEnum()]

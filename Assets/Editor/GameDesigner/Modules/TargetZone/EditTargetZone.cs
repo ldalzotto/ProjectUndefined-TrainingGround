@@ -6,15 +6,15 @@ using System;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditTargetZone : EditScriptableObjectModule<TargetZoneObjectModule>
+    public class EditTargetZone : EditScriptableObjectModule<TargetZoneModule>
     {
-        private TargetZonesConfiguration TargetZonesConfiguration;
+        private TargetZoneConfiguration TargetZonesConfiguration;
 
-        protected override Func<TargetZoneObjectModule, ScriptableObject> scriptableObjectResolver
+        protected override Func<TargetZoneModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (TargetZoneObjectModule TargetZone) =>
+                return (TargetZoneModule TargetZone) =>
                 {
                     if(this.TargetZonesConfiguration != null && TargetZonesConfiguration.ConfigurationInherentData.ContainsKey(TargetZone.TargetZoneID))
                     {
@@ -29,7 +29,7 @@ namespace Editor_GameDesigner
         {
             if (this.TargetZonesConfiguration == null)
             {
-                this.TargetZonesConfiguration = AssetFinder.SafeSingleAssetFind<TargetZonesConfiguration>("t:" + typeof(TargetZonesConfiguration));
+                this.TargetZonesConfiguration = AssetFinder.SafeSingleAssetFind<TargetZoneConfiguration>("t:" + typeof(TargetZoneConfiguration));
             }
         }
     }

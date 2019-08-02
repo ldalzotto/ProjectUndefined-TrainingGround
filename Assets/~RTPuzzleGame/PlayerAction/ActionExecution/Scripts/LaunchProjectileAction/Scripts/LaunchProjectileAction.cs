@@ -26,7 +26,7 @@ namespace RTPuzzle
         private PlayerOrientationManager PlayerOrientationManager;
         private LaunchProjectilePathAnimationManager LaunchProjectilePathAnimationManager;
 
-        private LaunchProjectileId projectileId;
+        private LaunchProjectileID projectileId;
         private InteractiveObjectType projectileObject;
         private RangeTypeObject projectileSphereRange;
 
@@ -237,7 +237,7 @@ namespace RTPuzzle
         #endregion
 
         private Camera camera;
-        private ProjectileInherentData projectileInherentData;
+        private LaunchProjectileInherentData projectileInherentData;
         private LaunchProjectileAction launchProjectileActionRef;
         private RangeTypeObject projectileCursorRange;
 
@@ -256,7 +256,7 @@ namespace RTPuzzle
         }
 
         public LaunchProjectileRayPositionerManager(Camera camera, Vector2 cursorScreenPositionAtInit, LaunchProjectileAction launchProjectileAction,
-                PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer, ProjectileInherentData projectileInherentData,
+                PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer, LaunchProjectileInherentData projectileInherentData,
                 PuzzleGameConfigurationManager puzzleGameConfigurationManager, InteractiveObjectType projectileInteractiveObject)
         {
             this.camera = camera;
@@ -271,7 +271,7 @@ namespace RTPuzzle
             }
             else if (this.projectileInherentData.isPersistingToAttractiveObject)
             {
-                projectileInteractiveObject.GetDisabledModule<AttractiveObjectTypeModule>().IfNotNull((AttractiveObjectTypeModule) => this.effectiveEffectRange = puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[AttractiveObjectTypeModule.AttractiveObjectId].EffectRange);
+                projectileInteractiveObject.GetDisabledModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectTypeModule) => this.effectiveEffectRange = puzzleGameConfigurationManager.AttractiveObjectsConfiguration()[AttractiveObjectTypeModule.AttractiveObjectId].EffectRange);
             }
         }
 
@@ -389,7 +389,7 @@ namespace RTPuzzle
             }
         }
 
-        public void OnLaunchProjectileSpawn(LaunchProjectileId launchProjectileId, BeziersControlPoints throwProjectilePath)
+        public void OnLaunchProjectileSpawn(LaunchProjectileID launchProjectileId, BeziersControlPoints throwProjectilePath)
         {
             this.projectileObjectRef.transform.rotation = Quaternion.LookRotation(this.playerTransform.forward, this.playerTransform.up);
             ProjectileActionInstanciationHelper.OnProjectileSpawn(ref this.projectileObjectRef, throwProjectilePath, PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId]);
@@ -441,12 +441,12 @@ namespace RTPuzzle
 
         private InteractiveObjectType projectileObjectRef;
         private Animator playerAnimator;
-        private ProjectileInherentData ProjectileInherentData;
+        private LaunchProjectileInherentData ProjectileInherentData;
 
         private PlayerAnimationWithObjectManager ProjectileAnimationManager;
         private PlayerAnimationWithObjectManager ProjectileLaunchAnimationManager;
 
-        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, AnimationConfiguration animationConfiguration, ProjectileInherentData ProjectileInherentData, InteractiveObjectType projectileObject)
+        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, AnimationConfiguration animationConfiguration, LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectType projectileObject)
         {
             this.projectileObjectRef = projectileObject;
             this.playerAnimator = playerAnimator;
@@ -564,14 +564,14 @@ namespace RTPuzzle
     #region Projectile instanciation helper
     public class ProjectileActionInstanciationHelper
     {
-        public static InteractiveObjectType CreateProjectileAtStart(ProjectileInherentData ProjectileInherentData, InteractiveObjectContainer interactiveObjectContainer)
+        public static InteractiveObjectType CreateProjectileAtStart(LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectContainer interactiveObjectContainer)
         {
             return LaunchProjectileModule.InstanciateV2(ProjectileInherentData, null, interactiveObjectContainer.transform, new List<Type>() {
                 typeof(ModelObjectModule)
             });
         }
 
-        public static void OnProjectileSpawn(ref InteractiveObjectType projectileObjectRef, BeziersControlPoints throwProjectilePath, ProjectileInherentData ProjectileInherentData)
+        public static void OnProjectileSpawn(ref InteractiveObjectType projectileObjectRef, BeziersControlPoints throwProjectilePath, LaunchProjectileInherentData ProjectileInherentData)
         {
             projectileObjectRef.EnableModule(typeof(LaunchProjectileModule), new InteractiveObjectInitializationObject(ProjectilePath: throwProjectilePath, ProjectileInherentData: ProjectileInherentData));
         }

@@ -26,27 +26,6 @@ public static class CodeGenerationHelper
             targetClass.BaseTypes.Add(baseType);
         }
 
-        /*
-        if (codeNameSpaceForImport != null)
-        {
-            //using dependencies by file search
-            var sourceClassFiles = Directory.GetFiles(Application.dataPath, sourceType.Name + ".cs", SearchOption.AllDirectories);
-            string sourceClassFile = string.Empty;
-            if (sourceClassFiles != null && sourceClassFiles.Length > 0)
-            {
-                Debug.Log(sourceClassFiles[0]);
-                using (StreamReader sr = new StreamReader(sourceClassFiles[0]))
-                {
-                    sourceClassFile = sr.ReadToEnd();
-                }
-            }
-            foreach (Match usingMatch in new Regex("using(.*?) (.*?);").Matches(sourceClassFile))
-            {
-                codeNameSpaceForImport.Imports.Add(new CodeNamespaceImport(usingMatch.Groups[1].Value));
-            }
-        }
-        */
-
         foreach (var customAttribute in sourceType.GetCustomAttributes(false))
         {
             targetClass.CustomAttributes = UpdateCustomAttribute(targetClass.CustomAttributes, customAttribute);

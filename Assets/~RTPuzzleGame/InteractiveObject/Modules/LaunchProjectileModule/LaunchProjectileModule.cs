@@ -4,14 +4,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
     public class LaunchProjectileModule : InteractiveObjectModule
     {
-        public LaunchProjectileId LaunchProjectileId;
-        private ProjectileInherentData launchProjectileInherentData;
-        public ProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
+        [FormerlySerializedAs("LaunchProjectileId")]
+        public LaunchProjectileID LaunchProjectileID;
+        private LaunchProjectileInherentData launchProjectileInherentData;
+        public LaunchProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
 
         #region Internal Dependencies
         private LaunchProjectileGroundColliderTracker LaunchProjectileGroundColliderTracker;
@@ -37,14 +39,14 @@ namespace RTPuzzle
         }
         #endregion
 
-        public static InteractiveObjectType InstanciateV2(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform, List<Type> exclusiveInitialEnabledModules = null)
+        public static InteractiveObjectType InstanciateV2(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform, List<Type> exclusiveInitialEnabledModules = null)
         {
             var launchProjectileInteractiveObjet = MonoBehaviour.Instantiate(LaunchProjectileInherentData.ProjectilePrefabV2, parentTransform);
             launchProjectileInteractiveObjet.Init(new InteractiveObjectInitializationObject(ProjectileInherentData: LaunchProjectileInherentData, ProjectilePath: ProjectilePath), exclusiveInitialEnabledModules);
             return launchProjectileInteractiveObjet;
         }
 
-        public void Init(ProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
+        public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
         {
             #region External Dependencies
             var npcAiManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
@@ -104,11 +106,11 @@ namespace RTPuzzle
     #region Projectile movement manager
     class LaunchProjectileMovementManager
     {
-        private ProjectileInherentData LaunchProjectileInherentData;
+        private LaunchProjectileInherentData LaunchProjectileInherentData;
         private Transform projectileTransform;
         private BeziersControlPoints ProjectilePath;
 
-        public LaunchProjectileMovementManager(ProjectileInherentData launchProjectileInherentData, Transform projectileTransform, BeziersControlPoints projectilePath)
+        public LaunchProjectileMovementManager(LaunchProjectileInherentData launchProjectileInherentData, Transform projectileTransform, BeziersControlPoints projectilePath)
         {
             LaunchProjectileInherentData = launchProjectileInherentData;
             this.projectileTransform = projectileTransform;
@@ -145,9 +147,9 @@ namespace RTPuzzle
         #endregion
 
         private LaunchProjectileModule LaunchProjectileRef;
-        private ProjectileInherentData LaunchProjectileInherentData;
+        private LaunchProjectileInherentData LaunchProjectileInherentData;
 
-        public SphereCollisionManager(ProjectileInherentData LaunchProjectileInherentData,
+        public SphereCollisionManager(LaunchProjectileInherentData LaunchProjectileInherentData,
             NPCAIManagerContainer NPCAIManagerContainer,
             InteractiveObjectContainer InteractiveObjectContainer,
             PuzzleGameConfigurationManager PuzzleGameConfigurationManager,
@@ -183,7 +185,7 @@ namespace RTPuzzle
                 if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.EffectRange))
                 {
                     //float travelDistance = 13;
-                    float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.RepelableObjectID].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileId);
+                    float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.ObjectRepelID].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileID);
                     var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - launchProjectileRef.transform.position), repelAbleObject.transform.up).normalized;
                     NavMeshHit navmeshHit;
                     if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))

@@ -77,15 +77,15 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\DottedLineID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\InteractiveObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\LaunchProjectileId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\LaunchProjectileID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\ObjectRepelID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PlayerActionId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PointOfInterestId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PuzzleCutsceneId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\RangeTypeID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\RepelableObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ScenarioTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\SelectionWheelNodeConfigurationId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TargetZoneID.cs" />

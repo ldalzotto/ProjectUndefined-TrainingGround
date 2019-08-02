@@ -13,7 +13,7 @@ namespace Editor_TargetZoneCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             this.CreateAsset(InstancePath.TargetZoneConfigurationDataPath,
                  editorInformationsData.TargetZoneID.ToString() + NameConstants.TargetZoneInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInformationsData.TargetZoneID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.TargetZonesConfiguration, editorProfile);
+            this.AddToGameConfiguration(editorInformationsData.TargetZoneID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration, editorProfile);
         }
     }
 }

@@ -12,17 +12,17 @@ namespace RTPuzzle
             this.BaseInit(selfAgent, aiID, PuzzleEventsManager);
         }
 
-        public override void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
+        public override void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)
         {
             SetAttractedObject(attractivePosition, attractiveObjectType);
         }
 
-        public override void ComponentTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
+        public override void ComponentTriggerStay(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)
         {
             SetAttractedObject(attractivePosition, attractiveObjectType);
         }
 
-        public override void ComponentTriggerExit(AttractiveObjectTypeModule attractiveObjectType)
+        public override void ComponentTriggerExit(AttractiveObjectModule attractiveObjectType)
         {
             if (this.involvedAttractiveObject != null &&
                 attractiveObjectType.AttractiveObjectId == this.involvedAttractiveObject.AttractiveObjectId)

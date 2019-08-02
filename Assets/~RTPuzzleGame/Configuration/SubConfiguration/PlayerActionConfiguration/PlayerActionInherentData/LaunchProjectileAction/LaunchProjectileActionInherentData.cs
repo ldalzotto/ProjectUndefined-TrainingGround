@@ -7,9 +7,9 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "LaunchProjectileActionInherentData", menuName = "Configuration/PuzzleGame/PlayerActionConfiguration/LaunchProjectileActionInherentData", order = 1)]
     public class LaunchProjectileActionInherentData : PlayerActionInherentData
     {
-        public LaunchProjectileId launchProjectileId;
+        public LaunchProjectileID launchProjectileId;
 
-        public LaunchProjectileActionInherentData(LaunchProjectileId launchProjectileId,
+        public LaunchProjectileActionInherentData(LaunchProjectileID launchProjectileId,
             SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
         {
             this.launchProjectileId = launchProjectileId;

@@ -5,6 +5,6 @@ using GameConfigurationID;
 namespace RTPuzzle
 {
     [System.Serializable]
-    public class RepelableObjectDistance : ByEnumProperty<LaunchProjectileId, float>
+    public class RepelableObjectDistance : ByEnumProperty<LaunchProjectileID, float>
     {    }
 }

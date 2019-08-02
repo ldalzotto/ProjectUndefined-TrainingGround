@@ -92,9 +92,9 @@ public abstract class ByEnumPropertyCustomEditor<K, V> : Editor where K : Enum
 }
 
 [CustomEditor(typeof(ProjectileEscapeRange))]
-public class ProjectileEscapeRangeCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileId, float> { }
+public class ProjectileEscapeRangeCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileID, float> { }
 [CustomEditor(typeof(ProjectileEscapeSemiAngle))]
-public class ProjectileEscapeSemiAngleCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileId, float> { }
+public class ProjectileEscapeSemiAngleCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileID, float> { }
 [CustomEditor(typeof(RepelableObjectDistance))]
-public class RepelableObjectDistanceCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileId, float> { }
+public class RepelableObjectDistanceCustomEditor : ByEnumPropertyCustomEditor<LaunchProjectileID, float> { }
 

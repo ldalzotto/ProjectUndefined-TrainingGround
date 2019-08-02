@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using CreationWizard;
 using GameConfigurationID;
 
-namespace Editor_ProjectileCreationWizard
+namespace Editor_LaunchProjectileCreationWizard
 {
     [System.Serializable]
     public class EditorInformations : CreationModuleComponent
@@ -40,7 +40,7 @@ namespace Editor_ProjectileCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LaunchProjectileId, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ProjectileConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LaunchProjectileId, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration)
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }
@@ -49,7 +49,7 @@ namespace Editor_ProjectileCreationWizard
     public class EditorInformationsData
     {
         [CustomEnum(isCreateable: true)]
-        public LaunchProjectileId LaunchProjectileId;
+        public LaunchProjectileID LaunchProjectileId;
         public CommonGameConfigurations CommonGameConfigurations;
     }
 

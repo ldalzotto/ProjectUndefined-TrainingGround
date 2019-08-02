@@ -27,7 +27,7 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        protected AttractiveObjectTypeModule involvedAttractiveObject;
+        protected AttractiveObjectModule involvedAttractiveObject;
 
         protected void BaseInit(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
         {
@@ -37,9 +37,9 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public abstract void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
-        public abstract void ComponentTriggerStay(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType);
-        public abstract void ComponentTriggerExit(AttractiveObjectTypeModule attractiveObjectType);
+        public abstract void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType);
+        public abstract void ComponentTriggerStay(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType);
+        public abstract void ComponentTriggerExit(AttractiveObjectModule attractiveObjectType);
 
         public virtual void OnDestinationReached()
         {
@@ -60,7 +60,7 @@ namespace RTPuzzle
             this.involvedAttractiveObject = null;
         }
 
-        public void OnAttractiveObjectDestroyed(AttractiveObjectTypeModule attractiveObjectToDestroy)
+        public void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {
             if (this.IsDestructedAttractiveObjectEqualsToCurrent(attractiveObjectToDestroy))
             {
@@ -69,7 +69,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectTypeModule attractiveObjectType)
+        protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)
         {
             //We only check if the center point is not occluded by obstacles. Range intersection is already done in the physics step (that leads to this event).
             //This is not completely accurate accurate -> we check if a single point is not occluded.
@@ -111,7 +111,7 @@ namespace RTPuzzle
             return this.IsInfluencedByAttractiveObject();
         }
 
-        private bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectTypeModule attractiveObjectToDestroy)
+        private bool IsDestructedAttractiveObjectEqualsToCurrent(AttractiveObjectModule attractiveObjectToDestroy)
         {
             return (this.involvedAttractiveObject != null &&
                 attractiveObjectToDestroy.GetInstanceID() == this.involvedAttractiveObject.GetInstanceID());

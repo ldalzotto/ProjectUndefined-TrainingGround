@@ -12,7 +12,7 @@ namespace GameConfigurationID {
   
   
   [System.Serializable()]
-  public enum LaunchProjectileId {
+  public enum LaunchProjectileID {
     
     STONE = 0,
     

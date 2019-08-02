@@ -25,21 +25,31 @@ namespace Editor_MainGameCreationWizard
             #endregion
 
             #region Puzzle Interactive Object Modules Prefabs
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseModelObjectModule, "BaseModelObjectModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseObjectRepelTypeModule, "BaseObjectRepelModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseAttractiveObjectModule, "BaseAttractiveObjectModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseTargetZoneObjectModule, "BaseTargetZoneModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLevelCompletionTriggerModule, "BaseLevelCompletionTriggerModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLaunchProjectileModule, "BaseLaunchProjectileModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseDisarmObjectModule, "BaseDisarmObjectModule");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseActionInteractableObjectModule, "BaseActionInteractableObjectModule");
+            foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.GetType().GetFields())
+            {
+                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs);
+                if (configurationObject == null)
+                {
+
+                    foreach (var foundAsset in AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name))
+                    {
+                        if (foundAsset.GetType() == typeof(GameObject))
+                        {
+                            var retrievedComp = ((GameObject)foundAsset).GetComponent(configurationFieldInfo.FieldType);
+                            if (typeof(InteractiveObjectModule).IsAssignableFrom(retrievedComp.GetType()))
+                            {
+                                configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs, retrievedComp);
+                            }
+                        }
+                    }
+                }
+            }
             #endregion
 
             #region Puzzle AI managers prefabs  
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIprefab");
             foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleAICommonPrefabs.GetType().GetFields())
             {
-
                 var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleAICommonPrefabs);
                 if (configurationObject == null)
                 {
@@ -172,28 +182,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public InteractiveObjectType BaseInteractiveObjectTypePrefab;
     }
-
-    [System.Serializable]
-    public class PuzzleInteractiveObjectModulePrefabs
-    {
-        [ReadOnly]
-        public ModelObjectModule BaseModelObjectModule;
-        [ReadOnly]
-        public ObjectRepelTypeModule BaseObjectRepelTypeModule;
-        [ReadOnly]
-        public AttractiveObjectTypeModule BaseAttractiveObjectModule;
-        [ReadOnly]
-        public TargetZoneObjectModule BaseTargetZoneObjectModule;
-        [ReadOnly]
-        public LevelCompletionTriggerModule BaseLevelCompletionTriggerModule;
-        [ReadOnly]
-        public LaunchProjectileModule BaseLaunchProjectileModule;
-        [ReadOnly]
-        public DisarmObjectModule BaseDisarmObjectModule;
-        [ReadOnly]
-        public ActionInteractableObjectModule BaseActionInteractableObjectModule;
-    }
-
+    
     [System.Serializable]
     public class AdventureGameConfigurations
     {

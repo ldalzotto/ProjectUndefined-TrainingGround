@@ -17,9 +17,9 @@ namespace RTPuzzle
     public class PuzzleGameConfiguration : CoreGame.GameConfiguration
     {
         
-        public RTPuzzle.ProjectileConfiguration ProjectileConfiguration;
+        public RTPuzzle.LaunchProjectileConfiguration LaunchProjectileConfiguration;
         
-        public RTPuzzle.TargetZonesConfiguration TargetZonesConfiguration;
+        public RTPuzzle.TargetZoneConfiguration TargetZoneConfiguration;
         
         public RTPuzzle.AttractiveObjectConfiguration AttractiveObjectConfiguration;
         
@@ -37,7 +37,7 @@ namespace RTPuzzle
         
         public RTPuzzle.DottedLineConfiguration DottedLineConfiguration;
         
-        public RTPuzzle.RepelableObjectsConfiguration RepelableObjectsConfiguration;
+        public RTPuzzle.ObjectRepelConfiguration ObjectRepelConfiguration;
         
         public RTPuzzle.DisarmObjectConfiguration DisarmObjectConfiguration;
         

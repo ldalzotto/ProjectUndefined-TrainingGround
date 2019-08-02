@@ -14,14 +14,14 @@ namespace RTPuzzle
             PuzzleGameConfiguration.LevelConfiguration.Init(PuzzleGameConfiguration.PlayerActionConfiguration);
         }
 
-        public Dictionary<LaunchProjectileId, ProjectileInherentData> ProjectileConf()
+        public Dictionary<LaunchProjectileID, LaunchProjectileInherentData> ProjectileConf()
         {
-            return PuzzleGameConfiguration.ProjectileConfiguration.ConfigurationInherentData;
+            return PuzzleGameConfiguration.LaunchProjectileConfiguration.ConfigurationInherentData;
         }
 
         public Dictionary<TargetZoneID, TargetZoneInherentData> TargetZonesConfiguration()
         {
-            return PuzzleGameConfiguration.TargetZonesConfiguration.ConfigurationInherentData;
+            return PuzzleGameConfiguration.TargetZoneConfiguration.ConfigurationInherentData;
         }
 
         public Dictionary<PlayerActionId, PlayerActionInherentData> PlayerActionConfiguration()
@@ -61,9 +61,9 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.DottedLineConfiguration.ConfigurationInherentData;
         }
 
-        public Dictionary<RepelableObjectID, RepelableObjectsInherentData> RepelableObjectsConfiguration()
+        public Dictionary<ObjectRepelID, ObjectRepelInherentData> RepelableObjectsConfiguration()
         {
-            return PuzzleGameConfiguration.RepelableObjectsConfiguration.ConfigurationInherentData;
+            return PuzzleGameConfiguration.ObjectRepelConfiguration.ConfigurationInherentData;
         }
         public Dictionary<DisarmObjectID, DisarmObjectInherentData> DisarmObjectsConfiguration()
         {

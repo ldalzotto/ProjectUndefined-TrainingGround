@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Editor_ProjectileCreationWizard;
+using Editor_LaunchProjectileCreationWizard;
 
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class CreateProjectile : CreateInEditorModule<ProjectileCreationWizard>
+    public class CreateProjectile : CreateInEditorModule<LaunchProjectileCreationWizard>
     {    }
 }

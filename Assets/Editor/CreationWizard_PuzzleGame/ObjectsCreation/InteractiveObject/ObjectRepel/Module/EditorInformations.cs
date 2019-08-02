@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using CreationWizard;
 using GameConfigurationID;
 
-namespace Editor_RepelableObjectCreationWizard
+namespace Editor_ObjectRepelCreationWizard
 {
     [System.Serializable]
     public class EditorInformations : CreationModuleComponent
@@ -40,7 +40,7 @@ namespace Editor_RepelableObjectCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.RepelableObjectID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.RepelableObjectsConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.RepelableObjectID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration)
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }
@@ -49,7 +49,7 @@ namespace Editor_RepelableObjectCreationWizard
     public class EditorInformationsData
     {
         [CustomEnum(isCreateable: true)]
-        public RepelableObjectID RepelableObjectID;
+        public ObjectRepelID RepelableObjectID;
         public CommonGameConfigurations CommonGameConfigurations;
     }
 

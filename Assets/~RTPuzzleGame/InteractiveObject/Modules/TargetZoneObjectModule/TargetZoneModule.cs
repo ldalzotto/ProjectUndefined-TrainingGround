@@ -7,7 +7,7 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public class TargetZoneObjectModule : InteractiveObjectModule
+    public class TargetZoneModule : InteractiveObjectModule
     {
         [CustomEnum]
         public TargetZoneID TargetZoneID;
@@ -24,9 +24,9 @@ namespace RTPuzzle
         public Collider ZoneDistanceDetectionCollider { get => zoneDistanceDetectionCollider; }
         public LevelCompletionTriggerModule LevelCompletionTriggerModule { get => levelCompletionTriggerModule; }
 
-        public static TargetZoneObjectModule FromCollisionType(CollisionType collisionType)
+        public static TargetZoneModule FromCollisionType(CollisionType collisionType)
         {
-            return collisionType.GetComponent<TargetZoneObjectModule>();
+            return collisionType.GetComponent<TargetZoneModule>();
         }
         #endregion
 

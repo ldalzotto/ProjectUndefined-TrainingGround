@@ -93,11 +93,11 @@ namespace RTPuzzle
         #endregion
 
         #region Tracked Object Retrieval
-        public ObjectRepelTypeModule GetTrackedRepelableObject()
+        public ObjectRepelModule GetTrackedRepelableObject()
         {
-            if (this.trackedObject != null && this.trackedObject.GetType() == typeof(ObjectRepelTypeModule))
+            if (this.trackedObject != null && this.trackedObject.GetType() == typeof(ObjectRepelModule))
             {
-                return (ObjectRepelTypeModule)this.trackedObject;
+                return (ObjectRepelModule)this.trackedObject;
             }
             return null;
         }
@@ -112,7 +112,7 @@ namespace RTPuzzle
         {
             if (this.CollisionType.IsRepelable)
             {
-                this.trackedObject = this.GetComponent<ObjectRepelTypeModule>();
+                this.trackedObject = this.GetComponent<ObjectRepelModule>();
             }
         }
     }

@@ -8,16 +8,16 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class EditProjectile : EditScriptableObjectModule<LaunchProjectileModule>
     {
-        private ProjectileConfiguration projectileConfiguration;
+        private LaunchProjectileConfiguration projectileConfiguration;
         protected override Func<LaunchProjectileModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
                 return (LaunchProjectileModule LaunchProjectile) =>
                 {
-                    if (projectileConfiguration != null && projectileConfiguration.ConfigurationInherentData.ContainsKey(LaunchProjectile.LaunchProjectileId))
+                    if (projectileConfiguration != null && projectileConfiguration.ConfigurationInherentData.ContainsKey(LaunchProjectile.LaunchProjectileID))
                     {
-                        return projectileConfiguration.ConfigurationInherentData[LaunchProjectile.LaunchProjectileId];
+                        return projectileConfiguration.ConfigurationInherentData[LaunchProjectile.LaunchProjectileID];
                     }
                     return null;
                 };
@@ -26,7 +26,7 @@ namespace Editor_GameDesigner
 
         public override void OnEnabled()
         {
-            this.projectileConfiguration = AssetFinder.SafeSingleAssetFind<ProjectileConfiguration>("t:" + typeof(ProjectileConfiguration));
+            this.projectileConfiguration = AssetFinder.SafeSingleAssetFind<LaunchProjectileConfiguration>("t:" + typeof(LaunchProjectileConfiguration));
         }
     }
 }

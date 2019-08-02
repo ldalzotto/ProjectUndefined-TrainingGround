@@ -5,14 +5,14 @@ using UnityEngine;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditAttractiveObject : EditScriptableObjectModule<AttractiveObjectTypeModule>
+    public class EditAttractiveObject : EditScriptableObjectModule<AttractiveObjectModule>
     {
         private AttractiveObjectConfiguration AttractiveObjectConfiguration;
-        protected override Func<AttractiveObjectTypeModule, ScriptableObject> scriptableObjectResolver
+        protected override Func<AttractiveObjectModule, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (AttractiveObjectTypeModule attractiveObjectType) =>
+                return (AttractiveObjectModule attractiveObjectType) =>
                 {
                     if (AttractiveObjectConfiguration != null && AttractiveObjectConfiguration.ConfigurationInherentData.ContainsKey(attractiveObjectType.AttractiveObjectId))
                     {

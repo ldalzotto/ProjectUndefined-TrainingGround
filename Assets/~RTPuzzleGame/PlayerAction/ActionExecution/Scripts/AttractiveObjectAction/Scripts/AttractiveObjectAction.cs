@@ -52,7 +52,7 @@ namespace RTPuzzle
             #endregion
 
             var attractiveObjectInherentConfigurationData = PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
-            this.attractiveObject = AttractiveObjectTypeModule.Instanciate(Vector3.zero, this.AttractiveObjectsInstanciatedParent.transform, attractiveObjectInherentConfigurationData, new List<Type>() { typeof(ModelObjectModule) });
+            this.attractiveObject = AttractiveObjectModule.Instanciate(Vector3.zero, this.AttractiveObjectsInstanciatedParent.transform, attractiveObjectInherentConfigurationData, new List<Type>() { typeof(ModelObjectModule) });
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerPuzzleLogicRootCollier());

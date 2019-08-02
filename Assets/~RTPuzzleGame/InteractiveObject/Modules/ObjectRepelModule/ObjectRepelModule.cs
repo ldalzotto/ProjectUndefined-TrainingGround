@@ -1,12 +1,14 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
-    public class ObjectRepelTypeModule : InteractiveObjectModule
+    public class ObjectRepelModule : InteractiveObjectModule
     {
-        public RepelableObjectID RepelableObjectID;
+        [FormerlySerializedAs("RepelableObjectID")]
+        public ObjectRepelID ObjectRepelID;
 
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
@@ -26,11 +28,11 @@ namespace RTPuzzle
             this.objectRepelCollider = GetComponent<Collider>();
         }
 
-        public static ObjectRepelTypeModule FromCollisionType(CollisionType collisionType)
+        public static ObjectRepelModule FromCollisionType(CollisionType collisionType)
         {
             if (collisionType.IsRepelable)
             {
-                return collisionType.GetComponent<ObjectRepelTypeModule>();
+                return collisionType.GetComponent<ObjectRepelModule>();
             }
             return null;
         }
@@ -80,7 +82,7 @@ namespace RTPuzzle
 
     public static class ObjectRepelTypeModuleEventHandling
     {
-        public static void OnObjectRepelRepelled(ObjectRepelTypeModule objectRepelType, Vector3 targetWorldPosition)
+        public static void OnObjectRepelRepelled(ObjectRepelModule objectRepelType, Vector3 targetWorldPosition)
         {
             Debug.Log(MyLog.Format(Vector3.Distance(objectRepelType.transform.position, targetWorldPosition)));
             objectRepelType.OnObjectRepelRepelled(BeziersControlPoints.Build(objectRepelType.transform.position, targetWorldPosition, objectRepelType.transform.up, BeziersControlPointsShape.CURVED));

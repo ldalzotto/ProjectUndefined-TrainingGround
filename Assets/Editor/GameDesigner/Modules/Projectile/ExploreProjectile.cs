@@ -10,8 +10,8 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class ExploreProjectile : ExploreModule
     {
-        private List<ProjectileInherentData> ProjectileDatas = new List<ProjectileInherentData>();
-        private Dictionary<ProjectileInherentData, Editor> ProjectileDatasEditor = new Dictionary<ProjectileInherentData, Editor>();
+        private List<LaunchProjectileInherentData> ProjectileDatas = new List<LaunchProjectileInherentData>();
+        private Dictionary<LaunchProjectileInherentData, Editor> ProjectileDatasEditor = new Dictionary<LaunchProjectileInherentData, Editor>();
 
 
         public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
@@ -23,7 +23,7 @@ namespace Editor_GameDesigner
         {
             base.OnEnabled();
             var levelManager = GameObject.FindObjectOfType<LevelManager>();
-            var projectileConfiguration = AssetFinder.SafeSingleAssetFind<ProjectileConfiguration>("t:" + typeof(ProjectileConfiguration).Name);
+            var projectileConfiguration = AssetFinder.SafeSingleAssetFind<LaunchProjectileConfiguration>("t:" + typeof(LaunchProjectileConfiguration).Name);
             var playerActionConfiguration = AssetFinder.SafeSingleAssetFind<PlayerActionConfiguration>("t:" + typeof(PlayerActionConfiguration).Name);
             var levelConfiguraiton = AssetFinder.SafeSingleAssetFind<LevelConfiguration>("t:" + typeof(LevelConfiguration).Name);
 
