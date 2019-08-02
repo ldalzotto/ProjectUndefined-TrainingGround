@@ -191,6 +191,8 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectModulesInitializationOperations.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />
