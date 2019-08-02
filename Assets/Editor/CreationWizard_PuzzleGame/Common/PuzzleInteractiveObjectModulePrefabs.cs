@@ -13,7 +13,7 @@ namespace RTPuzzle
     
     
     [System.Serializable()]
-    public class PuzzleInteractiveObjectModulePrefabs : object
+    public class PuzzleInteractiveObjectModulePrefabs
     {
         
         [ReadOnly()]

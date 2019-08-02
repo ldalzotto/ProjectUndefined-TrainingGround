@@ -1,4 +1,4 @@
-﻿using Editor_ActionInteractableObjectCreationWizard;
+using Editor_ActionInteractableObjectCreationWizard;
 using Editor_AttractiveObjectCreationWizard;
 using Editor_DisarmObjectCreationWizard;
 using Editor_MainGameCreationWizard;
@@ -104,8 +104,15 @@ namespace Editor_GameDesigner
                  "The object can be interacted by player."
                 )
             },
-            //${addNewEntry}
+//${addNewEntry}
         };
 
     }
 }
+
+
+
+
+
+
+

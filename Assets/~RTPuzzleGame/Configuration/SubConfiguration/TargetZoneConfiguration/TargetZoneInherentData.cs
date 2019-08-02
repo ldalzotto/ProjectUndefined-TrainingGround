@@ -13,6 +13,9 @@ namespace RTPuzzle
         [SerializeField]
         private float escapeFOVSemiAngle;
 
+        [SerializeField]
+        public InteractiveObjectType AssociatedInteractiveObjectType;
+
         public TargetZoneInherentData(float aiDistanceDetection, float escapeFOVSemiAngle)
         {
             this.aiDistanceDetection = aiDistanceDetection;

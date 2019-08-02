@@ -13,7 +13,7 @@ namespace Editor_MainGameCreationWizard
     
     
     [System.Serializable()]
-    public class PuzzleGameConfigurations : object
+    public class PuzzleGameConfigurations
     {
         
         [ReadOnly()]

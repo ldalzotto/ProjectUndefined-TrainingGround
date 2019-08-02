@@ -32,21 +32,4 @@ namespace Editor_GameDesigner
         public string SelectedKey;
     }
 
-    [System.Serializable]
-    public class InteractiveObjectModuleWizardID
-    {
-        [CustomEnum()]
-        public ObjectRepelID ObjectRepelID;
-        [CustomEnum()]
-        public AttractiveObjectId AttractiveObjectId;
-        [CustomEnum()]
-        public LaunchProjectileID LaunchProjectileId;
-        [CustomEnum()]
-        public TargetZoneID TargetZoneID;
-        [CustomEnum()]
-        public DisarmObjectID DisarmObjectID;
-        [CustomEnum()]
-        public ActionInteractableObjectID ActionInteractableObjectID;
-        
-    }
 }

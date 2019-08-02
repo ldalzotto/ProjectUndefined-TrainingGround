@@ -1,5 +1,6 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
@@ -10,7 +11,10 @@ namespace RTPuzzle
         public float InteractionRange;
         [CustomEnum()]
         public PlayerActionId PlayerActionId;
-        public InteractiveObjectType ActionInteractableObjectPrefab;
+
+        [SerializeField]
+        [FormerlySerializedAs("ActionInteractableObjectPrefab")]
+        public InteractiveObjectType AssociatedInteractiveObjectType;
 
         public void Init(float InteractionRange)
         {

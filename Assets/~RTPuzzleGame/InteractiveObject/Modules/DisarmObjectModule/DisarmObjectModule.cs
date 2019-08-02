@@ -22,7 +22,7 @@ namespace RTPuzzle
 
         public static InteractiveObjectType Instanciate(Vector3 worldPosition, DisarmObjectInherentData DisarmObjectInherentData)
         {
-            InteractiveObjectType createdDisarmObject = MonoBehaviour.Instantiate(DisarmObjectInherentData.DisarmObjectPrefab);
+            InteractiveObjectType createdDisarmObject = MonoBehaviour.Instantiate(DisarmObjectInherentData.AssociatedInteractiveObjectType);
             createdDisarmObject.Init(new InteractiveObjectInitializationObject(DisarmObjectInherentData: DisarmObjectInherentData));
             createdDisarmObject.transform.position = worldPosition;
             return createdDisarmObject;

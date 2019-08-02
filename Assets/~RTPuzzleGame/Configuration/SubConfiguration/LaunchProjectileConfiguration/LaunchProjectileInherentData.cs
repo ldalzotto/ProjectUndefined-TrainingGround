@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GameConfigurationID;
+using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
@@ -14,8 +15,9 @@ namespace RTPuzzle
         [SerializeField]
         public float TravelDistancePerSeconds;
 
+        [FormerlySerializedAs("ProjectilePrefabV2")]
         [SerializeField]
-        public InteractiveObjectType ProjectilePrefabV2;
+        public InteractiveObjectType AssociatedInteractiveObjectType;
 
         [SerializeField]
         public bool isExploding;
@@ -38,7 +40,7 @@ namespace RTPuzzle
             this.EffectRange = effectRange;
             this.ProjectileThrowRange = projectileThrowRange;
             this.TravelDistancePerSeconds = travelDistancePerSeconds;
-            this.ProjectilePrefabV2 = projectilePrefab;
+            this.AssociatedInteractiveObjectType = projectilePrefab;
             this.isExploding = isExploding;
             this.isPersistingToAttractiveObject = isPersistingToAttractiveObject;
         }

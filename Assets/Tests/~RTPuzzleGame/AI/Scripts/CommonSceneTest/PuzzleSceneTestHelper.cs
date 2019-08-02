@@ -68,7 +68,7 @@ namespace Tests
         {
             var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
             var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId.CHEESE];
-            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AttractiveInteractiveObjectPrefab);
+            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AssociatedInteractiveObjectType);
             return attractiveObjectInherentConfigurationData;
         }
 
@@ -83,7 +83,7 @@ namespace Tests
         {
             var projectileData = ScriptableObject.CreateInstance<LaunchProjectileInherentData>();
             var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[baseProjectileIDForPrefab];
-            projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.ProjectilePrefabV2, isExploding, isPersistingToAttractiveObject);
+            projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.AssociatedInteractiveObjectType, isExploding, isPersistingToAttractiveObject);
             return projectileData;
         }
 
@@ -91,7 +91,7 @@ namespace Tests
         {
             var disarmObjectData = ScriptableObject.CreateInstance<DisarmObjectInherentData>();
             var foundDisarmObjectConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().DisarmObjectsConfiguration()[disarmObjectID];
-            disarmObjectData.Init(DisarmTime, DisarmInteractionRange, foundDisarmObjectConfiguration.DisarmObjectPrefab);
+            disarmObjectData.Init(DisarmTime, DisarmInteractionRange, foundDisarmObjectConfiguration.AssociatedInteractiveObjectType);
             return disarmObjectData;
         }
 

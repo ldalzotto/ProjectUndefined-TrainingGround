@@ -1,5 +1,6 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
@@ -9,7 +10,9 @@ namespace RTPuzzle
     {
         public float DisarmTime;
         public float DisarmInteractionRange = 2.5f;
-        public InteractiveObjectType DisarmObjectPrefab;
+
+        [FormerlySerializedAs("DisarmObjectPrefab")]
+        public InteractiveObjectType AssociatedInteractiveObjectType;
 
         [Header("Animation")]
         [CustomEnum()]
@@ -19,7 +22,7 @@ namespace RTPuzzle
         {
             this.DisarmTime = DisarmTime;
             this.DisarmInteractionRange = DisarmInteractionRange;
-            this.DisarmObjectPrefab = DisarmObjectPrefab;
+            this.AssociatedInteractiveObjectType = DisarmObjectPrefab;
         }
 
     }

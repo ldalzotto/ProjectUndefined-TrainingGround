@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GameConfigurationID;
+using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,7 +14,9 @@ namespace RTPuzzle
     {
         public float EffectRange;
         public float EffectiveTime;
-        public InteractiveObjectType AttractiveInteractiveObjectPrefab;
+
+        [FormerlySerializedAs("AttractiveInteractiveObjectPrefab")]
+        public InteractiveObjectType AssociatedInteractiveObjectType;
 
         [Header("Animation")]
 
@@ -31,7 +34,7 @@ namespace RTPuzzle
         {
             EffectRange = effectRange;
             EffectiveTime = effectiveTime;
-            this.AttractiveInteractiveObjectPrefab = AttractiveInteractiveObjectPrefab;
+            this.AssociatedInteractiveObjectType = AttractiveInteractiveObjectPrefab;
         }
 
     }

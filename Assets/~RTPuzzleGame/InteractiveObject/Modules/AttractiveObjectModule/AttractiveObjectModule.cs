@@ -17,11 +17,11 @@ namespace RTPuzzle
             InteractiveObjectType attractiveObject = null;
             if (parent != null)
             {
-                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveInteractiveObjectPrefab, parent);
+                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AssociatedInteractiveObjectType, parent);
             }
             else
             {
-                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AttractiveInteractiveObjectPrefab);
+                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AssociatedInteractiveObjectType);
             }
 
             attractiveObject.transform.position = worldPosition;

@@ -12,7 +12,7 @@ namespace Editor_MainGameCreationWizard
 {
     
     
-    public class NameConstants : object
+    public class NameConstants
     {
         
         public static string BaseLevelChunkPrefab = "_BaseLevelPrefab";
@@ -70,5 +70,7 @@ namespace Editor_MainGameCreationWizard
         public static string DisarmObjectInherentData = "_DisarmObjectInherentData";
         
         public static string ActionInteractableObjectInherentData = "_ActionInteractableObjectInherentData";
+        
+        public static string InteractiveTestInherentData = "_InteractiveTest";
     }
 }

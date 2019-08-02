@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Editor_GameDesigner;
+using System;
 using System.CodeDom;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public static class CodeGenerationHelper
@@ -21,7 +25,7 @@ public static class CodeGenerationHelper
         targetClass.TypeAttributes = System.Reflection.TypeAttributes.Public;
 
         var baseType = sourceType.BaseType;
-        if (baseType != null)
+        if (baseType != null && baseType != typeof(object))
         {
             targetClass.BaseTypes.Add(baseType);
         }
@@ -72,6 +76,16 @@ public static class CodeGenerationHelper
             var CreateAssetMenuAttribute = (CreateAssetMenuAttribute)sourceCustomAttribute;
             cutomAttributes.Add(GenerateCreateAssetMenuAttribute(CreateAssetMenuAttribute.fileName, CreateAssetMenuAttribute.menuName));
         }
+        else if (sourceCustomAttribute.GetType() == typeof(CustomEnum))
+        {
+            var CustomEnumAttribute = (CustomEnum)sourceCustomAttribute;
+            cutomAttributes.Add(new CodeAttributeDeclaration(typeof(CustomEnum).FullName, new CodeAttributeArgument[] {
+                new CodeAttributeArgument("IsSearchable", new CodePrimitiveExpression(CustomEnumAttribute.IsSearchable)),
+                new CodeAttributeArgument("IsCreateable", new CodePrimitiveExpression(CustomEnumAttribute.IsCreateable)),
+                new CodeAttributeArgument("ChoosedOpenRepertoire", new CodePrimitiveExpression(CustomEnumAttribute.ChoosedOpenRepertoire))
+            }));
+
+        }
         return cutomAttributes;
     }
 
@@ -84,5 +98,79 @@ public static class CodeGenerationHelper
         }
         snippetString += "}";
         return snippetString;
+    }
+
+    public static string ApplyStringParameters(string sourceString, Dictionary<string, string> parameters)
+    {
+        foreach (var parameter in parameters)
+        {
+            sourceString = sourceString.Replace(parameter.Key, parameter.Value);
+        }
+        return sourceString;
+    }
+
+    public static ClassFile ClassFileFromType(Type sourceType)
+    {
+        //using dependencies by file search
+        var sourceClassFiles = Directory.GetFiles(Application.dataPath, sourceType.Name + ".cs", SearchOption.AllDirectories);
+        string sourceClassFile = string.Empty;
+        string sourceClassPath = string.Empty;
+        if (sourceClassFiles != null && sourceClassFiles.Length > 0)
+        {
+            Debug.Log(sourceClassFiles[0]);
+            using (StreamReader sr = new StreamReader(sourceClassFiles[0]))
+            {
+                sourceClassFile = sr.ReadToEnd();
+            }
+            sourceClassPath = sourceClassFiles[0];
+        }
+        return new ClassFile(sourceClassFile, sourceClassPath);
+    }
+
+    public class ClassFile
+    {
+        public string Content;
+        public string Path;
+
+        public ClassFile(string content, string path)
+        {
+            Content = content;
+            Path = path;
+        }
+    }
+
+    public static void AddGameDesignerChoiceTree(string keyname, string moduleType)
+    {
+        string GameDesignerChoiceTreeConstantPath = "Assets/Editor/GameDesigner/ChoiceTree";
+        CodeCompileUnit compileUnity = new CodeCompileUnit();
+        CodeNamespace samples = new CodeNamespace(typeof(ChoiceTreeConstant).Namespace);
+        var generatedChoiceTreeConstant = new CodeTypeDeclaration(typeof(ChoiceTreeConstant).Name);
+
+        var generatedChoiceModuleFieldName = nameof(ChoiceTreeConstant.Modules);
+        var generatedChoiceModuleField = new CodeMemberField(typeof(ChoiceTreeConstant).GetField(generatedChoiceModuleFieldName).FieldType, generatedChoiceModuleFieldName);
+        generatedChoiceModuleField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
+        var generatedChoiceModuleDic = ChoiceTreeConstant.Modules.ToList()
+            .ConvertAll(kv => new KeyValuePair<string, string>("\"" + kv.Key + "\"", "typeof(" + kv.Value.FullName + ")"))
+              .Union(new List<KeyValuePair<string, string>>() {
+                  new KeyValuePair<string, string>("\"" + keyname + "\"", "typeof(" + moduleType + ")") })
+            .GroupBy(kv => kv.Key)
+            .ToDictionary(kv => kv.Key, kv => kv.First().Value);
+        generatedChoiceModuleField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<string, System.Type>()" +
+            CodeGenerationHelper.FormatDictionaryToCodeSnippet(generatedChoiceModuleDic));
+        generatedChoiceTreeConstant.Members.Add(generatedChoiceModuleField);
+
+
+        samples.Types.Add(generatedChoiceTreeConstant);
+        compileUnity.Namespaces.Add(samples);
+
+        string filename = GameDesignerChoiceTreeConstantPath + "/" + generatedChoiceTreeConstant.Name + ".cs";
+        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+        CodeGeneratorOptions options = new CodeGeneratorOptions();
+        options.BracingStyle = "C";
+        using (StreamWriter sourceWriter = new StreamWriter(filename))
+        {
+            provider.GenerateCodeFromCompileUnit(
+                compileUnity, sourceWriter, options);
+        }
     }
 }

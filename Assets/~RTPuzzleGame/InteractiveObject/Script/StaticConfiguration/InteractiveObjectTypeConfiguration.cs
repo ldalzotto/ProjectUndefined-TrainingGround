@@ -17,10 +17,10 @@ namespace RTPuzzle
         
         public static System.Collections.Generic.Dictionary<System.Type, System.Action<RTPuzzle.InteractiveObjectInitializationObject, RTPuzzle.InteractiveObjectType>> InitializationConfiguration = new System.Collections.Generic.Dictionary<System.Type, System.Action<InteractiveObjectInitializationObject, InteractiveObjectType>>(){
 {typeof(RTPuzzle.ModelObjectModule),InteractiveObjectModulesInitializationOperations.InitializeModelObjectModule},
-{typeof(RTPuzzle.AttractiveObjectModule),InteractiveObjectModulesInitializationOperations.InitializeAttractiveObjectTypeModule},
-{typeof(RTPuzzle.ObjectRepelModule),InteractiveObjectModulesInitializationOperations.InitializeObjectRepelTypeModule},
+{typeof(RTPuzzle.AttractiveObjectModule),InteractiveObjectModulesInitializationOperations.InitializeAttractiveObjectModule},
+{typeof(RTPuzzle.ObjectRepelModule),InteractiveObjectModulesInitializationOperations.InitializeObjectRepelModule},
 {typeof(RTPuzzle.LevelCompletionTriggerModule),InteractiveObjectModulesInitializationOperations.InitializeLevelCompletionTriggerModule},
-{typeof(RTPuzzle.TargetZoneModule),InteractiveObjectModulesInitializationOperations.InitializeTargetZoneObjectModule},
+{typeof(RTPuzzle.TargetZoneModule),InteractiveObjectModulesInitializationOperations.InitializeTargetZoneModule},
 {typeof(RTPuzzle.LaunchProjectileModule),InteractiveObjectModulesInitializationOperations.InitializeLaunchProjectileModule},
 {typeof(RTPuzzle.DisarmObjectModule),InteractiveObjectModulesInitializationOperations.InitializeDisarmObjectModule},
 {typeof(RTPuzzle.ActionInteractableObjectModule),InteractiveObjectModulesInitializationOperations.InitializeActionInteractableObjectModule},

@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 
 namespace RTPuzzle
 {
@@ -11,7 +11,7 @@ namespace RTPuzzle
             interactiveObjectType.GetModule<ModelObjectModule>().IfNotNull((ModelObjectModule modelObjectModule) => modelObjectModule.Init());
         }
 
-        public static void InitializeObjectRepelTypeModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public static void InitializeObjectRepelModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             interactiveObjectType.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule objectRepelTypeModule) => objectRepelTypeModule.Init(interactiveObjectType.GetModule<ModelObjectModule>()));
         }
@@ -21,7 +21,7 @@ namespace RTPuzzle
             interactiveObjectType.GetModule<LevelCompletionTriggerModule>().IfNotNull((LevelCompletionTriggerModule levelCompletionTriggerModule) => levelCompletionTriggerModule.Init());
         }
 
-        public static void InitializeTargetZoneObjectModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public static void InitializeTargetZoneModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             interactiveObjectType.GetModule<TargetZoneModule>().IfNotNull((TargetZoneModule targetZoneObjectModule) =>
             {
@@ -30,7 +30,7 @@ namespace RTPuzzle
             });
         }
 
-        public static void InitializeAttractiveObjectTypeModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public static void InitializeAttractiveObjectModule(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             interactiveObjectType.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule attractiveObjectTypeModule) =>
             {
@@ -77,11 +77,12 @@ namespace RTPuzzle
             });
         }
         
-        public static void DummyInitialization(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public static void InitializeInteractiveTestModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
 
         }
 
+//${addNewEntry}
         #endregion
     }
 }

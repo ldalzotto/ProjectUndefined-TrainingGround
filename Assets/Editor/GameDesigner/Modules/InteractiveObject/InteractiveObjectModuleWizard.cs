@@ -39,7 +39,7 @@ namespace Editor_GameDesigner
                 }
             }
         }
-        
+
         protected override bool AdditionalEditCondition(Type selectedType)
         {
             var PrefabEditContidionOperation = InteractiveObjectModuleWizardConfiguration.InteractiveObjectModuleConfiguration[selectedType].PrefabEditContidionOperation;
@@ -105,20 +105,32 @@ namespace Editor_GameDesigner
                 var objectRepelTypeModule = EditorInteractiveObjectModulesOperation.AddPrefabModule(interactiveObjectType, interactiveObjectModulePrefab.Invoke(CommonGameConfigurations));
                 SetModuleID.Invoke(objectRepelTypeModule, moduleIDToSet.Invoke(InteractiveObjectModuleWizardID));
                 EditorUtility.SetDirty(InteractiveObjectModuleWizard.CurrentSelectedObjet);
+
+                //set interactive object module reference if necessary
+                var retrievedModule = (InteractiveObjectModule)interactiveObjectType.GetComponentInChildren(interactiveObjectModulePrefab.Invoke(CommonGameConfigurations).GetType());
+                var moduleID = GetModuleID.Invoke(retrievedModule);
+                var retrievedModuleConfiguration = configuration.Invoke(CommonGameConfigurations).GetEntry(moduleID);
+                foreach (var retrievedModuleConfigurationField in retrievedModuleConfiguration.GetType().GetFields())
+                {
+                    if (retrievedModuleConfigurationField.Name == "AssociatedInteractiveObjectType")
+                    {
+                        retrievedModuleConfigurationField.SetValue(retrievedModuleConfiguration, ((GameObject)AssetFinder.SafeAssetFind(interactiveObjectType.gameObject.name)[0]).GetComponent<InteractiveObjectType>());
+                    }
+                }
             }
             else if (InteractiveObjectModuleWizard.Remove)
             {
                 if (InteractiveObjectModuleWizard.DeepDeletion)
                 {
                     //Get ID
-                    var RetrievedObjectRepelTypeModule = (InteractiveObjectModule)interactiveObjectType.GetComponentInChildren(interactiveObjectModulePrefab.Invoke(CommonGameConfigurations).GetType());
-                    if (RetrievedObjectRepelTypeModule != null)
+                    var retrievedModuleToDelete = (InteractiveObjectModule)interactiveObjectType.GetComponentInChildren(interactiveObjectModulePrefab.Invoke(CommonGameConfigurations).GetType());
+                    if (retrievedModuleToDelete != null)
                     {
-                        var ojectRepelID = GetModuleID.Invoke(RetrievedObjectRepelTypeModule);
+                        var moduleID = GetModuleID.Invoke(retrievedModuleToDelete);
 
                         //configuration deletion
-                        AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(configuration.Invoke(CommonGameConfigurations).GetEntry(ojectRepelID)));
-                        configuration.Invoke(CommonGameConfigurations).ClearEntry(ojectRepelID);
+                        AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(configuration.Invoke(CommonGameConfigurations).GetEntry(moduleID)));
+                        configuration.Invoke(CommonGameConfigurations).ClearEntry(moduleID);
                     }
                 }
                 EditorInteractiveObjectModulesOperation.RemovePrefabModule(interactiveObjectType, interactiveObjectModulePrefab.Invoke(CommonGameConfigurations).GetType());

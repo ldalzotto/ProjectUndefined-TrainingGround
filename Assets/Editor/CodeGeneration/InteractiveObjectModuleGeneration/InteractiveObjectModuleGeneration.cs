@@ -1,12 +1,14 @@
-﻿using Editor_MainGameCreationWizard;
+﻿using Editor_GameDesigner;
 using GameConfigurationID;
 using RTPuzzle;
+using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class InteractiveObjectModuleGeneration : EditorWindow
@@ -14,6 +16,11 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     private const string InteractiveObjectModulePath = "Assets/~RTPuzzleGame/InteractiveObject/Modules";
     private const string INteractiveObjectStaticConfigurationPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/StaticConfiguration";
     private const string PuzzleGameConfigurationsEditorConstantsPath = "Assets/Editor/CreationWizard_PuzzleGame/Common";
+    private const string GameDesignerBasePath = "Assets/Editor/GameDesigner";
+
+    private const string InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt";
+    private const string InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt";
+    private const string InteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/InteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
 
     [MenuItem("Generation/InteractiveObjectModuleGeneration")]
     static void Init()
@@ -37,13 +44,23 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     {
         this.DoInput();
 
-        if (GUILayout.Button("GENERATE"))
+        if (GUILayout.Button("GENERATE SCRIPTS"))
         {
             if (!string.IsNullOrEmpty(this.baseName))
             {
                 this.DoGenerateModule();
                 this.UpdateInteractiveObjectModulesConfiguration();
                 this.UpdatePuzzleInteractiveObjectModulePrefabs();
+                this.UpdateInteractiveObjectModuleWizardID();
+                this.UpdateInteractiveObjectModuleWizardConfiguration();
+            }
+        }
+
+        if (GUILayout.Button("GENERATE ASSETS"))
+        {
+            if (!string.IsNullOrEmpty(this.baseName))
+            {
+                this.DoGenerateBasePrefad();
             }
         }
     }
@@ -115,6 +132,21 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
     private void UpdateInteractiveObjectModulesConfiguration()
     {
+        //Generate a new initialisation method
+        // InteractiveObjectModulesInitializationOperations
+        var interactiveObjectModulesInitializationOperationsClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModulesInitializationOperations));
+        if (!interactiveObjectModulesInitializationOperationsClassFile.Content.Contains("Initialize" + this.baseName + "Module"))
+        {
+            interactiveObjectModulesInitializationOperationsClassFile.Content =
+                interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
+                   CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(InteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
+                         {"${baseName}", this.baseName }
+                 }));
+
+            File.WriteAllText(interactiveObjectModulesInitializationOperationsClassFile.Path, interactiveObjectModulesInitializationOperationsClassFile.Content);
+        }
+
+        //Regenerate coniguration
         CodeCompileUnit compileUnity = new CodeCompileUnit();
         CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectTypeConfiguration).Namespace);
         var moduleClass = new CodeTypeDeclaration();
@@ -129,7 +161,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         var initializationConfigurationFieldDic = InteractiveObjectTypeConfiguration.InitializationConfiguration.ToList()
            .ConvertAll(kv => new KeyValuePair<string, string>("typeof(" + kv.Key.FullName + ")", "InteractiveObjectModulesInitializationOperations.Initialize" + kv.Key.Name))
              .Union(new List<KeyValuePair<string, string>>() {
-                  new KeyValuePair<string, string>("typeof(" + "RTPuzzle." + this.baseName + "Module)", "InteractiveObjectModulesInitializationOperations.DummyInitialization") })
+                  new KeyValuePair<string, string>("typeof(" + "RTPuzzle." + this.baseName + "Module)", "InteractiveObjectModulesInitializationOperations.Initialize" + this.baseName + "Module") })
            .GroupBy(kv => kv.Key)
            .ToDictionary(kv => kv.Key, kv => kv.First().Value);
         initializationConfigurationField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<System.Type, System.Action<InteractiveObjectInitializationObject, InteractiveObjectType>>()" +
@@ -189,37 +221,80 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-}
 
-
-/*
- * 
- * 
- using UnityEngine;
-using System.Collections;
-using RTPuzzle;
-
-namespace Editor_MainGameCreationWizard
-{
-    [System.Serializable]
-    public class PuzzleInteractiveObjectModulePrefabs
+    private void UpdateInteractiveObjectModuleWizardID()
     {
-        [ReadOnly]
-        public ModelObjectModule BaseModelObjectModule;
-        [ReadOnly]
-        public ObjectRepelTypeModule BaseObjectRepelTypeModule;
-        [ReadOnly]
-        public AttractiveObjectTypeModule BaseAttractiveObjectModule;
-        [ReadOnly]
-        public TargetZoneObjectModule BaseTargetZoneObjectModule;
-        [ReadOnly]
-        public LevelCompletionTriggerModule BaseLevelCompletionTriggerModule;
-        [ReadOnly]
-        public LaunchProjectileModule BaseLaunchProjectileModule;
-        [ReadOnly]
-        public DisarmObjectModule BaseDisarmObjectModule;
-        [ReadOnly]
-        public ActionInteractableObjectModule BaseActionInteractableObjectModule;
+        CodeCompileUnit compileUnity = new CodeCompileUnit();
+        CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectModuleWizardID).Namespace);
+        var interactiveObjectModuleWizardID = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(InteractiveObjectModuleWizardID));
+
+        //Add the new
+        bool add = true;
+        foreach (var field in typeof(InteractiveObjectModuleWizardID).GetFields())
+        {
+            if (field.Name == this.baseName + "ID")
+            {
+                add = false;
+            }
+        }
+        if (add)
+        {
+            var interactiveObjectPrefab = new CodeMemberField("GameConfigurationID." + this.baseName + "ID", this.baseName + "ID");
+            interactiveObjectPrefab.Attributes = MemberAttributes.Public;
+            interactiveObjectPrefab.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(CustomEnum).Name));
+            interactiveObjectModuleWizardID.Members.Add(interactiveObjectPrefab);
+        }
+
+
+        samples.Types.Add(interactiveObjectModuleWizardID);
+        compileUnity.Namespaces.Add(samples);
+
+        string filename = GameDesignerBasePath + "/" + typeof(InteractiveObjectModuleWizardID).Name + ".cs";
+        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+        CodeGeneratorOptions options = new CodeGeneratorOptions();
+        options.BracingStyle = "C";
+        using (StreamWriter sourceWriter = new StreamWriter(filename))
+        {
+            provider.GenerateCodeFromCompileUnit(
+                compileUnity, sourceWriter, options);
+        }
+    }
+
+    private void UpdateInteractiveObjectModuleWizardConfiguration()
+    {
+        if (!InteractiveObjectModuleWizardConfiguration.InteractiveObjectModuleConfiguration.Keys.ToList().ConvertAll(t => t.Name).ToList().Contains(this.baseName + "Module"))
+        {
+            string configurationToAdd = string.Empty;
+            if (this.isIdentified)
+            {
+                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
+              {"${baseName}", this.baseName }
+          });
+            }
+            else
+            {
+                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
+              {"${baseName}", this.baseName }
+          });
+            }
+
+            var interactiveObjectModuleWizardConfigurationClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModuleWizardConfiguration));
+            interactiveObjectModuleWizardConfigurationClassFile.Content =
+                interactiveObjectModuleWizardConfigurationClassFile.Content.Insert(interactiveObjectModuleWizardConfigurationClassFile.Content.IndexOf("//${addNewEntry}"), configurationToAdd) + "\r\n";
+
+            File.WriteAllText(interactiveObjectModuleWizardConfigurationClassFile.Path, interactiveObjectModuleWizardConfigurationClassFile.Content);
+        }
+    }
+
+    private void DoGenerateBasePrefad()
+    {
+        var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
+        tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
+        
+        var basePrefabGenerated = new GameObject("Base" + this.baseName + "Module");
+        basePrefabGenerated.AddComponent(TypeHelper.GetType("RTPuzzle." + this.baseName + "Module"));
+        PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
+
+        EditorSceneManager.CloseScene(tmpScene, true);
     }
 }
-     */

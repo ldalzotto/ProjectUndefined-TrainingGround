@@ -1,4 +1,4 @@
-﻿using AdventureGame;
+using AdventureGame;
 using CoreGame;
 using GameConfigurationID;
 using RTPuzzle;
@@ -30,6 +30,7 @@ namespace Editor_GameDesigner
     public class TargetZoneConfigurationModule : ConfigurationModule<TargetZoneConfiguration, TargetZoneID, TargetZoneInherentData> { }
     public class DisarmObjectConfigurationModule : ConfigurationModule<DisarmObjectConfiguration, DisarmObjectID, DisarmObjectInherentData> { }
     public class ActionInteractableObjectConfigurationModule : ConfigurationModule<ActionInteractableObjectConfiguration, ActionInteractableObjectID, ActionInteractableObjectInherentData> { }
+//${addNewEntry}
 
     public class DiscussionRepertoireConfigurationModule : IGameDesignerModule
     {

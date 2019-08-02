@@ -309,6 +309,7 @@
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Helpers\GameDesignerHelper.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\InteractiveObjectModuleWizardID.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AddPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\BaseModuleWizardModule.cs" />
@@ -395,10 +396,14 @@
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\InteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerConfigurationCreation\Create${baseName}.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerCreationModule\Create${baseName}.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\GameDesignerConfigurationModuleTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizard.cs.txt" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
