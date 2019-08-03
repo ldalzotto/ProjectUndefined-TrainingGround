@@ -23,10 +23,14 @@ namespace RTPuzzle
         private PuzzleEventsManager puzzleEventsManager;
         #endregion
 
+        #region Internal Dependencies
+        private TransformMoveManagerComponentV2 transformMoveManagerComponent;
+        #endregion
 
         #region Data Retrieval
         public PuzzleGameConfigurationManager PuzzleGameConfigurationManager { get => puzzleGameConfigurationManager; }
         public PuzzleEventsManager PuzzleEventsManager { get => puzzleEventsManager; }
+        public TransformMoveManagerComponentV2 TransformMoveManagerComponent { get => transformMoveManagerComponent; }
 
         public T GetModule<T>() where T : InteractiveObjectModule
         {
@@ -65,6 +69,10 @@ namespace RTPuzzle
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             this.puzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            #endregion
+
+            #region Internal Dependencies
+            this.transformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();
             #endregion
 
             this.PopulateModules(exclusiveInitialEnabledModules);
@@ -109,6 +117,7 @@ namespace RTPuzzle
             this.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.Tick(d, timeAttenuationFactor));
+            this.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule interactiveObjectCutsceneControllerModule) => interactiveObjectCutsceneControllerModule.Tick(d, timeAttenuationFactor));
         }
 
         public void DisableModule(Type moduleType)

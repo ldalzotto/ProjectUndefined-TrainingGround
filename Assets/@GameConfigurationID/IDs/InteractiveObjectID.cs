@@ -13,6 +13,8 @@ namespace GameConfigurationID
     [System.Serializable()]
     public enum InteractiveObjectID
     {
-        NONE = 0
+        NONE = 0,
+        Player = 1,
+        _1_Town_GardenDoor = 2
     }
 }

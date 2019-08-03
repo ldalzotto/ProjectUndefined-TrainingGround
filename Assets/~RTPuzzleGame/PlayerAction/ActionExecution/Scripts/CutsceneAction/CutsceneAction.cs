@@ -16,8 +16,7 @@ namespace RTPuzzle
         #endregion
 
         #region External Dependencies
-        private LevelManager levelManager;
-        private NPCAIManagerContainer nPCAIManagerContainer;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         public CutsceneAction(CutsceneActionInherentData CutsceneActionInherentData) : base(CutsceneActionInherentData)
@@ -30,13 +29,14 @@ namespace RTPuzzle
             base.FirstExecution();
 
             #region External Dependencies
-            this.levelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.nPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             #endregion
 
-            this.cutscenePlayerInput = new PuzzleCutsceneActionInput(this.puzzleCutsceneId, this.levelManager, this.nPCAIManagerContainer);
+            this.cutscenePlayerInput = new PuzzleCutsceneActionInput(this.InteractiveObjectContainer);
 
             this.cutscenePlayer = new SequencedActionManager((action) => this.cutscenePlayer.OnAddAction(action, this.cutscenePlayerInput), null, OnNoMoreActionToPlay: this.OnCutsceneEnded);
+            this.cutscenePlayer.OnAddAction(puzzleConfigurationManager.PuzzleCutsceneConfiguration()[this.puzzleCutsceneId].PuzzleCutsceneGraph.GetRootAction(), this.cutscenePlayerInput);
             this.isCutsceneActionFinished = false;
         }
 

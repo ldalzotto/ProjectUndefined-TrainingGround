@@ -187,6 +187,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AttractiveObjectModule\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\DisarmObjectModule\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\GrabObjectModule\GrabObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InteractiveObjectCutsceneControllerModule\InteractiveObjectCutsceneControllerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LaunchProjectileModule\LaunchProjectileModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LevelCompletionTriggerModule\LevelCompletionTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />

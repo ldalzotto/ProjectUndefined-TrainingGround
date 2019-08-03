@@ -129,7 +129,7 @@ namespace RTPuzzle
                 if (this.DebugGizmo)
                 {
                     FrustumToDisplay.Add(new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8));
-                    this.FrustumFacesNormal.Add(faceFrustum, new NormalGizmo(frontFaceNormal, C1));
+                    this.FrustumFacesNormal[faceFrustum] = new NormalGizmo(frontFaceNormal, C1);
                 }
 #endif
             }

@@ -5,19 +5,13 @@ namespace RTPuzzle
 {
     public class PuzzleCutsceneActionInput : SequencedActionInput
     {
-        private PuzzleCutsceneId cutsceneId;
-        private LevelManager levelManager;
-        private NPCAIManagerContainer nPCAIManagerContainer;
+        private InteractiveObjectContainer interactiveObjectContainer;
 
-        public PuzzleCutsceneActionInput(PuzzleCutsceneId cutsceneId, LevelManager levelManager, NPCAIManagerContainer NPCAIManagerContainer)
+        public PuzzleCutsceneActionInput(InteractiveObjectContainer interactiveObjectContainer)
         {
-            this.cutsceneId = cutsceneId;
-            this.levelManager = levelManager;
-            this.nPCAIManagerContainer = NPCAIManagerContainer;
+            this.interactiveObjectContainer = interactiveObjectContainer;
         }
-
-        public PuzzleCutsceneId CutsceneId { get => cutsceneId; }
-        public LevelManager LevelManager { get => levelManager;  }
-        public NPCAIManagerContainer NPCAIManagerContainer { get => nPCAIManagerContainer; }
+        
+        public InteractiveObjectContainer InteractiveObjectContainer { get => interactiveObjectContainer;  }
     }
 }

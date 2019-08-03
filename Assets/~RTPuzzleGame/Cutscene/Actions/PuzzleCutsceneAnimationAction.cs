@@ -13,7 +13,7 @@ namespace RTPuzzle
     public class PuzzleCutsceneAnimationAction : AbstractCutsceneAnimationAction
     {
         [CustomEnum()]
-        public AiID AiID;
+        public InteractiveObjectID InteractiveObjectID;
 
         public PuzzleCutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
@@ -21,14 +21,14 @@ namespace RTPuzzle
 
         protected override AbstractCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
         {
-            return null;
-           // return ((PuzzleCutsceneActionInput)ContextActionInput).NPCAIManagerContainer.GetNPCAiManager(this.AiID).NPCCutsceneController;
+            var PuzzleCutsceneActionInput = (PuzzleCutsceneActionInput)ContextActionInput;
+            return PuzzleCutsceneActionInput.InteractiveObjectContainer.GetInteractiveObject(this.InteractiveObjectID).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
         }
 
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.AiID = (AiID)NodeEditorGUILayout.EnumField("AI : ", string.Empty, this.AiID);
+            this.InteractiveObjectID = (InteractiveObjectID)NodeEditorGUILayout.EnumField("InteractiveObjectID : ", string.Empty, this.InteractiveObjectID);
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
             this.SkipToNextNode = (bool)NodeEditorGUILayout.BoolField("Skip immediately : ", string.Empty, this.SkipToNextNode);
             this.CrossFade = NodeEditorGUILayout.FloatField("Crossfade : ", string.Empty, this.CrossFade);

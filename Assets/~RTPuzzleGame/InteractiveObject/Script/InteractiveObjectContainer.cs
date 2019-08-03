@@ -13,7 +13,7 @@ namespace RTPuzzle
         #endregion
 
         #region Generic Container
-        private Dictionary<InteractiveObjectID, List<InteractiveObjectType>> interactiveObjects;
+        private MultiValueDictionary<InteractiveObjectID, InteractiveObjectType> interactiveObjects;
         #endregion
 
         #region Specific Containers
@@ -33,6 +33,10 @@ namespace RTPuzzle
         public Dictionary<TargetZoneID, TargetZoneModule> TargetZones { get => targetZones; }
         public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
         public Dictionary<GrabObjectID, GrabObjectModule> GrabObjectModules { get => grabObjectModules; }
+        public InteractiveObjectType GetInteractiveObject(InteractiveObjectID interactiveObjectID)
+        {
+            return this.interactiveObjects[interactiveObjectID][0];
+        }
         #endregion
 
         public void Init()
@@ -40,7 +44,7 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.DisarmObjectProgressBarRendererManager = GameObject.FindObjectOfType<DisarmObjectProgressBarRendererManager>();
 
-            this.interactiveObjects = new Dictionary<InteractiveObjectID, List<InteractiveObjectType>>();
+            this.interactiveObjects = new MultiValueDictionary<InteractiveObjectID, InteractiveObjectType>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectModule>();
             this.objectsRepelable = new List<ObjectRepelModule>();
             this.targetZones = new Dictionary<TargetZoneID, TargetZoneModule>();
@@ -59,28 +63,22 @@ namespace RTPuzzle
 
         public void Tick(float d, float timeAttenuationFactor)
         {
-            foreach (var idAssociatedInteractiveObjects in interactiveObjects.Values)
+            foreach (var interactiveObject in interactiveObjects.MultiValueGetValues())
             {
-                foreach (var interactiveObject in idAssociatedInteractiveObjects)
-                {
-                    interactiveObject.Tick(d, timeAttenuationFactor);
-                }
+                interactiveObject.Tick(d, timeAttenuationFactor);
             }
 
             //After Tick
             List<InteractiveObjectType> interactiveObjectsToRemove = null;
 
-            foreach (var idAssociatedInteractiveObjects in interactiveObjects.Values)
+            foreach (var interactiveObject in interactiveObjects.MultiValueGetValues())
             {
-                foreach (var interactiveObject in idAssociatedInteractiveObjects)
+                if ((interactiveObject.GetModule<AttractiveObjectModule>() != null && interactiveObject.GetModule<AttractiveObjectModule>().IsAskingToBeDestroyed())
+                || (interactiveObject.GetModule<DisarmObjectModule>() != null && interactiveObject.GetModule<DisarmObjectModule>().IsAskingToBeDestroyed())
+               )
                 {
-                    if ((interactiveObject.GetModule<AttractiveObjectModule>() != null && interactiveObject.GetModule<AttractiveObjectModule>().IsAskingToBeDestroyed())
-                    || (interactiveObject.GetModule<DisarmObjectModule>() != null && interactiveObject.GetModule<DisarmObjectModule>().IsAskingToBeDestroyed())
-                   )
-                    {
-                        if (interactiveObjectsToRemove == null) { interactiveObjectsToRemove = new List<InteractiveObjectType>(); }
-                        interactiveObjectsToRemove.Add(interactiveObject);
-                    }
+                    if (interactiveObjectsToRemove == null) { interactiveObjectsToRemove = new List<InteractiveObjectType>(); }
+                    interactiveObjectsToRemove.Add(interactiveObject);
                 }
             }
 
@@ -96,11 +94,7 @@ namespace RTPuzzle
         #region External Event
         public void OnInteractiveObjectAdded(InteractiveObjectType interactiveObject)
         {
-            if (!this.interactiveObjects.ContainsKey(interactiveObject.InteractiveObjectID))
-            {
-                this.interactiveObjects.Add(interactiveObject.InteractiveObjectID, new List<InteractiveObjectType>());
-            }
-            this.interactiveObjects[interactiveObject.InteractiveObjectID].Add(interactiveObject);
+            this.interactiveObjects.MultiValueAdd(interactiveObject.InteractiveObjectID, interactiveObject);
         }
 
         public void OnModuleEnabled(InteractiveObjectModule enabledModule)
@@ -169,11 +163,7 @@ namespace RTPuzzle
 
         private void OnInteractiveObjectDestroyedLogic(InteractiveObjectType interactiveObject)
         {
-            this.interactiveObjects[interactiveObject.InteractiveObjectID].Remove(interactiveObject);
-            if (this.interactiveObjects[interactiveObject.InteractiveObjectID].Count == 0)
-            {
-                this.interactiveObjects.Remove(interactiveObject.InteractiveObjectID);
-            }
+            this.interactiveObjects.MultiValueRemove(interactiveObject.InteractiveObjectID);
 
             #region AttractiveObjectTypeModule
             interactiveObject.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule AttractiveObjectTypeModule) =>

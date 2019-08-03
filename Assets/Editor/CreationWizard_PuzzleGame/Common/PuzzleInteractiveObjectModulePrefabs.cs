@@ -42,5 +42,8 @@ namespace RTPuzzle
         
         [ReadOnly()]
         public RTPuzzle.GrabObjectModule BaseGrabObjectModule;
+        
+        [ReadOnly()]
+        public InteractiveObjectCutsceneControllerModule BaseInteractiveObjectCutsceneControllerModule;
     }
 }

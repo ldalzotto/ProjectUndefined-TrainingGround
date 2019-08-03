@@ -77,5 +77,7 @@ namespace GameConfigurationID {
     GENERIC_SquatDown = 31,
     
     CA_CrushDownItem = 32,
+    
+    _1_Town_GardenDoor_Open = 33,
   }
 }
