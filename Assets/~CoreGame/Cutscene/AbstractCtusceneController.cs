@@ -54,7 +54,7 @@ namespace CoreGame
 
         public void Tick(float d)
         {
-            this.POICutsceneMoveManager.IfNotNull((POICutsceneMoveManager) => POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.AIRotationSpeed));
+            this.POICutsceneMoveManager.IfNotNull((POICutsceneMoveManager) => POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.RotationSpeed));
             this.PlayerAnimationDataManager.IfNotNull((PlayerAnimationDataManager) => PlayerAnimationDataManager.Tick(this.GetCurrentNormalizedSpeedMagnitude()));
         }
 

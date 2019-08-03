@@ -8,25 +8,33 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using CoreGame;
+using UnityEngine;
+
 namespace RTPuzzle
 {
-    
-    
+
+
     public class InteractiveObjectInitializationObject
     {
-        
+
         public RTPuzzle.AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
-        
+
         public RTPuzzle.TargetZoneInherentData TargetZoneInherentData;
-        
+
         public RTPuzzle.LaunchProjectileInherentData LaunchProjectileInherentData;
-        
+
         public RTPuzzle.DisarmObjectInherentData DisarmObjectInherentData;
-        
+
         public CoreGame.BeziersControlPoints ProjectilePath;
-        
+
         public RTPuzzle.ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
-        
+
         public RTPuzzle.GrabObjectInherentData GrabObjectInherentData;
+
+        public TransformMoveManagerComponentV2 TransformMoveManagerComponent;
+
+        public Rigidbody RigidBody;
+        
     }
 }

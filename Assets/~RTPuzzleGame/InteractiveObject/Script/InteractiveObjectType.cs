@@ -23,14 +23,9 @@ namespace RTPuzzle
         private PuzzleEventsManager puzzleEventsManager;
         #endregion
 
-        #region Internal Dependencies
-        private TransformMoveManagerComponentV2 transformMoveManagerComponent;
-        #endregion
-
         #region Data Retrieval
         public PuzzleGameConfigurationManager PuzzleGameConfigurationManager { get => puzzleGameConfigurationManager; }
         public PuzzleEventsManager PuzzleEventsManager { get => puzzleEventsManager; }
-        public TransformMoveManagerComponentV2 TransformMoveManagerComponent { get => transformMoveManagerComponent; }
 
         public T GetModule<T>() where T : InteractiveObjectModule
         {
@@ -72,9 +67,9 @@ namespace RTPuzzle
             #endregion
 
             #region Internal Dependencies
-            this.transformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();
+            InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();
             #endregion
-
+            
             this.PopulateModules(exclusiveInitialEnabledModules);
 
             foreach (var initializationStatement in InteractiveObjectTypeConfiguration.InitializationConfiguration.Values)

@@ -1,9 +1,12 @@
-﻿namespace CoreGame
+﻿using UnityEngine.Serialization;
+
+namespace CoreGame
 {
     [System.Serializable]
     public class TransformMoveManagerComponentV2 : ADataComponent
     {
         public float SpeedMultiplicationFactor = 20f;
-        public float AIRotationSpeed = 10f;
+        [FormerlySerializedAs("AIRotationSpeed")]
+        public float RotationSpeed = 10f;
     }
 }

@@ -97,7 +97,8 @@ namespace RTPuzzle
 //------------------------------------------------------------------------------
         public static void InitializeInteractiveObjectCutsceneControllerModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-             interactiveObjectType.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule InteractiveObjectCutsceneControllerModule) => InteractiveObjectCutsceneControllerModule.Init(interactiveObjectType));
+             interactiveObjectType.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule InteractiveObjectCutsceneControllerModule) => 
+                        InteractiveObjectCutsceneControllerModule.Init(interactiveObjectType.GetModule<ModelObjectModule>(), interactiveObjectInitializationObject));
         }
 //${addNewEntry}
         #endregion

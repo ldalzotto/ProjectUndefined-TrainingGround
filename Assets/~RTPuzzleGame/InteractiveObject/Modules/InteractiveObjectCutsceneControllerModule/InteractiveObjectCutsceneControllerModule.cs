@@ -17,22 +17,14 @@ namespace RTPuzzle
 
     public class InteractiveObjectCutsceneControllerModule : RTPuzzle.InteractiveObjectModule
     {
-
-        private InteractiveObjectType ParentInteractiveObjectType;
-
-        #region Module Dependencies
-        private ModelObjectModule ModelObjectModule;
-        #endregion
-
+        
         private InteractiveObjectCutsceneController interactiveObjectCutsceneController;
 
         internal InteractiveObjectCutsceneController InteractiveObjectCutsceneController { get => interactiveObjectCutsceneController; }
 
-        public void Init(InteractiveObjectType InteractiveObjectType)
+        public void Init(ModelObjectModule ModelObjectModule, InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
-            this.ModelObjectModule = InteractiveObjectType.GetModule<ModelObjectModule>();
-            this.ParentInteractiveObjectType = InteractiveObjectType;
-            this.interactiveObjectCutsceneController = new InteractiveObjectCutsceneController(this.ModelObjectModule, this.ParentInteractiveObjectType);
+            this.interactiveObjectCutsceneController = new InteractiveObjectCutsceneController(ModelObjectModule, InteractiveObjectInitializationObject);
         }
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -43,16 +35,11 @@ namespace RTPuzzle
 
     class InteractiveObjectCutsceneController : AbstractCutsceneController
     {
-        public InteractiveObjectCutsceneController(ModelObjectModule ModelObjectModule, InteractiveObjectType InteractiveObjectType)
+        public InteractiveObjectCutsceneController(ModelObjectModule ModelObjectModule, InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
-            #region Data Components Dependencies
-            var PlayerInputMoveManagerComponentV2 = InteractiveObjectType.TransformMoveManagerComponent;
-            #endregion
-
-            var Rigidbody = InteractiveObjectType.GetComponent<Rigidbody>();
             var Animator = ModelObjectModule.Animator;
 
-            base.BaseInit(Rigidbody, null, Animator, PlayerInputMoveManagerComponentV2, null);
+            base.BaseInit(null, null, Animator, InteractiveObjectInitializationObject.TransformMoveManagerComponent, null);
         }
     }
 }
