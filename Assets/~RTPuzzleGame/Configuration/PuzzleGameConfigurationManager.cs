@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -84,7 +84,7 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.GrabObjectConfiguration.ConfigurationInherentData;
         }
-
+//${addNewEntry}
     }
 
 

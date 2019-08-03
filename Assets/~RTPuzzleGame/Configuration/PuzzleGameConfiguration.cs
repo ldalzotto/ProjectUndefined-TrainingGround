@@ -45,6 +45,6 @@ namespace RTPuzzle
         
         public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
         
-        public GrabObjectConfiguration GrabObjectConfiguration;
+        public RTPuzzle.GrabObjectConfiguration GrabObjectConfiguration;
     }
 }

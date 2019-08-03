@@ -150,28 +150,5 @@ namespace RTPuzzle
         }
     }
 
-    public class InteractiveObjectInitializationObject
-    {
-        public AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
-        public TargetZoneInherentData TargetZoneInherentData;
-        public LaunchProjectileInherentData ProjectileInherentData;
-        public DisarmObjectInherentData DisarmObjectInherentData;
-        public BeziersControlPoints ProjectilePath;
-        public ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
-        public GrabObjectInherentData GrabObjectInherentData;
-
-        public InteractiveObjectInitializationObject(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
-            TargetZoneInherentData TargetZoneInherentData = null, LaunchProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null, DisarmObjectInherentData DisarmObjectInherentData = null,
-            ActionInteractableObjectInherentData ActionInteractableObjectInherentData = null, GrabObjectInherentData GrabObjectInherentData = null)
-        {
-            this.InputAttractiveObjectInherentConfigurationData = InputAttractiveObjectInherentConfigurationData;
-            this.TargetZoneInherentData = TargetZoneInherentData;
-            this.ProjectileInherentData = ProjectileInherentData;
-            this.ProjectilePath = ProjectilePath;
-            this.DisarmObjectInherentData = DisarmObjectInherentData;
-            this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
-            this.GrabObjectInherentData = GrabObjectInherentData;
-        }
-    }
 
 }

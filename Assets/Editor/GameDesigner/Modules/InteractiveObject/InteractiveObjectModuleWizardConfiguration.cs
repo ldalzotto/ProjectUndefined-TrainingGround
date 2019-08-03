@@ -122,10 +122,10 @@ namespace Editor_GameDesigner
                    ""
                 )
             },
-
 //${addNewEntry}
         };
 
     }
 }
+
 

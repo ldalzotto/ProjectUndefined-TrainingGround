@@ -190,4 +190,20 @@ public static class CodeGenerationHelper
             }
         }
     }
+    
+    public static void InsertToFile(FileInfo targetFile, FileInfo templateFile, string insertionMarker, Dictionary<string, string> parameters, Func<string, bool> insertionGuard = null)
+    {
+        string PuzzleGameConfigurationManagerFile = File.ReadAllText(targetFile.FullName);
+        
+        if ((insertionGuard != null && insertionGuard.Invoke(PuzzleGameConfigurationManagerFile)) 
+                    || insertionGuard == null)
+        {
+            string configurationToAdd = configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(templateFile.FullName), parameters);
+
+            PuzzleGameConfigurationManagerFile =
+               PuzzleGameConfigurationManagerFile.Insert(PuzzleGameConfigurationManagerFile.IndexOf(insertionMarker), configurationToAdd);
+
+            File.WriteAllText(targetFile.FullName, PuzzleGameConfigurationManagerFile);
+        }
+    }
 }

@@ -25,7 +25,7 @@ namespace RTPuzzle
         public static InteractiveObjectType Instanciate(Vector3 worldPosition, ActionInteractableObjectInherentData ActionInteractableObjectInherentData)
         {
             InteractiveObjectType createdDisarmObject = MonoBehaviour.Instantiate(ActionInteractableObjectInherentData.AssociatedInteractiveObjectType);
-            createdDisarmObject.Init(new InteractiveObjectInitializationObject(ActionInteractableObjectInherentData: ActionInteractableObjectInherentData));
+            createdDisarmObject.Init(new InteractiveObjectInitializationObject() { ActionInteractableObjectInherentData = ActionInteractableObjectInherentData });
             createdDisarmObject.transform.position = worldPosition;
             return createdDisarmObject;
         }

@@ -52,8 +52,8 @@ namespace RTPuzzle
             {
                 if (interactiveObjectInitializationObject.ProjectilePath != null)
                 {
-                    if (interactiveObjectInitializationObject.ProjectileInherentData == null) { launchProjectileModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.ProjectileConf()[interactiveObjectType.GetModule<LaunchProjectileModule>().LaunchProjectileID], interactiveObjectInitializationObject.ProjectilePath, interactiveObjectType.transform); }
-                    else { launchProjectileModule.Init(interactiveObjectInitializationObject.ProjectileInherentData, interactiveObjectInitializationObject.ProjectilePath, interactiveObjectType.transform); }
+                    if (interactiveObjectInitializationObject.LaunchProjectileInherentData == null) { launchProjectileModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.ProjectileConf()[interactiveObjectType.GetModule<LaunchProjectileModule>().LaunchProjectileID], interactiveObjectInitializationObject.ProjectilePath, interactiveObjectType.transform); }
+                    else { launchProjectileModule.Init(interactiveObjectInitializationObject.LaunchProjectileInherentData, interactiveObjectInitializationObject.ProjectilePath, interactiveObjectType.transform); }
                 }
             });
         }
@@ -90,8 +90,7 @@ namespace RTPuzzle
                 else { GrabObjectModule.Init(interactiveObjectInitializationObject.GrabObjectInherentData); }
             });
         }
-
-        //${addNewEntry}
+//${addNewEntry}
         #endregion
     }
 }

@@ -573,7 +573,7 @@ namespace RTPuzzle
 
         public static void OnProjectileSpawn(ref InteractiveObjectType projectileObjectRef, BeziersControlPoints throwProjectilePath, LaunchProjectileInherentData ProjectileInherentData)
         {
-            projectileObjectRef.EnableModule(typeof(LaunchProjectileModule), new InteractiveObjectInitializationObject(ProjectilePath: throwProjectilePath, ProjectileInherentData: ProjectileInherentData));
+            projectileObjectRef.EnableModule(typeof(LaunchProjectileModule), new InteractiveObjectInitializationObject() { ProjectilePath = throwProjectilePath, LaunchProjectileInherentData = ProjectileInherentData });
         }
     }
     #endregion

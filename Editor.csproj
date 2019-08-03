@@ -403,10 +403,12 @@
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\InteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleGameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerCreationModule\Create${baseName}.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\Edit${baseName}.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />

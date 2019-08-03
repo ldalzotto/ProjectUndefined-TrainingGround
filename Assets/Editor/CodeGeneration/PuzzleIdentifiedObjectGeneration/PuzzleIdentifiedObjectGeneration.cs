@@ -21,10 +21,12 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
     private const string EditorCreationWizardFolderPath = "Assets/Editor/CreationWizard_PuzzleGame/ObjectsCreation";
     private const string GameDesignerModulesPath = "Assets/Editor/GameDesigner/Modules";
     private const string GameDesignerConfigurationModulesPath = "Assets/Editor/GameDesigner/Modules/Configurations/ConfigurationsModule.cs";
-
+    private const string PuzzleGameConfigurationManagerPath = "Assets/~RTPuzzleGame/Configuration/PuzzleGameConfigurationManager.cs";
+    
     private const string CodeGenerationCreationWizardBasincConfigurationCreationTemplatePath = "Assets/Editor/CodeGeneration/Templates/CreationWizardBasicConfigurationCreation";
     private const string CodeGenrationGameDesignerConfigurationCreationTemplatePath = "Assets/Editor/CodeGeneration/Templates/GameDesignerCreationModule";
     private const string GameDesignerConfigurationModuleTemplatepath = "Assets/Editor/CodeGeneration/Templates/GameDesignerTemplates/GameDesignerConfigurationModuleTemplate.txt";
+    private const string PuzzleGameConfigurationManagerMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/PuzzleGameConfiguration/PuzzleGameConfigurationManagerMethodTemplate.txt";
 
     [MenuItem("Generation/PuzzleIdentifiedObjectGeneration")]
     static void Init()
@@ -233,6 +235,7 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
 
     private void UpdatePuzzleGameConfiguration()
     {
+        #region PuzzleGameConfiguration
         CodeCompileUnit compileUnity = new CodeCompileUnit();
         CodeNamespace samples = new CodeNamespace(typeof(PuzzleGameConfiguration).Namespace);
 
@@ -266,6 +269,12 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
             provider.GenerateCodeFromCompileUnit(
                 compileUnity, sourceWriter, options);
         }
+        #endregion
+        #region PuzzleGameConfigurationManager
+        CodeGenerationHelper.InsertToFile(new FileInfo(PuzzleGameConfigurationManagerPath), new FileInfo(PuzzleGameConfigurationManagerMethodTemplatePath), "//${addNewEntry}",
+                new Dictionary<string, string>() { { "${baseName}", this.baseName } },
+                insertionGuard: (file) => !file.Contains(this.baseName + "Configuration"));
+        #endregion
     }
 
     private void UpdateInstancePathEditorConstants()

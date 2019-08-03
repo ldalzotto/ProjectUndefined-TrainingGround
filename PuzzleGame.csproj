@@ -193,6 +193,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectRepelModule\ObjectRepelModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\TargetZoneObjectModule\TargetZoneModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectInitializationObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectModulesInitializationOperations.cs" />

@@ -41,6 +41,6 @@ namespace RTPuzzle
         public RTPuzzle.ActionInteractableObjectModule BaseActionInteractableObjectModule;
         
         [ReadOnly()]
-        public GrabObjectModule BaseGrabObjectModule;
+        public RTPuzzle.GrabObjectModule BaseGrabObjectModule;
     }
 }

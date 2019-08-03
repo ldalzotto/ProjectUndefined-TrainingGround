@@ -18,10 +18,12 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     private const string GameDesignerBasePath = "Assets/Editor/GameDesigner";
     private const string GameDesignerModulesPath = "Assets/Editor/GameDesigner/Modules";
     private const string CustomEditorPath = "Assets/Editor/GameCustomEditors";
+    private const string InteractiveObjectInitializationObjectPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/InteractiveObjectInitializationObject.cs";
 
     private const string InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt";
     private const string InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt";
-    private const string InteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/InteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
+    private const string IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
+    private const string NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
     private const string GameDesignerEditModuleTemplate = "Assets/Editor/CodeGeneration/Templates/GameDesignerTemplates/Edit${baseName}.cs.txt";
     private const string CustomEditorTemplatePath = "Assets/Editor/CodeGeneration/Templates/CustomEditorTemplate/${baseName}CustomEditor.cs.txt";
 
@@ -49,6 +51,10 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 {
                     this.DoGenerateModule();
                     this.UpdateInteractiveObjectModulesConfiguration();
+                    if (this.isIdentified)
+                    {
+                        this.UpdateInteractiveObjectInitializationObject();
+                    }
                     this.UpdatePuzzleInteractiveObjectModulePrefabs();
                     if (this.isIdentified)
                     {
@@ -112,19 +118,29 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             idMember.Type = new CodeTypeReference(typeof(PointOfInterestId).Namespace + "." + this.baseName + "ID");
             idMember.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(CustomEnum).Name));
             moduleClass.Members.Add(idMember);
+
+            var initMethod = new CodeMemberMethod();
+            initMethod.Name = "Init";
+            initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            initMethod.Parameters.Add(new CodeParameterDeclarationExpression(this.baseName + "InherentData", this.baseName + "InherentData"));
+            moduleClass.Members.Add(initMethod);
+        }
+        else
+        {
+            var initMethod = new CodeMemberMethod();
+            initMethod.Name = "Init";
+            initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            moduleClass.Members.Add(initMethod);
         }
 
         var tickMethod = new CodeMemberMethod();
         tickMethod.Name = "Tick";
-        tickMethod.Attributes = MemberAttributes.Public;
+        tickMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
         tickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "d"));
         tickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "timeAttenuationFactor"));
         moduleClass.Members.Add(tickMethod);
 
-        var initMethod = new CodeMemberMethod();
-        initMethod.Name = "Tick";
-        initMethod.Attributes = MemberAttributes.Public;
-        moduleClass.Members.Add(initMethod);
+
 
         samples.Types.Add(moduleClass);
         compileUnity.Namespaces.Add(samples);
@@ -147,13 +163,27 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         var interactiveObjectModulesInitializationOperationsClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModulesInitializationOperations));
         if (!interactiveObjectModulesInitializationOperationsClassFile.Content.Contains("Initialize" + this.baseName + "Module"))
         {
-            interactiveObjectModulesInitializationOperationsClassFile.Content =
-                interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
-                   CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(InteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
-                         {"${baseName}", this.baseName }
-                 }));
+            if (this.isIdentified)
+            {
+                interactiveObjectModulesInitializationOperationsClassFile.Content =
+                        interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
+                           CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
+                                             {"${baseName}", this.baseName }
+                         }));
 
-            File.WriteAllText(interactiveObjectModulesInitializationOperationsClassFile.Path, interactiveObjectModulesInitializationOperationsClassFile.Content);
+                File.WriteAllText(interactiveObjectModulesInitializationOperationsClassFile.Path, interactiveObjectModulesInitializationOperationsClassFile.Content);
+            }
+            else
+            {
+                interactiveObjectModulesInitializationOperationsClassFile.Content =
+                             interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
+                                CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
+                                             {"${baseName}", this.baseName }
+                              }));
+
+                File.WriteAllText(interactiveObjectModulesInitializationOperationsClassFile.Path, interactiveObjectModulesInitializationOperationsClassFile.Content);
+            }
+
         }
 
         //Regenerate coniguration
@@ -191,6 +221,32 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
 
+    }
+
+    private void UpdateInteractiveObjectInitializationObject()
+    {
+        if (!typeof(InteractiveObjectInitializationObject).GetFields().ToList().ConvertAll(f => f.Name).Contains(this.baseName + "InherentData"))
+        {
+            CodeCompileUnit compileUnity = new CodeCompileUnit();
+            CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectType).Namespace);
+
+            var InteractiveObjectInitializationObjectCode = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(InteractiveObjectInitializationObject));
+            //add the new field
+            InteractiveObjectInitializationObjectCode.Members.Add(new CodeMemberField(this.baseName + "InherentData", this.baseName + "InherentData") { Attributes = MemberAttributes.Public });
+
+            samples.Types.Add(InteractiveObjectInitializationObjectCode);
+            compileUnity.Namespaces.Add(samples);
+
+            string filename = InteractiveObjectInitializationObjectPath;
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            CodeGeneratorOptions options = new CodeGeneratorOptions();
+            options.BracingStyle = "C";
+            using (StreamWriter sourceWriter = new StreamWriter(filename))
+            {
+                provider.GenerateCodeFromCompileUnit(
+                    compileUnity, sourceWriter, options);
+            }
+        }
     }
 
     private void UpdatePuzzleInteractiveObjectModulePrefabs()
@@ -326,3 +382,22 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         EditorSceneManager.CloseScene(tmpScene, true);
     }
 }
+
+/*
+ * 
+ * 
+ namespace RTPuzzle
+{
+    public class InteractiveObjectInitializationObject
+    {
+        public AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
+        public TargetZoneInherentData TargetZoneInherentData;
+        public LaunchProjectileInherentData LaunchProjectileInherentData;
+        public DisarmObjectInherentData DisarmObjectInherentData;
+        public CoreGame.BeziersControlPoints ProjectilePath;
+        public ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
+        public GrabObjectInherentData GrabObjectInherentData;
+    }
+}
+
+     */
