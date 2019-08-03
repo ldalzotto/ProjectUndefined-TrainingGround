@@ -11,15 +11,15 @@ namespace Editor_GameDesigner
         {
             get
             {
-                return (ObjectRepelModule ObjectRepelType) => this.RepelableObjectsConfiguration.ConfigurationInherentData[ObjectRepelType.ObjectRepelID];
+                return (ObjectRepelModule ObjectRepelType) => this.ObjectRepelConfiguration.ConfigurationInherentData[ObjectRepelType.ObjectRepelID];
             }
         }
 
-        private ObjectRepelConfiguration RepelableObjectsConfiguration;
+        private ObjectRepelConfiguration ObjectRepelConfiguration;
 
         public override void OnEnabled()
         {
-            this.RepelableObjectsConfiguration = AssetFinder.SafeSingleAssetFind<ObjectRepelConfiguration>("t:" + typeof(ObjectRepelConfiguration).Name);
+            this.ObjectRepelConfiguration = AssetFinder.SafeSingleAssetFind<ObjectRepelConfiguration>("t:" + typeof(ObjectRepelConfiguration).Name);
         }
     }
 }

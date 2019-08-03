@@ -46,31 +46,37 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
 
         if (GUILayout.Button("GENERATE SCRIPTS"))
         {
-            if (!string.IsNullOrEmpty(this.baseName))
+            if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                this.DoGenerateID();
-                this.CreatePuzzleSubConfigurationFolderIfNecessary();
-                this.DoGenerateInherentData();
-                this.DoGenerateConfiguration();
-                this.UpdatePuzzleGameConfigurationsEditorConstants();
-                this.UpdatePuzzleGameConfiguration();
-                this.UpdateInstancePathEditorConstants();
-                this.UpdateNameConstantsEditorConstant();
-                this.DoGenerateEditorCreation();
-                this.UpdateGameCreationWizardEditorProfileChoiceTree();
-                this.DoGenerateCreateGameDesignerModule();
-                this.DoGenerateConfigurationGameDesignerModule();
-                this.UpdateGameDesignerChoiceTree();
-            }
+                if (!string.IsNullOrEmpty(this.baseName))
+                {
+                    this.DoGenerateID();
+                    this.CreatePuzzleSubConfigurationFolderIfNecessary();
+                    this.DoGenerateInherentData();
+                    this.DoGenerateConfiguration();
+                    this.UpdatePuzzleGameConfigurationsEditorConstants();
+                    this.UpdatePuzzleGameConfiguration();
+                    this.UpdateInstancePathEditorConstants();
+                    this.UpdateNameConstantsEditorConstant();
+                    this.DoGenerateEditorCreation();
+                    this.UpdateGameCreationWizardEditorProfileChoiceTree();
+                    this.DoGenerateCreateGameDesignerModule();
+                    this.DoGenerateConfigurationGameDesignerModule();
+                    this.UpdateGameDesignerChoiceTree();
+                }
+            } 
         }
 
         if (GUILayout.Button("GENERATE ASSETS"))
         {
-            if (!string.IsNullOrEmpty(this.baseName))
+            if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                this.DoCreateConfigurationAsset();
-                this.DoGenerateCreationWizardProfile();
-            }
+                if (!string.IsNullOrEmpty(this.baseName))
+                {
+                    this.DoCreateConfigurationAsset();
+                    this.DoGenerateCreationWizardProfile();
+                }
+            }  
         }
     }
 
@@ -407,6 +413,7 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
                 { "${baseName}", this.baseName}
             });
         }
+
     }
 
     private void DoGenerateConfigurationGameDesignerModule()
@@ -428,8 +435,10 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
 
     private void UpdateGameDesignerChoiceTree()
     {
-        CodeGenerationHelper.AddGameDesignerChoiceTree(this.baseName + "//." + "Create" + this.baseName, "Editor_GameDesigner.Create" + this.baseName);
-        CodeGenerationHelper.AddGameDesignerChoiceTree("Configuration//." + this.baseName + "ConfigurationModule", "Editor_GameDesigner." + this.baseName + "ConfigurationModule");
+        CodeGenerationHelper.AddGameDesignerChoiceTree(new List<KeyValuePair<string, string>>() {
+            new KeyValuePair<string, string>("Puzzle//" + this.baseName + "//.Create" + this.baseName, "Editor_GameDesigner.Create" + this.baseName),
+            new KeyValuePair<string, string>("Configuration//." + this.baseName + "ConfigurationModule",  "Editor_GameDesigner." + this.baseName + "ConfigurationModule")
+        });
     }
 
     private static void DuplicateDirectoryWithParamtersRecursive(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, Dictionary<string, string> parameters)
@@ -441,20 +450,7 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
 
         foreach (var fileToCopy in sourceDirectory.GetFiles())
         {
-            if (fileToCopy.Extension == ".txt")
-            {
-                var sourceText = fileToCopy.OpenText().ReadToEnd();
-                var targetText = CodeGenerationHelper.ApplyStringParameters(sourceText, parameters);
-                var targetFileName = CodeGenerationHelper.ApplyStringParameters(fileToCopy.Name, parameters).Replace(".txt", "");
-
-                Debug.Log(targetDirectory.FullName + "/" + targetFileName);
-                var fileToCreate = new FileInfo(targetDirectory.FullName + "/" + targetFileName);
-
-                using (StreamWriter sw = fileToCreate.CreateText())
-                {
-                    sw.Write(targetText);
-                }
-            }
+            CodeGenerationHelper.CopyFile(targetDirectory, parameters, fileToCopy);
         }
 
         foreach (var directoryToCopy in sourceDirectory.GetDirectories())
@@ -471,6 +467,11 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
         var configurationField = PuzzleGameConfiguration.GetType().GetField(this.baseName + "Configuration");
         configurationField.SetValue(PuzzleGameConfiguration, configurationSO);
         EditorUtility.SetDirty(PuzzleGameConfiguration);
+
+        //regenerate profile
+        var path = AssetDatabase.GetAssetPath(AssetFinder.SafeSingleAssetFind<GameCreationWizardEditorProfile>("t:" + typeof(GameCreationWizardEditorProfile).Name));
+        AssetDatabase.DeleteAsset(path);
+        AssetDatabase.CreateAsset(ScriptableObject.CreateInstance(typeof(GameCreationWizardEditorProfile)), path);
     }
 
     private void DoGenerateCreationWizardProfile()

@@ -139,7 +139,7 @@ public static class CodeGenerationHelper
         }
     }
 
-    public static void AddGameDesignerChoiceTree(string keyname, string moduleType)
+    public static void AddGameDesignerChoiceTree(List<KeyValuePair<string, string>> entries)
     {
         string GameDesignerChoiceTreeConstantPath = "Assets/Editor/GameDesigner/ChoiceTree";
         CodeCompileUnit compileUnity = new CodeCompileUnit();
@@ -151,8 +151,7 @@ public static class CodeGenerationHelper
         generatedChoiceModuleField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
         var generatedChoiceModuleDic = ChoiceTreeConstant.Modules.ToList()
             .ConvertAll(kv => new KeyValuePair<string, string>("\"" + kv.Key + "\"", "typeof(" + kv.Value.FullName + ")"))
-              .Union(new List<KeyValuePair<string, string>>() {
-                  new KeyValuePair<string, string>("\"" + keyname + "\"", "typeof(" + moduleType + ")") })
+              .Union(entries.ConvertAll(kv => new KeyValuePair<string, string>("\"" + kv.Key + "\"", "typeof(" + kv.Value + ")")))
             .GroupBy(kv => kv.Key)
             .ToDictionary(kv => kv.Key, kv => kv.First().Value);
         generatedChoiceModuleField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<string, System.Type>()" +
@@ -171,6 +170,24 @@ public static class CodeGenerationHelper
         {
             provider.GenerateCodeFromCompileUnit(
                 compileUnity, sourceWriter, options);
+        }
+    }
+    
+    public static void CopyFile(DirectoryInfo targetDirectory, Dictionary<string, string> parameters, FileInfo fileToCopy)
+    {
+        if (fileToCopy.Extension == ".txt")
+        {
+            var sourceText = fileToCopy.OpenText().ReadToEnd();
+            var targetText = CodeGenerationHelper.ApplyStringParameters(sourceText, parameters);
+            var targetFileName = CodeGenerationHelper.ApplyStringParameters(fileToCopy.Name, parameters).Replace(".txt", "");
+
+            Debug.Log(targetDirectory.FullName + "/" + targetFileName);
+            var fileToCreate = new FileInfo(targetDirectory.FullName + "/" + targetFileName);
+
+            using (StreamWriter sw = fileToCreate.CreateText())
+            {
+                sw.Write(targetText);
+            }
         }
     }
 }

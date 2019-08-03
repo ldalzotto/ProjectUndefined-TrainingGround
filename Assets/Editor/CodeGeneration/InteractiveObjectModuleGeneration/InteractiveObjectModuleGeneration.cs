@@ -1,7 +1,6 @@
 ﻿using Editor_GameDesigner;
 using GameConfigurationID;
 using RTPuzzle;
-using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -17,10 +16,14 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     private const string INteractiveObjectStaticConfigurationPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/StaticConfiguration";
     private const string PuzzleGameConfigurationsEditorConstantsPath = "Assets/Editor/CreationWizard_PuzzleGame/Common";
     private const string GameDesignerBasePath = "Assets/Editor/GameDesigner";
+    private const string GameDesignerModulesPath = "Assets/Editor/GameDesigner/Modules";
+    private const string CustomEditorPath = "Assets/Editor/GameCustomEditors";
 
     private const string InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt";
     private const string InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt";
     private const string InteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/InteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
+    private const string GameDesignerEditModuleTemplate = "Assets/Editor/CodeGeneration/Templates/GameDesignerTemplates/Edit${baseName}.cs.txt";
+    private const string CustomEditorTemplatePath = "Assets/Editor/CodeGeneration/Templates/CustomEditorTemplate/${baseName}CustomEditor.cs.txt";
 
     [MenuItem("Generation/InteractiveObjectModuleGeneration")]
     static void Init()
@@ -32,13 +35,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     #region Input
     private string baseName;
     private bool isIdentified;
-    private EnumPicker idEnumPicker;
     #endregion
-
-    private void OnEnable()
-    {
-        this.idEnumPicker = new EnumPicker(typeof(PointOfInterestId).Namespace, null);
-    }
 
     private void OnGUI()
     {
@@ -46,22 +43,40 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
         if (GUILayout.Button("GENERATE SCRIPTS"))
         {
-            if (!string.IsNullOrEmpty(this.baseName))
+            if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                this.DoGenerateModule();
-                this.UpdateInteractiveObjectModulesConfiguration();
-                this.UpdatePuzzleInteractiveObjectModulePrefabs();
-                this.UpdateInteractiveObjectModuleWizardID();
-                this.UpdateInteractiveObjectModuleWizardConfiguration();
+                if (!string.IsNullOrEmpty(this.baseName))
+                {
+                    this.DoGenerateModule();
+                    this.UpdateInteractiveObjectModulesConfiguration();
+                    this.UpdatePuzzleInteractiveObjectModulePrefabs();
+                    if (this.isIdentified)
+                    {
+                        this.UpdateInteractiveObjectModuleWizardID();
+                    }
+
+                    this.UpdateInteractiveObjectModuleWizardConfiguration();
+
+                    if (this.isIdentified)
+                    {
+                        this.DoGenerateGameDesignerEditModule();
+                        this.DoGenerateModuleCustomEditor();
+                    }
+
+                }
             }
         }
 
         if (GUILayout.Button("GENERATE ASSETS"))
         {
-            if (!string.IsNullOrEmpty(this.baseName))
+            if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                this.DoGenerateBasePrefad();
+                if (!string.IsNullOrEmpty(this.baseName))
+                {
+                    this.DoGenerateBasePrefad();
+                }
             }
+
         }
     }
 
@@ -69,10 +84,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     {
         this.baseName = EditorGUILayout.TextField("Base name", this.baseName);
         this.isIdentified = EditorGUILayout.Toggle("Is Identified : ", this.isIdentified);
-        if (this.isIdentified)
-        {
-            this.idEnumPicker.OnGUI();
-        }
     }
 
     private void DoGenerateModule()
@@ -98,7 +109,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 Name = this.baseName + "ID"
             };
             idMember.Attributes = MemberAttributes.Public;
-            idMember.Type = new CodeTypeReference(typeof(PointOfInterestId).Namespace + "." + this.idEnumPicker.GetSelectedKey());
+            idMember.Type = new CodeTypeReference(typeof(PointOfInterestId).Namespace + "." + this.baseName + "ID");
             idMember.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(CustomEnum).Name));
             moduleClass.Members.Add(idMember);
         }
@@ -133,7 +144,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     private void UpdateInteractiveObjectModulesConfiguration()
     {
         //Generate a new initialisation method
-        // InteractiveObjectModulesInitializationOperations
         var interactiveObjectModulesInitializationOperationsClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModulesInitializationOperations));
         if (!interactiveObjectModulesInitializationOperationsClassFile.Content.Contains("Initialize" + this.baseName + "Module"))
         {
@@ -286,11 +296,29 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         }
     }
 
+    private void DoGenerateGameDesignerEditModule()
+    {
+        CodeGenerationHelper.CopyFile(new DirectoryInfo(GameDesignerModulesPath + "/" + this.baseName), new Dictionary<string, string>() {
+              {"${baseName}", this.baseName }
+            }, new FileInfo(GameDesignerEditModuleTemplate));
+
+        CodeGenerationHelper.AddGameDesignerChoiceTree(new List<KeyValuePair<string, string>>() {
+            new KeyValuePair<string, string>("Puzzle//" + this.baseName + "//.Edit" + this.baseName, "Edit" + this.baseName)
+        });
+    }
+
+    private void DoGenerateModuleCustomEditor()
+    {
+        CodeGenerationHelper.CopyFile(new DirectoryInfo(CustomEditorPath), new Dictionary<string, string>() {
+              {"${baseName}", this.baseName }
+            }, new FileInfo(CustomEditorTemplatePath));
+    }
+
     private void DoGenerateBasePrefad()
     {
         var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
         tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
-        
+
         var basePrefabGenerated = new GameObject("Base" + this.baseName + "Module");
         basePrefabGenerated.AddComponent(TypeHelper.GetType("RTPuzzle." + this.baseName + "Module"));
         PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
