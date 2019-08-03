@@ -74,19 +74,23 @@ namespace RTPuzzle
         }
         public void OnWheelAwake()
         {
-            PLayerSelectionWheelManager.OnWheelAwake(PlayerActionsAvailableManager.CurrentAvailableActions);
+            PLayerSelectionWheelManager.OnWheelAwake(PlayerActionsAvailableManager.CurrentAvailableActions.MultiValueGetValues());
         }
         public void OnWheelSleep()
         {
             PLayerSelectionWheelManager.OnWheelSleep();
         }
-        public void AddActionToAvailable(RTPPlayerAction rTPPlayerActionToAdd)
+        public void AddActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToAdd)
         {
-            this.PlayerActionsAvailableManager.AddActionToAvailable(rTPPlayerActionToAdd);
+            this.PlayerActionsAvailableManager.AddActionToAvailable(playerActionId, rTPPlayerActionToAdd);
         }
-        public void RemoveActionToAvailable(RTPPlayerAction rTPPlayerActionToRemove)
+        public void RemoveActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToRemove)
         {
-            this.PlayerActionsAvailableManager.RemoveActionToAvailable(rTPPlayerActionToRemove);
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(playerActionId, rTPPlayerActionToRemove);
+        }
+        public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
+        {
+            this.PlayerActionsAvailableManager.IncreaseActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
         }
         #endregion
 
@@ -195,17 +199,16 @@ namespace RTPuzzle
     #region RTPPlayer actions availability
     class PlayerActionsAvailableManager
     {
-
-        private List<RTPPlayerAction> currentAvailableActions;
+        private MultiValueDictionary<PlayerActionId, RTPPlayerAction> currentAvailableActions;
 
         public PlayerActionsAvailableManager(LevelZonesID puzzleId, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
-            currentAvailableActions = puzzleGameConfigurationManager.LevelConfiguration()[puzzleId].PlayerActions;
+            this.currentAvailableActions = puzzleGameConfigurationManager.LevelConfiguration()[puzzleId].PlayerActions;
         }
 
         public void Tick(float d, float timeAttenuation)
         {
-            foreach (var availableAction in currentAvailableActions)
+            foreach (var availableAction in currentAvailableActions.MultiValueGetValues())
             {
                 if (availableAction.IsOnCoolDown())
                 {
@@ -214,16 +217,23 @@ namespace RTPuzzle
             }
         }
 
-        public void AddActionToAvailable(RTPPlayerAction rTPPlayerActionToAdd)
+        public void AddActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToAdd)
         {
-            this.currentAvailableActions.Add(rTPPlayerActionToAdd);
+            this.currentAvailableActions.MultiValueAdd(playerActionId, rTPPlayerActionToAdd);
         }
-        public void RemoveActionToAvailable(RTPPlayerAction rTPPlayerActionToRemove)
+        public void RemoveActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToRemove)
         {
-            this.currentAvailableActions.Remove(rTPPlayerActionToRemove);
+            this.currentAvailableActions.MultiValueRemove(playerActionId, rTPPlayerActionToRemove);
+        }
+        public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
+        {
+           foreach(var action in this.currentAvailableActions[playerActionId])
+            {
+                action.IncreaseActionRemainingExecutionAmount(deltaRemaining);
+            }
         }
 
-        public List<RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }
+        public MultiValueDictionary<PlayerActionId, RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }
     }
     #endregion
 

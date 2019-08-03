@@ -30,5 +30,6 @@ public class GameCreationWizardEditorProfileChoiceTree
 {nameof(Editor_DiscussionTreeCreationWizard.DiscussionTreeCreationWizard),new Editor_DiscussionTreeCreationWizard.DiscussionTreeCreationWizard()},
 {nameof(Editor_DisarmObjectCreationWizard.DisarmObjectCreationWizard),new Editor_DisarmObjectCreationWizard.DisarmObjectCreationWizard()},
 {nameof(Editor_ActionInteractableObjectCreationWizard.ActionInteractableObjectCreationWizard),new Editor_ActionInteractableObjectCreationWizard.ActionInteractableObjectCreationWizard()},
+{nameof(Editor_GrabObjectCreationWizard.GrabObjectCreationWizard),new Editor_GrabObjectCreationWizard.GrabObjectCreationWizard()},
 };
 }

@@ -51,5 +51,8 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
+        
+        [ReadOnly()]
+        public RTPuzzle.GrabObjectConfiguration GrabObjectConfiguration;
     }
 }

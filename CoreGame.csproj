@@ -136,6 +136,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\FunctionalExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\MultiValueDictionary.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\ProceduralTextureHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />

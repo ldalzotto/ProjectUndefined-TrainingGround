@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,27 +27,27 @@ namespace RTPuzzle
         public LevelRangeEffectInherentData LevelRangeEffectInherentData;
 
         [NonSerialized]
-        private List<RTPPlayerAction> playerActions;
-
+        private MultiValueDictionary<PlayerActionId, RTPPlayerAction> playerActions;
+        
         public void Init(PlayerActionConfiguration playerActionConfiguration)
         {
-            this.playerActions = new List<RTPPlayerAction>();
+            this.playerActions = new MultiValueDictionary<PlayerActionId, RTPPlayerAction>();
 
             foreach (var playerActionid in playerActionIds)
             {
                 var playerActionInherentData = playerActionConfiguration.ConfigurationInherentData[playerActionid.playerActionId];
                 if (playerActionInherentData.GetType() == typeof(LaunchProjectileActionInherentData))
                 {
-                    this.playerActions.Add(new LaunchProjectileAction((LaunchProjectileActionInherentData)playerActionInherentData));
+                    this.playerActions.MultiValueAdd(playerActionid.playerActionId, new LaunchProjectileAction((LaunchProjectileActionInherentData)playerActionInherentData));
                 }
                 else if (playerActionInherentData.GetType() == typeof(AttractiveObjectActionInherentData))
                 {
-                    this.playerActions.Add(new AttractiveObjectAction((AttractiveObjectActionInherentData)playerActionInherentData));
+                    this.playerActions.MultiValueAdd(playerActionid.playerActionId, new AttractiveObjectAction((AttractiveObjectActionInherentData)playerActionInherentData));
                 }
             }
         }
 
-        public List<RTPPlayerAction> PlayerActions { get => playerActions; }
+        public MultiValueDictionary<PlayerActionId, RTPPlayerAction> PlayerActions { get => playerActions; }
 
         public float AvailableTimeAmount { get => availableTimeAmount; set => availableTimeAmount = value; }
         public List<PlayerActionIdWrapper> PlayerActionIds { get => playerActionIds; }

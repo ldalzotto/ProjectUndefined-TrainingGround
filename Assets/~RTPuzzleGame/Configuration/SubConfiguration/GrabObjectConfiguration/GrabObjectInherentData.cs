@@ -8,28 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID
+namespace RTPuzzle
 {
-
-
+    using GameConfigurationID;
+    using UnityEngine;
+    
+    
     [System.Serializable()]
-    public enum PlayerActionId
+    [UnityEngine.CreateAssetMenu(fileName="GrabObjectInherentData", menuName="Configuration/PuzzleGame/GrabObjectConfiguration/GrabObjectInherentData", order=1)]
+    public class GrabObjectInherentData : ScriptableObject
     {
-
-        NONE = 0,
-
-        STONE_PROJECTILE_ACTION_1 = 1,
-
-        CHEESE_ATTRACTIVE_ACTION_1 = 2,
-
-        ATTRACTIVE_ACTION_EDITOR_TEST = 3,
-
-        RTP_PUZZLE_CREATION_TEST = 4,
-
-        SEWER_RTP_2_STONE_PROJECTILE = 5,
-
-        _1_Town_StartTurorial_SpeakerProjectile = 6,
-
-        _1_Town_StartTutorial_GardenDoorIntreaction = 7,
+        public RTPuzzle.InteractiveObjectType AssociatedInteractiveObjectType;
+        public float EffectRadius;
     }
 }

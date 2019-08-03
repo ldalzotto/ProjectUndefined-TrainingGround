@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -20,7 +21,7 @@ namespace RTPuzzle
         {
             RTPActionValidation((RTPPlayerAction currentAction) =>
             {
-                if(currentAction.GetType() == typeof(LaunchProjectileAction))
+                if (currentAction.GetType() == typeof(LaunchProjectileAction))
                 {
                     ((LaunchProjectileAction)currentAction).OnThrowProjectileCursorOnProjectileRange();
                 }
@@ -40,11 +41,19 @@ namespace RTPuzzle
         }
         public void OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.PlayerActionManager.AddActionToAvailable(actionInteractableObjectModule.AssociatedPlayerAction);
+            this.PlayerActionManager.AddActionToAvailable(PlayerActionId.NONE, actionInteractableObjectModule.AssociatedPlayerAction);
         }
         public void OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.PlayerActionManager.RemoveActionToAvailable(actionInteractableObjectModule.AssociatedPlayerAction);
+            this.PlayerActionManager.RemoveActionToAvailable(PlayerActionId.NONE, actionInteractableObjectModule.AssociatedPlayerAction);
+        }
+        public void OnGrabObjectEnter(GrabObjectModule grabObjectModule)
+        {
+            this.PlayerActionManager.AddActionToAvailable(PlayerActionId.NONE, grabObjectModule.GrabObjectAction);
+        }
+        public void OnGrabObjectExit(GrabObjectModule grabObjectModule)
+        {
+            this.PlayerActionManager.RemoveActionToAvailable(PlayerActionId.NONE, grabObjectModule.GrabObjectAction);
         }
         #endregion
 

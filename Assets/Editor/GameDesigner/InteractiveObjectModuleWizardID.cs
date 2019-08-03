@@ -33,5 +33,8 @@ namespace Editor_GameDesigner
         
         [CustomEnum(IsSearchable=true, IsCreateable=false, ChoosedOpenRepertoire=false)]
         public GameConfigurationID.ActionInteractableObjectID ActionInteractableObjectID;
+        
+        [CustomEnum()]
+        public GameConfigurationID.GrabObjectID GrabObjectID;
     }
 }

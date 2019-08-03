@@ -116,5 +116,8 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string InteractiveTestInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveTestConfiguration/" +
             "Data";
+        
+        [ReadOnly()]
+        public static string GrabObjectInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/GrabObjectConfiguration/Data";
     }
 }

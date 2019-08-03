@@ -44,5 +44,7 @@ namespace RTPuzzle
         public RTPuzzle.PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
         
         public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
+        
+        public GrabObjectConfiguration GrabObjectConfiguration;
     }
 }

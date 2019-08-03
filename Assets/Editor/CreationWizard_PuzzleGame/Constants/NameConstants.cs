@@ -72,5 +72,7 @@ namespace Editor_MainGameCreationWizard
         public static string ActionInteractableObjectInherentData = "_ActionInteractableObjectInherentData";
         
         public static string InteractiveTestInherentData = "_InteractiveTest";
+        
+        public static string GrabObjectInherentData = "_GrabObject";
     }
 }

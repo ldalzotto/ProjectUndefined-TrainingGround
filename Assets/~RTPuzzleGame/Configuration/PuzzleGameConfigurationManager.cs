@@ -80,6 +80,11 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.ActionInteractableObjectConfiguration.ConfigurationInherentData;
         }
 
+        public Dictionary<GrabObjectID, GrabObjectInherentData> GrabObjectConfiguration()
+        {
+            return PuzzleGameConfiguration.GrabObjectConfiguration.ConfigurationInherentData;
+        }
+
     }
 
 

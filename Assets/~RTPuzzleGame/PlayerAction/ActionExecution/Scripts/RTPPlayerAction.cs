@@ -52,6 +52,11 @@ namespace RTPuzzle
                 this.remainingExecutionAmout -= 1;
             }
         }
+        
+        public void IncreaseActionRemainingExecutionAmount(int deltaIncrease)
+        {
+            this.remainingExecutionAmout += deltaIncrease;
+        }
 
         #region Logical Conditions
         public bool IsOnCoolDown()

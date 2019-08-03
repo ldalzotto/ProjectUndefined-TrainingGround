@@ -158,10 +158,11 @@ namespace RTPuzzle
         public DisarmObjectInherentData DisarmObjectInherentData;
         public BeziersControlPoints ProjectilePath;
         public ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
+        public GrabObjectInherentData GrabObjectInherentData;
 
         public InteractiveObjectInitializationObject(AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData = null,
             TargetZoneInherentData TargetZoneInherentData = null, LaunchProjectileInherentData ProjectileInherentData = null, BeziersControlPoints ProjectilePath = null, DisarmObjectInherentData DisarmObjectInherentData = null,
-            ActionInteractableObjectInherentData ActionInteractableObjectInherentData = null)
+            ActionInteractableObjectInherentData ActionInteractableObjectInherentData = null, GrabObjectInherentData GrabObjectInherentData = null)
         {
             this.InputAttractiveObjectInherentConfigurationData = InputAttractiveObjectInherentConfigurationData;
             this.TargetZoneInherentData = TargetZoneInherentData;
@@ -169,6 +170,7 @@ namespace RTPuzzle
             this.ProjectilePath = ProjectilePath;
             this.DisarmObjectInherentData = DisarmObjectInherentData;
             this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
+            this.GrabObjectInherentData = GrabObjectInherentData;
         }
     }
 

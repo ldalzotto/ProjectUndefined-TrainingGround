@@ -24,6 +24,7 @@ namespace RTPuzzle
 {typeof(RTPuzzle.LaunchProjectileModule),InteractiveObjectModulesInitializationOperations.InitializeLaunchProjectileModule},
 {typeof(RTPuzzle.DisarmObjectModule),InteractiveObjectModulesInitializationOperations.InitializeDisarmObjectModule},
 {typeof(RTPuzzle.ActionInteractableObjectModule),InteractiveObjectModulesInitializationOperations.InitializeActionInteractableObjectModule},
+{typeof(RTPuzzle.GrabObjectModule),InteractiveObjectModulesInitializationOperations.InitializeGrabObjectModule},
 };
     }
 }
