@@ -15,6 +15,10 @@ namespace RTPuzzle
         private SquareObstacleChangeTracker SquareObstacleChangeTracker;
         #endregion
 
+        #region Internal Dependencies
+        private BoxCollider BoxCollider;
+        #endregion
+
 #if UNITY_EDITOR
         public bool DebugGizmo;
         public bool DebugIntersection;
@@ -32,8 +36,22 @@ namespace RTPuzzle
             return null;
         }
 
+        #region Data Retrieval
+        public Vector3 GetPosition()
+        {
+            return (this.BoxCollider != null ? this.transform.TransformPoint(this.BoxCollider.center) : this.transform.position);
+        }
+        public Quaternion GetRotation() { return this.transform.rotation; }
+        public Vector3 GetLossyScale()
+        {
+            return (this.BoxCollider != null ? this.BoxCollider.size : Vector3.one).Mul(this.transform.lossyScale);
+        }
+        #endregion
+
         public void Init()
         {
+            this.BoxCollider = GetComponent<BoxCollider>();
+
             this.FaceFrustums = new List<FrustumV2>();
             this.SquareObstacleChangeTracker = new SquareObstacleChangeTracker(this);
 
@@ -47,10 +65,10 @@ namespace RTPuzzle
         }
 
         #region Logical Conditions
-        
+
         public bool IsWorldPositionPointContainedInOcclusionFrustum(Vector3 comparisonWorldPoint)
         {
-            #warning PointInsideFrustum trigger frustum points recalculation
+#warning PointInsideFrustum trigger frustum points recalculation
             bool isIsideOcclusionFrustum = false;
             foreach (var faceFrustum in this.FaceFrustums)
             {
@@ -133,7 +151,7 @@ namespace RTPuzzle
                 }
 #endif
             }
-            
+
             return frustumPointsWorldPositions;
 
         }
@@ -240,15 +258,15 @@ namespace RTPuzzle
         public bool Tick(float d)
         {
             bool hasChanged = false;
-            if (this.lastFramePosition != this.SquareObstacleRef.transform.position ||
-                this.lastFrameRotation != this.SquareObstacleRef.transform.rotation ||
-                this.lastFrameScale != this.SquareObstacleRef.transform.lossyScale)
+            if (this.lastFramePosition != this.SquareObstacleRef.GetPosition() ||
+                this.lastFrameRotation != this.SquareObstacleRef.GetRotation() ||
+                this.lastFrameScale != this.SquareObstacleRef.GetLossyScale())
             {
                 hasChanged = true;
             }
-            this.lastFramePosition = this.SquareObstacleRef.transform.position;
-            this.lastFrameRotation = this.SquareObstacleRef.transform.rotation;
-            this.lastFrameScale = this.SquareObstacleRef.transform.lossyScale;
+            this.lastFramePosition = this.SquareObstacleRef.GetPosition();
+            this.lastFrameRotation = this.SquareObstacleRef.GetRotation();
+            this.lastFrameScale = this.SquareObstacleRef.GetLossyScale();
             return hasChanged;
         }
     }
