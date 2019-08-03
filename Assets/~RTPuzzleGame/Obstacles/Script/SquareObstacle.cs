@@ -137,6 +137,7 @@ namespace RTPuzzle
 
                 Vector3 frontFaceNormal = Vector3.Cross(C2 - C1, C4 - C1).normalized;
 
+                //We filter faceFrustums that are not facing the initial calculation point -> they are useless because always occluded by front faces
                 if (Vector3.Dot(frontFaceNormal, C1 - obstacleCalucation.WorldPositionStartAngleDefinition) < 0)
                 {
                     continue;
