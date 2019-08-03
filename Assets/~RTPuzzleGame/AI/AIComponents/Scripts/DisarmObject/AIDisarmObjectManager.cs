@@ -32,10 +32,9 @@ namespace RTPuzzle
         public override void OnDisarmingObjectStart(DisarmObjectModule disarmingObject)
         {
             this.disarmingObject = disarmingObject;
-            this.isDisarmingObject = true;
             //Make agent to look at object
             this.agent.transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(this.disarmingObject.transform.position - this.agent.transform.position, this.agent.transform.up));
-            this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_Start(this.aiID, disarmingObject);
+            this.SetIsDisarmingObject(true);
         }
 
         public override void OnDisarmingObjectExit(DisarmObjectModule disarmingObject)
@@ -43,8 +42,7 @@ namespace RTPuzzle
             if (this.disarmingObject != null && this.disarmingObject == disarmingObject)
             {
                 this.disarmingObject = null;
-                this.isDisarmingObject = false;
-                this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_End(this.aiID, disarmingObject.DisarmObjectID);
+                this.SetIsDisarmingObject(false);
             }
         }
         #endregion
@@ -81,7 +79,20 @@ namespace RTPuzzle
 
         public override void OnStateReset()
         {
-            this.isDisarmingObject = false;
+            this.SetIsDisarmingObject(false);
+        }
+
+        private void SetIsDisarmingObject(bool value)
+        {
+            if (this.isDisarmingObject && !value)
+            {
+                this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_End(this.aiID);
+            }
+            else if (!this.isDisarmingObject && value)
+            {
+                this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_Start(this.aiID, this.disarmingObject);
+            }
+            this.isDisarmingObject = value;
         }
     }
 }

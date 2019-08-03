@@ -8,7 +8,7 @@ namespace RTPuzzle
     {
         [CustomEnum()]
         public DisarmObjectID DisarmObjectID;
-
+        
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
         #endregion
