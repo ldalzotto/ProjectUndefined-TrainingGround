@@ -193,6 +193,7 @@
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
+    <Compile Include="Assets\Test\RangeEffectRework\RangeEffectRework.cs" />
     <Compile Include="Assets\Test\ShaderVectorTest.cs" />
     <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
@@ -208,6 +209,7 @@
     <None Include="Assets\_Shader\FX\wrappedLight.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveStandardShadowPass.cginc" />
+    <None Include="Assets\Test\RangeEffectRework\RangeBufferToMesh.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
     <None Include="Assets\Test\DottedLineTest\Shader\DottedLineShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovement.cginc" />
@@ -215,6 +217,8 @@
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryStandard.shader" />
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
+    <None Include="Assets\Test\RangeEffectRework\SphereRangeShader.shader" />
+    <None Include="Assets\Test\RangeEffectRework\RangeEdgeImageEffectShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
     <None Include="Assets\Test\WindTest\WindShaderTest.shader" />
     <None Include="Assets\Test\ShaderVectorAngleTest\VectorAngleTest.shader" />
@@ -225,7 +229,9 @@
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryFlatShade.cginc" />
+    <None Include="Assets\Test\RangeEffectRework\WorldPositionBufferShader.shader" />
     <None Include="Assets\CoreGame.asmdef" />
+    <None Include="Assets\Test\RangeEffectRework\WorldPositionConstants.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5.shader" />
     <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
     <Reference Include="Unity.Postprocessing.Runtime">
