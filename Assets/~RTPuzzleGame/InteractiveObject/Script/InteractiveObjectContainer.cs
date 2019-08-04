@@ -163,7 +163,7 @@ namespace RTPuzzle
 
         private void OnInteractiveObjectDestroyedLogic(InteractiveObjectType interactiveObject)
         {
-            this.interactiveObjects.MultiValueRemove(interactiveObject.InteractiveObjectID);
+            this.interactiveObjects.MultiValueRemove(interactiveObject.InteractiveObjectID, interactiveObject);
 
             #region AttractiveObjectTypeModule
             interactiveObject.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule AttractiveObjectTypeModule) =>
