@@ -11,7 +11,12 @@ namespace RTPuzzle
 
     public class GroundEffectsManagerV2 : MonoBehaviour
     {
+        #region Materials
+        public Material WorldPositionBufferMaterial;
+        public Material RangeEdgeImageEffectMaterial;
         public Material MasterRangeMaterial;
+        public Material RangeBufferToMeshMaterial;
+        #endregion
 
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
@@ -19,7 +24,12 @@ namespace RTPuzzle
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         #endregion
 
-        private CommandBuffer command;
+        #region Command Buffers
+        private CommandBuffer worldPositionBufferCommand;
+        private CommandBuffer rangeDrawCommand;
+        private CommandBuffer releaseCommand;
+        #endregion
+
         private GroundEffectType[] AffectedGroundEffectsType;
         private HashSet<MeshRenderer> RenderedRenderers;
 
@@ -81,9 +91,17 @@ namespace RTPuzzle
 
             var camera = Camera.main;
 
-            this.command = new CommandBuffer();
-            this.command.name = "GroundEffectsManagerV2";
-            camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.command);
+            this.worldPositionBufferCommand = new CommandBuffer();
+            this.worldPositionBufferCommand.name = this.GetType().Name + "." + nameof(this.worldPositionBufferCommand);
+            camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.worldPositionBufferCommand);
+
+            this.rangeDrawCommand = new CommandBuffer();
+            this.rangeDrawCommand.name = this.GetType().Name + "." + nameof(this.rangeDrawCommand);
+            camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.rangeDrawCommand);
+
+            this.releaseCommand = new CommandBuffer();
+            this.releaseCommand.name = this.GetType().Name + "." + nameof(this.releaseCommand);
+            camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.releaseCommand);
 
             AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
             for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
@@ -91,13 +109,13 @@ namespace RTPuzzle
                 AffectedGroundEffectsType[i].Init();
             }
 
-            this.CircleRangeBuffer = new DynamicComputeBufferManager<CircleRangeBufferData>(CircleRangeBufferData.GetByteSize(), "CircleRangeBuffer", string.Empty, ref this.MasterRangeMaterial, BufferReAllocateStrategy.SUPERIOR_ONLY);
-            this.BoxRangeBuffer = new DynamicComputeBufferManager<BoxRangeBufferData>(BoxRangeBufferData.GetByteSize(), "BoxRangeBuffer", string.Empty, ref this.MasterRangeMaterial, BufferReAllocateStrategy.SUPERIOR_ONLY);
-            this.FrustumRangeBuffer = new DynamicComputeBufferManager<FrustumRangeBufferData>(FrustumRangeBufferData.GetByteSize(), "FrustumRangeBuffer", string.Empty, ref this.MasterRangeMaterial, BufferReAllocateStrategy.SUPERIOR_ONLY);
-            this.RangeExecutionOrderBuffer = new DynamicComputeBufferManager<RangeExecutionOrderBufferData>(RangeExecutionOrderBufferData.GetByteSize(), "RangeExecutionOrderBuffer", string.Empty, ref this.MasterRangeMaterial, BufferReAllocateStrategy.SUPERIOR_ONLY);
+            this.CircleRangeBuffer = new DynamicComputeBufferManager<CircleRangeBufferData>(CircleRangeBufferData.GetByteSize(), "CircleRangeBuffer", string.Empty, new List<Material>() { this.MasterRangeMaterial }, BufferReAllocateStrategy.SUPERIOR_ONLY);
+            this.BoxRangeBuffer = new DynamicComputeBufferManager<BoxRangeBufferData>(BoxRangeBufferData.GetByteSize(), "BoxRangeBuffer", string.Empty, new List<Material>() { this.MasterRangeMaterial }, BufferReAllocateStrategy.SUPERIOR_ONLY);
+            this.FrustumRangeBuffer = new DynamicComputeBufferManager<FrustumRangeBufferData>(FrustumRangeBufferData.GetByteSize(), "FrustumRangeBuffer", string.Empty, new List<Material>() { this.MasterRangeMaterial }, BufferReAllocateStrategy.SUPERIOR_ONLY);
+            this.RangeExecutionOrderBuffer = new DynamicComputeBufferManager<RangeExecutionOrderBufferData>(RangeExecutionOrderBufferData.GetByteSize(), "RangeExecutionOrderBuffer", string.Empty, new List<Material>() { this.MasterRangeMaterial }, BufferReAllocateStrategy.SUPERIOR_ONLY);
 
-            this.FrustumBufferManager = new DynamicComputeBufferManager<FrustumPointsPositions>(FrustumPointsPositions.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", ref this.MasterRangeMaterial);
-            this.RangeToFrustumBufferLinkManager = new DynamicComputeBufferManager<RangeToFrustumBufferLink>(RangeToFrustumBufferLink.GetByteSize(), "RangeToFrustumBufferLinkBuffer", "_RangeToFrustumBufferLinkCount", ref this.MasterRangeMaterial);
+            this.FrustumBufferManager = new DynamicComputeBufferManager<FrustumPointsPositions>(FrustumPointsPositions.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", new List<Material>() { this.MasterRangeMaterial });
+            this.RangeToFrustumBufferLinkManager = new DynamicComputeBufferManager<RangeToFrustumBufferLink>(RangeToFrustumBufferLink.GetByteSize(), "RangeToFrustumBufferLinkBuffer", "_RangeToFrustumBufferLinkCount", new List<Material>() { this.MasterRangeMaterial });
 
             //master range shader color level adjuster
             var LevelRangeEffectInherentData = PuzzleGameConfigurationManager.LevelConfiguration()[currentLevelID].LevelRangeEffectInherentData;
@@ -289,8 +307,10 @@ namespace RTPuzzle
 
         private void OnCommandBufferUpdate()
         {
-            this.command.Clear();
-            this.MasterRangeMaterial.SetInt("_CountSize", this.rangeExecutionOrderBufferDataValues.Count);
+            this.worldPositionBufferCommand.Clear();
+            this.rangeDrawCommand.Clear();
+            this.releaseCommand.Clear();
+
 
             foreach (var rangeEffectId in this.rangeEffectRenderOrder)
             {
@@ -303,10 +323,54 @@ namespace RTPuzzle
                 }
             }
 
+
+            var worldPositionBuffer = Shader.PropertyToID("_WorldPositionBuffer");
+            this.worldPositionBufferCommand.GetTemporaryRT(worldPositionBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGBFloat, 16) { sRGB = false, autoGenerateMips = false });
+            this.worldPositionBufferCommand.SetGlobalTexture(worldPositionBuffer, new RenderTargetIdentifier(worldPositionBuffer));
+            this.worldPositionBufferCommand.SetRenderTarget(new RenderTargetIdentifier(worldPositionBuffer));
+            this.worldPositionBufferCommand.ClearRenderTarget(true, true, Color.black);
+
+            foreach (var meshToRender in this.RenderedRenderers)
+            {
+                this.worldPositionBufferCommand.DrawRenderer(meshToRender, this.WorldPositionBufferMaterial);
+            }
+            
+            var rangeRenderBuffer = Shader.PropertyToID("_RangeRenderBuffer");
+            this.rangeDrawCommand.GetTemporaryRT(rangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGBFloat) { sRGB = false, autoGenerateMips = false });
+
+            var tmpRangeRenderBuffer = Shader.PropertyToID("_TmpRangeRenderBuffer");
+            this.rangeDrawCommand.GetTemporaryRT(tmpRangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGBFloat) { sRGB = false, autoGenerateMips = false });
+            
+            foreach (var rangeExecution in this.rangeExecutionOrderBufferDataValues)
+            {
+                    this.rangeDrawCommand.SetRenderTarget(new RenderTargetIdentifier(tmpRangeRenderBuffer));
+                    this.rangeDrawCommand.ClearRenderTarget(true, true, Color.black);
+
+                    this.rangeDrawCommand.SetGlobalInt("_ExecutionOrderIndex", this.rangeExecutionOrderBufferDataValues.IndexOf(rangeExecution));
+                    this.rangeDrawCommand.Blit(new RenderTargetIdentifier(worldPositionBuffer), new RenderTargetIdentifier(tmpRangeRenderBuffer), this.MasterRangeMaterial, rangeExecution.RangeType);
+                    this.rangeDrawCommand.Blit(new RenderTargetIdentifier(tmpRangeRenderBuffer), new RenderTargetIdentifier(rangeRenderBuffer), this.RangeEdgeImageEffectMaterial);
+            }
+
+            this.rangeDrawCommand.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
+            foreach (var meshToRender in this.RenderedRenderers)
+            {
+                this.rangeDrawCommand.DrawRenderer(meshToRender, this.RangeBufferToMeshMaterial);
+            }
+
+            this.releaseCommand.ReleaseTemporaryRT(worldPositionBuffer);
+            this.releaseCommand.ReleaseTemporaryRT(rangeRenderBuffer);
+            this.releaseCommand.ReleaseTemporaryRT(tmpRangeRenderBuffer);
+
+            /*
+            this.MasterRangeMaterial.SetInt("_CountSize", this.rangeExecutionOrderBufferDataValues.Count);
+
+           
+
             foreach (var meshToRender in this.RenderedRenderers)
             {
                 this.command.DrawRenderer(meshToRender, this.MasterRangeMaterial);
             }
+            */
         }
 
     }

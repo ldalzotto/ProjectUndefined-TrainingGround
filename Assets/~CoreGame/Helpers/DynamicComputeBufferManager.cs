@@ -10,22 +10,25 @@ namespace CoreGame
         private List<T> computeBufferData;
 
         private BufferReAllocateStrategy BufferReAllocateStrategy;
-        private Material material;
+        private List<Material> materials;
         private string materialPropertyName;
         private string materialCountPropertyName;
         private int objectByteSize;
 
-        public DynamicComputeBufferManager(int objectByteSize, string materialPropertyName, string materialCountPropertyName, ref Material material , BufferReAllocateStrategy BufferReAllocateStrategy = BufferReAllocateStrategy.NONE)
+        public DynamicComputeBufferManager(int objectByteSize, string materialPropertyName, string materialCountPropertyName, List<Material> materials, BufferReAllocateStrategy BufferReAllocateStrategy = BufferReAllocateStrategy.NONE, ComputeBufferType ComputeBufferType = ComputeBufferType.Default)
         {
             this.objectByteSize = objectByteSize;
             this.materialPropertyName = materialPropertyName;
             this.materialCountPropertyName = materialCountPropertyName;
-            this.material = material;
+            this.materials = materials;
             this.BufferReAllocateStrategy = BufferReAllocateStrategy;
 
-            this.customComputeBuffer = new ComputeBuffer(1, objectByteSize);
+            this.customComputeBuffer = new ComputeBuffer(1, objectByteSize, ComputeBufferType);
             this.computeBufferData = new List<T>();
-            this.material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
+            foreach (var material in this.materials)
+            {
+                material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
+            }
         }
 
         public void Tick(float d, Action<List<T>> bufferDataSetter)
@@ -35,20 +38,26 @@ namespace CoreGame
                 this.computeBufferData.Clear();
                 bufferDataSetter.Invoke(this.computeBufferData);
 
-                if ( (this.BufferReAllocateStrategy == BufferReAllocateStrategy.NONE && this.customComputeBuffer.count != this.computeBufferData.Count) 
-                      || (this.BufferReAllocateStrategy == BufferReAllocateStrategy.SUPERIOR_ONLY && this.computeBufferData.Count > this.customComputeBuffer.count ))
+                if ((this.BufferReAllocateStrategy == BufferReAllocateStrategy.NONE && this.customComputeBuffer.count != this.computeBufferData.Count)
+                      || (this.BufferReAllocateStrategy == BufferReAllocateStrategy.SUPERIOR_ONLY && this.computeBufferData.Count > this.customComputeBuffer.count))
                 {
                     if (this.computeBufferData.Count != 0)
                     {
                         this.Dispose();
                         this.customComputeBuffer = new ComputeBuffer(this.computeBufferData.Count, this.objectByteSize);
-                        this.material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
+                        foreach (var material in this.materials)
+                        {
+                            material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
+                        }
                     }
                 }
 
                 if (!string.IsNullOrEmpty(this.materialCountPropertyName))
                 {
-                    this.material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
+                    foreach (var material in this.materials)
+                    {
+                        material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
+                    }
                 }
                 this.customComputeBuffer.SetData(this.computeBufferData);
             }
