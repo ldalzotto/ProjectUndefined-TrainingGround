@@ -20,10 +20,7 @@ namespace RTPuzzle
             {
                 FrustumRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
-
-            FrustumRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
-            FrustumRangeBufferData.AuraAnimationSpeed = 20f;
-
+            
             if (this.GetAssociatedRangeObject().IsOccludedByFrustum())
             {
                 FrustumRangeBufferData.OccludedByFrustums = 1;
@@ -50,12 +47,10 @@ namespace RTPuzzle
 
         public int OccludedByFrustums;
         public Vector4 AuraColor;
-        public float AuraTextureAlbedoBoost;
-        public float AuraAnimationSpeed;
 
         public static int GetByteSize()
         {
-            return (((3 * 8) + 4 + 1 + 1) * sizeof(float)) + ((1) * sizeof(int));
+            return (((3 * 8) + 4) * sizeof(float)) + ((1) * sizeof(int));
         }
     };
 }

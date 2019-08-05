@@ -26,6 +26,7 @@
 		{
 			float4 vertex : SV_POSITION;
 			float2 uv : TEXCOORD0;
+			float3 worldPos : TEXCOORD1;
 		};
 
 
@@ -45,6 +46,7 @@
 			v2f o;
 			o.vertex = UnityObjectToClipPos(v.vertex);
 			o.uv = v.uv;
+			o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 			return o;
 		}
 	ENDCG
@@ -65,7 +67,7 @@
 			fixed4 frag(v2f i) : SV_Target
 			{
 
-				float3 worldPos = WorldBufferDeNormalize(tex2D(_WorldPositionBuffer, i.uv).xyz);
+				float3 worldPos = i.worldPos;
 				fixed4 computeCol = fixed4(0,0,0,0);
 
 				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[_ExecutionOrderIndex];
@@ -96,7 +98,7 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				float3 worldPos = WorldBufferDeNormalize(tex2D(_WorldPositionBuffer, i.uv).xyz);
+				float3 worldPos = i.worldPos;
 				fixed4 computeCol = fixed4(0,0,0,0);
 
 				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[_ExecutionOrderIndex];
@@ -126,7 +128,7 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				float3 worldPos = WorldBufferDeNormalize(tex2D(_WorldPositionBuffer, i.uv).xyz);
+				float3 worldPos = i.worldPos;
 				fixed4 computeCol = fixed4(0,0,0,0);
 
 				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[_ExecutionOrderIndex];

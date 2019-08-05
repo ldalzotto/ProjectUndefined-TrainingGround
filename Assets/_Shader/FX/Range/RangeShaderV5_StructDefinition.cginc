@@ -6,8 +6,6 @@ struct CircleRangeBufferData {
 	float3 WorldRangeForward;
 	float Radius;
 	float4 AuraColor;
-	float AuraTextureAlbedoBoost;
-	float AuraAnimationSpeed;
 	int OccludedByFrustums;
 };
 
@@ -25,8 +23,6 @@ struct BoxRangeBufferData
 	float3 Center;
 	float3 LocalSize;
 	float4 AuraColor;
-	float AuraTextureAlbedoBoost;
-	float AuraAnimationSpeed;
 };
 
 struct FrustumRangeBufferData
@@ -42,8 +38,6 @@ struct FrustumRangeBufferData
 
 	int OccludedByFrustums;
 	float4 AuraColor;
-	float AuraTextureAlbedoBoost;
-	float AuraAnimationSpeed;
 };
 
 struct FrustumBufferData

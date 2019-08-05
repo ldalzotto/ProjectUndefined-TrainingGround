@@ -25,8 +25,6 @@ namespace RTPuzzle
             {
                 boxRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
-            boxRangeBufferData.AuraTextureAlbedoBoost = 0.1f;
-            boxRangeBufferData.AuraAnimationSpeed = 20f;
 
             return boxRangeBufferData;
         }
@@ -42,12 +40,10 @@ namespace RTPuzzle
         public Vector3 LocalSize;
 
         public Vector4 AuraColor;
-        public float AuraTextureAlbedoBoost;
-        public float AuraAnimationSpeed;
 
         public static int GetByteSize()
         {
-            return ((5 * 3) + 4 + 1 + 1) * sizeof(float);
+            return ((5 * 3) + 4 ) * sizeof(float);
         }
     }
 

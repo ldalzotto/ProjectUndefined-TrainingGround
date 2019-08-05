@@ -9,7 +9,8 @@ namespace RTPuzzle
     {
         void OnRangeCreated(RangeTypeObject rangeTypeObject);
         void Tick(float d);
-        void MeshToRender(ref HashSet<MeshRenderer> renderers, GroundEffectType[] affectedGroundEffectsType);
+        List<MeshRenderer> MeshRenderToRender(GroundEffectType[] affectedGroundEffectsType);
+        List<MeshFilter> MeshToRender(GroundEffectType[] affectedGroundEffectsType);
         RangeTypeObject GetAssociatedRangeObject();
         void OnRangeDestroyed();
     }
@@ -59,17 +60,36 @@ namespace RTPuzzle
             return this.associatedRangeObject.RangeType.RangeTypeID;
         }
 
-        public void MeshToRender(ref HashSet<MeshRenderer> renderers, GroundEffectType[] affectedGroundEffectsType)
+        public List<MeshRenderer> MeshRenderToRender(GroundEffectType[] affectedGroundEffectsType)
         {
+            List<MeshRenderer> involvedRenderers = new List<MeshRenderer>();
             foreach (var affectedGroundEffectType in affectedGroundEffectsType)
             {
                 if (affectedGroundEffectType.MeshRenderer.isVisible
                     && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                 {
-                    renderers.Add(affectedGroundEffectType.MeshRenderer);
+                    involvedRenderers.Add(affectedGroundEffectType.MeshRenderer);
                 }
             }
+            return involvedRenderers;
         }
+
+        public List<MeshFilter> MeshToRender(GroundEffectType[] affectedGroundEffectsType)
+        {
+            List<MeshFilter> involvedRenderers = new List<MeshFilter>();
+            foreach (var affectedGroundEffectType in affectedGroundEffectsType)
+            {
+                if (affectedGroundEffectType.MeshRenderer.isVisible
+                    && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
+                {
+                    involvedRenderers.Add(affectedGroundEffectType.MeshFilter);
+                }
+            }
+            return involvedRenderers;
+        }
+
+
+
 
     }
 

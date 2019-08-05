@@ -45,6 +45,11 @@
 				fixed4 frag(v2f i) : SV_Target
 				{
 					fixed4 col = tex2D(_MainTex, i.uv);
+
+				if (col.x == 0 && col.y == 0 && col.z == 0) {
+					discard;
+				}
+
 					fixed4 comparisonCol = tex2D(_MainTex, i.uv + float2(_DetectionUVDistance, 0))
 									 * tex2D(_MainTex, i.uv + float2(0, _DetectionUVDistance))
 									 * tex2D(_MainTex, i.uv + float2(-_DetectionUVDistance, 0))
@@ -53,10 +58,9 @@
 									 * tex2D(_MainTex, i.uv + (float2(-_DetectionUVDistance, _DetectionUVDistance) * 0.707106))
 									 * tex2D(_MainTex, i.uv + (float2(_DetectionUVDistance, -_DetectionUVDistance) * 0.707106))
 									 * tex2D(_MainTex, i.uv + (float2(-_DetectionUVDistance, -_DetectionUVDistance) * 0.707106));
-				//	if (comparisonCol.x == 0) { discard; }
-					return saturate((col * (comparisonCol.x == 0)) + (col * fixed4(0.2, 0.2, 0.2, 0.2)));
+						return saturate((col * (comparisonCol.x == 0)) + (col * fixed4(0.2, 0.2, 0.2, 0.2)));
+					}
+					ENDCG
 				}
-				ENDCG
-			}
 		}
 }
