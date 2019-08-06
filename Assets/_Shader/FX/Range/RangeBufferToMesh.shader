@@ -17,7 +17,6 @@
 			#pragma multi_compile_fog
 
 			#include "UnityCG.cginc"
-			#include "WorldPositionConstants.cginc"
 
 			struct appdata
 			{

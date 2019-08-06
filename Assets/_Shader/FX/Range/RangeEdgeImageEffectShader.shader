@@ -10,7 +10,6 @@
 			// No culling or depth
 			Cull Off ZWrite Off ZTest Always
 			Blend One One
-
 			Pass
 			{
 				CGPROGRAM
@@ -50,17 +49,17 @@
 					discard;
 				}
 
-					fixed4 comparisonCol = tex2D(_MainTex, i.uv + float2(_DetectionUVDistance, 0))
-									 * tex2D(_MainTex, i.uv + float2(0, _DetectionUVDistance))
-									 * tex2D(_MainTex, i.uv + float2(-_DetectionUVDistance, 0))
-									 * tex2D(_MainTex, i.uv + float2(0, -_DetectionUVDistance))
-									 * tex2D(_MainTex, i.uv + (float2(_DetectionUVDistance, _DetectionUVDistance) * 0.707106))
-									 * tex2D(_MainTex, i.uv + (float2(-_DetectionUVDistance, _DetectionUVDistance) * 0.707106))
-									 * tex2D(_MainTex, i.uv + (float2(_DetectionUVDistance, -_DetectionUVDistance) * 0.707106))
-									 * tex2D(_MainTex, i.uv + (float2(-_DetectionUVDistance, -_DetectionUVDistance) * 0.707106));
-						return saturate((col * (comparisonCol.x == 0)) + (col * fixed4(0.2, 0.2, 0.2, 0.2)));
-					}
-					ENDCG
+				fixed4 comparisonCol = tex2D(_MainTex, i.uv + float2(_DetectionUVDistance, 0))
+								 * tex2D(_MainTex, i.uv + float2(0, _DetectionUVDistance))
+								 * tex2D(_MainTex, i.uv + float2(-_DetectionUVDistance, 0))
+								 * tex2D(_MainTex, i.uv + float2(0, -_DetectionUVDistance))
+								 * tex2D(_MainTex, i.uv + (float2(_DetectionUVDistance, _DetectionUVDistance) * 0.707106))
+								 * tex2D(_MainTex, i.uv + (float2(-_DetectionUVDistance, _DetectionUVDistance) * 0.707106))
+								 * tex2D(_MainTex, i.uv + (float2(_DetectionUVDistance, -_DetectionUVDistance) * 0.707106))
+								 * tex2D(_MainTex, i.uv + (float2(-_DetectionUVDistance, -_DetectionUVDistance) * 0.707106));
+				return (col * (comparisonCol.x == 0)) + (col * fixed4(0.2, 0.2, 0.2, 0.2));
 				}
+				ENDCG
+			}
 		}
 }

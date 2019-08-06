@@ -14,7 +14,6 @@
 		#include "UnityCG.cginc"
 		#include "RangeShaderV5_StructDefinition.cginc"
 		#include "RangeShaderV5_Calculations.cginc"
-		#include "Assets/Test/RangeEffectRework/WorldPositionConstants.cginc"
 
 	    struct appdata
 		{
@@ -59,7 +58,7 @@
 		{
 			Name "SphereBuffer"
 			ZWrite Off
-			Blend SrcAlpha OneMinusSrcAlpha 
+			Blend One One
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -91,7 +90,7 @@
 		{
 			Name "BoxBuffer"
 			ZWrite Off
-			Blend SrcAlpha OneMinusSrcAlpha
+			Blend One One
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -121,7 +120,7 @@
 		{
 			Name "FrustumBuffer"
 			ZWrite Off
-			Blend SrcAlpha OneMinusSrcAlpha
+			Blend One One
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag

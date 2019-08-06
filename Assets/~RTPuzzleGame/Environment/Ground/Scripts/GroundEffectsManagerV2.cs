@@ -313,10 +313,12 @@ namespace RTPuzzle
 
 
             var rangeRenderBuffer = Shader.PropertyToID("_RangeRenderBuffer");
-            this.rangeDrawCommand.GetTemporaryRT(rangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGBFloat) { sRGB = false, autoGenerateMips = false });
+            this.rangeDrawCommand.GetTemporaryRT(rangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false });
+            this.rangeDrawCommand.SetRenderTarget(rangeRenderBuffer);
+            this.rangeDrawCommand.ClearRenderTarget(true, true, MyColors.TransparentBlack);
 
             var tmpRangeRenderBuffer = Shader.PropertyToID("_TmpRangeRenderBuffer");
-            this.rangeDrawCommand.GetTemporaryRT(tmpRangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGBFloat) { sRGB = false, autoGenerateMips = false });
+            this.rangeDrawCommand.GetTemporaryRT(tmpRangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false });
 
             HashSet<GroundEffectType> invovledGroundEffectTypes = new HashSet<GroundEffectType>();
             Mesh combinedMesh = null;
@@ -324,7 +326,7 @@ namespace RTPuzzle
             {
                 var groundEffectTypesToRender = this.rangeExecutionOrderToGroundEffectManager[rangeExecution].GroundEffectTypeToRender(this.AffectedGroundEffectsType);
                 this.rangeDrawCommand.SetRenderTarget(new RenderTargetIdentifier(tmpRangeRenderBuffer));
-                this.rangeDrawCommand.ClearRenderTarget(true, true, Color.black);
+                this.rangeDrawCommand.ClearRenderTarget(true, true, MyColors.TransparentBlack);
 
                 this.rangeDrawCommand.SetGlobalInt("_ExecutionOrderIndex", this.rangeExecutionOrderBufferDataValues.IndexOf(rangeExecution));
 
