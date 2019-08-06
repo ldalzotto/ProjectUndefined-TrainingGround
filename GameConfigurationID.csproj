@@ -78,7 +78,7 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\GrabObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\InteractiveObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ItemID.cs" />
-    <Compile Include="Assets\@GameConfigurationID\IDs\LaunchProjectileID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\LaunchProjectileId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />

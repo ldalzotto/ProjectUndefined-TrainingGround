@@ -9,8 +9,8 @@ namespace RTPuzzle
     {
         void OnRangeCreated(RangeTypeObject rangeTypeObject);
         void Tick(float d);
-        List<MeshRenderer> MeshRenderToRender(GroundEffectType[] affectedGroundEffectsType);
-        List<MeshFilter> MeshToRender(GroundEffectType[] affectedGroundEffectsType);
+        List<MeshRenderer> MeshRenderToRender(List<GroundEffectType> affectedGroundEffectsType);
+        List<GroundEffectType> GroundEffectTypeToRender(List<GroundEffectType> affectedGroundEffectsType);
         RangeTypeObject GetAssociatedRangeObject();
         void OnRangeDestroyed();
     }
@@ -60,7 +60,7 @@ namespace RTPuzzle
             return this.associatedRangeObject.RangeType.RangeTypeID;
         }
 
-        public List<MeshRenderer> MeshRenderToRender(GroundEffectType[] affectedGroundEffectsType)
+        public List<MeshRenderer> MeshRenderToRender(List<GroundEffectType> affectedGroundEffectsType)
         {
             List<MeshRenderer> involvedRenderers = new List<MeshRenderer>();
             foreach (var affectedGroundEffectType in affectedGroundEffectsType)
@@ -74,18 +74,18 @@ namespace RTPuzzle
             return involvedRenderers;
         }
 
-        public List<MeshFilter> MeshToRender(GroundEffectType[] affectedGroundEffectsType)
+        public List<GroundEffectType> GroundEffectTypeToRender(List<GroundEffectType> affectedGroundEffectsType)
         {
-            List<MeshFilter> involvedRenderers = new List<MeshFilter>();
+            List<GroundEffectType> involvedGroundEffectType = new List<GroundEffectType>();
             foreach (var affectedGroundEffectType in affectedGroundEffectsType)
             {
                 if (affectedGroundEffectType.MeshRenderer.isVisible
                     && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                 {
-                    involvedRenderers.Add(affectedGroundEffectType.MeshFilter);
+                    involvedGroundEffectType.Add(affectedGroundEffectType);
                 }
             }
-            return involvedRenderers;
+            return involvedGroundEffectType;
         }
 
 

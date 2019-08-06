@@ -29,7 +29,7 @@ namespace RTPuzzle
         private CommandBuffer releaseCommand;
         #endregion
 
-        private GroundEffectType[] AffectedGroundEffectsType;
+        private List<GroundEffectType> AffectedGroundEffectsType;
 
         private Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>> rangeEffectManagers;
 
@@ -97,11 +97,17 @@ namespace RTPuzzle
             this.releaseCommand.name = this.GetType().Name + "." + nameof(this.releaseCommand);
             camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.releaseCommand);
 
-            AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>();
-            for (var i = 0; i < AffectedGroundEffectsType.Length; i++)
+            AffectedGroundEffectsType = GetComponentsInChildren<GroundEffectType>().ToList();
+            foreach (var affectedGroundEffectType in AffectedGroundEffectsType)
             {
-                AffectedGroundEffectsType[i].Init();
+                affectedGroundEffectType.Init();
             }
+
+            //Do static batching of ground effects types
+            StaticBatchingUtility.Combine(
+                    AffectedGroundEffectsType.ConvertAll(groundEffectType => groundEffectType.gameObject)
+                    .Union(AffectedGroundEffectsType.ConvertAll(groundEffectType => groundEffectType.AssociatedGroundEffectIgnoredGroundObjectType).SelectMany(s => s).ToList().ConvertAll(groundEffectIgnoredObject => groundEffectIgnoredObject.gameObject))
+                    .ToArray(), this.gameObject);
 
             this.CircleRangeBuffer = new DynamicComputeBufferManager<CircleRangeBufferData>(CircleRangeBufferData.GetByteSize(), "CircleRangeBuffer", string.Empty, new List<Material>() { this.MasterRangeMaterial }, BufferReAllocateStrategy.SUPERIOR_ONLY);
             this.BoxRangeBuffer = new DynamicComputeBufferManager<BoxRangeBufferData>(BoxRangeBufferData.GetByteSize(), "BoxRangeBuffer", string.Empty, new List<Material>() { this.MasterRangeMaterial }, BufferReAllocateStrategy.SUPERIOR_ONLY);
@@ -313,31 +319,36 @@ namespace RTPuzzle
             var tmpRangeRenderBuffer = Shader.PropertyToID("_TmpRangeRenderBuffer");
             this.rangeDrawCommand.GetTemporaryRT(tmpRangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGBFloat) { sRGB = false, autoGenerateMips = false });
 
-            HashSet<MeshFilter> invovledRenderers = new HashSet<MeshFilter>();
+            HashSet<GroundEffectType> invovledGroundEffectTypes = new HashSet<GroundEffectType>();
             Mesh combinedMesh = null;
             foreach (var rangeExecution in this.rangeExecutionOrderBufferDataValues)
             {
-                var renderersToRender = this.rangeExecutionOrderToGroundEffectManager[rangeExecution].MeshToRender(this.AffectedGroundEffectsType);
+                var groundEffectTypesToRender = this.rangeExecutionOrderToGroundEffectManager[rangeExecution].GroundEffectTypeToRender(this.AffectedGroundEffectsType);
                 this.rangeDrawCommand.SetRenderTarget(new RenderTargetIdentifier(tmpRangeRenderBuffer));
                 this.rangeDrawCommand.ClearRenderTarget(true, true, Color.black);
 
                 this.rangeDrawCommand.SetGlobalInt("_ExecutionOrderIndex", this.rangeExecutionOrderBufferDataValues.IndexOf(rangeExecution));
 
                 combinedMesh = new Mesh();
-                combinedMesh.CombineMeshes(renderersToRender.ConvertAll(renderer => new CombineInstance() { mesh = renderer.mesh, transform = renderer.transform.localToWorldMatrix }).ToArray(), true);
+                combinedMesh.CombineMeshes(groundEffectTypesToRender.ConvertAll(groundEffectType => new CombineInstance() { mesh = groundEffectType.GroundEffectMesh, transform = groundEffectType.transform.localToWorldMatrix }).ToArray(), true);
 
                 this.rangeDrawCommand.DrawMesh(combinedMesh, Matrix4x4.identity, this.MasterRangeMaterial, 0, rangeExecution.RangeType);
 
-                foreach (var meshToRender in renderersToRender)
+                foreach (var meshToRender in groundEffectTypesToRender)
                 {
-                    invovledRenderers.Add(meshToRender);
+                    invovledGroundEffectTypes.Add(meshToRender);
                 }
                 this.rangeDrawCommand.Blit(new RenderTargetIdentifier(tmpRangeRenderBuffer), new RenderTargetIdentifier(rangeRenderBuffer), this.RangeEdgeImageEffectMaterial);
             }
 
             this.rangeDrawCommand.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
             combinedMesh = new Mesh();
-            combinedMesh.CombineMeshes(invovledRenderers.ToList().ConvertAll(renderer => new CombineInstance() { mesh = renderer.mesh, transform = renderer.transform.localToWorldMatrix }).ToArray(), true);
+
+            //We combine the ground and ignored ground objects
+            combinedMesh.CombineMeshes(
+                invovledGroundEffectTypes.ToList().ConvertAll(groundEffectType => groundEffectType.GetCombineInstances()).SelectMany(s => s)
+                .ToArray(), true);
+
             this.rangeDrawCommand.DrawMesh(combinedMesh, Matrix4x4.identity, this.RangeBufferToMeshMaterial);
 
             this.releaseCommand.ReleaseTemporaryRT(rangeRenderBuffer);

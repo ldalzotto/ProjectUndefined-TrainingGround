@@ -7,6 +7,7 @@
 	{
 		Tags { "RenderType" = "Opaque" }
 		Blend One One
+		ZWrite Off
 		Pass
 		{
 			CGPROGRAM

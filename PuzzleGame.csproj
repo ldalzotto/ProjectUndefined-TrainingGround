@@ -91,7 +91,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIRandomPatrolComponentMananger.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\Patrolling\AIScriptedPatrolComponentManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIPlayerEscapeComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIPlayerEscapeManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\PlayerEscape\AIplayerEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileWithCollisionEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneComponent.cs" />
@@ -171,6 +171,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\DisarmObject\DisarmObjectProgressBarRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\DisarmObject\DisarmObjectProgressBarType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectIgnoredGroundObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\AbstractGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\BoxGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\FrustumGroundEffectManager.cs" />
