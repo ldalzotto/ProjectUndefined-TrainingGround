@@ -12,7 +12,6 @@ namespace RTPuzzle
     public class GroundEffectsManagerV2 : MonoBehaviour
     {
         #region Materials
-        public Material WorldPositionBufferMaterial;
         public Material RangeEdgeImageEffectMaterial;
         public Material MasterRangeMaterial;
         public Material RangeBufferToMeshMaterial;
