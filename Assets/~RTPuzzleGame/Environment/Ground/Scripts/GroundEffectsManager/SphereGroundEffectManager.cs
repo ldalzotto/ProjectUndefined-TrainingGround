@@ -12,7 +12,6 @@ namespace RTPuzzle
         {
             CircleRangeBufferData CircleRangeBufferData = new CircleRangeBufferData();
             CircleRangeBufferData.CenterWorldPosition = this.GetAssociatedRangeObject().RangeType.GetCenterWorldPos();
-            CircleRangeBufferData.WorldRangeForward = this.GetAssociatedRangeObject().transform.forward;
 
             CircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
@@ -41,14 +40,13 @@ namespace RTPuzzle
     public struct CircleRangeBufferData
     {
         public Vector3 CenterWorldPosition;
-        public Vector3 WorldRangeForward;
         public float Radius;
         public Vector4 AuraColor;
         public int OccludedByFrustums;
 
         public static int GetByteSize()
         {
-            return ((3 + 3 + 1 + 4 ) * sizeof(float)) + ((1) * sizeof(int));
+            return ((3 + 1 + 4 ) * sizeof(float)) + ((1) * sizeof(int));
         }
     }
 }

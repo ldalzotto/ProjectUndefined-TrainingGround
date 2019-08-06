@@ -3,7 +3,6 @@
 
 struct CircleRangeBufferData {
 	float3 CenterWorldPosition;
-	float3 WorldRangeForward;
 	float Radius;
 	float4 AuraColor;
 	int OccludedByFrustums;
@@ -35,6 +34,24 @@ struct FrustumRangeBufferData
 	float3 FC6;
 	float3 FC7;
 	float3 FC8;
+
+	int OccludedByFrustums;
+	float4 AuraColor;
+};
+
+struct RoundedFrustumRangeBufferData
+{
+	float3 FC1;
+	float3 FC2;
+	float3 FC3;
+	float3 FC4;
+	float3 FC5;
+	float3 FC6;
+	float3 FC7;
+	float3 FC8;
+
+	float RangeRadius;
+	float3 CenterWorldPosition;
 
 	int OccludedByFrustums;
 	float4 AuraColor;

@@ -175,6 +175,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\AbstractGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\BoxGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\FrustumGroundEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\RoundedFrustumGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\SphereGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
@@ -236,8 +237,10 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\BoxRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\Common\AbstractFrustumRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\FrustumRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\RangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\RoundedFrustumRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\SphereRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObjectContainer.cs" />

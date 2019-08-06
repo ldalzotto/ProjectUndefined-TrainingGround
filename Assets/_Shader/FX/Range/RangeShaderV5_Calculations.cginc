@@ -5,13 +5,12 @@ uniform StructuredBuffer<RangeExecutionOrderBufferData> RangeExecutionOrderBuffe
 uniform StructuredBuffer<CircleRangeBufferData> CircleRangeBuffer;
 uniform StructuredBuffer<BoxRangeBufferData> BoxRangeBuffer;
 uniform StructuredBuffer<FrustumRangeBufferData> FrustumRangeBuffer;
+uniform StructuredBuffer<RoundedFrustumRangeBufferData> RoundedFrustumRangeBuffer;
 
 uniform StructuredBuffer<FrustumBufferData> FrustumBufferDataBuffer;
 
 uniform StructuredBuffer<RangeToFrustumBufferLink> RangeToFrustumBufferLinkBuffer;
 int _RangeToFrustumBufferLinkCount;
-
-
 
 int BoxDirectionIntersectsPoint(float3 WorldBoxDirection, float3 WorldBoxCenterPosition, float LocalDirectionSize, float3 pointWorldPosition) {
 	float3 startPoint = WorldBoxCenterPosition - (WorldBoxDirection * (LocalDirectionSize*0.5));
@@ -60,6 +59,11 @@ int PointInsideFrustumV2(float3 comparisonPoint, FrustumRangeBufferData frustumR
 		frustumRangeBufferData.FC5, frustumRangeBufferData.FC6, frustumRangeBufferData.FC7, frustumRangeBufferData.FC8);
 }
 
+int PointInsideFrustumV2(float3 comparisonPoint, RoundedFrustumRangeBufferData frustumBufferData) {
+	return PointInsideFrustumV2(comparisonPoint, frustumBufferData.FC1, frustumBufferData.FC2, frustumBufferData.FC3, frustumBufferData.FC4,
+		frustumBufferData.FC5, frustumBufferData.FC6, frustumBufferData.FC7, frustumBufferData.FC8);
+}
+
 int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
 	return PointInsideFrustumV2(comparisonPoint, frustumBufferData.FC1, frustumBufferData.FC2, frustumBufferData.FC3, frustumBufferData.FC4,
 		frustumBufferData.FC5, frustumBufferData.FC6, frustumBufferData.FC7, frustumBufferData.FC8);
@@ -74,10 +78,4 @@ int PointIsOccludedByFrustum(float3 comparisonPoint, RangeExecutionOrderBufferDa
 	return isInsideFrustum;
 }
 
-int PointInsideAngleRestrictionV2(float3 rangeCenterPoint, float3 worldRangeForward, float3 comparisonPoint, float maxAngleLimitationRad) {
-	float3 from = normalize(worldRangeForward);
-	float3 to = normalize(comparisonPoint - rangeCenterPoint);
-	float angleValue = (2 - (dot(from, to) + 1)) * 0.5 * 3.141592;
-	return angleValue <= maxAngleLimitationRad;
-}
 #endif

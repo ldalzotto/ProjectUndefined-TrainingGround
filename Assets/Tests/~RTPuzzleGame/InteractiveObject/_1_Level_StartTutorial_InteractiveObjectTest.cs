@@ -54,7 +54,6 @@ namespace Tests
             launchProjectileAction.SpawnLaunchProjectile(Vector3.zero);
             yield return new WaitUntil(() =>
                      {
-                         Debug.Log(launchProjectileAction.RemainingExecutionAmout);
                          return launchProjectileAction.RemainingExecutionAmout + 1 == launchProjectileActionRemainingExecutions;
                      }
             );

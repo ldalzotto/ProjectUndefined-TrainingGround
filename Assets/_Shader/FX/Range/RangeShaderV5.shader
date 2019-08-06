@@ -39,7 +39,6 @@
 		float _AlbedoBoost;
 		float _RangeMixFactor;
 
-
 		v2f vert(appdata v)
 		{
 			v2f o;
@@ -136,6 +135,37 @@
 				//fixed4 patternColor = tex2D(_AuraTexture, float2(worldPos.x, worldPos.z) * 2 * _AuraTexture_ST.xy + float2(_AuraTexture_ST.z + rangeBuffer.AuraAnimationSpeed * _Time.x, _AuraTexture_ST.w));
 				newCol = saturate(newCol /*+ patternColor * rangeBuffer.AuraTextureAlbedoBoost*/) * _AlbedoBoost;
 				computeCol = lerp(computeCol, newCol, _RangeMixFactor * PointInsideFrustumV2(worldPos, rangeBuffer) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)));
+
+				if (computeCol.a == 0) {
+					discard;
+				}
+
+				return saturate(computeCol);
+			}
+		ENDCG
+		}
+
+		Pass
+		{
+			Name "RoundedFrustumBuffer"
+			ZWrite Off
+			Blend One One
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+
+			fixed4 frag(v2f i) : SV_Target
+			{
+				float3 worldPos = i.worldPos;
+				fixed4 computeCol = fixed4(0,0,0,0);
+
+				RangeExecutionOrderBufferData executionOrder = RangeExecutionOrderBuffer[_ExecutionOrderIndex];
+				RoundedFrustumRangeBufferData rangeBuffer = RoundedFrustumRangeBuffer[executionOrder.Index];
+
+				float calcDistance = abs(distance(worldPos, rangeBuffer.CenterWorldPosition));
+				fixed4 newCol = rangeBuffer.AuraColor;
+				newCol = newCol * _AlbedoBoost;
+				computeCol = lerp(computeCol, newCol, _RangeMixFactor * (calcDistance <= rangeBuffer.RangeRadius) * PointInsideFrustumV2(worldPos, rangeBuffer) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustum(worldPos, executionOrder)) || (rangeBuffer.OccludedByFrustums == 0)));
 
 				if (computeCol.a == 0) {
 					discard;
