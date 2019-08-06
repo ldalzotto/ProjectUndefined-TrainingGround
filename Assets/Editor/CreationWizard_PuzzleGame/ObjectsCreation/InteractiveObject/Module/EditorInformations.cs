@@ -45,7 +45,7 @@ namespace Editor_InteractiveObjectCreationWizard
     [System.Serializable]
     public class EditorInformationsData
     {
-        [CustomEnum()]
+        [CustomEnum(isCreateable: true)]
         public InteractiveObjectID InteractiveObjectID;
         public string ObjectDominantPrefix;
         public CommonGameConfigurations CommonGameConfigurations;

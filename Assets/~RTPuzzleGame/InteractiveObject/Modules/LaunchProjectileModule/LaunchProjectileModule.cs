@@ -172,7 +172,7 @@ namespace RTPuzzle
             #region AI escape
             foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {
-                if (Intersection.BoxIntersectsSphereV2(npcAIManager.GetCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.EffectRange))
+                if (Intersection.BoxIntersectsSphereV2(npcAIManager.GetCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     npcAIManager.OnProjectileTriggerEnter(launchProjectileRef);
                 }
@@ -182,7 +182,7 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.InteractiveObjectContainer.ObjectsRepelable)
             {
-                if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.EffectRange))
+                if (Intersection.BoxIntersectsSphereV2(repelAbleObject.ObjectRepelCollider as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     //float travelDistance = 13;
                     float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.ObjectRepelID].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileID);

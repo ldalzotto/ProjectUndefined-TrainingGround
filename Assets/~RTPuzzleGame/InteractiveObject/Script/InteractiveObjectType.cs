@@ -31,7 +31,7 @@ namespace RTPuzzle
         {
             return this.GetModule(typeof(T)) as T;
         }
-
+        
         public InteractiveObjectModule GetModule(Type moduleType)
         {
             this.enabledModules.TryGetValue(moduleType, out InteractiveObjectModule returnModule);
@@ -40,6 +40,11 @@ namespace RTPuzzle
                 return returnModule;
             }
             return null;
+        }
+
+        public List<InteractiveObjectModule> GetAllModules()
+        {
+            return this.enabledModules.Values.ToList();
         }
 
         public T GetDisabledModule<T>() where T : InteractiveObjectModule
@@ -55,6 +60,11 @@ namespace RTPuzzle
                 return returnModule;
             }
             return null;
+        }
+
+        public List<InteractiveObjectModule> GetAllDisabledModules()
+        {
+            return this.disabledModules.Values.ToList();
         }
         #endregion
 

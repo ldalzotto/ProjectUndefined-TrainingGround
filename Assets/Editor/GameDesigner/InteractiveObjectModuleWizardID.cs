@@ -23,7 +23,7 @@ namespace Editor_GameDesigner
         public GameConfigurationID.AttractiveObjectId AttractiveObjectId;
         
         [CustomEnum(IsSearchable=true, IsCreateable=false, ChoosedOpenRepertoire=false)]
-        public GameConfigurationID.LaunchProjectileID LaunchProjectileId;
+        public GameConfigurationID.LaunchProjectileID LaunchProjectileID;
         
         [CustomEnum(IsSearchable=true, IsCreateable=false, ChoosedOpenRepertoire=false)]
         public GameConfigurationID.TargetZoneID TargetZoneID;

@@ -18,10 +18,10 @@ public class ProjectileInherentDataCutsomEditor : Editor
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Behavior : ");
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.isExploding)));
-        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.isPersistingToAttractiveObject)));
+        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.ExplodingEffectRange)));
 
         EditorGUILayout.Separator();
-        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.EffectRange)));
+        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.isPersistingToAttractiveObject)));
 
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Animation : ");

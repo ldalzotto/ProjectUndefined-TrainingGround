@@ -61,8 +61,8 @@ namespace Editor_GameCustomEditors
         public override void SceneGUI(ProjectileCustomEditorContext context, LaunchProjectileModule target)
         {
             Handles.color = Color.red;
-            Handles.Label(context.LaunchProjectile.transform.position + Vector3.up * context.ProjectileInherentData.EffectRange, nameof(context.ProjectileInherentData.EffectRange), MyEditorStyles.LabelRed);
-            Handles.DrawWireDisc(context.LaunchProjectile.transform.position, Vector3.up, context.ProjectileInherentData.EffectRange);
+            Handles.Label(context.LaunchProjectile.transform.position + Vector3.up * context.ProjectileInherentData.ExplodingEffectRange, nameof(context.ProjectileInherentData.ExplodingEffectRange), MyEditorStyles.LabelRed);
+            Handles.DrawWireDisc(context.LaunchProjectile.transform.position, Vector3.up, context.ProjectileInherentData.ExplodingEffectRange);
         }
     }
 }

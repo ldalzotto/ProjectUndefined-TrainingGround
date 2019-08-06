@@ -70,10 +70,10 @@ namespace Editor_GameDesigner
                     (CommonGameConfigurations) => CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.BaseLaunchProjectileModule,
                     (CommonGameConfigurations) => CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration,
                     (module) => ((LaunchProjectileModule)module).LaunchProjectileID, (module, id) => ((LaunchProjectileModule)module).LaunchProjectileID = (LaunchProjectileID)id,
-                    (InteractiveObjectModuleWizardID) => InteractiveObjectModuleWizardID.LaunchProjectileId
+                    (InteractiveObjectModuleWizardID) => InteractiveObjectModuleWizardID.LaunchProjectileID
                 ),
                    new PrefabIdentifiableConditionOperation((CommonGameConfigurations) => CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration,
-                            (InteractiveObjectModuleWizardID) => InteractiveObjectModuleWizardID.LaunchProjectileId,
+                            (InteractiveObjectModuleWizardID) => InteractiveObjectModuleWizardID.LaunchProjectileID,
                             typeof(LaunchProjectileCreationWizard)),
                    "Projectile following a path and do action on contact."
                  )

@@ -33,9 +33,13 @@ namespace RTPuzzle
         public Dictionary<TargetZoneID, TargetZoneModule> TargetZones { get => targetZones; }
         public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
         public Dictionary<GrabObjectID, GrabObjectModule> GrabObjectModules { get => grabObjectModules; }
-        public InteractiveObjectType GetInteractiveObject(InteractiveObjectID interactiveObjectID)
+        public InteractiveObjectType GetInteractiveObjectFirst(InteractiveObjectID interactiveObjectID)
         {
-            return this.interactiveObjects[interactiveObjectID][0];
+            return this.GetIntractiveObjectsAll(interactiveObjectID)[0];
+        }
+        public List<InteractiveObjectType> GetIntractiveObjectsAll(InteractiveObjectID interactiveObjectID)
+        {
+            return this.interactiveObjects[interactiveObjectID];
         }
         #endregion
 

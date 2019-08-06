@@ -15,6 +15,7 @@ namespace GameConfigurationID
     {
         NONE = 0,
         Player = 1,
-        _1_Town_GardenDoor = 2
+        _1_Town_GardenDoor = 2,
+        _1_Town_StartTutorial_Test_Speaker = 3
     }
 }

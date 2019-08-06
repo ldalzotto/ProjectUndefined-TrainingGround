@@ -22,11 +22,13 @@ namespace RTPuzzle
         [SerializeField]
         public bool isExploding;
 
+        [FormerlySerializedAs("EffectRange")]
+        [SerializeField]
+        public float ExplodingEffectRange;
+
         [SerializeField]
         public bool isPersistingToAttractiveObject;
 
-        [SerializeField]
-        public float EffectRange;
         
         [Header("Animation")]
 
@@ -35,22 +37,15 @@ namespace RTPuzzle
         [CustomEnum]
         public AnimationID PostActionAnimation;
 
-        public void Init(float effectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab, bool isExploding, bool isPersistingToAttractiveObject)
+        public void Init(float explodingEffectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab, bool isExploding, bool isPersistingToAttractiveObject)
         {
-            this.EffectRange = effectRange;
+            this.ExplodingEffectRange = explodingEffectRange;
             this.ProjectileThrowRange = projectileThrowRange;
             this.TravelDistancePerSeconds = travelDistancePerSeconds;
             this.AssociatedInteractiveObjectType = projectilePrefab;
             this.isExploding = isExploding;
             this.isPersistingToAttractiveObject = isPersistingToAttractiveObject;
         }
-
-        #region Debug purposes
-        public void SetTravelDistanceDebug(float value)
-        {
-            TravelDistancePerSeconds = value;
-        }
-        #endregion
     }
     
 }

@@ -63,7 +63,7 @@ namespace Editor_MainGameCreationWizard
         public static string TargetZonePrefabPath = "Assets/~RTPuzzleGame/TargetZone/Prefab";
         
         [ReadOnly()]
-        public static string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ProjectileConfiguration/Data";
+        public static string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/LaunchProjectileConfiguration/Data";
         
         [ReadOnly()]
         public static string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/" +

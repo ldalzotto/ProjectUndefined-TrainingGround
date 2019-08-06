@@ -26,13 +26,17 @@ namespace RTPuzzle
         private PlayerOrientationManager PlayerOrientationManager;
         private LaunchProjectilePathAnimationManager LaunchProjectilePathAnimationManager;
 
-        private LaunchProjectileID projectileId;
+        private LaunchProjectileInherentData projectileInherentData;
         private InteractiveObjectType projectileObject;
-        private RangeTypeObject projectileSphereRange;
+        private RangeTypeObject projectileThrowRange;
 
         private bool isActionFinished = false;
 
-        public RangeTypeObject ProjectileSphereRange { get => projectileSphereRange; }
+        public RangeTypeObject ProjectileThrowRange { get => projectileThrowRange; }
+        public RangeTypeObject GetProjectileEffectCursorRange()
+        {
+            return this.LaunchProjectileRayPositionerManager.ProjectileCursorRange;
+        }
 
         public override bool FinishedCondition()
         {
@@ -64,20 +68,21 @@ namespace RTPuzzle
             playerTransformScreen.y = camera.pixelHeight - playerTransformScreen.y;
             var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
-            this.projectileId = ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId;
+            var projectileId = ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId;
 
-            var projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
-            this.projectileSphereRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
-            this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(projectileInherentData, interactiveObjectContainer);
+            this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
+
+            this.projectileThrowRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, interactiveObjectContainer);
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
                playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
-                         projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
+                         this.projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
-            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, PuzzleGameConfigurationManager, playerTransform);
+            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, playerTransform);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
-            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, projectileInherentData, this.projectileObject);
+            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, this.projectileInherentData, this.projectileObject);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
             LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
         }
@@ -125,7 +130,7 @@ namespace RTPuzzle
         #region Internal Events
         public void OnExit()
         {
-            this.projectileSphereRange.OnRangeDestroyed();
+            this.projectileThrowRange.OnRangeDestroyed();
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
             LaunchProjectilePlayerAnimationManager.OnExit();
@@ -137,17 +142,22 @@ namespace RTPuzzle
         {
             if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
             {
-                PlayerOrientationManager.OnLaunchProjectileSpawn(LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
-                this.LaunchProjectilePlayerAnimationManager.PlayThrowProjectileAnimation(
-                    onAnimationEnd: () =>
-                    {
-                        this.PlayerActionConsumed();
-                        var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition(),
-                                             this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().transform.up, BeziersControlPointsShape.CURVED);
-                        ThrowProjectileManager.OnLaunchProjectileSpawn(this.projectileId, throwPorjectilePath);
-                    }
-                   );
+                this.SpawnLaunchProjectile(LaunchProjectileRayPositionerManager.GetCurrentCursorWorldPosition());
             }
+        }
+
+        public void SpawnLaunchProjectile(Vector3 tragetWorldPosition)
+        {
+            PlayerOrientationManager.OnLaunchProjectileSpawn(tragetWorldPosition);
+            this.LaunchProjectilePlayerAnimationManager.PlayThrowProjectileAnimation(
+                onAnimationEnd: () =>
+                {
+                    this.PlayerActionConsumed();
+                    var throwPorjectilePath = BeziersControlPoints.Build(this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds.center, tragetWorldPosition,
+                                         this.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().transform.up, BeziersControlPointsShape.CURVED);
+                    ThrowProjectileManager.OnLaunchProjectileSpawn(this.projectileInherentData, throwPorjectilePath);
+                }
+               );
         }
         #endregion
 
@@ -249,6 +259,7 @@ namespace RTPuzzle
 
         public bool IsCursorPositioned { get => isCursorPositioned; }
         public bool IsCursorInRange { get => isCursorInRange; }
+        public RangeTypeObject ProjectileCursorRange { get => projectileCursorRange; }
 
         public Vector3 GetCurrentCursorWorldPosition()
         {
@@ -267,7 +278,7 @@ namespace RTPuzzle
 
             if (this.projectileInherentData.isExploding)
             {
-                this.effectiveEffectRange = this.projectileInherentData.EffectRange;
+                this.effectiveEffectRange = this.projectileInherentData.ExplodingEffectRange;
             }
             else if (this.projectileInherentData.isPersistingToAttractiveObject)
             {
@@ -293,7 +304,7 @@ namespace RTPuzzle
                 currentCursorWorldPosition = hit.point;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
-                if (this.launchProjectileActionRef.ProjectileSphereRange.IsInsideAndNotOccluded(currentCursorWorldPosition))
+                if (this.launchProjectileActionRef.ProjectileThrowRange.IsInsideAndNotOccluded(currentCursorWorldPosition))
                 {
                     SetIsCursorInRange(true);
                 }
@@ -365,18 +376,16 @@ namespace RTPuzzle
         private LaunchProjectileAction LaunchProjectileRTPActionRef;
         private GameInputManager GameInputManager;
         private LaunchProjectileEventManager LaunchProjectileEventManager;
-        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private InteractiveObjectType projectileObjectRef;
         private Transform playerTransform;
 
         public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileEventManager LaunchProjectileEventManager,
-            InteractiveObjectType projectileObjectRef, PuzzleGameConfigurationManager PuzzleGameConfigurationManager, Transform playerTransform)
+            InteractiveObjectType projectileObjectRef, Transform playerTransform)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
             this.LaunchProjectileEventManager = LaunchProjectileEventManager;
             this.projectileObjectRef = projectileObjectRef;
-            this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
             this.playerTransform = playerTransform;
         }
 
@@ -389,10 +398,10 @@ namespace RTPuzzle
             }
         }
 
-        public void OnLaunchProjectileSpawn(LaunchProjectileID launchProjectileId, BeziersControlPoints throwProjectilePath)
+        public void OnLaunchProjectileSpawn(LaunchProjectileInherentData launchProjectileInherentData, BeziersControlPoints throwProjectilePath)
         {
             this.projectileObjectRef.transform.rotation = Quaternion.LookRotation(this.playerTransform.forward, this.playerTransform.up);
-            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref this.projectileObjectRef, throwProjectilePath, PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileId]);
+            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref this.projectileObjectRef, throwProjectilePath, launchProjectileInherentData);
             LaunchProjectileRTPActionRef.OnExit();
         }
 

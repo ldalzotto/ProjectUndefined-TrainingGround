@@ -22,7 +22,7 @@ namespace RTPuzzle
         protected override AbstractCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
         {
             var PuzzleCutsceneActionInput = (PuzzleCutsceneActionInput)ContextActionInput;
-            return PuzzleCutsceneActionInput.InteractiveObjectContainer.GetInteractiveObject(this.InteractiveObjectID).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
+            return PuzzleCutsceneActionInput.InteractiveObjectContainer.GetInteractiveObjectFirst(this.InteractiveObjectID).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
         }
 
 #if UNITY_EDITOR
