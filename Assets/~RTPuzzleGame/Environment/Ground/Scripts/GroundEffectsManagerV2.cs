@@ -12,7 +12,8 @@ namespace RTPuzzle
     public class GroundEffectsManagerV2 : MonoBehaviour
     {
         #region Materials
-        public Material RangeEdgeImageEffectMaterial;
+        public ComputeShader RangeEdgeImageEffectComputeShader;
+
         public Material MasterRangeMaterial;
         public Material RangeBufferToMeshMaterial;
         #endregion
@@ -337,15 +338,22 @@ namespace RTPuzzle
 
 
             var rangeRenderBuffer = Shader.PropertyToID("_RangeRenderBuffer");
-            this.rangeDrawCommand.GetTemporaryRT(rangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false });
+            this.rangeDrawCommand.GetTemporaryRT(rangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false, enableRandomWrite = true });
             this.rangeDrawCommand.SetRenderTarget(rangeRenderBuffer);
             this.rangeDrawCommand.ClearRenderTarget(true, true, MyColors.TransparentBlack);
 
             var tmpRangeRenderBuffer = Shader.PropertyToID("_TmpRangeRenderBuffer");
-            this.rangeDrawCommand.GetTemporaryRT(tmpRangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false });
+            this.rangeDrawCommand.GetTemporaryRT(tmpRangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false, enableRandomWrite = true });
 
             HashSet<GroundEffectType> invovledGroundEffectTypes = new HashSet<GroundEffectType>();
             Mesh combinedMesh = null;
+
+
+            this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel("CSMain"), rangeRenderBuffer, new RenderTargetIdentifier(rangeRenderBuffer));
+            this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel("CSMain"), tmpRangeRenderBuffer, new RenderTargetIdentifier(tmpRangeRenderBuffer));
+            this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, "TextureWidth", Camera.main.pixelWidth);
+            this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, "TextureHeight", Camera.main.pixelHeight);
+
             foreach (var rangeExecution in this.rangeExecutionOrderBufferDataValues)
             {
                 var groundEffectTypesToRender = this.rangeExecutionOrderToGroundEffectManager[rangeExecution].GroundEffectTypeToRender(this.AffectedGroundEffectsType);
@@ -363,7 +371,7 @@ namespace RTPuzzle
                 {
                     invovledGroundEffectTypes.Add(meshToRender);
                 }
-                this.rangeDrawCommand.Blit(new RenderTargetIdentifier(tmpRangeRenderBuffer), new RenderTargetIdentifier(rangeRenderBuffer), this.RangeEdgeImageEffectMaterial);
+                this.rangeDrawCommand.DispatchCompute(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel("CSMain"), Camera.main.pixelWidth / 8, Camera.main.pixelHeight / 8, 1);
             }
 
             this.rangeDrawCommand.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);

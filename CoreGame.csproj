@@ -211,6 +211,7 @@
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeBufferToMesh.shader" />
+    <None Include="Assets\_Shader\FX\Range\RangeEdgeImageEffectComputeShader.compute" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
     <None Include="Assets\Test\DottedLineTest\Shader\DottedLineShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovement.cginc" />
@@ -219,7 +220,6 @@
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
     <None Include="Assets\Test\RangeEffectRework\SphereRangeShader.shader" />
-    <None Include="Assets\_Shader\FX\Range\RangeEdgeImageEffectShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
     <None Include="Assets\Test\WindTest\WindShaderTest.shader" />
     <None Include="Assets\Test\ShaderVectorAngleTest\VectorAngleTest.shader" />
