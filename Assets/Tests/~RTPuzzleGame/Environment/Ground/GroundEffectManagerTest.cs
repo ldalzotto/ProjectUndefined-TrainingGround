@@ -41,10 +41,15 @@ namespace Tests
             List<RangeToFrustumBufferLink> attractiveObjectRangeToBufferLink = null;
             List<RangeToFrustumBufferLink> aiSightRangeToBufferLink = null;
 
+            bool circleRangeVerificationDone = false;
+            bool roundedRangeVerificationDone = false;
+
             foreach (var rangeExecutionOrder in GroundEffectsManagerV2.RangeExecutionOrderBufferDataValues)
             {
                 if (rangeExecutionOrder.RangeType == 0)
                 {
+                    circleRangeVerificationDone = true;
+
                     Assert.IsTrue(GroundEffectsManagerV2.CircleRangeBufferValues.Count - 1 >= rangeExecutionOrder.Index);
                     Assert.IsTrue(GroundEffectsManagerV2.CircleRangeBufferValues[rangeExecutionOrder.Index].OccludedByFrustums == 1);
 
@@ -56,14 +61,12 @@ namespace Tests
                     //The attractive object is only occluded by one obstacle and only two faces are concerned -> 2 frustum linked
                     Assert.IsTrue(attractiveObjectRangeToBufferLink.Count == 2);
                 }
-                else if (rangeExecutionOrder.RangeType == 1)
+                else if (rangeExecutionOrder.RangeType == 3)
                 {
+                    roundedRangeVerificationDone = true;
 
-                }
-                else if (rangeExecutionOrder.RangeType == 2)
-                {
-                    Assert.IsTrue(GroundEffectsManagerV2.FrustumRangeBufferValues.Count - 1 >= rangeExecutionOrder.Index);
-                    Assert.IsTrue(GroundEffectsManagerV2.FrustumRangeBufferValues[rangeExecutionOrder.Index].OccludedByFrustums == 1);
+                    Assert.IsTrue(GroundEffectsManagerV2.RoundedFrustumRangeBufferValues.Count - 1 >= rangeExecutionOrder.Index);
+                    Assert.IsTrue(GroundEffectsManagerV2.RoundedFrustumRangeBufferValues[rangeExecutionOrder.Index].OccludedByFrustums == 1);
 
                     aiSightRangeToBufferLink =
                       GroundEffectsManagerV2.RangeToFrustumBufferLinkValues.Select(l => l)
@@ -75,8 +78,12 @@ namespace Tests
                 }
             }
 
+            Assert.IsTrue(circleRangeVerificationDone);
+            Assert.IsTrue(roundedRangeVerificationDone);
+
             Assert.IsTrue(GroundEffectsManagerV2.CircleRangeBufferValues.Count == 1);
-            Assert.IsTrue(GroundEffectsManagerV2.FrustumRangeBufferValues.Count == 1);
+            Assert.IsTrue(GroundEffectsManagerV2.FrustumRangeBufferValues.Count == 0);
+            Assert.IsTrue(GroundEffectsManagerV2.RoundedFrustumRangeBufferValues.Count == 1);
             Assert.IsTrue(GroundEffectsManagerV2.BoxRangeBufferValues.Count == 0);
 
 
