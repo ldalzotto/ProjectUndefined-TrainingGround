@@ -20,5 +20,7 @@ namespace RTPuzzle
     {
         public RTPuzzle.InteractiveObjectType AssociatedInteractiveObjectType;
         public float EffectRadius;
+        [CustomEnum()]
+        public PlayerActionId PlayerActionToIncrement;
     }
 }

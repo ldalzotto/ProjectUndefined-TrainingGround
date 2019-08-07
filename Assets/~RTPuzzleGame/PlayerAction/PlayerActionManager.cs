@@ -122,6 +122,10 @@ namespace RTPuzzle
                 return PlayerActionExecutionManager.CurrentAction;
             }
         }
+        public MultiValueDictionary<PlayerActionId, RTPPlayerAction> GetCurrentAvailablePlayerActions()
+        {
+            return PlayerActionsAvailableManager.CurrentAvailableActions;
+        }
 
         #endregion
     }

@@ -22,17 +22,18 @@ namespace RTPuzzle
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         #endregion
 
-
         [CustomEnum()]
         public GameConfigurationID.GrabObjectID GrabObjectID;
 
+        private SphereCollider grabObjectRange;
         private InteractiveObjectType parentInteractiveObject;
-        private GrabObjectInherentData GrabObjectInherentData;
+        private GrabObjectInherentData grabObjectInherentData;
         private GrabObjectAction grabObjectAction;
 
         #region Data Retrieval
         public GrabObjectAction GrabObjectAction { get => grabObjectAction; }
         public InteractiveObjectType ParentInteractiveObject { get => parentInteractiveObject; }
+        public SphereCollider GrabObjectRange { get => grabObjectRange; }
         #endregion
 
         public void Init(GrabObjectInherentData GrabObjectInherentData)
@@ -41,12 +42,12 @@ namespace RTPuzzle
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             #endregion
             this.parentInteractiveObject = GetComponentInParent<InteractiveObjectType>();
-            this.GrabObjectInherentData = GrabObjectInherentData;
+            this.grabObjectInherentData = GrabObjectInherentData;
 
-            var sphereCollider = this.GetComponent<SphereCollider>();
-            sphereCollider.radius = this.GrabObjectInherentData.EffectRadius;
+            this.grabObjectRange = this.GetComponent<SphereCollider>();
+            this.grabObjectRange.radius = this.grabObjectInherentData.EffectRadius;
 
-            this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, PlayerActionId._1_Town_StartTurorial_SpeakerProjectile, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
+            this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, this.grabObjectInherentData.PlayerActionToIncrement, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
         }
 
         public virtual void Tick(float d, float timeAttenuationFactor)

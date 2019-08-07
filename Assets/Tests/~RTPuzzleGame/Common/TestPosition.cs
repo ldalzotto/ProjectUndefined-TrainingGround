@@ -4,6 +4,7 @@ namespace Tests
 {
     public class TestPosition : MonoBehaviour
     {
+        [CustomEnum()]
         public TestPositionID aITestPositionID;
     }
 

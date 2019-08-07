@@ -8,22 +8,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum AttractiveObjectId {
-    
-    CHEESE = 0,
-    
-    EDITOR_TEST = 1,
-    
-    CHEESE_SEWER_RTP_2 = 2,
-    
-    RTP_TEST_RangeEffectManager = 3,
-    
-    _1_Town_StartTutorial_Speaker = 4,
-    
-    TEST_PROJECTILE_TOATTRACTIVE = 5,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum AttractiveObjectId
+    {
+
+        CHEESE = 0,
+
+        EDITOR_TEST = 1,
+
+        CHEESE_SEWER_RTP_2 = 2,
+
+        RTP_TEST_RangeEffectManager = 3,
+
+        _1_Town_StartTutorial_Speaker = 4,
+
+        TEST_PROJECTILE_TOATTRACTIVE = 5,
+
+        _1_Town_StartTutorial_Test = 6,
+    }
 }

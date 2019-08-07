@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {
@@ -10,6 +11,13 @@ namespace RTPuzzle
         public GrabObjectAction(GrabActionInherentData GrabActionInherentData) : base(GrabActionInherentData)
         {
         }
+
+        #region Data Retrieval 
+        public PlayerActionId GetPlayerActionToIncrement()
+        {
+            return ((GrabActionInherentData)this.playerActionInherentData).PlayerActionToIncrement;
+        }
+        #endregion
 
         public override bool FinishedCondition()
         {

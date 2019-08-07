@@ -476,9 +476,17 @@ namespace RTPuzzle
         public void PlayThrowProjectileAnimation(Action onAnimationEnd)
         {
             this.ProjectileAnimationManager.KillSilently();
-            this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(this.projectileObjectRef.gameObject, this.animationConfiguration, this.ProjectileInherentData.PostActionAnimation, this.playerAnimator, 0.1f, false,
-                onAnimationEndAction: onAnimationEnd);
-            this.ProjectileLaunchAnimationManager.Play();
+            if (this.ProjectileInherentData.PostActionAnimation != AnimationID.NONE)
+            {
+                this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(this.projectileObjectRef.gameObject, this.animationConfiguration, this.ProjectileInherentData.PostActionAnimation, this.playerAnimator, 0.1f, false,
+                             onAnimationEndAction: onAnimationEnd);
+                this.ProjectileLaunchAnimationManager.Play();
+            }
+            else
+            {
+                onAnimationEnd.Invoke();
+            }
+
         }
         #endregion
 

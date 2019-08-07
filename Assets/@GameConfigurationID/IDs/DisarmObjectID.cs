@@ -8,16 +8,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum DisarmObjectID {
-    
-    RTP_CREATION_TEST = 0,
-    
-    _1_Town_Start_Tutorial_Speaker = 1,
-    
-    TEST_DISARM_ONLY = 2,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum DisarmObjectID
+    {
+
+        RTP_CREATION_TEST = 0,
+
+        _1_Town_Start_Tutorial_Speaker = 1,
+
+        TEST_DISARM_ONLY = 2,
+
+        _1_Town_StartTutorial_Test = 3,
+    }
 }

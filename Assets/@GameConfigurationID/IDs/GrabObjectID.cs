@@ -8,14 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum GrabObjectID {
-    
-    NONE = 0,
-    
-    _1_Town_StartTutorial_Speaker = 1,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum GrabObjectID
+    {
+
+        NONE = 0,
+
+        _1_Town_StartTutorial_Speaker = 1,
+        _1_Town_StartTutorial_Test = 2,
+    }
 }

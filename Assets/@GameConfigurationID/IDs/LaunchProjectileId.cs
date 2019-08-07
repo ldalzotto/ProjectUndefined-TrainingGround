@@ -28,6 +28,6 @@ namespace GameConfigurationID {
     
     TEST_PROJECTILE_TOATTRACTIVE = 7,
     
-    _1_Town_StartTutorial_Test_Speaker = 8,
+    _1_Town_StartTutorial_Test = 8,
   }
 }

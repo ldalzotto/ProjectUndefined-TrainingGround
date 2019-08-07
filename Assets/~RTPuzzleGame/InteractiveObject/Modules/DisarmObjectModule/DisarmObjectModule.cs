@@ -8,12 +8,13 @@ namespace RTPuzzle
     {
         [CustomEnum()]
         public DisarmObjectID DisarmObjectID;
-        
+
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
         #endregion
 
         private DisarmObjectInherentData disarmObjectInherentConfigurationData;
+        private SphereCollider disarmObjectRange;
 
         private List<NPCAIManager> AiThatCanInteract;
         private float elapsedTime;
@@ -34,7 +35,8 @@ namespace RTPuzzle
             this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
             this.AiThatCanInteract = new List<NPCAIManager>();
 
-            this.GetComponent<SphereCollider>().radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
+            this.disarmObjectRange = this.GetComponent<SphereCollider>();
+            this.disarmObjectRange.radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
             this.elapsedTime = 0f;
         }
 
@@ -53,6 +55,10 @@ namespace RTPuzzle
         public Vector3 GetProgressBarDisplayPosition()
         {
             return this.transform.position + IRenderBoundRetrievableStatic.GetDisarmProgressBarLocalOffset(this.ModelObjectModule);
+        }
+        public float GetEffectRange()
+        {
+            return this.disarmObjectRange.radius;
         }
         #endregion
 

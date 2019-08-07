@@ -39,10 +39,6 @@ namespace Editor_AttractiveObjectCreationWizard
 
         private string AttractiveObjectModelVerification()
         {
-            if (this.EditorInformationsData.AttractiveObjectModel == null)
-            {
-                return "AttractiveObjectModel must not be null.";
-            }
             return string.Empty;
         }
 
@@ -61,7 +57,6 @@ namespace Editor_AttractiveObjectCreationWizard
     {
         [CustomEnum(isCreateable: true)]
         public AttractiveObjectId AttractiveObjectId;
-        public GameObject AttractiveObjectModel;
         public CommonGameConfigurations CommonGameConfigurations;
     }
 }
