@@ -125,6 +125,11 @@ namespace RTPuzzle
             this.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule interactiveObjectCutsceneControllerModule) => interactiveObjectCutsceneControllerModule.Tick(d, timeAttenuationFactor));
         }
 
+        public void TickAlways(float d)
+        {
+            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.TickAlways(d));
+        }
+
         public void DisableModule(Type moduleType)
         {
             this.GetModule(moduleType).IfNotNull((m) =>

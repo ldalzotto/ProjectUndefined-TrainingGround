@@ -32,7 +32,6 @@ namespace RTPuzzle
 
         [Header("Visual Feedback")]
         public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;
-        public DisarmObjectProgressBarType DisarmObjectProgressBarBasePrefab;
 
         public DottedLine BaseDottedLineBasePrefab;
 

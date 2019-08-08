@@ -194,6 +194,8 @@
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
+    <Compile Include="Assets\Test\CircleBarTest\CircleFillBarRendererManager.cs" />
+    <Compile Include="Assets\Test\CircleBarTest\CircleFillBarType.cs" />
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\Test\RangeEffectRework\RangeEffectRework.cs" />
     <Compile Include="Assets\Test\ShaderVectorTest.cs" />
@@ -205,6 +207,7 @@
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\_Shader\Wave\WaveShaderPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
+    <None Include="Assets\Test\CircleBarTest\CircleBarTest.shader" />
     <None Include="Assets\_Shader\Wave\WaveShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />

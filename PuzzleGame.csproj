@@ -172,8 +172,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleCutsceneAnimationNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\PuzzleCutsceneGraph.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\DisarmObject\DisarmObjectProgressBarRendererManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\DisarmObject\DisarmObjectProgressBarType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectIgnoredGroundObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\AbstractGroundEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\BoxGroundEffectManager.cs" />

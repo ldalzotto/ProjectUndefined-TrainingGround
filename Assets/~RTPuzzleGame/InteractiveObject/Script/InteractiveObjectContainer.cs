@@ -9,7 +9,6 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
-        private DisarmObjectProgressBarRendererManager DisarmObjectProgressBarRendererManager;
         #endregion
 
         #region Generic Container
@@ -46,7 +45,6 @@ namespace RTPuzzle
         public void Init()
         {
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            this.DisarmObjectProgressBarRendererManager = GameObject.FindObjectOfType<DisarmObjectProgressBarRendererManager>();
 
             this.interactiveObjects = new MultiValueDictionary<InteractiveObjectID, InteractiveObjectType>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectModule>();
@@ -72,6 +70,21 @@ namespace RTPuzzle
                 interactiveObject.Tick(d, timeAttenuationFactor);
             }
 
+            ManagerDestroyAfterTick();
+        }
+
+        public void TickAlways(float d)
+        {
+            foreach (var interactiveObject in interactiveObjects.MultiValueGetValues())
+            {
+                interactiveObject.TickAlways(d);
+            }
+
+            this.ManagerDestroyAfterTick();
+        }
+
+        private void ManagerDestroyAfterTick()
+        {
             //After Tick
             List<InteractiveObjectType> interactiveObjectsToRemove = null;
 
@@ -182,7 +195,6 @@ namespace RTPuzzle
             interactiveObject.GetModule<TargetZoneModule>().IfNotNull((TargetZoneModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
             interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) =>
             {
-                this.DisarmObjectProgressBarRendererManager.OnDisarmObjectDestroyed(DisarmObjectModule);
                 this.disarmObjectModules.Remove(DisarmObjectModule);
             });
             interactiveObject.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) =>

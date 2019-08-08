@@ -22,7 +22,6 @@ namespace RTPuzzle
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
-        private DisarmObjectProgressBarRendererManager DisarmObjectProgressBarRendererManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
@@ -32,6 +31,7 @@ namespace RTPuzzle
         private InteractiveObjectContainer InteractiveObjectContainer;
         private RangeTypeObjectContainer RangeTypeContainer;
         private CameraMovementManager CameraMovementManager;
+        private CircleFillBarRendererManager CircleFillBarRendererManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -68,7 +68,6 @@ namespace RTPuzzle
             CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
             TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
             NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
-            DisarmObjectProgressBarRendererManager = GameObject.FindObjectOfType<DisarmObjectProgressBarRendererManager>();
             GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
             DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
             ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
@@ -76,6 +75,7 @@ namespace RTPuzzle
             SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
             ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
+            CircleFillBarRendererManager = GameObject.FindObjectOfType<CircleFillBarRendererManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -110,12 +110,12 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
             //TODO here
             NpcInteractionRingRendererManager.Init();
-            DisarmObjectProgressBarRendererManager.Init();
             GameObject.FindObjectOfType<AIPositionsManager>().Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             ObjectRepelLineVisualFeedbackManager.Init();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
+            CircleFillBarRendererManager.Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -144,6 +144,7 @@ namespace RTPuzzle
                 TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
 
                 NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
+                InteractiveObjectContainer.TickAlways(d);
 
                 if (TimeFlowManager.IsAbleToFlowTime())
                 {
@@ -163,8 +164,8 @@ namespace RTPuzzle
                 InRangeEffectManager.Tick(d);
                 ObjectRepelLineVisualFeedbackManager.Tick(d);
                 NpcInteractionRingRendererManager.Tick(d);
-                DisarmObjectProgressBarRendererManager.Tick(d);
                 DottedLineRendererManager.Tick();
+                CircleFillBarRendererManager.Tick(d);
             }
 
 #if UNITY_EDITOR

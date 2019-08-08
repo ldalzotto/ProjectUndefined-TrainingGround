@@ -1,4 +1,6 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +13,10 @@ namespace RTPuzzle
 
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
+        #endregion
+
+        #region Internal Dependencies
+        private CircleFillBarType progressbar;
         #endregion
 
         private DisarmObjectInherentData disarmObjectInherentConfigurationData;
@@ -37,6 +43,12 @@ namespace RTPuzzle
 
             this.disarmObjectRange = this.GetComponent<SphereCollider>();
             this.disarmObjectRange.radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
+
+            this.progressbar = this.GetComponentInChildren<CircleFillBarType>();
+            this.progressbar.Init(Camera.main);
+            this.progressbar.transform.position = this.GetProgressBarDisplayPosition();
+            this.progressbar.gameObject.SetActive(false);
+
             this.elapsedTime = 0f;
         }
 
@@ -52,7 +64,7 @@ namespace RTPuzzle
         {
             return this.elapsedTime / this.disarmObjectInherentConfigurationData.DisarmTime;
         }
-        public Vector3 GetProgressBarDisplayPosition()
+        private Vector3 GetProgressBarDisplayPosition()
         {
             return this.transform.position + IRenderBoundRetrievableStatic.GetDisarmProgressBarLocalOffset(this.ModelObjectModule);
         }
@@ -63,13 +75,25 @@ namespace RTPuzzle
         #endregion
 
         public void Tick(float d, float timeAttenuationFactor)
+        {        }
+        
+        public void TickAlways(float d)
         {
+            if (this.progressbar.gameObject.activeSelf)
+            {
+                this.progressbar.Tick(this.GetDisarmPercentage01());
+            }
         }
 
         #region External Event
         public void IncreaseTimeElapsedBy(float increasedTime)
         {
             this.elapsedTime += increasedTime;
+
+            if (this.GetDisarmPercentage01() > 0 && !this.progressbar.gameObject.activeSelf)
+            {
+                CircleFillBarType.EnableInstace(this.progressbar);
+            }
         }
         #endregion
 
@@ -94,7 +118,6 @@ namespace RTPuzzle
                 npcAIManager.OnDisarmObjectTriggerExit(this);
             }
         }
-
     }
 }
 
