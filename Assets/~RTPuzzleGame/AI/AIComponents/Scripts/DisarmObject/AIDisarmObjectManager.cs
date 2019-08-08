@@ -11,7 +11,6 @@
 namespace RTPuzzle
 {
     using GameConfigurationID;
-    using System;
     using UnityEngine;
     using UnityEngine.AI;
 
@@ -63,14 +62,14 @@ namespace RTPuzzle
             return (this.disarmingObject != null && this.isDisarmingObject);
         }
 
-        public override Nullable<Vector3> OnManagerTick(float d, float timeAttenuationFactor)
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             this.disarmingObject.IncreaseTimeElapsedBy(d * timeAttenuationFactor);
             if (this.disarmingObject.IsAskingToBeDestroyed())
             {
                 this.OnDisarmingObjectExit(this.disarmingObject);
             }
-            return null; //don't move while disarming
+            //don't move while disarming
         }
 
         public override void OnDestinationReached()

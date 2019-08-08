@@ -26,8 +26,8 @@ namespace RTPuzzle
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
         
         public abstract bool IsManagerEnabled();
-        
-        public abstract System.Nullable<UnityEngine.Vector3> OnManagerTick(float d, float timeAttenuationFactor);
+
+        public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         
         public abstract void OnDestinationReached();
         

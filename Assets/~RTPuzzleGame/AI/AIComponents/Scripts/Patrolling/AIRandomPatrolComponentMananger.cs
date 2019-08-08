@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,7 +12,7 @@ namespace RTPuzzle
 
         private bool isMovingTowardsDestination;
         private NavMeshHit[] navMeshHits = new NavMeshHit[8];
-
+        
         private Vector3? currentDestination;
 
         public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager, AiID aiID)
@@ -19,13 +20,13 @@ namespace RTPuzzle
             this.BaseInit(patrollingAgent, AIRandomPatrolComponent, aIFOVManager, aiID);
         }
 
-        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             if (!isMovingTowardsDestination)
             {
                 this.currentDestination = SetRandomDestination();
             }
-            return this.currentDestination.Value;
+            NPCAIDestinationContext.TargetPosition = this.currentDestination;
         }
 
         private Nullable<Vector3> SetRandomDestination()

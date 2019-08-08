@@ -33,7 +33,7 @@ namespace RTPuzzle
         public abstract void OnDestinationReached();
         public abstract void OnStateReset();
         protected abstract bool IsPatrolling();
-        public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
+        public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         public abstract void GizmoTick();
 
         public virtual void BeforeManagersUpdate(float d, float timeAttenuationFactor) { }

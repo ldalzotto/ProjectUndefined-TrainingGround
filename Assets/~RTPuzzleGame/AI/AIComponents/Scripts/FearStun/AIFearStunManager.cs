@@ -40,7 +40,7 @@ namespace RTPuzzle
             }
         }
 
-        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             if (this.AIFearTimeCounterManager.Tick(d, timeAttenuationFactor))
             {
@@ -50,9 +50,8 @@ namespace RTPuzzle
 
             if (this.isFeared)
             {
-                return this.currentAgent.transform.position;
+                NPCAIDestinationContext.TargetPosition = this.currentAgent.transform.position;
             }
-            return null;
         }
 
         #region External Events

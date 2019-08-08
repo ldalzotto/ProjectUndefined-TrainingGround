@@ -51,13 +51,13 @@ namespace RTPuzzle
             }
         }
 
-        public virtual Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public virtual void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             if (this.playerInSight && this.currentTarget != null)
             {
                 this.currentDestination = this.currentTarget.collider.transform.position;
             }
-            return this.currentDestination;
+            NPCAIDestinationContext.TargetPosition = this.currentDestination;
         }
 
         public bool IsManagerEnabled()

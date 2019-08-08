@@ -10,7 +10,7 @@ namespace RTPuzzle
 {
     public interface IPuzzleAIBehavior<out C> where C : AbstractAIComponents
     {
-        Nullable<Vector3> TickAI(float d, float timeAttenuationFactor);
+        void TickAI(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         void EndOfFixedTick();
         void TickGizmo();
         void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent);
@@ -117,8 +117,10 @@ namespace RTPuzzle
             this.currentManagerState = this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values.Last();
         }
 
-        public Nullable<Vector3> TickAI(float d, float timeAttenuationFactor)
+        public void TickAI(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
+            NPCAIDestinationContext.Clear();
+
             this.aiSightVision.IfNotNull(aiSightVision => aiSightVision.Tick(d));
 
             // (1) - Call the BeforeManagersUpdate callbacks.
@@ -131,7 +133,7 @@ namespace RTPuzzle
             }
 
             // (3) - Computing the first enabled AI Manager next position.
-            return this.currentManagerState.OnManagerTick(d, timeAttenuationFactor);
+            this.currentManagerState.OnManagerTick(d, timeAttenuationFactor, ref NPCAIDestinationContext);
         }
 
         protected abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);

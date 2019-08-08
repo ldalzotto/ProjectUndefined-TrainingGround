@@ -17,8 +17,9 @@ namespace CoreGame
             {
                 this.RetrievePositions();
             }
-
-            return this.positionMarkers[cutscenePositionMarkerID];
+            
+            this.positionMarkers.TryGetValue(cutscenePositionMarkerID, out PositionMarker foundMarker);
+            return foundMarker;
         }
 
         private void RetrievePositions()

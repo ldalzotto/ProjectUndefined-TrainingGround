@@ -12,7 +12,7 @@ namespace RTPuzzle
     {
         void BeforeManagersUpdate(float d, float timeAttenuationFactor);
         bool IsManagerEnabled();
-        Vector3? OnManagerTick(float d, float timeAttenuationFactor);
+        void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         void OnDestinationReached();
         void OnStateReset();
     }

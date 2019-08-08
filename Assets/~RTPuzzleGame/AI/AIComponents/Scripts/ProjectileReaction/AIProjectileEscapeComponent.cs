@@ -52,7 +52,7 @@ namespace RTPuzzle
             this.puzzleEventsManager = puzzleEventsManager;
             this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
         }
-        
+
         #region Internal Events
         protected void OnDestinationSetFromProjectileContact(LaunchProjectileID launchProjectileId)
         {
@@ -82,9 +82,9 @@ namespace RTPuzzle
         }
         #endregion
 
-        public Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
-            return this.escapeDestinationManager.Tick();
+            NPCAIDestinationContext.TargetPosition = this.escapeDestinationManager.Tick();
         }
 
         protected virtual void SetIsEscapingFromProjectile(bool value)

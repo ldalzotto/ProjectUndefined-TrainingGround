@@ -29,7 +29,8 @@ namespace RTPuzzle
 
         public AIPositionsType GetAIPositions(AiID aiID)
         {
-            return this.aiPositionsType[aiID];
+            this.aiPositionsType.TryGetValue(aiID, out AIPositionsType aiPositionsType);
+            return aiPositionsType;
         }
     }
 }

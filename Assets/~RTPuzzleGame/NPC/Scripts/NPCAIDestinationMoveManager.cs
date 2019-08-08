@@ -21,10 +21,10 @@ namespace RTPuzzle
         private float CurrentTimeAttenuated;
         private Vector3? currentDestination;
 
-        public void Tick(float d, float timeAttenuationFactor)
+        public void Tick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             this.CurrentTimeAttenuated = d * timeAttenuationFactor;
-            this.UpdateAgentTransform(d, timeAttenuationFactor);
+            this.UpdateAgentTransform(d, timeAttenuationFactor, ref NPCAIDestinationContext);
 
             //is destination reached
             if (this.currentDestination.HasValue)
@@ -40,33 +40,37 @@ namespace RTPuzzle
 
         private Vector3 lastSuccessfulWorldDestination;
 
-        private int lastFrameSuccessfulNextDestinationFrameNb;
-        private Vector3 lastFrameSuccessfulNextDestination;
-
         #region External Events
-        public void SetDestination(Vector3 worldDestination)
+        public void SetDestination(ref NPCAIDestinationContext NPCAIDestinationContext)
         {
-            //When a different path is calculated, we manually reset the path and calculate the next destination
-            //The input world destination may not be exactly on NavMesh.
-            //So we do comparison between world destination
-            if (this.lastSuccessfulWorldDestination != worldDestination)
+            if (NPCAIDestinationContext.TargetPosition.HasValue)
             {
-                this.currentDestination = worldDestination;
-                NavMeshPath path = new NavMeshPath();
-                objectAgent.ResetPath();
-                objectAgent.CalculatePath(worldDestination, path);
-                objectAgent.SetPath(path);
-
-                //If direction change is occuring when current destination has been reached
-                //We manually calculate next position to avoid a frame where AI is standing still
-                if (objectAgent.transform.position == objectAgent.nextPosition)
+                var worldDestination = NPCAIDestinationContext.TargetPosition.Value;
+                //When a different path is calculated, we manually reset the path and calculate the next destination
+                //The input world destination may not be exactly on NavMesh.
+                //So we do comparison between world destination
+                if (this.lastSuccessfulWorldDestination != worldDestination)
                 {
-                    this.ManuallyUpdateAgent();
+                    this.currentDestination = worldDestination;
+                    NavMeshPath path = new NavMeshPath();
+                    objectAgent.ResetPath();
+                    objectAgent.CalculatePath(worldDestination, path);
+                    objectAgent.SetPath(path);
+
+                    //If direction change is occuring when current destination has been reached
+                    //We manually calculate next position to avoid a frame where AI is standing still
+                    if (objectAgent.transform.position == objectAgent.nextPosition)
+                    {
+                        this.ManuallyUpdateAgent();
+                    }
+                    this.lastSuccessfulWorldDestination = worldDestination;
                 }
-                this.lastSuccessfulWorldDestination = worldDestination;
-                this.lastFrameSuccessfulNextDestinationFrameNb = Time.frameCount;
-                this.lastFrameSuccessfulNextDestination = objectAgent.nextPosition;
             }
+            else
+            {
+                this.StopAgent();
+            }
+
         }
 
         public void StopAgent()
@@ -91,7 +95,7 @@ namespace RTPuzzle
             objectAgent.nextPosition = pathHit.position;
         }
 
-        private void UpdateAgentTransform(float d, float timeAttenuationFactor)
+        private void UpdateAgentTransform(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
 
@@ -115,8 +119,13 @@ namespace RTPuzzle
 
                 this.objectAgent.transform.rotation = Quaternion.Slerp(this.objectAgent.transform.rotation, targetRotation, this.AIDestimationMoveManagerComponent.RotationSpeed * d * timeAttenuationFactor);
 
-                updatePosition = (!AIDestimationMoveManagerComponent.IsPositionUpdateConstrained) ||                    
+                updatePosition = (!AIDestimationMoveManagerComponent.IsPositionUpdateConstrained) ||
                     AIDestimationMoveManagerComponent.IsPositionUpdateConstrained && Quaternion.Angle(this.objectAgent.transform.rotation, targetRotation) <= this.AIDestimationMoveManagerComponent.MinAngleThatAllowThePositionUpdate;
+            }
+            else if (NPCAIDestinationContext.TargetRotation.HasValue)
+            {
+                var targetRotation = NPCAIDestinationContext.TargetRotation.Value;
+                this.objectAgent.transform.rotation = Quaternion.Slerp(this.objectAgent.transform.rotation, targetRotation, this.AIDestimationMoveManagerComponent.RotationSpeed * d * timeAttenuationFactor);
             }
 
             if (updatePosition)
@@ -141,5 +150,17 @@ namespace RTPuzzle
         }
 
         #endregion
+    }
+
+    public class NPCAIDestinationContext
+    {
+        public Vector3? TargetPosition;
+        public Quaternion? TargetRotation;
+
+        public void Clear()
+        {
+            this.TargetPosition = null;
+            this.TargetRotation = null;
+        }
     }
 }

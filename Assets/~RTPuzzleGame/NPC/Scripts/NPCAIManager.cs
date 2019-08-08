@@ -31,6 +31,10 @@ namespace RTPuzzle
         public AiID AiID;
         #endregion
 
+        #region State
+        private NPCAIDestinationContext NPCAIDestinationContext;
+        #endregion
+
         #region Data Retrieval
         public static NPCAIManager FromCollisionType(CollisionType collisionType)
         {
@@ -71,6 +75,8 @@ namespace RTPuzzle
             this.objectCollider = GetComponent<Collider>();
             this.aIDestimationMoveManagerComponentV2 = GetComponent<TransformMoveManagerComponentV2>();
 
+            this.NPCAIDestinationContext = new NPCAIDestinationContext();
+
             agent = GetComponent<NavMeshAgent>();
             agent.updatePosition = false;
             agent.updateRotation = false;
@@ -99,7 +105,7 @@ namespace RTPuzzle
         public void TickWhenTimeFlows(in float d, in float timeAttenuationFactor)
         {
             this.ComputeAINewDestination(d, timeAttenuationFactor);
-            AIDestinationMoveManager.Tick(d, timeAttenuationFactor);
+            AIDestinationMoveManager.Tick(d, timeAttenuationFactor, ref this.NPCAIDestinationContext);
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
         }
 
@@ -123,15 +129,8 @@ namespace RTPuzzle
 
         private void ComputeAINewDestination(in float d, in float timeAttenuationFactor)
         {
-            var newDestination = puzzleAIBehavior.TickAI(d, timeAttenuationFactor);
-            if (newDestination.HasValue)
-            {
-                this.SetDestination(newDestination.Value);
-            }
-            else
-            {
-                this.StopAgent();
-            }
+            puzzleAIBehavior.TickAI(d, timeAttenuationFactor, ref this.NPCAIDestinationContext);
+            AIDestinationMoveManager.SetDestination(ref this.NPCAIDestinationContext);
         }
 
         public void OnTriggerEnter(Collider other)
@@ -202,17 +201,7 @@ namespace RTPuzzle
         {
             this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
         }
-
-        private void SetDestination(Vector3 destination)
-        {
-            AIDestinationMoveManager.SetDestination(destination);
-        }
-
-        private void StopAgent()
-        {
-            AIDestinationMoveManager.StopAgent();
-        }
-
+        
         public void EnableAgent()
         {
             AIDestinationMoveManager.EnableAgent();

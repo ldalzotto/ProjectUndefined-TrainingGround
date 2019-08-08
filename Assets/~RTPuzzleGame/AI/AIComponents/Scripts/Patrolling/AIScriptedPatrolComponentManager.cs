@@ -10,13 +10,23 @@ namespace RTPuzzle
 
         private AIPositionsManager aIPositionsManager;
 
-        private Vector3 anchorPosition;
+        private Transform anchorPosition;
 
         public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager, AiID aiID, AIPositionsManager aIPositionsManager)
         {
             this.BaseInit(patrollingAgent, aIPatrolComponent, aIFOVManager, aiID);
             this.aIPositionsManager = aIPositionsManager;
-            this.anchorPosition = aIPositionsManager.GetAIPositions(aiID).GetPosition(AIPositionMarkerID._1_Town_GardenWatchman_1).transform.position;
+
+            var aiPositions = aIPositionsManager.GetAIPositions(aiID);
+            if (aiPositions != null)
+            {
+                var anchorPositionMarker = aiPositions.GetPosition(AIPositionMarkerID._1_Town_GardenWatchman_1);
+                if (anchorPositionMarker != null)
+                {
+                    this.anchorPosition = anchorPositionMarker.transform;
+                }
+            }
+
         }
 
         public override void GizmoTick() { }
@@ -25,14 +35,14 @@ namespace RTPuzzle
         {
         }
 
-        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             this.isPatrolling = true;
-            if (this.patrollingAgent.transform.position != this.anchorPosition)
+            if (this.anchorPosition != null)
             {
-                return this.anchorPosition;
+                NPCAIDestinationContext.TargetPosition = this.anchorPosition.position;
+                NPCAIDestinationContext.TargetRotation = this.anchorPosition.rotation;
             }
-            return null;
         }
 
         public override void OnStateReset()

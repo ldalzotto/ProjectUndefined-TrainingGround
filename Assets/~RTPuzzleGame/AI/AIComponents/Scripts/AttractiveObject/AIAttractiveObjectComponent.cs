@@ -96,13 +96,12 @@ namespace RTPuzzle
 
         public virtual void BeforeManagersUpdate(float d, float timeAttenuationFactor) { }
 
-        public virtual Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public virtual void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             if (isAttracted)
             {
-                return attractionPosition;
+                NPCAIDestinationContext.TargetPosition = attractionPosition;
             }
-            return null;
         }
 
         #region Logical Conditions

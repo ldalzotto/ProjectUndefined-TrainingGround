@@ -43,7 +43,7 @@ namespace RTPuzzle
 
         public virtual void OnDestinationReached() { }
 
-        public abstract Vector3? OnManagerTick(float d, float timeAttenuationFactor);
+        public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
 
         public void OnStateReset()
         {

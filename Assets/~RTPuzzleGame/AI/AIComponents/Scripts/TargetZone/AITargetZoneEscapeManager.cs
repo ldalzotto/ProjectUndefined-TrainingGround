@@ -1,5 +1,4 @@
 ﻿using GameConfigurationID;
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -39,10 +38,10 @@ namespace RTPuzzle
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
             this.aiID = aiID;
         }
-        
-        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
-            return this.EscapeDestinationManager.Tick();
+            NPCAIDestinationContext.TargetPosition = this.EscapeDestinationManager.Tick();
         }
 
         public override void OnDestinationReached()

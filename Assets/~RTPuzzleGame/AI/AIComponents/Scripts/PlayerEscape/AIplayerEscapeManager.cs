@@ -90,9 +90,9 @@ namespace RTPuzzle
             }
         }
 
-        public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
-            return this.escapeDestinationManager.Tick();
+            NPCAIDestinationContext.TargetPosition = this.escapeDestinationManager.Tick();
         }
 
         public override void OnStateReset()
