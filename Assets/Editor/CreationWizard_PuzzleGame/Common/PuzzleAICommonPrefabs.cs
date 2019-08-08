@@ -18,42 +18,42 @@ namespace Editor_MainGameCreationWizard
     {
         
         [ReadOnly()]
-        public NPCAIManager AIBasePrefab;
+        public RTPuzzle.NPCAIManager AIBasePrefab;
         
         [ReadOnly()]
-        public AIAttractiveObjectLooseManager AIAttractiveObjectLooseManager;
+        public RTPuzzle.AIAttractiveObjectLooseManager AIAttractiveObjectLooseManager;
         
         [ReadOnly()]
-        public AIAttractiveObjectPersistantManager AIAttractiveObjectPersistantManager;
+        public RTPuzzle.AIAttractiveObjectPersistantManager AIAttractiveObjectPersistantManager;
         
         [ReadOnly()]
-        public AIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager;
+        public RTPuzzle.AIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager;
         
         [ReadOnly()]
-        public AIFearStunManager AIFearStunManager;
+        public RTPuzzle.AIFearStunManager AIFearStunManager;
         
         [ReadOnly()]
-        public AIRandomPatrolComponentMananger AIRandomPatrolComponentMananger;
+        public RTPuzzle.AIRandomPatrolComponentMananger AIRandomPatrolComponentMananger;
         
         [ReadOnly()]
-        public AIScriptedPatrolComponentManager AIScriptedPatrolComponentManager;
+        public RTPuzzle.AIScriptedPatrolComponentManager AIScriptedPatrolComponentManager;
         
         [ReadOnly()]
-        public AIPlayerEscapeManager AIPlayerEscapeManager;
+        public RTPuzzle.AIPlayerEscapeManager AIPlayerEscapeManager;
         
         [ReadOnly()]
-        public AIProjectileWithCollisionEscapeManager AIProjectileWithCollisionEscapeManager;
+        public RTPuzzle.AIProjectileWithCollisionEscapeManager AIProjectileWithCollisionEscapeManager;
         
         [ReadOnly()]
-        public AITargetZoneEscapeManager AITargetZoneEscapeManager;
+        public RTPuzzle.AITargetZoneEscapeManager AITargetZoneEscapeManager;
         
         [ReadOnly()]
-        public AISightVision AISightVision;
+        public RTPuzzle.AISightVision AISightVision;
         
         [ReadOnly()]
-        public AIMoveTowardPlayerManager AIMoveTowardPlayerManager;
+        public RTPuzzle.AIMoveTowardPlayerManager AIMoveTowardPlayerManager;
         
         [ReadOnly()]
-        public AIDisarmObjectManager AIDisarmObjectManager;
+        public RTPuzzle.AIDisarmObjectManager AIDisarmObjectManager;
     }
 }

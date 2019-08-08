@@ -17,7 +17,7 @@ namespace RTPuzzle
     
     
     [Serializable()]
-    [CreateAssetMenu(fileName="GenericPuzzleAIComponents", menuName="Configuration/PuzzleGame/AIComponentsConfiguration/GenericPuzzleAIComponents", order=1)]
+    [UnityEngine.CreateAssetMenu(fileName="GenericPuzzleAIComponents", menuName="Configuration/PuzzleGame/AIComponentsConfiguration/GenericPuzzleAIComponents", order=1)]
     public class GenericPuzzleAIComponents : AbstractAIComponents
     {
         

@@ -103,7 +103,7 @@ public class AIComponentGeneration : EditorWindow
         OnManagerTickMethod.Name = "OnManagerTick";
         OnManagerTickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "d"));
         OnManagerTickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "timeAttenuationFactor"));
-        OnManagerTickMethod.ReturnType = new CodeTypeReference(typeof(Vector3?));
+        OnManagerTickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(NPCAIDestinationContext), "NPCAIDestinationContext") { Direction = FieldDirection.Ref });
 
         abstractManagerClass.Members.Add(OnManagerTickMethod);
 
@@ -167,8 +167,7 @@ public class AIComponentGeneration : EditorWindow
         OnManagerTickMethod.Name = "OnManagerTick";
         OnManagerTickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "d"));
         OnManagerTickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "timeAttenuationFactor"));
-        OnManagerTickMethod.ReturnType = new CodeTypeReference(typeof(Vector3?));
-        OnManagerTickMethod.Statements.Add(new CodeSnippetStatement("return null;"));
+        OnManagerTickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(NPCAIDestinationContext), "NPCAIDestinationContext") { Direction = FieldDirection.Ref });
 
         managerClass.Members.Add(OnManagerTickMethod);
 
