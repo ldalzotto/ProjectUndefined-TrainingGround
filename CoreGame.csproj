@@ -177,6 +177,8 @@
     <Compile Include="Assets\~CoreGame\PointOfInterest\AGhostPOIManager.cs" />
     <Compile Include="Assets\~CoreGame\PointOfInterest\APointOfInterestEventManager.cs" />
     <Compile Include="Assets\~CoreGame\PointOfInterest\APointOfInterestType.cs" />
+    <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionMarker.cs" />
+    <Compile Include="Assets\~CoreGame\Positioning\AbstractPositionsType.cs" />
     <Compile Include="Assets\~CoreGame\Random\RandomHelper.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />

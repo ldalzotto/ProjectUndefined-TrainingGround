@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GameConfigurationID;
+using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
@@ -7,9 +8,18 @@ namespace RTPuzzle
     {
         private bool isPatrolling;
 
-        public override void GizmoTick()
+        private AIPositionsManager aIPositionsManager;
+
+        private Vector3 anchorPosition;
+
+        public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager, AiID aiID, AIPositionsManager aIPositionsManager)
         {
+            this.BaseInit(patrollingAgent, aIPatrolComponent, aIFOVManager, aiID);
+            this.aIPositionsManager = aIPositionsManager;
+            this.anchorPosition = aIPositionsManager.GetAIPositions(aiID).GetPosition(AIPositionMarkerID._1_Town_GardenWatchman_1).transform.position;
         }
+
+        public override void GizmoTick() { }
 
         public override void OnDestinationReached()
         {
@@ -18,6 +28,10 @@ namespace RTPuzzle
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)
         {
             this.isPatrolling = true;
+            if (this.patrollingAgent.transform.position != this.anchorPosition)
+            {
+                return this.anchorPosition;
+            }
             return null;
         }
 

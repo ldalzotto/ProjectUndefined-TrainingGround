@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,10 +19,12 @@ namespace RTPuzzle
         protected AIFOVManager AIFOVManager;
         #endregion
 
+        protected AiID aiID;
         protected AIPatrolComponent AIPatrolComponent;
 
-        protected void BaseInit(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager)
+        protected void BaseInit(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager, AiID aiID)
         {
+            this.aiID = aiID;
             this.patrollingAgent = patrollingAgent;
             AIPatrolComponent = aIPatrolComponent;
             this.AIFOVManager = aIFOVManager;

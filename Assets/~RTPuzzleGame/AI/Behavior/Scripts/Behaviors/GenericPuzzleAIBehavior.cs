@@ -35,17 +35,18 @@ namespace RTPuzzle
         public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
             PuzzleEventsManager PuzzleEventsManager, InteractiveObjectContainer InteractiveObjectContainer,
             AiID aiID, Collider aiCollider, PlayerManagerDataRetriever playerManagerDataRetriever,
-            TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent)
+            TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent, AIPositionsManager aIPositionsManager)
         {
             this.BaseInit(selfAgent, aIComponents, new GenericPuzzleAIBehaviorExternalEventManager(), OnFOVChange, ForceUpdateAIBehavior);
 
             this.GetComponentInChildren<AIRandomPatrolComponentMananger>().IfNotNull(AIRandomPatrolComponentMananger =>
             {
-                AIRandomPatrolComponentMananger.Init(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager);
+                AIRandomPatrolComponentMananger.Init(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager, aiID);
                 this.aIPatrolComponentManager = AIRandomPatrolComponentMananger;
             });
             this.GetComponentInChildren<AIScriptedPatrolComponentManager>().IfNotNull(AIScriptedPatrolComponentManager =>
             {
+                AIScriptedPatrolComponentManager.Init(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager, aiID, aIPositionsManager);
                 this.aIPatrolComponentManager = AIScriptedPatrolComponentManager;
             });
             this.GetComponentInChildren<AIProjectileWithCollisionEscapeManager>().IfNotNull(AIProjectileWithCollisionEscapeManager =>

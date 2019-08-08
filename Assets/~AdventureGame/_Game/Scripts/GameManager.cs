@@ -60,6 +60,7 @@ namespace AdventureGame
 
             //initialization
             CameraMovementManager.Init();
+            GameObject.FindObjectOfType<CutscenePositionsManager>().Init();
             CutscenePlayerManagerV2.Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();

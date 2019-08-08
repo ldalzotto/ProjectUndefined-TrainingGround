@@ -24,7 +24,7 @@ namespace RTPuzzle
         public void Tick(float d, float timeAttenuationFactor)
         {
             this.CurrentTimeAttenuated = d * timeAttenuationFactor;
-            this.UpdateAgentTransform();
+            this.UpdateAgentTransform(d, timeAttenuationFactor);
 
             //is destination reached
             if (this.currentDestination.HasValue)
@@ -62,7 +62,6 @@ namespace RTPuzzle
                 if (objectAgent.transform.position == objectAgent.nextPosition)
                 {
                     this.ManuallyUpdateAgent();
-                    //objectAgent.transform.rotation = Quaternion.LookRotation(objectAgent.transform.position - objectAgent.nextPosition, objectAgent.transform.up);
                 }
                 this.lastSuccessfulWorldDestination = worldDestination;
                 this.lastFrameSuccessfulNextDestinationFrameNb = Time.frameCount;
@@ -92,27 +91,41 @@ namespace RTPuzzle
             objectAgent.nextPosition = pathHit.position;
         }
 
-        private void UpdateAgentTransform()
+        private void UpdateAgentTransform(float d, float timeAttenuationFactor)
         {
             objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
-            //  Debug.Log(MyLog.Format("AGENT MOVE : old " + objectTransform.position.ToString("F4") + " new " + objectAgent.nextPosition.ToString("F4")));
-            objectAgent.transform.position = objectAgent.nextPosition;
 
-
+            bool updatePosition = true;
             // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
             if (this.objectAgent.hasPath && !this.objectAgent.isStopped)
             {
                 //if target is too close, we look to destination
-                float distanceToDestination = Vector3.Distance(this.objectAgent.transform.position, this.objectAgent.destination);
+                float distanceToDestination = Vector3.Distance(objectAgent.nextPosition, this.objectAgent.destination);
 
-                if (this.objectAgent.transform.position != this.objectAgent.destination && distanceToDestination <= 5f)
+                Quaternion targetRotation;
+
+                if (objectAgent.nextPosition != this.objectAgent.destination && distanceToDestination <= 5f)
                 {
-                    this.objectAgent.transform.rotation = Quaternion.LookRotation((this.objectAgent.destination - this.objectAgent.transform.position), Vector3.up);
+                    targetRotation = Quaternion.LookRotation((this.objectAgent.destination - objectAgent.nextPosition), Vector3.up);
                 }
                 else
                 {
-                    this.objectAgent.transform.rotation = Quaternion.LookRotation((this.objectAgent.path.corners[1] - this.objectAgent.path.corners[0]).normalized, Vector3.up);
+                    targetRotation = Quaternion.LookRotation((this.objectAgent.path.corners[1] - this.objectAgent.path.corners[0]).normalized, Vector3.up);
                 }
+
+                this.objectAgent.transform.rotation = Quaternion.Slerp(this.objectAgent.transform.rotation, targetRotation, this.AIDestimationMoveManagerComponent.RotationSpeed * d * timeAttenuationFactor);
+
+                updatePosition = (!AIDestimationMoveManagerComponent.IsPositionUpdateConstrained) ||                    
+                    AIDestimationMoveManagerComponent.IsPositionUpdateConstrained && Quaternion.Angle(this.objectAgent.transform.rotation, targetRotation) <= this.AIDestimationMoveManagerComponent.MinAngleThatAllowThePositionUpdate;
+            }
+
+            if (updatePosition)
+            {
+                objectAgent.transform.position = objectAgent.nextPosition;
+            }
+            else
+            {
+                objectAgent.nextPosition = objectAgent.transform.position;
             }
         }
 

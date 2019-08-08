@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,9 +14,9 @@ namespace RTPuzzle
 
         private Vector3? currentDestination;
 
-        public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager)
+        public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager, AiID aiID)
         {
-            this.BaseInit(patrollingAgent, AIRandomPatrolComponent, aIFOVManager);
+            this.BaseInit(patrollingAgent, AIRandomPatrolComponent, aIFOVManager, aiID);
         }
 
         public override Vector3? OnManagerTick(float d, float timeAttenuationFactor)

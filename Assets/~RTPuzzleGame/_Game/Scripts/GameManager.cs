@@ -111,6 +111,7 @@ namespace RTPuzzle
             //TODO here
             NpcInteractionRingRendererManager.Init();
             DisarmObjectProgressBarRendererManager.Init();
+            GameObject.FindObjectOfType<AIPositionsManager>().Init();
             GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
             ObjectRepelLineVisualFeedbackManager.Init();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();

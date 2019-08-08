@@ -1,4 +1,6 @@
-﻿using UnityEngine.Serialization;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
+
 
 namespace CoreGame
 {
@@ -6,7 +8,11 @@ namespace CoreGame
     public class TransformMoveManagerComponentV2 : ADataComponent
     {
         public float SpeedMultiplicationFactor = 20f;
-        [FormerlySerializedAs("AIRotationSpeed")]
         public float RotationSpeed = 10f;
+
+        public bool IsPositionUpdateConstrained = false;
+
+        [Range(0f, 360f)]
+        public float MinAngleThatAllowThePositionUpdate = 45f;
     }
 }

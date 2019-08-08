@@ -63,6 +63,7 @@ namespace RTPuzzle
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            var aiPositionsManager = GameObject.FindObjectOfType<AIPositionsManager>();
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
             var rigidBody = GetComponent<Rigidbody>();
@@ -83,9 +84,9 @@ namespace RTPuzzle
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
             this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
-            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.aIDestimationMoveManagerComponentV2);
+            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.aIDestimationMoveManagerComponentV2, aiPositionsManager);
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent);
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent, aIBheaviorBuildInputData.AIPositionsManager);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
