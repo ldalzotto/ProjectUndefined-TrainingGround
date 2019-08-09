@@ -94,5 +94,12 @@ namespace CoreGame
             ProcessTick(0f, action);
         }
         #endregion
+
+        #region Data Retrieval
+        public List<SequencedAction> GetCurrentActions()
+        {
+            return this.ExecutedActions;
+        }
+        #endregion
     }
 }

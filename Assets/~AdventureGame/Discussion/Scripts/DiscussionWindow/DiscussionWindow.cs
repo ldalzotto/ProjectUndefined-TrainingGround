@@ -27,15 +27,9 @@ namespace AdventureGame
         private DiscussionWindowPositioner DiscussionWindowPositioner;
         private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
         private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
-
-        private DiscussionEventHandler DiscussionEventHandler;
-
+        
         public void InitializeDependencies()
         {
-            #region External Event hanlder
-            DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
-            #endregion
-
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
             var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
 
@@ -44,7 +38,7 @@ namespace AdventureGame
             DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject, (RectTransform)discussionWindowObject.transform);
             DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
             DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
-            DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator, DiscussionEventHandler);
+            DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
 
             TextDiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionWindowDimensionsManager);
             DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
@@ -502,14 +496,12 @@ namespace AdventureGame
         private const string EXIT_ANIMATION_NAME = "DiscussionWindowExitAnimation";
 
         private Animator DiscussionAnimator;
-        private DiscussionEventHandler DiscussionEventHandler;
 
         private bool isAnimationExitingPlaying;
 
-        public DiscussionWindowAnimationManager(Animator discussionAnimator, DiscussionEventHandler discussionEventHandler)
+        public DiscussionWindowAnimationManager(Animator discussionAnimator)
         {
             DiscussionAnimator = discussionAnimator;
-            DiscussionEventHandler = discussionEventHandler;
         }
 
         public bool IsAnimationExitingPlaying { get => isAnimationExitingPlaying; }

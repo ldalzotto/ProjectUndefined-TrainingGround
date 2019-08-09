@@ -197,6 +197,7 @@
     <Compile Include="Assets\Test\CircleBarTest\CircleFillBarRendererManager.cs" />
     <Compile Include="Assets\Test\CircleBarTest\CircleFillBarType.cs" />
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
+    <Compile Include="Assets\Test\InstanciatedBufferTest\InstanciatedBufferTest.cs" />
     <Compile Include="Assets\Test\ShaderVectorTest.cs" />
     <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
@@ -204,6 +205,7 @@
     <None Include="Assets\_Shader\Test\SphereFrustum.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.cginc" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
+    <None Include="Assets\Test\InstanciatedBufferTest\InstacniatedBufferTest.shader" />
     <None Include="Assets\_Shader\Wave\WaveShaderPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\Test\CircleBarTest\CircleBarTest.shader" />

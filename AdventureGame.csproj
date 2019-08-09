@@ -135,10 +135,12 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsType.cs" />
     <Compile Include="Assets\~AdventureGame\Debug\Script\AdventureDebugModule.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionEventHandler.cs" />
+    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowsContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryManager.cs" />

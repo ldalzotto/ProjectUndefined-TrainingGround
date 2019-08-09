@@ -1,7 +1,5 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -10,72 +8,30 @@ namespace AdventureGame
     public class DiscussionEventHandler : MonoBehaviour
     {
 
-        private DiscussionWindowManager DiscussionWindowManager;
+        private DiscussionWindowsContainer DiscussionWindowsContainer;
+
         private TimelinesEventManager ScenarioTimelineEventManager;
-
-        public delegate void DiscussionWindowSleepExternalHandler();
-        private event DiscussionWindowSleepExternalHandler OnDiscussionWindowSleepExternal;
-
-        public delegate void DiscussionTextNodeHandler();
-        private event DiscussionTextNodeHandler OnDiscussionTextNodeEndEvent;
-
-        public delegate void DiscussionChoiceNodeHandler(DiscussionNodeId selectedChoice);
-        private event DiscussionChoiceNodeHandler OnDiscussionChoiceNodeEndEvent;
 
         private void Start()
         {
-            DiscussionWindowManager = GameObject.FindObjectOfType<DiscussionWindowManager>();
+            DiscussionWindowsContainer = GameObject.FindObjectOfType<DiscussionWindowsContainer>();
             ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
         }
 
-        #region Discussion Window Events
-        public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position)
+
+        public DiscussionWindowManager OnDiscussionTreeStart(DiscussionTreeId discussionTreeId)
         {
-            DiscussionWindowManager.OnDiscussionWindowAwake(discussionNode, position);
+            return DiscussionWindowsContainer.OnDiscussionTreeStart(discussionTreeId);
+        }
+        public void OnDiscussionTreeEnd(DiscussionTreeId discussionTreeId)
+        {
+            DiscussionWindowsContainer.OnDiscussionTreeEnd(discussionTreeId);
         }
 
-        public IEnumerator OnDiscussionWindowSleep()
+        public void OnDiscussionChoiceMade(DiscussionNodeId discussionChoiceMade)
         {
-            yield return StartCoroutine(DiscussionWindowManager.PlayDiscussionCloseAnimation());
-            DiscussionWindowManager.OnDiscussionWindowSleep();
-            OnDiscussionWindowSleepExternal.Invoke();
+            ScenarioTimelineEventManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(discussionChoiceMade));
         }
-        #endregion
-
-        #region Discussion Text Event
-        public void OnDiscussionTextNodeEnd()
-        {
-            OnDiscussionTextNodeEndEvent.Invoke();
-        }
-        #endregion
-
-        #region Discusion Choices Event
-        public void OnDiscussionChoiceStart(List<DiscussionChoice> discussionChoices)
-        {
-            DiscussionWindowManager.OnChoicePopupAwake(discussionChoices);
-        }
-
-        public void OnDiscussionChoiceEnd(DiscussionNodeId selectedChoice)
-        {
-            ScenarioTimelineEventManager.OnScenarioActionExecuted(new DiscussionChoiceScenarioAction(selectedChoice));
-            OnDiscussionChoiceNodeEndEvent.Invoke(selectedChoice);
-        }
-        #endregion
-
-        public void InitializeEventHanlders(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler, DiscussionTextNodeHandler DiscussionTextNodeHandler, DiscussionChoiceNodeHandler DiscussionChoiceNodeHandler)
-        {
-            OnDiscussionWindowSleepExternal += DiscussionWindowSleepExternalHandler;
-            OnDiscussionTextNodeEndEvent += DiscussionTextNodeHandler;
-            OnDiscussionChoiceNodeEndEvent += DiscussionChoiceNodeHandler;
-        }
-
-        public void DeleteEventHanlders(DiscussionWindowSleepExternalHandler DiscussionWindowSleepExternalHandler, DiscussionTextNodeHandler DiscussionTextNodeHandler, DiscussionChoiceNodeHandler DiscussionChoiceNodeHandler)
-        {
-            OnDiscussionWindowSleepExternal -= DiscussionWindowSleepExternalHandler;
-            OnDiscussionTextNodeEndEvent -= DiscussionTextNodeHandler;
-            OnDiscussionChoiceNodeEndEvent -= DiscussionChoiceNodeHandler;
-        }
-
     }
 
 }

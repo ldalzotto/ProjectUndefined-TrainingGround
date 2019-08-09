@@ -12,7 +12,7 @@ namespace AdventureGame
         private PlayerManager PlayerManager;
         private NPCManager NPCManager;
         private InventoryManager InventoryManager;
-        private DiscussionWindowManager DiscussionWindowManager;
+        private DiscussionWindowsContainer DiscussionWindowsContainer;
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CameraMovementManager CameraMovementManager;
@@ -53,7 +53,7 @@ namespace AdventureGame
             PlayerManager = FindObjectOfType<PlayerManager>();
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
-            DiscussionWindowManager = FindObjectOfType<DiscussionWindowManager>();
+            DiscussionWindowsContainer = FindObjectOfType<DiscussionWindowsContainer>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
@@ -69,6 +69,7 @@ namespace AdventureGame
             PointOfInterestManager.Init();
             GameObject.FindObjectOfType<CutsceneGlobalController>().Init();
             GameObject.FindObjectOfType<CutsceneEventManager>().Init();
+            DiscussionWindowsContainer.Init();
 
 #if UNITY_EDITOR
             this.EditorOnlyModules.Init();
@@ -89,8 +90,8 @@ namespace AdventureGame
             PlayerManager.Tick(d);
             NPCManager.Tick(d);
             CameraMovementManager.Tick(d);
+            DiscussionWindowsContainer.Tick(d);
             InventoryManager.Tick(d);
-            DiscussionWindowManager.Tick(d);
 
 #if UNITY_EDITOR
             this.EditorOnlyModules.Tick(d);
@@ -113,7 +114,7 @@ namespace AdventureGame
 
         private void OnGUI()
         {
-            DiscussionWindowManager.GUITick();
+            DiscussionWindowsContainer.GUITick();
         }
 
         private void OnDrawGizmos()
