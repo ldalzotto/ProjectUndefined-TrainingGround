@@ -1,6 +1,5 @@
 ﻿using GameConfigurationID;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,10 +13,14 @@ namespace CoreGame
         private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
+        #region State 
+        private DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy;
+        private ChoicePopup OpenedChoicePopup;
+        #endregion
+
         private DiscussionTreeId discussionTreeID;
         private DicussionInputManager DicussionInputManager;
         private DiscussionWindow OpenedDiscussion;
-        private ChoicePopup OpenedChoicePopup;
         private DiscussionTreePlayer DiscussionTreePlayer;
 
         #region Logical Statements
@@ -25,13 +28,25 @@ namespace CoreGame
         {
             return this.DiscussionTreePlayer.IsConversationFinished;
         }
+        private bool IsWaitForInputStrategyEnabled()
+        {
+            return this.DiscussionWindowManagerStrategy == null || this.DiscussionWindowManagerStrategy.GetType() == typeof(WaitForInputDiscussionWindowManagerStrategy);
+        }
+        private bool IsWaitForSecondsStrategyEnabled()
+        {
+            return this.DiscussionWindowManagerStrategy != null && this.DiscussionWindowManagerStrategy.GetType() == typeof(WaitForSecondsDiscussionWindowManagerStrategy);
+        }
+        private bool IsWaitForSecondsStrategyTimeOver()
+        {
+            return this.IsWaitForSecondsStrategyEnabled() && ((WaitForSecondsDiscussionWindowManagerStrategy)this.DiscussionWindowManagerStrategy).IsTimeOver();
+        }
         #endregion
 
         #region Data Retrieval
         public DiscussionTreeId DiscussionTreeID { get => discussionTreeID; }
         #endregion
 
-        protected void BaseInit(DiscussionTreeId DiscussionTreeId)
+        protected void BaseInit(DiscussionTreeId DiscussionTreeId, DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy)
         {
             #region External Dependencies
             GameCanvas = GameObject.FindObjectOfType<Canvas>();
@@ -42,6 +57,7 @@ namespace CoreGame
             #endregion
 
             this.discussionTreeID = DiscussionTreeId;
+            this.DiscussionWindowManagerStrategy = DiscussionWindowManagerStrategy;
             DicussionInputManager = new DicussionInputManager(GameInputManager);
 
             this.OpenedDiscussion = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
@@ -57,42 +73,91 @@ namespace CoreGame
         public void Tick(float d, out Nullable<DiscussionNodeId> discussionChoiceMade)
         {
             discussionChoiceMade = null;
-            if (!OpenedDiscussion.IsExitAnimationPlaying())
+            if (this.IsWaitForInputStrategyEnabled())
             {
-                if (OpenedChoicePopup != null)
+                TickWaitForInput(d, out discussionChoiceMade);
+            }
+            else if (this.IsWaitForSecondsStrategyEnabled())
+            {
+                TickWaitForSeconds(d, out discussionChoiceMade);
+            }
+        }
+
+        private void TickWaitForInput(float d, out DiscussionNodeId? discussionChoiceMade)
+        {
+            discussionChoiceMade = null;
+            if (OpenedChoicePopup != null)
+            {
+                OpenedChoicePopup.Tick(d);
+                if (DicussionInputManager.Tick())
                 {
-                    OpenedChoicePopup.Tick(d);
+                    discussionChoiceMade = OnChoiceMade();
+                }
+            }
+            else
+            {
+                OpenedDiscussion.Tick(d);
+                if (!OpenedDiscussion.IsWriting())
+                {
                     if (DicussionInputManager.Tick())
                     {
-                        var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
-                        MonoBehaviour.Destroy(OpenedChoicePopup.gameObject);
-                        discussionChoiceMade = selectedChoice.DiscussionNodeId;
-                        this.DiscussionTreePlayer.OnDiscussionChoiceMade(selectedChoice.DiscussionNodeId);
-                        Coroutiner.Instance.StartCoroutine(this.OnDiscussionWindowSleepCoRoutine());
-                    }
-                }
-                else
-                {
-                    OpenedDiscussion.Tick(d);
-                    if (!OpenedDiscussion.IsWriting())
-                    {
-                        if (DicussionInputManager.Tick())
+                        if (OpenedDiscussion.IsWaitingForCloseInput())
                         {
-                            if (OpenedDiscussion.IsWaitingForCloseInput())
+                            if (this.DiscussionTreePlayer.OnDiscussionTextNodeEnd())
                             {
-                                if (this.DiscussionTreePlayer.OnDiscussionTextNodeEnd())
-                                {
-                                    Coroutiner.Instance.StartCoroutine(this.OnDiscussionWindowSleepCoRoutine());
-                                }
+                                this.OpenedDiscussion.PlayDiscussionCloseAnimation();
                             }
-                            else if (OpenedDiscussion.IsWaitingForContinueInput())
-                            {
-                                OpenedDiscussion.ProcessDiscussionContinue();
-                            }
+                        }
+                        else if (OpenedDiscussion.IsWaitingForContinueInput())
+                        {
+                            OpenedDiscussion.ProcessDiscussionContinue();
                         }
                     }
                 }
             }
+        }
+
+        private DiscussionNodeId? OnChoiceMade()
+        {
+            DiscussionNodeId? discussionChoiceMade;
+            var selectedChoice = OpenedChoicePopup.GetSelectedDiscussionChoice();
+            MonoBehaviour.Destroy(OpenedChoicePopup.gameObject);
+            discussionChoiceMade = selectedChoice.DiscussionNodeId;
+            this.DiscussionTreePlayer.OnDiscussionChoiceMade(selectedChoice.DiscussionNodeId);
+            this.OpenedDiscussion.PlayDiscussionCloseAnimation();
+            return discussionChoiceMade;
+        }
+
+        private void TickWaitForSeconds(float d, out DiscussionNodeId? discussionChoiceMade)
+        {
+            discussionChoiceMade = null;
+            var WaitForSecondsDiscussionWindowManagerStrategy = (WaitForSecondsDiscussionWindowManagerStrategy)DiscussionWindowManagerStrategy;
+
+            if (WaitForSecondsDiscussionWindowManagerStrategy.IsTimeOver() && !this.OpenedDiscussion.IsExitAnimationPlaying())
+            {
+                this.OpenedDiscussion.PlayDiscussionCloseAnimation();
+            }
+            else
+            {
+                OpenedDiscussion.Tick(d);
+
+                if (!OpenedDiscussion.IsWriting())
+                {
+                    if (OpenedDiscussion.IsWaitingForCloseInput())
+                    {
+                        if (this.DiscussionTreePlayer.OnDiscussionTextNodeEnd())
+                        {
+                            this.OpenedDiscussion.PlayDiscussionCloseAnimation();
+                        }
+                    }
+                    else if (OpenedDiscussion.IsWaitingForContinueInput())
+                    {
+                        OpenedDiscussion.ProcessDiscussionContinue();
+                    }
+                }
+            }
+
+            WaitForSecondsDiscussionWindowManagerStrategy.ElapsedTime += d;
         }
 
         public void GUITick()
@@ -114,7 +179,7 @@ namespace CoreGame
         {
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
-            OpenedDiscussion.InitializeDependencies();
+            OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished);
             OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, this.GetAbstractTextOnlyNodePosition(discussionNode), ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
         }
 
@@ -124,11 +189,17 @@ namespace CoreGame
             OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
         }
 
-        private IEnumerator OnDiscussionWindowSleepCoRoutine()
+        private void OnDiscussionWindowAnimationExitFinished()
         {
-            yield return OpenedDiscussion.PlayDiscussionCloseAnimation();
-            this.OnDiscussionWindowSleep();
-            this.DiscussionTreePlayer.OnDiscussionNodeFinished();
+            if (this.IsWaitForSecondsStrategyTimeOver())
+            {
+                this.DiscussionTreePlayer.AbortDiscussionTree();
+            }
+            else
+            {
+                this.OnDiscussionWindowSleep();
+                this.DiscussionTreePlayer.OnDiscussionNodeFinished();
+            }
         }
 
         private void OnDiscussionWindowSleep()
@@ -142,6 +213,22 @@ namespace CoreGame
 
             OpenedDiscussion.gameObject.SetActive(false);
         }
+    }
+
+    public abstract class DiscussionWindowManagerStrategy { }
+    public class WaitForInputDiscussionWindowManagerStrategy : DiscussionWindowManagerStrategy { }
+    public class WaitForSecondsDiscussionWindowManagerStrategy : DiscussionWindowManagerStrategy
+    {
+        public float SecondsToWait;
+        public float ElapsedTime;
+
+        public WaitForSecondsDiscussionWindowManagerStrategy(float secondsToWait)
+        {
+            SecondsToWait = secondsToWait;
+            ElapsedTime = 0f;
+        }
+
+        public bool IsTimeOver() { return this.ElapsedTime >= this.SecondsToWait; }
     }
 
     #region Discussion Input Handling

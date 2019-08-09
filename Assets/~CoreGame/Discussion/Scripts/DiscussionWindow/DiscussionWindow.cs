@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,13 +29,16 @@ namespace CoreGame
         private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
         private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
-        public void InitializeDependencies()
+        private Action OnExitAnimationFinished;
+
+        public void InitializeDependencies(Action OnExitAnimationFinished)
         {
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
             var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
 
             var discussionAnimator = GetComponent<Animator>();
 
+            this.OnExitAnimationFinished = OnExitAnimationFinished;
             DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject, (RectTransform)discussionWindowObject.transform);
             DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
             DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
@@ -51,6 +55,12 @@ namespace CoreGame
             DiscussionWindowPositioner.Tick();
             TextDiscussionWindowDimensionsManager.Tick(d);
             DiscussionWriterManager.Tick(d);
+
+            if (DiscussionWindowAnimationManager.Tick())
+            {
+                this.OnExitAnimationFinished.Invoke();
+            }
+            
         }
 
         public void OnGUIDraw()
@@ -85,9 +95,9 @@ namespace CoreGame
             InitializeDiscussionWindow(TextDiscussionWindowDimensionsManager.OverlappedOnlyText);
         }
 
-        public IEnumerator PlayDiscussionCloseAnimation()
+        public void PlayDiscussionCloseAnimation()
         {
-            return DiscussionWindowAnimationManager.PlayExitAnimation();
+            DiscussionWindowAnimationManager.PlayExitAnimation();
         }
 
         public void OnHeightChange(float newHeight)
@@ -511,13 +521,24 @@ namespace CoreGame
             DiscussionAnimator.Play(ENTER_ANIMATION_NAME);
         }
 
-        public IEnumerator PlayExitAnimation()
+        public bool Tick()
+        {
+            if (this.isAnimationExitingPlaying)
+            {
+                isAnimationExitingPlaying = WaitForEndOfAnimation.IsAnimationPlaying(DiscussionAnimator, EXIT_ANIMATION_NAME, 0, false);
+                if (!isAnimationExitingPlaying)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void PlayExitAnimation()
         {
             DiscussionAnimator.Play(EXIT_ANIMATION_NAME);
+            DiscussionAnimator.Update(0.01f);
             isAnimationExitingPlaying = true;
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfAnimation(DiscussionAnimator, EXIT_ANIMATION_NAME, 0);
-            isAnimationExitingPlaying = false;
         }
     }
     #endregion

@@ -9,10 +9,10 @@ namespace AdventureGame
     {
         private PointOfInterestManager PointOfInterestManager;
 
-        public AdventureDiscussionWindowManager(DiscussionTreeId DiscussionTreeId)
+        public AdventureDiscussionWindowManager(DiscussionTreeId DiscussionTreeId, DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy = null)
         {
             this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.BaseInit(DiscussionTreeId);
+            this.BaseInit(DiscussionTreeId, DiscussionWindowManagerStrategy);
         }
 
         protected override Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode)

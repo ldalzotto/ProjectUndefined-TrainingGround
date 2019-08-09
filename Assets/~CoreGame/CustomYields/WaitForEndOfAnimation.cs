@@ -20,18 +20,23 @@ public class WaitForEndOfAnimation : CustomYieldInstruction
     {
         get
         {
-            var currentAnimatorStateInfo = animator.GetCurrentAnimatorStateInfo(animatorLayer);
-            var nexAnimatorStateInfo = animator.GetNextAnimatorStateInfo(animatorLayer);
-            bool currentAnimatorStateIsCorrectName = currentAnimatorStateInfo.IsName(animationName);
-            bool nextAnimatorStateIsCorrectName = nexAnimatorStateInfo.IsName(animationName);
-
-            bool isCurrentAnimationEndedFramePerfrect = true;
-            if (this.framePerfectEndDetection)
-            {
-                isCurrentAnimationEndedFramePerfrect = currentAnimatorStateInfo.normalizedTime <= 1 - (Time.deltaTime * 2 / currentAnimatorStateInfo.length);
-            }
-
-            return (currentAnimatorStateIsCorrectName && isCurrentAnimationEndedFramePerfrect) || nextAnimatorStateIsCorrectName;
+            return IsAnimationPlaying(animator, animationName, animatorLayer, framePerfectEndDetection);
         }
+    }
+
+    public static bool IsAnimationPlaying(Animator animator, string animationName, int animatorLayer, bool framePerfectEndDetection)
+    {
+        var currentAnimatorStateInfo = animator.GetCurrentAnimatorStateInfo(animatorLayer);
+        var nexAnimatorStateInfo = animator.GetNextAnimatorStateInfo(animatorLayer);
+        bool currentAnimatorStateIsCorrectName = currentAnimatorStateInfo.IsName(animationName);
+        bool nextAnimatorStateIsCorrectName = nexAnimatorStateInfo.IsName(animationName);
+
+        bool isCurrentAnimationEndedFramePerfrect = true;
+        if (framePerfectEndDetection)
+        {
+            isCurrentAnimationEndedFramePerfrect = currentAnimatorStateInfo.normalizedTime <= 1 - (Time.deltaTime * 2 / currentAnimatorStateInfo.length);
+        }
+
+        return (currentAnimatorStateIsCorrectName && isCurrentAnimationEndedFramePerfrect) || nextAnimatorStateIsCorrectName;
     }
 }

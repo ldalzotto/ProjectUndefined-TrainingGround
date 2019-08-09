@@ -33,6 +33,7 @@ namespace CoreGame
                     if (discussionWindowManagersThatEnded == null)
                     {
                         discussionWindowManagersThatEnded = new List<AbstractDiscussionWindowManager>();
+                        discussionWindowManagersThatEnded.Add(discussionWindowManager);
                     }
                 }
             }

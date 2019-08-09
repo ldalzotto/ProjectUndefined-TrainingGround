@@ -1,7 +1,5 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -12,7 +10,7 @@ namespace AdventureGame
         #region External Dependencies
         private DiscussionEventHandler DiscussionEventHandler;
         #endregion
-        
+
         public override void Init()
         {
             base.Init();

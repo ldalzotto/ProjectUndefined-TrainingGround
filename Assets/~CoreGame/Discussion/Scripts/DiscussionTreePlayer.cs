@@ -78,6 +78,12 @@ namespace CoreGame
             discussionChoiceMade = choiceMade;
         }
 
+        public void AbortDiscussionTree()
+        {
+            this.currentDiscussionTreeNode = null;
+            this.isConversationFinished = true;
+        }
+
         //This method is called when any discussion done is about to sleep
         public void OnDiscussionNodeFinished()
         {
