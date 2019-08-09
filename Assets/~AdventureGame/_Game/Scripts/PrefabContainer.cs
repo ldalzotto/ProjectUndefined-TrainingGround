@@ -12,11 +12,6 @@ namespace AdventureGame
         public GameObject InventoryMenuCellPrefab;
         public GameObject GiveActionMiniaturePrefab;
 
-        [Header("Discussion UI Prefabs")]
-        public DiscussionWindow DiscussionUIPrefab;
-        public ChoicePopup ChoicePopupPrefab;
-        public ChoicePopupText ChoicePopupTextPrefab;
-
         [Header("Player FX")]
         public TriggerableEffect PlayerSmokeEffectPrefab;
 

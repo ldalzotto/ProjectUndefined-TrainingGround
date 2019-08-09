@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameConfigurationID;
+using CoreGame;
 
 namespace AdventureGame
 {

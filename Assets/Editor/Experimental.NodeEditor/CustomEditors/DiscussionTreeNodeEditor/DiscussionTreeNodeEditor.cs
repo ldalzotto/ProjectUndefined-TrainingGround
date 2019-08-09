@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using CoreGame;
 using Experimental.Editor_NodeEditor;
 using GameConfigurationID;
 using System;

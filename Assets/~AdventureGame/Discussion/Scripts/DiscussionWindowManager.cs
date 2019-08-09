@@ -12,8 +12,9 @@ namespace AdventureGame
     {
         #region External Dependencies
         private Canvas GameCanvas;
-        private AdventureStaticConfiguration AdventureStaticConfiguration;
+        private CoreStaticConfiguration CoreStaticConfiguration;
         private AdventureGameConfigurationManager AdventureGameConfigurationManager;
+        private PointOfInterestManager PointOfInterestManager;
         #endregion
 
         private DiscussionTreeId discussionTreeID;
@@ -37,15 +38,16 @@ namespace AdventureGame
         {
             #region External Dependencies
             GameCanvas = GameObject.FindObjectOfType<Canvas>();
-            this.AdventureStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration;
+            this.CoreStaticConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration;
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
 
             this.discussionTreeID = DiscussionTreeId;
             DicussionInputManager = new DicussionInputManager(GameInputManager);
-
-            this.OpenedDiscussion = MonoBehaviour.Instantiate(PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
+            
+            this.OpenedDiscussion = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
             this.DiscussionTreePlayer = new DiscussionTreePlayer(this.AdventureGameConfigurationManager.DiscussionTreeConf()[DiscussionTreeId],
                             this.OnDiscussionTextWindowAwake,
                             this.OnChoicePopupAwake);
@@ -114,13 +116,13 @@ namespace AdventureGame
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies();
-            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, GameObject.FindObjectOfType<PointOfInterestManager>().GetActivePointOfInterest(discussionNode.Talker).transform, ref this.AdventureStaticConfiguration.DiscussionTestRepertoire);
+            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, this.PointOfInterestManager.GetActivePointOfInterest(discussionNode.Talker).transform, ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
         }
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)
         {
-            OpenedChoicePopup = MonoBehaviour.Instantiate(PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
-            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, ref this.AdventureStaticConfiguration.DiscussionTestRepertoire);
+            OpenedChoicePopup = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
+            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
         }
 
         private IEnumerator OnDiscussionWindowSleepCoRoutine()

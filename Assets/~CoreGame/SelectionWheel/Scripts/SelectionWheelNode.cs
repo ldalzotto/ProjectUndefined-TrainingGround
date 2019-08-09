@@ -29,7 +29,7 @@ public class SelectionWheelNode : MonoBehaviour
 
     public static SelectionWheelNode Instantiate(SelectionWheelNodeData wheelNodeData, WheelNodeSpriteResolver NodeSpriteResolver)
     {
-        var obj = Instantiate(PrefabContainer.Instance.ActionWheelNodePrefab);
+        var obj = Instantiate(CoreGame.PrefabContainer.Instance.ActionWheelNodePrefab);
         var wheelActionNode = obj.GetComponent<SelectionWheelNode>();
         wheelActionNode.imageComponent = obj.GetComponent<Image>();
 

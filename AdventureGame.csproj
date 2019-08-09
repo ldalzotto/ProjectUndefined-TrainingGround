@@ -67,13 +67,8 @@
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfiguration.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfigurationContainer.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneInherentData.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\DiscussionTreeConfiguration\DiscussionTree.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\DiscussionTreeConfiguration\DiscussionTreeConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestConfiguration.cs" />
@@ -136,9 +131,6 @@
     <Compile Include="Assets\~AdventureGame\Debug\Script\AdventureDebugModule.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionEventHandler.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
-    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
-    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
-    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowsContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
@@ -179,7 +171,6 @@
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPathContainer.cs" />
     <None Include="Assets\~AdventureGame\AdventureGame.asmdef" />
-    <None Include="Assets\~AdventureGame\Discussion\Font\LICENSE.txt" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>

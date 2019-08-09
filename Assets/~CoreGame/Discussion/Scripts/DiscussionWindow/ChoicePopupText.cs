@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace AdventureGame
+namespace CoreGame
 {
 
     public class ChoicePopupText : MonoBehaviour

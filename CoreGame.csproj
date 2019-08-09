@@ -101,9 +101,14 @@
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTree.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTreeConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
@@ -127,6 +132,9 @@
     <Compile Include="Assets\~CoreGame\DataComponent\ADataComponent.cs" />
     <Compile Include="Assets\~CoreGame\DataComponent\DataComponentContainer.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
     <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\AnimationPlayerHelper.cs" />
@@ -235,6 +243,7 @@
     <None Include="Assets\_Shader\FX\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\FX\Particle_SmokeCone_Shader.shader" />
     <None Include="Assets\_Shader\Common\GeometryShader\GeometryFlatShade.cginc" />
+    <None Include="Assets\~CoreGame\Discussion\Font\LICENSE.txt" />
     <None Include="Assets\CoreGame.asmdef" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5.shader" />
     <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />

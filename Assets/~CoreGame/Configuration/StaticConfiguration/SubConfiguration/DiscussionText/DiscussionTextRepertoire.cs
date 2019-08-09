@@ -4,10 +4,10 @@ using OdinSerializer;
 using System.Collections.Generic;
 using GameConfigurationID;
 
-namespace AdventureGame
+namespace CoreGame
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "DiscussionTextRepertoire", menuName = "Configuration/AdventureGame/StaticConfiguration/DiscussionTextRepertoire", order = 1)]
+    [CreateAssetMenu(fileName = "DiscussionTextRepertoire", menuName = "Configuration/CoreGame/StaticConfiguration/DiscussionTextRepertoire", order = 1)]
     public class DiscussionTextRepertoire : SerializedScriptableObject
     {
 #if UNITY_EDITOR

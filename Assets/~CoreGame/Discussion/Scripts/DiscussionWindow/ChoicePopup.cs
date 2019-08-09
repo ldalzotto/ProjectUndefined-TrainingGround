@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AdventureGame
+namespace CoreGame
 {
 
     public class ChoicePopup : MonoBehaviour

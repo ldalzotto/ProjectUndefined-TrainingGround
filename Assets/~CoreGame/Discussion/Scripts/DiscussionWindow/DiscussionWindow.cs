@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AdventureGame
+namespace CoreGame
 {
 
     public class DiscussionWindow : MonoBehaviour
@@ -27,7 +27,7 @@ namespace AdventureGame
         private DiscussionWindowPositioner DiscussionWindowPositioner;
         private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
         private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
-        
+
         public void InitializeDependencies()
         {
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
@@ -232,7 +232,7 @@ namespace AdventureGame
         public float LetterDisplayIntervalTime { get => letterDisplayIntervalTime; }
     }
 
-    class DiscussionWriterManager
+    public class DiscussionWriterManager
     {
         private DiscussionWriterComponent DiscussionWriterComponent;
         private Text textAreaText;

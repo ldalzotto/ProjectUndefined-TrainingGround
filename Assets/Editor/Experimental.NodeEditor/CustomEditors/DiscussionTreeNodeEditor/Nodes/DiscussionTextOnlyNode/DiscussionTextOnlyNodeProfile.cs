@@ -1,5 +1,4 @@
-﻿using AdventureGame;
-using NodeGraph;
+﻿using NodeGraph;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,12 +31,12 @@ namespace Editor_DiscussionTreeNodeEditor
         {
             return new Vector2(200, 100);
         }
-        
+
         protected override string NodeTitle()
         {
             return this.DiscussionNodeEdge.DiscussionNodeId.ToString();
         }
-        
-        
+
+
     }
 }

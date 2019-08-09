@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using CoreGame;
 using GameConfigurationID;
 using NodeGraph;
 using UnityEditor;
