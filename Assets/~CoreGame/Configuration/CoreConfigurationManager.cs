@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using GameConfigurationID;
 
 namespace CoreGame
 {
@@ -12,6 +14,10 @@ namespace CoreGame
         public LevelHierarchyConfiguration LevelHierarchyConfiguration() { return CoreConfiguration.LevelHierarchyConfiguration; }
         public TimelineConfiguration TimelineConfiguration() { return CoreConfiguration.TimelineConfiguration; }
         public AnimationConfiguration AnimationConfiguration() { return CoreConfiguration.AnimationConfiguration; }
+        public Dictionary<DiscussionTreeId, DiscussionTree> DiscussionConfiguration()
+        {
+            return CoreConfiguration.DiscussionTreeConfiguration.ConfigurationInherentData;
+        }
     }
 
 }

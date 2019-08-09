@@ -12,6 +12,7 @@ namespace CoreGame
         public LevelHierarchyConfiguration LevelHierarchyConfiguration;
         public TimelineConfiguration TimelineConfiguration;
         public AnimationConfiguration AnimationConfiguration;
+        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
     }
 }
 

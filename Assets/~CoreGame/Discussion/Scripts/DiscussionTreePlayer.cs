@@ -3,7 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 
-namespace AdventureGame
+namespace CoreGame
 {
     public class DiscussionTreePlayer
     {
@@ -13,14 +13,14 @@ namespace AdventureGame
         private DiscussionTreeNode currentDiscussionTreeNode;
         private DiscussionNodeId discussionChoiceMade;
         
-        private Action<DiscussionTextOnlyNode> OnDiscussionTextWindowAwake;
+        private Action<AbstractDiscussionTextOnlyNode> OnDiscussionTextWindowAwake;
         private Action<List<DiscussionChoice>> OnChoicePopupAwake;
 
         #region Data Retrieval
         public bool IsConversationFinished { get => isConversationFinished; }
         #endregion
 
-        public DiscussionTreePlayer(DiscussionTree playingDiscussionTree, Action<DiscussionTextOnlyNode> onDiscussionTextWindowAwake, Action<List<DiscussionChoice>> onChoicePopupAwake)
+        public DiscussionTreePlayer(DiscussionTree playingDiscussionTree, Action<AbstractDiscussionTextOnlyNode> onDiscussionTextWindowAwake, Action<List<DiscussionChoice>> onChoicePopupAwake)
         {
             this.playingDiscussionTree = playingDiscussionTree;
             OnDiscussionTextWindowAwake = onDiscussionTextWindowAwake;
@@ -37,13 +37,13 @@ namespace AdventureGame
             {
                 this.isConversationFinished = true;
             }
-            else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+            else if (currentDiscussionTreeNode.GetType().IsSubclassOf(typeof(AbstractDiscussionTextOnlyNode)))
             {
-                this.OnDiscussionTextWindowAwake.Invoke((DiscussionTextOnlyNode)currentDiscussionTreeNode);
+                this.OnDiscussionTextWindowAwake.Invoke((AbstractDiscussionTextOnlyNode)currentDiscussionTreeNode);
             }
-            else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
+            else if (currentDiscussionTreeNode.GetType().IsSubclassOf(typeof(AbstractDiscussionChoiceNode)))
             {
-                OnChoicePopupAwake.Invoke(((DiscussionChoiceNode)currentDiscussionTreeNode).DiscussionChoices.ConvertAll(discussionChoice => (DiscussionChoice)this.playingDiscussionTree.DiscussionNodes[discussionChoice]));
+                OnChoicePopupAwake.Invoke(((AbstractDiscussionChoiceNode)currentDiscussionTreeNode).DiscussionChoices.ConvertAll(discussionChoice => (DiscussionChoice)this.playingDiscussionTree.DiscussionNodes[discussionChoice]));
             }
 
         }
@@ -55,11 +55,11 @@ namespace AdventureGame
 
         public bool OnDiscussionTextNodeEnd()
         {
-            if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+            if (currentDiscussionTreeNode.GetType().IsSubclassOf(typeof(AbstractDiscussionTextOnlyNode)))
             {
-                var currentTextNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
+                var currentTextNode = (AbstractDiscussionTextOnlyNode)currentDiscussionTreeNode;
                 var nextNode = currentTextNode.GetNextNode(ref this.playingDiscussionTree);
-                if (nextNode != null && nextNode.GetType() == typeof(DiscussionChoiceNode))
+                if (nextNode != null && nextNode.GetType().IsSubclassOf(typeof(AbstractDiscussionChoiceNode)))
                 {
                     //choice node disaply
                     OnNewCurrentNode(nextNode);
@@ -85,9 +85,9 @@ namespace AdventureGame
             {
                 isConversationFinished = true;
             }
-            else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionTextOnlyNode))
+            else if (currentDiscussionTreeNode.GetType().IsSubclassOf(typeof(AbstractDiscussionTextOnlyNode)))
             {
-                var currentTextNode = (DiscussionTextOnlyNode)currentDiscussionTreeNode;
+                var currentTextNode = (AbstractDiscussionTextOnlyNode)currentDiscussionTreeNode;
                 var nextNode = currentTextNode.GetNextNode(ref this.playingDiscussionTree);
                 if (nextNode != null)
                 {
@@ -98,9 +98,9 @@ namespace AdventureGame
                     isConversationFinished = true;
                 }
             }
-            else if (currentDiscussionTreeNode.GetType() == typeof(DiscussionChoiceNode))
+            else if (currentDiscussionTreeNode.GetType().IsSubclassOf(typeof(AbstractDiscussionChoiceNode)))
             {
-                var currentChoiceNode = (DiscussionChoiceNode)currentDiscussionTreeNode;
+                var currentChoiceNode = (AbstractDiscussionChoiceNode)currentDiscussionTreeNode;
                 var nextNode = currentChoiceNode.GetNextNode(discussionChoiceMade, ref this.playingDiscussionTree);
                 if (nextNode != null)
                 {

@@ -11,8 +11,8 @@ namespace Editor_DiscussionTreeNodeEditor
     public class DiscussionConnectionNodeEdge : NodeEdgeProfile
     {
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() {
-            typeof(DiscussionTextOnlyNodeEdge),
-            typeof(DiscussionChoiceInputEdge)
+            typeof(AdventureDiscussionTextOnlyNodeEdge),
+            typeof(AdventureDiscussionChoiceInputEdge)
         };
 
         protected override Color EdgeColor()
@@ -25,13 +25,13 @@ namespace Editor_DiscussionTreeNodeEditor
             if (this.ConnectedNodeEdges != null && this.ConnectedNodeEdges.Count > 0)
             {
                 var connectedEdge = this.ConnectedNodeEdges[0];
-                if (connectedEdge.GetType() == typeof(DiscussionTextOnlyNodeEdge))
+                if (connectedEdge.GetType() == typeof(AdventureDiscussionTextOnlyNodeEdge))
                 {
-                    return ((DiscussionTextOnlyNodeEdge)connectedEdge).DiscussionNodeId;
+                    return ((AdventureDiscussionTextOnlyNodeEdge)connectedEdge).DiscussionNodeId;
                 }
-                else if (connectedEdge.GetType() == typeof(DiscussionChoiceInputEdge))
+                else if (connectedEdge.GetType() == typeof(AdventureDiscussionChoiceInputEdge))
                 {
-                    return ((DiscussionChoiceInputEdge)connectedEdge).DiscussionNodeId;
+                    return ((AdventureDiscussionChoiceInputEdge)connectedEdge).DiscussionNodeId;
                 }
             }
             return DiscussionNodeId.NONE;

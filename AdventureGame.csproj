@@ -129,9 +129,8 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsType.cs" />
     <Compile Include="Assets\~AdventureGame\Debug\Script\AdventureDebugModule.cs" />
+    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\AdventureDiscussionWindowManager.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionEventHandler.cs" />
-    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
-    <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowManager.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindowsContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />

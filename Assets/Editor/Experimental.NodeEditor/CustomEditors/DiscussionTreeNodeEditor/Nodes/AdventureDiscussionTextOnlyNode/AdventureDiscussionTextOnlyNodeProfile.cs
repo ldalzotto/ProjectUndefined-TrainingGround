@@ -5,14 +5,14 @@ using UnityEngine;
 namespace Editor_DiscussionTreeNodeEditor
 {
     [System.Serializable]
-    public class DiscussionTextOnlyNodeProfile : NodeProfile
+    public class AdventureDiscussionTextOnlyNodeProfile : NodeProfile
     {
-        public DiscussionTextOnlyNodeEdge DiscussionNodeEdge;
+        public AdventureDiscussionTextOnlyNodeEdge DiscussionNodeEdge;
         public DiscussionConnectionNodeEdge ConnectionEdge;
 
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.DiscussionNodeEdge = DiscussionTextOnlyNodeEdge.CreateNodeEdge<DiscussionTextOnlyNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
+            this.DiscussionNodeEdge = AdventureDiscussionTextOnlyNodeEdge.CreateNodeEdge<AdventureDiscussionTextOnlyNodeEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() { this.DiscussionNodeEdge };
         }
 

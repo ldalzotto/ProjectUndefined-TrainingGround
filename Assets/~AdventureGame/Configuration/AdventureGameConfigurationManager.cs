@@ -20,11 +20,6 @@ namespace AdventureGame
             return AdventureGameConfiguration.PointOfInterestConfiguration.ConfigurationInherentData;
         }
 
-        public Dictionary<DiscussionTreeId, DiscussionTree> DiscussionTreeConf()
-        {
-            return AdventureGameConfiguration.DiscussionTreeConfiguration.ConfigurationInherentData;
-        }
-
         public Dictionary<CutsceneId, CutsceneInherentData> CutsceneConf()
         {
             return AdventureGameConfiguration.CutsceneConfiguration.ConfigurationInherentData;

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Editor_DiscussionTreeNodeEditor
 {
     [System.Serializable]
-    public class DiscussionTextOnlyNodeEdge : NodeEdgeProfile
+    public class AdventureDiscussionTextOnlyNodeEdge : NodeEdgeProfile
     {
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() {
             typeof(DiscussionConnectionNodeEdge)

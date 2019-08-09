@@ -26,7 +26,7 @@ namespace AdventureGame
         #endregion
 
         [NonSerialized]
-        private DiscussionWindowManager PlayedDiscussionWindowManager;
+        private AbstractDiscussionWindowManager PlayedDiscussionWindowManager;
 
 
 #if UNITY_EDITOR

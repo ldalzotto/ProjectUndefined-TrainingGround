@@ -1,5 +1,4 @@
-﻿using AdventureGame;
-using CoreGame;
+﻿using CoreGame;
 using Experimental.Editor_NodeEditor;
 using GameConfigurationID;
 using System;
@@ -17,8 +16,8 @@ namespace Editor_DiscussionTreeNodeEditor
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>()
         {
             {"DiscussionStartNode", typeof(DiscussionStartNodeProfile) },
-            {"TextOnlyNode", typeof(DiscussionTextOnlyNodeProfile)},
-            {"DiscussionChoiceNode", typeof(DiscussionChoiceNodeProfile) },
+            {"TextOnlyNode", typeof(AdventureDiscussionTextOnlyNodeProfile)},
+            {"DiscussionChoiceNode", typeof(AdventureDiscussionChoiceNodeProfile) },
             {"DiscussionChoiceTextNode", typeof(DiscussionChoiceTextNodeProfile) }
         };
 
@@ -42,20 +41,20 @@ namespace Editor_DiscussionTreeNodeEditor
 
                 foreach (var editorNode in allNodes)
                 {
-                    if (editorNode.GetType() == typeof(DiscussionTextOnlyNodeProfile))
+                    if (editorNode.GetType() == typeof(AdventureDiscussionTextOnlyNodeProfile))
                     {
-                        var discussionTextOnlyNodeProfile = (DiscussionTextOnlyNodeProfile)editorNode;
+                        var discussionTextOnlyNodeProfile = (AdventureDiscussionTextOnlyNodeProfile)editorNode;
                         discussionTree.DiscussionNodes.Add(discussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId,
-                            new DiscussionTextOnlyNode(discussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId, discussionTextOnlyNodeProfile.DiscussionNodeEdge.DisplayedText,
-                                 discussionTextOnlyNodeProfile.DiscussionNodeEdge.Talker, discussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID())
+                            new AdventureDiscussionTextOnlyNode(discussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId, discussionTextOnlyNodeProfile.DiscussionNodeEdge.DisplayedText,
+                                  discussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), discussionTextOnlyNodeProfile.DiscussionNodeEdge.Talker)
                             );
                     }
-                    else if (editorNode.GetType() == typeof(DiscussionChoiceNodeProfile))
+                    else if (editorNode.GetType() == typeof(AdventureDiscussionChoiceNodeProfile))
                     {
-                        var discussionChoiceNodeProfile = (DiscussionChoiceNodeProfile)editorNode;
+                        var discussionChoiceNodeProfile = (AdventureDiscussionChoiceNodeProfile)editorNode;
                         discussionTree.DiscussionNodes.Add(discussionChoiceNodeProfile.DiscussionChoiceInputEdge.DiscussionNodeId,
-                            new DiscussionChoiceNode(discussionChoiceNodeProfile.DiscussionChoiceInputEdge.DiscussionNodeId, discussionChoiceNodeProfile.DiscussionChoiceInputEdge.Talker,
-                               discussionChoiceNodeProfile.ChoicesEdge.ConvertAll(choice => choice.GetConnectedDiscussionNodeId())));
+                            new AdventureDiscussionChoiceNode(discussionChoiceNodeProfile.DiscussionChoiceInputEdge.DiscussionNodeId, discussionChoiceNodeProfile.ChoicesEdge.ConvertAll(choice => choice.GetConnectedDiscussionNodeId()),
+                              discussionChoiceNodeProfile.DiscussionChoiceInputEdge.Talker));
                     }
                     else if (editorNode.GetType() == typeof(DiscussionChoiceTextNodeProfile))
                     {

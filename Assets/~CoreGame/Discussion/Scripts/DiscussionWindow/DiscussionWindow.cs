@@ -59,7 +59,7 @@ namespace CoreGame
         }
 
         #region External Events
-        public void OnDiscussionWindowAwake(DiscussionTextOnlyNode discussionNode, Transform position, ref DiscussionTextRepertoire DiscussionTextRepertoire)
+        public void OnDiscussionWindowAwake(AbstractDiscussionTextOnlyNode discussionNode, Transform position, ref DiscussionTextRepertoire DiscussionTextRepertoire)
         {
             DiscussionWindowAnimationManager.PlayEnterAnimation();
             DiscussionWindowPositioner.SetTransformToFollow(position);

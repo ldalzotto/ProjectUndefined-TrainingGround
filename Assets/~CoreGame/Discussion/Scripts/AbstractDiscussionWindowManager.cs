@@ -1,20 +1,17 @@
-﻿using CoreGame;
-using GameConfigurationID;
+﻿using GameConfigurationID;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AdventureGame
+namespace CoreGame
 {
-
-    public class DiscussionWindowManager
+    public abstract class AbstractDiscussionWindowManager
     {
         #region External Dependencies
         private Canvas GameCanvas;
         private CoreStaticConfiguration CoreStaticConfiguration;
-        private AdventureGameConfigurationManager AdventureGameConfigurationManager;
-        private PointOfInterestManager PointOfInterestManager;
+        private CoreConfigurationManager CoreConfigurationManager;
         #endregion
 
         private DiscussionTreeId discussionTreeID;
@@ -34,26 +31,28 @@ namespace AdventureGame
         public DiscussionTreeId DiscussionTreeID { get => discussionTreeID; }
         #endregion
 
-        public DiscussionWindowManager(DiscussionTreeId DiscussionTreeId)
+        protected void BaseInit(DiscussionTreeId DiscussionTreeId)
         {
             #region External Dependencies
             GameCanvas = GameObject.FindObjectOfType<Canvas>();
             this.CoreStaticConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration;
-            this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
-            this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
 
             this.discussionTreeID = DiscussionTreeId;
             DicussionInputManager = new DicussionInputManager(GameInputManager);
-            
+
             this.OpenedDiscussion = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
-            this.DiscussionTreePlayer = new DiscussionTreePlayer(this.AdventureGameConfigurationManager.DiscussionTreeConf()[DiscussionTreeId],
+            this.DiscussionTreePlayer = new DiscussionTreePlayer(this.CoreConfigurationManager.DiscussionConfiguration()[DiscussionTreeId],
                             this.OnDiscussionTextWindowAwake,
                             this.OnChoicePopupAwake);
 
             this.DiscussionTreePlayer.StartDiscussion();
         }
+
+        protected abstract Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode);
 
         public void Tick(float d, out Nullable<DiscussionNodeId> discussionChoiceMade)
         {
@@ -111,12 +110,12 @@ namespace AdventureGame
         }
         #endregion
 
-        private void OnDiscussionTextWindowAwake(DiscussionTextOnlyNode discussionNode)
+        private void OnDiscussionTextWindowAwake(AbstractDiscussionTextOnlyNode discussionNode)
         {
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies();
-            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, this.PointOfInterestManager.GetActivePointOfInterest(discussionNode.Talker).transform, ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
+            OpenedDiscussion.OnDiscussionWindowAwake(discussionNode, this.GetAbstractTextOnlyNodePosition(discussionNode), ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
         }
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)

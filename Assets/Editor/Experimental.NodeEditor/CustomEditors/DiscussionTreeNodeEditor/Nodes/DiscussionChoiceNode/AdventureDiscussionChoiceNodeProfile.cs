@@ -6,14 +6,14 @@ using UnityEngine;
 namespace Editor_DiscussionTreeNodeEditor
 {
     [System.Serializable]
-    public class DiscussionChoiceNodeProfile : NodeProfile
+    public class AdventureDiscussionChoiceNodeProfile : NodeProfile
     {
-        public DiscussionChoiceInputEdge DiscussionChoiceInputEdge;
+        public AdventureDiscussionChoiceInputEdge DiscussionChoiceInputEdge;
         public List<DiscussionChoiceToTextEdge> ChoicesEdge;
 
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.DiscussionChoiceInputEdge = DiscussionChoiceInputEdge.CreateNodeEdge<DiscussionChoiceInputEdge>(this, NodeEdgeType.SINGLE_INPUT);
+            this.DiscussionChoiceInputEdge = AdventureDiscussionChoiceInputEdge.CreateNodeEdge<AdventureDiscussionChoiceInputEdge>(this, NodeEdgeType.SINGLE_INPUT);
             return new List<NodeEdgeProfile>() { this.DiscussionChoiceInputEdge };
         }
 

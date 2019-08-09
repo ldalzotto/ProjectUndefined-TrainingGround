@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Editor_DiscussionTreeNodeEditor
 {
     [System.Serializable]
-    public class DiscussionChoiceInputEdge : NodeEdgeProfile
+    public class AdventureDiscussionChoiceInputEdge : NodeEdgeProfile
     {
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() { };
 

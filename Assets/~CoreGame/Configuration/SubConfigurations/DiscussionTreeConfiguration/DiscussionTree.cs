@@ -12,9 +12,9 @@ namespace CoreGame
         public DiscussionNodeId DiscussionRootNode;
         public Dictionary<DiscussionNodeId, DiscussionTreeNode> DiscussionNodes;
 
-        public DiscussionTextOnlyNode GetRootNode()
+        public AbstractDiscussionTextOnlyNode GetRootNode()
         {
-            return (DiscussionTextOnlyNode)this.DiscussionNodes[DiscussionRootNode];
+            return (AbstractDiscussionTextOnlyNode)this.DiscussionNodes[DiscussionRootNode];
         }
     }
 
@@ -25,26 +25,21 @@ namespace CoreGame
         protected DiscussionNodeId discussionNodeId;
     }
 
-    [System.Serializable]
-    public class DiscussionTextOnlyNode : DiscussionTreeNode
+    public abstract class AbstractDiscussionTextOnlyNode : DiscussionTreeNode
     {
         [SerializeField]
         private DisucssionSentenceTextId displayedText;
         [SerializeField]
-        private PointOfInterestId talker;
-        [SerializeField]
         private DiscussionNodeId nextNode;
 
-        public DiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, PointOfInterestId talker, DiscussionNodeId nextNode)
+        protected AbstractDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, DiscussionNodeId nextNode)
         {
             this.discussionNodeId = DiscussionNodeId;
             this.displayedText = displayedText;
-            this.talker = talker;
             this.nextNode = nextNode;
         }
 
         public DisucssionSentenceTextId DisplayedText { get => displayedText; }
-        public PointOfInterestId Talker { get => talker; }
         public DiscussionNodeId NextNode { get => nextNode; }
 
         public DiscussionTreeNode GetNextNode(ref DiscussionTree discussionTreeRef)
@@ -54,24 +49,33 @@ namespace CoreGame
     }
 
     [System.Serializable]
-    public class DiscussionChoiceNode : DiscussionTreeNode
+    public class AdventureDiscussionTextOnlyNode : AbstractDiscussionTextOnlyNode
     {
         [SerializeField]
         private PointOfInterestId talker;
+
+        public AdventureDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, DiscussionNodeId nextNode, PointOfInterestId talker) : base(DiscussionNodeId, displayedText, nextNode)
+        {
+            this.talker = talker;
+        }
+
+        public PointOfInterestId Talker { get => talker;  }
+    }
+
+    public abstract class AbstractDiscussionChoiceNode : DiscussionTreeNode
+    {
         [SerializeField]
         private List<DiscussionNodeId> discussionChoices;
 
-        public DiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, PointOfInterestId talker, List<DiscussionNodeId> discussionChoices)
+        protected AbstractDiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, List<DiscussionNodeId> discussionChoices)
         {
             this.discussionNodeId = DiscussionTreeNodeId;
-            this.talker = talker;
             this.discussionChoices = discussionChoices;
         }
 
-        public PointOfInterestId Talker { get => talker; }
         public List<DiscussionNodeId> DiscussionChoices { get => discussionChoices; }
 
-        public DiscussionTreeNode GetNextNode(DiscussionNodeId selectedChoice,ref DiscussionTree discussionTreeRef)
+        public DiscussionTreeNode GetNextNode(DiscussionNodeId selectedChoice, ref DiscussionTree discussionTreeRef)
         {
             foreach (var discussionChoice in discussionChoices)
             {
@@ -82,14 +86,28 @@ namespace CoreGame
                     {
                         return ((DiscussionChoice)selectedNode).GetNextNode(ref discussionTreeRef);
                     }
-                    else if (selectedNode.GetType() == typeof(DiscussionTextOnlyNode))
+                    else if (selectedNode.GetType().IsSubclassOf(typeof(AbstractDiscussionTextOnlyNode)))
                     {
-                        return ((DiscussionTextOnlyNode)selectedNode).GetNextNode(ref discussionTreeRef);
+                        return ((AbstractDiscussionTextOnlyNode)selectedNode).GetNextNode(ref discussionTreeRef);
                     }
                 }
             }
             return null;
         }
+    }
+
+    [System.Serializable]
+    public class AdventureDiscussionChoiceNode : AbstractDiscussionChoiceNode
+    {
+        [SerializeField]
+        private PointOfInterestId talker;
+
+        public AdventureDiscussionChoiceNode(DiscussionNodeId DiscussionTreeNodeId, List<DiscussionNodeId> discussionChoices, PointOfInterestId talker) : base(DiscussionTreeNodeId, discussionChoices)
+        {
+            this.talker = talker;
+        }
+
+        public PointOfInterestId Talker { get => talker; }
     }
 
     [System.Serializable]
