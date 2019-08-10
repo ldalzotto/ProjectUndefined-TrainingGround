@@ -1,7 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -115,13 +114,17 @@ namespace AdventureGame
             ItemReceivedPopup.Tick(d);
             if (gameInputManager.CurrentInput.ActionButtonD())
             {
-                ItemReceivedPopup.StartCoroutine(ExitPopup());
+                this.ExitPopup();
             }
         }
 
-        private IEnumerator ExitPopup()
+        private void ExitPopup()
         {
-            yield return ItemReceivedPopup.StartCoroutine(ItemReceivedPopup.OnClose());
+            this.ItemReceivedPopup.PlayCloseAnimation();
+        }
+
+        private void OnPopupClosed()
+        {
             isOpened = false;
             Debug.Log("Destroy : " + ItemReceivedPopup.name);
             MonoBehaviour.Destroy(ItemReceivedPopup.gameObject);
@@ -130,7 +133,7 @@ namespace AdventureGame
         public void ResetState()
         {
             ItemReceivedPopup = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, GameCanvas.transform);
-            ItemReceivedPopup.Init(involvedItem);
+            ItemReceivedPopup.Init(involvedItem, this.OnPopupClosed);
             isOpened = true;
         }
     }

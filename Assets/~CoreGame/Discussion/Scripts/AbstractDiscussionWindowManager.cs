@@ -63,6 +63,7 @@ namespace CoreGame
             DicussionInputManager = new DicussionInputManager(GameInputManager);
 
             this.OpenedDiscussion = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.DiscussionUIPrefab, GameCanvas.transform, false);
+
             this.DiscussionTreePlayer = new DiscussionTreePlayer(this.CoreConfigurationManager.DiscussionConfiguration()[DiscussionTreeId],
                             this.OnDiscussionTextWindowAwake,
                             this.OnChoicePopupAwake);

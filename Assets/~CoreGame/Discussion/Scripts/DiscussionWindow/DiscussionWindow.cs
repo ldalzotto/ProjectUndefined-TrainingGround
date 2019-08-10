@@ -436,8 +436,12 @@ namespace CoreGame
     [System.Serializable]
     public class DiscussionWindowDimensionsComponent
     {
-        public float Margin;
+        public float MarginLeft;
+        public float MarginRight;
+        public float MarginUp;
+        public float MarginDown;
         public float MaxWindowWidth;
+        public float MinWindowHeight;
     }
 
     public interface IDiscussionWindowDimensionsComputation
@@ -466,19 +470,18 @@ namespace CoreGame
             var textAreaTransform = (RectTransform)textAreaObject.transform;
             this.textAreaText = textAreaObject.GetComponent<Text>();
             this.discussionWindowTransform = discussionWindowTransform;
-            var margin = discussionWindowDimensionsComponent.Margin;
-            textAreaTransform.offsetMin = new Vector2(margin, margin);
-            textAreaTransform.offsetMax = new Vector2(-margin, -margin);
+            textAreaTransform.offsetMin = new Vector2(discussionWindowDimensionsComponent.MarginLeft, discussionWindowDimensionsComponent.MarginDown);
+            textAreaTransform.offsetMax = new Vector2(-discussionWindowDimensionsComponent.MarginRight, -discussionWindowDimensionsComponent.MarginUp);
         }
 
         public float GetCurrentWindowHeight()
         {
-            return textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.Margin * 2);
+            return Mathf.Max(DiscussionWindowDimensionsComponent.MinWindowHeight, textAreaText.preferredHeight + (DiscussionWindowDimensionsComponent.MarginDown + DiscussionWindowDimensionsComponent.MarginUp));
         }
 
         public float GetPreferredWindowWidthClamped()
         {
-            return Mathf.Min(textAreaText.preferredWidth + (DiscussionWindowDimensionsComponent.Margin * 2), DiscussionWindowDimensionsComponent.MaxWindowWidth);
+            return Mathf.Min(textAreaText.preferredWidth + (DiscussionWindowDimensionsComponent.MarginLeft + DiscussionWindowDimensionsComponent.MarginRight), DiscussionWindowDimensionsComponent.MaxWindowWidth);
         }
 
         public float GetSingleLineHeightWithLineSpace()
@@ -493,7 +496,7 @@ namespace CoreGame
 
         public float GetWindowHeight(int lineNb)
         {
-            return ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.Margin * 2);
+            return Mathf.Max(DiscussionWindowDimensionsComponent.MinWindowHeight, ((textAreaText.font.lineHeight + textAreaText.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.MarginDown + DiscussionWindowDimensionsComponent.MarginUp));
         }
     }
 
