@@ -72,6 +72,7 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\CutscenePositionMarkerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DisarmObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionNodeId.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionPositionMarkerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DiscussionTreeId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\DisucssionSentenceTextId.cs" />

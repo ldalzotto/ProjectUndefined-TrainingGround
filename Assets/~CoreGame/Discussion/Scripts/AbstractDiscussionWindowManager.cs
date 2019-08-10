@@ -11,6 +11,7 @@ namespace CoreGame
         private Canvas GameCanvas;
         private CoreStaticConfiguration CoreStaticConfiguration;
         private CoreConfigurationManager CoreConfigurationManager;
+        protected DiscussionPositionManager DiscussionPositionManager;
         #endregion
 
         #region State 
@@ -52,6 +53,7 @@ namespace CoreGame
             GameCanvas = GameObject.FindObjectOfType<Canvas>();
             this.CoreStaticConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration;
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            this.DiscussionPositionManager = GameObject.FindObjectOfType<DiscussionPositionManager>();
 
             var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
@@ -68,7 +70,14 @@ namespace CoreGame
             this.DiscussionTreePlayer.StartDiscussion();
         }
 
-        protected abstract Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode);
+        protected virtual Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode)
+        {
+            if (abstractDiscussionTextOnlyNode.GetType() == typeof(FixedScreenPositionDiscussionTextOnlyNode))
+            {
+                return this.DiscussionPositionManager.GetDiscussionPosition(((FixedScreenPositionDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).DiscussionScreenPosition).transform;
+            }
+            return null;
+        }
 
         public void Tick(float d, out Nullable<DiscussionNodeId> discussionChoiceMade)
         {

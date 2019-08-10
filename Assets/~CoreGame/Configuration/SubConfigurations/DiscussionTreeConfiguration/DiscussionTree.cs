@@ -62,6 +62,20 @@ namespace CoreGame
         public PointOfInterestId Talker { get => talker;  }
     }
 
+    [System.Serializable]
+    public class FixedScreenPositionDiscussionTextOnlyNode : AbstractDiscussionTextOnlyNode
+    {
+        [SerializeField]
+        private DiscussionPositionMarkerID discussionScreenPosition;
+
+        public FixedScreenPositionDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, DiscussionNodeId nextNode, DiscussionPositionMarkerID discussionScreenPosition) : base(DiscussionNodeId, displayedText, nextNode)
+        {
+            this.discussionScreenPosition = discussionScreenPosition;
+        }
+
+        public DiscussionPositionMarkerID DiscussionScreenPosition { get => discussionScreenPosition; }
+    }
+
     public abstract class AbstractDiscussionChoiceNode : DiscussionTreeNode
     {
         [SerializeField]

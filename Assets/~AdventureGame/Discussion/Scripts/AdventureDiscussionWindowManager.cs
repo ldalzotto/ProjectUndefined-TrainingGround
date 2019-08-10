@@ -17,11 +17,15 @@ namespace AdventureGame
 
         protected override Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode)
         {
-            if (abstractDiscussionTextOnlyNode.GetType() == typeof(AdventureDiscussionTextOnlyNode))
+            var position = base.GetAbstractTextOnlyNodePosition(abstractDiscussionTextOnlyNode);
+            if (position == null)
             {
-                return this.PointOfInterestManager.GetActivePointOfInterest(((AdventureDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).Talker).transform;
+                if (abstractDiscussionTextOnlyNode.GetType() == typeof(AdventureDiscussionTextOnlyNode))
+                {
+                    return this.PointOfInterestManager.GetActivePointOfInterest(((AdventureDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).Talker).transform;
+                }
             }
-            return null;
+            return position;
         }
     }
 

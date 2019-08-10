@@ -138,6 +138,9 @@
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionManager.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionMarker.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionsType.cs" />
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
     <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\AnimationPlayerHelper.cs" />

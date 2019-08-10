@@ -17,6 +17,7 @@ namespace Editor_DiscussionTreeNodeEditor
         {
             {"DiscussionStartNode", typeof(DiscussionStartNodeProfile) },
             {"TextOnlyNode", typeof(AdventureDiscussionTextOnlyNodeProfile)},
+            {"FixedPositionTextOnlyNode", typeof(FixedScreenPositionDiscussionTextOnlyNodeProfile) },
             {"DiscussionChoiceNode", typeof(AdventureDiscussionChoiceNodeProfile) },
             {"DiscussionChoiceTextNode", typeof(DiscussionChoiceTextNodeProfile) }
         };
@@ -47,6 +48,14 @@ namespace Editor_DiscussionTreeNodeEditor
                         discussionTree.DiscussionNodes.Add(discussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId,
                             new AdventureDiscussionTextOnlyNode(discussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId, discussionTextOnlyNodeProfile.DiscussionNodeEdge.DisplayedText,
                                   discussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), discussionTextOnlyNodeProfile.DiscussionNodeEdge.Talker)
+                            );
+                    }
+                    else if (editorNode.GetType() == typeof(FixedScreenPositionDiscussionTextOnlyNodeProfile))
+                    {
+                        var fixedScreenPositionTextOnlyProfile = (FixedScreenPositionDiscussionTextOnlyNodeProfile)editorNode;
+                        discussionTree.DiscussionNodes.Add(fixedScreenPositionTextOnlyProfile.DiscussionNodeEdge.DiscussionNodeId,
+                            new FixedScreenPositionDiscussionTextOnlyNode(fixedScreenPositionTextOnlyProfile.DiscussionNodeEdge.DiscussionNodeId, fixedScreenPositionTextOnlyProfile.DiscussionNodeEdge.DisplayedText,
+                                  fixedScreenPositionTextOnlyProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), fixedScreenPositionTextOnlyProfile.DiscussionNodeEdge.DiscussionPositionMarkerID)
                             );
                     }
                     else if (editorNode.GetType() == typeof(AdventureDiscussionChoiceNodeProfile))

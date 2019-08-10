@@ -198,6 +198,8 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\AdventureDiscussionTextOnlyNode\AdventureDiscussionTextOnlyNodeEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\AdventureDiscussionTextOnlyNode\AdventureDiscussionTextOnlyNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\DiscussionConnectionNodeEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\TextOnly\AbstractDiscussionTextOnlyNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\Common\TextOnly\AbstractTextOnlyNodeEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\AdventureDiscussionChoiceInputEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\AdventureDiscussionChoiceNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\DiscussionChoiceToTextEdge.cs" />
@@ -205,6 +207,8 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionChoiceNode\DisucssionChoiceText\DiscussionChoiceTextNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionStartNode\DiscussionStartEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\DiscussionStartNode\DiscussionStartNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\FixedScreenPositionTextOnlyNode\FixedScreenPositionDiscussionTextOnlyNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\DiscussionTreeNodeEditor\Nodes\FixedScreenPositionTextOnlyNode\FixedScreenPositionTextOnlyNodeEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\PuzzleCutsceneNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionEdgeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Abstract\TimelineActionsNode\TimelineActionNodeProfile.cs" />

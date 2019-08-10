@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,7 +59,7 @@ namespace CoreGame
             {
                 this.OnExitAnimationFinished.Invoke();
             }
-            
+
         }
 
         public void OnGUIDraw()
@@ -387,7 +386,14 @@ namespace CoreGame
         {
             if (worldTransformToFollow != null)
             {
-                this.discussionTransform.position = camera.WorldToScreenPoint(worldTransformToFollow.position);
+                if (worldTransformToFollow.GetType() == typeof(RectTransform))
+                {
+                    this.discussionTransform.position = worldTransformToFollow.position;
+                }
+                else
+                {
+                    this.discussionTransform.position = camera.WorldToScreenPoint(worldTransformToFollow.position);
+                }
             }
         }
     }

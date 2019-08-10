@@ -10,14 +10,13 @@ using UnityEngine;
 namespace Editor_DiscussionTreeNodeEditor
 {
     [System.Serializable]
-    public class AdventureDiscussionTextOnlyNodeEdge : AbstractTextOnlyNodeEdge
+    public class FixedScreenPositionTextOnlyNodeEdge : AbstractTextOnlyNodeEdge
     {
-        
-        public PointOfInterestId Talker;
+        public DiscussionPositionMarkerID DiscussionPositionMarkerID;
 
         protected override void AdditionalGUI()
         {
-            this.Talker = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.Talker);
+            this.DiscussionPositionMarkerID = (DiscussionPositionMarkerID)NodeEditorGUILayout.EnumField("Position : ", string.Empty, this.DiscussionPositionMarkerID);
         }
     }
 }

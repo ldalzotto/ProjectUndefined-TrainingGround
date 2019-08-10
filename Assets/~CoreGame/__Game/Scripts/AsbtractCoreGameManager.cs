@@ -35,6 +35,7 @@ namespace CoreGame
             GameObject.FindObjectOfType<APointOfInterestEventManager>().Init();
             GameObject.FindObjectOfType<LevelManager>().Init(levelType);
             this.LevelChunkFXTransitionManager.Init();
+            GameObject.FindObjectOfType<DiscussionPositionManager>().Init();
 
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
         }

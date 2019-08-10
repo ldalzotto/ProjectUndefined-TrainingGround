@@ -9,12 +9,13 @@ namespace Editor_DiscussionTreeNodeEditor
     {
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>()
         {
-            typeof(AdventureDiscussionTextOnlyNodeEdge)
+            typeof(AdventureDiscussionTextOnlyNodeEdge),
+            typeof(FixedScreenPositionTextOnlyNodeEdge)
         };
 
-        public AdventureDiscussionTextOnlyNodeEdge GetLinkedEdge()
+        public AbstractTextOnlyNodeEdge GetLinkedEdge()
         {
-            return this.ConnectedNodeEdges[0] as AdventureDiscussionTextOnlyNodeEdge;
+            return this.ConnectedNodeEdges[0] as AbstractTextOnlyNodeEdge;
         }
     }
 }

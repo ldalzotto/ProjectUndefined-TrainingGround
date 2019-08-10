@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Editor_DiscussionTreeNodeEditor
 {
     [System.Serializable]
-    public class AdventureDiscussionTextOnlyNodeProfile : AbstractDiscussionTextOnlyNodeProfile<AdventureDiscussionTextOnlyNodeEdge>
+    public class FixedScreenPositionDiscussionTextOnlyNodeProfile : AbstractDiscussionTextOnlyNodeProfile<FixedScreenPositionTextOnlyNodeEdge>
     {
     }
 }
