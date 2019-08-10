@@ -250,6 +250,8 @@ namespace CoreGame
 
     public class DiscussionWriterManager
     {
+        private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
+
         private DiscussionWriterComponent DiscussionWriterComponent;
         private Text textAreaText;
         private RectTransform discussionWindowTransform;
@@ -306,7 +308,7 @@ namespace CoreGame
 
         public void OnDiscussionTextStartWriting(string truncatedTargetText)
         {
-            var sanitizedTruncatedTargetText = truncatedTargetText.Trim(new char[] { ' ' });
+            var sanitizedTruncatedTargetText = truncatedTargetText.Trim(this.TrimmedCharForSanitaze);
 
             var initialDiscussionWindowAreaSize = this.discussionWindowTransform.sizeDelta;
             this.discussionWindowTransform.sizeDelta = new Vector2(this.discussionWindowTransform.sizeDelta.x, this.discussionWindowDimensionsComputation.GetMaxWindowHeight());
@@ -320,8 +322,10 @@ namespace CoreGame
                 int endIndex = (i == this.textAreaText.cachedTextGenerator.lines.Count - 1) ? this.textAreaText.text.Length
                     : this.textAreaText.cachedTextGenerator.lines[i + 1].startCharIdx;
                 int length = endIndex - startIndex;
-                finalRenderedLines.Add(this.textAreaText.text.Substring(startIndex, length));
+                finalRenderedLines.Add(this.textAreaText.text.Substring(startIndex, length).Trim(this.TrimmedCharForSanitaze));
             }
+
+
 
             this.textAreaText.text = "";
             this.discussionWindowTransform.sizeDelta = initialDiscussionWindowAreaSize;
