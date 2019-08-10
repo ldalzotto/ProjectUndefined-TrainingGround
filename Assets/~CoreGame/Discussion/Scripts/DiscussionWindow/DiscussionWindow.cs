@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,8 +20,8 @@ namespace CoreGame
         public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
         public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
 
-        private TextOnlyDiscussionWindowDimensionsManager TextDiscussionWindowDimensionsManager;
         private DiscussionWindowDimensionsManager DiscussionWindowDimensionsManager;
+        private DiscussionWindowDimensionsComputation DiscussionWindowDimensionsComputation;
         private DiscussionWriterManager DiscussionWriterManager;
         private DiscussionWorkflowManager DiscussionWorkflowManager;
 
@@ -38,22 +39,26 @@ namespace CoreGame
             var discussionAnimator = GetComponent<Animator>();
 
             this.OnExitAnimationFinished = OnExitAnimationFinished;
-            DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent, textAreaObject, (RectTransform)discussionWindowObject.transform);
+            DiscussionWindowDimensionsComputation = new DiscussionWindowDimensionsComputation(DiscussionWindowDimensionsComponent, textAreaObject, (RectTransform)discussionWindowObject.transform, this.TextOnlyDiscussionWindowDimensionsComponent);
             DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
             DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, (RectTransform)discussionWindowObject.transform);
             DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
 
-            TextDiscussionWindowDimensionsManager = new TextOnlyDiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionWindowDimensionsManager);
-            DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, textAreaObject.GetComponent<Text>());
+            DiscussionWindowDimensionsManager = new DiscussionWindowDimensionsManager(this, textAreaObject, discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent, DiscussionWindowDimensionsComputation);
+            DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, textAreaObject.GetComponent<Text>(), (RectTransform)discussionWindowObject.transform, DiscussionWindowDimensionsComputation);
             DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
         }
 
         public void Tick(float d)
         {
-            DiscussionWindowDimensionsTransitionManager.Tick(d);
-            DiscussionWindowPositioner.Tick();
-            TextDiscussionWindowDimensionsManager.Tick(d);
+            //We write first
             DiscussionWriterManager.Tick(d);
+
+            DiscussionWindowPositioner.Tick();
+            DiscussionWindowDimensionsManager.Tick(d);
+
+            //Window dimension transitions if detected
+            DiscussionWindowDimensionsTransitionManager.Tick(d);
 
             if (DiscussionWindowAnimationManager.Tick())
             {
@@ -64,15 +69,15 @@ namespace CoreGame
 
         public void OnGUIDraw()
         {
-            TextDiscussionWindowDimensionsManager.OnGUIDraw();
+            DiscussionWindowDimensionsManager.OnGUIDraw();
         }
 
         #region External Events
-        public void OnDiscussionWindowAwake(AbstractDiscussionTextOnlyNode discussionNode, Transform position, ref DiscussionTextRepertoire DiscussionTextRepertoire)
+        public void OnDiscussionWindowAwake(string fullText, Transform position)
         {
             DiscussionWindowAnimationManager.PlayEnterAnimation();
             DiscussionWindowPositioner.SetTransformToFollow(position);
-            InitializeDiscussionWindow(DiscussionTextRepertoire.SentencesText[discussionNode.DisplayedText]);
+            InitializeDiscussionWindow(fullText);
         }
 
         public void OnDiscussionWindowSleep()
@@ -84,14 +89,14 @@ namespace CoreGame
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
             fullTextContent = Regex.Unescape(fullTextContent);
-            TextDiscussionWindowDimensionsManager.InitializeDiscussionWindow(fullTextContent);
-            var truncatedText = TextDiscussionWindowDimensionsManager.ComputeTrucatedText(fullTextContent);
+            DiscussionWindowDimensionsManager.InitializeDiscussionWindow(fullTextContent);
+            var truncatedText = DiscussionWindowDimensionsManager.ComputeTrucatedText(fullTextContent);
             DiscussionWriterManager.OnDiscussionTextStartWriting(truncatedText);
         }
 
         public void ProcessDiscussionContinue()
         {
-            InitializeDiscussionWindow(TextDiscussionWindowDimensionsManager.OverlappedOnlyText);
+            InitializeDiscussionWindow(DiscussionWindowDimensionsManager.OverlappedOnlyText);
         }
 
         public void PlayDiscussionCloseAnimation()
@@ -108,14 +113,12 @@ namespace CoreGame
         {
             DiscussionWindowDimensionsTransitionManager.OnWidthChange(newWidth);
         }
-
-
         #endregion
 
         #region Internal Events
         public void OnTextFinishedWriting()
         {
-            DiscussionWorkflowManager.OnTextFinishedWriting(TextDiscussionWindowDimensionsManager.OverlappedOnlyText);
+            DiscussionWorkflowManager.OnTextFinishedWriting(DiscussionWindowDimensionsManager.OverlappedOnlyText);
         }
 
         #endregion
@@ -147,14 +150,14 @@ namespace CoreGame
         public int MaxLineDisplayed;
     }
 
-    class TextOnlyDiscussionWindowDimensionsManager
+    class DiscussionWindowDimensionsManager
     {
         private DiscussionWindow DiscussionBaseReference;
         private TextOnlyDiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
         private Text textAreaText;
         private RectTransform discussionWindowTransform;
 
-        private DiscussionWindowDimensionsComputation discussionWindowDimensionsComputation;
+        private IDiscussionWindowDimensionsComputation discussionWindowDimensionsComputation;
         private int displayedLineNB;
         private int nonOverlappedLineNb;
         private TextGenerator cachedTextGenerator;
@@ -163,9 +166,9 @@ namespace CoreGame
 
         public string OverlappedOnlyText { get => overlappedOnlyText; }
 
-        public TextOnlyDiscussionWindowDimensionsManager(DiscussionWindow DiscussionBaseReference, GameObject textAreaObject,
+        public DiscussionWindowDimensionsManager(DiscussionWindow DiscussionBaseReference, GameObject textAreaObject,
                         GameObject discussionWindowObject, TextOnlyDiscussionWindowDimensionsComponent textOnlyDiscussionWindowDimensionsComponent,
-                        DiscussionWindowDimensionsComputation discussionWindowDimensionsComputation)
+                        IDiscussionWindowDimensionsComputation discussionWindowDimensionsComputation)
         {
             this.displayedLineNB = 1;
             this.DiscussionBaseReference = DiscussionBaseReference;
@@ -202,31 +205,35 @@ namespace CoreGame
         public void InitializeDiscussionWindow(string fullTextContent)
         {
             this.displayedLineNB = 1;
-            textAreaText.text = fullTextContent;
-            Canvas.ForceUpdateCanvases();
+
+            this.ForceUpdateTextCachedTextGenerator(fullTextContent);
             DiscussionBaseReference.OnHeightChange(discussionWindowDimensionsComputation.GetWindowHeight(this.displayedLineNB));
             DiscussionBaseReference.OnWidthChange(discussionWindowDimensionsComputation.GetPreferredWindowWidthClamped());
+
             CalculateNonOverlappedLineNb();
-            textAreaText.text = "";
-            Canvas.ForceUpdateCanvases();
+            this.ForceUpdateTextCachedTextGenerator("");
         }
 
         public string ComputeTrucatedText(string fullTextContent)
         {
             var initialSizeDelta = discussionWindowTransform.sizeDelta;
 
-            textAreaText.text = fullTextContent;
-            discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, discussionWindowDimensionsComputation.GetWindowHeight(DiscussionWindowDimensionsComponent.MaxLineDisplayed));
-            Canvas.ForceUpdateCanvases();
+            discussionWindowTransform.sizeDelta = new Vector2(discussionWindowTransform.sizeDelta.x, discussionWindowDimensionsComputation.GetMaxWindowHeight());
+            this.ForceUpdateTextCachedTextGenerator(fullTextContent);
 
             var truncatedText = textAreaText.text.Substring(0, textAreaText.cachedTextGenerator.characterCountVisible);
             overlappedOnlyText = textAreaText.text.Substring(textAreaText.cachedTextGenerator.characterCountVisible, textAreaText.text.Length - textAreaText.cachedTextGenerator.characterCountVisible);
 
-            textAreaText.text = "";
             discussionWindowTransform.sizeDelta = initialSizeDelta;
-            Canvas.ForceUpdateCanvases();
+            this.ForceUpdateTextCachedTextGenerator("");
 
             return truncatedText;
+        }
+
+        private void ForceUpdateTextCachedTextGenerator(string textContent)
+        {
+            textAreaText.text = textContent;
+            Canvas.ForceUpdateCanvases();
         }
     }
 
@@ -245,6 +252,8 @@ namespace CoreGame
     {
         private DiscussionWriterComponent DiscussionWriterComponent;
         private Text textAreaText;
+        private RectTransform discussionWindowTransform;
+        private IDiscussionWindowDimensionsComputation discussionWindowDimensionsComputation;
 
         private string currentDisplayedText;
         private string truncatedTargetText;
@@ -254,8 +263,10 @@ namespace CoreGame
         public delegate void TextFinishedWritingHanlder();
         public event TextFinishedWritingHanlder OnTextFinishedWriting;
 
-        public DiscussionWriterManager(TextFinishedWritingHanlder TextFinishedWritingHanlder, DiscussionWriterComponent discussionWriterComponent, Text textAreaText)
+        public DiscussionWriterManager(TextFinishedWritingHanlder TextFinishedWritingHanlder, DiscussionWriterComponent discussionWriterComponent, Text textAreaText, RectTransform discussionWindowTransform, IDiscussionWindowDimensionsComputation discussionWindowDimensionsComputation)
         {
+            this.discussionWindowTransform = discussionWindowTransform;
+            this.discussionWindowDimensionsComputation = discussionWindowDimensionsComputation;
             OnTextFinishedWriting += TextFinishedWritingHanlder;
             DiscussionWriterComponent = discussionWriterComponent;
             this.textAreaText = textAreaText;
@@ -295,10 +306,32 @@ namespace CoreGame
 
         public void OnDiscussionTextStartWriting(string truncatedTargetText)
         {
+            var sanitizedTruncatedTargetText = truncatedTargetText.Trim(new char[] { ' ' });
+
+            var initialDiscussionWindowAreaSize = this.discussionWindowTransform.sizeDelta;
+            this.discussionWindowTransform.sizeDelta = new Vector2(this.discussionWindowTransform.sizeDelta.x, this.discussionWindowDimensionsComputation.GetMaxWindowHeight());
+
+            this.textAreaText.text = sanitizedTruncatedTargetText;
+            Canvas.ForceUpdateCanvases();
+            List<string> finalRenderedLines = new List<string>();
+            for (int i = 0; i < this.textAreaText.cachedTextGenerator.lines.Count; i++)
+            {
+                int startIndex = this.textAreaText.cachedTextGenerator.lines[i].startCharIdx;
+                int endIndex = (i == this.textAreaText.cachedTextGenerator.lines.Count - 1) ? this.textAreaText.text.Length
+                    : this.textAreaText.cachedTextGenerator.lines[i + 1].startCharIdx;
+                int length = endIndex - startIndex;
+                finalRenderedLines.Add(this.textAreaText.text.Substring(startIndex, length));
+            }
+
+            this.textAreaText.text = "";
+            this.discussionWindowTransform.sizeDelta = initialDiscussionWindowAreaSize;
+            Canvas.ForceUpdateCanvases();
+
+            this.truncatedTargetText = String.Join("\n", finalRenderedLines.ToArray());
+
             isTextWriting = true;
             timeElapsed = 0f;
             currentDisplayedText = "";
-            this.truncatedTargetText = truncatedTargetText;
         }
     }
     #endregion
@@ -407,24 +440,28 @@ namespace CoreGame
         public float MaxWindowWidth;
     }
 
-    public interface DiscussionWindowDimensionsComputation
+    public interface IDiscussionWindowDimensionsComputation
     {
         float GetPreferredWindowWidthClamped();
         float GetCurrentWindowHeight();
         float GetSingleLineHeightWithLineSpace();
         float GetWindowHeight(int lineNB);
+        float GetMaxWindowHeight();
     }
 
-    class DiscussionWindowDimensionsManager : DiscussionWindowDimensionsComputation
+    class DiscussionWindowDimensionsComputation : IDiscussionWindowDimensionsComputation
     {
         private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
+        private TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
 
         private Text textAreaText;
         private RectTransform discussionWindowTransform;
 
-        public DiscussionWindowDimensionsManager(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject, RectTransform discussionWindowTransform)
+        public DiscussionWindowDimensionsComputation(DiscussionWindowDimensionsComponent discussionWindowDimensionsComponent, GameObject textAreaObject,
+                RectTransform discussionWindowTransform, TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent)
         {
             DiscussionWindowDimensionsComponent = discussionWindowDimensionsComponent;
+            this.TextOnlyDiscussionWindowDimensionsComponent = TextOnlyDiscussionWindowDimensionsComponent;
 
             var textAreaTransform = (RectTransform)textAreaObject.transform;
             this.textAreaText = textAreaObject.GetComponent<Text>();
@@ -447,6 +484,11 @@ namespace CoreGame
         public float GetSingleLineHeightWithLineSpace()
         {
             return (textAreaText.font.lineHeight + textAreaText.lineSpacing);
+        }
+
+        public float GetMaxWindowHeight()
+        {
+            return this.GetWindowHeight(this.TextOnlyDiscussionWindowDimensionsComponent.MaxLineDisplayed);
         }
 
         public float GetWindowHeight(int lineNb)

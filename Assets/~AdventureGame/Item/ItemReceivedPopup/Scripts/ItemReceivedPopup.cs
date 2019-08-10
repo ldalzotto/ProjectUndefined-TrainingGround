@@ -32,7 +32,7 @@ namespace AdventureGame
             #endregion
 
             ItemReceivedPopupDimensionsManager = new ItemReceivedPopupDimensionsManager(ItemReceivedPopupDimensionsComponent, (RectTransform)transform, popupContentTransform);
-            DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, popupText);
+            DiscussionWriterManager = new DiscussionWriterManager(() => { this.OnTextFinishedWriting(); }, DiscussionWriterComponent, popupText, null, null);
             ItemReceivedPopupAnimationManager = new ItemReceivedPopupAnimationManager(GetComponent<Animator>());
            //TODO popupIcon.sprite = ItemResourceResolver.ResolveItemInventoryIcon(involvedItem);
             this.OnDiscussionTextStartWriting(adventureGameConfigurationManager.ItemConf()[involvedItem].ItemReceivedDescriptionText);
@@ -53,6 +53,7 @@ namespace AdventureGame
         #region Internal Events
         public void OnDiscussionTextStartWriting(string text)
         {
+            //TODO -> migrate to discussion ?
             DiscussionWriterManager.OnDiscussionTextStartWriting(text);
         }
         public void OnTextFinishedWriting()
