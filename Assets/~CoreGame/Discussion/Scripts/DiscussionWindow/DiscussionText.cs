@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,9 +10,11 @@ namespace CoreGame
     public class DiscussionText
     {
         private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
+        public const string SpecialCharacterImageTemplate = "#00";
 
         private string initialRawText;
-        private string unescapedInitialRawText;
+        private string transformedInitialRawText;
+        private List<Image> SpecialCharactersImages;
 
         private string overlappedText;
 
@@ -21,10 +24,31 @@ namespace CoreGame
         private DiscussionTextPlayerEngine DiscussionTextPlayerEngine;
 
         public DiscussionText(string initialRawText, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent,
-            TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener)
+            TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
         {
+
             this.initialRawText = initialRawText;
-            this.unescapedInitialRawText = Regex.Unescape(this.initialRawText);
+            this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
+
+            this.SpecialCharactersImages = new List<Image>();
+            var keyCharacterRegex = new Regex("@.*?( |$)");
+            Match regexMatch = null;
+            do
+            {
+                regexMatch = keyCharacterRegex.Match(this.transformedInitialRawText);
+                if (regexMatch.Success)
+                {
+                    var matchValue = regexMatch.Value.Trim(TrimmedCharForSanitaze);
+                    this.transformedInitialRawText = this.transformedInitialRawText.Substring(0, regexMatch.Index)
+                        + SpecialCharacterImageTemplate
+                        + this.transformedInitialRawText.Substring(regexMatch.Index + matchValue.Length, this.transformedInitialRawText.Length - (regexMatch.Index + matchValue.Length));
+
+                    //TODO -> Mapping
+                    var instaciatedImage = MonoBehaviour.Instantiate(PrefabContainer.Instance.InputBaseImage, textAreaText.transform);
+                    instaciatedImage.gameObject.SetActive(false);
+                    this.SpecialCharactersImages.Add(instaciatedImage);
+                }
+            } while (regexMatch.Success);
 
             this.discussionTextWindowDimensions = new DiscussionTextWindowDimensions(DiscussionWindowDimensionsComponent, TextOnlyDiscussionWindowDimensionsComponent);
             this.DiscussionTextPlayerEngine = new DiscussionTextPlayerEngine(TextOnlyDiscussionWindowDimensionsComponent, this.discussionTextWindowDimensions, DiscussionHeightChangeListener);
@@ -44,7 +68,7 @@ namespace CoreGame
         #region Writing
         public void Increment(Text textAreaText)
         {
-            this.DiscussionTextPlayerEngine.Increment(textAreaText);
+            this.DiscussionTextPlayerEngine.Increment(textAreaText, SpecialCharactersImages);
         }
         #endregion
 
@@ -60,12 +84,13 @@ namespace CoreGame
             var initialSizeDelta = discussionWindowTransform.sizeDelta;
 
             discussionWindowTransform.sizeDelta = new Vector2(this.discussionTextWindowDimensions.GetMaxWindowWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(discussionWindowText));
-            this.ForceUpdateTextCachedTextGenerator(this.unescapedInitialRawText, discussionWindowText);
+            this.ForceUpdateTextCachedTextGenerator(this.transformedInitialRawText, discussionWindowText);
 
             var truncatedText = discussionWindowText.text.Substring(0, discussionWindowText.cachedTextGenerator.characterCountVisible);
             this.overlappedText = discussionWindowText.text.Substring(discussionWindowText.cachedTextGenerator.characterCountVisible, discussionWindowText.text.Length - discussionWindowText.cachedTextGenerator.characterCountVisible);
 
             truncatedText = truncatedText.Trim(this.TrimmedCharForSanitaze);
+
             this.ForceUpdateTextCachedTextGenerator(truncatedText, discussionWindowText);
 
             this.discussionTextWindowDimensions.ComputeFinalDimensions(discussionWindowText);
@@ -79,7 +104,9 @@ namespace CoreGame
                 int endIndex = (i == discussionWindowText.cachedTextGenerator.lines.Count - 1) ? discussionWindowText.text.Length
                     : discussionWindowText.cachedTextGenerator.lines[i + 1].startCharIdx;
                 int length = endIndex - startIndex;
-                this.linedTruncatedText.Add(discussionWindowText.text.Substring(startIndex, length).Trim(this.TrimmedCharForSanitaze));
+
+                string lineToAdd = discussionWindowText.text.Substring(startIndex, length).Trim(this.TrimmedCharForSanitaze);
+                this.linedTruncatedText.Add(lineToAdd);
             }
 
             discussionWindowTransform.sizeDelta = initialSizeDelta;
@@ -146,10 +173,12 @@ namespace CoreGame
             this.DiscussionHeightChangeListener = DiscussionHeightChangeListener;
         }
 
+
         private string targetText;
         private string currentDisplayedText;
         private int displayedLineNb;
 
+        private Regex textSpecialImageRegex;
 
         public string CurrentDisplayedText { get => currentDisplayedText; }
         public int DisplayedLineNb { get => displayedLineNb; }
@@ -159,13 +188,44 @@ namespace CoreGame
             this.targetText = String.Join("\n", discussionText.LinedTruncatedText.ToArray());
             this.currentDisplayedText = String.Empty;
             this.displayedLineNb = 1;
+            this.textSpecialImageRegex = new Regex(DiscussionText.SpecialCharacterImageTemplate);
         }
 
-        public void Increment(Text textAreaText)
+        public void Increment(Text textAreaText, List<Image> SpecialCharactersImages)
         {
             if (currentDisplayedText.Length < targetText.Length)
             {
-                currentDisplayedText += targetText[currentDisplayedText.Length];
+                var charToAdd = targetText[currentDisplayedText.Length];
+                if (charToAdd == '#')
+                {
+                    currentDisplayedText += charToAdd;
+                    currentDisplayedText += targetText[currentDisplayedText.Length];
+                    currentDisplayedText += targetText[currentDisplayedText.Length];
+
+                    textAreaText.text = currentDisplayedText;
+                    Canvas.ForceUpdateCanvases();
+                }
+                else
+                {
+                    currentDisplayedText += charToAdd;
+                }
+
+                int specialImageMatchCount = 0;
+                foreach (Match specialImageMatch in this.textSpecialImageRegex.Matches(currentDisplayedText))
+                {
+                    if (specialImageMatch.Success)
+                    {
+                        var drawedCharacters = textAreaText.cachedTextGenerator.GetCharactersArray().ToList();
+                        if (drawedCharacters.Count >= specialImageMatch.Index + DiscussionText.SpecialCharacterImageTemplate.Length)
+                        {
+                            var imagePosition = (drawedCharacters[specialImageMatch.Index].cursorPos + drawedCharacters[specialImageMatch.Index + DiscussionText.SpecialCharacterImageTemplate.Length].cursorPos) / 2f;
+                            SpecialCharactersImages[specialImageMatchCount].gameObject.SetActive(true);
+                            SpecialCharactersImages[specialImageMatchCount].transform.position = new Vector2(textAreaText.transform.position.x, textAreaText.transform.position.y) + imagePosition;
+                            specialImageMatchCount += 1;
+                        }
+                    }
+                }
+
                 var newDisplayedLineNb = Mathf.Min(this.currentDisplayedText.Split('\n').Length, this.TextOnlyDiscussionWindowDimensionsComponent.MaxLineDisplayed);
                 if (newDisplayedLineNb != this.displayedLineNb)
                 {

@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CoreGame
 {
@@ -20,6 +21,7 @@ namespace CoreGame
         public DiscussionWindow DiscussionUIPrefab;
         public ChoicePopup ChoicePopupPrefab;
         public ChoicePopupText ChoicePopupTextPrefab;
+        public Image InputBaseImage;
 
         public static PrefabContainer Instance
         {

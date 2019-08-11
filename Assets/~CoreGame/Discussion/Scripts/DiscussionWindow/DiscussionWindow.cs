@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,8 @@ namespace CoreGame
 
     public class DiscussionWindow : MonoBehaviour, DiscussionWindowOnTextFinishedWritingListener, DiscussionHeightChangeListener
     {
+        public Texture2D DebugTexture;
+
         private const string TEXT_AREA_OBJECT_NAME = "TextArea";
         private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
         private const string CONTINUE_ICON_OBJECT_NAME = "ContinueIcon";
@@ -49,7 +52,7 @@ namespace CoreGame
             DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
             DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, this.discussionWindowObjectTransform);
             DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
-            
+
             DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, this.textAreaText);
             DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
         }
@@ -70,6 +73,18 @@ namespace CoreGame
             }
         }
 
+        private void OnDrawGizmos()
+        {
+            if (this.textAreaText != null && this.DebugTexture != null)
+            {
+                this.textAreaText.cachedTextGenerator.GetCharactersArray().ToList().ForEach((c) =>
+                {
+                    var p3 = ((RectTransform)this.textAreaText.transform).position;
+                    Gizmos.DrawGUITexture(new Rect(new Vector2(p3.x + c.cursorPos.x, p3.y + c.cursorPos.y), new Vector2(3, 3)), this.DebugTexture);
+                });
+            }
+        }
+
         #region External Events
         public void OnDiscussionWindowAwake(string fullText, Transform position)
         {
@@ -87,7 +102,7 @@ namespace CoreGame
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
 
-            this.currentDiscussionText = new DiscussionText(fullTextContent, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this);
+            this.currentDiscussionText = new DiscussionText(fullTextContent, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText);
             this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform, this.textAreaText);
             this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb(), this.textAreaText));
             this.OnWidthChange(this.currentDiscussionText.GetFinalWidth());
