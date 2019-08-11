@@ -8,6 +8,7 @@ namespace CoreGame
 
     public class DiscussionWindow : MonoBehaviour, DiscussionWindowOnTextFinishedWritingListener, DiscussionHeightChangeListener
     {
+        public Material TestMaterial;
         public Texture2D DebugTexture;
 
         private const string TEXT_AREA_OBJECT_NAME = "TextArea";
@@ -103,8 +104,8 @@ namespace CoreGame
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
 
             this.currentDiscussionText = new DiscussionText(fullTextContent, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText);
-            this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform, this.textAreaText);
-            this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb(), this.textAreaText));
+            this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
+            this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
             this.OnWidthChange(this.currentDiscussionText.GetFinalWidth());
 
             DiscussionWriterManager.OnDiscussionTextStartWriting();
@@ -205,7 +206,6 @@ namespace CoreGame
         {
             if (isTextWriting)
             {
-                textAreaText.text = discussionText.GetCurrentDisplayedText();
                 timeElapsed += d;
 
                 if (discussionText.IsAllowedToIncrementEngine())
@@ -213,7 +213,7 @@ namespace CoreGame
                     while (timeElapsed >= DiscussionWriterComponent.LetterDisplayIntervalTime)
                     {
                         timeElapsed -= DiscussionWriterComponent.LetterDisplayIntervalTime;
-                        discussionText.Increment(textAreaText);
+                        discussionText.Increment();
                     }
                 }
                 else

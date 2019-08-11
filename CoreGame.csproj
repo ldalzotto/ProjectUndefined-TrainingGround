@@ -214,6 +214,7 @@
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\Test\InstanciatedBufferTest\InstanciatedBufferTest.cs" />
     <Compile Include="Assets\Test\ShaderVectorTest.cs" />
+    <Compile Include="Assets\Test\TextMeshManipulationTest\CustomTextRenderer.cs" />
     <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />
