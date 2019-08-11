@@ -93,13 +93,13 @@ namespace RTPuzzle
         {
             if (sourceSlice.Up())
             {
-                if (newSlice.Contains(sourceSlice.BeginAngleIncluded) && newSlice.Contains(sourceSlice.EndAngleExcluded))
+                if (newSlice.AngleDegreeContains(sourceSlice.BeginIncluded) && newSlice.AngleDegreeContains(sourceSlice.EndExcluded))
                 {
                     return sourceSlice;
                 }
-                else if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
+                else if (sourceSlice.AngleDegreeContains(newSlice.BeginIncluded))
                 {
-                    if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                    if (sourceSlice.AngleDegreeContains(newSlice.EndExcluded))
                     {
                         return newSlice;
                     }
@@ -107,24 +107,24 @@ namespace RTPuzzle
                     {
                         if (newSlice.Up())
                         {
-                            return new StartEndSlice(newSlice.BeginAngleIncluded, sourceSlice.EndAngleExcluded);
+                            return new StartEndSlice(newSlice.BeginIncluded, sourceSlice.EndExcluded);
                         }
                         else
                         {
-                            return new StartEndSlice(sourceSlice.EndAngleExcluded, newSlice.BeginAngleIncluded);
+                            return new StartEndSlice(sourceSlice.EndExcluded, newSlice.BeginIncluded);
                         }
 
                     }
                 }
-                else if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                else if (sourceSlice.AngleDegreeContains(newSlice.EndExcluded))
                 {
                     if (newSlice.Up())
                     {
-                        return new StartEndSlice(sourceSlice.BeginAngleIncluded, newSlice.EndAngleExcluded);
+                        return new StartEndSlice(sourceSlice.BeginIncluded, newSlice.EndExcluded);
                     }
                     else
                     {
-                        return new StartEndSlice(newSlice.EndAngleExcluded, sourceSlice.BeginAngleIncluded);
+                        return new StartEndSlice(newSlice.EndExcluded, sourceSlice.BeginIncluded);
                     }
                 }
                 else
@@ -134,13 +134,13 @@ namespace RTPuzzle
             }
             else
             {
-                if (newSlice.Contains(sourceSlice.BeginAngleIncluded) && newSlice.Contains(sourceSlice.EndAngleExcluded))
+                if (newSlice.AngleDegreeContains(sourceSlice.BeginIncluded) && newSlice.AngleDegreeContains(sourceSlice.EndExcluded))
                 {
                     return sourceSlice;
                 }
-                else if (sourceSlice.Contains(newSlice.BeginAngleIncluded))
+                else if (sourceSlice.AngleDegreeContains(newSlice.BeginIncluded))
                 {
-                    if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                    if (sourceSlice.AngleDegreeContains(newSlice.EndExcluded))
                     {
                         return newSlice;
                     }
@@ -148,24 +148,24 @@ namespace RTPuzzle
                     {
                         if (newSlice.Up())
                         {
-                            return new StartEndSlice(newSlice.BeginAngleIncluded, sourceSlice.BeginAngleIncluded);
+                            return new StartEndSlice(newSlice.BeginIncluded, sourceSlice.BeginIncluded);
                         }
                         else
                         {
-                            return new StartEndSlice(sourceSlice.BeginAngleIncluded, newSlice.BeginAngleIncluded);
+                            return new StartEndSlice(sourceSlice.BeginIncluded, newSlice.BeginIncluded);
                         }
 
                     }
                 }
-                else if (sourceSlice.Contains(newSlice.EndAngleExcluded))
+                else if (sourceSlice.AngleDegreeContains(newSlice.EndExcluded))
                 {
                     if (newSlice.Up())
                     {
-                        return new StartEndSlice(sourceSlice.EndAngleExcluded, newSlice.EndAngleExcluded);
+                        return new StartEndSlice(sourceSlice.EndExcluded, newSlice.EndExcluded);
                     }
                     else
                     {
-                        return new StartEndSlice(newSlice.EndAngleExcluded, sourceSlice.EndAngleExcluded);
+                        return new StartEndSlice(newSlice.EndExcluded, sourceSlice.EndExcluded);
                     }
                 }
                 else
@@ -188,9 +188,9 @@ namespace RTPuzzle
                 var deltaBetweenSlices = 0f;
                 if (i != 0)
                 {
-                    deltaBetweenSlices = mappedFOVSlices[i - 1].EndAngleExcluded;
+                    deltaBetweenSlices = mappedFOVSlices[i - 1].EndExcluded;
                 }
-                var deltaForCurrentSlice = currentFovSlice.EndAngleExcluded - currentFovSlice.BeginAngleIncluded;
+                var deltaForCurrentSlice = currentFovSlice.EndExcluded - currentFovSlice.BeginIncluded;
                 mappedFOVSlices.Add(new StartEndSlice(deltaBetweenSlices, deltaForCurrentSlice + deltaBetweenSlices));
             }
 
@@ -198,7 +198,7 @@ namespace RTPuzzle
             var deltaAngleRange = 0f;
             foreach (var mappedFOVSlice in mappedFOVSlices)
             {
-                deltaAngleRange += (mappedFOVSlice.EndAngleExcluded - mappedFOVSlice.BeginAngleIncluded);
+                deltaAngleRange += (mappedFOVSlice.EndExcluded - mappedFOVSlice.BeginIncluded);
             }
 
             var deltaAngle = deltaAngleRange / sampleNB;
@@ -221,11 +221,11 @@ namespace RTPuzzle
 
                 foreach (var mappedFOVSlice in mappedFOVSlices)
                 {
-                    if (mappedFOVSlice.Contains(currentDeltaAngle))
+                    if (mappedFOVSlice.AngleDegreeContains(currentDeltaAngle))
                     {
                         var associatedRawFOV = rawFOV[mappedFOVSlices.IndexOf(mappedFOVSlice)];
-                        var mappedRatio = (currentDeltaAngle - mappedFOVSlice.BeginAngleIncluded) / (mappedFOVSlice.EndAngleExcluded - mappedFOVSlice.BeginAngleIncluded);
-                        var rawAngle = (mappedRatio * (associatedRawFOV.EndAngleExcluded - associatedRawFOV.BeginAngleIncluded)) + associatedRawFOV.BeginAngleIncluded;
+                        var mappedRatio = (currentDeltaAngle - mappedFOVSlice.BeginIncluded) / (mappedFOVSlice.EndExcluded - mappedFOVSlice.BeginIncluded);
+                        var rawAngle = (mappedRatio * (associatedRawFOV.EndExcluded - associatedRawFOV.BeginIncluded)) + associatedRawFOV.BeginIncluded;
                         anglesRayCast[i] = rawAngle;
                     }
                 }
@@ -245,8 +245,8 @@ namespace RTPuzzle
             for (var i = 0; i < mergedFOVSlices.Count; i++)
             {
                 var currentRange = mergedFOVSlices[i];
-                anglesRayCast[i * 2] = currentRange.BeginAngleIncluded;
-                anglesRayCast[(i * 2) + 1] = currentRange.EndAngleExcluded;
+                anglesRayCast[i * 2] = currentRange.BeginIncluded;
+                anglesRayCast[(i * 2) + 1] = currentRange.EndExcluded;
             }
             return anglesRayCast;
         }
@@ -260,9 +260,9 @@ namespace RTPuzzle
                 {
                     if (i != 0)
                     {
-                        if (rawFOV[i - 1].EndAngleExcluded == rawFOV[i].BeginAngleIncluded)
+                        if (rawFOV[i - 1].EndExcluded == rawFOV[i].BeginIncluded)
                         {
-                            mergedFOVSlices.Add(new StartEndSlice(rawFOV[i - 1].BeginAngleIncluded, rawFOV[i].EndAngleExcluded));
+                            mergedFOVSlices.Add(new StartEndSlice(rawFOV[i - 1].BeginIncluded, rawFOV[i].EndExcluded));
                         }
                         else
                         {
@@ -291,7 +291,7 @@ namespace RTPuzzle
             {
                 if (fovSlice.Down())
                 {
-                    rawFOV.Add(new StartEndSlice(fovSlice.EndAngleExcluded, fovSlice.BeginAngleIncluded));
+                    rawFOV.Add(new StartEndSlice(fovSlice.EndExcluded, fovSlice.BeginIncluded));
                 }
                 else
                 {
@@ -360,7 +360,7 @@ namespace RTPuzzle
             foreach (var fovSlice in aiFov.FovSlices)
             {
                 Gizmos.color = Color.blue;
-                var beginAxisDirection = Quaternion.AngleAxis(-fovSlice.BeginAngleIncluded, agent.transform.up) * (Vector3.forward * 10);
+                var beginAxisDirection = Quaternion.AngleAxis(-fovSlice.BeginIncluded, agent.transform.up) * (Vector3.forward * 10);
                 Gizmos.DrawRay(agent.transform.position, beginAxisDirection);
                 var style = new GUIStyle();
                 style.normal.textColor = Color.blue;
@@ -369,7 +369,7 @@ namespace RTPuzzle
 #endif
                 Gizmos.color = Color.red;
                 style.normal.textColor = Color.red;
-                var endAxisDirection = Quaternion.AngleAxis(-fovSlice.EndAngleExcluded, agent.transform.up) * (Vector3.forward * 10);
+                var endAxisDirection = Quaternion.AngleAxis(-fovSlice.EndExcluded, agent.transform.up) * (Vector3.forward * 10);
 #if UNITY_EDITOR
                 Gizmos.DrawRay(agent.transform.position, endAxisDirection);
                 Handles.Label(agent.transform.position + endAxisDirection, "End (" + aiFov.FovSlices.IndexOf(fovSlice) + ")", style);

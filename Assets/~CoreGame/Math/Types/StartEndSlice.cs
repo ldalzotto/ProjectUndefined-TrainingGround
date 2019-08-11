@@ -13,8 +13,14 @@ namespace CoreGame
             this.endExcluded = endExcluded;
         }
 
-        public float BeginAngleIncluded { get => beginIncluded; }
-        public float EndAngleExcluded { get => endExcluded; }
+        public StartEndSlice(int beginIncluded, int endExcluded)
+        {
+            this.beginIncluded = beginIncluded;
+            this.endExcluded = endExcluded;
+        }
+
+        public float BeginIncluded { get => beginIncluded; }
+        public float EndExcluded { get => endExcluded; }
 
         public bool Up()
         {
@@ -27,6 +33,11 @@ namespace CoreGame
         }
 
         public bool Contains(float a)
+        {
+            return a >= beginIncluded && a < endExcluded;
+        }
+
+        public bool AngleDegreeContains(float a)
         {
             if (Up())
             {

@@ -49,14 +49,6 @@ namespace CoreGame
 
         protected virtual void OnChoiceMade(DiscussionNodeId choice) { }
         protected virtual void OnDiscussionTreeEnd(DiscussionTreeId discussionTreeId) { }
-
-        public void GUITick()
-        {
-            foreach (var discussionWindowManager in this.discussionWindowsManager.Values)
-            {
-                discussionWindowManager.GUITick();
-            }
-        }
         
         private void RemoveDiscussionTree(DiscussionTreeId discussionTreeId)
         {

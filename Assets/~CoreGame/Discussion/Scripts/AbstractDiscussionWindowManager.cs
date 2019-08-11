@@ -170,14 +170,6 @@ namespace CoreGame
             WaitForSecondsDiscussionWindowManagerStrategy.ElapsedTime += d;
         }
 
-        public void GUITick()
-        {
-            if (OpenedDiscussion != null)
-            {
-                OpenedDiscussion.OnGUIDraw();
-            }
-        }
-
         #region External Event
         public void OnDiscussionEnded()
         {

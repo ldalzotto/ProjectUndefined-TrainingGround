@@ -137,6 +137,7 @@
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionTreePlayer.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionText.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionManager.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionMarker.cs" />

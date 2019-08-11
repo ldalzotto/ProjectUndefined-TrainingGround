@@ -29,8 +29,8 @@ namespace CoreGame
 
         private static void ComputeColorsPixel(StartEndSlice slice, ref Color[] colors, Color insideColor)
         {
-            var beginInt = Mathf.RoundToInt(slice.BeginAngleIncluded);
-            var endInt = Mathf.RoundToInt(slice.EndAngleExcluded);
+            var beginInt = Mathf.RoundToInt(slice.BeginIncluded);
+            var endInt = Mathf.RoundToInt(slice.EndExcluded);
 
             for (var i = beginInt; i < endInt; i++)
             {

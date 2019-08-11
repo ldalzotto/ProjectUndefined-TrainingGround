@@ -114,7 +114,7 @@ namespace AdventureGame
 
         private void OnGUI()
         {
-            DiscussionWindowsContainer.GUITick();
+         
         }
 
         private void OnDrawGizmos()
