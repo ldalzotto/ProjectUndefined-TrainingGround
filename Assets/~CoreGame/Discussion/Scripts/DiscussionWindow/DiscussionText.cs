@@ -85,16 +85,14 @@ namespace CoreGame
         {
             var initialSizeDelta = discussionWindowTransform.sizeDelta;
 
-            var generatedText = this.TextMesh.ForceRefresh(this.transformedInitialRawText, new Vector2(this.discussionTextWindowDimensions.GetMaxWindowWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(this.TextMesh)));
+            var generatedText = this.TextMesh.ForceRefreshInternalGeneration(this.transformedInitialRawText, new Vector2(this.discussionTextWindowDimensions.GetMaxWindowWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(this.TextMesh)));
 
             var truncatedText = this.transformedInitialRawText.Substring(0, generatedText.characterCountVisible);
             this.overlappedText = this.transformedInitialRawText.Substring(generatedText.characterCountVisible, this.transformedInitialRawText.Length - generatedText.characterCountVisible);
 
             truncatedText = truncatedText.Trim(this.TrimmedCharForSanitaze);
 
-            this.TextMesh.ForceRefresh(truncatedText);
-
-            generatedText = this.TextMesh.ForceRefresh(truncatedText, new Vector2(this.discussionTextWindowDimensions.GetMaxWindowWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(this.TextMesh)));
+            generatedText = this.TextMesh.ForceRefreshInternalGeneration(truncatedText, new Vector2(this.discussionTextWindowDimensions.GetMaxWindowWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(this.TextMesh)));
 
             this.linedTruncatedText = new List<string>();
             for (int i = 0; i < generatedText.lines.Count; i++)
@@ -108,7 +106,7 @@ namespace CoreGame
                 this.linedTruncatedText.Add(lineToAdd);
             }
 
-            this.TextMesh.ForceRefresh("");
+            this.TextMesh.GenerateFinalMeshFromTextGenerator();
 
             this.DiscussionTextPlayerEngine.StartWriting(this);
         }
@@ -192,17 +190,19 @@ namespace CoreGame
 
                 if (charToAdd == '#')
                 {
+                    TextMesh.IncrementChar(charToAdd);
                     currentDisplayedTextUnModified += charToAdd;
+                    TextMesh.IncrementChar(targetText[currentDisplayedTextUnModified.Length]);
                     currentDisplayedTextUnModified += targetText[currentDisplayedTextUnModified.Length];
+                    TextMesh.IncrementChar(targetText[currentDisplayedTextUnModified.Length]);
                     currentDisplayedTextUnModified += targetText[currentDisplayedTextUnModified.Length];
                 }
                 else
                 {
+                    TextMesh.IncrementChar(charToAdd);
                     currentDisplayedTextUnModified += charToAdd;
                 }
-
-                TextMesh.ForceRefresh(currentDisplayedTextUnModified);
-
+                
                 int specialImageMatchCount = 0;
                 foreach (var imageVertices in TextMesh.FindOccurences(DiscussionText.SpecialCharacterImageTemplate))
                 {
@@ -241,22 +241,31 @@ namespace CoreGame
         private CanvasRenderer canvasRenderer;
         private TextGenerationSettings textGenerationSettings;
         private TextGenerator textGenerator;
-        private string lastTextUsedForGeneration;
-        private Mesh Mesh;
+
+        private Color textColor;
+        private string lastTextUsedToSet;
+        private string lastMeshedText;
+
+        private Mesh mesh;
 
         public TextMesh(Text text, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent)
         {
+            this.canvasRenderer = text.canvasRenderer;
             this.DiscussionWindowDimensionsComponent = DiscussionWindowDimensionsComponent;
 
-            this.canvasRenderer = text.GetComponent<CanvasRenderer>();
             this.textGenerationSettings = text.GetGenerationSettings(Vector2.zero);
             this.textGenerationSettings.scaleFactor = 1f;
             this.textGenerator = new TextGenerator();
             this.textGenerator.Invalidate();
+            this.mesh = new Mesh();
+            this.textColor = text.color;
+
             text.enabled = false;
+            this.canvasRenderer.SetMaterial(text.font.material, null);
+
         }
 
-        public TextGenerator ForceRefresh(string text, Nullable<Vector2> unmargedExtends = null)
+        public TextGenerator ForceRefreshInternalGeneration(string text, Nullable<Vector2> unmargedExtends = null)
         {
             this.textGenerator.Invalidate();
             if (unmargedExtends.HasValue)
@@ -266,55 +275,60 @@ namespace CoreGame
                                                -DiscussionWindowDimensionsComponent.MarginUp - DiscussionWindowDimensionsComponent.MarginDown);
             }
             this.textGenerator.Populate(text, this.TextGenerationSettings);
-
-            this.TextGenToMesh(this.textGenerator, out Mesh textMesh);
-            this.canvasRenderer.SetMesh(textMesh);
-            this.canvasRenderer.SetMaterial(this.textGenerationSettings.font.material, null);
-            this.Mesh = textMesh;
-
-            /*
-            //DEBUG
-            float minX = 0f;
-            float maxX = 0f;
-            foreach(var vert in this.Mesh.vertices.ToList())
-            {
-                minX = Math.Min(minX, vert.x);
-                maxX = Math.Max(maxX, vert.x);
-            }
-            Debug.Log(Math.Abs(maxX - minX));
-            */
-
-            this.lastTextUsedForGeneration = text;
-
             return this.textGenerator;
+        }
+
+        public void GenerateFinalMeshFromTextGenerator()
+        {
+            this.TextGenToMesh(this.textGenerator, ref this.mesh);
+            this.lastTextUsedToSet = string.Empty;
+            this.lastMeshedText = string.Empty;
+            this.canvasRenderer.SetMesh(this.mesh);
+        }
+
+        public void IncrementChar(char characterAdded)
+        {
+            this.lastTextUsedToSet += characterAdded;
+            if (characterAdded != ' ' && characterAdded != '\n')
+            {
+                this.lastMeshedText += characterAdded;
+                var newColors = this.mesh.colors;
+                newColors[((this.lastMeshedText.Length - 1) * 4)] = this.textColor;
+                newColors[((this.lastMeshedText.Length - 1) * 4) + 1] = this.textColor;
+                newColors[((this.lastMeshedText.Length - 1) * 4) + 2] = this.textColor;
+                newColors[((this.lastMeshedText.Length - 1) * 4) + 3] = this.textColor;
+
+                this.mesh.colors = newColors;
+
+                this.canvasRenderer.SetMesh(this.mesh);
+            }
         }
 
         public List<LetterVertices> FindOccurences(string patternToFind)
         {
-            var sanitizedLastTextUsedForGeneration = this.lastTextUsedForGeneration.Replace(" ", "").Replace("\n", "");
+            var sanitizedLastTextUsedForGeneration = this.lastTextUsedToSet.Replace(" ", "").Replace("\n", "");
             List<LetterVertices> foundVertices = new List<LetterVertices>();
+            var meshVertices = this.mesh.vertices;
             foreach (Match match in new Regex(patternToFind).Matches(sanitizedLastTextUsedForGeneration))
             {
                 if (match.Success)
                 {
                     foundVertices.Add(new LetterVertices()
                     {
-                        TopLeft = this.Mesh.vertices[match.Index * 4],
-                        TopRight = this.Mesh.vertices[((match.Index + match.Length - 1) * 4) + 1],
-                        BottomRight = this.Mesh.vertices[((match.Index + match.Length - 1) * 4) + 2],
-                        BottomLeft = this.Mesh.vertices[(match.Index * 4) + 3]
+                        TopLeft = meshVertices[match.Index * 4],
+                        TopRight = meshVertices[((match.Index + match.Length - 1) * 4) + 1],
+                        BottomRight = meshVertices[((match.Index + match.Length - 1) * 4) + 2],
+                        BottomLeft = meshVertices[(match.Index * 4) + 3]
                     });
                 }
             }
             return foundVertices;
         }
-        
-        private void TextGenToMesh(TextGenerator generator, out Mesh mesh)
-        {
-            mesh = new Mesh();
 
+        private void TextGenToMesh(TextGenerator generator, ref Mesh mesh)
+        {
             mesh.vertices = generator.verts.Select(v => v.position).ToArray();
-            mesh.colors32 = generator.verts.Select(v => v.color).ToArray();
+            mesh.colors32 = new Color32[mesh.vertexCount] ;
             mesh.uv = generator.verts.Select(v => v.uv0).ToArray();
             var triangles = new int[generator.vertexCount * 6];
             for (var i = 0; i < mesh.vertices.Length / 4; i++)

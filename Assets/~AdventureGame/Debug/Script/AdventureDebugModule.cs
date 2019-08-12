@@ -27,6 +27,12 @@ namespace AdventureGame
         private CutsceneGlobalController CutsceneGlobalController;
         private CameraMovementManager CameraMovementManager;
 
+        [Header("DiscussioonUI")]
+        public bool ItemReceivedPopup;
+        [CustomEnum()]
+        public ItemID PopupItem;
+        private ItemReceivedPopup ItemReceivedPopupObject;
+
         public void Init()
         {
             this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
@@ -50,6 +56,16 @@ namespace AdventureGame
             {
                 this.targetRotation = false;
                 this.CameraMovementManager.SetTargetAngle(this.targetAngle);
+            }
+            if (this.ItemReceivedPopup)
+            {
+                this.ItemReceivedPopup = false;
+                this.ItemReceivedPopupObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, GameObject.FindObjectOfType<Canvas>().transform);
+                this.ItemReceivedPopupObject.Init(this.PopupItem, () => { });
+            }
+            if (this.ItemReceivedPopupObject != null)
+            {
+                this.ItemReceivedPopupObject.Tick(d);
             }
         }
     }
