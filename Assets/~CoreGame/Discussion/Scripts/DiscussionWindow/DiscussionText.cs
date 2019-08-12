@@ -10,7 +10,7 @@ namespace CoreGame
     public class DiscussionText
     {
         private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
-        public const string SpecialCharacterImageTemplate = "#00";
+        public const string SpecialCharacterImageTemplate = "#0";
 
         private string initialRawText;
         private string transformedInitialRawText;
@@ -18,6 +18,7 @@ namespace CoreGame
         private string overlappedText;
 
         private List<string> linedTruncatedText;
+        private List<Image> SpecialCharactersImages;
 
         private TextMesh TextMesh;
         private DiscussionTextWindowDimensions discussionTextWindowDimensions;
@@ -29,6 +30,28 @@ namespace CoreGame
 
             this.initialRawText = initialRawText;
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
+
+            #region Special Character Image mapping
+            this.SpecialCharactersImages = new List<Image>();
+            var keyCharacterRegex = new Regex("@.*?( |$)");
+            Match regexMatch = null;
+            do
+            {
+                regexMatch = keyCharacterRegex.Match(this.transformedInitialRawText);
+                if (regexMatch.Success)
+                {
+                    var matchValue = regexMatch.Value.Trim(TrimmedCharForSanitaze);
+                    this.transformedInitialRawText = this.transformedInitialRawText.Substring(0, regexMatch.Index)
+                        + SpecialCharacterImageTemplate
+                        + this.transformedInitialRawText.Substring(regexMatch.Index + matchValue.Length, this.transformedInitialRawText.Length - (regexMatch.Index + matchValue.Length));
+
+                    //TODO -> Mapping
+                    var instaciatedImage = MonoBehaviour.Instantiate(PrefabContainer.Instance.InputBaseImage, textAreaText.transform);
+                    instaciatedImage.gameObject.SetActive(false);
+                    this.SpecialCharactersImages.Add(instaciatedImage);
+                }
+            } while (regexMatch.Success);
+            #endregion
 
             this.discussionTextWindowDimensions = new DiscussionTextWindowDimensions(DiscussionWindowDimensionsComponent, TextOnlyDiscussionWindowDimensionsComponent);
             this.DiscussionTextPlayerEngine = new DiscussionTextPlayerEngine(TextOnlyDiscussionWindowDimensionsComponent, this.discussionTextWindowDimensions, DiscussionHeightChangeListener);
@@ -48,7 +71,7 @@ namespace CoreGame
         #region Writing
         public void Increment()
         {
-            this.DiscussionTextPlayerEngine.Increment(this.TextMesh);
+            this.DiscussionTextPlayerEngine.Increment(this.TextMesh, this.SpecialCharactersImages);
         }
         #endregion
 
@@ -168,7 +191,7 @@ namespace CoreGame
             this.textSpecialImageRegex = new Regex(DiscussionText.SpecialCharacterImageTemplate);
         }
 
-        public void Increment(TextMesh TextMesh)
+        public void Increment(TextMesh TextMesh, List<Image> SpecialCharactersImages)
         {
             if (currentDisplayedTextUnModified.Length < targetText.Length)
             {
@@ -186,6 +209,16 @@ namespace CoreGame
                 }
 
                 TextMesh.ForceRefresh(currentDisplayedTextUnModified);
+
+                int specialImageMatchCount = 0;
+                foreach (var imageVertices in TextMesh.FindOccurences(DiscussionText.SpecialCharacterImageTemplate))
+                {
+                    Vector2 imagePosition = imageVertices.Center();
+                    SpecialCharactersImages[specialImageMatchCount].gameObject.SetActive(true);
+                    SpecialCharactersImages[specialImageMatchCount].transform.localPosition = imagePosition;
+                    ((RectTransform)(SpecialCharactersImages[specialImageMatchCount].transform)).sizeDelta = new Vector2(imageVertices.Width(), imageVertices.Width());
+                    specialImageMatchCount += 1;
+                }
 
                 var newDisplayedLineNb = Mathf.Min(this.currentDisplayedTextUnModified.Split('\n').Length, this.TextOnlyDiscussionWindowDimensionsComponent.MaxLineDisplayed);
                 if (newDisplayedLineNb != this.displayedLineNb)
@@ -215,6 +248,7 @@ namespace CoreGame
         private CanvasRenderer canvasRenderer;
         private TextGenerationSettings textGenerationSettings;
         private TextGenerator textGenerator;
+        private string lastTextUsedForGeneration;
         private Mesh Mesh;
 
         public TextMesh(Text text, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent)
@@ -242,7 +276,29 @@ namespace CoreGame
             this.canvasRenderer.SetMesh(textMesh);
             this.canvasRenderer.SetMaterial(this.textGenerationSettings.font.material, null);
             this.Mesh = textMesh;
+            this.lastTextUsedForGeneration = text;
+
             return this.textGenerator;
+        }
+
+        public List<LetterVertices> FindOccurences(string patternToFind)
+        {
+            var sanitizedLastTextUsedForGeneration = this.lastTextUsedForGeneration.Replace(" ", "").Replace("\n", "");
+            List<LetterVertices> foundVertices = new List<LetterVertices>();
+            foreach (Match match in new Regex(patternToFind).Matches(sanitizedLastTextUsedForGeneration))
+            {
+                if (match.Success)
+                {
+                    foundVertices.Add(new LetterVertices()
+                    {
+                        TopLeft = this.Mesh.vertices[match.Index * 4],
+                        TopRight = this.Mesh.vertices[((match.Index + match.Length - 1) * 4) + 1],
+                        BottomRight = this.Mesh.vertices[((match.Index + match.Length - 1) * 4) + 2],
+                        BottomLeft = this.Mesh.vertices[(match.Index * 4) + 3]
+                    });
+                }
+            }
+            return foundVertices;
         }
 
         private void TextGenToMesh(TextGenerator generator, out Mesh mesh)
@@ -268,6 +324,32 @@ namespace CoreGame
             mesh.RecalculateBounds();
         }
 
+        public Transform Transform
+        {
+            get
+            {
+                return this.canvasRenderer.transform;
+            }
+        }
+
         public TextGenerationSettings TextGenerationSettings { get => textGenerationSettings; }
+    }
+
+    class LetterVertices
+    {
+        public Vector3 TopLeft;
+        public Vector3 TopRight;
+        public Vector3 BottomRight;
+        public Vector3 BottomLeft;
+
+        public Vector2 Center()
+        {
+            return (this.TopLeft + this.TopRight + this.BottomLeft + this.BottomRight) / 4f;
+        }
+
+        public float Width()
+        {
+            return Mathf.Abs(this.TopRight.x - this.TopLeft.x);
+        }
     }
 }
