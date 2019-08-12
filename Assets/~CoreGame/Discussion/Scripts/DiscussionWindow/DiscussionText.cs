@@ -116,6 +116,11 @@ namespace CoreGame
             this.DiscussionTextPlayerEngine.StartWriting(this);
         }
 
+        public void OnDestroy()
+        {
+            if (this.SpecialCharactersImages != null) { this.SpecialCharactersImages.ForEach(i => MonoBehaviour.Destroy(i.gameObject)); }
+        }
+
         private void ForceUpdateTextCachedTextGenerator(string textContent, Text textArea)
         {
             textArea.text = textContent;
@@ -267,7 +272,8 @@ namespace CoreGame
             this.textGenerator.Invalidate();
             if (unmargedExtends.HasValue)
             {
-                this.textGenerationSettings.generationExtents = unmargedExtends.Value + new Vector2(-DiscussionWindowDimensionsComponent.MarginLeft - DiscussionWindowDimensionsComponent.MarginRight,
+                this.textGenerationSettings.generationExtents = unmargedExtends.Value
+                    + new Vector2(-DiscussionWindowDimensionsComponent.MarginLeft - DiscussionWindowDimensionsComponent.MarginRight,
                                                -DiscussionWindowDimensionsComponent.MarginUp - DiscussionWindowDimensionsComponent.MarginDown);
             }
             this.textGenerator.Populate(text, this.TextGenerationSettings);

@@ -103,6 +103,7 @@ namespace CoreGame
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
 
+            if (this.currentDiscussionText != null) { this.currentDiscussionText.OnDestroy(); }
             this.currentDiscussionText = new DiscussionText(fullTextContent, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText);
             this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
             this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
