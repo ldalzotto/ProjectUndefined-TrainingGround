@@ -7,10 +7,12 @@ public class CustomTextRenderer : MonoBehaviour
 {
     public Font Font;
     public string Text;
+    public Vector2 Extends;
 
     public bool MakeProgression;
     public bool SelectCharacter;
     public bool LinePositions;
+    public bool Regenerate;
 
     private Text textComponent;
     private Mesh Mesh;
@@ -23,9 +25,22 @@ public class CustomTextRenderer : MonoBehaviour
 
     void Start()
     {
+        this.RegenerateMesh();
+    }
+
+    private void RegenerateMesh()
+    {
+        var canvas = GameObject.FindObjectOfType<Canvas>();
         this.textComponent = GetComponentInChildren<Text>();
-        this.TextGenerationSettings = this.textComponent.GetGenerationSettings(((RectTransform)this.transform).sizeDelta);
-        this.textComponent.gameObject.SetActive(false);
+        if (this.textComponent != null)
+        {
+            this.TextGenerationSettings = textComponent.GetGenerationSettings(new Vector2(((RectTransform)this.transform).rect.width, ((RectTransform)this.transform).rect.height));
+            this.textComponent.gameObject.SetActive(false);
+        } else
+        {
+            this.TextGenerationSettings.generationExtents = RectTransformUtility.CalculateRelativeRectTransformBounds(canvas.transform, this.transform).extents;
+        }
+        
         this.TextGenerationSettings.font = this.Font;
 
         this.TextGenerator = new TextGenerator();
@@ -46,6 +61,7 @@ public class CustomTextRenderer : MonoBehaviour
 
     void Update()
     {
+        this.RegenerateMesh();
         if (MakeProgression)
         {
             this.progressionString += this.Text[this.progressionString.Length];
@@ -90,6 +106,12 @@ public class CustomTextRenderer : MonoBehaviour
             }
             this.Mesh.SetVertices(verticesToSet);
             this.CanvasRenderer.SetMesh(this.Mesh);
+        }
+
+        if (Regenerate)
+        {
+            Regenerate = false;
+            this.RegenerateMesh();
         }
     }
 

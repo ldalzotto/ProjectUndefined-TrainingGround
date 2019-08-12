@@ -63,7 +63,6 @@ namespace CoreGame
         public List<string> LinedTruncatedText { get => linedTruncatedText; }
         public string OverlappedText { get => overlappedText; }
 
-        public float GetFinalWidth() { return this.discussionTextWindowDimensions.FinalWidth; }
         public float GetWindowHeight(int lineNb) { return this.discussionTextWindowDimensions.GetWindowHeight(lineNb, this.TextMesh); }
         public int GetDisplayedLineNb() { return this.DiscussionTextPlayerEngine.DisplayedLineNb; }
         #endregion
@@ -95,9 +94,7 @@ namespace CoreGame
 
             this.TextMesh.ForceRefresh(truncatedText);
 
-            this.discussionTextWindowDimensions.ComputeFinalDimensions();
-
-            generatedText = this.TextMesh.ForceRefresh(truncatedText, new Vector2(this.GetFinalWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(this.TextMesh)));
+            generatedText = this.TextMesh.ForceRefresh(truncatedText, new Vector2(this.discussionTextWindowDimensions.GetMaxWindowWidth(), this.discussionTextWindowDimensions.GetMaxWindowHeight(this.TextMesh)));
 
             this.linedTruncatedText = new List<string>();
             for (int i = 0; i < generatedText.lines.Count; i++)
@@ -133,20 +130,11 @@ namespace CoreGame
         private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
         private TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
 
-        private float finalWidth;
-
         public DiscussionTextWindowDimensions(DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent,
             TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent)
         {
             this.DiscussionWindowDimensionsComponent = DiscussionWindowDimensionsComponent;
             this.TextOnlyDiscussionWindowDimensionsComponent = TextOnlyDiscussionWindowDimensionsComponent;
-        }
-
-        public float FinalWidth { get => finalWidth; }
-
-        public void ComputeFinalDimensions()
-        {
-            this.finalWidth = DiscussionWindowDimensionsComponent.MaxWindowWidth;
         }
 
         public float GetMaxWindowHeight(TextMesh TextMesh)
@@ -262,6 +250,7 @@ namespace CoreGame
 
             this.canvasRenderer = text.GetComponent<CanvasRenderer>();
             this.textGenerationSettings = text.GetGenerationSettings(Vector2.zero);
+            this.textGenerationSettings.scaleFactor = 1f;
             this.textGenerator = new TextGenerator();
             this.textGenerator.Invalidate();
             text.enabled = false;
@@ -282,6 +271,19 @@ namespace CoreGame
             this.canvasRenderer.SetMesh(textMesh);
             this.canvasRenderer.SetMaterial(this.textGenerationSettings.font.material, null);
             this.Mesh = textMesh;
+
+            /*
+            //DEBUG
+            float minX = 0f;
+            float maxX = 0f;
+            foreach(var vert in this.Mesh.vertices.ToList())
+            {
+                minX = Math.Min(minX, vert.x);
+                maxX = Math.Max(maxX, vert.x);
+            }
+            Debug.Log(Math.Abs(maxX - minX));
+            */
+
             this.lastTextUsedForGeneration = text;
 
             return this.textGenerator;
@@ -306,7 +308,7 @@ namespace CoreGame
             }
             return foundVertices;
         }
-
+        
         private void TextGenToMesh(TextGenerator generator, out Mesh mesh)
         {
             mesh = new Mesh();

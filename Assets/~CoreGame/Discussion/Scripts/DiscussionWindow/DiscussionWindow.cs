@@ -107,7 +107,7 @@ namespace CoreGame
             this.currentDiscussionText = new DiscussionText(fullTextContent, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText);
             this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
             this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
-            this.OnWidthChange(this.currentDiscussionText.GetFinalWidth());
+            this.OnWidthChange(this.DiscussionWindowDimensionsComponent.MaxWindowWidth);
 
             DiscussionWriterManager.OnDiscussionTextStartWriting();
         }
