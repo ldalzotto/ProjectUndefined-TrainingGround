@@ -115,12 +115,6 @@ namespace CoreGame
         {
             if (this.SpecialCharactersImages != null) { this.SpecialCharactersImages.ForEach(i => MonoBehaviour.Destroy(i.gameObject)); }
         }
-
-        private void ForceUpdateTextCachedTextGenerator(string textContent, Text textArea)
-        {
-            textArea.text = textContent;
-            Canvas.ForceUpdateCanvases();
-        }
     }
 
     class DiscussionTextWindowDimensions
@@ -274,6 +268,9 @@ namespace CoreGame
                     + new Vector2(-DiscussionWindowDimensionsComponent.MarginLeft - DiscussionWindowDimensionsComponent.MarginRight,
                                                -DiscussionWindowDimensionsComponent.MarginUp - DiscussionWindowDimensionsComponent.MarginDown);
             }
+
+            Debug.Log(this.TextGenerationSettings.generationExtents);
+
             this.textGenerator.Populate(text, this.TextGenerationSettings);
             return this.textGenerator;
         }
