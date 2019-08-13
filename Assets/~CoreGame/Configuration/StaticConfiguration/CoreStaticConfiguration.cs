@@ -8,5 +8,6 @@ namespace CoreGame
     public class CoreStaticConfiguration : ScriptableObject
     {
         public DiscussionTextRepertoire DiscussionTestRepertoire;
+        public CoreInputConfiguration CoreInputConfiguration;
     }
 }

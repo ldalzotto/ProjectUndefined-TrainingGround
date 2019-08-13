@@ -104,6 +104,7 @@
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\ChunkZonesSceneConfiguration\ChunkZonesSceneConfiguration.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\FunctionalExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\InputHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MultiValueDictionary.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\ProceduralTextureHelper.cs" />
@@ -257,6 +259,9 @@
     <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

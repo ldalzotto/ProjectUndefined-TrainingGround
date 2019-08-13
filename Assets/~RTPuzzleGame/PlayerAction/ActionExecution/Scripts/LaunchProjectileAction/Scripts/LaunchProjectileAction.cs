@@ -60,13 +60,13 @@ namespace RTPuzzle
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
             var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            var coreInputConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration.CoreInputConfiguration;
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();
             var playerTransformScreen = camera.WorldToScreenPoint(playerTransform.position);
             playerTransformScreen.y = camera.pixelHeight - playerTransformScreen.y;
-            var configuration = GameObject.FindObjectOfType<PlayerActionConfigurationManager>();
 
             var projectileId = ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId;
 
@@ -75,7 +75,7 @@ namespace RTPuzzle
             this.projectileThrowRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, interactiveObjectContainer);
 
-            LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(configuration.LaunchProjectileScreenPositionManagerComponent,
+            LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(coreInputConfiguration,
                playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          this.projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
@@ -174,17 +174,17 @@ namespace RTPuzzle
     #region Screen Position Manager
     class LaunchProjectileScreenPositionManager
     {
-        private LaunchProjectileScreenPositionManagerComponent LaunchProjectileScreenPositionManagerComponent;
+        private CoreInputConfiguration CoreInputConfiguration;
         private GameInputManager GameInputManager;
         private CameraMovementManager CameraMovementManager;
 
         private ThrowProjectileCursorType cursorObject;
         private Vector2 currentCursorScreenPosition;
 
-        public LaunchProjectileScreenPositionManager(LaunchProjectileScreenPositionManagerComponent launchProjectileScreenPositionManagerComponent,
+        public LaunchProjectileScreenPositionManager(CoreInputConfiguration CoreInputConfiguration,
             Vector2 currentCursorScreenPosition, GameInputManager GameInputManager, Canvas gameCanvas, CameraMovementManager CameraMovementManager)
         {
-            LaunchProjectileScreenPositionManagerComponent = launchProjectileScreenPositionManagerComponent;
+            this.CoreInputConfiguration = CoreInputConfiguration;
             this.currentCursorScreenPosition = currentCursorScreenPosition;
             this.GameInputManager = GameInputManager;
             this.cursorObject = ThrowProjectileCursorType.Instanciate(gameCanvas.transform);
@@ -199,7 +199,7 @@ namespace RTPuzzle
             if (!this.CameraMovementManager.IsCameraRotating())
             {
                 var locomotionAxis = GameInputManager.CurrentInput.CursorDisplacement();
-                currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * Screen.width * LaunchProjectileScreenPositionManagerComponent.CursorSpeedScreenWidthPerCent * d);
+                currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * Screen.width * this.CoreInputConfiguration.GetCursorMovementMouseSensitivity() * d);
                 UpdateCursorPosition();
             }
         }

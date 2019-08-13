@@ -5,7 +5,6 @@ namespace CoreGame
     public class PlayerCommonComponents : MonoBehaviour
     {
         [Header("Camera")]
-        public CameraOrientationManagerComponent CameraOrientationManagerComponent;
         public CameraFollowManagerComponent CameraFollowManagerComponent;
 
         [Header("Procedural animations")]

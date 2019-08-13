@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace CoreGame
 {
@@ -18,104 +19,154 @@ namespace CoreGame
         {
             currentInput = new JoystickInput();
             Cursor.lockState = CursorLockMode.Locked;
+            //todo strange
         }
 
         private class JoystickInput : XInput
         {
             public bool ActionButtonD()
             {
-                return Input.GetButtonDown("Action") || Input.GetMouseButtonDown(0);
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.fKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame;
             }
 
             public bool ActionButtonDH()
             {
-                return Input.GetButton("Action") || Input.GetButtonDown("Action") || Input.GetMouseButton(0) || Input.GetMouseButtonDown(0);
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.fKey.isPressed || Mouse.current.leftButton.isPressed;
             }
 
             public bool CancelButtonD()
             {
-                return Input.GetButtonDown("Cancel");
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.cKey.wasPressedThisFrame;
             }
 
             public bool CancelButtonDH()
             {
-                return Input.GetButton("Cancel") || Input.GetButtonDown("Cancel");
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.cKey.isPressed;
             }
 
             public bool InventoryButtonD()
             {
-                return Input.GetButtonDown("Inventory");
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.eKey.isPressed;
             }
 
             public Vector3 LocomotionAxis()
             {
-                if (Mathf.Abs(Input.GetAxis("Horizontal")) >= float.Epsilon || Mathf.Abs(Input.GetAxis("Vertical")) >= float.Epsilon)
+                if (!Application.isFocused)
+                {
+                    return Vector3.zero;
+                }
+
+                if (Gamepad.current != null)
+                {
+                    return Vector3.zero;
+                }
+                else
                 {
                     //keyboard
-                    var rawDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                    var rawDirection = new Vector3(-Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.leftArrowKey, Keyboard.current.aKey)) + Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.rightArrowKey, Keyboard.current.dKey)), 0,
+                             -Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.downArrowKey, Keyboard.current.sKey)) + Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.upArrowKey, Keyboard.current.wKey)));
                     if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
                     {
                         rawDirection = rawDirection.normalized;
                     }
                     return rawDirection;
                 }
-                else
-                {
-                    //gamepad
-                    return new Vector3(Input.GetAxis("Horizontal_PAD"), 0, Input.GetAxis("Vertical_PAD"));
-                }
             }
-            
+
             public Vector3 CursorDisplacement()
             {
-                if (Mathf.Abs(Input.GetAxis("Mouse X")) >= float.Epsilon || Mathf.Abs(Input.GetAxis("Mouse Y")) >= float.Epsilon)
+                if (!Application.isFocused)
                 {
-                    //keyboard
-                    return new Vector3(Input.GetAxis("Mouse X"),0, Input.GetAxis("Mouse Y"));
+                    return Vector3.zero;
+                }
+
+                if (Gamepad.current != null)
+                {
+                    return Vector3.zero;
                 }
                 else
                 {
-                    //gamepad
-                    return new Vector3(Input.GetAxis("Horizontal_PAD"), 0, Input.GetAxis("Vertical_PAD"));
+                    return new Vector3(Mouse.current.delta.x.ReadValue(), 0, Mouse.current.delta.y.ReadValue());
                 }
             }
-            
+
             public float LeftRotationCameraDH()
             {
-                var buttonPress = (Input.GetButton("Camera_Rotation_Left") || Input.GetButtonDown("Camera_Rotation_Left"));
-                if (buttonPress)
+                if (!Application.isFocused)
                 {
-                    return Convert.ToInt32(buttonPress);
+                    return 0f;
                 }
-                else if (Input.GetMouseButton(1))
+
+                if (Mouse.current.rightButton.isPressed)
                 {
-                    return Mathf.Max(Input.GetAxis("Mouse X"), 0);
+                    return Mathf.Max(Mouse.current.delta.x.ReadValue(), 0);
                 }
-                return 0f;
+                else
+                {
+                    return 0f;
+                }
             }
 
             public float RightRotationCameraDH()
             {
-                var buttonPress = (Input.GetButton("Camera_Rotation_Right") || Input.GetButtonDown("Camera_Rotation_Right"));
-                if (buttonPress)
+                if (!Application.isFocused)
                 {
-                    return Convert.ToInt32(buttonPress);
+                    return 0f;
                 }
-                else if (Input.GetMouseButton(1))
+
+                if (Mouse.current.rightButton.isPressed)
                 {
-                    return Mathf.Min(Input.GetAxis("Mouse X"), 0) * -1;
+                    return -Mathf.Min(Mouse.current.delta.x.ReadValue(), 0);
                 }
-                return 0f;
+                else
+                {
+                    return 0f;
+                }
             }
 
             public bool TimeForwardButtonDH()
             {
-                return Input.GetButton("TimeForward") || Input.GetButtonDown("TimeForward");
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.iKey.isPressed;
             }
 
             public bool PuzzleResetButton()
             {
-                return Input.GetButton("PuzzleReset");
+                if (!Application.isFocused)
+                {
+                    return false;
+                }
+
+                return Keyboard.current.rKey.isPressed;
             }
         }
 

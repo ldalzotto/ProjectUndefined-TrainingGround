@@ -5,7 +5,6 @@ namespace CoreGame
     public class CameraMovementManager : MonoBehaviour
     {
         public CameraFollowManagerComponent CameraFollowManagerComponent;
-        public CameraOrientationManagerComponent CameraOrientationManagerComponent;
 
         private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
@@ -15,9 +14,10 @@ namespace CoreGame
             var playerPosition = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform;
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG).transform;
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            var coreInputConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration.CoreInputConfiguration;
 
             this.CameraFollowManager = new CameraFollowManager(playerPosition, cameraPivotPoint, CameraFollowManagerComponent);
-            this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, gameInputManager, CameraOrientationManagerComponent);
+            this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, gameInputManager, coreInputConfiguration);
         }
 
         public void Tick(float d)
@@ -87,14 +87,9 @@ namespace CoreGame
         #endregion
     }
 
-    [System.Serializable]
-    public class CameraOrientationManagerComponent
-    {
-        public float CameraRotationSpeed;
-    }
     public class CameraOrientationManager
     {
-        private CameraOrientationManagerComponent CameraOrientationManagerComponent;
+        private CoreInputConfiguration CoreInputConfiguration;
         private Transform cameraPivotPoint;
         private IGameInputManager gameInputManager;
 
@@ -105,11 +100,11 @@ namespace CoreGame
         private bool isRotatingTowardsAtarget = false;
         #endregion
 
-        public CameraOrientationManager(Transform cameraPivotPoint, IGameInputManager gameInputManager, CameraOrientationManagerComponent CameraOrientationManagerComponent)
+        public CameraOrientationManager(Transform cameraPivotPoint, IGameInputManager gameInputManager, CoreInputConfiguration CoreInputConfiguration)
         {
             this.cameraPivotPoint = cameraPivotPoint;
             this.gameInputManager = gameInputManager;
-            this.CameraOrientationManagerComponent = CameraOrientationManagerComponent;
+            this.CoreInputConfiguration = CoreInputConfiguration;
         }
 
         public bool IsRotating { get => isRotating; }
@@ -125,7 +120,7 @@ namespace CoreGame
             }
             else
             {
-                rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * this.CameraOrientationManagerComponent.CameraRotationSpeed, 0);
+                rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * this.CoreInputConfiguration.GetCameraMovementMouseSensitivity(), 0);
             }
             
             if (Mathf.Abs(rotationVector.y) <= 0.001)
