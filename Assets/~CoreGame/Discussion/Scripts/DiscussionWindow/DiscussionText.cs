@@ -136,7 +136,9 @@ namespace CoreGame
 
         public float GetWindowHeight(int lineNb, TextMesh TextMesh)
         {
-            return Mathf.Max(DiscussionWindowDimensionsComponent.MinWindowHeight, ((TextMesh.TextGenerationSettings.font.lineHeight + TextMesh.TextGenerationSettings.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.MarginDown + DiscussionWindowDimensionsComponent.MarginUp));
+            var scaledLineHeight = TextMesh.TextGenerationSettings.font.lineHeight / TextMesh.TextGenerationSettings.scaleFactor;
+            return
+                Mathf.Max(DiscussionWindowDimensionsComponent.MinWindowHeight, ((scaledLineHeight + TextMesh.TextGenerationSettings.lineSpacing) * lineNb) + (DiscussionWindowDimensionsComponent.MarginDown + DiscussionWindowDimensionsComponent.MarginUp));
         }
 
         public float GetMaxWindowWidth()
@@ -248,7 +250,7 @@ namespace CoreGame
             this.DiscussionWindowDimensionsComponent = DiscussionWindowDimensionsComponent;
 
             this.textGenerationSettings = text.GetGenerationSettings(Vector2.zero);
-            this.textGenerationSettings.scaleFactor = 1f;
+            //this.textGenerationSettings.scaleFactor = 1f;
             this.textGenerator = new TextGenerator();
             this.textGenerator.Invalidate();
             this.mesh = new Mesh();
@@ -324,7 +326,8 @@ namespace CoreGame
 
         private void TextGenToMesh(TextGenerator generator, ref Mesh mesh)
         {
-            mesh.vertices = generator.verts.Select(v => v.position).ToArray();
+            var scaleMatrix = Matrix4x4.Scale(new Vector3(this.textGenerationSettings.scaleFactor, this.textGenerationSettings.scaleFactor, this.textGenerationSettings.scaleFactor)).inverse;
+            mesh.vertices = generator.verts.Select(v => scaleMatrix.MultiplyPoint(v.position)).ToArray();
             mesh.colors32 = new Color32[mesh.vertexCount] ;
             mesh.uv = generator.verts.Select(v => v.uv0).ToArray();
             var triangles = new int[generator.vertexCount * 6];
