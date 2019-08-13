@@ -16,7 +16,6 @@ namespace Editor_MainGameCreationWizard
             #region Puzzle Common Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.GameManagerPersistanceInstance, "_GameManagers_Persistance_Instanciater");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.CorePuzzleSceneElements, "CorePuzzleSceneElements");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.EventSystem, "EventSystem");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.PuzzleDebugModule, "PuzzleDebugModule");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
@@ -171,8 +170,6 @@ namespace Editor_MainGameCreationWizard
         public GameManagerPersistanceInstance GameManagerPersistanceInstance;
         [ReadOnly]
         public GameObject CorePuzzleSceneElements;
-        [ReadOnly]
-        public EventSystem EventSystem;
         [ReadOnly]
         public PuzzleDebugModule PuzzleDebugModule;
         [ReadOnly]
