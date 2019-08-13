@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor.IMGUI.Controls;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
 
 public class RegexTextFinder
 {
@@ -22,7 +20,10 @@ public class RegexTextFinder
         this.searchText = this.searchField.OnGUI(this.searchText);
         if (EditorGUI.EndChangeCheck())
         {
-            this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+            if (!string.IsNullOrEmpty(this.searchText))
+            {
+                this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+            }
         }
 
     }
@@ -30,11 +31,14 @@ public class RegexTextFinder
     public void SetSearchTest(string searchText)
     {
         this.searchText = searchText;
-        this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+        if (!string.IsNullOrEmpty(this.searchText))
+        {
+            this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+        }
     }
 
     public bool IsMatchingWith(string comparisonString)
     {
-        return string.IsNullOrEmpty(this.searchText) || this.regex.Match(comparisonString).Success;
+        return (string.IsNullOrEmpty(this.searchText) || (this.regex != null && this.regex.Match(comparisonString).Success));
     }
 }

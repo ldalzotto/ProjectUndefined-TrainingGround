@@ -10,7 +10,6 @@ namespace CoreGame
     public class DiscussionText
     {
         private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
-        public const string SpecialCharacterImageTemplate = "#0";
 
         private string initialRawText;
         private string transformedInitialRawText;
@@ -18,7 +17,10 @@ namespace CoreGame
         private string overlappedText;
 
         private List<string> linedTruncatedText;
-        private List<Image> SpecialCharactersImages;
+
+        #region Parameters management
+        private DiscussionTextParameter DiscussionTextParameter;
+        #endregion
 
         private TextMesh TextMesh;
         private DiscussionTextWindowDimensions discussionTextWindowDimensions;
@@ -32,25 +34,8 @@ namespace CoreGame
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
 
             #region Special Character Image mapping
-            this.SpecialCharactersImages = new List<Image>();
-            var keyCharacterRegex = new Regex("@.*?( |$)");
-            Match regexMatch = null;
-            do
-            {
-                regexMatch = keyCharacterRegex.Match(this.transformedInitialRawText);
-                if (regexMatch.Success)
-                {
-                    var matchValue = regexMatch.Value.Trim(TrimmedCharForSanitaze);
-                    this.transformedInitialRawText = this.transformedInitialRawText.Substring(0, regexMatch.Index)
-                        + SpecialCharacterImageTemplate
-                        + this.transformedInitialRawText.Substring(regexMatch.Index + matchValue.Length, this.transformedInitialRawText.Length - (regexMatch.Index + matchValue.Length));
-
-                    //TODO -> Mapping
-                    var instaciatedImage = MonoBehaviour.Instantiate(PrefabContainer.Instance.InputBaseImage, textAreaText.transform);
-                    instaciatedImage.gameObject.SetActive(false);
-                    this.SpecialCharactersImages.Add(instaciatedImage);
-                }
-            } while (regexMatch.Success);
+            this.DiscussionTextParameter = new DiscussionTextParameter();
+            this.transformedInitialRawText = this.DiscussionTextParameter.ParseParameters(this.transformedInitialRawText);
             #endregion
 
             this.discussionTextWindowDimensions = new DiscussionTextWindowDimensions(DiscussionWindowDimensionsComponent, TextOnlyDiscussionWindowDimensionsComponent);
@@ -70,7 +55,7 @@ namespace CoreGame
         #region Writing
         public void Increment()
         {
-            this.DiscussionTextPlayerEngine.Increment(this.TextMesh, this.SpecialCharactersImages);
+            this.DiscussionTextPlayerEngine.Increment(this.TextMesh, this.DiscussionTextParameter);
         }
         #endregion
 
@@ -113,7 +98,7 @@ namespace CoreGame
 
         public void OnDestroy()
         {
-            if (this.SpecialCharactersImages != null) { this.SpecialCharactersImages.ForEach(i => MonoBehaviour.Destroy(i.gameObject)); }
+            this.DiscussionTextParameter.OnTextDestroy();
         }
     }
 
@@ -166,8 +151,6 @@ namespace CoreGame
         private string currentDisplayedTextUnModified;
         private int displayedLineNb;
 
-        private Regex textSpecialImageRegex;
-
         public int DisplayedLineNb { get => displayedLineNb; }
 
         public void StartWriting(DiscussionText discussionText)
@@ -175,39 +158,21 @@ namespace CoreGame
             this.targetText = String.Join("\n", discussionText.LinedTruncatedText.ToArray());
             this.currentDisplayedTextUnModified = String.Empty;
             this.displayedLineNb = 1;
-            this.textSpecialImageRegex = new Regex(DiscussionText.SpecialCharacterImageTemplate);
         }
 
-        public void Increment(TextMesh TextMesh, List<Image> SpecialCharactersImages)
+        public void Increment(TextMesh TextMesh, DiscussionTextParameter DiscussionTextParameter)
         {
             if (currentDisplayedTextUnModified.Length < targetText.Length)
             {
-                var charToAdd = targetText[currentDisplayedTextUnModified.Length];
+                var stringToAdd = DiscussionTextParameter.GetFullTransformedParameterTemplate(targetText[currentDisplayedTextUnModified.Length]);
 
-                if (charToAdd == '#')
+                for (var i = 0; i < stringToAdd.Length; i++)
                 {
-                    TextMesh.IncrementChar(charToAdd);
-                    currentDisplayedTextUnModified += charToAdd;
-                    TextMesh.IncrementChar(targetText[currentDisplayedTextUnModified.Length]);
-                    currentDisplayedTextUnModified += targetText[currentDisplayedTextUnModified.Length];
-                    TextMesh.IncrementChar(targetText[currentDisplayedTextUnModified.Length]);
-                    currentDisplayedTextUnModified += targetText[currentDisplayedTextUnModified.Length];
+                    TextMesh.IncrementChar(stringToAdd[i]);
+                    currentDisplayedTextUnModified += stringToAdd[i];
                 }
-                else
-                {
-                    TextMesh.IncrementChar(charToAdd);
-                    currentDisplayedTextUnModified += charToAdd;
-                }
-                
-                int specialImageMatchCount = 0;
-                foreach (var imageVertices in TextMesh.FindOccurences(DiscussionText.SpecialCharacterImageTemplate))
-                {
-                    Vector2 imagePosition = imageVertices.Center();
-                    SpecialCharactersImages[specialImageMatchCount].gameObject.SetActive(true);
-                    SpecialCharactersImages[specialImageMatchCount].transform.localPosition = imagePosition;
-                    ((RectTransform)(SpecialCharactersImages[specialImageMatchCount].transform)).sizeDelta = new Vector2(imageVertices.Width(), imageVertices.Width());
-                    specialImageMatchCount += 1;
-                }
+
+                DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh);
 
                 var newDisplayedLineNb = Mathf.Min(this.currentDisplayedTextUnModified.Split('\n').Length, this.TextOnlyDiscussionWindowDimensionsComponent.MaxLineDisplayed);
                 if (newDisplayedLineNb != this.displayedLineNb)
@@ -230,7 +195,7 @@ namespace CoreGame
         void OnHeightChange(float newHeight);
     }
 
-    class TextMesh
+    public class TextMesh
     {
         private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
 
@@ -328,7 +293,7 @@ namespace CoreGame
         {
             var scaleMatrix = Matrix4x4.Scale(new Vector3(this.textGenerationSettings.scaleFactor, this.textGenerationSettings.scaleFactor, this.textGenerationSettings.scaleFactor)).inverse;
             mesh.vertices = generator.verts.Select(v => scaleMatrix.MultiplyPoint(v.position)).ToArray();
-            mesh.colors32 = new Color32[mesh.vertexCount] ;
+            mesh.colors32 = new Color32[mesh.vertexCount];
             mesh.uv = generator.verts.Select(v => v.uv0).ToArray();
             var triangles = new int[generator.vertexCount * 6];
             for (var i = 0; i < mesh.vertices.Length / 4; i++)
@@ -355,9 +320,10 @@ namespace CoreGame
         }
 
         public TextGenerationSettings TextGenerationSettings { get => textGenerationSettings; }
+        public CanvasRenderer CanvasRenderer { get => canvasRenderer; }
     }
 
-    class LetterVertices
+    public class LetterVertices
     {
         public Vector3 TopLeft;
         public Vector3 TopRight;
