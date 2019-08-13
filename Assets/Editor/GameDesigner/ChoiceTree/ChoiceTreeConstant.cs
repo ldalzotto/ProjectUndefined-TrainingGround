@@ -85,6 +85,7 @@ namespace Editor_GameDesigner
 {"Puzzle//GrabObject//.CreateGrabObject",typeof(Editor_GameDesigner.CreateGrabObject)},
 {"Configuration//.GrabObjectConfigurationModule",typeof(Editor_GameDesigner.GrabObjectConfigurationModule)},
 {"Puzzle//GrabObject//.EditGrabObject",typeof(Editor_GameDesigner.EditGrabObject)},
+{"Configuration//.InputConfigurationModule",typeof(Editor_GameDesigner.InputConfigurationModule)},
 };
     }
 }

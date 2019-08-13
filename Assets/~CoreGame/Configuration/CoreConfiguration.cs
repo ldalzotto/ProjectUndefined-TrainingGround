@@ -13,6 +13,7 @@ namespace CoreGame
         public TimelineConfiguration TimelineConfiguration;
         public AnimationConfiguration AnimationConfiguration;
         public DiscussionTreeConfiguration DiscussionTreeConfiguration;
+        public InputConfiguration InputConfiguration;
     }
 }
 

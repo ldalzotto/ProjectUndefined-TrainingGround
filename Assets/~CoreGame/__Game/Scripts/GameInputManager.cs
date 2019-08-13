@@ -1,6 +1,9 @@
-﻿using System;
+﻿using GameConfigurationID;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace CoreGame
 {
@@ -11,91 +14,60 @@ namespace CoreGame
 
     public class GameInputManager : MonoBehaviour, IGameInputManager
     {
+
         private XInput currentInput;
 
         public XInput CurrentInput { get => currentInput; }
 
         public void Init()
         {
-            currentInput = new JoystickInput();
+            currentInput = new GameInput(new GameInputV2(GameObject.FindObjectOfType<CoreConfigurationManager>().CoreConfiguration.InputConfiguration), GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration.CoreInputConfiguration);
             Cursor.lockState = CursorLockMode.Locked;
-            //todo strange
         }
 
-        private class JoystickInput : XInput
+        private class GameInput : XInput
         {
-            public bool ActionButtonD()
-            {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
+            private GameInputV2 GameInputV2;
+            private CoreInputConfiguration CoreInputConfiguration;
 
-                return Keyboard.current.fKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame;
+            public GameInput(GameInputV2 gameInputV2, CoreInputConfiguration CoreInputConfiguration)
+            {
+                GameInputV2 = gameInputV2;
+                this.CoreInputConfiguration = CoreInputConfiguration;
             }
 
-            public bool ActionButtonDH()
+            public bool ActionButtonD()
             {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-
-                return Keyboard.current.fKey.isPressed || Mouse.current.leftButton.isPressed;
+                return this.GameInputV2.InputConditionsMet(InputID.ACTION_DOWN);
             }
 
             public bool CancelButtonD()
             {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-
-                return Keyboard.current.cKey.wasPressedThisFrame;
+                return this.GameInputV2.InputConditionsMet(InputID.CANCEL_DOWN);
             }
 
             public bool CancelButtonDH()
             {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-
-                return Keyboard.current.cKey.isPressed;
+                return this.GameInputV2.InputConditionsMet(InputID.CANCEL_DOWN_HOLD);
             }
 
             public bool InventoryButtonD()
             {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-
-                return Keyboard.current.eKey.isPressed;
+                return this.GameInputV2.InputConditionsMet(InputID.INVENTORY_DOWN);
             }
 
             public Vector3 LocomotionAxis()
             {
-                if (!Application.isFocused)
+                var rawDirection = new Vector3(-Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.LEFT_DOWN_HOLD))
+                                               + Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.RIGHT_DOWN_HOLD)),
+                                               0,
+                                               -Convert.ToInt32(Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.DOWN_DOWN_HOLD)))
+                                               + Convert.ToInt32(Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.UP_DOWN_HOLD))));
+                if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
                 {
-                    return Vector3.zero;
+                    rawDirection = rawDirection.normalized;
                 }
-
-                if (Gamepad.current != null)
-                {
-                    return Vector3.zero;
-                }
-                else
-                {
-                    //keyboard
-                    var rawDirection = new Vector3(-Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.leftArrowKey, Keyboard.current.aKey)) + Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.rightArrowKey, Keyboard.current.dKey)), 0,
-                             -Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.downArrowKey, Keyboard.current.sKey)) + Convert.ToInt32(InputHelper.IsEitherPressed(Keyboard.current.upArrowKey, Keyboard.current.wKey)));
-                    if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
-                    {
-                        rawDirection = rawDirection.normalized;
-                    }
-                    return rawDirection;
-                }
+                return rawDirection;
             }
 
             public Vector3 CursorDisplacement()
@@ -104,72 +76,97 @@ namespace CoreGame
                 {
                     return Vector3.zero;
                 }
-
-                if (Gamepad.current != null)
-                {
-                    return Vector3.zero;
-                }
-                else
-                {
-                    return new Vector3(Mouse.current.delta.x.ReadValue(), 0, Mouse.current.delta.y.ReadValue());
-                }
+                return new Vector3(Mouse.current.delta.x.ReadValue(), 0, Mouse.current.delta.y.ReadValue()) * Screen.width * this.CoreInputConfiguration.GetCursorMovementMouseSensitivity();
             }
 
             public float LeftRotationCameraDH()
             {
-                if (!Application.isFocused)
+                if (this.GameInputV2.InputConditionsMet(InputID.CAMERA_ROTATION_DOWN_HOLD))
                 {
-                    return 0f;
+                    return Mathf.Max(Mouse.current.delta.x.ReadValue(), 0) * Screen.width * this.CoreInputConfiguration.GetCameraMovementMouseSensitivity();
                 }
 
-                if (Mouse.current.rightButton.isPressed)
-                {
-                    return Mathf.Max(Mouse.current.delta.x.ReadValue(), 0);
-                }
-                else
-                {
-                    return 0f;
-                }
+                return 0f;
             }
 
             public float RightRotationCameraDH()
             {
-                if (!Application.isFocused)
+                if (this.GameInputV2.InputConditionsMet(InputID.CAMERA_ROTATION_DOWN_HOLD))
                 {
-                    return 0f;
+                    return -Mathf.Min(Mouse.current.delta.x.ReadValue(), 0) * Screen.width * this.CoreInputConfiguration.GetCameraMovementMouseSensitivity();
                 }
 
-                if (Mouse.current.rightButton.isPressed)
-                {
-                    return -Mathf.Min(Mouse.current.delta.x.ReadValue(), 0);
-                }
-                else
-                {
-                    return 0f;
-                }
+                return 0f;
             }
 
             public bool TimeForwardButtonDH()
             {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-
-                return Keyboard.current.iKey.isPressed;
+                return this.GameInputV2.InputConditionsMet(InputID.TIME_FORWARD_DOWN_HOLD);
             }
 
             public bool PuzzleResetButton()
             {
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-
-                return Keyboard.current.rKey.isPressed;
+                return this.GameInputV2.InputConditionsMet(InputID.PUZZLE_RESET_DOWN_HOLD);
             }
         }
 
+
+    }
+
+    class GameInputV2
+    {
+        private Dictionary<Key, KeyControl> KeyToKeyControlLookup;
+        private Dictionary<MouseButton, ButtonControl> MouseButtonControlLookup;
+
+        private InputConfiguration InputConfiguration;
+
+        public GameInputV2(InputConfiguration inputConfiguration)
+        {
+            this.KeyToKeyControlLookup = new Dictionary<Key, KeyControl>();
+            this.MouseButtonControlLookup = new Dictionary<MouseButton, ButtonControl>();
+
+            foreach (var keyBoardKeyControl in Keyboard.current.allKeys)
+            {
+                this.KeyToKeyControlLookup[keyBoardKeyControl.keyCode] = keyBoardKeyControl;
+            }
+            this.MouseButtonControlLookup[MouseButton.LEFT_BUTTON] = Mouse.current.leftButton;
+            this.MouseButtonControlLookup[MouseButton.RIGHT_BUTTON] = Mouse.current.rightButton;
+
+            InputConfiguration = inputConfiguration;
+        }
+
+        public bool InputConditionsMet(InputID inputID)
+        {
+            bool inputConditionsMet = false;
+            if (Application.isFocused)
+            {
+                var inputConfigurationInherentData = this.InputConfiguration.ConfigurationInherentData[inputID];
+                foreach (var attibutedKey in inputConfigurationInherentData.AttributedKeys)
+                {
+                    if (inputConfigurationInherentData.Down)
+                    {
+                        inputConditionsMet = inputConditionsMet || this.KeyToKeyControlLookup[attibutedKey].wasPressedThisFrame;
+                    }
+                    else if (inputConfigurationInherentData.DownHold)
+                    {
+                        inputConditionsMet = inputConditionsMet || this.KeyToKeyControlLookup[attibutedKey].wasPressedThisFrame || this.KeyToKeyControlLookup[attibutedKey].isPressed;
+                    }
+                }
+
+                foreach (var attrubuteMouseButton in inputConfigurationInherentData.AttributedMouseButtons)
+                {
+                    if (inputConfigurationInherentData.Down)
+                    {
+                        inputConditionsMet = inputConditionsMet || this.MouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame;
+                    }
+                    else if (inputConfigurationInherentData.DownHold)
+                    {
+                        inputConditionsMet = inputConditionsMet || this.MouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame || this.MouseButtonControlLookup[attrubuteMouseButton].isPressed;
+                    }
+                }
+            }
+            return inputConditionsMet;
+        }
     }
 
     public interface XInput
@@ -178,12 +175,17 @@ namespace CoreGame
         Vector3 CursorDisplacement();
         float LeftRotationCameraDH();
         float RightRotationCameraDH();
-        bool ActionButtonDH();
         bool ActionButtonD();
         bool InventoryButtonD();
         bool CancelButtonD();
         bool CancelButtonDH();
         bool TimeForwardButtonDH();
         bool PuzzleResetButton();
+    }
+
+    public enum MouseButton
+    {
+        LEFT_BUTTON = 0,
+        RIGHT_BUTTON = 1
     }
 }

@@ -111,6 +111,8 @@
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\AbstractDiscussionWindowsContainer.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTree.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\DiscussionTreeConfiguration\DiscussionTreeConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\InputConfiguration\InputConfigurationInherentData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
@@ -152,7 +154,6 @@
     <Compile Include="Assets\~CoreGame\Helpers\FunctionalExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
-    <Compile Include="Assets\~CoreGame\Helpers\InputHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MultiValueDictionary.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\ProceduralTextureHelper.cs" />
@@ -209,7 +210,6 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
-    <Compile Include="Assets\Input\Mobile\Scripts\MobileInputJoystickManager.cs" />
     <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
     <Compile Include="Assets\Test\CircleBarTest\CircleFillBarRendererManager.cs" />
     <Compile Include="Assets\Test\CircleBarTest\CircleFillBarType.cs" />

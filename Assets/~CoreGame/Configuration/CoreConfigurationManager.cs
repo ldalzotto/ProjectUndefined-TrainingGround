@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GameConfigurationID;
 using System.Collections.Generic;
-using GameConfigurationID;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -17,6 +16,10 @@ namespace CoreGame
         public Dictionary<DiscussionTreeId, DiscussionTree> DiscussionConfiguration()
         {
             return CoreConfiguration.DiscussionTreeConfiguration.ConfigurationInherentData;
+        }
+        public Dictionary<InputID, InputConfigurationInherentData> InputConfiguration()
+        {
+            return CoreConfiguration.InputConfiguration.ConfigurationInherentData;
         }
     }
 

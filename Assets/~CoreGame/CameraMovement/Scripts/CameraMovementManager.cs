@@ -120,9 +120,9 @@ namespace CoreGame
             }
             else
             {
-                rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d * this.CoreInputConfiguration.GetCameraMovementMouseSensitivity(), 0);
+                rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d, 0);
             }
-            
+
             if (Mathf.Abs(rotationVector.y) <= 0.001)
             {
                 if (this.isRotatingTowardsAtarget)
