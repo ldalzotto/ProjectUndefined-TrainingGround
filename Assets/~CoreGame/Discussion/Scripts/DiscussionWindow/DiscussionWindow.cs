@@ -26,6 +26,7 @@ namespace CoreGame
 
         #region External Dependencies
         private CoreConfigurationManager CoreConfigurationManager;
+        private GameInputManager GameInputManager;
         #endregion
 
         #region Internal Dependencies
@@ -49,6 +50,7 @@ namespace CoreGame
         {
             #region External Dependencies
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            this.GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             #endregion
 
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
@@ -118,7 +120,8 @@ namespace CoreGame
         private void InitializeDiscussionWindow(string text, ReadOnlyCollection<InputParameter> InputParameters)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
-            this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText, this.CoreConfigurationManager.InputConfiguration());
+            this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, 
+                this, this.textAreaText, this.CoreConfigurationManager.InputConfiguration(), this.GameInputManager);
             this.OnDiscussionStartWriting();
         }
 

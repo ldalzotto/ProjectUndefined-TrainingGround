@@ -23,6 +23,7 @@ namespace CoreGame
 
         #region External Dependencies
         private InputConfiguration InputConfiguration;
+        private GameInputManager GameInputManager;
         #endregion
 
         #region State
@@ -34,10 +35,11 @@ namespace CoreGame
         public List<IParameterDisplayContent> ParameterDisplayContent { get => parameterDisplayContent; }
         #endregion
 
-        public DiscussionTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration)
+        public DiscussionTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration, GameInputManager gameInputManager)
         {
             this.InputParameters = InputParameters;
             this.InputConfiguration = inputConfiguration;
+            this.GameInputManager = gameInputManager;
         }
 
         public string ParseParameters(string inputText)
@@ -126,7 +128,7 @@ namespace CoreGame
                         if (InputParameterDisplayContent.InputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
                         {
                             InputParameterDisplayContent.IconImage.SetTextFontSize((int)Math.Floor(imageVertices.Width() * 0.75f));
-                            InputParameterDisplayContent.IconImage.SetKey(InputParameterDisplayContent.InputConfigurationInherentData.AttributedKeys[0].ToString()[0].ToString());
+                            InputParameterDisplayContent.IconImage.SetKey(this.GameInputManager.GetKeyToKeyControlLookup()[InputParameterDisplayContent.InputConfigurationInherentData.AttributedKeys[0]].displayName);
                         }
                     }
                 }

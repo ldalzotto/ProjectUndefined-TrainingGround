@@ -29,14 +29,13 @@ namespace CoreGame
         #endregion
 
         public DiscussionText(string initialRawText, ReadOnlyCollection<InputParameter> InputParameters, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent,
-            TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText, InputConfiguration inputConfiguration)
+            TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText, InputConfiguration inputConfiguration, GameInputManager GameInputManager)
         {
-
             this.initialRawText = initialRawText;
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
 
             #region Special Character Image mapping
-            this.DiscussionTextParameter = new DiscussionTextParameter(InputParameters, inputConfiguration);
+            this.DiscussionTextParameter = new DiscussionTextParameter(InputParameters, inputConfiguration, GameInputManager);
             this.transformedInitialRawText = this.DiscussionTextParameter.ParseParameters(this.transformedInitialRawText);
             #endregion
 

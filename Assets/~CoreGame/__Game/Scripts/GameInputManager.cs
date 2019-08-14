@@ -27,42 +27,44 @@ namespace CoreGame
 
         private class GameInput : XInput
         {
-            private GameInputV2 GameInputV2;
+            private GameInputV2 gameInputV2;
             private CoreInputConfiguration CoreInputConfiguration;
+
+            internal GameInputV2 GameInputV2 { get => gameInputV2; }
 
             public GameInput(GameInputV2 gameInputV2, CoreInputConfiguration CoreInputConfiguration)
             {
-                GameInputV2 = gameInputV2;
+                this.gameInputV2 = gameInputV2;
                 this.CoreInputConfiguration = CoreInputConfiguration;
             }
 
             public bool ActionButtonD()
             {
-                return this.GameInputV2.InputConditionsMet(InputID.ACTION_DOWN);
+                return this.gameInputV2.InputConditionsMet(InputID.ACTION_DOWN);
             }
 
             public bool CancelButtonD()
             {
-                return this.GameInputV2.InputConditionsMet(InputID.CANCEL_DOWN);
+                return this.gameInputV2.InputConditionsMet(InputID.CANCEL_DOWN);
             }
 
             public bool CancelButtonDH()
             {
-                return this.GameInputV2.InputConditionsMet(InputID.CANCEL_DOWN_HOLD);
+                return this.gameInputV2.InputConditionsMet(InputID.CANCEL_DOWN_HOLD);
             }
 
             public bool InventoryButtonD()
             {
-                return this.GameInputV2.InputConditionsMet(InputID.INVENTORY_DOWN);
+                return this.gameInputV2.InputConditionsMet(InputID.INVENTORY_DOWN);
             }
 
             public Vector3 LocomotionAxis()
             {
-                var rawDirection = new Vector3(-Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.LEFT_DOWN_HOLD))
-                                               + Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.RIGHT_DOWN_HOLD)),
+                var rawDirection = new Vector3(-Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.LEFT_DOWN_HOLD))
+                                               + Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.RIGHT_DOWN_HOLD)),
                                                0,
-                                               -Convert.ToInt32(Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.DOWN_DOWN_HOLD)))
-                                               + Convert.ToInt32(Convert.ToInt32(this.GameInputV2.InputConditionsMet(InputID.UP_DOWN_HOLD))));
+                                               -Convert.ToInt32(Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.DOWN_DOWN_HOLD)))
+                                               + Convert.ToInt32(Convert.ToInt32(this.gameInputV2.InputConditionsMet(InputID.UP_DOWN_HOLD))));
                 if (Vector3.Distance(rawDirection, Vector3.zero) > 1)
                 {
                     rawDirection = rawDirection.normalized;
@@ -81,7 +83,7 @@ namespace CoreGame
 
             public float LeftRotationCameraDH()
             {
-                if (this.GameInputV2.InputConditionsMet(InputID.CAMERA_ROTATION_DOWN_HOLD))
+                if (this.gameInputV2.InputConditionsMet(InputID.CAMERA_ROTATION_DOWN_HOLD))
                 {
                     return Mathf.Max(Mouse.current.delta.x.ReadValue(), 0) * Screen.width * this.CoreInputConfiguration.GetCameraMovementMouseSensitivity();
                 }
@@ -91,7 +93,7 @@ namespace CoreGame
 
             public float RightRotationCameraDH()
             {
-                if (this.GameInputV2.InputConditionsMet(InputID.CAMERA_ROTATION_DOWN_HOLD))
+                if (this.gameInputV2.InputConditionsMet(InputID.CAMERA_ROTATION_DOWN_HOLD))
                 {
                     return -Mathf.Min(Mouse.current.delta.x.ReadValue(), 0) * Screen.width * this.CoreInputConfiguration.GetCameraMovementMouseSensitivity();
                 }
@@ -101,39 +103,52 @@ namespace CoreGame
 
             public bool TimeForwardButtonDH()
             {
-                return this.GameInputV2.InputConditionsMet(InputID.TIME_FORWARD_DOWN_HOLD);
+                return this.gameInputV2.InputConditionsMet(InputID.TIME_FORWARD_DOWN_HOLD);
             }
 
             public bool PuzzleResetButton()
             {
-                return this.GameInputV2.InputConditionsMet(InputID.PUZZLE_RESET_DOWN_HOLD);
+                return this.gameInputV2.InputConditionsMet(InputID.PUZZLE_RESET_DOWN_HOLD);
             }
         }
 
+        #region Data Retrieval
+        public Dictionary<Key, KeyControl> GetKeyToKeyControlLookup()
+        {
+            return ((GameInput)this.currentInput).GameInputV2.KeyToKeyControlLookup;
+        }
+        public Dictionary<MouseButton, ButtonControl> GetMouseButtonControlLookup()
+        {
+            return ((GameInput)this.currentInput).GameInputV2.MouseButtonControlLookup;
+        }
+        #endregion
 
     }
 
     class GameInputV2
     {
-        private Dictionary<Key, KeyControl> KeyToKeyControlLookup;
-        private Dictionary<MouseButton, ButtonControl> MouseButtonControlLookup;
+        private Dictionary<Key, KeyControl> keyToKeyControlLookup;
+        private Dictionary<MouseButton, ButtonControl> mouseButtonControlLookup;
 
         private InputConfiguration InputConfiguration;
 
         public GameInputV2(InputConfiguration inputConfiguration)
         {
-            this.KeyToKeyControlLookup = new Dictionary<Key, KeyControl>();
-            this.MouseButtonControlLookup = new Dictionary<MouseButton, ButtonControl>();
+            this.keyToKeyControlLookup = new Dictionary<Key, KeyControl>();
+            this.mouseButtonControlLookup = new Dictionary<MouseButton, ButtonControl>();
 
             foreach (var keyBoardKeyControl in Keyboard.current.allKeys)
             {
-                this.KeyToKeyControlLookup[keyBoardKeyControl.keyCode] = keyBoardKeyControl;
+                this.keyToKeyControlLookup[keyBoardKeyControl.keyCode] = keyBoardKeyControl;
             }
-            this.MouseButtonControlLookup[MouseButton.LEFT_BUTTON] = Mouse.current.leftButton;
-            this.MouseButtonControlLookup[MouseButton.RIGHT_BUTTON] = Mouse.current.rightButton;
+            this.mouseButtonControlLookup[MouseButton.LEFT_BUTTON] = Mouse.current.leftButton;
+            this.mouseButtonControlLookup[MouseButton.RIGHT_BUTTON] = Mouse.current.rightButton;
 
             InputConfiguration = inputConfiguration;
         }
+
+        public Dictionary<Key, KeyControl> KeyToKeyControlLookup { get => keyToKeyControlLookup; }
+        public Dictionary<MouseButton, ButtonControl> MouseButtonControlLookup { get => mouseButtonControlLookup; }
 
         public bool InputConditionsMet(InputID inputID)
         {
@@ -145,11 +160,11 @@ namespace CoreGame
                 {
                     if (inputConfigurationInherentData.Down)
                     {
-                        inputConditionsMet = inputConditionsMet || this.KeyToKeyControlLookup[attibutedKey].wasPressedThisFrame;
+                        inputConditionsMet = inputConditionsMet || this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame;
                     }
                     else if (inputConfigurationInherentData.DownHold)
                     {
-                        inputConditionsMet = inputConditionsMet || this.KeyToKeyControlLookup[attibutedKey].wasPressedThisFrame || this.KeyToKeyControlLookup[attibutedKey].isPressed;
+                        inputConditionsMet = inputConditionsMet || this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame || this.keyToKeyControlLookup[attibutedKey].isPressed;
                     }
                 }
 
@@ -157,11 +172,11 @@ namespace CoreGame
                 {
                     if (inputConfigurationInherentData.Down)
                     {
-                        inputConditionsMet = inputConditionsMet || this.MouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame;
+                        inputConditionsMet = inputConditionsMet || this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame;
                     }
                     else if (inputConfigurationInherentData.DownHold)
                     {
-                        inputConditionsMet = inputConditionsMet || this.MouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame || this.MouseButtonControlLookup[attrubuteMouseButton].isPressed;
+                        inputConditionsMet = inputConditionsMet || this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame || this.mouseButtonControlLookup[attrubuteMouseButton].isPressed;
                     }
                 }
             }
