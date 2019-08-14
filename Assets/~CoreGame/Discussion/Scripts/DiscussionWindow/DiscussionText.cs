@@ -11,7 +11,7 @@ namespace CoreGame
     public class DiscussionText
     {
         private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
-        
+
         private string initialRawText;
         private string transformedInitialRawText;
 
@@ -57,6 +57,10 @@ namespace CoreGame
         public void Increment()
         {
             this.DiscussionTextPlayerEngine.Increment(this.TextMesh, this.DiscussionTextParameter);
+            if (!this.DiscussionTextPlayerEngine.IsAllowedToIncrementEngine())
+            {
+                this.DiscussionTextParameter.TransformedParameterCurrentCountOffset += this.DiscussionTextPlayerEngine.ParameterNbInThisIncrement;
+            }
         }
         #endregion
 
@@ -97,9 +101,13 @@ namespace CoreGame
             this.DiscussionTextPlayerEngine.StartWriting(this);
         }
 
-        public void OnDestroy()
+        public void OnDiscussionContinue()
         {
-            this.DiscussionTextParameter.OnTextDestroy();
+            this.DiscussionTextParameter.OnDiscussionContinue();
+            this.transformedInitialRawText = this.overlappedText;
+            this.overlappedText = string.Empty;
+            this.linedTruncatedText.Clear();
+            this.TextMesh.Clear();
         }
     }
 
@@ -151,8 +159,10 @@ namespace CoreGame
         private string targetText;
         private string currentDisplayedTextUnModified;
         private int displayedLineNb;
+        private int parameterNbInThisIncrement;
 
         public int DisplayedLineNb { get => displayedLineNb; }
+        public int ParameterNbInThisIncrement { get => parameterNbInThisIncrement; }
 
         public void StartWriting(DiscussionText discussionText)
         {
@@ -163,6 +173,7 @@ namespace CoreGame
 
         public void Increment(TextMesh TextMesh, DiscussionTextParameter DiscussionTextParameter)
         {
+            this.parameterNbInThisIncrement = 0;
             if (currentDisplayedTextUnModified.Length < targetText.Length)
             {
                 var stringToAdd = DiscussionTextParameter.GetFullTransformedParameterTemplate(targetText[currentDisplayedTextUnModified.Length]);
@@ -173,7 +184,7 @@ namespace CoreGame
                     currentDisplayedTextUnModified += stringToAdd[i];
                 }
 
-                DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh);
+                this.parameterNbInThisIncrement = Math.Max(this.parameterNbInThisIncrement, DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh));
 
                 var newDisplayedLineNb = Mathf.Min(this.currentDisplayedTextUnModified.Split('\n').Length, this.TextOnlyDiscussionWindowDimensionsComponent.MaxLineDisplayed);
                 if (newDisplayedLineNb != this.displayedLineNb)
@@ -320,6 +331,11 @@ namespace CoreGame
 
         public TextGenerationSettings TextGenerationSettings { get => textGenerationSettings; }
         public CanvasRenderer CanvasRenderer { get => canvasRenderer; }
+
+        public void Clear()
+        {
+            this.mesh.Clear();
+        }
     }
 
     public class LetterVertices

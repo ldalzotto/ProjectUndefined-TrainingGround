@@ -27,10 +27,12 @@ namespace CoreGame
         #region State
         private List<IParameterDisplayContent> parameterDisplayContent;
         private ReadOnlyCollection<InputParameter> InputParameters;
+        private int transformedParameterCurrentCountOffset = 0;
         #endregion
 
         #region Data Retrieval
         public List<IParameterDisplayContent> ParameterDisplayContent { get => parameterDisplayContent; }
+        public int TransformedParameterCurrentCountOffset { get => transformedParameterCurrentCountOffset; set => transformedParameterCurrentCountOffset = value; }
         #endregion
 
         public DiscussionTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration)
@@ -77,23 +79,24 @@ namespace CoreGame
             return inputText;
         }
 
-        public void ProcessParametersOnFinalTextMesh(TextMesh textMesh)
+        public int ProcessParametersOnFinalTextMesh(TextMesh textMesh)
         {
-            int transformedParameterMatchCount = 0;
+            int transformedParameterCount = 0 + this.transformedParameterCurrentCountOffset;
             foreach (var imageVertices in textMesh.FindOccurences(TransformedParameterTemplate))
             {
-                if (this.parameterDisplayContent[transformedParameterMatchCount].GetType() == typeof(InputParameterDisplayContent))
+                if (this.parameterDisplayContent[transformedParameterCount].GetType() == typeof(InputParameterDisplayContent))
                 {
-                    var InputParameterDisplayContent = (InputParameterDisplayContent)this.parameterDisplayContent[transformedParameterMatchCount];
+                    var InputParameterDisplayContent = (InputParameterDisplayContent)this.parameterDisplayContent[transformedParameterCount];
                     Vector2 imagePosition = imageVertices.Center();
                     InputParameterDisplayContent.IconImage.gameObject.SetActive(true);
                     InputParameterDisplayContent.IconImage.transform.SetParent(textMesh.CanvasRenderer.transform);
                     InputParameterDisplayContent.IconImage.transform.localPosition = imagePosition;
                     ((RectTransform)(InputParameterDisplayContent.IconImage.transform)).sizeDelta = new Vector2(imageVertices.Width(), imageVertices.Width());
                     InputParameterDisplayContent.IconImage.SetKey(InputParameterDisplayContent.InputConfigurationInherentData.AttributedKeys[0].ToString()[0].ToString());
-                    transformedParameterMatchCount += 1;
+                    transformedParameterCount += 1;
                 }
             }
+            return transformedParameterCount;
         }
 
         public string GetFullTransformedParameterTemplate(char firstChar)
@@ -107,11 +110,11 @@ namespace CoreGame
         }
 
         #region External Events
-        public void OnTextDestroy()
+        public void OnDiscussionContinue()
         {
             if (this.parameterDisplayContent != null)
             {
-                this.parameterDisplayContent.ForEach((parameter) => parameter.OnTextDestroy());
+                this.parameterDisplayContent.ForEach((parameter) => parameter.OnDiscussionContinue());
             }
         }
         #endregion
@@ -119,7 +122,7 @@ namespace CoreGame
 
     public interface IParameterDisplayContent
     {
-        void OnTextDestroy();
+        void OnDiscussionContinue();
     }
 
     public class InputParameterDisplayContent : IParameterDisplayContent
@@ -133,9 +136,12 @@ namespace CoreGame
             IconImage = iconImage;
         }
 
-        public void OnTextDestroy()
+        public void OnDiscussionContinue()
         {
-            MonoBehaviour.Destroy(this.IconImage.gameObject);
+            if (this.IconImage != null && this.IconImage.gameObject != null && this.IconImage.gameObject.activeSelf)
+            {
+                MonoBehaviour.Destroy(this.IconImage.gameObject);
+            }
         }
     }
 

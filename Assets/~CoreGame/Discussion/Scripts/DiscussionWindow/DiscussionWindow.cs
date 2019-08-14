@@ -111,25 +111,21 @@ namespace CoreGame
 
         public void OnDiscussionWindowSleep()
         {
+            this.currentDiscussionText.OnDiscussionContinue();
             DiscussionWorkflowManager.OnDiscussionWindowSleep();
         }
 
         private void InitializeDiscussionWindow(string text, ReadOnlyCollection<InputParameter> InputParameters)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
-
-            if (this.currentDiscussionText != null) { this.currentDiscussionText.OnDestroy(); }
             this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText, this.CoreConfigurationManager.InputConfiguration());
-            this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
-            this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
-            this.OnWidthChange(this.DiscussionWindowDimensionsComponent.MaxWindowWidth);
-
-            DiscussionWriterManager.OnDiscussionTextStartWriting();
+            this.OnDiscussionStartWriting();
         }
 
         public void ProcessDiscussionContinue()
         {
-            InitializeDiscussionWindow(this.currentDiscussionText.OverlappedText, this.currentWindowDiscussionTextInherentData.InputParameters.AsReadOnly());
+            this.currentDiscussionText.OnDiscussionContinue();
+            this.OnDiscussionStartWriting();
         }
 
         public void PlayDiscussionCloseAnimation()
@@ -152,6 +148,14 @@ namespace CoreGame
         public void OnTextFinishedWriting()
         {
             DiscussionWorkflowManager.OnTextFinishedWriting(this.currentDiscussionText.OverlappedText);
+        }
+
+        private void OnDiscussionStartWriting()
+        {
+            this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
+            this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
+            this.OnWidthChange(this.DiscussionWindowDimensionsComponent.MaxWindowWidth);
+            DiscussionWriterManager.OnDiscussionTextStartWriting();
         }
 
         #endregion

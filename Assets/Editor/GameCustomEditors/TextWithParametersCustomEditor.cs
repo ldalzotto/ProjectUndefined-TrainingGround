@@ -34,11 +34,16 @@ namespace Editor_GameCustomEditors
         public override void OnInspectorGUI()
         {
             DiscussionTextInherentData TextWithParametersTarget = (DiscussionTextInherentData)target;
-            
+
+            EditorGUI.BeginChangeCheck();
             TextWithParametersTarget.Text = EditorGUILayout.TextArea(TextWithParametersTarget.Text);
             this.parameterList.DoLayoutList();
 
             this.serializedObject.ApplyModifiedProperties();
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(this.target);
+            }
         }
     }
 }
