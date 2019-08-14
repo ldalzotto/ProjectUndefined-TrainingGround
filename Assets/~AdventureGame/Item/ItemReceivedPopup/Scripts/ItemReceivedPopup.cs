@@ -1,7 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +10,7 @@ namespace AdventureGame
     {
         private const string PopupContentObjectName = "PopupContent";
         private const string PopupImageObjectName = "ItemIcon";
-        
+
         public DiscussionWriterComponent DiscussionWriterComponent;
         private DiscussionWindow DiscussionWindow;
 
@@ -23,12 +22,13 @@ namespace AdventureGame
 
             #region External Dependencies
             var adventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             #endregion
 
             this.DiscussionWindow = this.GetComponent<DiscussionWindow>();
             this.DiscussionWindow.InitializeDependencies(onWindowClosed);
-            
-            this.OnDiscussionTextStartWriting(adventureGameConfigurationManager.ItemConf()[involvedItem].ItemReceivedDescriptionText);
+
+            this.OnDiscussionTextStartWriting(coreConfigurationManager.DiscussionTextConfigurationData()[adventureGameConfigurationManager.ItemConf()[involvedItem].ItemReceivedDescriptionTextV2]);
         }
 
         public void Tick(float d)
@@ -44,10 +44,9 @@ namespace AdventureGame
         #endregion
 
         #region Internal Events
-        public void OnDiscussionTextStartWriting(string text)
+        public void OnDiscussionTextStartWriting(DiscussionTextInherentData text)
         {
-            //TODO
-          //  this.DiscussionWindow.OnDiscussionWindowAwake(text, (RectTransform)this.transform);
+            this.DiscussionWindow.OnDiscussionWindowAwake(text, (RectTransform)this.transform);
         }
         #endregion
     }

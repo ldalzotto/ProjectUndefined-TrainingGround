@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CoreGame;
+using GameConfigurationID;
 
 namespace AdventureGame
 {
@@ -9,7 +11,9 @@ namespace AdventureGame
     {
         public Item ItemPrefab;
         public GameObject ItemModel;
-        public string ItemReceivedDescriptionText;
+
+        [CustomEnum(isCreateable: true)]
+        public DiscussionTextID ItemReceivedDescriptionTextV2;
         public Sprite ItemMenuIcon;
     }
 
