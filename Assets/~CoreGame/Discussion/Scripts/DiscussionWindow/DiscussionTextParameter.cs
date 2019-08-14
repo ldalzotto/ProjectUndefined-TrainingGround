@@ -91,7 +91,9 @@ namespace CoreGame
                     InputParameterDisplayContent.IconImage.gameObject.SetActive(true);
                     InputParameterDisplayContent.IconImage.transform.SetParent(textMesh.CanvasRenderer.transform);
                     InputParameterDisplayContent.IconImage.transform.localPosition = imagePosition;
-                    ((RectTransform)(InputParameterDisplayContent.IconImage.transform)).sizeDelta = new Vector2(imageVertices.Width(), imageVertices.Width());
+                    ((RectTransform)(InputParameterDisplayContent.IconImage.transform)).sizeDelta = Vector2.one * imageVertices.Width();
+                    InputParameterDisplayContent.IconImage.transform.localScale = Vector3.one;
+                    InputParameterDisplayContent.IconImage.SetTextFontSize((int)Math.Floor(imageVertices.Width() * 0.75f));
                     InputParameterDisplayContent.IconImage.SetKey(InputParameterDisplayContent.InputConfigurationInherentData.AttributedKeys[0].ToString()[0].ToString());
                     transformedParameterCount += 1;
                 }

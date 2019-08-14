@@ -227,7 +227,6 @@ namespace CoreGame
             this.DiscussionWindowDimensionsComponent = DiscussionWindowDimensionsComponent;
 
             this.textGenerationSettings = text.GetGenerationSettings(Vector2.zero);
-            //this.textGenerationSettings.scaleFactor = 1f;
             this.textGenerator = new TextGenerator();
             this.textGenerator.Invalidate();
             this.mesh = new Mesh();

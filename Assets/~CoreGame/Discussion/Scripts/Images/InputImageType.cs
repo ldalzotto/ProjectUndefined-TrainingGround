@@ -25,5 +25,10 @@ namespace CoreGame
         {
             this.KeyText.text = key;
         }
+
+        public void SetTextFontSize(int fontSize)
+        {
+            this.KeyText.fontSize = fontSize;
+        }
     }
 }
