@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using GameConfigurationID;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace CoreGame
@@ -16,6 +14,24 @@ namespace CoreGame
         public List<MouseButton> AttributedMouseButtons;
         public bool Down;
         public bool DownHold;
+
+        public Key GetAssociatedInputKey()
+        {
+            if (this.AttributedKeys != null && this.AttributedKeys.Count > 0)
+            {
+                return this.AttributedKeys[0];
+            }
+            return Key.None;
+        }
+
+        public MouseButton GetAssociatedMouseButton()
+        {
+            if(this.AttributedMouseButtons != null && this.AttributedMouseButtons.Count > 0)
+            {
+                return this.AttributedMouseButtons[0];
+            }
+            return MouseButton.NONE;
+        }
     }
 
 }

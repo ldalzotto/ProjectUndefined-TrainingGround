@@ -22,6 +22,8 @@ namespace CoreGame
         public ChoicePopup ChoicePopupPrefab;
         public ChoicePopupText ChoicePopupTextPrefab;
         public InputImageType InputBaseImage;
+        public InputImageType LeftMouseBaseImage;
+        public InputImageType RightMouseBaseImage;
 
         public static PrefabContainer Instance
         {

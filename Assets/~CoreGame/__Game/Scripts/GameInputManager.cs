@@ -185,7 +185,8 @@ namespace CoreGame
 
     public enum MouseButton
     {
-        LEFT_BUTTON = 0,
-        RIGHT_BUTTON = 1
+        NONE = 0,
+        LEFT_BUTTON = 1,
+        RIGHT_BUTTON = 2
     }
 }
