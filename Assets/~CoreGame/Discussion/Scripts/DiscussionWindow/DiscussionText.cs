@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace CoreGame
     public class DiscussionText
     {
         private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
-
+        
         private string initialRawText;
         private string transformedInitialRawText;
 
@@ -26,15 +27,15 @@ namespace CoreGame
         private DiscussionTextWindowDimensions discussionTextWindowDimensions;
         private DiscussionTextPlayerEngine DiscussionTextPlayerEngine;
 
-        public DiscussionText(string initialRawText, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent,
-            TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText)
+        public DiscussionText(string initialRawText, ReadOnlyCollection<InputParameter> InputParameters, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent,
+            TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText, InputConfiguration inputConfiguration)
         {
 
             this.initialRawText = initialRawText;
             this.transformedInitialRawText = Regex.Unescape(this.initialRawText);
 
             #region Special Character Image mapping
-            this.DiscussionTextParameter = new DiscussionTextParameter();
+            this.DiscussionTextParameter = new DiscussionTextParameter(InputParameters, inputConfiguration);
             this.transformedInitialRawText = this.DiscussionTextParameter.ParseParameters(this.transformedInitialRawText);
             #endregion
 

@@ -21,7 +21,7 @@ namespace CoreGame
         public DiscussionWindow DiscussionUIPrefab;
         public ChoicePopup ChoicePopupPrefab;
         public ChoicePopupText ChoicePopupTextPrefab;
-        public Image InputBaseImage;
+        public InputImageType InputBaseImage;
 
         public static PrefabContainer Instance
         {

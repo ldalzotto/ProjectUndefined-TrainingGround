@@ -180,7 +180,7 @@ namespace CoreGame
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished);
-            OpenedDiscussion.OnDiscussionWindowAwake(this.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText].Text, this.GetAbstractTextOnlyNodePosition(discussionNode));
+            OpenedDiscussion.OnDiscussionWindowAwake(this.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText], this.GetAbstractTextOnlyNodePosition(discussionNode));
         }
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)

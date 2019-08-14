@@ -1,24 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CoreGame
 {
     public class DiscussionTextParameter
     {
+        #region Constants
         public static Dictionary<ParameterType, string> ParameterAlias = new Dictionary<ParameterType, string>()
         {
             {ParameterType.INPUT_PARAMETER, "InputParam" }
         };
-
         public const string TransformedParameterTemplate = "#0";
 
         private Regex BaseParameterRegex = new Regex("\\${.*?}");
+        private Regex ParameterNameExtractorRegex = new Regex("((?![\\${]).*(?=:))");
+        private Regex ParameterNumberExtractorRegex = new Regex("((?<=[:]).*(?=}))");
+        #endregion
 
+        #region External Dependencies
+        private InputConfiguration InputConfiguration;
+        #endregion
+
+        #region State
         private List<IParameterDisplayContent> parameterDisplayContent;
+        private ReadOnlyCollection<InputParameter> InputParameters;
+        #endregion
 
+        #region Data Retrieval
         public List<IParameterDisplayContent> ParameterDisplayContent { get => parameterDisplayContent; }
+        #endregion
+
+        public DiscussionTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration)
+        {
+            this.InputParameters = InputParameters;
+            this.InputConfiguration = inputConfiguration;
+        }
 
         public string ParseParameters(string inputText)
         {
@@ -30,16 +49,22 @@ namespace CoreGame
                 parameterMatch = this.BaseParameterRegex.Match(inputText);
                 if (parameterMatch.Success)
                 {
-                    if (parameterMatch.Value.Contains(ParameterAlias[ParameterType.INPUT_PARAMETER]))
+                    var ParameterNameMatch = ParameterNameExtractorRegex.Match(parameterMatch.Value);
+                    if (ParameterNameMatch.Success && ParameterNameMatch.Value == ParameterAlias[ParameterType.INPUT_PARAMETER])
                     {
-                        var instaciatedImage = MonoBehaviour.Instantiate(PrefabContainer.Instance.InputBaseImage);
-                        instaciatedImage.gameObject.SetActive(false);
+                        var parameterOrderNumberMatch = ParameterNumberExtractorRegex.Match(parameterMatch.Value);
+                        if (parameterOrderNumberMatch.Success)
+                        {
+                            var instaciatedImage = InputImageType.Instantiate();
+                            instaciatedImage.gameObject.SetActive(false);
 
-                        inputText = inputText.Substring(0, parameterMatch.Index)
-                                      + TransformedParameterTemplate
-                                      + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
-                        this.parameterDisplayContent.Add(new InputParameterDisplayContent("D", instaciatedImage));
+                            inputText = inputText.Substring(0, parameterMatch.Index)
+                                          + TransformedParameterTemplate
+                                          + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
 
+                            var inputConfigurationData = this.InputConfiguration.ConfigurationInherentData[this.InputParameters[Convert.ToInt32(parameterOrderNumberMatch.Value)].inputID];
+                            this.parameterDisplayContent.Add(new InputParameterDisplayContent(inputConfigurationData, instaciatedImage));
+                        }
                     }
                     else
                     {
@@ -65,6 +90,7 @@ namespace CoreGame
                     InputParameterDisplayContent.IconImage.transform.SetParent(textMesh.CanvasRenderer.transform);
                     InputParameterDisplayContent.IconImage.transform.localPosition = imagePosition;
                     ((RectTransform)(InputParameterDisplayContent.IconImage.transform)).sizeDelta = new Vector2(imageVertices.Width(), imageVertices.Width());
+                    InputParameterDisplayContent.IconImage.SetKey(InputParameterDisplayContent.InputConfigurationInherentData.AttributedKeys[0].ToString()[0].ToString());
                     transformedParameterMatchCount += 1;
                 }
             }
@@ -98,12 +124,12 @@ namespace CoreGame
 
     public class InputParameterDisplayContent : IParameterDisplayContent
     {
-        public string InputText;
-        public Image IconImage;
+        public InputConfigurationInherentData InputConfigurationInherentData;
+        public InputImageType IconImage;
 
-        public InputParameterDisplayContent(string inputText, Image iconImage)
+        public InputParameterDisplayContent(InputConfigurationInherentData inputConfigurationInherentData, InputImageType iconImage)
         {
-            InputText = inputText;
+            InputConfigurationInherentData = inputConfigurationInherentData;
             IconImage = iconImage;
         }
 

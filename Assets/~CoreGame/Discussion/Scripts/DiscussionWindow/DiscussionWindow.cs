@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,15 +12,21 @@ namespace CoreGame
         public Material TestMaterial;
         public Texture2D DebugTexture;
 
+        #region Constants
         private const string TEXT_AREA_OBJECT_NAME = "TextArea";
         private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
         private const string CONTINUE_ICON_OBJECT_NAME = "ContinueIcon";
         private const string END_ICON_OBJECT_NAME = "EndIcon";
+        #endregion
 
         public TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
         public DiscussionWriterComponent DiscussionWriterComponent;
         public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
         public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
+
+        #region External Dependencies
+        private CoreConfigurationManager CoreConfigurationManager;
+        #endregion
 
         #region Internal Dependencies
         private DiscussionWriterManager DiscussionWriterManager;
@@ -33,10 +40,17 @@ namespace CoreGame
         private RectTransform discussionWindowObjectTransform;
         private Text textAreaText;
         #endregion
+
+        private DiscussionTextInherentData currentWindowDiscussionTextInherentData;
+
         private Action OnExitAnimationFinished;
 
         public void InitializeDependencies(Action OnExitAnimationFinished)
         {
+            #region External Dependencies
+            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            #endregion
+
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
             this.textAreaText = textAreaObject.GetComponent<Text>();
 
@@ -87,11 +101,12 @@ namespace CoreGame
         }
 
         #region External Events
-        public void OnDiscussionWindowAwake(string fullText, Transform position)
+        public void OnDiscussionWindowAwake(DiscussionTextInherentData discussionText, Transform position)
         {
+            this.currentWindowDiscussionTextInherentData = discussionText;
             DiscussionWindowAnimationManager.PlayEnterAnimation();
             DiscussionWindowPositioner.SetTransformToFollow(position);
-            InitializeDiscussionWindow(fullText);
+            InitializeDiscussionWindow(discussionText.Text, discussionText.InputParameters.AsReadOnly());
         }
 
         public void OnDiscussionWindowSleep()
@@ -99,12 +114,12 @@ namespace CoreGame
             DiscussionWorkflowManager.OnDiscussionWindowSleep();
         }
 
-        private void InitializeDiscussionWindow(string fullTextContent)
+        private void InitializeDiscussionWindow(string text, ReadOnlyCollection<InputParameter> InputParameters)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
 
             if (this.currentDiscussionText != null) { this.currentDiscussionText.OnDestroy(); }
-            this.currentDiscussionText = new DiscussionText(fullTextContent, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText);
+            this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, this, this.textAreaText, this.CoreConfigurationManager.InputConfiguration());
             this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
             this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
             this.OnWidthChange(this.DiscussionWindowDimensionsComponent.MaxWindowWidth);
@@ -114,7 +129,7 @@ namespace CoreGame
 
         public void ProcessDiscussionContinue()
         {
-            InitializeDiscussionWindow(this.currentDiscussionText.OverlappedText);
+            InitializeDiscussionWindow(this.currentDiscussionText.OverlappedText, this.currentWindowDiscussionTextInherentData.InputParameters.AsReadOnly());
         }
 
         public void PlayDiscussionCloseAnimation()
