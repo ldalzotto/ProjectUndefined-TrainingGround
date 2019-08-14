@@ -33,11 +33,18 @@ namespace AdventureGame
         public ItemID PopupItem;
         private ItemReceivedPopup ItemReceivedPopupObject;
 
+        [Header("Tutorial Step")]
+        public bool PlayTutorialStep;
+        [CustomEnum()]
+        public TutorialStepID TutorialStepID;
+        private TutorialManager TutorialManager;
+
         public void Init()
         {
             this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             this.CutsceneGlobalController = GameObject.FindObjectOfType<CutsceneGlobalController>();
             this.CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
+            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
         }
 
         public void Tick(float d)
@@ -66,6 +73,11 @@ namespace AdventureGame
             if (this.ItemReceivedPopupObject != null)
             {
                 this.ItemReceivedPopupObject.Tick(d);
+            }
+            if (this.PlayTutorialStep)
+            {
+                this.PlayTutorialStep = false;
+                this.TutorialManager.PlayTutorialStep(this.TutorialStepID);
             }
         }
     }

@@ -29,6 +29,13 @@ namespace CoreGame
         private GameInputManager GameInputManager;
         #endregion
 
+        #region Instance
+        public static DiscussionWindow Instanciate(Canvas canvas)
+        {
+            return MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.DiscussionUIPrefab, canvas.transform, false);
+        }
+        #endregion
+
         #region Internal Dependencies
         private DiscussionWriterManager DiscussionWriterManager;
         private DiscussionWorkflowManager DiscussionWorkflowManager;

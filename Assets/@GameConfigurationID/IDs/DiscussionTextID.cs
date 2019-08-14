@@ -45,5 +45,7 @@ namespace GameConfigurationID {
     _1_Town_Girl_ToParkInfiltration_NodeEditor_6 = 14,
     
     DummyItemDescription = 15,
+
+    Tutorial_Movement = 16
   }
 }

@@ -288,6 +288,7 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\RemoveReceivableItem\RemoveReceivableItemNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\SetAnimationPositionAction\SetAnimationPositionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineTemplatedWorkflowActionNode\SetAnimationPositionAction\SetAnimationPositionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TutorialNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
     <Compile Include="Assets\Editor\FileExplorer\FileExplorer.cs" />

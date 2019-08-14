@@ -94,6 +94,7 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\SelectionWheelNodeConfigurationId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TargetZoneID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TimelineID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\TutorialStepID.cs" />
     <None Include="Assets\@GameConfigurationID\GameConfigurationID.asmdef" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

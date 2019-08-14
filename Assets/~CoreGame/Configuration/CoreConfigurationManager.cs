@@ -28,6 +28,12 @@ namespace CoreGame
             return CoreConfiguration.DiscussionTextConfiguration.ConfigurationInherentData;
         }
         public DiscussionTextConfiguration DiscussionTextConfiguration() { return CoreConfiguration.DiscussionTextConfiguration; }
+
+        public TutorialStepConfiguration TutorialStepConfiguration() { return CoreConfiguration.TutorialStepConfiguration; }
+        public Dictionary<TutorialStepID, TutorialStepInherentData> TutorialStepConfigurationData()
+        {
+            return CoreConfiguration.TutorialStepConfiguration.ConfigurationInherentData;
+        }
     }
 
 }

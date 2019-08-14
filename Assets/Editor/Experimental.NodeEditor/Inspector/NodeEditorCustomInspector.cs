@@ -1,4 +1,5 @@
 ﻿using AdventureGame;
+using CoreGame;
 using Editor_DiscussionTimelineNodeEditor;
 using Editor_DiscussionTreeNodeEditor;
 using Editor_LevelAvailabilityNodeEditor;
@@ -45,6 +46,10 @@ namespace Experimental.Editor_NodeEditor
                 else if (this.target.GetType() == typeof(PuzzleCutsceneGraph))
                 {
                     PuzzleCutsceneNodeEditor.Init((NodeEditorProfile)this.target);
+                }
+                else if (this.target.GetType() == typeof(TutorialGraph))
+                {
+                    TutorialNodeEditor.Init((NodeEditorProfile)this.target);
                 }
                 else
                 {

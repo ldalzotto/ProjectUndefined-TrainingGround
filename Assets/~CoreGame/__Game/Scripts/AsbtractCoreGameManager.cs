@@ -13,6 +13,7 @@ namespace CoreGame
         private PersistanceManager PersistanceManager;
         protected AGhostPOIManager AGhostPOIManager;
         private LevelChunkFXTransitionManager LevelChunkFXTransitionManager;
+        private TutorialManager TutorialManager;
 
         protected void OnAwake(LevelType levelType)
         {
@@ -22,6 +23,7 @@ namespace CoreGame
             this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.AGhostPOIManager = GameObject.FindObjectOfType<AGhostPOIManager>();
             this.LevelChunkFXTransitionManager = GameObject.FindObjectOfType<LevelChunkFXTransitionManager>();
+            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
 
             this.PersistanceManager.Init();
             this.GameInputManager.Init();
@@ -36,6 +38,7 @@ namespace CoreGame
             GameObject.FindObjectOfType<LevelManager>().Init(levelType);
             this.LevelChunkFXTransitionManager.Init();
             GameObject.FindObjectOfType<DiscussionPositionManager>().Init();
+            this.TutorialManager.Init();
 
             Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
         }
@@ -51,6 +54,7 @@ namespace CoreGame
         {
             this.PersistanceManager.Tick(d);
             this.LevelChunkFXTransitionManager.Tick(d);
+            this.TutorialManager.Tick(d);
         }
 
         private IEnumerator InitializeTimelinesAtEndOfFrame()
