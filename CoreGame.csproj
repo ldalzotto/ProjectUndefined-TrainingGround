@@ -217,6 +217,7 @@
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Nodes\TutorialTextNode.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\TutorialGraph.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
+    <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />

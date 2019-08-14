@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public class TutorialManager : MonoBehaviour
+    public class TutorialManager : MonoBehaviour, TutorialStepManagerEventListener
     {
         private TutorialActionInput TutorialActionInput;
 
@@ -12,13 +12,24 @@ namespace CoreGame
         private TutorialStepConfiguration TutorialStepConfiguration;
         #endregion
 
+        #region Internal Managers
+        private TutorialStatePersister TutorialStatePersister;
+        #endregion
+
+        #region State
+        private List<TutorialStepID> TutorialStepFInishedThisFrame;
+        #endregion
+
         private Dictionary<TutorialStepID, TutorialStepManager> PlayingTutorialStepManagers;
 
         #region External Events
         public void PlayTutorialStep(TutorialStepID tutorialStepID)
         {
-            this.PlayingTutorialStepManagers[tutorialStepID] = new TutorialStepManager(this.TutorialActionInput);
-            this.PlayingTutorialStepManagers[tutorialStepID].Play(this.TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
+            if (!this.TutorialStatePersister.GetTutorialState(tutorialStepID))
+            {
+                this.PlayingTutorialStepManagers[tutorialStepID] = new TutorialStepManager(this.TutorialActionInput, tutorialStepID, this);
+                this.PlayingTutorialStepManagers[tutorialStepID].Play(this.TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
+            }
         }
         #endregion
 
@@ -30,6 +41,8 @@ namespace CoreGame
                GameObject.FindObjectOfType<CoreConfigurationManager>().DiscussionTextConfiguration(),
                GameObject.FindObjectOfType<DiscussionPositionManager>(),
                GameObject.FindObjectOfType<PlayerManagerType>());
+            this.TutorialStatePersister = new TutorialStatePersister();
+            this.TutorialStepFInishedThisFrame = new List<TutorialStepID>();
         }
 
         public void Tick(float d)
@@ -38,21 +51,41 @@ namespace CoreGame
             {
                 playingTutorialStepManagerEntry.Value.Tick(d);
             }
+
+            foreach (var tutorialStepFinished in this.TutorialStepFInishedThisFrame)
+            {
+                this.PlayingTutorialStepManagers.Remove(tutorialStepFinished);
+            }
         }
-        
+
+        public void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID)
+        {
+            this.TutorialStatePersister.SetTutorialState(tutorialStepID, true);
+            this.TutorialStepFInishedThisFrame.Add(tutorialStepID);
+        }
+    }
+
+    public interface TutorialStepManagerEventListener
+    {
+        void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID);
     }
 
     class TutorialStepManager
     {
 
+        private TutorialStepManagerEventListener TutorialStepManagerEventListener;
+
         private TutorialActionInput TutorialActionInput;
         private SequencedActionManager tutorialPlayer;
+        private TutorialStepID tutorialStepID;
 
-        public TutorialStepManager(TutorialActionInput TutorialActionInput)
+        public TutorialStepManager(TutorialActionInput TutorialActionInput, TutorialStepID tutorialStepID, TutorialStepManagerEventListener TutorialStepManagerEventListener)
         {
             this.TutorialActionInput = TutorialActionInput;
             this.tutorialPlayer = new SequencedActionManager((action) => this.tutorialPlayer.OnAddAction(action, this.TutorialActionInput), null, OnNoMoreActionToPlay: () =>
-            { });
+            {
+                TutorialStepManagerEventListener.OnTutorialStepManagerEnd(tutorialStepID);
+            });
         }
 
         public void Play(TutorialGraph TutorialGraph)
