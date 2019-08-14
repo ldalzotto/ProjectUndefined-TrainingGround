@@ -111,7 +111,7 @@ namespace CoreGame
 
         public void OnDiscussionWindowSleep()
         {
-            this.currentDiscussionText.OnDiscussionContinue();
+            this.currentDiscussionText.OnDiscussionTerminated();
             DiscussionWorkflowManager.OnDiscussionWindowSleep();
         }
 

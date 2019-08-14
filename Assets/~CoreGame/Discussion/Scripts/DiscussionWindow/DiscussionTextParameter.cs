@@ -27,12 +27,10 @@ namespace CoreGame
         #region State
         private List<IParameterDisplayContent> parameterDisplayContent;
         private ReadOnlyCollection<InputParameter> InputParameters;
-        private int transformedParameterCurrentCountOffset = 0;
         #endregion
 
         #region Data Retrieval
         public List<IParameterDisplayContent> ParameterDisplayContent { get => parameterDisplayContent; }
-        public int TransformedParameterCurrentCountOffset { get => transformedParameterCurrentCountOffset; set => transformedParameterCurrentCountOffset = value; }
         #endregion
 
         public DiscussionTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration)
@@ -79,9 +77,9 @@ namespace CoreGame
             return inputText;
         }
 
-        public int ProcessParametersOnFinalTextMesh(TextMesh textMesh)
+        public int ProcessParametersOnFinalTextMesh(TextMesh textMesh, TransformedParameterCounterTracker TransformedParameterCounterTracker)
         {
-            int transformedParameterCount = 0 + this.transformedParameterCurrentCountOffset;
+            int transformedParameterCount = 0 + TransformedParameterCounterTracker.TransformedParameterCurrentCountOffset;
             foreach (var imageVertices in textMesh.FindOccurences(TransformedParameterTemplate))
             {
                 if (this.parameterDisplayContent[transformedParameterCount].GetType() == typeof(InputParameterDisplayContent))
@@ -119,12 +117,20 @@ namespace CoreGame
                 this.parameterDisplayContent.ForEach((parameter) => parameter.OnDiscussionContinue());
             }
         }
+        public void OnDiscussionTerminated()
+        {
+            if (this.parameterDisplayContent != null)
+            {
+                this.parameterDisplayContent.ForEach((parameter) => parameter.OnDiscussionTerminated());
+            }
+        }
         #endregion
     }
 
     public interface IParameterDisplayContent
     {
         void OnDiscussionContinue();
+        void OnDiscussionTerminated();
     }
 
     public class InputParameterDisplayContent : IParameterDisplayContent
@@ -140,15 +146,39 @@ namespace CoreGame
 
         public void OnDiscussionContinue()
         {
-            if (this.IconImage != null && this.IconImage.gameObject != null && this.IconImage.gameObject.activeSelf)
+            if (this.IconImage.gameObject.activeSelf)
             {
-                MonoBehaviour.Destroy(this.IconImage.gameObject);
+                this.IconImage.gameObject.SetActive(false);
             }
+        }
+
+        public void OnDiscussionTerminated()
+        {
+            MonoBehaviour.Destroy(this.IconImage.gameObject); 
         }
     }
 
     public enum ParameterType
     {
         INPUT_PARAMETER
+    }
+
+    public class TransformedParameterCounterTracker
+    {
+        private int transformedParameterCurrentCountOffset = 0;
+        
+        #region Data Retrieval
+        public int TransformedParameterCurrentCountOffset { get => transformedParameterCurrentCountOffset; }
+        #endregion
+
+        #region External Events
+        public void OnDiscussionEngineIncremented(in DiscussionTextPlayerEngine DiscussionTextPlayerEngine, int parameterNbInThisIncrement)
+        {
+            if (!DiscussionTextPlayerEngine.IsAllowedToIncrementEngine())
+            {
+                this.transformedParameterCurrentCountOffset += parameterNbInThisIncrement;
+            }
+        }
+        #endregion
     }
 }

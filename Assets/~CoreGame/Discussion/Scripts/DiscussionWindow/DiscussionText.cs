@@ -12,20 +12,21 @@ namespace CoreGame
     {
         private char[] TrimmedCharForSanitaze = new char[] { ' ', '\n' };
 
+        #region State
         private string initialRawText;
         private string transformedInitialRawText;
-
         private string overlappedText;
-
         private List<string> linedTruncatedText;
+        #endregion
 
+        #region Internal Managers
         #region Parameters management
         private DiscussionTextParameter DiscussionTextParameter;
         #endregion
-
         private TextMesh TextMesh;
         private DiscussionTextWindowDimensions discussionTextWindowDimensions;
         private DiscussionTextPlayerEngine DiscussionTextPlayerEngine;
+        #endregion
 
         public DiscussionText(string initialRawText, ReadOnlyCollection<InputParameter> InputParameters, DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent,
             TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent, DiscussionHeightChangeListener DiscussionHeightChangeListener, Text textAreaText, InputConfiguration inputConfiguration)
@@ -57,10 +58,6 @@ namespace CoreGame
         public void Increment()
         {
             this.DiscussionTextPlayerEngine.Increment(this.TextMesh, this.DiscussionTextParameter);
-            if (!this.DiscussionTextPlayerEngine.IsAllowedToIncrementEngine())
-            {
-                this.DiscussionTextParameter.TransformedParameterCurrentCountOffset += this.DiscussionTextPlayerEngine.ParameterNbInThisIncrement;
-            }
         }
         #endregion
 
@@ -68,6 +65,22 @@ namespace CoreGame
         public bool IsAllowedToIncrementEngine()
         {
             return this.DiscussionTextPlayerEngine.IsAllowedToIncrementEngine();
+        }
+        #endregion
+
+        #region External Events
+        public void OnDiscussionContinue()
+        {
+            this.DiscussionTextParameter.OnDiscussionContinue();
+            this.transformedInitialRawText = this.overlappedText;
+            this.overlappedText = string.Empty;
+            this.linedTruncatedText.Clear();
+            this.TextMesh.Clear();
+        }
+
+        public void OnDiscussionTerminated()
+        {
+            this.DiscussionTextParameter.OnDiscussionTerminated();
         }
         #endregion
 
@@ -100,18 +113,9 @@ namespace CoreGame
 
             this.DiscussionTextPlayerEngine.StartWriting(this);
         }
-
-        public void OnDiscussionContinue()
-        {
-            this.DiscussionTextParameter.OnDiscussionContinue();
-            this.transformedInitialRawText = this.overlappedText;
-            this.overlappedText = string.Empty;
-            this.linedTruncatedText.Clear();
-            this.TextMesh.Clear();
-        }
     }
 
-    class DiscussionTextWindowDimensions
+    public class DiscussionTextWindowDimensions
     {
         private DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
         private TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
@@ -141,8 +145,12 @@ namespace CoreGame
         }
     }
 
-    class DiscussionTextPlayerEngine
+    public class DiscussionTextPlayerEngine
     {
+        #region Trackers
+        private TransformedParameterCounterTracker TransformedParameterCounterTracker;
+        #endregion
+
         private TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
         private DiscussionTextWindowDimensions DiscussionTextWindowDimensions;
         private DiscussionHeightChangeListener DiscussionHeightChangeListener;
@@ -153,16 +161,15 @@ namespace CoreGame
             this.TextOnlyDiscussionWindowDimensionsComponent = TextOnlyDiscussionWindowDimensionsComponent;
             this.DiscussionTextWindowDimensions = DiscussionTextWindowDimensions;
             this.DiscussionHeightChangeListener = DiscussionHeightChangeListener;
+            this.TransformedParameterCounterTracker = new TransformedParameterCounterTracker();
         }
 
 
         private string targetText;
         private string currentDisplayedTextUnModified;
         private int displayedLineNb;
-        private int parameterNbInThisIncrement;
 
         public int DisplayedLineNb { get => displayedLineNb; }
-        public int ParameterNbInThisIncrement { get => parameterNbInThisIncrement; }
 
         public void StartWriting(DiscussionText discussionText)
         {
@@ -173,7 +180,7 @@ namespace CoreGame
 
         public void Increment(TextMesh TextMesh, DiscussionTextParameter DiscussionTextParameter)
         {
-            this.parameterNbInThisIncrement = 0;
+            var parameterNbInThisIncrement = 0;
             if (currentDisplayedTextUnModified.Length < targetText.Length)
             {
                 var stringToAdd = DiscussionTextParameter.GetFullTransformedParameterTemplate(targetText[currentDisplayedTextUnModified.Length]);
@@ -184,7 +191,7 @@ namespace CoreGame
                     currentDisplayedTextUnModified += stringToAdd[i];
                 }
 
-                this.parameterNbInThisIncrement = Math.Max(this.parameterNbInThisIncrement, DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh));
+                parameterNbInThisIncrement = Math.Max(parameterNbInThisIncrement, DiscussionTextParameter.ProcessParametersOnFinalTextMesh(TextMesh, this.TransformedParameterCounterTracker));
 
                 var newDisplayedLineNb = Mathf.Min(this.currentDisplayedTextUnModified.Split('\n').Length, this.TextOnlyDiscussionWindowDimensionsComponent.MaxLineDisplayed);
                 if (newDisplayedLineNb != this.displayedLineNb)
@@ -192,6 +199,8 @@ namespace CoreGame
                     this.DiscussionHeightChangeListener.OnHeightChange(this.DiscussionTextWindowDimensions.GetWindowHeight(newDisplayedLineNb, TextMesh));
                 }
                 this.displayedLineNb = newDisplayedLineNb;
+
+                this.TransformedParameterCounterTracker.OnDiscussionEngineIncremented(this, parameterNbInThisIncrement);
             }
         }
 
