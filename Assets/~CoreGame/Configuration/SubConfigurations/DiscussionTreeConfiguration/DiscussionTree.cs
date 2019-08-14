@@ -28,18 +28,18 @@ namespace CoreGame
     public abstract class AbstractDiscussionTextOnlyNode : DiscussionTreeNode
     {
         [SerializeField]
-        private DisucssionSentenceTextId displayedText;
+        private DiscussionTextID displayedText;
         [SerializeField]
         private DiscussionNodeId nextNode;
 
-        protected AbstractDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, DiscussionNodeId nextNode)
+        protected AbstractDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DiscussionTextID displayedText, DiscussionNodeId nextNode)
         {
             this.discussionNodeId = DiscussionNodeId;
             this.displayedText = displayedText;
             this.nextNode = nextNode;
         }
 
-        public DisucssionSentenceTextId DisplayedText { get => displayedText; }
+        public DiscussionTextID DisplayedText { get => displayedText; }
         public DiscussionNodeId NextNode { get => nextNode; }
 
         public DiscussionTreeNode GetNextNode(ref DiscussionTree discussionTreeRef)
@@ -54,7 +54,7 @@ namespace CoreGame
         [SerializeField]
         private PointOfInterestId talker;
 
-        public AdventureDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, DiscussionNodeId nextNode, PointOfInterestId talker) : base(DiscussionNodeId, displayedText, nextNode)
+        public AdventureDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DiscussionTextID displayedText, DiscussionNodeId nextNode, PointOfInterestId talker) : base(DiscussionNodeId, displayedText, nextNode)
         {
             this.talker = talker;
         }
@@ -68,7 +68,7 @@ namespace CoreGame
         [SerializeField]
         private DiscussionPositionMarkerID discussionScreenPosition;
 
-        public FixedScreenPositionDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DisucssionSentenceTextId displayedText, DiscussionNodeId nextNode, DiscussionPositionMarkerID discussionScreenPosition) : base(DiscussionNodeId, displayedText, nextNode)
+        public FixedScreenPositionDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DiscussionTextID displayedText, DiscussionNodeId nextNode, DiscussionPositionMarkerID discussionScreenPosition) : base(DiscussionNodeId, displayedText, nextNode)
         {
             this.discussionScreenPosition = discussionScreenPosition;
         }
@@ -128,18 +128,18 @@ namespace CoreGame
     public class DiscussionChoice : DiscussionTreeNode
     {
         [SerializeField]
-        private DisucssionSentenceTextId text;
+        private DiscussionTextID text;
         [SerializeField]
         private DiscussionNodeId nextNode;
 
-        public DiscussionChoice(DiscussionNodeId discussionNodeId, DisucssionSentenceTextId text, DiscussionNodeId nextNode)
+        public DiscussionChoice(DiscussionNodeId discussionNodeId, DiscussionTextID text, DiscussionNodeId nextNode)
         {
             this.discussionNodeId = discussionNodeId;
             this.text = text;
             this.nextNode = nextNode;
         }
 
-        public DisucssionSentenceTextId Text { get => text; }
+        public DiscussionTextID Text { get => text; }
         public DiscussionNodeId NextNode { get => nextNode; }
         public DiscussionNodeId DiscussionNodeId { get => discussionNodeId; }
 

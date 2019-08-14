@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using RTPuzzle;
-using CoreGame;
-using System;
+﻿using CoreGame;
 using Editor_GameDesigner;
 using GameConfigurationID;
-using AdventureGame;
+using System;
+using UnityEditor;
+using UnityEngine;
 
 namespace ConfigurationEditor
 {
@@ -29,8 +26,9 @@ namespace ConfigurationEditor
 
         public static void OpenTextRepertoireAtID(string DisucssionSentenceTextId)
         {
-            DiscussionTextRepertoire.EditorTemporaryChosenId = DisucssionSentenceTextId;
-            GameDesignerEditor.InitWithSelectedKey(typeof(DiscussionRepertoireConfigurationModule));
+            var gameDesignerEditorWindow = GameDesignerEditor.InitWithSelectedKey(typeof(DiscussionTextConfigurationModule));
+            var discussionConfigurationModule = (DiscussionTextConfigurationModule)gameDesignerEditorWindow.GetCrrentGameDesignerModule();
+            ((GenericConfigurationEditor<DiscussionTextID, DiscussionTextInherentData>)discussionConfigurationModule.ConfigurationEditor).ProjectilesConf.SetSearchFilter(DisucssionSentenceTextId);
         }
     }
 

@@ -77,7 +77,7 @@ namespace Editor_GameDesigner
 {"Configuration//.RangeTypeConfigurationModule",typeof(Editor_GameDesigner.RangeTypeConfigurationModule)},
 {"Configuration//.SelectionWheelNodeConfigurationModule",typeof(Editor_GameDesigner.SelectionWheelNodeConfigurationModule)},
 {"Configuration//.TargetZoneConfigurationModule",typeof(Editor_GameDesigner.TargetZoneConfigurationModule)},
-{"Configuration//.DiscussionRepertoireConfigurationModule",typeof(Editor_GameDesigner.DiscussionRepertoireConfigurationModule)},
+{"Configuration//.DiscussionTextConfigurationModule",typeof(Editor_GameDesigner.DiscussionTextConfigurationModule)},
 {"Configuration//.DisarmObjectConfigurationModule",typeof(Editor_GameDesigner.DisarmObjectConfigurationModule)},
 {"Configuration//.PuzzleCutsceneConfigurationModule",typeof(Editor_GameDesigner.PuzzleCutsceneConfigurationModule)},
 {"Configuration//.ActionInteractableObjectConfigurationModule",typeof(Editor_GameDesigner.ActionInteractableObjectConfigurationModule)},

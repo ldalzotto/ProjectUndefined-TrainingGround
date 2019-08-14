@@ -14,6 +14,7 @@ namespace CoreGame
         public AnimationConfiguration AnimationConfiguration;
         public DiscussionTreeConfiguration DiscussionTreeConfiguration;
         public InputConfiguration InputConfiguration;
+        public DiscussionTextConfiguration DiscussionTextConfiguration;
     }
 }
 

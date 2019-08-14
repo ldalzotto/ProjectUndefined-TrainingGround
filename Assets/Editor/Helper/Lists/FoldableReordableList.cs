@@ -15,8 +15,8 @@ namespace ConfigurationEditor
         [SerializeField]
         private bool displayed;
 
-        public FoldableReordableList(List<T> list, bool draggable, bool displayHeader, bool displayAddButton, bool displayRemovebutton, string listTitle, float elementHeightFactor, ElementCallbackDelegate elementCallbackDelegate)
-                 : base(list, typeof(T), draggable, displayHeader, displayAddButton, displayRemovebutton)
+        public FoldableReordableList(List<T> list, bool draggable, bool displayHeader, bool displayAddButton, bool displayRemovebutton, string listTitle, float elementHeightFactor, ElementCallbackDelegate elementCallbackDelegate, ElementHeightCallbackDelegate elementHeightCallBack = null)
+                : base(list, typeof(T), draggable, displayHeader, displayAddButton, displayRemovebutton)
         {
             this.drawHeaderCallback = (Rect rect) =>
             {
@@ -44,17 +44,21 @@ namespace ConfigurationEditor
                     elementCallbackDelegate(rect, index, isActive, isFocused);
                 }
             };
-            elementHeightCallback = (int index) =>
+            this.elementHeightCallback = elementHeightCallBack;
+            if (elementHeightCallback == null)
             {
-                if (displayed)
+                this.elementHeightCallback = (int index) =>
                 {
-                    return elementHeight * elementHeightFactor;
-                }
-                else
-                {
-                    return 0;
-                }
-            };
+                    if (displayed)
+                    {
+                        return elementHeight * elementHeightFactor;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                };
+            }
         }
 
         public bool Displayed { get => displayed; set => displayed = value; }

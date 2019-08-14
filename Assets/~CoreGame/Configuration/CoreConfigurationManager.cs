@@ -21,6 +21,11 @@ namespace CoreGame
         {
             return CoreConfiguration.InputConfiguration.ConfigurationInherentData;
         }
+        public Dictionary<DiscussionTextID, DiscussionTextInherentData> DiscussionTextConfigurationData()
+        {
+            return CoreConfiguration.DiscussionTextConfiguration.ConfigurationInherentData;
+        }
+        public DiscussionTextConfiguration DiscussionTextConfiguration() { return CoreConfiguration.DiscussionTextConfiguration; }
     }
 
 }

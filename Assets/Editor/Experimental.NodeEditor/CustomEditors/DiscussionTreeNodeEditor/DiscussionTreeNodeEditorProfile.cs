@@ -23,12 +23,12 @@ namespace Editor_DiscussionTreeNodeEditor
         }
 
         [SerializeField]
-        public DiscussionTextRepertoire DiscussionTextRepertoire;
+        public DiscussionTextConfiguration DiscussionTextRepertoire;
 
         public override void Init()
         {
             base.Init();
-            this.DiscussionTextRepertoire = AssetFinder.SafeSingleAssetFind<DiscussionTextRepertoire>("t:" + typeof(DiscussionTextRepertoire).Name);
+            this.DiscussionTextRepertoire = AssetFinder.SafeSingleAssetFind<DiscussionTextConfiguration>("t:" + typeof(DiscussionTextConfiguration).Name);
         }
 
 

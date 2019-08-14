@@ -19,20 +19,20 @@ namespace Editor_DiscussionTreeNodeEditor
         [CustomEnum(isCreateable: true)]
         public DiscussionNodeId DiscussionNodeId;
         [CustomEnum(isCreateable: true, choosedOpenRepertoire: true)]
-        public DisucssionSentenceTextId DisplayedText;
+        public DiscussionTextID DisplayedText;
 
         protected override void GUI_Impl(Rect rect, ref NodeEditorProfile nodeEditorProfileRef)
         {
             EditorGUILayout.BeginVertical();
             this.DiscussionNodeId = (DiscussionNodeId)NodeEditorGUILayout.EnumField("Node : ", string.Empty, this.DiscussionNodeId);
-            this.DisplayedText = (DisucssionSentenceTextId)NodeEditorGUILayout.EnumField("Text : ", string.Empty, this.DisplayedText);
+            this.DisplayedText = (DiscussionTextID)NodeEditorGUILayout.EnumField("Text : ", string.Empty, this.DisplayedText);
             this.AdditionalGUI();
             EditorGUILayout.EndVertical();
             EditorGUILayout.Separator();
 
-            if (((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.SentencesText.ContainsKey(this.DisplayedText))
+            if (((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.ConfigurationInherentData.ContainsKey(this.DisplayedText))
             {
-                EditorGUILayout.HelpBox(((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.SentencesText[this.DisplayedText], MessageType.None);
+                EditorGUILayout.HelpBox(((DiscussionTreeNodeEditorProfile)nodeEditorProfileRef).DiscussionTextRepertoire.ConfigurationInherentData[this.DisplayedText].Text, MessageType.None);
             }
 
         }

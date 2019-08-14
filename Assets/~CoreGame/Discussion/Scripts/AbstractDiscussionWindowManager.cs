@@ -9,7 +9,6 @@ namespace CoreGame
     {
         #region External Dependencies
         private Canvas GameCanvas;
-        private CoreStaticConfiguration CoreStaticConfiguration;
         private CoreConfigurationManager CoreConfigurationManager;
         protected DiscussionPositionManager DiscussionPositionManager;
         #endregion
@@ -51,7 +50,6 @@ namespace CoreGame
         {
             #region External Dependencies
             GameCanvas = GameObject.FindObjectOfType<Canvas>();
-            this.CoreStaticConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration;
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
             this.DiscussionPositionManager = GameObject.FindObjectOfType<DiscussionPositionManager>();
 
@@ -182,13 +180,13 @@ namespace CoreGame
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished);
-            OpenedDiscussion.OnDiscussionWindowAwake(this.CoreStaticConfiguration.DiscussionTestRepertoire.SentencesText[discussionNode.DisplayedText], this.GetAbstractTextOnlyNodePosition(discussionNode));
+            OpenedDiscussion.OnDiscussionWindowAwake(this.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText].Text, this.GetAbstractTextOnlyNodePosition(discussionNode));
         }
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)
         {
             OpenedChoicePopup = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
-            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, ref this.CoreStaticConfiguration.DiscussionTestRepertoire);
+            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, this.CoreConfigurationManager.DiscussionTextConfiguration());
         }
 
         private void OnDiscussionWindowAnimationExitFinished()

@@ -74,6 +74,10 @@ namespace ConfigurationEditor
         {
             this.clearCacheRequested = true;
         }
+        public void SetSearchFilter(string searchFilter)
+        {
+            this.keySearchString = searchFilter;
+        }
         #endregion
 
         public void GUITick(ref Dictionary<K, V> dictionaryEditorValues)

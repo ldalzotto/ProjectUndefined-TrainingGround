@@ -29,7 +29,7 @@ namespace CoreGame
         }
 
         #region External Events
-        public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices, Vector2 localPosition, ref DiscussionTextRepertoire DiscussionTextRepertoire)
+        public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices, Vector2 localPosition, DiscussionTextConfiguration DiscussionTextRepertoire)
         {
 
             #region External Dependencies
@@ -47,7 +47,7 @@ namespace CoreGame
             foreach (var choice in nexDiscussionChoices)
             {
                 var choicesPopupText = Instantiate(PrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
-                choicesPopupText.SetDiscussionChoice(choice, ref DiscussionTextRepertoire);
+                choicesPopupText.SetDiscussionChoice(choice, DiscussionTextRepertoire);
                 choicePopupTexts.Add(choicesPopupText);
             }
 

@@ -300,7 +300,6 @@
     <Compile Include="Assets\Editor\GameCustomEditors\ActionInteractiveObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\AttractiveObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\DisarmObjectCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\DiscussionTextRepertoireCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\GrabObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
@@ -312,6 +311,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TransformMoveManagerComponentV2CustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />

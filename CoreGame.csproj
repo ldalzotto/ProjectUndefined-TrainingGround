@@ -103,7 +103,7 @@
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
-    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionText\DiscussionTextRepertoire.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionTextConfiguration\DiscussionTextConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfigurationData.cs" />
@@ -141,6 +141,7 @@
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopup.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\ChoicePopupText.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionText.cs" />
+    <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionTextInherentData.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionTextParameter.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\DiscussionWindow\DiscussionWindow.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Positions\DiscussionPositionManager.cs" />

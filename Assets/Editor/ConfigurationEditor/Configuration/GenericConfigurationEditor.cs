@@ -28,6 +28,8 @@ namespace ConfigurationEditor
         #region Projectile dictionary configuration
         [SerializeField]
         private DictionaryEnumGUI<K, DATA> projectilesConf = new DictionaryEnumGUI<K, DATA>();
+
+        public DictionaryEnumGUI<K, DATA> ProjectilesConf { get => projectilesConf; }
         #endregion
 
         public void GUITick()

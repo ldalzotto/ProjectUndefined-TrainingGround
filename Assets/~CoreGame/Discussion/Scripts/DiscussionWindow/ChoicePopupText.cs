@@ -18,10 +18,10 @@ namespace CoreGame
             text = GetComponent<Text>();
         }
 
-        public void SetDiscussionChoice(DiscussionChoice choice, ref DiscussionTextRepertoire DiscussionTextRepertoire)
+        public void SetDiscussionChoice(DiscussionChoice choice, DiscussionTextConfiguration DiscussionTextConfiguration)
         {
             discussionChoice = choice;
-            this.text.text = DiscussionTextRepertoire.SentencesText[choice.Text];
+            this.text.text = DiscussionTextConfiguration.ConfigurationInherentData[choice.Text].Text;
             TextGenerationSettings = new TextGenerationSettings();
             TextGenerationSettings.font = text.font;
             TextGenerationSettings.fontSize = text.fontSize;

@@ -236,8 +236,6 @@ namespace CoreGame
                                                -DiscussionWindowDimensionsComponent.MarginUp - DiscussionWindowDimensionsComponent.MarginDown);
             }
 
-            Debug.Log(this.TextGenerationSettings.generationExtents);
-
             this.textGenerator.Populate(text, this.TextGenerationSettings);
             return this.textGenerator;
         }

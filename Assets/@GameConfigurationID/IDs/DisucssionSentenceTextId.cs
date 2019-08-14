@@ -13,7 +13,7 @@ namespace GameConfigurationID
 
 
     [System.Serializable()]
-    public enum DisucssionSentenceTextId
+    public enum DiscussionTextID
     {
 
         SWER_RTP_1_DOOR = 0,

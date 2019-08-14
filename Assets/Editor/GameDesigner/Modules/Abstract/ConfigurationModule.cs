@@ -9,6 +9,8 @@ namespace Editor_GameDesigner
         [SerializeField]
         private IGenericConfigurationEditor configurationEditor;
 
+        public IGenericConfigurationEditor ConfigurationEditor { get => configurationEditor; }
+
         public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             this.configurationEditor.GUITick();
