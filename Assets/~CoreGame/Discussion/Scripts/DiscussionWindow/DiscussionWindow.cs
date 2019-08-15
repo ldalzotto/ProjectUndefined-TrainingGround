@@ -100,11 +100,11 @@ namespace CoreGame
         }
 
         #region External Events
-        public void OnDiscussionWindowAwake(DiscussionTextInherentData discussionText, Transform position)
+        public void OnDiscussionWindowAwakeV2(DiscussionTextInherentData discussionText, Vector3 worldPosition, WindowPositionType WindowPositionType)
         {
             this.currentWindowDiscussionTextInherentData = discussionText;
             DiscussionWindowAnimationManager.PlayEnterAnimation();
-            DiscussionWindowPositioner.SetTransformToFollow(position);
+            DiscussionWindowPositioner.SetTransformToFollow(worldPosition, WindowPositionType);
             InitializeDiscussionWindow(discussionText.Text, discussionText.InputParameters.AsReadOnly());
         }
 
@@ -328,7 +328,9 @@ namespace CoreGame
     {
         private Camera camera;
         private Transform discussionTransform;
-        private Transform worldTransformToFollow;
+
+        private Vector3 worldPositionToFollow;
+        private WindowPositionType WindowPositionType;
 
         public DiscussionWindowPositioner(Camera camera, Transform discussionTransform)
         {
@@ -336,25 +338,29 @@ namespace CoreGame
             this.discussionTransform = discussionTransform;
         }
 
-        public void SetTransformToFollow(Transform worldTransformToFollow)
+        public void SetTransformToFollow(Vector3 worldPosition, WindowPositionType WindowPositionType)
         {
-            this.worldTransformToFollow = worldTransformToFollow;
+            this.worldPositionToFollow = worldPosition;
+            this.WindowPositionType = WindowPositionType;
         }
 
         public void Tick()
         {
-            if (worldTransformToFollow != null)
+            if (this.WindowPositionType == WindowPositionType.WORLD)
             {
-                if (worldTransformToFollow.GetType() == typeof(RectTransform))
-                {
-                    this.discussionTransform.position = worldTransformToFollow.position;
-                }
-                else
-                {
-                    this.discussionTransform.position = camera.WorldToScreenPoint(worldTransformToFollow.position);
-                }
+                this.discussionTransform.position = camera.WorldToScreenPoint(worldPositionToFollow);
+            }
+            else if (this.WindowPositionType == WindowPositionType.SCREEN)
+            {
+                this.discussionTransform.position = worldPositionToFollow;
             }
         }
+    }
+
+    public enum WindowPositionType
+    {
+        WORLD = 0,
+        SCREEN = 1
     }
     #endregion
 

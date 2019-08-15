@@ -82,7 +82,7 @@ namespace AdventureGame
             }
             if (this.InterrupTutorialStep)
             {
-                this.TutorialManager.AbortAllTutorials();
+                this.TutorialManager.Abort();
             }
         }
     }

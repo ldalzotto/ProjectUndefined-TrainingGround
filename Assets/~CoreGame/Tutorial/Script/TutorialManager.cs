@@ -25,37 +25,42 @@ namespace CoreGame
         {
             return this.TutorialStatePersister.GetTutorialState(TutorialStepID);
         }
-        public bool IsTutorialStepPlaying(TutorialStepID tutorialStepID)
+
+        public bool IsTutorialStepPlaying()
         {
-            return this.PlayingTutorialStepManagers.ContainsKey(tutorialStepID);
+            return this.PlayingTutorialStepManager != null;
         }
         #endregion
 
-        private Dictionary<TutorialStepID, TutorialStepManager> PlayingTutorialStepManagers;
+        private TutorialStepManager PlayingTutorialStepManager;
 
         #region External Events
         public void PlayTutorialStep(TutorialStepID tutorialStepID)
         {
+            if (this.PlayingTutorialStepManager != null)
+            {
+                this.PlayingTutorialStepManager.Interrupt();
+            }
+
             if (!this.TutorialStatePersister.GetTutorialState(tutorialStepID))
             {
-                this.PlayingTutorialStepManagers[tutorialStepID] = new TutorialStepManager(this.TutorialActionInput, tutorialStepID, this);
-                this.PlayingTutorialStepManagers[tutorialStepID].Play(this.TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
+                this.TutorialActionInput.TutorialStepID = tutorialStepID;
+                this.PlayingTutorialStepManager = new TutorialStepManager(this.TutorialActionInput, tutorialStepID, this);
+                this.PlayingTutorialStepManager.Play(this.TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
             }
         }
 
-        public void AbortAllTutorials()
+        public void Abort()
         {
-            foreach (var PlayingTutorialStepManager in PlayingTutorialStepManagers.Values)
+            if (this.PlayingTutorialStepManager != null)
             {
-                PlayingTutorialStepManager.Interrupt();
+                this.PlayingTutorialStepManager.Interrupt();
             }
-            this.PlayingTutorialStepManagers.Clear();
         }
         #endregion
 
         public void Init()
         {
-            this.PlayingTutorialStepManagers = new Dictionary<TutorialStepID, TutorialStepManager>();
             this.TutorialStepConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.TutorialStepConfiguration();
             this.TutorialActionInput = new TutorialActionInput(CoreGameSingletonInstances.GameCanvas,
                CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration(),
@@ -67,21 +72,16 @@ namespace CoreGame
 
         public void Tick(float d)
         {
-            foreach (var playingTutorialStepManagerEntry in this.PlayingTutorialStepManagers)
+            if (this.PlayingTutorialStepManager != null)
             {
-                playingTutorialStepManagerEntry.Value.Tick(d);
-            }
-
-            foreach (var tutorialStepFinished in this.TutorialStepFInishedThisFrame)
-            {
-                this.PlayingTutorialStepManagers.Remove(tutorialStepFinished);
+                this.PlayingTutorialStepManager.Tick(d);
             }
         }
 
         public void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID)
         {
             this.TutorialStatePersister.SetTutorialState(tutorialStepID, true);
-            this.TutorialStepFInishedThisFrame.Add(tutorialStepID);
+            this.PlayingTutorialStepManager = null;
         }
     }
 

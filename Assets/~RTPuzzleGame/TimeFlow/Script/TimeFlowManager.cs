@@ -1,5 +1,4 @@
-﻿using System;
-using CoreGame;
+﻿using CoreGame;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -46,10 +45,17 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Data Retrieval
         public float GetTimeAttenuation()
         {
             return TimeFlowInputManager.GetTimeAttenuation();
         }
+        public float GetCurrentAvailableTime()
+        {
+            return this.TimeFlowValueTracker.CurrentAvailableTime;
+        }
+        #endregion
+        
 
 #if UNITY_EDITOR
         #region Debug CHEAT

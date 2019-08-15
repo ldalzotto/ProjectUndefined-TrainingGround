@@ -55,13 +55,18 @@ namespace CoreGame
             this.DiscussionTreePlayer.StartDiscussion();
         }
 
-        protected virtual Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode)
+        protected virtual bool GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode, out Vector3 worldPosition, out WindowPositionType WindowPositionType)
         {
+            worldPosition = default;
+            WindowPositionType = default;
+
             if (abstractDiscussionTextOnlyNode.GetType() == typeof(FixedScreenPositionDiscussionTextOnlyNode))
             {
-                return CoreGameSingletonInstances.DiscussionPositionManager.GetDiscussionPosition(((FixedScreenPositionDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).DiscussionScreenPosition).transform;
+                worldPosition = CoreGameSingletonInstances.DiscussionPositionManager.GetDiscussionPosition(((FixedScreenPositionDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).DiscussionScreenPosition).transform.position;
+                WindowPositionType = WindowPositionType.SCREEN;
+                return true;
             }
-            return null;
+            return false;
         }
 
         public void Tick(float d, out Nullable<DiscussionNodeId> discussionChoiceMade)
@@ -166,7 +171,8 @@ namespace CoreGame
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished);
-            OpenedDiscussion.OnDiscussionWindowAwake(CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText], this.GetAbstractTextOnlyNodePosition(discussionNode));
+            this.GetAbstractTextOnlyNodePosition(discussionNode, out Vector3 worldPosition, out WindowPositionType WindowPositionType);
+            OpenedDiscussion.OnDiscussionWindowAwakeV2(CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText], worldPosition, WindowPositionType);
         }
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)

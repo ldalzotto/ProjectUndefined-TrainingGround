@@ -32,6 +32,7 @@ namespace RTPuzzle
         private RangeTypeObjectContainer RangeTypeContainer;
         private CameraMovementManager CameraMovementManager;
         private CircleFillBarRendererManager CircleFillBarRendererManager;
+        private PuzzleTutorialEventSender PuzzleTutorialEventSender;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -76,6 +77,7 @@ namespace RTPuzzle
             ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             CircleFillBarRendererManager = GameObject.FindObjectOfType<CircleFillBarRendererManager>();
+            PuzzleTutorialEventSender = GameObject.FindObjectOfType<PuzzleTutorialEventSender>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -116,6 +118,8 @@ namespace RTPuzzle
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
+            PuzzleTutorialEventSender.Init();
+
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -132,6 +136,8 @@ namespace RTPuzzle
 
                 if (!GameOverManager.OnGameOver)
                 {
+                    PuzzleTutorialEventSender.Tick(d);
+
                     PlayerActionManager.Tick(d);
                     PlayerManager.Tick(d);
                     CameraMovementManager.Tick(d);

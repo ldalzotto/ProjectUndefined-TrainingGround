@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using NodeGraph;
+using RTPuzzle;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -13,6 +14,7 @@ namespace Experimental.Editor_NodeEditor
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>() {
             {typeof(CutsceneStartNode).Name, typeof(CutsceneStartNode) },
             {typeof(TutorialTextNode).Name, typeof(TutorialTextNode)},
+            {typeof(PuzzleTutorialTextNode).Name, typeof(PuzzleTutorialTextNode) }
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

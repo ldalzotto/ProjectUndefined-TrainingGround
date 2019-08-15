@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using GameConfigurationID;
+﻿using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -11,57 +10,73 @@ using NodeGraph_Editor;
 namespace CoreGame
 {
     [System.Serializable]
-    public class TutorialTextAction : SequencedAction
+    public class TutorialTextAction : AbstractTutorialTextAction
     {
         [CustomEnum()]
         [SerializeField]
-        public DiscussionTextID DiscussionTextID;
-
-        [NonSerialized]
-        private DiscussionWindow DiscussionWindow;
-
-        [NonSerialized]
-        private bool discussionEnded = false;
-        [NonSerialized]
-        private TutorialActionInput TutorialActionInput;
-
-        public TutorialTextAction(List<SequencedAction> nextActions) : base(nextActions)
-        {
-        }
+        public DiscussionPositionMarkerID DiscussionPositionMarkerID;
 
         public override void AfterFinishedEventProcessed()
         {
         }
 
-        public override bool ComputeFinishedConditions()
+        public TutorialTextAction(List<SequencedAction> nextActions) : base(nextActions)
         {
-            return this.discussionEnded;
         }
 
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
-            this.discussionEnded = false;
-            this.playerCrossedDistance = 0f;
-            this.lastFramePlayerPosition = null;
-
-            this.TutorialActionInput = (TutorialActionInput)ContextActionInput;
-            
-            this.DiscussionWindow = DiscussionWindow.Instanciate(this.TutorialActionInput.MainCanvas);
-            this.DiscussionWindow.InitializeDependencies(() => { this.discussionEnded = true; }, displayWorkflowIcon: false);
-            this.DiscussionWindow.OnDiscussionWindowAwake(this.TutorialActionInput.DiscussionTextConfiguration.ConfigurationInherentData[this.DiscussionTextID], this.TutorialActionInput.DiscussionPositionManager.GetDiscussionPosition(DiscussionPositionMarkerID.TOP_LEFT).transform);
+            base.FirstExecutionAction(ContextActionInput);
+            this.DiscussionWindow.OnDiscussionWindowAwakeV2(this.TutorialActionInput.DiscussionTextConfiguration.ConfigurationInherentData[this.DiscussionTextID],
+                  this.TutorialActionInput.DiscussionPositionManager.GetDiscussionPosition(DiscussionPositionMarkerID).transform.position, WindowPositionType.SCREEN);
         }
+
+        protected override ITutorialTextActionManager GetTutorialTextManager(TutorialActionInput tutorialActionInput)
+        {
+            if (tutorialActionInput.TutorialStepID == TutorialStepID.TUTORIAL_MOVEMENT)
+            {
+                return new MovementTutorialTextActionmanager();
+            }
+            return null;
+        }
+
+
+        public override void Tick(float d)
+        {
+            base.Tick(d);
+
+
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.DiscussionTextID = (DiscussionTextID)NodeEditorGUILayout.EnumField("Discussion Text : ", string.Empty, this.DiscussionTextID);
+            this.DiscussionPositionMarkerID = (DiscussionPositionMarkerID)NodeEditorGUILayout.EnumField("Discussion Position : ", string.Empty, this.DiscussionPositionMarkerID);
+        }
+#endif
+    }
+
+    class MovementTutorialTextActionmanager : ITutorialTextActionManager
+    {
 
         private float playerCrossedDistance = 0f;
         private Nullable<Vector3> lastFramePlayerPosition;
-    
-        public override void Tick(float d)
-        {
-            this.DiscussionWindow.Tick(d);
 
-            if(this.playerCrossedDistance >= 0f)
+        private PlayerManagerType PlayerManagerType;
+
+        public void FirstExecutionAction(TutorialActionInput TutorialActionInput, DiscussionTextID DiscussionTextID, DiscussionWindow discussionWindow)
+        {
+            this.playerCrossedDistance = 0f;
+            this.lastFramePlayerPosition = null;
+            this.PlayerManagerType = TutorialActionInput.PlayerManagerType;
+        }
+
+        public bool Tick(float d)
+        {
+            if (this.playerCrossedDistance >= 0f)
             {
-                //TODO -> move to it's own piece of code
-                var currentPlayerPosition = this.TutorialActionInput.PlayerManagerType.transform.position;
+                var currentPlayerPosition = this.PlayerManagerType.transform.position;
                 if (lastFramePlayerPosition.HasValue)
                 {
                     this.playerCrossedDistance += Vector3.Distance(this.lastFramePlayerPosition.Value, currentPlayerPosition);
@@ -70,27 +85,12 @@ namespace CoreGame
 
                 if (this.playerCrossedDistance >= 20)
                 {
-                    Debug.Log("CLOSE");
                     this.playerCrossedDistance = -1;
-                    this.DiscussionWindow.PlayDiscussionCloseAnimation();
+                    return true;
                 }
             }
-      
-
+            return false;
         }
-
-        public override void Interupt()
-        {
-            base.Interupt();
-            MonoBehaviour.Destroy(this.DiscussionWindow.gameObject);
-        }
-
-#if UNITY_EDITOR
-        public override void ActionGUI()
-        {
-            this.DiscussionTextID = (DiscussionTextID)NodeEditorGUILayout.EnumField("Discussion Text : ", string.Empty, this.DiscussionTextID);
-        }
-#endif
     }
 
 }

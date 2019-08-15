@@ -46,7 +46,7 @@ namespace AdventureGame
         #region Internal Events
         public void OnDiscussionTextStartWriting(DiscussionTextInherentData text)
         {
-            this.DiscussionWindow.OnDiscussionWindowAwake(text, (RectTransform)this.transform);
+            this.DiscussionWindow.OnDiscussionWindowAwakeV2(text, ((RectTransform)this.transform).position, WindowPositionType.SCREEN);
         }
         #endregion
     }

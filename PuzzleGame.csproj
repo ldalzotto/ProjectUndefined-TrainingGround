@@ -252,6 +252,10 @@
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Actions\PuzzleTutorialTextAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Edges\PuzzleTutorialTextEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Nodes\PuzzleTutorialTextNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\PuzzleTutorialEventSender.cs" />
     <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
     <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackMarkType.cs" />

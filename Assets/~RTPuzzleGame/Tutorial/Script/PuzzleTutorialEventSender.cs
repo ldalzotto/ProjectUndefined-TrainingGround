@@ -2,9 +2,9 @@
 using GameConfigurationID;
 using UnityEngine;
 
-namespace AdventureGame
+namespace RTPuzzle
 {
-    public class AdventureTutorialEventSender : MonoBehaviour
+    public class PuzzleTutorialEventSender : MonoBehaviour
     {
         private TutorialManager tutorialManager;
 
@@ -15,9 +15,9 @@ namespace AdventureGame
 
         public void Tick(float d)
         {
-            if (!this.tutorialManager.GetTutorialCurrentState(TutorialStepID.TUTORIAL_MOVEMENT) && !this.tutorialManager.IsTutorialStepPlaying())
+            if (!this.tutorialManager.GetTutorialCurrentState(TutorialStepID.PUZZLE_TIME_ELAPSING) && !this.tutorialManager.IsTutorialStepPlaying())
             {
-                this.tutorialManager.PlayTutorialStep(TutorialStepID.TUTORIAL_MOVEMENT);
+                this.tutorialManager.PlayTutorialStep(TutorialStepID.PUZZLE_TIME_ELAPSING);
             }
         }
     }

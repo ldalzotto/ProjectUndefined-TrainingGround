@@ -213,6 +213,7 @@
     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineAction\LevelCompletedTimelineAction.cs" />
     <Compile Include="Assets\~CoreGame\Timelines\LevelAvailabilityTimeline\TimelineNodeWorkflowAction\LevelUnlockWorkflowAction.cs" />
     <Compile Include="Assets\~CoreGame\Timelines\TimelinesEventManager.cs" />
+    <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\Abstract\AbstractTutorialTextAction.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialActionInput.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Actions\TutorialTextAction.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Edges\TutorialTextEdge.cs" />

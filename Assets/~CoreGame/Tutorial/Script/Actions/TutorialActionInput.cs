@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameConfigurationID;
 
 namespace CoreGame
 {
     public class TutorialActionInput : SequencedActionInput
     {
+        public TutorialStepID TutorialStepID;
         public Canvas MainCanvas;
         public DiscussionTextConfiguration DiscussionTextConfiguration;
         public DiscussionPositionManager DiscussionPositionManager;
@@ -12,6 +14,7 @@ namespace CoreGame
 
         public TutorialActionInput(Canvas mainCanvas, DiscussionTextConfiguration discussionTextConfiguration, DiscussionPositionManager discussionPositionManager, PlayerManagerType playerManagerType)
         {
+            this.TutorialStepID = TutorialStepID;
             MainCanvas = mainCanvas;
             DiscussionTextConfiguration = discussionTextConfiguration;
             DiscussionPositionManager = discussionPositionManager;

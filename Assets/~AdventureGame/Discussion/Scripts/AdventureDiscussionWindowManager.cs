@@ -15,17 +15,19 @@ namespace AdventureGame
             this.BaseInit(DiscussionTreeId, DiscussionWindowManagerStrategy);
         }
 
-        protected override Transform GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode)
+        protected override bool GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode, out Vector3 worldPosition, out WindowPositionType WindowPositionType)
         {
-            var position = base.GetAbstractTextOnlyNodePosition(abstractDiscussionTextOnlyNode);
-            if (position == null)
+            if (!base.GetAbstractTextOnlyNodePosition(abstractDiscussionTextOnlyNode, out worldPosition, out WindowPositionType))
             {
                 if (abstractDiscussionTextOnlyNode.GetType() == typeof(AdventureDiscussionTextOnlyNode))
                 {
-                    return this.PointOfInterestManager.GetActivePointOfInterest(((AdventureDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).Talker).transform;
+                    worldPosition = this.PointOfInterestManager.GetActivePointOfInterest(((AdventureDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).Talker).transform.position;
+                    WindowPositionType = WindowPositionType.WORLD;
+                    return true;
                 }
+                return false;
             }
-            return position;
+            return true;
         }
     }
 

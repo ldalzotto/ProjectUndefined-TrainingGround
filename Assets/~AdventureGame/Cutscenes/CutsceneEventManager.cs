@@ -21,7 +21,7 @@ namespace AdventureGame
         {
             this.InventoryEventManager.OnInventoryDisabled();
             this.ContextActionWheelEventManager.OnWheelDisabled();
-            CoreGameSingletonInstances.TutorialManager.AbortAllTutorials();
+            CoreGameSingletonInstances.TutorialManager.Abort();
         }
     }
 }

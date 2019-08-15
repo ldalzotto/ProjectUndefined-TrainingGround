@@ -14,6 +14,7 @@ namespace GameConfigurationID
     public enum TutorialStepID
     {
         NONE = 0,
-        TUTORIAL_MOVEMENT = 1
+        TUTORIAL_MOVEMENT = 1,
+        PUZZLE_TIME_ELAPSING = 2
     }
 }
