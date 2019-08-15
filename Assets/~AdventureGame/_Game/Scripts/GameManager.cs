@@ -33,7 +33,7 @@ namespace AdventureGame
         void Start()
         {
             base.OnStart();
-            
+
             //load dynamic POI
             var allLoadedLevelChunkID = GameObject.FindObjectOfType<LevelManager>().AllLoadedLevelZonesChunkID;
             var allActivePOIIds = GameObject.FindObjectsOfType<APointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestId);
@@ -114,7 +114,7 @@ namespace AdventureGame
 
         private void OnGUI()
         {
-         
+
         }
 
         private void OnDrawGizmos()

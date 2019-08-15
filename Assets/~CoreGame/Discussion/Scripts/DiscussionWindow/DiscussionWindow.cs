@@ -118,7 +118,7 @@ namespace CoreGame
         private void InitializeDiscussionWindow(string text, ReadOnlyCollection<InputParameter> InputParameters)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
-            this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, 
+            this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent,
                 this, this.textAreaText, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), CoreGameSingletonInstances.GameInputManager);
             this.OnDiscussionStartWriting();
         }
@@ -133,7 +133,7 @@ namespace CoreGame
         {
             DiscussionWindowAnimationManager.PlayExitAnimation();
         }
-
+        
         public void OnHeightChange(float newHeight)
         {
             DiscussionWindowDimensionsTransitionManager.OnHeightChange(newHeight);

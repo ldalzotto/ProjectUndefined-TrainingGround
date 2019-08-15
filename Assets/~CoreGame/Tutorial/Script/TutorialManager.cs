@@ -31,6 +31,15 @@ namespace CoreGame
                 this.PlayingTutorialStepManagers[tutorialStepID].Play(this.TutorialStepConfiguration.ConfigurationInherentData[tutorialStepID].TutorialGraph);
             }
         }
+
+        public void AbortAllTutorials()
+        {
+            foreach(var PlayingTutorialStepManager in PlayingTutorialStepManagers.Values)
+            {
+                PlayingTutorialStepManager.Interrupt();
+            }
+            this.PlayingTutorialStepManagers.Clear();
+        }
         #endregion
 
         public void Init()
@@ -96,6 +105,11 @@ namespace CoreGame
         public void Tick(float d)
         {
             this.tutorialPlayer.Tick(d);
+        }
+
+        public void Interrupt()
+        {
+            this.tutorialPlayer.InterruptAllActions();
         }
     }
 }

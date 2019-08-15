@@ -42,6 +42,7 @@ namespace CoreGame
         {
             this.discussionEnded = false;
             this.playerCrossedDistance = 0f;
+            this.lastFramePlayerPosition = null;
 
             this.TutorialActionInput = (TutorialActionInput)ContextActionInput;
             
@@ -81,8 +82,7 @@ namespace CoreGame
         public override void Interupt()
         {
             base.Interupt();
-            this.DiscussionWindow.PlayDiscussionCloseAnimation();
-            this.discussionEnded = true;
+            MonoBehaviour.Destroy(this.DiscussionWindow.gameObject);
         }
 
 #if UNITY_EDITOR

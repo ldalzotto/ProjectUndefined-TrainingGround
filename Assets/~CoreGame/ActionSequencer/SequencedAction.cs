@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -19,7 +18,7 @@ namespace CoreGame
         public abstract bool ComputeFinishedConditions();
         public abstract void AfterFinishedEventProcessed();
         public abstract void Tick(float d);
-        
+
         [SerializeField]
         private List<SequencedAction> nextActions;
 
@@ -28,7 +27,7 @@ namespace CoreGame
         private SequencedActionInput actionInput;
         #endregion
 
-        public SequencedAction(List<SequencedAction>  nextActions)
+        public SequencedAction(List<SequencedAction> nextActions)
         {
             this.nextActions = nextActions;
         }

@@ -24,7 +24,7 @@ namespace CoreGame
         private bool isCutscenePlaying = false;
         public bool IsCutscenePlaying { get => isCutscenePlaying; }
         #endregion
-
+        
         protected IEnumerator PlayCutscene(AbstractCutsceneGraph cutsceneGraph, SequencedActionInput cutsceneInput)
         {
             this.isCutscenePlaying = true;

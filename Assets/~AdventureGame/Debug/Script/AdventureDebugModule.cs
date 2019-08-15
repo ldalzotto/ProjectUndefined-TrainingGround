@@ -35,6 +35,7 @@ namespace AdventureGame
 
         [Header("Tutorial Step")]
         public bool PlayTutorialStep;
+        public bool InterrupTutorialStep;
         [CustomEnum()]
         public TutorialStepID TutorialStepID;
         private TutorialManager TutorialManager;
@@ -78,6 +79,10 @@ namespace AdventureGame
             {
                 this.PlayTutorialStep = false;
                 this.TutorialManager.PlayTutorialStep(this.TutorialStepID);
+            }
+            if (this.InterrupTutorialStep)
+            {
+                this.TutorialManager.AbortAllTutorials();
             }
         }
     }

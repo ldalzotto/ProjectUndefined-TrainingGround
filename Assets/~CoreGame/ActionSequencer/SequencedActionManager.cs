@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CoreGame
 {
@@ -67,13 +66,14 @@ namespace CoreGame
                     this.OnNoMoreActionToPlay.Invoke();
                 }
             }
+            
         }
 
         private void ProcessTick(float d, SequencedAction contextAction)
         {
             contextAction.OnTick(d, this.OnActionFinished);
         }
-        
+
         public void InterruptAllActions()
         {
             foreach (var action in ExecutedActions)

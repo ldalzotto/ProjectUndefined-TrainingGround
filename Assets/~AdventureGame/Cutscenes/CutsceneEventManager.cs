@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace AdventureGame
@@ -20,6 +21,7 @@ namespace AdventureGame
         {
             this.InventoryEventManager.OnInventoryDisabled();
             this.ContextActionWheelEventManager.OnWheelDisabled();
+            CoreGameSingletonInstances.TutorialManager.AbortAllTutorials();
         }
     }
 }
