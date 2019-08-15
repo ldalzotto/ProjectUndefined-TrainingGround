@@ -14,7 +14,6 @@ namespace CoreGame
 
         public TutorialActionInput(Canvas mainCanvas, DiscussionTextConfiguration discussionTextConfiguration, DiscussionPositionManager discussionPositionManager, PlayerManagerType playerManagerType)
         {
-            this.TutorialStepID = TutorialStepID;
             MainCanvas = mainCanvas;
             DiscussionTextConfiguration = discussionTextConfiguration;
             DiscussionPositionManager = discussionPositionManager;

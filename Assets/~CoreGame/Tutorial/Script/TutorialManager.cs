@@ -57,6 +57,20 @@ namespace CoreGame
                 this.PlayingTutorialStepManager.Interrupt();
             }
         }
+
+        public void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID)
+        {
+            this.TutorialStatePersister.SetTutorialState(tutorialStepID, true);
+            this.PlayingTutorialStepManager = null;
+        }
+
+        public void SendEventToTutorialGraph(TutorialGraphEventType tutorialGraphEvent)
+        {
+            if (this.PlayingTutorialStepManager != null)
+            {
+                this.PlayingTutorialStepManager.ReceiveTutorialGraphEvent(tutorialGraphEvent);
+            }
+        }
         #endregion
 
         public void Init()
@@ -78,11 +92,6 @@ namespace CoreGame
             }
         }
 
-        public void OnTutorialStepManagerEnd(TutorialStepID tutorialStepID)
-        {
-            this.TutorialStatePersister.SetTutorialState(tutorialStepID, true);
-            this.PlayingTutorialStepManager = null;
-        }
     }
 
     public interface TutorialStepManagerEventListener
@@ -122,5 +131,20 @@ namespace CoreGame
         {
             this.tutorialPlayer.InterruptAllActions();
         }
+
+        public void ReceiveTutorialGraphEvent(TutorialGraphEventType tutorialGraphEvent)
+        {
+            foreach (var currentAction in this.tutorialPlayer.GetCurrentActions())
+            {
+                if (typeof(ITutorialEventListener).IsAssignableFrom(currentAction.GetType()))
+                {
+                    if(tutorialGraphEvent == TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE)
+                    {
+                        ((ITutorialEventListener)currentAction).OnPlayerActionWheelAwake();
+                    }
+                }
+            }
+        }
     }
+
 }

@@ -64,7 +64,7 @@ namespace RTPuzzle
 
             PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.rootPuzzleLogicCollider.GetRootCollider(), playerPhysicsMovementComponent);
-            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PlayerActionEventManager, PlayerActionManager);
+            PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PuzzleEventsManager, PlayerActionManager);
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
@@ -139,14 +139,17 @@ namespace RTPuzzle
     #region Player Action Selection Manager
     class PlayerSelectionWheelManager
     {
+        #region External Dependencies
+        private PuzzleEventsManager PuzzleEventsManager;
+        #endregion
+
         private IGameInputManager GameInputManager;
-        private PlayerActionEventManager PlayerActionEventManager;
         private PlayerActionManager PlayerActionManager;
 
-        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PlayerActionEventManager PlayerActionEventManager, PlayerActionManager PlayerActionManager)
+        public PlayerSelectionWheelManager(IGameInputManager gameInputManager, PuzzleEventsManager PuzzleEventsManager, PlayerActionManager PlayerActionManager)
         {
             GameInputManager = gameInputManager;
-            this.PlayerActionEventManager = PlayerActionEventManager;
+            this.PuzzleEventsManager = PuzzleEventsManager;
             this.PlayerActionManager = PlayerActionManager;
         }
 
@@ -156,13 +159,13 @@ namespace RTPuzzle
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
-                    PlayerActionEventManager.OnWheelAwake();
+                    this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelAwake();
                     return true;
                 }
             }
             else if (GameInputManager.CurrentInput.CancelButtonD())
             {
-                PlayerActionEventManager.OnWheelSleep();
+                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelSleep();
                 return true;
             }
             return false;
@@ -172,7 +175,7 @@ namespace RTPuzzle
         {
             if (GameInputManager.CurrentInput.ActionButtonD())
             {
-                PlayerActionEventManager.OnCurrentNodeSelected();
+                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelNodeSelected();
             }
         }
 

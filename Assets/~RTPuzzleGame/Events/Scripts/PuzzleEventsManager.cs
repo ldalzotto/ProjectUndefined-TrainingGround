@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ namespace RTPuzzle
         private TimelinesEventManager TimelinesEventManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
+        private PlayerActionEventManager PlayerActionEventManager;
+        private TutorialManager TutorialManager;
         #endregion
 
         public void Init()
@@ -27,6 +30,8 @@ namespace RTPuzzle
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
             this.GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
+            this.PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
+            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
         }
 
         #region AI related events
@@ -133,6 +138,22 @@ namespace RTPuzzle
         public void PZ_EVT_OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
         {
             this.PlayerActionPuzzleEventsManager.OnActionInteractableExit(actionInteractableObjectModule);
+        }
+        #endregion
+
+        #region Player Action Wheel Event
+        public void PZ_EVT_OnPlayerActionWheelAwake()
+        {
+            this.PlayerActionEventManager.OnWheelAwake();
+            this.TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
+        }
+        public void PZ_EVT_OnPlayerActionWheelSleep()
+        {
+            this.PlayerActionEventManager.OnWheelSleep();
+        }
+        public void PZ_EVT_OnPlayerActionWheelNodeSelected()
+        {
+            this.PlayerActionEventManager.OnCurrentNodeSelected();
         }
         #endregion
 

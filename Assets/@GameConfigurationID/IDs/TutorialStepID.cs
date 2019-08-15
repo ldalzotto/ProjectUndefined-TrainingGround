@@ -15,6 +15,7 @@ namespace GameConfigurationID
     {
         NONE = 0,
         TUTORIAL_MOVEMENT = 1,
-        PUZZLE_TIME_ELAPSING = 2
+        PUZZLE_TIME_ELAPSING = 2,
+        PUZZLE_CONTEXT_ACTION_AWAKE = 3
     }
 }

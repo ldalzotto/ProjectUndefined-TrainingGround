@@ -19,6 +19,22 @@ namespace RTPuzzle
             {
                 this.tutorialManager.PlayTutorialStep(TutorialStepID.PUZZLE_TIME_ELAPSING);
             }
+            if (!this.tutorialManager.GetTutorialCurrentState(TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE) && !this.tutorialManager.IsTutorialStepPlaying())
+            {
+                this.tutorialManager.PlayTutorialStep(TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE);
+            }
         }
+
+        #region External Events       
+        public void OnPlayerActionWheelAwake()
+        {
+        }
+        public void OnPlayerActionWheelSleep()
+        {
+        }
+        public void OnPlayerActionWheelNodeSelected()
+        {
+        }
+        #endregion
     }
 }

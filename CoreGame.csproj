@@ -219,6 +219,7 @@
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Edges\TutorialTextEdge.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\Nodes\TutorialTextNode.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\Graph\TutorialGraph.cs" />
+    <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialGraphEvents.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialManager.cs" />
     <Compile Include="Assets\~CoreGame\Tutorial\Script\TutorialStatePersister.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayout.cs" />

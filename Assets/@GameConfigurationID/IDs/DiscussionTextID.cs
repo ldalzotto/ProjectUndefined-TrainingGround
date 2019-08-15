@@ -50,6 +50,8 @@ namespace GameConfigurationID
 
         Tutorial_Movement = 16,
 
-        Tutorial_PuzzleTimeElapse = 17
+        Tutorial_PuzzleTimeElapse = 17,
+
+        Tutorial_PuzzleContextAactionAwake = 18
     }
 }
