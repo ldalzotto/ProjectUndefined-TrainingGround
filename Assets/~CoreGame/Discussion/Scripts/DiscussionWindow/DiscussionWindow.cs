@@ -48,7 +48,7 @@ namespace CoreGame
 
         private Action OnExitAnimationFinished;
 
-        public void InitializeDependencies(Action OnExitAnimationFinished)
+        public void InitializeDependencies(Action OnExitAnimationFinished, bool displayWorkflowIcon = true)
         {
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
             this.textAreaText = textAreaObject.GetComponent<Text>();
@@ -68,7 +68,7 @@ namespace CoreGame
             DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
 
             DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, this.textAreaText);
-            DiscussionWorkflowManager = new DiscussionWorkflowManager(CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), (RectTransform)gameObject.FindChildObjectRecursively(WORKFLOW_ICON_IMAGE_CONTAINER_NAME).transform);
+            DiscussionWorkflowManager = new DiscussionWorkflowManager(CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), (RectTransform)gameObject.FindChildObjectRecursively(WORKFLOW_ICON_IMAGE_CONTAINER_NAME).transform, displayWorkflowIcon);
         }
 
         public void Tick(float d)
@@ -260,11 +260,14 @@ namespace CoreGame
 
         private InputImageType InputImageType;
 
-        public DiscussionWorkflowManager(InputConfiguration InputConfiguration, RectTransform imageIconContainer)
+        public DiscussionWorkflowManager(InputConfiguration InputConfiguration, RectTransform imageIconContainer, bool displayWorkflowIcon)
         {
-            this.InputImageType = InputImageType.Instantiate(InputConfiguration.ConfigurationInherentData[GameConfigurationID.InputID.ACTION_DOWN], imageIconContainer, true);
-            this.InputImageType.transform.localPosition = Vector3.zero;
-            this.InputImageType.gameObject.SetActive(false);
+            if (displayWorkflowIcon)
+            {
+                this.InputImageType = InputImageType.Instantiate(InputConfiguration.ConfigurationInherentData[GameConfigurationID.InputID.ACTION_DOWN], imageIconContainer, true);
+                this.InputImageType.transform.localPosition = Vector3.zero;
+                this.InputImageType.gameObject.SetActive(false);
+            }
             OnDiscussionWindowAwake();
         }
 
@@ -289,7 +292,11 @@ namespace CoreGame
                     isWaitningForEnd = true;
                 }
 
-                this.InputImageType.gameObject.SetActive(true);
+                if (this.InputImageType != null)
+                {
+                    this.InputImageType.gameObject.SetActive(true);
+                }
+
             }
         }
 
@@ -300,7 +307,10 @@ namespace CoreGame
 
         private void ResetState()
         {
-            this.InputImageType.gameObject.SetActive(false);
+            if (this.InputImageType != null)
+            {
+                this.InputImageType.gameObject.SetActive(false);
+            }
             isWaitingForContinue = false;
             isWaitningForEnd = false;
         }

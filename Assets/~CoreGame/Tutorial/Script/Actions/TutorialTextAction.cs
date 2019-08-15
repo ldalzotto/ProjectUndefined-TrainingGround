@@ -47,7 +47,7 @@ namespace CoreGame
             this.TutorialActionInput = (TutorialActionInput)ContextActionInput;
             
             this.DiscussionWindow = DiscussionWindow.Instanciate(this.TutorialActionInput.MainCanvas);
-            this.DiscussionWindow.InitializeDependencies(() => { this.discussionEnded = true; });
+            this.DiscussionWindow.InitializeDependencies(() => { this.discussionEnded = true; }, displayWorkflowIcon: false);
             this.DiscussionWindow.OnDiscussionWindowAwake(this.TutorialActionInput.DiscussionTextConfiguration.ConfigurationInherentData[this.DiscussionTextID], this.TutorialActionInput.DiscussionPositionManager.GetDiscussionPosition(DiscussionPositionMarkerID.TOP_LEFT).transform);
         }
 
