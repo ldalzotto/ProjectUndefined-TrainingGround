@@ -7,12 +7,6 @@ namespace CoreGame
 {
     public abstract class AbstractDiscussionWindowManager
     {
-        #region External Dependencies
-        private Canvas GameCanvas;
-        private CoreConfigurationManager CoreConfigurationManager;
-        protected DiscussionPositionManager DiscussionPositionManager;
-        #endregion
-
         #region State 
         private DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy;
         private ChoicePopup OpenedChoicePopup;
@@ -48,21 +42,13 @@ namespace CoreGame
 
         protected void BaseInit(DiscussionTreeId DiscussionTreeId, DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy)
         {
-            #region External Dependencies
-            GameCanvas = GameObject.FindObjectOfType<Canvas>();
-            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            this.DiscussionPositionManager = GameObject.FindObjectOfType<DiscussionPositionManager>();
-
-            var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            #endregion
-
             this.discussionTreeID = DiscussionTreeId;
             this.DiscussionWindowManagerStrategy = DiscussionWindowManagerStrategy;
-            DicussionInputManager = new DicussionInputManager(GameInputManager);
+            DicussionInputManager = new DicussionInputManager(CoreGameSingletonInstances.GameInputManager);
 
-            this.OpenedDiscussion = DiscussionWindow.Instanciate(GameCanvas);
+            this.OpenedDiscussion = DiscussionWindow.Instanciate(CoreGameSingletonInstances.GameCanvas);
 
-            this.DiscussionTreePlayer = new DiscussionTreePlayer(this.CoreConfigurationManager.DiscussionConfiguration()[DiscussionTreeId],
+            this.DiscussionTreePlayer = new DiscussionTreePlayer(CoreGameSingletonInstances.CoreConfigurationManager.DiscussionConfiguration()[DiscussionTreeId],
                             this.OnDiscussionTextWindowAwake,
                             this.OnChoicePopupAwake);
 
@@ -73,7 +59,7 @@ namespace CoreGame
         {
             if (abstractDiscussionTextOnlyNode.GetType() == typeof(FixedScreenPositionDiscussionTextOnlyNode))
             {
-                return this.DiscussionPositionManager.GetDiscussionPosition(((FixedScreenPositionDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).DiscussionScreenPosition).transform;
+                return CoreGameSingletonInstances.DiscussionPositionManager.GetDiscussionPosition(((FixedScreenPositionDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).DiscussionScreenPosition).transform;
             }
             return null;
         }
@@ -180,13 +166,13 @@ namespace CoreGame
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
             OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished);
-            OpenedDiscussion.OnDiscussionWindowAwake(this.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText], this.GetAbstractTextOnlyNodePosition(discussionNode));
+            OpenedDiscussion.OnDiscussionWindowAwake(CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText], this.GetAbstractTextOnlyNodePosition(discussionNode));
         }
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)
         {
             OpenedChoicePopup = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
-            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, this.CoreConfigurationManager.DiscussionTextConfiguration());
+            OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration());
         }
 
         private void OnDiscussionWindowAnimationExitFinished()

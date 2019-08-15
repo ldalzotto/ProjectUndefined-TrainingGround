@@ -36,11 +36,11 @@ namespace CoreGame
         public void Init()
         {
             this.PlayingTutorialStepManagers = new Dictionary<TutorialStepID, TutorialStepManager>();
-            this.TutorialStepConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().TutorialStepConfiguration();
-            this.TutorialActionInput = new TutorialActionInput(GameObject.FindObjectOfType<Canvas>(),
-               GameObject.FindObjectOfType<CoreConfigurationManager>().DiscussionTextConfiguration(),
-               GameObject.FindObjectOfType<DiscussionPositionManager>(),
-               GameObject.FindObjectOfType<PlayerManagerType>());
+            this.TutorialStepConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.TutorialStepConfiguration();
+            this.TutorialActionInput = new TutorialActionInput(CoreGameSingletonInstances.GameCanvas,
+               CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration(),
+               CoreGameSingletonInstances.DiscussionPositionManager,
+                CoreGameSingletonInstances.PlayerManagerType);
             this.TutorialStatePersister = new TutorialStatePersister();
             this.TutorialStepFInishedThisFrame = new List<TutorialStepID>();
         }

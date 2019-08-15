@@ -46,7 +46,7 @@ namespace CoreGame
             if (providedTimelineInitializer == null)
             {
                 #region External Dependencies
-                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)GameObject.FindObjectOfType<CoreConfigurationManager>().TimelineConfiguration().ConfigurationInherentData[TimelineID];
+                this.TimelineInitializer = (TimelineInitializerV2<T, NODE_KEY>)CoreGameSingletonInstances.CoreConfigurationManager.TimelineConfiguration().ConfigurationInherentData[TimelineID];
                 #endregion
             }
             else

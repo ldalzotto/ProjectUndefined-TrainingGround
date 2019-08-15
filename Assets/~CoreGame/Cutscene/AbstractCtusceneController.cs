@@ -9,10 +9,6 @@ namespace CoreGame
 {
     public abstract class AbstractCutsceneController
     {
-        #region External Dependencies
-        private CoreConfigurationManager CoreConfigurationManager;
-        #endregion
-
         private Rigidbody Rigidbody;
         private NavMeshAgent Agent;
         private Animator Animator;
@@ -37,8 +33,6 @@ namespace CoreGame
             this.PlayerInputMoveManagerComponentV2 = transformMoveManagerComponent;
             #endregion
             
-            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-
             this.Rigidbody = rigidBody;
             this.Agent = agent;
             this.Animator = animator;
@@ -75,18 +69,18 @@ namespace CoreGame
         public IEnumerator PlayAnimationAndWait(AnimationID animationID, float crossFadeDuration, Func<IEnumerator> animationEndCallback, bool updateModelImmediately, bool framePerfectEndDetection)
         {
             this.isAnimationPlaying = true;
-            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately, framePerfectEndDetection);
+            yield return AnimationPlayerHelper.PlayAndWait(this.Animator, CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, animationEndCallback, updateModelImmediately, framePerfectEndDetection);
             this.isAnimationPlaying = false;
         }
 
         public void Play(AnimationID animationID, float crossFadeDuration, bool updateModelImmediately)
         {
-            AnimationPlayerHelper.Play(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
+            AnimationPlayerHelper.Play(this.Animator, CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[animationID], crossFadeDuration, updateModelImmediately);
         }
 
         public void StopAnimation(AnimationID animationID)
         {
-            AnimationPlayerHelper.Play(this.Animator, this.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);
+            AnimationPlayerHelper.Play(this.Animator, CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration().ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0f);
             this.isAnimationPlaying = false;
         }
 

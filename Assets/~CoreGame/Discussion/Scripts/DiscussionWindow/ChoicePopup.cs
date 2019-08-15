@@ -32,10 +32,6 @@ namespace CoreGame
         public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices, Vector2 localPosition, DiscussionTextConfiguration DiscussionTextRepertoire)
         {
 
-            #region External Dependencies
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            #endregion
-
             #region Internal Dependencies
             choicesContainerObject = gameObject.FindChildObjectRecursively(CHOICES_CONTAINER_OBJECT_NAME);
             var choicesSelectionRectangle = gameObject.FindChildObjectRecursively(CHOICES_SELECTION_RECTANGLE_OBJECT_NAME);
@@ -53,7 +49,7 @@ namespace CoreGame
 
             ChoicePopupDimensionsManager = new ChoicePopupDimensionsManager(ChoicePopupDimensionsComponent, (RectTransform)choicesContainerObject.transform, (RectTransform)transform);
             ChoicePopupSelectionManager = new ChoicePopupSelectionManager(choicesSelectionRectangle, ChoicePopupSelectionManagerComponent, choicePopupTexts);
-            DiscussionChoiceSelectionInputManager = new DiscussionChoiceSelectionInputManager(this, gameInputManager);
+            DiscussionChoiceSelectionInputManager = new DiscussionChoiceSelectionInputManager(this, CoreGameSingletonInstances.GameInputManager);
             ChoicePopupAnimationManager = new ChoicePopupAnimationManager(GetComponent<Animator>());
 
             ChoicePopupDimensionsManager.OnChoicePopupAwake(choicePopupTexts);

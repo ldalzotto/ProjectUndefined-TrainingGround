@@ -28,7 +28,7 @@ public class SelectionWheel : MonoBehaviour
     public void Init(List<SelectionWheelNodeData> wheelNodeDatas, WheelNodeSpriteResolver NodeSpriteResolver)
     {
         #region External Dependencies
-        GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+        GameInputManager GameInputManager = CoreGameSingletonInstances.GameInputManager;
         #endregion
 
         ActionWheelNodePositionManager = new ActionWheelNodePositionManager(ActionWheelNodePositionManagerComponent, GameInputManager, ActionWheelActiveNodeManager);

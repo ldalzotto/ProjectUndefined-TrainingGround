@@ -66,6 +66,7 @@
     <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AsbtractCoreGameManager.cs" />
+    <Compile Include="Assets\~CoreGame\__Game\Scripts\CoreGameSingletonInstances.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\MaterialContainer.cs" />
@@ -228,7 +229,6 @@
     <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\Test\InstanciatedBufferTest\InstanciatedBufferTest.cs" />
     <Compile Include="Assets\Test\ShaderVectorTest.cs" />
-    <Compile Include="Assets\Test\TextMeshManipulationTest\CustomTextRenderer.cs" />
     <None Include="Assets\_Shader\Test\SphereFrustum_V2.shader" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterStandardShadowPass.cginc" />

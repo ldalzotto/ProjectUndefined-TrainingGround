@@ -9,17 +9,12 @@ namespace CoreGame
         private PlayerPositionPersister playerPositionPersister;
 
         private PlayerPosition playerPositionBeforeLevelLoad;
-
-        #region External Dependencies
-        private PlayerManagerType PlayerManagerType;
-
+        
         public PlayerPosition PlayerPositionBeforeLevelLoad { get => playerPositionBeforeLevelLoad; }
-
-        #endregion
+        
         public void Init()
         {
             this.playerPositionPersister = new PlayerPositionPersister();
-            this.PlayerManagerType = GameObject.FindObjectOfType<PlayerManagerType>();
 
             if (this.playerPositionBeforeLevelLoad == null)
             {
@@ -38,7 +33,7 @@ namespace CoreGame
         #region External Events
         public void OnAdventureToPuzzleLevel()
         {
-            this.playerPositionBeforeLevelLoad = this.PlayerManagerType.GetPlayerPosition();
+            this.playerPositionBeforeLevelLoad = CoreGameSingletonInstances.PlayerManagerType.GetPlayerPosition();
             this.playerPositionPersister.SaveAsync(this.playerPositionBeforeLevelLoad);
         }
         #endregion

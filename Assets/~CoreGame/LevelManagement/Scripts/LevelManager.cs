@@ -20,24 +20,15 @@ namespace CoreGame
         public LevelZonesID LevelID { get => levelID; set => levelID = value; }
         public List<LevelZoneChunkID> AllLoadedLevelZonesChunkID { get => allLoadedLevelZonesChunkID; }
         public LevelZoneChunkID CurrentLevelZoneChunkID { get => currentLevelZoneChunkID; }
-
-        #region External Dependencies
-        private Coroutiner Coroutiner;
-        #endregion
-
+        
         #region Internal Managers
         private EnvironmentSceneLevelManager EnvironmentSceneLevelManager;
         #endregion
 
         public void Init(LevelType currentLevelType)
         {
-            var LevelAvailabilityManager = GameObject.FindObjectOfType<LevelAvailabilityManager>();
-            var CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            var LevelManagerEventManager = GameObject.FindObjectOfType<LevelManagerEventManager>();
-
-            this.Coroutiner = GameObject.FindObjectOfType<Coroutiner>();
             this.currentLevelType = currentLevelType;
-            this.EnvironmentSceneLevelManager = new EnvironmentSceneLevelManager(LevelAvailabilityManager, this, CoreConfigurationManager, LevelManagerEventManager);
+            this.EnvironmentSceneLevelManager = new EnvironmentSceneLevelManager(CoreGameSingletonInstances.LevelAvailabilityManager, this, CoreGameSingletonInstances.CoreConfigurationManager, CoreGameSingletonInstances.LevelManagerEventManager);
         }
 
         #region External Event

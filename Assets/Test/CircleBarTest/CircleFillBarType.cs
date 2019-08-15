@@ -10,15 +10,12 @@ namespace CoreGame
 
         public MeshFilter MeshFilter { get => meshFilter; }
         public float CurrentProgression { get => currentProgression; }
-
-        private CircleFillBarRendererManager CircleFillBarRendererManager;
-
+        
         public void Init(Camera camera)
         {
             this.cam = camera;
             this.meshFilter = GetComponent<MeshFilter>();
-            this.CircleFillBarRendererManager = GameObject.FindObjectOfType<CircleFillBarRendererManager>();
-            this.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
+           CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
         }
 
         public void Tick(float progression)
@@ -29,14 +26,14 @@ namespace CoreGame
 
         public void OnCircleFillBarTypeEnabled()
         {
-            this.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
+            CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
         }
 
         private void OnDisable()
         {
-            if (this.CircleFillBarRendererManager != null)
+            if (CoreGameSingletonInstances.CircleFillBarRendererManager != null)
             {
-                this.CircleFillBarRendererManager.OnCircleFillBarTypeDestroyed(this);
+                CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeDestroyed(this);
             }
         }
 

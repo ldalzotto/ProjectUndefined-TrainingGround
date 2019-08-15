@@ -24,10 +24,6 @@ namespace CoreGame
         public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
         public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
 
-        #region External Dependencies
-        private CoreConfigurationManager CoreConfigurationManager;
-        private GameInputManager GameInputManager;
-        #endregion
 
         #region Instance
         public static DiscussionWindow Instanciate(Canvas canvas)
@@ -55,11 +51,6 @@ namespace CoreGame
 
         public void InitializeDependencies(Action OnExitAnimationFinished)
         {
-            #region External Dependencies
-            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            this.GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            #endregion
-
             var textAreaObject = gameObject.FindChildObjectRecursively(TEXT_AREA_OBJECT_NAME);
             this.textAreaText = textAreaObject.GetComponent<Text>();
 
@@ -128,7 +119,7 @@ namespace CoreGame
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
             this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent, 
-                this, this.textAreaText, this.CoreConfigurationManager.InputConfiguration(), this.GameInputManager);
+                this, this.textAreaText, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), CoreGameSingletonInstances.GameInputManager);
             this.OnDiscussionStartWriting();
         }
 

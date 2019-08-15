@@ -7,9 +7,6 @@ namespace CoreGame
 {
     public class LevelChunkTracker : MonoBehaviour
     {
-        #region External Dependencies
-        private LevelManagerEventManager LevelManagerEventManager;
-        #endregion
 
         #region Internal Dependencies
         private LevelChunkType associatedLevelChunkType;
@@ -26,8 +23,6 @@ namespace CoreGame
 
         internal void Init()
         {
-            this.LevelManagerEventManager = GameObject.FindObjectOfType<LevelManagerEventManager>();
-
             Debug.Log("LevelChunkTracker Init : " + this.name);
             this.associatedLevelChunkType = GetComponent<LevelChunkType>();
             this.transitionableLevelFXType = GetComponentInChildren<TransitionableLevelFXType>();
@@ -39,7 +34,7 @@ namespace CoreGame
         {
             if (other.tag == TagConstants.PLAYER_TAG)
             {
-                this.LevelManagerEventManager.CORE_EVT_OnChunkLevelEnter(this);
+               CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnChunkLevelEnter(this);
             }
         }
 
@@ -47,7 +42,7 @@ namespace CoreGame
         {
             if (other.tag == TagConstants.PLAYER_TAG)
             {
-                this.LevelManagerEventManager.CORE_EVT_OnChunkLevelExit(this);
+                CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnChunkLevelExit(this);
             }
         }
 

@@ -9,9 +9,7 @@ namespace CoreGame
 {
     public class PersistanceManager : MonoBehaviour
     {
-
-        private AutoSaveIcon AutoSaveIcon;
-
+        
         private BinaryFormatter binaryFormatter = new BinaryFormatter();
         private PersistanceManagerThreadObject PersistanceManagerThreadObject;
         // End of processing async event
@@ -19,8 +17,7 @@ namespace CoreGame
 
         public virtual void Init()
         {
-            this.AutoSaveIcon = GameObject.FindObjectOfType<AutoSaveIcon>();
-            this.AutoSaveIcon.Init();
+            CoreGameSingletonInstances.AutoSaveIcon.Init();
             if (this.PersistanceManagerThreadObject == null)
             {
                 this.PersistanceManagerThreadObject = new PersistanceManagerThreadObject(OnNoMorePersistanceProcessingCallback: this.OnNoMorePersistanceProcessing);
@@ -31,7 +28,7 @@ namespace CoreGame
         {
             if (this.NoMorePersistanceEvent)
             {
-                this.AutoSaveIcon.OnSaveEnd();
+                CoreGameSingletonInstances.AutoSaveIcon.OnSaveEnd();
                 this.NoMorePersistanceEvent = false;
             }
         }
@@ -39,7 +36,7 @@ namespace CoreGame
         #region External Event
         public virtual void OnPersistRequested(Action persistAction)
         {
-            this.AutoSaveIcon.OnSaveStart();
+            CoreGameSingletonInstances.AutoSaveIcon.OnSaveStart();
             this.PersistanceManagerThreadObject.OnPersistRequested(persistAction);
         }
         public void OnNoMorePersistanceProcessing()

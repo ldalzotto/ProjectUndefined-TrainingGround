@@ -6,9 +6,6 @@ namespace CoreGame
 {
     public abstract class AbstractGamePersister<T>
     {
-        #region External Dependencies
-        private PersistanceManager PersistanceManager;
-        #endregion
 
         private string persisterFolderName;
         private string fileExtension;
@@ -24,19 +21,18 @@ namespace CoreGame
             this.fileExtension = fileExtension;
             this.fileName = fileName;
             folderPath = Path.Combine(Application.persistentDataPath, persisterFolderName);
-            this.PersistanceManager = GameObject.FindObjectOfType<PersistanceManager>();
         }
 
 
         public T Load()
         {
             var path = this.GetDataPath();
-            return this.PersistanceManager.Load<T>(folderPath, path, this.fileName, this.fileExtension);
+            return CoreGameSingletonInstances.PersistanceManager.Load<T>(folderPath, path, this.fileName, this.fileExtension);
         }
 
         public void SaveAsync(T dataToSave)
         {
-            this.PersistanceManager.OnPersistRequested(() =>
+            CoreGameSingletonInstances.PersistanceManager.OnPersistRequested(() =>
             {
                 this.SaveSync(dataToSave);
             });

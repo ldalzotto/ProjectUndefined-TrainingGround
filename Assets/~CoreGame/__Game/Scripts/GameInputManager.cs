@@ -21,7 +21,7 @@ namespace CoreGame
 
         public void Init()
         {
-            currentInput = new GameInput(new GameInputV2(GameObject.FindObjectOfType<CoreConfigurationManager>().CoreConfiguration.InputConfiguration), GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration.CoreInputConfiguration);
+            currentInput = new GameInput(new GameInputV2( CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.InputConfiguration), CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
             Cursor.lockState = CursorLockMode.Locked;
         }
 

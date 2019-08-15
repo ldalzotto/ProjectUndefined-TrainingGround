@@ -13,11 +13,9 @@ namespace CoreGame
         {
             var playerPosition = GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform;
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG).transform;
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            var coreInputConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration.CoreInputConfiguration;
 
             this.CameraFollowManager = new CameraFollowManager(playerPosition, cameraPivotPoint, CameraFollowManagerComponent);
-            this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, gameInputManager, coreInputConfiguration);
+            this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, CoreGameSingletonInstances.GameInputManager, CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
         }
 
         public void Tick(float d)
