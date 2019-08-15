@@ -16,6 +16,7 @@ namespace AdventureGame
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CameraMovementManager CameraMovementManager;
+        private AdventureTutorialEventSender AdventureTutorialEventSender;
 
 #if UNITY_EDITOR
         private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
@@ -57,6 +58,7 @@ namespace AdventureGame
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
+            AdventureTutorialEventSender = GameObject.FindObjectOfType<AdventureTutorialEventSender>();
 
             //initialization
             CameraMovementManager.Init();
@@ -70,32 +72,41 @@ namespace AdventureGame
             GameObject.FindObjectOfType<CutsceneGlobalController>().Init();
             GameObject.FindObjectOfType<CutsceneEventManager>().Init();
             DiscussionWindowsContainer.Init();
+            AdventureTutorialEventSender.Init();
+            GameObject.FindObjectOfType<ContextActionWheelEventManager>().Init();
 
 #if UNITY_EDITOR
             this.EditorOnlyModules.Init();
 #endif
-
         }
 
         void Update()
         {
-            var d = Time.deltaTime;
+            if (!this.IsInitializing)
+            {
+                var d = Time.deltaTime;
 
-            this.BeforeTick(d);
+                this.BeforeTick(d);
 
-            CutscenePlayerManagerV2.Tick(d);
-            ContextActionWheelManager.Tick(d);
-            ContextActionManager.Tick(d);
-            PointOfInterestManager.Tick(d);
-            PlayerManager.Tick(d);
-            NPCManager.Tick(d);
-            CameraMovementManager.Tick(d);
-            DiscussionWindowsContainer.Tick(d);
-            InventoryManager.Tick(d);
+                CutscenePlayerManagerV2.Tick(d);
+                if (!CutscenePlayerManagerV2.IsCutscenePlaying)
+                {
+                    this.AdventureTutorialEventSender.Tick(d);
+                }
+                ContextActionWheelManager.Tick(d);
+                ContextActionManager.Tick(d);
+                PointOfInterestManager.Tick(d);
+                PlayerManager.Tick(d);
+                NPCManager.Tick(d);
+                CameraMovementManager.Tick(d);
+                DiscussionWindowsContainer.Tick(d);
+                InventoryManager.Tick(d);
 
 #if UNITY_EDITOR
-            this.EditorOnlyModules.Tick(d);
+                this.EditorOnlyModules.Tick(d);
 #endif
+            }
+
         }
 
         private void FixedUpdate()

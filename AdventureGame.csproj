@@ -165,6 +165,7 @@
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\V2\ScenarioTimelineInitializerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\V2\ScenarioTimelineManagerV2.cs" />
     <Compile Include="Assets\~AdventureGame\Scenario\Scripts\Timelines\Scenario\V2\TimelineNodeWorkflowAction\ScenarioTimelineWorkflowActionV2.cs" />
+    <Compile Include="Assets\~AdventureGame\Tutorial\Script\AdventureTutorialEventSender.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\CommonManagers\LinearWayPointFollow.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPoint.cs" />
     <Compile Include="Assets\~AdventureGame\WayPoint\Scripts\WayPointPath.cs" />

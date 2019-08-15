@@ -124,53 +124,56 @@ namespace RTPuzzle
 
         private void Update()
         {
-            var d = Time.deltaTime;
-
-            this.BeforeTick(d);
-
-            if (!GameOverManager.OnGameOver)
+            if (!this.IsInitializing)
             {
-                PlayerActionManager.Tick(d);
-                PlayerManager.Tick(d);
-                CameraMovementManager.Tick(d);
+                var d = Time.deltaTime;
 
-                ObstaclesListenerManager.Tick(d);
-                SquareObstaclesManager.Tick(d);
-                ObstacleFrustumCalculationManager.Tick(d);
+                this.BeforeTick(d);
 
-                TimeFlowManager.Tick(d);
-                GameOverManager.Tick(d);
-                CooldownFeedManager.Tick(d);
-                TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
-
-                NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
-                InteractiveObjectContainer.TickAlways(d);
-
-                if (TimeFlowManager.IsAbleToFlowTime())
+                if (!GameOverManager.OnGameOver)
                 {
-                    NPCAIManagerContainer.EnableAgents();
-                    NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                    InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());
+                    PlayerActionManager.Tick(d);
+                    PlayerManager.Tick(d);
+                    CameraMovementManager.Tick(d);
 
-                    PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
-                }
-                else
-                {
-                    NPCAIManagerContainer.DisableAgents();
-                }
+                    ObstaclesListenerManager.Tick(d);
+                    SquareObstaclesManager.Tick(d);
+                    ObstacleFrustumCalculationManager.Tick(d);
 
-                RangeTypeContainer.Tick(d);
-                GroundEffectsManagerV2.Tick(d);
-                InRangeEffectManager.Tick(d);
-                ObjectRepelLineVisualFeedbackManager.Tick(d);
-                NpcInteractionRingRendererManager.Tick(d);
-                DottedLineRendererManager.Tick();
-                CircleFillBarRendererManager.Tick(d);
-            }
+                    TimeFlowManager.Tick(d);
+                    GameOverManager.Tick(d);
+                    CooldownFeedManager.Tick(d);
+                    TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
+
+                    NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
+                    InteractiveObjectContainer.TickAlways(d);
+
+                    if (TimeFlowManager.IsAbleToFlowTime())
+                    {
+                        NPCAIManagerContainer.EnableAgents();
+                        NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                        InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());
+
+                        PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                    }
+                    else
+                    {
+                        NPCAIManagerContainer.DisableAgents();
+                    }
+
+                    RangeTypeContainer.Tick(d);
+                    GroundEffectsManagerV2.Tick(d);
+                    InRangeEffectManager.Tick(d);
+                    ObjectRepelLineVisualFeedbackManager.Tick(d);
+                    NpcInteractionRingRendererManager.Tick(d);
+                    DottedLineRendererManager.Tick();
+                    CircleFillBarRendererManager.Tick(d);
+                }
 
 #if UNITY_EDITOR
-            EditorOnlyManagers.Tick(d);
+                EditorOnlyManagers.Tick(d);
 #endif
+            }
         }
 
         private void LateUpdate()

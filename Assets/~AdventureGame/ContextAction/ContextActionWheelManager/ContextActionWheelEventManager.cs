@@ -3,16 +3,14 @@ using UnityEngine;
 
 namespace AdventureGame
 {
-
     public class ContextActionWheelEventManager : MonoBehaviour
     {
-
         private PlayerManager PlayerManager;
         private ContextActionWheelManager ContextActionWheelManager;
         private InventoryManager InventoryManager;
         private SelectionWheel ContextActionWheel;
 
-        private void Start()
+        public void Init()
         {
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();

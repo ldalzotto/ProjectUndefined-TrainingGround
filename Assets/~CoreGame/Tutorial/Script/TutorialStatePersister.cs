@@ -1,5 +1,7 @@
 ﻿using GameConfigurationID;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace CoreGame
@@ -46,7 +48,7 @@ namespace CoreGame
     {
         [SerializeField]
         public Dictionary<TutorialStepID, bool> TutorialStepState;
-
+        
         public TutorialState()
         {
             this.TutorialStepState = new Dictionary<TutorialStepID, bool>();

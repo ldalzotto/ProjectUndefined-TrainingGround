@@ -53,19 +53,20 @@ public class SelectionWheel : MonoBehaviour
         {
             transformToDestroy[i] = actionNodeContainerObject.GetChild(i);
         }
-
-        StartCoroutine(ContextActionWhelleEnterExitAnimationManager.ExitCoroutine(() =>
+        
+        if(transformToDestroy!=null && transformToDestroy.Length > 0)
         {
-            for (var i = 0; i < transformToDestroy.Length; i++)
+            StartCoroutine(ContextActionWhelleEnterExitAnimationManager.ExitCoroutine(() =>
             {
-                if (transformToDestroy[i] != null)
+                for (var i = 0; i < transformToDestroy.Length; i++)
                 {
-                    Destroy(transformToDestroy[i].gameObject);
+                    if (transformToDestroy[i] != null)
+                    {
+                        Destroy(transformToDestroy[i].gameObject);
+                    }
                 }
-            }
-        }));
-
-
+            }));
+        }
     }
 
 

@@ -5,9 +5,15 @@ using UnityEngine;
 namespace CoreGame
 {
     public abstract class AsbtractCoreGameManager : MonoBehaviour
-    {        
+    {
+        private bool isInitializing;
+
+        protected bool IsInitializing { get => isInitializing; }
+
         protected void OnAwake(LevelType levelType)
-        {            
+        {
+            this.isInitializing = true;
+
             CoreGameSingletonInstances.PersistanceManager.Init();
             CoreGameSingletonInstances.GameInputManager.Init();
             CoreGameSingletonInstances.LevelAvailabilityManager.Init();
@@ -65,6 +71,7 @@ namespace CoreGame
                     allActivePOI[i].Init_EndOfFrame();
                 }
             }
+            this.isInitializing = false;
         }
     }
 }

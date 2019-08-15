@@ -20,6 +20,17 @@ namespace CoreGame
         private List<TutorialStepID> TutorialStepFInishedThisFrame;
         #endregion
 
+        #region Data Retrieval 
+        public bool GetTutorialCurrentState(TutorialStepID TutorialStepID)
+        {
+            return this.TutorialStatePersister.GetTutorialState(TutorialStepID);
+        }
+        public bool IsTutorialStepPlaying(TutorialStepID tutorialStepID)
+        {
+            return this.PlayingTutorialStepManagers.ContainsKey(tutorialStepID);
+        }
+        #endregion
+
         private Dictionary<TutorialStepID, TutorialStepManager> PlayingTutorialStepManagers;
 
         #region External Events
@@ -34,7 +45,7 @@ namespace CoreGame
 
         public void AbortAllTutorials()
         {
-            foreach(var PlayingTutorialStepManager in PlayingTutorialStepManagers.Values)
+            foreach (var PlayingTutorialStepManager in PlayingTutorialStepManagers.Values)
             {
                 PlayingTutorialStepManager.Interrupt();
             }
