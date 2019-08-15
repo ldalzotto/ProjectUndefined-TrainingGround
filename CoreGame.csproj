@@ -158,6 +158,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\ComputeBufferHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\DynamicComputeBufferManager.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\FunctionalExtensions.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\GameInputHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GenericAnimatorHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\GizmoHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MultiValueDictionary.cs" />

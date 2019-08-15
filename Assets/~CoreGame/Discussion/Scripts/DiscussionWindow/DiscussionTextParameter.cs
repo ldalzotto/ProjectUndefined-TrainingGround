@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace CoreGame
 {
@@ -58,32 +57,10 @@ namespace CoreGame
                         var parameterOrderNumberMatch = ParameterNumberExtractorRegex.Match(parameterMatch.Value);
                         if (parameterOrderNumberMatch.Success)
                         {
-                            InputImageTypeInstanceType InputImageTypeInstanceType = InputImageTypeInstanceType.NONE;
                             var inputConfigurationData = this.InputConfiguration.ConfigurationInherentData[this.InputParameters[Convert.ToInt32(parameterOrderNumberMatch.Value)].inputID];
+                            
+                            InputImageType instaciatedImage = InputImageType.Instantiate(inputConfigurationData);
 
-
-                            var keyAttributedButton = inputConfigurationData.GetAssociatedInputKey();
-                            if (keyAttributedButton != Key.None)
-                            {
-                                InputImageTypeInstanceType = InputImageTypeInstanceType.KEY;
-                            }
-                            else
-                            {
-                                var mouseAttributedButton = inputConfigurationData.GetAssociatedMouseButton();
-                                if (mouseAttributedButton != MouseButton.NONE)
-                                {
-                                    if (mouseAttributedButton == MouseButton.LEFT_BUTTON)
-                                    {
-                                        InputImageTypeInstanceType = InputImageTypeInstanceType.LEFT_MOUSE;
-                                    }
-                                    else if (mouseAttributedButton == MouseButton.RIGHT_BUTTON)
-                                    {
-                                        InputImageTypeInstanceType = InputImageTypeInstanceType.RIGHT_MOUSE;
-                                    }
-                                }
-                            }
-
-                            InputImageType instaciatedImage = InputImageType.Instantiate(InputImageTypeInstanceType);
                             if (instaciatedImage != null)
                             {
                                 instaciatedImage.gameObject.SetActive(false);
@@ -92,7 +69,7 @@ namespace CoreGame
                                               + TransformedParameterTemplate
                                               + inputText.Substring(parameterMatch.Index + parameterMatch.Value.Length, inputText.Length - (parameterMatch.Index + parameterMatch.Value.Length));
 
-                                this.parameterDisplayContent.Add(new InputParameterDisplayContent(inputConfigurationData, instaciatedImage, InputImageTypeInstanceType));
+                                this.parameterDisplayContent.Add(new InputParameterDisplayContent(instaciatedImage));
                             }
                         }
                     }
@@ -115,7 +92,7 @@ namespace CoreGame
                 if (this.parameterDisplayContent[transformedParameterCount].GetType() == typeof(InputParameterDisplayContent))
                 {
                     var InputParameterDisplayContent = (InputParameterDisplayContent)this.parameterDisplayContent[transformedParameterCount];
-                    if (InputParameterDisplayContent.InputImageTypeInstanceType != InputImageTypeInstanceType.NONE)
+                    if (InputParameterDisplayContent.GetInputImageTypeInstanceType() != InputImageTypeInstanceType.NONE)
                     {
                         Vector2 imagePosition = imageVertices.Center();
                         InputParameterDisplayContent.IconImage.gameObject.SetActive(true);
@@ -125,10 +102,9 @@ namespace CoreGame
                         InputParameterDisplayContent.IconImage.transform.localScale = Vector3.one;
                         transformedParameterCount += 1;
 
-                        if (InputParameterDisplayContent.InputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
+                        if (InputParameterDisplayContent.GetInputImageTypeInstanceType() == InputImageTypeInstanceType.KEY)
                         {
                             InputParameterDisplayContent.IconImage.SetTextFontSize((int)Math.Floor(imageVertices.Width() * 0.75f));
-                            InputParameterDisplayContent.IconImage.SetKey(this.GameInputManager.GetKeyToKeyControlLookup()[InputParameterDisplayContent.InputConfigurationInherentData.AttributedKeys[0]].displayName);
                         }
                     }
                 }
@@ -172,15 +148,16 @@ namespace CoreGame
 
     public class InputParameterDisplayContent : IParameterDisplayContent
     {
-        public InputConfigurationInherentData InputConfigurationInherentData;
         public InputImageType IconImage;
-        public InputImageTypeInstanceType InputImageTypeInstanceType;
 
-        public InputParameterDisplayContent(InputConfigurationInherentData inputConfigurationInherentData, InputImageType iconImage, InputImageTypeInstanceType InputImageTypeInstanceType)
+        public InputParameterDisplayContent( InputImageType iconImage)
         {
-            InputConfigurationInherentData = inputConfigurationInherentData;
             IconImage = iconImage;
-            this.InputImageTypeInstanceType = InputImageTypeInstanceType;
+        }
+
+        public InputImageTypeInstanceType GetInputImageTypeInstanceType()
+        {
+            return this.IconImage.InputImageTypeInstanceType;
         }
 
         public void OnDiscussionContinue()

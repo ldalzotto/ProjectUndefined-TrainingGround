@@ -5,25 +5,32 @@ namespace CoreGame
 {
     public class InputImageType : MonoBehaviour
     {
-        private InputImageTypeInstanceType InputImageTypeInstanceType;
+        private InputImageTypeInstanceType inputImageTypeInstanceType;
 
-        public static InputImageType Instantiate(InputImageTypeInstanceType InputImageTypeInstanceType)
+        public static InputImageType Instantiate(InputConfigurationInherentData InputConfigurationInherentData, Transform parent = null, bool animate = false)
         {
             InputImageType InputImageType = null;
+            InputImageType prefabToInstanciate = null;
+
+            var InputImageTypeInstanceType = GameInputHelper.GetInputImageType(InputConfigurationInherentData);
+
             if (InputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
             {
-                InputImageType = MonoBehaviour.Instantiate(PrefabContainer.Instance.InputBaseImage);
+                prefabToInstanciate = PrefabContainer.Instance.InputBaseImage;
             }
             else if (InputImageTypeInstanceType == InputImageTypeInstanceType.LEFT_MOUSE)
             {
-                InputImageType = MonoBehaviour.Instantiate(PrefabContainer.Instance.LeftMouseBaseImage);
+                prefabToInstanciate = PrefabContainer.Instance.LeftMouseBaseImage;
             }
             else if (InputImageTypeInstanceType == InputImageTypeInstanceType.RIGHT_MOUSE)
             {
-                InputImageType = MonoBehaviour.Instantiate(PrefabContainer.Instance.RightMouseBaseImage);
+                prefabToInstanciate = PrefabContainer.Instance.RightMouseBaseImage;
             }
 
-            InputImageType.Init(InputImageTypeInstanceType);
+            if (parent != null) { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate, parent); }
+            else { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate); }
+            
+            InputImageType.Init(InputImageTypeInstanceType, InputConfigurationInherentData, animate);
             return InputImageType;
         }
 
@@ -31,20 +38,34 @@ namespace CoreGame
         private Text KeyText;
         #endregion
 
-        public void Init(InputImageTypeInstanceType InputImageTypeInstanceType)
+        public InputImageTypeInstanceType InputImageTypeInstanceType { get => inputImageTypeInstanceType; }
+
+        public void Init(InputImageTypeInstanceType InputImageTypeInstanceType, InputConfigurationInherentData InputConfigurationInherentData, bool animate)
         {
-            this.InputImageTypeInstanceType = InputImageTypeInstanceType;
+            this.inputImageTypeInstanceType = InputImageTypeInstanceType;
             this.KeyText = GetComponentInChildren<Text>();
+            if (!animate)
+            {
+                GetComponent<Animator>().enabled = false;
+            }
+            
+            this.SetKey(CoreGameSingletonInstances.GameInputManager.GetKeyToKeyControlLookup()[InputConfigurationInherentData.AttributedKeys[0]].displayName);
         }
 
         public void SetKey(string key)
         {
-            this.KeyText.text = key;
+            if(this.inputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
+            {
+                this.KeyText.text = key;
+            }
         }
 
         public void SetTextFontSize(int fontSize)
         {
-            this.KeyText.fontSize = fontSize;
+            if (this.inputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
+            {
+                this.KeyText.fontSize = fontSize;
+            }
         }
     }
 

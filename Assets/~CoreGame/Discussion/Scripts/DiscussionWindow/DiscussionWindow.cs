@@ -15,8 +15,7 @@ namespace CoreGame
         #region Constants
         private const string TEXT_AREA_OBJECT_NAME = "TextArea";
         private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
-        private const string CONTINUE_ICON_OBJECT_NAME = "ContinueIcon";
-        private const string END_ICON_OBJECT_NAME = "EndIcon";
+        private const string WORKFLOW_ICON_IMAGE_CONTAINER_NAME = "WorkflowIconImageContainer";
         #endregion
 
         public TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
@@ -69,7 +68,7 @@ namespace CoreGame
             DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
 
             DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, this.textAreaText);
-            DiscussionWorkflowManager = new DiscussionWorkflowManager(gameObject.FindChildObjectRecursively(CONTINUE_ICON_OBJECT_NAME), gameObject.FindChildObjectRecursively(END_ICON_OBJECT_NAME));
+            DiscussionWorkflowManager = new DiscussionWorkflowManager(CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), (RectTransform)gameObject.FindChildObjectRecursively(WORKFLOW_ICON_IMAGE_CONTAINER_NAME).transform);
         }
 
         public void Tick(float d)
@@ -133,7 +132,7 @@ namespace CoreGame
         {
             DiscussionWindowAnimationManager.PlayExitAnimation();
         }
-        
+
         public void OnHeightChange(float newHeight)
         {
             DiscussionWindowDimensionsTransitionManager.OnHeightChange(newHeight);
@@ -258,13 +257,14 @@ namespace CoreGame
     #region Discussion Window Workflow
     class DiscussionWorkflowManager
     {
-        private GameObject ContinueIcon;
-        private GameObject EndIcon;
 
-        public DiscussionWorkflowManager(GameObject continueIcon, GameObject endIcon)
+        private InputImageType InputImageType;
+
+        public DiscussionWorkflowManager(InputConfiguration InputConfiguration, RectTransform imageIconContainer)
         {
-            ContinueIcon = continueIcon;
-            EndIcon = endIcon;
+            this.InputImageType = InputImageType.Instantiate(InputConfiguration.ConfigurationInherentData[GameConfigurationID.InputID.ACTION_DOWN], imageIconContainer, true);
+            this.InputImageType.transform.localPosition = Vector3.zero;
+            this.InputImageType.gameObject.SetActive(false);
             OnDiscussionWindowAwake();
         }
 
@@ -281,17 +281,15 @@ namespace CoreGame
                 if (overlappedOnlyText != "")
                 {
                     isWaitingForContinue = true;
-                    ContinueIcon.SetActive(true);
                     isWaitningForEnd = false;
-                    EndIcon.SetActive(false);
                 }
                 else
                 {
                     isWaitingForContinue = false;
-                    ContinueIcon.SetActive(false);
                     isWaitningForEnd = true;
-                    EndIcon.SetActive(true);
                 }
+
+                this.InputImageType.gameObject.SetActive(true);
             }
         }
 
@@ -302,8 +300,7 @@ namespace CoreGame
 
         private void ResetState()
         {
-            ContinueIcon.SetActive(false);
-            EndIcon.SetActive(false);
+            this.InputImageType.gameObject.SetActive(false);
             isWaitingForContinue = false;
             isWaitningForEnd = false;
         }
