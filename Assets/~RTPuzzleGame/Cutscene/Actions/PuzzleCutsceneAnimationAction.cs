@@ -15,6 +15,10 @@ namespace RTPuzzle
         [CustomEnum()]
         public InteractiveObjectID InteractiveObjectID;
 
+        public bool InteractiveObjectParametrized;
+        [CustomEnum()]
+        public PuzzleCutsceneParametersName InteractiveObjectParameterName;
+
         public PuzzleCutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
         }
@@ -22,13 +26,30 @@ namespace RTPuzzle
         protected override AbstractCutsceneController GetAbstractCutsceneController(SequencedActionInput ContextActionInput)
         {
             var PuzzleCutsceneActionInput = (PuzzleCutsceneActionInput)ContextActionInput;
-            return PuzzleCutsceneActionInput.InteractiveObjectContainer.GetInteractiveObjectFirst(this.InteractiveObjectID).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
+            if (this.InteractiveObjectParametrized)
+            {
+                return ((InteractiveObjectType)PuzzleCutsceneActionInput.PuzzleCutsceneGraphParameters[this.InteractiveObjectParameterName]).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
+            }
+            else
+            {
+                return PuzzleCutsceneActionInput.InteractiveObjectContainer.GetInteractiveObjectFirst(this.InteractiveObjectID).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
+            }
         }
 
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.InteractiveObjectID = (InteractiveObjectID)NodeEditorGUILayout.EnumField("InteractiveObjectID : ", string.Empty, this.InteractiveObjectID);
+            EditorGUILayout.BeginHorizontal(EditorStyles.textArea);
+            this.InteractiveObjectParametrized = EditorGUILayout.Toggle(this.InteractiveObjectParametrized);
+            if (this.InteractiveObjectParametrized)
+            {
+                this.InteractiveObjectParameterName = (PuzzleCutsceneParametersName) NodeEditorGUILayout.EnumField("InteractiveObject param : ", string.Empty, this.InteractiveObjectParameterName);
+            }
+            else
+            {
+                this.InteractiveObjectID = (InteractiveObjectID)NodeEditorGUILayout.EnumField("InteractiveObjectID : ", string.Empty, this.InteractiveObjectID);
+            }
+            EditorGUILayout.EndHorizontal();
             this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
             this.SkipToNextNode = (bool)NodeEditorGUILayout.BoolField("Skip immediately : ", string.Empty, this.SkipToNextNode);
             this.CrossFade = NodeEditorGUILayout.FloatField("Crossfade : ", string.Empty, this.CrossFade);

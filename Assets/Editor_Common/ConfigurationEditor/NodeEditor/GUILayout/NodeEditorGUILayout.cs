@@ -18,6 +18,17 @@ namespace NodeGraph_Editor
             EditorGUILayout.EndHorizontal();
         }
 
+        public static string StringField(string label, string tooltip, string data)
+        {
+            CommonGUIContent.text = label;
+            CommonGUIContent.tooltip = tooltip;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(CommonGUIContent, GUILayout.Width(label.Length * 7f));
+            var retrunEnum = EditorGUILayout.TextField(data, GUILayout.ExpandWidth(true));
+            EditorGUILayout.EndHorizontal();
+            return retrunEnum;
+        }
+
         public static Enum EnumField(string label, string tooltip, Enum enumField)
         {
             CommonGUIContent.text = label;
