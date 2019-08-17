@@ -36,5 +36,8 @@ namespace Editor_GameDesigner
         
         [CustomEnum(IsSearchable=true, IsCreateable=false, ChoosedOpenRepertoire=false)]
         public GameConfigurationID.GrabObjectID GrabObjectID;
+
+        [CustomEnum(IsSearchable = true, IsCreateable = false, ChoosedOpenRepertoire = false)]
+        public GameConfigurationID.NearPlayerGameOverTriggerID NearPlayerGameOverTriggerID;
     }
 }

@@ -46,5 +46,7 @@ namespace RTPuzzle
         public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
         
         public RTPuzzle.GrabObjectConfiguration GrabObjectConfiguration;
+
+        public RTPuzzle.NearPlayerGameOverTriggerConfiguration NearPlayerGameOverTriggerConfiguration;
     }
 }

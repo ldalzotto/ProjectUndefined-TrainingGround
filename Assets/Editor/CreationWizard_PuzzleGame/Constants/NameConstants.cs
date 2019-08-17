@@ -68,7 +68,9 @@ namespace Editor_MainGameCreationWizard
         public static string DiscussionNodeEditorObject = "_NodeEditor";
         
         public static string DisarmObjectInherentData = "_DisarmObjectInherentData";
-        
+
+        public static string NearPlayerGameOverTriggerInherentData = "_NearPlayerGameOverTriggerInherentData";
+
         public static string ActionInteractableObjectInherentData = "_ActionInteractableObjectInherentData";
         
         public static string InteractiveTestInherentData = "_InteractiveTest";

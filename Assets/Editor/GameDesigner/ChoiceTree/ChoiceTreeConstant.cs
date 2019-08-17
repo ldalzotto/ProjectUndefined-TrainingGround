@@ -87,6 +87,8 @@ namespace Editor_GameDesigner
 {"Puzzle//GrabObject//.EditGrabObject",typeof(Editor_GameDesigner.EditGrabObject)},
 {"Configuration//.InputConfigurationModule",typeof(Editor_GameDesigner.InputConfigurationModule)},
 {"Configuration//.TutorialStepConfigurationModule",typeof(Editor_GameDesigner.TutorialStepConfigurationModule)},
+{"Configuration//.NearPlayerGameOverTriggerConfigurationModule",typeof(Editor_GameDesigner.NearPlayerGameOverTriggerConfigurationModule)},
+{"Puzzle//NearPlayerGameOverTrigger//.EditNearPlayerGameOverTrigger",typeof(Editor_GameDesigner.EditNearPlayerGameOverTrigger)},
 };
     }
 }

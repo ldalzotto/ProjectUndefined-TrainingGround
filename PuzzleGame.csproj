@@ -149,6 +149,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\CompletionConfiguration\LevelCompletionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\LevelConfigurationData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\NearPlayerGameOverTriggerConfiguration\NearPlayerGameOverTriggerConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\NearPlayerGameOverTriggerConfiguration\NearPlayerGameOverTriggerInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\AttractiveObjectAction\AttractiveObjectActionInherentData.cs" />

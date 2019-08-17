@@ -168,6 +168,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DiscussionTree\DiscussionTreeCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DiscussionTree\Module\DiscussionTreeDataCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\DiscussionTree\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GameOver\NearPlayerGameOverTrigger\Module\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GameOver\NearPlayerGameOverTrigger\Module\NearPlayerGameOverTriggerConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GameOver\NearPlayerGameOverTrigger\NearPlayerGameOverTriggerCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GameOver\NearPlayerGameOverTrigger\NearPlayerGameOverTriggerCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GrabObject\GrabObjectCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GrabObject\GrabObjectCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\GrabObject\Modules\EditorInformations.cs" />
@@ -305,6 +309,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\NearPlayerGameOverTriggerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ObjectRepelTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
@@ -361,6 +366,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\NearPlayerGameOverTrigger\EditNearPlayerGameOverTrigger.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Obstacles\AddNewObstacle.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\CreatePlayerActions.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\ExplorePlayerActions.cs" />

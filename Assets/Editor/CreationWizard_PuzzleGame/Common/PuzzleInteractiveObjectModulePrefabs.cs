@@ -47,6 +47,6 @@ namespace RTPuzzle
         public RTPuzzle.InteractiveObjectCutsceneControllerModule BaseInteractiveObjectCutsceneControllerModule;
         
         [ReadOnly()]
-        public NearPlayerGameOverTriggerModule BaseNearPlayerGameOverTriggerModule;
+        public RTPuzzle.NearPlayerGameOverTriggerModule BaseNearPlayerGameOverTriggerModule;
     }
 }

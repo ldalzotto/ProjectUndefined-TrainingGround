@@ -72,7 +72,10 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string DisarmObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/DisarmObjectConfiguration/Dat" +
             "a";
-        
+
+        [ReadOnly()]
+        public static string NearPlayerGameOverTriggerInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/NearPlayerGameOverTriggerConfiguration/Data";
+
         [ReadOnly()]
         public static string ActionInteractableObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ActionInteractableObjectConfi" +
             "guration/Data";

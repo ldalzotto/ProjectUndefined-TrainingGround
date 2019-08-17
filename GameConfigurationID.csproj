@@ -85,6 +85,7 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelAvailabilityTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZoneChunkID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\LevelZonesID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\NearPlayerGameOverTriggerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ObjectRepelID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PlayerActionId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PointOfInterestId.cs" />

@@ -31,5 +31,6 @@ public class GameCreationWizardEditorProfileChoiceTree
 {nameof(Editor_DisarmObjectCreationWizard.DisarmObjectCreationWizard),new Editor_DisarmObjectCreationWizard.DisarmObjectCreationWizard()},
 {nameof(Editor_ActionInteractableObjectCreationWizard.ActionInteractableObjectCreationWizard),new Editor_ActionInteractableObjectCreationWizard.ActionInteractableObjectCreationWizard()},
 {nameof(Editor_GrabObjectCreationWizard.GrabObjectCreationWizard),new Editor_GrabObjectCreationWizard.GrabObjectCreationWizard()},
+{nameof(Editor_NearPlayerGameOverTriggerCreationWizard.NearPlayerGameOverTriggerCreationWizard),new Editor_NearPlayerGameOverTriggerCreationWizard.NearPlayerGameOverTriggerCreationWizard()},
 };
 }
