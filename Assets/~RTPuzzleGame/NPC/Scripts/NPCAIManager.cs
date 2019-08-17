@@ -201,7 +201,7 @@ namespace RTPuzzle
         {
             this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
         }
-        
+
         public void EnableAgent()
         {
             AIDestinationMoveManager.EnableAgent();

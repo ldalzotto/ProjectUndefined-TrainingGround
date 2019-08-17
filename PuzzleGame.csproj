@@ -167,9 +167,14 @@
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneActionInput.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneAnimationAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleFaceTowardsAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\CutsceneControllers\PuzzleCutsceneController.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\GlobalPlayers\BlockingCutscenePlayer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleCutsceneAnimationEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleFaceTowardsEdge.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleCutsceneAnimationNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleFaceTowardsNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Parameters\ParametrizedInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\PuzzleCutsceneGraph.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectIgnoredGroundObjectType.cs" />
@@ -194,6 +199,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LaunchProjectileModule\LaunchProjectileModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LevelCompletionTriggerModule\LevelCompletionTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\NearPlayerGameOverTriggerModule\NearPlayerGameOverTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectRepelModule\ObjectRepelModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\TargetZoneObjectModule\TargetZoneModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />

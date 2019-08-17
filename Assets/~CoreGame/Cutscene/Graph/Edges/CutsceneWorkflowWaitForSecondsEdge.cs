@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CoreGame;
 
-namespace AdventureGame
+namespace CoreGame
 {
     [System.Serializable]
     public class CutsceneWorkflowWaitForSecondsEdge : ACutsceneEdge<CutsceneWorkflowWaitForSecondsAction>

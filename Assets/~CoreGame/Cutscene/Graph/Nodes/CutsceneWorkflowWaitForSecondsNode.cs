@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using CoreGame;
 
-namespace AdventureGame
+namespace CoreGame
 {
     [System.Serializable]
     public class CutsceneWorkflowWaitForSecondsNode : ACutsceneNode<CutsceneWorkflowWaitForSecondsAction, CutsceneWorkflowWaitForSecondsEdge>

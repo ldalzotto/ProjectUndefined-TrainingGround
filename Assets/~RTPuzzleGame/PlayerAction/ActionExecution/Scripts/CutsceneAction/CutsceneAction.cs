@@ -37,7 +37,7 @@ namespace RTPuzzle
             this.cutscenePlayerInput = new PuzzleCutsceneActionInput(this.InteractiveObjectContainer);
 
             this.cutscenePlayer = new SequencedActionManager((action) => this.cutscenePlayer.OnAddAction(action, this.cutscenePlayerInput), null, OnNoMoreActionToPlay: this.OnCutsceneEnded);
-            this.cutscenePlayer.OnAddAction(puzzleConfigurationManager.PuzzleCutsceneConfiguration()[this.puzzleCutsceneId].PuzzleCutsceneGraph.GetRootAction(), this.cutscenePlayerInput);
+            this.cutscenePlayer.OnAddActions(puzzleConfigurationManager.PuzzleCutsceneConfiguration()[this.puzzleCutsceneId].PuzzleCutsceneGraph.GetRootActions(), this.cutscenePlayerInput);
             this.isCutsceneActionFinished = false;
         }
 

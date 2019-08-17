@@ -1,25 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 using NodeGraph;
+using System.Collections.Generic;
 
 namespace CoreGame
 {
     [System.Serializable]
     public abstract class AbstractCutsceneGraph : NodeEditorProfile
     {
-        public SequencedAction GetRootAction()
+        public List<SequencedAction> GetRootActions()
         {
-            SequencedAction rootAction = null;
             foreach (var node in this.Nodes.Values)
             {
                 if (node.GetType() == typeof(CutsceneStartNode))
                 {
-                    var childNode = ((CutsceneStartNode)node).GetFirstNode();
-                    childNode.BuildAction();
-                    rootAction = childNode.GetAction();
+                    var childNodes = ((CutsceneStartNode)node).GetFirstNodes();
+                    childNodes.ForEach((childNode) => childNode.BuildAction());
+                    return childNodes.ConvertAll((childNode) => childNode.GetAction());
                 }
             }
-            return rootAction;
+            return null;
         }
     }
 }

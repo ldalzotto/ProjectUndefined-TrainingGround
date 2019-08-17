@@ -9,12 +9,14 @@ namespace RTPuzzle
 
         #region External Dependencies
         private PlayerActionManager PlayerActionManager;
+        private BlockingCutscenePlayer BlockingCutscenePlayer;
         #endregion
 
         #region Internal Components
         private Rigidbody playerRigidbody;
         private NavMeshAgent navMeshAgent;
         private RootPuzzleLogicCollider rootPuzzleLogicCollider;
+        private InteractiveObjectType associatedInteractiveObject;
         #endregion
 
         private PlayerPhysicsMovementComponent playerPhysicsMovementComponent;
@@ -44,12 +46,14 @@ namespace RTPuzzle
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            this.BlockingCutscenePlayer = GameObject.FindObjectOfType<BlockingCutscenePlayer>();
             #endregion
-            
+
             this.playerRigidbody = GetComponent<Rigidbody>();
             var animator = GetComponentInChildren<Animator>();
             this.navMeshAgent = GetComponent<NavMeshAgent>();
             this.rootPuzzleLogicCollider = GetComponentInChildren<RootPuzzleLogicCollider>();
+            this.associatedInteractiveObject = GetComponent<InteractiveObjectType>();
 
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
@@ -68,7 +72,7 @@ namespace RTPuzzle
             PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
-            
+
             GenericAnimatorHelper.SetMovementLayer(animator, coreConfigurationManager.AnimationConfiguration(), LevelType.PUZZLE);
         }
 
@@ -76,8 +80,8 @@ namespace RTPuzzle
         {
             if (!LevelResetManager.Tick(d))
             {
-                
-                if (!PlayerActionManager.IsActionExecuting())
+
+                if (!PlayerActionManager.IsActionExecuting() && !this.IsPlayerDirectedByCutscene())
                 {
                     if (!PlayerSelectionWheelManager.AwakeOrSleepWheel())
                     {
@@ -117,6 +121,10 @@ namespace RTPuzzle
         {
             return PlayerInputMoveManager.HasMoved;
         }
+        public bool IsPlayerDirectedByCutscene()
+        {
+            return this.associatedInteractiveObject.GetModule<InteractiveObjectCutsceneControllerModule>().IsCutscenePlaying() || this.BlockingCutscenePlayer.Playing;
+        }
         #endregion
 
         #region Data Retrieval
@@ -132,8 +140,8 @@ namespace RTPuzzle
         }
         public Rigidbody PlayerRigidbody { get => playerRigidbody; }
         public Collider PlayerPuzzleLogicRootCollier { get => this.rootPuzzleLogicCollider.GetRootCollider(); }
-        public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent { get => playerPhysicsMovementComponent;}
-        public NavMeshAgent NavMeshAgent { get => navMeshAgent;  }
+        public PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent { get => playerPhysicsMovementComponent; }
+        public NavMeshAgent NavMeshAgent { get => navMeshAgent; }
     }
 
     #region Player Action Selection Manager

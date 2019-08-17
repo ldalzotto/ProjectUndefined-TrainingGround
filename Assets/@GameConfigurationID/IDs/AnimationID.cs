@@ -79,5 +79,13 @@ namespace GameConfigurationID {
     CA_CrushDownItem = 32,
     
     _1_Town_GardenDoor_Open = 33,
+    
+    CA_PushWithViolence_0 = 34,
+    
+    POSE_DrawGun = 35,
+    
+    CA_PushWithViolence_1 = 36,
+    
+    POSE_FallDown = 37,
   }
 }

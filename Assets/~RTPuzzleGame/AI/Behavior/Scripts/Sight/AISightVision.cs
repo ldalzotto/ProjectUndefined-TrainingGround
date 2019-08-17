@@ -12,12 +12,12 @@ namespace RTPuzzle
 
         private RangeTypeObject sightVisionRange;
         private AISightVisionTargetTracker AISightVisionTargetTracker;
-        private AISightInteresectionManager AISightInteresectionManager;
+        private AISightIntersectionManager AISightInteresectionManager;
 
         public void Init(PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager)
         {
             this.AISightVisionTargetTracker = new AISightVisionTargetTracker(this);
-            this.AISightInteresectionManager = new AISightInteresectionManager(this.AISightVisionTargetTracker, puzzleAIBehaviorExternalEventManager);
+            this.AISightInteresectionManager = new AISightIntersectionManager(this.AISightVisionTargetTracker, puzzleAIBehaviorExternalEventManager);
             this.sightVisionRange = GetComponentInChildren<RangeTypeObject>();
             this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AISightVisionTargetTracker });
         }
@@ -33,6 +33,10 @@ namespace RTPuzzle
         {
             this.AISightInteresectionManager.OnTargetTriggerExit(ColliderWithCollisionType);
         }
+        #endregion
+
+        #region Logical Conditions
+        public bool IsPlayerInSight() { return this.AISightInteresectionManager.IsPlayerInSight(); }
         #endregion
 
 #if UNITY_EDITOR
@@ -79,7 +83,7 @@ namespace RTPuzzle
         }
     }
 
-    public class AISightInteresectionManager
+    public class AISightIntersectionManager
     {
         private PuzzleAIBehaviorExternalEventManager PuzzleAIBehaviorExternalEventManager;
 
@@ -90,7 +94,7 @@ namespace RTPuzzle
 
         public Dictionary<ColliderWithCollisionType, bool> IsInside { get => isInside; }
 
-        public AISightInteresectionManager(AISightVisionTargetTracker aISightVisionTargetTracker, PuzzleAIBehaviorExternalEventManager PuzzleAIBehaviorExternalEventManager)
+        public AISightIntersectionManager(AISightVisionTargetTracker aISightVisionTargetTracker, PuzzleAIBehaviorExternalEventManager PuzzleAIBehaviorExternalEventManager)
         {
             this.PuzzleAIBehaviorExternalEventManager = PuzzleAIBehaviorExternalEventManager;
             this.aISightVisionTargetTracker = aISightVisionTargetTracker;
@@ -150,6 +154,20 @@ namespace RTPuzzle
         public void OnTargetTriggerExit(ColliderWithCollisionType ColliderWithCollisionType)
         {
             this.SetIsInside(ColliderWithCollisionType, false);
+        }
+        #endregion
+
+        #region Logical Conditions
+        public bool IsPlayerInSight()
+        {
+            foreach(var insideCollider in this.isInside.Keys)
+            {
+                if (insideCollider.collisionType.IsPlayer)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
     }

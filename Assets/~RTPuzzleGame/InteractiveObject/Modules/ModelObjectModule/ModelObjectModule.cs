@@ -9,6 +9,7 @@ namespace RTPuzzle
         #region Properties
         private ExtendedBounds AverageModeBounds;
         private Animator animator;
+        private Rigidbody associatedRigidbody;
         #endregion
 
         #region Data Retrieval
@@ -17,6 +18,7 @@ namespace RTPuzzle
             return this.AverageModeBounds;
         }
         public Animator Animator { get => animator; }
+        public Rigidbody AssociatedRigidbody { get => associatedRigidbody; }
         #endregion
 
         public void Init()
@@ -27,6 +29,8 @@ namespace RTPuzzle
             {
                 this.animator = GetComponentInChildren<Animator>();
             }
+
+            this.associatedRigidbody = GetComponentInParent<Rigidbody>();
         }
     }
 }

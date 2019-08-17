@@ -78,8 +78,9 @@ namespace RTPuzzle
 
             #region Internal Dependencies
             InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();
+            InteractiveObjectInitializationObject.AISightVision = GetComponentInChildren<AISightVision>();
             #endregion
-            
+
             this.PopulateModules(exclusiveInitialEnabledModules);
 
             foreach (var initializationStatement in InteractiveObjectTypeConfiguration.InitializationConfiguration.Values)

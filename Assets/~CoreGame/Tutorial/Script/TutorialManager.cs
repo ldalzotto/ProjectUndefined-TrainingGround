@@ -119,7 +119,7 @@ namespace CoreGame
 
         public void Play(TutorialGraph TutorialGraph)
         {
-            this.tutorialPlayer.OnAddAction(TutorialGraph.GetRootAction(), this.TutorialActionInput);
+            this.tutorialPlayer.OnAddActions(TutorialGraph.GetRootActions(), this.TutorialActionInput);
         }
 
         public void Tick(float d)

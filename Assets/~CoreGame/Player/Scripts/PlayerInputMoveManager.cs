@@ -10,7 +10,7 @@ namespace CoreGame
         protected Rigidbody PlayerRigidBody;
         protected PlayerSpeedProcessingInput playerSpeedProcessingInput;
         private bool hasMoved;
-        private float playerSpeedMagnitude;
+        protected float playerSpeedMagnitude;
 
         public PlayerMoveManager(TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
         {
@@ -82,6 +82,7 @@ namespace CoreGame
 
         public void ResetSpeed()
         {
+            this.playerSpeedMagnitude = 0;
             playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
             playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
         }

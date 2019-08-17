@@ -26,6 +26,7 @@ namespace RTPuzzle
 {typeof(RTPuzzle.ActionInteractableObjectModule),InteractiveObjectModulesInitializationOperations.InitializeActionInteractableObjectModule},
 {typeof(RTPuzzle.GrabObjectModule),InteractiveObjectModulesInitializationOperations.InitializeGrabObjectModule},
 {typeof(RTPuzzle.InteractiveObjectCutsceneControllerModule),InteractiveObjectModulesInitializationOperations.InitializeInteractiveObjectCutsceneControllerModule},
+{typeof(RTPuzzle.NearPlayerGameOverTriggerModule),InteractiveObjectModulesInitializationOperations.InitializeNearPlayerGameOverTriggerModule},
 };
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CoreGame
@@ -15,7 +16,7 @@ namespace CoreGame
 
         protected void BaseInit(Action OnCutsceneStart, Action OnCutsceneEnd)
         {
-            this.SequencedActionManager = new SequencedActionManager(OnActionAdd: this.OnActionAdd, OnActionFinished: null, OnNoMoreActionToPlay: this.OnNoMoreActionToPlay);
+            this.SequencedActionManager = new SequencedActionManager((action) => this.SequencedActionManager.OnAddAction(action, this.currentInput), OnActionFinished: null, OnNoMoreActionToPlay: this.OnNoMoreActionToPlay);
             this.OnCutsceneStart = OnCutsceneStart;
             this.OnCutsceneEnd = OnCutsceneEnd;
         }
@@ -30,7 +31,7 @@ namespace CoreGame
             this.isCutscenePlaying = true;
             this.currentInput = cutsceneInput;
             if (this.OnCutsceneStart != null) { this.OnCutsceneStart.Invoke(); }
-            this.OnActionAdd(cutsceneGraph.GetRootAction());
+            this.OnActionsAdd(cutsceneGraph.GetRootActions());
             yield return new WaitUntil(() => { return !this.isCutscenePlaying; });
             if (this.OnCutsceneEnd != null) { this.OnCutsceneEnd.Invoke(); }
         }
@@ -40,9 +41,9 @@ namespace CoreGame
             this.SequencedActionManager.Tick(d);
         }
 
-        private void OnActionAdd(SequencedAction SequencedAction)
+        private void OnActionsAdd(List<SequencedAction> SequencedActions)
         {
-            this.SequencedActionManager.OnAddAction(SequencedAction, this.currentInput);
+            this.SequencedActionManager.OnAddActions(SequencedActions, this.currentInput);
         }
 
         private void OnNoMoreActionToPlay()

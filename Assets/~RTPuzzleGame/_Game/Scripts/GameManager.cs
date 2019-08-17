@@ -33,6 +33,7 @@ namespace RTPuzzle
         private CameraMovementManager CameraMovementManager;
         private CircleFillBarRendererManager CircleFillBarRendererManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
+        private BlockingCutscenePlayer BlockingCutscenePlayer;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -78,6 +79,7 @@ namespace RTPuzzle
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             CircleFillBarRendererManager = GameObject.FindObjectOfType<CircleFillBarRendererManager>();
             PuzzleTutorialEventSender = GameObject.FindObjectOfType<PuzzleTutorialEventSender>();
+            BlockingCutscenePlayer = GameObject.FindObjectOfType<BlockingCutscenePlayer>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -119,6 +121,7 @@ namespace RTPuzzle
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
             PuzzleTutorialEventSender.Init();
+            BlockingCutscenePlayer.Init();
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -137,9 +140,11 @@ namespace RTPuzzle
                 if (!GameOverManager.OnGameOver)
                 {
                     PuzzleTutorialEventSender.Tick(d);
+                    BlockingCutscenePlayer.Tick(d);
 
                     PlayerActionManager.Tick(d);
                     PlayerManager.Tick(d);
+
                     CameraMovementManager.Tick(d);
 
                     ObstaclesListenerManager.Tick(d);
@@ -154,7 +159,7 @@ namespace RTPuzzle
                     NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
                     InteractiveObjectContainer.TickAlways(d);
 
-                    if (TimeFlowManager.IsAbleToFlowTime())
+                    if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
                         NPCAIManagerContainer.EnableAgents();
                         NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());

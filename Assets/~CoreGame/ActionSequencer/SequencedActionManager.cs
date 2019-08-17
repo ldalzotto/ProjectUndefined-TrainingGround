@@ -93,6 +93,13 @@ namespace CoreGame
             //first tick for removing at the same frame if necessary
             ProcessTick(0f, action);
         }
+        public void OnAddActions(List<SequencedAction> actions, SequencedActionInput actionInput)
+        {
+            foreach(var action in actions)
+            {
+                this.OnAddAction(action, actionInput);
+            }
+        }
         #endregion
 
         #region Data Retrieval

@@ -15,6 +15,9 @@ namespace Experimental.Editor_NodeEditor
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>() {
             {typeof(PuzzleCutsceneAnimationNode).Name, typeof(PuzzleCutsceneAnimationNode)},
             {typeof(CutsceneStartNode).Name,  typeof(CutsceneStartNode)},
+            {typeof(CutsceneWorkflowWaitForSecondsNode).Name, typeof(CutsceneWorkflowWaitForSecondsNode) },
+            {typeof(PuzzleFaceTowardsNode).Name, typeof(PuzzleFaceTowardsNode) },
+            
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

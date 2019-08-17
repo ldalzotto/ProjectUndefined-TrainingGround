@@ -35,6 +35,8 @@ namespace RTPuzzle
         public TransformMoveManagerComponentV2 TransformMoveManagerComponent;
 
         public Rigidbody RigidBody;
+
+        public AISightVision AISightVision;
         
     }
 }

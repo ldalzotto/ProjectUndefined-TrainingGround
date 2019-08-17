@@ -10,15 +10,19 @@ namespace CoreGame
     {
         [SerializeField]
         private CutsceneActionConnectionEdge startEdge;
-
-        public SequencedAction GetStartAction()
+        
+        public List<ICutsceneNode> GetFirstNodes()
         {
-            return this.GetFirstNode().GetAction();
-        }
-
-        public ICutsceneNode GetFirstNode()
-        {
-            return ((ICutsceneNode)startEdge.ConnectedNodeEdges[0].NodeProfileRef);
+            List<ICutsceneNode> nextNodes = new List<ICutsceneNode>();
+            foreach (var connectedNode in startEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge)e))
+            {
+                var ICutsceneNode = connectedNode.NodeProfileRef as ICutsceneNode;
+                if (ICutsceneNode != null)
+                {
+                    nextNodes.Add(ICutsceneNode);
+                }
+            }
+            return nextNodes;
         }
 
 #if UNITY_EDITOR

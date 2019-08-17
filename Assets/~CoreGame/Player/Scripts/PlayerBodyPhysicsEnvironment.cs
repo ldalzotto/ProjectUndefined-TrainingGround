@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -7,7 +8,7 @@ namespace CoreGame
         private GroundRayCaster GroundRayCaster;
         private StickGroundBodyPositioner StickGroundBodyPositioner;
         private SlopeVelocityAdjuster SlopeVelocityAdjuster;
-
+        
         public PlayerBodyPhysicsEnvironment(Rigidbody rigidbody, Collider collider, PlayerPhysicsMovementComponent PlayerPhysicsMovementComponent)
         {
             GroundRayCaster = new GroundRayCaster(rigidbody, collider);
@@ -18,6 +19,7 @@ namespace CoreGame
         public void FixedTick(float d)
         {
             GroundRayCaster.FixedTick(d);
+
             if (GroundRayCaster.HasHitted())
             {
                 //slope velocity adjusted
@@ -26,6 +28,11 @@ namespace CoreGame
                 //stick to ground
                 StickGroundBodyPositioner.FixedTick(GroundRayCaster.GetHitPosition());
             }
+        }
+
+        public void ResetSpeed()
+        {
+            this.SlopeVelocityAdjuster.ResetSpeed();
         }
 
     }
@@ -103,6 +110,11 @@ namespace CoreGame
             Debug.DrawRay(rigidbody.position, rigidBodyProjectedNormal * 10, Color.green);
             Debug.DrawRay(rigidbody.position, rigidbody.velocity * 10, Color.red);
 
+        }
+
+        internal void ResetSpeed()
+        {
+            this.rigidbody.velocity = Vector3.zero;
         }
     }
 }

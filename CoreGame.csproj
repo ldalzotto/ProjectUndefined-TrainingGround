@@ -129,13 +129,17 @@
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCtusceneController.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCutscenePlayerManager.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractCutsceneAnimationAction.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractRotateAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowAbortAction.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\AbstractCutsceneGraph.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Abstract\ACutsceneEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneActionConnectionEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneWorkflowAbortEdge.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneWorkflowWaitForSecondsEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\Abstract\ACutsceneNode.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneStartNode.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneWorkflowWaitForSecondsNode.cs" />
     <Compile Include="Assets\~CoreGame\DataComponent\ADataComponent.cs" />
     <Compile Include="Assets\~CoreGame\DataComponent\DataComponentContainer.cs" />
     <Compile Include="Assets\~CoreGame\Debug\Scripts\FPSDisplay.cs" />
@@ -164,6 +168,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\MultiValueDictionary.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\ProceduralTextureHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\QuaterionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SerializationHelper.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />

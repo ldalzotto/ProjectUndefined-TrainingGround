@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using GameConfigurationID;
+﻿using GameConfigurationID;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -15,6 +14,7 @@ namespace CoreGame
 
         private POICutsceneMoveManager POICutsceneMoveManager;
         private PlayerAnimationDataManager PlayerAnimationDataManager;
+        private ObjectRotateManager ObjectRotateManager;
 
         #region Data Components Dependencies
         private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponentV2;
@@ -24,7 +24,14 @@ namespace CoreGame
         private bool askedForWarp;
         private bool isAnimationPlaying;
         public bool IsAnimationPlaying { get => isAnimationPlaying; }
-        public bool IsDirectedByAi() { return this.POICutsceneMoveManager.IsDirectedByAi; } 
+        public bool IsDirectedByAi()
+        {
+            if (this.POICutsceneMoveManager == null) { return false; }
+            else { return this.POICutsceneMoveManager.IsDirectedByAi; }
+        }
+        public bool IsRotating() { return this.ObjectRotateManager.IsRotating; }
+
+        public bool IsCutscenePlaying() { return (this.IsAnimationPlaying || this.IsDirectedByAi() || this.IsRotating()); }
         #endregion
 
         protected void BaseInit(Rigidbody rigidBody, NavMeshAgent agent, Animator animator, TransformMoveManagerComponentV2 transformMoveManagerComponent = null, PlayerAnimationDataManager playerAnimationDataManager = null)
@@ -32,24 +39,26 @@ namespace CoreGame
             #region Data Components Dependencies
             this.PlayerInputMoveManagerComponentV2 = transformMoveManagerComponent;
             #endregion
-            
+
             this.Rigidbody = rigidBody;
             this.Agent = agent;
             this.Animator = animator;
 
             //If we want the controller to not move agent/rb
-            if(this.PlayerInputMoveManagerComponentV2 != null)
+            if (this.PlayerInputMoveManagerComponentV2 != null)
             {
                 this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
             }
 
             this.PlayerAnimationDataManager = playerAnimationDataManager;
+            this.ObjectRotateManager = new ObjectRotateManager(rigidBody);
         }
 
         public void Tick(float d)
         {
             this.POICutsceneMoveManager.IfNotNull((POICutsceneMoveManager) => POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.RotationSpeed));
             this.PlayerAnimationDataManager.IfNotNull((PlayerAnimationDataManager) => PlayerAnimationDataManager.Tick(this.GetCurrentNormalizedSpeedMagnitude()));
+            this.ObjectRotateManager.Tick(d);
         }
 
         public void Warp(Transform warpPosition)
@@ -88,8 +97,12 @@ namespace CoreGame
         {
             return this.POICutsceneMoveManager.GetCurrentNormalizedSpeedMagnitude();
         }
-    }
 
+        public void AskRotation(Quaternion targetRotation, float speed)
+        {
+            this.ObjectRotateManager.AskRotation(targetRotation, speed);
+        }
+    }
 
     class POICutsceneMoveManager
     {
@@ -170,12 +183,65 @@ namespace CoreGame
             this.speedFactorOverDistance = speedFactorOverDistance;
             playerAgent.nextPosition = this.PlayerRigidBody.transform.position;
             playerAgent.SetDestination(destination.position);
-            PlayerRigidBody.isKinematic = true;
+            CutsceneControllerHelper.DisableRigidBodyForAnimation(PlayerRigidBody);
             //Let the AI move
             yield return Coroutiner.Instance.StartCoroutine(new WaitForNavAgentDestinationReached(playerAgent));
-            PlayerRigidBody.isKinematic = false;
+            CutsceneControllerHelper.EnableRigidBodyForAnimation(PlayerRigidBody);
             playerAgent.ResetPath();
             this.isDirectedByAi = false;
+        }
+    }
+
+    class ObjectRotateManager
+    {
+        private bool isRotating;
+        private Rigidbody rotatingRigidBody;
+        private Quaternion targetQuaternion;
+        private float speed;
+
+        public ObjectRotateManager(Rigidbody rotatingRigidBody)
+        {
+            this.rotatingRigidBody = rotatingRigidBody;
+        }
+
+        public bool IsRotating { get => isRotating; }
+
+        public void AskRotation(Quaternion targetQuaternion, float speed)
+        {
+            this.targetQuaternion = targetQuaternion;
+            this.speed = speed;
+            this.isRotating = true;
+        }
+
+        public void Tick(float d)
+        {
+            if (this.isRotating)
+            {
+                this.rotatingRigidBody.rotation = Quaternion.Slerp(this.rotatingRigidBody.rotation, this.targetQuaternion, this.speed * d);
+                if (QuaterionHelper.ApproxEquals(this.rotatingRigidBody.transform.rotation, this.targetQuaternion))
+                {
+                    this.rotatingRigidBody.rotation = this.targetQuaternion;
+                    this.isRotating = false;
+                }
+            }
+        }
+    }
+
+    public static class CutsceneControllerHelper
+    {
+        public static void DisableRigidBodyForAnimation(Rigidbody rigidbody)
+        {
+            if (rigidbody != null)
+            {
+                rigidbody.isKinematic = true;
+            }
+        }
+        public static void EnableRigidBodyForAnimation(Rigidbody rigidbody)
+        {
+            if (rigidbody != null)
+            {
+                rigidbody.isKinematic = false;
+            }
         }
     }
 }

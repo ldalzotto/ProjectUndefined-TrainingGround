@@ -31,15 +31,17 @@ namespace RTPuzzle
         {
             this.interactiveObjectCutsceneController.Tick(d);
         }
+
+        #region Logical Conditions
+        public bool IsCutscenePlaying() { return this.interactiveObjectCutsceneController.IsCutscenePlaying(); }
+        #endregion
     }
 
     class InteractiveObjectCutsceneController : AbstractCutsceneController
     {
         public InteractiveObjectCutsceneController(ModelObjectModule ModelObjectModule, InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
-            var Animator = ModelObjectModule.Animator;
-
-            base.BaseInit(null, null, Animator, InteractiveObjectInitializationObject.TransformMoveManagerComponent, null);
+            base.BaseInit(ModelObjectModule.AssociatedRigidbody, null, ModelObjectModule.Animator, InteractiveObjectInitializationObject.TransformMoveManagerComponent, null);
         }
     }
 }
