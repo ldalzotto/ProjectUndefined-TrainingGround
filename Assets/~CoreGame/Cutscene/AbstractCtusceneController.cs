@@ -217,12 +217,14 @@ namespace CoreGame
         {
             if (this.isRotating)
             {
-                this.rotatingRigidBody.rotation = Quaternion.Slerp(this.rotatingRigidBody.rotation, this.targetQuaternion, this.speed * d);
+                this.rotatingRigidBody.transform.rotation = Quaternion.Slerp(this.rotatingRigidBody.rotation, this.targetQuaternion, this.speed * d);
                 if (QuaterionHelper.ApproxEquals(this.rotatingRigidBody.transform.rotation, this.targetQuaternion))
                 {
-                    this.rotatingRigidBody.rotation = this.targetQuaternion;
+                    this.rotatingRigidBody.transform.eulerAngles = this.targetQuaternion.eulerAngles;
                     this.isRotating = false;
                 }
+
+                Debug.Log(this.rotatingRigidBody.transform.eulerAngles.ToString("F4"));
             }
         }
     }

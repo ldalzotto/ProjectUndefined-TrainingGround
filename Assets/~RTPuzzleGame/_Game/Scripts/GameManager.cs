@@ -121,7 +121,6 @@ namespace RTPuzzle
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
             PuzzleTutorialEventSender.Init();
-            BlockingCutscenePlayer.Init();
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
