@@ -11,43 +11,49 @@ namespace RTPuzzle
         private MeshFilter meshFilter;
         private Mesh groundEffectMesh;
 
+        private bool hasBeenInit;
+
         private List<GroundEffectIgnoredGroundObjectType> associatedGroundEffectIgnoredGroundObjectType;
         private List<CombineInstance> groundEffectCombinedInstances;
 
         public MeshRenderer MeshRenderer { get => meshRenderer; }
         public MeshFilter MeshFilter { get => meshFilter; }
-        public Mesh GroundEffectMesh { get => groundEffectMesh;  }
+        public Mesh GroundEffectMesh { get => groundEffectMesh; }
 
         public List<GroundEffectIgnoredGroundObjectType> AssociatedGroundEffectIgnoredGroundObjectType { get => associatedGroundEffectIgnoredGroundObjectType; }
 
         public void Init()
         {
-            meshRenderer = GetComponent<MeshRenderer>();
-            meshFilter = GetComponent<MeshFilter>();
-            this.groundEffectMesh = new Mesh();
-            this.groundEffectMesh.SetVertices(this.meshFilter.mesh.vertices.ToList());
-            this.groundEffectMesh.SetTriangles(this.meshFilter.mesh.triangles, 0);
+            if (!hasBeenInit)
+            {
+                meshRenderer = GetComponent<MeshRenderer>();
+                meshFilter = GetComponent<MeshFilter>();
+                this.groundEffectMesh = new Mesh();
+                this.groundEffectMesh.SetVertices(this.meshFilter.mesh.vertices.ToList());
+                this.groundEffectMesh.SetTriangles(this.meshFilter.mesh.triangles, 0);
 
 
-            var childsGroundEffectIgnoredGroundObjectType = GetComponentsInChildren<GroundEffectIgnoredGroundObjectType>();
-            if (childsGroundEffectIgnoredGroundObjectType != null)
-            {
-                this.associatedGroundEffectIgnoredGroundObjectType = childsGroundEffectIgnoredGroundObjectType.ToList();
-            } else
-            {
-                this.associatedGroundEffectIgnoredGroundObjectType = new List<GroundEffectIgnoredGroundObjectType>();
+                var childsGroundEffectIgnoredGroundObjectType = GetComponentsInChildren<GroundEffectIgnoredGroundObjectType>();
+                if (childsGroundEffectIgnoredGroundObjectType != null)
+                {
+                    this.associatedGroundEffectIgnoredGroundObjectType = childsGroundEffectIgnoredGroundObjectType.ToList();
+                }
+                else
+                {
+                    this.associatedGroundEffectIgnoredGroundObjectType = new List<GroundEffectIgnoredGroundObjectType>();
+                }
+
+                foreach (var GroundEffectIgnoredGroundObjectType in this.associatedGroundEffectIgnoredGroundObjectType)
+                {
+                    GroundEffectIgnoredGroundObjectType.Init();
+                }
+
+                this.groundEffectCombinedInstances = new List<CombineInstance>();
+                groundEffectCombinedInstances.Add(new CombineInstance() { mesh = this.groundEffectMesh, transform = this.transform.localToWorldMatrix });
+                groundEffectCombinedInstances.AddRange(this.associatedGroundEffectIgnoredGroundObjectType.ConvertAll(GroundEffectIgnoredGroundObjectType => new CombineInstance() { mesh = GroundEffectIgnoredGroundObjectType.GroundEffectMesh, transform = GroundEffectIgnoredGroundObjectType.transform.localToWorldMatrix }));
+
+                this.hasBeenInit = true;
             }
-
-            foreach(var GroundEffectIgnoredGroundObjectType in this.associatedGroundEffectIgnoredGroundObjectType)
-            {
-                GroundEffectIgnoredGroundObjectType.Init();
-            }
-
-           this.groundEffectCombinedInstances = new List<CombineInstance>();
-            groundEffectCombinedInstances.Add(new CombineInstance() { mesh = this.groundEffectMesh, transform = this.transform.localToWorldMatrix });
-            groundEffectCombinedInstances.AddRange(this.associatedGroundEffectIgnoredGroundObjectType.ConvertAll(GroundEffectIgnoredGroundObjectType => new CombineInstance() { mesh = GroundEffectIgnoredGroundObjectType.GroundEffectMesh, transform = GroundEffectIgnoredGroundObjectType.transform.localToWorldMatrix }));
-
-
         }
 
         public List<CombineInstance> GetCombineInstances()
