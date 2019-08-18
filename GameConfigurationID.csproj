@@ -91,6 +91,7 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\PointOfInterestId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\PuzzleCutsceneId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\RangeTypeID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\RangeTypeObjectDefinitionID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\ScenarioTimelineNodeID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\SelectionWheelNodeConfigurationId.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\TargetZoneID.cs" />

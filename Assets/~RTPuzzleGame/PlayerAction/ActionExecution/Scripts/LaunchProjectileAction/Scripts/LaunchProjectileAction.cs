@@ -71,7 +71,7 @@ namespace RTPuzzle
 
             this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
 
-            this.projectileThrowRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, interactiveObjectContainer);
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
@@ -294,7 +294,7 @@ namespace RTPuzzle
                     {
                         MonoBehaviour.DestroyImmediate(this.projectileCursorRange.gameObject);
                     }
-                    this.projectileCursorRange = RangeTypeObject.Instanciate(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.effectiveEffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
+                    this.projectileCursorRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.effectiveEffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
                 }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;

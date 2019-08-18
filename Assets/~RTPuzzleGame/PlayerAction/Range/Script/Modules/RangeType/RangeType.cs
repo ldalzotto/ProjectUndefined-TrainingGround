@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameConfigurationID;
+﻿using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -13,6 +12,11 @@ namespace RTPuzzle
         protected RangeTypeObject RangeTypeObjectRef;
 
         public RangeTypeID RangeTypeID { get => rangeTypeID; set => rangeTypeID = value; }
+
+        public virtual void PopulateFromDefinition(RangeTypeDefinition rangeTypeDefinition)
+        {
+            this.rangeTypeID = rangeTypeDefinition.RangeTypeID;
+        }
 
         public virtual void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {

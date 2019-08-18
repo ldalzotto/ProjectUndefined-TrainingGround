@@ -28,6 +28,7 @@ namespace RTPuzzle
         public CooldownFeedLineType CooldownFeedLineType;
 
         [Header("Ranges prefab")]
+        public RangeTypeObject BaseRangeTypeObject;
         public RangeTypeObject BaseSphereRangePrefab;
 
         [Header("Visual Feedback")]

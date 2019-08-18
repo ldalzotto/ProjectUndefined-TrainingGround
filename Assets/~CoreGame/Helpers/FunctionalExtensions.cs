@@ -34,5 +34,11 @@ namespace CoreGame
                 });
             });
         }
+
+        public static T With<T>(this T input, Action<T> action)
+        {
+            input.IfNotNull((i) => action.Invoke(i));
+            return input;
+        }
     }
 }

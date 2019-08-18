@@ -9,6 +9,8 @@ namespace RTPuzzle
 {
     public class RangeTypeObject : MonoBehaviour
     {
+        public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
+
         #region Modules
         private RangeType rangeType;
         private RangeObstacleListener rangeObstacleListener;
@@ -28,6 +30,32 @@ namespace RTPuzzle
         #endregion
 
         public void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
+        {
+            if (RangeTypeObjectDefinitionID != RangeTypeObjectDefinitionID.NONE)
+            {
+                GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().RangeTypeObjectDefinitionConfiguration()[this.RangeTypeObjectDefinitionID]
+                        .DefineRangeTypeObject(this, GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
+            }
+
+            this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
+        }
+
+        public void Init(RangeTypeObjectDefinitionConfigurationInherentData rangeTypeObjectDefinitionConfigurationInherentData,
+            RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
+        {
+            rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
+            this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
+        }
+
+        public void PopuplateSphereRangeData(float sphereRange, RangeTypeID rangeTypeID, RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
+        {
+            this.PopulateModules();
+            this.SetRangeID(rangeTypeID);
+            ((SphereRangeType)this.rangeType).PopupulateFromData(sphereRange);
+            this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
+        }
+
+        private void CommonInit(RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior)
         {
             #region External Dependencies
             this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();
@@ -103,13 +131,13 @@ namespace RTPuzzle
         }
         #endregion
 
-        public static RangeTypeObject Instanciate(RangeTypeID rangeTypeID, float sphereRadius, Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
+        public static RangeTypeObject InstanciateSphereRange(RangeTypeID rangeTypeID, float sphereRange,
+                                 Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
         {
             var rangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
-            var sphereRangeTypeObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.BaseSphereRangePrefab, rangeTypeContainer.transform);
-            sphereRangeTypeObject.PopulateModules();
-            sphereRangeTypeObject.SetRangeID(rangeTypeID);
-            sphereRangeTypeObject.Init(new RangeTypeObjectInitializer(sphereRadius, originPositionProvider, rangeColorProvider));
+            var sphereRangeTypeObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.BaseRangeTypeObject, rangeTypeContainer.transform);
+            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration),
+                new RangeTypeObjectInitializer(originPositionProvider, rangeColorProvider));
             return sphereRangeTypeObject;
         }
 
@@ -158,13 +186,11 @@ namespace RTPuzzle
 
     public class RangeTypeObjectInitializer
     {
-        public float SphereRadius;
         public Func<Vector3> OriginPositionProvider;
         public Func<Color> RangeColorProvider;
 
-        public RangeTypeObjectInitializer(float sphereRadius = 0f, Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
+        public RangeTypeObjectInitializer(Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
         {
-            SphereRadius = sphereRadius;
             OriginPositionProvider = originPositionProvider;
             RangeColorProvider = rangeColorProvider;
         }

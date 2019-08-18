@@ -35,6 +35,17 @@ namespace CoreGame
 
         public Quaternion WorldRotation { set => worldRotation = value; }
 
+        public FrustumV2 Clone()
+        {
+            FrustumV2 cloned = new FrustumV2();
+            cloned.Center = this.Center;
+            cloned.DeltaRotation = this.DeltaRotation;
+            cloned.F1 = this.F1.Clone();
+            cloned.F2 = this.F2.Clone();
+            cloned.FaceDistance = this.FaceDistance;
+            return cloned;
+        }
+
         public FrustumV2()
         {
             this.F1 = new FrustumFaceV2();
@@ -102,6 +113,15 @@ namespace CoreGame
         public float Height;
         [SerializeField]
         public float Width;
+
+        public FrustumFaceV2 Clone()
+        {
+            FrustumFaceV2 cloned = new FrustumFaceV2();
+            cloned.FaceOffsetFromCenter = this.FaceOffsetFromCenter;
+            cloned.Height = this.Height;
+            cloned.Width = this.Width;
+            return cloned;
+        }
     }
 
     [System.Serializable]

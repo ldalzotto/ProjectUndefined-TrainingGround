@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using GameConfigurationID;
+using RTPuzzle;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -21,10 +22,13 @@ namespace Tests
         public IEnumerator OccludedIntersection_Test()
         {
             yield return this.Before();
-            var testObstacleRangObject = AssetFinder.SafeSingleAssetFind<RangeTypeObject>("TEST_OBSTACLE_RangeObject");
-            var instanciatedRange = MonoBehaviour.Instantiate(testObstacleRangObject);
+            var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
+            
+            var instanciatedRange = MonoBehaviour.Instantiate(puzzleStaticConfiguration.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseRangeTypeObject);
             instanciatedRange.transform.position = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position;
-            instanciatedRange.Init(new RangeTypeObjectInitializer(sphereRadius: 99999f));
+            instanciatedRange.Init(
+                  RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration),
+                  new RangeTypeObjectInitializer());
 
             yield return new WaitForFixedUpdate();
 

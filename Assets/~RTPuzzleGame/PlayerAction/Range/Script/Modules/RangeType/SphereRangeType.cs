@@ -12,6 +12,22 @@ namespace RTPuzzle
 
         private Func<Vector3> originPositionProvider;
 
+        public override void PopulateFromDefinition(RangeTypeDefinition rangeTypeDefinition)
+        {
+            base.PopulateFromDefinition(rangeTypeDefinition);
+            if(rangeTypeDefinition.RangeShapeConfiguration != null && rangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(SphereRangeShapeConfiguration))
+            {
+                SphereRangeShapeConfiguration SphereRangeShapeConfiguration = (SphereRangeShapeConfiguration)rangeTypeDefinition.RangeShapeConfiguration;
+                this.PopupulateFromData(SphereRangeShapeConfiguration.Radius);
+            }
+        }
+
+        public void PopupulateFromData(float radius)
+        {
+            this.sphereCollider = GetComponent<SphereCollider>();
+            this.sphereCollider.radius = radius;
+        }
+
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             this.sphereCollider = GetComponent<SphereCollider>();
@@ -19,7 +35,6 @@ namespace RTPuzzle
             if (RangeTypeObjectInitializer != null)
             {
                 this.originPositionProvider = RangeTypeObjectInitializer.OriginPositionProvider;
-                this.sphereCollider.radius = RangeTypeObjectInitializer.SphereRadius;
             }
 
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
@@ -32,6 +47,8 @@ namespace RTPuzzle
                 }
             }
         }
+
+      
 
         public override void Tick(float d)
         {

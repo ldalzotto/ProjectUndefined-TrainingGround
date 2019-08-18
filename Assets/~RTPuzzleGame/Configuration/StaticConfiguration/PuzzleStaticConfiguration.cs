@@ -8,6 +8,7 @@ namespace RTPuzzle
     public class PuzzleStaticConfiguration : ScriptableObject
     {
         public RangeColorConfiguration RangeColorConfiguration;
+        public PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
     }
 }
 

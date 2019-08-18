@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,7 +11,7 @@ namespace RTPuzzle
     public class RoundedFrustumRangeType : AbstractFrustumRangeType
     {
         private float rangeRadius;
-
+        
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
@@ -49,7 +50,7 @@ namespace RTPuzzle
         {
             return Vector3.Distance(this.transform.position, worldPointComparison) <= rangeRadius && Intersection.PointInsideFrustum(this.frustumPointsWorldPositions, worldPointComparison);
         }
-
+        
         public override bool IsInside(BoxCollider boxCollider)
         {
             return Intersection.BoxIntersectsSphereV2(boxCollider, this.transform.position, this.rangeRadius)

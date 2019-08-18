@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
+﻿using CoreGame;
 using System;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -33,6 +32,23 @@ namespace RTPuzzle
                     this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC8)
              );
             return this.frustumPointsWorldPositions;
+        }
+
+
+        public override void PopulateFromDefinition(RangeTypeDefinition RangeTypeDefinition)
+        {
+            base.PopulateFromDefinition(RangeTypeDefinition);
+            if (RangeTypeDefinition.RangeShapeConfiguration != null)
+            {
+                if (RangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(FrustumRangeShapeConfiguration))
+                {
+                    this.frustum = ((FrustumRangeShapeConfiguration)RangeTypeDefinition.RangeShapeConfiguration).frustum.Clone();
+                }
+                else if (RangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(RoundedFrustumRangeShapeConfiguration))
+                {
+                    this.frustum = ((RoundedFrustumRangeShapeConfiguration)RangeTypeDefinition.RangeShapeConfiguration).frustum.Clone();
+                }
+            }
         }
 
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)

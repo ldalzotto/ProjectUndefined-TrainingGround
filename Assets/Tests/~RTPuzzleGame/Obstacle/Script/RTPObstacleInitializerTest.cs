@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using GameConfigurationID;
+using RTPuzzle;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,9 @@ public class RTPObstacleInitializerTest : MonoBehaviour
     {
         if (!hasInit)
         {
-            GameObject.FindObjectOfType<RangeTypeObject>().Init(new RangeTypeObjectInitializer(99999f));
+            GameObject.FindObjectOfType<RangeTypeObject>().Init(
+                RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration),
+                new RangeTypeObjectInitializer());
             hasInit = true;
         }
     }

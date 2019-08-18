@@ -114,6 +114,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfigurationContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzlePrefabConfiguration\PuzzlePrefabConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectInherentData.cs" />
@@ -161,6 +162,15 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PuzzleCutsceneConfiguration\PuzzleCutsceneInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeObstacleListenerDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\BoxRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\FrustumRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\RoundedFrustumRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\SphereRangeShapeConfiguration .cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeTypeDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfigurationInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\TargetZoneConfiguration\TargetZoneConfiguration.cs" />
@@ -257,6 +267,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\FrustumPlaneIntersectionTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\FrustumPlaneIntersectionTestV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\LineObjTest.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Test\RangeConfiguration\InstanceTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />

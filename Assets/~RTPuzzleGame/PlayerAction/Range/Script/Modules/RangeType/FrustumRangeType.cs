@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using System;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -15,7 +14,7 @@ namespace RTPuzzle
             float diagonalDistance = Vector3.Distance(Vector3.zero, new Vector3(0, this.frustumBoundingBox.size.y / 2f, this.frustumBoundingBox.size.z));
             return Mathf.Max(this.frustumBoundingBox.size.z, this.frustumBoundingBox.size.x / 2f, this.frustumBoundingBox.size.y / 2f, diagonalDistance);
         }
-        
+
         public FrustumRangeBufferData GetFrustumRangeBufferData()
         {
             if (!this.frustumPointsLocalPositions.HasValue)
@@ -45,7 +44,7 @@ namespace RTPuzzle
         {
             return Intersection.PointInsideFrustum(this.frustumPointsWorldPositions, worldPointComparison);
         }
-        
+
 #if UNITY_EDITOR
 
         private void OnDrawGizmos()

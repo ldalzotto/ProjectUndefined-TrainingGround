@@ -62,8 +62,7 @@ namespace RTPuzzle
         {
             this.modelObjectModule = ModelObjectModule;
             this.sphereRange = GetComponentInChildren<RangeTypeObject>();
-            this.sphereRange.Init(new RangeTypeObjectInitializer(sphereRadius: attractiveObjectInherentConfigurationData.EffectRange));
-
+            this.sphereRange.PopuplateSphereRangeData(attractiveObjectInherentConfigurationData.EffectRange, RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE, new RangeTypeObjectInitializer());
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
         }
 

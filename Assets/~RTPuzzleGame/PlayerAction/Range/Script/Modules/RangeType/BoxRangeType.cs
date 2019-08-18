@@ -9,12 +9,26 @@ namespace RTPuzzle
         private BoxCollider BoxCollider;
         #endregion
 
-        public Vector3 LocalSize;
+        private Vector3 localSize;
+
+        public Vector3 LocalSize { get => localSize; }
+
+        public override void PopulateFromDefinition(RangeTypeDefinition rangeTypeDefinition)
+        {
+            base.PopulateFromDefinition(rangeTypeDefinition);
+            if(rangeTypeDefinition.RangeShapeConfiguration != null && rangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(BoxRangeShapeConfiguration))
+            {
+                var BoxRangeShapeConfiguration = (BoxRangeShapeConfiguration)rangeTypeDefinition.RangeShapeConfiguration;
+                this.BoxCollider = GetComponent<BoxCollider>();
+                this.BoxCollider.size = BoxRangeShapeConfiguration.Size;
+                this.BoxCollider.center = BoxRangeShapeConfiguration.Center;
+            }
+        }
 
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             this.BoxCollider = GetComponent<BoxCollider>();
-            this.LocalSize = this.BoxCollider.size;
+            this.localSize = this.BoxCollider.size;
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
         }
         

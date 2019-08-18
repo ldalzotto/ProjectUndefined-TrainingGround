@@ -387,6 +387,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\EditTargetZone.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\TargetZone\ExploreTargetZone.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
+    <Compile Include="Assets\Editor\Helper\AssetHelper.cs" />
     <Compile Include="Assets\Editor\Helper\EnumPicker.cs" />
     <Compile Include="Assets\Editor\Helper\Fold\FoldableArea.cs" />
     <Compile Include="Assets\Editor\Helper\HandlesHelper.cs" />
@@ -414,6 +415,8 @@
     <Compile Include="Assets\Editor\PropertyDrawer\Material\HideIfDisabledDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
+    <Compile Include="Assets\Editor\Test\RangeConfiguration\RangeDefinitionCustomEditor.cs" />
+    <Compile Include="Assets\Editor\Test\RangeConfiguration\RangeTypeObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
