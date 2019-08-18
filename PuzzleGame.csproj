@@ -167,7 +167,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\BoxRangeShapeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\FrustumRangeShapeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\RoundedFrustumRangeShapeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\SphereRangeShapeConfiguration .cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\SphereRangeShapeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeTypeDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfigurationInherentData.cs" />

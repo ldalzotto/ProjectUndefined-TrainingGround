@@ -14,10 +14,10 @@ public class RangeTypeObjectDefinitionCustomEditor : Editor
 
     private void OnEnable()
     {
-        this.AvailableRangeShapeConfigurationTypes = TypeHelper.GetAllTypeAssignableFrom(typeof(RangeShapeConfiguration)).ToList();
-
         if (target != null)
         {
+            this.AvailableRangeShapeConfigurationTypes = TypeHelper.GetAllTypeAssignableFrom(typeof(RangeShapeConfiguration)).ToList();
+
             RangeTypeDefinition RangeTypeDefinitionTarget = (RangeTypeDefinition)target;
             if (RangeTypeDefinitionTarget.RangeShapeConfiguration != null)
             {
@@ -33,13 +33,13 @@ public class RangeTypeObjectDefinitionCustomEditor : Editor
                 RangeTypeDefinitionTarget.RangeShapeConfiguration = (RangeShapeConfiguration)AssetHelper.CreateAssetAtSameDirectoryLevel(RangeTypeDefinitionTarget, this.SelectedType, "Range");
             }
         }
-       
     }
 
     public override void OnInspectorGUI()
     {
         RangeTypeDefinition RangeTypeDefinitionTarget = (RangeTypeDefinition)target;
 
+        EditorGUI.BeginChangeCheck();
         EditorGUI.BeginChangeCheck();
         SelectedType = AvailableRangeShapeConfigurationTypes[EditorGUILayout.Popup(this.AvailableRangeShapeConfigurationTypes.IndexOf(SelectedType), this.AvailableRangeShapeConfigurationTypes.ConvertAll(t => t.Name).ToArray())];
         if (EditorGUI.EndChangeCheck())
@@ -52,5 +52,10 @@ public class RangeTypeObjectDefinitionCustomEditor : Editor
 
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(RangeTypeDefinitionTarget.RangeTypeID)), true);
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(RangeTypeDefinitionTarget.RangeShapeConfiguration)), true);
+        if (EditorGUI.EndChangeCheck())
+        {
+            this.serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(target);
+        }
     }
 }

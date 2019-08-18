@@ -23,7 +23,19 @@ namespace RTPuzzle
             {
                 foreach (Transform child in rangeTypeObject.transform)
                 {
-                    Destroy(child.gameObject);
+                    bool destroy = false;
+                    foreach (var component in child.GetComponents<Component>())
+                    {
+                        if (RangeTypeObjectDefinitionConfigurationInherentData.RangeModuleTypes.Contains(component.GetType()))
+                        {
+                            destroy = true;
+                            break;
+                        }
+                    }
+                    if (destroy)
+                    {
+                        Destroy(child.gameObject);
+                    }
                 }
 
                 foreach (var rangeDefinitionModuleActivation in this.RangeDefinitionModulesActivation)
