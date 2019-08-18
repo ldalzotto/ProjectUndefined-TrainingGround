@@ -6,56 +6,63 @@ using UnityEngine;
 [CustomPropertyDrawer(typeof(Inline))]
 public class InlinePropertyDrawer : PropertyDrawer
 {
+    private bool folded;
     private Editor inlineEditor;
-    
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         Inline byEnumProperty = (Inline)attribute;
-        
+
+        EditorGUI.indentLevel += 1;
         EditorGUI.PropertyField(position, property);
+        EditorGUI.indentLevel -= 1;
+        this.folded = EditorGUI.Foldout(position, this.folded, string.Empty);
 
-        if (property.objectReferenceValue != null)
+        if (this.folded)
         {
-            if (this.inlineEditor == null)
+            if (property.objectReferenceValue != null)
             {
-                inlineEditor = Editor.CreateEditor(property.objectReferenceValue);
-            }
-            if (this.inlineEditor != null)
-            {
-                EditorGUI.indentLevel += 1;
-                this.inlineEditor.OnInspectorGUI();
-                EditorGUI.indentLevel -= 1;
-            }
-        }
-        else
-        {
-            if (EditorUtility.IsPersistent(property.serializedObject.targetObject))
-            {
-                EditorGUI.BeginDisabledGroup(!byEnumProperty.CreateSubIfAbsent);
-                GUI.Button(position, new GUIContent(""), EditorStyles.miniButton);
-                EditorGUI.EndDisabledGroup();
-                if (byEnumProperty.CreateSubIfAbsent)
+                if (this.inlineEditor == null)
                 {
-                    bool toCreate = true;
-                    var ActualAssets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(property.serializedObject.targetObject)).ToList();
-
-                    foreach (var ActualAsset in ActualAssets)
+                    inlineEditor = Editor.CreateEditor(property.objectReferenceValue);
+                }
+                if (this.inlineEditor != null)
+                {
+                    EditorGUI.indentLevel += 1;
+                    this.inlineEditor.OnInspectorGUI();
+                    EditorGUI.indentLevel -= 1;
+                }
+            }
+            else
+            {
+                if (EditorUtility.IsPersistent(property.serializedObject.targetObject))
+                {
+                    EditorGUI.BeginDisabledGroup(!byEnumProperty.CreateSubIfAbsent);
+                    GUI.Button(position, new GUIContent(""), EditorStyles.miniButton);
+                    EditorGUI.EndDisabledGroup();
+                    if (byEnumProperty.CreateSubIfAbsent)
                     {
-                        if (ActualAsset != null)
+                        bool toCreate = true;
+                        var ActualAssets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(property.serializedObject.targetObject)).ToList();
+
+                        foreach (var ActualAsset in ActualAssets)
                         {
-                            if (ActualAsset.name == byEnumProperty.FileName)
+                            if (ActualAsset != null)
                             {
-                                toCreate = false;
-                                property.objectReferenceValue = ActualAsset;
-                                break;
+                                if (ActualAsset.name == byEnumProperty.FileName)
+                                {
+                                    toCreate = false;
+                                    property.objectReferenceValue = ActualAsset;
+                                    break;
+                                }
                             }
                         }
-                    }
 
 
-                    if (toCreate)
-                    {
-                        this.CreateByEnumSO(property, byEnumProperty);
+                        if (toCreate)
+                        {
+                            this.CreateByEnumSO(property, byEnumProperty);
+                        }
                     }
                 }
             }
