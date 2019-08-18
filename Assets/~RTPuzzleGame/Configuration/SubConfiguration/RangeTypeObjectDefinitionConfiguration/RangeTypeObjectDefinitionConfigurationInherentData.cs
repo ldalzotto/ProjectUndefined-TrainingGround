@@ -8,35 +8,17 @@ namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "RangeTypeObjectDefinitionConfigurationInherentData", menuName = "Configuration/PuzzleGame/RangeTypeObjectDefinitionConfiguration/RangeTypeObjectDefinitionConfigurationInherentData", order = 1)]
-    public class RangeTypeObjectDefinitionConfigurationInherentData : SerializedScriptableObject
+    public class RangeTypeObjectDefinitionConfigurationInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
         public static List<Type> RangeModuleTypes = new List<Type>() { typeof(RangeTypeDefinition), typeof(RangeObstacleListenerDefinition) };
 
-        [SerializeField]
-        public Dictionary<Type, bool> RangeDefinitionModulesActivation;
-        [SerializeField]
-        public Dictionary<Type, ScriptableObject> RangeDefinitionModules;
+        public override List<Type> ModuleTypes => RangeTypeObjectDefinitionConfigurationInherentData.RangeModuleTypes;
 
         public void DefineRangeTypeObject(RangeTypeObject rangeTypeObject, PuzzlePrefabConfiguration puzzlePrefabConfiguration)
         {
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
-                foreach (Transform child in rangeTypeObject.transform)
-                {
-                    bool destroy = false;
-                    foreach (var component in child.GetComponents<Component>())
-                    {
-                        if (RangeTypeObjectDefinitionConfigurationInherentData.RangeModuleTypes.Contains(component.GetType()))
-                        {
-                            destroy = true;
-                            break;
-                        }
-                    }
-                    if (destroy)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                }
+                this.DestroyExistingModules(rangeTypeObject.gameObject);
 
                 foreach (var rangeDefinitionModuleActivation in this.RangeDefinitionModulesActivation)
                 {

@@ -110,6 +110,7 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Positioning\AIPositionsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Positioning\AIPositionsType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\Abstract\AbstractObjectDefinitionConfigurationInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
