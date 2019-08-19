@@ -316,7 +316,6 @@
     <Compile Include="Assets\Editor\GameCustomEditors\ProjectileInherentDataCutsomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\TargetZoneCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TransformMoveManagerComponentV2CustomEditor.cs" />

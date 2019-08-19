@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace RTPuzzle
 {
     public class InteractiveObjectType : MonoBehaviour
@@ -178,6 +182,13 @@ namespace RTPuzzle
                 this.EnableModule(disabledModule, InteractiveObjectInitializationObject);
             }
         }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            Handles.Label(this.transform.position + new Vector3(0, -2f, 0), this.name, MyEditorStyles.LabelWhite);
+        }
+#endif
     }
 
 

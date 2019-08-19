@@ -28,7 +28,5 @@ namespace GameConfigurationID
         OneAIForcedTargetZone_Test = 6,
 
         OneAIForcedHighDistanceTargetZone_Test = 7,
-
-        INPUT_BoxRange_NoObstacleListener = 8,
     }
 }

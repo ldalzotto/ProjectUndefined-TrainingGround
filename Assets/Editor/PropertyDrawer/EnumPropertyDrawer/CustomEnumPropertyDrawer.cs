@@ -1,4 +1,7 @@
 ﻿using ConfigurationEditor;
+using Editor_GameDesigner;
+using Editor_MainGameCreationWizard;
+using Editor_TargetZoneCreationWizard;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -94,7 +97,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
             if (searchableEnum.ConfigurationType != null)
             {
-                if (this.CachedConfigurationEditor == null || this.lastFrameEnum.ToString() != targetEnum.ToString())
+                if (this.CachedConfigurationEditor == null || (this.lastFrameEnum != null && this.lastFrameEnum.ToString() != targetEnum.ToString()))
                 {
                     var foundAssets = AssetFinder.SafeAssetFind("t:" + searchableEnum.ConfigurationType.Name);
                     if (foundAssets != null && foundAssets.Count > 0)
@@ -107,7 +110,12 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             this.ConfigurationFoldableArea = new FoldableArea(false, so.name, false);
                         }
                     }
+                }
 
+                if (this.lastFrameEnum == null)
+                {
+                    this.CachedConfigurationEditor = null;
+                    this.ConfigurationFoldableArea = null;
                 }
 
                 if (CachedConfigurationEditor != null)
@@ -124,7 +132,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                     GUI.backgroundColor = oldBackGroundColor;
                 }
             }
-
+            
             this.lastFrameEnum = targetEnum;
 
         }
