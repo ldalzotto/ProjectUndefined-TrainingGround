@@ -10,7 +10,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionInherentData", order = 1)]
     public class InteractiveObjectTypeDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
-        public static List<Type> InteractiveObjectModuleTypes = new List<Type>() { typeof(TargetZoneModuleDefinition), typeof(LevelCompletionTriggerModuleDefinition) };
+        public static List<Type> InteractiveObjectModuleTypes = new List<Type>() { typeof(TargetZoneModuleDefinition), typeof(LevelCompletionTriggerModuleDefinition), typeof(InteractiveObjectCutsceneControllerModuleDefinition) };
 
         public override List<Type> ModuleTypes => InteractiveObjectTypeDefinitionInherentData.InteractiveObjectModuleTypes;
 
@@ -37,6 +37,11 @@ namespace RTPuzzle
                             var LevelCompletionTriggerModuleDefinition = (LevelCompletionTriggerModuleDefinition)moduleConfiguration;
                             var LevelCompletionTriggerModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseLevelCompletionTriggerModule, InteractiveObjectType.transform);
                             LevelCompletionTriggerModuleInstancer.PopuplateFromDefinition(LevelCompletionTriggerModule, LevelCompletionTriggerModuleDefinition, puzzlePrefabConfiguration, LevelCompletionZoneDefinition);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(InteractiveObjectCutsceneControllerModuleDefinition))
+                        {
+                            var InteractiveObjectCutsceneControllerModuleDefinition = (InteractiveObjectCutsceneControllerModuleDefinition)moduleConfiguration;
+                            MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectCutsceneControllerModule, InteractiveObjectType.transform);
                         }
                     }
                 }
