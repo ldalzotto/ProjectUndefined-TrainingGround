@@ -95,7 +95,7 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData;
         }
 
-        public Dictionary<InteractiveObjectTypeDefinitionID, InteractiveObjectTypeDefinitionConfigurationInherentData> InteractiveObjectTypeDefinitionConfiguration()
+        public Dictionary<InteractiveObjectTypeDefinitionID, InteractiveObjectTypeDefinitionInherentData> InteractiveObjectTypeDefinitionConfiguration()
         {
             return PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData;
         }

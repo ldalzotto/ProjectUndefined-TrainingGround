@@ -175,7 +175,7 @@ namespace RTPuzzle
         private Dictionary<string, EnableArea> DrawDisplay;
 
         private InteractiveObjectType InteractiveObjectType;
-        private InteractiveObjectTypeDefinitionConfigurationInherentData InteractiveObjectTypeDefinitionConfigurationInherentData;
+        private InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionConfigurationInherentData;
 
         private void OnGUI()
         {
@@ -185,7 +185,7 @@ namespace RTPuzzle
 
                 if (InteractiveObjectType != null && InteractiveObjectType.InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
                 {
-                    this.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData.TryGetValue(InteractiveObjectType.InteractiveObjectTypeDefinitionID, out InteractiveObjectTypeDefinitionConfigurationInherentData interactiveObjectTypeDefinitionConfigurationInherentData);
+                    this.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData.TryGetValue(InteractiveObjectType.InteractiveObjectTypeDefinitionID, out InteractiveObjectTypeDefinitionInherentData interactiveObjectTypeDefinitionConfigurationInherentData);
                     this.InteractiveObjectTypeDefinitionConfigurationInherentData = interactiveObjectTypeDefinitionConfigurationInherentData;
                     if (interactiveObjectTypeDefinitionConfigurationInherentData != null)
                     {

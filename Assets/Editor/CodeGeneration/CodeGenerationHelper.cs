@@ -206,4 +206,22 @@ public static class CodeGenerationHelper
             File.WriteAllText(targetFile.FullName, PuzzleGameConfigurationManagerFile);
         }
     }
+    
+    public static void DuplicateDirectoryWithParamtersRecursive(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, Dictionary<string, string> parameters)
+    {
+        if (!targetDirectory.Exists)
+        {
+            targetDirectory.Create();
+        }
+
+        foreach (var fileToCopy in sourceDirectory.GetFiles())
+        {
+            CodeGenerationHelper.CopyFile(targetDirectory, parameters, fileToCopy);
+        }
+
+        foreach (var directoryToCopy in sourceDirectory.GetDirectories())
+        {
+            DuplicateDirectoryWithParamtersRecursive(directoryToCopy, new DirectoryInfo(targetDirectory.FullName + "/" + directoryToCopy.Name), parameters);
+        }
+    }
 }

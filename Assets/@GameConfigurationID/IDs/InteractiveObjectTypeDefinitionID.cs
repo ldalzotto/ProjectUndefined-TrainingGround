@@ -19,6 +19,7 @@ namespace GameConfigurationID
         _Sewers_2_TargetZone = 3,
         OneAIForcedTargetZone_Test = 4,
         OneAIForcedHighDistanceTargetZone_Test = 5,
-        INPUT_TargetZone =6
+        INPUT_TargetZone = 6,
+        _1_Town_GardenWatchman = 7,
     }
 }

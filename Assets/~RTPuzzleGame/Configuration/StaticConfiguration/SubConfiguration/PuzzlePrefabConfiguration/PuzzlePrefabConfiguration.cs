@@ -19,6 +19,7 @@ namespace RTPuzzle
         public InteractiveObjectType BaseInteractiveObjectType;
         public TargetZoneModule BaseTargetZoneModule;
         public LevelCompletionTriggerModule BaseLevelCompletionTriggerModule;
+        public InteractiveObjectCutsceneControllerModule BaseInteractiveObjectCutsceneControllerModule;
     }
 }
 

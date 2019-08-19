@@ -54,11 +54,14 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public RTPuzzle.GrabObjectConfiguration GrabObjectConfiguration;
-
+        
         [ReadOnly()]
         public RTPuzzle.NearPlayerGameOverTriggerConfiguration NearPlayerGameOverTriggerConfiguration;
-
+        
         [ReadOnly()]
         public RTPuzzle.RangeTypeObjectDefinitionConfiguration RangeTypeObjectDefinitionConfiguration;
+        
+        [ReadOnly()]
+        public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
     }
 }

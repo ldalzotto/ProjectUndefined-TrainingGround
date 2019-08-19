@@ -7,12 +7,12 @@ using static RTPuzzle.TargetZoneModule;
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionConfigurationInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionConfigurationInherentData", order = 1)]
-    public class InteractiveObjectTypeDefinitionConfigurationInherentData : AbstractObjectDefinitionConfigurationInherentData
+    [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionInherentData", order = 1)]
+    public class InteractiveObjectTypeDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
         public static List<Type> InteractiveObjectModuleTypes = new List<Type>() { typeof(TargetZoneModuleDefinition), typeof(LevelCompletionTriggerModuleDefinition) };
 
-        public override List<Type> ModuleTypes => InteractiveObjectTypeDefinitionConfigurationInherentData.InteractiveObjectModuleTypes;
+        public override List<Type> ModuleTypes => InteractiveObjectTypeDefinitionInherentData.InteractiveObjectModuleTypes;
 
         public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, RangeTypeObjectDefinitionConfigurationInherentData LevelCompletionZoneDefinition = null)
         {
@@ -46,9 +46,9 @@ namespace RTPuzzle
 
     public static class InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder
     {
-        public static InteractiveObjectTypeDefinitionConfigurationInherentData TargetZone()
+        public static InteractiveObjectTypeDefinitionInherentData TargetZone()
         {
-            return new InteractiveObjectTypeDefinitionConfigurationInherentData()
+            return new InteractiveObjectTypeDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                 {

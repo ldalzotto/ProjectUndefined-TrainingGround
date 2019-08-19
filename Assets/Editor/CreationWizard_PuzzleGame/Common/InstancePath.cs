@@ -63,7 +63,8 @@ namespace Editor_MainGameCreationWizard
         public static string TargetZonePrefabPath = "Assets/~RTPuzzleGame/TargetZone/Prefab";
         
         [ReadOnly()]
-        public static string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/LaunchProjectileConfiguration/Data";
+        public static string ProjectileInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/LaunchProjectileConfiguration" +
+            "/Data";
         
         [ReadOnly()]
         public static string ProjectilePrefabPath = "Assets/~RTPuzzleGame/PlayerAction/ActionExecution/Scripts/LaunchProjectileAction/" +
@@ -72,10 +73,11 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string DisarmObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/DisarmObjectConfiguration/Dat" +
             "a";
-
+        
         [ReadOnly()]
-        public static string NearPlayerGameOverTriggerInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/NearPlayerGameOverTriggerConfiguration/Data";
-
+        public static string NearPlayerGameOverTriggerInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/NearPlayerGameOverTriggerConf" +
+            "iguration/Data";
+        
         [ReadOnly()]
         public static string ActionInteractableObjectInherentDatapath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/ActionInteractableObjectConfi" +
             "guration/Data";
@@ -122,5 +124,17 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public static string GrabObjectInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/GrabObjectConfiguration/Data";
+        
+        [ReadOnly()]
+        public static string CreationWizardTestInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/CreationWizardTestConfigurati" +
+            "on/Data";
+        
+        [ReadOnly()]
+        public static string InteractiveObjectTypeDefinitionConfigurationInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjectTypeDefiniti" +
+            "onConfigurationConfiguration/Data";
+        
+        [ReadOnly()]
+        public static string InteractiveObjectTypeDefinitionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjectTypeDefiniti" +
+            "onConfiguration/Data";
     }
 }

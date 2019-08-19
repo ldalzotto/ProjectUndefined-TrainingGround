@@ -68,13 +68,19 @@ namespace Editor_MainGameCreationWizard
         public static string DiscussionNodeEditorObject = "_NodeEditor";
         
         public static string DisarmObjectInherentData = "_DisarmObjectInherentData";
-
+        
         public static string NearPlayerGameOverTriggerInherentData = "_NearPlayerGameOverTriggerInherentData";
-
+        
         public static string ActionInteractableObjectInherentData = "_ActionInteractableObjectInherentData";
         
         public static string InteractiveTestInherentData = "_InteractiveTest";
         
         public static string GrabObjectInherentData = "_GrabObject";
+        
+        public static string CreationWizardTestInherentData = "_CreationWizardTest";
+        
+        public static string InteractiveObjectTypeDefinitionConfigurationInherentData = "_InteractiveObjectTypeDefinitionConfiguration";
+        
+        public static string InteractiveObjectTypeDefinitionInherentData = "_InteractiveObjectTypeDefinition";
     }
 }

@@ -7,9 +7,8 @@ namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionConfiguration", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionConfiguration", order = 1)]
-    public class InteractiveObjectTypeDefinitionConfiguration : ConfigurationSerialization<InteractiveObjectTypeDefinitionID, InteractiveObjectTypeDefinitionConfigurationInherentData>
+    public class InteractiveObjectTypeDefinitionConfiguration : ConfigurationSerialization<InteractiveObjectTypeDefinitionID, InteractiveObjectTypeDefinitionInherentData>
     {
-
     }
 
 }

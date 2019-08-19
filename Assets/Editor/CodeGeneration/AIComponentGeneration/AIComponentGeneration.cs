@@ -18,11 +18,6 @@ public class AIComponentGeneration : EditorWindow
         window.Show();
     }
 
-    private const string AIComponentBasePath = "Assets/~RTPuzzleGame/AI/AIComponents/Scripts";
-    private const string GenericPuzzleAIComponentsFilePath = "Assets/~RTPuzzleGame/AI/AIComponents/AIComponentContainer/Scripts/GenericPuzzleAIComponents.cs";
-    private const string AIModuleWizardConstant = "Assets/Editor/GameDesigner/Modules/AI/AIModuleWizard/AIManagerModuleWizardConstants.cs";
-    private const string AICommonPrefabsPath = "Assets/Editor/CreationWizard_PuzzleGame/Common/PuzzleAICommonPrefabs.cs";
-
     private string AIComponentBaseName;
 
     private DirectoryInfo componentDirectory;
@@ -54,7 +49,7 @@ public class AIComponentGeneration : EditorWindow
 
     private void CreateComponentFolderIfNecessary()
     {
-        this.componentDirectory = new DirectoryInfo(AIComponentBasePath + "/" + this.AIComponentBaseName);
+        this.componentDirectory = new DirectoryInfo(PathConstants.AIComponentBasePath + "/" + this.AIComponentBaseName);
         if (!componentDirectory.Exists)
         {
             componentDirectory.Create();
@@ -230,7 +225,7 @@ public class AIComponentGeneration : EditorWindow
         samples.Types.Add(genericPuzzleAIComponentsClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = GenericPuzzleAIComponentsFilePath;
+        string filename = PathConstants.GenericPuzzleAIComponentsFilePath;
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -280,7 +275,7 @@ public class AIComponentGeneration : EditorWindow
         samples.Types.Add(AIManagerModuleWizardConstantsClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = AIModuleWizardConstant;
+        string filename = PathConstants.AIModuleWizardConstant;
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -311,7 +306,7 @@ public class AIComponentGeneration : EditorWindow
         samples.Types.Add(aiCommonPrefabClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = AICommonPrefabsPath;
+        string filename = PathConstants.AICommonPrefabsPath;
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";

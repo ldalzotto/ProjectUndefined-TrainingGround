@@ -12,21 +12,7 @@ using UnityEngine;
 
 public class InteractiveObjectModuleGeneration : EditorWindow
 {
-    private const string InteractiveObjectModulePath = "Assets/~RTPuzzleGame/InteractiveObject/Modules";
-    private const string INteractiveObjectStaticConfigurationPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/StaticConfiguration";
-    private const string PuzzleGameConfigurationsEditorConstantsPath = "Assets/Editor/CreationWizard_PuzzleGame/Common";
-    private const string GameDesignerBasePath = "Assets/Editor/GameDesigner";
-    private const string GameDesignerModulesPath = "Assets/Editor/GameDesigner/Modules";
-    private const string CustomEditorPath = "Assets/Editor/GameCustomEditors";
-    private const string InteractiveObjectInitializationObjectPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/InteractiveObjectInitializationObject.cs";
-
-    private const string InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt";
-    private const string InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt";
-    private const string IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
-    private const string NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
-    private const string GameDesignerEditModuleTemplate = "Assets/Editor/CodeGeneration/Templates/GameDesignerTemplates/Edit${baseName}.cs.txt";
-    private const string CustomEditorTemplatePath = "Assets/Editor/CodeGeneration/Templates/CustomEditorTemplate/${baseName}CustomEditor.cs.txt";
-
+    
     [MenuItem("Generation/InteractiveObjectModuleGeneration")]
     static void Init()
     {
@@ -56,6 +42,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                         this.UpdateInteractiveObjectInitializationObject();
                     }
                     this.UpdatePuzzleInteractiveObjectModulePrefabs();
+
                     if (this.isIdentified)
                     {
                         this.UpdateInteractiveObjectModuleWizardID();
@@ -94,7 +81,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
     private void DoGenerateModule()
     {
-        DirectoryInfo moduleDirectory = new DirectoryInfo(InteractiveObjectModulePath + "/" + this.baseName + "Module");
+        DirectoryInfo moduleDirectory = new DirectoryInfo(PathConstants.InteractiveObjectModulePath + "/" + this.baseName + "Module");
         if (!moduleDirectory.Exists)
         {
             moduleDirectory.Create();
@@ -167,7 +154,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             {
                 interactiveObjectModulesInitializationOperationsClassFile.Content =
                         interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
-                           CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
+                           CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
                                              {"${baseName}", this.baseName }
                          }));
 
@@ -177,7 +164,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             {
                 interactiveObjectModulesInitializationOperationsClassFile.Content =
                              interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
-                                CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
+                                CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
                                              {"${baseName}", this.baseName }
                               }));
 
@@ -211,7 +198,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         samples.Types.Add(moduleClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = INteractiveObjectStaticConfigurationPath + "/" + typeof(InteractiveObjectTypeConfiguration).Name + ".cs";
+        string filename = PathConstants.INteractiveObjectStaticConfigurationPath + "/" + typeof(InteractiveObjectTypeConfiguration).Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -237,7 +224,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             samples.Types.Add(InteractiveObjectInitializationObjectCode);
             compileUnity.Namespaces.Add(samples);
 
-            string filename = InteractiveObjectInitializationObjectPath;
+            string filename = PathConstants.InteractiveObjectInitializationObjectPath;
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
             CodeGeneratorOptions options = new CodeGeneratorOptions();
             options.BracingStyle = "C";
@@ -277,7 +264,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         samples.Types.Add(puzzleInteractiveObjectModulePrefab);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = PuzzleGameConfigurationsEditorConstantsPath + "/" + typeof(PuzzleInteractiveObjectModulePrefabs).Name + ".cs";
+        string filename = PathConstants.PuzzleGameConfigurationsEditorConstantsPath + "/" + typeof(PuzzleInteractiveObjectModulePrefabs).Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -315,7 +302,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         samples.Types.Add(interactiveObjectModuleWizardID);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = GameDesignerBasePath + "/" + typeof(InteractiveObjectModuleWizardID).Name + ".cs";
+        string filename = PathConstants.GameDesignerBasePath + "/" + typeof(InteractiveObjectModuleWizardID).Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -333,13 +320,13 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             string configurationToAdd = string.Empty;
             if (this.isIdentified)
             {
-                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
+                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
               {"${baseName}", this.baseName }
           });
             }
             else
             {
-                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
+                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
               {"${baseName}", this.baseName }
           });
             }
@@ -354,9 +341,9 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
     private void DoGenerateGameDesignerEditModule()
     {
-        CodeGenerationHelper.CopyFile(new DirectoryInfo(GameDesignerModulesPath + "/" + this.baseName), new Dictionary<string, string>() {
+        CodeGenerationHelper.CopyFile(new DirectoryInfo(PathConstants.GameDesignerModulesPath + "/" + this.baseName), new Dictionary<string, string>() {
               {"${baseName}", this.baseName }
-            }, new FileInfo(GameDesignerEditModuleTemplate));
+            }, new FileInfo(PathConstants.GameDesignerEditModuleTemplate));
 
         CodeGenerationHelper.AddGameDesignerChoiceTree(new List<KeyValuePair<string, string>>() {
             new KeyValuePair<string, string>("Puzzle//" + this.baseName + "//.Edit" + this.baseName, "Edit" + this.baseName)
@@ -365,9 +352,9 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
     private void DoGenerateModuleCustomEditor()
     {
-        CodeGenerationHelper.CopyFile(new DirectoryInfo(CustomEditorPath), new Dictionary<string, string>() {
+        CodeGenerationHelper.CopyFile(new DirectoryInfo(PathConstants.CustomEditorPath), new Dictionary<string, string>() {
               {"${baseName}", this.baseName }
-            }, new FileInfo(CustomEditorTemplatePath));
+            }, new FileInfo(PathConstants.CustomEditorTemplatePath));
     }
 
     private void DoGenerateBasePrefad()
@@ -377,27 +364,8 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
         var basePrefabGenerated = new GameObject("Base" + this.baseName + "Module");
         basePrefabGenerated.AddComponent(TypeHelper.GetType("RTPuzzle." + this.baseName + "Module"));
-        PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
+        PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, PathConstants.InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
 
         EditorSceneManager.CloseScene(tmpScene, true);
     }
 }
-
-/*
- * 
- * 
- namespace RTPuzzle
-{
-    public class InteractiveObjectInitializationObject
-    {
-        public AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
-        public TargetZoneInherentData TargetZoneInherentData;
-        public LaunchProjectileInherentData LaunchProjectileInherentData;
-        public DisarmObjectInherentData DisarmObjectInherentData;
-        public CoreGame.BeziersControlPoints ProjectilePath;
-        public ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
-        public GrabObjectInherentData GrabObjectInherentData;
-    }
-}
-
-     */
