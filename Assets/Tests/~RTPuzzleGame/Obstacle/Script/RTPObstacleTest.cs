@@ -27,7 +27,7 @@ namespace Tests
             var instanciatedRange = MonoBehaviour.Instantiate(puzzleStaticConfiguration.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseRangeTypeObject);
             instanciatedRange.transform.position = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position;
             instanciatedRange.Init(
-                  RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration),
+                  RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT),
                   new RangeTypeObjectInitializer());
 
             yield return new WaitForFixedUpdate();

@@ -47,6 +47,13 @@ namespace RTPuzzle
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
 
+        public void PopulateBoxRangeData(RangeTypeDefinition rangeTypeDefinition)
+        {
+            this.PopulateModules();
+            this.SetRangeID(rangeTypeDefinition.RangeTypeID);
+            ((BoxRangeType)this.rangeType).PopulateFromDefinition(rangeTypeDefinition);
+        }
+
         public void PopuplateSphereRangeData(float sphereRange, RangeTypeID rangeTypeID, RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
         {
             this.PopulateModules();
@@ -136,7 +143,7 @@ namespace RTPuzzle
         {
             var rangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
             var sphereRangeTypeObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.BaseRangeTypeObject, rangeTypeContainer.transform);
-            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration),
+            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID),
                 new RangeTypeObjectInitializer(originPositionProvider, rangeColorProvider));
             return sphereRangeTypeObject;
         }

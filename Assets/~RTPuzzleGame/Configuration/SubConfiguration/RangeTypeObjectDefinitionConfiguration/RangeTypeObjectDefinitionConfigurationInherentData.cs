@@ -1,5 +1,4 @@
 ﻿using GameConfigurationID;
-using OdinSerializer;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,14 +63,50 @@ namespace RTPuzzle
 
     public static class RangeTypeObjectDefinitionConfigurationInherentDataBuilder
     {
-        public static RangeTypeObjectDefinitionConfigurationInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID, RangeTypeObjectDefinitionConfiguration rangeTypeObjectDefinitionConfiguration)
+        public static RangeTypeObjectDefinitionConfigurationInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
         {
-            RangeTypeObjectDefinitionConfigurationInherentData RangeTypeObjectDefinitionConfigurationInherentData =
-                    GameObject.Instantiate(rangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[RangeTypeObjectDefinitionID.INPUT_SphereRange_WithObstacleListener]);
-            var RangeTypeDefinition = (RangeTypeDefinition)RangeTypeObjectDefinitionConfigurationInherentData.RangeDefinitionModules[typeof(RangeTypeDefinition)];
-            RangeTypeDefinition.RangeTypeID = rangeTypeID;
-            ((SphereRangeShapeConfiguration)RangeTypeDefinition.RangeShapeConfiguration).Radius = sphereRange;
-            return RangeTypeObjectDefinitionConfigurationInherentData;
+            return new RangeTypeObjectDefinitionConfigurationInherentData()
+            {
+                RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                {
+                    {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
+                        RangeTypeID = rangeTypeID,
+                        RangeShapeConfiguration = new SphereRangeShapeConfiguration()
+                        {
+                            Radius = sphereRange
+                        }
+                    } },
+                    {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
+                },
+                RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
+                {
+                    {typeof(RangeTypeDefinition), true },
+                    {typeof(RangeObstacleListenerDefinition), true }
+                }
+            };
+        }
+        
+        public static RangeTypeObjectDefinitionConfigurationInherentData BoxRangeNoObstacleListener(Vector3 center, Vector3 size, RangeTypeID rangeTypeID)
+        {
+            return new RangeTypeObjectDefinitionConfigurationInherentData()
+            {
+                RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                {
+                    {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
+                        RangeTypeID = rangeTypeID,
+                        RangeShapeConfiguration = new BoxRangeShapeConfiguration()
+                        {
+                            Center = center,
+                            Size = size
+                        }
+                    } }
+                },
+                RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
+                {
+                    {typeof(RangeTypeDefinition), true }
+                }
+            };
         }
     }
+
 }

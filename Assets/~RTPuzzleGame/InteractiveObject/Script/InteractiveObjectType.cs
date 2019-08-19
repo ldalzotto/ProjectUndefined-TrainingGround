@@ -9,6 +9,9 @@ namespace RTPuzzle
 {
     public class InteractiveObjectType : MonoBehaviour
     {
+        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
+        public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
+
         [CustomEnum()]
         public InteractiveObjectID InteractiveObjectID;
 
@@ -31,7 +34,7 @@ namespace RTPuzzle
         {
             return this.GetModule(typeof(T)) as T;
         }
-        
+
         public InteractiveObjectModule GetModule(Type moduleType)
         {
             this.enabledModules.TryGetValue(moduleType, out InteractiveObjectModule returnModule);
@@ -74,7 +77,14 @@ namespace RTPuzzle
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             this.puzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            var puzzleGameStatciConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             #endregion
+
+            if (InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
+            {
+                this.puzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[this.InteractiveObjectTypeDefinitionID].DefineInteractiveObject(this,
+                         puzzleGameStatciConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
+            }
 
             #region Internal Dependencies
             InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();

@@ -131,6 +131,10 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectDefinitionConfiguration\InteractiveObjectDefinition\LevelCompletionTriggerModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectDefinitionConfiguration\InteractiveObjectDefinition\TargetZoneModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectDefinitionConfiguration\InteractiveObjectTypeDefinitionConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectDefinitionConfiguration\InteractiveObjectTypeDefinitionConfigurationInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\Matrix\RepelableObjectDistance.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelInherentData.cs" />

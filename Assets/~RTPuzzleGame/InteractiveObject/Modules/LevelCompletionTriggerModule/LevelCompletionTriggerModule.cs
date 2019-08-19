@@ -18,9 +18,17 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();
+            this.ResolveModuleDependencies();
             this.RangeTypeObject.Init(null, eventListenersFromExterior: new List<RangeTypeObjectEventListener>() { this });
+        }
+
+        private void ResolveModuleDependencies()
+        {
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            if (this.RangeTypeObject == null)
+            {
+                this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();
+            }
         }
 
         public void OnInteractiveObjectDestroyed()
@@ -45,6 +53,27 @@ namespace RTPuzzle
             if (CollisionType != null && (CollisionType.IsAI || CollisionType.IsPlayer))
             {
                 this.PuzzleEventsManager.PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate();
+            }
+        }
+
+        public static class LevelCompletionTriggerModuleInstancer
+        {
+            public static void PopuplateFromDefinition(
+                                LevelCompletionTriggerModule LevelCompletionTriggerModule,
+                                LevelCompletionTriggerModuleDefinition LevelCompletionTriggerModuleDefinition,
+                                PuzzlePrefabConfiguration puzzlePrefabConfiguration,
+                                RangeTypeObjectDefinitionConfigurationInherentData LevelCompletionZoneDefinition = null)
+            {
+                LevelCompletionTriggerModule.ResolveModuleDependencies();
+                if (LevelCompletionZoneDefinition == null)
+                {
+                    LevelCompletionTriggerModule.RangeTypeObject.RangeTypeObjectDefinitionID = LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID;
+                }
+                else
+                {
+                    LevelCompletionZoneDefinition.DefineRangeTypeObject(LevelCompletionTriggerModule.RangeTypeObject, puzzlePrefabConfiguration);
+                }
+
             }
         }
 

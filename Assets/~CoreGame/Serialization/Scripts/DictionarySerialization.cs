@@ -12,6 +12,7 @@ namespace ConfigurationEditor
 #if UNITY_EDITOR
         void ClearEntry(Enum key);
         ScriptableObject GetEntry(Enum key);
+        void GetEntryTry(Enum key, out ScriptableObject scriptableObject);
         void SetEntry(Enum key, ScriptableObject value);
         List<Enum> GetKeys();
 #endif
@@ -43,6 +44,13 @@ namespace ConfigurationEditor
             return this.ConfigurationInherentData[castedKey];
         }
 
+        public void GetEntryTry(Enum key, out ScriptableObject scriptableObject)
+        {
+            var castedKey = (K)key;
+            this.ConfigurationInherentData.TryGetValue(castedKey, out V valueObj);
+            scriptableObject = (ScriptableObject)valueObj;
+        }
+
         private void ClearEntry(K key)
         {
             if (ConfigurationInherentData.ContainsKey(key))
@@ -62,6 +70,8 @@ namespace ConfigurationEditor
         {
             return this.ConfigurationInherentData.Keys.ToList().ConvertAll(e => (Enum)e);
         }
+
+       
 
 #endif
     }

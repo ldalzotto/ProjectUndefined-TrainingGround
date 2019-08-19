@@ -45,19 +45,16 @@ namespace RTPuzzle
             if (!this.hasInit)
             {
                 this.levelCompletionTriggerModule = levelCompletionTriggerModule;
-                this.zoneDistanceDetectionCollider = GetComponent<SphereCollider>();
+                this.ResolveModuleDependencies();
                 this.zoneDistanceDetectionCollider.radius = targetZoneInherentData.AIDistanceDetection;
 
                 this.hasInit = true;
             }
         }
 
-        public static InteractiveObjectType Instanciate(TargetZoneInherentData targetZoneInherentData, Vector3 worldPosition)
+        private void ResolveModuleDependencies()
         {
-            var targetZone = MonoBehaviour.Instantiate(PrefabContainer.Instance.TargetZonePrefab);
-            targetZone.Init(new InteractiveObjectInitializationObject() { TargetZoneInherentData = targetZoneInherentData });
-            targetZone.transform.position = worldPosition;
-            return targetZone;
+            this.zoneDistanceDetectionCollider = GetComponent<SphereCollider>();
         }
 
         private void OnDrawGizmos()
@@ -69,6 +66,15 @@ namespace RTPuzzle
             Handles.Label(transform.position + new Vector3(0, 3f, 0), TargetZoneID.ToString(), labelStyle);
             Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_TargetZone", true);
 #endif
+        }
+
+        public static class TargetZoneModuleInstancer
+        {
+            public static void PopulateFromDefinition(TargetZoneModule TargetZoneModule, TargetZoneModuleDefinition targetZoneModuleDefinition)
+            {
+                TargetZoneModule.TargetZoneID = targetZoneModuleDefinition.TargetZoneID;
+            }
+
         }
 
     }

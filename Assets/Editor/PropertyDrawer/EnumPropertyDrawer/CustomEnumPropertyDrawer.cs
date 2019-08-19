@@ -1,6 +1,4 @@
-﻿using AdventureGame;
-using ConfigurationEditor;
-using Editor_GameDesigner;
+﻿using ConfigurationEditor;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -10,7 +8,11 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 {
     private EnumSearchGUIWindow windowInstance;
 
+    private Enum lastFrameEnum;
     private int lineNB = 0;
+
+    private FoldableArea ConfigurationFoldableArea;
+    private Editor CachedConfigurationEditor;
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
@@ -30,7 +32,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
         }
         return EditorGUI.GetPropertyHeight(property) * lineNB;
     }
-    
+
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         CustomEnum searchableEnum = (CustomEnum)attribute;
@@ -89,6 +91,41 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                 }
                 currentLineNB += 1;
             }
+
+            if (searchableEnum.ConfigurationType != null)
+            {
+                if (this.CachedConfigurationEditor == null || this.lastFrameEnum.ToString() != targetEnum.ToString())
+                {
+                    var foundAssets = AssetFinder.SafeAssetFind("t:" + searchableEnum.ConfigurationType.Name);
+                    if (foundAssets != null && foundAssets.Count > 0)
+                    {
+                        var configuration = (IConfigurationSerialization)foundAssets[0];
+                        configuration.GetEntryTry(targetEnum, out ScriptableObject so);
+                        if (so != null)
+                        {
+                            this.CachedConfigurationEditor = Editor.CreateEditor(so);
+                            this.ConfigurationFoldableArea = new FoldableArea(false, so.name, false);
+                        }
+                    }
+
+                }
+
+                if (CachedConfigurationEditor != null)
+                {
+                    var oldBackGroundColor = GUI.backgroundColor;
+                    GUI.backgroundColor = MyColors.HotPink;
+                    this.ConfigurationFoldableArea.OnGUI(() =>
+                    {
+                        EditorGUI.BeginDisabledGroup(true);
+                        EditorGUILayout.ObjectField(this.CachedConfigurationEditor.target, typeof(ScriptableObject), false);
+                        EditorGUI.EndDisabledGroup();
+                        this.CachedConfigurationEditor.OnInspectorGUI();
+                    });
+                    GUI.backgroundColor = oldBackGroundColor;
+                }
+            }
+
+            this.lastFrameEnum = targetEnum;
 
         }
     }

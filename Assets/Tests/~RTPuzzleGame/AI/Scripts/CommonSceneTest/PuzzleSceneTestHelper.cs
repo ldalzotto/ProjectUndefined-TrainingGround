@@ -225,7 +225,12 @@ namespace Tests
         public static IEnumerator TargetZoneYield(TargetZoneInherentData targetZoneInherentData, Vector3 targetZonePosition,
             Func<InteractiveObjectType, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached)
         {
-            var targetZone = TargetZoneModule.Instanciate(targetZoneInherentData, targetZonePosition);
+            var puzzlePrefabConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
+            var targetZone = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, targetZonePosition, Quaternion.identity);
+            InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone().DefineInteractiveObject(targetZone, puzzlePrefabConfiguration,
+                    RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE) );
+            targetZone.Init(new InteractiveObjectInitializationObject() { TargetZoneInherentData = targetZoneInherentData });
+
             yield return new WaitForFixedUpdate();
             if (OnTargetZoneSpawn != null)
             {

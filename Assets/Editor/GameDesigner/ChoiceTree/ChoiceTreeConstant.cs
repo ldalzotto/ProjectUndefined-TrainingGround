@@ -90,6 +90,7 @@ namespace Editor_GameDesigner
 {"Configuration//.NearPlayerGameOverTriggerConfigurationModule",typeof(Editor_GameDesigner.NearPlayerGameOverTriggerConfigurationModule)},
 {"Configuration//.RangeTypeObjectDefinitionConfigurationModule",typeof(Editor_GameDesigner.RangeTypeObjectDefinitionConfigurationModule)},
 {"Puzzle//NearPlayerGameOverTrigger//.EditNearPlayerGameOverTrigger",typeof(Editor_GameDesigner.EditNearPlayerGameOverTrigger)},
+{"Configuration//.InteractiveObjectTypeDefinitionConfigurationModule",typeof(Editor_GameDesigner.InteractiveObjectTypeDefinitionConfigurationModule)},
 };
     }
 }

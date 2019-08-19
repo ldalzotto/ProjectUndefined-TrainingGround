@@ -412,6 +412,7 @@
     <Compile Include="Assets\Editor\ObjectDefinition\ObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\IncludeConfigurationPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\Material\HideIfDisabledDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
