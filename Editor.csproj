@@ -314,7 +314,6 @@
     <Compile Include="Assets\Editor\GameCustomEditors\DisarmObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\GrabObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\LaunchProjectileCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ObjectRepelTypeCustomEditor.cs" />

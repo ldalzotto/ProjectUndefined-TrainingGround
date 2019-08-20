@@ -31,5 +31,7 @@ namespace GameConfigurationID {
     _1_Town_GardenDoor = 8,
     
     Player = 9,
+    
+    _1_Town_StartTutorial_Speaker = 10,
   }
 }

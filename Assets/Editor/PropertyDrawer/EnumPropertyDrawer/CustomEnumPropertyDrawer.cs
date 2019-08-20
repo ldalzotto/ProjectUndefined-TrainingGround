@@ -1,7 +1,4 @@
 ﻿using ConfigurationEditor;
-using Editor_GameDesigner;
-using Editor_MainGameCreationWizard;
-using Editor_TargetZoneCreationWizard;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +8,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 {
     private EnumSearchGUIWindow windowInstance;
 
+    private bool updateConfigurationView;
     private Enum lastFrameEnum;
     private int lineNB = 0;
 
@@ -97,7 +95,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
             if (searchableEnum.ConfigurationType != null)
             {
-                if (this.CachedConfigurationEditor == null || (this.lastFrameEnum != null && this.lastFrameEnum.ToString() != targetEnum.ToString()))
+                if (updateConfigurationView)
                 {
                     var foundAssets = AssetFinder.SafeAssetFind("t:" + searchableEnum.ConfigurationType.Name);
                     if (foundAssets != null && foundAssets.Count > 0)
@@ -109,7 +107,13 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             this.CachedConfigurationEditor = Editor.CreateEditor(so);
                             this.ConfigurationFoldableArea = new FoldableArea(false, so.name, false);
                         }
+                        else
+                        {
+                            this.CachedConfigurationEditor = null;
+                            this.ConfigurationFoldableArea = null;
+                        }
                     }
+                    updateConfigurationView = false;
                 }
 
                 if (this.lastFrameEnum == null)
@@ -118,7 +122,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                     this.ConfigurationFoldableArea = null;
                 }
 
-                if (CachedConfigurationEditor != null)
+                if (CachedConfigurationEditor != null && this.ConfigurationFoldableArea != null)
                 {
                     var oldBackGroundColor = GUI.backgroundColor;
                     GUI.backgroundColor = MyColors.HotPink;
@@ -132,7 +136,8 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                     GUI.backgroundColor = oldBackGroundColor;
                 }
             }
-            
+
+            updateConfigurationView = this.lastFrameEnum == null || (this.lastFrameEnum != null && this.lastFrameEnum.ToString() != targetEnum.ToString());
             this.lastFrameEnum = targetEnum;
 
         }

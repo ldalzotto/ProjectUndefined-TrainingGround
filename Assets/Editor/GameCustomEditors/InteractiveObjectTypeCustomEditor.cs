@@ -11,6 +11,7 @@ namespace RTPuzzle
     public class InteractiveObjectTypeCustomEditor : EditorWindow
     {
         private CommonGameConfigurations CommonGameConfigurations;
+        private PlayerManager PlayerManager;
 
         [MenuItem("Test/InteractiveObjectTypeCustomEditor")]
         static void Init()
@@ -27,6 +28,7 @@ namespace RTPuzzle
             if (InteractiveObjectTypeDefinitionConfiguration == null) { this.InteractiveObjectTypeDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<InteractiveObjectTypeDefinitionConfiguration>("t:" + typeof(InteractiveObjectTypeDefinitionConfiguration)); }
             if (DrawDisplay == null) { DrawDisplay = new Dictionary<string, EnableArea>(); }
             if (this.CommonGameConfigurations == null) { this.CommonGameConfigurations = new CommonGameConfigurations(); EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations); }
+            if (this.PlayerManager == null) { this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>(); }
             SceneView.duringSceneGui += this.OnSceneGUI;
         }
 
@@ -143,7 +145,34 @@ namespace RTPuzzle
                             }
                         }
                     }
-                    //${addNewEntry}
+                    else if (drawDisplay.Key == typeof(LaunchProjectileModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(LaunchProjectileModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LaunchProjectileModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+								var LaunchProjectileModuleDefinition = (LaunchProjectileModuleDefinition)definitionSO;
+                                var LaunchProjectileInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration.ConfigurationInherentData[LaunchProjectileModuleDefinition.LaunchProjectileID];
+
+                                Handles.color = Color.magenta;
+                                var position = InteractiveObjectType.transform.position;
+                                if (this.PlayerManager != null)
+                                {
+                                    position = this.PlayerManager.transform.position;
+                                }
+                                Handles.Label(position + Vector3.up * LaunchProjectileInherentData.ProjectileThrowRange, nameof(LaunchProjectileInherentData.ProjectileThrowRange), MyEditorStyles.LabelMagenta);
+                                Handles.DrawWireDisc(position, Vector3.up, LaunchProjectileInherentData.ProjectileThrowRange);
+
+
+                                Handles.color = Color.red;
+                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * LaunchProjectileInherentData.ExplodingEffectRange, nameof(LaunchProjectileInherentData.ExplodingEffectRange), MyEditorStyles.LabelRed);
+                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, LaunchProjectileInherentData.ExplodingEffectRange);
+                            }
+                        }
+                    }
+//${addNewEntry}
                 }
 
                 Handles.color = oldHandlesColor;

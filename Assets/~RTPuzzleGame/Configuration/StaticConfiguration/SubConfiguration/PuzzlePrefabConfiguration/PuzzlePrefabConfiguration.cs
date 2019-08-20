@@ -22,6 +22,7 @@ namespace RTPuzzle
         public InteractiveObjectCutsceneControllerModule BaseInteractiveObjectCutsceneControllerModule;
         public ActionInteractableObjectModule BaseActionInteractableObjectModule;
         public NearPlayerGameOverTriggerModule BaseNearPlayerGameOverTriggerModule;
+        public LaunchProjectileModule BaseLaunchProjectileModule;
     }
 }
 

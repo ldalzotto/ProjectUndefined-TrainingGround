@@ -60,8 +60,9 @@ namespace RTPuzzle
             #region Internal Dependencies
             this.ParentInteractiveObjectTypeRef = this.GetComponentInParent<InteractiveObjectType>();
             this.LaunchProjectileGroundColliderTracker = this.GetComponentInChildren<LaunchProjectileGroundColliderTracker>();
-            this.LaunchProjectileGroundColliderTracker.Init(this);
             #endregion
+
+            this.LaunchProjectileGroundColliderTracker.Init(this);
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
             baseObjectTransform.position = ProjectilePath.ResolvePoint(0.1f);
@@ -101,6 +102,13 @@ namespace RTPuzzle
         }
         #endregion
 
+        public static class LaunchProjectileModuleInstancer
+        {
+            internal static void PopuplateFromDefinition(LaunchProjectileModule launchProjectileModule, LaunchProjectileModuleDefinition launchProjectileModuleDefinition)
+            {
+                launchProjectileModule.LaunchProjectileID = launchProjectileModuleDefinition.LaunchProjectileID;
+            }
+        }
     }
 
     #region Projectile movement manager
