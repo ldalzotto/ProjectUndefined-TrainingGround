@@ -77,5 +77,13 @@ namespace RTPuzzle
             }
         }
 
+        public static class GrabObjectModuleInstancer
+        {
+            internal static void PopuplateFromDefinition(GrabObjectModule grabObjectModule, GrabObjectModuleDefinition grabObjectModuleDefinition)
+            {
+                grabObjectModule.GrabObjectID = grabObjectModuleDefinition.GrabObjectID;
+            }
+        }
+
     }
 }

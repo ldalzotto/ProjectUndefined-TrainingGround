@@ -7,7 +7,7 @@ namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "RangeTypeObjectDefinitionConfiguration", menuName = "Configuration/PuzzleGame/RangeTypeObjectDefinitionConfiguration/RangeTypeObjectDefinitionConfiguration", order = 1)]
-    public class RangeTypeObjectDefinitionConfiguration : ConfigurationSerialization<RangeTypeObjectDefinitionID, RangeTypeObjectDefinitionConfigurationInherentData>
+    public class RangeTypeObjectDefinitionConfiguration : ConfigurationSerialization<RangeTypeObjectDefinitionID, RangeTypeObjectDefinitionInherentData>
     {
 
     }

@@ -40,13 +40,13 @@ namespace RTPuzzle
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
 
-        public void Init(RangeTypeObjectDefinitionConfigurationInherentData rangeTypeObjectDefinitionConfigurationInherentData,
+        public void Init(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData,
             RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
         {
             rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
-
+        
         public void PopulateBoxRangeData(RangeTypeDefinition rangeTypeDefinition)
         {
             this.PopulateModules();
@@ -60,6 +60,11 @@ namespace RTPuzzle
             this.SetRangeID(rangeTypeID);
             ((SphereRangeType)this.rangeType).PopupulateFromData(sphereRange);
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
+        }
+
+        public void SetIsAttractiveObject()
+        {
+            this.rangeType.IfNotNull((RangeType rangeType) => rangeType.GetCollisionType().IsRTAttractiveObject = true);
         }
 
         private void CommonInit(RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior)

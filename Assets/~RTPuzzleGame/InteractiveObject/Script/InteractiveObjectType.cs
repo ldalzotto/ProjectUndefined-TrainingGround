@@ -87,7 +87,7 @@ namespace RTPuzzle
             if (InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
             {
                 this.puzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[this.InteractiveObjectTypeDefinitionID].DefineInteractiveObject(this,
-                         puzzleGameStatciConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
+                         puzzleGameStatciConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleGameConfigurationManager.PuzzleGameConfiguration);
             }
 
             #region Internal Dependencies

@@ -172,6 +172,69 @@ namespace RTPuzzle
                             }
                         }
                     }
+                    else if (drawDisplay.Key == typeof(AttractiveObjectModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(AttractiveObjectModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(AttractiveObjectModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+								var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)definitionSO;
+                                var AttractiveObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData[AttractiveObjectModuleDefinition.AttractiveObjectId];
+
+                                Handles.color = Color.magenta;
+                                var position = InteractiveObjectType.transform.position;
+                                Handles.Label(position + Vector3.up * AttractiveObjectInherentData.EffectRange, nameof(AttractiveObjectInherentData.EffectRange), MyEditorStyles.LabelMagenta);
+                                Handles.DrawWireDisc(position, Vector3.up, AttractiveObjectInherentData.EffectRange);
+                            }
+                        }
+                    }
+                    else if (drawDisplay.Key == typeof(ModelObjectModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ModelObjectModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ModelObjectModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+								 var ModelObjectModuleDefinition = (ModelObjectModuleDefinition)definitionSO;
+							}
+                        }
+                    }
+                    else if (drawDisplay.Key == typeof(DisarmObjectModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(DisarmObjectModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(DisarmObjectModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+								 var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)definitionSO;
+                                var DisarmObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ConfigurationInherentData[DisarmObjectModuleDefinition.DisarmObjectID];
+
+                                Handles.color = Color.magenta;
+                                var position = InteractiveObjectType.transform.position;
+                                Handles.Label(position + Vector3.up * DisarmObjectInherentData.DisarmInteractionRange, nameof(DisarmObjectInherentData.DisarmInteractionRange), MyEditorStyles.LabelMagenta);
+                                Handles.DrawWireDisc(position, Vector3.up, DisarmObjectInherentData.DisarmInteractionRange);
+                            }
+                        }
+                    }
+                    else if (drawDisplay.Key == typeof(GrabObjectModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(GrabObjectModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(GrabObjectModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+								 var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)definitionSO;
+                                var GrabObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration.ConfigurationInherentData[GrabObjectModuleDefinition.GrabObjectID];
+                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * GrabObjectInherentData.EffectRadius, nameof(GrabObjectInherentData.EffectRadius), MyEditorStyles.LabelMagenta);
+                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, GrabObjectInherentData.EffectRadius);
+                            }
+                        }
+                    }
 //${addNewEntry}
                 }
 
@@ -191,7 +254,7 @@ namespace RTPuzzle
             return EnableArea;
         }
 
-        private void DrawRangeDefinition(RangeTypeObjectDefinitionConfigurationInherentData rangeTypeObjectDefinitionConfigurationInherentData, Transform transform, Color color, string label, GUIStyle labelStyle)
+        private void DrawRangeDefinition(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData, Transform transform, Color color, string label, GUIStyle labelStyle)
         {
             foreach (var rangeTypeDefinitionModule in rangeTypeObjectDefinitionConfigurationInherentData.RangeDefinitionModules)
             {

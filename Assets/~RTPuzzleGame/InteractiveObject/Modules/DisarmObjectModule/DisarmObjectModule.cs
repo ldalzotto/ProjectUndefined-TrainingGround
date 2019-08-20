@@ -118,6 +118,14 @@ namespace RTPuzzle
                 npcAIManager.OnDisarmObjectTriggerExit(this);
             }
         }
+
+        public static class DisarmObjectModuleInstancer
+        {
+            public static void PopuplateFromDefinition(DisarmObjectModule disarmObjectModule, DisarmObjectModuleDefinition disarmObjectModuleDefinition)
+            {
+                disarmObjectModule.DisarmObjectID = disarmObjectModuleDefinition.DisarmObjectID;
+            }
+        }
     }
 }
 

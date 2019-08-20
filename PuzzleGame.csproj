@@ -136,9 +136,13 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\Constants\InteractiveObjectModuleTypesConstants.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ActionInteractableObjectModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AttractiveObjectModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\DisarmObjectModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\GrabObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\InteractiveObjectCutsceneControllerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\LaunchProjectileModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\LevelCompletionTriggerModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\NearPlayerGameOverTriggerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\TargetZoneModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionConfiguration.cs" />
@@ -180,7 +184,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\SphereRangeShapeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeTypeDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfigurationInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\TargetZoneConfiguration\TargetZoneConfiguration.cs" />

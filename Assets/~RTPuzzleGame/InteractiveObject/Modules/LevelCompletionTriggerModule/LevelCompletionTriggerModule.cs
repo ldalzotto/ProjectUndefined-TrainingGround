@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GameConfigurationID;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -62,7 +63,7 @@ namespace RTPuzzle
                                 LevelCompletionTriggerModule LevelCompletionTriggerModule,
                                 LevelCompletionTriggerModuleDefinition LevelCompletionTriggerModuleDefinition,
                                 PuzzlePrefabConfiguration puzzlePrefabConfiguration,
-                                RangeTypeObjectDefinitionConfigurationInherentData LevelCompletionZoneDefinition = null)
+                                RangeTypeObjectDefinitionInherentData LevelCompletionZoneDefinition = null)
             {
                 LevelCompletionTriggerModule.ResolveModuleDependencies();
                 if (LevelCompletionZoneDefinition == null)
@@ -71,6 +72,7 @@ namespace RTPuzzle
                 }
                 else
                 {
+                    LevelCompletionTriggerModule.RangeTypeObject.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
                     LevelCompletionZoneDefinition.DefineRangeTypeObject(LevelCompletionTriggerModule.RangeTypeObject, puzzlePrefabConfiguration);
                 }
 

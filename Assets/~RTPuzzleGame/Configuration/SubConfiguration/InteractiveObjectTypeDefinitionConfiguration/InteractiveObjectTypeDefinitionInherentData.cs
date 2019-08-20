@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static RTPuzzle.ActionInteractableObjectModule;
+using static RTPuzzle.AttractiveObjectModule;
+using static RTPuzzle.DisarmObjectModule;
+using static RTPuzzle.GrabObjectModule;
 using static RTPuzzle.LaunchProjectileModule;
 using static RTPuzzle.LevelCompletionTriggerModule;
+using static RTPuzzle.ModelObjectModule;
 using static RTPuzzle.NearPlayerGameOverTriggerModule;
 using static RTPuzzle.TargetZoneModule;
 
@@ -15,7 +19,8 @@ namespace RTPuzzle
     {
         public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
 
-        public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, RangeTypeObjectDefinitionConfigurationInherentData LevelCompletionZoneDefinition = null)
+        public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, 
+                        PuzzleGameConfiguration puzzleGameConfiguration, RangeTypeObjectDefinitionInherentData LevelCompletionZoneDefinition = null)
         {
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
@@ -62,7 +67,31 @@ namespace RTPuzzle
                             var LaunchProjectileModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseLaunchProjectileModule, InteractiveObjectType.transform);
                             LaunchProjectileModuleInstancer.PopuplateFromDefinition(LaunchProjectileModule, LaunchProjectileModuleDefinition);
                         }
-                        //${addNewEntry}
+                        else if (moduleConfiguration.GetType() == typeof(AttractiveObjectModuleDefinition))
+                        {
+                            var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)moduleConfiguration;
+                            var AttractiveObjectModule =  MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseAttractiveObjectModule, InteractiveObjectType.transform);
+                            AttractiveObjectModuleInstancer.PopuplateFromDefinition(AttractiveObjectModule, AttractiveObjectModuleDefinition, puzzlePrefabConfiguration, puzzleGameConfiguration);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(ModelObjectModuleDefinition))
+                        {
+                            var ModelObjectModuleDefinition = (ModelObjectModuleDefinition)moduleConfiguration;
+                            var ModelObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseModelObjectModule, InteractiveObjectType.transform);
+                            ModelObjectModuleInstancer.PopuplateFromDefinition(ModelObjectModule, ModelObjectModuleDefinition);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(DisarmObjectModuleDefinition))
+                        {
+                            var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)moduleConfiguration;
+                            var DisarmObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseDisarmObjectModule, InteractiveObjectType.transform);
+                            DisarmObjectModuleInstancer.PopuplateFromDefinition(DisarmObjectModule, DisarmObjectModuleDefinition);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(GrabObjectModuleDefinition))
+                        {
+                            var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)moduleConfiguration;
+                          var GrabObjectModule =  MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseGrabObjectModule, InteractiveObjectType.transform);
+                            GrabObjectModuleInstancer.PopuplateFromDefinition(GrabObjectModule, GrabObjectModuleDefinition);
+                        }
+//${addNewEntry}
                     }
                 }
             }

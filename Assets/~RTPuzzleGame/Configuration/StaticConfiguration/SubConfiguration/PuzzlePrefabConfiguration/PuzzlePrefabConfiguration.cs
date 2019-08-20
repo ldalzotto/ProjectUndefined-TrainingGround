@@ -23,6 +23,10 @@ namespace RTPuzzle
         public ActionInteractableObjectModule BaseActionInteractableObjectModule;
         public NearPlayerGameOverTriggerModule BaseNearPlayerGameOverTriggerModule;
         public LaunchProjectileModule BaseLaunchProjectileModule;
+        public AttractiveObjectModule BaseAttractiveObjectModule;
+        public ModelObjectModule BaseModelObjectModule;
+        public DisarmObjectModule BaseDisarmObjectModule;
+        public GrabObjectModule BaseGrabObjectModule;
     }
 }
 

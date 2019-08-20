@@ -8,24 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum RangeTypeObjectDefinitionID {
+using UnityEngine;
+
+namespace RTPuzzle
+{
     
-    NONE = 0,
     
-    _1_Town_StartTutorial_TargetZone = 1,
-    
-    _1_Town_GardenWatchman = 2,
-    
-    _Sewers_1_TargetZone = 4,
-    
-    _Sewers_2_TargetZone = 5,
-    
-    OneAIForcedTargetZone_Test = 6,
-    
-    OneAIForcedHighDistanceTargetZone_Test = 7,
-  }
+    public class ModelObjectModuleDefinition : OdinSerializer.SerializedScriptableObject
+    {
+        public GameObject ModelPrefab;
+    }
 }

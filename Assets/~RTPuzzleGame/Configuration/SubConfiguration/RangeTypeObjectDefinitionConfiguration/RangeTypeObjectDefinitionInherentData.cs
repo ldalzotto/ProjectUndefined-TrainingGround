@@ -6,12 +6,12 @@ using UnityEngine;
 namespace RTPuzzle
 {
     [System.Serializable]
-    [CreateAssetMenu(fileName = "RangeTypeObjectDefinitionConfigurationInherentData", menuName = "Configuration/PuzzleGame/RangeTypeObjectDefinitionConfiguration/RangeTypeObjectDefinitionConfigurationInherentData", order = 1)]
-    public class RangeTypeObjectDefinitionConfigurationInherentData : AbstractObjectDefinitionConfigurationInherentData
+    [CreateAssetMenu(fileName = "RangeTypeObjectDefinitionInherentData", menuName = "Configuration/PuzzleGame/RangeTypeObjectDefinitionConfiguration/RangeTypeObjectDefinitionInherentData", order = 1)]
+    public class RangeTypeObjectDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
         public static List<Type> RangeModuleTypes = new List<Type>() { typeof(RangeTypeDefinition), typeof(RangeObstacleListenerDefinition) };
 
-        public override List<Type> ModuleTypes => RangeTypeObjectDefinitionConfigurationInherentData.RangeModuleTypes;
+        public override List<Type> ModuleTypes => RangeTypeObjectDefinitionInherentData.RangeModuleTypes;
 
         public void DefineRangeTypeObject(RangeTypeObject rangeTypeObject, PuzzlePrefabConfiguration puzzlePrefabConfiguration)
         {
@@ -63,9 +63,9 @@ namespace RTPuzzle
 
     public static class RangeTypeObjectDefinitionConfigurationInherentDataBuilder
     {
-        public static RangeTypeObjectDefinitionConfigurationInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
+        public static RangeTypeObjectDefinitionInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
         {
-            return new RangeTypeObjectDefinitionConfigurationInherentData()
+            return new RangeTypeObjectDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                 {
@@ -86,9 +86,9 @@ namespace RTPuzzle
             };
         }
         
-        public static RangeTypeObjectDefinitionConfigurationInherentData BoxRangeNoObstacleListener(Vector3 center, Vector3 size, RangeTypeID rangeTypeID)
+        public static RangeTypeObjectDefinitionInherentData BoxRangeNoObstacleListener(Vector3 center, Vector3 size, RangeTypeID rangeTypeID)
         {
-            return new RangeTypeObjectDefinitionConfigurationInherentData()
+            return new RangeTypeObjectDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                 {

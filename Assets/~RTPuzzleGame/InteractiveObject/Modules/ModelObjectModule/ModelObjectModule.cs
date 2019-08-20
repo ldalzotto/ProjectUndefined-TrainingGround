@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using CoreGame;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -25,12 +24,20 @@ namespace RTPuzzle
         {
             this.AverageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
             this.animator = GetComponent<Animator>();
-            if(this.animator == null)
+            if (this.animator == null)
             {
                 this.animator = GetComponentInChildren<Animator>();
             }
 
             this.associatedRigidbody = GetComponentInParent<Rigidbody>();
+        }
+
+        public static class ModelObjectModuleInstancer
+        {
+            public static void PopuplateFromDefinition(ModelObjectModule modelObjectModule, ModelObjectModuleDefinition modelObjectModuleDefinition)
+            {
+                GameObject.Instantiate(modelObjectModuleDefinition.ModelPrefab, modelObjectModule.transform);
+            }
         }
     }
 }

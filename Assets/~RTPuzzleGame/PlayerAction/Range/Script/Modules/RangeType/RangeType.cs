@@ -8,6 +8,7 @@ namespace RTPuzzle
         [SerializeField]
         private RangeTypeID rangeTypeID;
 
+        private CollisionType associatedCollisionType;
         protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
         protected RangeTypeObject RangeTypeObjectRef;
 
@@ -22,6 +23,7 @@ namespace RTPuzzle
         {
             this.rangeTypeInherentConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().RangeTypeConfiguration()[this.rangeTypeID];
             this.RangeTypeObjectRef = RangeTypeObjectRef;
+            this.associatedCollisionType = GetComponent<CollisionType>();
         }
 
         public virtual void Tick(float d) { }
@@ -42,6 +44,11 @@ namespace RTPuzzle
                 return collisionType.GetComponent<RangeType>();
             }
             return null;
+        }
+
+        public CollisionType GetCollisionType()
+        {
+            return this.associatedCollisionType;
         }
 
         private void OnTriggerEnter(Collider other)

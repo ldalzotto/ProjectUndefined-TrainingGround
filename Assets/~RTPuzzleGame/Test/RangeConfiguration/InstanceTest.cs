@@ -6,7 +6,7 @@ public class InstanceTest : MonoBehaviour
 {
     public PuzzlePrefabConfiguration puzzlePrefabConfiguration;
     public RangeTypeObject RangeTypeObject;
-    public RangeTypeObjectDefinitionConfigurationInherentData RangeDefinition;
+    public RangeTypeObjectDefinitionInherentData RangeDefinition;
 
     private void Awake()
     {

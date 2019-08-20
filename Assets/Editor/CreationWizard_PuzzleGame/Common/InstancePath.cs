@@ -136,5 +136,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string InteractiveObjectTypeDefinitionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjectTypeDefiniti" +
             "onConfiguration/Data";
+        
+        [ReadOnly()]
+        public static string RangeTypeObjectDefinitionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/RangeTypeObjectDefinitionConf" +
+            "iguration/Data";
     }
 }

@@ -82,5 +82,7 @@ namespace Editor_MainGameCreationWizard
         public static string InteractiveObjectTypeDefinitionConfigurationInherentData = "_InteractiveObjectTypeDefinitionConfiguration";
         
         public static string InteractiveObjectTypeDefinitionInherentData = "_InteractiveObjectTypeDefinition";
+        
+        public static string RangeTypeObjectDefinitionInherentData = "_RangeTypeObjectDefinition";
     }
 }

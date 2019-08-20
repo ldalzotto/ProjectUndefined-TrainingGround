@@ -226,8 +226,9 @@ namespace Tests
             Func<InteractiveObjectType, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached)
         {
             var puzzlePrefabConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
+            var puzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
             var targetZone = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, targetZonePosition, Quaternion.identity);
-            InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone().DefineInteractiveObject(targetZone, puzzlePrefabConfiguration,
+            InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone().DefineInteractiveObject(targetZone, puzzlePrefabConfiguration, puzzleGameConfiguration,
                     RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE) );
             targetZone.Init(new InteractiveObjectInitializationObject() { TargetZoneInherentData = targetZoneInherentData });
 

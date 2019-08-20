@@ -197,6 +197,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\RangeTypeObjectDefinition\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\RangeTypeObjectDefinition\Modules\RangeTypeObjectDefinitionConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\RangeTypeObjectDefinition\RangeTypeObjectDefinitionCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\RangeTypeObjectDefinition\RangeTypeObjectDefinitionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\Modules\TargetZoneConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\TargetZone\TargetZoneCreationWizard\TargetZoneCreationWizard.cs" />
@@ -310,9 +314,6 @@
     <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\AttractiveObjectCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\DisarmObjectCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\GrabObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
