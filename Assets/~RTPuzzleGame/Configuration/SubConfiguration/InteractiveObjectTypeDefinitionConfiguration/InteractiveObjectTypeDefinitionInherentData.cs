@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static RTPuzzle.ActionInteractableObjectModule;
 using static RTPuzzle.LevelCompletionTriggerModule;
 using static RTPuzzle.TargetZoneModule;
 
@@ -41,13 +42,19 @@ namespace RTPuzzle
                             var InteractiveObjectCutsceneControllerModuleDefinition = (InteractiveObjectCutsceneControllerModuleDefinition)moduleConfiguration;
                             MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectCutsceneControllerModule, InteractiveObjectType.transform);
                         }
+                        else if (moduleConfiguration.GetType() == typeof(ActionInteractableObjectModuleDefinition))
+                        {
+                            var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)moduleConfiguration;
+                            var ActionInteractableObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseActionInteractableObjectModule, InteractiveObjectType.transform);
+                            ActionInteractableObjectModuleInstancer.PopuplateFromDefinition(ActionInteractableObjectModule, ActionInteractableObjectModuleDefinition);
+                        }
 //${addNewEntry}
                     }
                 }
             }
         }
     }
-    
+
     public static class InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder
     {
         public static InteractiveObjectTypeDefinitionInherentData TargetZone()

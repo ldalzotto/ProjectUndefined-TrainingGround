@@ -100,6 +100,18 @@ namespace RTPuzzle
                             this.DrawRangeDefinition(rangeDefinition, InteractiveObjectType.transform, Color.blue, "Test", MyEditorStyles.LabelBlue);
                         }
                     }
+                    else if (drawDisplay.Key == typeof(ActionInteractableObjectModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ActionInteractableObjectModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+                            var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules[typeof(ActionInteractableObjectModuleDefinition)];
+                            var ActionInteractableInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration.ConfigurationInherentData[ActionInteractableObjectModuleDefinition.ActionInteractableObjectID];
+                            Handles.color = Color.magenta;
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ActionInteractableInherentData.InteractionRange, nameof(ActionInteractableInherentData.InteractionRange), MyEditorStyles.LabelMagenta);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ActionInteractableInherentData.InteractionRange);
+                        }
+                    }
 //${addNewEntry}
                 }
 

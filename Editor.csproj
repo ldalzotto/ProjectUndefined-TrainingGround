@@ -310,7 +310,6 @@
     <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\ActionInteractiveObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\AttractiveObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\DisarmObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\GrabObjectCustomEditor.cs" />

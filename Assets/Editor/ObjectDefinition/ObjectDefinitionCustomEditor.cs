@@ -71,7 +71,7 @@ public class ObjectDefinitionCustomEditor : Editor
             {
                 RangeDefinitionTarget.ModuleTypes.ForEach((moduleDefinitionType) =>
                 {
-                    if (!RangeDefinitionTarget.RangeDefinitionModulesActivation.Keys.ToList().ConvertAll(k => k.GetType()).Contains(moduleDefinitionType))
+                    if (!RangeDefinitionTarget.RangeDefinitionModulesActivation.Keys.ToList().Contains(moduleDefinitionType))
                     {
                         RangeDefinitionTarget.RangeDefinitionModulesActivation[moduleDefinitionType] = false;
                     }

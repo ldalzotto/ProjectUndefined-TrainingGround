@@ -22,14 +22,6 @@ namespace RTPuzzle
         public RTPPlayerAction AssociatedPlayerAction { get => associatedPlayerAction; }
         #endregion
 
-        public static InteractiveObjectType Instanciate(Vector3 worldPosition, ActionInteractableObjectInherentData ActionInteractableObjectInherentData)
-        {
-            InteractiveObjectType createdDisarmObject = MonoBehaviour.Instantiate(ActionInteractableObjectInherentData.AssociatedInteractiveObjectType);
-            createdDisarmObject.Init(new InteractiveObjectInitializationObject() { ActionInteractableObjectInherentData = ActionInteractableObjectInherentData });
-            createdDisarmObject.transform.position = worldPosition;
-            return createdDisarmObject;
-        }
-
         public void Init(ActionInteractableObjectInherentData ActionInteractableObjectInherentData, PuzzleGameConfigurationManager puzzleGameConfigurationManager, PuzzleEventsManager PuzzleEventsManager)
         {
             this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
@@ -59,6 +51,16 @@ namespace RTPuzzle
             if (collisionType != null && collisionType.IsPlayer)
             {
                 this.PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
+            }
+        }
+
+        public static class ActionInteractableObjectModuleInstancer
+        {
+            public static void PopuplateFromDefinition(
+                              ActionInteractableObjectModule ActionInteractableObjectModule,
+                              ActionInteractableObjectModuleDefinition ActionInteractableObjectModuleDefinition)
+            {
+                ActionInteractableObjectModule.ActionInteractableObjectID = ActionInteractableObjectModuleDefinition.ActionInteractableObjectID;
             }
         }
 

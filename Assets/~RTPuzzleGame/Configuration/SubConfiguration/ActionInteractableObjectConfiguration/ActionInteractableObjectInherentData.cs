@@ -9,13 +9,9 @@ namespace RTPuzzle
     public class ActionInteractableObjectInherentData : ScriptableObject
     {
         public float InteractionRange;
-        [CustomEnum()]
+        [CustomEnum(ConfigurationType = typeof(PlayerActionConfiguration))]
         public PlayerActionId PlayerActionId;
-
-        [SerializeField]
-        [FormerlySerializedAs("ActionInteractableObjectPrefab")]
-        public InteractiveObjectType AssociatedInteractiveObjectType;
-
+        
         public void Init(float InteractionRange)
         {
             this.InteractionRange = InteractionRange;
