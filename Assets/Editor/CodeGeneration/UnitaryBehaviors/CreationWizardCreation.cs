@@ -10,7 +10,7 @@ using UnityEditor;
 
 public class CreationWizardCreation : EditorWindow
 {
-    [MenuItem("Generation/CreationWizardCreation")]
+    [MenuItem("Generation/UnitaryBehaviors/CreationWizardCreation")]
     static void Init()
     {
         CreationWizardCreation window = (CreationWizardCreation)EditorWindow.GetWindow(typeof(CreationWizardCreation));

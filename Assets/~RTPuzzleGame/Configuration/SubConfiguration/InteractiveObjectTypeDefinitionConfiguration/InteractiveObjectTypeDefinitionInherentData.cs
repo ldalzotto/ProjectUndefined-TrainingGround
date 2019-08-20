@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static RTPuzzle.LevelCompletionTriggerModule;
@@ -10,9 +10,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionInherentData", order = 1)]
     public class InteractiveObjectTypeDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
-        public static List<Type> InteractiveObjectModuleTypes = new List<Type>() { typeof(TargetZoneModuleDefinition), typeof(LevelCompletionTriggerModuleDefinition), typeof(InteractiveObjectCutsceneControllerModuleDefinition) };
-
-        public override List<Type> ModuleTypes => InteractiveObjectTypeDefinitionInherentData.InteractiveObjectModuleTypes;
+        public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
 
         public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, RangeTypeObjectDefinitionConfigurationInherentData LevelCompletionZoneDefinition = null)
         {
@@ -43,12 +41,13 @@ namespace RTPuzzle
                             var InteractiveObjectCutsceneControllerModuleDefinition = (InteractiveObjectCutsceneControllerModuleDefinition)moduleConfiguration;
                             MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectCutsceneControllerModule, InteractiveObjectType.transform);
                         }
+//${addNewEntry}
                     }
                 }
             }
         }
     }
-
+    
     public static class InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder
     {
         public static InteractiveObjectTypeDefinitionInherentData TargetZone()

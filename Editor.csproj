@@ -73,6 +73,7 @@
     <Compile Include="Assets\Editor\CodeGeneration\PathConstants.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\PuzzleIdentifiedObjectGeneration\PuzzleIdentifiedObjectGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\CreationWizardCreation.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\InteractiveObjectModuleDefinitionCreation.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
@@ -429,11 +430,13 @@
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleGameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerCreationModule\Create${baseName}.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\Edit${baseName}.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCustomEditorCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CustomEditorTemplate\${baseName}CustomEditor.cs.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
