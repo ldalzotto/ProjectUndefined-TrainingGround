@@ -29,5 +29,7 @@ namespace GameConfigurationID {
     _1_Town_GardenWatchman = 7,
     
     _1_Town_GardenDoor = 8,
+    
+    Player = 9,
   }
 }
