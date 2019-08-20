@@ -77,17 +77,21 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(TargetZoneModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-                            var TargetZoneModuleDefinition = (TargetZoneModuleDefinition)this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules[typeof(TargetZoneModuleDefinition)];
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(TargetZoneModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+                                var TargetZoneModuleDefinition = (TargetZoneModuleDefinition)definitionSO;
 
-                            var targetZoneInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration.ConfigurationInherentData[TargetZoneModuleDefinition.TargetZoneID];
-                            Handles.color = Color.red;
-                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * targetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
-                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, targetZoneInherentData.AIDistanceDetection);
+                                var targetZoneInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration.ConfigurationInherentData[TargetZoneModuleDefinition.TargetZoneID];
+                                Handles.color = Color.red;
+                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * targetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
+                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, targetZoneInherentData.AIDistanceDetection);
 
-                            Handles.color = Color.yellow;
-                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
-                            Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, targetZoneInherentData.EscapeFOVSemiAngle, 5f);
-                            Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, -targetZoneInherentData.EscapeFOVSemiAngle, 5f);
+                                Handles.color = Color.yellow;
+                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
+                                Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, targetZoneInherentData.EscapeFOVSemiAngle, 5f);
+                                Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, -targetZoneInherentData.EscapeFOVSemiAngle, 5f);
+                            }
                         }
                     }
                     else if (drawDisplay.Key == typeof(LevelCompletionTriggerModuleDefinition).Name)
@@ -95,9 +99,13 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(LevelCompletionTriggerModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-                            var LevelCompletionTriggerModuleDefinition = (LevelCompletionTriggerModuleDefinition)this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules[typeof(LevelCompletionTriggerModuleDefinition)];
-                            var rangeDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID];
-                            this.DrawRangeDefinition(rangeDefinition, InteractiveObjectType.transform, Color.blue, "Test", MyEditorStyles.LabelBlue);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LevelCompletionTriggerModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+                                var LevelCompletionTriggerModuleDefinition = (LevelCompletionTriggerModuleDefinition)definitionSO;
+                                var rangeDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID];
+                                this.DrawRangeDefinition(rangeDefinition, InteractiveObjectType.transform, Color.blue, "Test", MyEditorStyles.LabelBlue);
+                            }
                         }
                     }
                     else if (drawDisplay.Key == typeof(ActionInteractableObjectModuleDefinition).Name)
@@ -105,14 +113,37 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(ActionInteractableObjectModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-                            var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules[typeof(ActionInteractableObjectModuleDefinition)];
-                            var ActionInteractableInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration.ConfigurationInherentData[ActionInteractableObjectModuleDefinition.ActionInteractableObjectID];
-                            Handles.color = Color.magenta;
-                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ActionInteractableInherentData.InteractionRange, nameof(ActionInteractableInherentData.InteractionRange), MyEditorStyles.LabelMagenta);
-                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ActionInteractableInherentData.InteractionRange);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ActionInteractableObjectModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+                                var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)definitionSO;
+                                var ActionInteractableInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration.ConfigurationInherentData[ActionInteractableObjectModuleDefinition.ActionInteractableObjectID];
+                                Handles.color = Color.magenta;
+                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ActionInteractableInherentData.InteractionRange, nameof(ActionInteractableInherentData.InteractionRange), MyEditorStyles.LabelMagenta);
+                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ActionInteractableInherentData.InteractionRange);
+                            }
                         }
                     }
-//${addNewEntry}
+                    else if (drawDisplay.Key == typeof(NearPlayerGameOverTriggerModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(NearPlayerGameOverTriggerModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(NearPlayerGameOverTriggerModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+                                var NearPlayerGameOverTriggerModuleDefinition = (NearPlayerGameOverTriggerModuleDefinition)definitionSO;
+                                var NearPlayerGameOverTriggerInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.NearPlayerGameOverTriggerConfiguration.ConfigurationInherentData[NearPlayerGameOverTriggerModuleDefinition.NearPlayerGameOverTriggerID];
+
+                                Handles.color = Color.magenta;
+                                var labelStyle = new GUIStyle(EditorStyles.label);
+                                labelStyle.normal.textColor = Color.magenta;
+                                Handles.Label(InteractiveObjectType.transform.position + (Vector3.up * NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius), "Near player game over radius.", labelStyle);
+                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius);
+                            }
+                        }
+                    }
+                    //${addNewEntry}
                 }
 
                 Handles.color = oldHandlesColor;

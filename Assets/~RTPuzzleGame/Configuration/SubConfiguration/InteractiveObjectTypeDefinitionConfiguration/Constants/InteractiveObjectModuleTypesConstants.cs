@@ -11,7 +11,7 @@ namespace RTPuzzle
             typeof(TargetZoneModuleDefinition),
             typeof(LevelCompletionTriggerModuleDefinition),
             typeof(InteractiveObjectCutsceneControllerModuleDefinition),
-            typeof(ActionInteractableObjectModuleDefinition),//${addNewEntry}
+            typeof(ActionInteractableObjectModuleDefinition),typeof(NearPlayerGameOverTriggerModuleDefinition),//${addNewEntry}
         };
     }
 

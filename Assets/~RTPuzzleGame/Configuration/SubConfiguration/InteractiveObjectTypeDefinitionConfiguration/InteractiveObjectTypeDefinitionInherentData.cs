@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static RTPuzzle.ActionInteractableObjectModule;
 using static RTPuzzle.LevelCompletionTriggerModule;
+using static RTPuzzle.NearPlayerGameOverTriggerModule;
 using static RTPuzzle.TargetZoneModule;
 
 namespace RTPuzzle
@@ -47,6 +48,12 @@ namespace RTPuzzle
                             var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)moduleConfiguration;
                             var ActionInteractableObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseActionInteractableObjectModule, InteractiveObjectType.transform);
                             ActionInteractableObjectModuleInstancer.PopuplateFromDefinition(ActionInteractableObjectModule, ActionInteractableObjectModuleDefinition);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(NearPlayerGameOverTriggerModuleDefinition))
+                        {
+                            var NearPlayerGameOverTriggerModuleDefinition = (NearPlayerGameOverTriggerModuleDefinition)moduleConfiguration;
+                            var NearPlayerGameOverTriggerModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseNearPlayerGameOverTriggerModule, InteractiveObjectType.transform);
+                            NearPlayerGameOverTriggerModuleInstancer.PopuplateFromDefinition(NearPlayerGameOverTriggerModule, NearPlayerGameOverTriggerModuleDefinition);
                         }
 //${addNewEntry}
                     }

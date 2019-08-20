@@ -63,5 +63,13 @@ namespace RTPuzzle
         {
             this.PuzzleEventsManager.PZ_EVT_LevelReseted();
         }
+
+        public static class NearPlayerGameOverTriggerModuleInstancer
+        {
+            public static void PopuplateFromDefinition(NearPlayerGameOverTriggerModule nearPlayerGameOverTriggerModule, NearPlayerGameOverTriggerModuleDefinition nearPlayerGameOverTriggerModuleDefinition)
+            {
+                nearPlayerGameOverTriggerModule.NearPlayerGameOverTriggerID = nearPlayerGameOverTriggerModuleDefinition.NearPlayerGameOverTriggerID;
+            }
+        }
     }
 }

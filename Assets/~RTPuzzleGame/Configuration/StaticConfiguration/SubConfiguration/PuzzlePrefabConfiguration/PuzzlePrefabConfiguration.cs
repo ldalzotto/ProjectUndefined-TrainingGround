@@ -21,6 +21,7 @@ namespace RTPuzzle
         public LevelCompletionTriggerModule BaseLevelCompletionTriggerModule;
         public InteractiveObjectCutsceneControllerModule BaseInteractiveObjectCutsceneControllerModule;
         public ActionInteractableObjectModule BaseActionInteractableObjectModule;
+        public NearPlayerGameOverTriggerModule BaseNearPlayerGameOverTriggerModule;
     }
 }
 
