@@ -19,7 +19,8 @@ namespace Tests
         public static InteractiveObjectType SpawnProjectile(LaunchProjectileInherentData projectileInherentData, Vector3 projectilePosition)
         {
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(projectileInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>());
+            InteractiveObjectType createdProjectile = null;
+            // var createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(projectileInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>());
 
             var projectileBezierPath = new BeziersControlPoints();
             projectileBezierPath.P0 = projectilePosition;

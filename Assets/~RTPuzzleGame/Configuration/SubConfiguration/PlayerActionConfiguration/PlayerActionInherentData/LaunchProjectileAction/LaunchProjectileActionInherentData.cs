@@ -7,6 +7,9 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "LaunchProjectileActionInherentData", menuName = "Configuration/PuzzleGame/PlayerActionConfiguration/LaunchProjectileActionInherentData", order = 1)]
     public class LaunchProjectileActionInherentData : PlayerActionInherentData
     {
+        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
+        public InteractiveObjectTypeDefinitionID projectedObjectDefinitionID;
+
         public LaunchProjectileID launchProjectileId;
 
         public LaunchProjectileActionInherentData(LaunchProjectileID launchProjectileId,

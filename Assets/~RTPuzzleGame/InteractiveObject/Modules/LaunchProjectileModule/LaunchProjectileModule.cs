@@ -38,14 +38,7 @@ namespace RTPuzzle
             return this.LaunchProjectileMovementManager.GetTargetPosition();
         }
         #endregion
-
-        public static InteractiveObjectType InstanciateV2(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform parentTransform, List<Type> exclusiveInitialEnabledModules = null)
-        {
-            var launchProjectileInteractiveObjet = MonoBehaviour.Instantiate(LaunchProjectileInherentData.AssociatedInteractiveObjectType, parentTransform);
-            launchProjectileInteractiveObjet.Init(new InteractiveObjectInitializationObject() { LaunchProjectileInherentData = LaunchProjectileInherentData, ProjectilePath = ProjectilePath }, exclusiveInitialEnabledModules);
-            return launchProjectileInteractiveObjet;
-        }
-
+        
         public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
         {
             #region External Dependencies

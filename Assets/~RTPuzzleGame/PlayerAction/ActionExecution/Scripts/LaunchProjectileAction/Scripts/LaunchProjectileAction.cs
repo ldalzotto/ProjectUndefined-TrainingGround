@@ -67,12 +67,16 @@ namespace RTPuzzle
             var playerTransformScreen = camera.WorldToScreenPoint(playerTransform.position);
             playerTransformScreen.y = camera.pixelHeight - playerTransformScreen.y;
 
-            var projectileId = ((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId;
+            LaunchProjectileActionInherentData LaunchProjectileActionInherentData = (LaunchProjectileActionInherentData)this.playerActionInherentData;
 
-            this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[((LaunchProjectileActionInherentData)this.playerActionInherentData).launchProjectileId];
+            var launchProjectileInteractiveObjectDefinition = PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[LaunchProjectileActionInherentData.projectedObjectDefinitionID];
+            var launchProjectileID = ((LaunchProjectileModuleDefinition)launchProjectileInteractiveObjectDefinition.RangeDefinitionModules[typeof(LaunchProjectileModuleDefinition)])
+                            .LaunchProjectileID;
+            this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileID];
 
             this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
-            this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, interactiveObjectContainer);
+            this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, launchProjectileInteractiveObjectDefinition,
+                     interactiveObjectContainer, PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration );
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
@@ -569,7 +573,6 @@ namespace RTPuzzle
         {
             var targetProjetilePlayerRelativeDirection = Vector3.ProjectOnPlane((targetProjectileWorldPosition - this.rigidbody.position).normalized, this.rigidbody.transform.up);
             this.rigidbody.rotation = Quaternion.LookRotation(targetProjetilePlayerRelativeDirection, this.rigidbody.transform.up);
-            //this.rigidbody.MoveRotation(Quaternion.FromToRotation(this.rigidbody.transform.forward, targetProjetilePlayerRelativeDirection));
         }
     }
     #endregion
@@ -577,11 +580,15 @@ namespace RTPuzzle
     #region Projectile instanciation helper
     public class ProjectileActionInstanciationHelper
     {
-        public static InteractiveObjectType CreateProjectileAtStart(LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectContainer interactiveObjectContainer)
+        public static InteractiveObjectType CreateProjectileAtStart(LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData,
+            InteractiveObjectContainer interactiveObjectContainer, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration)
         {
-            return LaunchProjectileModule.InstanciateV2(ProjectileInherentData, null, interactiveObjectContainer.transform, new List<Type>() {
+            var projectileObject = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, interactiveObjectContainer.transform);
+            InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(projectileObject, puzzlePrefabConfiguration, puzzleGameConfiguration);
+            projectileObject.Init(new InteractiveObjectInitializationObject() { LaunchProjectileInherentData = ProjectileInherentData }, new List<Type>() {
                 typeof(ModelObjectModule)
             });
+            return projectileObject;
         }
 
         public static void OnProjectileSpawn(ref InteractiveObjectType projectileObjectRef, BeziersControlPoints throwProjectilePath, LaunchProjectileInherentData ProjectileInherentData)
