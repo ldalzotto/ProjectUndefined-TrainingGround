@@ -15,8 +15,8 @@ namespace RTPuzzle
         public float EffectRange;
         public float EffectiveTime;
 
-        [FormerlySerializedAs("AttractiveInteractiveObjectPrefab")]
-        public InteractiveObjectType AssociatedInteractiveObjectType;
+        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
+        public InteractiveObjectTypeDefinitionID AttractiveInteractiveObjectDefinition;
 
         [Header("Animation")]
 
@@ -24,13 +24,6 @@ namespace RTPuzzle
         public AnimationID PreActionAnimation;
         [CustomEnum]
         public AnimationID PostActionAnimation;
-        
-        public void Init(float effectRange, float effectiveTime, InteractiveObjectType AttractiveInteractiveObjectPrefab)
-        {
-            EffectRange = effectRange;
-            EffectiveTime = effectiveTime;
-            this.AssociatedInteractiveObjectType = AttractiveInteractiveObjectPrefab;
-        }
 
     }
 }

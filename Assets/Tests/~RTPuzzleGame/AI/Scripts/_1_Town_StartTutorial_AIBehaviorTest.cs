@@ -287,7 +287,7 @@ namespace Tests
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());
                         Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
 
-                        return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 0.2f), aiManager.transform.position,
+                        return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_2, 999999f, 0.2f), aiManager.transform.position,
                            OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                            {
                                Assert.IsTrue(aiBehavior.IsDisarmingObject());
@@ -313,12 +313,12 @@ namespace Tests
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
             Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
 
-            yield return PuzzleSceneTestHelper.AttractiveObjectYield(PuzzleSceneTestHelper.CreateAttractiveObjectInherentConfigurationData(999999f, 0.2f), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
                OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                {
                    Assert.IsFalse(aiBehavior.IsDisarmingObject());
                    Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
-                   return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
+                   return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_2, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());

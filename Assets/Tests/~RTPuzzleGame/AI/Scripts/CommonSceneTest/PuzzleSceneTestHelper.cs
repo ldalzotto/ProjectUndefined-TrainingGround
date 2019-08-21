@@ -27,14 +27,8 @@ namespace Tests
             InteractiveObjectInitialization.InteractiveObjectInitializationObject.ProjectilePath = projectileBezierPath;
 
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            InteractiveObjectType createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(InteractiveObjectInitialization.InteractiveObjectInitializationObject.LaunchProjectileInherentData
-                , InteractiveObjectInitialization.InteractiveObjectTypeDefinitionInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>(),
-                        GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration);
-
-
-            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref createdProjectile, InteractiveObjectInitialization.InteractiveObjectInitializationObject.ProjectilePath,
-                InteractiveObjectInitialization.InteractiveObjectInitializationObject.LaunchProjectileInherentData);
-            return createdProjectile;
+            return InteractiveObjectType.Instantiate(InteractiveObjectInitialization.InteractiveObjectTypeDefinitionInherentData, InteractiveObjectInitialization.InteractiveObjectInitializationObject,
+                     GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration);
         }
 
         public static Transform FindTestPosition(TestPositionID aITestPositionID)
@@ -42,15 +36,15 @@ namespace Tests
             return GameObject.FindObjectsOfType<TestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == aITestPositionID).First().transform;
         }
 
-        public static InteractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, TestPositionID aITestPositionID)
+        public static InteractiveObjectType SpawnAttractiveObject(InteractiveObjectInitialization InteractiveObjectInitialization, TestPositionID aITestPositionID)
         {
             var attractiveObjectSpawnPosition = FindTestPosition(aITestPositionID).position;
-            return SpawnAttractiveObject(attractiveObjectInherentConfigurationData, attractiveObjectSpawnPosition);
+            return SpawnAttractiveObject(InteractiveObjectInitialization, attractiveObjectSpawnPosition);
         }
 
-        public static InteractiveObjectType SpawnAttractiveObject(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition)
+        public static InteractiveObjectType SpawnAttractiveObject(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 worldPosition)
         {
-            return AttractiveObjectModule.Instanciate(worldPosition, null, attractiveObjectInherentConfigurationData, null);
+            return InteractiveObjectInitialization.InstanciateAndInit(worldPosition);
         }
 
         public static InteractiveObjectType SpawnAIDisarmObject(DisarmObjectInherentData disarmObjectInherentData, Vector3 worldPosition)
@@ -66,8 +60,10 @@ namespace Tests
         public static AttractiveObjectInherentConfigurationData CreateAttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime)
         {
             var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId.CHEESE];
-            attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AssociatedInteractiveObjectType);
+            var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId._Sewers_1_CheeseAttractive];
+
+            //TODO Attractive instance
+            // attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AssociatedInteractiveObjectType);
             return attractiveObjectInherentConfigurationData;
         }
 
@@ -77,7 +73,7 @@ namespace Tests
             GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle = escapeSemiAngle;
             GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = playerDetectionRadius;
         }
-        
+
         public static void SetAIEscapeSemiAngle(AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
         {
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
@@ -130,10 +126,10 @@ namespace Tests
         #endregion
 
         #region Attractive Object
-        public static IEnumerator AttractiveObjectYield(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, Vector3 worldPosition,
+        public static IEnumerator AttractiveObjectYield(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 worldPosition,
                     Func<InteractiveObjectType, IEnumerator> OnAttractiveObjectSpawn, Func<IEnumerator> OnAttractiveObjectDestroyed)
         {
-            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(attractiveObjectInherentConfigurationData, worldPosition);
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(InteractiveObjectInitialization, worldPosition);
             yield return new WaitForFixedUpdate();
             if (OnAttractiveObjectSpawn != null)
             {
@@ -141,7 +137,7 @@ namespace Tests
             }
             if (OnAttractiveObjectDestroyed != null)
             {
-                yield return new WaitForSeconds(attractiveObjectInherentConfigurationData.EffectiveTime);
+                yield return new WaitForSeconds(InteractiveObjectInitialization.InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData.EffectiveTime);
                 yield return OnAttractiveObjectDestroyed.Invoke();
             }
         }

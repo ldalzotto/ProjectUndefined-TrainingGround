@@ -75,6 +75,25 @@ namespace RTPuzzle
         }
         #endregion
 
+        public static InteractiveObjectType Instantiate(InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData,
+                        InteractiveObjectInitializationObject InteractiveObjectInitializationObject, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration,
+                        Transform parent = null,
+                        List<Type> exclusiveInitialEnabledModules = null)
+        {
+            InteractiveObjectType InstanciatedInterractiveObject = null;
+            if (parent == null)
+            {
+                InstanciatedInterractiveObject = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType);
+            }
+            else
+            {
+                InstanciatedInterractiveObject = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, parent);
+            }
+            InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(InstanciatedInterractiveObject, puzzlePrefabConfiguration, puzzleGameConfiguration);
+            InstanciatedInterractiveObject.Init(InteractiveObjectInitializationObject, exclusiveInitialEnabledModules);
+            return InstanciatedInterractiveObject;
+        }
+
         public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, List<Type> exclusiveInitialEnabledModules = null)
         {
             #region External Dependencies

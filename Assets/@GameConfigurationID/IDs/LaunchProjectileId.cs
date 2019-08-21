@@ -8,28 +8,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum LaunchProjectileID {
-    
-    STONE = 0,
-    
-    STONE_1 = 1,
-    
-    RTP_PUZZLE_CREATION_TEST = 2,
-    
-    SEWER_RTP_2_STONE = 3,
-    
-    _1_Town_StartTutorial_Speaker = 5,
-    
-    TEST_PROJECTILE_EXPLODE = 6,
-    
-    TEST_PROJECTILE_TOATTRACTIVE = 7,
-    
-    _1_Town_StartTutorial_Test = 8,
+namespace GameConfigurationID
+{
 
-        TEST_1 = 9
+
+    [System.Serializable()]
+    public enum LaunchProjectileID
+    {
+
+        _Sewers_1_Projectile = 0,
+
+        STONE_1 = 1,
+
+        RTP_PUZZLE_CREATION_TEST = 2,
+
+        _Sewers_2_Projectile = 3,
+
+        _1_Town_StartTutorial_Speaker = 5,
+
+        TEST_PROJECTILE_EXPLODE = 6,
+
+        TEST_PROJECTILE_TOATTRACTIVE = 7,
+
+        _1_Town_StartTutorial_Test = 8,
+
+        TEST_1 = 9,
+        TEST_2 = 10
     }
 }

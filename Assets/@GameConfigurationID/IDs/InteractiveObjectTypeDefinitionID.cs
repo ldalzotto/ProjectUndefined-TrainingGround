@@ -33,7 +33,17 @@ namespace GameConfigurationID {
     Player = 9,
     
     _1_Town_StartTutorial_Speaker = 10,
-
-    TEST_1 = 11
+    
+    TEST_1 = 11,
+    
+    _Sewers_1_Projectile = 12,
+    
+    _Sewers_1_CheeseAttractive = 13,
+    
+    TEST_2 = 14,
+    
+    _Sewers_2_CheeseAttractive = 15,
+    
+    _Sewers_2_Projectile = 16,
   }
 }

@@ -10,8 +10,7 @@ public class ProjectileInherentDataCutsomEditor : Editor
         EditorGUI.BeginDisabledGroup(true);
         EditorGUILayout.ObjectField("Script : ", MonoScript.FromScriptableObject(ProjectileInherentDataTarget), typeof(MonoScript), false);
         EditorGUI.EndDisabledGroup();
-
-        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.AssociatedInteractiveObjectType)));
+        
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.ProjectileThrowRange)));
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.TravelDistancePerSeconds)));
 

@@ -17,6 +17,7 @@ namespace GameConfigurationID
         Player = 1,
         _1_Town_GardenDoor = 2,
         _1_Town_GardenWatchman = 4,
-        TEST_1 = 5
+        TEST_1 = 5,
+        TEST_2 = 6
     }
 }

@@ -39,20 +39,26 @@ namespace RTPuzzle
         {
             base.FirstExecution();
             this.isActionOver = false;
-            this.attractiveObjectId = ((AttractiveObjectActionInherentData)this.playerActionInherentData).AttractiveObjectId;
+            var attractiveObjectActionInherentData = ((AttractiveObjectActionInherentData)this.playerActionInherentData);
+            this.attractiveObjectId = attractiveObjectActionInherentData.AttractiveObjectId;
 
             #region External Dependencies
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             this.AttractiveObjectsInstanciatedParent = GameObject.FindObjectOfType<AttractiveObjectsInstanciatedParent>();
             var playerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration;
             var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
             var attractiveObjectInherentConfigurationData = PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
-            this.attractiveObject = AttractiveObjectModule.Instanciate(Vector3.zero, this.AttractiveObjectsInstanciatedParent.transform, attractiveObjectInherentConfigurationData, new List<Type>() { typeof(ModelObjectModule) });
+            var attractiveObjectDefinition = this.PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[attractiveObjectInherentConfigurationData.AttractiveInteractiveObjectDefinition];
+
+            this.attractiveObject =
+                AttractiveObjectActionInstanceHelper.CreateAttractiveObjectAtStart(attractiveObjectDefinition, puzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration,
+                        this.AttractiveObjectsInstanciatedParent.transform);
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerPuzzleLogicRootCollier());
@@ -100,7 +106,7 @@ namespace RTPuzzle
             var objectSpawnPosition = this.AttractiveObjectGroundPositioner.GetAttractiveObjectSpawnPosition();
             if (objectSpawnPosition.HasValue)
             {
-                this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject() { AttractiveObjectInherentConfigurationData= PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId] });
+                this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject());
                 this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, this.attractiveObject, this.PuzzleGameConfigurationManager, this.AttractiveObjectsInstanciatedParent);
             }
 
@@ -206,4 +212,14 @@ namespace RTPuzzle
 
     }
 
+    public static class AttractiveObjectActionInstanceHelper
+    {
+        public static InteractiveObjectType CreateAttractiveObjectAtStart(InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData,
+                        PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration,
+                        Transform parent)
+        {
+            return InteractiveObjectType.Instantiate(InteractiveObjectTypeDefinitionInherentData, new InteractiveObjectInitializationObject(), puzzlePrefabConfiguration, puzzleGameConfiguration, parent,
+                new List<Type>() { typeof(ModelObjectModule) });
+        }
+    }
 }

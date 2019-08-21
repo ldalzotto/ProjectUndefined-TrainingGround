@@ -15,10 +15,6 @@ namespace RTPuzzle
         [SerializeField]
         public float TravelDistancePerSeconds;
 
-        [FormerlySerializedAs("ProjectilePrefabV2")]
-        [SerializeField]
-        public InteractiveObjectType AssociatedInteractiveObjectType;
-
         [SerializeField]
         public bool isExploding;
 

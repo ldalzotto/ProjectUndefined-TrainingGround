@@ -12,23 +12,6 @@ namespace RTPuzzle
     public class AttractiveObjectModule : InteractiveObjectModule
     {
 
-        public static InteractiveObjectType Instanciate(Vector3 worldPosition, Transform parent, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, List<Type> exclusiveInitialEnabledModules)
-        {
-            InteractiveObjectType attractiveObject = null;
-            if (parent != null)
-            {
-                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AssociatedInteractiveObjectType, parent);
-            }
-            else
-            {
-                attractiveObject = MonoBehaviour.Instantiate(attractiveObjectInherentConfigurationData.AssociatedInteractiveObjectType);
-            }
-
-            attractiveObject.transform.position = worldPosition;
-            attractiveObject.Init(new InteractiveObjectInitializationObject() { AttractiveObjectInherentConfigurationData = attractiveObjectInherentConfigurationData }, exclusiveInitialEnabledModules);
-            return attractiveObject;
-        }
-
         public static AttractiveObjectModule GetAttractiveObjectFromCollisionType(CollisionType collisionType)
         {
             var sphereRange = RangeType.RetrieveFromCollisionType(collisionType);

@@ -26,6 +26,7 @@ namespace GameConfigurationID {
     
     _1_Town_StartTutorial = 5,
 
-        TEST_1 = 6
+        TEST_1 = 6,
+        TEST_2 = 7
     }
 }

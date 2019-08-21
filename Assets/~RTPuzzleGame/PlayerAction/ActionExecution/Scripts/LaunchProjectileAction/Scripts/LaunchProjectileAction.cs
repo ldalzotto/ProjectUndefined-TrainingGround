@@ -581,12 +581,10 @@ namespace RTPuzzle
         public static InteractiveObjectType CreateProjectileAtStart(LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData,
             InteractiveObjectContainer interactiveObjectContainer, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration)
         {
-            var projectileObject = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, interactiveObjectContainer.transform);
-            InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(projectileObject, puzzlePrefabConfiguration, puzzleGameConfiguration);
-            projectileObject.Init(new InteractiveObjectInitializationObject() { LaunchProjectileInherentData = ProjectileInherentData }, new List<Type>() {
-                typeof(ModelObjectModule)
-            });
-            return projectileObject;
+            return InteractiveObjectType.Instantiate(InteractiveObjectTypeDefinitionInherentData, new InteractiveObjectInitializationObject() { LaunchProjectileInherentData = ProjectileInherentData },
+                puzzlePrefabConfiguration, puzzleGameConfiguration, interactiveObjectContainer.transform, new List<Type>() {
+                    typeof(ModelObjectModule)
+                });
         }
 
         public static void OnProjectileSpawn(ref InteractiveObjectType projectileObjectRef, BeziersControlPoints throwProjectilePath, LaunchProjectileInherentData ProjectileInherentData)

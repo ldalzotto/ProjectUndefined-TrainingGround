@@ -16,20 +16,18 @@ namespace GameConfigurationID
     public enum AttractiveObjectId
     {
 
-        CHEESE = 0,
-
-        EDITOR_TEST = 1,
-
-        CHEESE_SEWER_RTP_2 = 2,
+        _Sewers_1_CheeseAttractive = 0,
+        
+        _Sewers_2_CheeseAttractive = 2,
 
         RTP_TEST_RangeEffectManager = 3,
 
         _1_Town_StartTutorial_Speaker = 4,
 
-        TEST_PROJECTILE_TOATTRACTIVE = 5,
-
         _1_Town_StartTutorial_Test = 6,
 
-        TEST_1 = 7
+        TEST_1 = 7,
+
+        TEST_2 = 8
     }
 }
