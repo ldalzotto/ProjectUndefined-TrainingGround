@@ -100,7 +100,7 @@ namespace RTPuzzle
             var objectSpawnPosition = this.AttractiveObjectGroundPositioner.GetAttractiveObjectSpawnPosition();
             if (objectSpawnPosition.HasValue)
             {
-                this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject() { InputAttractiveObjectInherentConfigurationData= PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId] });
+                this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject() { AttractiveObjectInherentConfigurationData= PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId] });
                 this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, this.attractiveObject, this.PuzzleGameConfigurationManager, this.AttractiveObjectsInstanciatedParent);
             }
 

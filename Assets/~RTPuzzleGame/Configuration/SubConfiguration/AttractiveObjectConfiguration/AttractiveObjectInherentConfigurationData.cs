@@ -24,12 +24,7 @@ namespace RTPuzzle
         public AnimationID PreActionAnimation;
         [CustomEnum]
         public AnimationID PostActionAnimation;
-
-        public AttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime, InteractiveObjectType AttractiveInteractiveObjectPrefab)
-        {
-            this.Init(effectRange, effectiveTime, AttractiveInteractiveObjectPrefab);
-        }
-
+        
         public void Init(float effectRange, float effectiveTime, InteractiveObjectType AttractiveInteractiveObjectPrefab)
         {
             EffectRange = effectRange;

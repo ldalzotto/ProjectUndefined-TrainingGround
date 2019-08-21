@@ -19,7 +19,7 @@ namespace Tests
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f, LaunchProjectileID.TEST_PROJECTILE_EXPLODE);
+            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(99999f, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
@@ -37,7 +37,7 @@ namespace Tests
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f, LaunchProjectileID.TEST_PROJECTILE_EXPLODE);
+            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(99999f, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
@@ -55,7 +55,7 @@ namespace Tests
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = PuzzleSceneTestHelper.CreateProjectileInherentData(99999f, 0f, LaunchProjectileID.TEST_PROJECTILE_EXPLODE);
+            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(99999f, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();

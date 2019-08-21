@@ -36,16 +36,7 @@ namespace RTPuzzle
         public AnimationID PreActionAnimation;
         [CustomEnum]
         public AnimationID PostActionAnimation;
-
-        public void Init(float explodingEffectRange, float projectileThrowRange, float travelDistancePerSeconds, InteractiveObjectType projectilePrefab, bool isExploding, bool isPersistingToAttractiveObject)
-        {
-            this.ExplodingEffectRange = explodingEffectRange;
-            this.ProjectileThrowRange = projectileThrowRange;
-            this.TravelDistancePerSeconds = travelDistancePerSeconds;
-            this.AssociatedInteractiveObjectType = projectilePrefab;
-            this.isExploding = isExploding;
-            this.isPersistingToAttractiveObject = isPersistingToAttractiveObject;
-        }
+        
     }
     
 }

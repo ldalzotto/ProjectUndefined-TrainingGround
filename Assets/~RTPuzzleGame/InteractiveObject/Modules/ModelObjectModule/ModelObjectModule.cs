@@ -36,7 +36,10 @@ namespace RTPuzzle
         {
             public static void PopuplateFromDefinition(ModelObjectModule modelObjectModule, ModelObjectModuleDefinition modelObjectModuleDefinition)
             {
-                GameObject.Instantiate(modelObjectModuleDefinition.ModelPrefab, modelObjectModule.transform);
+                if(modelObjectModuleDefinition.ModelPrefab != null)
+                {
+                    GameObject.Instantiate(modelObjectModuleDefinition.ModelPrefab, modelObjectModule.transform);
+                }
             }
         }
     }

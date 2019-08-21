@@ -10,25 +10,28 @@ namespace Tests
 {
     class PuzzleSceneTestHelper
     {
-        public static InteractiveObjectType SpawnProjectile(LaunchProjectileInherentData projectileInherentData, TestPositionID projectilePoistion)
+        public static InteractiveObjectType SpawnProjectile(InteractiveObjectInitialization InteractiveObjectInitialization, TestPositionID projectilePoistion)
         {
             var projectilePosition = GameObject.FindObjectsOfType<TestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == projectilePoistion).First().transform.position;
-            return SpawnProjectile(projectileInherentData, projectilePosition);
+            return SpawnProjectile(InteractiveObjectInitialization, projectilePosition);
         }
-
-        public static InteractiveObjectType SpawnProjectile(LaunchProjectileInherentData projectileInherentData, Vector3 projectilePosition)
+        
+        public static InteractiveObjectType SpawnProjectile(InteractiveObjectInitialization InteractiveObjectInitialization,  Vector3 projectilePosition)
         {
-            var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            InteractiveObjectType createdProjectile = null;
-            // var createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(projectileInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>());
-
             var projectileBezierPath = new BeziersControlPoints();
             projectileBezierPath.P0 = projectilePosition;
             projectileBezierPath.P1 = projectilePosition;
             projectileBezierPath.P2 = projectilePosition;
             projectileBezierPath.P3 = projectilePosition;
 
-            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref createdProjectile, projectileBezierPath, projectileInherentData);
+            InteractiveObjectInitialization.InteractiveObjectInitializationObject.ProjectilePath = projectileBezierPath;
+
+            var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            InteractiveObjectType createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(InteractiveObjectInitialization.InteractiveObjectInitializationObject, InteractiveObjectInitialization.InteractiveObjectTypeDefinitionInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>(),
+                        GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration);
+
+          
+            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref createdProjectile, InteractiveObjectInitialization.InteractiveObjectInitializationObject);
             return createdProjectile;
         }
 
@@ -53,13 +56,6 @@ namespace Tests
             return DisarmObjectModule.Instanciate(worldPosition, disarmObjectInherentData);
         }
 
-        public static void SetAttractiveObjectConfigurationData(AttractiveObjectId attractiveObjectId, float effectRange, float effectiveTime)
-        {
-            var attractiveObjectConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[attractiveObjectId];
-            attractiveObjectConfiguration.EffectRange = effectRange;
-            attractiveObjectConfiguration.EffectiveTime = effectiveTime;
-        }
-
         public static TargetZoneModule FindTargetZone(TargetZoneID targetZoneID)
         {
             return GameObject.FindObjectsOfType<TargetZoneModule>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();
@@ -79,15 +75,7 @@ namespace Tests
             GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle = escapeSemiAngle;
             GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = playerDetectionRadius;
         }
-
-        public static LaunchProjectileInherentData CreateProjectileInherentData(float effectRange, float travelDistancePerSeconds, LaunchProjectileID baseProjectileIDForPrefab, bool isExploding = true, bool isPersistingToAttractiveObject = false)
-        {
-            var projectileData = ScriptableObject.CreateInstance<LaunchProjectileInherentData>();
-            var randomProjectileInherentConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().ProjectileConf()[baseProjectileIDForPrefab];
-            projectileData.Init(effectRange, 0f, travelDistancePerSeconds, randomProjectileInherentConfiguration.AssociatedInteractiveObjectType, isExploding, isPersistingToAttractiveObject);
-            return projectileData;
-        }
-
+        
         public static DisarmObjectInherentData CreateDisarmObjectInherentData(float DisarmTime, float DisarmInteractionRange, DisarmObjectID disarmObjectID)
         {
             var disarmObjectData = ScriptableObject.CreateInstance<DisarmObjectInherentData>();
@@ -166,10 +154,11 @@ namespace Tests
         #endregion
 
         #region Projectile
-        public static IEnumerator ProjectileYield(LaunchProjectileInherentData projectileInherentData, Vector3 projectilePoistion,
+        public static IEnumerator ProjectileYield(InteractiveObjectInitialization InteractiveObjectInitialization,
+                            Vector3 projectilePoistion,
                 Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<IEnumerator> OnDistanceReached)
         {
-            var projectile = SpawnProjectile(projectileInherentData, projectilePoistion);
+            var projectile = SpawnProjectile(InteractiveObjectInitialization, projectilePoistion);
             yield return new WaitForFixedUpdate();
             if (OnProjectileSpawn != null)
             {
@@ -185,12 +174,10 @@ namespace Tests
             }
         }
 
-        public static IEnumerator ProjectileToAttractiveYield(LaunchProjectileInherentData projectileInherentData, float attractiveObjectEffectRange, float attractiveObjectEffectiveTime, Vector3 projectilePosition,
+        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition,
                Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<InteractiveObjectType, IEnumerator> OnProjectileTurnedIntoAttractive, Func<IEnumerator> OnDistanceReached)
         {
-            var projectile = SpawnProjectile(projectileInherentData, projectilePosition);
-
-            PuzzleSceneTestHelper.SetAttractiveObjectConfigurationData(projectile.GetDisabledModule<AttractiveObjectModule>().AttractiveObjectId, attractiveObjectEffectRange, attractiveObjectEffectiveTime);
+            var projectile = SpawnProjectile(InteractiveObjectInitialization, projectilePosition);
 
             yield return new WaitForFixedUpdate();
             if (OnProjectileSpawn != null)
@@ -214,10 +201,10 @@ namespace Tests
             }
         }
 
-        public static IEnumerator ProjectileToAttractiveYield(LaunchProjectileInherentData projectileInherentData, float attractiveObjectEffectRange, float attractiveObjectEffectiveTime, TestPositionID projectilePosition,
+        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization InteractiveObjectInitialization, TestPositionID projectilePosition,
             Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<InteractiveObjectType, IEnumerator> OnProjectileTurnedIntoAttractive, Func<IEnumerator> OnDistanceReached)
         {
-            yield return ProjectileToAttractiveYield(projectileInherentData, attractiveObjectEffectRange, attractiveObjectEffectiveTime, FindTestPosition(projectilePosition).position,
+            yield return ProjectileToAttractiveYield(InteractiveObjectInitialization, FindTestPosition(projectilePosition).position,
                  OnProjectileSpawn, OnProjectileTurnedIntoAttractive, OnDistanceReached);
         }
         #endregion
@@ -250,18 +237,18 @@ namespace Tests
         #endregion
 
         #region Projectile Ignore Target
-        public static IEnumerator ProjectileIngoreTargetYield(LaunchProjectileInherentData projectileInherentData, Vector3 projectilePoistion,
+        public static IEnumerator ProjectileIngoreTargetYield(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePoistion,
             Func<IEnumerator> OnBeforeSecondProjectileSpawn,
             Func<InteractiveObjectType, IEnumerator> OnSecondProjectileSpawned,
             Func<IEnumerator> OnSecondProjectileDistanceReached)
         {
-            SpawnProjectile(projectileInherentData, projectilePoistion);
+            SpawnProjectile(InteractiveObjectInitialization, projectilePoistion);
             yield return new WaitForFixedUpdate();
             if (OnBeforeSecondProjectileSpawn != null)
             {
                 yield return OnBeforeSecondProjectileSpawn.Invoke();
             }
-            var projectile = SpawnProjectile(projectileInherentData, projectilePoistion);
+            var projectile = SpawnProjectile(InteractiveObjectInitialization, projectilePoistion);
             yield return new WaitForFixedUpdate();
             if (OnSecondProjectileSpawned != null)
             {
@@ -283,7 +270,7 @@ namespace Tests
             Func<IEnumerator> OnFearTriggered, Func<IEnumerator> OnFearEnded, float fearTime, GenericPuzzleAIBehavior mouseAIBheavior)
         {
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 1f);
-            yield return ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(1000, 1, LaunchProjectileID.TEST_PROJECTILE_EXPLODE), projectilePosition,
+            yield return ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(1000, 1), projectilePosition,
                 OnProjectileSpawn: null,
                 OnDistanceReached: null);
             yield return new WaitForEndOfFrame();
@@ -328,10 +315,10 @@ namespace Tests
             }
         }
 
-        public static IEnumerator EscapeFromPlayerIgnoreTargetYield(PlayerManager playerManager, NPCAIManager nPCAIManager, LaunchProjectileInherentData projectileInherentData, Vector3 projectilePosition,
+        public static IEnumerator EscapeFromPlayerIgnoreTargetYield(PlayerManager playerManager, NPCAIManager nPCAIManager, InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition,
             Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
         {
-            yield return PuzzleSceneTestHelper.ProjectileYield(projectileInherentData, projectilePosition,
+            yield return PuzzleSceneTestHelper.ProjectileYield(InteractiveObjectInitialization, projectilePosition,
                 OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                 {
                     return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, nPCAIManager, OnBeforeSettingPosition, OnSamePositionSetted, null);

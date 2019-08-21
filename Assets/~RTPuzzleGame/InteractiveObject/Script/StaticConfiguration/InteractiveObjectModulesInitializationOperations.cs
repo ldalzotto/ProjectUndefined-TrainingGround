@@ -34,13 +34,13 @@ namespace RTPuzzle
         {
             interactiveObjectType.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule attractiveObjectTypeModule) =>
             {
-                if (InteractiveObjectInitializationObject.InputAttractiveObjectInherentConfigurationData == null)
+                if (InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData == null)
                 {
                     attractiveObjectTypeModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], interactiveObjectType.GetModule<ModelObjectModule>());
                 }
                 else
                 {
-                    attractiveObjectTypeModule.Init(InteractiveObjectInitializationObject.InputAttractiveObjectInherentConfigurationData, interactiveObjectType.GetModule<ModelObjectModule>());
+                    attractiveObjectTypeModule.Init(InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData, interactiveObjectType.GetModule<ModelObjectModule>());
                 }
             }
             );

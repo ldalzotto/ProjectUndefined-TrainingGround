@@ -18,7 +18,7 @@ namespace RTPuzzle
     public class InteractiveObjectInitializationObject
     {
 
-        public RTPuzzle.AttractiveObjectInherentConfigurationData InputAttractiveObjectInherentConfigurationData;
+        public RTPuzzle.AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData;
 
         public RTPuzzle.TargetZoneInherentData TargetZoneInherentData;
 

@@ -1,3 +1,4 @@
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionInherentData", order = 1)]
     public class InteractiveObjectTypeDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
+        public InteractiveObjectID InteractiveObjectID;
+
         public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
 
         public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, 
@@ -24,6 +27,11 @@ namespace RTPuzzle
         {
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
+                if (InteractiveObjectID != InteractiveObjectID.NONE)
+                {
+                    InteractiveObjectType.InteractiveObjectID = InteractiveObjectID;
+                }
+
                 this.DestroyExistingModules(InteractiveObjectType.gameObject);
 
                 foreach (var rangeDefinitionModuleActivation in this.RangeDefinitionModulesActivation)

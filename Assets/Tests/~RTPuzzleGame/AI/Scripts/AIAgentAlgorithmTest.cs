@@ -31,7 +31,7 @@ namespace Tests
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, 30f);
             var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
             var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
-            PuzzleSceneTestHelper.ProjectileYield(PuzzleSceneTestHelper.CreateProjectileInherentData(9999f, 10f, LaunchProjectileID.TEST_PROJECTILE_EXPLODE), mouseTestAIManager.transform.position,
+            PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(9999f, 10f), mouseTestAIManager.transform.position,
                 OnProjectileSpawn: (InteractiveObjectType LaunchProjectile) =>
                 {
                     Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);
