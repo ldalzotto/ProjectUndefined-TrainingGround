@@ -34,4 +34,9 @@ public abstract class AbstractObjectDefinitionConfigurationInherentData : Serial
             }
         }
     }
+
+    public T GetDefinitionModule<T>() where T : ScriptableObject
+    {
+        return (T)this.RangeDefinitionModules[typeof(T)];
+    }
 }

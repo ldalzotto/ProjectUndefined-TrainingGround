@@ -29,5 +29,7 @@ namespace GameConfigurationID {
     TEST_PROJECTILE_TOATTRACTIVE = 7,
     
     _1_Town_StartTutorial_Test = 8,
-  }
+
+        TEST_1 = 9
+    }
 }

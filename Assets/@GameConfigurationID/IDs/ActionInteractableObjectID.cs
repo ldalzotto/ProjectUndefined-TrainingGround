@@ -17,5 +17,7 @@ namespace GameConfigurationID {
     TEST = 0,
     
     _1_Town_GardenDoor = 1,
-  }
+
+        TEST_1 = 2
+    }
 }

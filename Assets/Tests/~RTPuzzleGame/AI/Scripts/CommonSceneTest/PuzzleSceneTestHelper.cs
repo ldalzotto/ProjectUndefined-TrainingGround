@@ -15,8 +15,8 @@ namespace Tests
             var projectilePosition = GameObject.FindObjectsOfType<TestPosition>().ToList().Select(a => a).Where(pos => pos.aITestPositionID == projectilePoistion).First().transform.position;
             return SpawnProjectile(InteractiveObjectInitialization, projectilePosition);
         }
-        
-        public static InteractiveObjectType SpawnProjectile(InteractiveObjectInitialization InteractiveObjectInitialization,  Vector3 projectilePosition)
+
+        public static InteractiveObjectType SpawnProjectile(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition)
         {
             var projectileBezierPath = new BeziersControlPoints();
             projectileBezierPath.P0 = projectilePosition;
@@ -27,11 +27,13 @@ namespace Tests
             InteractiveObjectInitialization.InteractiveObjectInitializationObject.ProjectilePath = projectileBezierPath;
 
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            InteractiveObjectType createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(InteractiveObjectInitialization.InteractiveObjectInitializationObject, InteractiveObjectInitialization.InteractiveObjectTypeDefinitionInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>(),
+            InteractiveObjectType createdProjectile = ProjectileActionInstanciationHelper.CreateProjectileAtStart(InteractiveObjectInitialization.InteractiveObjectInitializationObject.LaunchProjectileInherentData
+                , InteractiveObjectInitialization.InteractiveObjectTypeDefinitionInherentData, GameObject.FindObjectOfType<InteractiveObjectContainer>(),
                         GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration, GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration);
 
-          
-            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref createdProjectile, InteractiveObjectInitialization.InteractiveObjectInitializationObject);
+
+            ProjectileActionInstanciationHelper.OnProjectileSpawn(ref createdProjectile, InteractiveObjectInitialization.InteractiveObjectInitializationObject.ProjectilePath,
+                InteractiveObjectInitialization.InteractiveObjectInitializationObject.LaunchProjectileInherentData);
             return createdProjectile;
         }
 
@@ -76,14 +78,6 @@ namespace Tests
             GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = playerDetectionRadius;
         }
         
-        public static DisarmObjectInherentData CreateDisarmObjectInherentData(float DisarmTime, float DisarmInteractionRange, DisarmObjectID disarmObjectID)
-        {
-            var disarmObjectData = ScriptableObject.CreateInstance<DisarmObjectInherentData>();
-            var foundDisarmObjectConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().DisarmObjectsConfiguration()[disarmObjectID];
-            disarmObjectData.Init(DisarmTime, DisarmInteractionRange, foundDisarmObjectConfiguration.AssociatedInteractiveObjectType);
-            return disarmObjectData;
-        }
-
         public static void SetAIEscapeSemiAngle(AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
         {
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
@@ -217,7 +211,7 @@ namespace Tests
             var puzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
             var targetZone = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, targetZonePosition, Quaternion.identity);
             InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone().DefineInteractiveObject(targetZone, puzzlePrefabConfiguration, puzzleGameConfiguration,
-                    RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE) );
+                    RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE));
             targetZone.Init(new InteractiveObjectInitializationObject() { TargetZoneInherentData = targetZoneInherentData });
 
             yield return new WaitForFixedUpdate();
@@ -328,10 +322,10 @@ namespace Tests
         #endregion
 
         #region AI disarm object
-        public static IEnumerator DisarmObjectYield(DisarmObjectInherentData disarmObjectInherentData, Vector3 worldPosition, Func<InteractiveObjectType, IEnumerator> OnDisarmObjectSpawn, 
+        public static IEnumerator DisarmObjectYield(InteractiveObjectInitialization disarmObjectInitialization, Vector3 worldPosition, Func<InteractiveObjectType, IEnumerator> OnDisarmObjectSpawn,
                     Func<InteractiveObjectType, IEnumerator> OnDisarmTimerOver)
         {
-            var disarmObject = SpawnAIDisarmObject(disarmObjectInherentData, worldPosition);
+            var disarmObject = disarmObjectInitialization.InstanciateAndInit(worldPosition);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
             if (OnDisarmObjectSpawn != null)
@@ -340,7 +334,7 @@ namespace Tests
             }
             if (OnDisarmTimerOver != null)
             {
-                yield return new WaitForSeconds(disarmObjectInherentData.DisarmTime);
+                yield return new WaitForSeconds(disarmObjectInitialization.InteractiveObjectInitializationObject.DisarmObjectInherentData.DisarmTime);
                 yield return OnDisarmTimerOver.Invoke(disarmObject);
             }
         }

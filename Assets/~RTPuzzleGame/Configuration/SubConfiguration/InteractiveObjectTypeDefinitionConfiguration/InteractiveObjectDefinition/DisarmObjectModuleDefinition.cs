@@ -18,7 +18,5 @@ namespace RTPuzzle
     {
         [CustomEnum(ConfigurationType = typeof(DisarmObjectConfiguration))]
         public DisarmObjectID DisarmObjectID;
-
-        public DisarmObjectInherentData DisarmObjectInherentData;
     }
 }

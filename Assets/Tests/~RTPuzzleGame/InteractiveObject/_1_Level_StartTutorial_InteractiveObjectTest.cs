@@ -16,28 +16,28 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest);
             yield return new WaitForFixedUpdate();
-
-            var interactiveObjectID = InteractiveObjectID._1_Town_StartTutorial_Test_Speaker;
+            
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
 
 
             var projectileThrowRange = 9993f;
             var projectileEffectRange = 9994f;
-            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
                  explodingEffectRange: 9991f, travelDistancePerSeconds: 9992f, projectileThrowRange: projectileThrowRange,
                  attractiveObjectEffectRange: projectileEffectRange, attractiveObjectEffectiveTime: 9995f,
                  grabObjectRadius: 1.5f,
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
-            projectile.InteractiveObjectTypeDefinitionInherentData.InteractiveObjectID = interactiveObjectID;
-            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(default, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f),
-                     projectile.InteractiveObjectInitializationObject,
-                     projectile.InteractiveObjectTypeDefinitionInherentData
+
+            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
+                 projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
+                 projectile.InteractiveObjectTypeDefinitionID,
+                 SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f)
             );
 
             playerActionManager.ExecuteAction(launchProjetileAction);
-            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(interactiveObjectID);
+            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(projectile.InteractiveObjectID);
 
             Assert.IsTrue(interactiveLaunchProjectiles.Count == 1);
             var interactiveProjectile = interactiveLaunchProjectiles[0];
@@ -63,22 +63,21 @@ namespace Tests
 
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker( InteractiveObjectTestID.TEST_1,
                  explodingEffectRange: 9999f, travelDistancePerSeconds: 9999f, projectileThrowRange: 9999f,
                  attractiveObjectEffectRange: 9999f, attractiveObjectEffectiveTime: 9995f,
                  grabObjectRadius: 1.5f,
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
-            projectile.InteractiveObjectTypeDefinitionInherentData.InteractiveObjectID = InteractiveObjectID._1_Town_StartTutorial_Test_Speaker;
-            var launchProjectileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(default, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f),
-                     projectile.InteractiveObjectInitializationObject,
-                     projectile.InteractiveObjectTypeDefinitionInherentData
-            );
+            var launchProjectileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
+                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
+                    projectile.InteractiveObjectTypeDefinitionID,
+                    SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
             var launchProjectileActionRemainingExecutions = launchProjectileAction.RemainingExecutionAmout;
             playerActionManager.ExecuteAction(launchProjectileAction);
             launchProjectileAction.SpawnLaunchProjectile(Vector3.zero);
 
-            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(InteractiveObjectID._1_Town_StartTutorial_Test_Speaker);
+            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(projectile.InteractiveObjectID);
 
             Assert.AreEqual(1, interactiveLaunchProjectiles.Count);
 
@@ -99,21 +98,19 @@ namespace Tests
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
-
-            var interactiveObjectID = InteractiveObjectID._1_Town_StartTutorial_Test_Speaker;
+            
             var projectileThrowRange = 9993f;
             var projectileEffectRange = 9994f;
-            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
                  explodingEffectRange: 9991f, travelDistancePerSeconds: 9992f, projectileThrowRange: projectileThrowRange,
                  attractiveObjectEffectRange: projectileEffectRange, attractiveObjectEffectiveTime: 9995f,
                  grabObjectRadius: 1.5f,
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
-            projectile.InteractiveObjectTypeDefinitionInherentData.InteractiveObjectID = interactiveObjectID;
-            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(default, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f),
-                     projectile.InteractiveObjectInitializationObject,
-                     projectile.InteractiveObjectTypeDefinitionInherentData
-            );
+            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
+                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
+                    projectile.InteractiveObjectTypeDefinitionID,
+                SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
             var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
             playerActionManager.ExecuteAction(launchProjetileAction);
             launchProjetileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
@@ -121,7 +118,7 @@ namespace Tests
             //Wait for projectile to read target
             yield return null;
 
-            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(interactiveObjectID);
+            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(projectile.InteractiveObjectID);
 
             Assert.AreEqual(1, interactiveLaunchProjectiles.Count);
 
@@ -144,14 +141,27 @@ namespace Tests
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
-            var launchProjectileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(LaunchProjectileID._1_Town_StartTutorial_Test, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
-            var launchProjectileActionRemainingExecutions = launchProjectileAction.RemainingExecutionAmout;
-            playerActionManager.ExecuteAction(launchProjectileAction);
-            launchProjectileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
+
+            var projectileThrowRange = 9993f;
+            var projectileEffectRange = 9994f;
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
+                 explodingEffectRange: 9991f, travelDistancePerSeconds: 9992f, projectileThrowRange: projectileThrowRange,
+                 attractiveObjectEffectRange: projectileEffectRange, attractiveObjectEffectiveTime: 9995f,
+                 grabObjectRadius: 1.5f,
+                 disarmInteractionRange: 2.5f, disarmTime: 2f
+            );
+            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
+                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
+                    projectile.InteractiveObjectTypeDefinitionID,
+                SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
+            var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
+            playerActionManager.ExecuteAction(launchProjetileAction);
+            launchProjetileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
+            
 
             //Wait for projectile to read target
             yield return null;
-            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(InteractiveObjectID._1_Town_StartTutorial_Test_Speaker);
+            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(projectile.InteractiveObjectID);
             Assert.AreEqual(1, interactiveLaunchProjectiles.Count);
 
             var interactiveProjectile = interactiveLaunchProjectiles[0];
@@ -178,14 +188,27 @@ namespace Tests
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
             var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
-            var launchProjectileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(LaunchProjectileID._1_Town_StartTutorial_Test, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
-            var launchProjectileActionRemainingExecutions = launchProjectileAction.RemainingExecutionAmout;
-            playerActionManager.ExecuteAction(launchProjectileAction);
-            launchProjectileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
+
+
+            var projectileThrowRange = 9993f;
+            var projectileEffectRange = 9994f;
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
+                 explodingEffectRange: 9991f, travelDistancePerSeconds: 9992f, projectileThrowRange: projectileThrowRange,
+                 attractiveObjectEffectRange: projectileEffectRange, attractiveObjectEffectiveTime: 9995f,
+                 grabObjectRadius: 1.5f,
+                 disarmInteractionRange: 2.5f, disarmTime: 2f
+            );
+            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
+                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
+                    projectile.InteractiveObjectTypeDefinitionID,
+                SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
+            var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
+            playerActionManager.ExecuteAction(launchProjetileAction);
+            launchProjetileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
 
             //Wait for projectile to read target
             yield return null;
-            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(InteractiveObjectID._1_Town_StartTutorial_Test_Speaker);
+            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(projectile.InteractiveObjectID);
             Assert.AreEqual(1, interactiveLaunchProjectiles.Count);
 
             var interactiveProjectile = interactiveLaunchProjectiles[0];

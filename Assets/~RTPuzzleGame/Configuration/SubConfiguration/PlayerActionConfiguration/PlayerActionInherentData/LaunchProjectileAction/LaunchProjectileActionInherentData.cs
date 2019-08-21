@@ -12,10 +12,11 @@ namespace RTPuzzle
 
         public LaunchProjectileID launchProjectileId;
 
-        public LaunchProjectileActionInherentData(LaunchProjectileID launchProjectileId,
+        public LaunchProjectileActionInherentData(LaunchProjectileID launchProjectileId, InteractiveObjectTypeDefinitionID projectedObjectDefinitionID,
             SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
         {
             this.launchProjectileId = launchProjectileId;
+            this.projectedObjectDefinitionID = projectedObjectDefinitionID;
         }
         
     }

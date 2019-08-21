@@ -33,5 +33,7 @@ namespace GameConfigurationID {
     Player = 9,
     
     _1_Town_StartTutorial_Speaker = 10,
+
+    TEST_1 = 11
   }
 }

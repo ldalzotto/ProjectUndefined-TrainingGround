@@ -20,8 +20,6 @@ namespace GameConfigurationID
 
         _1_Town_Start_Tutorial_Speaker = 1,
 
-        TEST_DISARM_ONLY = 2,
-
-        _1_Town_StartTutorial_Test = 3,
+        TEST_1 = 4
     }
 }

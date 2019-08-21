@@ -17,5 +17,7 @@ namespace GameConfigurationID {
     NONE = 0,
     
     _1_Town_GardenWatchman = 1,
-  }
+
+        TEST_1 = 2
+    }
 }

@@ -143,7 +143,7 @@ namespace Tests
                              Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
                              Assert.IsFalse(aiBehavior.IsDisarmingObject());
 
-                             return PuzzleSceneTestHelper.DisarmObjectYield(PuzzleSceneTestHelper.CreateDisarmObjectInherentData(0.05f, 999f, DisarmObjectID.TEST_DISARM_ONLY), aiManager.transform.position,
+                             return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                                     {
                                         Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
@@ -224,7 +224,7 @@ namespace Tests
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
 
-            yield return PuzzleSceneTestHelper.DisarmObjectYield(PuzzleSceneTestHelper.CreateDisarmObjectInherentData(0.05f, 999f, DisarmObjectID.TEST_DISARM_ONLY), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());
@@ -251,7 +251,7 @@ namespace Tests
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
             Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
 
-            yield return PuzzleSceneTestHelper.DisarmObjectYield(PuzzleSceneTestHelper.CreateDisarmObjectInherentData(0.05f, 999f, DisarmObjectID.TEST_DISARM_ONLY), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());
@@ -281,7 +281,7 @@ namespace Tests
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
             Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
 
-            yield return PuzzleSceneTestHelper.DisarmObjectYield(PuzzleSceneTestHelper.CreateDisarmObjectInherentData(0.05f, 999f, DisarmObjectID.TEST_DISARM_ONLY), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());
@@ -318,7 +318,7 @@ namespace Tests
                {
                    Assert.IsFalse(aiBehavior.IsDisarmingObject());
                    Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
-                   return PuzzleSceneTestHelper.DisarmObjectYield(PuzzleSceneTestHelper.CreateDisarmObjectInherentData(0.05f, 999f, DisarmObjectID.TEST_DISARM_ONLY), aiManager.transform.position,
+                   return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());
