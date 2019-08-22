@@ -74,21 +74,21 @@ namespace Tests
             GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = playerDetectionRadius;
         }
 
-        public static void SetAIEscapeSemiAngle(AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
+        public static void SetAIEscapeSemiAngle(InteractiveObjectTestID InteractiveObjectTestID, AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
         {
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
             {
                 GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
-                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeSemiAngleV2.Values[LaunchProjectileID.TEST_PROJECTILE_EXPLODE] = escapeSemiAngle;
+                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeSemiAngleV2.Values[InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].LaunchProjectileID] = escapeSemiAngle;
             }
         }
 
-        public static void SetAIEscapeDistanceFromProjectile(AbstractAIComponents abstractAIComponents, float escapeDistance)
+        public static void SetAIEscapeDistanceFromProjectile(InteractiveObjectTestID InteractiveObjectTestID, AbstractAIComponents abstractAIComponents, float escapeDistance)
         {
             if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
             {
                 GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
-                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[LaunchProjectileID.TEST_PROJECTILE_EXPLODE] = escapeDistance;
+                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].LaunchProjectileID] = escapeDistance;
             }
         }
 
@@ -256,11 +256,11 @@ namespace Tests
         #endregion
 
         #region Fear
-        public static IEnumerator FearYield(Vector3 projectilePosition,
+        public static IEnumerator FearYield(Vector3 projectilePosition, InteractiveObjectTestID projectileID,
             Func<IEnumerator> OnFearTriggered, Func<IEnumerator> OnFearEnded, float fearTime, GenericPuzzleAIBehavior mouseAIBheavior)
         {
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseAIBheavior.AIComponents, 1f);
-            yield return ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(1000, 1), projectilePosition,
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(projectileID, mouseAIBheavior.AIComponents, 1f);
+            yield return ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(projectileID, 1000, 1), projectilePosition,
                 OnProjectileSpawn: null,
                 OnDistanceReached: null);
             yield return new WaitForEndOfFrame();
@@ -346,7 +346,11 @@ namespace Tests
 
                 if (genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null)
                 {
-                    PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(genericPuzzleAIComponents, 25f);
+                    genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values.Clear();
+                    foreach (LaunchProjectileID projectileId in Enum.GetValues(typeof(LaunchProjectileID)))
+                    {
+                        genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[projectileId] = 25f;
+                    }
                 }
 
                 genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;

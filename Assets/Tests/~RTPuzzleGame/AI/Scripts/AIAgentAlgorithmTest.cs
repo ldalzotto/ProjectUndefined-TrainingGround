@@ -28,10 +28,10 @@ namespace Tests
             yield return this.Before(SceneConstants.OneAINoTargetZone);
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, 30f);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, 30f);
             var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
             var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
-            PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(9999f, 10f), mouseTestAIManager.transform.position,
+            PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 9999f, 10f), mouseTestAIManager.transform.position,
                 OnProjectileSpawn: (InteractiveObjectType LaunchProjectile) =>
                 {
                     Assert.IsTrue(oldAgentNextPosition != mouseTestAIManager.GetAgent().nextPosition);

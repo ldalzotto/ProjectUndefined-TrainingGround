@@ -26,8 +26,6 @@ namespace GameConfigurationID
 
         _1_Town_StartTutorial_Speaker = 5,
 
-        TEST_PROJECTILE_EXPLODE = 6,
-
         _1_Town_StartTutorial_Test = 8,
 
         TEST_1 = 9,

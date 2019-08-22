@@ -8,7 +8,9 @@ namespace Tests
 
     public static class ProjectileInteractiveObjectDefinitions
     {
-        public static InteractiveObjectInitialization ExplodingProjectile(float explodingEffectRange, float travelDistancePerSeconds)
+        public static InteractiveObjectInitialization ExplodingProjectile(
+            InteractiveObjectTestID interactiveObjectTestID,
+            float explodingEffectRange, float travelDistancePerSeconds)
         {
             return new InteractiveObjectInitialization()
             {
@@ -16,7 +18,7 @@ namespace Tests
                 {
                     RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                     {
-                        {typeof(LaunchProjectileModuleDefinition), new LaunchProjectileModuleDefinition(){ LaunchProjectileID = GameConfigurationID.LaunchProjectileID.TEST_PROJECTILE_EXPLODE }},
+                        {typeof(LaunchProjectileModuleDefinition), new LaunchProjectileModuleDefinition(){ LaunchProjectileID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].LaunchProjectileID }},
                         {typeof(ModelObjectModuleDefinition), new ModelObjectModuleDefinition() }
                     },
                     RangeDefinitionModulesActivation = new Dictionary<Type, bool>()

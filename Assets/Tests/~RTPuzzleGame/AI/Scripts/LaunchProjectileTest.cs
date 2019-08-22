@@ -18,8 +18,8 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(99999f, 0f);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
+            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
@@ -36,8 +36,8 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(99999f, 0f);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
+            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
@@ -54,8 +54,8 @@ namespace Tests
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
-            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(99999f, 0f);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
+            var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 0f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, mouseTestAIManager.GetAgent().transform.position + Vector3.back);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
