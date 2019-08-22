@@ -1,5 +1,4 @@
-﻿using GameConfigurationID;
-using RTPuzzle;
+﻿using RTPuzzle;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,41 +38,48 @@ namespace Tests
             };
         }
 
-        public static InteractiveObjectInitialization MutateToAttractiveProjectile(float explodingEffectRange, float travelDistancePerSeconds, float attractiveObjectEffectRange, float attractiveObjectEffectiveTime)
+        public static InteractiveObjectInitialization MutateToAttractiveProjectile(
+                InteractiveObjectTestID interactiveObjectTestID,
+                float explodingEffectRange, float travelDistancePerSeconds,
+                float attractiveObjectEffectRange, float attractiveObjectEffectiveTime)
         {
-            return new InteractiveObjectInitialization()
-            {
-                InteractiveObjectTypeDefinitionInherentData = new InteractiveObjectTypeDefinitionInherentData()
+            var InteractiveObjectInitialization = new InteractiveObjectInitialization()
                 {
-                    RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                    InteractiveObjectTypeDefinitionInherentData = new InteractiveObjectTypeDefinitionInherentData()
                     {
-                        {typeof(LaunchProjectileModuleDefinition), new LaunchProjectileModuleDefinition(){ LaunchProjectileID = GameConfigurationID.LaunchProjectileID.TEST_PROJECTILE_TOATTRACTIVE }},
-                        {typeof(AttractiveObjectModuleDefinition), new AttractiveObjectModuleDefinition(){ }},
-                        {typeof(ModelObjectModuleDefinition), new ModelObjectModuleDefinition() }
+                        RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                        {
+                            {typeof(LaunchProjectileModuleDefinition), new LaunchProjectileModuleDefinition(){ LaunchProjectileID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].LaunchProjectileID }},
+                            {typeof(AttractiveObjectModuleDefinition), new AttractiveObjectModuleDefinition(){ AttractiveObjectId = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].AttractiveObjectId }},
+                            {typeof(ModelObjectModuleDefinition), new ModelObjectModuleDefinition() }
+                        },
+                        RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
+                        {
+                            {typeof(LaunchProjectileModuleDefinition), true},
+                            {typeof(AttractiveObjectModuleDefinition), true},
+                            {typeof(ModelObjectModuleDefinition), new ModelObjectModuleDefinition() }
+                        }
                     },
-                    RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
+                    InteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
                     {
-                        {typeof(LaunchProjectileModuleDefinition), true},
-                        {typeof(AttractiveObjectModuleDefinition), true},
-                        {typeof(ModelObjectModuleDefinition), new ModelObjectModuleDefinition() }
+                        LaunchProjectileInherentData = new LaunchProjectileInherentData()
+                        {
+                            ExplodingEffectRange = explodingEffectRange,
+                            TravelDistancePerSeconds = travelDistancePerSeconds,
+                            isExploding = false,
+                            isPersistingToAttractiveObject = true
+                        },
+                        AttractiveObjectInherentConfigurationData = new AttractiveObjectInherentConfigurationData()
+                        {
+                            EffectRange = attractiveObjectEffectRange,
+                            EffectiveTime = attractiveObjectEffectiveTime
+                        }
                     }
-                },
-                InteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
-                {
-                    LaunchProjectileInherentData = new LaunchProjectileInherentData()
-                    {
-                        ExplodingEffectRange = explodingEffectRange,
-                        TravelDistancePerSeconds = travelDistancePerSeconds,
-                        isExploding = false,
-                        isPersistingToAttractiveObject = true
-                    },
-                    AttractiveObjectInherentConfigurationData = new AttractiveObjectInherentConfigurationData()
-                    {
-                        EffectRange = attractiveObjectEffectRange,
-                        EffectiveTime = attractiveObjectEffectiveTime
-                    }
-                }
-            };
+                };
+            InteractiveObjectInitialization.InteractiveObjectID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].InteractiveObjectID;
+            InteractiveObjectInitialization.InteractiveObjectTypeDefinitionInherentData.InteractiveObjectID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].InteractiveObjectID;
+            InteractiveObjectInitialization.InitializeTestConfigurations(interactiveObjectTestID);
+            return InteractiveObjectInitialization;
         }
 
         public static InteractiveObjectInitialization _1_Town_Speaker(
