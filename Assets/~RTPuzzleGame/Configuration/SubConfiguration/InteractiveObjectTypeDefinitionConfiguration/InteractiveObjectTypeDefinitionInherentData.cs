@@ -10,6 +10,7 @@ using static RTPuzzle.LaunchProjectileModule;
 using static RTPuzzle.LevelCompletionTriggerModule;
 using static RTPuzzle.ModelObjectModule;
 using static RTPuzzle.NearPlayerGameOverTriggerModule;
+using static RTPuzzle.ObjectRepelModule;
 using static RTPuzzle.TargetZoneModule;
 
 namespace RTPuzzle
@@ -22,7 +23,7 @@ namespace RTPuzzle
 
         public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
 
-        public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, 
+        public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration,
                         PuzzleGameConfiguration puzzleGameConfiguration, RangeTypeObjectDefinitionInherentData LevelCompletionZoneDefinition = null)
         {
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
@@ -78,7 +79,7 @@ namespace RTPuzzle
                         else if (moduleConfiguration.GetType() == typeof(AttractiveObjectModuleDefinition))
                         {
                             var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)moduleConfiguration;
-                            var AttractiveObjectModule =  MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseAttractiveObjectModule, InteractiveObjectType.transform);
+                            var AttractiveObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseAttractiveObjectModule, InteractiveObjectType.transform);
                             AttractiveObjectModuleInstancer.PopuplateFromDefinition(AttractiveObjectModule, AttractiveObjectModuleDefinition, puzzlePrefabConfiguration, puzzleGameConfiguration);
                         }
                         else if (moduleConfiguration.GetType() == typeof(ModelObjectModuleDefinition))
@@ -96,8 +97,14 @@ namespace RTPuzzle
                         else if (moduleConfiguration.GetType() == typeof(GrabObjectModuleDefinition))
                         {
                             var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)moduleConfiguration;
-                          var GrabObjectModule =  MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseGrabObjectModule, InteractiveObjectType.transform);
+                            var GrabObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseGrabObjectModule, InteractiveObjectType.transform);
                             GrabObjectModuleInstancer.PopuplateFromDefinition(GrabObjectModule, GrabObjectModuleDefinition);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(ObjectRepelModuleDefinition))
+                        {
+                            var ObjectRepelModuleDefinition = (ObjectRepelModuleDefinition)moduleConfiguration;
+                            var ObjectRepelModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectRepelModule, InteractiveObjectType.transform);
+                            ObjectRepelModuleInstancer.PopuplateFromDefinition(ObjectRepelModule, ObjectRepelModuleDefinition);
                         }
 //${addNewEntry}
                     }

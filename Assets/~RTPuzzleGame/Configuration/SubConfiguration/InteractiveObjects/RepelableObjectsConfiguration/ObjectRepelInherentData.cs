@@ -11,8 +11,6 @@ namespace RTPuzzle
         [Inline(createSubIfAbsent: true, FileName = "RepelableObjectDistance")]
         public RepelableObjectDistance RepelableObjectDistance;
 
-        public InteractiveObjectType AssociatedInteractiveObjectType;
-
         public float GetRepelableObjectDistance(LaunchProjectileID launchProjectileId)
         {
             if (this.RepelableObjectDistance != null && this.RepelableObjectDistance.Values.ContainsKey(launchProjectileId))

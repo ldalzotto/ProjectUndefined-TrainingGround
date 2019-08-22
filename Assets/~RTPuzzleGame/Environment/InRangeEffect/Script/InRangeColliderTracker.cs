@@ -21,7 +21,7 @@ namespace RTPuzzle
 
         public List<Renderer> InvolvedRenderers { get => involvedRenderers; }
 
-        private void Start()
+        public void Init()
         {
             #region External Dependencies
             this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();

@@ -98,6 +98,8 @@ namespace RTPuzzle
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
             NPCAIAnimationManager = new NPCAIAnimationManager(animator, animationConfiguration);
 
+            this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
+
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
         }

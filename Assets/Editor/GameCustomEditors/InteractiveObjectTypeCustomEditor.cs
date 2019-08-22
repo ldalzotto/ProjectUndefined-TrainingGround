@@ -2,6 +2,7 @@ using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace RTPuzzle
         private void OnEnable()
         {
             if (InteractiveObjectTypeDefinitionConfiguration == null) { this.InteractiveObjectTypeDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<InteractiveObjectTypeDefinitionConfiguration>("t:" + typeof(InteractiveObjectTypeDefinitionConfiguration)); }
-            if (DrawDisplay == null) { DrawDisplay = new Dictionary<string, EnableArea>(); }
+            if (DrawDisplay == null) { DrawDisplay = new Dictionary<string, InteractiveObjectDisaplyEnableArea>(); }
             if (this.CommonGameConfigurations == null) { this.CommonGameConfigurations = new CommonGameConfigurations(); EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations); }
             if (this.PlayerManager == null) { this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>(); }
             SceneView.duringSceneGui += this.OnSceneGUI;
@@ -37,7 +38,7 @@ namespace RTPuzzle
             SceneView.duringSceneGui -= this.OnSceneGUI;
         }
 
-        private Dictionary<string, EnableArea> DrawDisplay;
+        private Dictionary<string, InteractiveObjectDisaplyEnableArea> DrawDisplay;
 
         private InteractiveObjectType InteractiveObjectType;
         private InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionConfigurationInherentData;
@@ -56,14 +57,12 @@ namespace RTPuzzle
                     {
                         foreach (var interacitveObjectDefinitionModule in interactiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules)
                         {
-                            this.GetDrawDisplayOrCreate(interacitveObjectDefinitionModule.Key.Name).OnGUI(null);
+                            this.GetDrawDisplayOrCreate(interacitveObjectDefinitionModule.Key.Name, interacitveObjectDefinitionModule.Value).OnGUI(null);
                         }
                     }
                 }
             }
-
         }
-
 
         private void OnSceneGUI(SceneView sceneView)
         {
@@ -150,10 +149,10 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(LaunchProjectileModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LaunchProjectileModuleDefinition), out ScriptableObject definitionSO);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LaunchProjectileModuleDefinition), out ScriptableObject definitionSO);
                             if (definitionSO != null)
                             {
-								var LaunchProjectileModuleDefinition = (LaunchProjectileModuleDefinition)definitionSO;
+                                var LaunchProjectileModuleDefinition = (LaunchProjectileModuleDefinition)definitionSO;
                                 var LaunchProjectileInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration.ConfigurationInherentData[LaunchProjectileModuleDefinition.LaunchProjectileID];
 
                                 Handles.color = Color.magenta;
@@ -177,10 +176,10 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(AttractiveObjectModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(AttractiveObjectModuleDefinition), out ScriptableObject definitionSO);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(AttractiveObjectModuleDefinition), out ScriptableObject definitionSO);
                             if (definitionSO != null)
                             {
-								var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)definitionSO;
+                                var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)definitionSO;
                                 var AttractiveObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData[AttractiveObjectModuleDefinition.AttractiveObjectId];
 
                                 Handles.color = Color.magenta;
@@ -195,11 +194,11 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(ModelObjectModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ModelObjectModuleDefinition), out ScriptableObject definitionSO);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ModelObjectModuleDefinition), out ScriptableObject definitionSO);
                             if (definitionSO != null)
                             {
-								 var ModelObjectModuleDefinition = (ModelObjectModuleDefinition)definitionSO;
-							}
+                                var ModelObjectModuleDefinition = (ModelObjectModuleDefinition)definitionSO;
+                            }
                         }
                     }
                     else if (drawDisplay.Key == typeof(DisarmObjectModuleDefinition).Name)
@@ -207,10 +206,10 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(DisarmObjectModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(DisarmObjectModuleDefinition), out ScriptableObject definitionSO);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(DisarmObjectModuleDefinition), out ScriptableObject definitionSO);
                             if (definitionSO != null)
                             {
-								 var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)definitionSO;
+                                var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)definitionSO;
                                 var DisarmObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ConfigurationInherentData[DisarmObjectModuleDefinition.DisarmObjectID];
 
                                 Handles.color = Color.magenta;
@@ -225,13 +224,30 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(GrabObjectModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(GrabObjectModuleDefinition), out ScriptableObject definitionSO);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(GrabObjectModuleDefinition), out ScriptableObject definitionSO);
                             if (definitionSO != null)
                             {
-								 var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)definitionSO;
+                                var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)definitionSO;
                                 var GrabObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration.ConfigurationInherentData[GrabObjectModuleDefinition.GrabObjectID];
                                 Handles.Label(InteractiveObjectType.transform.position + Vector3.up * GrabObjectInherentData.EffectRadius, nameof(GrabObjectInherentData.EffectRadius), MyEditorStyles.LabelMagenta);
                                 Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, GrabObjectInherentData.EffectRadius);
+                            }
+                        }
+                    }
+                    else if (drawDisplay.Key == typeof(ObjectRepelModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectRepelModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectRepelModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+                                var ObjectRepelModuleDefinition = (ObjectRepelModuleDefinition)definitionSO;
+                                var ObjectRepelInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[ObjectRepelModuleDefinition.ObjectRepelID];
+                                Handles.color = Color.yellow;
+                                var selectedProjectile = drawArea.GetEnumParameter<LaunchProjectileID>();
+                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ObjectRepelInherentData.GetRepelableObjectDistance(selectedProjectile), nameof(ObjectRepelInherentData.RepelableObjectDistance), MyEditorStyles.LabelYellow);
+                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ObjectRepelInherentData.GetRepelableObjectDistance(selectedProjectile));
                             }
                         }
                     }
@@ -243,12 +259,22 @@ namespace RTPuzzle
             }
         }
 
-        private EnableArea GetDrawDisplayOrCreate(string key)
+        private InteractiveObjectDisaplyEnableArea GetDrawDisplayOrCreate(string key, ScriptableObject definitionSO = null)
         {
-            this.DrawDisplay.TryGetValue(key, out EnableArea EnableArea);
+            this.DrawDisplay.TryGetValue(key, out InteractiveObjectDisaplyEnableArea EnableArea);
             if (EnableArea == null)
             {
-                this.DrawDisplay[key] = new EnableArea(true, key);
+                if (key == typeof(ObjectRepelModuleDefinition).Name && definitionSO != null)
+                {
+                    var ObjectRepelModuleDefinition = (ObjectRepelModuleDefinition)definitionSO;
+                    var ObjectRepelInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[ObjectRepelModuleDefinition.ObjectRepelID];
+                    this.DrawDisplay[key] = new InteractiveObjectDisaplyEnableArea(true, key, new List<AdditionalEnumParameter>() { new AdditionalEnumParameter(typeof(LaunchProjectileID), ObjectRepelInherentData.RepelableObjectDistance.Values.Keys.ToList().ConvertAll(e => (Enum)e)) });
+                }
+                else
+                {
+                    this.DrawDisplay[key] = new InteractiveObjectDisaplyEnableArea(true, key);
+                }
+
                 return this.DrawDisplay[key];
             }
             return EnableArea;
@@ -271,15 +297,25 @@ namespace RTPuzzle
         }
     }
 
-    public class EnableArea
+    public class InteractiveObjectDisaplyEnableArea
     {
         private bool isEnabled;
         private string label;
+        private Dictionary<Type, AdditionalEnumParameter> AdditionalEnumerationParameters;
 
-        public EnableArea(bool isEnabled, string label)
+        public InteractiveObjectDisaplyEnableArea(bool isEnabled, string label, List<AdditionalEnumParameter> AdditionalEnumerationParameters = null)
         {
             this.isEnabled = isEnabled;
             this.label = label;
+
+            if (AdditionalEnumerationParameters != null)
+            {
+                this.AdditionalEnumerationParameters = new Dictionary<Type, AdditionalEnumParameter>();
+                foreach (var enumParam in AdditionalEnumerationParameters)
+                {
+                    this.AdditionalEnumerationParameters.Add(enumParam.EnumType, enumParam);
+                }
+            }
         }
 
         public bool IsEnabled { get => isEnabled; }
@@ -290,6 +326,16 @@ namespace RTPuzzle
             GUILayout.BeginHorizontal();
             this.isEnabled = EditorGUILayout.Toggle(this.isEnabled, GUILayout.Width(30f));
             EditorGUILayout.LabelField(this.label);
+
+            if (this.AdditionalEnumerationParameters != null)
+            {
+                foreach (var additionalEnumerationParameter in this.AdditionalEnumerationParameters.ToList())
+                {
+                    this.AdditionalEnumerationParameters[additionalEnumerationParameter.Key].SelectedEnum = EditorGUILayout.EnumPopup(new GUIContent(""), this.AdditionalEnumerationParameters[additionalEnumerationParameter.Key].SelectedEnum, (value) => additionalEnumerationParameter.Value.AvailableEnums.Contains(value), false);
+                }
+
+            }
+
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
@@ -297,6 +343,27 @@ namespace RTPuzzle
             {
                 guiAction.Invoke();
             }
+        }
+
+        public T GetEnumParameter<T>() where T : Enum
+        {
+            return (T)this.AdditionalEnumerationParameters[typeof(T)].SelectedEnum;
+        }
+    }
+
+    public class AdditionalEnumParameter
+    {
+        public Type EnumType;
+        public List<Enum> AvailableEnums;
+        public Enum SelectedEnum;
+
+        public AdditionalEnumParameter(Type enumType, List<Enum> availableEnums)
+        {
+            EnumType = enumType;
+            AvailableEnums = availableEnums;
+            var enumerator = Enum.GetValues(enumType).GetEnumerator();
+            enumerator.MoveNext();
+            this.SelectedEnum = (Enum)enumerator.Current;
         }
     }
 }

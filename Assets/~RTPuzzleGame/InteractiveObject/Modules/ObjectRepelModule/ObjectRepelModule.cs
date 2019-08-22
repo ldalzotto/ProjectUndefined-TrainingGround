@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -26,6 +27,7 @@ namespace RTPuzzle
         {
             this.ModelObjectModule = ModelObjectModule;
             this.objectRepelCollider = GetComponent<Collider>();
+            this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
         }
 
         public static ObjectRepelModule FromCollisionType(CollisionType collisionType)
@@ -71,6 +73,14 @@ namespace RTPuzzle
             return this.ModelObjectModule;
         }
         #endregion
+
+        public static class ObjectRepelModuleInstancer
+        {
+            public static void PopuplateFromDefinition(ObjectRepelModule objectRepelModule, ObjectRepelModuleDefinition objectRepelModuleDefinition)
+            {
+                objectRepelModule.ObjectRepelID = objectRepelModuleDefinition.ObjectRepelID;
+            }
+        }
     }
 
     public class ObjectRepelTypeAnimationComponent
