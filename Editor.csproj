@@ -363,9 +363,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\GrabObject\EditGrabObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\CreateInteractiveObject.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\EditorInteractiveObjectModulesOperation.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\InteractiveObjectModuleWizard.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\InteractiveObjectModuleWizardConfiguration.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\AddEnvironmentModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateAdventureLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
@@ -440,14 +437,14 @@
     <None Include="Assets\Editor\Editor.asmdef" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\GameDesignerConfigurationModuleTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizard.cs.txt" />
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Tilemap.Editor">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>

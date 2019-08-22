@@ -47,9 +47,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                     {
                         this.UpdateInteractiveObjectModuleWizardID();
                     }
-
-                    this.UpdateInteractiveObjectModuleWizardConfiguration();
-
+                    
                     if (this.isIdentified)
                     {
                         this.DoGenerateGameDesignerEditModule();
@@ -312,33 +310,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-
-    private void UpdateInteractiveObjectModuleWizardConfiguration()
-    {
-        if (!InteractiveObjectModuleWizardConfiguration.InteractiveObjectModuleConfiguration.Keys.ToList().ConvertAll(t => t.Name).ToList().Contains(this.baseName + "Module"))
-        {
-            string configurationToAdd = string.Empty;
-            if (this.isIdentified)
-            {
-                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
-              {"${baseName}", this.baseName }
-          });
-            }
-            else
-            {
-                configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath), new Dictionary<string, string>() {
-              {"${baseName}", this.baseName }
-          });
-            }
-
-            var interactiveObjectModuleWizardConfigurationClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModuleWizardConfiguration));
-            interactiveObjectModuleWizardConfigurationClassFile.Content =
-                interactiveObjectModuleWizardConfigurationClassFile.Content.Insert(interactiveObjectModuleWizardConfigurationClassFile.Content.IndexOf("//${addNewEntry}"), configurationToAdd) + "\r\n";
-
-            File.WriteAllText(interactiveObjectModuleWizardConfigurationClassFile.Path, interactiveObjectModuleWizardConfigurationClassFile.Content);
-        }
-    }
-
+    
     private void DoGenerateGameDesignerEditModule()
     {
         CodeGenerationHelper.CopyFile(new DirectoryInfo(PathConstants.GameDesignerModulesPath + "/" + this.baseName), new Dictionary<string, string>() {
