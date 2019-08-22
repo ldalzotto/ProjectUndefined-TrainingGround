@@ -23,9 +23,5 @@ namespace GameConfigurationID {
     _Sewers_1_TargetZone = 4,
     
     _Sewers_2_TargetZone = 5,
-    
-    OneAIForcedTargetZone_Test = 6,
-    
-    OneAIForcedHighDistanceTargetZone_Test = 7,
   }
 }

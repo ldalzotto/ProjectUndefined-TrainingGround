@@ -12,22 +12,25 @@ namespace Tests
     public abstract class AbstractPuzzleSceneTest : MonoBehaviour
     {
         private MockPuzzleEventsManager mockPuzzleEventsManagerTest;
+        private Action objectDynamicInstancesCreation;
 
         public MockPuzzleEventsManager MockPuzzleEventsManagerTest { get => mockPuzzleEventsManagerTest; }
 
-        public IEnumerator Before(string sceneName)
+        public IEnumerator Before(string sceneName, Action objectDynamicInstancesCreation = null)
         {
-            yield return this.Before(sceneName, AiID.MOUSE_TEST);
+            yield return this.Before(sceneName, AiID.MOUSE_TEST, objectDynamicInstancesCreation);
         }
 
         protected AiID chosenId;
 
-        public IEnumerator Before(string sceneName, AiID choosenId)
+        public IEnumerator Before(string sceneName, AiID choosenId, Action objectDynamicInstancesCreation = null)
         {
             this.chosenId = choosenId;
             this.mockPuzzleEventsManagerTest = null;
+            this.objectDynamicInstancesCreation = objectDynamicInstancesCreation;
             SceneManager.sceneLoaded += this.OnSceneLoadCallBack;
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            
             yield return new WaitForFixedUpdate();
 
             var timeflowManager = GameObject.FindObjectOfType<TimeFlowManager>();
@@ -51,6 +54,7 @@ namespace Tests
 
         private void OnSceneLoadCallBack(Scene scene, LoadSceneMode loadSceneMode)
         {
+            if (objectDynamicInstancesCreation != null) { objectDynamicInstancesCreation.Invoke(); }
             var puzzleEventManagerObject = GameObject.FindObjectOfType<PuzzleEventsManager>().gameObject;
             var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
             this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;

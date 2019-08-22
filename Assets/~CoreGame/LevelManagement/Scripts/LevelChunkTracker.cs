@@ -23,7 +23,7 @@ namespace CoreGame
 
         internal void Init()
         {
-            Debug.Log("LevelChunkTracker Init : " + this.name);
+            Debug.Log(MyLog.Format("LevelChunkTracker Init : " + this.name));
             this.associatedLevelChunkType = GetComponent<LevelChunkType>();
             this.transitionableLevelFXType = GetComponentInChildren<TransitionableLevelFXType>();
             this.transitionableLevelFXType.Init();

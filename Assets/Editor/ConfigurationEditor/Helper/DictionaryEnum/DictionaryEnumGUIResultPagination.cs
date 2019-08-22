@@ -12,7 +12,7 @@ namespace ConfigurationEditor
         private int currentPageSelected;
 
         [SerializeField]
-        private int maxElementPerPage = 10;
+        private int maxElementPerPage = 50;
 
         private GUIStyle paginationStyle;
 

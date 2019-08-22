@@ -15,7 +15,7 @@ namespace Tests
         public void InitializeTestConfigurations(InteractiveObjectTestID interactiveObjectTestID)
         {
             var interactiveObjectTestIDTree = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID];
-            var puzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
+            var puzzleGameConfiguration = AssetFinder.SafeSingleAssetFind<PuzzleGameConfiguration>("t:" + typeof(PuzzleGameConfiguration));
             InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData.IfNotNull(AttractiveObjectInherentConfigurationData => puzzleGameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.AttractiveObjectId] = AttractiveObjectInherentConfigurationData);
             InteractiveObjectInitializationObject.TargetZoneInherentData.IfNotNull(TargetZoneInherentData => puzzleGameConfiguration.TargetZoneConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.TargetZoneID] = TargetZoneInherentData);
             InteractiveObjectInitializationObject.LaunchProjectileInherentData.IfNotNull(LaunchProjectileInherentData => puzzleGameConfiguration.LaunchProjectileConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.LaunchProjectileID] = LaunchProjectileInherentData);
@@ -29,13 +29,20 @@ namespace Tests
             puzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.InteractiveObjectTypeDefinitionID] = InteractiveObjectTypeDefinitionInherentData;
         }
 
+        public InteractiveObjectType Instanciate(Vector3 worldPosition)
+        {
+            var puzzleGameConfiguration = AssetFinder.SafeSingleAssetFind<PuzzleGameConfiguration>("t:" + typeof(PuzzleGameConfiguration));
+            var PuzzleStaticConfiguration = AssetFinder.SafeSingleAssetFind<PuzzleStaticConfiguration>("t:" + typeof(PuzzleStaticConfiguration));
+            InteractiveObjectType intstanciatedInteractiveObject = MonoBehaviour.Instantiate(PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseInteractiveObjectType);
+            Debug.Log(intstanciatedInteractiveObject.name);
+            intstanciatedInteractiveObject.transform.position = worldPosition;
+            InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(intstanciatedInteractiveObject, PuzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleGameConfiguration);
+            return intstanciatedInteractiveObject;
+        }
+
         public InteractiveObjectType InstanciateAndInit(Vector3 worldPosition)
         {
-            var PuzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
-            var PuzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration;
-            InteractiveObjectType   intstanciatedInteractiveObject = MonoBehaviour.Instantiate(PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseInteractiveObjectType);
-            intstanciatedInteractiveObject.transform.position = worldPosition;
-            InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(intstanciatedInteractiveObject, PuzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfiguration);
+            var intstanciatedInteractiveObject = Instanciate(worldPosition);
             intstanciatedInteractiveObject.Init(this.InteractiveObjectInitializationObject);
             return intstanciatedInteractiveObject;
         }

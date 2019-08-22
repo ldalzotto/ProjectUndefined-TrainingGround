@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using RTPuzzle;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -245,9 +246,9 @@ namespace Tests
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
         }
 
-        private IEnumerator AI_ProjectileReceived_FirstTimeNotIntoTargetZone(string sceneName, AiID aiID)
+        private IEnumerator AI_ProjectileReceived_FirstTimeNotIntoTargetZone(string sceneName, AiID aiID, InteractiveObjectTestID targetZoneInteractiveObjectTestID, Action objectDynamicInstancesCreation = null)
         {
-            yield return this.Before(sceneName, aiID);
+            yield return this.Before(sceneName, aiID, objectDynamicInstancesCreation);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(aiID);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseAIBheavior.AIComponents, 90f);
@@ -258,14 +259,14 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
             var aiDestination = mouseTestAIManager.GetAgent().destination;
-            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[targetZoneInteractiveObjectTestID].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             Assert.IsFalse(targetZoneCollider.bounds.Contains(aiDestination), "AI Destination should not be in the target zone the first hit.");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
         }
 
-        private IEnumerator AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(string sceneName, float? projectileEscapeDistance)
+        private IEnumerator AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(string sceneName, float? projectileEscapeDistance, InteractiveObjectTestID targetZoneInteractiveObjectTestID, Action objectDynamicInstancesCreation = null)
         {
-            yield return this.AI_ProjectileReceived_FirstTimeNotIntoTargetZone(sceneName, AiID.MOUSE_TEST);
+            yield return this.AI_ProjectileReceived_FirstTimeNotIntoTargetZone(sceneName, AiID.MOUSE_TEST, targetZoneInteractiveObjectTestID, objectDynamicInstancesCreation);
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseAIBheavior.AIComponents, 90f);
@@ -278,7 +279,7 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
             var aiDestination = mouseTestAIManager.GetAgent().destination;
-            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[targetZoneInteractiveObjectTestID].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             Assert.IsTrue(targetZoneCollider.bounds.Contains(aiDestination), "AI Destination should contains the target zone the second hit.");
             Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should ignore target zones while escaping from projectile for the second time.");
             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "The AI should not escape with target zone consideration.");
@@ -288,13 +289,17 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_FirstTimeNotIntoTargetZone()
         {
-            yield return this.AI_ProjectileReceived_FirstTimeNotIntoTargetZone(SceneConstants.OneAIForcedTargetZone, AiID.MOUSE_TEST);
+            yield return this.AI_ProjectileReceived_FirstTimeNotIntoTargetZone(SceneConstants.OneAIForcedTargetZone, AiID.MOUSE_TEST, InteractiveObjectTestID.TEST_2, () => {
+                LevelCompletionTriggerDefinition.LevelCOmpletionTargetZone(InteractiveObjectTestID.TEST_2, Vector3.zero, new Vector3(25.29f, 12.17f, 12.4f), 17.8f, 110f).Instanciate(new Vector3(-36.08f, 0.5f, -4.4f));
+            });
         }
 
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_FirstTimeIntoTargetZoneDistanceCheck()
         { 
-            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone, () => {
+                LevelCompletionTriggerDefinition.LevelCOmpletionTargetZone(InteractiveObjectTestID.TEST_2, Vector3.zero, new Vector3(25.29f, 12.17f, 12.4f), 17.8f, 110f).Instanciate(new Vector3(-36.08f, 0.5f, -4.4f));
+            });
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
@@ -883,7 +888,9 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_ProjectileReceived_SecondTimeInTargetZone_WhenDestinationReached_WhenThereIsStillEscapeDistanceToTravel_StillEscape_Test()
         {
-            yield return this.AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(SceneConstants.OneAIForcedTargetZone, 9999f);
+            yield return this.AI_ProjectileReceived_SecondTime_EscapeWithoutTarget_DestinationInTargetZone(SceneConstants.OneAIForcedTargetZone, 9999f, InteractiveObjectTestID.TEST_2,() => {
+                LevelCompletionTriggerDefinition.LevelCOmpletionTargetZone(InteractiveObjectTestID.TEST_2, Vector3.zero, new Vector3(25.29f, 12.17f, 12.4f), 17.8f, 110f).Instanciate(new Vector3(-36.08f, 0.5f, -4.4f));
+            });
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseAIBheavior.AIComponents, 100f);
@@ -901,24 +908,26 @@ namespace Tests
             PuzzleSceneTestHelper.SpawnProjectile(projectileData, TestPositionID.PROJECTILE_TARGET_2);
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame(); //wait for destination position to update
-            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID.TEST_2].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             Assert.IsTrue(targetZoneCollider.bounds.Contains(mouseTestAIManager.GetAgent().destination), "AI Destination should contains the target zone the second (or more) hit.");
             Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should ignore target zones while escaping from projectile for the second (or more) time.");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
         }
         #endregion
-
+        
         [UnityTest]
         public IEnumerator AI_TargetZone_WhenAIIsNearTargetZone_AiFOVShoudlBeReducedBasedOnTargetZoneBoundCenter_Test()
         {
-            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            var targetEscapeSemiAngle = 110f;
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone, () => {
+                LevelCompletionTriggerDefinition.LevelCOmpletionTargetZone(InteractiveObjectTestID.TEST_2, Vector3.zero, new Vector3(25.29f, 12.17f, 12.4f), 17.8f, targetEscapeSemiAngle).Instanciate(new Vector3(-36.08f, 0.5f, -4.4f));
+            });
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID.TEST_2].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
             var aiPosition = targetZoneCollider.transform.position + new Vector3(0, 0, 0.1f);
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, aiPosition);
             yield return null;
@@ -930,13 +939,15 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_TargetZone_WhenAIExitTargetZone_WhenThereIsStillEscapeDistanceToTravel_StillEscape()
         {
-            yield return this.Before(SceneConstants.OneAIForcedHighDistanceTargetZone);
+            var targetEscapeSemiAngle = 110f;
+            yield return this.Before(SceneConstants.OneAIForcedHighDistanceTargetZone, () => {
+                LevelCompletionTriggerDefinition.LevelCOmpletionTargetZone(InteractiveObjectTestID.TEST_1, Vector3.zero, new Vector3(0.5f, 0.5f, 0.5f), 17.8f, targetEscapeSemiAngle).Instanciate(new Vector3(-36.08f, 0.5f, -8.46f));
+            });
             yield return null;
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
-            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID.TEST_1].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var targetEscapeSemiAngle = gameConfiguration.TargetZonesConfiguration()[TargetZoneID.TEST_TARGET_ZONE].EscapeFOVSemiAngle;
             var aiPosition = targetZoneCollider.transform.position + new Vector3(-0.1f, 0f, 0f);
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager, aiPosition);
             yield return null; //AI is inside the target zone
@@ -1511,13 +1522,15 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_PlayerEscape_EscapeFromPlayerWhenInRange_WhenEscapingWithoutTargetZones_DestinationIntoTargetZone()
         {
-            yield return this.Before(SceneConstants.OneAIForcedTargetZone);
+            yield return this.Before(SceneConstants.OneAIForcedTargetZone, () => {
+                LevelCompletionTriggerDefinition.LevelCOmpletionTargetZone(InteractiveObjectTestID.TEST_2, Vector3.zero, new Vector3(25.29f, 12.17f, 12.4f), 17.8f, 110f).Instanciate(new Vector3(-36.08f, 0.5f, -4.4f));
+            });
             yield return null;
             
             var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)mouseTestAIManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
-            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(TargetZoneID.TEST_TARGET_ZONE).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+            var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID.TEST_2].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             var currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseAIBheavior.AIComponents, 90f);
 
