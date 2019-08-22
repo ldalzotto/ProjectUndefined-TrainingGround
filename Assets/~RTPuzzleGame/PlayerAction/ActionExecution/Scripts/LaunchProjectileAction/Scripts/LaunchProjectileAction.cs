@@ -70,7 +70,7 @@ namespace RTPuzzle
             LaunchProjectileActionInherentData LaunchProjectileActionInherentData = (LaunchProjectileActionInherentData)this.playerActionInherentData;
 
             var launchProjectileInteractiveObjectDefinition = PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[LaunchProjectileActionInherentData.projectedObjectDefinitionID];
-            this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[LaunchProjectileActionInherentData.launchProjectileId];
+            this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileInteractiveObjectDefinition.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID];
 
             this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, launchProjectileInteractiveObjectDefinition,

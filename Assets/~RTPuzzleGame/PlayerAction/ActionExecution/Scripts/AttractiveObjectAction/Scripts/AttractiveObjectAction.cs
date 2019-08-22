@@ -40,7 +40,6 @@ namespace RTPuzzle
             base.FirstExecution();
             this.isActionOver = false;
             var attractiveObjectActionInherentData = ((AttractiveObjectActionInherentData)this.playerActionInherentData);
-            this.attractiveObjectId = attractiveObjectActionInherentData.AttractiveObjectId;
 
             #region External Dependencies
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
@@ -52,9 +51,11 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
+            
+            this.attractiveObjectId = this.PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[attractiveObjectActionInherentData.AttractiveObjectDefinitionID].GetDefinitionModule<AttractiveObjectModuleDefinition>().AttractiveObjectId;
 
             var attractiveObjectInherentConfigurationData = PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
-            var attractiveObjectDefinition = this.PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[attractiveObjectInherentConfigurationData.AttractiveInteractiveObjectDefinition];
+            var attractiveObjectDefinition = this.PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[attractiveObjectActionInherentData.AttractiveObjectDefinitionID];
 
             this.attractiveObject =
                 AttractiveObjectActionInstanceHelper.CreateAttractiveObjectAtStart(attractiveObjectDefinition, puzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration,

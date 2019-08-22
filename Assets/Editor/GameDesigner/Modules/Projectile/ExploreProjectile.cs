@@ -26,6 +26,7 @@ namespace Editor_GameDesigner
             var projectileConfiguration = AssetFinder.SafeSingleAssetFind<LaunchProjectileConfiguration>("t:" + typeof(LaunchProjectileConfiguration).Name);
             var playerActionConfiguration = AssetFinder.SafeSingleAssetFind<PlayerActionConfiguration>("t:" + typeof(PlayerActionConfiguration).Name);
             var levelConfiguraiton = AssetFinder.SafeSingleAssetFind<LevelConfiguration>("t:" + typeof(LevelConfiguration).Name);
+            var interactiveObjectDefinitionCOnfiguration = AssetFinder.SafeSingleAssetFind<InteractiveObjectTypeDefinitionConfiguration>("t:" + typeof(InteractiveObjectTypeDefinitionConfiguration).Name);
 
             if (levelManager != null && projectileConfiguration != null && playerActionConfiguration != null && levelConfiguraiton != null)
             {
@@ -36,7 +37,7 @@ namespace Editor_GameDesigner
                             .Select(action => action)
                             .Where(action => action.GetType() == typeof(LaunchProjectileActionInherentData))
                             .Select(action => (LaunchProjectileActionInherentData)action)
-                            .Select(action => projectileConfiguration.ConfigurationInherentData[action.launchProjectileId])
+                            .Select(action => projectileConfiguration.ConfigurationInherentData[interactiveObjectDefinitionCOnfiguration.ConfigurationInherentData[action.projectedObjectDefinitionID].GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID])
                             .ToList();
             }
         }

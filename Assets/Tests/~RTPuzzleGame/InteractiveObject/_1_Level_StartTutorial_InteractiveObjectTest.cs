@@ -31,7 +31,6 @@ namespace Tests
             );
 
             var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
-                 projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
                  projectile.InteractiveObjectTypeDefinitionID,
                  SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f)
             );
@@ -70,7 +69,6 @@ namespace Tests
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
             var launchProjectileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
-                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
                     projectile.InteractiveObjectTypeDefinitionID,
                     SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
             var launchProjectileActionRemainingExecutions = launchProjectileAction.RemainingExecutionAmout;
@@ -108,7 +106,6 @@ namespace Tests
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
             var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
-                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
                     projectile.InteractiveObjectTypeDefinitionID,
                 SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
             var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
@@ -151,7 +148,6 @@ namespace Tests
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
             var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
-                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
                     projectile.InteractiveObjectTypeDefinitionID,
                 SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
             var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
@@ -199,7 +195,6 @@ namespace Tests
                  disarmInteractionRange: 2.5f, disarmTime: 2f
             );
             var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
-                projectile.InteractiveObjectTypeDefinitionInherentData.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID,
                     projectile.InteractiveObjectTypeDefinitionID,
                 SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
             var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;

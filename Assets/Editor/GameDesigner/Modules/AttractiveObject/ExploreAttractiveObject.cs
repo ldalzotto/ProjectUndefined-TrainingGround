@@ -26,6 +26,7 @@ namespace Editor_GameDesigner
             var attractiveObjectConfiguration = AssetFinder.SafeSingleAssetFind<AttractiveObjectConfiguration>("t:" + typeof(AttractiveObjectConfiguration).Name);
             var playerActionConfiguration = AssetFinder.SafeSingleAssetFind<PlayerActionConfiguration>("t:" + typeof(PlayerActionConfiguration).Name);
             var levelConfiguraiton = AssetFinder.SafeSingleAssetFind<LevelConfiguration>("t:" + typeof(LevelConfiguration).Name);
+            var interactiveObjectDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<InteractiveObjectTypeDefinitionConfiguration>("t:" + typeof(InteractiveObjectTypeDefinitionConfiguration).Name);
 
             this.AttractiveObjectInherentConfigurationDatas.Clear();
             var attractiveObjects = GameObject.FindObjectsOfType<AttractiveObjectModule>();
@@ -40,7 +41,7 @@ namespace Editor_GameDesigner
                     levelConfiguraiton.ConfigurationInherentData[levelManager.LevelID].PlayerActionIds
                         .Select(actionID => playerActionConfiguration.ConfigurationInherentData[actionID.playerActionId])
                         .Where(action => action.GetType() == typeof(AttractiveObjectActionInherentData))
-                        .Select(action => ((AttractiveObjectActionInherentData)action).AttractiveObjectId)
+                        .Select(action => interactiveObjectDefinitionConfiguration.ConfigurationInherentData[((AttractiveObjectActionInherentData)action).AttractiveObjectDefinitionID].GetDefinitionModule<AttractiveObjectModuleDefinition>().AttractiveObjectId)
                         .Select(attractiveObjectId => attractiveObjectConfiguration.ConfigurationInherentData[attractiveObjectId])
                 );
 

@@ -14,10 +14,7 @@ namespace RTPuzzle
     {
         public float EffectRange;
         public float EffectiveTime;
-
-        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
-        public InteractiveObjectTypeDefinitionID AttractiveInteractiveObjectDefinition;
-
+        
         [Header("Animation")]
 
         [CustomEnum]
