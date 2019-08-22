@@ -86,7 +86,6 @@ namespace RTPuzzle
             });
             this.GetComponentInChildren<AIMoveTowardPlayerManager>().IfNotNull(AIMoveTowardPlayerManager =>
             {
-                AIMoveTowardPlayerManager.Init(this.aiSightVision);
                 this.aIMoveTowardPlayerManager = AIMoveTowardPlayerManager;
             });
             this.GetComponentInChildren<AIDisarmObjectManager>().IfNotNull(AIDisarmObjectManager =>

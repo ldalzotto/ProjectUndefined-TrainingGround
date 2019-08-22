@@ -12,7 +12,7 @@ using GameConfigurationID;
 
 namespace RTPuzzle
 {
-    public class NearPlayerGameOverTriggerModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class NearPlayerGameOverTriggerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(NearPlayerGameOverTriggerConfiguration))]
         public NearPlayerGameOverTriggerID NearPlayerGameOverTriggerID;

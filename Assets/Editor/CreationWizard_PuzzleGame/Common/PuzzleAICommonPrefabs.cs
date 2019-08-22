@@ -48,7 +48,7 @@ namespace Editor_MainGameCreationWizard
         public RTPuzzle.AITargetZoneEscapeManager AITargetZoneEscapeManager;
         
         [ReadOnly()]
-        public RTPuzzle.AISightVision AISightVision;
+        public RTPuzzle.ObjectSightModule AISightVision;
         
         [ReadOnly()]
         public RTPuzzle.AIMoveTowardPlayerManager AIMoveTowardPlayerManager;

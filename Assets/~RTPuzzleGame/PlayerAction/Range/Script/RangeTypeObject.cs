@@ -9,6 +9,7 @@ namespace RTPuzzle
 {
     public class RangeTypeObject : MonoBehaviour
     {
+        [CustomEnum(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
         public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
 
         #region Modules

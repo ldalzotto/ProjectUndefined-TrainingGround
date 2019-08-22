@@ -160,6 +160,7 @@ namespace RTPuzzle
 
                     if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
+                        InteractiveObjectContainer.TickBeforeAIUpdate(d, TimeFlowManager.GetTimeAttenuation());
                         NPCAIManagerContainer.EnableAgents();
                         NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
                         InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());

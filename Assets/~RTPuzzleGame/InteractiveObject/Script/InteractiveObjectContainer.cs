@@ -73,6 +73,16 @@ namespace RTPuzzle
             ManagerDestroyAfterTick();
         }
 
+        public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
+        {
+            foreach (var interactiveObject in interactiveObjects.MultiValueGetValues())
+            {
+                interactiveObject.TickBeforeAIUpdate(d, timeAttenuationFactor);
+            }
+
+            ManagerDestroyAfterTick();
+        }
+        
         public void TickAlways(float d)
         {
             foreach (var interactiveObject in interactiveObjects.MultiValueGetValues())

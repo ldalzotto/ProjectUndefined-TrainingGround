@@ -251,6 +251,18 @@ namespace RTPuzzle
                             }
                         }
                     }
+                    else if (drawDisplay.Key == typeof(ObjectSightModuleDefinition).Name)
+                    {
+                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectSightModuleDefinition).Name);
+                        if (drawArea.IsEnabled)
+                        {
+						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectSightModuleDefinition), out ScriptableObject definitionSO);
+                            if (definitionSO != null)
+                            {
+								 var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)definitionSO;
+							}
+                        }
+                    }
 //${addNewEntry}
                 }
 

@@ -12,7 +12,7 @@ using GameConfigurationID;
 
 namespace RTPuzzle
 {
-    public class LaunchProjectileModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class LaunchProjectileModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(LaunchProjectileConfiguration))]
         public LaunchProjectileID LaunchProjectileID;

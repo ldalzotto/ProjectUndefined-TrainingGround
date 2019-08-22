@@ -14,7 +14,7 @@ namespace RTPuzzle
 {
     
     
-    public class ModelObjectModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class ModelObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public GameObject ModelPrefab;
     }

@@ -92,7 +92,6 @@ namespace RTPuzzle
         #endregion
 
         protected AIFOVManager aIFOVManager;
-        protected AISightVision aiSightVision;
 
         protected void BaseInit(NavMeshAgent selfAgent, C AIComponents,
             PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
@@ -104,12 +103,6 @@ namespace RTPuzzle
             this.OnFOVChange = OnFOVChange;
             this.forceUpdateAIBehavior = ForceUpdateAIBehavior;
             this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
-
-            this.GetComponentInChildren<AISightVision>().IfNotNull(AISightVision =>
-            {
-                this.aiSightVision = AISightVision;
-                this.aiSightVision.Init(puzzleAIBehaviorExternalEventManager);
-            });
         }
 
         protected void AfterChildInit()
@@ -120,8 +113,6 @@ namespace RTPuzzle
         public void TickAI(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             NPCAIDestinationContext.Clear();
-
-            this.aiSightVision.IfNotNull(aiSightVision => aiSightVision.Tick(d));
 
             // (1) - Call the BeforeManagersUpdate callbacks.
             this.BeforeManagersUpdate(d, timeAttenuationFactor);

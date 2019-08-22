@@ -36,7 +36,7 @@ namespace RTPuzzle
 
         public Rigidbody RigidBody;
 
-        public AISightVision AISightVision;
+        public ObjectSightModule AISightVision;
         
     }
 }

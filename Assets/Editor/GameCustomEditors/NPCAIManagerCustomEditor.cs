@@ -23,7 +23,7 @@ namespace Editor_GameCustomEditors
                 {
                     AbstractAIComponents AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
                     this.context = new NPCAIManagerCustomEditorContext();
-                    this.context.AISightVision = (target as NPCAIManager).GetComponentInChildren<AISightVision>();
+                    this.context.AISightVision = (target as NPCAIManager).GetComponentInChildren<ObjectSightModule>();
 
                     if (AIComponents != null)
                     {
@@ -34,8 +34,7 @@ namespace Editor_GameCustomEditors
                             new AIProjectileEscapeComponent(),
                             new AIPatrolComponent(),
                             new AIPlayerEscapeComponent(),
-                            new AITargetZoneComponent(),
-                            new AISightComponent()
+                            new AITargetZoneComponent()
                         };
                     }
                 }
@@ -47,7 +46,7 @@ namespace Editor_GameCustomEditors
     public class NPCAIManagerCustomEditorContext
     {
         public GenericPuzzleAIComponents GenericPuzzleAIComponents;
-        public AISightVision AISightVision;
+        public ObjectSightModule AISightVision;
     }
 
     public class AIProjectileEscapeComponent : IDPickGUIModule<NPCAIManager, NPCAIManagerCustomEditorContext, LaunchProjectileID, float>
@@ -137,17 +136,6 @@ namespace Editor_GameCustomEditors
             }
         }
     }
-
-    public class AISightComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
-    {
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
-        {
-            if(context.AISightVision != null)
-            {
-                Handles.color = MyColors.HotPink;
-                context.AISightVision.HandlesTick();
-            }
-        }
-    }
+    
 }
 

@@ -14,7 +14,7 @@ namespace RTPuzzle
 {
     
     
-    public class ActionInteractableObjectModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class ActionInteractableObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(ActionInteractableObjectConfiguration))]
         public ActionInteractableObjectID ActionInteractableObjectID;

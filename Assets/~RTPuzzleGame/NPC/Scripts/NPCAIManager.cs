@@ -10,7 +10,7 @@ using UnityEditor;
 namespace RTPuzzle
 {
 
-    public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable
+    public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener
     {
 #if UNITY_EDITOR
         [Header("Debug")]
@@ -99,6 +99,9 @@ namespace RTPuzzle
             NPCAIAnimationManager = new NPCAIAnimationManager(animator, animationConfiguration);
 
             this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
+
+            //Sight listeners
+            this.GetComponent<InteractiveObjectType>().IfNotNull((InteractiveObjectType) => InteractiveObjectType.GetEnabledOrDisabledModule<ObjectSightModule>().IfNotNull((ObjectSightModule) => ObjectSightModule.RegisterSightTrackingListener(this)));
 
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
@@ -300,6 +303,15 @@ namespace RTPuzzle
         public void OnDisarmObjectEnd()
         {
             this.NPCAIAnimationManager.OnDisarmObjectEnd();
+        }
+        public void SightInRangeEnter(ColliderWithCollisionType trackedCollider)
+        {
+            this.puzzleAIBehavior.ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(trackedCollider));
+        }
+
+        public void SightInRangeExit(ColliderWithCollisionType trackedCollider)
+        {
+            this.puzzleAIBehavior.ReceiveEvent(new SightInRangeExitAIBehaviorEvent(trackedCollider));
         }
         #endregion
 

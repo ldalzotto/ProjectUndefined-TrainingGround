@@ -18,7 +18,7 @@ namespace RTPuzzle
         public NearPlayerGameOverTriggerID NearPlayerGameOverTriggerID;
 
         #region External Dependencies
-        private AISightVision AISightVision;
+        private ObjectSightModule AISightVision;
         private BlockingCutscenePlayer BlockingCutscenePlayer;
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
@@ -26,7 +26,7 @@ namespace RTPuzzle
         private InteractiveObjectType InteractiveObjectTypeRef;
         private NearPlayerGameOverTriggerInherentData NearPlayerGameOverTriggerInherentData;
 
-        public void Init(AISightVision AISightVision, InteractiveObjectType InteractiveObjectTypeRef)
+        public void Init(ObjectSightModule AISightVision, InteractiveObjectType InteractiveObjectTypeRef)
         {
             this.AISightVision = AISightVision;
             this.BlockingCutscenePlayer = GameObject.FindObjectOfType<BlockingCutscenePlayer>();

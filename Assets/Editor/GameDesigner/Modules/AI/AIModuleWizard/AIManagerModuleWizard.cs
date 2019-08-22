@@ -19,7 +19,7 @@ namespace Editor_GameDesigner
 
         protected override void OnEdit(GenericPuzzleAIBehavior RootModuleObject, Type selectedType)
         {
-            if (selectedType.GetType() == typeof(AISightVision))
+            if (selectedType.GetType() == typeof(ObjectSightModule))
             {
                 this.ProcessAISightVisionEdit();
             }
@@ -86,7 +86,7 @@ namespace Editor_GameDesigner
         {
             if (this.add)
             {
-                if (this.currentSelectedObjet.GetComponentInChildren<AISightVision>() == null)
+                if (this.currentSelectedObjet.GetComponentInChildren<ObjectSightModule>() == null)
                 {
                     var aiManagerContainer = this.currentSelectedObjet.FindChildObjectRecursively("AIManagerComponents");
                     PrefabUtility.InstantiatePrefab(this.CommonGameConfigurations.PuzzleAICommonPrefabs.AISightVision, aiManagerContainer.transform);
@@ -94,9 +94,9 @@ namespace Editor_GameDesigner
             }
             else if (this.remove)
             {
-                if (this.currentSelectedObjet.GetComponentInChildren<AISightVision>() != null)
+                if (this.currentSelectedObjet.GetComponentInChildren<ObjectSightModule>() != null)
                 {
-                    MonoBehaviour.DestroyImmediate(this.currentSelectedObjet.GetComponentInChildren<AISightVision>());
+                    MonoBehaviour.DestroyImmediate(this.currentSelectedObjet.GetComponentInChildren<ObjectSightModule>());
                 }
             }
         }

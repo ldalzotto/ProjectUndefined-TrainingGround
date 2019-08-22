@@ -73,6 +73,14 @@ namespace RTPuzzle
         {
             return this.disabledModules.Values.ToList();
         }
+
+        public T GetEnabledOrDisabledModule<T>() where T : InteractiveObjectModule
+        {
+            T foundModule = null;
+            foundModule = this.GetModule<T>();
+            if (foundModule == null) { foundModule = this.GetDisabledModule<T>(); }
+            return foundModule;
+        }
         #endregion
 
         public static InteractiveObjectType Instantiate(InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData,
@@ -111,7 +119,7 @@ namespace RTPuzzle
 
             #region Internal Dependencies
             InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();
-            InteractiveObjectInitializationObject.AISightVision = GetComponentInChildren<AISightVision>();
+            InteractiveObjectInitializationObject.AISightVision = GetComponentInChildren<ObjectSightModule>();
             #endregion
 
             this.PopulateModules(exclusiveInitialEnabledModules);
@@ -157,6 +165,11 @@ namespace RTPuzzle
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.Tick(d, timeAttenuationFactor));
             this.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule interactiveObjectCutsceneControllerModule) => interactiveObjectCutsceneControllerModule.Tick(d, timeAttenuationFactor));
+        }
+
+        public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
+        {
+            this.GetModule<ObjectSightModule>().IfNotNull((ObjectSightModule ObjectSightModule) => ObjectSightModule.TickBeforeAIUpdate(d));
         }
 
         public void TickAlways(float d)

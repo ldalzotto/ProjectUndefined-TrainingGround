@@ -6,19 +6,23 @@ namespace CoreGame
 {
     public class GameLogHandler : ILogHandler
     {
-        private FileStream m_FileStream;
+        public static FileStream m_FileStream;
+        
         private StreamWriter m_StreamWriter;
         private ILogHandler m_DefaultLogHandler = Debug.unityLogger.logHandler;
 
         public GameLogHandler()
         {
-            string filePath = Application.persistentDataPath + "/GameLogs.txt";
+            if(GameLogHandler.m_FileStream == null)
+            {
+                string filePath = Application.persistentDataPath + "/GameLogs.txt";
 
-            m_FileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            m_StreamWriter = new StreamWriter(m_FileStream);
+                GameLogHandler.m_FileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                m_StreamWriter = new StreamWriter(m_FileStream);
 
-            // Replace the default debug log handler
-            Debug.unityLogger.logHandler = this;
+                // Replace the default debug log handler
+                Debug.unityLogger.logHandler = this;
+            }
         }
 
         public void LogFormat(LogType logType, UnityEngine.Object context, string format, params object[] args)

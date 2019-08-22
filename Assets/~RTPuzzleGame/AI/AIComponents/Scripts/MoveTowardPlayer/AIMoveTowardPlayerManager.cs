@@ -4,18 +4,11 @@ namespace RTPuzzle
 {
     public class AIMoveTowardPlayerManager : AbstractAIManager, InterfaceAIManager
     {
-        private AISightVision AISightVision;
-
         #region State
         protected bool playerInSight;
         protected ColliderWithCollisionType currentTarget;
         private Vector3? currentDestination;
         #endregion
-
-        public void Init(AISightVision AISightVision)
-        {
-            this.AISightVision = AISightVision;
-        }
 
         #region External Events
         public virtual void OnDestinationReached()

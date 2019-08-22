@@ -11,6 +11,7 @@ using static RTPuzzle.LevelCompletionTriggerModule;
 using static RTPuzzle.ModelObjectModule;
 using static RTPuzzle.NearPlayerGameOverTriggerModule;
 using static RTPuzzle.ObjectRepelModule;
+using static RTPuzzle.ObjectSightModule;
 using static RTPuzzle.TargetZoneModule;
 
 namespace RTPuzzle
@@ -24,7 +25,7 @@ namespace RTPuzzle
         public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
 
         public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration,
-                        PuzzleGameConfiguration puzzleGameConfiguration, RangeTypeObjectDefinitionInherentData LevelCompletionZoneDefinition = null)
+                        PuzzleGameConfiguration puzzleGameConfiguration)
         {
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
@@ -51,7 +52,7 @@ namespace RTPuzzle
                         {
                             var LevelCompletionTriggerModuleDefinition = (LevelCompletionTriggerModuleDefinition)moduleConfiguration;
                             var LevelCompletionTriggerModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseLevelCompletionTriggerModule, InteractiveObjectType.transform);
-                            LevelCompletionTriggerModuleInstancer.PopuplateFromDefinition(LevelCompletionTriggerModule, LevelCompletionTriggerModuleDefinition, puzzlePrefabConfiguration, LevelCompletionZoneDefinition);
+                            LevelCompletionTriggerModuleInstancer.PopuplateFromDefinition(LevelCompletionTriggerModule, LevelCompletionTriggerModuleDefinition, puzzlePrefabConfiguration);
                         }
                         else if (moduleConfiguration.GetType() == typeof(InteractiveObjectCutsceneControllerModuleDefinition))
                         {
@@ -106,7 +107,13 @@ namespace RTPuzzle
                             var ObjectRepelModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectRepelModule, InteractiveObjectType.transform);
                             ObjectRepelModuleInstancer.PopuplateFromDefinition(ObjectRepelModule, ObjectRepelModuleDefinition);
                         }
-//${addNewEntry}
+                        else if (moduleConfiguration.GetType() == typeof(ObjectSightModuleDefinition))
+                        {
+                            var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)moduleConfiguration;
+                            var ObjectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, InteractiveObjectType.transform);
+                            ObjectSightModuleInstancer.PopuplateFromDefinition(ObjectSightModule, ObjectSightModuleDefinition);
+                        }
+                        //${addNewEntry}
                     }
                 }
             }
@@ -115,14 +122,18 @@ namespace RTPuzzle
 
     public static class InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder
     {
-        public static InteractiveObjectTypeDefinitionInherentData TargetZone()
+        public static InteractiveObjectTypeDefinitionInherentData TargetZone(RangeTypeObjectDefinitionInherentData targetZoneRangeDefinition = null)
         {
             return new InteractiveObjectTypeDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                 {
                     {typeof(TargetZoneModuleDefinition), new TargetZoneModuleDefinition() },
-                    {typeof(LevelCompletionTriggerModuleDefinition), new LevelCompletionTriggerModuleDefinition() }
+                    {typeof(LevelCompletionTriggerModuleDefinition), new LevelCompletionTriggerModuleDefinition() {
+                            RangeTypeObjectDefinitionIDPicker = (targetZoneRangeDefinition == null),
+                            RangeTypeObjectDefinitionInherentData = targetZoneRangeDefinition
+                        }
+                    }
                 },
                 RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
                 {

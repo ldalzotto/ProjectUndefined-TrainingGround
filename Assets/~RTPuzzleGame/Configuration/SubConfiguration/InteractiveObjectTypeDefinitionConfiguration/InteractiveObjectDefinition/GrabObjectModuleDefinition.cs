@@ -14,7 +14,7 @@ namespace RTPuzzle
 {
     
     
-    public class GrabObjectModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class GrabObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(GrabObjectConfiguration))]
         public GrabObjectID GrabObjectID;

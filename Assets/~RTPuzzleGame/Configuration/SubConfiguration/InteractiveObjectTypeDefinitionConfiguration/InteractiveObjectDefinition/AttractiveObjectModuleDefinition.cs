@@ -12,7 +12,7 @@ using GameConfigurationID;
 
 namespace RTPuzzle
 {
-    public class AttractiveObjectModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class AttractiveObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(AttractiveObjectConfiguration))]
         public AttractiveObjectId AttractiveObjectId;

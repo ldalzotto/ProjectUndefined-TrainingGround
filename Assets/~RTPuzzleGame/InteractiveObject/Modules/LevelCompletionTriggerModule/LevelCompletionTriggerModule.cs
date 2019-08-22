@@ -62,18 +62,17 @@ namespace RTPuzzle
             public static void PopuplateFromDefinition(
                                 LevelCompletionTriggerModule LevelCompletionTriggerModule,
                                 LevelCompletionTriggerModuleDefinition LevelCompletionTriggerModuleDefinition,
-                                PuzzlePrefabConfiguration puzzlePrefabConfiguration,
-                                RangeTypeObjectDefinitionInherentData LevelCompletionZoneDefinition = null)
+                                PuzzlePrefabConfiguration puzzlePrefabConfiguration)
             {
                 LevelCompletionTriggerModule.ResolveModuleDependencies();
-                if (LevelCompletionZoneDefinition == null)
+                if (LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionIDPicker)
                 {
                     LevelCompletionTriggerModule.RangeTypeObject.RangeTypeObjectDefinitionID = LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID;
                 }
                 else
                 {
                     LevelCompletionTriggerModule.RangeTypeObject.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
-                    LevelCompletionZoneDefinition.DefineRangeTypeObject(LevelCompletionTriggerModule.RangeTypeObject, puzzlePrefabConfiguration);
+                    LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(LevelCompletionTriggerModule.RangeTypeObject, puzzlePrefabConfiguration);
                 }
 
             }

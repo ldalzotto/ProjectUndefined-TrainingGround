@@ -14,7 +14,7 @@ namespace RTPuzzle
 {
     
     
-    public class DisarmObjectModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class DisarmObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(DisarmObjectConfiguration))]
         public DisarmObjectID DisarmObjectID;

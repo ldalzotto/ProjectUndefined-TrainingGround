@@ -9,12 +9,16 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObjectRepelModuleDefinition : AbstractInteractiveObjectDefinition
+    public class ObjectSightModuleDefinition : AbstractInteractiveObjectDefinition
     {
-        [CustomEnum(ConfigurationType = typeof(ObjectRepelConfiguration))]
-        public ObjectRepelID ObjectRepelID;
+        public Vector3 LocalPosition;
+        public Quaternion LocalRotation;
+
+        [CustomEnum(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
+        public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
     }
 }

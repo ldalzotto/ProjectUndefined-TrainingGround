@@ -206,8 +206,9 @@ namespace Tests
             var puzzlePrefabConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             var puzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
             var targetZone = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, targetZonePosition, Quaternion.identity);
-            InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone().DefineInteractiveObject(targetZone, puzzlePrefabConfiguration, puzzleGameConfiguration,
-                    RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE));
+            InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone(
+                    RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE)
+                  ).DefineInteractiveObject(targetZone, puzzlePrefabConfiguration, puzzleGameConfiguration);
             targetZone.Init(new InteractiveObjectInitializationObject() { TargetZoneInherentData = targetZoneInherentData });
 
             yield return new WaitForFixedUpdate();

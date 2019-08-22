@@ -4,7 +4,7 @@ using OdinSerializer;
 
 namespace RTPuzzle
 {
-    public class InteractiveObjectCutsceneControllerModuleDefinition : SerializedScriptableObject
+    public class InteractiveObjectCutsceneControllerModuleDefinition : AbstractInteractiveObjectDefinition
     {
 
     }

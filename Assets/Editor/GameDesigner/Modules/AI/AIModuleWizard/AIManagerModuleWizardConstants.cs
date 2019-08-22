@@ -19,7 +19,7 @@ namespace Editor_GameDesigner
     {
         
         public static System.Collections.Generic.Dictionary<System.Type, string> AIManagerDescriptionMessage = new Dictionary<Type, string>(){
-{typeof(AISightVision),"The sight vision of prefab."},
+{typeof(ObjectSightModule),"The sight vision of prefab."},
 {typeof(AIAttractiveObjectLooseManager),"Move to the nearest attractive point in range. Once targeted, the movement is cancelled if the AI exit attractive object range."},
 {typeof(AIAttractiveObjectPersistantManager),"Move to the nearest attractive point in range. Once targeted, the movement is never cancelled by this component."},
 {typeof(AIEscapeWithoutTriggerManager),"Reduce FOV while not taking into account physics obstacles entity."},
@@ -35,7 +35,7 @@ namespace Editor_GameDesigner
 };
         
         public static System.Collections.Generic.Dictionary<System.Type, string> AIManagerAssociatedComponent = new Dictionary<Type, string>(){
-{typeof(AISightVision),""},
+{typeof(ObjectSightModule),""},
 {typeof(AIAttractiveObjectLooseManager),"AIAttractiveObjectComponent"},
 {typeof(AIAttractiveObjectPersistantManager),"AIAttractiveObjectComponent"},
 {typeof(AIEscapeWithoutTriggerManager),"AIEscapeWithoutTriggerComponent"},

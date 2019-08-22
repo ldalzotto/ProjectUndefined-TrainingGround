@@ -28,6 +28,7 @@ namespace RTPuzzle
         public DisarmObjectModule BaseDisarmObjectModule;
         public GrabObjectModule BaseGrabObjectModule;
         public ObjectRepelModule BaseObjectRepelModule;
+        public ObjectSightModule BaseObjectSightModule;
     }
 }
 
