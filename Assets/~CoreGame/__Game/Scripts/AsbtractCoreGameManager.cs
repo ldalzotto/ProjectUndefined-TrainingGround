@@ -12,6 +12,8 @@ namespace CoreGame
 
         protected void OnAwake(LevelType levelType)
         {
+            new GameLogHandler();
+
             this.isInitializing = true;
 
             CoreGameSingletonInstances.PersistanceManager.Init();
@@ -74,5 +76,6 @@ namespace CoreGame
             this.isInitializing = false;
         }
     }
+    
 }
 
