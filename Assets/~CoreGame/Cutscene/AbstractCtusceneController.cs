@@ -17,7 +17,7 @@ namespace CoreGame
         private ObjectRotateManager ObjectRotateManager;
 
         #region Data Components Dependencies
-        private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponentV2;
+        private TransformMoveManagerComponentV3 PlayerInputMoveManagerComponentV3;
         #endregion
 
         #region State 
@@ -34,10 +34,10 @@ namespace CoreGame
         public bool IsCutscenePlaying() { return (this.IsAnimationPlaying || this.IsDirectedByAi() || this.IsRotating()); }
         #endregion
 
-        protected void BaseInit(Rigidbody rigidBody, NavMeshAgent agent, Animator animator, TransformMoveManagerComponentV2 transformMoveManagerComponent = null, PlayerAnimationDataManager playerAnimationDataManager = null)
+        protected void BaseInit(Rigidbody rigidBody, NavMeshAgent agent, Animator animator, TransformMoveManagerComponentV3 transformMoveManagerComponent = null, PlayerAnimationDataManager playerAnimationDataManager = null)
         {
             #region Data Components Dependencies
-            this.PlayerInputMoveManagerComponentV2 = transformMoveManagerComponent;
+            this.PlayerInputMoveManagerComponentV3 = transformMoveManagerComponent;
             #endregion
 
             this.Rigidbody = rigidBody;
@@ -45,7 +45,7 @@ namespace CoreGame
             this.Animator = animator;
 
             //If we want the controller to not move agent/rb
-            if (this.PlayerInputMoveManagerComponentV2 != null)
+            if (this.PlayerInputMoveManagerComponentV3 != null)
             {
                 this.POICutsceneMoveManager = new POICutsceneMoveManager(this.Rigidbody, this.Agent);
             }
@@ -53,10 +53,10 @@ namespace CoreGame
             this.PlayerAnimationDataManager = playerAnimationDataManager;
             this.ObjectRotateManager = new ObjectRotateManager(rigidBody);
         }
-
+        
         public void Tick(float d)
         {
-            this.POICutsceneMoveManager.IfNotNull((POICutsceneMoveManager) => POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV2.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV2.RotationSpeed));
+            this.POICutsceneMoveManager.IfNotNull((POICutsceneMoveManager) => POICutsceneMoveManager.Tick(d, this.PlayerInputMoveManagerComponentV3.SpeedMultiplicationFactor, this.PlayerInputMoveManagerComponentV3.RotationSpeed));
             this.PlayerAnimationDataManager.IfNotNull((PlayerAnimationDataManager) => PlayerAnimationDataManager.Tick(this.GetCurrentNormalizedSpeedMagnitude()));
             this.ObjectRotateManager.Tick(d);
         }

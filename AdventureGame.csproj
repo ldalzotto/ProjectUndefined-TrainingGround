@@ -67,6 +67,9 @@
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfiguration.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfigurationContainer.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\SubConfiguration\AdventurePlayerMovementConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />

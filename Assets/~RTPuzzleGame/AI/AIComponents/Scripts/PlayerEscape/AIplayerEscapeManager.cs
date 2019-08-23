@@ -14,7 +14,7 @@ namespace RTPuzzle
         private AIFOVManager aIFOVManager;
         private Func<Collider[]> targetZoneTriggerColliderProvider;
         private PuzzleEventsManager puzzleEventsManager;
-        private TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent;
         #endregion
 
         private AiID aiID;
@@ -36,7 +36,7 @@ namespace RTPuzzle
 
         public void Init(NavMeshAgent selfAgent, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager,
             PlayerManagerDataRetriever playerManagerDataRetriever, AIPlayerEscapeComponent aIPlayerEscapeComponent, AIFOVManager aIFOVManager, Func<Collider[]> targetZoneTriggerColliderProvider, AiID aiID,
-            PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent)
+            PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent)
         {
             this.selfAgent = selfAgent;
             this.puzzleAIBehaviorExternalEventManager = puzzleAIBehaviorExternalEventManager;

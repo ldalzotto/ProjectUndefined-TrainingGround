@@ -62,6 +62,9 @@ public class SerializableObjectHelper
             }
             return prop.serializedObject.FindProperty(parentPropertypath);
 
+        } else if(separatedPaths.Length == 1)
+        {
+            return prop.serializedObject.FindProperty(separatedPaths[0]);
         }
         return null;
 
@@ -140,6 +143,34 @@ public class SerializableObjectHelper
         var so = new SerializedObject(obj);
         modification.Invoke(so);
         so.ApplyModifiedProperties();
+    }
+
+    public static IEnumerable<SerializedProperty> GetChildren(SerializedProperty property)
+    {
+        property = property.Copy();
+        var nextElement = property.Copy();
+        bool hasNextElement = nextElement.NextVisible(false);
+        if (!hasNextElement)
+        {
+            nextElement = null;
+        }
+
+        property.NextVisible(true);
+        while (true)
+        {
+            if ((SerializedProperty.EqualContents(property, nextElement)))
+            {
+                yield break;
+            }
+
+            yield return property;
+
+            bool hasNext = property.NextVisible(false);
+            if (!hasNext)
+            {
+                break;
+            }
+        }
     }
 }
 #endif

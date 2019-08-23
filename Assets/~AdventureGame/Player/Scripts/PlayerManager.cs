@@ -65,7 +65,7 @@ namespace AdventureGame
             this.PlayerDataComponentContainer.Init();
 
             #region Data Components
-            var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            var TransformMoveManagerComponentV3 = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration.AdventurePlayerMovementConfiguration.PlayerTransformMoveComponent;
             var PlayerPOITrackerManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>();
             var PlayerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
             #endregion
@@ -74,12 +74,12 @@ namespace AdventureGame
             this.PointOfInterestTrackerModule = this.PointOfInterestType.GetPointOfInterestTrackerModule();
             #endregion
             
-            this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
+            this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.PointOfInterestTrackerModule);
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
-            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, playerAnimator, playerRigidBody, coreConfigurationManager);
+            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV3, playerAnimator, playerRigidBody, coreConfigurationManager);
             this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, playerCollider, PlayerPhysicsMovementComponent);
         }
 

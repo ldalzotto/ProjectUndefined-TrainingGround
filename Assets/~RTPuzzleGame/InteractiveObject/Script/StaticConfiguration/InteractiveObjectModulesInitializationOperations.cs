@@ -107,7 +107,7 @@ namespace RTPuzzle
 //------------------------------------------------------------------------------
         public static void InitializeNearPlayerGameOverTriggerModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-             interactiveObjectType.GetModule<NearPlayerGameOverTriggerModule>().IfNotNull((NearPlayerGameOverTriggerModule NearPlayerGameOverTriggerModule) => NearPlayerGameOverTriggerModule.Init(interactiveObjectInitializationObject.AISightVision, interactiveObjectType));
+             interactiveObjectType.GetModule<NearPlayerGameOverTriggerModule>().IfNotNull((NearPlayerGameOverTriggerModule NearPlayerGameOverTriggerModule) => NearPlayerGameOverTriggerModule.Init(interactiveObjectType.GetModule<ObjectSightModule>(), interactiveObjectType));
         }
 
         public static void InitializeObjectSightModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)

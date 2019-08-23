@@ -89,7 +89,7 @@ namespace AdventureGame
 
         public override void Init()
         {
-            Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
+         //   Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
 
             #region External Dependencies
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();

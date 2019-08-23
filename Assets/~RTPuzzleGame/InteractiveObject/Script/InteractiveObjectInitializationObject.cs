@@ -31,12 +31,10 @@ namespace RTPuzzle
         public RTPuzzle.ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
 
         public RTPuzzle.GrabObjectInherentData GrabObjectInherentData;
-
-        public TransformMoveManagerComponentV2 TransformMoveManagerComponent;
+        
+        public InteractiveObjectSharedDataType TransformMoveManagerComponent;
 
         public Rigidbody RigidBody;
-
-        public ObjectSightModule AISightVision;
         
     }
 }

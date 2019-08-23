@@ -15,6 +15,8 @@ namespace CoreGame
         {
             if(GameLogHandler.m_FileStream == null)
             {
+                Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.ScriptOnly);
+
                 string filePath = Application.persistentDataPath + "/GameLogs.txt";
 
                 GameLogHandler.m_FileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);

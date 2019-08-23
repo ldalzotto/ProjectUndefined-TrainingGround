@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreGame;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -11,10 +12,19 @@ public class ObjectDefinitionCustomEditor : Editor
     private Dictionary<Type, FoldableArea> fold = new Dictionary<Type, FoldableArea>();
     private Dictionary<Type, Editor> cachedEditors = new Dictionary<Type, Editor>();
 
+    private IObjectDefinitionCustomEditorEventListener Listener;
+
+    public void RegisterListener(IObjectDefinitionCustomEditorEventListener objectDefinitionCustomEditorEventListener)
+    {
+        this.Listener = objectDefinitionCustomEditorEventListener;
+    }
+
     public override void OnInspectorGUI()
     {
         AbstractObjectDefinitionConfigurationInherentData RangeDefinitionTarget = (AbstractObjectDefinitionConfigurationInherentData)target;
         this.DoInit(RangeDefinitionTarget);
+
+        this.Listener.IfNotNull(Listener => Listener.BeforeOnInspectorGUI());
 
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.BeginVertical();
@@ -81,4 +91,9 @@ public class ObjectDefinitionCustomEditor : Editor
 
         if (RangeDefinitionTarget.RangeDefinitionModules == null) { RangeDefinitionTarget.RangeDefinitionModules = new Dictionary<Type, ScriptableObject>(); }
     }
+}
+
+public interface IObjectDefinitionCustomEditorEventListener
+{
+    void BeforeOnInspectorGUI();
 }

@@ -24,9 +24,15 @@ namespace RTPuzzle
 
         public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
 
+        public InteractiveObjectSharedDataTypeInherentData InteractiveObjectSharedDataTypeInherentData;
+
         public void DefineInteractiveObject(InteractiveObjectType InteractiveObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration,
                         PuzzleGameConfiguration puzzleGameConfiguration)
         {
+            if (this.InteractiveObjectSharedDataTypeInherentData != null)
+            {
+                this.InteractiveObjectSharedDataTypeInherentData.DefineInteractiveObjectSharedDataType(InteractiveObjectType);
+            }
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
                 if (InteractiveObjectID != InteractiveObjectID.NONE)

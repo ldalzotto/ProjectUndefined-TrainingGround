@@ -57,7 +57,7 @@ namespace AdventureGame
                 PlayerAnimationDataManager = new PlayerAnimationDataManager(Animator);
             }
 
-            base.BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV2, PlayerAnimationDataManager);
+            base.BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV2.ToV3(), PlayerAnimationDataManager);
         }
     }
 }

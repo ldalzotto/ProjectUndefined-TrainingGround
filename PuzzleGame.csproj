@@ -147,6 +147,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ObjectRepelModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ObjectSightModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\TargetZoneModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectSharedDataTypeInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\LaunchProjectileConfiguration\LaunchProjectileConfiguration.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectInitializationObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\SharedData\InteractiveObjectSharedDataType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectModulesInitializationOperations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
@@ -281,10 +283,6 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\RangeTypeObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TargetZone\Scripts\TargetZoneHelper.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\FrustumPlaneIntersectionTest.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\FrustumPlaneIntersectionTestV2.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Test\IntersectionTest\LineObjTest.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Test\RangeConfiguration\InstanceTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowPlayPauseIcon\Scripts\TimeFlowPlayPauseManager.cs" />

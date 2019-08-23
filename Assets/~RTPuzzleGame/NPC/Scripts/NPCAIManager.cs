@@ -47,7 +47,7 @@ namespace RTPuzzle
 #endif
         #endregion
 
-        private TransformMoveManagerComponentV2 aIDestimationMoveManagerComponentV2;
+        private InteractiveObjectSharedDataType interactiveObjectSharedData;
         private NPCAIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
@@ -73,7 +73,7 @@ namespace RTPuzzle
             var rigidBody = GetComponent<Rigidbody>();
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
-            this.aIDestimationMoveManagerComponentV2 = GetComponent<TransformMoveManagerComponentV2>();
+            this.interactiveObjectSharedData = GetComponent<InteractiveObjectSharedDataType>();
 
             this.NPCAIDestinationContext = new NPCAIDestinationContext();
 
@@ -86,13 +86,13 @@ namespace RTPuzzle
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
-            AIDestinationMoveManager = new NPCAIDestinationMoveManager(aIDestimationMoveManagerComponentV2, agent, this.SendOnDestinationReachedEvent);
+            AIDestinationMoveManager = new NPCAIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
             this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
-            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, this.aIDestimationMoveManagerComponentV2, aiPositionsManager);
+            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, aiPositionsManager);
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, aIBheaviorBuildInputData.AIDestimationMoveManagerComponent, aIBheaviorBuildInputData.AIPositionsManager);
+                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, aIBheaviorBuildInputData.AIPositionsManager);
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);

@@ -104,6 +104,8 @@ namespace RTPuzzle
 
         public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, List<Type> exclusiveInitialEnabledModules = null)
         {
+         //   Debug.Log(MyLog.Format(this.InteractiveObjectTypeDefinitionID.ToString()));
+
             #region External Dependencies
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
@@ -118,8 +120,7 @@ namespace RTPuzzle
             }
 
             #region Internal Dependencies
-            InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponentInChildren<TransformMoveManagerComponentV2>();
-            InteractiveObjectInitializationObject.AISightVision = GetComponentInChildren<ObjectSightModule>();
+            InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponent<InteractiveObjectSharedDataType>();
             #endregion
 
             this.PopulateModules(exclusiveInitialEnabledModules);

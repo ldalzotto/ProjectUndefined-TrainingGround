@@ -18,7 +18,7 @@ namespace CoreGame
         private AnimationPositionTrackerManager HairObjectAnimationTracker;
         private AnimationPositionTrackerManager ChestObjectAnimationTracker;
 
-        public PlayerProceduralAnimationsManager(PlayerCommonComponents playerCommonComponents, TransformMoveManagerComponentV2 playerInputMoveManagerComponentV2, Animator playerAnimator, Rigidbody playerRigidBody, CoreConfigurationManager CoreConfigurationManager)
+        public PlayerProceduralAnimationsManager(PlayerCommonComponents playerCommonComponents, TransformMoveManagerComponentV3 playerInputMoveManagerComponentV2, Animator playerAnimator, Rigidbody playerRigidBody, CoreConfigurationManager CoreConfigurationManager)
         {
             this.PlayerCommonComponents = playerCommonComponents;
 

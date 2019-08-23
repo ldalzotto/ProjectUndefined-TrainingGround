@@ -183,12 +183,11 @@ namespace RTPuzzle
         public AiID aiID;
         public Collider aiCollider;
         public Action ForceUpdateAIBehavior;
-        public TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent;
         public AIPositionsManager AIPositionsManager;
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents,
             Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
-            InteractiveObjectContainer InteractiveObjectContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior, TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent, AIPositionsManager AIPositionsManager)
+            InteractiveObjectContainer InteractiveObjectContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior, AIPositionsManager AIPositionsManager)
         {
             this.selfAgent = selfAgent;
             this.aIComponents = aIComponents;
@@ -199,7 +198,6 @@ namespace RTPuzzle
             this.aiID = aiID;
             this.aiCollider = aiCollider;
             this.ForceUpdateAIBehavior = ForceUpdateAIBehavior;
-            this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
             this.AIPositionsManager = AIPositionsManager;
         }
     }

@@ -413,12 +413,13 @@
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
+    <Compile Include="Assets\Editor\ObjectDefinition\InteractiveObjectDefinition.cs" />
     <Compile Include="Assets\Editor\ObjectDefinition\ObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\IncludeConfigurationPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ListPropertyDrawer\ReorderableListPropertyDrawer.cs" />
-    <Compile Include="Assets\Editor\PropertyDrawer\Material\HideIfDisabledDrawer.cs" />
+    <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\FoldablePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\Test\RangeConfiguration\RangeTypeObjectDefinitionCustomEditor.cs" />

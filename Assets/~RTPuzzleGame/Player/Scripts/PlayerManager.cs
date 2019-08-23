@@ -62,14 +62,14 @@ namespace RTPuzzle
             this.rootPuzzleLogicCollider.Init();
 
             #region Data Components
-            var TransformMoveManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            var TransformMoveManagerComponentV3 = this.GetComponent<InteractiveObjectSharedDataType>().InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent;
             this.playerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
             #endregion
 
-            PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV2, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
+            PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.rootPuzzleLogicCollider.GetRootCollider(), playerPhysicsMovementComponent);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PuzzleEventsManager, PlayerActionManager);
-            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV2, animator, this.playerRigidbody, coreConfigurationManager);
+            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV3, animator, this.playerRigidbody, coreConfigurationManager);
             PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
 

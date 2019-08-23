@@ -10,7 +10,7 @@ public class FoldableArea
 
     private bool canBeDisabled;
     private bool isEnabled;
-
+   
     public FoldableArea(bool canBeDisabled, string foldContent, bool isEnabledStartValue)
     {
         this.canBeDisabled = canBeDisabled;

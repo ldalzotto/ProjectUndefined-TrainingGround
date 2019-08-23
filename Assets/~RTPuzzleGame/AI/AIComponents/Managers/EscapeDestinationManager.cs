@@ -208,7 +208,7 @@ namespace RTPuzzle
             return () => { puzzleEventsManager.PZ_EVT_AI_FearedForced(aiID, fearTime); };
         }
 
-        public static float ForcedFearRemainingDistanceToFearTime(EscapeDestinationManager escapeDestinationManager, TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent)
+        public static float ForcedFearRemainingDistanceToFearTime(EscapeDestinationManager escapeDestinationManager, TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent)
         {
             return escapeDestinationManager.GetRemainingDistance() / aIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
         }

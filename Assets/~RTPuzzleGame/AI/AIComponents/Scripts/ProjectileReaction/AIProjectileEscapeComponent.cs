@@ -25,7 +25,7 @@ namespace RTPuzzle
         protected NavMeshAgent escapingAgent;
         protected AIFOVManager AIFOVManager;
         protected PuzzleEventsManager puzzleEventsManager;
-        private TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent;
         #endregion
 
         #region Internal Dependencies
@@ -42,7 +42,7 @@ namespace RTPuzzle
         #endregion
 
         protected void BaseInit(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID,
-            AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent)
+            AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             this.AIFOVManager = aIFOVManager;

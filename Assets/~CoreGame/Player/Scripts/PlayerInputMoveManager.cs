@@ -6,13 +6,13 @@ namespace CoreGame
     #region Player Movement
     public abstract class PlayerMoveManager
     {
-        private TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent;
+        private TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent;
         protected Rigidbody PlayerRigidBody;
         protected PlayerSpeedProcessingInput playerSpeedProcessingInput;
         private bool hasMoved;
         protected float playerSpeedMagnitude;
 
-        public PlayerMoveManager(TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
+        public PlayerMoveManager(TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
         {
             this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
             PlayerRigidBody = playerRigidBody;
@@ -61,7 +61,7 @@ namespace CoreGame
         private Transform CameraPivotPoint;
         private IGameInputManager GameInputManager;
 
-        public PlayerInputMoveManager(TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
+        public PlayerInputMoveManager(TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent, Transform cameraPivotPoint, IGameInputManager gameInputManager, Rigidbody playerRigidBody)
              : base(PlayerInputMoveManagerComponent, playerRigidBody)
         {
             CameraPivotPoint = cameraPivotPoint;

@@ -7,11 +7,11 @@ namespace RTPuzzle
 {
     public class NPCAIDestinationMoveManager
     {
-        private TransformMoveManagerComponentV2 AIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent;
         private NavMeshAgent objectAgent;
         private Action OnDestinationReachedEvent;
 
-        public NPCAIDestinationMoveManager(TransformMoveManagerComponentV2 aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
+        public NPCAIDestinationMoveManager(TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
         {
             AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
             this.objectAgent = objectAgent;
@@ -120,7 +120,7 @@ namespace RTPuzzle
                 this.objectAgent.transform.rotation = Quaternion.Slerp(this.objectAgent.transform.rotation, targetRotation, this.AIDestimationMoveManagerComponent.RotationSpeed * d * timeAttenuationFactor);
 
                 updatePosition = (!AIDestimationMoveManagerComponent.IsPositionUpdateConstrained) ||
-                    AIDestimationMoveManagerComponent.IsPositionUpdateConstrained && Quaternion.Angle(this.objectAgent.transform.rotation, targetRotation) <= this.AIDestimationMoveManagerComponent.MinAngleThatAllowThePositionUpdate;
+                    AIDestimationMoveManagerComponent.IsPositionUpdateConstrained && Quaternion.Angle(this.objectAgent.transform.rotation, targetRotation) <= this.AIDestimationMoveManagerComponent.TransformPositionUpdateConstraints.MinAngleThatAllowThePositionUpdate;
             }
             else if (NPCAIDestinationContext.TargetRotation.HasValue)
             {

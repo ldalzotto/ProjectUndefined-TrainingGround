@@ -13,7 +13,7 @@ namespace RTPuzzle
         private AIFOVManager AIFOVManager;
         private PuzzleEventsManager puzzleEventsManager;
         private AiID aiID;
-        private TransformMoveManagerComponentV2 playerAIDestimationMoveManagerComponent;
+        private TransformMoveManagerComponentV3 playerAIDestimationMoveManagerComponent;
         #endregion
 
         private EscapeDestinationManager escapeDestinationManager;
@@ -21,7 +21,7 @@ namespace RTPuzzle
         #region State
         private bool isEscaping;
 
-        public void Init(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AiID aiID, TransformMoveManagerComponentV2 playerAIDestimationMoveManagerComponent)
+        public void Init(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AiID aiID, TransformMoveManagerComponentV3 playerAIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             AIFOVManager = aIFOVManager;

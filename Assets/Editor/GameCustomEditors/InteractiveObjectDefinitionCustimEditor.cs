@@ -67,6 +67,10 @@ namespace Editor_GameCustomEditors
         public ScriptableObjectSubstitutionFieldTracker(FieldInfo sourceField, FieldInfo substitutionField, ScriptableObjectSubstitution ScriptableObjectSubstitutionProperty, SerializedObject serializedObject)
         {
             this.sourceButtonPressed = serializedObject.FindProperty(ScriptableObjectSubstitutionProperty.SourcePickerName).boolValue;
+            if (!sourceButtonPressed && serializedObject.FindProperty(ScriptableObjectSubstitutionProperty.SubstitutionName).objectReferenceValue == null)
+            {
+                this.sourceButtonPressed = true;
+            }
             this.substitutionButtonPressed = !this.sourceButtonPressed;
             SourceField = sourceField;
             SubstitutionField = substitutionField;

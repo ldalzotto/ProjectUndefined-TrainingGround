@@ -18,14 +18,14 @@ namespace CoreGame
 
     public class PlayerHoodAnimationManager
     {
-        TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent;
+        TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent;
         private PlayerHoodAnimationManagerComponent PlayerHoodAnimationManagerComponent;
         private Transform HoodTransform;
         private Rigidbody PlayerRigidBody;
 
         private Vector3 initialLocalRotation;
 
-        public PlayerHoodAnimationManager(PlayerHoodAnimationManagerComponent playerHoodAnimationManagerComponent, Transform hoodTransform, Rigidbody rigidbody, TransformMoveManagerComponentV2 PlayerInputMoveManagerComponent)
+        public PlayerHoodAnimationManager(PlayerHoodAnimationManagerComponent playerHoodAnimationManagerComponent, Transform hoodTransform, Rigidbody rigidbody, TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent)
         {
             this.PlayerInputMoveManagerComponent = PlayerInputMoveManagerComponent;
             PlayerHoodAnimationManagerComponent = playerHoodAnimationManagerComponent;
