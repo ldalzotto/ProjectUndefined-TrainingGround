@@ -262,7 +262,7 @@ namespace RTPuzzle
                                 var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)definitionSO;
                                 var rangeObjectDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[ObjectSightModuleDefinition.RangeTypeObjectDefinitionID];
                                 rangeObjectDefinition.GetDefinitionModule<RangeTypeDefinition>().RangeShapeConfiguration.HandleDraw(InteractiveObjectType.transform.TransformPoint(ObjectSightModuleDefinition.LocalPosition),
-                                    InteractiveObjectType.transform.rotation, InteractiveObjectType.transform.lossyScale);
+                                InteractiveObjectType.transform.rotation, InteractiveObjectType.transform.lossyScale);
                             }
                         }
                     }

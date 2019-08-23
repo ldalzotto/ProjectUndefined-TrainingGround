@@ -15,6 +15,7 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         public override void HandleDraw(Vector3 worldPosition, Quaternion worldRotation, Vector3 lossyScale)
         {
+            this.frustum.SetCalculationDataForFaceBasedCalculation(worldPosition, worldRotation, lossyScale);
             this.frustum.CalculateFrustumPoints(out Vector3 FC1, out Vector3 FC2, out Vector3 FC3, out Vector3 FC4, out Vector3 FC5, out Vector3 FC6, out Vector3 FC7, out Vector3 FC8);
 
             var oldGizmoColor = Handles.color;
