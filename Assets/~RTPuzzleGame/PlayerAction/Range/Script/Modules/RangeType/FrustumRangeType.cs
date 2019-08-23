@@ -47,33 +47,8 @@ namespace RTPuzzle
 
 #if UNITY_EDITOR
 
-        private void OnDrawGizmos()
-        {
-            this.HandlesDraw();
-        }
-
         public override void HandlesDraw()
         {
-            this.DoFrustumCalculation();
-            var worldPosFrustum = GetFrustumPointsWorldPositions();
-
-            var oldGizmoColor = Handles.color;
-            Handles.color = MyColors.HotPink;
-            this.DrawFace(worldPosFrustum.FC1, worldPosFrustum.FC2, worldPosFrustum.FC3, worldPosFrustum.FC4);
-            this.DrawFace(worldPosFrustum.FC1, worldPosFrustum.FC5, worldPosFrustum.FC6, worldPosFrustum.FC2);
-            this.DrawFace(worldPosFrustum.FC2, worldPosFrustum.FC6, worldPosFrustum.FC7, worldPosFrustum.FC3);
-            this.DrawFace(worldPosFrustum.FC3, worldPosFrustum.FC7, worldPosFrustum.FC8, worldPosFrustum.FC4);
-            this.DrawFace(worldPosFrustum.FC4, worldPosFrustum.FC8, worldPosFrustum.FC5, worldPosFrustum.FC1);
-            this.DrawFace(worldPosFrustum.FC5, worldPosFrustum.FC6, worldPosFrustum.FC7, worldPosFrustum.FC8);
-            Handles.color = oldGizmoColor;
-        }
-
-        private void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)
-        {
-            Handles.DrawLine(C1, C2);
-            Handles.DrawLine(C2, C3);
-            Handles.DrawLine(C3, C4);
-            Handles.DrawLine(C4, C1);
         }
 #endif
     }

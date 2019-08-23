@@ -256,11 +256,14 @@ namespace RTPuzzle
                         var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectSightModuleDefinition).Name);
                         if (drawArea.IsEnabled)
                         {
-						    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectSightModuleDefinition), out ScriptableObject definitionSO);
+                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectSightModuleDefinition), out ScriptableObject definitionSO);
                             if (definitionSO != null)
                             {
-								 var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)definitionSO;
-							}
+                                var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)definitionSO;
+                                var rangeObjectDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[ObjectSightModuleDefinition.RangeTypeObjectDefinitionID];
+                                rangeObjectDefinition.GetDefinitionModule<RangeTypeDefinition>().RangeShapeConfiguration.HandleDraw(InteractiveObjectType.transform.TransformPoint(ObjectSightModuleDefinition.LocalPosition),
+                                    InteractiveObjectType.transform.rotation, InteractiveObjectType.transform.lossyScale);
+                            }
                         }
                     }
 //${addNewEntry}
