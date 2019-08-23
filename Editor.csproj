@@ -363,6 +363,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\GrabObject\EditGrabObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Ground\GroundSetter.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\CreateInteractiveObject.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\InteractiveObject\InteractiveObjectExplorer.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\AddEnvironmentModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateAdventureLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
@@ -408,6 +409,7 @@
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Zoom\EditorZoomArea.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectExplorerWindow.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />

@@ -1,4 +1,6 @@
 ﻿using ConfigurationEditor;
+using Editor_GameDesigner;
+using Editor_MainGameCreationWizard;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -39,6 +41,8 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
         CustomEnum searchableEnum = (CustomEnum)attribute;
         if (property.propertyType == SerializedPropertyType.Enum)
         {
+            EditorGUI.BeginProperty(position, null, property);
+
             var targetEnum = SerializableObjectHelper.GetBaseProperty<Enum>(property);
             int currentLineNB = 0;
 
@@ -124,22 +128,60 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
 
                 if (CachedConfigurationEditor != null && this.ConfigurationFoldableArea != null)
                 {
-                    var oldBackGroundColor = GUI.backgroundColor;
-                    GUI.backgroundColor = MyColors.HotPink;
-                    this.ConfigurationFoldableArea.OnGUI(() =>
+                    try
                     {
-                        EditorGUI.BeginDisabledGroup(true);
-                        EditorGUILayout.ObjectField(this.CachedConfigurationEditor.target, typeof(ScriptableObject), false);
-                        EditorGUI.EndDisabledGroup();
-                        this.CachedConfigurationEditor.OnInspectorGUI();
-                    });
-                    GUI.backgroundColor = oldBackGroundColor;
+                        var oldBackGroundColor = GUI.backgroundColor;
+                        GUI.backgroundColor = MyColors.HotPink;
+                        this.ConfigurationFoldableArea.OnGUI(() =>
+                        {
+                            EditorGUI.BeginDisabledGroup(true);
+                            EditorGUILayout.ObjectField(this.CachedConfigurationEditor.target, typeof(ScriptableObject), false);
+                            EditorGUI.EndDisabledGroup();
+                            this.CachedConfigurationEditor.OnInspectorGUI();
+                        });
+                        GUI.backgroundColor = oldBackGroundColor;
+                    }
+                    catch (Exception e) { }
+                }
+                else if (CachedConfigurationEditor == null)
+                {
+                    try
+                    {
+                        //We propose creation wizard
+                        if (GUILayout.Button("CREATE IN WIZARD"))
+                        {
+                            GameCreationWizard.InitWithSelected(targetEnum.GetType().Name.Replace("ID", "CreationWizard"));
+                        }
+                    }
+                    catch (Exception e) { }
                 }
             }
 
             updateConfigurationView = this.lastFrameEnum == null || (this.lastFrameEnum != null && this.lastFrameEnum.ToString() != targetEnum.ToString());
+
+            if (searchableEnum.OpenToConfiguration)
+            {
+                if (searchableEnum.ConfigurationType != null)
+                {
+                    try
+                    {
+                        if (GUILayout.Button("OPEN CONFIGURATION"))
+                        {
+                            var gameDesignerEditor = ConfigurationInspector.OpenConfigurationEditor(searchableEnum.ConfigurationType);
+                            var currentGameModule = gameDesignerEditor.GetCrrentGameDesignerModule();
+                            if (typeof(IConfigurationModule).IsAssignableFrom(currentGameModule.GetType()))
+                            {
+                                ((IConfigurationModule)currentGameModule).SetSearchString(targetEnum.ToString());
+                            }
+                        }
+                    }
+                    catch (Exception e) { }
+                }
+            }
+
             this.lastFrameEnum = targetEnum;
 
+            EditorGUI.EndProperty();
         }
     }
 

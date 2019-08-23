@@ -13,6 +13,7 @@ namespace ConfigurationEditor
     public interface IDictionaryEnumGUI<K, V> where K : Enum where V : ScriptableObject
     {
         void GUITick(ref Dictionary<K, V> dictionaryEditorValues);
+        void SetSearchFilter(string searchString);
     }
 
     [System.Serializable]
@@ -79,7 +80,7 @@ namespace ConfigurationEditor
             this.keySearchString = searchFilter;
         }
         #endregion
-
+        
         public void GUITick(ref Dictionary<K, V> dictionaryEditorValues)
         {
 

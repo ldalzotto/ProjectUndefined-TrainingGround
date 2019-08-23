@@ -19,9 +19,9 @@ namespace ConfigurationEditor
             base.OnInspectorGUI();
         }
 
-        public static void OpenConfigurationEditor(Type targetType)
+        public static GameDesignerEditor OpenConfigurationEditor(Type targetType)
         {
-            GameDesignerEditor.InitWithSelectedKey(targetType);
+            return GameDesignerEditor.InitWithSelectedKey(targetType);
         }
 
         public static void OpenTextRepertoireAtID(string DisucssionSentenceTextId)

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using CoreGame;
 
 #if UNITY_EDITOR
@@ -27,6 +26,9 @@ namespace RTPuzzle
             this.DrawFace(FC3, FC7, FC8, FC4);
             this.DrawFace(FC4, FC8, FC5, FC1);
             this.DrawFace(FC5, FC6, FC7, FC8);
+
+            Handles.DrawWireDisc(worldPosition, worldRotation * Vector3.up, this.frustum.F2.FaceOffsetFromCenter.z / 2f);
+
             Handles.color = oldGizmoColor;
         }
         private void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)

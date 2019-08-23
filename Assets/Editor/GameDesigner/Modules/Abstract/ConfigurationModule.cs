@@ -4,7 +4,11 @@ using UnityEngine;
 
 namespace Editor_GameDesigner
 {
-    public abstract class ConfigurationModule<CONFIGURATION, ID, VALUE> : IGameDesignerModule where ID : Enum where VALUE : ScriptableObject where CONFIGURATION : IConfigurationSerialization
+    public interface IConfigurationModule {
+        void SetSearchString(string searchString);
+    }
+
+    public abstract class ConfigurationModule<CONFIGURATION, ID, VALUE> : IGameDesignerModule, IConfigurationModule where ID : Enum where VALUE : ScriptableObject where CONFIGURATION : IConfigurationSerialization
     {
         [SerializeField]
         private IGenericConfigurationEditor configurationEditor;
@@ -23,6 +27,11 @@ namespace Editor_GameDesigner
         public void OnEnabled()
         {
             this.configurationEditor = new GenericConfigurationEditor<ID, VALUE>("t:" + typeof(CONFIGURATION).Name);
+        }
+
+        public void SetSearchString(string searchString)
+        {
+            this.configurationEditor.SetSearchString(searchString);
         }
     }
 }

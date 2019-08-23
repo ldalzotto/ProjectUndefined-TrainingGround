@@ -9,6 +9,7 @@ namespace ConfigurationEditor
     public interface IGenericConfigurationEditor
     {
         void GUITick();
+        void SetSearchString(string searchString);
     }
 
     [System.Serializable]
@@ -59,7 +60,10 @@ namespace ConfigurationEditor
 
         }
 
-
+        public void SetSearchString(string searchString)
+        {
+            this.projectilesConf.SetSearchFilter(searchString);
+        }
     }
 }
 #endif

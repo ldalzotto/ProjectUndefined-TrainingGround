@@ -13,7 +13,7 @@ namespace RTPuzzle
 {
     public class InteractiveObjectType : MonoBehaviour
     {
-        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
+        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
 
         [CustomEnum()]
@@ -218,7 +218,7 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
-            Handles.Label(this.transform.position + new Vector3(0, -2f, 0), this.name, MyEditorStyles.LabelWhite);
+            Handles.Label(this.transform.position + new Vector3(0, -2f, 0), this.InteractiveObjectTypeDefinitionID.ToString(), MyEditorStyles.LabelWhite);
         }
 #endif
     }
