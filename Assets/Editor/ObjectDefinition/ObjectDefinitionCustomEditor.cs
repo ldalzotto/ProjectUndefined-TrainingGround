@@ -24,9 +24,9 @@ public class ObjectDefinitionCustomEditor : Editor
         AbstractObjectDefinitionConfigurationInherentData RangeDefinitionTarget = (AbstractObjectDefinitionConfigurationInherentData)target;
         this.DoInit(RangeDefinitionTarget);
 
-        this.Listener.IfNotNull(Listener => Listener.BeforeOnInspectorGUI());
 
         EditorGUI.BeginChangeCheck();
+        this.Listener.IfNotNull(Listener => Listener.BeforeOnInspectorGUI());
         EditorGUILayout.BeginVertical();
         foreach (var rangeDefinitionModule in RangeDefinitionTarget.RangeDefinitionModulesActivation.Keys.ToList())
         {

@@ -9,269 +9,258 @@ using UnityEngine;
 namespace RTPuzzle
 {
     [ExecuteInEditMode]
-    public class InteractiveObjectTypeCustomEditor : EditorWindow
+    public class InteractiveObjectTypeCustomEditor
     {
         private CommonGameConfigurations CommonGameConfigurations;
         private PlayerManager PlayerManager;
 
-        [MenuItem("Test/InteractiveObjectTypeCustomEditor")]
-        static void Init()
-        {
-            // Get existing open window or if none, make a new one:
-            InteractiveObjectTypeCustomEditor window = (InteractiveObjectTypeCustomEditor)EditorWindow.GetWindow(typeof(InteractiveObjectTypeCustomEditor));
-            window.Show();
-        }
-
         private InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
 
-        private void OnEnable()
+        private void OnEnable(InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID)
         {
-            if (InteractiveObjectTypeDefinitionConfiguration == null) { this.InteractiveObjectTypeDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<InteractiveObjectTypeDefinitionConfiguration>("t:" + typeof(InteractiveObjectTypeDefinitionConfiguration)); }
-            if (DrawDisplay == null) { DrawDisplay = new Dictionary<string, InteractiveObjectDisaplyEnableArea>(); }
-            if (this.CommonGameConfigurations == null) { this.CommonGameConfigurations = new CommonGameConfigurations(); EditorInformationsHelper.InitProperties(ref this.CommonGameConfigurations); }
+            if (DrawDisplay == null)
+            {
+                DrawDisplay = new Dictionary<string, InteractiveObjectDisaplyEnableArea>();
+                this.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData.TryGetValue(InteractiveObjectTypeDefinitionID, out InteractiveObjectTypeDefinitionInherentData interactiveObjectTypeDefinitionConfigurationInherentData);
+                this.InteractiveObjectTypeDefinitionConfigurationInherentData = interactiveObjectTypeDefinitionConfigurationInherentData;
+                foreach (var rangeDefinitionModule in this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules)
+                {
+                    this.GetDrawDisplayOrCreate(rangeDefinitionModule.Key.Name, rangeDefinitionModule.Value);
+                }
+            }
             if (this.PlayerManager == null) { this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>(); }
-            SceneView.duringSceneGui += this.OnSceneGUI;
         }
 
-        void OnDisable()
+        public InteractiveObjectTypeCustomEditor(CommonGameConfigurations commonGameConfigurations, InteractiveObjectTypeDefinitionConfiguration interactiveObjectTypeDefinitionConfiguration, InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID)
         {
-            SceneView.duringSceneGui -= this.OnSceneGUI;
+            CommonGameConfigurations = commonGameConfigurations;
+            InteractiveObjectTypeDefinitionConfiguration = interactiveObjectTypeDefinitionConfiguration;
+            this.OnEnable(InteractiveObjectTypeDefinitionID);
         }
 
         private Dictionary<string, InteractiveObjectDisaplyEnableArea> DrawDisplay;
 
-        private InteractiveObjectType InteractiveObjectType;
         private InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionConfigurationInherentData;
 
-        private void OnGUI()
-        {
-            if (Selection.activeGameObject != null)
-            {
-                this.InteractiveObjectType = Selection.activeGameObject.GetComponent<InteractiveObjectType>();
 
-                if (InteractiveObjectType != null && InteractiveObjectType.InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
+        public void OnGUI(InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID)
+        {
+            this.OnEnable(InteractiveObjectTypeDefinitionID);
+            if (this.InteractiveObjectTypeDefinitionConfigurationInherentData != null)
+            {
+                foreach (var interacitveObjectDefinitionModule in this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules)
                 {
-                    this.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData.TryGetValue(InteractiveObjectType.InteractiveObjectTypeDefinitionID, out InteractiveObjectTypeDefinitionInherentData interactiveObjectTypeDefinitionConfigurationInherentData);
-                    this.InteractiveObjectTypeDefinitionConfigurationInherentData = interactiveObjectTypeDefinitionConfigurationInherentData;
-                    if (interactiveObjectTypeDefinitionConfigurationInherentData != null)
-                    {
-                        foreach (var interacitveObjectDefinitionModule in interactiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules)
-                        {
-                            this.GetDrawDisplayOrCreate(interacitveObjectDefinitionModule.Key.Name, interacitveObjectDefinitionModule.Value).OnGUI(null);
-                        }
-                    }
+                    this.GetDrawDisplayOrCreate(interacitveObjectDefinitionModule.Key.Name, interacitveObjectDefinitionModule.Value).OnGUI(null);
                 }
             }
         }
 
-        private void OnSceneGUI(SceneView sceneView)
+        public void OnSceneGUI(SceneView sceneView, InteractiveObjectType InteractiveObjectType)
         {
-            if (InteractiveObjectType != null)
+            this.OnEnable(InteractiveObjectType.InteractiveObjectTypeDefinitionID);
+            Handles.BeginGUI();
+            var oldHandlesColor = Handles.color;
+
+            foreach (var drawDisplay in this.DrawDisplay)
             {
-                Handles.BeginGUI();
-                var oldHandlesColor = Handles.color;
-
-                foreach (var drawDisplay in this.DrawDisplay)
+                if (drawDisplay.Key == typeof(TargetZoneModuleDefinition).Name)
                 {
-                    if (drawDisplay.Key == typeof(TargetZoneModuleDefinition).Name)
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(TargetZoneModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
                     {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(TargetZoneModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(TargetZoneModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
                         {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(TargetZoneModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var TargetZoneModuleDefinition = (TargetZoneModuleDefinition)definitionSO;
+                            var TargetZoneModuleDefinition = (TargetZoneModuleDefinition)definitionSO;
 
-                                var targetZoneInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration.ConfigurationInherentData[TargetZoneModuleDefinition.TargetZoneID];
-                                Handles.color = Color.red;
-                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * targetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
-                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, targetZoneInherentData.AIDistanceDetection);
+                            var targetZoneInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration.ConfigurationInherentData[TargetZoneModuleDefinition.TargetZoneID];
+                            Handles.color = Color.red;
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * targetZoneInherentData.AIDistanceDetection, nameof(TargetZoneInherentData.AIDistanceDetection), MyEditorStyles.LabelRed);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, targetZoneInherentData.AIDistanceDetection);
 
-                                Handles.color = Color.yellow;
-                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
-                                Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, targetZoneInherentData.EscapeFOVSemiAngle, 5f);
-                                Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, -targetZoneInherentData.EscapeFOVSemiAngle, 5f);
-                            }
+                            Handles.color = Color.yellow;
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * 5f, nameof(TargetZoneInherentData.EscapeFOVSemiAngle), MyEditorStyles.LabelYellow);
+                            Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, targetZoneInherentData.EscapeFOVSemiAngle, 5f);
+                            Handles.DrawWireArc(InteractiveObjectType.transform.position, Vector3.up, InteractiveObjectType.transform.forward, -targetZoneInherentData.EscapeFOVSemiAngle, 5f);
                         }
                     }
-                    else if (drawDisplay.Key == typeof(LevelCompletionTriggerModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(LevelCompletionTriggerModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LevelCompletionTriggerModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var LevelCompletionTriggerModuleDefinition = (LevelCompletionTriggerModuleDefinition)definitionSO;
-                                var rangeDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID];
-                                this.DrawRangeDefinition(rangeDefinition, InteractiveObjectType.transform, Color.blue, "Test", MyEditorStyles.LabelBlue);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(ActionInteractableObjectModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ActionInteractableObjectModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ActionInteractableObjectModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)definitionSO;
-                                var ActionInteractableInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration.ConfigurationInherentData[ActionInteractableObjectModuleDefinition.ActionInteractableObjectID];
-                                Handles.color = Color.magenta;
-                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ActionInteractableInherentData.InteractionRange, nameof(ActionInteractableInherentData.InteractionRange), MyEditorStyles.LabelMagenta);
-                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ActionInteractableInherentData.InteractionRange);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(NearPlayerGameOverTriggerModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(NearPlayerGameOverTriggerModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(NearPlayerGameOverTriggerModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var NearPlayerGameOverTriggerModuleDefinition = (NearPlayerGameOverTriggerModuleDefinition)definitionSO;
-                                var NearPlayerGameOverTriggerInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.NearPlayerGameOverTriggerConfiguration.ConfigurationInherentData[NearPlayerGameOverTriggerModuleDefinition.NearPlayerGameOverTriggerID];
-
-                                Handles.color = Color.magenta;
-                                var labelStyle = new GUIStyle(EditorStyles.label);
-                                labelStyle.normal.textColor = Color.magenta;
-                                Handles.Label(InteractiveObjectType.transform.position + (Vector3.up * NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius), "Near player game over radius.", labelStyle);
-                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(LaunchProjectileModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(LaunchProjectileModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LaunchProjectileModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var LaunchProjectileModuleDefinition = (LaunchProjectileModuleDefinition)definitionSO;
-                                var LaunchProjectileInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration.ConfigurationInherentData[LaunchProjectileModuleDefinition.LaunchProjectileID];
-
-                                Handles.color = Color.magenta;
-                                var position = InteractiveObjectType.transform.position;
-                                if (this.PlayerManager != null)
-                                {
-                                    position = this.PlayerManager.transform.position;
-                                }
-                                Handles.Label(position + Vector3.up * LaunchProjectileInherentData.ProjectileThrowRange, nameof(LaunchProjectileInherentData.ProjectileThrowRange), MyEditorStyles.LabelMagenta);
-                                Handles.DrawWireDisc(position, Vector3.up, LaunchProjectileInherentData.ProjectileThrowRange);
-
-
-                                Handles.color = Color.red;
-                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * LaunchProjectileInherentData.ExplodingEffectRange, nameof(LaunchProjectileInherentData.ExplodingEffectRange), MyEditorStyles.LabelRed);
-                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, LaunchProjectileInherentData.ExplodingEffectRange);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(AttractiveObjectModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(AttractiveObjectModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(AttractiveObjectModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)definitionSO;
-                                var AttractiveObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData[AttractiveObjectModuleDefinition.AttractiveObjectId];
-
-                                Handles.color = Color.magenta;
-                                var position = InteractiveObjectType.transform.position;
-                                Handles.Label(position + Vector3.up * AttractiveObjectInherentData.EffectRange, nameof(AttractiveObjectInherentData.EffectRange), MyEditorStyles.LabelMagenta);
-                                Handles.DrawWireDisc(position, Vector3.up, AttractiveObjectInherentData.EffectRange);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(ModelObjectModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ModelObjectModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ModelObjectModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var ModelObjectModuleDefinition = (ModelObjectModuleDefinition)definitionSO;
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(DisarmObjectModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(DisarmObjectModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(DisarmObjectModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)definitionSO;
-                                var DisarmObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ConfigurationInherentData[DisarmObjectModuleDefinition.DisarmObjectID];
-
-                                Handles.color = Color.magenta;
-                                var position = InteractiveObjectType.transform.position;
-                                Handles.Label(position + Vector3.up * DisarmObjectInherentData.DisarmInteractionRange, nameof(DisarmObjectInherentData.DisarmInteractionRange), MyEditorStyles.LabelMagenta);
-                                Handles.DrawWireDisc(position, Vector3.up, DisarmObjectInherentData.DisarmInteractionRange);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(GrabObjectModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(GrabObjectModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(GrabObjectModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)definitionSO;
-                                var GrabObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration.ConfigurationInherentData[GrabObjectModuleDefinition.GrabObjectID];
-                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * GrabObjectInherentData.EffectRadius, nameof(GrabObjectInherentData.EffectRadius), MyEditorStyles.LabelMagenta);
-                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, GrabObjectInherentData.EffectRadius);
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(ObjectRepelModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectRepelModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectRepelModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var ObjectRepelModuleDefinition = (ObjectRepelModuleDefinition)definitionSO;
-                                var ObjectRepelInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[ObjectRepelModuleDefinition.ObjectRepelID];
-                                Handles.color = Color.yellow;
-                                var selectedProjectile = drawArea.GetEnumParameter<LaunchProjectileID>();
-                                Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ObjectRepelInherentData.GetRepelableObjectDistance(selectedProjectile), nameof(ObjectRepelInherentData.RepelableObjectDistance), MyEditorStyles.LabelYellow);
-                                Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ObjectRepelInherentData.GetRepelableObjectDistance(selectedProjectile));
-                            }
-                        }
-                    }
-                    else if (drawDisplay.Key == typeof(ObjectSightModuleDefinition).Name)
-                    {
-                        var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectSightModuleDefinition).Name);
-                        if (drawArea.IsEnabled)
-                        {
-                            this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectSightModuleDefinition), out ScriptableObject definitionSO);
-                            if (definitionSO != null)
-                            {
-                                var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)definitionSO;
-                                var rangeObjectDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[ObjectSightModuleDefinition.RangeTypeObjectDefinitionID];
-                                rangeObjectDefinition.GetDefinitionModule<RangeTypeDefinition>().RangeShapeConfiguration.HandleDraw(InteractiveObjectType.transform.TransformPoint(ObjectSightModuleDefinition.LocalPosition),
-                                InteractiveObjectType.transform.rotation, InteractiveObjectType.transform.lossyScale);
-                            }
-                        }
-                    }
-//${addNewEntry}
                 }
+                else if (drawDisplay.Key == typeof(LevelCompletionTriggerModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(LevelCompletionTriggerModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LevelCompletionTriggerModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var LevelCompletionTriggerModuleDefinition = (LevelCompletionTriggerModuleDefinition)definitionSO;
+                            var rangeDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID];
+                            this.DrawRangeDefinition(rangeDefinition, InteractiveObjectType.transform, Color.blue, "Test", MyEditorStyles.LabelBlue);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(ActionInteractableObjectModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(ActionInteractableObjectModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ActionInteractableObjectModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var ActionInteractableObjectModuleDefinition = (ActionInteractableObjectModuleDefinition)definitionSO;
+                            var ActionInteractableInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration.ConfigurationInherentData[ActionInteractableObjectModuleDefinition.ActionInteractableObjectID];
+                            Handles.color = Color.magenta;
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ActionInteractableInherentData.InteractionRange, nameof(ActionInteractableInherentData.InteractionRange), MyEditorStyles.LabelMagenta);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ActionInteractableInherentData.InteractionRange);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(NearPlayerGameOverTriggerModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(NearPlayerGameOverTriggerModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(NearPlayerGameOverTriggerModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var NearPlayerGameOverTriggerModuleDefinition = (NearPlayerGameOverTriggerModuleDefinition)definitionSO;
+                            var NearPlayerGameOverTriggerInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.NearPlayerGameOverTriggerConfiguration.ConfigurationInherentData[NearPlayerGameOverTriggerModuleDefinition.NearPlayerGameOverTriggerID];
 
-                Handles.color = oldHandlesColor;
-                Handles.EndGUI();
+                            Handles.color = Color.magenta;
+                            var labelStyle = new GUIStyle(EditorStyles.label);
+                            labelStyle.normal.textColor = Color.magenta;
+                            Handles.Label(InteractiveObjectType.transform.position + (Vector3.up * NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius), "Near player game over radius.", labelStyle);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(LaunchProjectileModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(LaunchProjectileModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(LaunchProjectileModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var LaunchProjectileModuleDefinition = (LaunchProjectileModuleDefinition)definitionSO;
+                            var LaunchProjectileInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration.ConfigurationInherentData[LaunchProjectileModuleDefinition.LaunchProjectileID];
+
+                            Handles.color = Color.magenta;
+                            var position = InteractiveObjectType.transform.position;
+                            if (this.PlayerManager != null)
+                            {
+                                position = this.PlayerManager.transform.position;
+                            }
+                            Handles.Label(position + Vector3.up * LaunchProjectileInherentData.ProjectileThrowRange, nameof(LaunchProjectileInherentData.ProjectileThrowRange), MyEditorStyles.LabelMagenta);
+                            Handles.DrawWireDisc(position, Vector3.up, LaunchProjectileInherentData.ProjectileThrowRange);
+
+
+                            Handles.color = Color.red;
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * LaunchProjectileInherentData.ExplodingEffectRange, nameof(LaunchProjectileInherentData.ExplodingEffectRange), MyEditorStyles.LabelRed);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, LaunchProjectileInherentData.ExplodingEffectRange);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(AttractiveObjectModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(AttractiveObjectModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(AttractiveObjectModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)definitionSO;
+                            var AttractiveObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration.ConfigurationInherentData[AttractiveObjectModuleDefinition.AttractiveObjectId];
+
+                            Handles.color = Color.magenta;
+                            var position = InteractiveObjectType.transform.position;
+                            Handles.Label(position + Vector3.up * AttractiveObjectInherentData.EffectRange, nameof(AttractiveObjectInherentData.EffectRange), MyEditorStyles.LabelMagenta);
+                            Handles.DrawWireDisc(position, Vector3.up, AttractiveObjectInherentData.EffectRange);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(ModelObjectModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(ModelObjectModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ModelObjectModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var ModelObjectModuleDefinition = (ModelObjectModuleDefinition)definitionSO;
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(DisarmObjectModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(DisarmObjectModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(DisarmObjectModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)definitionSO;
+                            var DisarmObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration.ConfigurationInherentData[DisarmObjectModuleDefinition.DisarmObjectID];
+
+                            Handles.color = Color.magenta;
+                            var position = InteractiveObjectType.transform.position;
+                            Handles.Label(position + Vector3.up * DisarmObjectInherentData.DisarmInteractionRange, nameof(DisarmObjectInherentData.DisarmInteractionRange), MyEditorStyles.LabelMagenta);
+                            Handles.DrawWireDisc(position, Vector3.up, DisarmObjectInherentData.DisarmInteractionRange);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(GrabObjectModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(GrabObjectModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(GrabObjectModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var GrabObjectModuleDefinition = (GrabObjectModuleDefinition)definitionSO;
+                            var GrabObjectInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration.ConfigurationInherentData[GrabObjectModuleDefinition.GrabObjectID];
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * GrabObjectInherentData.EffectRadius, nameof(GrabObjectInherentData.EffectRadius), MyEditorStyles.LabelMagenta);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, GrabObjectInherentData.EffectRadius);
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(ObjectRepelModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectRepelModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectRepelModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var ObjectRepelModuleDefinition = (ObjectRepelModuleDefinition)definitionSO;
+                            var ObjectRepelInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[ObjectRepelModuleDefinition.ObjectRepelID];
+                            Handles.color = Color.yellow;
+                            var selectedProjectile = drawArea.GetEnumParameter<LaunchProjectileID>();
+                            Handles.Label(InteractiveObjectType.transform.position + Vector3.up * ObjectRepelInherentData.GetRepelableObjectDistance(selectedProjectile), nameof(ObjectRepelInherentData.RepelableObjectDistance), MyEditorStyles.LabelYellow);
+                            Handles.DrawWireDisc(InteractiveObjectType.transform.position, Vector3.up, ObjectRepelInherentData.GetRepelableObjectDistance(selectedProjectile));
+                        }
+                    }
+                }
+                else if (drawDisplay.Key == typeof(ObjectSightModuleDefinition).Name)
+                {
+                    var drawArea = this.GetDrawDisplayOrCreate(typeof(ObjectSightModuleDefinition).Name);
+                    if (drawArea.IsEnabled)
+                    {
+                        this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(ObjectSightModuleDefinition), out ScriptableObject definitionSO);
+                        if (definitionSO != null)
+                        {
+                            var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)definitionSO;
+                            var rangeObjectDefinition = this.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData[ObjectSightModuleDefinition.RangeTypeObjectDefinitionID];
+                            rangeObjectDefinition.GetDefinitionModule<RangeTypeDefinition>().RangeShapeConfiguration.HandleDraw(InteractiveObjectType.transform.TransformPoint(ObjectSightModuleDefinition.LocalPosition),
+                            InteractiveObjectType.transform.rotation, InteractiveObjectType.transform.lossyScale);
+                        }
+                    }
+                }
+                //${addNewEntry}
             }
+
+            Handles.color = oldHandlesColor;
+            Handles.EndGUI();
         }
 
         private InteractiveObjectDisaplyEnableArea GetDrawDisplayOrCreate(string key, ScriptableObject definitionSO = null)

@@ -17,7 +17,7 @@ namespace Editor_GameDesigner
         }
 
         public void OnDisabled()
-        { }
+        { this.interactiveObjectExplorerWindow.OnDisabled(); }
 
         public void OnEnabled()
         {
