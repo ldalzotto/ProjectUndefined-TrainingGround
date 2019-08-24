@@ -25,7 +25,7 @@ namespace RTPuzzle
             this.RangeTypeObjectRef = RangeTypeObjectRef;
             this.associatedCollisionType = GetComponent<CollisionType>();
         }
-
+        
         public virtual void Tick(float d) { }
 
 #if UNITY_EDITOR
@@ -36,6 +36,11 @@ namespace RTPuzzle
         public abstract Collider GetCollider();
         public abstract float GetRadiusRange();
         public abstract Vector3 GetCenterWorldPos();
+
+        protected void SetWorldPosition(Vector3 worldPosition)
+        {
+            this.RangeTypeObjectRef.transform.position = worldPosition;
+        }
 
         public static RangeType RetrieveFromCollisionType(CollisionType collisionType)
         {

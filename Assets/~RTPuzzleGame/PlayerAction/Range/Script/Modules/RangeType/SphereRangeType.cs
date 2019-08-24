@@ -54,7 +54,7 @@ namespace RTPuzzle
         {
             if (this.originPositionProvider != null)
             {
-                transform.position = this.originPositionProvider.Invoke();
+                this.SetWorldPosition(this.originPositionProvider.Invoke());
             }
         }
 
