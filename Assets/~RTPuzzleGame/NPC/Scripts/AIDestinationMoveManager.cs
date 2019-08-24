@@ -5,13 +5,13 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class NPCAIDestinationMoveManager
+    public class AIDestinationMoveManager
     {
         private TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent;
         private NavMeshAgent objectAgent;
         private Action OnDestinationReachedEvent;
 
-        public NPCAIDestinationMoveManager(TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
+        public AIDestinationMoveManager(TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent, NavMeshAgent objectAgent, Action OnDestinationReachedEvent)
         {
             AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
             this.objectAgent = objectAgent;

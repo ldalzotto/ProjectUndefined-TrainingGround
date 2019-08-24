@@ -15,7 +15,7 @@ namespace Tests
         public IEnumerator LaunchProjectile_WhenProjectileHit_AIFOVIsReducedBasedOnAgentPosition_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseTestAIManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
@@ -33,7 +33,7 @@ namespace Tests
         public IEnumerator LaunchProjectile_WhenProjectileHit_AtLowerProjectileCollisionSphere_AIFOVIsReducedBasedOnAgentPosition_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseTestAIManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);
@@ -51,7 +51,7 @@ namespace Tests
         public IEnumerator LaunchProjectile_WhenProjectileHit_AtUpperProjectileCollisionSphere_AIFOVIsReducedBasedOnAgentPosition_Test()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseTestAIManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             yield return null;
             var projectileSemiAngle = 90f;
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, projectileSemiAngle);

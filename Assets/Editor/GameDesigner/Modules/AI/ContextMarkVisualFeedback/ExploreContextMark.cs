@@ -19,7 +19,7 @@ namespace Editor_GameDesigner
 
         public override void OnEnabled()
         {
-            var NPCAIManagers = GameObject.FindObjectsOfType<NPCAIManager>().ToList();
+            var NPCAIManagers = GameObject.FindObjectsOfType<AIObjectType>().ToList();
             var ContextMarkVisualFeedbackConfiguration = AssetFinder.SafeSingleAssetFind<ContextMarkVisualFeedbackConfiguration>("t:" + typeof(ContextMarkVisualFeedbackConfiguration).Name);
             this.ContextMarkVisualFeedbackInherentData = NPCAIManagers.ConvertAll(n => ContextMarkVisualFeedbackConfiguration.ConfigurationInherentData[n.AiID]);
             base.OnEnabled();

@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ExecuteInEditMode]
     public class InteractiveObjectTypeCustomEditor
     {
         private CommonGameConfigurations CommonGameConfigurations;

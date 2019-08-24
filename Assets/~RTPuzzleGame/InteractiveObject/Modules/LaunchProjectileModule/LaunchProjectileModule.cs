@@ -42,7 +42,7 @@ namespace RTPuzzle
         public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
         {
             #region External Dependencies
-            var npcAiManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var npcAiManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
@@ -141,7 +141,7 @@ namespace RTPuzzle
     class SphereCollisionManager
     {
         #region External Dependencies
-        private NPCAIManagerContainer NPCAIManagerContainer;
+        private AIManagerContainer NPCAIManagerContainer;
         private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private PuzzleEventsManager PuzzleEventsManager;
@@ -151,7 +151,7 @@ namespace RTPuzzle
         private LaunchProjectileInherentData LaunchProjectileInherentData;
 
         public SphereCollisionManager(LaunchProjectileInherentData LaunchProjectileInherentData,
-            NPCAIManagerContainer NPCAIManagerContainer,
+            AIManagerContainer NPCAIManagerContainer,
             InteractiveObjectContainer InteractiveObjectContainer,
             PuzzleGameConfigurationManager PuzzleGameConfigurationManager,
             PuzzleEventsManager PuzzleEventsManager,

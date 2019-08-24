@@ -5,10 +5,12 @@ using System.Collections;
 public class Inline : PropertyAttribute
 {
     public bool CreateSubIfAbsent = false;
+    public bool CreateAtSameLevelIfAbsent = false;
     public string FileName;
 
-    public Inline(bool createSubIfAbsent = false)
+    public Inline(bool createSubIfAbsent = false, bool createAtSameLevelIfAbsent = false)
     {
         CreateSubIfAbsent = createSubIfAbsent;
+        CreateAtSameLevelIfAbsent = createAtSameLevelIfAbsent;
     }
 }

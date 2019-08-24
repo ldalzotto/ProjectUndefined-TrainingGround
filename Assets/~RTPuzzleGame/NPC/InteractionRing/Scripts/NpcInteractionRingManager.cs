@@ -9,7 +9,7 @@ namespace RTPuzzle
         private const string INTERACTION_RING_OBJECT_NAME = "InteractionRing";
 
         #region External Renferences
-        private NPCAIManager npcAiManagerRef;
+        private AIObjectType npcAiManagerRef;
         private NpcInteractionRingContainer NpcInteractionRingContainer;
         #endregion
 
@@ -35,7 +35,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        public NpcInteractionRingManager(NPCAIManager npcAiManagerRef)
+        public NpcInteractionRingManager(AIObjectType npcAiManagerRef)
         {
             #region External Dependencies
             this.NpcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
@@ -74,7 +74,7 @@ namespace RTPuzzle
             npcInteractionRingType.transform.position = this.npcAiManagerRef.transform.position + ringPositionOffset;
         }
 
-        private void ComputePositionOffset(NPCAIManager npcAiManagerRef)
+        private void ComputePositionOffset(AIObjectType npcAiManagerRef)
         {
             ringPositionOffset = new Vector3(0, npcAiManagerRef.GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
         }

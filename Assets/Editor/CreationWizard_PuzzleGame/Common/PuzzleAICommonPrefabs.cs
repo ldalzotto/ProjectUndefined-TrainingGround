@@ -18,7 +18,7 @@ namespace Editor_MainGameCreationWizard
     {
         
         [ReadOnly()]
-        public RTPuzzle.NPCAIManager AIBasePrefab;
+        public RTPuzzle.AIObjectType AIBasePrefab;
         
         [ReadOnly()]
         public RTPuzzle.AIAttractiveObjectLooseManager AIAttractiveObjectLooseManager;

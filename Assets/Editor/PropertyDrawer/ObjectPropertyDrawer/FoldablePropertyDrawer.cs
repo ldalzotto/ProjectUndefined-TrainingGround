@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 [CustomPropertyDrawer(typeof(Foldable))]
@@ -32,10 +33,15 @@ public class FoldablePropertyDrawer : PropertyDrawer
         EditorGUI.BeginProperty(position, null, property);
         this.foldableArea.OnGUI(() =>
         {
-            foreach (var childPropery in SerializableObjectHelper.GetChildren(property))
+            try
             {
-                EditorGUILayout.PropertyField(childPropery, true);
+                foreach (var childPropery in SerializableObjectHelper.GetChildren(property))
+                {
+
+                    EditorGUILayout.PropertyField(childPropery, true);
+                }
             }
+            catch (Exception e) { }
         });
 
         if (foldableAttribute.CanBeDisabled)

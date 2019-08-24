@@ -94,7 +94,7 @@ namespace Tests
             
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var aiContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
             
             var projectileThrowRange = 9993f;
@@ -136,7 +136,7 @@ namespace Tests
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var aiContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
 
             var projectileThrowRange = 9993f;
@@ -182,7 +182,7 @@ namespace Tests
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var aiContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
 
 

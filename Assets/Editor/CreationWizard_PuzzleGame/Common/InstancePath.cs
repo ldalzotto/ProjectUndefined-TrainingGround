@@ -140,5 +140,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string RangeTypeObjectDefinitionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/RangeTypeObjectDefinitionConf" +
             "iguration/Data";
+        
+        [ReadOnly()]
+        public static string AIObjectTypeDefinitionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AIObjectTypeDefinitionConfigu" +
+            "ration/Data";
     }
 }

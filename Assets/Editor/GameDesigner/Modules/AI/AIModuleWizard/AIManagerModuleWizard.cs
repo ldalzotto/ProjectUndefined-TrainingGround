@@ -38,7 +38,7 @@ namespace Editor_GameDesigner
 
         private void ProcessAIManagerEdit(string aiComponentFieldName, AbstractAIManager aiComponentBasePrefab, Type aiManagerType)
         {
-            var aiID = this.currentSelectedObjet.GetComponent<NPCAIManager>().AiID;
+            var aiID = this.currentSelectedObjet.GetComponent<AIObjectType>().AiID;
             var componentsFolderPath = InstancePath.AIBehaviorConfigurationPath + "/" + aiID.ToString() + "_Components";
             if (this.add)
             {

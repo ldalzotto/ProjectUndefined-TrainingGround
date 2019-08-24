@@ -74,6 +74,7 @@
     <Compile Include="Assets\Editor\CodeGeneration\PuzzleIdentifiedObjectGeneration\PuzzleIdentifiedObjectGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\CreationWizardCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\InteractiveObjectModuleDefinitionCreation.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\PuzzleConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\GenericConfigurationEditor.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Helper\DictionaryEnum\DictionaryEnumGUI.cs" />
@@ -160,6 +161,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\AIObjectTypeDefinitionCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\AIObjectTypeDefinitionCreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\Modules\AIObjectTypeDefinitionConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\AnimationCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\AnimationCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\Animation\Module\AnimationConfigurationDataCreation.cs" />
@@ -351,6 +356,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ContextMarkVisualFeedback\ExploreContextMark.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ExploreAI.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\AIObjectTypeDefinition\CreateAIObjectTypeDefinition.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Animation\CreateAnimation.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\CreateAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\EditAttractiveObject.cs" />

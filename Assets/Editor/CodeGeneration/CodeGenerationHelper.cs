@@ -102,6 +102,7 @@ public static class CodeGenerationHelper
 
     public static string ApplyStringParameters(string sourceString, Dictionary<string, string> parameters)
     {
+        if (parameters == null) { return sourceString; }
         foreach (var parameter in parameters)
         {
             sourceString = sourceString.Replace(parameter.Key, parameter.Value);
@@ -141,38 +142,15 @@ public static class CodeGenerationHelper
 
     public static void AddGameDesignerChoiceTree(List<KeyValuePair<string, string>> entries)
     {
-        string GameDesignerChoiceTreeConstantPath = "Assets/Editor/GameDesigner/ChoiceTree";
         CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(ChoiceTreeConstant).Namespace);
-        var generatedChoiceTreeConstant = new CodeTypeDeclaration(typeof(ChoiceTreeConstant).Name);
 
-        var generatedChoiceModuleFieldName = nameof(ChoiceTreeConstant.Modules);
-        var generatedChoiceModuleField = new CodeMemberField(typeof(ChoiceTreeConstant).GetField(generatedChoiceModuleFieldName).FieldType, generatedChoiceModuleFieldName);
-        generatedChoiceModuleField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-        var generatedChoiceModuleDic = ChoiceTreeConstant.Modules.ToList()
-            .ConvertAll(kv => new KeyValuePair<string, string>("\"" + kv.Key + "\"", "typeof(" + kv.Value.FullName + ")"))
-              .Union(entries.ConvertAll(kv => new KeyValuePair<string, string>("\"" + kv.Key + "\"", "typeof(" + kv.Value + ")")))
-            .GroupBy(kv => kv.Key)
-            .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        generatedChoiceModuleField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<string, System.Type>()" +
-            CodeGenerationHelper.FormatDictionaryToCodeSnippet(generatedChoiceModuleDic));
-        generatedChoiceTreeConstant.Members.Add(generatedChoiceModuleField);
-
-
-        samples.Types.Add(generatedChoiceTreeConstant);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = GameDesignerChoiceTreeConstantPath + "/" + generatedChoiceTreeConstant.Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
+        foreach (var entry in entries)
         {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
+            CodeGenerationHelper.InsertToFile(new FileInfo(ClassFileFromType(typeof(ChoiceTreeConstant)).Path),
+                       "{\"" + entry.Key + "\"" + ", typeof(" + entry.Value + ")},\n", "//${addNewEntry}", null);
         }
     }
-    
+
     public static void CopyFile(DirectoryInfo targetDirectory, Dictionary<string, string> parameters, FileInfo fileToCopy)
     {
         if (fileToCopy.Extension == ".txt")
@@ -190,15 +168,20 @@ public static class CodeGenerationHelper
             }
         }
     }
-    
+
     public static void InsertToFile(FileInfo targetFile, FileInfo templateFile, string insertionMarker, Dictionary<string, string> parameters, Func<string, bool> insertionGuard = null)
     {
+        InsertToFile(targetFile, File.ReadAllText(templateFile.FullName), insertionMarker, parameters, insertionGuard);
+    }
+
+    public static void InsertToFile(FileInfo targetFile, string valueToAdd, string insertionMarker, Dictionary<string, string> parameters, Func<string, bool> insertionGuard = null)
+    {
         string PuzzleGameConfigurationManagerFile = File.ReadAllText(targetFile.FullName);
-        
-        if ((insertionGuard != null && insertionGuard.Invoke(PuzzleGameConfigurationManagerFile)) 
+
+        if ((insertionGuard != null && insertionGuard.Invoke(PuzzleGameConfigurationManagerFile))
                     || insertionGuard == null)
         {
-            string configurationToAdd = configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(templateFile.FullName), parameters);
+            string configurationToAdd = configurationToAdd = CodeGenerationHelper.ApplyStringParameters(valueToAdd, parameters);
 
             PuzzleGameConfigurationManagerFile =
                PuzzleGameConfigurationManagerFile.Insert(PuzzleGameConfigurationManagerFile.IndexOf(insertionMarker), configurationToAdd);
@@ -206,7 +189,7 @@ public static class CodeGenerationHelper
             File.WriteAllText(targetFile.FullName, PuzzleGameConfigurationManagerFile);
         }
     }
-    
+
     public static void DuplicateDirectoryWithParamtersRecursive(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, Dictionary<string, string> parameters)
     {
         if (!targetDirectory.Exists)

@@ -9,12 +9,12 @@ namespace RTPuzzle
     {
 
         #region External Dependencies
-        private NPCAIManager NPCAIManagerRef;
+        private AIObjectType NPCAIManagerRef;
         private NpcInteractionRingManager NpcInteractionRingManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
-        public ContextMarkVisualFeedbackManager(NPCAIManager NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
+        public ContextMarkVisualFeedbackManager(AIObjectType NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
         {
             this.NPCAIManagerRef = NPCAIManagerRef;
             this.DeleteOperation();

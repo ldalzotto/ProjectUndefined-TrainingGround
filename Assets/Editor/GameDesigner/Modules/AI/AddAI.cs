@@ -8,7 +8,7 @@ using System;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class AddAI : AddPrefabModule<NPCAIManager>
+    public class AddAI : AddPrefabModule<AIObjectType>
     {
         protected override Func<GameObject> ParentGameObject
         {

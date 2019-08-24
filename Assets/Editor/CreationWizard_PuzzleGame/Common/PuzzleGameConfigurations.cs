@@ -63,5 +63,8 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
+        
+        [ReadOnly()]
+        public RTPuzzle.AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
     }
 }

@@ -7,15 +7,15 @@ using System;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class EditBehavior : EditScriptableObjectModule<NPCAIManager>
+    public class EditBehavior : EditScriptableObjectModule<AIObjectType>
     {
 
         private AIComponentsConfiguration aIComponentsConfiguration;
-        protected override Func<NPCAIManager, ScriptableObject> scriptableObjectResolver
+        protected override Func<AIObjectType, ScriptableObject> scriptableObjectResolver
         {
             get
             {
-                return (NPCAIManager npcAIManager) =>
+                return (AIObjectType npcAIManager) =>
                 {
                     if (aIComponentsConfiguration != null)
                     {

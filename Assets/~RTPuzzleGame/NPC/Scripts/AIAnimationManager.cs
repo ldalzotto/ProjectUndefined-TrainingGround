@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class NPCAIAnimationManager : MonoBehaviour
+    public class AIAnimationManager : MonoBehaviour
     {
 
         private PlayerAnimationDataManager NPCPAnimationDataManager;
@@ -13,7 +13,7 @@ namespace RTPuzzle
         private Animator animator;
         private AnimationConfiguration animationConfiguration;
 
-        public NPCAIAnimationManager(Animator animator, AnimationConfiguration animationConfiguration)
+        public AIAnimationManager(Animator animator, AnimationConfiguration animationConfiguration)
         {
             this.animator = animator;
             this.animationConfiguration = animationConfiguration;

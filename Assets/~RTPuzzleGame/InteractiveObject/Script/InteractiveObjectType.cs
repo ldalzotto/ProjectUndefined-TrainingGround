@@ -16,7 +16,7 @@ namespace RTPuzzle
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
 
-        [CustomEnum()]
+        [HideInInspector]
         public InteractiveObjectID InteractiveObjectID;
 
         #region Modules
@@ -219,6 +219,7 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
+            var labelStyle = new GUIStyle(EditorStyles.label);
             Handles.Label(this.transform.position + new Vector3(0, -2f, 0), this.InteractiveObjectTypeDefinitionID.ToString(), MyEditorStyles.LabelWhite);
         }
 #endif

@@ -5,13 +5,13 @@ namespace RTPuzzle
     public class CollisionTypeHelper
     {
 
-        public static NPCAIManager GetAIManager(CollisionType collisionType)
+        public static AIObjectType GetAIManager(CollisionType collisionType)
         {
             if (collisionType != null)
             {
                 if (collisionType.IsAI)
                 {
-                    return collisionType.GetComponent<NPCAIManager>();
+                    return collisionType.GetComponent<AIObjectType>();
                 }
             }
             return null;

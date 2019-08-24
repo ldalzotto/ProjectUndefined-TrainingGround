@@ -44,7 +44,7 @@ namespace Tests
             );
 
             //AI Components default intialization
-            GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManagers().Values.ToList().ForEach((NPCAIManager npcAimanager) =>
+            GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManagers().Values.ToList().ForEach((AIObjectType npcAimanager) =>
             {
                 PuzzleSceneTestHelper.InitializeAIComponents(npcAimanager.GetAIBehavior().AIComponents);
             });
@@ -60,7 +60,7 @@ namespace Tests
             this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
             this.mockPuzzleEventsManagerTest.ClearCalls();
 
-            var npcAIManager = GameObject.FindObjectOfType<NPCAIManager>();
+            var npcAIManager = GameObject.FindObjectOfType<AIObjectType>();
             npcAIManager.AiID = this.chosenId;
         }
 

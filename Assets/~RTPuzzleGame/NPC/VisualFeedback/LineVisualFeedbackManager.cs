@@ -12,7 +12,7 @@ namespace RTPuzzle
         private DottedLineContainer DottedLineContainer;
         #endregion
 
-        public LineVisualFeedbackManager(NPCAIManager nPCAIManagerRef)
+        public LineVisualFeedbackManager(AIObjectType nPCAIManagerRef)
         {
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();

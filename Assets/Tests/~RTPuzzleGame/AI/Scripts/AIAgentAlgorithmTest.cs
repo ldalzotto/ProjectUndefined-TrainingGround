@@ -14,7 +14,7 @@ namespace Tests
         public IEnumerator OnDestinationReached_NewPathIsCalculatedTheSameFrame()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseTestAIManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
             var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());
@@ -27,7 +27,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
             yield return null;
-            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseTestAIManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, mouseTestAIManager.GetAIBehavior().AIComponents, 30f);
             var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
             var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
@@ -44,7 +44,7 @@ namespace Tests
         public IEnumerator OnDestinationReached_NewPathIsCalculatedTheSameFrame_ButPositionIsNotUpdated()
         {
             yield return this.Before(SceneConstants.OneAINoTargetZone);
-            var mouseTestAIManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
+            var mouseTestAIManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST);
             var oldAgentDestination = mouseTestAIManager.GetAgent().destination;
             var oldAgentNextPosition = mouseTestAIManager.GetAgent().destination;
             TestHelperMethods.SetAgentDestinationPositionReached(mouseTestAIManager.GetAgent());

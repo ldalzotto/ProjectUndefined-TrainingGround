@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class NPCAIManagerContainer : MonoBehaviour
+    public class AIManagerContainer : MonoBehaviour
     {
-        private Dictionary<AiID, NPCAIManager> npcAiManagers = new Dictionary<AiID, NPCAIManager>();
+        private Dictionary<AiID, AIObjectType> npcAiManagers = new Dictionary<AiID, AIObjectType>();
 
         #region External Events
-        public void OnNPCAiManagerCreated(NPCAIManager NPCAIManager)
+        public void OnNPCAiManagerCreated(AIObjectType NPCAIManager)
         {
             this.npcAiManagers.Add(NPCAIManager.AiID, NPCAIManager);
         }
@@ -37,11 +37,11 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public NPCAIManager GetNPCAiManager(AiID aiID)
+        public AIObjectType GetNPCAiManager(AiID aiID)
         {
             return npcAiManagers[aiID];
         }
-        public Dictionary<AiID, NPCAIManager> GetNPCAiManagers()
+        public Dictionary<AiID, AIObjectType> GetNPCAiManagers()
         {
             return this.npcAiManagers;
         }
@@ -49,7 +49,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            var initialNPCAIManagers = GameObject.FindObjectsOfType<NPCAIManager>();
+            var initialNPCAIManagers = GameObject.FindObjectsOfType<AIObjectType>();
             foreach (var initialNPCManager in initialNPCAIManagers)
             {
                 initialNPCManager.Init();

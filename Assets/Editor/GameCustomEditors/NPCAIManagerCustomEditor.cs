@@ -8,8 +8,7 @@ using UnityEngine;
 
 namespace Editor_GameCustomEditors
 {
-    [CustomEditor(typeof(NPCAIManager))]
-    public class NPCAIManagerCustomEditor : AbstractGameCustomEditorWithLiveSelection<NPCAIManager, NPCAIManagerCustomEditorContext, AIComponentsConfigurationModule, EditBehavior>
+    public class NPCAIManagerCustomEditor : AbstractGameCustomEditorWithLiveSelection<AIObjectType, NPCAIManagerCustomEditorContext, AIComponentsConfigurationModule, EditBehavior>
     {
 
         public AIComponentsConfiguration AIComponentsConfiguration;
@@ -21,15 +20,15 @@ namespace Editor_GameCustomEditors
                 AIComponentsConfiguration = AssetFinder.SafeSingleAssetFind<AIComponentsConfiguration>("t:" + typeof(AIComponentsConfiguration).Name);
                 if (AIComponentsConfiguration != null)
                 {
-                    AbstractAIComponents AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as NPCAIManager).AiID].AIComponents;
+                    AbstractAIComponents AIComponents = AIComponentsConfiguration.ConfigurationInherentData[(target as AIObjectType).AiID].AIComponents;
                     this.context = new NPCAIManagerCustomEditorContext();
-                    this.context.AISightVision = (target as NPCAIManager).GetComponentInChildren<ObjectSightModule>();
+                    this.context.AISightVision = (target as AIObjectType).GetComponentInChildren<ObjectSightModule>();
 
                     if (AIComponents != null)
                     {
                         this.context.GenericPuzzleAIComponents = (GenericPuzzleAIComponents)AIComponents;
 
-                        this.drawModules = new List<GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>>()
+                        this.drawModules = new List<GUIDrawModule<AIObjectType, NPCAIManagerCustomEditorContext>>()
                         {
                             new AIProjectileEscapeComponent(),
                             new AIPatrolComponent(),
@@ -49,7 +48,7 @@ namespace Editor_GameCustomEditors
         public ObjectSightModule AISightVision;
     }
 
-    public class AIProjectileEscapeComponent : IDPickGUIModule<NPCAIManager, NPCAIManagerCustomEditorContext, LaunchProjectileID, float>
+    public class AIProjectileEscapeComponent : IDPickGUIModule<AIObjectType, NPCAIManagerCustomEditorContext, LaunchProjectileID, float>
     {
         public override Func<NPCAIManagerCustomEditorContext, ByEnumProperty<LaunchProjectileID, float>> GetByEnumProperty
         {
@@ -63,7 +62,7 @@ namespace Editor_GameCustomEditors
             }
         }
 
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target, LaunchProjectileID selectedKey)
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, AIObjectType target, LaunchProjectileID selectedKey)
         {
             if (context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent != null && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null
                     && context.GenericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values.ContainsKey(selectedKey))
@@ -83,9 +82,9 @@ namespace Editor_GameCustomEditors
         }
     }
 
-    public class AIPatrolComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    public class AIPatrolComponent : GUIDrawModule<AIObjectType, NPCAIManagerCustomEditorContext>
     {
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, AIObjectType target)
         {
             if (context.GenericPuzzleAIComponents.AIRandomPatrolComponent != null)
             {
@@ -98,9 +97,9 @@ namespace Editor_GameCustomEditors
         }
     }
 
-    public class AIPlayerEscapeComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    public class AIPlayerEscapeComponent : GUIDrawModule<AIObjectType, NPCAIManagerCustomEditorContext>
     {
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, AIObjectType target)
         {
             if (context.GenericPuzzleAIComponents.AIPlayerEscapeComponent != null)
             {
@@ -122,9 +121,9 @@ namespace Editor_GameCustomEditors
         }
     }
 
-    public class AITargetZoneComponent : GUIDrawModule<NPCAIManager, NPCAIManagerCustomEditorContext>
+    public class AITargetZoneComponent : GUIDrawModule<AIObjectType, NPCAIManagerCustomEditorContext>
     {
-        public override void SceneGUI(NPCAIManagerCustomEditorContext context, NPCAIManager target)
+        public override void SceneGUI(NPCAIManagerCustomEditorContext context, AIObjectType target)
         {
             if (context.GenericPuzzleAIComponents.AITargetZoneComponent != null)
             {

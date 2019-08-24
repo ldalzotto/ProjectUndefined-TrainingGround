@@ -46,11 +46,13 @@ namespace RTPuzzle
         public RTPuzzle.ActionInteractableObjectConfiguration ActionInteractableObjectConfiguration;
         
         public RTPuzzle.GrabObjectConfiguration GrabObjectConfiguration;
-
+        
         public RTPuzzle.NearPlayerGameOverTriggerConfiguration NearPlayerGameOverTriggerConfiguration;
-
+        
         public RTPuzzle.RangeTypeObjectDefinitionConfiguration RangeTypeObjectDefinitionConfiguration;
-
+        
         public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
+        
+        public AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
     }
 }

@@ -10,9 +10,9 @@ using CreationWizard;
 namespace Editor_AICreationObjectCreationWizard
 {
     [System.Serializable]
-    public class AIPrefabCreation : CreateablePrefabComponent<NPCAIManager>
+    public class AIPrefabCreation : CreateablePrefabComponent<AIObjectType>
     {
-        public override Func<AbstractCreationWizardEditorProfile, NPCAIManager> BasePrefabProvider
+        public override Func<AbstractCreationWizardEditorProfile, AIObjectType> BasePrefabProvider
         {
             get
             {

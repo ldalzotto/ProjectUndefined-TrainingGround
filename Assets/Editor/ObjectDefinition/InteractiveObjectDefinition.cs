@@ -12,7 +12,8 @@ public class InteractiveObjectDefinition : ObjectDefinitionCustomEditor, IObject
     public void BeforeOnInspectorGUI()
     {
         var InteractiveObjectTypeDefinitionInherentData = (InteractiveObjectTypeDefinitionInherentData)target;
-        
+
+        EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(InteractiveObjectTypeDefinitionInherentData.InteractiveObjectID)));
         if (sharedDataFoldableArea == null)
         {
             if (InteractiveObjectTypeDefinitionInherentData.InteractiveObjectSharedDataTypeInherentData != null)

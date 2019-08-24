@@ -10,8 +10,9 @@ using UnityEditor;
 namespace RTPuzzle
 {
 
-    public class NPCAIManager : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener
+    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener
     {
+
 #if UNITY_EDITOR
         [Header("Debug")]
         public bool DebugEabled;
@@ -27,8 +28,11 @@ namespace RTPuzzle
         #endregion
 
         #region AI Behavior Components
-        [Header("AI Behavior Components")]
+        [CustomEnum(ConfigurationType = typeof(AIObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
+        public AIObjectTypeDefinitionID AIObjectTypeDefinitionID;
+
         public AiID AiID;
+        
         #endregion
 
         #region State
@@ -36,19 +40,19 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public static NPCAIManager FromCollisionType(CollisionType collisionType)
+        public static AIObjectType FromCollisionType(CollisionType collisionType)
         {
             if (collisionType == null) { return null; }
-            return collisionType.GetComponent<NPCAIManager>();
+            return collisionType.GetComponent<AIObjectType>();
         }
 
 #if UNITY_EDITOR
-        public NPCAIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
+        public AIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
 #endif
         #endregion
 
         private InteractiveObjectSharedDataType interactiveObjectSharedData;
-        private NPCAIDestinationMoveManager AIDestinationMoveManager;
+        private AIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
         private IPuzzleAIBehavior<AbstractAIComponents> puzzleAIBehavior;
@@ -56,13 +60,13 @@ namespace RTPuzzle
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
-        private NPCAIAnimationManager NPCAIAnimationManager;
+        private AIAnimationManager NPCAIAnimationManager;
 
         public void Init()
         {
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var puzzleCOnfigurationmanager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
@@ -86,7 +90,7 @@ namespace RTPuzzle
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 
-            AIDestinationMoveManager = new NPCAIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
+            AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
             this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
@@ -96,7 +100,7 @@ namespace RTPuzzle
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
             AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
-            NPCAIAnimationManager = new NPCAIAnimationManager(animator, animationConfiguration);
+            NPCAIAnimationManager = new AIAnimationManager(animator, animationConfiguration);
 
             this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
 
@@ -165,7 +169,6 @@ namespace RTPuzzle
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.normal.textColor = Color.magenta;
             Handles.Label(transform.position + new Vector3(0, 3f, 0), AiID.ToString(), labelStyle);
-            Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AI", true);
 
             var oldGizmoColor = Gizmos.color;
             Gizmos.color = Color.yellow;

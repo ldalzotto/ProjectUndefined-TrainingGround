@@ -23,6 +23,7 @@ public static class PathConstants
     public const string GameDesignerConfigurationModulesPath = "Assets/Editor/GameDesigner/Modules/Configurations/ConfigurationsModule.cs";
     public const string PuzzleGameConfigurationManagerPath = "Assets/~RTPuzzleGame/Configuration/PuzzleGameConfigurationManager.cs";
     public const string InteractiveObjectModuleDefinitionPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectDefinition";
+    public const string GameDesignerChoiceTreeConstantPath = "Assets/Editor/GameDesigner/ChoiceTree/ChoiceTreeConstant.cs";
 
     public const string CodeGenerationCreationWizardBasincConfigurationCreationTemplatePath = "Assets/Editor/CodeGeneration/Templates/CreationWizardBasicConfigurationCreation";
     public const string InteractiveObjectIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt";

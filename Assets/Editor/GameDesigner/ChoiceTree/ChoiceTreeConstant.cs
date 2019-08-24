@@ -91,6 +91,9 @@ namespace Editor_GameDesigner
 {"Configuration//.RangeTypeObjectDefinitionConfigurationModule",typeof(Editor_GameDesigner.RangeTypeObjectDefinitionConfigurationModule)},
 {"Puzzle//NearPlayerGameOverTrigger//.EditNearPlayerGameOverTrigger",typeof(Editor_GameDesigner.EditNearPlayerGameOverTrigger)},
 {"Configuration//.InteractiveObjectTypeDefinitionConfigurationModule",typeof(Editor_GameDesigner.InteractiveObjectTypeDefinitionConfigurationModule)},
+{"Puzzle//AIObjectTypeDefinition//.CreateAIObjectTypeDefinition",typeof(Editor_GameDesigner.CreateAIObjectTypeDefinition)},
+{"Configuration//.AIObjectTypeDefinitionConfigurationModule",typeof(Editor_GameDesigner.AIObjectTypeDefinitionConfigurationModule)},
+//${addNewEntry}
 };
     }
 }

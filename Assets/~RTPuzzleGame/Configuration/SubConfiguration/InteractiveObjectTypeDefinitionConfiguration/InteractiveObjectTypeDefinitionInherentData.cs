@@ -20,6 +20,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "InteractiveObjectTypeDefinitionInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjectTypeDefinitionConfiguration/InteractiveObjectTypeDefinitionInherentData", order = 1)]
     public class InteractiveObjectTypeDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
+        [CustomEnum()]
         public InteractiveObjectID InteractiveObjectID;
 
         public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
@@ -35,10 +36,7 @@ namespace RTPuzzle
             }
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
-                if (InteractiveObjectID != InteractiveObjectID.NONE)
-                {
-                    InteractiveObjectType.InteractiveObjectID = InteractiveObjectID;
-                }
+                InteractiveObjectType.InteractiveObjectID = InteractiveObjectID;
 
                 this.DestroyExistingModules(InteractiveObjectType.gameObject);
 

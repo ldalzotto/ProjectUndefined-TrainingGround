@@ -10,8 +10,8 @@ namespace Editor_GameDesigner
     [System.Serializable]
     public class ExploreAI : ExploreModule
     {
-        private List<NPCAIManager> NPCAIManagers = new List<NPCAIManager>();
-        private Dictionary<NPCAIManager, Editor> NPCAIManagersEditor = new Dictionary<NPCAIManager, Editor>();
+        private List<AIObjectType> NPCAIManagers = new List<AIObjectType>();
+        private Dictionary<AIObjectType, Editor> NPCAIManagersEditor = new Dictionary<AIObjectType, Editor>();
 
         public override void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
@@ -21,7 +21,7 @@ namespace Editor_GameDesigner
         public override void OnEnabled()
         {
             base.OnEnabled();
-            this.NPCAIManagers = GameObject.FindObjectsOfType<NPCAIManager>().ToList();
+            this.NPCAIManagers = GameObject.FindObjectsOfType<AIObjectType>().ToList();
         }
     }
 }

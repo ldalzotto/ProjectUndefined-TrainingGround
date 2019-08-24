@@ -8,7 +8,7 @@ namespace RTPuzzle
     public class PuzzleEventsManager : MonoBehaviour
     {
         #region External Dependencies
-        private NPCAIManagerContainer NPCAIManagerContainer;
+        private AIManagerContainer NPCAIManagerContainer;
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
@@ -22,7 +22,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            this.NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
             this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
             this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();

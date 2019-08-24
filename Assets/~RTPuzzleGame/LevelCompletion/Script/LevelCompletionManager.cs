@@ -21,7 +21,7 @@ namespace RTPuzzle
         {
             #region External dependencies
             var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            var NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 

@@ -16,7 +16,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
@@ -40,7 +40,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
@@ -68,7 +68,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
@@ -96,7 +96,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
@@ -129,7 +129,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
@@ -161,7 +161,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
@@ -190,7 +190,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
@@ -219,7 +219,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
@@ -245,7 +245,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
@@ -275,7 +275,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
@@ -307,7 +307,7 @@ namespace Tests
             yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
             yield return new WaitForFixedUpdate();
             yield return null;
-            var aiManager = FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(this.chosenId);
+            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());

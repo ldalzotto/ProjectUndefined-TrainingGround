@@ -6,15 +6,15 @@ using UnityEngine;
 namespace Editor_GameDesigner
 {
     [System.Serializable]
-    public class AIModel : SetModelModule<NPCAIManager>
+    public class AIModel : SetModelModule<AIObjectType>
     {
         public GameObject AIModelObject;
 
-        protected override Func<NPCAIManager, Transform> FindParent
+        protected override Func<AIObjectType, Transform> FindParent
         {
             get
             {
-                return (NPCAIManager NPCAIManager) =>
+                return (AIObjectType NPCAIManager) =>
                 {
                     return NPCAIManager.gameObject.FindChildObjectRecursively("Model").transform;
                 };

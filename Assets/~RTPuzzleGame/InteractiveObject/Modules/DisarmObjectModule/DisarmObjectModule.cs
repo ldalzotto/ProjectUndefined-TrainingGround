@@ -22,7 +22,7 @@ namespace RTPuzzle
         private DisarmObjectInherentData disarmObjectInherentConfigurationData;
         private SphereCollider disarmObjectRange;
 
-        private List<NPCAIManager> AiThatCanInteract;
+        private List<AIObjectType> AiThatCanInteract;
         private float elapsedTime;
 
         public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
@@ -39,7 +39,7 @@ namespace RTPuzzle
         {
             this.ModelObjectModule = ModelObjectModule;
             this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
-            this.AiThatCanInteract = new List<NPCAIManager>();
+            this.AiThatCanInteract = new List<AIObjectType>();
 
             this.disarmObjectRange = this.GetComponent<SphereCollider>();
             this.disarmObjectRange.radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
@@ -102,7 +102,7 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsAI)
             {
-                var npcAIManager = NPCAIManager.FromCollisionType(collisionType);
+                var npcAIManager = AIObjectType.FromCollisionType(collisionType);
                 this.AiThatCanInteract.Add(npcAIManager);
                 npcAIManager.OnDisarmObjectTriggerEnter(this);
             }
@@ -113,7 +113,7 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsAI)
             {
-                var npcAIManager = NPCAIManager.FromCollisionType(collisionType);
+                var npcAIManager = AIObjectType.FromCollisionType(collisionType);
                 this.AiThatCanInteract.Remove(npcAIManager);
                 npcAIManager.OnDisarmObjectTriggerExit(this);
             }

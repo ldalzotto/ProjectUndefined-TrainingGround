@@ -156,7 +156,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -183,7 +183,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -218,7 +218,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -247,7 +247,7 @@ namespace Tests
             }
             if (OnSecondProjectileDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -284,7 +284,7 @@ namespace Tests
         #endregion
 
         #region Player escape
-        public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, NPCAIManager nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
+        public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, AIObjectType nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
         {
             if (OnBeforeSettingPosition != null)
             {
@@ -298,7 +298,7 @@ namespace Tests
             }
             if (OnDestinationReached != null)
             {
-                var agent = GameObject.FindObjectOfType<NPCAIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -306,7 +306,7 @@ namespace Tests
             }
         }
 
-        public static IEnumerator EscapeFromPlayerIgnoreTargetYield(PlayerManager playerManager, NPCAIManager nPCAIManager, InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition,
+        public static IEnumerator EscapeFromPlayerIgnoreTargetYield(PlayerManager playerManager, AIObjectType nPCAIManager, InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition,
             Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
         {
             yield return PuzzleSceneTestHelper.ProjectileYield(InteractiveObjectInitialization, projectilePosition,

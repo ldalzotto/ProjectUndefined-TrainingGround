@@ -14,7 +14,7 @@ namespace RTPuzzle
 
         private PlayerManager PlayerManager;
         private PlayerManagerDataRetriever PlayerManagerDataRetriever;
-        private NPCAIManagerContainer NPCAIManagerContainer;
+        private AIManagerContainer NPCAIManagerContainer;
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
@@ -59,7 +59,7 @@ namespace RTPuzzle
             InventoryMenu.gameObject.SetActive(false);
 
             PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            NPCAIManagerContainer = GameObject.FindObjectOfType<NPCAIManagerContainer>();
+            NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
@@ -115,7 +115,7 @@ namespace RTPuzzle
             //TODO here
             NpcInteractionRingRendererManager.Init();
             GameObject.FindObjectOfType<AIPositionsManager>().Init();
-            GameObject.FindObjectOfType<NPCAIManagerContainer>().Init();
+            GameObject.FindObjectOfType<AIManagerContainer>().Init();
             ObjectRepelLineVisualFeedbackManager.Init();
             GameObject.FindObjectOfType<LevelCompletionManager>().Init();
             DottedLineRendererManager.Init();
