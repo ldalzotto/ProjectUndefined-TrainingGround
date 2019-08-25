@@ -12,8 +12,12 @@ namespace RTPuzzle
         public float EscapeSemiAngle;
     }
 
-    public abstract class AbstractPlayerEscapeManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractPlayerEscapeManager : AbstractAIManager<AIPlayerEscapeComponent>, InterfaceAIManager
     {
+        protected AbstractPlayerEscapeManager(AIPlayerEscapeComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 
         public abstract bool IsManagerEnabled();

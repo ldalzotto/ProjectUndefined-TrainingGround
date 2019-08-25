@@ -7,7 +7,7 @@ namespace RTPuzzle
 
     public class AITargetZoneEscapeManager : AbstractAITargetZoneManager
     {
-        private AiID aiID;
+        private AIObjectID aiID;
         private Collider aiCollider;
 
         #region External Dependencies
@@ -18,15 +18,18 @@ namespace RTPuzzle
 
         #region Internal Dependencies
         private AIFOVManager AIFOVManager;
-        private AITargetZoneComponent aITargetZoneComponent;
         #endregion
 
         #region Internal Managers
         private EscapeDestinationManager EscapeDestinationManager;
+
         #endregion
+        
+        public AITargetZoneEscapeManager(AITargetZoneComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
 
-
-        public void Init(NavMeshAgent agent, Collider aiCollider, AITargetZoneComponent aITargetZoneComponent, AIFOVManager AIFOVManager, AiID aiID)
+        public void Init(NavMeshAgent agent, Collider aiCollider, AIFOVManager AIFOVManager, AIObjectID aiID)
         {
             this.agent = agent;
             this.aiCollider = aiCollider;
@@ -34,7 +37,6 @@ namespace RTPuzzle
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             this.AIFOVManager = AIFOVManager;
-            this.aITargetZoneComponent = aITargetZoneComponent;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
             this.aiID = aiID;
         }
@@ -86,7 +88,7 @@ namespace RTPuzzle
             var targetZoneConfigurationData = this.puzzleGameConfigurationManager.TargetZonesConfiguration()[targetZone.TargetZoneID];
 
             this.isEscapingFromTargetZone = true;
-            this.EscapeDestinationManager.ResetDistanceComputation(aITargetZoneComponent.TargetZoneEscapeDistance);
+            this.EscapeDestinationManager.ResetDistanceComputation(this.AssociatedAIComponent.TargetZoneEscapeDistance);
 
             AIFOVManager.IntersectFOV_FromEscapeDirection(targetZone.transform.position, agent.transform.position, targetZoneConfigurationData.EscapeFOVSemiAngle);
 

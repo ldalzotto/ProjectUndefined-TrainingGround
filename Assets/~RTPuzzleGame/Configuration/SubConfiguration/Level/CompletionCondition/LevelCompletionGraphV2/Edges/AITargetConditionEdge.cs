@@ -13,7 +13,7 @@ namespace RTPuzzle
     public class AITargetConditionEdge : NodeEdgeProfile
     {
         [CustomEnum]
-        public AiID AiID;
+        public AIObjectID AiID;
         [CustomEnum]
         public TargetZoneID TargetZoneID;
 

@@ -102,7 +102,6 @@
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\InstancePath.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleAICommonPrefabs.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleGameConfigurations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleInteractiveObjectModulePrefabs.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
@@ -152,15 +151,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\ActionInteractableObject\ActionInteractableObjectCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\ActionInteractableObject\Module\ActionInteractableObjectConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\ActionInteractableObject\Module\EditorInformations.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIBehaviorCreationWizard\AIBehaviorCreationWizard.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIBehaviorCreationWizard\AIBehaviorCreationWizardProfile.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIBehaviorCreationWizard\Modules\AIComponentsCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIBehaviorCreationWizard\Modules\EditorInformations.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\AIObjectCreationWizard.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\AIObjectCreationWizardProfile.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIBehaviorConfigurationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\AIPrefabCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AI\AIObjectCreationWizard\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\AIObjectTypeDefinitionCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\AIObjectTypeDefinitionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\AIObjectTypeDefinition\Modules\AIObjectTypeDefinitionConfigurationCreation.cs" />
@@ -349,12 +339,8 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\ActionInteractableObject\EditActionInteractableObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AddAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AIModel.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AIModuleWizard\AIManagerModuleWizard.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\AIModuleWizard\AIManagerModuleWizardConstants.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\CreateBehavior.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\Behavior\EditBehavior.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ContextMarkVisualFeedback\ExploreContextMark.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\AI\CreateAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AI\ExploreAI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AIObjectTypeDefinition\CreateAIObjectTypeDefinition.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Animation\CreateAnimation.cs" />

@@ -203,7 +203,7 @@ namespace RTPuzzle
         #endregion
 
         #region Calculation failed fallback
-        public static Action OnDestinationCalculationFailed_ForceAIFear(PuzzleEventsManager puzzleEventsManager, AiID aiID, float fearTime)
+        public static Action OnDestinationCalculationFailed_ForceAIFear(PuzzleEventsManager puzzleEventsManager, AIObjectID aiID, float fearTime)
         {
             return () => { puzzleEventsManager.PZ_EVT_AI_FearedForced(aiID, fearTime); };
         }

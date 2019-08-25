@@ -35,64 +35,64 @@ namespace RTPuzzle
         }
 
         #region AI related events
-        public virtual void PZ_EVT_AI_DestinationReached(AiID aiID)
+        public virtual void PZ_EVT_AI_DestinationReached(AIObjectID aiID)
         {
             this.NPCAIManagerContainer.OnDestinationReached(aiID);
         }
         #endregion
 
         #region Fear Events
-        public void PZ_EVT_AI_FearedStunned_Start(AiID aiID)
+        public void PZ_EVT_AI_FearedStunned_Start(AIObjectID aiID)
         {
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Start"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunned();
         }
-        public void PZ_EVT_AI_FearedForced(AiID aiID, float fearTime)
+        public void PZ_EVT_AI_FearedForced(AIObjectID aiID, float fearTime)
         {
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedForced"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedForced(fearTime);
         }
-        public void PZ_EVT_AI_FearedStunned_Ended(AiID aiID)
+        public void PZ_EVT_AI_FearedStunned_Ended(AIObjectID aiID)
         {
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
         }
-        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectModule attractiveObject, AiID aiID)
+        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectModule attractiveObject, AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart(attractiveObject);
         }
-        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectModule involvedAttractiveObject, AiID aiID)
+        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectModule involvedAttractiveObject, AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
         }
 
-        public virtual void PZ_EVT_AI_Projectile_Hitted(AiID aiID)
+        public virtual void PZ_EVT_AI_Projectile_Hitted(AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
         }
 
-        public void PZ_EVT_AI_Projectile_NoMoreAffected(AiID aiID)
+        public void PZ_EVT_AI_Projectile_NoMoreAffected(AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
         }
 
-        public void PZ_EVT_AI_DisarmObject_Start(AiID aiID, DisarmObjectModule disarmObjectModule)
+        public void PZ_EVT_AI_DisarmObject_Start(AIObjectID aiID, DisarmObjectModule disarmObjectModule)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart(disarmObjectModule);
         }
 
-        public void PZ_EVT_AI_DisarmObject_End(AiID aiID)
+        public void PZ_EVT_AI_DisarmObject_End(AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectEnd();
         }
         #endregion
 
         #region Escape without target zone events
-        public void PZ_EVT_AI_EscapeWithoutTarget_Start(AiID aiID)
+        public void PZ_EVT_AI_EscapeWithoutTarget_Start(AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetStart();
         }
-        public void PZ_EVT_AI_EscapeWithoutTarget_End(AiID aiID)
+        public void PZ_EVT_AI_EscapeWithoutTarget_End(AIObjectID aiID)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetEnd();
         }

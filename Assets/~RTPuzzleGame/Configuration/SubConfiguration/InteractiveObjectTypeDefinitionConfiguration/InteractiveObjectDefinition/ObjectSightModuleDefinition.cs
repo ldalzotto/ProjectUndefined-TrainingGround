@@ -18,7 +18,13 @@ namespace RTPuzzle
         public Vector3 LocalPosition;
         public Quaternion LocalRotation;
 
+        [ScriptableObjectSubstitution(substitutionName: nameof(RangeTypeObjectDefinitionInherentData),
+                  sourcePickerName: nameof(RangeTypeObjectDefinitionIDPicker))]
         [CustomEnum(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
         public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
+
+        [Inline()]
+        public RangeTypeObjectDefinitionInherentData RangeTypeObjectDefinitionInherentData;
+        public bool RangeTypeObjectDefinitionIDPicker;
     }
 }

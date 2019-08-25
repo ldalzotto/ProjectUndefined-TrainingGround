@@ -12,9 +12,13 @@ namespace RTPuzzle
 
         private Transform anchorPosition;
 
-        public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager, AiID aiID, AIPositionsManager aIPositionsManager)
+        public AIScriptedPatrolComponentManager(AIPatrolComponent associatedAIComponent) : base(associatedAIComponent)
         {
-            this.BaseInit(patrollingAgent, aIPatrolComponent, aIFOVManager, aiID);
+        }
+
+        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager)
+        {
+            this.BaseInit(patrollingAgent, aIFOVManager, aiID);
             this.aIPositionsManager = aIPositionsManager;
 
             var aiPositions = aIPositionsManager.GetAIPositions(aiID);

@@ -15,8 +15,6 @@ public class GameCreationWizardEditorProfileChoiceTree
     
     public static System.Collections.Generic.Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>> configurations = new System.Collections.Generic.Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>(){
 {nameof(Editor_PuzzleLevelCreationWizard.PuzzleLevelCreationWizard),new Editor_PuzzleLevelCreationWizard.PuzzleLevelCreationWizard()},
-{nameof(Editor_AICreationObjectCreationWizard.AIObjectCreationWizard),new Editor_AICreationObjectCreationWizard.AIObjectCreationWizard()},
-{nameof(Editor_AIBehaviorCreationWizard.AIBehaviorCreationWizard),new Editor_AIBehaviorCreationWizard.AIBehaviorCreationWizard()},
 {nameof(Editor_TargetZoneCreationWizard.TargetZoneCreationWizard),new Editor_TargetZoneCreationWizard.TargetZoneCreationWizard()},
 {nameof(Editor_LaunchProjectileCreationWizard.LaunchProjectileCreationWizard),new Editor_LaunchProjectileCreationWizard.LaunchProjectileCreationWizard()},
 {nameof(Editor_PlayerActionCreationWizard.PlayerActionCreationWizard),new Editor_PlayerActionCreationWizard.PlayerActionCreationWizard()},

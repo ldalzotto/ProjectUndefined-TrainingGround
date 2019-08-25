@@ -8,38 +8,45 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum InteractiveObjectTypeDefinitionID {
-    
-    NONE = 0,
-    
-    _1_Town_StartTutorial_TargetZone = 1,
-    
-    _Sewers_1_TargetZone = 2,
-    
-    _Sewers_2_TargetZone = 3,
-    
-    _1_Town_GardenWatchman = 7,
-    
-    _1_Town_GardenDoor = 8,
-    
-    Player = 9,
-    
-    _1_Town_StartTutorial_Speaker = 10,
-    
-    TEST_1 = 11,
-    
-    _Sewers_1_Projectile = 12,
-    
-    _Sewers_1_CheeseAttractive = 13,
-    
-    TEST_2 = 14,
-    
-    _Sewers_2_CheeseAttractive = 15,
-    
-    _Sewers_2_Projectile = 16,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum InteractiveObjectTypeDefinitionID
+    {
+
+        NONE = 0,
+
+        _1_Town_StartTutorial_TargetZone = 1,
+
+        _Sewers_1_TargetZone = 2,
+
+        _Sewers_2_TargetZone = 3,
+
+        _1_Town_GardenWatchman = 7,
+
+        _1_Town_GardenDoor = 8,
+
+        Player = 9,
+
+        _1_Town_StartTutorial_Speaker = 10,
+
+        TEST_1 = 11,
+
+        _Sewers_1_Projectile = 12,
+
+        _Sewers_1_CheeseAttractive = 13,
+
+        TEST_2 = 14,
+
+        _Sewers_2_CheeseAttractive = 15,
+
+        _Sewers_2_Projectile = 16,
+
+        _Sewers_1_Mouse = 17,
+
+        _Sewers_2_Mouse = 18,
+        TEST_3 = 15
+    }
 }

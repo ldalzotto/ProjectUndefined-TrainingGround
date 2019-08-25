@@ -8,20 +8,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID
+namespace RTPuzzle
 {
-
-
+    using UnityEngine;
+    using ConfigurationEditor;
+    using GameConfigurationID;
+    using System.Collections.Generic;
+    
+    
     [System.Serializable()]
-    public enum DisarmObjectID
+    [UnityEngine.CreateAssetMenu(fileName="AIObjectConfiguration", menuName="Configuration/PuzzleGame/AIObjectConfiguration/AIObjectConfiguration", order=1)]
+    public class AIObjectConfiguration : ConfigurationEditor.ConfigurationSerialization<AIObjectID, AIObjectInherentData>
     {
-
-        RTP_CREATION_TEST = 0,
-
-        _1_Town_Start_Tutorial_Speaker = 1,
-
-        TEST_1 = 4,
-        TEST_2 = 5,
-        TEST_3 = 6
     }
 }

@@ -39,11 +39,10 @@ public class AIComponentGeneration : EditorWindow
         if (!string.IsNullOrEmpty(this.AIComponentBaseName))
         {
             this.CreateComponentFolderIfNecessary();
-            this.GenerateComponentWithAbstractManager();
+          //  this.GenerateComponentWithAbstractManager();
             this.GenerateManager();
             this.AddComponentToGenericPuzzleAIComponents();
             this.AddEditorWizardConstants();
-            this.AddToAICommonPrefabs();
         }
     }
 
@@ -56,6 +55,7 @@ public class AIComponentGeneration : EditorWindow
         }
     }
 
+    /*
     private void GenerateComponentWithAbstractManager()
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
@@ -129,6 +129,7 @@ public class AIComponentGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
+    */
 
     private void GenerateManager()
     {
@@ -286,34 +287,4 @@ public class AIComponentGeneration : EditorWindow
         }
     }
 
-    private void AddToAICommonPrefabs()
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(PuzzleAICommonPrefabs).Namespace);
-        samples.Imports.Add(new CodeNamespaceImport("RTPuzzle"));
-
-        var aiCommonPrefabClass = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(PuzzleAICommonPrefabs));
-
-        //add new manager
-        if (typeof(PuzzleAICommonPrefabs).GetFields().ToList().Select(f => f).Where(f => f.FieldType.Name == this.managerClass.Name).ToList().Count() == 0)
-        {
-            var newManagerAddedField = new CodeMemberField(this.managerClass.Name, this.managerClass.Name);
-            newManagerAddedField.Attributes = MemberAttributes.Public;
-            newManagerAddedField.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
-            aiCommonPrefabClass.Members.Add(newManagerAddedField);
-        }
-
-        samples.Types.Add(aiCommonPrefabClass);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.AICommonPrefabsPath;
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-    }
 }

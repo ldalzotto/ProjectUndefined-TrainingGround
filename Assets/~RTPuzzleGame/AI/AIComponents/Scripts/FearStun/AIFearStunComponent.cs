@@ -16,9 +16,9 @@ namespace RTPuzzle
         public float TimeWhileBeginFeared;
     }
 
-    public abstract class AbstractAIFearStunManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractAIFearStunManager : AbstractAIManager<AIFearStunComponent>, InterfaceAIManager
     {
-        protected AiID AiID;
+        protected AIObjectID AiID;
 
         #region State
         protected bool isFeared;
@@ -27,8 +27,11 @@ namespace RTPuzzle
         #region External Dependencies
         protected PuzzleEventsManager PuzzleEventsManager;
         #endregion
+        protected AbstractAIFearStunManager(AIFearStunComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
 
-        protected void BaseInit(AiID aiID, PuzzleEventsManager puzzleEventsManager)
+        protected void BaseInit(AIObjectID aiID, PuzzleEventsManager puzzleEventsManager)
         {
             AiID = aiID;
             PuzzleEventsManager = puzzleEventsManager;

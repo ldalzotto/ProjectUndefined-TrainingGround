@@ -13,11 +13,15 @@ namespace RTPuzzle
         private Func<Collider[]> targetZoneTriggerColliderProvider;
         #endregion
 
-        public void Init(NavMeshAgent escapingAgent, AIProjectileEscapeComponent AIProjectileEscapeComponent,
-                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AiID aiID, Func<Collider[]> targetZoneTriggerColliderProvider,
+        public AIProjectileWithCollisionEscapeManager(AIProjectileEscapeComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
+        public void Init(NavMeshAgent escapingAgent,
+                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AIObjectID aiID, Func<Collider[]> targetZoneTriggerColliderProvider,
                 TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent)
         {
-            this.BaseInit(escapingAgent, AIFOVManager, aiID, AIProjectileEscapeComponent, PuzzleEventsManager, AIDestimationMoveManagerComponent);
+            this.BaseInit(escapingAgent, AIFOVManager, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent);
             this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
         }
 

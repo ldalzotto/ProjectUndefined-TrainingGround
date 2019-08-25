@@ -14,9 +14,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_MoveTowardPlayer_NominalTest()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
@@ -38,9 +40,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_MoveTowardPlayer_KeepTargetingPlayerIfPlayerMoves()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
@@ -66,9 +70,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_MoveTowardPlayer_MoveToLastDestinationIfPlayerIsOutOfRange()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
@@ -94,9 +100,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_MoveTowardPlayer_NotInterruptedBy_ProjectileToAttractive()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
@@ -127,9 +135,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_MoveTowardPlayer_NotInterruptedBy_DisarmObject()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
@@ -159,9 +169,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_ProjectileToAttractive_IsAttracted()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
@@ -188,9 +200,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_ProjectileToAttractive_InterruptedBy_MoveTowardPlayer()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
@@ -217,9 +231,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_DisarmObject_NominalTest()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
@@ -243,9 +259,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_DisarmObject_InterruptedBy_MoveTowardPlayer()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
@@ -273,9 +291,11 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_DisarmObject_NotInterruptedBy_AttractiveObject()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());
@@ -304,10 +324,12 @@ namespace Tests
         [UnityTest]
         public IEnumerator AI_AttractiveObject_InterruptedBy_DisarmObject()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
             yield return null;
-            var aiManager = FindObjectOfType<AIManagerContainer>().GetNPCAiManager(this.chosenId);
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
             Assert.IsFalse(aiBehavior.IsDisarmingObject());

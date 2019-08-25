@@ -1,4 +1,4 @@
-﻿using System;
+﻿using GameConfigurationID;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -58,12 +58,21 @@ namespace RTPuzzle
 
         public static class ObjectSightModuleInstancer
         {
-            public static void PopuplateFromDefinition(ObjectSightModule objectSightModule, ObjectSightModuleDefinition objectSightModuleDefinition)
+            public static void PopuplateFromDefinition(ObjectSightModule objectSightModule, ObjectSightModuleDefinition objectSightModuleDefinition, PuzzlePrefabConfiguration puzzlePrefabConfiguration)
             {
                 objectSightModule.ResolveInternalDependencies();
                 objectSightModule.transform.localPosition = objectSightModuleDefinition.LocalPosition;
                 objectSightModule.transform.localRotation = objectSightModuleDefinition.LocalRotation;
-                objectSightModule.sightVisionRange.RangeTypeObjectDefinitionID = objectSightModuleDefinition.RangeTypeObjectDefinitionID;
+                if (objectSightModuleDefinition.RangeTypeObjectDefinitionIDPicker)
+                {
+                    objectSightModule.sightVisionRange.RangeTypeObjectDefinitionID = objectSightModuleDefinition.RangeTypeObjectDefinitionID;
+                }
+                else
+                {
+                    objectSightModule.sightVisionRange.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
+                    objectSightModuleDefinition.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(objectSightModule.sightVisionRange, puzzlePrefabConfiguration);
+                }
+
             }
         }
     }

@@ -18,20 +18,16 @@ namespace RTPuzzle
         public ProjectileEscapeSemiAngle EscapeSemiAngleV2;
     }
 
-    public abstract class AbstractAIProjectileEscapeManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractAIProjectileEscapeManager : AbstractAIManager<AIProjectileEscapeComponent>, InterfaceAIManager
     {
-        protected AiID aiID;
+        protected AIObjectID aiID;
         #region External Dependencies
         protected NavMeshAgent escapingAgent;
         protected AIFOVManager AIFOVManager;
         protected PuzzleEventsManager puzzleEventsManager;
         private TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent;
         #endregion
-
-        #region Internal Dependencies
-        protected AIProjectileEscapeComponent AIProjectileEscapeComponent;
-        #endregion
-
+        
         #region Internal Managers
         protected EscapeDestinationManager escapeDestinationManager;
         #endregion
@@ -41,14 +37,16 @@ namespace RTPuzzle
         protected abstract Action<NavMeshRaycastStrategy> DestinationCalulationMethod { get; }
         #endregion
 
-        protected void BaseInit(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AiID aiID,
-            AIProjectileEscapeComponent AIProjectileEscapeComponent, PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent)
+        protected AbstractAIProjectileEscapeManager(AIProjectileEscapeComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
+        protected void BaseInit(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent)
         {
             this.escapingAgent = escapingAgent;
             this.AIFOVManager = aIFOVManager;
             this.aiID = aiID;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
-            this.AIProjectileEscapeComponent = AIProjectileEscapeComponent;
             this.puzzleEventsManager = puzzleEventsManager;
             this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
         }
@@ -56,7 +54,7 @@ namespace RTPuzzle
         #region Internal Events
         protected void OnDestinationSetFromProjectileContact(LaunchProjectileID launchProjectileId)
         {
-            this.escapeDestinationManager.ResetDistanceComputation(this.AIProjectileEscapeComponent.EscapeDistanceV2.Values[launchProjectileId]);
+            this.escapeDestinationManager.ResetDistanceComputation(this.AssociatedAIComponent.EscapeDistanceV2.Values[launchProjectileId]);
         }
         #endregion
 
@@ -74,11 +72,11 @@ namespace RTPuzzle
         #region Data Retrieval
         public float GetMaxEscapeDistance(LaunchProjectileID launchProjectileId)
         {
-            return this.AIProjectileEscapeComponent.EscapeDistanceV2.Values[launchProjectileId];
+            return this.AssociatedAIComponent.EscapeDistanceV2.Values[launchProjectileId];
         }
         public float GetSemiAngle(LaunchProjectileID launchProjectileId)
         {
-            return this.AIProjectileEscapeComponent.EscapeSemiAngleV2.Values[launchProjectileId];
+            return this.AssociatedAIComponent.EscapeSemiAngleV2.Values[launchProjectileId];
         }
         #endregion
 
@@ -102,7 +100,7 @@ namespace RTPuzzle
             if (impactPoint != null)
             {
                 this.OnDestinationSetFromProjectileContact(projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId);
-                this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, this.AIProjectileEscapeComponent.EscapeSemiAngleV2.Values[projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId]);
+                this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngleV2.Values[projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId]);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation,
                         EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }

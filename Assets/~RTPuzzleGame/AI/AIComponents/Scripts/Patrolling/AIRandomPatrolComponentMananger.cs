@@ -15,9 +15,13 @@ namespace RTPuzzle
         
         private Vector3? currentDestination;
 
-        public void Init(NavMeshAgent patrollingAgent, AIPatrolComponent AIRandomPatrolComponent, AIFOVManager aIFOVManager, AiID aiID)
+        public AIRandomPatrolComponentMananger(AIPatrolComponent associatedAIComponent) : base(associatedAIComponent)
         {
-            this.BaseInit(patrollingAgent, AIRandomPatrolComponent, aIFOVManager, aiID);
+        }
+
+        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID)
+        {
+            this.BaseInit(patrollingAgent, aIFOVManager, aiID);
         }
 
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
@@ -32,7 +36,7 @@ namespace RTPuzzle
         private Nullable<Vector3> SetRandomDestination()
         {
 
-            navMeshHits = this.AIFOVManager.NavMeshRaycastSample(8, patrollingAgent.transform, this.AIPatrolComponent.MaxDistance);
+            navMeshHits = this.AIFOVManager.NavMeshRaycastSample(8, patrollingAgent.transform, this.AssociatedAIComponent.MaxDistance);
 
             var maxDistance = 0f;
             Nullable<NavMeshHit> selectedHit = null; ;

@@ -57,39 +57,21 @@ namespace Tests
             return GameObject.FindObjectsOfType<TargetZoneModule>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();
         }
 
-        public static AttractiveObjectInherentConfigurationData CreateAttractiveObjectInherentConfigurationData(float effectRange, float effectiveTime)
+        public static void SetPlayerEscapeComponentValues(AIObjectInitialization AIObjectInitialization, float escapeDistance, float escapeSemiAngle, float playerDetectionRadius)
         {
-            var attractiveObjectInherentConfigurationData = ScriptableObject.CreateInstance<AttractiveObjectInherentConfigurationData>();
-            var randomAttractiveObjectInherentData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().AttractiveObjectsConfiguration()[AttractiveObjectId._Sewers_1_CheeseAttractive];
-
-            //TODO Attractive instance
-            // attractiveObjectInherentConfigurationData.Init(effectRange, effectiveTime, randomAttractiveObjectInherentData.AssociatedInteractiveObjectType);
-            return attractiveObjectInherentConfigurationData;
+            AIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIPlayerEscapeComponent>().EscapeDistance = escapeDistance;
+            AIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIPlayerEscapeComponent>().EscapeSemiAngle = escapeSemiAngle;
+            AIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIPlayerEscapeComponent>().PlayerDetectionRadius = playerDetectionRadius;
         }
 
-        public static void SetPlayerEscapeComponentValues(GenericPuzzleAIComponents GenericPuzzleAIComponents, float escapeDistance, float escapeSemiAngle, float playerDetectionRadius)
+        public static void SetAIEscapeSemiAngle(InteractiveObjectTestID ProjectileTestID, AIObjectInitialization AIObjectInitialization, float escapeSemiAngle)
         {
-            GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeDistance = escapeDistance;
-            GenericPuzzleAIComponents.AIPlayerEscapeComponent.EscapeSemiAngle = escapeSemiAngle;
-            GenericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = playerDetectionRadius;
+            AIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIProjectileEscapeComponent>().EscapeSemiAngleV2.Values[InteractiveObjectTestIDTree.InteractiveObjectTestIDs[ProjectileTestID].LaunchProjectileID] = escapeSemiAngle;
         }
 
-        public static void SetAIEscapeSemiAngle(InteractiveObjectTestID InteractiveObjectTestID, AbstractAIComponents abstractAIComponents, float escapeSemiAngle)
+        public static void SetAIEscapeDistanceFromProjectile(InteractiveObjectTestID InteractiveObjectTestID, AIObjectInitialization AIObjectInitialization, float escapeDistance)
         {
-            if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
-            {
-                GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
-                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeSemiAngleV2.Values[InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].LaunchProjectileID] = escapeSemiAngle;
-            }
-        }
-
-        public static void SetAIEscapeDistanceFromProjectile(InteractiveObjectTestID InteractiveObjectTestID, AbstractAIComponents abstractAIComponents, float escapeDistance)
-        {
-            if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
-            {
-                GenericPuzzleAIComponents genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
-                genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].LaunchProjectileID] = escapeDistance;
-            }
+            AIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIProjectileEscapeComponent>().EscapeDistanceV2.Values[InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].LaunchProjectileID] = escapeDistance;
         }
 
         #region Move Toward Player
@@ -146,7 +128,7 @@ namespace Tests
         #region Projectile
         public static IEnumerator ProjectileYield(InteractiveObjectInitialization InteractiveObjectInitialization,
                             Vector3 projectilePoistion,
-                Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<IEnumerator> OnDistanceReached)
+                Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<IEnumerator> OnDistanceReached, Func<AIObjectType> OnDistanceReaderAIObjectType)
         {
             var projectile = SpawnProjectile(InteractiveObjectInitialization, projectilePoistion);
             yield return new WaitForFixedUpdate();
@@ -156,7 +138,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = OnDistanceReaderAIObjectType.Invoke().GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -164,10 +146,10 @@ namespace Tests
             }
         }
 
-        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePosition,
+        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization projectileObjectInitialization, Vector3 projectilePosition,
                Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<InteractiveObjectType, IEnumerator> OnProjectileTurnedIntoAttractive, Func<IEnumerator> OnDistanceReached)
         {
-            var projectile = SpawnProjectile(InteractiveObjectInitialization, projectilePosition);
+            var projectile = SpawnProjectile(projectileObjectInitialization, projectilePosition);
 
             yield return new WaitForFixedUpdate();
             if (OnProjectileSpawn != null)
@@ -183,7 +165,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AIObjectID.MOUSE_TEST).GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -201,7 +183,7 @@ namespace Tests
 
         #region TargetZone
         public static IEnumerator TargetZoneYield(TargetZoneInherentData targetZoneInherentData, Vector3 targetZonePosition,
-            Func<InteractiveObjectType, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached)
+            Func<InteractiveObjectType, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached, Func<AIObjectType> OnDistanceReachedAIObjectType)
         {
             var puzzlePrefabConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             var puzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
@@ -218,7 +200,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = OnDistanceReachedAIObjectType.Invoke().GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -231,7 +213,8 @@ namespace Tests
         public static IEnumerator ProjectileIngoreTargetYield(InteractiveObjectInitialization InteractiveObjectInitialization, Vector3 projectilePoistion,
             Func<IEnumerator> OnBeforeSecondProjectileSpawn,
             Func<InteractiveObjectType, IEnumerator> OnSecondProjectileSpawned,
-            Func<IEnumerator> OnSecondProjectileDistanceReached)
+            Func<IEnumerator> OnSecondProjectileDistanceReached,
+            Func<AIObjectType> OnSecondProjectileDistanceReachedAIObjectType)
         {
             SpawnProjectile(InteractiveObjectInitialization, projectilePoistion);
             yield return new WaitForFixedUpdate();
@@ -247,7 +230,7 @@ namespace Tests
             }
             if (OnSecondProjectileDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = OnSecondProjectileDistanceReachedAIObjectType.Invoke().GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -257,13 +240,14 @@ namespace Tests
         #endregion
 
         #region Fear
-        public static IEnumerator FearYield(Vector3 projectilePosition, InteractiveObjectTestID projectileID,
+        public static IEnumerator FearYield(Vector3 projectilePosition, InteractiveObjectTestID projectileID, AIObjectInitialization AIObjectInitialization,
             Func<IEnumerator> OnFearTriggered, Func<IEnumerator> OnFearEnded, float fearTime, GenericPuzzleAIBehavior mouseAIBheavior)
         {
-            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(projectileID, mouseAIBheavior.AIComponents, 1f);
+            PuzzleSceneTestHelper.SetAIEscapeSemiAngle(projectileID, AIObjectInitialization, 1f);
             yield return ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(projectileID, 1000, 1), projectilePosition,
                 OnProjectileSpawn: null,
-                OnDistanceReached: null);
+                OnDistanceReached: null,
+                OnDistanceReaderAIObjectType: null);
             yield return new WaitForEndOfFrame();
             if (OnFearTriggered != null)
             {
@@ -284,7 +268,8 @@ namespace Tests
         #endregion
 
         #region Player escape
-        public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, AIObjectType nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached)
+        public static IEnumerator EscapeFromPlayerYield(PlayerManager playerManager, AIObjectType nPCAIManager, Func<IEnumerator> OnBeforeSettingPosition, 
+                Func<IEnumerator> OnSamePositionSetted, Func<IEnumerator> OnDestinationReached, Func<AIObjectType> OnDestinationReachedAIObjectType)
         {
             if (OnBeforeSettingPosition != null)
             {
@@ -298,7 +283,7 @@ namespace Tests
             }
             if (OnDestinationReached != null)
             {
-                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AiID.MOUSE_TEST).GetAgent();
+                var agent = OnDestinationReachedAIObjectType.Invoke().GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -312,9 +297,10 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(InteractiveObjectInitialization, projectilePosition,
                 OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                 {
-                    return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, nPCAIManager, OnBeforeSettingPosition, OnSamePositionSetted, null);
+                    return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, nPCAIManager, OnBeforeSettingPosition, OnSamePositionSetted, null, null);
                 },
-                OnDistanceReached: OnDestinationReached);
+                OnDistanceReached: OnDestinationReached,
+                OnDistanceReaderAIObjectType: () => nPCAIManager);
         }
         #endregion
 

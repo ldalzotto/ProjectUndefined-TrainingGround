@@ -9,24 +9,34 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIPatrolComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIPatrolComponent", order = 1)]
     public class AIPatrolComponent : AbstractAIComponent
     {
+        [CustomEnum()]
+        public AIPatrolManagerType AIPatrolManagerType;
         public float MaxDistance;
     }
+    
+    public enum AIPatrolManagerType
+    {
+        RANDOM = 0,
+        SCRIPTED = 1
+    }
 
-    public abstract class AbstractAIPatrolComponentManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractAIPatrolComponentManager : AbstractAIManager<AIPatrolComponent>, InterfaceAIManager
     {
         #region External Dependencies
         protected NavMeshAgent patrollingAgent;
         protected AIFOVManager AIFOVManager;
         #endregion
 
-        protected AiID aiID;
-        protected AIPatrolComponent AIPatrolComponent;
+        protected AIObjectID aiID;
 
-        protected void BaseInit(NavMeshAgent patrollingAgent, AIPatrolComponent aIPatrolComponent, AIFOVManager aIFOVManager, AiID aiID)
+        protected AbstractAIPatrolComponentManager(AIPatrolComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
+        protected void BaseInit(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID)
         {
             this.aiID = aiID;
             this.patrollingAgent = patrollingAgent;
-            AIPatrolComponent = aIPatrolComponent;
             this.AIFOVManager = aIFOVManager;
         }
 

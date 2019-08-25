@@ -20,9 +20,12 @@ namespace RTPuzzle
     {
     }
     
-    public abstract class AbstractAIDisarmObjectManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractAIDisarmObjectManager : AbstractAIManager<AIDisarmObjectComponent>, InterfaceAIManager
     {
-        
+        protected AbstractAIDisarmObjectManager(AIDisarmObjectComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
         
         public abstract bool IsManagerEnabled();

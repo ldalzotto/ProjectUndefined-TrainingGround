@@ -28,6 +28,7 @@ namespace GameConfigurationID
 
         TEST_1 = 7,
 
-        TEST_2 = 8
+        TEST_2 = 8,
+        TEST_3 = 9
     }
 }

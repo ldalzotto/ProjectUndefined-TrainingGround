@@ -10,8 +10,12 @@ namespace RTPuzzle
     {
     }
 
-    public abstract class AbstractAIEscapeWithoutTriggerManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractAIEscapeWithoutTriggerManager : AbstractAIManager<AIEscapeWithoutTriggerComponent>, InterfaceAIManager
     {
+        protected AbstractAIEscapeWithoutTriggerManager(AIEscapeWithoutTriggerComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 
         public abstract bool IsManagerEnabled();

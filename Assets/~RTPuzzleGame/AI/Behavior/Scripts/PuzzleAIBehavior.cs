@@ -20,9 +20,6 @@ namespace RTPuzzle
 
         void OnDestinationReached();
         void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy);
-#if UNITY_EDITOR
-        AbstractAIComponents AIComponents { get; set; }
-#endif
     }
 
     /// <summary>
@@ -32,17 +29,14 @@ namespace RTPuzzle
     /// All change of AI behaviors are handles by the <see cref="PuzzleAIBehaviorExternalEventManager"/> where all events are processed.
     /// </summary>
     /// <typeparam name="C"></typeparam>
-    public abstract class PuzzleAIBehavior<C> : MonoBehaviour, IPuzzleAIBehavior<C> where C : AbstractAIComponents
+    public abstract class PuzzleAIBehavior<C> : IPuzzleAIBehavior<C> where C : AbstractAIComponents
     {
-        protected C aIComponents;
-
         #region External Dependencies
         protected NavMeshAgent selfAgent;
-        protected Action<FOV> OnFOVChange;
         #endregion
 
         #region Internal Dependencies
-        private Action forceUpdateAIBehavior;
+        private AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener;
         protected PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager;
         protected AIBehaviorManagerContainer aIBehaviorManagerContainer;
         protected InterfaceAIManager currentManagerState;
@@ -51,10 +45,9 @@ namespace RTPuzzle
         #region Data retrieval
 
 #if UNITY_EDITOR
-        public AbstractAIComponents AIComponents { get => aIComponents; set => aIComponents = (C)value; }
         public PuzzleAIBehaviorExternalEventManager PuzzleAIBehaviorExternalEventManager { get => puzzleAIBehaviorExternalEventManager; }
 #endif
-        public Action ForceUpdateAIBehavior { get => forceUpdateAIBehavior; }
+        public void ForceUpdateAIBehavior() { this.AIObjectTypeInternalEventsListener.ForceTickAI(); }
         public AIFOVManager AIFOVManager { get => aIFOVManager; }
 
         protected List<InterfaceAIManager> GetAllManagers()
@@ -93,16 +86,13 @@ namespace RTPuzzle
 
         protected AIFOVManager aIFOVManager;
 
-        protected void BaseInit(NavMeshAgent selfAgent, C AIComponents,
-            PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior)
+        protected void BaseInit(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.selfAgent = selfAgent;
-            this.aIComponents = AIComponents;
-            this.puzzleAIBehaviorExternalEventManager = puzzleAIBehaviorExternalEventManager;
+            this.AIObjectTypeInternalEventsListener = AIBheaviorBuildInputData.AIObjectTypeInternalEventsListener;
+            this.selfAgent = AIBheaviorBuildInputData.selfAgent;
+            this.puzzleAIBehaviorExternalEventManager = AIBheaviorBuildInputData.GenericPuzzleAIBehaviorExternalEventManager;
             this.puzzleAIBehaviorExternalEventManager.Init(this);
-            this.OnFOVChange = OnFOVChange;
-            this.forceUpdateAIBehavior = ForceUpdateAIBehavior;
-            this.aIFOVManager = new AIFOVManager(selfAgent, OnFOVChange);
+            this.aIFOVManager = new AIFOVManager(selfAgent, this.AIObjectTypeInternalEventsListener.OnFOVChange);
         }
 
         protected void AfterChildInit()
@@ -175,30 +165,30 @@ namespace RTPuzzle
     public struct AIBheaviorBuildInputData
     {
         public NavMeshAgent selfAgent;
-        public AbstractAIComponents aIComponents;
-        public Action<FOV> OnFOVChange;
         public PuzzleEventsManager PuzzleEventsManager;
         public PlayerManagerDataRetriever PlayerManagerDataRetriever;
         public InteractiveObjectContainer InteractiveObjectContainer;
-        public AiID aiID;
+        public AIObjectID aiID;
         public Collider aiCollider;
-        public Action ForceUpdateAIBehavior;
         public AIPositionsManager AIPositionsManager;
+        public TransformMoveManagerComponentV3 TransformMoveManagerComponent;
+        public PuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager;
+        public AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener;
 
-        public AIBheaviorBuildInputData(NavMeshAgent selfAgent, AbstractAIComponents aIComponents,
-            Action<FOV> onFOVChange, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
-            InteractiveObjectContainer InteractiveObjectContainer, AiID aiID, Collider aiCollider, Action ForceUpdateAIBehavior, AIPositionsManager AIPositionsManager)
+        public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
+            InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, Collider aiCollider, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
+            AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener)
         {
             this.selfAgent = selfAgent;
-            this.aIComponents = aIComponents;
-            OnFOVChange = onFOVChange;
             PuzzleEventsManager = puzzleEventsManager;
             this.PlayerManagerDataRetriever = PlayerManagerDataRetriever;
             this.InteractiveObjectContainer = InteractiveObjectContainer;
             this.aiID = aiID;
             this.aiCollider = aiCollider;
-            this.ForceUpdateAIBehavior = ForceUpdateAIBehavior;
             this.AIPositionsManager = AIPositionsManager;
+            this.TransformMoveManagerComponent = TransformMoveManagerComponent;
+            this.GenericPuzzleAIBehaviorExternalEventManager = new GenericPuzzleAIBehaviorExternalEventManager();
+            this.AIObjectTypeInternalEventsListener = AIObjectTypeInternalEventsListener;
         }
     }
 

@@ -18,14 +18,13 @@ namespace Tests
 
         public IEnumerator Before(string sceneName, Action objectDynamicInstancesCreation = null)
         {
-            yield return this.Before(sceneName, AiID.MOUSE_TEST, objectDynamicInstancesCreation);
+            yield return this.Before(sceneName, AIObjectID.MOUSE_TEST, objectDynamicInstancesCreation);
         }
 
-        protected AiID chosenId;
+        protected AIObjectID chosenId;
 
-        public IEnumerator Before(string sceneName, AiID choosenId, Action objectDynamicInstancesCreation = null)
+        public IEnumerator Before(string sceneName, AIObjectID choosenId, Action objectDynamicInstancesCreation = null)
         {
-            this.chosenId = choosenId;
             this.mockPuzzleEventsManagerTest = null;
             this.objectDynamicInstancesCreation = objectDynamicInstancesCreation;
             SceneManager.sceneLoaded += this.OnSceneLoadCallBack;
@@ -42,13 +41,7 @@ namespace Tests
                     GameObject.FindObjectOfType<TimeFlowBarManager>(),
                     GameObject.FindObjectOfType<LevelManager>()
             );
-
-            //AI Components default intialization
-            GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManagers().Values.ToList().ForEach((AIObjectType npcAimanager) =>
-            {
-                PuzzleSceneTestHelper.InitializeAIComponents(npcAimanager.GetAIBehavior().AIComponents);
-            });
-
+            
             SceneManager.sceneLoaded -= this.OnSceneLoadCallBack;
         }
 
@@ -59,9 +52,6 @@ namespace Tests
             var puzzleEventManager = puzzleEventManagerObject.GetComponent<PuzzleEventsManager>();
             this.mockPuzzleEventsManagerTest = puzzleEventManagerObject.AddComponent(typeof(MockPuzzleEventsManager)) as MockPuzzleEventsManager;
             this.mockPuzzleEventsManagerTest.ClearCalls();
-
-            var npcAIManager = GameObject.FindObjectOfType<AIObjectType>();
-            npcAIManager.AiID = this.chosenId;
         }
 
         class MockedInputManager : IGameInputManager
@@ -134,13 +124,13 @@ namespace Tests
             public bool OnDestinationReachedCalled;
             public int AiHittedByProjectileCallCount;
 
-            public override void PZ_EVT_AI_DestinationReached(AiID aiID)
+            public override void PZ_EVT_AI_DestinationReached(AIObjectID aiID)
             {
                 base.PZ_EVT_AI_DestinationReached(aiID);
                 this.OnDestinationReachedCalled = true;
             }
 
-            public override void PZ_EVT_AI_Projectile_Hitted(AiID aiID)
+            public override void PZ_EVT_AI_Projectile_Hitted(AIObjectID aiID)
             {
                 base.PZ_EVT_AI_Projectile_Hitted(aiID);
                 this.AiHittedByProjectileCallCount += 1;

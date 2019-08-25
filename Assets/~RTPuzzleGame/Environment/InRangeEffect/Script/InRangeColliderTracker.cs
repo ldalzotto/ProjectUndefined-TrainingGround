@@ -75,6 +75,8 @@ namespace RTPuzzle
 
         private List<Renderer> GetAllRenderersInChildrenFiltered(Transform baseTransform)
         {
+            if (baseTransform == null) { return new List<Renderer>(); }
+
             var foundRenderes = baseTransform.GetComponentsInChildren<Renderer>();
             if (foundRenderes != null)
             {

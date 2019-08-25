@@ -16,7 +16,8 @@ namespace RTPuzzle
             typeof(ModelObjectModuleDefinition),
             typeof(DisarmObjectModuleDefinition),
             typeof(GrabObjectModuleDefinition),
-            typeof(ObjectRepelModuleDefinition),typeof(ObjectSightModuleDefinition),//${addNewEntry}
+            typeof(ObjectRepelModuleDefinition),
+            typeof(ObjectSightModuleDefinition),//${addNewEntry}
         };
     }
 

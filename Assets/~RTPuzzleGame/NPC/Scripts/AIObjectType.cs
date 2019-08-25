@@ -9,8 +9,13 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
+    public interface AIObjectTypeInternalEventsListener
+    {
+        void ForceTickAI();
+        void OnFOVChange(FOV currentFOV);
+    }
 
-    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener
+    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener
     {
 
 #if UNITY_EDITOR
@@ -31,12 +36,15 @@ namespace RTPuzzle
         [CustomEnum(ConfigurationType = typeof(AIObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
         public AIObjectTypeDefinitionID AIObjectTypeDefinitionID;
 
-        public AiID AiID;
-        
+        [HideInInspector]
+        public AIObjectID AiID;
+
         #endregion
 
         #region State
         private NPCAIDestinationContext NPCAIDestinationContext;
+        private GenericPuzzleAIBehaviorContainer genericPuzzleAIBehaviorContainer;
+        public GenericPuzzleAIBehaviorContainer GenericPuzzleAIBehaviorContainer { get => genericPuzzleAIBehaviorContainer; set => genericPuzzleAIBehaviorContainer = value; }
         #endregion
 
         #region Data Retrieval
@@ -64,8 +72,17 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var puzzleCOnfigurationmanager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration;
+
+            if (this.AIObjectTypeDefinitionID != AIObjectTypeDefinitionID.NONE)
+            {
+                puzzleCOnfigurationmanager.AIObjectTypeDefinitionConfiguration()[this.AIObjectTypeDefinitionID]
+                    .DefineAIObject(this, puzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration);
+                this.GetComponent<InteractiveObjectType>().IfNotNull(InteractiveObjectType => InteractiveObjectType.Init(new InteractiveObjectInitializationObject()));
+            }
+
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
@@ -74,7 +91,6 @@ namespace RTPuzzle
             var aiPositionsManager = GameObject.FindObjectOfType<AIPositionsManager>();
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
-            var rigidBody = GetComponent<Rigidbody>();
             var animator = GetComponentInChildren<Animator>();
             this.objectCollider = GetComponent<Collider>();
             this.interactiveObjectSharedData = GetComponent<InteractiveObjectSharedDataType>();
@@ -85,7 +101,6 @@ namespace RTPuzzle
             agent.updatePosition = false;
             agent.updateRotation = false;
 
-            var aiBehaviorInherentData = puzzleCOnfigurationmanager.AIComponentsConfiguration()[AiID];
             var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
@@ -93,14 +108,20 @@ namespace RTPuzzle
             AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
-            this.puzzleAIBehavior = this.GetComponent<GenericPuzzleAIBehavior>();
-            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, aiBehaviorInherentData.AIComponents, OnFOVChange, PuzzleEventsManager, playerManagerDataRetriever, interactiveObjectContainer, this.AiID, this.objectCollider, this.ForceTickAI, aiPositionsManager);
-            ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(agent, (GenericPuzzleAIComponents)aIBheaviorBuildInputData.aIComponents, aIBheaviorBuildInputData.OnFOVChange, aIBheaviorBuildInputData.ForceUpdateAIBehavior,
-                    aIBheaviorBuildInputData.PuzzleEventsManager, aIBheaviorBuildInputData.InteractiveObjectContainer, aIBheaviorBuildInputData.aiID, aIBheaviorBuildInputData.aiCollider, aIBheaviorBuildInputData.PlayerManagerDataRetriever, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, aIBheaviorBuildInputData.AIPositionsManager);
+            this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
+
+            var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
+                     interactiveObjectContainer, this.AiID, this.objectCollider, aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this);
+
+            ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.genericPuzzleAIBehaviorContainer, aIBheaviorBuildInputData);
+
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
-            AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
-            NPCAIAnimationManager = new AIAnimationManager(animator, animationConfiguration);
+            if (animator != null)
+            {
+                AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
+                NPCAIAnimationManager = new AIAnimationManager(animator, animationConfiguration);
+            }
 
             this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
 
@@ -120,7 +141,7 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            NPCAIAnimationManager.TickAlways(d, timeAttenuationFactor);
+            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, timeAttenuationFactor));
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
@@ -131,7 +152,7 @@ namespace RTPuzzle
             this.puzzleAIBehavior.EndOfFixedTick();
         }
 
-        private void ForceTickAI()
+        public void ForceTickAI()
         {
             this.ComputeAINewDestination(0, 0);
         }
@@ -166,9 +187,8 @@ namespace RTPuzzle
         {
 #if UNITY_EDITOR
             var labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.alignment = TextAnchor.MiddleCenter;
-            labelStyle.normal.textColor = Color.magenta;
-            Handles.Label(transform.position + new Vector3(0, 3f, 0), AiID.ToString(), labelStyle);
+            labelStyle.normal.textColor = Color.white;
+            Handles.Label(transform.position + new Vector3(0, -2f, 0), this.AIObjectTypeDefinitionID.ToString(), labelStyle);
 
             var oldGizmoColor = Gizmos.color;
             Gizmos.color = Color.yellow;
@@ -222,13 +242,13 @@ namespace RTPuzzle
         public void OnHittedByProjectileFirstTime()
         {
             this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME, this.AiID);
-            this.AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime();
+            this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime());
         }
 
         public void OnEscapeWithoutTargetStart()
         {
             this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET, this.AiID);
-            this.AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart();
+            this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart());
         }
         public void OnEscapeWithoutTargetEnd()
         {
@@ -249,7 +269,7 @@ namespace RTPuzzle
             this.puzzleAIBehavior.ReceiveEvent(new FearedEndAIBehaviorEvent(
                 eventProcessedCallback: () =>
                 {
-                    this.AnimationVisualFeedbackManager.OnAIFearedStunnedEnded();
+                    this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnAIFearedStunnedEnded());
                 }
            ));
         }
@@ -264,7 +284,7 @@ namespace RTPuzzle
             this.puzzleAIBehavior.ReceiveEvent(new FearedStartAIBehaviorEvent(
                 eventProcessedCallback: () =>
                 {
-                    this.AnimationVisualFeedbackManager.OnAIFearedStunned();
+                    this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnAIFearedStunned());
                 }
             ));
         }
@@ -301,11 +321,11 @@ namespace RTPuzzle
 
         public void OnDisarmObjectStart(DisarmObjectModule disarmObjectModule)
         {
-            this.NPCAIAnimationManager.OnDisarmObjectStart(disarmObjectModule);
+            this.NPCAIAnimationManager.IfNotNull(NPCAIAnimationManager => NPCAIAnimationManager.OnDisarmObjectStart(disarmObjectModule));
         }
         public void OnDisarmObjectEnd()
         {
-            this.NPCAIAnimationManager.OnDisarmObjectEnd();
+            this.NPCAIAnimationManager.IfNotNull(NPCAIAnimationManager => NPCAIAnimationManager.OnDisarmObjectEnd());
         }
         public void SightInRangeEnter(ColliderWithCollisionType trackedCollider)
         {
@@ -319,7 +339,7 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Events
-        private void OnFOVChange(FOV currentFOV)
+        public void OnFOVChange(FOV currentFOV)
         {
             NpcFOVRingManager.OnFOVChanged(currentFOV);
         }
@@ -356,6 +376,7 @@ namespace RTPuzzle
         }
         #endregion
     }
+
 
     class NPCSpeedAdjusterManager
     {

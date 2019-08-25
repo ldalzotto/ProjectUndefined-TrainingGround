@@ -7,11 +7,11 @@ namespace RTPuzzle
 {
     public class AIPositionsManager : MonoBehaviour
     {
-        private Dictionary<AiID, AIPositionsType> aiPositionsType;
+        private Dictionary<AIObjectID, AIPositionsType> aiPositionsType;
 
         public void Init()
         {
-            this.aiPositionsType = new Dictionary<AiID, AIPositionsType>();
+            this.aiPositionsType = new Dictionary<AIObjectID, AIPositionsType>();
             var AIPositionsType = GameObject.FindObjectsOfType<AIPositionsType>();
             if (AIPositionsType != null)
             {
@@ -27,7 +27,7 @@ namespace RTPuzzle
             this.aiPositionsType[AIPositionsType.AiID] = AIPositionsType;
         }
 
-        public AIPositionsType GetAIPositions(AiID aiID)
+        public AIPositionsType GetAIPositions(AIObjectID aiID)
         {
             this.aiPositionsType.TryGetValue(aiID, out AIPositionsType aiPositionsType);
             return aiPositionsType;

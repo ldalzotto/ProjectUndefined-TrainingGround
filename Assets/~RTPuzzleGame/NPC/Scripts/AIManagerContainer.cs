@@ -8,7 +8,7 @@ namespace RTPuzzle
 {
     public class AIManagerContainer : MonoBehaviour
     {
-        private Dictionary<AiID, AIObjectType> npcAiManagers = new Dictionary<AiID, AIObjectType>();
+        private Dictionary<AIObjectID, AIObjectType> npcAiManagers = new Dictionary<AIObjectID, AIObjectType>();
 
         #region External Events
         public void OnNPCAiManagerCreated(AIObjectType NPCAIManager)
@@ -30,18 +30,18 @@ namespace RTPuzzle
             }
         }
 
-        internal void OnDestinationReached(AiID aiID)
+        internal void OnDestinationReached(AIObjectID aiID)
         {
             this.npcAiManagers[aiID].OnDestinationReached();
         }
         #endregion
 
         #region Data Retrieval
-        public AIObjectType GetNPCAiManager(AiID aiID)
+        public AIObjectType GetNPCAiManager(AIObjectID aiID)
         {
             return npcAiManagers[aiID];
         }
-        public Dictionary<AiID, AIObjectType> GetNPCAiManagers()
+        public Dictionary<AIObjectID, AIObjectType> GetNPCAiManagers()
         {
             return this.npcAiManagers;
         }

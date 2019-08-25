@@ -36,20 +36,24 @@ namespace RTPuzzle
             }
         }
 
-        public void ReceiveEvent(ContextMarkVisualFeedbackEvent contextMarkVisualFeedbackEvent, AiID aiID)
+        public void ReceiveEvent(ContextMarkVisualFeedbackEvent contextMarkVisualFeedbackEvent, AIObjectID aiID)
         {
             this.DeleteOperation();
-            switch (contextMarkVisualFeedbackEvent)
+            this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration().TryGetValue(aiID, out ContextMarkVisualFeedbackInherentData ContextMarkVisualFeedbackInherentData);
+            if (ContextMarkVisualFeedbackInherentData != null)
             {
-                case ContextMarkVisualFeedbackEvent.ATTRACTED_START:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].AttractedPrafab);
-                    break;
-                case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].ProjectileHitPrefab);
-                    break;
-                case ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET:
-                    this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration()[aiID].EscapeWithoutTargetPrefab);
-                    break;
+                switch (contextMarkVisualFeedbackEvent)
+                {
+                    case ContextMarkVisualFeedbackEvent.ATTRACTED_START:
+                        this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(ContextMarkVisualFeedbackInherentData.AttractedPrafab);
+                        break;
+                    case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME:
+                        this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(ContextMarkVisualFeedbackInherentData.ProjectileHitPrefab);
+                        break;
+                    case ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET:
+                        this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(ContextMarkVisualFeedbackInherentData.EscapeWithoutTargetPrefab);
+                        break;
+                }
             }
         }
 

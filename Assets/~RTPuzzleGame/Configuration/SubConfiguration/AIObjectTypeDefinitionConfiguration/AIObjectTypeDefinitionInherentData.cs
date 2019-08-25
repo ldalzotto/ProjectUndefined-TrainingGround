@@ -12,7 +12,7 @@ namespace RTPuzzle
 {
     using GameConfigurationID;
     using UnityEngine;
-
+    using UnityEngine.AI;
 
     [System.Serializable()]
     [UnityEngine.CreateAssetMenu(fileName = "AIObjectTypeDefinitionInherentData", menuName = "Configuration/PuzzleGame/AIObjectTypeDefinitionConfiguration/AIObjectTypeDefiniti" +
@@ -21,12 +21,97 @@ namespace RTPuzzle
     {
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
-        
-        [CustomEnum(ConfigurationType = typeof(AIComponentsConfiguration))]
-        public AiID AiId;
+
+        [CustomEnum(ConfigurationType = typeof(AIObjectConfiguration))]
+        public AIObjectID AIObjectID;
 
         [Inline(CreateAtSameLevelIfAbsent = true)]
         public GenericPuzzleAIComponentsV2 GenericPuzzleAIComponents;
 
+        public void DefineAIObject(AIObjectType aIObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration)
+        {
+            if (this.InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
+            {
+                puzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData.TryGetValue(this.InteractiveObjectTypeDefinitionID, out InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData);
+                if (InteractiveObjectTypeDefinitionInherentData != null)
+                {
+                    var InteractiveObjectType = aIObjectType.gameObject.AddComponent<InteractiveObjectType>();
+                    InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(InteractiveObjectType, puzzlePrefabConfiguration, puzzleGameConfiguration);
+                }
+
+                aIObjectType.AiID = this.AIObjectID;
+
+                var GenericPuzzleAIBehaviorContainer = new GenericPuzzleAIBehaviorContainer();
+                foreach (var definitionModuleAction in this.GenericPuzzleAIComponents.RangeDefinitionModulesActivation)
+                {
+                    if (definitionModuleAction.Value)
+                    {
+                        var moduleConfiguration = this.GenericPuzzleAIComponents.RangeDefinitionModules[definitionModuleAction.Key];
+
+                        if (moduleConfiguration.GetType() == typeof(AIPatrolComponent))
+                        {
+                            var AIPatrolComponent = (AIPatrolComponent)moduleConfiguration;
+                            if (AIPatrolComponent.AIPatrolManagerType == AIPatrolManagerType.RANDOM)
+                            {
+                                GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager = new AIRandomPatrolComponentMananger(AIPatrolComponent);
+                            }
+                            else
+                            {
+                                GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager = new AIScriptedPatrolComponentManager(AIPatrolComponent);
+                            }
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIProjectileEscapeComponent))
+                        {
+                            var AIProjectileEscapeComponent = (AIProjectileEscapeComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.AIProjectileEscapeManager = new AIProjectileWithCollisionEscapeManager(AIProjectileEscapeComponent);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIEscapeWithoutTriggerComponent))
+                        {
+                            var AIEscapeWithoutTriggerComponent = (AIEscapeWithoutTriggerComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.AIEscapeWithoutTriggerManager = new AIEscapeWithoutTriggerManager(AIEscapeWithoutTriggerComponent);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AITargetZoneComponent))
+                        {
+                            var AITargetZoneComponent = (AITargetZoneComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.AITargetZoneManager = new AITargetZoneEscapeManager(AITargetZoneComponent);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIAttractiveObjectComponent))
+                        {
+                            var AIAttractiveObjectComponent = (AIAttractiveObjectComponent)moduleConfiguration;
+                            if (AIAttractiveObjectComponent.AttractiveObjectStrategyType == AttractiveObjectStrategyType.LOOSE)
+                            {
+                                GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager = new AIAttractiveObjectLooseManager(AIAttractiveObjectComponent);
+                            }
+                            else
+                            {
+                                GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager = new AIAttractiveObjectPersistantManager(AIAttractiveObjectComponent);
+                            }
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIFearStunComponent))
+                        {
+                            var AIFearStunComponent = (AIFearStunComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.AIFearStunManager = new AIFearStunManager(AIFearStunComponent);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIPlayerEscapeComponent))
+                        {
+                            var AIPlayerEscapeComponent = (AIPlayerEscapeComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.PlayerEscapeManager = new AIPlayerEscapeManager(AIPlayerEscapeComponent);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIMoveTowardPlayerComponent))
+                        {
+                            var AIMoveTowardPlayerComponent = (AIMoveTowardPlayerComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.AIMoveTowardPlayerManager = new AIMoveTowardPlayerManager(AIMoveTowardPlayerComponent);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AIDisarmObjectComponent))
+                        {
+                            var AIDisarmObjectComponent = (AIDisarmObjectComponent)moduleConfiguration;
+                            GenericPuzzleAIBehaviorContainer.AIDisarmObjectManager = new AIDisarmObjectManager(AIDisarmObjectComponent);
+                        }
+                        //${addNewEntry}
+                    }
+                }
+                aIObjectType.GenericPuzzleAIBehaviorContainer = GenericPuzzleAIBehaviorContainer;
+            }
+        }
     }
 }

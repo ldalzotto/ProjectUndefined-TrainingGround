@@ -7,7 +7,7 @@ namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "AIComponentsConfiguration", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIComponentsConfiguration", order = 1)]
-    public class AIComponentsConfiguration : ConfigurationSerialization<AiID, AIBehaviorInherentData>
+    public class AIComponentsConfiguration : ConfigurationSerialization<AIObjectID, AIBehaviorInherentData>
     {
     }
 

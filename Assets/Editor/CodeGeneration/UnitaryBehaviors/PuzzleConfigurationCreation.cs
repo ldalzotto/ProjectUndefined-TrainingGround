@@ -102,7 +102,7 @@ public class PuzzleConfigurationCreation : EditorWindow
         samples.Types.Add(configurationClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = "Configuration/PuzzleGame/" + baseName + "Configuration/" + configurationClass.Name + ".cs";
+        string filename = PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration/" + configurationClass.Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -111,8 +111,8 @@ public class PuzzleConfigurationCreation : EditorWindow
             provider.GenerateCodeFromCompileUnit(
                 compileUnity, sourceWriter, options);
         }
-
-        var configurationDataDirectory = new DirectoryInfo("Configuration/PuzzleGame/" + baseName + "Configuration/Data");
+        
+        var configurationDataDirectory = new DirectoryInfo(PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration/Data");
         if (!configurationDataDirectory.Exists)
         {
             configurationDataDirectory.Create();

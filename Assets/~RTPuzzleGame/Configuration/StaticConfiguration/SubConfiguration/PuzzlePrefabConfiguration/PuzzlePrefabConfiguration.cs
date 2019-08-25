@@ -29,6 +29,10 @@ namespace RTPuzzle
         public GrabObjectModule BaseGrabObjectModule;
         public ObjectRepelModule BaseObjectRepelModule;
         public ObjectSightModule BaseObjectSightModule;
+
+        [Header("AI")]
+        public AIObjectType BaseAIObjectType;
+
     }
 }
 

@@ -89,13 +89,15 @@ namespace Tests
         [UnityTest]
         public IEnumerator LaunchProjectileModule_ReachedDestination_IfIsPersistingToAttractiveObject_AttractiveModuleEnabled()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_2).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
             
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
             
             var projectileThrowRange = 9993f;
             var projectileEffectRange = 9994f;
@@ -130,14 +132,16 @@ namespace Tests
         [UnityTest]
         public IEnumerator DisarmObjectModule_WhenAIIsNear_WithAIDisarmObjectManager_IsDisarming()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, AiID._1_Town_StartTutorial_AITest);
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () => {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_2).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
             yield return new WaitForFixedUpdate();
 
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
 
             var projectileThrowRange = 9993f;
             var projectileEffectRange = 9994f;
@@ -167,7 +171,7 @@ namespace Tests
             Assert.AreEqual(awaitedDisarmObjectRange, DisarmObjectModule.GetEffectRange());
 
             Assert.AreEqual(0f, DisarmObjectModule.GetDisarmPercentage01());
-            TestHelperMethods.SetAgentPosition(aiBehavior.GetAgent(), DisarmObjectModule.transform.position);
+            TestHelperMethods.SetAgentPosition(aiManager.GetAgent(), DisarmObjectModule.transform.position);
             yield return new WaitForFixedUpdate();
             yield return null;
             Assert.IsTrue(DisarmObjectModule.GetDisarmPercentage01() > 0f);
@@ -176,14 +180,13 @@ namespace Tests
         [UnityTest]
         public IEnumerator GrabObjectModule_WhenPlayerIsNear_IsAddingAGrabPlayerAction()
         {
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, AiID._1_Town_StartTutorial_AITest);
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest);
             yield return new WaitForFixedUpdate();
 
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            var aiBehavior = aiContainer.GetNPCAiManager(AiID._1_Town_StartTutorial_AITest);
 
 
             var projectileThrowRange = 9993f;

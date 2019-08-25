@@ -24,8 +24,12 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        private AiID aiID;
+        private AIObjectID aiID;
         private NavMeshAgent agent;
+
+        public AIDisarmObjectManager(AIDisarmObjectComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
 
         #region External Events
         public override void OnDisarmingObjectStart(DisarmObjectModule disarmingObject)
@@ -46,7 +50,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(NavMeshAgent agent, PuzzleEventsManager PuzzleEventsManager, AiID aiID)
+        public void Init(NavMeshAgent agent, PuzzleEventsManager PuzzleEventsManager, AIObjectID aiID)
         {
             this.agent = agent;
             this.aiID = aiID;

@@ -53,6 +53,8 @@ namespace RTPuzzle
         
         public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
         
-        public AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
+        public RTPuzzle.AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
+        
+        public AIObjectConfiguration AIObjectConfiguration;
     }
 }

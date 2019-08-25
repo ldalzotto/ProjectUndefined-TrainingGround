@@ -1,5 +1,4 @@
 ﻿using GameConfigurationID;
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,13 +9,20 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIAttractiveObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIAttractiveObjectComponent", order = 1)]
     public class AIAttractiveObjectComponent : AbstractAIComponent
     {
+        [CustomEnum()]
+        public AttractiveObjectStrategyType AttractiveObjectStrategyType;
     }
-    
-    public abstract class AbstractAIAttractiveObjectManager : AbstractAIManager, InterfaceAIManager
+
+    public enum AttractiveObjectStrategyType
+    {
+        LOOSE = 0, PERSISTANT = 1
+    }
+
+    public abstract class AbstractAIAttractiveObjectManager : AbstractAIManager<AIAttractiveObjectComponent>, InterfaceAIManager
     {
 
         protected NavMeshAgent selfAgent;
-        protected AiID aiID;
+        protected AIObjectID aiID;
 
         #region State
         protected bool isAttracted;
@@ -29,7 +35,11 @@ namespace RTPuzzle
 
         protected AttractiveObjectModule involvedAttractiveObject;
 
-        protected void BaseInit(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
+        protected AbstractAIAttractiveObjectManager(AIAttractiveObjectComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
+        protected void BaseInit(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager PuzzleEventsManager)
         {
             this.selfAgent = selfAgent;
             this.aiID = aiID;

@@ -15,13 +15,15 @@ namespace RTPuzzle
         #endregion
 
         private NavMeshAgent currentAgent;
-        private AIFearStunComponent AIFearStunComponent;
 
-        public void Init(NavMeshAgent currentAgent, AIFearStunComponent aIFearStunComponent, PuzzleEventsManager PuzzleEventsManager, AIFOVManager aiFovManager, AiID AiID)
+        public AIFearStunManager(AIFearStunComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
+
+        public void Init(NavMeshAgent currentAgent, PuzzleEventsManager PuzzleEventsManager, AIFOVManager aiFovManager, AIObjectID AiID)
         {
             this.BaseInit(AiID, PuzzleEventsManager);
             this.currentAgent = currentAgent;
-            AIFearStunComponent = aIFearStunComponent;
             this.aiFovManager = aiFovManager;
             this.AIFearTimeCounterManager = new AIFearTimeCounterManager();
         }
@@ -30,12 +32,12 @@ namespace RTPuzzle
         {
             if (!this.isFeared)
             {
-                if (this.aiFovManager.GetFOVAngleSum() <= this.AIFearStunComponent.FOVSumThreshold)
+                if (this.aiFovManager.GetFOVAngleSum() <= this.AssociatedAIComponent.FOVSumThreshold)
                 {
                     this.SetIsFeared(true);
                     //because BeforeManagersUpdate is called before OnManagerTick, we anticipate the fact that the mananger will be called.
                     //this, we set the current timer so that after OnManagerTick will be called, fearedTimer = 0f
-                    this.AIFearTimeCounterManager.InitFearTimer(-(d * timeAttenuationFactor), this.AIFearStunComponent.TimeWhileBeginFeared);
+                    this.AIFearTimeCounterManager.InitFearTimer(-(d * timeAttenuationFactor), this.AssociatedAIComponent.TimeWhileBeginFeared);
                 }
             }
         }

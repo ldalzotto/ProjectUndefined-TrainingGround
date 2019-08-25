@@ -2,13 +2,17 @@
 
 namespace RTPuzzle
 {
-    public class AIMoveTowardPlayerManager : AbstractAIManager, InterfaceAIManager
+    public class AIMoveTowardPlayerManager : AbstractAIManager<AIMoveTowardPlayerComponent>, InterfaceAIManager
     {
         #region State
         protected bool playerInSight;
         protected ColliderWithCollisionType currentTarget;
         private Vector3? currentDestination;
         #endregion
+
+        public AIMoveTowardPlayerManager(AIMoveTowardPlayerComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
 
         #region External Events
         public virtual void OnDestinationReached()

@@ -29,9 +29,6 @@ namespace Editor_MainGameCreationWizard
         public CoreGame.ChunkZonesSceneConfiguration ChunkZonesSceneConfiguration;
         
         [ReadOnly()]
-        public RTPuzzle.AIComponentsConfiguration AIComponentsConfiguration;
-        
-        [ReadOnly()]
         public RTPuzzle.TargetZoneConfiguration TargetZoneConfiguration;
         
         [ReadOnly()]

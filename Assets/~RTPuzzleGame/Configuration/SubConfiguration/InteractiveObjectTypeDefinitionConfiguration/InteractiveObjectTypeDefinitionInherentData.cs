@@ -34,12 +34,12 @@ namespace RTPuzzle
             {
                 this.InteractiveObjectSharedDataTypeInherentData.DefineInteractiveObjectSharedDataType(InteractiveObjectType);
             }
+
+            InteractiveObjectType.InteractiveObjectID = InteractiveObjectID;
+
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
-                InteractiveObjectType.InteractiveObjectID = InteractiveObjectID;
-
                 this.DestroyExistingModules(InteractiveObjectType.gameObject);
-
                 foreach (var rangeDefinitionModuleActivation in this.RangeDefinitionModulesActivation)
                 {
                     if (rangeDefinitionModuleActivation.Value)
@@ -115,7 +115,7 @@ namespace RTPuzzle
                         {
                             var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)moduleConfiguration;
                             var ObjectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, InteractiveObjectType.transform);
-                            ObjectSightModuleInstancer.PopuplateFromDefinition(ObjectSightModule, ObjectSightModuleDefinition);
+                            ObjectSightModuleInstancer.PopuplateFromDefinition(ObjectSightModule, ObjectSightModuleDefinition, puzzlePrefabConfiguration);
                         }
                         //${addNewEntry}
                     }

@@ -12,9 +12,9 @@ namespace GameConfigurationID {
   
   
   [System.Serializable()]
-  public enum AiID {
+  public enum AIObjectID {
     
-    MOUSE = 0,
+    _Sewers_1_Mouse = 0,
     
     MOUSE_TEST = 1,
     
@@ -28,7 +28,7 @@ namespace GameConfigurationID {
     
     RTP_PUZZLE_CREATION = 6,
     
-    MOUSE_SEWER_RTP_2 = 7,
+    _Sewers_2_Mouse = 7,
     
     EDITOR_TEST = 8,
     
@@ -37,5 +37,7 @@ namespace GameConfigurationID {
     RTP_TEST_RangeEffectManager = 10,
     
     _1_Town_StartTutorial_AITest = 11,
-  }
+
+        TEST_1 = 12
+    }
 }

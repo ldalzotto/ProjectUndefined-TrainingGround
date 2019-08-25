@@ -129,7 +129,7 @@ namespace RTPuzzle
             {
                 genericAiBehavior.SetManagerState(null);
                 // to not have inactive frame.
-                genericAiBehavior.ForceUpdateAIBehavior.Invoke();
+                genericAiBehavior.ForceUpdateAIBehavior();
             }
         }
 
@@ -162,7 +162,7 @@ namespace RTPuzzle
                 if (!genericAiBehavior.AIAttractiveObjectManager.IsManagerEnabled())
                 {
                     genericAiBehavior.SetManagerState(null);
-                    genericAiBehavior.ForceUpdateAIBehavior.Invoke();
+                    genericAiBehavior.ForceUpdateAIBehavior();
                 }
             }
         }
@@ -173,7 +173,7 @@ namespace RTPuzzle
             {
                 genericAiBehavior.AIAttractiveObjectManager.OnAttractiveObjectDestroyed(attractiveObectDestroyedAIBehaviorEvent.DestroyedAttractiveObject);
                 // to not have inactive frame.
-                genericAiBehavior.ForceUpdateAIBehavior.Invoke();
+                genericAiBehavior.ForceUpdateAIBehavior();
             }
         }
 

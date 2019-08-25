@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/*
 namespace Editor_GameCustomEditors
 {
     public class NPCAIManagerCustomEditor : AbstractGameCustomEditorWithLiveSelection<AIObjectType, NPCAIManagerCustomEditorContext, AIComponentsConfigurationModule, EditBehavior>
@@ -138,3 +139,4 @@ namespace Editor_GameCustomEditors
     
 }
 
+    */

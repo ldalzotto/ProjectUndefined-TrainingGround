@@ -22,13 +22,9 @@ namespace Editor_GameDesigner
 {"Level//.CreateChunk",typeof(Editor_GameDesigner.CreateChunk)},
 {"LevelChunk//Environmnent//.AddEnvironmentModel",typeof(Editor_GameDesigner.AddEnvironmentModel)},
 {"LevelChunk//Environmnent//Obstacles//.AddNewObstacle",typeof(Editor_GameDesigner.AddNewObstacle)},
-{"Puzzle//AI//.CreateAI",typeof(Editor_GameDesigner.CreateAI)},
 {"Puzzle//AI//.AddAI",typeof(Editor_GameDesigner.AddAI)},
 {"Puzzle//AI//.AIModel",typeof(Editor_GameDesigner.AIModel)},
 {"Puzzle//AI//.ExploreAI",typeof(Editor_GameDesigner.ExploreAI)},
-{"Puzzle//AI//.AIManagerModuleWizard",typeof(Editor_GameDesigner.AIManagerModuleWizard)},
-{"Puzzle//AI//Behavior//.CreateBehavior",typeof(Editor_GameDesigner.CreateBehavior)},
-{"Puzzle//AI//Behavior//.EditBehavior",typeof(Editor_GameDesigner.EditBehavior)},
 {"Puzzle//Environment//.GroundEffectAdd",typeof(Editor_GameDesigner.GroundEffectAdd)},
 {"Puzzle//TargetZone//.CreateTargetZone",typeof(Editor_GameDesigner.CreateTargetZone)},
 {"Puzzle//TargetZone//.EditTargetZone",typeof(Editor_GameDesigner.EditTargetZone)},
@@ -66,7 +62,6 @@ namespace Editor_GameDesigner
 {"Configuration//.LevelHierarchyConfigurationModule",typeof(Editor_GameDesigner.LevelHierarchyConfigurationModule)},
 {"Configuration//.LevelZonesSceneConfigurationModule",typeof(Editor_GameDesigner.LevelZonesSceneConfigurationModule)},
 {"Configuration//.TimelineConfigurationModule",typeof(Editor_GameDesigner.TimelineConfigurationModule)},
-{"Configuration//.AIComponentsConfigurationModule",typeof(Editor_GameDesigner.AIComponentsConfigurationModule)},
 {"Configuration//.ContextMarkVisualFeedbackConfigurationModule",typeof(Editor_GameDesigner.ContextMarkVisualFeedbackConfigurationModule)},
 {"Configuration//.AttractiveObjectConfigurationModule",typeof(Editor_GameDesigner.AttractiveObjectConfigurationModule)},
 {"Configuration//.DottedLineConfigurationModule",typeof(Editor_GameDesigner.DottedLineConfigurationModule)},
@@ -93,6 +88,7 @@ namespace Editor_GameDesigner
 {"Configuration//.InteractiveObjectTypeDefinitionConfigurationModule",typeof(Editor_GameDesigner.InteractiveObjectTypeDefinitionConfigurationModule)},
 {"Puzzle//AIObjectTypeDefinition//.CreateAIObjectTypeDefinition",typeof(Editor_GameDesigner.CreateAIObjectTypeDefinition)},
 {"Configuration//.AIObjectTypeDefinitionConfigurationModule",typeof(Editor_GameDesigner.AIObjectTypeDefinitionConfigurationModule)},
+{"Configuration//.AIObjectConfigurationModule", typeof(Editor_GameDesigner.AIObjectConfigurationModule)},
 //${addNewEntry}
 };
     }

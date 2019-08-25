@@ -16,14 +16,17 @@ namespace Tests
         {
             var interactiveObjectTestIDTree = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID];
             var puzzleGameConfiguration = AssetFinder.SafeSingleAssetFind<PuzzleGameConfiguration>("t:" + typeof(PuzzleGameConfiguration));
-            InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData.IfNotNull(AttractiveObjectInherentConfigurationData => puzzleGameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.AttractiveObjectId] = AttractiveObjectInherentConfigurationData);
-            InteractiveObjectInitializationObject.TargetZoneInherentData.IfNotNull(TargetZoneInherentData => puzzleGameConfiguration.TargetZoneConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.TargetZoneID] = TargetZoneInherentData);
-            InteractiveObjectInitializationObject.LaunchProjectileInherentData.IfNotNull(LaunchProjectileInherentData => puzzleGameConfiguration.LaunchProjectileConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.LaunchProjectileID] = LaunchProjectileInherentData);
-            InteractiveObjectInitializationObject.DisarmObjectInherentData.IfNotNull(DisarmObjectInherentData => puzzleGameConfiguration.DisarmObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.DisarmObjectID] = DisarmObjectInherentData);
-            InteractiveObjectInitializationObject.GrabObjectInherentData.IfNotNull(GrabObjectInherentData => puzzleGameConfiguration.GrabObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.GrabObjectID] = GrabObjectInherentData);
-            InteractiveObjectInitializationObject.ActionInteractableObjectInherentData.IfNotNull(ActionInteractableObjectInherentData => puzzleGameConfiguration.ActionInteractableObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.ActionInteractableObjectID] = ActionInteractableObjectInherentData);
 
-
+            if (InteractiveObjectInitializationObject != null)
+            {
+                InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData.IfNotNull(AttractiveObjectInherentConfigurationData => puzzleGameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.AttractiveObjectId] = AttractiveObjectInherentConfigurationData);
+                InteractiveObjectInitializationObject.TargetZoneInherentData.IfNotNull(TargetZoneInherentData => puzzleGameConfiguration.TargetZoneConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.TargetZoneID] = TargetZoneInherentData);
+                InteractiveObjectInitializationObject.LaunchProjectileInherentData.IfNotNull(LaunchProjectileInherentData => puzzleGameConfiguration.LaunchProjectileConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.LaunchProjectileID] = LaunchProjectileInherentData);
+                InteractiveObjectInitializationObject.DisarmObjectInherentData.IfNotNull(DisarmObjectInherentData => puzzleGameConfiguration.DisarmObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.DisarmObjectID] = DisarmObjectInherentData);
+                InteractiveObjectInitializationObject.GrabObjectInherentData.IfNotNull(GrabObjectInherentData => puzzleGameConfiguration.GrabObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.GrabObjectID] = GrabObjectInherentData);
+                InteractiveObjectInitializationObject.ActionInteractableObjectInherentData.IfNotNull(ActionInteractableObjectInherentData => puzzleGameConfiguration.ActionInteractableObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.ActionInteractableObjectID] = ActionInteractableObjectInherentData);
+            }
+            
             InteractiveObjectID = interactiveObjectTestIDTree.InteractiveObjectID;
             InteractiveObjectTypeDefinitionID = interactiveObjectTestIDTree.InteractiveObjectTypeDefinitionID;
             puzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.InteractiveObjectTypeDefinitionID] = InteractiveObjectTypeDefinitionInherentData;

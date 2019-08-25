@@ -10,11 +10,14 @@ namespace RTPuzzle
         public float TargetZoneEscapeDistance;
     }
 
-    public abstract class AbstractAITargetZoneManager : AbstractAIManager, InterfaceAIManager
+    public abstract class AbstractAITargetZoneManager : AbstractAIManager<AITargetZoneComponent>, InterfaceAIManager
     {
         #region State
         protected bool isEscapingFromTargetZone;
         #endregion
+        protected AbstractAITargetZoneManager(AITargetZoneComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
 
         public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         public abstract void TriggerTargetZoneEscape(TargetZoneModule targetZone);

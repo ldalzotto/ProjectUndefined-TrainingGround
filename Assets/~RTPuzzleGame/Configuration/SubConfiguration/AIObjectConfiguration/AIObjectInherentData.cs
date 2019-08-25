@@ -8,24 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum TargetZoneID {
-    
-    LEVEL1_TARGET_ZONE = 0,
-    
-    RTP_PUZZLE_CREATION_TEST = 2,
-    
-    SEWER_RTP_2_TARGET_ZONE = 3,
-    
-    INTERACTION_TEST = 4,
-    
-    _1_Town_StartTutorial = 5,
+namespace RTPuzzle
+{
+    using UnityEngine;
+    using UnityEngine.AI;
 
-        TEST_1 = 6,
-        TEST_2 = 7,
-        TEST_3 = 8
+    [System.Serializable()]
+    [UnityEngine.CreateAssetMenu(fileName = "AIObjectInherentData", menuName = "Configuration/PuzzleGame/AIObjectConfiguration/AIObjectInherentData", order = 1)]
+    public class AIObjectInherentData : ScriptableObject
+    {
     }
 }

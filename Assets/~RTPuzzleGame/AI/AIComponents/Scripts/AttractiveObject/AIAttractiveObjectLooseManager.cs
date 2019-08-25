@@ -6,8 +6,11 @@ namespace RTPuzzle
 {
     public class AIAttractiveObjectLooseManager : AbstractAIAttractiveObjectManager
     {
+        public AIAttractiveObjectLooseManager(AIAttractiveObjectComponent associatedAIComponent) : base(associatedAIComponent)
+        {
+        }
 
-        public void Init(NavMeshAgent selfAgent, AiID aiID, PuzzleEventsManager PuzzleEventsManager)
+        public void Init(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager PuzzleEventsManager)
         {
             this.BaseInit(selfAgent, aiID, PuzzleEventsManager);
         }

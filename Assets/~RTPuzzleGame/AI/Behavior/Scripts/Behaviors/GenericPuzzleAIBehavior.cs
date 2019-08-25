@@ -1,110 +1,94 @@
 ﻿using CoreGame;
-using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace RTPuzzle
 {
     public class GenericPuzzleAIBehavior : PuzzleAIBehavior<GenericPuzzleAIComponents>
     {
-        private AbstractAIPatrolComponentManager aIPatrolComponentManager;
-        private AbstractAIProjectileEscapeManager aIProjectileEscapeManager;
-        private AbstractAIEscapeWithoutTriggerManager aIEscapeWithoutTriggerManager;
-        private AbstractAITargetZoneManager aITargetZoneManager;
-        private AbstractAIFearStunManager aIFearStunManager;
-        private AbstractAIAttractiveObjectManager aIAttractiveObjectManager;
-        private AbstractPlayerEscapeManager playerEscapeManager;
-        private AIMoveTowardPlayerManager aIMoveTowardPlayerManager;
-        private AbstractAIDisarmObjectManager aIDisarmObjectManager;
+        private GenericPuzzleAIBehaviorContainer GenericPuzzleAIBehaviorContainer;
 
         #region Data Retrieval
-        public AbstractAIPatrolComponentManager AIPatrolComponentManager { get => aIPatrolComponentManager; }
-        public AbstractAIProjectileEscapeManager AIProjectileEscapeManager { get => aIProjectileEscapeManager; }
-        public AbstractAIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager { get => aIEscapeWithoutTriggerManager; }
-        public AbstractAITargetZoneManager AITargetZoneManager { get => aITargetZoneManager; }
-        public AbstractAIFearStunManager AIFearStunManager { get => aIFearStunManager; }
-        public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; }
-        public AbstractPlayerEscapeManager PlayerEscapeManager { get => playerEscapeManager; }
-        public AIMoveTowardPlayerManager AIPlayerMoveTowardPlayerManager { get => aIMoveTowardPlayerManager; }
-        public AbstractAIDisarmObjectManager AIDisarmObjectManager { get => aIDisarmObjectManager; }
+        public AbstractAIPatrolComponentManager AIPatrolComponentManager { get => GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager; }
+        public AbstractAIProjectileEscapeManager AIProjectileEscapeManager { get => GenericPuzzleAIBehaviorContainer.AIProjectileEscapeManager; }
+        public AbstractAIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager { get => GenericPuzzleAIBehaviorContainer.AIEscapeWithoutTriggerManager; }
+        public AbstractAITargetZoneManager AITargetZoneManager { get => GenericPuzzleAIBehaviorContainer.AITargetZoneManager; }
+        public AbstractAIFearStunManager AIFearStunManager { get => GenericPuzzleAIBehaviorContainer.AIFearStunManager; }
+        public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager; }
+        public AbstractPlayerEscapeManager PlayerEscapeManager { get => GenericPuzzleAIBehaviorContainer.PlayerEscapeManager; }
+        public AIMoveTowardPlayerManager AIPlayerMoveTowardPlayerManager { get => GenericPuzzleAIBehaviorContainer.AIMoveTowardPlayerManager; }
+        public AbstractAIDisarmObjectManager AIDisarmObjectManager { get => GenericPuzzleAIBehaviorContainer.AIDisarmObjectManager; }
         #endregion
 
-        public void Init(NavMeshAgent selfAgent, GenericPuzzleAIComponents aIComponents, Action<FOV> OnFOVChange, Action ForceUpdateAIBehavior,
-            PuzzleEventsManager PuzzleEventsManager, InteractiveObjectContainer InteractiveObjectContainer,
-            AiID aiID, Collider aiCollider, PlayerManagerDataRetriever playerManagerDataRetriever,
-            TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent, AIPositionsManager aIPositionsManager)
+        public void Init(GenericPuzzleAIBehaviorContainer GenericPuzzleAIBehaviorContainer, AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.BaseInit(selfAgent, aIComponents, new GenericPuzzleAIBehaviorExternalEventManager(), OnFOVChange, ForceUpdateAIBehavior);
+            this.GenericPuzzleAIBehaviorContainer = GenericPuzzleAIBehaviorContainer;
+            this.BaseInit(AIBheaviorBuildInputData);
 
-            this.GetComponentInChildren<AIRandomPatrolComponentMananger>().IfNotNull(AIRandomPatrolComponentMananger =>
+            GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager.IfNotNull(AIRandomPatrolComponentMananger =>
             {
-                AIRandomPatrolComponentMananger.Init(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager, aiID);
-                this.aIPatrolComponentManager = AIRandomPatrolComponentMananger;
+                if (AIPatrolComponentManager.GetType() == typeof(AIRandomPatrolComponentMananger))
+                {
+                    ((AIRandomPatrolComponentMananger)AIRandomPatrolComponentMananger).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.aiID);
+                }
+                else if (AIPatrolComponentManager.GetType() == typeof(AIScriptedPatrolComponentManager))
+                {
+                    ((AIScriptedPatrolComponentManager)AIRandomPatrolComponentMananger).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.AIPositionsManager);
+                }
             });
-            this.GetComponentInChildren<AIScriptedPatrolComponentManager>().IfNotNull(AIScriptedPatrolComponentManager =>
+
+            GenericPuzzleAIBehaviorContainer.AIProjectileEscapeManager.IfNotNull(AIProjectileWithCollisionEscapeManager =>
             {
-                AIScriptedPatrolComponentManager.Init(selfAgent, aIComponents.AIRandomPatrolComponent, aIFOVManager, aiID, aIPositionsManager);
-                this.aIPatrolComponentManager = AIScriptedPatrolComponentManager;
+                ((AIProjectileWithCollisionEscapeManager)AIProjectileWithCollisionEscapeManager).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.aiID, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(AIBheaviorBuildInputData.InteractiveObjectContainer); }, AIBheaviorBuildInputData.TransformMoveManagerComponent);
             });
-            this.GetComponentInChildren<AIProjectileWithCollisionEscapeManager>().IfNotNull(AIProjectileWithCollisionEscapeManager =>
+
+            GenericPuzzleAIBehaviorContainer.AIEscapeWithoutTriggerManager.IfNotNull(AIEscapeWithoutTriggerManager =>
             {
-                AIProjectileWithCollisionEscapeManager.Init(selfAgent, aIComponents.AIProjectileEscapeWithCollisionComponent, aIFOVManager, PuzzleEventsManager, aiID, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, AIDestimationMoveManagerComponent);
-                this.aIProjectileEscapeManager = AIProjectileWithCollisionEscapeManager;
+                ((AIEscapeWithoutTriggerManager)AIEscapeWithoutTriggerManager).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.TransformMoveManagerComponent);
             });
-            this.GetComponentInChildren<AIEscapeWithoutTriggerManager>().IfNotNull(AIEscapeWithoutTriggerManager =>
+
+            GenericPuzzleAIBehaviorContainer.AIFearStunManager.IfNotNull(AIFearStunManager =>
             {
-                AIEscapeWithoutTriggerManager.Init(selfAgent, aIFOVManager, PuzzleEventsManager, aiID, AIDestimationMoveManagerComponent);
-                this.aIEscapeWithoutTriggerManager = AIEscapeWithoutTriggerManager;
+                ((AIFearStunManager)AIFearStunManager).Init(selfAgent, AIBheaviorBuildInputData.PuzzleEventsManager, this.aIFOVManager, AIBheaviorBuildInputData.aiID);
             });
-            this.GetComponentInChildren<AIFearStunManager>().IfNotNull(AIFearStunManager =>
+
+            GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager.IfNotNull(AIAttractiveObjectManager =>
             {
-                AIFearStunManager.Init(selfAgent, aIComponents.AIFearStunComponent, PuzzleEventsManager, this.aIFOVManager, aiID);
-                this.aIFearStunManager = AIFearStunManager;
+                if (AIAttractiveObjectManager.GetType() == typeof(AIAttractiveObjectPersistantManager))
+                {
+                    ((AIAttractiveObjectPersistantManager)AIAttractiveObjectManager).Init(selfAgent, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager);
+                }
+                else if (AIAttractiveObjectManager.GetType() == typeof(AIAttractiveObjectLooseManager))
+                {
+                    ((AIAttractiveObjectLooseManager)AIAttractiveObjectManager).Init(selfAgent, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager);
+                }
             });
-            this.GetComponentInChildren<AIAttractiveObjectPersistantManager>().IfNotNull(AIAttractiveObjectPersistantManager =>
+            GenericPuzzleAIBehaviorContainer.AITargetZoneManager.IfNotNull(AITargetZoneEscapeManager =>
             {
-                AIAttractiveObjectPersistantManager.Init(selfAgent, aiID, PuzzleEventsManager);
-                this.aIAttractiveObjectManager = AIAttractiveObjectPersistantManager;
+                ((AITargetZoneEscapeManager)AITargetZoneEscapeManager).Init(selfAgent, AIBheaviorBuildInputData.aiCollider, this.aIFOVManager, AIBheaviorBuildInputData.aiID);
             });
-            this.GetComponentInChildren<AIAttractiveObjectLooseManager>().IfNotNull(AIAttractiveObjectLooseManager =>
+            GenericPuzzleAIBehaviorContainer.PlayerEscapeManager.IfNotNull(AIPlayerEscapeManager =>
             {
-                AIAttractiveObjectLooseManager.Init(selfAgent, aiID, PuzzleEventsManager);
-                this.aIAttractiveObjectManager = AIAttractiveObjectLooseManager;
+                ((AIPlayerEscapeManager)AIPlayerEscapeManager).Init(selfAgent, this.puzzleAIBehaviorExternalEventManager, AIBheaviorBuildInputData.PlayerManagerDataRetriever, this.AIFOVManager, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(AIBheaviorBuildInputData.InteractiveObjectContainer); }, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.TransformMoveManagerComponent);
             });
-            this.GetComponentInChildren<AITargetZoneEscapeManager>().IfNotNull(AITargetZoneEscapeManager =>
+            GenericPuzzleAIBehaviorContainer.AIDisarmObjectManager.IfNotNull(AIDisarmObjectManager =>
             {
-                AITargetZoneEscapeManager.Init(selfAgent, aiCollider, aIComponents.AITargetZoneComponent, this.aIFOVManager, aiID);
-                this.aITargetZoneManager = AITargetZoneEscapeManager;
-            });
-            this.GetComponentInChildren<AIPlayerEscapeManager>().IfNotNull(AIPlayerEscapeManager =>
-            {
-                AIPlayerEscapeManager.Init(selfAgent, this.puzzleAIBehaviorExternalEventManager, playerManagerDataRetriever, aIComponents.AIPlayerEscapeComponent, this.AIFOVManager, () => { return TargetZoneHelper.GetTargetZonesTriggerColliders(InteractiveObjectContainer); }, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent);
-                this.playerEscapeManager = AIPlayerEscapeManager;
-            });
-            this.GetComponentInChildren<AIMoveTowardPlayerManager>().IfNotNull(AIMoveTowardPlayerManager =>
-            {
-                this.aIMoveTowardPlayerManager = AIMoveTowardPlayerManager;
-            });
-            this.GetComponentInChildren<AIDisarmObjectManager>().IfNotNull(AIDisarmObjectManager =>
-            {
-                AIDisarmObjectManager.Init(selfAgent, PuzzleEventsManager, aiID);
-                this.aIDisarmObjectManager = AIDisarmObjectManager;
+                ((AIDisarmObjectManager)AIDisarmObjectManager).Init(selfAgent, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.aiID);
             });
 
             var dic = new Dictionary<int, InterfaceAIManager>()
             {
-                 { 1, this.aIFearStunManager },
-                 { 2, this.aIEscapeWithoutTriggerManager },
-                 { 3, this.aITargetZoneManager },
-                 { 4, this.playerEscapeManager },
-                 { 5, this.aIProjectileEscapeManager },
-                 { 6, this.aIMoveTowardPlayerManager},
-                 { 7, this.aIDisarmObjectManager },
-                 { 8, this.aIAttractiveObjectManager },
-                 { 9, this.aIPatrolComponentManager }
+                 { 1, this.AIFearStunManager },
+                 { 2, this.AIEscapeWithoutTriggerManager },
+                 { 3, this.AITargetZoneManager },
+                 { 4, this.PlayerEscapeManager },
+                 { 5, this.AIProjectileEscapeManager },
+                 { 6, this.AIPlayerMoveTowardPlayerManager},
+                 { 7, this.AIDisarmObjectManager },
+                 { 8, this.AIAttractiveObjectManager },
+                 { 9, this.AIPatrolComponentManager }
             };
             this.aIBehaviorManagerContainer = new AIBehaviorManagerContainer(new SortedList<int, InterfaceAIManager>(
                 dic.Select(s => s).Where(s => s.Value != null).ToDictionary(s => s.Key, s => s.Value)
@@ -118,33 +102,33 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsProjectileTriggerAllowedToInterruptOtherStates()
         {
-            return (this.IsAttractiveObjectsEnabled() && this.aIAttractiveObjectManager.IsManagerEnabled())
-                        || (this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled())
-                        || (this.IsPlayerEscapeEnabled() && this.playerEscapeManager.IsManagerEnabled()
-                        || (this.IsMovignTowardPlayerEnabled() && this.aIMoveTowardPlayerManager.IsManagerEnabled()));
+            return (this.IsAttractiveObjectsEnabled() && this.AIAttractiveObjectManager.IsManagerEnabled())
+                        || (this.IsEscapeFromTargetZoneEnabled() && this.AITargetZoneManager.IsManagerEnabled())
+                        || (this.IsPlayerEscapeEnabled() && this.PlayerEscapeManager.IsManagerEnabled()
+                        || (this.IsMovignTowardPlayerEnabled() && this.AIPlayerMoveTowardPlayerManager.IsManagerEnabled()));
         }
         public bool IsPlayerEscapeAllowedToInterruptOtherStates()
         {
-            return ((this.IsEscapeFromTargetZoneEnabled() && this.aITargetZoneManager.IsManagerEnabled())
-                  || (this.IsMovignTowardPlayerEnabled() && this.aIMoveTowardPlayerManager.IsManagerEnabled()));
+            return ((this.IsEscapeFromTargetZoneEnabled() && this.AITargetZoneManager.IsManagerEnabled())
+                  || (this.IsMovignTowardPlayerEnabled() && this.AIPlayerMoveTowardPlayerManager.IsManagerEnabled()));
         }
         #endregion
 
         protected override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
-            this.aIFearStunManager.IfNotNull((AbstractAIFearStunManager AbstractAIFearStunManager) => AbstractAIFearStunManager.BeforeManagersUpdate(d, timeAttenuationFactor));
-            this.playerEscapeManager.IfNotNull((AbstractPlayerEscapeManager AbstractPlayerEscapeManager) => AbstractPlayerEscapeManager.BeforeManagersUpdate(d, timeAttenuationFactor));
+            this.AIFearStunManager.IfNotNull((AbstractAIFearStunManager AbstractAIFearStunManager) => AbstractAIFearStunManager.BeforeManagersUpdate(d, timeAttenuationFactor));
+            this.PlayerEscapeManager.IfNotNull((AbstractPlayerEscapeManager AbstractPlayerEscapeManager) => AbstractPlayerEscapeManager.BeforeManagersUpdate(d, timeAttenuationFactor));
         }
 
         public override void OnDestinationReached()
         {
-            this.aIPatrolComponentManager.IfNotNull((aIPatrolComponentManager) => aIPatrolComponentManager.OnDestinationReached());
-            this.aIProjectileEscapeManager.IfNotNull((aIProjectileEscapeManager) => aIProjectileEscapeManager.OnDestinationReached());
-            this.aIEscapeWithoutTriggerManager.IfNotNull((aIEscapeWithoutTriggerManager) => aIEscapeWithoutTriggerManager.OnDestinationReached());
-            this.aITargetZoneManager.IfNotNull((aITargetZoneManager) => aITargetZoneManager.OnDestinationReached());
-            this.aIAttractiveObjectManager.IfNotNull((aIAttractiveObjectManager) => aIAttractiveObjectManager.OnDestinationReached());
-            this.playerEscapeManager.IfNotNull((playerEscapeManager) => playerEscapeManager.OnDestinationReached());
-            this.aIMoveTowardPlayerManager.IfNotNull((aIPlayerAttractiveManager) => aIPlayerAttractiveManager.OnDestinationReached());
+            this.AIPatrolComponentManager.IfNotNull((aIPatrolComponentManager) => aIPatrolComponentManager.OnDestinationReached());
+            this.AIProjectileEscapeManager.IfNotNull((aIProjectileEscapeManager) => aIProjectileEscapeManager.OnDestinationReached());
+            this.AIEscapeWithoutTriggerManager.IfNotNull((aIEscapeWithoutTriggerManager) => aIEscapeWithoutTriggerManager.OnDestinationReached());
+            this.AITargetZoneManager.IfNotNull((aITargetZoneManager) => aITargetZoneManager.OnDestinationReached());
+            this.AIAttractiveObjectManager.IfNotNull((aIAttractiveObjectManager) => aIAttractiveObjectManager.OnDestinationReached());
+            this.PlayerEscapeManager.IfNotNull((playerEscapeManager) => playerEscapeManager.OnDestinationReached());
+            this.AIPlayerMoveTowardPlayerManager.IfNotNull((aIPlayerAttractiveManager) => aIPlayerAttractiveManager.OnDestinationReached());
 
             if (!this.IsFeared() && !this.IsEscapingWithoutTarget() && !this.IsEscapingFromExitZone() && !this.IsEscapingFromProjectileWithTargetZones() && !this.IsEscapingFromPlayer())
             {
@@ -213,33 +197,33 @@ namespace RTPuzzle
 
         public override void TickGizmo()
         {
-            this.aIPatrolComponentManager.IfNotNull(aIPatrolComponentManager => aIPatrolComponentManager.GizmoTick());
-            this.aIProjectileEscapeManager.IfNotNull(aIProjectileEscapeManager => aIProjectileEscapeManager.GizmoTick());
+            this.AIPatrolComponentManager.IfNotNull(aIPatrolComponentManager => aIPatrolComponentManager.GizmoTick());
+            this.AIProjectileEscapeManager.IfNotNull(aIProjectileEscapeManager => aIProjectileEscapeManager.GizmoTick());
             aIFOVManager.GizmoTick();
         }
 
         #region Module Fonctionality
-        public bool IsPatrollingEnabled() { return this.aIPatrolComponentManager != null; }
-        public bool IsEscapingFromProjectileWithTargetZonesEnabled() { return this.aIProjectileEscapeManager != null; }
-        public bool IsEscapeWithoutTriggerEnabled() { return this.aIEscapeWithoutTriggerManager != null; }
-        public bool IsFearEnabled() { return this.aIFearStunManager != null; }
-        public bool IsAttractiveObjectsEnabled() { return this.aIAttractiveObjectManager != null; }
-        public bool IsEscapeFromTargetZoneEnabled() { return this.aITargetZoneManager != null; }
-        public bool IsPlayerEscapeEnabled() { return this.playerEscapeManager != null; }
-        public bool IsMovignTowardPlayerEnabled() { return this.aIMoveTowardPlayerManager != null; }
-        public bool IsDisarmingObjectEnabled() { return this.aIDisarmObjectManager != null; }
+        public bool IsPatrollingEnabled() { return this.AIPatrolComponentManager != null; }
+        public bool IsEscapingFromProjectileWithTargetZonesEnabled() { return this.AIProjectileEscapeManager != null; }
+        public bool IsEscapeWithoutTriggerEnabled() { return this.AIEscapeWithoutTriggerManager != null; }
+        public bool IsFearEnabled() { return this.AIFearStunManager != null; }
+        public bool IsAttractiveObjectsEnabled() { return this.AIAttractiveObjectManager != null; }
+        public bool IsEscapeFromTargetZoneEnabled() { return this.AITargetZoneManager != null; }
+        public bool IsPlayerEscapeEnabled() { return this.PlayerEscapeManager != null; }
+        public bool IsMovignTowardPlayerEnabled() { return this.AIPlayerMoveTowardPlayerManager != null; }
+        public bool IsDisarmingObjectEnabled() { return this.AIDisarmObjectManager != null; }
         #endregion
 
         #region State Retrieval
-        public bool IsPatrolling() { if (this.IsPatrollingEnabled()) { return this.aIPatrolComponentManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsFeared() { if (this.IsFearEnabled()) { return this.aIFearStunManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsEscapingFromProjectileWithTargetZones() { if (this.IsEscapingFromProjectileWithTargetZonesEnabled()) { return this.aIProjectileEscapeManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsEscapingWithoutTarget() { if (this.IsEscapeWithoutTriggerEnabled()) { return this.aIEscapeWithoutTriggerManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsEscapingFromExitZone() { if (this.IsEscapeFromTargetZoneEnabled()) { return this.aITargetZoneManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsInfluencedByAttractiveObject() { if (this.IsAttractiveObjectsEnabled()) { return this.aIAttractiveObjectManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsEscapingFromPlayer() { if (this.IsPlayerEscapeEnabled()) { return this.playerEscapeManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsMovingTowardPlayer() { if (this.IsMovignTowardPlayerEnabled()) { return this.aIMoveTowardPlayerManager.IsManagerEnabled(); } else { return false; } }
-        public bool IsDisarmingObject() { if (this.IsDisarmingObjectEnabled()) { return this.aIDisarmObjectManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsPatrolling() { if (this.IsPatrollingEnabled()) { return this.AIPatrolComponentManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsFeared() { if (this.IsFearEnabled()) { return this.AIFearStunManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsEscapingFromProjectileWithTargetZones() { if (this.IsEscapingFromProjectileWithTargetZonesEnabled()) { return this.AIProjectileEscapeManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsEscapingWithoutTarget() { if (this.IsEscapeWithoutTriggerEnabled()) { return this.AIEscapeWithoutTriggerManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsEscapingFromExitZone() { if (this.IsEscapeFromTargetZoneEnabled()) { return this.AITargetZoneManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsInfluencedByAttractiveObject() { if (this.IsAttractiveObjectsEnabled()) { return this.AIAttractiveObjectManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsEscapingFromPlayer() { if (this.IsPlayerEscapeEnabled()) { return this.PlayerEscapeManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsMovingTowardPlayer() { if (this.IsMovignTowardPlayerEnabled()) { return this.AIPlayerMoveTowardPlayerManager.IsManagerEnabled(); } else { return false; } }
+        public bool IsDisarmingObject() { if (this.IsDisarmingObjectEnabled()) { return this.AIDisarmObjectManager.IsManagerEnabled(); } else { return false; } }
         #endregion
 
         public void DebugGUITick()
@@ -250,10 +234,32 @@ namespace RTPuzzle
         public override string ToString()
         {
             return String.Format("[StunFeared : {0}, EscapingWithoutTarget : {1}, EscapingFromTargetZone : {2}, ProjEscapingWithTarget : {3}, Attracted : {4}, Patrolling : {5}]",
-                new string[] { this.aIFearStunManager.IsManagerEnabled().ToString(), this.aIEscapeWithoutTriggerManager.IsManagerEnabled().ToString(),
-            this.aITargetZoneManager.IsManagerEnabled().ToString(), this.aIProjectileEscapeManager.IsManagerEnabled().ToString(),
-        this.aIAttractiveObjectManager.IsManagerEnabled().ToString(), this.aIPatrolComponentManager.IsManagerEnabled().ToString() });
+                new string[] { this.AIFearStunManager.IsManagerEnabled().ToString(), this.AIEscapeWithoutTriggerManager.IsManagerEnabled().ToString(),
+            this.AITargetZoneManager.IsManagerEnabled().ToString(), this.AIProjectileEscapeManager.IsManagerEnabled().ToString(),
+        this.AIAttractiveObjectManager.IsManagerEnabled().ToString(), this.AIPatrolComponentManager.IsManagerEnabled().ToString() });
         }
     }
 
+    public class GenericPuzzleAIBehaviorContainer
+    {
+        private AbstractAIPatrolComponentManager aIPatrolComponentManager;
+        private AbstractAIProjectileEscapeManager aIProjectileEscapeManager;
+        private AbstractAIEscapeWithoutTriggerManager aIEscapeWithoutTriggerManager;
+        private AbstractAITargetZoneManager aITargetZoneManager;
+        private AbstractAIFearStunManager aIFearStunManager;
+        private AbstractAIAttractiveObjectManager aIAttractiveObjectManager;
+        private AbstractPlayerEscapeManager playerEscapeManager;
+        private AIMoveTowardPlayerManager aIMoveTowardPlayerManager;
+        private AbstractAIDisarmObjectManager aIDisarmObjectManager;
+
+        public AbstractAIPatrolComponentManager AIPatrolComponentManager { get => aIPatrolComponentManager; set => aIPatrolComponentManager = value; }
+        public AbstractAIProjectileEscapeManager AIProjectileEscapeManager { get => aIProjectileEscapeManager; set => aIProjectileEscapeManager = value; }
+        public AbstractAIEscapeWithoutTriggerManager AIEscapeWithoutTriggerManager { get => aIEscapeWithoutTriggerManager; set => aIEscapeWithoutTriggerManager = value; }
+        public AbstractAITargetZoneManager AITargetZoneManager { get => aITargetZoneManager; set => aITargetZoneManager = value; }
+        public AbstractAIFearStunManager AIFearStunManager { get => aIFearStunManager; set => aIFearStunManager = value; }
+        public AbstractAIAttractiveObjectManager AIAttractiveObjectManager { get => aIAttractiveObjectManager; set => aIAttractiveObjectManager = value; }
+        public AbstractPlayerEscapeManager PlayerEscapeManager { get => playerEscapeManager; set => playerEscapeManager = value; }
+        public AIMoveTowardPlayerManager AIMoveTowardPlayerManager { get => aIMoveTowardPlayerManager; set => aIMoveTowardPlayerManager = value; }
+        public AbstractAIDisarmObjectManager AIDisarmObjectManager { get => aIDisarmObjectManager; set => aIDisarmObjectManager = value; }
+    }
 }

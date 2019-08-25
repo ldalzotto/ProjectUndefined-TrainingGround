@@ -29,6 +29,7 @@ namespace GameConfigurationID
         _1_Town_StartTutorial_Test = 8,
 
         TEST_1 = 9,
-        TEST_2 = 10
+        TEST_2 = 10,
+        TEST_3 = 11
     }
 }

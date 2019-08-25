@@ -20,7 +20,6 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BasePuzzleLevelDynamics, "BasePuzzleLevelDynamics");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseLevelChunkPrefab, "BaseLevelprefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseInteractiveObjectTypePrefab, "BaseInteractiveObjectPrefab");
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIPrefab");
             #endregion
 
             #region Puzzle Interactive Object Modules Prefabs
@@ -44,30 +43,7 @@ namespace Editor_MainGameCreationWizard
                 }
             }
             #endregion
-
-            #region Puzzle AI managers prefabs  
-            AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleAICommonPrefabs.AIBasePrefab, "BaseAIprefab");
-            foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleAICommonPrefabs.GetType().GetFields())
-            {
-                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleAICommonPrefabs);
-                if (configurationObject == null)
-                {
-
-                    foreach (var foundAsset in AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name))
-                    {
-                        if (foundAsset.GetType() == typeof(GameObject))
-                        {
-                            var retrievedComp = ((GameObject)foundAsset).GetComponent(configurationFieldInfo.FieldType);
-                            if (typeof(AbstractAIManager).IsAssignableFrom(retrievedComp.GetType()))
-                            {
-                                configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleAICommonPrefabs, retrievedComp);
-                            }
-                        }
-                    }
-                }
-            }
-            #endregion
-
+            
             #region Adventure Common Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
@@ -115,7 +91,6 @@ namespace Editor_MainGameCreationWizard
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureGameConfigurations))
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.CoreGameConfigurations))
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs))
-                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleAICommonPrefabs))
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureCommonPrefabs))
                         .ToList()
                    .Find((s) => !string.IsNullOrEmpty(s));
@@ -139,7 +114,6 @@ namespace Editor_MainGameCreationWizard
         public AdventureCommonPrefabs AdventureCommonPrefabs;
 
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
-        public PuzzleAICommonPrefabs PuzzleAICommonPrefabs;
         public PuzzleGameConfigurations PuzzleGameConfigurations;
         public PuzzleInteractiveObjectModulePrefabs PuzzleInteractiveObjectModulePrefabs;
         
@@ -149,7 +123,6 @@ namespace Editor_MainGameCreationWizard
             this.PuzzleGameConfigurations = new PuzzleGameConfigurations();
             this.AdventureGameConfigurations = new AdventureGameConfigurations();
             this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
-            this.PuzzleAICommonPrefabs = new PuzzleAICommonPrefabs();
             this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
             this.PuzzleInteractiveObjectModulePrefabs = new PuzzleInteractiveObjectModulePrefabs();
         }
