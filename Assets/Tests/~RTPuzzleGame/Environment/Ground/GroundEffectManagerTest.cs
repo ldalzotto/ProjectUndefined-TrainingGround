@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using GameConfigurationID;
+using RTPuzzle;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Tests
         {
             yield return this.Before("RTP_TEST_RangeEffectManager", () => {
                 AIObjectDefinition.RangeEffectTestAI(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+                AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_2, 20.99f, 999999f).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position);
             });
 
             var ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();

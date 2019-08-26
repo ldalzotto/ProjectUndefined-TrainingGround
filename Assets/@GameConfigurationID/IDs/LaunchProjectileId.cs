@@ -18,8 +18,6 @@ namespace GameConfigurationID
 
         _Sewers_1_Projectile = 0,
 
-        STONE_1 = 1,
-
         RTP_PUZZLE_CREATION_TEST = 2,
 
         _Sewers_2_Projectile = 3,

@@ -132,8 +132,7 @@ namespace Tests
             return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
                new List<AbstractAIComponent>()
                {
-                    new AIPatrolComponent(){ AIPatrolManagerType = AIPatrolManagerType.SCRIPTED },
-                    new AIAttractiveObjectComponent(){ AttractiveObjectStrategyType = AttractiveObjectStrategyType.PERSISTANT }
+                    new AIPatrolComponent(){ AIPatrolManagerType = AIPatrolManagerType.SCRIPTED }
                },
                new List<SerializedScriptableObject>()
                {

@@ -20,8 +20,6 @@ namespace GameConfigurationID
         
         _Sewers_2_CheeseAttractive = 2,
 
-        RTP_TEST_RangeEffectManager = 3,
-
         _1_Town_StartTutorial_Speaker = 4,
 
         _1_Town_StartTutorial_Test = 6,
