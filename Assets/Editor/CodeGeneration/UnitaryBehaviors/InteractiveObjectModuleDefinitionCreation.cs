@@ -102,7 +102,7 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
 
     private static void AddCustomEditorCondition(string baseName)
     {
-        var InteractiveObjectTypeCustomEditorClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectTypeCustomEditor));
+        var InteractiveObjectTypeCustomEditorClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectTypeGizmos));
         if (!InteractiveObjectTypeCustomEditorClassFile.Content.Contains(baseName + "ModuleDefinition"))
         {
             InteractiveObjectTypeCustomEditorClassFile.Content =

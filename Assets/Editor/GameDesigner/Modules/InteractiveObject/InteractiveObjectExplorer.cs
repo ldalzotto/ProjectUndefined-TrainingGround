@@ -9,7 +9,7 @@ namespace Editor_GameDesigner
     public class InteractiveObjectExplorer : IGameDesignerModule
     {
         [SerializeField]
-        private InteractiveObjectExplorerWindow interactiveObjectExplorerWindow;
+        private InteractiveObjectExplorerModule interactiveObjectExplorerWindow;
 
         public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
@@ -21,7 +21,7 @@ namespace Editor_GameDesigner
 
         public void OnEnabled()
         {
-            this.interactiveObjectExplorerWindow = new InteractiveObjectExplorerWindow();
+            this.interactiveObjectExplorerWindow = new InteractiveObjectExplorerModule();
             this.interactiveObjectExplorerWindow.OnEnable();
         }
     }

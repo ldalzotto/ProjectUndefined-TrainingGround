@@ -308,9 +308,7 @@
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectDefinitionCustimEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectTypeCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\NPCAIManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ProjectileInherentDataCutsomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
@@ -399,7 +397,11 @@
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Zoom\EditorZoomArea.cs" />
-    <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectExplorerWindow.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\IObjectGizmoDisplayEnableArea.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\ObjectModulesGizmo.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\AIObjectTypeGizmos.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectExplorerModule.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectTypeGizmos.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />

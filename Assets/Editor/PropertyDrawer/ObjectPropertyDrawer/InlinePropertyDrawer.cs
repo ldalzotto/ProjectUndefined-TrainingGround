@@ -62,7 +62,6 @@ public class InlinePropertyDrawer : PropertyDrawer
                                 }
                             }
 
-
                             if (toCreate)
                             {
                                 this.CreateByEnumSO(property, byEnumProperty);
