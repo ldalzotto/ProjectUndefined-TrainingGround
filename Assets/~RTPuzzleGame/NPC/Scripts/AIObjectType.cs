@@ -63,7 +63,7 @@ namespace RTPuzzle
         private AIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
-        private IPuzzleAIBehavior<AbstractAIComponents> puzzleAIBehavior;
+        private IPuzzleAIBehavior puzzleAIBehavior;
         private NpcInteractionRingManager NpcFOVRingManager;
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
@@ -358,7 +358,7 @@ namespace RTPuzzle
         {
             return this.NpcFOVRingManager.RingPositionOffset;
         }
-        public IPuzzleAIBehavior<AbstractAIComponents> GetAIBehavior()
+        public IPuzzleAIBehavior GetAIBehavior()
         {
             return this.puzzleAIBehavior;
         }

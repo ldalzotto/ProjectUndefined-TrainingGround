@@ -41,7 +41,6 @@ public class AIComponentGeneration : EditorWindow
             this.CreateComponentFolderIfNecessary();
           //  this.GenerateComponentWithAbstractManager();
             this.GenerateManager();
-            this.AddComponentToGenericPuzzleAIComponents();
             this.AddEditorWizardConstants();
         }
     }
@@ -183,50 +182,6 @@ public class AIComponentGeneration : EditorWindow
         compileUnity.Namespaces.Add(samples);
 
         string filename = this.componentDirectory.FullName + "/" + managerClass.Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-    }
-
-    private void AddComponentToGenericPuzzleAIComponents()
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(AttractiveObjectAction).Namespace);
-        samples.Imports.Add(new CodeNamespaceImport("UnityEngine"));
-        samples.Imports.Add(new CodeNamespaceImport("UnityEditor"));
-        samples.Imports.Add(new CodeNamespaceImport("OdinSerializer"));
-        samples.Imports.Add(new CodeNamespaceImport("System"));
-        var genericPuzzleAIComponentsClass = new CodeTypeDeclaration(typeof(GenericPuzzleAIComponents).Name);
-        genericPuzzleAIComponentsClass.IsClass = true;
-        genericPuzzleAIComponentsClass.BaseTypes.Add(typeof(AbstractAIComponents).Name);
-
-        genericPuzzleAIComponentsClass.CustomAttributes.Add(new CodeAttributeDeclaration("Serializable"));
-        genericPuzzleAIComponentsClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(typeof(GenericPuzzleAIComponents).Name, "Configuration/PuzzleGame/AIComponentsConfiguration/GenericPuzzleAIComponents"));
-
-        foreach (var GenericPuzzleAIComponentsField in typeof(GenericPuzzleAIComponents).GetFields())
-        {
-            var codeTypeMember = new CodeMemberField(GenericPuzzleAIComponentsField.FieldType.Name, GenericPuzzleAIComponentsField.Name);
-            codeTypeMember.Attributes = MemberAttributes.Public;
-            genericPuzzleAIComponentsClass.Members.Add(codeTypeMember);
-        }
-
-        //Add the new component
-        if (!typeof(GenericPuzzleAIComponents).GetFields().ToList().ConvertAll(f => f.FieldType.Name).Contains(this.componentClass.Name))
-        {
-            var codeTypeMember = new CodeMemberField(this.componentClass.Name, this.componentClass.Name);
-            codeTypeMember.Attributes = MemberAttributes.Public;
-            genericPuzzleAIComponentsClass.Members.Add(codeTypeMember);
-        }
-
-        samples.Types.Add(genericPuzzleAIComponentsClass);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.GenericPuzzleAIComponentsFilePath;
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";

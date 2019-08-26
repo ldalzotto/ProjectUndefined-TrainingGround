@@ -118,7 +118,7 @@ namespace Tests
                              Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
                              Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
 
-                             return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), playerManager.transform.position,
+                             return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), aiManager, playerManager.transform.position,
                                          OnProjectileSpawn: null,
                                          OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                                          {
@@ -176,7 +176,7 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
-            yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
+            yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), aiManager, TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
                 OnProjectileSpawn: (InteractiveObjectType projectile) =>
                 {
                     Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
@@ -207,7 +207,7 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
-            yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
+            yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), aiManager, TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
                 OnProjectileSpawn: null,
                 OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                 {

@@ -2,7 +2,7 @@
 {
     public interface BehaviorStateTracker
     {
-        void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> behavior);
-        void OnEventProcessed(IPuzzleAIBehavior<AbstractAIComponents> behavior, PuzzleAIBehaviorExternalEvent externalEvent);
+        void AfterDestinationReached(IPuzzleAIBehavior behavior);
+        void OnEventProcessed(IPuzzleAIBehavior behavior, PuzzleAIBehaviorExternalEvent externalEvent);
     }
 }

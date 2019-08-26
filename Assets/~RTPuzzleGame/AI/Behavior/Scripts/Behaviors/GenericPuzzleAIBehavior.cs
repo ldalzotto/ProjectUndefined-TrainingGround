@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class GenericPuzzleAIBehavior : PuzzleAIBehavior<GenericPuzzleAIComponents>
+    public class GenericPuzzleAIBehavior : PuzzleAIBehavior
     {
         private GenericPuzzleAIBehaviorContainer GenericPuzzleAIBehaviorContainer;
 

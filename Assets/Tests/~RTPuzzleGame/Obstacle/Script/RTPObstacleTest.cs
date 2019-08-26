@@ -21,6 +21,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator OccludedIntersection_Test()
         {
+            //RangeEffectTestAI
             yield return this.Before();
             var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             

@@ -8,35 +8,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum AIObjectID {
-    
-    _Sewers_1_Mouse = 0,
-    
-    MOUSE_TEST = 1,
-    
-    MOUSE_1 = 2,
-    
-    MOUSE_2 = 3,
-    
-    MOUSE_3 = 4,
-    
-    MOUSE_4 = 5,
-    
-    RTP_PUZZLE_CREATION = 6,
-    
-    _Sewers_2_Mouse = 7,
-    
-    EDITOR_TEST = 8,
-    
-    _1_Town_GardenWatchman = 9,
-    
-    RTP_TEST_RangeEffectManager = 10,
-    
-    _1_Town_StartTutorial_AITest = 11,
+namespace GameConfigurationID
+{
+    [System.Serializable()]
+    public enum AIObjectID
+    {
+        _Sewers_1_Mouse = 0,
+
+        RTP_PUZZLE_CREATION = 6,
+
+        _Sewers_2_Mouse = 7,
+
+        _1_Town_GardenWatchman = 9,
+
+        RTP_TEST_RangeEffectManager = 10,
+
+        _1_Town_StartTutorial_AITest = 11,
 
         TEST_1 = 12
     }

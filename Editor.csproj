@@ -62,8 +62,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Editor\AI\AiBehaviorInherentDataEditor.cs" />
-    <Compile Include="Assets\Editor\AI\AIComponentsEditor.cs" />
     <Compile Include="Assets\Editor\ByEnumPropertyEditors\ByEnumPropertyEditors.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\AIComponentGeneration\AIComponentGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\CodeGenerationHelper.cs" />

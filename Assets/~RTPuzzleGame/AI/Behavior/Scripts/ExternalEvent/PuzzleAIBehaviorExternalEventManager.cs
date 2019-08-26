@@ -11,11 +11,11 @@ namespace RTPuzzle
     /// </summary>
     public abstract class PuzzleAIBehaviorExternalEventManager
     {
-        protected IPuzzleAIBehavior<AbstractAIComponents> aiBehavior;
+        protected IPuzzleAIBehavior aiBehavior;
 
         protected abstract Dictionary<string, int> EventProcessingOrder { get; }
 
-        public void Init(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        public void Init(IPuzzleAIBehavior aiBehavior)
         {
             this.aiBehavior = aiBehavior;
         }
@@ -95,7 +95,7 @@ namespace RTPuzzle
             return false;
         }
 
-        private void A_ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        private void A_ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior aiBehavior)
         {
             this.ProcessEvent(externalEvent, aiBehavior);
 
@@ -112,8 +112,8 @@ namespace RTPuzzle
             }
         }
 
-        public abstract void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior);
-        public void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        public abstract void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior aiBehavior);
+        public void AfterDestinationReached(IPuzzleAIBehavior aiBehavior)
         {
             foreach (var behaviorStateTracker in this.BehaviorStateTrackerContainer.BehaviorStateTrackers.Values)
             {

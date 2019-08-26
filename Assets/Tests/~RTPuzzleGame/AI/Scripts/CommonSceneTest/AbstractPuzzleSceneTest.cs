@@ -15,15 +15,8 @@ namespace Tests
         private Action objectDynamicInstancesCreation;
 
         public MockPuzzleEventsManager MockPuzzleEventsManagerTest { get => mockPuzzleEventsManagerTest; }
-
+        
         public IEnumerator Before(string sceneName, Action objectDynamicInstancesCreation = null)
-        {
-            yield return this.Before(sceneName, AIObjectID.MOUSE_TEST, objectDynamicInstancesCreation);
-        }
-
-        protected AIObjectID chosenId;
-
-        public IEnumerator Before(string sceneName, AIObjectID choosenId, Action objectDynamicInstancesCreation = null)
         {
             this.mockPuzzleEventsManagerTest = null;
             this.objectDynamicInstancesCreation = objectDynamicInstancesCreation;

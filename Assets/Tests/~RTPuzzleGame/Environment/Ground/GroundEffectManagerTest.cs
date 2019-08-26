@@ -9,18 +9,15 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    public class GroundEffectManagerTest
+    public class GroundEffectManagerTest : AbstractPuzzleSceneTest
     {
-        private IEnumerator Before()
-        {
-            SceneManager.LoadScene("RTP_TEST_RangeEffectManager", LoadSceneMode.Single);
-            yield return new WaitForFixedUpdate();
-        }
-
         [UnityTest]
         public IEnumerator RangeBufferSentToShader()
         {
-            yield return this.Before();
+            yield return this.Before("RTP_TEST_RangeEffectManager", () => {
+                AIObjectDefinition.RangeEffectTestAI(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
+
             var ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
             //wait for frustum calculation;
             yield return new WaitUntil(() =>

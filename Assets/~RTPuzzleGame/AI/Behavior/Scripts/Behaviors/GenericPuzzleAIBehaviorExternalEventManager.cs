@@ -36,7 +36,7 @@ namespace RTPuzzle
 
         protected override BehaviorStateTrackerContainer BehaviorStateTrackerContainer => trackerContainer;
 
-        public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior<AbstractAIComponents> aiBehavior)
+        public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior aiBehavior)
         {
             // Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;

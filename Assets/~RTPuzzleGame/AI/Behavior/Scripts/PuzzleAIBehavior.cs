@@ -8,7 +8,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public interface IPuzzleAIBehavior<out C> where C : AbstractAIComponents
+    public interface IPuzzleAIBehavior
     {
         void TickAI(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         void EndOfFixedTick();
@@ -28,8 +28,7 @@ namespace RTPuzzle
     /// The container <see cref="AIBehaviorManagerContainer"/> is responsible of the order of execution of <see cref="InterfaceAIManager"/>s.
     /// All change of AI behaviors are handles by the <see cref="PuzzleAIBehaviorExternalEventManager"/> where all events are processed.
     /// </summary>
-    /// <typeparam name="C"></typeparam>
-    public abstract class PuzzleAIBehavior<C> : IPuzzleAIBehavior<C> where C : AbstractAIComponents
+    public abstract class PuzzleAIBehavior : IPuzzleAIBehavior
     {
         #region External Dependencies
         protected NavMeshAgent selfAgent;

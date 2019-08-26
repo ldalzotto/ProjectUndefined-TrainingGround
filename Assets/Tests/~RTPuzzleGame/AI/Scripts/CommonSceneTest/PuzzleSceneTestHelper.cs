@@ -146,7 +146,7 @@ namespace Tests
             }
         }
 
-        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization projectileObjectInitialization, Vector3 projectilePosition,
+        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization projectileObjectInitialization, AIObjectType aIObjectType, Vector3 projectilePosition,
                Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<InteractiveObjectType, IEnumerator> OnProjectileTurnedIntoAttractive, Func<IEnumerator> OnDistanceReached)
         {
             var projectile = SpawnProjectile(projectileObjectInitialization, projectilePosition);
@@ -165,7 +165,7 @@ namespace Tests
             }
             if (OnDistanceReached != null)
             {
-                var agent = GameObject.FindObjectOfType<AIManagerContainer>().GetNPCAiManager(AIObjectID.MOUSE_TEST).GetAgent();
+                var agent = aIObjectType.GetAgent();
                 TestHelperMethods.SetAgentDestinationPositionReached(agent);
                 yield return null;
                 yield return new WaitForFixedUpdate();
@@ -173,10 +173,10 @@ namespace Tests
             }
         }
 
-        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization InteractiveObjectInitialization, TestPositionID projectilePosition,
+        public static IEnumerator ProjectileToAttractiveYield(InteractiveObjectInitialization InteractiveObjectInitialization, AIObjectType aIObjectType, TestPositionID projectilePosition, 
             Func<InteractiveObjectType, IEnumerator> OnProjectileSpawn, Func<InteractiveObjectType, IEnumerator> OnProjectileTurnedIntoAttractive, Func<IEnumerator> OnDistanceReached)
         {
-            yield return ProjectileToAttractiveYield(InteractiveObjectInitialization, FindTestPosition(projectilePosition).position,
+            yield return ProjectileToAttractiveYield(InteractiveObjectInitialization, aIObjectType, FindTestPosition(projectilePosition).position, 
                  OnProjectileSpawn, OnProjectileTurnedIntoAttractive, OnDistanceReached);
         }
         #endregion
@@ -322,31 +322,5 @@ namespace Tests
             }
         }
         #endregion
-
-        public static void InitializeAIComponents(AbstractAIComponents abstractAIComponents)
-        {
-            if (abstractAIComponents.GetType() == typeof(GenericPuzzleAIComponents))
-            {
-                var genericPuzzleAIComponents = (GenericPuzzleAIComponents)abstractAIComponents;
-
-                genericPuzzleAIComponents.AIRandomPatrolComponent.MaxDistance = 15f;
-
-                if (genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2 != null)
-                {
-                    genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values.Clear();
-                    foreach (LaunchProjectileID projectileId in Enum.GetValues(typeof(LaunchProjectileID)))
-                    {
-                        genericPuzzleAIComponents.AIProjectileEscapeWithCollisionComponent.EscapeDistanceV2.Values[projectileId] = 25f;
-                    }
-                }
-
-                genericPuzzleAIComponents.AITargetZoneComponent.TargetZoneEscapeDistance = 50f;
-
-                genericPuzzleAIComponents.AIFearStunComponent.FOVSumThreshold = 20f;
-                genericPuzzleAIComponents.AIFearStunComponent.TimeWhileBeginFeared = 2f;
-
-                genericPuzzleAIComponents.AIPlayerEscapeComponent.PlayerDetectionRadius = -1f;
-            }
-        }
     }
 }

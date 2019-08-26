@@ -27,8 +27,6 @@ namespace RTPuzzle
         
         public RTPuzzle.SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
         
-        public RTPuzzle.AIComponentsConfiguration AIComponentsConfiguration;
-        
         public RTPuzzle.PlayerActionConfiguration PlayerActionConfiguration;
         
         public RTPuzzle.ContextMarkVisualFeedbackConfiguration ContextMarkVisualFeedbackConfiguration;

@@ -41,10 +41,6 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData;
         }
-        public Dictionary<AIObjectID, AIBehaviorInherentData> AIComponentsConfiguration()
-        {
-            return PuzzleGameConfiguration.AIComponentsConfiguration.ConfigurationInherentData;
-        }
 
         public Dictionary<AIObjectID, ContextMarkVisualFeedbackInherentData> ContextMarkVisualFeedbackConfiguration()
         {

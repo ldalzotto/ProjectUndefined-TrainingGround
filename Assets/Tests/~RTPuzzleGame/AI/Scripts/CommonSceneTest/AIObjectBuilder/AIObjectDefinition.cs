@@ -69,23 +69,6 @@ namespace Tests
                 }
             }
 
-            /*
-            //Define interactive object configuration
-            if (interactiveObjectConfigurations != null)
-            {
-                AIObjectInitialization.InteractiveObjectInitialization.InteractiveObjectInitializationObject = new InteractiveObjectInitializationObject();
-                foreach (var interactiveObjectConfiguration in interactiveObjectConfigurations)
-                {
-                    foreach (var initialisationObjectField in AIObjectInitialization.InteractiveObjectInitialization.InteractiveObjectInitializationObject.GetType().GetFields())
-                    {
-                        if (initialisationObjectField.FieldType == interactiveObjectConfiguration.GetType())
-                        {
-                            initialisationObjectField.SetValue(AIObjectInitialization.InteractiveObjectInitialization.InteractiveObjectInitializationObject, interactiveObjectConfiguration);
-                        }
-                    }
-                }
-            }
-            */
             AIObjectInitialization.InitializeTestConfigurations(AIObjectTestID, InteractiveObjectTestID);
             return AIObjectInitialization;
         }
@@ -144,6 +127,40 @@ namespace Tests
             );
         }
 
+        public static AIObjectInitialization RangeEffectTestAI(AIObjectTestID AIObjectTestID, InteractiveObjectTestID InteractiveObjectTestID)
+        {
+            return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
+               new List<AbstractAIComponent>()
+               {
+                    new AIPatrolComponent(){ AIPatrolManagerType = AIPatrolManagerType.SCRIPTED },
+                    new AIAttractiveObjectComponent(){ AttractiveObjectStrategyType = AttractiveObjectStrategyType.PERSISTANT }
+               },
+               new List<SerializedScriptableObject>()
+               {
+                    new ObjectSightModuleDefinition(){
+                                LocalPosition = new Vector3(0, 4.65f, 1.27f),
+                                RangeTypeObjectDefinitionIDPicker = false,
+                                RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
+                                {
+                                    RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                                    {
+                                        {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
+                                            RangeTypeID = RangeTypeID.SIGHT_VISION,
+                                            RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = RangeEffectManagerTestFrustum }
+                                        }},
+                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
+                                    },
+                                    RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
+                                    {
+                                        {typeof(RangeTypeDefinition), true},
+                                        {typeof(RangeObstacleListenerDefinition), true}
+                                    }
+                                }
+                    }
+               }
+           );
+        }
+
 
         public static FrustumV2 BaseSightFrustum = new FrustumV2()
         {
@@ -159,6 +176,19 @@ namespace Tests
                 Width = 50f
             }
         };
-
+        public static FrustumV2 RangeEffectManagerTestFrustum = new FrustumV2()
+        {
+            F1 = new FrustumFaceV2()
+            {
+                Height = 80f,
+                Width = 80f
+            },
+            F2 = new FrustumFaceV2()
+            {
+                Height = 100f,
+                Width = 100f,
+                FaceOffsetFromCenter = new Vector3(0, 0, 304.2f)
+            }
+        };
     }
 }

@@ -9,7 +9,7 @@ namespace RTPuzzle
 
         public bool IsEscapingWhileIgnoringTargets { get => isEscapingWhileIgnoringTargets; }
 
-        public void AfterDestinationReached(IPuzzleAIBehavior<AbstractAIComponents> behavior)
+        public void AfterDestinationReached(IPuzzleAIBehavior behavior)
         {
             this.isEscapingWhileIgnoringTargets = false;
             if (behavior.GetType() == typeof(GenericPuzzleAIBehavior))
@@ -22,7 +22,7 @@ namespace RTPuzzle
             }
         }
 
-        public void OnEventProcessed(IPuzzleAIBehavior<AbstractAIComponents> behavior, PuzzleAIBehaviorExternalEvent externalEvent)
+        public void OnEventProcessed(IPuzzleAIBehavior behavior, PuzzleAIBehaviorExternalEvent externalEvent)
         {
             this.isEscapingWhileIgnoringTargets = false;
             if (behavior.GetType() == typeof(GenericPuzzleAIBehavior))
