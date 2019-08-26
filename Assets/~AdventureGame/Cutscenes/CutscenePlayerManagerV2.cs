@@ -41,6 +41,7 @@ namespace AdventureGame
         {
             //Reset some state to ensure that nothing wrong persist
             this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);
+            this.CutsceneEventManager.OnCutsceneEnded();
         }
 
         #region External Event

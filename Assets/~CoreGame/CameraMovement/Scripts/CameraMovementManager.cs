@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -32,6 +33,14 @@ namespace CoreGame
         public void SetTargetAngle(float targetAngle)
         {
             this.CameraOrientationManager.SetTargetAngle(targetAngle);
+        }
+        public void DisableInput()
+        {
+            this.CameraOrientationManager.DisableInput();
+        }
+        public void EnableInput()
+        {
+            this.CameraOrientationManager.EnableInput();
         }
         #endregion
 
@@ -96,6 +105,7 @@ namespace CoreGame
         #region State
         private bool isRotating = false;
         private bool isRotatingTowardsAtarget = false;
+        private bool inputEnabled = true;
         #endregion
 
         public CameraOrientationManager(Transform cameraPivotPoint, IGameInputManager gameInputManager, CoreInputConfiguration CoreInputConfiguration)
@@ -109,14 +119,14 @@ namespace CoreGame
 
         public void Tick(float d)
         {
-            Vector3 rotationVector;
+            Vector3 rotationVector = Vector3.zero;
             if (this.isRotatingTowardsAtarget)
             {
                 float initialY = this.cameraPivotPoint.transform.rotation.eulerAngles.y;
                 float deltaAngle = Mathf.Lerp(initialY, this.targetAngle, 0.1f) - initialY;
                 rotationVector = new Vector3(0, Mathf.Abs(deltaAngle) * Mathf.Sign(this.targetAngle - initialY), 0);
             }
-            else
+            else if(this.inputEnabled)
             {
                 rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d, 0);
             }
@@ -141,6 +151,16 @@ namespace CoreGame
         {
             this.targetAngle = targetAngle;
             this.isRotatingTowardsAtarget = true;
+        }
+
+        public void DisableInput()
+        {
+            this.inputEnabled = false;
+        }
+
+        public void EnableInput()
+        {
+            this.inputEnabled = true;
         }
     }
 }
