@@ -183,47 +183,6 @@ namespace RTPuzzle
             puzzleAIBehavior.TickGizmo();
         }
 
-        private void OnDrawGizmos()
-        {
-#if UNITY_EDITOR
-            var labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.normal.textColor = Color.white;
-            Handles.Label(transform.position + new Vector3(0, -2f, 0), this.AIObjectTypeDefinitionID.ToString(), labelStyle);
-
-            var oldGizmoColor = Gizmos.color;
-            Gizmos.color = Color.yellow;
-            if (this.agent != null && this.agent.hasPath)
-            {
-                Vector3 startPoint = this.agent.path.corners[0];
-                for (var i = 1; i < this.agent.path.corners.Length; i++)
-                {
-                    Gizmos.DrawLine(startPoint, this.agent.path.corners[i]);
-                    startPoint = this.agent.path.corners[i];
-                }
-            }
-            Gizmos.color = oldGizmoColor;
-#endif
-        }
-
-        public void GUITick()
-        {
-#if UNITY_EDITOR
-            if (DebugEabled)
-            {
-                var mouseAIBehavior = puzzleAIBehavior as GenericPuzzleAIBehavior;
-                var screenPos = Camera.main.WorldToScreenPoint(transform.position);
-                screenPos.y = Camera.main.pixelHeight - screenPos.y;
-                GUILayout.BeginArea(new Rect(screenPos, new Vector2(200, 300)));
-                GUILayout.BeginVertical("box");
-                GUILayout.Label("Position : " + transform.position.ToString());
-                GUILayout.Label("Agent speed : " + this.agent.velocity.ToString("F8"));
-                mouseAIBehavior.DebugGUITick();
-                GUILayout.EndVertical();
-                GUILayout.EndArea();
-            }
-#endif
-        }
-
         #region External Events
         public void OnProjectileTriggerEnter(LaunchProjectileModule launchProjectile)
         {
@@ -375,6 +334,48 @@ namespace RTPuzzle
             return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
         }
         #endregion
+
+
+        private void OnDrawGizmos()
+        {
+#if UNITY_EDITOR
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Color.white;
+            Handles.Label(transform.position + new Vector3(0, -2f, 0), this.AIObjectTypeDefinitionID.ToString(), labelStyle);
+
+            var oldGizmoColor = Gizmos.color;
+            Gizmos.color = Color.yellow;
+            if (this.agent != null && this.agent.hasPath)
+            {
+                Vector3 startPoint = this.agent.path.corners[0];
+                for (var i = 1; i < this.agent.path.corners.Length; i++)
+                {
+                    Gizmos.DrawLine(startPoint, this.agent.path.corners[i]);
+                    startPoint = this.agent.path.corners[i];
+                }
+            }
+            Gizmos.color = oldGizmoColor;
+#endif
+        }
+
+        public void GUITick()
+        {
+#if UNITY_EDITOR
+            if (DebugEabled)
+            {
+                var mouseAIBehavior = puzzleAIBehavior as GenericPuzzleAIBehavior;
+                var screenPos = Camera.main.WorldToScreenPoint(transform.position);
+                screenPos.y = Camera.main.pixelHeight - screenPos.y;
+                GUILayout.BeginArea(new Rect(screenPos, new Vector2(200, 300)));
+                GUILayout.BeginVertical("box");
+                GUILayout.Label("Position : " + transform.position.ToString());
+                GUILayout.Label("Agent speed : " + this.agent.velocity.ToString("F8"));
+                mouseAIBehavior.DebugGUITick();
+                GUILayout.EndVertical();
+                GUILayout.EndArea();
+            }
+#endif
+        }
     }
 
 

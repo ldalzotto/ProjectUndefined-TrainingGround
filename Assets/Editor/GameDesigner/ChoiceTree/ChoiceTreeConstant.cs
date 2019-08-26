@@ -36,7 +36,6 @@ namespace Editor_GameDesigner
 {"Puzzle//DisarmObject//.CreateDisarmObject",typeof(Editor_GameDesigner.CreateDisarmObject)},
 {"Puzzle//DisarmObject//.EditDisarmObject",typeof(Editor_GameDesigner.EditDisarmObject)},
 {"Puzzle//InteractiveObject//.CreateInteractiveObject",typeof(Editor_GameDesigner.CreateInteractiveObject)},
-{"Puzzle//InteractiveObject//.InteractiveObjectExplorer",typeof(Editor_GameDesigner.InteractiveObjectExplorer)},
 {"Puzzle//AttractiveObject//.CreateAttractiveObject",typeof(Editor_GameDesigner.CreateAttractiveObject)},
 {"Puzzle//AttractiveObject//.EditAttractiveObject",typeof(Editor_GameDesigner.EditAttractiveObject)},
 {"Puzzle//AttractiveObject//.ExploreAttractiveObject",typeof(Editor_GameDesigner.ExploreAttractiveObject)},

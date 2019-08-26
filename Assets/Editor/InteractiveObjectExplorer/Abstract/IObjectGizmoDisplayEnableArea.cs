@@ -29,8 +29,8 @@ public class IObjectGizmoDisplayEnableArea
 
     public void OnGUI(Action guiAction)
     {
-        GUILayout.BeginVertical(EditorStyles.textArea);
-        GUILayout.BeginHorizontal();
+        var areaRect = EditorGUILayout.BeginVertical(EditorStyles.textArea);
+        EditorGUILayout.BeginHorizontal();
         this.isEnabled = EditorGUILayout.Toggle(this.isEnabled, GUILayout.Width(30f));
         EditorGUILayout.LabelField(this.label);
 
@@ -43,9 +43,9 @@ public class IObjectGizmoDisplayEnableArea
 
         }
 
-        GUILayout.EndHorizontal();
-        GUILayout.EndVertical();
-
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
+        
         if (this.isEnabled && guiAction != null)
         {
             guiAction.Invoke();

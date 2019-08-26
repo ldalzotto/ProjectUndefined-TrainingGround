@@ -22,11 +22,11 @@ namespace RTPuzzle
             {
                 var ObjectRepelModuleDefinition = (ObjectRepelModuleDefinition)definitionSO;
                 var ObjectRepelInherentData = this.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[ObjectRepelModuleDefinition.ObjectRepelID];
-                return new IObjectGizmoDisplayEnableArea(true, moduleDefinitionType, new List<AdditionalEnumParameter>() { new AdditionalEnumParameter(ObjectRepelInherentData.RepelableObjectDistance.GetType(), typeof(LaunchProjectileID), ObjectRepelInherentData.RepelableObjectDistance.Values.Keys.ToList().ConvertAll(e => (Enum)e)) });
+                return new IObjectGizmoDisplayEnableArea(false, moduleDefinitionType, new List<AdditionalEnumParameter>() { new AdditionalEnumParameter(ObjectRepelInherentData.RepelableObjectDistance.GetType(), typeof(LaunchProjectileID), ObjectRepelInherentData.RepelableObjectDistance.Values.Keys.ToList().ConvertAll(e => (Enum)e)) });
             }
             else
             {
-               return new IObjectGizmoDisplayEnableArea(true, moduleDefinitionType);
+               return new IObjectGizmoDisplayEnableArea(false, moduleDefinitionType);
             }
         }
 
