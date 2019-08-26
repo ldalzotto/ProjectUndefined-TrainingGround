@@ -13,7 +13,7 @@
 public class GameCreationWizardEditorProfileChoiceTree
 {
     
-    public static System.Collections.Generic.Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>> configurations = new System.Collections.Generic.Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>(){
+    public static System.Collections.Generic.Dictionary<string, ICreationWizardEditor> configurations = new System.Collections.Generic.Dictionary<string, ICreationWizardEditor>(){
 {nameof(Editor_PuzzleLevelCreationWizard.PuzzleLevelCreationWizard),new Editor_PuzzleLevelCreationWizard.PuzzleLevelCreationWizard()},
 {nameof(Editor_TargetZoneCreationWizard.TargetZoneCreationWizard),new Editor_TargetZoneCreationWizard.TargetZoneCreationWizard()},
 {nameof(Editor_LaunchProjectileCreationWizard.LaunchProjectileCreationWizard),new Editor_LaunchProjectileCreationWizard.LaunchProjectileCreationWizard()},

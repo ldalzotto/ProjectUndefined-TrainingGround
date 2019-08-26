@@ -38,7 +38,7 @@ namespace Editor_MainGameCreationWizard
             if (this.playerActionCreationWizardEditorProfile != null)
             {
                 this.playerActionCreationWizardEditorProfile.GUITick(() => { Repaint(); });
-                ICreationWizardEditor<AbstractCreationWizardEditorProfile> selectedTab = this.playerActionCreationWizardEditorProfile.GetSelectedConf();
+                ICreationWizardEditor selectedTab = this.playerActionCreationWizardEditorProfile.GetSelectedConf();
                 if (selectedTab != null)
                 {
                     selectedTab.OnGUI();

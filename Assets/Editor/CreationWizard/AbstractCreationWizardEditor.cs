@@ -6,12 +6,12 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public interface ICreationWizardEditor<out T> where T : AbstractCreationWizardEditorProfile
+public interface ICreationWizardEditor
 {
     void OnGUI();
 }
 
-public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor<T> where T : AbstractCreationWizardEditorProfile
+public abstract class AbstractCreationWizardEditor<T> : ICreationWizardEditor where T : AbstractCreationWizardEditorProfile
 {
     protected T editorProfile;
 
