@@ -1,5 +1,4 @@
 ﻿using Editor_GameDesigner;
-using Editor_MainGameCreationWizard;
 using RTPuzzle;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -39,8 +38,9 @@ public class AIComponentGeneration : EditorWindow
         if (!string.IsNullOrEmpty(this.AIComponentBaseName))
         {
             this.CreateComponentFolderIfNecessary();
-          //  this.GenerateComponentWithAbstractManager();
+            this.GenerateComponentWithAbstractManager();
             this.GenerateManager();
+            this.UpdateGenericPuzzleAIComponentsV2();
             this.AddEditorWizardConstants();
         }
     }
@@ -54,7 +54,6 @@ public class AIComponentGeneration : EditorWindow
         }
     }
 
-    /*
     private void GenerateComponentWithAbstractManager()
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
@@ -73,9 +72,14 @@ public class AIComponentGeneration : EditorWindow
         abstractManagerClass.IsClass = true;
         abstractManagerClass.TypeAttributes = System.Reflection.TypeAttributes.Abstract | System.Reflection.TypeAttributes.Public;
 
-
-        abstractManagerClass.BaseTypes.Add(typeof(AbstractAIManager).Name);
+        abstractManagerClass.BaseTypes.Add("AbstractAIManager<" + this.AIComponentBaseName + "Component>");
         abstractManagerClass.BaseTypes.Add(typeof(InterfaceAIManager).Name);
+
+        var defaultConstructor = new CodeConstructor();
+        defaultConstructor.Attributes = MemberAttributes.Public;
+        defaultConstructor.Parameters.Add(new CodeParameterDeclarationExpression(this.AIComponentBaseName + "Component", this.AIComponentBaseName + "Component"));
+        defaultConstructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(this.AIComponentBaseName + "Component"));
+        abstractManagerClass.Members.Add(defaultConstructor);
 
         var BeforeManagersUpdateMethod = new CodeMemberMethod();
         BeforeManagersUpdateMethod.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
@@ -128,7 +132,6 @@ public class AIComponentGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-    */
 
     private void GenerateManager()
     {
@@ -140,6 +143,12 @@ public class AIComponentGeneration : EditorWindow
         managerClass.TypeAttributes = System.Reflection.TypeAttributes.Public;
 
         managerClass.BaseTypes.Add(this.abstractManagerClass.Name);
+
+        var defaultConstructor = new CodeConstructor();
+        defaultConstructor.Attributes = MemberAttributes.Public;
+        defaultConstructor.Parameters.Add(new CodeParameterDeclarationExpression(this.AIComponentBaseName + "Component", this.AIComponentBaseName + "Component"));
+        defaultConstructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(this.AIComponentBaseName + "Component"));
+        managerClass.Members.Add(defaultConstructor);
 
         var BeforeManagersUpdateMethod = new CodeMemberMethod();
         BeforeManagersUpdateMethod.Attributes = MemberAttributes.Override | MemberAttributes.Public;
@@ -190,6 +199,13 @@ public class AIComponentGeneration : EditorWindow
             provider.GenerateCodeFromCompileUnit(
                 compileUnity, sourceWriter, options);
         }
+    }
+
+    private void UpdateGenericPuzzleAIComponentsV2()
+    {
+        var GenericPuzzleAIComponentsV2File = CodeGenerationHelper.ClassFileFromType(typeof(GenericPuzzleAIComponentsV2));
+        GenericPuzzleAIComponentsV2File.Content = GenericPuzzleAIComponentsV2File.Content.Insert(GenericPuzzleAIComponentsV2File.Content.IndexOf("//${addNewEntry}"), "typeof(" + this.AIComponentBaseName + "Component)\n");
+        File.WriteAllText(GenericPuzzleAIComponentsV2File.Path, GenericPuzzleAIComponentsV2File.Content);
     }
 
     private void AddEditorWizardConstants()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace RTPuzzle
@@ -17,6 +17,7 @@ namespace RTPuzzle
             typeof(AIPlayerEscapeComponent),
             typeof(AIMoveTowardPlayerComponent),
             typeof(AIDisarmObjectComponent),
+//${addNewEntry}
         };
     }
 }
