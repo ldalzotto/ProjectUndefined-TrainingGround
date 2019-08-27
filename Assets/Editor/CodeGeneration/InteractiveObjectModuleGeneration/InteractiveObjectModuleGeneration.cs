@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class InteractiveObjectModuleGeneration : EditorWindow
 {
-    
+
     [MenuItem("Generation/InteractiveObjectModuleGeneration")]
     static void Init()
     {
@@ -42,17 +42,20 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                         this.UpdateInteractiveObjectInitializationObject();
                     }
                     this.UpdatePuzzleInteractiveObjectModulePrefabs();
+                    InteractiveObjectModuleDefinitionCreation.GenerateScripts(this.baseName);
 
                     if (this.isIdentified)
                     {
                         this.UpdateInteractiveObjectModuleWizardID();
                     }
-                    
+
                     if (this.isIdentified)
                     {
                         this.DoGenerateGameDesignerEditModule();
                         this.DoGenerateModuleCustomEditor();
                     }
+
+                    this.UpdatePuzzlePrefabConfiguration();
 
                 }
             }
@@ -310,7 +313,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-    
+
     private void DoGenerateGameDesignerEditModule()
     {
         CodeGenerationHelper.CopyFile(new DirectoryInfo(PathConstants.GameDesignerModulesPath + "/" + this.baseName), new Dictionary<string, string>() {
@@ -329,6 +332,13 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             }, new FileInfo(PathConstants.CustomEditorTemplatePath));
     }
 
+    private void UpdatePuzzlePrefabConfiguration()
+    {
+        var PuzzlePrefabConfigurationFile = CodeGenerationHelper.ClassFileFromType(typeof(PuzzlePrefabConfiguration));
+        CodeGenerationHelper.InsertToFile(new FileInfo(PuzzlePrefabConfigurationFile.Path), "        public ${baseName}Module Base${baseName}Module;\n", "//${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}",
+                    new Dictionary<string, string>() { { "${baseName}", this.baseName } });
+    }
+
     private void DoGenerateBasePrefad()
     {
         var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
@@ -336,8 +346,12 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
         var basePrefabGenerated = new GameObject("Base" + this.baseName + "Module");
         basePrefabGenerated.AddComponent(TypeHelper.GetType("RTPuzzle." + this.baseName + "Module"));
-        PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, PathConstants.InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
+        var savedAssed = PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, PathConstants.InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
 
         EditorSceneManager.CloseScene(tmpScene, true);
+
+        var PuzzlePrefabConfiguration = AssetFinder.SafeSingleAssetFind<PuzzlePrefabConfiguration>("t:" + typeof(PuzzlePrefabConfiguration));
+        PuzzlePrefabConfiguration.GetType().GetFields().ToArray().Select(f => f).Where(f => f.FieldType.Name == this.baseName + "Module").First().SetValue(PuzzlePrefabConfiguration, savedAssed.GetComponent(this.baseName + "Module"));
+        EditorUtility.SetDirty(PuzzlePrefabConfiguration);
     }
 }

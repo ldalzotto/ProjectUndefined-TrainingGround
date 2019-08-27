@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -28,6 +28,7 @@ namespace RTPuzzle
         public GrabObjectModule BaseGrabObjectModule;
         public ObjectRepelModule BaseObjectRepelModule;
         public ObjectSightModule BaseObjectSightModule;
+//${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
         [Header("AI")]
         public AIObjectType BaseAIObjectType;

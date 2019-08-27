@@ -114,8 +114,7 @@ namespace RTPuzzle
         {
             interactiveObjectType.GetModule<ObjectSightModule>().IfNotNull((ObjectSightModule ObjectSightModule) => ObjectSightModule.Init());
         }
-
-        //${addNewEntry}
+//${addNewEntry}
         #endregion
     }
 }

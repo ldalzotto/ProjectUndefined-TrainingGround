@@ -15,7 +15,7 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
         InteractiveObjectModuleDefinitionCreation window = (InteractiveObjectModuleDefinitionCreation)EditorWindow.GetWindow(typeof(InteractiveObjectModuleDefinitionCreation));
         window.Show();
     }
-    
+
     private string baseName;
 
     private void OnGUI()
@@ -25,14 +25,19 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
         {
             if (EditorUtility.DisplayDialog("GENERATE ?", "Confirm generation.", "YES", "NO"))
             {
-                if (!string.IsNullOrEmpty(this.baseName))
-                {
-                    GenerateDefinitionClass(this.baseName);
-                    UpdateDefinitionConfigurations(this.baseName);
-                    AddDefinitionCondition(this.baseName);
-                    AddCustomEditorCondition(this.baseName);
-                }
+                GenerateScripts(this.baseName);
             }
+        }
+    }
+
+    public static void GenerateScripts(string baseName)
+    {
+        if (!string.IsNullOrEmpty(baseName))
+        {
+            GenerateDefinitionClass(baseName);
+            UpdateDefinitionConfigurations(baseName);
+            AddDefinitionCondition(baseName);
+            AddCustomEditorCondition(baseName);
         }
     }
 
@@ -72,12 +77,12 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
     {
         var InteractiveObjectModuleTypesConstantsClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModuleTypesConstants));
 
-        if(!InteractiveObjectModuleTypesConstantsClassFile.Content.Contains(baseName + "ModuleDefinition"))
+        if (!InteractiveObjectModuleTypesConstantsClassFile.Content.Contains(baseName + "ModuleDefinition"))
         {
 
             InteractiveObjectModuleTypesConstantsClassFile.Content =
                InteractiveObjectModuleTypesConstantsClassFile.Content.Insert(InteractiveObjectModuleTypesConstantsClassFile.Content.IndexOf("//${addNewEntry}"),
-                    "typeof(" + baseName + "ModuleDefinition" + "),"
+                    "            typeof(" + baseName + "ModuleDefinition" + "),\n"
                 );
             File.WriteAllText(InteractiveObjectModuleTypesConstantsClassFile.Path, InteractiveObjectModuleTypesConstantsClassFile.Content);
 

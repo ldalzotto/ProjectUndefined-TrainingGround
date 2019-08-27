@@ -241,7 +241,7 @@ namespace RTPuzzle
                     }
                 }
             }
-            //${addNewEntry}
+//${addNewEntry}
         }
          
         private void DrawRangeDefinition(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData, Transform transform, Color color, string label, GUIStyle labelStyle)
