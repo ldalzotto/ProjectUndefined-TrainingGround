@@ -70,4 +70,14 @@ public static class ComponentSearchExtensions
         return returnValue;
     }
 
+    public static List<T> GetComponentsInCurrentAndChild<T>(this Component component) where T : Component
+    {
+        List<T> foundComponents = new List<T>();
+        var sameLevelComponent = component.GetComponent<T>();
+        if (sameLevelComponent != null) { foundComponents.Add(sameLevelComponent); }
+        var childComponents = component.GetComponentsInChildren<T>();
+        if(childComponents != null) { foundComponents.AddRange(childComponents); }
+        return foundComponents;
+    }
+
 }

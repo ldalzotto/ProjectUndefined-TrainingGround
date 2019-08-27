@@ -97,14 +97,13 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
-    <Compile Include="Assets\~CoreGame\Component\ComponentSearchExtensions.cs" />
-    <Compile Include="Assets\~CoreGame\Component\ComponentSearchHelper.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CoreMaterialConfiguration\CoreMaterialConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionTextConfiguration\DiscussionTextConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />
@@ -160,6 +159,8 @@
     <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\AnimationPlayerHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\BoundsHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\ComponentSearchExtensions.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\ComponentSearchHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\ComputeBufferHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\DynamicComputeBufferManager.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\FunctionalExtensions.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\QuaterionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SerializationHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\TransformExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkFXTransitionManager.cs" />

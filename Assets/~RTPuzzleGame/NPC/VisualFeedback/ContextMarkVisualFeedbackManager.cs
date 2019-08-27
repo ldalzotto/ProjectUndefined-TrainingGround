@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using CoreGame;
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -11,16 +10,19 @@ namespace RTPuzzle
         #region External Dependencies
         private AIObjectType NPCAIManagerRef;
         private NpcInteractionRingManager NpcInteractionRingManager;
-        private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
+        private CoreMaterialConfiguration CoreMaterialConfiguration;
         #endregion
 
-        public ContextMarkVisualFeedbackManager(AIObjectType NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager, PuzzleGameConfigurationManager PuzzleGameConfigurationManager)
+        public ContextMarkVisualFeedbackManager(AIObjectType NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager,
+                    PuzzlePrefabConfiguration PuzzlePrefabConfiguration, CoreMaterialConfiguration CoreMaterialConfiguration)
         {
             this.NPCAIManagerRef = NPCAIManagerRef;
             this.DeleteOperation();
             this.visualFeedbackMark = null;
             this.NpcInteractionRingManager = npcFOVRingManager;
-            this.PuzzleGameConfigurationManager = PuzzleGameConfigurationManager;
+            this.PuzzlePrefabConfiguration = PuzzlePrefabConfiguration;
+            this.CoreMaterialConfiguration = CoreMaterialConfiguration;
         }
 
         private AIFeedbackMarkType visualFeedbackMark;
@@ -36,24 +38,28 @@ namespace RTPuzzle
             }
         }
 
-        public void ReceiveEvent(ContextMarkVisualFeedbackEvent contextMarkVisualFeedbackEvent, AIObjectID aiID)
+        public void ReceiveEvent(AbstractContextMarkVisualFeedbackEvent contextMarkVisualFeedbackEvent, AIObjectID aiID)
         {
-            this.DeleteOperation();
-            this.PuzzleGameConfigurationManager.ContextMarkVisualFeedbackConfiguration().TryGetValue(aiID, out ContextMarkVisualFeedbackInherentData ContextMarkVisualFeedbackInherentData);
-            if (ContextMarkVisualFeedbackInherentData != null)
+            if (contextMarkVisualFeedbackEvent.GetType() == typeof(AttractedStartEvent))
             {
-                switch (contextMarkVisualFeedbackEvent)
+                var AttractedStartEvent = (AttractedStartEvent)contextMarkVisualFeedbackEvent;
+                this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzlePrefabConfiguration.BaseAIFeedbackMarkType, (AIFeedbackMarkType) =>
                 {
-                    case ContextMarkVisualFeedbackEvent.ATTRACTED_START:
-                        this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(ContextMarkVisualFeedbackInherentData.AttractedPrafab);
-                        break;
-                    case ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME:
-                        this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(ContextMarkVisualFeedbackInherentData.ProjectileHitPrefab);
-                        break;
-                    case ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET:
-                        this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(ContextMarkVisualFeedbackInherentData.EscapeWithoutTargetPrefab);
-                        break;
-                }
+                    var modelObjectModuleInstanciated = Object.Instantiate(AttractedStartEvent.ModelObjectModule, AIFeedbackMarkType.transform);
+                    modelObjectModuleInstanciated.CleanObjectForFeedbackIcon(this.CoreMaterialConfiguration);
+                });
+            }
+            else if (contextMarkVisualFeedbackEvent.GetType() == typeof(ProjectileHittedFirstTimeEvent))
+            {
+                this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.ProjectileHitPrefab);
+            }
+            else if (contextMarkVisualFeedbackEvent.GetType() == typeof(EscapeWithoutTargetEvent))
+            {
+                this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.EscapeWithoutTargetPrefab);
+            }
+            else if (contextMarkVisualFeedbackEvent.GetType() == typeof(DeleteEvent))
+            {
+                this.DeleteOperation();
             }
         }
 
@@ -69,16 +75,5 @@ namespace RTPuzzle
         {
             this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(visualFeedbackMarkPrefab);
         }
-
     }
-
-
-    public enum ContextMarkVisualFeedbackEvent
-    {
-        PROJECTILE_HITTED_FIRST_TIME = 0,
-        ESCAPE_WITHOUT_TARGET = 1,
-        ATTRACTED_START = 2,
-        DELETE = 3
-    }
-
 }

@@ -90,6 +90,7 @@ namespace RTPuzzle
         #region Escape without target zone events
         public void PZ_EVT_AI_EscapeWithoutTarget_Start(AIObjectID aiID)
         {
+            Debug.Log(MyLog.Format("PZ_EVT_AI_EscapeWithoutTarget_Start"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetStart();
         }
         public void PZ_EVT_AI_EscapeWithoutTarget_End(AIObjectID aiID)

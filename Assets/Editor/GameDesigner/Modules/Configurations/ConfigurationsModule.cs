@@ -17,7 +17,6 @@ namespace Editor_GameDesigner
     public class LevelHierarchyConfigurationModule : ConfigurationModule<LevelHierarchyConfiguration, LevelZonesID, LevelHierarchyConfigurationData> { }
     public class LevelZonesSceneConfigurationModule : ConfigurationModule<LevelZonesSceneConfiguration, LevelZonesID, LevelZonesSceneConfigurationData> { }
     public class TimelineConfigurationModule : ConfigurationModule<TimelineConfiguration, TimelineID, TimelineInitializerScriptableObject> { }
-    public class ContextMarkVisualFeedbackConfigurationModule : ConfigurationModule<ContextMarkVisualFeedbackConfiguration, AIObjectID, ContextMarkVisualFeedbackInherentData> { }
     public class AttractiveObjectConfigurationModule : ConfigurationModule<AttractiveObjectConfiguration, AttractiveObjectId, AttractiveObjectInherentConfigurationData> { }
     public class DottedLineConfigurationModule : ConfigurationModule<DottedLineConfiguration, DottedLineID, DottedLineInherentData> { }
     public class RepelableObjectsConfigurationModule : ConfigurationModule<ObjectRepelConfiguration, ObjectRepelID, ObjectRepelInherentData> { }

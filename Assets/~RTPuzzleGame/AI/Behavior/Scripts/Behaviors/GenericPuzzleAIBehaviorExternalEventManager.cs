@@ -100,6 +100,7 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("AI - EscapeWithoutTrigger_Start"));
             if (genericAiBehavior.IsEscapeWithoutTriggerEnabled())
             {
+                genericAiBehavior.SetManagerState(null); //To Trigger events before
                 genericAiBehavior.AIEscapeWithoutTriggerManager.OnEscapeStart(escapeWithoutTriggerStartAIBehaviorEvent);
                 genericAiBehavior.SetManagerState(genericAiBehavior.AIEscapeWithoutTriggerManager);
             }

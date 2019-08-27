@@ -104,7 +104,7 @@ namespace RTPuzzle
 
         public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, List<Type> exclusiveInitialEnabledModules = null)
         {
-         //   Debug.Log(MyLog.Format(this.InteractiveObjectTypeDefinitionID.ToString()));
+            //   Debug.Log(MyLog.Format(this.InteractiveObjectTypeDefinitionID.ToString()));
 
             #region External Dependencies
             this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();

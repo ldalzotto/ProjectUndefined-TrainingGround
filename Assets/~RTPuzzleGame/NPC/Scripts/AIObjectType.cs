@@ -88,6 +88,7 @@ namespace RTPuzzle
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            var coreStaticConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration;
             var aiPositionsManager = GameObject.FindObjectOfType<AIPositionsManager>();
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
@@ -115,7 +116,7 @@ namespace RTPuzzle
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.genericPuzzleAIBehaviorContainer, aIBheaviorBuildInputData);
 
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleCOnfigurationmanager);
+            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleStaticConfiguration.PuzzlePrefabConfiguration, coreStaticConfiguration.CoreMaterialConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
             if (animator != null)
             {
@@ -200,27 +201,28 @@ namespace RTPuzzle
 
         public void OnHittedByProjectileFirstTime()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.PROJECTILE_HITTED_FIRST_TIME, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new ProjectileHittedFirstTimeEvent(), this.AiID);
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime());
         }
 
         public void OnEscapeWithoutTargetStart()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ESCAPE_WITHOUT_TARGET, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new EscapeWithoutTargetEvent(), this.AiID);
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart());
         }
         public void OnEscapeWithoutTargetEnd()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
         }
+
         public void OnAiAffectedByProjectileEnd()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
         }
 
         internal void OnGameOver()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
         }
 
         internal void OnAIFearedStunnedEnded()
@@ -251,12 +253,12 @@ namespace RTPuzzle
         internal void OnAIAttractedStart(AttractiveObjectModule attractiveObject)
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectStart(attractiveObject.AttractiveObjectId);
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.ATTRACTED_START, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new AttractedStartEvent(attractiveObject.GetModel()), this.AiID);
         }
         internal void OnAIAttractedEnd()
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectEnd();
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(ContextMarkVisualFeedbackEvent.DELETE, this.AiID);
+            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace RTPuzzle
 {
@@ -33,6 +32,10 @@ namespace RTPuzzle
         [Header("AI")]
         public AIObjectType BaseAIObjectType;
 
+        [Header("AI Feedback")]
+        public AIFeedbackMarkType BaseAIFeedbackMarkType;
+        public AIFeedbackMarkType ProjectileHitPrefab;
+        public AIFeedbackMarkType EscapeWithoutTargetPrefab;
     }
 }
 

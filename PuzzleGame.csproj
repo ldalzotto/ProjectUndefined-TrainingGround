@@ -117,8 +117,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIContextMarkVisualFeedback\ContextMarkVisualFeedbackInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectConfiguration\AIObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectConfiguration\AIObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionConfiguration.cs" />
@@ -250,6 +248,7 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIObjectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\ContextMarkVisualFeedbackEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\ContextMarkVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\LineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleFrustumCalculationManager.cs" />
