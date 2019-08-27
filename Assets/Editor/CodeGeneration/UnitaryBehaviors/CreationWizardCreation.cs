@@ -209,7 +209,7 @@ public class CreationWizardCreation : EditorWindow
                   new KeyValuePair<string, string>("nameof(Editor_" + baseName + "CreationWizard." + baseName + "CreationWizard)", "new Editor_" + baseName + "CreationWizard." + baseName + "CreationWizard()") })
             .GroupBy(kv => kv.Key)
             .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        configurationTreeField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<string, ICreationWizardEditor<AbstractCreationWizardEditorProfile>>()" +
+        configurationTreeField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<string, ICreationWizardEditor>()" +
             CodeGenerationHelper.FormatDictionaryToCodeSnippet(configurationTreeFieldDic));
         generatedCreationWizardEditorProfileChoiceTree.Members.Add(configurationTreeField);
 
