@@ -144,5 +144,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string AIObjectTypeDefinitionInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AIObjectTypeDefinitionConfigu" +
             "ration/Data";
+        
+        [ReadOnly()]
+        public static string PuzzleCutsceneInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/PuzzleCutsceneConfiguration/D" +
+            "ata";
     }
 }

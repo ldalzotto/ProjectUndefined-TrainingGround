@@ -7,6 +7,6 @@ namespace RTPuzzle
 {
     [System.Serializable]
     [CreateAssetMenu(fileName = "PuzzleCutsceneConfiguration", menuName = "Configuration/PuzzleGame/PuzzleCutsceneConfiguration/PuzzleCutsceneConfiguration", order = 1)]
-    public class PuzzleCutsceneConfiguration : ConfigurationSerialization<PuzzleCutsceneId, PuzzleCutsceneInherentData>
+    public class PuzzleCutsceneConfiguration : ConfigurationSerialization<PuzzleCutsceneID, PuzzleCutsceneInherentData>
     {  }
 }

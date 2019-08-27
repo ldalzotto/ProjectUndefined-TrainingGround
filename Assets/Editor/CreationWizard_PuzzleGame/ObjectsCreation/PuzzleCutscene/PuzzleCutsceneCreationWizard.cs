@@ -8,16 +8,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum PuzzleCutsceneID {
-    
-    NONE = 0,
-    
-    _1_Town_GardenDoor_InteractiveAction = 1,
-    
-    _GENERIC_NearPlayerGameOver = 2,
-  }
+using UnityEngine;
+using System.Collections;
+
+namespace Editor_PuzzleCutsceneCreationWizard
+{
+    public class PuzzleCutsceneCreationWizard : AbstractCreationWizardEditor<PuzzleCutsceneCreationWizardProfile>
+    {
+        
+    }
+
 }

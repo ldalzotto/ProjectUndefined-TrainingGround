@@ -7,10 +7,10 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "CutsceneActionInherentData", menuName = "Configuration/PuzzleGame/PlayerActionConfiguration/CutsceneActionInherentData", order = 1)]
     public class CutsceneActionInherentData : PlayerActionInherentData
     {
-        [CustomEnum()]
-        public PuzzleCutsceneId PuzzleCutsceneId;
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID PuzzleCutsceneId;
 
-        public CutsceneActionInherentData(PuzzleCutsceneId PuzzleCutsceneId, SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
+        public CutsceneActionInherentData(PuzzleCutsceneID PuzzleCutsceneId, SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
         {
             this.PuzzleCutsceneId = PuzzleCutsceneId;
         }

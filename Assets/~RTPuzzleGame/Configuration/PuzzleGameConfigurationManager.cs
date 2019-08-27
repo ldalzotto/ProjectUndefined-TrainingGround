@@ -61,7 +61,7 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.DisarmObjectConfiguration.ConfigurationInherentData;
         }
 
-        public Dictionary<PuzzleCutsceneId, PuzzleCutsceneInherentData> PuzzleCutsceneConfiguration()
+        public Dictionary<PuzzleCutsceneID, PuzzleCutsceneInherentData> PuzzleCutsceneConfiguration()
         {
             return PuzzleGameConfiguration.PuzzleCutsceneConfiguration.ConfigurationInherentData;
         }

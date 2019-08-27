@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -7,7 +8,9 @@ namespace RTPuzzle
     public class NearPlayerGameOverTriggerInherentData : ScriptableObject
     {
         public float NearPlayerDetectionRadius;
-        public PuzzleCutsceneGraph AnimationGraph;
+
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID AnimationCutsceneGraphID;
     }
 
 }

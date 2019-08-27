@@ -7,7 +7,7 @@ namespace RTPuzzle
 {
     public class CutsceneAction : RTPPlayerAction
     {
-        private PuzzleCutsceneId puzzleCutsceneId;
+        private PuzzleCutsceneID puzzleCutsceneId;
 
         private SequencedActionManager cutscenePlayer;
         private PuzzleCutsceneActionInput cutscenePlayerInput;
