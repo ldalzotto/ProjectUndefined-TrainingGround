@@ -111,6 +111,12 @@ namespace RTPuzzle
                             var ObjectRepelModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectRepelModule, InteractiveObjectType.transform);
                             ObjectRepelModuleInstancer.PopuplateFromDefinition(ObjectRepelModule, ObjectRepelModuleDefinition);
                         }
+                        else if (moduleConfiguration.GetType() == typeof(ObjectSightModuleDefinition))
+                        {
+                            var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)moduleConfiguration;
+                            var ObjectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, InteractiveObjectType.transform);
+                            ObjectSightModuleInstancer.PopuplateFromDefinition(ObjectSightModule, ObjectSightModuleDefinition, puzzlePrefabConfiguration);
+                        }
 //${addNewEntry}
                     }
                 }
