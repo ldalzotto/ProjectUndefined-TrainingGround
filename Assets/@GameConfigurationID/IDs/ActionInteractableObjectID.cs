@@ -14,7 +14,7 @@ namespace GameConfigurationID {
   [System.Serializable()]
   public enum ActionInteractableObjectID {
     
-    TEST = 0,
+    NONE = 0,
     
     _1_Town_GardenDoor = 1,
 

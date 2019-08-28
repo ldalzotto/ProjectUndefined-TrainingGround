@@ -304,9 +304,13 @@ namespace Tests
         [UnityTest]
         public IEnumerator ActionInteractableObjectModule_WhenPlayerIsNear_IsAddingAssociatedAction()
         {
+            var playerActionID = PlayerActionId.TEST_1;
+            InteractiveObjectType interactableObject = null;
             yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
             {
-              //  ActionInteractableObjectDefinition.ActionInteractableObjectOnly(InteractiveObjectTestID.TEST_1, 9999f, new CutsceneActionInherentData()
+                interactableObject = ActionInteractableObjectDefinition.ActionInteractableObjectOnly(InteractiveObjectTestID.TEST_1, new ActionInteractableObjectInitialization(
+                           9999f, playerActionID, 0f, 1, PuzzleCutsceneID.TEST_1, ActionInteractableObjectDefinition.DoNothingCutsceneGraph()
+                    )).Instanciate(Vector3.zero);
             });
             yield return new WaitForFixedUpdate();
 
@@ -314,7 +318,32 @@ namespace Tests
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
 
+            var currentAvailablePlayerActions = playerActionManager.GetCurrentAvailablePlayerActions();
+            Assert.IsTrue(currentAvailablePlayerActions.Count == 1);
+        }
 
+        [UnityTest]
+        public IEnumerator ActionInteractableObjectModule_WhenActionIsConsumed_ActionInteractableObjectModuleDisabled()
+        {
+            var playerActionID = PlayerActionId.TEST_1;
+            InteractiveObjectType interactableObject = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
+            {
+                interactableObject = ActionInteractableObjectDefinition.ActionInteractableObjectOnly(InteractiveObjectTestID.TEST_1, new ActionInteractableObjectInitialization(
+                           9999f, playerActionID, 0f, 1, PuzzleCutsceneID.TEST_1, ActionInteractableObjectDefinition.DoNothingCutsceneGraph()
+                    )).Instanciate(Vector3.zero);
+            });
+            yield return new WaitForFixedUpdate();
+
+            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+
+            var currentAvailablePlayerActions = playerActionManager.GetCurrentAvailablePlayerActions();
+            playerActionManager.ExecuteAction(currentAvailablePlayerActions[PlayerActionId.NONE][0]);
+            yield return null;
+            Assert.IsTrue(currentAvailablePlayerActions.Count == 0);
+            Assert.IsTrue(interactableObject.GetDisabledModule<ActionInteractableObjectModule>());
         }
 
         private void InteractiveObjectModulePresenceAssert(InteractiveObjectType interactiveObject, List<Type> enabledModulesToCheck = null, List<Type> disabledModulesToCheck = null)

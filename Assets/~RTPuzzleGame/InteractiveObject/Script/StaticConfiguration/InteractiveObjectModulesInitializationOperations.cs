@@ -72,21 +72,8 @@ namespace RTPuzzle
         {
             interactiveObjectType.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule ActionInteractableObjectModule) =>
             {
-                var ActionInteractableObjectModuleInitializationData = interactiveObjectInitializationObject.ActionInteractableObjectModuleInitializationData;
-                if (ActionInteractableObjectModuleInitializationData == null)
-                {
-                    ActionInteractableObjectModuleInitializationData = new ActionInteractableObjectModuleInitializationData();
-                    ActionInteractableObjectModuleInitializationData.ActionInteractableObjectInherentData = interactiveObjectType.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[ActionInteractableObjectModule.ActionInteractableObjectID];
-                    ActionInteractableObjectModuleInitializationData.AssociatedPlayerActionInherentData = interactiveObjectType.PuzzleGameConfigurationManager.PlayerActionConfiguration()[ActionInteractableObjectModuleInitializationData.ActionInteractableObjectInherentData.PlayerActionId];
-                }
-                else
-                {
-                    if (ActionInteractableObjectModuleInitializationData.AssociatedPlayerActionInherentData == null)
-                    {
-                        ActionInteractableObjectModuleInitializationData.AssociatedPlayerActionInherentData = interactiveObjectType.PuzzleGameConfigurationManager.PlayerActionConfiguration()[ActionInteractableObjectModuleInitializationData.ActionInteractableObjectInherentData.PlayerActionId];
-                    }
-                }
-                ActionInteractableObjectModule.Init(ActionInteractableObjectModuleInitializationData, interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager);
+                if (interactiveObjectInitializationObject.ActionInteractableObjectInherentData == null) { ActionInteractableObjectModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[ActionInteractableObjectModule.ActionInteractableObjectID], interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager); }
+                else { ActionInteractableObjectModule.Init(interactiveObjectInitializationObject.ActionInteractableObjectInherentData, interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager); }
             });
         }
 

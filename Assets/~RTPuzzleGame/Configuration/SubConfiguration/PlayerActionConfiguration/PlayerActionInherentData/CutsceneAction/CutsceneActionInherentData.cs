@@ -10,9 +10,12 @@ namespace RTPuzzle
         [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
         public PuzzleCutsceneID PuzzleCutsceneId;
 
-        public CutsceneActionInherentData(PuzzleCutsceneID PuzzleCutsceneId, SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
+        public CutsceneActionInherentData(SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
         {
-            this.PuzzleCutsceneId = PuzzleCutsceneId;
+        }
+
+        public CutsceneActionInherentData()
+        {
         }
     }
 }

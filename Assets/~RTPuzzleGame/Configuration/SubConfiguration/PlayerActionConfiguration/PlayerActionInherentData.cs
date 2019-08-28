@@ -12,6 +12,7 @@ namespace RTPuzzle
         [Tooltip("Number of times the action can be executed. -1 is infinite. -2 is not displayed")]
         public int ExecutionAmount = -1;
 
+        public PlayerActionInherentData() { }
         protected PlayerActionInherentData(SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime)
         {
             ActionWheelNodeConfigurationId = actionWheelNodeConfigurationId;

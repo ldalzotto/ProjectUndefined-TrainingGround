@@ -24,12 +24,7 @@ namespace Tests
                 InteractiveObjectInitializationObject.LaunchProjectileInherentData.IfNotNull(LaunchProjectileInherentData => puzzleGameConfiguration.LaunchProjectileConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.LaunchProjectileID] = LaunchProjectileInherentData);
                 InteractiveObjectInitializationObject.DisarmObjectInherentData.IfNotNull(DisarmObjectInherentData => puzzleGameConfiguration.DisarmObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.DisarmObjectID] = DisarmObjectInherentData);
                 InteractiveObjectInitializationObject.GrabObjectInherentData.IfNotNull(GrabObjectInherentData => puzzleGameConfiguration.GrabObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.GrabObjectID] = GrabObjectInherentData);
-                InteractiveObjectInitializationObject.ActionInteractableObjectModuleInitializationData.IfNotNull(
-                    ActionInteractableObjectModuleInitializationData =>
-                    {
-                        puzzleGameConfiguration.ActionInteractableObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.ActionInteractableObjectID] = ActionInteractableObjectModuleInitializationData.ActionInteractableObjectInherentData;
-                        puzzleGameConfiguration.PlayerActionConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.PlayerActionId] = ActionInteractableObjectModuleInitializationData.AssociatedPlayerActionInherentData;
-                    });
+                InteractiveObjectInitializationObject.ActionInteractableObjectInherentData.IfNotNull(ActionInteractableObjectInherentData => puzzleGameConfiguration.ActionInteractableObjectConfiguration.ConfigurationInherentData[interactiveObjectTestIDTree.ActionInteractableObjectID] = ActionInteractableObjectInherentData);
             }
 
             InteractiveObjectID = interactiveObjectTestIDTree.InteractiveObjectID;

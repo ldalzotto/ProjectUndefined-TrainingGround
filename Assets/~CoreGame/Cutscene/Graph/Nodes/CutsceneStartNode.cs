@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using NodeGraph;
+﻿using NodeGraph;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,16 +9,19 @@ namespace CoreGame
     {
         [SerializeField]
         private CutsceneActionConnectionEdge startEdge;
-        
+
         public List<ICutsceneNode> GetFirstNodes()
         {
             List<ICutsceneNode> nextNodes = new List<ICutsceneNode>();
-            foreach (var connectedNode in startEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge)e))
+            if (startEdge != null) //when instanciated by test
             {
-                var ICutsceneNode = connectedNode.NodeProfileRef as ICutsceneNode;
-                if (ICutsceneNode != null)
+                foreach (var connectedNode in startEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge)e))
                 {
-                    nextNodes.Add(ICutsceneNode);
+                    var ICutsceneNode = connectedNode.NodeProfileRef as ICutsceneNode;
+                    if (ICutsceneNode != null)
+                    {
+                        nextNodes.Add(ICutsceneNode);
+                    }
                 }
             }
             return nextNodes;

@@ -24,15 +24,15 @@ namespace RTPuzzle
         public RTPPlayerAction AssociatedPlayerAction { get => associatedPlayerAction; }
         #endregion
 
-        public void Init(ActionInteractableObjectModuleInitializationData ActionInteractableObjectModuleInitializationData, InteractiveObjectType baseInteractiveObjectType, PuzzleGameConfigurationManager puzzleGameConfigurationManager, PuzzleEventsManager PuzzleEventsManager)
+        public void Init(ActionInteractableObjectInherentData ActionInteractableObjectInherentData, InteractiveObjectType baseInteractiveObjectType, PuzzleGameConfigurationManager puzzleGameConfigurationManager, PuzzleEventsManager PuzzleEventsManager)
         {
-            this.ActionInteractableObjectInherentData = ActionInteractableObjectModuleInitializationData.ActionInteractableObjectInherentData;
+            this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
             this.baseInteractiveObjectType = baseInteractiveObjectType;
             this.PuzzleEventsManager = PuzzleEventsManager;
             var triggerCollider = GetComponent<SphereCollider>();
             triggerCollider.radius = this.ActionInteractableObjectInherentData.InteractionRange;
 
-            this.associatedPlayerAction = new CutsceneAction((CutsceneActionInherentData)ActionInteractableObjectModuleInitializationData.AssociatedPlayerActionInherentData);
+            this.associatedPlayerAction = new CutsceneAction((CutsceneActionInherentData)puzzleGameConfigurationManager.PlayerActionConfiguration()[ActionInteractableObjectInherentData.PlayerActionId]);
         }
 
         public void TickAlways(float d)
@@ -77,10 +77,5 @@ namespace RTPuzzle
         }
     }
 
-public class ActionInteractableObjectModuleInitializationData
-    {
-        public ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
-        public PlayerActionInherentData AssociatedPlayerActionInherentData;
-    }
 }
 
