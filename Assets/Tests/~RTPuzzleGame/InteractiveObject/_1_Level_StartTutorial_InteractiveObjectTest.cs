@@ -16,7 +16,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest);
             yield return new WaitForFixedUpdate();
-            
+
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
 
@@ -62,7 +62,7 @@ namespace Tests
 
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker( InteractiveObjectTestID.TEST_1,
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
                  explodingEffectRange: 9999f, travelDistancePerSeconds: 9999f, projectileThrowRange: 9999f,
                  attractiveObjectEffectRange: 9999f, attractiveObjectEffectiveTime: 9995f,
                  grabObjectRadius: 1.5f,
@@ -90,15 +90,16 @@ namespace Tests
         public IEnumerator LaunchProjectileModule_ReachedDestination_IfIsPersistingToAttractiveObject_AttractiveModuleEnabled()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_2).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
-            
+
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            
+
             var projectileThrowRange = 9993f;
             var projectileEffectRange = 9994f;
             var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
@@ -125,7 +126,7 @@ namespace Tests
 
             Assert.AreEqual(4, interactiveProjectile.GetAllModules().Count);
             this.InteractiveObjectModulePresenceAssert(interactiveProjectile, enabledModulesToCheck: new List<Type>() { typeof(ModelObjectModule), typeof(AttractiveObjectModule), typeof(DisarmObjectModule), typeof(GrabObjectModule) });
-            
+
             Assert.AreEqual(projectileEffectRange, interactiveProjectile.GetModule<AttractiveObjectModule>().SphereRange.RangeType.GetRadiusRange());
         }
 
@@ -133,7 +134,8 @@ namespace Tests
         public IEnumerator DisarmObjectModule_WhenAIIsNear_WithAIDisarmObjectManager_IsDisarming()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_2).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -157,7 +159,7 @@ namespace Tests
             var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
             playerActionManager.ExecuteAction(launchProjetileAction);
             launchProjetileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
-            
+
 
             //Wait for projectile to read target
             yield return null;
@@ -166,6 +168,7 @@ namespace Tests
 
             var interactiveProjectile = interactiveLaunchProjectiles[0];
             var DisarmObjectModule = interactiveProjectile.GetModule<DisarmObjectModule>();
+            var GrabObjectModule = interactiveProjectile.GetModule<GrabObjectModule>();
 
             var awaitedDisarmObjectRange = puzzleConfigurationManager.DisarmObjectsConfiguration()[DisarmObjectModule.DisarmObjectID].DisarmInteractionRange;
             Assert.AreEqual(awaitedDisarmObjectRange, DisarmObjectModule.GetEffectRange());
@@ -175,6 +178,61 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             yield return null;
             Assert.IsTrue(DisarmObjectModule.GetDisarmPercentage01() > 0f);
+        }
+
+        [UnityTest]
+        public IEnumerator DisarmObjectModule_WhenAIDisarmObject_GrabModuleIsDisabled()
+        {
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
+            {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_2).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
+            yield return new WaitForFixedUpdate();
+
+            var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+
+            var projectileThrowRange = 9993f;
+            var projectileEffectRange = 9994f;
+            var projectile = ProjectileInteractiveObjectDefinitions._1_Town_Speaker(InteractiveObjectTestID.TEST_1,
+                 explodingEffectRange: 9991f, travelDistancePerSeconds: 9992f, projectileThrowRange: projectileThrowRange,
+                 attractiveObjectEffectRange: projectileEffectRange, attractiveObjectEffectiveTime: 9995f,
+                 grabObjectRadius: 1.5f,
+                 disarmInteractionRange: 2.5f, disarmTime: 2f
+            );
+            var launchProjetileAction = new LaunchProjectileAction(new LaunchProjectileActionInherentData(
+                    projectile.InteractiveObjectTypeDefinitionID,
+                SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
+            var launchProjectileActionRemainingExecutions = launchProjetileAction.RemainingExecutionAmout;
+            playerActionManager.ExecuteAction(launchProjetileAction);
+            launchProjetileAction.SpawnLaunchProjectile(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PROJECTILE_TARGET_1).transform.position);
+
+            //Wait for projectile to read target
+            yield return null;
+            var interactiveLaunchProjectiles = interactiveObjectContainer.GetIntractiveObjectsAll(projectile.InteractiveObjectID);
+
+            var interactiveProjectile = interactiveLaunchProjectiles[0];
+            var DisarmObjectModule = interactiveProjectile.GetModule<DisarmObjectModule>();
+            var GrabObjectModule = interactiveProjectile.GetModule<GrabObjectModule>();
+
+            TestHelperMethods.SetAgentPosition(aiManager.GetAgent(), DisarmObjectModule.transform.position);
+
+            Assert.IsTrue(GrabObjectModule.isActiveAndEnabled);
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+            //When disarming, the grab module is disabled
+            Assert.IsFalse(GrabObjectModule.isActiveAndEnabled);
+
+            var playerObject = interactiveObjectContainer.GetInteractiveObjectFirst(InteractiveObjectID.Player);
+            playerObject.transform.position = aiManager.GetAgent().transform.position + (aiManager.GetAgent().transform.forward * 3f);
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            //When disarming disabled, the grab module is re-enabled
+            Assert.IsTrue(GrabObjectModule.isActiveAndEnabled);
         }
 
         [UnityTest]

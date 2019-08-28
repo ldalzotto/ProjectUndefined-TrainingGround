@@ -75,16 +75,6 @@ namespace RTPuzzle
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
         }
-
-        public void PZ_EVT_AI_DisarmObject_Start(AIObjectID aiID, DisarmObjectModule disarmObjectModule)
-        {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart(disarmObjectModule);
-        }
-
-        public void PZ_EVT_AI_DisarmObject_End(AIObjectID aiID)
-        {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectEnd();
-        }
         #endregion
 
         #region Escape without target zone events
@@ -155,6 +145,20 @@ namespace RTPuzzle
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()
         {
             this.PlayerActionEventManager.OnCurrentNodeSelected();
+        }
+        #endregion
+
+        #region Disarm object event
+        public void PZ_EVT_DisarmObject_Start(AIObjectID aiID,  DisarmObjectModule disarmObjectModule)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart(disarmObjectModule);
+            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectStart());
+        }
+
+        public void PZ_EVT_DisarmObject_End(AIObjectID aiID, DisarmObjectModule disarmObjectModule)
+        {
+            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectEnd();
+            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectEnd());
         }
         #endregion
 

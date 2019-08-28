@@ -13,6 +13,7 @@ namespace RTPuzzle
 
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
+        private InteractiveObjectType AssociatedInteractiveObjectType;
         #endregion
 
         #region Internal Dependencies
@@ -35,9 +36,10 @@ namespace RTPuzzle
             return createdDisarmObject;
         }
 
-        public void Init(ModelObjectModule ModelObjectModule, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
+        public void Init(ModelObjectModule ModelObjectModule, InteractiveObjectType AssociatedInteractiveObjectType, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
         {
             this.ModelObjectModule = ModelObjectModule;
+            this.AssociatedInteractiveObjectType = AssociatedInteractiveObjectType;
             this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
             this.AiThatCanInteract = new List<AIObjectType>();
 
@@ -94,6 +96,15 @@ namespace RTPuzzle
             {
                 CircleFillBarType.EnableInstace(this.progressbar);
             }
+        }
+        public void OnDisarmObjectStart()
+        {
+            this.AssociatedInteractiveObjectType.DisableModule(typeof(GrabObjectModule));
+        }
+
+        public void OnDisarmObjectEnd()
+        {
+            this.AssociatedInteractiveObjectType.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
         }
         #endregion
 

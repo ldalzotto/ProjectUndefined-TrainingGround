@@ -89,11 +89,11 @@ namespace RTPuzzle
         {
             if (this.isDisarmingObject && !value)
             {
-                this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_End(this.aiID);
+                this.PuzzleEventsManager.PZ_EVT_DisarmObject_End(this.aiID, this.disarmingObject);
             }
             else if (!this.isDisarmingObject && value)
             {
-                this.PuzzleEventsManager.PZ_EVT_AI_DisarmObject_Start(this.aiID, this.disarmingObject);
+                this.PuzzleEventsManager.PZ_EVT_DisarmObject_Start(this.aiID, this.disarmingObject);
             }
             this.isDisarmingObject = value;
         }
