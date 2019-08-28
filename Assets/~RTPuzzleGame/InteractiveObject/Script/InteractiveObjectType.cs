@@ -49,9 +49,16 @@ namespace RTPuzzle
             return null;
         }
 
-        public List<InteractiveObjectModule> GetAllModules()
+        public List<InteractiveObjectModule> GetAllEnabledModules()
         {
             return this.enabledModules.Values.ToList();
+        }
+
+        public List<InteractiveObjectModule> GetAllEnabledAndDisabledModules()
+        {
+            var returnList = this.enabledModules.Values.ToList();
+            returnList.AddRange(this.disabledModules.Values.ToList());
+            return returnList;
         }
 
         public T GetDisabledModule<T>() where T : InteractiveObjectModule
@@ -164,7 +171,6 @@ namespace RTPuzzle
             this.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
-            this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.Tick(d, timeAttenuationFactor));
             this.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule interactiveObjectCutsceneControllerModule) => interactiveObjectCutsceneControllerModule.Tick(d, timeAttenuationFactor));
         }
 
@@ -176,6 +182,7 @@ namespace RTPuzzle
         public void TickAlways(float d)
         {
             this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.TickAlways(d));
+            this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.TickAlways(d));
         }
 
         public void DisableModule(Type moduleType)
@@ -185,6 +192,7 @@ namespace RTPuzzle
                 m.gameObject.SetActive(false);
                 this.enabledModules.Remove(moduleType);
                 this.disabledModules[moduleType] = m;
+                m.OnModuleDisabled();
                 this.interactiveObjectContainer.OnModuleDisabled(m);
             });
         }
@@ -208,11 +216,23 @@ namespace RTPuzzle
 
         }
 
-        internal void EnableAllDisabledModules(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
+        public void EnableAllDisabledModules(InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
             foreach (var disabledModule in this.disabledModules.Keys.ToList())
             {
                 this.EnableModule(disabledModule, InteractiveObjectInitializationObject);
+            }
+        }
+
+        public void OnInteractiveObjectDestroyed()
+        {
+            foreach (var enabledModule in this.enabledModules.Values)
+            {
+                enabledModule.OnInteractiveObjectDestroyed();
+            }
+            foreach (var disabledModule in this.disabledModules.Values)
+            {
+                disabledModule.OnInteractiveObjectDestroyed();
             }
         }
 

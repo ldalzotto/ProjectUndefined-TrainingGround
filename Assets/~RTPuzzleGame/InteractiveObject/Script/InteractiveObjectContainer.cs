@@ -7,10 +7,6 @@ namespace RTPuzzle
 {
     public class InteractiveObjectContainer : MonoBehaviour
     {
-        #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
-        #endregion
-
         #region Generic Container
         private MultiValueDictionary<InteractiveObjectID, InteractiveObjectType> interactiveObjects;
         #endregion
@@ -44,8 +40,6 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-
             this.interactiveObjects = new MultiValueDictionary<InteractiveObjectID, InteractiveObjectType>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectModule>();
             this.objectsRepelable = new List<ObjectRepelModule>();
@@ -82,7 +76,7 @@ namespace RTPuzzle
 
             ManagerDestroyAfterTick();
         }
-        
+
         public void TickAlways(float d)
         {
             foreach (var interactiveObject in interactiveObjects.MultiValueGetValues())
@@ -192,33 +186,15 @@ namespace RTPuzzle
         {
             this.interactiveObjects.MultiValueRemove(interactiveObject.InteractiveObjectID, interactiveObject);
 
-            #region AttractiveObjectTypeModule
-            interactiveObject.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule AttractiveObjectTypeModule) =>
-            {
-                this.attractiveObjectContainer.Remove(AttractiveObjectTypeModule.AttractiveObjectId);
-                AttractiveObjectTypeModule.SphereRange.OnRangeDestroyed();
-                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_TpeDestroyed(AttractiveObjectTypeModule);
-            });
+            #region Call events for all modules
+            interactiveObject.OnInteractiveObjectDestroyed();
             #endregion
 
+            interactiveObject.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.Remove(AttractiveObjectTypeModule.AttractiveObjectId));
             interactiveObject.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule ObjectRepelTypeModule) => this.objectsRepelable.Remove(ObjectRepelTypeModule));
             interactiveObject.GetModule<TargetZoneModule>().IfNotNull((TargetZoneModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
-            interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) =>
-            {
-                this.disarmObjectModules.Remove(DisarmObjectModule);
-            });
-            interactiveObject.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) =>
-            {
-                GrabObjectModule.OnInteractiveObjectDestroyed();
-                this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID);
-            });
-
-            #region LevelCompletionTriggerModule
-            interactiveObject.GetModule<LevelCompletionTriggerModule>().IfNotNull((LevelCompletionTriggerModule LevelCompletionTriggerModule) =>
-            {
-                LevelCompletionTriggerModule.OnInteractiveObjectDestroyed();
-            });
-            #endregion
+            interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => this.disarmObjectModules.Remove(DisarmObjectModule));
+            interactiveObject.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) => this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID));
         }
 
 

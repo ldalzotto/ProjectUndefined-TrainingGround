@@ -32,7 +32,7 @@ namespace RTPuzzle
             }
         }
 
-        public void OnInteractiveObjectDestroyed()
+        public override void OnInteractiveObjectDestroyed()
         {
             this.RangeTypeObject.OnRangeDestroyed();
         }

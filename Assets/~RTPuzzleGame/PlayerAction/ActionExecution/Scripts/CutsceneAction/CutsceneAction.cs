@@ -45,6 +45,7 @@ namespace RTPuzzle
         private void OnCutsceneEnded()
         {
             this.isCutsceneActionFinished = true;
+            this.PlayerActionConsumed();
         }
         #endregion
 

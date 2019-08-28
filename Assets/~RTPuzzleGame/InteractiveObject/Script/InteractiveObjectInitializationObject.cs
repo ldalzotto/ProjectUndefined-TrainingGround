@@ -13,11 +13,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-
-
     public class InteractiveObjectInitializationObject
     {
-
         public RTPuzzle.AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData;
 
         public RTPuzzle.TargetZoneInherentData TargetZoneInherentData;
@@ -28,7 +25,7 @@ namespace RTPuzzle
 
         public CoreGame.BeziersControlPoints ProjectilePath;
 
-        public RTPuzzle.ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
+        public RTPuzzle.ActionInteractableObjectModuleInitializationData ActionInteractableObjectModuleInitializationData;
 
         public RTPuzzle.GrabObjectInherentData GrabObjectInherentData;
         

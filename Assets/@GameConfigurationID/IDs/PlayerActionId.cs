@@ -31,5 +31,9 @@ namespace GameConfigurationID
         _1_Town_StartTurorial_SpeakerProjectile = 6,
 
         _1_Town_StartTutorial_GardenDoorIntreaction = 7,
+
+        TEST_1 = 8,
+        TEST_2 = 9,
+        TEST_3 = 10,
     }
 }

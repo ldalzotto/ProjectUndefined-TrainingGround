@@ -65,8 +65,9 @@ namespace RTPuzzle
         }
         public bool CanBeExecuted()
         {
-            return !this.IsOnCoolDown() && this.remainingExecutionAmout != 0;
+            return !this.IsOnCoolDown() && this.HasStillSomeExecutionAmount();
         }
+        public bool HasStillSomeExecutionAmount() { return this.remainingExecutionAmout != 0; }
         #endregion
 
         #region Data Retrieval

@@ -41,7 +41,7 @@ namespace Tests
             Assert.IsTrue(interactiveLaunchProjectiles.Count == 1);
             var interactiveProjectile = interactiveLaunchProjectiles[0];
 
-            var enabledModules = interactiveProjectile.GetAllModules();
+            var enabledModules = interactiveProjectile.GetAllEnabledModules();
             Assert.IsTrue(enabledModules.Count == 1);
             Assert.IsTrue(enabledModules[0].GetType() == typeof(ModelObjectModule));
 
@@ -81,7 +81,7 @@ namespace Tests
 
             var interactiveProjectile = interactiveLaunchProjectiles[0];
 
-            Assert.AreEqual(2, interactiveProjectile.GetAllModules().Count);
+            Assert.AreEqual(2, interactiveProjectile.GetAllEnabledModules().Count);
             this.InteractiveObjectModulePresenceAssert(interactiveProjectile, enabledModulesToCheck: new List<Type>() { typeof(ModelObjectModule), typeof(LaunchProjectileModule) });
 
         }
@@ -124,7 +124,7 @@ namespace Tests
 
             var interactiveProjectile = interactiveLaunchProjectiles[0];
 
-            Assert.AreEqual(4, interactiveProjectile.GetAllModules().Count);
+            Assert.AreEqual(4, interactiveProjectile.GetAllEnabledModules().Count);
             this.InteractiveObjectModulePresenceAssert(interactiveProjectile, enabledModulesToCheck: new List<Type>() { typeof(ModelObjectModule), typeof(AttractiveObjectModule), typeof(DisarmObjectModule), typeof(GrabObjectModule) });
 
             Assert.AreEqual(projectileEffectRange, interactiveProjectile.GetModule<AttractiveObjectModule>().SphereRange.RangeType.GetRadiusRange());
@@ -301,12 +301,27 @@ namespace Tests
             Assert.IsTrue(grabObjectActionReferToGrabObjectConfiguredAction);
         }
 
+        [UnityTest]
+        public IEnumerator ActionInteractableObjectModule_WhenPlayerIsNear_IsAddingAssociatedAction()
+        {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
+            {
+
+            });
+            yield return new WaitForFixedUpdate();
+
+            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+
+
+        }
 
         private void InteractiveObjectModulePresenceAssert(InteractiveObjectType interactiveObject, List<Type> enabledModulesToCheck = null, List<Type> disabledModulesToCheck = null)
         {
             if (enabledModulesToCheck != null)
             {
-                var enabledModules = interactiveObject.GetAllModules().ConvertAll(m => m.GetType());
+                var enabledModules = interactiveObject.GetAllEnabledModules().ConvertAll(m => m.GetType());
                 foreach (var enabledModule in enabledModulesToCheck)
                 {
                     Assert.IsTrue(enabledModules.Contains(enabledModule));

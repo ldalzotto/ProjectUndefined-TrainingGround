@@ -30,6 +30,10 @@ namespace RTPuzzle
         private RangeTypeObject sphereRange;
         #endregion
 
+        #region External Dependencies
+        private PuzzleEventsManager PuzzleEventsManager;
+        #endregion
+
         #region Data Retrieval
         public ModelObjectModule GetModel()
         {
@@ -41,19 +45,25 @@ namespace RTPuzzle
         public AttractiveObjectId AttractiveObjectId;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, ModelObjectModule ModelObjectModule)
+        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, ModelObjectModule ModelObjectModule, PuzzleEventsManager puzzleEventsManager)
         {
             this.modelObjectModule = ModelObjectModule;
             this.sphereRange = GetComponentInChildren<RangeTypeObject>();
             this.sphereRange.Init(new RangeTypeObjectInitializer(), null);
             this.sphereRange.SetIsAttractiveObject();
-          //  this.sphereRange.PopuplateSphereRangeData(attractiveObjectInherentConfigurationData.EffectRange, RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE, new RangeTypeObjectInitializer());
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
+            this.PuzzleEventsManager = puzzleEventsManager;
         }
 
         public void Tick(float d, float timeAttenuationFactor)
         {
             this.AttractiveObjectLifetimeTimer.Tick(d, timeAttenuationFactor);
+        }
+
+        public override void OnInteractiveObjectDestroyed()
+        {
+            this.sphereRange.OnRangeDestroyed();
+            this.PuzzleEventsManager.PZ_EVT_AttractiveObject_TpeDestroyed(this);
         }
 
         #region Logical Conditions

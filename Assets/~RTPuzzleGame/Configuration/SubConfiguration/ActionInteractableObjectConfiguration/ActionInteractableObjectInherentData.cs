@@ -11,7 +11,7 @@ namespace RTPuzzle
         public float InteractionRange;
         [CustomEnum(ConfigurationType = typeof(PlayerActionConfiguration))]
         public PlayerActionId PlayerActionId;
-        
+
         public void Init(float InteractionRange)
         {
             this.InteractionRange = InteractionRange;

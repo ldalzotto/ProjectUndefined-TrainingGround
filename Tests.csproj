@@ -84,6 +84,7 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AbstractPuzzleSceneTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AIObjectBuilder\AIObjectDefinition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\AIObjectBuilder\AIObjectInitialization.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\InteractiveObjectBuilder\ActionInteractableObjectDefinition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\InteractiveObjectBuilder\AttractiveObjectDefinition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\InteractiveObjectBuilder\DisarmInteractiveObjectDefinition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\InteractiveObjectBuilder\InteractiveObjectInitialization.cs" />
