@@ -54,13 +54,6 @@ namespace RTPuzzle
             return this.enabledModules.Values.ToList();
         }
 
-        public List<InteractiveObjectModule> GetAllEnabledAndDisabledModules()
-        {
-            var returnList = this.enabledModules.Values.ToList();
-            returnList.AddRange(this.disabledModules.Values.ToList());
-            return returnList;
-        }
-
         public T GetDisabledModule<T>() where T : InteractiveObjectModule
         {
             return this.GetDisabledModule(typeof(T)) as T;
@@ -229,10 +222,6 @@ namespace RTPuzzle
             foreach (var enabledModule in this.enabledModules.Values)
             {
                 enabledModule.OnInteractiveObjectDestroyed();
-            }
-            foreach (var disabledModule in this.disabledModules.Values)
-            {
-                disabledModule.OnInteractiveObjectDestroyed();
             }
         }
 
