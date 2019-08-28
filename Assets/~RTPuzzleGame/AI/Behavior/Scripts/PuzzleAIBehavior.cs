@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -129,6 +128,14 @@ namespace RTPuzzle
             {
                 this.ManagersStateReset(new List<InterfaceAIManager>() { newManagetState });
                 this.currentManagerState = newManagetState;
+            }
+        }
+
+        public void ResetState(InterfaceAIManager stateToReset)
+        {
+            if (stateToReset != null)
+            {
+                stateToReset.OnStateReset();
             }
         }
 

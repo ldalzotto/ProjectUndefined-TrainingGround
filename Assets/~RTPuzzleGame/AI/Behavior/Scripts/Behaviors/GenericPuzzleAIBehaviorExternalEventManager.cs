@@ -80,6 +80,7 @@ namespace RTPuzzle
                         && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIEscapeWithoutTriggerManager)
                         && this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                 {
+                    genericAiBehavior.SetManagerState(null);
                     this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(projectileTriggerEnterEvent.CollisionPosition,
                              genericAiBehavior.AIProjectileEscapeManager.GetSemiAngle(projectileTriggerEnterEvent.LaunchProjectileId),
                              genericAiBehavior.AIProjectileEscapeManager.GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)),
@@ -89,6 +90,7 @@ namespace RTPuzzle
                     && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                         || genericAiBehavior.IsProjectileTriggerAllowedToInterruptOtherStates())
                 {
+                    genericAiBehavior.SetManagerState(null);
                     genericAiBehavior.AIProjectileEscapeManager.ComponentTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent);
                     genericAiBehavior.SetManagerState(genericAiBehavior.AIProjectileEscapeManager);
                 }
@@ -100,7 +102,6 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("AI - EscapeWithoutTrigger_Start"));
             if (genericAiBehavior.IsEscapeWithoutTriggerEnabled())
             {
-                genericAiBehavior.SetManagerState(null); //To Trigger events before
                 genericAiBehavior.AIEscapeWithoutTriggerManager.OnEscapeStart(escapeWithoutTriggerStartAIBehaviorEvent);
                 genericAiBehavior.SetManagerState(genericAiBehavior.AIEscapeWithoutTriggerManager);
             }
