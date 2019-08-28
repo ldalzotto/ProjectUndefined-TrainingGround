@@ -306,7 +306,7 @@ namespace Tests
         {
             yield return this.Before(SceneConstants._1_Level_StartTutorial_InteractiveObjectTest, () =>
             {
-
+              //  ActionInteractableObjectDefinition.ActionInteractableObjectOnly(InteractiveObjectTestID.TEST_1, 9999f, new CutsceneActionInherentData()
             });
             yield return new WaitForFixedUpdate();
 

@@ -198,6 +198,8 @@ namespace RTPuzzle
             {
                 var locomotionAxis = GameInputManager.CurrentInput.CursorDisplacement();
                 currentCursorScreenPosition += (new Vector2(locomotionAxis.x, -locomotionAxis.z) * d);
+                currentCursorScreenPosition.x = Mathf.Clamp(currentCursorScreenPosition.x, 0f, Screen.width);
+                currentCursorScreenPosition.y = Mathf.Clamp(currentCursorScreenPosition.y, 0f, Screen.height);
                 UpdateCursorPosition();
             }
         }
