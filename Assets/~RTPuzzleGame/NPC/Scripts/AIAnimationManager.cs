@@ -24,9 +24,9 @@ namespace RTPuzzle
             GenericAnimatorHelper.SetMovementLayer(animator, animationConfiguration, LevelType.PUZZLE);
         }
 
-        public void TickAlways(float d, float timeAttenuationFactor)
+        public void TickAlways(float normalizedCurrentSpeed)
         {
-            this.NPCPAnimationDataManager.Tick(timeAttenuationFactor);
+            this.NPCPAnimationDataManager.Tick(normalizedCurrentSpeed);
         }
 
         #region External Events

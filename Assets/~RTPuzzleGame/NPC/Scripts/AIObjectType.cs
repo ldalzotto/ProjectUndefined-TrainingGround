@@ -142,7 +142,7 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, timeAttenuationFactor));
+            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(this.agent.velocity.normalized.magnitude));
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
