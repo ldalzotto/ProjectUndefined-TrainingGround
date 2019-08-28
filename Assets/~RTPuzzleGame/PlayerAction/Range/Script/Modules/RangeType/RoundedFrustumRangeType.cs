@@ -53,7 +53,7 @@ namespace RTPuzzle
         
         public override bool IsInside(BoxCollider boxCollider)
         {
-            return Intersection.BoxIntersectsSphereV2(boxCollider, this.transform.position, this.rangeRadius)
+            return Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider, this.transform.position, this.rangeRadius)
                 && (Intersection.FrustumBoxIntersection(this.GetFrustumPointsWorldPositions(), boxCollider) || Intersection.BoxEntirelyContainedInFrustum(this.GetFrustumPointsWorldPositions(), boxCollider));
         }
 

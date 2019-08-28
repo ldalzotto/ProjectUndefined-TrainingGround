@@ -22,6 +22,6 @@ namespace GameConfigurationID {
     
     _Sewers_1_TargetZone = 4,
     
-    _Sewers_2_TargetZone = 5,
+    _Sewers_2_TargetZone = 5
   }
 }

@@ -1,5 +1,4 @@
-﻿using GameConfigurationID;
-using RTPuzzle;
+﻿using RTPuzzle;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,7 +14,8 @@ namespace Tests
         public IEnumerator AI_MoveTowardPlayer_NominalTest()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -41,7 +41,8 @@ namespace Tests
         public IEnumerator AI_MoveTowardPlayer_KeepTargetingPlayerIfPlayerMoves()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -71,7 +72,8 @@ namespace Tests
         public IEnumerator AI_MoveTowardPlayer_MoveToLastDestinationIfPlayerIsOutOfRange()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -101,7 +103,8 @@ namespace Tests
         public IEnumerator AI_MoveTowardPlayer_NotInterruptedBy_ProjectileToAttractive()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -136,7 +139,8 @@ namespace Tests
         public IEnumerator AI_MoveTowardPlayer_NotInterruptedBy_DisarmObject()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -167,10 +171,26 @@ namespace Tests
         }
 
         [UnityTest]
+        public IEnumerator AI_MoveTowardPlayer_WhenAIMoves_WhenPlayerIsMotionless()
+        {
+            AIObjectType aiManager = null;
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
+                aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1, sphereSightInfinite: true).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
+            });
+
+            var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
+            Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
+        }
+
+        [UnityTest]
         public IEnumerator AI_ProjectileToAttractive_IsAttracted()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -201,7 +221,8 @@ namespace Tests
         public IEnumerator AI_ProjectileToAttractive_InterruptedBy_MoveTowardPlayer()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -211,8 +232,8 @@ namespace Tests
                 OnProjectileSpawn: null,
                 OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                 {
-                //   Debug.Break();
-                Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
+                    //   Debug.Break();
+                    Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
                     Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
 
                     return PuzzleSceneTestHelper.MoveTowardPlayerYield(TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
@@ -232,7 +253,8 @@ namespace Tests
         public IEnumerator AI_DisarmObject_NominalTest()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -244,8 +266,8 @@ namespace Tests
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
                         Assert.IsTrue(aiBehavior.IsDisarmingObject());
-                    //We ensure that the AI is not moving
-                    Assert.IsFalse(aiManager.GetAgent().hasPath);
+                        //We ensure that the AI is not moving
+                        Assert.IsFalse(aiManager.GetAgent().hasPath);
                         return null;
                     },
                     OnDisarmTimerOver: (InteractiveObjectType disarmObject) =>
@@ -260,7 +282,8 @@ namespace Tests
         public IEnumerator AI_DisarmObject_InterruptedBy_MoveTowardPlayer()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -292,7 +315,8 @@ namespace Tests
         public IEnumerator AI_DisarmObject_NotInterruptedBy_AttractiveObject()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();
@@ -325,7 +349,8 @@ namespace Tests
         public IEnumerator AI_AttractiveObject_InterruptedBy_DisarmObject()
         {
             AIObjectType aiManager = null;
-            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () => {
+            yield return this.Before(SceneConstants._1_Level_StartTutorial_AIBehaviorTest, () =>
+            {
                 aiManager = AIObjectDefinition.TownAIV2(AIObjectTestID.TEST_1, InteractiveObjectTestID.TEST_1).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.AI_INITIAL_POSITION_1));
             });
             yield return new WaitForFixedUpdate();

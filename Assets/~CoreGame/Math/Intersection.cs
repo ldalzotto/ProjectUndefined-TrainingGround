@@ -5,30 +5,47 @@ namespace CoreGame
 
     public class Intersection
     {
-        
-        #region BOX<->SPHERE
 
-        public static bool BoxIntersectsSphereV2(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
+        #region BOX->SPHERE
+        public static bool BoxIntersectsOrEntirelyContainedInSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
         {
-            //TODO -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
-            //TODO -> Also, order of faces can be sorted by distance check.
+            return BoxEntirelyContainedInSphere(boxCollider, SphereWorldPosition, SphereRadius) || BoxIntersectsSphere(boxCollider, SphereWorldPosition, SphereRadius);
+        }
+
+        public static bool BoxIntersectsSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
+        {
+            // -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
+            // -> Also, order of faces can be sorted by distance check.
             ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
             //Face intersection
-            return FaceIntersectOrContainsSphere(BC6, BC8, BC5, BC7, SphereWorldPosition, SphereRadius)
-                || FaceIntersectOrContainsSphere(BC2, BC4, BC1, BC3, SphereWorldPosition, SphereRadius)
-                || FaceIntersectOrContainsSphere(BC6, BC8, BC2, BC4, SphereWorldPosition, SphereRadius)
-                || FaceIntersectOrContainsSphere(BC5, BC7, BC1, BC3, SphereWorldPosition, SphereRadius)
-                || FaceIntersectOrContainsSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
-                || FaceIntersectOrContainsSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
+            return FaceIntersectSphere(BC6, BC8, BC5, BC7, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC2, BC4, BC1, BC3, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC6, BC8, BC2, BC4, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC5, BC7, BC1, BC3, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
+        }
+        public static bool BoxEntirelyContainedInSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
+        {
+            // -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
+            // -> Also, order of faces can be sorted by distance check.
+            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            //Face contains
+            return FaceEntirelyContainedInSphere(BC6, BC8, BC5, BC7, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC2, BC4, BC1, BC3, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC6, BC8, BC2, BC4, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC5, BC7, BC1, BC3, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
         }
         #endregion
 
         #region FRUSTUM<->POINT
-        
+
         public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
         {
-            #warning PointInsideFrustum trigger frustum points recalculation
+#warning PointInsideFrustum trigger frustum points recalculation
             frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
             return PointInsideFrustumComputation(worldPositionPoint, C1, C2, C3, C4, C5, C6, C7, C8);
         }
@@ -81,22 +98,21 @@ namespace CoreGame
             return pointInsideFrustum;
         }
 
-        
-        public static bool FaceIntersectOrContainsSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
+        public static bool FaceIntersectSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
             bool planeIntersected = false;
-            bool edgeIntersectedOrContained = false;
+            bool edgeIntersected = false;
 
-            // (1) - We check if edges cross the sphere or are fully contained inside
-            edgeIntersectedOrContained 
-                = LineSphereIntersection(C1, (C2 - C1).normalized, Vector3.Distance(C2, C1), SphereWorldPosition, SphereRadius)
-               || LineSphereIntersection(C1, (C3 - C1).normalized, Vector3.Distance(C3, C1), SphereWorldPosition, SphereRadius)
-               || LineSphereIntersection(C3, (C4 - C3).normalized, Vector3.Distance(C4, C3), SphereWorldPosition, SphereRadius)
-               || LineSphereIntersection(C2, (C4 - C2).normalized, Vector3.Distance(C4, C2), SphereWorldPosition, SphereRadius);
+            // (1) - We check if edges cross the sphere 
+            edgeIntersected
+                = SegmentSphereIntersection(C1, (C2 - C1).normalized, Vector3.Distance(C2, C1), SphereWorldPosition, SphereRadius)
+               || SegmentSphereIntersection(C1, (C3 - C1).normalized, Vector3.Distance(C3, C1), SphereWorldPosition, SphereRadius)
+               || SegmentSphereIntersection(C3, (C4 - C3).normalized, Vector3.Distance(C4, C3), SphereWorldPosition, SphereRadius)
+               || SegmentSphereIntersection(C2, (C4 - C2).normalized, Vector3.Distance(C4, C2), SphereWorldPosition, SphereRadius);
 
             // (2) - If edges doesn't cross the sphere, we try to find the intersection from sphere to cube face plane //http://www.ambrsoft.com/TrigoCalc/Sphere/SpherePlaneIntersection_.htm
             // Intersection is valid only if intercention circle center is contained insibe cube face https://math.stackexchange.com/a/190373
-            if (!edgeIntersectedOrContained)
+            if (!edgeIntersected)
             {
                 Vector3 normal = Vector3.Cross(C2 - C1, C3 - C1);
                 float a = normal.x;
@@ -120,42 +136,54 @@ namespace CoreGame
                 }
             }
 
-            return (planeIntersected || edgeIntersectedOrContained);
+            return (planeIntersected || edgeIntersected);
         }
 
-        public static bool LineSphereIntersection(Vector3 lineOrigin, Vector3 lineDirection, float lineDistance, Vector3 sphereCenterPoint, float sphereRadius)
+        public static bool FaceEntirelyContainedInSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
-            // Line sphere intersection https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+            bool edgeContained = false;
 
-            float a = -1 * (Vector3.Dot(lineDirection, lineOrigin - sphereCenterPoint));
-            float b = Mathf.Pow(-1 * a, 2) - ((lineOrigin - sphereCenterPoint).sqrMagnitude - (sphereRadius * sphereRadius));
+            // (1) - We check if edges are fully contained inside
+            edgeContained
+                = SegmentEntirelyContainedInSphere(C1, (C2 - C1).normalized, Vector3.Distance(C2, C1), SphereWorldPosition, SphereRadius)
+               || SegmentEntirelyContainedInSphere(C1, (C3 - C1).normalized, Vector3.Distance(C3, C1), SphereWorldPosition, SphereRadius)
+               || SegmentEntirelyContainedInSphere(C3, (C4 - C3).normalized, Vector3.Distance(C4, C3), SphereWorldPosition, SphereRadius)
+               || SegmentEntirelyContainedInSphere(C2, (C4 - C2).normalized, Vector3.Distance(C4, C2), SphereWorldPosition, SphereRadius);
+
+            return edgeContained;
+        }
+
+        public static bool SegmentSphereIntersection(Vector3 segmentOrigin, Vector3 segmentDirection, float segmentDistance, Vector3 sphereCenterPoint, float sphereRadius)
+        {
+            // Segment sphere intersection https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
+
+            float a = -1 * (Vector3.Dot(segmentDirection, segmentOrigin - sphereCenterPoint));
+            float b = Mathf.Pow(-1 * a, 2) - ((segmentOrigin - sphereCenterPoint).sqrMagnitude - (sphereRadius * sphereRadius));
 
             bool intersect = false;
-            bool contained = false;
 
             if (b == 0)
             {
                 float d = a;
-                intersect = (d > 0 && d < lineDistance);
+                intersect = (d > 0 && d < segmentDistance);
             }
             if (b >= 0)
             {
                 float d = a + Mathf.Sqrt(b);
-                intersect = (d > 0 && d < lineDistance);
+                intersect = (d > 0 && d < segmentDistance);
                 if (!intersect)
                 {
                     d = a - Mathf.Sqrt(b);
-                    intersect = (d > 0 && d < lineDistance);
+                    intersect = (d > 0 && d < segmentDistance);
                 }
             }
 
-            // If line is not intersecting, we check if line is fully contained inside sphere
-            if (!intersect)
-            {
-                contained = Vector3.Distance(lineOrigin, sphereCenterPoint) <= sphereRadius && Vector3.Distance(lineOrigin + (lineDirection * lineDistance), sphereCenterPoint) <= sphereRadius;
-            }
+            return intersect;
+        }
 
-            return intersect || contained;
+        public static bool SegmentEntirelyContainedInSphere(Vector3 segmentOrigin, Vector3 segmentDirection, float segmentDistance, Vector3 sphereCenterPoint, float sphereRadius)
+        {
+            return Vector3.Distance(segmentOrigin, sphereCenterPoint) <= sphereRadius && Vector3.Distance(segmentOrigin + (segmentDirection * segmentDistance), sphereCenterPoint) <= sphereRadius;
         }
 
         #endregion
@@ -296,7 +324,7 @@ namespace CoreGame
 
             return true;
         }
-        
+
         public static void ExtractBoxColliderWorldPoints(BoxCollider boxCollider, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
         {
             Vector3 diagDirection = Vector3.zero;

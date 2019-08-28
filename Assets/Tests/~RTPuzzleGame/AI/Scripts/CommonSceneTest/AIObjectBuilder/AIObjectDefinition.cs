@@ -73,8 +73,34 @@ namespace Tests
             return AIObjectInitialization;
         }
 
-        public static AIObjectInitialization TownAIV2(AIObjectTestID AIObjectTestID, InteractiveObjectTestID InteractiveObjectTestID)
+        public static AIObjectInitialization TownAIV2(AIObjectTestID AIObjectTestID, InteractiveObjectTestID InteractiveObjectTestID, bool sphereSightInfinite = false)
         {
+            var RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
+            {
+                RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                                    {
+                                        {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
+                                            RangeTypeID = GameConfigurationID.RangeTypeID.SIGHT_VISION,
+                                            RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = BaseSightFrustum }
+                                        }},
+                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
+                                    },
+                RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
+                                    {
+                                        {typeof(RangeTypeDefinition), true},
+                                        {typeof(RangeObstacleListenerDefinition), true}
+                                    }
+            };
+
+            if (sphereSightInfinite)
+            {
+                RangeTypeObjectDefinitionInherentData.RangeDefinitionModules[typeof(RangeTypeDefinition)] = new RangeTypeDefinition()
+                {
+                    RangeTypeID = RangeTypeID.SIGHT_VISION,
+                    RangeShapeConfiguration = new SphereRangeShapeConfiguration() { Radius = 9999f }
+                };
+            }
+
             return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
                 new List<AbstractAIComponent>()
                 {
@@ -87,25 +113,10 @@ namespace Tests
                 {
                     new ObjectSightModuleDefinition(){
                                 RangeTypeObjectDefinitionIDPicker = false,
-                                RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
-                                {
-                                    RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
-                                    {
-                                        {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
-                                            RangeTypeID = GameConfigurationID.RangeTypeID.SIGHT_VISION,
-                                            RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = BaseSightFrustum }
-                                        }},
-                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
-                                    },
-                                    RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
-                                    {
-                                        {typeof(RangeTypeDefinition), true},
-                                        {typeof(RangeObstacleListenerDefinition), true}
-                                    }
-                                }
+                                RangeTypeObjectDefinitionInherentData = RangeTypeObjectDefinitionInherentData
                     }
                 }
-            );
+            ); ;
         }
 
         public static AIObjectInitialization SewersAI(AIObjectTestID AIObjectTestID, InteractiveObjectTestID InteractiveObjectTestID)

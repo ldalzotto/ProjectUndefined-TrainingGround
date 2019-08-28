@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace RTPuzzle
         {
             this.ResolveInternalDependencies();
             this.AISightVisionTargetTracker = new AISightVisionTargetTracker(this);
-            this.AISightInteresectionManager = new AISightIntersectionManager(this.AISightVisionTargetTracker);
+            this.AISightInteresectionManager = new AISightIntersectionManager(this.AISightVisionTargetTracker, this);
             this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AISightVisionTargetTracker });
         }
 
@@ -115,36 +116,42 @@ namespace RTPuzzle
         private AISightVisionTargetTracker aISightVisionTargetTracker;
         private List<SightTrackingListener> SightTrackingListeners;
 
-        private Dictionary<ColliderWithCollisionType, Vector3> lastFramePosition;
+        private TransformChangeListenerManager sightModuleMovementChangeTracker;
+        private Dictionary<ColliderWithCollisionType, TransformChangeListenerManager> inRangeCollidersMovementChangeTrackers;
         private Dictionary<ColliderWithCollisionType, bool> isInside;
 
         public Dictionary<ColliderWithCollisionType, bool> IsInside { get => isInside; }
 
-        public AISightIntersectionManager(AISightVisionTargetTracker aISightVisionTargetTracker)
+        public AISightIntersectionManager(AISightVisionTargetTracker aISightVisionTargetTracker, ObjectSightModule ObjectSightModule)
         {
             this.aISightVisionTargetTracker = aISightVisionTargetTracker;
-            this.lastFramePosition = new Dictionary<ColliderWithCollisionType, Vector3>();
+            this.sightModuleMovementChangeTracker = new TransformChangeListenerManager(ObjectSightModule.transform, true, true);
+            this.inRangeCollidersMovementChangeTrackers = new Dictionary<ColliderWithCollisionType, TransformChangeListenerManager>();
             this.isInside = new Dictionary<ColliderWithCollisionType, bool>();
             this.SightTrackingListeners = new List<SightTrackingListener>();
         }
 
         public void Tick(float d, ref RangeTypeObject sightVisionRange)
         {
+            this.sightModuleMovementChangeTracker.Tick();
+
             foreach (var trackedCollider in this.aISightVisionTargetTracker.GetTrackedColliders())
             {
-                if (this.lastFramePosition.ContainsKey(trackedCollider))
+                if (this.inRangeCollidersMovementChangeTrackers.ContainsKey(trackedCollider))
                 {
-                    if (this.lastFramePosition[trackedCollider] != trackedCollider.collider.transform.position)
+                    this.inRangeCollidersMovementChangeTrackers[trackedCollider].Tick();
+                    //if target collider moves
+                    if (this.inRangeCollidersMovementChangeTrackers[trackedCollider].TransformChangedThatFrame()
+                         || this.sightModuleMovementChangeTracker.TransformChangedThatFrame())
                     {
                         this.SetIsInside(trackedCollider, sightVisionRange.IsInsideAndNotOccluded((BoxCollider)trackedCollider.collider));
                     }
                 }
                 else
                 {
+                    this.inRangeCollidersMovementChangeTrackers[trackedCollider] = new TransformChangeListenerManager(trackedCollider.collisionType.transform, true, true);
                     this.SetIsInside(trackedCollider, sightVisionRange.IsInsideAndNotOccluded((BoxCollider)trackedCollider.collider));
                 }
-
-                this.lastFramePosition[trackedCollider] = trackedCollider.collider.transform.position;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace RTPuzzle
         public List<SquareObstacle> NearSquareObstacles { get => nearSquareObstacles; }
 
         #region Internal Managers
-        private ObstacleListenerChangePositionTracker ObstacleListenerChangePositionTracker;
+        private TransformChangeListenerManager ObstacleListenerChangePositionTracker;
         #endregion
 
         #region External Dependencies
@@ -30,9 +30,9 @@ namespace RTPuzzle
             this.nearSquareObstacles = new List<SquareObstacle>();
             this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
-            this.ObstacleListenerChangePositionTracker = new ObstacleListenerChangePositionTracker(this);
+            this.ObstacleListenerChangePositionTracker = new TransformChangeListenerManager(this.transform, true, false, null);
         }
-        
+
         public void OnObstacleListenerDestroyed()
         {
             this.ObstaclesListenerManager.OnObstacleListenerDestroyed(this);
@@ -40,13 +40,13 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            this.ObstacleListenerChangePositionTracker.Tick(d);
+            this.ObstacleListenerChangePositionTracker.Tick();
         }
 
         #region Logical Conditions
         public bool HasPositionChanged()
         {
-            return this.ObstacleListenerChangePositionTracker.HasChanged;
+            return this.ObstacleListenerChangePositionTracker.TransformChangedThatFrame();
         }
         public bool IsListenerHaveObstaclesNearby()
         {
@@ -116,29 +116,4 @@ namespace RTPuzzle
         }
     }
 
-    class ObstacleListenerChangePositionTracker
-    {
-        private ObstacleListener trackedObject;
-
-        public ObstacleListenerChangePositionTracker(ObstacleListener trackedObject)
-        {
-            this.trackedObject = trackedObject;
-            this.hasChanged = true;
-        }
-
-        private Vector3 lastFramePosition;
-        private bool hasChanged;
-
-        public bool HasChanged { get => hasChanged; }
-
-        public void Tick(float d)
-        {
-            this.hasChanged = false;
-            if (this.lastFramePosition != this.trackedObject.transform.position)
-            {
-                this.hasChanged = true;
-            }
-            this.lastFramePosition = this.trackedObject.transform.position;
-        }
-    }
 }

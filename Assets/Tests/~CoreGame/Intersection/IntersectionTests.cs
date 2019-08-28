@@ -63,14 +63,28 @@ namespace Tests
         private void AssertBox(Vector3 moveDirection, float directionDelta, ref BoxCollider box, Vector3 sphereWorldPosition, float sphereRadius) {
 
             box.transform.position = moveDirection;
-            Assert.IsTrue(Intersection.BoxIntersectsSphereV2(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * (-1 * directionDelta));
-            Assert.IsTrue(Intersection.BoxIntersectsSphereV2(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * directionDelta);
-            Assert.IsFalse(Intersection.BoxIntersectsSphereV2(box, sphereWorldPosition, sphereRadius));
+            Assert.IsFalse(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
         }
+
+        [Test]
+        public void CubeEntirelyContainedInSphere()
+        {
+            var sphereWorldPosition = Vector3.zero;
+            var sphereRadius = 9999f;
+
+            BoxCollider box = this.CreateBoxCollider();
+            this.InitBox(ref box, Vector3.one, Quaternion.identity);
+            box.transform.position = Vector3.zero;
+
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
+        }
+
     }
 
 }

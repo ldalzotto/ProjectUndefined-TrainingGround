@@ -173,6 +173,7 @@
     <Compile Include="Assets\~CoreGame\Helpers\QuaterionHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\SerializationHelper.cs" />
+    <Compile Include="Assets\~CoreGame\Helpers\TransformChangeListener.cs" />
     <Compile Include="Assets\~CoreGame\Helpers\TransformExtensions.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\LevelAvailability\Script\LevelAvailabilityManager.cs" />

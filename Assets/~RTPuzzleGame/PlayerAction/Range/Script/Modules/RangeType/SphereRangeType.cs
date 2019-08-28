@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
 using System;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace RTPuzzle
         public override void PopulateFromDefinition(RangeTypeDefinition rangeTypeDefinition)
         {
             base.PopulateFromDefinition(rangeTypeDefinition);
-            if(rangeTypeDefinition.RangeShapeConfiguration != null && rangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(SphereRangeShapeConfiguration))
+            if (rangeTypeDefinition.RangeShapeConfiguration != null && rangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(SphereRangeShapeConfiguration))
             {
                 SphereRangeShapeConfiguration SphereRangeShapeConfiguration = (SphereRangeShapeConfiguration)rangeTypeDefinition.RangeShapeConfiguration;
                 this.PopupulateFromData(SphereRangeShapeConfiguration.Radius);
@@ -48,7 +48,7 @@ namespace RTPuzzle
             }
         }
 
-      
+
 
         public override void Tick(float d)
         {
@@ -60,7 +60,7 @@ namespace RTPuzzle
 
         public override bool IsInside(BoxCollider boxCollider)
         {
-            return false;
+            return Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider, this.GetCenterWorldPos(), this.GetRadiusRange());
         }
 
         public override bool IsInside(Vector3 worldPointComparison)
