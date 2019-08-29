@@ -8,5 +8,6 @@ namespace AdventureGame
     public class AdventureStaticConfiguration : SerializedScriptableObject
     {
         public AdventurePlayerMovementConfiguration AdventurePlayerMovementConfiguration;
+        public AdventureDiscussionStaticConfiguration AdventureDiscussionStaticConfiguration;
     }
 }

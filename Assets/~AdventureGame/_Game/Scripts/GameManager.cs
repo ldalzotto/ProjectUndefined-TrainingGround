@@ -12,7 +12,7 @@ namespace AdventureGame
         private PlayerManager PlayerManager;
         private NPCManager NPCManager;
         private InventoryManager InventoryManager;
-        private DiscussionWindowsContainer DiscussionWindowsContainer;
+        private DiscussionManager DiscussionManager;
         private PointOfInterestManager PointOfInterestManager;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CameraMovementManager CameraMovementManager;
@@ -54,7 +54,7 @@ namespace AdventureGame
             PlayerManager = FindObjectOfType<PlayerManager>();
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
-            DiscussionWindowsContainer = FindObjectOfType<DiscussionWindowsContainer>();
+            DiscussionManager = FindObjectOfType<DiscussionManager>();
             PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
             CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
@@ -71,7 +71,7 @@ namespace AdventureGame
             PointOfInterestManager.Init();
             GameObject.FindObjectOfType<CutsceneGlobalController>().Init();
             GameObject.FindObjectOfType<CutsceneEventManager>().Init();
-            DiscussionWindowsContainer.Init();
+            DiscussionManager.Init();
             AdventureTutorialEventSender.Init();
             GameObject.FindObjectOfType<ContextActionWheelEventManager>().Init();
 
@@ -99,7 +99,7 @@ namespace AdventureGame
                 PlayerManager.Tick(d);
                 NPCManager.Tick(d);
                 CameraMovementManager.Tick(d);
-                DiscussionWindowsContainer.Tick(d);
+                DiscussionManager.Tick(d);
                 InventoryManager.Tick(d);
 
 #if UNITY_EDITOR

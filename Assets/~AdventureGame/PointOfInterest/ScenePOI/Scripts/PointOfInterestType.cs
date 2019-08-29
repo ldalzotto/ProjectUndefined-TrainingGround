@@ -56,6 +56,10 @@ namespace AdventureGame
         {
             return this.PointOfInteresetModules.PointOfInterestCutsceneController.GetCutsceneController();
         }
+        public PointOfInterestModelObjectModule GetPointOfInterestModelObject()
+        {
+            return this.PointOfInteresetModules.PointOfInterestModelObjectModule;
+        }
         public PointOfInterestTrackerModule GetPointOfInterestTrackerModule()
         {
             return this.PointOfInteresetModules.PointOfInterestTrackerModule;

@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 

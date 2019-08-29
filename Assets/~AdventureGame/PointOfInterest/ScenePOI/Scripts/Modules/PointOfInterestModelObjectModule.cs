@@ -8,6 +8,7 @@ namespace AdventureGame
     public class PointOfInterestModelObjectModule : APointOfInterestModule
     {
         #region Internal Dependencies
+        private GameObject modelObject;
         private List<GameObject> oneLevelDownChildObjects;
         private Collider[] allColliders;
         private Animator animator;
@@ -20,6 +21,12 @@ namespace AdventureGame
         private POIShowHideManager POIShowHideManager;
         #endregion
 
+        #region Internal State
+        private ExtendedBounds averageModeBounds;
+        public ExtendedBounds AverageModeBounds { get => averageModeBounds; }
+        #endregion
+
+
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
             // This means that the POI has been persisted across scenes
@@ -30,7 +37,7 @@ namespace AdventureGame
             }
 
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
-            var modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
+            this.modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
 
             this.allColliders = modelObject.GetComponentsInChildren<Collider>();
             this.oneLevelDownChildObjects = modelObject.FindOneLevelDownChilds();
@@ -41,6 +48,10 @@ namespace AdventureGame
             }
             this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
             this.InitAnimation();
+
+            this.averageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
+            this.modelObject.transform.localScale = Vector3.one;
+            this.modelObject.transform.localPosition = Vector3.zero;
         }
 
         private void InitAnimation()
@@ -76,6 +87,18 @@ namespace AdventureGame
                     collider.enabled = value;
                 }
             }
+        }
+        public void SetModelLocalScaleRelativeTo(Vector3 localScale, Vector3 localScalePoint)
+        {
+            var initialOrigin = Vector3.zero;
+            this.modelObject.transform.localPosition =
+                new Vector3()
+                {
+                    x = initialOrigin.x + (localScalePoint.x * ((localScale.x * -1) + 1)),
+                    y = localScalePoint.y * ((localScale.y * -1) + 1),
+                    z = localScalePoint.z * ((localScale.z * -1) + 1)
+                };
+            this.modelObject.transform.localScale = localScale;
         }
         #endregion
     }
@@ -157,7 +180,7 @@ namespace AdventureGame
         {
             return this.PointOfInterestModelObjectModule != null && !this.PointOfInterestTypeRef.PointOfInterestInherentData.IsAlwaysDisplayed;
         }
-        
+
         public void ShowModelAndEnablePhysics()
         {
             this.Show();
