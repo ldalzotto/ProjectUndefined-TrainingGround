@@ -45,13 +45,16 @@ namespace GameConfigurationID
         _1_Town_Girl_ToParkInfiltration_NodeEditor_5 = 13,
 
         _1_Town_Girl_ToParkInfiltration_NodeEditor_6 = 14,
-
+        
         DummyItemDescription = 15,
 
         Tutorial_Movement = 16,
 
         Tutorial_PuzzleTimeElapse = 17,
 
-        Tutorial_PuzzleContextAactionAwake = 18
+        Tutorial_PuzzleContextAactionAwake = 18,
+        
+        _1_Town_Girl_ToParkInfiltration_NodeEditor_7 = 19,
+
     }
 }

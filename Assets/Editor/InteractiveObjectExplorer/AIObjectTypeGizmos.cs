@@ -133,7 +133,7 @@ public class AIObjectTypeGizmos : ObjectModulesGizmo
         if (moduleDefinitionType == typeof(AIProjectileEscapeComponent).Name)
         {
             var AIProjectileEscapeComponent = AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIProjectileEscapeComponent>();
-            return new IObjectGizmoDisplayEnableArea(false, moduleDefinitionType, new List<AdditionalEnumParameter>()
+            return new IObjectGizmoDisplayEnableArea(true, moduleDefinitionType, new List<AdditionalEnumParameter>()
                     { new AdditionalEnumParameter(AIProjectileEscapeComponent.EscapeDistanceV2.GetType(), typeof(LaunchProjectileID), AIProjectileEscapeComponent.EscapeDistanceV2.Values.Keys.ToList().ConvertAll(e => (Enum)e)),
                       new AdditionalEnumParameter(AIProjectileEscapeComponent.EscapeSemiAngleV2.GetType(), typeof(LaunchProjectileID), AIProjectileEscapeComponent.EscapeSemiAngleV2.Values.Keys.ToList().ConvertAll(e => (Enum) e))
                      }
@@ -141,7 +141,7 @@ public class AIObjectTypeGizmos : ObjectModulesGizmo
         }
         else
         {
-            return new IObjectGizmoDisplayEnableArea(false, moduleDefinitionType);
+            return new IObjectGizmoDisplayEnableArea(true, moduleDefinitionType);
         }
     }
 }

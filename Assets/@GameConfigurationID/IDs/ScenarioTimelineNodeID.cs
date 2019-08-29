@@ -31,5 +31,7 @@ namespace GameConfigurationID {
     _1_Town_BeforeStartCutscene = 16,
     
     GrabTest = 17,
+    
+    _1_Town_PuzzleTransition = 18,
   }
 }

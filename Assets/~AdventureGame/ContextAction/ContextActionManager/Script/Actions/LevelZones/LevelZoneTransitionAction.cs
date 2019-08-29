@@ -2,6 +2,10 @@
 using GameConfigurationID;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using NodeGraph_Editor;
+#endif
+
 namespace AdventureGame
 {
     [System.Serializable]
@@ -38,6 +42,13 @@ namespace AdventureGame
         {
 
         }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        {
+            this.nextZone = (LevelZonesID)NodeEditorGUILayout.EnumField("Next zone : ", string.Empty, this.nextZone);
+        }
+#endif
     }
 
 }

@@ -17,6 +17,7 @@ namespace Editor_ScenarioNodeEditor
             {"TimelineActions//CutsceneTimelineAction", typeof(CutsceneTimelineActionNodeProfile) },
             {"TimelineActions//GiveScenarioAction", typeof(GiveScenarioActionTimelineActionNodeProfile) },
             {"TimelineActions//LevelCompleted", typeof(LevelCompletedTimelineActionNodeProfile) },
+            {"TimelineActions//DiscussionChoiceAction", typeof(DiscussionChoiceScenearioActionTimelineActionNodeProfile) },
             {"TemplatedWorkflowActions//AddGrabbableItem", typeof(AddGrabbableItemWorkflowActionNodeProfile) },
             {"TemplatedWorkflowActions//RemoveGrabbableItem",typeof(RemoveGrabbableItemNodeProfile) },
             {"TemplatedWorkflowActions//AddItemInteractionAction", typeof(AddItemInteractionActionNodeProfile) },
@@ -33,9 +34,12 @@ namespace Editor_ScenarioNodeEditor
             {"LinkedWorkflowActions//AddDiscussionContextAction", typeof(AddDiscussionActionNodeProfile) },
             {"LinkedWorkflowActions//RemoveDiscussionContextAction", typeof(RemoveDiscussionActionNodeProfile) },
             {"LinkedWorkflowActions//AddContextAction", typeof(AddContextActionNodeProfile) },
+            {"LinkedWorkflowActions//ExecuteContextAction", typeof(ExecuteContextActionNodeProfile) },
             {"BaseContextAction//AnimatorAction", typeof(AnimatorContextActionNodeProfile) },
             {"BaseContextAction//TalkAction", typeof(TalkContextActionNodeProfile) },
-            {"BaseContextAction//CutsceneAction", typeof(CutsceneContextActionNodeProfile) }
+            {"BaseContextAction//CutsceneAction", typeof(CutsceneContextActionNodeProfile) },
+            {"BaseContextAction//LevelZoneTransitionAction", typeof(LevelZoneTransitionActionNodeProfile) }
+            
         };
     }
 }

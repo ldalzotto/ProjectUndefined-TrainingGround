@@ -258,6 +258,8 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\AnimatorContextAction\AnimatorContextActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\CutsceneContextAction\CutsceneContextActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\CutsceneContextAction\CutsceneContextActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\LevelTransitionAction\LevelZoneTransitionActionActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\LevelTransitionAction\LevelZoneTransitionActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\TalkContextAction\TalkContextActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ContextActionNode\TalkContextAction\TalkContextActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\ScenarioNodeEditor.cs" />
@@ -268,8 +270,12 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddDiscussionAction\AddDiscussionActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddItemRelatedContextAction\AddItemContextActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\AddItemRelatedContextAction\AddItemContextActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\ExecuteContextAction\ExecuteContextActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineLinkedWorkflowActionNode\ExecuteContextAction\ExecuteContextActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\CutsceneTimelineAction\CutsceneTimelineActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\CutsceneTimelineAction\CutsceneTimelineActionNodeProfile.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\DiscussionChoiceAction\DiscussionChoiceScenearioActionTimelineActionEdge.cs" />
+    <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\DiscussionChoiceAction\DiscussionChoiceScenearioActionTimelineActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GiveScenarioAction\GiveScenarioActionTimelineActionEdge.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GiveScenarioAction\GiveScenarioActionTimelineActionNodeProfile.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TimelinesNodeEditor\Scenario\TimelineNode\GrabScenarioAction\GrabScenarioActionTimelineActionEdge.cs" />

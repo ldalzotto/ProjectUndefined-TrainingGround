@@ -8,10 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum DiscussionTimelineNodeID {
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum DiscussionTimelineNodeID
+    {
+        _Sewers_1_DoorNoEntry = 0
+    }
 }

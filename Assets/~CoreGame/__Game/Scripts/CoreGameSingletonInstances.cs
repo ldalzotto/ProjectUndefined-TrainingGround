@@ -25,7 +25,6 @@ namespace CoreGame
         private static CoreStaticConfigurationContainer coreStaticConfigurationContainer;
         private static CircleFillBarRendererManager circleFillBarRendererManager;
         private static AutoSaveIcon autoSaveIcon;
-        private static Canvas gameCanvas;
         private static DiscussionPositionsType discussionPositionsType;
 
         public static PersistanceManager PersistanceManager { get => FindAndSetInstanceIfNull(persistanceManager, obj => persistanceManager = obj); }
@@ -48,7 +47,20 @@ namespace CoreGame
         public static CoreStaticConfigurationContainer CoreStaticConfigurationContainer { get => FindAndSetInstanceIfNull(coreStaticConfigurationContainer, obj => coreStaticConfigurationContainer = obj); }
         public static CircleFillBarRendererManager CircleFillBarRendererManager { get => FindAndSetInstanceIfNull(circleFillBarRendererManager, obj => circleFillBarRendererManager = obj); }
         public static AutoSaveIcon AutoSaveIcon { get => FindAndSetInstanceIfNull(autoSaveIcon, obj => autoSaveIcon = obj); }
-        public static Canvas GameCanvas { get => FindAndSetInstanceIfNull(gameCanvas, obj => gameCanvas = obj); }
+        public static Canvas GameCanvas
+        {
+            get
+            {
+                if (CoreGameSingletonInstances.LevelManager.CurrentLevelType == LevelType.ADVENTURE)
+                {
+                    return GameObject.FindGameObjectWithTag(TagConstants.ADVENTURE_CANVAS).GetComponent<Canvas>();
+                }
+                else
+                {
+                    return GameObject.FindGameObjectWithTag(TagConstants.PUZZLE_CANVAS).GetComponent<Canvas>();
+                }
+            }
+        }
         public static DiscussionPositionsType DiscussionPositionsType { get => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj); }
 
         public static T FindAndSetInstanceIfNull<T>(T obj, Action<T> setter) where T : Behaviour

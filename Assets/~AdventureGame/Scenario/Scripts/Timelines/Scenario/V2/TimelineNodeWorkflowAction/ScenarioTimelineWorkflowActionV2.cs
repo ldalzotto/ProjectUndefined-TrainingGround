@@ -487,5 +487,24 @@ namespace AdventureGame
 #endif
     }
 
+
+    [System.Serializable]
+    public class ExecuteContextActionV3 : TimelineNodeWorkflowActionV2<GhostsPOIManager, ScenarioTimelineNodeID>
+    {
+        [SerializeField]
+        public AContextAction ContextAction;
+
+        public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
+        {
+            var ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
+            ContextActionEventManager.OnContextActionAdd(this.ContextAction);
+        }
+
+#if UNITY_EDITOR
+        public override void ActionGUI()
+        { }
+#endif
+    }
+
     #endregion
 }

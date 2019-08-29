@@ -3,6 +3,7 @@ using UnityEngine;
 using GameConfigurationID;
 #if UNITY_EDITOR
 using UnityEditor;
+using NodeGraph_Editor;
 #endif
 
 namespace AdventureGame
@@ -108,7 +109,12 @@ namespace AdventureGame
 
     public class DiscussionChoiceScenarioAction : TimeLineAction
     {
-        public DiscussionNodeId ChoiceId { get; }
+        [SerializeField]
+        private DiscussionNodeId ChoiceId;
+
+        public DiscussionChoiceScenarioAction()
+        {
+        }
 
         public DiscussionChoiceScenarioAction(DiscussionNodeId choiceId)
         {
@@ -132,10 +138,12 @@ namespace AdventureGame
             return "DiscussionChoiceScenarioAction. " + " Choice made : " + ChoiceId.ToString();
         }
 
+#if UNITY_EDITOR
         public void NodeGUI()
         {
-
+            this.ChoiceId = (DiscussionNodeId)NodeEditorGUILayout.EnumField("Choice : ", string.Empty, this.ChoiceId);
         }
+#endif
     }
 
     public class CutsceneTimelineScenarioAction : TimeLineAction

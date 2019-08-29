@@ -58,7 +58,7 @@ namespace RTPuzzle
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             var CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
-            var canvas = GameObject.FindGameObjectWithTag(TagConstants.CANVAS_TAG).GetComponent<Canvas>();
+            var canvas = GameObject.FindGameObjectWithTag(TagConstants.PUZZLE_CANVAS).GetComponent<Canvas>();
             var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
