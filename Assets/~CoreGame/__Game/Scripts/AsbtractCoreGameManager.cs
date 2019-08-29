@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace CoreGame
@@ -13,7 +12,7 @@ namespace CoreGame
         protected void OnAwake(LevelType levelType)
         {
             new GameLogHandler();
-            
+
             this.isInitializing = true;
 
             CoreGameSingletonInstances.PersistanceManager.Init();
@@ -24,6 +23,7 @@ namespace CoreGame
             CoreGameSingletonInstances.PlayerAdventurePositionManager.Init();
             CoreGameSingletonInstances.APointOfInterestEventManager.Init();
             CoreGameSingletonInstances.LevelManager.Init(levelType);
+            CoreGameSingletonInstances.LevelMemoryManager.Init(levelType, CoreGameSingletonInstances.LevelManager);
             CoreGameSingletonInstances.LevelChunkFXTransitionManager.Init();
             CoreGameSingletonInstances.TutorialManager.Init();
 
@@ -70,12 +70,13 @@ namespace CoreGame
             {
                 for (var i = 0; i < allActivePOI.Length; i++)
                 {
+                    Debug.Log(MyLog.Format(allActivePOI[i].PointOfInterestId.ToString()));
                     allActivePOI[i].Init_EndOfFrame();
                 }
             }
             this.isInitializing = false;
         }
     }
-    
+
 }
 

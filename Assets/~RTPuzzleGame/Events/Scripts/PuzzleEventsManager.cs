@@ -18,6 +18,7 @@ namespace RTPuzzle
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
         private PlayerActionEventManager PlayerActionEventManager;
         private TutorialManager TutorialManager;
+        private LevelMemoryManager LevelMemoryManager;
         #endregion
 
         public void Init()
@@ -32,6 +33,7 @@ namespace RTPuzzle
             this.GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
             this.PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
+            this.LevelMemoryManager = GameObject.FindObjectOfType<LevelMemoryManager>();
         }
 
         #region AI related events
@@ -165,14 +167,14 @@ namespace RTPuzzle
         public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
-            this.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
+            this.OnPuzzleToAdventureLevel(this.LevelMemoryManager.LastAdventureLevel);
         }
 
         public void PZ_EVT_LevelCompleted()
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
             this.TimelinesEventManager.OnScenarioActionExecuted(new LevelCompletedTimelineAction(this.LevelManager.GetCurrentLevel()));
-            this.OnPuzzleToAdventureLevel(LevelZonesID.SEWER_ADVENTURE);
+            this.OnPuzzleToAdventureLevel(this.LevelMemoryManager.LastAdventureLevel);
         }
 
         public void PZ_EVT_LevelReseted()

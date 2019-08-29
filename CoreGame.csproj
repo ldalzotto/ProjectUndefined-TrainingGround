@@ -181,6 +181,7 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkTracker.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelChunkType.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelManager.cs" />
+    <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelMemoryManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />

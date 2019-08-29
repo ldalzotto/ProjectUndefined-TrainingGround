@@ -16,6 +16,7 @@ namespace CoreGame
         private static TimelinesEventManager timelinesEventManager;
         private static LevelTransitionManager levelTransitionManager;
         private static LevelManagerEventManager levelManagerEventManager;
+        private static LevelMemoryManager levelMemoryManager;
         private static PlayerAdventurePositionManager playerAdventurePositionManager;
         private static APointOfInterestEventManager aPointOfInterestEventManager;
         private static LevelManager levelManager;
@@ -38,6 +39,7 @@ namespace CoreGame
         public static TimelinesEventManager TimelinesEventManager { get => FindAndSetInstanceIfNull(timelinesEventManager, obj => timelinesEventManager = obj); }
         public static LevelTransitionManager LevelTransitionManager { get => FindAndSetInstanceIfNull(levelTransitionManager, obj => levelTransitionManager = obj); }
         public static LevelManagerEventManager LevelManagerEventManager { get => FindAndSetInstanceIfNull(levelManagerEventManager, obj => levelManagerEventManager = obj); }
+        public static LevelMemoryManager LevelMemoryManager { get => FindAndSetInstanceIfNull(levelMemoryManager, obj => levelMemoryManager = obj); }
         public static PlayerAdventurePositionManager PlayerAdventurePositionManager { get => FindAndSetInstanceIfNull(playerAdventurePositionManager, obj => playerAdventurePositionManager = obj); }
         public static APointOfInterestEventManager APointOfInterestEventManager { get => FindAndSetInstanceIfNull(aPointOfInterestEventManager, obj => aPointOfInterestEventManager = obj); }
         public static LevelManager LevelManager { get => FindAndSetInstanceIfNull(levelManager, obj => levelManager = obj); }

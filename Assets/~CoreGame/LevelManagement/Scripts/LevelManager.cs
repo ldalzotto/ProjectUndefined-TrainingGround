@@ -6,9 +6,6 @@ namespace CoreGame
 {
     public class LevelManager : MonoBehaviour
     {
-
-        private LevelType currentLevelType;
-
         [SerializeField]
         private LevelZonesID levelID;
         [SerializeField]
@@ -16,13 +13,17 @@ namespace CoreGame
         [SerializeField]
         private List<LevelZoneChunkID> allLoadedLevelZonesChunkID;
 
-        public LevelType CurrentLevelType { get => currentLevelType; }
         public LevelZonesID LevelID { get => levelID; set => levelID = value; }
         public List<LevelZoneChunkID> AllLoadedLevelZonesChunkID { get => allLoadedLevelZonesChunkID; }
         public LevelZoneChunkID CurrentLevelZoneChunkID { get => currentLevelZoneChunkID; }
-        
+
         #region Internal Managers
         private EnvironmentSceneLevelManager EnvironmentSceneLevelManager;
+        #endregion
+
+        #region Internal State
+        private LevelType currentLevelType;
+        public LevelType CurrentLevelType { get => currentLevelType; }
         #endregion
 
         public void Init(LevelType currentLevelType)
@@ -137,7 +138,5 @@ namespace CoreGame
     {
         ADVENTURE, PUZZLE
     }
-
-
 
 }
