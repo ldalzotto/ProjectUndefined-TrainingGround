@@ -407,6 +407,7 @@
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
+    <Compile Include="Assets\Editor\MaterialProperties\ShowOnKeywordDrawer.cs" />
     <Compile Include="Assets\Editor\ObjectDefinition\InteractiveObjectDefinition.cs" />
     <Compile Include="Assets\Editor\ObjectDefinition\ObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />

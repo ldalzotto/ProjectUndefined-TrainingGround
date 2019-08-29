@@ -1,15 +1,12 @@
-﻿Shader "Custom/SmokeShader"
+﻿Shader "FX/SmokeShaderParticles"
 {
 	Properties
 	{
-		_MainTex("Main Texture", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Metallic("Metallic", Range(0,1)) = 0.0
-
-		_AlphaCutSmooth("Alpha Cut Smooth", Range(0.0,1.0)) = 0.05
-
+		[Toggle(SMOOTH_ALPHA_CUTOUT)] _SmoothAlphaCutout ("Smooth alpha cutout ?", Float) = 0
+		[ShowOnKeyword(SMOOTH_ALPHA_CUTOUT)]	_AlphaCutSmooth("Alpha Cut Smooth", Range(0.0,1.0)) = 0.05
 		_DeformationFactor("Deformation Factor", Range(0.0,5.0)) = 1.0
-
 	}
 		SubShader
 		{
@@ -18,17 +15,14 @@
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
 			#pragma surface surf Standard vertex:vert fullforwardshadows alpha:blend
-
+			#pragma shader_feature SMOOTH_ALPHA_CUTOUT
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
 
-			#include "wrappedLight.cginc"
-			#include "noiseSimplex.cginc"
-
-			sampler2D _MainTex;
-
-		half _Glossiness;
-		half _Metallic;
+			#include "Assets/_Shader/Noise/noiseSimplex.cginc"
+			
+			half _Glossiness;
+			half _Metallic;
 			half _DeformationFactor;
 			half _AlphaCutSmooth;
 
@@ -43,25 +37,18 @@
 
 			struct Input
 			{
-				float2 uv_MainTex;
-				float3 viewDir;
-				float3 worldNormal;
-				float3 worldPos;
 				float4 color : COLOR;
-				fixed samplexNoiseValue;
-				fixed4 custom;
+				fixed samplexNoiseValue01;
+				float fixedRandom;
 			};
 
-
 			void vert(inout appdata v, out Input o) {
-				UNITY_INITIALIZE_OUTPUT(Input, o);
 				float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
-				fixed3 randomNbparticleVector = fixed3(v.randomNbparticle.x, v.randomNbparticle.x, v.randomNbparticle.x) ;
-				o.samplexNoiseValue = (snoise(worldPos * randomNbparticleVector / 2) + 1)*0.5;
-				o.custom = v.custom;
+				float unNormalizedSamplexNoise = snoise(worldPos * v.randomNbparticle.x / 2);
+				o.samplexNoiseValue01 = (unNormalizedSamplexNoise + 1)*0.5;
+				o.fixedRandom = v.custom.x;
 				o.color = v.color;
-
-				v.vertex.xyz += (o.samplexNoiseValue   * _DeformationFactor) ;
+				v.vertex.xyz += unNormalizedSamplexNoise * _DeformationFactor;
 			}
 
 			void surf(Input IN, inout SurfaceOutputStandard o)
@@ -72,10 +59,13 @@
 				o.Smoothness = _Glossiness;
 				//noise
 				//rim effect
-				half cutoutAlpha = IN.custom.x;
-				half maskA = smoothstep(cutoutAlpha - _AlphaCutSmooth, cutoutAlpha + _AlphaCutSmooth, IN.samplexNoiseValue);
-				half nv = saturate(dot(IN.worldNormal, IN.viewDir));
-				o.Alpha = nv * maskA * IN.color.a;
+				half cutoutAlpha = IN.fixedRandom;
+#if SMOOTH_ALPHA_CUTOUT
+				half maskA = smoothstep(cutoutAlpha - _AlphaCutSmooth, cutoutAlpha + _AlphaCutSmooth, IN.samplexNoiseValue01);
+#else
+				half maskA = step(cutoutAlpha, IN.samplexNoiseValue01);
+#endif
+				o.Alpha = maskA * IN.color.a;
 			}
 			ENDCG
 		}
