@@ -6,41 +6,29 @@ namespace CoreGame
 
     public class ChoicePopupText : MonoBehaviour
     {
-        private Text text;
         private DiscussionChoice discussionChoice;
-
-        private TextGenerationSettings TextGenerationSettings;
+        private GeneratedText generatedText;
 
         public DiscussionChoice DiscussionChoice { get => discussionChoice; }
 
-        private void Awake()
+        public void Init(DiscussionChoice choice, DiscussionTextConfiguration DiscussionTextConfiguration, GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent)
         {
-            text = GetComponent<Text>();
-        }
-
-        public void SetDiscussionChoice(DiscussionChoice choice, DiscussionTextConfiguration DiscussionTextConfiguration)
-        {
+            var text = GetComponent<Text>();
             discussionChoice = choice;
-            this.text.text = DiscussionTextConfiguration.ConfigurationInherentData[choice.Text].Text;
-            TextGenerationSettings = new TextGenerationSettings();
-            TextGenerationSettings.font = text.font;
-            TextGenerationSettings.fontSize = text.fontSize;
-            TextGenerationSettings.fontStyle = text.fontStyle;
-        }
-
-        public int GetFontSize()
-        {
-            return text.fontSize;
+            var DiscussionTextInherentData = DiscussionTextConfiguration.ConfigurationInherentData[choice.Text];
+            this.generatedText = new GeneratedText(DiscussionTextInherentData.Text, new GeneratedTextParameter(DiscussionTextInherentData.InputParameters.AsReadOnly(), null),
+                  GeneratedTextDimensionsComponent, null, text);
+            this.generatedText.GenerateAndDisplayAllText();
         }
 
         public float GetTextCharacterLength()
         {
-            return text.cachedTextGenerator.GetPreferredWidth(text.text, TextGenerationSettings);
+            return this.generatedText.GetWindowWidth();
         }
 
         public float GetTextCharacterHeight()
         {
-            return text.cachedTextGenerator.GetPreferredHeight(text.text, TextGenerationSettings);
+            return this.generatedText.GetWindowHeight(this.generatedText.GetDisplayedLineNb());
         }
 
     }

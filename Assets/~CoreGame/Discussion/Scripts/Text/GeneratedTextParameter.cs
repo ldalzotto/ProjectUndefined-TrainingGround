@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public class DiscussionTextParameter
+    public class GeneratedTextParameter
     {
         #region Constants
         public static Dictionary<ParameterType, string> ParameterAlias = new Dictionary<ParameterType, string>()
@@ -34,11 +34,10 @@ namespace CoreGame
         public List<IParameterDisplayContent> ParameterDisplayContent { get => parameterDisplayContent; }
         #endregion
 
-        public DiscussionTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration, GameInputManager gameInputManager)
+        public GeneratedTextParameter(ReadOnlyCollection<InputParameter> InputParameters, InputConfiguration inputConfiguration)
         {
             this.InputParameters = InputParameters;
             this.InputConfiguration = inputConfiguration;
-            this.GameInputManager = gameInputManager;
         }
 
         public string ParseParameters(string inputText)
@@ -188,7 +187,7 @@ namespace CoreGame
         #endregion
 
         #region External Events
-        public void OnDiscussionEngineIncremented(in DiscussionTextPlayerEngine DiscussionTextPlayerEngine, int parameterNbInThisIncrement)
+        public void OnDiscussionEngineIncremented(in TextPlayerEngine DiscussionTextPlayerEngine, int parameterNbInThisIncrement)
         {
             if (!DiscussionTextPlayerEngine.IsAllowedToIncrementEngine())
             {

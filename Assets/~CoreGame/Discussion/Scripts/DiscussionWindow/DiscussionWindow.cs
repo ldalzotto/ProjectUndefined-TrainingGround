@@ -17,13 +17,11 @@ namespace CoreGame
         private const string DISCUSSION_WINDOW_OBJECT_NAME = "DiscussionWindow";
         private const string WORKFLOW_ICON_IMAGE_CONTAINER_NAME = "WorkflowIconImageContainer";
         #endregion
-
-        public TextOnlyDiscussionWindowDimensionsComponent TextOnlyDiscussionWindowDimensionsComponent;
+        
         public DiscussionWriterComponent DiscussionWriterComponent;
         public DiscussionWindowDimensionsTransitionComponent DiscussionWindowDimensionsTransitionComponent;
-        public DiscussionWindowDimensionsComponent DiscussionWindowDimensionsComponent;
-
-
+        public GeneratedTextDimensionsComponent GeneratedTextDimensionsComponent;
+        
         #region Instance
         public static DiscussionWindow Instanciate(Canvas canvas)
         {
@@ -39,8 +37,7 @@ namespace CoreGame
         private DiscussionWindowDimensionsTransitionManager DiscussionWindowDimensionsTransitionManager;
         private DiscussionWindowAnimationManager DiscussionWindowAnimationManager;
 
-        private DiscussionText currentDiscussionText;
-        private RectTransform discussionWindowObjectTransform;
+        private GeneratedText currentDiscussionText;
         private Text textAreaText;
         #endregion
 
@@ -56,15 +53,15 @@ namespace CoreGame
             var discussionWindowObject = gameObject.FindChildObjectRecursively(DISCUSSION_WINDOW_OBJECT_NAME);
 
             var discussionAnimator = GetComponent<Animator>();
-            this.discussionWindowObjectTransform = (RectTransform)discussionWindowObject.transform;
+            var discussionWindowObjectTransform = (RectTransform)discussionWindowObject.transform;
 
             this.OnExitAnimationFinished = OnExitAnimationFinished;
 
-            ((RectTransform)(textAreaObject.transform)).offsetMin = new Vector2(DiscussionWindowDimensionsComponent.MarginLeft, DiscussionWindowDimensionsComponent.MarginDown);
-            ((RectTransform)(textAreaObject.transform)).offsetMax = new Vector2(-DiscussionWindowDimensionsComponent.MarginRight, -DiscussionWindowDimensionsComponent.MarginUp);
+            ((RectTransform)(textAreaObject.transform)).offsetMin = new Vector2(GeneratedTextDimensionsComponent.MarginLeft, GeneratedTextDimensionsComponent.MarginDown);
+            ((RectTransform)(textAreaObject.transform)).offsetMax = new Vector2(-GeneratedTextDimensionsComponent.MarginRight, -GeneratedTextDimensionsComponent.MarginUp);
 
             DiscussionWindowPositioner = new DiscussionWindowPositioner(Camera.main, transform);
-            DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, this.discussionWindowObjectTransform);
+            DiscussionWindowDimensionsTransitionManager = new DiscussionWindowDimensionsTransitionManager(DiscussionWindowDimensionsTransitionComponent, discussionWindowObjectTransform);
             DiscussionWindowAnimationManager = new DiscussionWindowAnimationManager(discussionAnimator);
 
             DiscussionWriterManager = new DiscussionWriterManager(this, DiscussionWriterComponent, this.textAreaText);
@@ -117,8 +114,8 @@ namespace CoreGame
         private void InitializeDiscussionWindow(string text, ReadOnlyCollection<InputParameter> InputParameters)
         {
             DiscussionWorkflowManager.OnDiscussionWindowAwake();
-            this.currentDiscussionText = new DiscussionText(text, InputParameters, this.DiscussionWindowDimensionsComponent, this.TextOnlyDiscussionWindowDimensionsComponent,
-                this, this.textAreaText, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration(), CoreGameSingletonInstances.GameInputManager);
+            this.currentDiscussionText = new GeneratedText(text, new GeneratedTextParameter(InputParameters, CoreGameSingletonInstances.CoreConfigurationManager.InputConfiguration()), GeneratedTextDimensionsComponent,
+                this, this.textAreaText);
             this.OnDiscussionStartWriting();
         }
 
@@ -152,9 +149,9 @@ namespace CoreGame
 
         private void OnDiscussionStartWriting()
         {
-            this.currentDiscussionText.ComputeTruncatedText(this.discussionWindowObjectTransform);
+            this.currentDiscussionText.ComputeTruncatedText();
             this.OnHeightChange(this.currentDiscussionText.GetWindowHeight(this.currentDiscussionText.GetDisplayedLineNb()));
-            this.OnWidthChange(this.DiscussionWindowDimensionsComponent.MaxWindowWidth);
+            this.OnWidthChange(this.GeneratedTextDimensionsComponent.MaxWindowWidth);
             DiscussionWriterManager.OnDiscussionTextStartWriting();
         }
 
@@ -179,15 +176,7 @@ namespace CoreGame
         }
         #endregion
     }
-
-    #region Discussion Window Dimensions
-    [System.Serializable]
-    public class TextOnlyDiscussionWindowDimensionsComponent
-    {
-        public int MaxLineDisplayed;
-    }
-    #endregion
-
+    
     #region Discussion Window Text Writer
     [System.Serializable]
     public class DiscussionWriterComponent
@@ -222,7 +211,7 @@ namespace CoreGame
 
         public bool IsTextWriting { get => isTextWriting; }
 
-        public void Tick(float d, DiscussionText discussionText)
+        public void Tick(float d, GeneratedText discussionText)
         {
             if (isTextWriting)
             {
@@ -363,20 +352,7 @@ namespace CoreGame
         SCREEN = 1
     }
     #endregion
-
-    #region DiscussionWindow Dimensions
-    [System.Serializable]
-    public class DiscussionWindowDimensionsComponent
-    {
-        public float MarginLeft;
-        public float MarginRight;
-        public float MarginUp;
-        public float MarginDown;
-        public float MaxWindowWidth;
-        public float MinWindowHeight;
-    }
-    #endregion
-
+    
     #region Dimensions Transitions
     [System.Serializable]
     public class DiscussionWindowDimensionsTransitionComponent

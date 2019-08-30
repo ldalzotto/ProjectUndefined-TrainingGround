@@ -13,6 +13,7 @@ namespace CoreGame
 
         public ChoicePopupDimensionsComponent ChoicePopupDimensionsComponent;
         public ChoicePopupSelectionManagerComponent ChoicePopupSelectionManagerComponent;
+        public GeneratedTextDimensionsComponent SingleChoiceGeneratedTextDimensionsComponent;
 
         private ChoicePopupDimensionsManager ChoicePopupDimensionsManager;
         private ChoicePopupSelectionManager ChoicePopupSelectionManager;
@@ -43,7 +44,7 @@ namespace CoreGame
             foreach (var choice in nexDiscussionChoices)
             {
                 var choicesPopupText = Instantiate(PrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
-                choicesPopupText.SetDiscussionChoice(choice, DiscussionTextRepertoire);
+                choicesPopupText.Init(choice, DiscussionTextRepertoire, this.SingleChoiceGeneratedTextDimensionsComponent);
                 choicePopupTexts.Add(choicesPopupText);
             }
 
