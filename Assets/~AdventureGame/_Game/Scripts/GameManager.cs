@@ -17,6 +17,7 @@ namespace AdventureGame
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CameraMovementManager CameraMovementManager;
         private AdventureTutorialEventSender AdventureTutorialEventSender;
+        private TutorialManager TutorialManager;
 
 #if UNITY_EDITOR
         private EditorOnlyModules EditorOnlyModules = new EditorOnlyModules();
@@ -59,6 +60,7 @@ namespace AdventureGame
             CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
             CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             AdventureTutorialEventSender = GameObject.FindObjectOfType<AdventureTutorialEventSender>();
+            TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
 
             //initialization
             CameraMovementManager.Init();
@@ -74,6 +76,7 @@ namespace AdventureGame
             DiscussionManager.Init();
             AdventureTutorialEventSender.Init();
             GameObject.FindObjectOfType<ContextActionWheelEventManager>().Init();
+            TutorialManager.Init();
 
 #if UNITY_EDITOR
             this.EditorOnlyModules.Init();
@@ -88,6 +91,7 @@ namespace AdventureGame
 
                 this.BeforeTick(d);
 
+                TutorialManager.Tick(d);
                 CutscenePlayerManagerV2.Tick(d);
                 if (!CutscenePlayerManagerV2.IsCutscenePlaying)
                 {

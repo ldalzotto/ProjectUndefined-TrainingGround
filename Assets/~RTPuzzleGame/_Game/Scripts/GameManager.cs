@@ -34,6 +34,7 @@ namespace RTPuzzle
         private CircleFillBarRendererManager CircleFillBarRendererManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
         private BlockingCutscenePlayer BlockingCutscenePlayer;
+        private TutorialManager TutorialManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -80,6 +81,7 @@ namespace RTPuzzle
             CircleFillBarRendererManager = GameObject.FindObjectOfType<CircleFillBarRendererManager>();
             PuzzleTutorialEventSender = GameObject.FindObjectOfType<PuzzleTutorialEventSender>();
             BlockingCutscenePlayer = GameObject.FindObjectOfType<BlockingCutscenePlayer>();
+            TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
 
             var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
             var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -121,6 +123,7 @@ namespace RTPuzzle
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
             PuzzleTutorialEventSender.Init();
+            TutorialManager.Init();
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -138,6 +141,8 @@ namespace RTPuzzle
 
                 if (!GameOverManager.OnGameOver)
                 {
+                    TutorialManager.Tick(d);
+
                     PuzzleTutorialEventSender.Tick(d);
                     BlockingCutscenePlayer.Tick(d);
 

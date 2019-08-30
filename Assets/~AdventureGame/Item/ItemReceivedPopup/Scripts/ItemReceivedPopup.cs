@@ -10,8 +10,7 @@ namespace AdventureGame
     {
         private const string PopupContentObjectName = "PopupContent";
         private const string PopupImageObjectName = "ItemIcon";
-
-        public DiscussionWriterComponent DiscussionWriterComponent;
+        
         private DiscussionWindow DiscussionWindow;
 
         public void Init(ItemID involvedItem, Action onWindowClosed)

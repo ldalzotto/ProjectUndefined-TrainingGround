@@ -25,7 +25,6 @@ namespace CoreGame
             CoreGameSingletonInstances.LevelManager.Init(levelType);
             CoreGameSingletonInstances.LevelMemoryManager.Init(levelType, CoreGameSingletonInstances.LevelManager);
             CoreGameSingletonInstances.LevelChunkFXTransitionManager.Init();
-            CoreGameSingletonInstances.TutorialManager.Init();
 
             CoreGameSingletonInstances.Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
         }
@@ -41,7 +40,6 @@ namespace CoreGame
         {
             CoreGameSingletonInstances.PersistanceManager.Tick(d);
             CoreGameSingletonInstances.LevelChunkFXTransitionManager.Tick(d);
-            CoreGameSingletonInstances.TutorialManager.Tick(d);
         }
 
         private IEnumerator InitializeTimelinesAtEndOfFrame()

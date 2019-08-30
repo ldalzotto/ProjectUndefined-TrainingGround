@@ -10,6 +10,7 @@ namespace AdventureGame
         private InventoryEventManager InventoryEventManager;
         private ContextActionWheelEventManager ContextActionWheelEventManager;
         private CameraMovementManager CameraMovementManager;
+        private TutorialManager TutorialManager;
         #endregion
 
         public void Init()
@@ -17,13 +18,14 @@ namespace AdventureGame
             this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             this.ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
             this.CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
+            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
         }
 
         public void OnCutscneStarted()
         {
             this.InventoryEventManager.OnInventoryDisabled();
             this.ContextActionWheelEventManager.OnWheelDisabled();
-            CoreGameSingletonInstances.TutorialManager.Abort();
+            this.TutorialManager.Abort();
             this.CameraMovementManager.DisableInput();
         }
 

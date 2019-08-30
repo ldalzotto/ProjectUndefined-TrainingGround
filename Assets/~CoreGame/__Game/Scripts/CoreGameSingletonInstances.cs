@@ -11,7 +11,6 @@ namespace CoreGame
         private static Coroutiner coroutiner;
         private static AGhostPOIManager aGhostPOIManager;
         private static LevelChunkFXTransitionManager levelChunkFXTransitionManager;
-        private static TutorialManager tutorialManager;
         private static LevelAvailabilityManager levelAvailabilityManager;
         private static TimelinesEventManager timelinesEventManager;
         private static LevelTransitionManager levelTransitionManager;
@@ -34,7 +33,6 @@ namespace CoreGame
         public static Coroutiner Coroutiner { get => FindAndSetInstanceIfNull(coroutiner, obj => coroutiner = obj); }
         public static AGhostPOIManager AGhostPOIManager { get => FindAndSetInstanceIfNull(aGhostPOIManager, obj => aGhostPOIManager = obj); }
         public static LevelChunkFXTransitionManager LevelChunkFXTransitionManager { get => FindAndSetInstanceIfNull(levelChunkFXTransitionManager, obj => levelChunkFXTransitionManager = obj); }
-        public static TutorialManager TutorialManager { get => FindAndSetInstanceIfNull(tutorialManager, obj => tutorialManager = obj); }
         public static LevelAvailabilityManager LevelAvailabilityManager { get => FindAndSetInstanceIfNull(levelAvailabilityManager, obj => levelAvailabilityManager = obj); }
         public static TimelinesEventManager TimelinesEventManager { get => FindAndSetInstanceIfNull(timelinesEventManager, obj => timelinesEventManager = obj); }
         public static LevelTransitionManager LevelTransitionManager { get => FindAndSetInstanceIfNull(levelTransitionManager, obj => levelTransitionManager = obj); }
