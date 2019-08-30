@@ -39,7 +39,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                return _Color * abs(sin(_Time.x * _ColorSpeed));
+                return _Color * abs(cos(_Time.x * _ColorSpeed));
             }
             ENDCG
         }

@@ -2,23 +2,18 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace RTPuzzle
+namespace CoreGame
 {
-    public class InteractiveObjectSelectionRendererManager
+    public class ObjectSelectionRendererManager
     {
         private ComputeShader OutlineComputeShader;
         private Material OutlineColorShader;
         private Material BufferScreenSampleShader;
 
         private CommandBuffer commandBufer;
-
-        #region Internal Dependencies
-        private InteractiveObjectSelectionManager InteractiveObjectSelectionManager;
-        #endregion
-
-        public InteractiveObjectSelectionRendererManager(InteractiveObjectSelectionManager InteractiveObjectSelectionManager, ComputeShader OutlineComputeShader, Material OutlineColorShader, Material BufferScreenSampleShader)
+        
+        public ObjectSelectionRendererManager(ComputeShader OutlineComputeShader, Material OutlineColorShader, Material BufferScreenSampleShader)
         {
-            this.InteractiveObjectSelectionManager = InteractiveObjectSelectionManager;
             this.OutlineComputeShader = OutlineComputeShader;
             this.OutlineColorShader = OutlineColorShader;
             this.BufferScreenSampleShader = BufferScreenSampleShader;
@@ -29,13 +24,13 @@ namespace RTPuzzle
             Camera.main.AddCommandBuffer(CameraEvent.AfterForwardAlpha, this.commandBufer);
         }
 
-        public void Tick(float d)
+        public void Tick(AbstractSelectableObject currentSelectedObject)
         {
             this.commandBufer.Clear();
 
-            if (this.InteractiveObjectSelectionManager.GetCurrentSelectedObject() != null)
+            if (currentSelectedObject != null)
             {
-                var modelOutlined = this.InteractiveObjectSelectionManager.GetCurrentSelectedObject().ModelObjectModule;
+                var modelOutlined = currentSelectedObject.ModelObjectModule;
 
                 if (modelOutlined != null)
                 {
@@ -53,7 +48,7 @@ namespace RTPuzzle
                     this.commandBufer.SetRenderTarget(new RenderTargetIdentifier(tmpRangeRenderArrayBuffer, depthSlice: 0));
                     this.commandBufer.ClearRenderTarget(true, true, MyColors.TransparentBlack);
                     
-                    foreach (var meshRenderer in modelOutlined.MeshRenderers)
+                    foreach (var meshRenderer in modelOutlined.GetAllMeshRenderers())
                     {
                         this.commandBufer.DrawRenderer(meshRenderer, this.OutlineColorShader);
                     }
@@ -68,7 +63,7 @@ namespace RTPuzzle
 
                     this.commandBufer.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
 
-                    foreach (var meshRenderer in modelOutlined.MeshRenderers)
+                    foreach (var meshRenderer in modelOutlined.GetAllMeshRenderers())
                     {
                         this.commandBufer.DrawRenderer(meshRenderer, this.BufferScreenSampleShader);
                     }

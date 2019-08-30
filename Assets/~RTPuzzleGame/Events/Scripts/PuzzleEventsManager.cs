@@ -129,12 +129,10 @@ namespace RTPuzzle
         public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
             this.InteractiveObjectSelectionManager.OnActionInteractableEnter(actionInteractableObjectModule);
-         //   this.PlayerActionPuzzleEventsManager.OnActionInteractableEnter(actionInteractableObjectModule);
         }
         public void PZ_EVT_OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
         {
             this.InteractiveObjectSelectionManager.OnActionInteractableExit(actionInteractableObjectModule);
-         //   this.PlayerActionPuzzleEventsManager.OnActionInteractableExit(actionInteractableObjectModule);
         }
         #endregion
 
@@ -142,12 +140,10 @@ namespace RTPuzzle
         public void PZ_EVT_OnGrabObjectEnter(GrabObjectModule grabObjectModule)
         {
             this.InteractiveObjectSelectionManager.OnGrabObjectEnter(grabObjectModule);
-           // this.PlayerActionPuzzleEventsManager.OnGrabObjectEnter(grabObjectModule);
         }
         public void PZ_EVT_OnGrabObjectExit(GrabObjectModule grabObjectModule)
         {
             this.InteractiveObjectSelectionManager.OnGrabObjectExit(grabObjectModule);
-          //  this.PlayerActionPuzzleEventsManager.OnGrabObjectExit(grabObjectModule);
         }
         #endregion
 

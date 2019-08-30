@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ModelObjectModule : InteractiveObjectModule, IRenderBoundRetrievable
+    public class ModelObjectModule : InteractiveObjectModule, IRenderBoundRetrievable, IMeshRendererRetrievable
     {
         #region Properties
         private ExtendedBounds AverageModeBounds;
@@ -21,7 +21,10 @@ namespace RTPuzzle
         }
         public Animator Animator { get => animator; }
         public Rigidbody AssociatedRigidbody { get => associatedRigidbody; }
-        public List<MeshRenderer> MeshRenderers { get => meshRenderers; }
+        public List<MeshRenderer> GetAllMeshRenderers()
+        {
+            return this.meshRenderers;
+        }
         #endregion
 
         public void Init()

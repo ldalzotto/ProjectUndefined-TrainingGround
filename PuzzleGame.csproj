@@ -236,7 +236,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\Selection\InteractiveObjectSelectionManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\Selection\InteractiveObjectSelectionRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\SharedData\InteractiveObjectSharedDataType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectModulesInitializationOperations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectTypeConfiguration.cs" />
@@ -270,7 +269,6 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelLineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsInstanciatedParent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Common\IRenderBoundRetrievable.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionManager.cs" />

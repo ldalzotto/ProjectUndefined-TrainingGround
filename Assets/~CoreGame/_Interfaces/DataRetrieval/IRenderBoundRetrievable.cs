@@ -1,7 +1,7 @@
 ﻿using CoreGame;
 using UnityEngine;
 
-namespace RTPuzzle
+namespace CoreGame
 {
     public interface IRenderBoundRetrievable
     {

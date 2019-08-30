@@ -12,14 +12,13 @@ namespace RTPuzzle
     public class GroundEffectsManagerV2 : MonoBehaviour
     {
         #region Materials
-        public ComputeShader RangeEdgeImageEffectComputeShader;
-
         public Material MasterRangeMaterial;
-        public Material RangeBufferToMeshMaterial;
         #endregion
 
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
+        private CoreMaterialConfiguration CoreMaterialConfiguration;
+
         private ObstaclesListenerManager ObstaclesListenerManager;
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         #endregion
@@ -90,6 +89,7 @@ namespace RTPuzzle
             PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
             ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
             ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
+            this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
             #endregion
 
             var camera = Camera.main;
@@ -350,11 +350,11 @@ namespace RTPuzzle
                 HashSet<GroundEffectType> invovledGroundEffectTypes = new HashSet<GroundEffectType>();
                 Mesh combinedMesh = null;
 
-                this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), rangeRenderBuffer, new RenderTargetIdentifier(rangeRenderBuffer));
-                this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), tmpRangeRenderArrayBuffer, new RenderTargetIdentifier(tmpRangeRenderArrayBuffer));
+                this.rangeDrawCommand.SetComputeTextureParam(this.CoreMaterialConfiguration.OutlineImageEffectComputeShader, this.CoreMaterialConfiguration.OutlineImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), rangeRenderBuffer, new RenderTargetIdentifier(rangeRenderBuffer));
+                this.rangeDrawCommand.SetComputeTextureParam(this.CoreMaterialConfiguration.OutlineImageEffectComputeShader, this.CoreMaterialConfiguration.OutlineImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), tmpRangeRenderArrayBuffer, new RenderTargetIdentifier(tmpRangeRenderArrayBuffer));
 
-                this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, OutlineComputeShaderConstants.TEXTURE_WIDTH, Camera.main.pixelWidth);
-                this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, OutlineComputeShaderConstants.TEXTURE_HEIGHT, Camera.main.pixelHeight);
+                this.rangeDrawCommand.SetComputeIntParam(this.CoreMaterialConfiguration.OutlineImageEffectComputeShader, OutlineComputeShaderConstants.TEXTURE_WIDTH, Camera.main.pixelWidth);
+                this.rangeDrawCommand.SetComputeIntParam(this.CoreMaterialConfiguration.OutlineImageEffectComputeShader, OutlineComputeShaderConstants.TEXTURE_HEIGHT, Camera.main.pixelHeight);
 
                 foreach (var rangeExecution in this.rangeExecutionOrderBufferDataValues)
                 {
@@ -375,7 +375,7 @@ namespace RTPuzzle
                     }
                 }
 
-                this.rangeDrawCommand.DispatchCompute(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), Camera.main.pixelWidth / 8, Camera.main.pixelHeight / 8, this.rangeExecutionOrderBufferDataValues.Count);
+                this.rangeDrawCommand.DispatchCompute(this.CoreMaterialConfiguration.OutlineImageEffectComputeShader, this.CoreMaterialConfiguration.OutlineImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), Camera.main.pixelWidth / 8, Camera.main.pixelHeight / 8, this.rangeExecutionOrderBufferDataValues.Count);
 
                 this.rangeDrawCommand.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
                 combinedMesh = new Mesh();
@@ -384,8 +384,8 @@ namespace RTPuzzle
                 combinedMesh.CombineMeshes(
                     invovledGroundEffectTypes.ToList().ConvertAll(groundEffectType => groundEffectType.GetCombineInstances()).SelectMany(s => s)
                     .ToArray(), true);
-                
-                this.rangeDrawCommand.DrawMesh(combinedMesh, Matrix4x4.identity, this.RangeBufferToMeshMaterial);
+
+                this.rangeDrawCommand.DrawMesh(combinedMesh, Matrix4x4.identity, this.CoreMaterialConfiguration.BufferScreenSampleMaterial);
 
                 this.releaseCommand.ReleaseTemporaryRT(rangeRenderBuffer);
                 this.releaseCommand.ReleaseTemporaryRT(tmpRangeRenderArrayBuffer);

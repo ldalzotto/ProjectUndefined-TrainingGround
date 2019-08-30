@@ -9,5 +9,10 @@ namespace CoreGame
     public class CoreMaterialConfiguration : SerializedScriptableObject
     {
         public Material UnlitVertexColor;
+
+        [Header("Outline Materials")]
+        public ComputeShader OutlineImageEffectComputeShader;
+        public Material BufferScreenSampleMaterial;
+        public Material OutlineColorShader;
     }
 }

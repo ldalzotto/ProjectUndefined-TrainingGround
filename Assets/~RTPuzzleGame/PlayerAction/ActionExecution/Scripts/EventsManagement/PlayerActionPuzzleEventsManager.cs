@@ -1,10 +1,11 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PlayerActionPuzzleEventsManager : MonoBehaviour
+    public class PlayerActionPuzzleEventsManager : MonoBehaviour, SelectableObjectSelectionManagerEventListener<SelectableObject>
     {
 
         #region External Dependencies
