@@ -26,6 +26,7 @@ namespace GameConfigurationID
         INVENTORY_DOWN = 8,
         CAMERA_ROTATION_DOWN_HOLD = 9,
         TIME_FORWARD_DOWN_HOLD = 10,
-        PUZZLE_RESET_DOWN_HOLD = 11
+        PUZZLE_RESET_DOWN_HOLD = 11,
+        SWITCH_SELECTION_DOWN = 12
     }
 }

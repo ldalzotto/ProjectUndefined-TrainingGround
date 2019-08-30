@@ -339,22 +339,22 @@ namespace RTPuzzle
 
             if (this.rangeExecutionOrderBufferDataValues.Count > 0)
             {
-                var rangeRenderBuffer = Shader.PropertyToID("_RangeRenderBuffer");
+                var rangeRenderBuffer = Shader.PropertyToID(OutlineComputeShaderConstants.OUTLINE_TARGET_TEXTURE);
                 this.rangeDrawCommand.GetTemporaryRT(rangeRenderBuffer, new RenderTextureDescriptor(Camera.main.pixelWidth, Camera.main.pixelHeight, RenderTextureFormat.ARGB64) { sRGB = false, autoGenerateMips = false, enableRandomWrite = true });
                 this.rangeDrawCommand.SetRenderTarget(rangeRenderBuffer);
                 this.rangeDrawCommand.ClearRenderTarget(true, true, MyColors.TransparentBlack);
 
-                var tmpRangeRenderArrayBuffer = Shader.PropertyToID("_TmpRangeRenderArrayBuffer");
+                var tmpRangeRenderArrayBuffer = Shader.PropertyToID(OutlineComputeShaderConstants.PRE_EFFECT_TEXTURES);
                 this.rangeDrawCommand.GetTemporaryRTArray(tmpRangeRenderArrayBuffer, Camera.main.pixelWidth, Camera.main.pixelHeight, this.rangeExecutionOrderBufferDataValues.Count, 0, FilterMode.Point, RenderTextureFormat.ARGB64, RenderTextureReadWrite.Linear, 1, true);
 
                 HashSet<GroundEffectType> invovledGroundEffectTypes = new HashSet<GroundEffectType>();
                 Mesh combinedMesh = null;
 
-                this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel("CSMain"), rangeRenderBuffer, new RenderTargetIdentifier(rangeRenderBuffer));
-                this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel("CSMain"), tmpRangeRenderArrayBuffer, new RenderTargetIdentifier(tmpRangeRenderArrayBuffer));
+                this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), rangeRenderBuffer, new RenderTargetIdentifier(rangeRenderBuffer));
+                this.rangeDrawCommand.SetComputeTextureParam(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), tmpRangeRenderArrayBuffer, new RenderTargetIdentifier(tmpRangeRenderArrayBuffer));
 
-                this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, "TextureWidth", Camera.main.pixelWidth);
-                this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, "TextureHeight", Camera.main.pixelHeight);
+                this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, OutlineComputeShaderConstants.TEXTURE_WIDTH, Camera.main.pixelWidth);
+                this.rangeDrawCommand.SetComputeIntParam(this.RangeEdgeImageEffectComputeShader, OutlineComputeShaderConstants.TEXTURE_HEIGHT, Camera.main.pixelHeight);
 
                 foreach (var rangeExecution in this.rangeExecutionOrderBufferDataValues)
                 {
@@ -375,7 +375,7 @@ namespace RTPuzzle
                     }
                 }
 
-                this.rangeDrawCommand.DispatchCompute(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel("CSMain"), Camera.main.pixelWidth / 8, Camera.main.pixelHeight / 8, this.rangeExecutionOrderBufferDataValues.Count);
+                this.rangeDrawCommand.DispatchCompute(this.RangeEdgeImageEffectComputeShader, this.RangeEdgeImageEffectComputeShader.FindKernel(OutlineComputeShaderConstants.RANGE_OUTLINE_KERNEL), Camera.main.pixelWidth / 8, Camera.main.pixelHeight / 8, this.rangeExecutionOrderBufferDataValues.Count);
 
                 this.rangeDrawCommand.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
                 combinedMesh = new Mesh();
@@ -384,7 +384,7 @@ namespace RTPuzzle
                 combinedMesh.CombineMeshes(
                     invovledGroundEffectTypes.ToList().ConvertAll(groundEffectType => groundEffectType.GetCombineInstances()).SelectMany(s => s)
                     .ToArray(), true);
-
+                
                 this.rangeDrawCommand.DrawMesh(combinedMesh, Matrix4x4.identity, this.RangeBufferToMeshMaterial);
 
                 this.releaseCommand.ReleaseTemporaryRT(rangeRenderBuffer);

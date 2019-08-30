@@ -1,0 +1,48 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel RangeOutline
+#pragma kernel Outline
+
+uniform int TextureWidth;
+uniform int TextureHeight;
+
+Texture2DArray<float4> _TmpRangeRenderArrayBuffer;
+RWTexture2D<float4> _RangeRenderBuffer;
+
+float4 GetComputedOutlineColor(float pixelDistance, uint3 texCoord) {
+	int bottomPosition = max(texCoord.y - pixelDistance, 0);
+	int upPosition = min(texCoord.y + pixelDistance, TextureHeight - 1);
+	int leftPosition = max(texCoord.x - pixelDistance, 0);
+	int rightPosition = min(texCoord.x + pixelDistance, TextureWidth - 1);
+
+	return
+		_TmpRangeRenderArrayBuffer[float3(rightPosition, texCoord.y, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(texCoord.x, upPosition, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(leftPosition, texCoord.y, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(texCoord.x, bottomPosition, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(rightPosition, upPosition, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(rightPosition, bottomPosition, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(leftPosition, bottomPosition, texCoord.z)]
+		* _TmpRangeRenderArrayBuffer[float3(leftPosition, upPosition, texCoord.z)];
+}
+
+[numthreads(8, 8, 1)]
+void RangeOutline(uint3 id : SV_DispatchThreadID)
+{
+	float _PixelDistance = 3;
+	float4 center = _TmpRangeRenderArrayBuffer[id.xyz];
+	if (center.x != 0 || center.y != 0 || center.z != 0) {
+		float4 comparisonCol = GetComputedOutlineColor(_PixelDistance, id);
+		_RangeRenderBuffer[id.xy] = _RangeRenderBuffer[id.xy] + ((center * (comparisonCol.x == 0)) + (center * float4(0.2, 0.2, 0.2, 0.2)));
+	}
+}
+
+[numthreads(8, 8, 1)]
+void Outline(uint3 id : SV_DispatchThreadID)
+{
+	float _PixelDistance = 3;
+	float4 center = _TmpRangeRenderArrayBuffer[id.xyz];
+	if (center.x != 0 || center.y != 0 || center.z != 0) {
+		float4 comparisonCol = GetComputedOutlineColor(_PixelDistance, id);
+		_RangeRenderBuffer[id.xy] = _RangeRenderBuffer[id.xy] + (center * (comparisonCol.x == 0)) + (center * float4(0.05, 0.05, 0.05, 0.05));
+	}
+}

@@ -39,22 +39,16 @@ namespace RTPuzzle
             }
           );
         }
-        public void OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
+
+        public void OnSelectableObjectSelected(SelectableObject SelectableObject)
         {
-            this.PlayerActionManager.AddActionToAvailable(PlayerActionId.NONE, actionInteractableObjectModule.AssociatedPlayerAction);
+            this.PlayerActionManager.AddActionToAvailable(PlayerActionId.NONE, SelectableObject.AssociatedPlayerAction);
         }
-        public void OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
+        public void OnSelectableObjectDeSelected(SelectableObject SelectableObject)
         {
-            this.PlayerActionManager.RemoveActionToAvailable(PlayerActionId.NONE, actionInteractableObjectModule.AssociatedPlayerAction);
+            this.PlayerActionManager.RemoveActionToAvailable(PlayerActionId.NONE, SelectableObject.AssociatedPlayerAction);
         }
-        public void OnGrabObjectEnter(GrabObjectModule grabObjectModule)
-        {
-            this.PlayerActionManager.AddActionToAvailable(PlayerActionId.NONE, grabObjectModule.GrabObjectAction);
-        }
-        public void OnGrabObjectExit(GrabObjectModule grabObjectModule)
-        {
-            this.PlayerActionManager.RemoveActionToAvailable(PlayerActionId.NONE, grabObjectModule.GrabObjectAction);
-        }
+        
         #endregion
 
         private void RTPActionValidation(Action<RTPPlayerAction> ifValidatedAction)

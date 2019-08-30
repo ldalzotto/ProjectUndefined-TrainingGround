@@ -111,6 +111,11 @@ namespace Tests
             return 0f;
         }
 
+        public bool SwitchSelectionButtonD()
+        {
+            return false;
+        }
+
         public bool TimeForwardButtonDH()
         {
             return true;

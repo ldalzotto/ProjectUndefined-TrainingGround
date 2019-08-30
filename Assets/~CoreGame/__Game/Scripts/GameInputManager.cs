@@ -110,6 +110,11 @@ namespace CoreGame
             {
                 return this.gameInputV2.InputConditionsMet(InputID.PUZZLE_RESET_DOWN_HOLD);
             }
+
+            public bool SwitchSelectionButtonD()
+            {
+                return this.gameInputV2.InputConditionsMet(InputID.SWITCH_SELECTION_DOWN);
+            }
         }
 
         #region Data Retrieval
@@ -196,6 +201,7 @@ namespace CoreGame
         bool CancelButtonDH();
         bool TimeForwardButtonDH();
         bool PuzzleResetButton();
+        bool SwitchSelectionButtonD();
     }
 
     public enum MouseButton

@@ -72,8 +72,8 @@ namespace RTPuzzle
         {
             interactiveObjectType.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule ActionInteractableObjectModule) =>
             {
-                if (interactiveObjectInitializationObject.ActionInteractableObjectInherentData == null) { ActionInteractableObjectModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[ActionInteractableObjectModule.ActionInteractableObjectID], interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager); }
-                else { ActionInteractableObjectModule.Init(interactiveObjectInitializationObject.ActionInteractableObjectInherentData, interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager); }
+                if (interactiveObjectInitializationObject.ActionInteractableObjectInherentData == null) { ActionInteractableObjectModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[ActionInteractableObjectModule.ActionInteractableObjectID], interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager, interactiveObjectType.GetModule<ModelObjectModule>()); }
+                else { ActionInteractableObjectModule.Init(interactiveObjectInitializationObject.ActionInteractableObjectInherentData, interactiveObjectType, interactiveObjectType.PuzzleGameConfigurationManager, interactiveObjectType.PuzzleEventsManager, interactiveObjectType.GetModule<ModelObjectModule>()); }
             });
         }
 
@@ -86,8 +86,8 @@ namespace RTPuzzle
         {
             interactiveObjectType.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) =>
             {
-                if (interactiveObjectInitializationObject.GrabObjectInherentData == null) { GrabObjectModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.GrabObjectConfiguration()[GrabObjectModule.GrabObjectID]); }
-                else { GrabObjectModule.Init(interactiveObjectInitializationObject.GrabObjectInherentData); }
+                if (interactiveObjectInitializationObject.GrabObjectInherentData == null) { GrabObjectModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.GrabObjectConfiguration()[GrabObjectModule.GrabObjectID], interactiveObjectType.GetModule<ModelObjectModule>()); }
+                else { GrabObjectModule.Init(interactiveObjectInitializationObject.GrabObjectInherentData, interactiveObjectType.GetModule<ModelObjectModule>()); }
             });
         }
         //------------------------------------------------------------------------------

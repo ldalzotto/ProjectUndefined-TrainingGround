@@ -245,6 +245,7 @@ namespace Tests
             var playerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var aiContainer = GameObject.FindObjectOfType<AIManagerContainer>();
+            var InteractiveObjectSelectionManager = GameObject.FindObjectOfType<InteractiveObjectSelectionManager>();
 
 
             var projectileThrowRange = 9993f;
@@ -279,8 +280,11 @@ namespace Tests
             var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
             PlayerManager.transform.position = grabObjectModule.transform.position;
 
+            //Player action selected presence
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject() == null);
             yield return new WaitForFixedUpdate();
-
+            yield return null; //Wait for player action selection to update current available player actions
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject() != null);
             Assert.IsTrue(PlayerActionManager.GetCurrentAvailablePlayerActions().MultiValueGetValues().Count == initialPlayerActionsCount + 1);
 
             bool currentAvailablePlayerActionsContainsGrabObjectAction = false;

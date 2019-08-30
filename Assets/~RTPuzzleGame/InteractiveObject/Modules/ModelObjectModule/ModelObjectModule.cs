@@ -1,4 +1,6 @@
 ﻿using CoreGame;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -9,8 +11,9 @@ namespace RTPuzzle
         private ExtendedBounds AverageModeBounds;
         private Animator animator;
         private Rigidbody associatedRigidbody;
+        private List<MeshRenderer> meshRenderers;
         #endregion
-        
+
         #region Data Retrieval
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
@@ -18,6 +21,7 @@ namespace RTPuzzle
         }
         public Animator Animator { get => animator; }
         public Rigidbody AssociatedRigidbody { get => associatedRigidbody; }
+        public List<MeshRenderer> MeshRenderers { get => meshRenderers; }
         #endregion
 
         public void Init()
@@ -30,6 +34,7 @@ namespace RTPuzzle
             }
 
             this.associatedRigidbody = GetComponentInParent<Rigidbody>();
+            this.meshRenderers = GetComponentsInChildren<MeshRenderer>().ToList();
         }
 
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)

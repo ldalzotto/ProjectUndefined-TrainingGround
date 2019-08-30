@@ -19,11 +19,15 @@ namespace RTPuzzle
     {
 
         #region External Dependencies
-        private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
+        private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
         [CustomEnum()]
         public GameConfigurationID.GrabObjectID GrabObjectID;
+
+        #region Internal Modules Dependencies
+        private ModelObjectModule modelObjectModule;
+        #endregion
 
         private SphereCollider grabObjectRange;
         private InteractiveObjectType parentInteractiveObject;
@@ -34,19 +38,22 @@ namespace RTPuzzle
         public GrabObjectAction GrabObjectAction { get => grabObjectAction; }
         public InteractiveObjectType ParentInteractiveObject { get => parentInteractiveObject; }
         public SphereCollider GrabObjectRange { get => grabObjectRange; }
+        public ModelObjectModule ModelObjectModule { get => modelObjectModule; }
         #endregion
 
-        public void Init(GrabObjectInherentData GrabObjectInherentData)
+        public void Init(GrabObjectInherentData GrabObjectInherentData, ModelObjectModule modelObjectModule)
         {
+            this.modelObjectModule = modelObjectModule;
+
             #region External Dependencies
-            this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             #endregion
             this.parentInteractiveObject = GetComponentInParent<InteractiveObjectType>();
             this.grabObjectInherentData = GrabObjectInherentData;
 
             this.grabObjectRange = this.GetComponent<SphereCollider>();
             this.grabObjectRange.radius = this.grabObjectInherentData.EffectRadius;
-
+            
             this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, this.grabObjectInherentData.PlayerActionToIncrement, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
         }
 
@@ -59,13 +66,13 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsPlayer)
             {
-                this.PlayerActionPuzzleEventsManager.OnGrabObjectEnter(this);
+                this.PuzzleEventsManager.PZ_EVT_OnGrabObjectEnter(this);
             }
         }
 
         public override void OnInteractiveObjectDestroyed()
         {
-            this.PlayerActionPuzzleEventsManager.OnGrabObjectExit(this);
+            this.PuzzleEventsManager.PZ_EVT_OnGrabObjectExit(this);
         }
 
         private void OnTriggerExit(Collider other)
@@ -73,7 +80,7 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsPlayer)
             {
-                this.PlayerActionPuzzleEventsManager.OnGrabObjectExit(this);
+                this.PuzzleEventsManager.PZ_EVT_OnGrabObjectExit(this);
             }
         }
 

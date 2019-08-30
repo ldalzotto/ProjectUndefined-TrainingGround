@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\_Materials\VertexColor\VertexUnlitInstanciatedPropertySetter.cs" />
     <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
+    <Compile Include="Assets\_Shader\FX\Outline\OutlineComputeShaderConstants.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AsbtractCoreGameManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\CoreGameSingletonInstances.cs" />
@@ -253,17 +254,17 @@
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\Test\CircleBarTest\CircleBarTest.shader" />
     <None Include="Assets\_Shader\Wave\WaveShader.shader" />
+    <None Include="Assets\_Shader\FX\Outline\OutlineColorWriteShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveStandardShadowPass.cginc" />
-    <None Include="Assets\_Shader\FX\Range\RangeBufferToMesh.shader" />
-    <None Include="Assets\_Shader\FX\Range\RangeEdgeImageEffectComputeShader.compute" />
+    <None Include="Assets\_Shader\FX\Outline\BufferScreenSampleShader.shader" />
+    <None Include="Assets\_Shader\FX\Outline\RangeEdgeImageEffectComputeShader.compute" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
     <None Include="Assets\Test\DottedLineTest\Shader\DottedLineShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovement.cginc" />
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
-    <None Include="Assets\_Shader\Common\GeometryShader\GeometryStandard.shader" />
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
@@ -274,9 +275,9 @@
     <None Include="Assets\_Shader\WaterV2\WaterShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterForwardPass.cginc" />
     <None Include="Assets\_Shader\Noise\noiseSimplex.cginc" />
-    <None Include="Assets\_Shader\Common\GeometryShader\GeometryFlatShade.cginc" />
     <None Include="Assets\~CoreGame\Discussion\Font\LICENSE.txt" />
     <None Include="Assets\CoreGame.asmdef" />
+    <None Include="Assets\_Shader\ImageBlitShader\AddBlitShader.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5.shader" />
     <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
     <Reference Include="Unity.Postprocessing.Runtime">

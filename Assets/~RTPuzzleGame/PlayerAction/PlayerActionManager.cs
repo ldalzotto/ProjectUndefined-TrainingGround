@@ -122,6 +122,7 @@ namespace RTPuzzle
                 return PlayerActionExecutionManager.CurrentAction;
             }
         }
+
         public MultiValueDictionary<PlayerActionId, RTPPlayerAction> GetCurrentAvailablePlayerActions()
         {
             return PlayerActionsAvailableManager.CurrentAvailableActions;
@@ -231,7 +232,7 @@ namespace RTPuzzle
         }
         public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
         {
-           foreach(var action in this.currentAvailableActions[playerActionId])
+            foreach (var action in this.currentAvailableActions[playerActionId])
             {
                 action.IncreaseActionRemainingExecutionAmount(deltaRemaining);
             }

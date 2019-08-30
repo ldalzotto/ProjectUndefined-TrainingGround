@@ -9,6 +9,7 @@ namespace RTPuzzle
         public ActionInteractableObjectID ActionInteractableObjectID;
 
         #region Module Dependencies
+        private ModelObjectModule modelObjectModule;
         #endregion
 
         #region External Dependencies
@@ -22,13 +23,19 @@ namespace RTPuzzle
 
         #region Data Retrieval
         public RTPPlayerAction AssociatedPlayerAction { get => associatedPlayerAction; }
+        public ModelObjectModule GetModelObjectModule()
+        {
+            return this.modelObjectModule;
+        }
         #endregion
 
-        public void Init(ActionInteractableObjectInherentData ActionInteractableObjectInherentData, InteractiveObjectType baseInteractiveObjectType, PuzzleGameConfigurationManager puzzleGameConfigurationManager, PuzzleEventsManager PuzzleEventsManager)
+        public void Init(ActionInteractableObjectInherentData ActionInteractableObjectInherentData, InteractiveObjectType baseInteractiveObjectType, 
+            PuzzleGameConfigurationManager puzzleGameConfigurationManager, PuzzleEventsManager PuzzleEventsManager, ModelObjectModule ModelObjectModule)
         {
             this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
             this.baseInteractiveObjectType = baseInteractiveObjectType;
             this.PuzzleEventsManager = PuzzleEventsManager;
+            this.modelObjectModule = ModelObjectModule;
             var triggerCollider = GetComponent<SphereCollider>();
             triggerCollider.radius = this.ActionInteractableObjectInherentData.InteractionRange;
 
@@ -65,7 +72,7 @@ namespace RTPuzzle
                 this.PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
             }
         }
-
+        
         public static class ActionInteractableObjectModuleInstancer
         {
             public static void PopuplateFromDefinition(

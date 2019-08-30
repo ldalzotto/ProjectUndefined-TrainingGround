@@ -235,6 +235,8 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectInitializationObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\Selection\InteractiveObjectSelectionManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\Selection\InteractiveObjectSelectionRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\SharedData\InteractiveObjectSharedDataType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectModulesInitializationOperations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectTypeConfiguration.cs" />

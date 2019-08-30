@@ -105,6 +105,11 @@ namespace Tests
                 throw new NotImplementedException();
             }
 
+            public bool SwitchSelectionButtonD()
+            {
+                throw new NotImplementedException();
+            }
+
             public bool TimeForwardButtonDH()
             {
                 return true;
