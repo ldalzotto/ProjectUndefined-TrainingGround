@@ -110,9 +110,9 @@ namespace CoreGame
 
     public abstract class AbstractSelectableObject
     {
-        public IMeshRendererRetrievable ModelObjectModule;
+        public IRendererRetrievable ModelObjectModule;
 
-        public AbstractSelectableObject(IMeshRendererRetrievable modelObjectModule)
+        public AbstractSelectableObject(IRendererRetrievable modelObjectModule)
         {
             ModelObjectModule = modelObjectModule;
         }

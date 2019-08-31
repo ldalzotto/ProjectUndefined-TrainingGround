@@ -10,13 +10,20 @@ namespace AdventureGame
 {
     public class PointOfInterestTrackerModule : APointOfInterestModule
     {
+        #region External Dependencies
+        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
+        #endregion
+
+        private PointOfInterestType PointOfInterestTypeRef;
         private POITrackerManager POITrackerManager;
 
         public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
+            this.PlayerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+
+            this.PointOfInterestTypeRef = pointOfInterestTypeRef;
             var trackerCollider = GetComponent<SphereCollider>();
             this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef, pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>(), trackerCollider);
-
         }
 
         #region Data Retrieval
@@ -35,7 +42,12 @@ namespace AdventureGame
             {
                 if (collisionType.IsPoi)
                 {
-                    this.POITrackerManager.OnPOIObjectEnter(PointOfInterestTypeHelper.FromCollisionType(collisionType));
+                    var otherPointOfInterestType = PointOfInterestTypeHelper.FromCollisionType(collisionType);
+                    this.POITrackerManager.OnPOIObjectEnter(otherPointOfInterestType);
+                    if (this.PointOfInterestTypeRef.IsPlayer())
+                    {
+                        this.PlayerPointOfInterestSelectionManager.OnPointOfInterestInRange(otherPointOfInterestType);
+                    }
                 }
             }
         }
@@ -47,7 +59,12 @@ namespace AdventureGame
             {
                 if (collisionType.IsPoi)
                 {
-                    this.POITrackerManager.OnPOIObjectExit(PointOfInterestTypeHelper.FromCollisionType(collisionType));
+                    var otherPointOfInterestType = PointOfInterestTypeHelper.FromCollisionType(collisionType);
+                    this.POITrackerManager.OnPOIObjectExit(otherPointOfInterestType);
+                    if (this.PointOfInterestTypeRef.IsPlayer())
+                    {
+                        this.PlayerPointOfInterestSelectionManager.OnPointOfInterestExitRange(otherPointOfInterestType);
+                    }
                 }
             }
         }
@@ -66,7 +83,7 @@ namespace AdventureGame
         private Transform ReferenceTransform;
         private List<PointOfInterestType> InRangePointOfInterests = new List<PointOfInterestType>();
         private PointOfInterestType nearestInRangeInteractabledPointOfInterest;
-        
+
         public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
 
         public POITrackerManager(PointOfInterestType PointOfInterestTypeRef, PlayerPOITrackerManagerComponentV2 playerPOITrackerManagerComponent, SphereCollider TrackerCollider)
@@ -111,13 +128,13 @@ namespace AdventureGame
             PointOfInterestType nearestInteractivePoi = null;
             foreach (var POI in InRangePointOfInterests)
             {
-                if(Vector3.Angle(this.PointOfInterestTypeRef.transform.forward, POI.transform.position - this.PointOfInterestTypeRef.transform.position) <= this.PointOfInterestTypeRef.PointOfInterestInherentData.POIDetectionAngleLimit)
+                if (Vector3.Angle(this.PointOfInterestTypeRef.transform.forward, POI.transform.position - this.PointOfInterestTypeRef.transform.position) <= this.PointOfInterestTypeRef.PointOfInterestInherentData.POIDetectionAngleLimit)
                 {
                     nearestInteractivePoi = POI;
                     break;
                 }
             }
-            
+
             return nearestInteractivePoi;
         }
 

@@ -9,6 +9,7 @@ namespace AdventureGame
 
         private ContextActionManager ContextActionManager;
         private ContextActionWheelManager ContextActionWheelManager;
+        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
         private PlayerManager PlayerManager;
         private NPCManager NPCManager;
         private InventoryManager InventoryManager;
@@ -52,6 +53,7 @@ namespace AdventureGame
 
             ContextActionManager = FindObjectOfType<ContextActionManager>();
             ContextActionWheelManager = FindObjectOfType<ContextActionWheelManager>();
+            PlayerPointOfInterestSelectionManager = FindObjectOfType<PlayerPointOfInterestSelectionManager>();
             PlayerManager = FindObjectOfType<PlayerManager>();
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
@@ -64,8 +66,10 @@ namespace AdventureGame
 
             //initialization
             CameraMovementManager.Init();
+            GameObject.FindObjectOfType<AdventureEventsManager>().Init();
             GameObject.FindObjectOfType<CutscenePositionsManager>().Init();
             CutscenePlayerManagerV2.Init();
+            PlayerPointOfInterestSelectionManager.Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();
@@ -100,6 +104,7 @@ namespace AdventureGame
                 ContextActionWheelManager.Tick(d);
                 ContextActionManager.Tick(d);
                 PointOfInterestManager.Tick(d);
+                PlayerPointOfInterestSelectionManager.Tick(d);
                 PlayerManager.Tick(d);
                 NPCManager.Tick(d);
                 CameraMovementManager.Tick(d);

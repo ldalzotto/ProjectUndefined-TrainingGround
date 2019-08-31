@@ -1,6 +1,4 @@
 ﻿using CoreGame;
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,11 +13,15 @@ namespace AdventureGame
         private DataComponentContainer PlayerDataComponentContainer;
         #endregion
 
+        #region Player POI selection manager
+        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
+        #endregion
+
         #region Animation Managers
         private PlayerAnimationManager PlayerAnimationManager;
         private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
-        
+
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
 
         private PlayerInputMoveManager PlayerInputMoveManager;
@@ -40,6 +42,7 @@ namespace AdventureGame
             ContextActionWheelEventManager ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
             InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
             var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            this.PlayerPointOfInterestSelectionManager = this.GetComponent<PlayerPointOfInterestSelectionManager>();
             #endregion
 
             #region Load Persisted Position
@@ -61,6 +64,7 @@ namespace AdventureGame
             playerAgent.updateRotation = false;
 
             this.PlayerCommonComponents = GetComponentInChildren<PlayerCommonComponents>();
+
             this.PlayerDataComponentContainer = GetComponentInChildren<DataComponentContainer>();
             this.PlayerDataComponentContainer.Init();
 
@@ -73,7 +77,7 @@ namespace AdventureGame
             #region POI Modules
             this.PointOfInterestTrackerModule = this.PointOfInterestType.GetPointOfInterestTrackerModule();
             #endregion
-            
+
             this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
             this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.PointOfInterestTrackerModule);
             this.PlayerContextActionManager = new PlayerContextActionManager();
@@ -112,7 +116,7 @@ namespace AdventureGame
                 //if statement to avoid processing inpout at the same frame
                 if (!PlayerInventoryTriggerManager.Tick())
                 {
-                    PlayerPOIWheelTriggerManager.Tick(d, PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest());
+                    PlayerPOIWheelTriggerManager.Tick(d, this.PlayerPointOfInterestSelectionManager.GetCurrentSelectedPOI());
                 }
             }
 
@@ -165,7 +169,7 @@ namespace AdventureGame
         public bool IsVisualMovementAllowed()
         {
             return (!PlayerContextActionManager.IsActionExecuting || PlayerContextActionManager.IsTalkActionExecuting)
-                        && !PlayerAnimationManager.IsIdleAnimationRunnig() 
+                        && !PlayerAnimationManager.IsIdleAnimationRunnig()
                         && this.PointOfInterestType.IsVisualMovementAllowed();
         }
 
@@ -231,9 +235,9 @@ namespace AdventureGame
             this.PointOfInterestTrackerModule = pointOfInterestTrackerModule;
         }
 
-        public void Tick(float d, PointOfInterestType nearestPOI)
+        public void Tick(float d, PointOfInterestType selectedPOI)
         {
-            if (nearestPOI != null)
+            if (selectedPOI != null)
             {
                 if (GameInputManager.CurrentInput.ActionButtonD())
                 {
@@ -241,7 +245,7 @@ namespace AdventureGame
                     {
                         Debug.Log(PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest().name);
                         wheelEnabled = true;
-                        ContextActionWheelEventManager.OnWheelEnabled(nearestPOI.GetContextActions(), WheelTriggerSource.PLAYER);
+                        ContextActionWheelEventManager.OnWheelEnabled(selectedPOI.GetContextActions(), WheelTriggerSource.PLAYER);
                     }
                 }
             }
@@ -250,15 +254,6 @@ namespace AdventureGame
         public void OnWheelDisabled()
         {
             wheelEnabled = false;
-        }
-
-        public void GizmoTick(PointOfInterestType nearestPOI)
-        {
-            if (PlayerTransform != null && nearestPOI != null)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawRay(nearestPOI.transform.position, (PlayerTransform.position - nearestPOI.transform.position).normalized * nearestPOI.GetMaxDistanceToInteractWithPlayer());
-            }
         }
     }
     #endregion

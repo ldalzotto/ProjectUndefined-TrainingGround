@@ -135,6 +135,7 @@
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionManager.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\AdventureDiscussionWindowManager.cs" />
     <Compile Include="Assets\~AdventureGame\Discussion\Scripts\DiscussionWindow\DiscussionWindowsContainer.cs" />
+    <Compile Include="Assets\~AdventureGame\Events\AdventureEventsManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryCell.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Item\Inventory\Script\InventoryManager.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerAnimationPlayer.cs" />
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerManager.cs" />
+    <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerPointOfInterestSelectionManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\GhostPOI\Scripts\GhostsPOIManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\DataComponents\PlayerPOITrackerManagerComponentV2.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Scripts\DataComponents\PlayerPOIVisualMovementComponentV2.cs" />

@@ -71,7 +71,6 @@
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameLogHandler.cs" />
-    <Compile Include="Assets\~CoreGame\__Game\Scripts\MaterialContainer.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
@@ -189,7 +188,6 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
-    <Compile Include="Assets\~CoreGame\MaterialDynamicInstances\POISelectedMaterial.cs" />
     <Compile Include="Assets\~CoreGame\Math\FrustumPointsPositions.cs" />
     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
@@ -260,7 +258,6 @@
     <None Include="Assets\_Shader\Wave\WaveShader.shader" />
     <None Include="Assets\_Shader\FX\Outline\OutlineColorWriteShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
-    <None Include="Assets\_Shader\FX\PointOfInterest\SelectedPointOfInterestShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\FX\Outline\BufferScreenSampleShader.shader" />

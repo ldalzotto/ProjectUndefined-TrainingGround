@@ -43,6 +43,6 @@ void Outline(uint3 id : SV_DispatchThreadID)
 	float4 center = _TmpRangeRenderArrayBuffer[id.xyz];
 	if (center.x != 0 || center.y != 0 || center.z != 0) {
 		float4 comparisonCol = GetComputedOutlineColor(_PixelDistance, id);
-		_RangeRenderBuffer[id.xy] = _RangeRenderBuffer[id.xy] + (center * (comparisonCol.x == 0)) + (center * float4(0.05, 0.05, 0.05, 0.05));
+		_RangeRenderBuffer[id.xy] = _RangeRenderBuffer[id.xy] + (center * (comparisonCol.x == 0)) + (center * float4(0.025, 0.025, 0.025, 0.025));
 	}
 }

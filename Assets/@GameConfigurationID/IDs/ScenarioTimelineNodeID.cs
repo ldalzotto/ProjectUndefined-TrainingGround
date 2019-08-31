@@ -33,5 +33,7 @@ namespace GameConfigurationID {
     GrabTest = 17,
     
     _1_Town_PuzzleTransition = 18,
+    
+    _1_Town_GardenWatchMan_Initialization = 19,
   }
 }

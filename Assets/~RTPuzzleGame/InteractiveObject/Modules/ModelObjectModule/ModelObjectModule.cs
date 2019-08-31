@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ModelObjectModule : InteractiveObjectModule, IRenderBoundRetrievable, IMeshRendererRetrievable
+    public class ModelObjectModule : InteractiveObjectModule, IRenderBoundRetrievable, IRendererRetrievable
     {
         #region Properties
         private ExtendedBounds AverageModeBounds;
         private Animator animator;
         private Rigidbody associatedRigidbody;
-        private List<MeshRenderer> meshRenderers;
+        private List<Renderer> renderers;
         #endregion
 
         #region Data Retrieval
@@ -21,9 +21,9 @@ namespace RTPuzzle
         }
         public Animator Animator { get => animator; }
         public Rigidbody AssociatedRigidbody { get => associatedRigidbody; }
-        public List<MeshRenderer> GetAllMeshRenderers()
+        public List<Renderer> GetAllRenderers()
         {
-            return this.meshRenderers;
+            return this.renderers;
         }
         #endregion
 
@@ -37,7 +37,7 @@ namespace RTPuzzle
             }
 
             this.associatedRigidbody = GetComponentInParent<Rigidbody>();
-            this.meshRenderers = GetComponentsInChildren<MeshRenderer>().ToList();
+            this.renderers = GetComponentsInChildren<Renderer>().ToList();
         }
 
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)

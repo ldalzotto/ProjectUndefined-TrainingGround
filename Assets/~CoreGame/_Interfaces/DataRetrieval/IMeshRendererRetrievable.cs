@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public interface IMeshRendererRetrievable
+    public interface IRendererRetrievable
     {
-        List<MeshRenderer> GetAllMeshRenderers();
+        List<Renderer> GetAllRenderers();
     }
 }

@@ -7,6 +7,10 @@ namespace RTPuzzle
 {
     public class PlayerActionManager : MonoBehaviour
     {
+        #region External Dependencies
+        private PuzzleEventsManager PuzzleEventsManager;
+        #endregion
+
         public PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
 
         private PlayerActionExecutionManager PlayerActionExecutionManager;
@@ -19,6 +23,7 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
+            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
             var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
             var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
@@ -80,17 +85,21 @@ namespace RTPuzzle
         {
             PLayerSelectionWheelManager.OnWheelSleep();
         }
-        public void AddActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToAdd)
-        {
-            this.PlayerActionsAvailableManager.AddActionToAvailable(playerActionId, rTPPlayerActionToAdd);
-        }
-        public void RemoveActionToAvailable(PlayerActionId playerActionId, RTPPlayerAction rTPPlayerActionToRemove)
-        {
-            this.PlayerActionsAvailableManager.RemoveActionToAvailable(playerActionId, rTPPlayerActionToRemove);
-        }
         public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
         {
             this.PlayerActionsAvailableManager.IncreaseActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
+        }
+        public void OnSelectableObjectSelected(SelectableObject selectableObject)
+        {
+            this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, selectableObject.AssociatedPlayerAction);
+            if (this.PLayerSelectionWheelManager.WheelEnabled)
+            {
+                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
+            }
+        }
+        public void OnSelectableObjectDeSelected(SelectableObject selectableObject)
+        {
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(PlayerActionId.NONE, selectableObject.AssociatedPlayerAction);
         }
         #endregion
 

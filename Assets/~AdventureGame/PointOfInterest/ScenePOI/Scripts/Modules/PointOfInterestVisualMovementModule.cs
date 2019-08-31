@@ -11,22 +11,25 @@ namespace AdventureGame
 {
     public class PointOfInterestVisualMovementModule : APointOfInterestModule
     {
-        #region Modules
+        private PointOfInterestType pointOfInterestTypeRef;
         private PointOfInterestTrackerModule PointOfInterestTrackerModule;
+        #region player POISelection
+        private PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager;
         #endregion
 
         private PointOfInterestVisualMovementManager PointOfInterestVisualMovementManager;
         private IVisualMovementPermission IVisualMovementPermission;
 
-        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule, PointOfInterestTrackerModule PointOfInterestTrackerModule)
+        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule,
+            PointOfInterestTrackerModule PointOfInterestTrackerModule,
+            PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager)
         {
+            this.pointOfInterestTypeRef = pointOfInterestTypeRef;
+            this.PointOfInterestTrackerModule = PointOfInterestTrackerModule;
             #region Data Component Dependencies
             var PlayerPOIVisualMovementComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOIVisualMovementComponentV2>();
             #endregion
-
-            #region Other Modules Dependencies
-            this.PointOfInterestTrackerModule = PointOfInterestTrackerModule;
-            #endregion
+            this.PlayerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager;
 
             this.PointOfInterestVisualMovementManager = new PointOfInterestVisualMovementManager(PlayerPOIVisualMovementComponentV2, PointOfInterestModelObjectModule.Animator);
 
@@ -44,7 +47,14 @@ namespace AdventureGame
         {
             if (this.IVisualMovementPermission.IsVisualMovementAllowed())
             {
-                this.PointOfInterestVisualMovementManager.LateTick(d, this.PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest());
+                if (this.pointOfInterestTypeRef.IsPlayer())
+                {
+                    this.PointOfInterestVisualMovementManager.LateTick(d, this.PlayerPointOfInterestSelectionManager.GetCurrentSelectedPOI());
+                }
+                else
+                {
+                    this.PointOfInterestVisualMovementManager.LateTick(d, this.PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest());
+                }
             }
             else
             {

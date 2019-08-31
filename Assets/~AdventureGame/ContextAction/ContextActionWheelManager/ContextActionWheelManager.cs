@@ -21,7 +21,6 @@ namespace AdventureGame
 
         private WheelActivityManager WheelActivityManager;
         private WheelActionActivationManager WheelActionActivationManager;
-        private PointOnInteresetSelectedEffectManager PointOnInteresetSelectedEffectManager;
         private WheelPositionManager WheelPositionManager;
 
         private void Start()
@@ -37,7 +36,6 @@ namespace AdventureGame
             WheelActivityManager = new WheelActivityManager(GameInputManager);
             WheelActionActivationManager = new WheelActionActivationManager(GameInputManager, ContextActionWheel);
             WheelPositionManager = new WheelPositionManager(GameObject.FindGameObjectWithTag(TagConstants.PLAYER_TAG).transform, WheelPositionManagerComponent, ContextActionWheel.transform);
-            PointOnInteresetSelectedEffectManager = new PointOnInteresetSelectedEffectManager();
         }
 
         public void Tick(float d)
@@ -75,13 +73,18 @@ namespace AdventureGame
         public void OnAwakeWheel(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource, PointOfInterestType currentTargetedPOI)
         {
             ContextActionWheel.Init(contextActions.ConvertAll(contextAction => new ContextActionSelectionWheelNodeData(contextAction) as SelectionWheelNodeData), ResolveWheelNodeSpriteFromNodeData);
-            PointOnInteresetSelectedEffectManager.OnWheelEnabled(currentTargetedPOI);
             WheelActivityManager.AwakeWheel(wheelTriggerSource);
         }
         public void SleepWheel()
         {
             WheelActivityManager.SleepWheel();
-            PointOnInteresetSelectedEffectManager.OnWheelDisabled();
+        }
+        #endregion
+
+        #region Logical Conditions
+        public bool IsWheelEnabled()
+        {
+            return this.WheelActivityManager.IsEnabled;
         }
         #endregion
 
@@ -176,47 +179,7 @@ namespace AdventureGame
         PLAYER, INVENTORY_MENU
     }
     #endregion
-
-    #region  POISelection Effect
-    class PointOnInteresetSelectedEffectManager
-    {
-
-        private Dictionary<int, Material> originalMaterials = new Dictionary<int, Material>();
-        private PointOfInterestType cachedSelectedPointOfInterest;
-
-        public void OnWheelEnabled(PointOfInterestType selectedPointOfInterest)
-        {
-            if (selectedPointOfInterest != null)
-            {
-                cachedSelectedPointOfInterest = selectedPointOfInterest;
-                var poiMeshRenderers = selectedPointOfInterest.GetRenderers();
-                for (var i = 0; i < poiMeshRenderers.Length; i++)
-                {
-                    originalMaterials[poiMeshRenderers[i].GetInstanceID()] = poiMeshRenderers[i].material;
-                    var selectedMaterial = POISelectedMaterial.Build(poiMeshRenderers[i].material);
-                    poiMeshRenderers[i].material = selectedMaterial;
-                }
-            }
-
-        }
-
-        public void OnWheelDisabled()
-        {
-            if (cachedSelectedPointOfInterest != null)
-            {
-                var poiMeshRenderers = cachedSelectedPointOfInterest.GetRenderers();
-                for (var i = 0; i < poiMeshRenderers.Length; i++)
-                {
-                    poiMeshRenderers[i].material = originalMaterials[poiMeshRenderers[i].GetInstanceID()];
-                }
-                cachedSelectedPointOfInterest = null;
-            }
-
-        }
-
-    }
-    #endregion
-
+    
     #region Wheel node Context Action data
     public class ContextActionSelectionWheelNodeData : SelectionWheelNodeData
     {

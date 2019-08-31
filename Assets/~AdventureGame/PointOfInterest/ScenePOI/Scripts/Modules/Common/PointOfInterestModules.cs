@@ -36,7 +36,7 @@ namespace AdventureGame
             this.pointOfInterestModelObjectModule.IfNotNull((pointOfInterestModelObjectModule) => pointOfInterestModelObjectModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule));
             this.pointOfInterestCutsceneController.IfNotNull((pointOfInterestCutsceneController) => pointOfInterestCutsceneController.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule));
             this.pointOfInterestTrackerModule.IfNotNull((pointOfInterestTrackerModule) => pointOfInterestTrackerModule.Init(pointOfInterestTypeRef));
-            this.pointOfInterestVisualMovementModule.IfNotNull((pointOfInterestVisualMovementModule) => pointOfInterestVisualMovementModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestTrackerModule));
+            this.pointOfInterestVisualMovementModule.IfNotNull((pointOfInterestVisualMovementModule) => pointOfInterestVisualMovementModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestTrackerModule, GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>()));
         }
 
         public void Tick(float d)

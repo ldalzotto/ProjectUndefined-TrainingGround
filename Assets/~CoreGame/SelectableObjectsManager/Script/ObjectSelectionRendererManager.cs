@@ -44,11 +44,11 @@ namespace CoreGame
 
                     var tmpRangeRenderArrayBuffer = Shader.PropertyToID(OutlineComputeShaderConstants.PRE_EFFECT_TEXTURES);
                     this.commandBufer.GetTemporaryRTArray(tmpRangeRenderArrayBuffer, width, height, 1, 0, FilterMode.Point, RenderTextureFormat.ARGB64, RenderTextureReadWrite.Linear, 1, true);
-
-                    this.commandBufer.SetRenderTarget(new RenderTargetIdentifier(tmpRangeRenderArrayBuffer, depthSlice: 0));
-                    this.commandBufer.ClearRenderTarget(true, true, MyColors.TransparentBlack);
                     
-                    foreach (var meshRenderer in modelOutlined.GetAllMeshRenderers())
+                    this.commandBufer.SetRenderTarget(new RenderTargetIdentifier(tmpRangeRenderArrayBuffer, depthSlice: 0));
+                    this.commandBufer.ClearRenderTarget(false, true, MyColors.TransparentBlack);
+                    
+                    foreach (var meshRenderer in modelOutlined.GetAllRenderers())
                     {
                         this.commandBufer.DrawRenderer(meshRenderer, this.OutlineColorShader);
                     }
@@ -63,7 +63,7 @@ namespace CoreGame
 
                     this.commandBufer.SetRenderTarget(BuiltinRenderTextureType.CameraTarget);
 
-                    foreach (var meshRenderer in modelOutlined.GetAllMeshRenderers())
+                    foreach (var meshRenderer in modelOutlined.GetAllRenderers())
                     {
                         this.commandBufer.DrawRenderer(meshRenderer, this.BufferScreenSampleShader);
                     }

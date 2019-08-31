@@ -157,6 +157,11 @@ namespace RTPuzzle
         {
             this.PlayerActionEventManager.OnWheelSleep();
         }
+        public void PZ_EVT_OnPlayerActionWheelRefresh()
+        {
+            this.PZ_EVT_OnPlayerActionWheelSleep();
+            this.PZ_EVT_OnPlayerActionWheelAwake();
+        }
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()
         {
             this.PlayerActionEventManager.OnCurrentNodeSelected();

@@ -1,16 +1,18 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AdventureGame
 {
 
-    public class PointOfInterestModelObjectModule : APointOfInterestModule
+    public class PointOfInterestModelObjectModule : APointOfInterestModule, IRendererRetrievable
     {
         #region Internal Dependencies
         private GameObject modelObject;
         private List<GameObject> oneLevelDownChildObjects;
         private Collider[] allColliders;
+        private List<Renderer> renderers;
         private Animator animator;
         private PointOfInterestType pointOfInterestTypeRef;
 
@@ -26,6 +28,12 @@ namespace AdventureGame
         public ExtendedBounds AverageModeBounds { get => averageModeBounds; }
         #endregion
 
+        #region Data Retrieval
+        public List<Renderer> GetAllRenderers()
+        {
+            return this.renderers;
+        }
+        #endregion
 
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
@@ -40,6 +48,7 @@ namespace AdventureGame
             this.modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
 
             this.allColliders = modelObject.GetComponentsInChildren<Collider>();
+            this.renderers = modelObject.GetComponentsInChildren<Renderer>().ToList();
             this.oneLevelDownChildObjects = modelObject.FindOneLevelDownChilds();
             this.animator = modelObject.GetComponent<Animator>();
             if (this.animator == null)

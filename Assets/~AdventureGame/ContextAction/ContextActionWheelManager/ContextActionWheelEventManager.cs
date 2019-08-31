@@ -30,6 +30,13 @@ namespace AdventureGame
         {
             ContextActionWheelManager.OnAwakeWheel(contextActions, wheelTriggerSource, PlayerManager.GetCurrentTargetedPOI());
         }
+
+        public void OnWheelRefresh(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource)
+        {
+            this.OnWheelDisabled();
+            this.OnWheelEnabled(contextActions, wheelTriggerSource);
+        }
+
     }
 
 }

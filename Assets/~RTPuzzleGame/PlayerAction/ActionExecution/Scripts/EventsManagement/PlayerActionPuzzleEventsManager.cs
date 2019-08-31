@@ -43,11 +43,11 @@ namespace RTPuzzle
 
         public void OnSelectableObjectSelected(SelectableObject SelectableObject)
         {
-            this.PlayerActionManager.AddActionToAvailable(PlayerActionId.NONE, SelectableObject.AssociatedPlayerAction);
+            this.PlayerActionManager.OnSelectableObjectSelected(SelectableObject);
         }
         public void OnSelectableObjectDeSelected(SelectableObject SelectableObject)
         {
-            this.PlayerActionManager.RemoveActionToAvailable(PlayerActionId.NONE, SelectableObject.AssociatedPlayerAction);
+            this.PlayerActionManager.OnSelectableObjectDeSelected(SelectableObject);
         }
         
         #endregion
