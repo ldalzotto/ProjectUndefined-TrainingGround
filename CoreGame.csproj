@@ -266,6 +266,7 @@
     <None Include="Assets\Test\DottedLineTest\Shader\DottedLineShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovement.cginc" />
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
+    <None Include="Assets\_Shader\Common\VertexUnlitTransparent.shader" />
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />

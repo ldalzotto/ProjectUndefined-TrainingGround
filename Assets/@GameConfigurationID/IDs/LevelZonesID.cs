@@ -43,5 +43,7 @@ namespace GameConfigurationID {
     ADVENTURE_AnimationCutsceneTimelineTest = 13,
     
     NONE = -1,
+    
+    _Town1_Park = 14,
   }
 }

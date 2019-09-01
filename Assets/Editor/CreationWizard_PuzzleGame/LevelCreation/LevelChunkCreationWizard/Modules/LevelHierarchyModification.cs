@@ -18,7 +18,6 @@ namespace Editor_LevelChunkCreationWizard
         {
             if (levelZonesID != LevelZonesID.NONE)
             {
-                var levelHierarchy = LevelHierarchyConfiguration.ConfigurationInherentData[levelZonesID];
                 LevelHierarchyConfiguration.AddPuzzleChunkLevel(levelZonesID, levelZoneChunkID);
                 editorProfile.LevelHierarchyAdded(LevelHierarchyConfiguration, levelZonesID, levelZoneChunkID);
             }
