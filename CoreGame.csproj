@@ -277,6 +277,7 @@
     <None Include="Assets\_Shader\WaterV2\WaterShader.shader" />
     <None Include="Assets\_Shader\WaterV2\WaterForwardPass.cginc" />
     <None Include="Assets\_Shader\Noise\noiseSimplex.cginc" />
+    <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2.shader" />
     <None Include="Assets\~CoreGame\Discussion\Font\LICENSE.txt" />
     <None Include="Assets\CoreGame.asmdef" />
     <None Include="Assets\_Shader\ImageBlitShader\AddBlitShader.shader" />
