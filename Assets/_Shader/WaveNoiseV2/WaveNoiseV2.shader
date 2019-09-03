@@ -2,53 +2,42 @@
 
 Shader "Custom/WaveNoiseV2"
 {
-    Properties
-    {
-		_DisplacementFactorMap("Displacement factor map", 2D) = "white" {}
-		_WorldSpaceDirection("World space direction", Vector) = (1,1,1,1)
+	Properties
+	{
 		_MaxIntensity("Max Intensity", Float) = 1.0
-		_NoiseSpeed("Noise Speed", Float) = 1.0
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
-    }
-    SubShader
-    {
-        Tags { "RenderType"="Opaque" }
+		_MinIntensity("Min Intensity", Float) = -1.0
+		_Glossiness("Smoothness", Range(0,1)) = 0.5
+		_Metallic("Metallic", Range(0,1)) = 0.0
+		[Toggle(IS_NOISE)] _IsNoise("Is Noise?", Float) = 1.0
+		[ShowOnKeywordDrawer(IS_NOISE)] _DisplacementFactorMap("Displacement factor map", 2D) = "white" {}
+		[ShowOnKeywordDrawer(IS_NOISE)] _WorldSpaceDirection("World space direction", Vector) = (1,1,1,1)
+		[ShowOnKeywordDrawer(IS_NOISE)] _NoiseSpeed("Noise Speed", Float) = 1.0
+		[ShowOnKeywordDrawer(IS_NOISE)] _NoiseFrequency("Noise frequency", Float) = 1.0
 
-        CGPROGRAM
-        #pragma surface surf Standard fullforwardshadows vertex:vert
-        #pragma target 3.0
-		#include "Assets/_Shader/Noise/noiseSimplex.cginc"
+		[Toggle(IS_WAVE)] _IsWave("Is Wave?", Float) = 0.0
+		[ShowOnKeywordDrawer(IS_WAVE)] _WaveMap("(R) Amplitude texture, (G) Speed texture, (B) Frequency texture", 2D) = "white" {}
+		[ShowOnKeywordDrawer(IS_WAVE)] _MaxSpeed("Max speed", Float) = 1.0
+		[ShowOnKeywordDrawer(IS_WAVE)] _MaxFrequency("Max frequency", Float) = 1.0
 
-        struct Input
-        {
-			float4 vertexColor : COLOR;
-        };
+		[Toggle(DIRECTION_TEXTURE)] _IsDirectionTexture("Direction texture?", Float) = 0.0
+		[ShowOnKeywordDrawer(DIRECTION_TEXTURE)] _DirectionTexture("Direction texture", 2D) = "grey" {}
 
-		sampler2D _DisplacementFactorMap;
-		float4 _DisplacementFactorMap_ST;
-		float4 _WorldSpaceDirection;
-		float _MaxIntensity;
-		float _NoiseSpeed;
+		[Toggle(FLAT_SHADE)] _IsFlatShade("Flat shade?", Float) = 0.0
+	}
+		SubShader
+		{
+			Tags { "RenderType" = "Opaque" }
 
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
+			CGPROGRAM
+			#pragma surface WaveNoiseSurf Standard addshadow vertex:WaveNoiseVert
+			#pragma target 3.0
+			#pragma shader_feature IS_NOISE
+			#pragma shader_feature IS_WAVE
+			#pragma shader_feature DIRECTION_TEXTURE
+			#pragma shader_feature FLAT_SHADE
 
-		void vert(inout appdata_full v) {
-			float3 worldPosition = mul(unity_ObjectToWorld, v.vertex);
-			float noiseIntensity = snoise(worldPosition + (_Time *_NoiseSpeed));
-			v.vertex.xyz += (tex2Dlod(_DisplacementFactorMap, float4(v.texcoord.xy, 0, 0)).x * mul(unity_WorldToObject, _WorldSpaceDirection) * _MaxIntensity * noiseIntensity);
+			#include "Assets/_Shader/WaveNoiseV2/WaveNoiseV2Include.cginc"
+			ENDCG
 		}
-
-        void surf (Input IN, inout SurfaceOutputStandard o)
-        {
-            o.Albedo = IN.vertexColor;
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
-            o.Alpha = IN.vertexColor.w;
-        }
-        ENDCG
-    }
-    FallBack "Diffuse"
+		FallBack "Diffuse"
 }

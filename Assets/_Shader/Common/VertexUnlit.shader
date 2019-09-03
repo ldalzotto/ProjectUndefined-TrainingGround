@@ -8,7 +8,6 @@
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-
         Pass
         {
 			ZWrite On

@@ -5,8 +5,7 @@ void SetNormalWorld(inout VertexOutputForwardBase i, float3 normalWorld) {
 #ifdef _TANGENT_TO_WORLD
 	float4 tangentWorld = float4(UnityObjectToWorldDir(i.tangent.xyz), i.tangent.w);
 
-	float3x3 tangentToW
-		orld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
+	float3x3 tangentToWorld = CreateTangentToWorldPerVertex(normalWorld, tangentWorld.xyz, tangentWorld.w);
 	i.tangentToWorldAndPackedData[0].xyz = tangentToWorld[0];
 	i.tangentToWorldAndPackedData[1].xyz = tangentToWorld[1];
 	i.tangentToWorldAndPackedData[2].xyz = tangentToWorld[2];

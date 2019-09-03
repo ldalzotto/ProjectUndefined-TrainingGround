@@ -1,10 +1,5 @@
-// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
-
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
 #ifndef WAVE_MOVEMENT
 #define WAVE_MOVEMENT
-
 struct WaveMovementDefinition {
 	sampler2D waveDisplacementTexture;
 	sampler2D waveMap;
@@ -61,5 +56,4 @@ float3 WaveMovement(VertexInput v, WaveMovementDefinition waveDefinition) {
 
 	return finalLocalPosition;
 }
-
 #endif // WAVE_MOVEMENT

@@ -252,12 +252,14 @@
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.cginc" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\Test\InstanciatedBufferTest\InstacniatedBufferTest.shader" />
+    <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
     <None Include="Assets\_Shader\Wave\WaveShaderPass.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
     <None Include="Assets\Test\CircleBarTest\CircleBarTest.shader" />
     <None Include="Assets\_Shader\Wave\WaveShader.shader" />
     <None Include="Assets\_Shader\FX\Outline\OutlineColorWriteShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
+    <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
     <None Include="Assets\_Shader\UI\Selection\SelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\Wave\WaveStandardShadowPass.cginc" />
     <None Include="Assets\_Shader\FX\Outline\BufferScreenSampleShader.shader" />
