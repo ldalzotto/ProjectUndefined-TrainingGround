@@ -87,5 +87,7 @@ namespace GameConfigurationID {
     CA_PushWithViolence_1 = 36,
     
     POSE_FallDown = 37,
+    
+    _1_Town_Park_BatFly = 38,
   }
 }

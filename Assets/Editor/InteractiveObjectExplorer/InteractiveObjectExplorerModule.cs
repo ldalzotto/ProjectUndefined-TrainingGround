@@ -248,7 +248,7 @@ namespace Editor_InteractiveObjectExplorer
 
         public void OnSceneGUI(SceneView sceneView)
         {
-            if (this.GUIArea.IsEnabled)
+            if (this.GUIArea.IsEnabled && this.aIObjectType != null)
             {
                 this.gizmoEditor.OnSceneGUI(sceneView, this.aIObjectType.transform);
             }

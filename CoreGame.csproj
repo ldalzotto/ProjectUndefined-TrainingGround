@@ -66,6 +66,11 @@
     <Compile Include="Assets\_Scenes\_1_Town\PlayerObjects\Speaker\SpeakerPlayingAnimationBehavior.cs" />
     <Compile Include="Assets\_Shader\FX\Outline\OutlineComputeShaderConstants.cs" />
     <Compile Include="Assets\_Shader\FX\Range\RangeShaderEditor.cs" />
+    <Compile Include="Assets\~AnimationSystem\AnimationActor\AnimationActor.cs" />
+    <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AbstractAnimationActorModule.cs" />
+    <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AnimationActorModelModule.cs" />
+    <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AnimationActorMovementModule.cs" />
+    <Compile Include="Assets\~AnimationSystem\BaseAnimationSystem\BaseAnimationSystem.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AsbtractCoreGameManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\CoreGameSingletonInstances.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
