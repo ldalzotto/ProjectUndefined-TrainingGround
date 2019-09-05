@@ -39,5 +39,7 @@ namespace GameConfigurationID {
     _1_Town_GardenDoor = 10002,
     
     _1_Town_GardenWatchman = 10003,
+    
+    _Town1_PuzzleIntroductionCutscene = 10004,
   }
 }
