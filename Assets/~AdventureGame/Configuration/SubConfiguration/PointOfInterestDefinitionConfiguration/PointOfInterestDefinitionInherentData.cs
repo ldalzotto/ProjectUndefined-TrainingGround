@@ -66,6 +66,11 @@ namespace AdventureGame
                             var PointOfInterestTrackerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestTrackerModule, pointOfInterestModules.transform);
                             PointOfInterestTrackerModuleInstancer.PopuplateFromDefinition(PointOfInterestTrackerModule, PointOfInterestTrackerModuleDefinition);
                         }
+                        else if (moduleConfiguration.GetType() == typeof(PointOfInterestVisualMovementModuleDefinition))
+                        {
+                            var PointOfInterestVisualMovementModuleDefinition = (PointOfInterestVisualMovementModuleDefinition)moduleConfiguration;
+                            var PointOfInterestVisualMovementModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestVisualMovementModule, pointOfInterestModules.transform);
+                        }
                     }
                 }
             }

@@ -10,5 +10,6 @@ namespace AdventureGame
         [Header("POI base modules")]
         public PointOfInterestCutsceneControllerModule BasePointOfInterestCutsceneControllerModule;
         public PointOfInterestTrackerModule BasePointOfInterestTrackerModule;
+        public PointOfInterestVisualMovementModule BasePointOfInterestVisualMovementModule;
     }
 }
