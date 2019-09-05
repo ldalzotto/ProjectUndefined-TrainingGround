@@ -193,6 +193,10 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIPrefabCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizardProfile.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\Modules\EditorInformations.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\Modules\PointOfInterestDefinitionConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\PointOfInterestDefinitionCreationWizard.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\PointOfInterestDefinitionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\Modules\PuzzleCutsceneConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\PuzzleCutsceneCreationWizard.cs" />
@@ -378,6 +382,7 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\POIModel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\POIModules\Common\EditorPOIModulesOperation.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\POIModules\POIModuleWizard.cs" />
+    <Compile Include="Assets\Editor\GameDesigner\Modules\PointOfInterestDefinition\CreatePointOfInterestDefinition.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\ExploreProjectile.cs" />
@@ -417,8 +422,9 @@
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />
     <Compile Include="Assets\Editor\MaterialProperties\ShowOnKeywordDrawer.cs" />
-    <Compile Include="Assets\Editor\ObjectDefinition\InteractiveObjectDefinition.cs" />
+    <Compile Include="Assets\Editor\ObjectDefinition\InteractiveObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\ObjectDefinition\ObjectDefinitionCustomEditor.cs" />
+    <Compile Include="Assets\Editor\ObjectDefinition\PointOfInterestDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\CustomEnumPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\EnumSearchGUIWindow.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\EnumPropertyDrawer\IncludeConfigurationPropertyDrawer.cs" />

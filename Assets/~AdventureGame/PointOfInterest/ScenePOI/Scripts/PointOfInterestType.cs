@@ -9,11 +9,19 @@ namespace AdventureGame
 
     public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission
     {
+        [CustomEnum(ConfigurationType = typeof(PointOfInterestDefinitionConfiguration))]
+        public PointOfInterestDefinitionID PointOfInterestDefinitionID;
+
         #region Ghost POI Persistance States
         private PointOfInterestScenarioState pointOfInterestScenarioState;
         private PointOfInterestModelState pointOfInterestModelState;
         private PointOfInterestAnimationPositioningState pointOfInterestAnimationPositioningState;
         private PointOfInterestLevelPositioningState pointOfInterestLevelPositioningState;
+        #endregion
+
+        #region Internal State
+        private bool hasBeenDefined = false;
+        private PointOfInterestDefinitionInherentData pointOfInterestDefinitionInherentData;
         #endregion
 
         #region Modules
@@ -42,6 +50,7 @@ namespace AdventureGame
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
         public PointOfInterestInherentData PointOfInterestInherentData { get => pointOfInterestInherentData; }
         public DataComponentContainer POIDataComponentContainer { get => pOIDataComponentContainer; }
+        public PointOfInterestDefinitionInherentData PointOfInterestDefinitionInherentData { get => pointOfInterestDefinitionInherentData; }
 
         #region Data Retrieval
         public float GetMaxDistanceToInteractWithPlayer()
@@ -93,14 +102,22 @@ namespace AdventureGame
 
         public override void Init()
         {
-         //   Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
+            //   Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
 
             #region External Dependencies
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
             this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
             this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            var adventureStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration;
             #endregion
+
+            if (this.PointOfInterestDefinitionID != PointOfInterestDefinitionID.NONE && !this.hasBeenDefined)
+            {
+                this.pointOfInterestDefinitionInherentData = this.AdventureGameConfigurationManager.PointOfInterestDefinitionConfiguration()[this.PointOfInterestDefinitionID];
+                this.pointOfInterestDefinitionInherentData.DefinePointOfInterest(this, adventureStaticConfiguration.AdventurePrefabConfiguration);
+                this.hasBeenDefined = true;
+            }
 
             this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [System.Serializable]
 [CustomEditor(typeof(InteractiveObjectTypeDefinitionInherentData), false)]
-public class InteractiveObjectDefinition : ObjectDefinitionCustomEditor, IObjectDefinitionCustomEditorEventListener
+public class InteractiveObjectDefinitionCustomEditor : ObjectDefinitionCustomEditor, IObjectDefinitionCustomEditorEventListener
 {
     private FoldableArea sharedDataFoldableArea;
     private Editor SharedDataEditor;

@@ -86,6 +86,8 @@ namespace Editor_GameDesigner
 {"Puzzle//AIObjectTypeDefinition//.CreateAIObjectTypeDefinition",typeof(Editor_GameDesigner.CreateAIObjectTypeDefinition)},
 {"Configuration//.AIObjectTypeDefinitionConfigurationModule",typeof(Editor_GameDesigner.AIObjectTypeDefinitionConfigurationModule)},
 {"Configuration//.AIObjectConfigurationModule", typeof(Editor_GameDesigner.AIObjectConfigurationModule)},
+{"Puzzle//PointOfInterestDefinition//.CreatePointOfInterestDefinition", typeof(Editor_GameDesigner.CreatePointOfInterestDefinition)},
+{"Configuration//.PointOfInterestDefinitionConfigurationModule", typeof(Editor_GameDesigner.PointOfInterestDefinitionConfigurationModule)},
 //${addNewEntry}
 };
     }

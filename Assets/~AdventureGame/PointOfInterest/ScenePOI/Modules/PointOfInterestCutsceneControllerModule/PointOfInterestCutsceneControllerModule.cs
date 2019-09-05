@@ -43,7 +43,7 @@ namespace AdventureGame
         public PointOfInterestCutsceneController(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
             #region Data Components Dependencies
-            var PlayerInputMoveManagerComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<TransformMoveManagerComponentV2>();
+            var PlayerInputMoveManagerComponentV3 = pointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.TransformMoveManagerComponent;
             #endregion
 
             var Rigidbody = pointOfInterestTypeRef.GetComponentInParent<Rigidbody>();
@@ -57,7 +57,7 @@ namespace AdventureGame
                 PlayerAnimationDataManager = new PlayerAnimationDataManager(Animator);
             }
 
-            base.BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV2.ToV3(), PlayerAnimationDataManager);
+            base.BaseInit(Rigidbody, Agent, Animator, PlayerInputMoveManagerComponentV3, PlayerAnimationDataManager);
         }
     }
 }

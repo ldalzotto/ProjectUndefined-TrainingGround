@@ -122,6 +122,7 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\Abstract\AbstractObjectDefinitionConfigurationInherentData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />

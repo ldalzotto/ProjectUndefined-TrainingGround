@@ -8,13 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AdventureGame
+namespace Editor_MainGameCreationWizard
 {
     
     
-    [UnityEngine.CreateAssetMenu(fileName="AdventureGameConfiguration", menuName="Configuration/AdventureGame/AdventureGameConfiguration", order=1)]
     [System.Serializable()]
-    public class AdventureGameConfigurations : CoreGame.GameConfiguration
+    public class AdventureGameConfigurations
     {
         
         public AdventureGame.ItemConfiguration ItemConfiguration;
@@ -22,5 +21,8 @@ namespace AdventureGame
         public AdventureGame.PointOfInterestConfiguration PointOfInterestConfiguration;
         
         public AdventureGame.CutsceneConfiguration CutsceneConfiguration;
+        
+        [ReadOnly()]
+        public AdventureGame.PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
     }
 }

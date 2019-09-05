@@ -9,5 +9,6 @@ namespace AdventureGame
     {
         public AdventurePlayerMovementConfiguration AdventurePlayerMovementConfiguration;
         public AdventureDiscussionStaticConfiguration AdventureDiscussionStaticConfiguration;
+        public AdventurePrefabConfiguration AdventurePrefabConfiguration;
     }
 }

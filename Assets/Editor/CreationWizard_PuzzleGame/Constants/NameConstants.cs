@@ -90,5 +90,7 @@ namespace Editor_MainGameCreationWizard
         public static string PuzzleCutsceneInherentData = "_PuzzleCutscene";
         
         public static string AdventureGenerationTestInherentData = "_AdventureGenerationTest";
+        
+        public static string PointOfInterestDefinitionInherentData = "_PointOfInterestDefinition";
     }
 }

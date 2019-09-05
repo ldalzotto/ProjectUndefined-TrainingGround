@@ -156,5 +156,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string AdventureGenerationTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/AdventureGenerationTestConfi" +
             "guration/Data";
+        
+        [ReadOnly()]
+        public static string PointOfInterestDefinitionInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestDefinitionCon" +
+            "figuration/Data";
     }
 }

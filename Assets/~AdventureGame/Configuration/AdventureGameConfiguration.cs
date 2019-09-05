@@ -22,5 +22,7 @@ namespace AdventureGame
         public AdventureGame.PointOfInterestConfiguration PointOfInterestConfiguration;
         
         public AdventureGame.CutsceneConfiguration CutsceneConfiguration;
+        
+        public PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
     }
 }
