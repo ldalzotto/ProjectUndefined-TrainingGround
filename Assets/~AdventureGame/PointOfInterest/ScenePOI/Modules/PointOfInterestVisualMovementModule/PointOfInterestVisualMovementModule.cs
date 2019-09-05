@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static AnimationConstants;
+using GameConfigurationID;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,6 +13,8 @@ namespace AdventureGame
 {
     public class PointOfInterestVisualMovementModule : APointOfInterestModule
     {
+        private PointOfInterestVisualMovementID PointOfInterestVisualMovementID;
+
         private PointOfInterestType pointOfInterestTypeRef;
         private PointOfInterestTrackerModule PointOfInterestTrackerModule;
         #region player POISelection
@@ -24,14 +28,13 @@ namespace AdventureGame
             PointOfInterestTrackerModule PointOfInterestTrackerModule,
             PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager)
         {
+            var PointOfInterestVisualMovementInherentData = GameObject.FindObjectOfType<AdventureGameConfigurationManager>().PointOfInterestVisualMovementConfiguration()[this.PointOfInterestVisualMovementID];
+
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
             this.PointOfInterestTrackerModule = PointOfInterestTrackerModule;
-            #region Data Component Dependencies
-            var PlayerPOIVisualMovementComponentV2 = pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOIVisualMovementComponentV2>();
-            #endregion
             this.PlayerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager;
 
-            this.PointOfInterestVisualMovementManager = new PointOfInterestVisualMovementManager(PlayerPOIVisualMovementComponentV2, PointOfInterestModelObjectModule.Animator);
+            this.PointOfInterestVisualMovementManager = new PointOfInterestVisualMovementManager(PointOfInterestVisualMovementInherentData, PointOfInterestModelObjectModule.Animator);
 
             if (pointOfInterestTypeRef.IsPlayer())
             {
@@ -61,6 +64,14 @@ namespace AdventureGame
                 this.PointOfInterestVisualMovementManager.LateTickNoFollowing();
             }
         }
+
+        public static class PointOfInterestVisualMovementModuleInstancer
+        {
+            public static void PopuplateFromDefinition(PointOfInterestVisualMovementModule pointOfInterestVisualMovementModule, PointOfInterestVisualMovementModuleDefinition pointOfInterestVisualMovementModuleDefinition)
+            {
+                pointOfInterestVisualMovementModule.PointOfInterestVisualMovementID = pointOfInterestVisualMovementModuleDefinition.PointOfInterestVisualMovementID;
+            }
+        }
     }
 
     public interface IVisualMovementPermission
@@ -70,7 +81,7 @@ namespace AdventureGame
 
     class PointOfInterestVisualMovementManager
     {
-        private PlayerPOIVisualMovementComponentV2 playerPOIVisualHeadMovementComponent;
+        private PointOfInterestVisualMovementInherentData PointOfInterestVisualMovementInherentData;
 
         private List<Transform> bonesThatReactToPOI;
         private Transform headBone;
@@ -84,11 +95,11 @@ namespace AdventureGame
         //To avoid unnescessary calculation when not active
         private bool lastFrameWasLateTickNoFollowing = false;
 
-        public PointOfInterestVisualMovementManager(PlayerPOIVisualMovementComponentV2 playerPOIVisualHeadMovementComponent, Animator animator)
+        public PointOfInterestVisualMovementManager(PointOfInterestVisualMovementInherentData PointOfInterestVisualMovementInherentData, Animator animator)
         {
-            this.headBone = BipedBoneRetriever.GetPlayerBone(playerPOIVisualHeadMovementComponent.MovingBone, animator).transform;
+            this.headBone = BipedBoneRetriever.GetPlayerBone(PointOfInterestVisualMovementInherentData.MovingBone, animator).transform;
             this.bonesThatReactToPOI = new List<Transform>() { this.headBone };
-            this.playerPOIVisualHeadMovementComponent = playerPOIVisualHeadMovementComponent;
+            this.PointOfInterestVisualMovementInherentData = PointOfInterestVisualMovementInherentData;
             for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
             {
                 InterpolatedBoneRotations.Add(Quaternion.identity);
@@ -117,7 +128,7 @@ namespace AdventureGame
                     var targetDirection = (LastNearestInteractablePOI.transform.position - affectedBone.transform.position).normalized;
 
                     // (2) - We clamp the bone rotation to a cone.
-                    var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.playerPOIVisualHeadMovementComponent.RotationAngleLimit);
+                    var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.PointOfInterestVisualMovementInherentData.RotationAngleLimit);
 
                     // (3) - We rotate the target direction to fit the cone constraint.
                     var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
@@ -129,7 +140,7 @@ namespace AdventureGame
                     */
 
                     affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
-                        playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
+                        PointOfInterestVisualMovementInherentData.SmoothMovementSpeed * d);
                     InterpolatedBoneRotations[i] = affectedBone.rotation;
                 }
             }
@@ -152,13 +163,13 @@ namespace AdventureGame
                     var dotProductToTarget = Mathf.Abs(Quaternion.Dot(InterpolatedBoneRotations[i], affectedBone.rotation));
 
                     //too much angle to smooth -> direct transition
-                    if (dotProductToTarget <= playerPOIVisualHeadMovementComponent.SmoothOutMaxDotProductLimit)
+                    if (dotProductToTarget <= PointOfInterestVisualMovementInherentData.SmoothOutMaxDotProductLimit)
                     {
                         hasEndedSmoothingOut = true;
                     }
                     else if (dotProductToTarget <= 0.9999f)
                     {
-                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], affectedBone.rotation, playerPOIVisualHeadMovementComponent.SmoothMovementSpeed * d);
+                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], affectedBone.rotation, PointOfInterestVisualMovementInherentData.SmoothMovementSpeed * d);
                         InterpolatedBoneRotations[i] = affectedBone.rotation;
                     }
                     else

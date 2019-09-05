@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Editor_MainGameCreationWizard
+namespace AdventureGame
 {
     
     
@@ -24,5 +24,8 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public AdventureGame.PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
+        
+        [ReadOnly()]
+        public AdventureGame.PointOfInterestVisualMovementConfiguration PointOfInterestVisualMovementConfiguration;
     }
 }

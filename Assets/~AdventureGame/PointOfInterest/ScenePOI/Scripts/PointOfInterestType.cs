@@ -29,10 +29,6 @@ namespace AdventureGame
         private PointOfInterestModulesEventManager PointOfInterestModulesEventManager;
         #endregion
 
-        #region Data Components
-        private DataComponentContainer pOIDataComponentContainer;
-        #endregion
-
         private PointOfInterestInherentData pointOfInterestInherentData;
 
         #region External Dependencies
@@ -49,7 +45,6 @@ namespace AdventureGame
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
         public PointOfInterestInherentData PointOfInterestInherentData { get => pointOfInterestInherentData; }
-        public DataComponentContainer POIDataComponentContainer { get => pOIDataComponentContainer; }
         public PointOfInterestDefinitionInherentData PointOfInterestDefinitionInherentData { get => pointOfInterestDefinitionInherentData; }
 
         #region Data Retrieval
@@ -121,9 +116,6 @@ namespace AdventureGame
             }
 
             this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
-
-            this.pOIDataComponentContainer = this.GetComponentInChildren<DataComponentContainer>();
-            this.pOIDataComponentContainer.Init();
 
             this.PointOfInteresetModules = new PointOfInterestModules(this);
             this.PointOfInterestModulesEventManager = new PointOfInterestModulesEventManager(this.PointOfInteresetModules);

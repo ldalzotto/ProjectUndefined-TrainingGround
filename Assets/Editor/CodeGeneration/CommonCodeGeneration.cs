@@ -9,6 +9,11 @@ public static class CommonCodeGeneration
         {
             puzzleConfigurationFodler.Create();
         }
+        var puzzleConfigurationDataFodler = new DirectoryInfo(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetSubConfigurationFolderPath(baseName) + "/Data");
+        if (!puzzleConfigurationDataFodler.Exists)
+        {
+            puzzleConfigurationDataFodler.Create();
+        }
         return puzzleConfigurationFodler;
     }
 }

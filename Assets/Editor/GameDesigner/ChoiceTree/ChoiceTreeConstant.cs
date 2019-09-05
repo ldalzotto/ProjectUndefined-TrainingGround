@@ -46,7 +46,6 @@ namespace Editor_GameDesigner
 {"Puzzle//InteractiveObjects//.EditRepelableObject",typeof(Editor_GameDesigner.EditRepelableObject)},
 {"Adventure//POI//.CreatePOI",typeof(Editor_GameDesigner.CreatePOI)},
 {"Adventure//POI//.EditPOI",typeof(Editor_GameDesigner.EditPOI)},
-{"Adventure//POI//.POIModel",typeof(Editor_GameDesigner.POIModel)},
 {"Adventure//POI//.ExplorePOI",typeof(Editor_GameDesigner.ExplorePOI)},
 {"Adventure//Discussion//Modules//.CreateDiscussionTree",typeof(Editor_GameDesigner.CreateDiscussionTree)},
 {"Core//Animation//.CreateAnimation",typeof(Editor_GameDesigner.CreateAnimation)},
@@ -87,6 +86,8 @@ namespace Editor_GameDesigner
 {"Configuration//.AIObjectConfigurationModule", typeof(Editor_GameDesigner.AIObjectConfigurationModule)},
 {"Puzzle//PointOfInterestDefinition//.CreatePointOfInterestDefinition", typeof(Editor_GameDesigner.CreatePointOfInterestDefinition)},
 {"Configuration//.PointOfInterestDefinitionConfigurationModule", typeof(Editor_GameDesigner.PointOfInterestDefinitionConfigurationModule)},
+{"Puzzle//PointOfInterestVisualMovement//.CreatePointOfInterestVisualMovement", typeof(Editor_GameDesigner.CreatePointOfInterestVisualMovement)},
+{"Configuration//.PointOfInterestVisualMovementConfigurationModule", typeof(Editor_GameDesigner.PointOfInterestVisualMovementConfigurationModule)},
 //${addNewEntry}
 };
     }

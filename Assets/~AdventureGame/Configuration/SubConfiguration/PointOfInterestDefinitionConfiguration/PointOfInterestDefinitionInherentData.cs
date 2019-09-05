@@ -16,6 +16,7 @@ namespace AdventureGame
     using UnityEngine;
     using UnityEngine.AI;
     using static AdventureGame.PointOfInterestTrackerModule;
+    using static AdventureGame.PointOfInterestVisualMovementModule;
 
     [System.Serializable()]
     [UnityEngine.CreateAssetMenu(fileName = "PointOfInterestDefinitionInherentData", menuName = "Configuration/AdventureGame/PointOfInterestDefinitionConfiguration/PointOfInteres" +
@@ -60,6 +61,7 @@ namespace AdventureGame
                         {
                             var PointOfInterestVisualMovementModuleDefinition = (PointOfInterestVisualMovementModuleDefinition)moduleConfiguration;
                             var PointOfInterestVisualMovementModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestVisualMovementModule, PointOfInterestType.transform);
+                            PointOfInterestVisualMovementModuleInstancer.PopuplateFromDefinition(PointOfInterestVisualMovementModule, PointOfInterestVisualMovementModuleDefinition);
                         }
                         else if (moduleConfiguration.GetType() == typeof(PointOfInterestModelObjectModuleDefinition))
                         {

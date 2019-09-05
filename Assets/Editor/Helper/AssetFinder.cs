@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 
 public class AssetFinder
@@ -67,6 +68,11 @@ public class AssetFinder
     public static List<UnityEngine.Object> SafeAssetFind(string filter)
     {
         return SafeAssetFind<UnityEngine.Object>(filter);
+    }
+
+    public static List<UnityEngine.Object> SafeAssetFindExactName(string name)
+    {
+      return  SafeAssetFind<UnityEngine.Object>(name).Select(o => o).Where(o => o.name == name).ToList();
     }
 }
 

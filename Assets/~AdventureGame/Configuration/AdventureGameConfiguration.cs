@@ -23,6 +23,8 @@ namespace AdventureGame
         
         public AdventureGame.CutsceneConfiguration CutsceneConfiguration;
         
-        public PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
+        public AdventureGame.PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
+        
+        public PointOfInterestVisualMovementConfiguration PointOfInterestVisualMovementConfiguration;
     }
 }

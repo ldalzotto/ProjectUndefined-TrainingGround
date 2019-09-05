@@ -5,7 +5,6 @@ using RTPuzzle;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Editor_MainGameCreationWizard
 {
@@ -28,22 +27,26 @@ namespace Editor_MainGameCreationWizard
                 var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs);
                 if (configurationObject == null)
                 {
-
-                    foreach (var foundAsset in AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name))
+                    var foundAssets = AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name);
+                    if (foundAssets.Count == 0) { Debug.Log("Not found : " + configurationFieldInfo.FieldType.Name); }
+                    foreach (var foundAsset in foundAssets)
                     {
                         if (foundAsset.GetType() == typeof(GameObject))
                         {
                             var retrievedComp = ((GameObject)foundAsset).GetComponent(configurationFieldInfo.FieldType);
-                            if (typeof(InteractiveObjectModule).IsAssignableFrom(retrievedComp.GetType()))
+                            if (retrievedComp != null)
                             {
-                                configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs, retrievedComp);
+                                if (typeof(InteractiveObjectModule).IsAssignableFrom(retrievedComp.GetType()))
+                                {
+                                    configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs, retrievedComp);
+                                }
                             }
                         }
                     }
                 }
             }
             #endregion
-            
+
             #region Adventure Common Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
@@ -116,7 +119,7 @@ namespace Editor_MainGameCreationWizard
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
         public PuzzleGameConfigurations PuzzleGameConfigurations;
         public PuzzleInteractiveObjectModulePrefabs PuzzleInteractiveObjectModulePrefabs;
-        
+
         public CommonGameConfigurations()
         {
             this.CoreGameConfigurations = new CoreGameConfigurations();
@@ -154,7 +157,7 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly]
         public InteractiveObjectType BaseInteractiveObjectTypePrefab;
     }
-    
+
     [System.Serializable]
     public class AdventureCommonPrefabs
     {

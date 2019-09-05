@@ -17,9 +17,6 @@ namespace AdventureGame
 
         public bool IsPersistantToPuzzle = false;
         public bool IsAlwaysDisplayed = false;
-
-        [Tooltip("This is used for cutscene instanciation")]
-        public GameObject PointOfInterestPrefab;
     }
 
 }

@@ -92,5 +92,7 @@ namespace Editor_MainGameCreationWizard
         public static string AdventureGenerationTestInherentData = "_AdventureGenerationTest";
         
         public static string PointOfInterestDefinitionInherentData = "_PointOfInterestDefinition";
+        
+        public static string PointOfInterestVisualMovementInherentData = "_PointOfInterestVisualMovement";
     }
 }
