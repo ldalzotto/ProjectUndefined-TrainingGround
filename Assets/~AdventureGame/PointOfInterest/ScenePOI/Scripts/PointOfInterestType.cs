@@ -102,7 +102,7 @@ namespace AdventureGame
 
         public override void Init()
         {
-            //   Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
+            Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
 
             #region External Dependencies
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
@@ -121,11 +121,10 @@ namespace AdventureGame
 
             this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
 
-            this.pOIDataComponentContainer = this.transform.parent.GetComponentInChildren<DataComponentContainer>();
+            this.pOIDataComponentContainer = this.GetComponentInChildren<DataComponentContainer>();
             this.pOIDataComponentContainer.Init();
 
-            this.PointOfInteresetModules = transform.parent.GetComponentInChildren<PointOfInterestModules>();
-            this.PointOfInteresetModules.Init(this);
+            this.PointOfInteresetModules = new PointOfInterestModules(this);
             this.PointOfInterestModulesEventManager = new PointOfInterestModulesEventManager(this.PointOfInteresetModules);
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
@@ -247,11 +246,11 @@ namespace AdventureGame
         #region Prefab Data Retrieval
         public Renderer[] GetRenderers(bool includeInactives = false)
         {
-            return transform.parent.GetComponentsInChildren<Renderer>(includeInactives);
+            return this.GetComponentsInChildren<Renderer>(includeInactives);
         }
         public GameObject GetRootObject()
         {
-            return transform.parent.gameObject;
+            return this.gameObject;
         }
         #endregion
 

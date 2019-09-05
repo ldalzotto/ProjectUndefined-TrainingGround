@@ -9,7 +9,6 @@ namespace AdventureGame
     public class PointOfInterestModelObjectModule : APointOfInterestModule, IRendererRetrievable
     {
         #region Internal Dependencies
-        private GameObject modelObject;
         private List<GameObject> oneLevelDownChildObjects;
         private Collider[] allColliders;
         private List<Renderer> renderers;
@@ -45,22 +44,21 @@ namespace AdventureGame
             }
 
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
-            this.modelObject = PointOfInterestTypeHelper.GetModelObject(pointOfInterestTypeRef);
 
-            this.allColliders = modelObject.GetComponentsInChildren<Collider>();
-            this.renderers = modelObject.GetComponentsInChildren<Renderer>().ToList();
-            this.oneLevelDownChildObjects = modelObject.FindOneLevelDownChilds();
-            this.animator = modelObject.GetComponent<Animator>();
+            this.allColliders = this.GetComponentsInChildren<Collider>();
+            this.renderers = this.GetComponentsInChildren<Renderer>().ToList();
+            this.oneLevelDownChildObjects = this.gameObject.FindOneLevelDownChilds();
+            this.animator = this.GetComponent<Animator>();
             if (this.animator == null)
             {
-                this.animator = modelObject.GetComponentInChildren<Animator>();
+                this.animator = this.GetComponentInChildren<Animator>();
             }
             this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
             this.InitAnimation();
 
             this.averageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
-            this.modelObject.transform.localScale = Vector3.one;
-            this.modelObject.transform.localPosition = Vector3.zero;
+            this.transform.localScale = Vector3.one;
+            this.transform.transform.localPosition = Vector3.zero;
         }
 
         private void InitAnimation()
@@ -100,14 +98,14 @@ namespace AdventureGame
         public void SetModelLocalScaleRelativeTo(Vector3 localScale, Vector3 localScalePoint)
         {
             var initialOrigin = Vector3.zero;
-            this.modelObject.transform.localPosition =
+            this.transform.localPosition =
                 new Vector3()
                 {
                     x = initialOrigin.x + (localScalePoint.x * ((localScale.x * -1) + 1)),
                     y = localScalePoint.y * ((localScale.y * -1) + 1),
                     z = localScalePoint.z * ((localScale.z * -1) + 1)
                 };
-            this.modelObject.transform.localScale = localScale;
+            this.transform.localScale = localScale;
         }
         #endregion
     }

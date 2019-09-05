@@ -48,7 +48,6 @@ namespace Editor_GameDesigner
 {"Adventure//POI//.EditPOI",typeof(Editor_GameDesigner.EditPOI)},
 {"Adventure//POI//.POIModel",typeof(Editor_GameDesigner.POIModel)},
 {"Adventure//POI//.ExplorePOI",typeof(Editor_GameDesigner.ExplorePOI)},
-{"Adventure//POI//Modules//.POIModuleWizard",typeof(Editor_GameDesigner.POIModuleWizard)},
 {"Adventure//Discussion//Modules//.CreateDiscussionTree",typeof(Editor_GameDesigner.CreateDiscussionTree)},
 {"Core//Animation//.CreateAnimation",typeof(Editor_GameDesigner.CreateAnimation)},
 {"Configuration//.CutsceneConfigurationModule",typeof(Editor_GameDesigner.CutsceneConfigurationModule)},

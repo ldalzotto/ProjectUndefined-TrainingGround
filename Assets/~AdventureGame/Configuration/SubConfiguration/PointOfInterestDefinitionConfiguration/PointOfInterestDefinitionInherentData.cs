@@ -35,17 +35,7 @@ namespace AdventureGame
         public void DefinePointOfInterest(PointOfInterestType PointOfInterestType, AdventurePrefabConfiguration AdventurePrefabConfiguration)
         {
             PointOfInterestType.PointOfInterestId = PointOfInterestId;
-
-            if (this.PointOfInterestSharedDataTypeInherentData != null)
-            {
-                if (this.PointOfInterestSharedDataTypeInherentData.InteractionWithPlayerAllowed)
-                {
-                    this.CreateRigidBody(PointOfInterestType);
-                }
-            }
-
-            var pointOfInterestModules = PointOfInterestType.transform.parent.GetComponentInChildren<PointOfInterestModules>();
-
+            
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
                 foreach (var rangeDefinitionModuleActivation in this.RangeDefinitionModulesActivation)
@@ -57,19 +47,19 @@ namespace AdventureGame
                         if (moduleConfiguration.GetType() == typeof(PointOfInterestCutsceneControllerModuleDefinition))
                         {
                             var PointOfInterestCutsceneControllerModuleDefinition = (PointOfInterestCutsceneControllerModuleDefinition)moduleConfiguration;
-                            var PointOfInterestCutsceneControllerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestCutsceneControllerModule, pointOfInterestModules.transform);
+                            var PointOfInterestCutsceneControllerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestCutsceneControllerModule, PointOfInterestType.transform);
                             this.EnableNavMeshAgent(PointOfInterestType);
                         }
                         else if (moduleConfiguration.GetType() == typeof(PointOfInterestTrackerModuleDefinition))
                         {
                             var PointOfInterestTrackerModuleDefinition = (PointOfInterestTrackerModuleDefinition)moduleConfiguration;
-                            var PointOfInterestTrackerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestTrackerModule, pointOfInterestModules.transform);
+                            var PointOfInterestTrackerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestTrackerModule, PointOfInterestType.transform);
                             PointOfInterestTrackerModuleInstancer.PopuplateFromDefinition(PointOfInterestTrackerModule, PointOfInterestTrackerModuleDefinition);
                         }
                         else if (moduleConfiguration.GetType() == typeof(PointOfInterestVisualMovementModuleDefinition))
                         {
                             var PointOfInterestVisualMovementModuleDefinition = (PointOfInterestVisualMovementModuleDefinition)moduleConfiguration;
-                            var PointOfInterestVisualMovementModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestVisualMovementModule, pointOfInterestModules.transform);
+                            var PointOfInterestVisualMovementModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestVisualMovementModule, PointOfInterestType.transform);
                         }
                     }
                 }
@@ -80,17 +70,7 @@ namespace AdventureGame
         {
             if (PointOfInterestType.PointOfInterestDefinitionID != PointOfInterestDefinitionID.PLAYER)
             {
-                PointOfInterestType.transform.parent.GetComponent<NavMeshAgent>().enabled = true;
-            }
-        }
-
-        private void CreateRigidBody(PointOfInterestType PointOfInterestType)
-        {
-            if (PointOfInterestType.PointOfInterestDefinitionID != PointOfInterestDefinitionID.PLAYER)
-            {
-                var Rigidbody = PointOfInterestType.transform.parent.gameObject.AddComponent<Rigidbody>();
-                Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-                Rigidbody.useGravity = false;
+                PointOfInterestType.transform.GetComponent<NavMeshAgent>().enabled = true;
             }
         }
     }

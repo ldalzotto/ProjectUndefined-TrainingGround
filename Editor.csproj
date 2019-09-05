@@ -379,8 +379,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\EditPOI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\ExplorePOI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\POI\POIModel.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\POIModules\Common\EditorPOIModulesOperation.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\POIModules\POIModuleWizard.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PointOfInterestDefinition\CreatePointOfInterestDefinition.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\EditProjectile.cs" />

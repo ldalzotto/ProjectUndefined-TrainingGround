@@ -1,10 +1,9 @@
-﻿using System;
-using CoreGame;
+﻿using CoreGame;
 using UnityEngine;
 
 namespace AdventureGame
 {
-    public class PointOfInterestModules : MonoBehaviour
+    public class PointOfInterestModules
     {
 
         private PointOfInterestModelObjectModule pointOfInterestModelObjectModule;
@@ -18,10 +17,10 @@ namespace AdventureGame
         public PointOfInterestTrackerModule PointOfInterestTrackerModule { get => pointOfInterestTrackerModule; }
         public PointOfInterestVisualMovementModule PointOfInterestVisualMovementModule { get => pointOfInterestVisualMovementModule; }
         #endregion
-        
-        public void Init(PointOfInterestType pointOfInterestTypeRef)
+
+        public PointOfInterestModules(PointOfInterestType pointOfInterestTypeRef)
         {
-            var retrievedPointOfInterestModules = this.transform.GetComponentsInChildren<APointOfInterestModule>();
+            var retrievedPointOfInterestModules = pointOfInterestTypeRef.GetComponentsInChildren<APointOfInterestModule>();
             if (retrievedPointOfInterestModules != null)
             {
                 foreach (var retrievedPointOfInterestModule in retrievedPointOfInterestModules)
