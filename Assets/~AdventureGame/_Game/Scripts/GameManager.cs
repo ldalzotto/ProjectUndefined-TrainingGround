@@ -39,12 +39,12 @@ namespace AdventureGame
 
             //load dynamic POI
             var allLoadedLevelChunkID = GameObject.FindObjectOfType<LevelManager>().AllLoadedLevelZonesChunkID;
-            var allActivePOIIds = GameObject.FindObjectsOfType<APointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestId);
-            foreach (var elligiblePOIIdTo in CoreGameSingletonInstances.AGhostPOIManager.GetAllPOIIdElligibleToBeDynamicallyInstanciated(allLoadedLevelChunkID))
+            var allActivePOIDefinitionIds = GameObject.FindObjectsOfType<PointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestDefinitionID);
+            foreach (var elligiblePOIDefinitionIdTo in CoreGameSingletonInstances.AGhostPOIManager.GetAllPOIIdElligibleToBeDynamicallyInstanciated(allLoadedLevelChunkID))
             {
-                if (!allActivePOIIds.Contains(elligiblePOIIdTo))
+                if (!allActivePOIDefinitionIds.Contains(elligiblePOIDefinitionIdTo))
                 {
-                    PointOfInterestType.Instanciate(elligiblePOIIdTo);
+                    PointOfInterestType.Instanciate(elligiblePOIDefinitionIdTo);
                 }
             }
 

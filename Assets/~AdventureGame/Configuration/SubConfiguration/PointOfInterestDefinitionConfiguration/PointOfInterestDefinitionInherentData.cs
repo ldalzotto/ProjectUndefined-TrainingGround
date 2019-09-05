@@ -35,7 +35,7 @@ namespace AdventureGame
         public void DefinePointOfInterest(PointOfInterestType PointOfInterestType, AdventurePrefabConfiguration AdventurePrefabConfiguration)
         {
             PointOfInterestType.PointOfInterestId = PointOfInterestId;
-            
+
             if (this.RangeDefinitionModulesActivation != null && this.RangeDefinitionModules != null)
             {
                 foreach (var rangeDefinitionModuleActivation in this.RangeDefinitionModulesActivation)
@@ -60,6 +60,14 @@ namespace AdventureGame
                         {
                             var PointOfInterestVisualMovementModuleDefinition = (PointOfInterestVisualMovementModuleDefinition)moduleConfiguration;
                             var PointOfInterestVisualMovementModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestVisualMovementModule, PointOfInterestType.transform);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(PointOfInterestModelObjectModuleDefinition))
+                        {
+                            var PointOfInterestModelObjectModuleDefinition = (PointOfInterestModelObjectModuleDefinition)moduleConfiguration;
+                            var PointOfInterestModelObjectModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestModelObjectModule, PointOfInterestType.transform);
+                            var modelObject = GameObject.Instantiate(PointOfInterestModelObjectModuleDefinition.ModelObject, PointOfInterestModelObjectModule.transform);
+                            modelObject.transform.localPosition = Vector3.zero;
+                            modelObject.transform.localRotation = Quaternion.identity;
                         }
                     }
                 }

@@ -12,7 +12,7 @@ namespace AdventureGame
     public class CutsceneSpawnPOIAction : SequencedAction
     {
         [CustomEnum()]
-        public PointOfInterestId PointOfInterestId;
+        public PointOfInterestDefinitionID PointOfInterestDefinitionID;
         [CustomEnum()]
         public CutscenePositionMarkerID Position;
 
@@ -32,13 +32,13 @@ namespace AdventureGame
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
-
-            if (cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId) == null)
+            var pointOfInterestID = cutsceneActionInput.AdventureGameConfigurationManager.PointOfInterestDefinitionConfiguration()[this.PointOfInterestDefinitionID].PointOfInterestId;
+            if (cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(pointOfInterestID) == null)
             {
-                PointOfInterestType.InstanciateNow(this.PointOfInterestId);
+                PointOfInterestType.InstanciateNow(this.PointOfInterestDefinitionID);
             }
 
-            var cutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId).GetPointOfInterestCutsceneController();
+            var cutsceneController = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(pointOfInterestID).GetPointOfInterestCutsceneController();
             if (cutsceneController != null && cutsceneActionInput.CutscenePositionsManager != null)
             {
                 cutsceneController.Warp(cutsceneActionInput.CutscenePositionsManager.GetCutscenePosition(cutsceneActionInput.CutsceneId, this.Position).transform);
@@ -52,7 +52,7 @@ namespace AdventureGame
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
-            this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
+            this.PointOfInterestDefinitionID = (PointOfInterestDefinitionID)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestDefinitionID);
             this.Position = (CutscenePositionMarkerID)NodeEditorGUILayout.EnumField("Position : ", string.Empty, this.Position);
         }
 #endif

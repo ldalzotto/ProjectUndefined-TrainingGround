@@ -19,8 +19,6 @@ namespace AdventureGame
         private Dictionary<PointOfInterestId, GhostPOI> ghostPOIs = null;
         private GhostPOIManagerPersister GhostPOIManagerPersister;
 
-        public Dictionary<PointOfInterestId, GhostPOI> GhostPOIs { get { return ghostPOIs; } }
-
         public override void Init()
         {
             this.GhostPOIManagerPersister = new GhostPOIManagerPersister();
@@ -51,20 +49,20 @@ namespace AdventureGame
 
         public GhostPOI GetGhostPOI(PointOfInterestId pointOfInterestId)
         {
-            return GhostPOIs[pointOfInterestId];
+            return this.ghostPOIs[pointOfInterestId];
         }
 
-        public override List<PointOfInterestId> GetAllPOIIdElligibleToBeDynamicallyInstanciated(List<LevelZoneChunkID> levelZoneChunkIDs)
+        public override List<PointOfInterestDefinitionID> GetAllPOIIdElligibleToBeDynamicallyInstanciated(List<LevelZoneChunkID> levelZoneChunkIDs)
         {
-            var returnList = new List<PointOfInterestId>();
-            foreach(var ghostPOIEntry in this.ghostPOIs)
+            var returnList = new List<PointOfInterestDefinitionID>();
+            foreach (var ghostPOIEntry in this.ghostPOIs)
             {
                 var currentGhostPOI = ghostPOIEntry.Value;
-                if (currentGhostPOI.PointOfInterestLevelPositioningState != null && currentGhostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID != LevelZoneChunkID.NONE 
+                if (currentGhostPOI.PointOfInterestLevelPositioningState != null && currentGhostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID != LevelZoneChunkID.NONE
                     && levelZoneChunkIDs.Contains(currentGhostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID) &&
                     currentGhostPOI.PointOfInterestModelState != null && !currentGhostPOI.PointOfInterestModelState.IsDisabled)
                 {
-                    returnList.Add(ghostPOIEntry.Key);
+                    returnList.Add(currentGhostPOI.PointOfInterestIdentificationState.PointOfInterestDefinitionID);
                 }
             }
             return returnList;
@@ -73,13 +71,14 @@ namespace AdventureGame
         #region External Events
         public override void OnPOICreated(APointOfInterestType pointOfInterestType)
         {
-            ((PointOfInterestType)pointOfInterestType).SyncPOIFromGhostPOI(GhostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
+            ((PointOfInterestType)pointOfInterestType).SyncPOIFromGhostPOI(this.ghostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
+            ((PointOfInterestType)pointOfInterestType).SynchIndentificationStateToGhostPOI(this.ghostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
 
         public override void OnPOIDisabled(APointOfInterestType pointOfInterestType)
         {
-            ((PointOfInterestType)pointOfInterestType).SyncPointOfInterestModelStateToGhostPOI(GhostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
+            ((PointOfInterestType)pointOfInterestType).SyncPointOfInterestModelStateToGhostPOI(this.ghostPOIs[((PointOfInterestType)pointOfInterestType).PointOfInterestId]);
             this.OnGhostPOIChanged();
         }
 
@@ -101,6 +100,8 @@ namespace AdventureGame
     public class GhostPOI
     {
         [SerializeField]
+        private PointOfInterestIdentificationState pointOfInterestIdentificationState;
+        [SerializeField]
         private PointOfInterestScenarioState PointOfInterestScenarioState;
         [SerializeField]
         private ContextActionSynchronizerManager contextActionSynchronizerManager;
@@ -116,12 +117,14 @@ namespace AdventureGame
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; set => pointOfInterestModelState = value; }
         public PointOfInterestAnimationPositioningState PointOfInterestAnimationPositioningState { get => pointOfInterestAnimationPositioningState; set => pointOfInterestAnimationPositioningState = value; }
         public PointOfInterestLevelPositioningState PointOfInterestLevelPositioningState { get => pointOfInterestLevelPositioningState; set => pointOfInterestLevelPositioningState = value; }
+        public PointOfInterestIdentificationState PointOfInterestIdentificationState { get => pointOfInterestIdentificationState; }
 
         [NonSerialized]
         private GhostsPOIManager ghostsPOIManagerRef;
 
         public GhostPOI()
         {
+            pointOfInterestIdentificationState = new PointOfInterestIdentificationState();
             PointOfInterestScenarioState = new PointOfInterestScenarioState();
             contextActionSynchronizerManager = new ContextActionSynchronizerManager();
             PointOfInterestModelState = new PointOfInterestModelState();
@@ -229,7 +232,7 @@ namespace AdventureGame
 
         public void OnPositionChanged(Transform position, LevelZoneChunkID levelZoneChunkID)
         {
-            if(this.pointOfInterestLevelPositioningState == null)
+            if (this.pointOfInterestLevelPositioningState == null)
             {
                 this.pointOfInterestLevelPositioningState = new PointOfInterestLevelPositioningState();
             }

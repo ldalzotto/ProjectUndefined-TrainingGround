@@ -8,7 +8,8 @@ namespace AdventureGame
         public static List<Type> PointOfInterestModuleTypes = new List<Type>() {
             typeof(PointOfInterestCutsceneControllerModuleDefinition),
             typeof(PointOfInterestTrackerModuleDefinition),
-            typeof(PointOfInterestVisualMovementModuleDefinition)
+            typeof(PointOfInterestVisualMovementModuleDefinition),
+            typeof(PointOfInterestModelObjectModuleDefinition)
 //${addNewEntry}
         };
     }

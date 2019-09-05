@@ -117,4 +117,13 @@ namespace AdventureGame
 
     }
     #endregion
+
+    #region Identification State
+    [System.Serializable]
+    public class PointOfInterestIdentificationState
+    {
+        [SerializeField]
+        public PointOfInterestDefinitionID PointOfInterestDefinitionID;
+    }
+    #endregion
 }

@@ -28,7 +28,6 @@ namespace Editor_POICreationWizard
             var savedPrefab = PrefabUtility.SavePrefabAsset(createdPOI.gameObject);
 
             var pointOfInterestInherentData = editorProfile.GetModule<POIConfigurationCreation>().CreatedObject;
-            SerializableObjectHelper.Modify(pointOfInterestInherentData, (so) => so.FindProperty(nameof(pointOfInterestInherentData.PointOfInterestPrefab)).objectReferenceValue = savedPrefab);
         }
     }
 }

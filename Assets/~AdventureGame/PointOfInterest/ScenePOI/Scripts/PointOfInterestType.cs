@@ -80,17 +80,18 @@ namespace AdventureGame
 
         #endregion
 
-        public static PointOfInterestType Instanciate(PointOfInterestId pointOfInterestId)
+        public static PointOfInterestType Instanciate(PointOfInterestDefinitionID PointOfInterestDefinitionID)
         {
-            var poiInstanciated = MonoBehaviour.Instantiate(GameObject.FindObjectOfType<AdventureGameConfigurationManager>().POIConf()[pointOfInterestId].PointOfInterestPrefab, GameObject.FindObjectOfType<LevelManager>().transform);
-            var pointOfInterestTypeInstanciated = poiInstanciated.GetComponentInChildren<PointOfInterestType>();
-            pointOfInterestTypeInstanciated.Init();
-            return pointOfInterestTypeInstanciated;
+            var AdventureGameStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration;
+            var pointOfInterestType = MonoBehaviour.Instantiate(AdventureGameStaticConfiguration.AdventurePrefabConfiguration.BasePointOfInterestType, GameObject.FindObjectOfType<LevelManager>().transform);
+            pointOfInterestType.PointOfInterestDefinitionID = PointOfInterestDefinitionID;
+            pointOfInterestType.Init();
+            return pointOfInterestType;
         }
 
-        public static void InstanciateNow(PointOfInterestId pointOfInterestId)
+        public static void InstanciateNow(PointOfInterestDefinitionID PointOfInterestDefinitionID)
         {
-            var pointOfInterestTypeInstanciated = Instanciate(pointOfInterestId);
+            var pointOfInterestTypeInstanciated = Instanciate(PointOfInterestDefinitionID);
             pointOfInterestTypeInstanciated.Init_EndOfFrame();
         }
 
@@ -215,6 +216,11 @@ namespace AdventureGame
             {
                 PointOfInterestEventManager.SetPosition(this, ghostPOI.PointOfInterestLevelPositioningState.TransformBinarry.Format());
             }
+        }
+
+        public void SynchIndentificationStateToGhostPOI(GhostPOI ghostPOI)
+        {
+            ghostPOI.PointOfInterestIdentificationState.PointOfInterestDefinitionID = this.PointOfInterestDefinitionID;
         }
 
         public void SyncPointOfInterestModelStateToGhostPOI(GhostPOI ghostPOI)

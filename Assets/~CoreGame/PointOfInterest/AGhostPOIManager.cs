@@ -10,6 +10,6 @@ namespace CoreGame
         public abstract void Init();
         public abstract void OnPOICreated(APointOfInterestType pointOfInterestType);
         public abstract void OnPOIDisabled(APointOfInterestType pointOfInterestType);
-        public abstract List<PointOfInterestId> GetAllPOIIdElligibleToBeDynamicallyInstanciated(List<LevelZoneChunkID>  levelZoneChunkIDs);
+        public abstract List<PointOfInterestDefinitionID> GetAllPOIIdElligibleToBeDynamicallyInstanciated(List<LevelZoneChunkID>  levelZoneChunkIDs);
     }
 }
