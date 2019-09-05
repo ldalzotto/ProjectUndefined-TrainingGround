@@ -88,5 +88,7 @@ namespace Editor_MainGameCreationWizard
         public static string AIObjectTypeDefinitionInherentData = "_AIObjectTypeDefinition";
         
         public static string PuzzleCutsceneInherentData = "_PuzzleCutscene";
+        
+        public static string AdventureGenerationTestInherentData = "_AdventureGenerationTest";
     }
 }

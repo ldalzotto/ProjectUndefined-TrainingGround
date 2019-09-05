@@ -1,12 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.IO;
-using System.Collections.Generic;
+﻿using Editor_MainGameCreationWizard;
 using System.CodeDom;
-using System.Linq;
 using System.CodeDom.Compiler;
-using Editor_MainGameCreationWizard;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 public class CreationWizardCreation : EditorWindow
 {
@@ -18,9 +17,11 @@ public class CreationWizardCreation : EditorWindow
     }
 
     private string baseName;
+    private GameTypeGeneration GameTypeGeneration;
 
     private void OnGUI()
     {
+        this.GameTypeGeneration = (GameTypeGeneration)EditorGUILayout.EnumPopup(this.GameTypeGeneration);
         this.baseName = EditorGUILayout.TextField("BaseName : ", this.baseName);
         if (GUILayout.Button("GENERATE SCRIPTS"))
         {
@@ -28,7 +29,7 @@ public class CreationWizardCreation : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
-                    CreationWizardCreation.DoGenerateCreationWizardScripts(this.baseName);
+                    CreationWizardCreation.DoGenerateCreationWizardScripts(this.baseName, this.GameTypeGeneration);
                 }
             }
         }
@@ -44,12 +45,12 @@ public class CreationWizardCreation : EditorWindow
         }
     }
 
-    public static void DoGenerateCreationWizardScripts(string baseName)
+    public static void DoGenerateCreationWizardScripts(string baseName, GameTypeGeneration GameTypeGeneration)
     {
-        UpdatePuzzleGameConfigurationsEditorConstants(baseName);
-        UpdateInstancePathEditorConstants(baseName);
+        UpdatePuzzleGameConfigurationsEditorConstants(baseName, GameTypeGeneration);
+        UpdateInstancePathEditorConstants(baseName, GameTypeGeneration);
         UpdateNameConstantsEditorConstant(baseName);
-        DoGenerateEditorCreation(baseName);
+        DoGenerateEditorCreation(baseName, GameTypeGeneration);
         UpdateGameCreationWizardEditorProfileChoiceTree(baseName);
     }
 
@@ -59,16 +60,16 @@ public class CreationWizardCreation : EditorWindow
         DoGenerateCreationWizardProfile(baseName);
     }
 
-    private static void UpdatePuzzleGameConfigurationsEditorConstants(string baseName)
+    private static void UpdatePuzzleGameConfigurationsEditorConstants(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(PuzzleGameConfigurations).Namespace);
+        CodeNamespace samples = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace();
 
-        var generatedPuzzleGameConfigurations = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(PuzzleGameConfigurations));
+        var generatedPuzzleGameConfigurations = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType());
 
         //Add the new configuration
         bool add = true;
-        foreach (var field in typeof(PuzzleGameConfigurations).GetFields())
+        foreach (var field in GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType().GetFields())
         {
             if (field.Name == baseName + "Configuration")
             {
@@ -77,7 +78,7 @@ public class CreationWizardCreation : EditorWindow
         }
         if (add)
         {
-            var newManagerAddedField = new CodeMemberField("RTPuzzle" + "." + baseName + "Configuration", baseName + "Configuration");
+            var newManagerAddedField = new CodeMemberField(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace().Name + "." + baseName + "Configuration", baseName + "Configuration");
             newManagerAddedField.Attributes = MemberAttributes.Public;
             newManagerAddedField.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
             generatedPuzzleGameConfigurations.Members.Add(newManagerAddedField);
@@ -97,9 +98,9 @@ public class CreationWizardCreation : EditorWindow
         }
     }
 
-    private static void UpdateInstancePathEditorConstants(string baseName)
+    private static void UpdateInstancePathEditorConstants(string baseName, GameTypeGeneration GameTypeGeneration)
     {
-        var puzzleConfigurationFodler = CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(baseName);
+        var puzzleConfigurationFodler = CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(baseName, GameTypeGeneration);
 
         CodeCompileUnit compileUnity = new CodeCompileUnit();
         CodeNamespace samples = new CodeNamespace(typeof(PuzzleGameConfigurations).Namespace);
@@ -175,8 +176,8 @@ public class CreationWizardCreation : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-    
-    private static void DoGenerateEditorCreation(string baseName)
+
+    private static void DoGenerateEditorCreation(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         DirectoryInfo sourceTemplateDirectory = new DirectoryInfo(PathConstants.CodeGenerationCreationWizardBasincConfigurationCreationTemplatePath);
         if (sourceTemplateDirectory.Exists)
@@ -189,7 +190,9 @@ public class CreationWizardCreation : EditorWindow
             }
 
             CodeGenerationHelper.DuplicateDirectoryWithParamtersRecursive(sourceTemplateDirectory, targetDirectory, new Dictionary<string, string>() {
-                { "${baseName}", baseName}
+                { "${baseName}", baseName},
+                {"${namespaceName}", GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace().Name },
+                {"${editorGameConfigurationsName}",GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType().Name }
             });
         }
     }

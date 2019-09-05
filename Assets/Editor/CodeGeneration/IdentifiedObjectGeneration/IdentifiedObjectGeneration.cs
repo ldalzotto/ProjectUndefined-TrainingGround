@@ -7,17 +7,18 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class PuzzleIdentifiedObjectGeneration : EditorWindow
+public class IdentifiedObjectGeneration : EditorWindow
 {
 
     [MenuItem("Generation/PuzzleIdentifiedObjectGeneration")]
     static void Init()
     {
-        PuzzleIdentifiedObjectGeneration window = (PuzzleIdentifiedObjectGeneration)EditorWindow.GetWindow(typeof(PuzzleIdentifiedObjectGeneration));
+        IdentifiedObjectGeneration window = (IdentifiedObjectGeneration)EditorWindow.GetWindow(typeof(IdentifiedObjectGeneration));
         window.Show();
     }
 
     private string baseName;
+    private GameTypeGeneration GameTypeGeneration;
 
     private DirectoryInfo puzzleConfigurationFodler;
     private CodeTypeDeclaration idEnumClass;
@@ -33,11 +34,11 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
                     this.DoGenerateID();
-                    this.puzzleConfigurationFodler = CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(this.baseName);
-                    PuzzleConfigurationCreation.DoGenerateInherentData(this.baseName);
-                    PuzzleConfigurationCreation.DoGenerateConfiguration(this.baseName);
-                    PuzzleConfigurationCreation.UpdatePuzzleGameConfiguration(this.baseName);
-                    CreationWizardCreation.DoGenerateCreationWizardScripts(this.baseName);
+                    this.puzzleConfigurationFodler = CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(this.baseName, this.GameTypeGeneration);
+                    PuzzleConfigurationCreation.DoGenerateInherentData(this.baseName, this.GameTypeGeneration);
+                    PuzzleConfigurationCreation.DoGenerateConfiguration(this.baseName, this.GameTypeGeneration);
+                    PuzzleConfigurationCreation.UpdateGameConfiguration(this.baseName, this.GameTypeGeneration);
+                    CreationWizardCreation.DoGenerateCreationWizardScripts(this.baseName, this.GameTypeGeneration);
                     this.DoGenerateCreateGameDesignerModule();
                     PuzzleConfigurationCreation.DoGenerateConfigurationGameDesignerModule(this.baseName);
                 }
@@ -50,7 +51,7 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
-                    PuzzleConfigurationCreation.DoCreateConfigurationAsset(this.baseName);
+                    PuzzleConfigurationCreation.DoCreateConfigurationAsset(this.baseName, this.GameTypeGeneration);
                     CreationWizardCreation.DoGenerateCreationWizardScriptsAssets(this.baseName);
                 }
             }
@@ -59,6 +60,7 @@ public class PuzzleIdentifiedObjectGeneration : EditorWindow
 
     private void DoInput()
     {
+        this.GameTypeGeneration = (GameTypeGeneration)EditorGUILayout.EnumPopup(this.GameTypeGeneration);
         this.baseName = EditorGUILayout.TextField("BaseName : ", this.baseName);
     }
 

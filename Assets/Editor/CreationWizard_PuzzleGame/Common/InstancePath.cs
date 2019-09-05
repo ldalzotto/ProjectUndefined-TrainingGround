@@ -148,5 +148,13 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string PuzzleCutsceneInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/PuzzleCutsceneConfiguration/D" +
             "ata";
+        
+        [ReadOnly()]
+        public static string AdventureGenTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/AdventureGenTestConfiguratio" +
+            "n/Data";
+        
+        [ReadOnly()]
+        public static string AdventureGenerationTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/AdventureGenerationTestConfi" +
+            "guration/Data";
     }
 }

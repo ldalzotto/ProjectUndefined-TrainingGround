@@ -1,5 +1,4 @@
 ﻿using ConfigurationEditor;
-using RTPuzzle;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -17,9 +16,11 @@ public class PuzzleConfigurationCreation : EditorWindow
     }
 
     private string baseName;
+    private GameTypeGeneration GameTypeGeneration;
 
     private void OnGUI()
     {
+        this.GameTypeGeneration = (GameTypeGeneration)EditorGUILayout.EnumPopup(this.GameTypeGeneration);
         this.baseName = EditorGUILayout.TextField("BaseName : ", this.baseName);
 
         if (GUILayout.Button("GENERATE SCRIPTS"))
@@ -28,10 +29,10 @@ public class PuzzleConfigurationCreation : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
-                    CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(this.baseName);
-                    DoGenerateInherentData(this.baseName);
-                    DoGenerateConfiguration(this.baseName);
-                    UpdatePuzzleGameConfiguration(this.baseName);
+                    CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(this.baseName, this.GameTypeGeneration);
+                    DoGenerateInherentData(this.baseName, this.GameTypeGeneration);
+                    DoGenerateConfiguration(this.baseName, this.GameTypeGeneration);
+                    UpdateGameConfiguration(this.baseName, this.GameTypeGeneration);
                     DoGenerateConfigurationGameDesignerModule(this.baseName);
                 }
             }
@@ -42,7 +43,7 @@ public class PuzzleConfigurationCreation : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
-                    DoCreateConfigurationAsset(this.baseName);
+                    DoCreateConfigurationAsset(this.baseName, this.GameTypeGeneration);
                 }
             }
         }
@@ -50,26 +51,22 @@ public class PuzzleConfigurationCreation : EditorWindow
 
     }
 
-    public static void DoGenerateInherentData(string baseName)
+    public static void DoGenerateInherentData(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(PuzzleEventsManager).Namespace);
+        CodeNamespace samples = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace();
         samples.Imports.Add(new CodeNamespaceImport("UnityEngine"));
         CodeTypeDeclaration inherentDataClass = new CodeTypeDeclaration(baseName + "InherentData");
         inherentDataClass.IsClass = true;
         inherentDataClass.TypeAttributes = System.Reflection.TypeAttributes.Public;
         inherentDataClass.CustomAttributes.Add(new CodeAttributeDeclaration("System.Serializable"));
-        inherentDataClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(inherentDataClass.Name, "Configuration/PuzzleGame/" + baseName + "Configuration/" + inherentDataClass.Name));
+        inherentDataClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(inherentDataClass.Name, GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationAssetMenuAttributeName(baseName, inherentDataClass.Name)));
         inherentDataClass.BaseTypes.Add(typeof(ScriptableObject).Name);
-
-        var interactiveObjectReference = new CodeMemberField(typeof(InteractiveObjectType), "AssociatedInteractiveObjectType");
-        interactiveObjectReference.Attributes = MemberAttributes.Public;
-        inherentDataClass.Members.Add(interactiveObjectReference);
 
         samples.Types.Add(inherentDataClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration/" + inherentDataClass.Name + ".cs";
+        string filename = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetSubConfigurationFolderPath(baseName) + "/" + inherentDataClass.Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -80,10 +77,10 @@ public class PuzzleConfigurationCreation : EditorWindow
         }
     }
 
-    public static void DoGenerateConfiguration(string baseName)
+    public static void DoGenerateConfiguration(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(PuzzleEventsManager).Namespace);
+        CodeNamespace samples = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace();
         samples.Imports.Add(new CodeNamespaceImport("UnityEngine"));
         samples.Imports.Add(new CodeNamespaceImport("ConfigurationEditor"));
         samples.Imports.Add(new CodeNamespaceImport("GameConfigurationID"));
@@ -93,7 +90,7 @@ public class PuzzleConfigurationCreation : EditorWindow
         configurationClass.IsClass = true;
         configurationClass.TypeAttributes = System.Reflection.TypeAttributes.Public;
         configurationClass.CustomAttributes.Add(new CodeAttributeDeclaration("System.Serializable"));
-        configurationClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(configurationClass.Name, "Configuration/PuzzleGame/" + configurationClass.Name + "/" + configurationClass.Name));
+        configurationClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(configurationClass.Name, GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationAssetMenuAttributeName(baseName, configurationClass.Name)));
         var configurationType = new CodeTypeReference(typeof(ConfigurationSerialization<,>));
         configurationType.TypeArguments.Add(baseName + "ID");
         configurationType.TypeArguments.Add(baseName + "InherentData");
@@ -102,7 +99,7 @@ public class PuzzleConfigurationCreation : EditorWindow
         samples.Types.Add(configurationClass);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration/" + configurationClass.Name + ".cs";
+        string filename = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetSubConfigurationFolderPath(baseName) + "/" + configurationClass.Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -111,7 +108,7 @@ public class PuzzleConfigurationCreation : EditorWindow
             provider.GenerateCodeFromCompileUnit(
                 compileUnity, sourceWriter, options);
         }
-        
+
         var configurationDataDirectory = new DirectoryInfo(PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration/Data");
         if (!configurationDataDirectory.Exists)
         {
@@ -119,17 +116,17 @@ public class PuzzleConfigurationCreation : EditorWindow
         }
     }
 
-    public static void UpdatePuzzleGameConfiguration(string baseName)
+    public static void UpdateGameConfiguration(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         #region PuzzleGameConfiguration
         CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(PuzzleGameConfiguration).Namespace);
+        CodeNamespace samples = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace();
 
-        var generatedPuzzleGameConfiguration = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(PuzzleGameConfiguration));
+        var generatedConfiguration = CopyConfigurationClass(GameTypeGeneration);
 
         //Add the new configuration
         bool add = true;
-        foreach (var field in typeof(PuzzleGameConfiguration).GetFields())
+        foreach (var field in GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationType().GetFields())
         {
             if (field.Name == (baseName + "Configuration"))
             {
@@ -140,13 +137,13 @@ public class PuzzleConfigurationCreation : EditorWindow
         {
             var newManagerAddedField = new CodeMemberField(baseName + "Configuration", baseName + "Configuration");
             newManagerAddedField.Attributes = MemberAttributes.Public;
-            generatedPuzzleGameConfiguration.Members.Add(newManagerAddedField);
+            generatedConfiguration.Members.Add(newManagerAddedField);
         }
 
-        samples.Types.Add(generatedPuzzleGameConfiguration);
+        samples.Types.Add(generatedConfiguration);
         compileUnity.Namespaces.Add(samples);
 
-        string filename = PathConstants.PuzzleConfigurationFolderPath + "/" + generatedPuzzleGameConfiguration.Name + ".cs";
+        string filename = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationFolderPath() + "/" + generatedConfiguration.Name + ".cs";
         CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
         CodeGeneratorOptions options = new CodeGeneratorOptions();
         options.BracingStyle = "C";
@@ -157,7 +154,8 @@ public class PuzzleConfigurationCreation : EditorWindow
         }
         #endregion
         #region PuzzleGameConfigurationManager
-        CodeGenerationHelper.InsertToFile(new FileInfo(PathConstants.PuzzleGameConfigurationManagerPath), new FileInfo(PathConstants.PuzzleGameConfigurationManagerMethodTemplatePath), "//${addNewEntry}",
+        CodeGenerationHelper.InsertToFile(new FileInfo(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetGameConfigurationManagerPath()),
+            new FileInfo(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetGameConfigurationManagerMethodTemplatePath()), "//${addNewEntry}",
                 new Dictionary<string, string>() { { "${baseName}", baseName } },
                 insertionGuard: (file) => !file.Contains(baseName + "Configuration"));
         #endregion
@@ -185,14 +183,20 @@ public class PuzzleConfigurationCreation : EditorWindow
         }
     }
 
-    public static void DoCreateConfigurationAsset(string baseName)
+    public static void DoCreateConfigurationAsset(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         var configurationSO = ScriptableObject.CreateInstance(baseName + "Configuration");
-        AssetDatabase.CreateAsset(configurationSO, PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration/" + baseName + "Configuration.asset");
-        var PuzzleGameConfiguration = AssetFinder.SafeSingleAssetFind<PuzzleGameConfiguration>("t:" + typeof(PuzzleGameConfiguration));
+        AssetDatabase.CreateAsset(configurationSO, GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetSubConfigurationFolderPath(baseName) + baseName + "Configuration.asset");
+        var PuzzleGameConfiguration = AssetFinder.SafeSingleAssetFind<UnityEngine.Object>("t:" + GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationType());
         var configurationField = PuzzleGameConfiguration.GetType().GetField(baseName + "Configuration");
         configurationField.SetValue(PuzzleGameConfiguration, configurationSO);
         EditorUtility.SetDirty(PuzzleGameConfiguration);
 
+    }
+
+
+    private static CodeTypeDeclaration CopyConfigurationClass(GameTypeGeneration GameTypeGeneration)
+    {
+        return CodeGenerationHelper.CopyClassAndFieldsFromExistingType(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationType());
     }
 }

@@ -40,7 +40,7 @@ namespace Editor_DiscussionTreeCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.DiscussionTreeId, this.EditorInformationsData.CommonGameConfigurations.AdventureGameConfigurations.DiscussionTreeConfiguration)
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.DiscussionTreeId, this.EditorInformationsData.CommonGameConfigurations.CoreGameConfigurations.DiscussionTreeConfiguration)
             }
             .Find(s => !string.IsNullOrEmpty(s));
         }

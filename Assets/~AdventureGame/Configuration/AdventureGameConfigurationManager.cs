@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using GameConfigurationID;
@@ -24,6 +24,7 @@ namespace AdventureGame
         {
             return AdventureGameConfiguration.CutsceneConfiguration.ConfigurationInherentData;
         }
+//${addNewEntry}
 
         
     }

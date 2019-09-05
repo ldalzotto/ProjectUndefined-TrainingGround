@@ -133,6 +133,8 @@ namespace Editor_MainGameCreationWizard
     {
         [ReadOnly]
         public AnimationConfiguration AnimationConfiguration;
+        [ReadOnly]
+        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
     }
 
 
@@ -153,15 +155,6 @@ namespace Editor_MainGameCreationWizard
         public InteractiveObjectType BaseInteractiveObjectTypePrefab;
     }
     
-    [System.Serializable]
-    public class AdventureGameConfigurations
-    {
-        [ReadOnly]
-        public PointOfInterestConfiguration PointOfInterestConfiguration;
-        [ReadOnly]
-        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
-    }
-
     [System.Serializable]
     public class AdventureCommonPrefabs
     {

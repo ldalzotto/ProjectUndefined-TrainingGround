@@ -14,7 +14,7 @@ namespace AdventureGame
     
     [UnityEngine.CreateAssetMenu(fileName="AdventureGameConfiguration", menuName="Configuration/AdventureGame/AdventureGameConfiguration", order=1)]
     [System.Serializable()]
-    public class AdventureGameConfiguration : CoreGame.GameConfiguration
+    public class AdventureGameConfigurations : CoreGame.GameConfiguration
     {
         
         public AdventureGame.ItemConfiguration ItemConfiguration;

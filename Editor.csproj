@@ -67,9 +67,11 @@
     <Compile Include="Assets\Editor\CodeGeneration\CodeGenerationHelper.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\CommonCodeGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\EnumGeneration\EnumIDGeneration.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\GameTypeCodeGenerationConfiguration.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\GameTypeGeneration.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\IdentifiedObjectGeneration\IdentifiedObjectGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\InteractiveObjectModuleGeneration\InteractiveObjectModuleGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\PathConstants.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\PuzzleIdentifiedObjectGeneration\PuzzleIdentifiedObjectGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\CreationWizardCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\InteractiveObjectModuleDefinitionCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\PuzzleConfigurationCreation.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="Assets\Editor\CreationWizard\Components\ModificationComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Constants\ErrorMessages.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\AdventureGameConfigurations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\InstancePath.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleGameConfigurations.cs" />
@@ -428,7 +431,8 @@
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleGameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\AdventureGameConfigurationManagerMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
