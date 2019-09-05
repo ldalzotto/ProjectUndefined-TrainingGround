@@ -42,7 +42,7 @@ namespace AdventureGame
                 var pointOfInterestType = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId);
                 var pointOfInterestCutsceneController = pointOfInterestType.GetPointOfInterestCutsceneController();
 
-                ghostPOI.OnPositionChanged(pointOfInterestType.GetRootObject().transform, cutsceneActionInput.LevelManager.CurrentLevelZoneChunkID);
+                ghostPOI.OnPositionChanged(pointOfInterestType.GetRootObject().transform, cutsceneActionInput.LevelManager.CurrentLevelZoneChunkWherePlayerIsID);
 
                 if(this.PoseAnimationID!= AnimationID.NONE)
                 {

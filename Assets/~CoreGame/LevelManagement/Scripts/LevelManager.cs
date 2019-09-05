@@ -9,13 +9,13 @@ namespace CoreGame
         [SerializeField]
         private LevelZonesID levelID;
         [SerializeField]
-        private LevelZoneChunkID currentLevelZoneChunkID = LevelZoneChunkID.NONE;
+        private LevelZoneChunkID currentLevelZoneChunkWherePlayerIsID = LevelZoneChunkID.NONE;
         [SerializeField]
         private List<LevelZoneChunkID> allLoadedLevelZonesChunkID;
 
         public LevelZonesID LevelID { get => levelID; set => levelID = value; }
         public List<LevelZoneChunkID> AllLoadedLevelZonesChunkID { get => allLoadedLevelZonesChunkID; }
-        public LevelZoneChunkID CurrentLevelZoneChunkID { get => currentLevelZoneChunkID; }
+        public LevelZoneChunkID CurrentLevelZoneChunkWherePlayerIsID { get => currentLevelZoneChunkWherePlayerIsID; }
 
         #region Internal Managers
         private EnvironmentSceneLevelManager EnvironmentSceneLevelManager;
@@ -44,7 +44,7 @@ namespace CoreGame
         public void OnChunkLevelEnter(LevelChunkType NextLevelChunk)
         {
             Debug.Log(MyLog.Format("LevelManager OnChunkLevelEnter"));
-            this.currentLevelZoneChunkID = NextLevelChunk.LevelZoneChunkID;
+            this.currentLevelZoneChunkWherePlayerIsID = NextLevelChunk.LevelZoneChunkID;
         }
 
         public void OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)

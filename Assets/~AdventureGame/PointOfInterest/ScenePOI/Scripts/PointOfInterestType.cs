@@ -195,7 +195,7 @@ namespace AdventureGame
                 PointOfInterestEventManager.SetAnimationPosition(ghostPOI.PointOfInterestAnimationPositioningState.LastPlayedAnimation, this);
             }
 
-            if (ghostPOI.PointOfInterestLevelPositioningState != null && ghostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID == this.LevelManager.CurrentLevelZoneChunkID)
+            if (ghostPOI.PointOfInterestLevelPositioningState != null && this.LevelManager.AllLoadedLevelZonesChunkID.Contains(ghostPOI.PointOfInterestLevelPositioningState.LevelZoneChunkID))
             {
                 PointOfInterestEventManager.SetPosition(this, ghostPOI.PointOfInterestLevelPositioningState.TransformBinarry.Format());
             }
