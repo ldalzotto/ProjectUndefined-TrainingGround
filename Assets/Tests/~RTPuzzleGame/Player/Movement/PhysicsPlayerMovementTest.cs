@@ -33,7 +33,7 @@ namespace Tests
             var playerRigidBody = GameObject.FindObjectOfType<PlayerManagerDataRetriever>().GetPlayerRigidBody();
             var groundStickComponent = GameObject.FindObjectOfType<PlayerManager>().PlayerPhysicsMovementComponent;
             var playerCommonComponents = GameObject.FindObjectOfType<PlayerCommonComponents>();
-            var playerDataComponents = GameObject.FindObjectOfType<PlayerManager>().GetComponentInChildren<DataComponentContainer>();
+            var playerInteractiveObject = GameObject.FindObjectOfType<PlayerManager>().GetComponent<InteractiveObjectType>();
             yield return new WaitForFixedUpdate();
             playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.MinimumDistanceToStick * 1.1f);
             yield return new WaitForFixedUpdate();
@@ -41,7 +41,9 @@ namespace Tests
             yield return new WaitForFixedUpdate(); //take into account the input
             //rotation will take place at the end of physics step https://docs.unity3d.com/ScriptReference/Rigidbody-rotation.html
             yield return new WaitForFixedUpdate();
-            Assert.AreApproximatelyEqual(playerDataComponents.GetDataComponent<TransformMoveManagerComponentV2>().SpeedMultiplicationFactor, playerRigidBody.velocity.magnitude);
+            Assert.AreApproximatelyEqual(
+                GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().InteractiveObjectTypeDefinitionConfiguration()[playerInteractiveObject.InteractiveObjectTypeDefinitionID].InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent.SpeedMultiplicationFactor
+                        , playerRigidBody.velocity.magnitude);
             Assert.AreApproximatelyEqual(Mathf.Sin(Mathf.Deg2Rad * slopeAngle), playerRigidBody.velocity.normalized.x);
             Assert.AreApproximatelyEqual(Mathf.Cos(Mathf.Deg2Rad * slopeAngle), playerRigidBody.velocity.normalized.y);
         }

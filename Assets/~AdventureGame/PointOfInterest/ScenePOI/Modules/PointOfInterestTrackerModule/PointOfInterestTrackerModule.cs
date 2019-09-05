@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using UnityEngine;
-using CoreGame;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace AdventureGame
@@ -16,14 +15,13 @@ namespace AdventureGame
 
         private PointOfInterestType PointOfInterestTypeRef;
         private POITrackerManager POITrackerManager;
-
         public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
             this.PlayerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
 
             this.PointOfInterestTypeRef = pointOfInterestTypeRef;
             var trackerCollider = GetComponent<SphereCollider>();
-            this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef, pointOfInterestTypeRef.POIDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>(), trackerCollider);
+            this.POITrackerManager = new POITrackerManager(pointOfInterestTypeRef, trackerCollider);
         }
 
         #region Data Retrieval
@@ -73,12 +71,20 @@ namespace AdventureGame
         {
             this.POITrackerManager.OnPOIObjectExit((PointOfInterestType)pointOfInterestType);
         }
+
+        public static class PointOfInterestTrackerModuleInstancer
+        {
+            public static void PopuplateFromDefinition(PointOfInterestTrackerModule pointOfInterestTrackerModule, PointOfInterestTrackerModuleDefinition pointOfInterestTrackerModuleDefinition)
+            {
+                var sphereCollider = pointOfInterestTrackerModule.GetComponent<SphereCollider>();
+                sphereCollider.radius = pointOfInterestTrackerModuleDefinition.SphereDetectionRadius;
+            }
+        }
     }
 
     class POITrackerManager
     {
         private PointOfInterestType PointOfInterestTypeRef;
-        private PlayerPOITrackerManagerComponentV2 PlayerPOITrackerManagerComponent;
         private SphereCollider TrackerCollider;
         private Transform ReferenceTransform;
         private List<PointOfInterestType> InRangePointOfInterests = new List<PointOfInterestType>();
@@ -86,18 +92,15 @@ namespace AdventureGame
 
         public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
 
-        public POITrackerManager(PointOfInterestType PointOfInterestTypeRef, PlayerPOITrackerManagerComponentV2 playerPOITrackerManagerComponent, SphereCollider TrackerCollider)
+        public POITrackerManager(PointOfInterestType PointOfInterestTypeRef, SphereCollider TrackerCollider)
         {
             this.PointOfInterestTypeRef = PointOfInterestTypeRef;
-            PlayerPOITrackerManagerComponent = playerPOITrackerManagerComponent;
             this.TrackerCollider = TrackerCollider;
-            this.TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
             this.ReferenceTransform = this.TrackerCollider.transform;
         }
 
         public void Tick(float d)
         {
-            TrackerCollider.radius = PlayerPOITrackerManagerComponent.SphereDetectionRadius;
             nearestInRangeInteractabledPointOfInterest = GetNearestPOIInteractable();
         }
 
@@ -146,6 +149,7 @@ namespace AdventureGame
             }
         }
 
+        /*
         public void OnGizmoTick()
         {
             if (PlayerPOITrackerManagerComponent != null && TrackerCollider != null)
@@ -160,5 +164,6 @@ namespace AdventureGame
 #endif
             }
         }
+        */
     }
 }

@@ -206,7 +206,6 @@
     <Compile Include="Assets\~CoreGame\Physics\PhysicsHelper.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerCommonComponents.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\PlayerPhysicsMovementComponent.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV2.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\CommonComponents\TransformMoveManagerComponentV3.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\ContextAnimationManagers\PlayerPocketObjectOutManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerAdventurePositionManager.cs" />

@@ -33,12 +33,10 @@ namespace Editor_GameDesigner
                               if (this.add)
                               {
                                   EditorPOIModulesOperation.AddModule<PointOfInterestCutsceneControllerModule>(PointOfInterestType);
-                                  EditorPOIModulesOperation.AddDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
                               }
                               else
                               {
                                   EditorPOIModulesOperation.RemoveModule<PointOfInterestCutsceneControllerModule>(PointOfInterestType);
-                                  EditorPOIModulesOperation.RemoveDataComponent<TransformMoveManagerComponentV2>(PointOfInterestType);
                               }
                           },
                           PointOfInterestVisualMovementModuleAction: () =>
@@ -61,12 +59,10 @@ namespace Editor_GameDesigner
                               if (this.add)
                               {
                                   EditorPOIModulesOperation.AddPrefabModule(PointOfInterestType, this.CommonGameConfigurations.AdventureCommonPrefabs.BasePointOfInterestTrackerModule);
-                                  EditorPOIModulesOperation.AddDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
                               }
                               else
                               {
                                   EditorPOIModulesOperation.RemovePrefabModule<PointOfInterestTrackerModule>(PointOfInterestType);
-                                  EditorPOIModulesOperation.RemoveDataComponent<PlayerPOITrackerManagerComponentV2>(PointOfInterestType);
                               }
                           }
                );

@@ -15,6 +15,7 @@ namespace AdventureGame
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.AI;
+    using static AdventureGame.PointOfInterestTrackerModule;
 
     [System.Serializable()]
     [UnityEngine.CreateAssetMenu(fileName = "PointOfInterestDefinitionInherentData", menuName = "Configuration/AdventureGame/PointOfInterestDefinitionConfiguration/PointOfInteres" +
@@ -58,6 +59,12 @@ namespace AdventureGame
                             var PointOfInterestCutsceneControllerModuleDefinition = (PointOfInterestCutsceneControllerModuleDefinition)moduleConfiguration;
                             var PointOfInterestCutsceneControllerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestCutsceneControllerModule, pointOfInterestModules.transform);
                             this.EnableNavMeshAgent(PointOfInterestType);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(PointOfInterestTrackerModuleDefinition))
+                        {
+                            var PointOfInterestTrackerModuleDefinition = (PointOfInterestTrackerModuleDefinition)moduleConfiguration;
+                            var PointOfInterestTrackerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestTrackerModule, pointOfInterestModules.transform);
+                            PointOfInterestTrackerModuleInstancer.PopuplateFromDefinition(PointOfInterestTrackerModule, PointOfInterestTrackerModuleDefinition);
                         }
                     }
                 }

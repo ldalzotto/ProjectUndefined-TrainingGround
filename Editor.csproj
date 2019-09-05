@@ -332,7 +332,6 @@
     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\TransformMoveManagerComponentV2CustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTreeConstant.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />

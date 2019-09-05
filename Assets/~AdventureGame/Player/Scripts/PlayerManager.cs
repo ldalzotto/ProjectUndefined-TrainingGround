@@ -70,7 +70,6 @@ namespace AdventureGame
 
             #region Data Components
             var TransformMoveManagerComponentV3 = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration.AdventurePlayerMovementConfiguration.PlayerTransformMoveComponent;
-            var PlayerPOITrackerManagerComponentV2 = this.PlayerDataComponentContainer.GetDataComponent<PlayerPOITrackerManagerComponentV2>();
             var PlayerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
             #endregion
 
