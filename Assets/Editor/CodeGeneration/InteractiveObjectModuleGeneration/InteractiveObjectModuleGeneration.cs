@@ -44,17 +44,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                     this.UpdatePuzzleInteractiveObjectModulePrefabs();
                     InteractiveObjectModuleDefinitionCreation.GenerateScripts(this.baseName);
 
-                    if (this.isIdentified)
-                    {
-                        this.UpdateInteractiveObjectModuleWizardID();
-                    }
-
-                    if (this.isIdentified)
-                    {
-                        this.DoGenerateGameDesignerEditModule();
-                        this.DoGenerateModuleCustomEditor();
-                    }
-
                     this.UpdatePuzzlePrefabConfiguration();
 
                 }
@@ -67,7 +56,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
-                    this.DoGenerateBasePrefad();
+                    this.DoGenerateBasePrefab();
                 }
             }
 
@@ -276,62 +265,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         }
     }
 
-    private void UpdateInteractiveObjectModuleWizardID()
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectModuleWizardID).Namespace);
-        var interactiveObjectModuleWizardID = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(InteractiveObjectModuleWizardID));
-
-        //Add the new
-        bool add = true;
-        foreach (var field in typeof(InteractiveObjectModuleWizardID).GetFields())
-        {
-            if (field.Name == this.baseName + "ID")
-            {
-                add = false;
-            }
-        }
-        if (add)
-        {
-            var interactiveObjectPrefab = new CodeMemberField("GameConfigurationID." + this.baseName + "ID", this.baseName + "ID");
-            interactiveObjectPrefab.Attributes = MemberAttributes.Public;
-            interactiveObjectPrefab.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(CustomEnum).Name));
-            interactiveObjectModuleWizardID.Members.Add(interactiveObjectPrefab);
-        }
-
-
-        samples.Types.Add(interactiveObjectModuleWizardID);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.GameDesignerBasePath + "/" + typeof(InteractiveObjectModuleWizardID).Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-    }
-
-    private void DoGenerateGameDesignerEditModule()
-    {
-        CodeGenerationHelper.CopyFile(new DirectoryInfo(PathConstants.GameDesignerModulesPath + "/" + this.baseName), new Dictionary<string, string>() {
-              {"${baseName}", this.baseName }
-            }, new FileInfo(PathConstants.GameDesignerEditModuleTemplate));
-
-        CodeGenerationHelper.AddGameDesignerChoiceTree(new List<KeyValuePair<string, string>>() {
-            new KeyValuePair<string, string>("Puzzle//" + this.baseName + "//.Edit" + this.baseName, "Edit" + this.baseName)
-        });
-    }
-
-    private void DoGenerateModuleCustomEditor()
-    {
-        CodeGenerationHelper.CopyFile(new DirectoryInfo(PathConstants.CustomEditorPath), new Dictionary<string, string>() {
-              {"${baseName}", this.baseName }
-            }, new FileInfo(PathConstants.CustomEditorTemplatePath));
-    }
-
     private void UpdatePuzzlePrefabConfiguration()
     {
         var PuzzlePrefabConfigurationFile = CodeGenerationHelper.ClassFileFromType(typeof(PuzzlePrefabConfiguration));
@@ -339,7 +272,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                     new Dictionary<string, string>() { { "${baseName}", this.baseName } });
     }
 
-    private void DoGenerateBasePrefad()
+    private void DoGenerateBasePrefab()
     {
         var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
         tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();

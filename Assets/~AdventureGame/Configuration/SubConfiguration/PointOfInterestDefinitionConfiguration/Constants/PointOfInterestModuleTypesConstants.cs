@@ -10,7 +10,7 @@ namespace AdventureGame
             typeof(PointOfInterestTrackerModuleDefinition),
             typeof(PointOfInterestVisualMovementModuleDefinition),
             typeof(PointOfInterestModelObjectModuleDefinition),
-            typeof(PointOfInterestLogicColliderModuleDefinition)
+            typeof(PointOfInterestLogicColliderModuleDefinition),
 //${addNewEntry}
         };
     }

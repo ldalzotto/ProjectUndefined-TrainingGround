@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{A49DEB64-1BB8-7A03-3613-F94BABF7F69E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -73,6 +72,7 @@
     <Compile Include="Assets\Editor\CodeGeneration\IdentifiedObjectGeneration\IdentifiedObjectGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\InteractiveObjectModuleGeneration\InteractiveObjectModuleGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\PathConstants.cs" />
+    <Compile Include="Assets\Editor\CodeGeneration\PointOfInterestModuleGeneration\PointOfInterestModuleGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\CreationWizardCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\InteractiveObjectModuleDefinitionCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\PuzzleConfigurationCreation.cs" />
@@ -336,7 +336,6 @@
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Helpers\GameDesignerHelper.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\InteractiveObjectModuleWizardID.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AddPrefabModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\AGameDesignerModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Abstract\BaseModuleWizardModule.cs" />
@@ -430,6 +429,7 @@
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCustomEditorCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\AdventureGameConfigurationManagerMethodTemplate.txt" />
@@ -438,10 +438,9 @@
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerCreationModule\Create${baseName}.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\Edit${baseName}.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCustomEditorCondition.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\CustomEditorTemplate\${baseName}CustomEditor.cs.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\GameDesignerConfigurationModuleTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizard.cs.txt" />

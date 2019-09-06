@@ -1,4 +1,4 @@
-﻿using OdinSerializer;
+using OdinSerializer;
 using UnityEngine;
 
 namespace AdventureGame
@@ -16,5 +16,6 @@ namespace AdventureGame
         public PointOfInterestVisualMovementModule BasePointOfInterestVisualMovementModule;
         public PointOfInterestModelObjectModule BasePointOfInterestModelObjectModule;
         public PointOfInterestLogicColliderModule BasePointOfInterestLogicColliderModule;
+//${AdventurePrefabConfiguration:basePointOfInterestModulePrefab}
     }
 }

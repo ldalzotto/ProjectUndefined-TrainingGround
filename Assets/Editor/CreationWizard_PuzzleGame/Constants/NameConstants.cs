@@ -94,5 +94,7 @@ namespace Editor_MainGameCreationWizard
         public static string PointOfInterestDefinitionInherentData = "_PointOfInterestDefinition";
         
         public static string PointOfInterestVisualMovementInherentData = "_PointOfInterestVisualMovement";
+        
+        public static string PointOfInterestModuleTestInherentData = "_PointOfInterestModuleTest";
     }
 }

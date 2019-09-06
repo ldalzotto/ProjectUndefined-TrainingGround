@@ -12,6 +12,9 @@ public static class PathConstants
     public const string InteractiveObjectModulePath = "Assets/~RTPuzzleGame/InteractiveObject/Modules";
     public const string INteractiveObjectStaticConfigurationPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/StaticConfiguration";
 
+    public const string PointOfInterestModulePath = "Assets/~AdventureGame/PointOfInterest/ScenePOI/Modules";
+    public const string PointOfInterestDefinitionPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestDefinitionConfiguration/PointOfInterestDefinition";
+
     public const string PuzzleGameConfigurationsEditorConstantsPath = "Assets/Editor/CreationWizard_PuzzleGame/Common";
 
     public const string GameDesignerBasePath = "Assets/Editor/GameDesigner";
@@ -38,7 +41,6 @@ public static class PathConstants
     public const string InteractiveObjectNonIdentifiedModuleWizardConfigurationTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleWizardConfiguration/InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt";
     public const string IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
     public const string NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModulesInitializationOperations/NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt";
-    public const string GameDesignerEditModuleTemplate = "Assets/Editor/CodeGeneration/Templates/GameDesignerTemplates/Edit${baseName}.cs.txt";
     public const string CustomEditorTemplatePath = "Assets/Editor/CodeGeneration/Templates/CustomEditorTemplate/${baseName}CustomEditor.cs.txt";
     public const string CodeGenrationGameDesignerConfigurationCreationTemplatePath = "Assets/Editor/CodeGeneration/Templates/GameDesignerCreationModule";
     public const string GameDesignerConfigurationModuleTemplatepath = "Assets/Editor/CodeGeneration/Templates/GameDesignerTemplates/GameDesignerConfigurationModuleTemplate.txt";
@@ -47,4 +49,8 @@ public static class PathConstants
     
     public const string InteractiveObjectDefinitionConditionTemplatePath = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleDefinition/DefinitionCondition.txt";
     public const string InteractiveObjectDefinitionCustomEditorCondition = "Assets/Editor/CodeGeneration/Templates/InteractiveObjectModuleDefinition/DefinitionCustomEditorCondition.txt";
+
+
+    public const string PointOfInterestObjectDefinitionConditionTemplatePath = "Assets/Editor/CodeGeneration/Templates/PointOfInterestModuleDefinition/DefinitionCondition.txt";
+    public const string PointOfInterestObjectDefinitionCustomEditorCondition = "Assets/Editor/CodeGeneration/Templates/PointOfInterestModuleDefinition/DefinitionCustomEditorCondition.txt";
 }

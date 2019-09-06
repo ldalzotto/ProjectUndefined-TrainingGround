@@ -164,5 +164,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string PointOfInterestVisualMovementInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestVisualMovemen" +
             "tConfiguration/Data";
+        
+        [ReadOnly()]
+        public static string PointOfInterestModuleTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestModuleTestCon" +
+            "figuration/Data";
     }
 }

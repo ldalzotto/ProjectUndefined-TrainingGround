@@ -79,6 +79,7 @@ namespace AdventureGame
                             var PointOfInterestLogicColliderModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestLogicColliderModule, PointOfInterestType.transform);
                             PointOfInterestLogicColliderModuleInstancer.PopuplateFromDefinition(PointOfInterestLogicColliderModule, PointOfInterestLogicColliderModuleDefinition, PointOfInterestType.PointOfInterestDefinitionID);
                         }
+//${addNewEntry}
                     }
                 }
             }

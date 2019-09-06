@@ -23,6 +23,6 @@ namespace AdventureGame
         
         public AdventureGame.PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
         
-        public PointOfInterestVisualMovementConfiguration PointOfInterestVisualMovementConfiguration;
+        public AdventureGame.PointOfInterestVisualMovementConfiguration PointOfInterestVisualMovementConfiguration;
     }
 }

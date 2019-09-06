@@ -63,6 +63,7 @@ namespace Editor_GameDesigner
 // </auto-generated>
 //------------------------------------------------------------------------------
     public class PointOfInterestVisualMovementConfigurationModule : ConfigurationModule<PointOfInterestVisualMovementConfiguration, PointOfInterestVisualMovementID, PointOfInterestVisualMovementInherentData> { }
+
 //${addNewEntry}
 
 }

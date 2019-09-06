@@ -1,4 +1,4 @@
-﻿using AdventureGame;
+using AdventureGame;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 using System;
@@ -51,6 +51,7 @@ public class PointOfInterestGizmos : ObjectModulesGizmo
         }
         else if (moduleDefinitionType == typeof(PointOfInterestVisualMovementModuleDefinition).Name) { }
         else if (moduleDefinitionType == typeof(PointOfInterestModelObjectModuleDefinition).Name) { }
+//${addNewEntry}
     }
 
     protected override Dictionary<Type, ScriptableObject> GetDefinitionModules()
