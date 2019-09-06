@@ -49,7 +49,7 @@ namespace AdventureGame
                         {
                             var PointOfInterestCutsceneControllerModuleDefinition = (PointOfInterestCutsceneControllerModuleDefinition)moduleConfiguration;
                             var PointOfInterestCutsceneControllerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestCutsceneControllerModule, PointOfInterestType.transform);
-                            this.EnableNavMeshAgent(PointOfInterestType);
+                            this.CreateAndEnableNavMeshAgent(PointOfInterestType);
                         }
                         else if (moduleConfiguration.GetType() == typeof(PointOfInterestTrackerModuleDefinition))
                         {
@@ -76,11 +76,25 @@ namespace AdventureGame
             }
         }
 
-        private void EnableNavMeshAgent(PointOfInterestType PointOfInterestType)
+        private void CreateAndEnableNavMeshAgent(PointOfInterestType PointOfInterestType)
         {
             if (PointOfInterestType.PointOfInterestDefinitionID != PointOfInterestDefinitionID.PLAYER)
             {
-                PointOfInterestType.transform.GetComponent<NavMeshAgent>().enabled = true;
+                var poiNavMeshAgent = PointOfInterestType.transform.GetComponent<NavMeshAgent>();
+                if (poiNavMeshAgent == null)
+                {
+                    poiNavMeshAgent = PointOfInterestType.gameObject.AddComponent<NavMeshAgent>();
+                    poiNavMeshAgent.baseOffset = 0f;
+                    poiNavMeshAgent.speed = 20f;
+                    poiNavMeshAgent.angularSpeed = 120f;
+                    poiNavMeshAgent.acceleration = 3600;
+                    poiNavMeshAgent.stoppingDistance = 0f;
+                    poiNavMeshAgent.autoBraking = true;
+                    poiNavMeshAgent.radius = 0.5f;
+                    poiNavMeshAgent.height = 2f;
+                    poiNavMeshAgent.autoTraverseOffMeshLink = true;
+                    poiNavMeshAgent.autoRepath = true;
+                }
             }
         }
     }
