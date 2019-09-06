@@ -25,14 +25,28 @@ public class PointOfInterestGizmos : ObjectModulesGizmo
 
     protected override void DrawGizmo(string moduleDefinitionType, Transform objectTransform)
     {
-        if (moduleDefinitionType == typeof(PointOfInterestCutsceneControllerModuleDefinition).Name) { }
+        if (moduleDefinitionType == typeof(PointOfInterestSharedDataTypeInherentData).Name)
+        {
+            var drawArea = this.GetDrawDisplay(typeof(PointOfInterestSharedDataTypeInherentData).Name);
+            if (drawArea.IsEnabled)
+            {
+                var PointOfInterestSharedDataTypeInherentData = this.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData;
+                Handles.color = Color.yellow;
+                Handles.Label(objectTransform.position + Vector3.up * 10, nameof(PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit), MyEditorStyles.LabelYellow);
+                Handles.DrawWireArc(objectTransform.position, objectTransform.up, objectTransform.forward, PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit, 10);
+                Handles.DrawWireArc(objectTransform.position, objectTransform.up, objectTransform.forward, -PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit, 10);
+            }
+        }
+        else if (moduleDefinitionType == typeof(PointOfInterestCutsceneControllerModuleDefinition).Name) { }
         else if (moduleDefinitionType == typeof(PointOfInterestTrackerModuleDefinition).Name)
         {
             var drawArea = this.GetDrawDisplay(typeof(PointOfInterestTrackerModuleDefinition).Name);
             if (drawArea.IsEnabled)
             {
+                var PointOfInterestTrackerModuleDefinition = this.PointOfInterestDefinitionInherentData.GetDefinitionModule<PointOfInterestTrackerModuleDefinition>();
                 Handles.color = Color.green;
-                Handles.DrawWireDisc(objectTransform.position, objectTransform.up, this.PointOfInterestDefinitionInherentData.GetDefinitionModule<PointOfInterestTrackerModuleDefinition>().SphereDetectionRadius);
+                Handles.Label(objectTransform.position + Vector3.up * PointOfInterestTrackerModuleDefinition.SphereDetectionRadius, "POI Tracker range", MyEditorStyles.LabelGreen);
+                Handles.DrawWireDisc(objectTransform.position, objectTransform.up, PointOfInterestTrackerModuleDefinition.SphereDetectionRadius);
             }
         }
         else if (moduleDefinitionType == typeof(PointOfInterestVisualMovementModuleDefinition).Name) { }
@@ -41,8 +55,13 @@ public class PointOfInterestGizmos : ObjectModulesGizmo
 
     protected override Dictionary<Type, ScriptableObject> GetDefinitionModules()
     {
-        return this.PointOfInterestDefinitionConfiguration.ConfigurationInherentData[this.PointOfInterestDefinitionID].RangeDefinitionModules
-                    .Select(m => m).Where(m => m.Value != null).ToDictionary(m => m.Key, m => m.Value);
+        var pointOfInterestDefinitionInherentData = this.PointOfInterestDefinitionConfiguration.ConfigurationInherentData[this.PointOfInterestDefinitionID];
+        KeyValuePair<Type, ScriptableObject> PointOfInterestSharedDataTypeInherentData = new KeyValuePair<Type, ScriptableObject>(
+               pointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.GetType(), pointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData);
+        return pointOfInterestDefinitionInherentData.RangeDefinitionModules
+                    .Select(m => m).Where(m => m.Value != null)
+                    .Union(new List<KeyValuePair<Type, ScriptableObject>>() { PointOfInterestSharedDataTypeInherentData })
+                    .ToDictionary(m => m.Key, m => m.Value);
     }
 
     protected override IObjectGizmoDisplayEnableArea HandleGizmoDisplayAreaCreation(string moduleDefinitionType, ScriptableObject definitionSO)

@@ -43,13 +43,11 @@ public abstract class ObjectModulesGizmo
     public virtual void OnSceneGUI(SceneView sceneView, Transform objectTransform)
     {
         this.Init();
-        Handles.BeginGUI();
         var oldHandlesColor = Handles.color;
         foreach (var drawDisplay in this.DrawDisplay)
         {
             this.DrawGizmo(drawDisplay.Key, objectTransform);
         }
-        Handles.EndGUI();
     }
 
     protected abstract void DrawGizmo(string moduleDefinitionType, Transform objectTransform);

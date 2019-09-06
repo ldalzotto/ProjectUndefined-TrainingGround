@@ -67,23 +67,27 @@ namespace Editor_InteractiveObjectExplorer
                 {
                     var LevelConfiguration = AssetFinder.SafeSingleAssetFind<LevelConfiguration>("t:" + typeof(LevelConfiguration).Name);
                     var PlayerActionConfiguration = AssetFinder.SafeSingleAssetFind<PlayerActionConfiguration>("t:" + typeof(PlayerActionConfiguration).Name);
-                    LevelConfiguration.ConfigurationInherentData[levelManager.LevelID].PlayerActionIds.ForEach((pa) =>
+                    LevelConfiguration.ConfigurationInherentData.TryGetValue(levelManager.LevelID, out LevelConfigurationData LevelConfigurationData);
+                    if (LevelConfigurationData != null)
                     {
-                        var playerActionAsset = PlayerActionConfiguration.ConfigurationInherentData[pa.playerActionId];
-                        if (playerActionAsset != null)
+                        LevelConfigurationData.PlayerActionIds.ForEach((pa) =>
                         {
-                            if (playerActionAsset.GetType() == typeof(LaunchProjectileActionInherentData))
+                            var playerActionAsset = PlayerActionConfiguration.ConfigurationInherentData[pa.playerActionId];
+                            if (playerActionAsset != null)
                             {
-                                var objectDefinitionID = ((LaunchProjectileActionInherentData)playerActionAsset).projectedObjectDefinitionID;
-                                PlayerActionsInteractiveObjectDefinitions.Add(objectDefinitionID);
+                                if (playerActionAsset.GetType() == typeof(LaunchProjectileActionInherentData))
+                                {
+                                    var objectDefinitionID = ((LaunchProjectileActionInherentData)playerActionAsset).projectedObjectDefinitionID;
+                                    PlayerActionsInteractiveObjectDefinitions.Add(objectDefinitionID);
+                                }
+                                else if (playerActionAsset.GetType() == typeof(AttractiveObjectActionInherentData))
+                                {
+                                    var objectDefinitionID = ((AttractiveObjectActionInherentData)playerActionAsset).AttractiveObjectDefinitionID;
+                                    PlayerActionsInteractiveObjectDefinitions.Add(objectDefinitionID);
+                                }
                             }
-                            else if (playerActionAsset.GetType() == typeof(AttractiveObjectActionInherentData))
-                            {
-                                var objectDefinitionID = ((AttractiveObjectActionInherentData)playerActionAsset).AttractiveObjectDefinitionID;
-                                PlayerActionsInteractiveObjectDefinitions.Add(objectDefinitionID);
-                            }
-                        }
-                    });
+                        });
+                    }
                 }
             }
             if (this.SceneAIObjectsType == null)
@@ -198,6 +202,7 @@ namespace Editor_InteractiveObjectExplorer
         {
             if (this.GizmoDisplayArea.IsEnabled)
             {
+                Handles.BeginGUI();
                 foreach (var gizmoDisplay in this.GizmoDisplay)
                 {
                     gizmoDisplay.OnSceneGUI(sceneView);
@@ -210,6 +215,7 @@ namespace Editor_InteractiveObjectExplorer
                 {
                     gizmoDisplay.OnSceneGUI(sceneView);
                 }
+                Handles.EndGUI();
             }
         }
     }
