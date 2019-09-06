@@ -149,14 +149,11 @@ namespace AdventureGame
 
         private void OnDrawGizmos()
         {
-            var labelStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
-            labelStyle.alignment = TextAnchor.MiddleCenter;
-            labelStyle.normal.textColor = Color.red;
 #if UNITY_EDITOR
-            Handles.Label(transform.position, PointOfInterestId.ToString(), labelStyle);
+            var labelStyle = new GUIStyle(EditorStyles.label);
+            labelStyle.normal.textColor = Color.white;
+            Handles.Label(transform.position + new Vector3(0, -2f, 0), this.PointOfInterestDefinitionID.ToString(), labelStyle);
 #endif
-
-            Gizmos.DrawIcon(transform.position + new Vector3(0, 5f, 0), "Gizmo_POI", true);
         }
 
         #region Logical Conditions
