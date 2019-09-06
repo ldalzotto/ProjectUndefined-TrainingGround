@@ -188,11 +188,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObjectTypeDefinition\InteractiveObjectTypeDefinitionCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObjectTypeDefinition\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\InteractiveObjectTypeDefinition\Modules\InteractiveObjectTypeDefinitionConfigurationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\EditorInformations.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIConfigurationCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\Module\POIPrefabCreation.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizard.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\POI\POICreationWizard\POICreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\Modules\PointOfInterestDefinitionConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestDefinition\PointOfInterestDefinitionCreationWizard.cs" />
@@ -379,9 +374,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Obstacles\AddNewObstacle.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\CreatePlayerActions.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\ExplorePlayerActions.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\CreatePOI.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\EditPOI.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\POI\ExplorePOI.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PointOfInterestDefinition\CreatePointOfInterestDefinition.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PointOfInterestVisualMovement\CreatePointOfInterestVisualMovement.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Projectile\CreateProjectile.cs" />

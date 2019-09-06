@@ -76,8 +76,6 @@
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\CutsceneConfiguration\CutsceneInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestConfiguration.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestConfiguration\PointOfInterestInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\Constants\PointOfInterestModuleTypesConstants.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestCutsceneControllerModuleDefinition.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestModelObjectModuleDefinition.cs" />

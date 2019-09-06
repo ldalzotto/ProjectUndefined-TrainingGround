@@ -18,8 +18,6 @@ namespace AdventureGame
         
         public AdventureGame.ItemConfiguration ItemConfiguration;
         
-        public AdventureGame.PointOfInterestConfiguration PointOfInterestConfiguration;
-        
         public AdventureGame.CutsceneConfiguration CutsceneConfiguration;
         
         [ReadOnly()]

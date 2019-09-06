@@ -11,7 +11,6 @@ namespace Editor_GameDesigner
     public class PuzzleCutsceneConfigurationModule : ConfigurationModule<PuzzleCutsceneConfiguration, PuzzleCutsceneID, PuzzleCutsceneInherentData> { }
     public class DiscussionTreeConfigurationModule : ConfigurationModule<DiscussionTreeConfiguration, DiscussionTreeId, DiscussionTree> { }
     public class ItemConfigurationModule : ConfigurationModule<ItemConfiguration, ItemID, ItemInherentData> { }
-    public class PointOfInterestConfigurationModule : ConfigurationModule<PointOfInterestConfiguration, PointOfInterestId, PointOfInterestInherentData> { }
     public class AnimationConfigurationModule : ConfigurationModule<AnimationConfiguration, AnimationID, AnimationConfigurationData> { }
     public class ChunkZonesSceneConfigurationModule : ConfigurationModule<ChunkZonesSceneConfiguration, LevelZoneChunkID, LevelZonesSceneConfigurationData> { }
     public class LevelHierarchyConfigurationModule : ConfigurationModule<LevelHierarchyConfiguration, LevelZonesID, LevelHierarchyConfigurationData> { }

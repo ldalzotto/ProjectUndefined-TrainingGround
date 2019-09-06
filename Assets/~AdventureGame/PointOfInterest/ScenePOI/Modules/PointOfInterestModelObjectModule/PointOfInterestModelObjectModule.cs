@@ -132,7 +132,7 @@ namespace AdventureGame
         {
             if (this.LevelManager.CurrentLevelType == LevelType.PUZZLE)
             {
-                if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
+                if (!pointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.IsPersistantToPuzzle)
                 {
                     this.Hide();
                 }
@@ -140,7 +140,7 @@ namespace AdventureGame
             }
             else
             {
-                if (!pointOfInterestTypeRef.PointOfInterestInherentData.IsPersistantToPuzzle)
+                if (!pointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.IsPersistantToPuzzle)
                 {
                     this.Show();
                 }
@@ -185,7 +185,7 @@ namespace AdventureGame
 
         private bool IsPOICanBeHideable()
         {
-            return this.PointOfInterestModelObjectModule != null && !this.PointOfInterestTypeRef.PointOfInterestInherentData.IsAlwaysDisplayed;
+            return this.PointOfInterestModelObjectModule != null && !this.PointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.IsAlwaysDisplayed;
         }
 
         public void ShowModelAndEnablePhysics()

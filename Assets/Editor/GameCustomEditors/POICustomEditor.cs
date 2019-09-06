@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Editor_GameCustomEditors
 {
+    /*
     [ExecuteInEditMode]
     [CustomEditor(typeof(PointOfInterestType))]
     public class POICustomEditor : AbstractGameCustomEditorWithLiveSelection<PointOfInterestType, POICustomEditorContext, PointOfInterestConfigurationModule, EditPOI>
@@ -34,11 +35,6 @@ namespace Editor_GameCustomEditors
     {
         public override void SceneGUI(POICustomEditorContext context, PointOfInterestType target)
         {
-            Handles.color = Color.yellow;
-            var maxDistanceInteraction = context.PointOfInterestInherentData.MaxDistanceToInteract;
-            Handles.Label(target.transform.position + Vector3.up * maxDistanceInteraction, nameof(context.PointOfInterestInherentData.MaxDistanceToInteract), MyEditorStyles.LabelYellow);
-            Handles.DrawWireDisc(target.transform.position, Vector3.up, maxDistanceInteraction);
-
             Handles.color = Color.green;
             Handles.Label(target.transform.position + Vector3.up * 5f, nameof(context.PointOfInterestInherentData.POIDetectionAngleLimit), MyEditorStyles.LabelGreen);
             Handles.DrawWireArc(target.transform.position, Vector3.up, target.transform.forward, context.PointOfInterestInherentData.POIDetectionAngleLimit, 5f);
@@ -46,4 +42,5 @@ namespace Editor_GameCustomEditors
             
         }
     }
+    */
 }

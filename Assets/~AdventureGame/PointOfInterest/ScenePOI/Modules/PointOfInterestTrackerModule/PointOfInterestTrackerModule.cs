@@ -131,7 +131,7 @@ namespace AdventureGame
             PointOfInterestType nearestInteractivePoi = null;
             foreach (var POI in InRangePointOfInterests)
             {
-                if (Vector3.Angle(this.PointOfInterestTypeRef.transform.forward, POI.transform.position - this.PointOfInterestTypeRef.transform.position) <= this.PointOfInterestTypeRef.PointOfInterestInherentData.POIDetectionAngleLimit)
+                if (Vector3.Angle(this.PointOfInterestTypeRef.transform.forward, POI.transform.position - this.PointOfInterestTypeRef.transform.position) <= this.PointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit)
                 {
                     nearestInteractivePoi = POI;
                     break;

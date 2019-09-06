@@ -29,8 +29,6 @@ namespace AdventureGame
         private PointOfInterestModulesEventManager PointOfInterestModulesEventManager;
         #endregion
 
-        private PointOfInterestInherentData pointOfInterestInherentData;
-
         #region External Dependencies
         private LevelManager LevelManager;
         private APointOfInterestEventManager PointOfInterestEventManager;
@@ -44,17 +42,12 @@ namespace AdventureGame
         #endregion
         public PointOfInterestScenarioState PointOfInterestScenarioState { get => pointOfInterestScenarioState; }
         public PointOfInterestModelState PointOfInterestModelState { get => pointOfInterestModelState; }
-        public PointOfInterestInherentData PointOfInterestInherentData { get => pointOfInterestInherentData; }
         public PointOfInterestDefinitionInherentData PointOfInterestDefinitionInherentData { get => pointOfInterestDefinitionInherentData; }
 
         #region Data Retrieval
-        public float GetMaxDistanceToInteractWithPlayer()
-        {
-            return this.pointOfInterestInherentData.MaxDistanceToInteract;
-        }
         public bool IsInteractionWithPlayerAllowed()
         {
-            return this.pointOfInterestInherentData.InteractionWithPlayerAllowed;
+            return this.pointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.InteractionWithPlayerAllowed;
         }
         public AbstractCutsceneController GetPointOfInterestCutsceneController()
         {
@@ -114,9 +107,7 @@ namespace AdventureGame
                 this.pointOfInterestDefinitionInherentData.DefinePointOfInterest(this, adventureStaticConfiguration.AdventurePrefabConfiguration);
                 this.hasBeenDefined = true;
             }
-
-            this.pointOfInterestInherentData = this.AdventureGameConfigurationManager.POIConf()[this.PointOfInterestId];
-
+            
             this.PointOfInteresetModules = new PointOfInterestModules(this);
             this.PointOfInterestModulesEventManager = new PointOfInterestModulesEventManager(this.PointOfInteresetModules);
 
