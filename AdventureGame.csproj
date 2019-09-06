@@ -78,6 +78,7 @@
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\ItemConfiguration\ItemInherentData.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\Constants\PointOfInterestModuleTypesConstants.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestCutsceneControllerModuleDefinition.cs" />
+    <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestLogicColliderModuleDefinition.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestTrackerModuleDefinition.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\SubConfiguration\PointOfInterestDefinitionConfiguration\PointOfInterestDefinition\PointOfInterestVisualMovementModuleDefinition.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Assets\~AdventureGame\Player\Scripts\PlayerPointOfInterestSelectionManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\GhostPOI\Scripts\GhostsPOIManager.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Modules\PointOfInterestCutsceneControllerModule\PointOfInterestCutsceneControllerModule.cs" />
+    <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Modules\PointOfInterestLogicColliderModule\PointOfInterestLogicColliderModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Modules\PointOfInterestModelObjectModule\PointOfInterestModelObjectModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Modules\PointOfInterestTrackerModule\PointOfInterestTrackerModule.cs" />
     <Compile Include="Assets\~AdventureGame\PointOfInterest\ScenePOI\Modules\PointOfInterestVisualMovementModule\PointOfInterestVisualMovementModule.cs" />

@@ -6,6 +6,7 @@ namespace CoreGame
 {
     public abstract class APointOfInterestType : MonoBehaviour
     {
+        [HideInInspector]
         public PointOfInterestId PointOfInterestId;
 
         public abstract void Init();

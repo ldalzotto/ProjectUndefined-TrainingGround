@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static AnimationConstants;
 using GameConfigurationID;
-using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -72,6 +71,14 @@ namespace AdventureGame
                 pointOfInterestVisualMovementModule.PointOfInterestVisualMovementID = pointOfInterestVisualMovementModuleDefinition.PointOfInterestVisualMovementID;
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            if (this.PointOfInterestVisualMovementManager != null)
+            {
+                this.PointOfInterestVisualMovementManager.GizmoTick();
+            }
+        }
     }
 
     public interface IVisualMovementPermission
@@ -86,7 +93,7 @@ namespace AdventureGame
         private List<Transform> bonesThatReactToPOI;
         private Transform headBone;
 
-        private PointOfInterestType LastNearestInteractablePOI;
+        private PointOfInterestType LastNearestNearestInteractablePOI;
         private List<Quaternion> InterpolatedBoneRotations = new List<Quaternion>();
 
         private bool IsLookingToPOI;
@@ -108,8 +115,9 @@ namespace AdventureGame
 
         public void LateTick(float d, PointOfInterestType NearestInteractablePOI)
         {
-            LastNearestInteractablePOI = NearestInteractablePOI;
-            if (LastNearestInteractablePOI != null)
+            this.LastNearestNearestInteractablePOI = NearestInteractablePOI;
+
+            if (this.LastNearestNearestInteractablePOI != null)
             {
                 if (!IsLookingToPOI)
                 {
@@ -125,7 +133,7 @@ namespace AdventureGame
                     var affectedBone = this.bonesThatReactToPOI[i];
 
                     // (1) - Target direction is the direction between bone and POI point.
-                    var targetDirection = (LastNearestInteractablePOI.transform.position - affectedBone.transform.position).normalized;
+                    var targetDirection = (this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition() - affectedBone.transform.position).normalized;
 
                     // (2) - We clamp the bone rotation to a cone.
                     var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.PointOfInterestVisualMovementInherentData.RotationAngleLimit);
@@ -203,18 +211,19 @@ namespace AdventureGame
             hasEndedSmoothingOut = false;
         }
 
+
         public void GizmoTick()
         {
-            if (LastNearestInteractablePOI != null)
+            if (this.LastNearestNearestInteractablePOI != null)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(LastNearestInteractablePOI.transform.position, 1f);
+                Gizmos.DrawWireSphere(this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition(), 1f);
 
                 for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
                 {
-                    Gizmos.DrawLine(this.bonesThatReactToPOI[i].position, LastNearestInteractablePOI.transform.position);
+                    Gizmos.DrawLine(this.bonesThatReactToPOI[i].position, this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition());
 #if UNITY_EDITOR
-                    Handles.Label(LastNearestInteractablePOI.transform.position, "Targeted POI");
+                    Handles.Label(this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition(), "Targeted POI");
 #endif
                 }
             }

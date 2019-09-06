@@ -41,10 +41,13 @@ namespace AdventureGame
                 if (collisionType.IsPoi)
                 {
                     var otherPointOfInterestType = PointOfInterestTypeHelper.FromCollisionType(collisionType);
-                    this.POITrackerManager.OnPOIObjectEnter(otherPointOfInterestType);
-                    if (this.PointOfInterestTypeRef.IsPlayer())
+                    if (otherPointOfInterestType != null && otherPointOfInterestType != this.PointOfInterestTypeRef)
                     {
-                        this.PlayerPointOfInterestSelectionManager.OnPointOfInterestInRange(otherPointOfInterestType);
+                        this.POITrackerManager.OnPOIObjectEnter(otherPointOfInterestType);
+                        if (this.PointOfInterestTypeRef.IsPlayer())
+                        {
+                            this.PlayerPointOfInterestSelectionManager.OnPointOfInterestInRange(otherPointOfInterestType);
+                        }
                     }
                 }
             }
@@ -58,10 +61,13 @@ namespace AdventureGame
                 if (collisionType.IsPoi)
                 {
                     var otherPointOfInterestType = PointOfInterestTypeHelper.FromCollisionType(collisionType);
-                    this.POITrackerManager.OnPOIObjectExit(otherPointOfInterestType);
-                    if (this.PointOfInterestTypeRef.IsPlayer())
+                    if (otherPointOfInterestType != null && otherPointOfInterestType != this.PointOfInterestTypeRef)
                     {
-                        this.PlayerPointOfInterestSelectionManager.OnPointOfInterestExitRange(otherPointOfInterestType);
+                        this.POITrackerManager.OnPOIObjectExit(otherPointOfInterestType);
+                        if (this.PointOfInterestTypeRef.IsPlayer())
+                        {
+                            this.PlayerPointOfInterestSelectionManager.OnPointOfInterestExitRange(otherPointOfInterestType);
+                        }
                     }
                 }
             }

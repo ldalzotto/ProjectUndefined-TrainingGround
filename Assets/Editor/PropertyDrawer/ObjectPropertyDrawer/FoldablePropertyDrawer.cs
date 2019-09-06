@@ -41,7 +41,7 @@ public class FoldablePropertyDrawer : PropertyDrawer
                     EditorGUILayout.PropertyField(childPropery, true);
                 }
             }
-            catch (Exception e) { }
+            catch (Exception) { }
         });
 
         if (foldableAttribute.CanBeDisabled)

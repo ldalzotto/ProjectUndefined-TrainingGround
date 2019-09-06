@@ -34,7 +34,7 @@ namespace AdventureGame
         }
         #endregion
 
-        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
+        public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule, PointOfInterestLogicColliderModule PointOfInterestLogicColliderModule)
         {
             // This means that the POI has been persisted across scenes
             // We reactivate POI to let ghost POI manager sync re disable it
@@ -53,7 +53,7 @@ namespace AdventureGame
             {
                 this.animator = this.GetComponentInChildren<Animator>();
             }
-            this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
+            this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, PointOfInterestModelObjectModule, PointOfInterestLogicColliderModule);
             this.InitAnimation();
 
             this.averageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
@@ -118,13 +118,13 @@ namespace AdventureGame
         private PointOfInterestModelObjectModule PointOfInterestModelObjectModule;
         #endregion
 
-        private Collider poiCollider;
+        private PointOfInterestLogicColliderModule PointOfInterestLogicColliderModule;
 
-        public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
+        public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule, PointOfInterestLogicColliderModule PointOfInterestLogicColliderModule)
         {
             this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
             this.PointOfInterestTypeRef = pointOfInterestTypeRef;
-            this.poiCollider = pointOfInterestTypeRef.GetComponent<Collider>();
+            this.PointOfInterestLogicColliderModule = PointOfInterestLogicColliderModule;
             this.PointOfInterestModelObjectModule = PointOfInterestModelObjectModule;
         }
 
@@ -169,7 +169,10 @@ namespace AdventureGame
         {
             if (this.IsPOICanBeHideable())
             {
-                this.poiCollider.enabled = false;
+                if (this.PointOfInterestLogicColliderModule != null)
+                {
+                    this.PointOfInterestLogicColliderModule.DisableCollider();
+                }
                 this.PointOfInterestModelObjectModule.SetAllColliders(false);
             }
         }
@@ -178,7 +181,10 @@ namespace AdventureGame
         {
             if (this.IsPOICanBeHideable())
             {
-                this.poiCollider.enabled = true;
+                if (this.PointOfInterestLogicColliderModule != null)
+                {
+                    this.PointOfInterestLogicColliderModule.EnableCollider();
+                }
                 this.PointOfInterestModelObjectModule.SetAllColliders(true);
             }
         }

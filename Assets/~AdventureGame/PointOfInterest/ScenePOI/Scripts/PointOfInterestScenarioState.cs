@@ -54,7 +54,10 @@ namespace AdventureGame
         {
             for (var i = 0; i < scenePOIRenderers.Length; i++)
             {
-                scenePOIRenderers[i].enabled = !this.isDisabled;
+                if (scenePOIRenderers[i] != null)
+                {
+                    scenePOIRenderers[i].enabled = !this.isDisabled;
+                }
             }
         }
 

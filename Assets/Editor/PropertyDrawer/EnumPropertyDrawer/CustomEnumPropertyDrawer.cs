@@ -141,7 +141,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                         });
                         GUI.backgroundColor = oldBackGroundColor;
                     }
-                    catch (Exception e) { }
+                    catch (Exception) { }
                 }
                 else if (CachedConfigurationEditor == null)
                 {
@@ -153,7 +153,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             GameCreationWizard.InitWithSelected(targetEnum.GetType().Name.Replace("ID", "CreationWizard"));
                         }
                     }
-                    catch (Exception e) { }
+                    catch (Exception) { }
                 }
             }
 
@@ -175,7 +175,7 @@ public class CustomEnumPropertyDrawer : PropertyDrawer
                             }
                         }
                     }
-                    catch (Exception e) { }
+                    catch (Exception) { }
                 }
             }
 

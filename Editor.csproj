@@ -323,7 +323,7 @@
     <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectDefinitionCustimEditor.cs" />
+    <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\POICustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ProjectileInherentDataCutsomEditor.cs" />
@@ -411,6 +411,7 @@
     <Compile Include="Assets\Editor\InteractiveObjectExplorer\AIObjectTypeGizmos.cs" />
     <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectExplorerModule.cs" />
     <Compile Include="Assets\Editor\InteractiveObjectExplorer\InteractiveObjectTypeGizmos.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\PointOfInterestGizmos.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelProgressionSaveEditor\LevelProgressionSaveEditor.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneExplorer\LevelSceneExplorer.cs" />
     <Compile Include="Assets\Editor\LevelManagement\LevelSceneLoader\LevelSceneLoaderV2.cs" />

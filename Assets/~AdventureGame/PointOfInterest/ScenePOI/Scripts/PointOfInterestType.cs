@@ -9,7 +9,7 @@ namespace AdventureGame
 
     public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission
     {
-        [CustomEnum(ConfigurationType = typeof(PointOfInterestDefinitionConfiguration))]
+        [CustomEnum(ConfigurationType = typeof(PointOfInterestDefinitionConfiguration), OpenToConfiguration = true)]
         public PointOfInterestDefinitionID PointOfInterestDefinitionID;
 
         #region Ghost POI Persistance States
@@ -65,6 +65,18 @@ namespace AdventureGame
         {
             return this.CoreConfigurationManager;
         }
+        public Vector3 GetLogicColliderWorldPosition()
+        {
+            var PointOfInterestLogicColliderModule = this.PointOfInteresetModules.PointOfInterestLogicColliderModule;
+            if (PointOfInterestLogicColliderModule != null)
+            {
+                return PointOfInterestLogicColliderModule.GetWorldPositionColliderCenter();
+            }
+            else
+            {
+                return this.transform.position;
+            }
+        }
 
         #endregion
 
@@ -107,7 +119,7 @@ namespace AdventureGame
                 this.pointOfInterestDefinitionInherentData.DefinePointOfInterest(this, adventureStaticConfiguration.AdventurePrefabConfiguration);
                 this.hasBeenDefined = true;
             }
-            
+
             this.PointOfInteresetModules = new PointOfInterestModules(this);
             this.PointOfInterestModulesEventManager = new PointOfInterestModulesEventManager(this.PointOfInteresetModules);
 

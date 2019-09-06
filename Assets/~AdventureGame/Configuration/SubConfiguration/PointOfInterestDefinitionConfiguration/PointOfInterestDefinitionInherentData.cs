@@ -15,6 +15,7 @@ namespace AdventureGame
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.AI;
+    using static AdventureGame.PointOfInterestLogicColliderModule;
     using static AdventureGame.PointOfInterestTrackerModule;
     using static AdventureGame.PointOfInterestVisualMovementModule;
 
@@ -50,6 +51,7 @@ namespace AdventureGame
                             var PointOfInterestCutsceneControllerModuleDefinition = (PointOfInterestCutsceneControllerModuleDefinition)moduleConfiguration;
                             var PointOfInterestCutsceneControllerModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestCutsceneControllerModule, PointOfInterestType.transform);
                             this.CreateAndEnableNavMeshAgent(PointOfInterestType);
+                            this.CreatePointOfInterestTypeRigidBody(PointOfInterestType);
                         }
                         else if (moduleConfiguration.GetType() == typeof(PointOfInterestTrackerModuleDefinition))
                         {
@@ -70,6 +72,12 @@ namespace AdventureGame
                             var modelObject = GameObject.Instantiate(PointOfInterestModelObjectModuleDefinition.ModelObject, PointOfInterestModelObjectModule.transform);
                             modelObject.transform.localPosition = Vector3.zero;
                             modelObject.transform.localRotation = Quaternion.identity;
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(PointOfInterestLogicColliderModuleDefinition))
+                        {
+                            var PointOfInterestLogicColliderModuleDefinition = (PointOfInterestLogicColliderModuleDefinition)moduleConfiguration;
+                            var PointOfInterestLogicColliderModule = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.BasePointOfInterestLogicColliderModule, PointOfInterestType.transform);
+                            PointOfInterestLogicColliderModuleInstancer.PopuplateFromDefinition(PointOfInterestLogicColliderModule, PointOfInterestLogicColliderModuleDefinition, PointOfInterestType.PointOfInterestDefinitionID);
                         }
                     }
                 }
@@ -95,6 +103,25 @@ namespace AdventureGame
                     poiNavMeshAgent.autoTraverseOffMeshLink = true;
                     poiNavMeshAgent.autoRepath = true;
                 }
+            }
+        }
+
+        private void CreatePointOfInterestTypeRigidBody(PointOfInterestType PointOfInterestType)
+        {
+            if (PointOfInterestType.PointOfInterestDefinitionID != PointOfInterestDefinitionID.PLAYER)
+            {
+                var poiRigidBody = PointOfInterestType.GetComponent<Rigidbody>();
+                if (poiRigidBody == null)
+                {
+                    poiRigidBody = PointOfInterestType.gameObject.AddComponent<Rigidbody>();
+                }
+                poiRigidBody.useGravity = false;
+                poiRigidBody.constraints = RigidbodyConstraints.FreezeAll;
+                poiRigidBody.interpolation = RigidbodyInterpolation.None;
+                poiRigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                poiRigidBody.mass = 1f;
+                poiRigidBody.drag = 0;
+                poiRigidBody.angularDrag = 0.05f;
             }
         }
     }

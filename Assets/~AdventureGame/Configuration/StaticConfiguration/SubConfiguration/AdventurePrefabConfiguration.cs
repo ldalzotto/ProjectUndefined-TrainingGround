@@ -15,5 +15,6 @@ namespace AdventureGame
         public PointOfInterestTrackerModule BasePointOfInterestTrackerModule;
         public PointOfInterestVisualMovementModule BasePointOfInterestVisualMovementModule;
         public PointOfInterestModelObjectModule BasePointOfInterestModelObjectModule;
+        public PointOfInterestLogicColliderModule BasePointOfInterestLogicColliderModule;
     }
 }

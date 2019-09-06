@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using AdventureGame;
+using CoreGame;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 using RTPuzzle;
@@ -23,16 +24,18 @@ namespace Editor_InteractiveObjectExplorer
         private CommonGameConfigurations CommonGameConfigurations;
         private InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
         private AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
+        private PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration;
 
         private List<InteractiveObjectType> SceneInteractiveObjects;
         private List<InteractiveObjectTypeDefinitionID> PlayerActionsInteractiveObjectDefinitions;
 
         private List<AIObjectType> SceneAIObjectsType;
-
+        private List<PointOfInterestType> ScenePointOfInterestType;
 
         private FoldableArea GizmoDisplayArea;
         private List<InteractiveObjectGizmoDisplay> GizmoDisplay;
         private List<AIObjectGizmoDisplay> AIGizmoDisplay;
+        private List<PointOfInterestGizmoDisplay> POIGizmoDisplay;
 
         private RegexTextFinder RegexTextFinder;
         private Vector2 ScrollPosition;
@@ -46,9 +49,11 @@ namespace Editor_InteractiveObjectExplorer
             }
             if (this.InteractiveObjectTypeDefinitionConfiguration == null) { this.InteractiveObjectTypeDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<InteractiveObjectTypeDefinitionConfiguration>("t:" + typeof(InteractiveObjectTypeDefinitionConfiguration).Name); }
             if (this.AIObjectTypeDefinitionConfiguration == null) { this.AIObjectTypeDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<AIObjectTypeDefinitionConfiguration>("t:" + typeof(AIObjectTypeDefinitionConfiguration).Name); }
+            if (this.PointOfInterestDefinitionConfiguration == null) { this.PointOfInterestDefinitionConfiguration = AssetFinder.SafeSingleAssetFind<PointOfInterestDefinitionConfiguration>("t:" + typeof(PointOfInterestDefinitionConfiguration).Name); }
             if (this.GizmoDisplayArea == null) { this.GizmoDisplayArea = new FoldableArea(true, "Gizmos : ", false); }
             if (this.GizmoDisplay == null) { this.GizmoDisplay = new List<InteractiveObjectGizmoDisplay>(); }
             if (this.AIGizmoDisplay == null) { this.AIGizmoDisplay = new List<AIObjectGizmoDisplay>(); }
+            if (this.POIGizmoDisplay == null) { this.POIGizmoDisplay = new List<PointOfInterestGizmoDisplay>(); }
             if (this.SceneInteractiveObjects == null)
             {
                 this.SceneInteractiveObjects = GameObject.FindObjectsOfType<InteractiveObjectType>().ToList();
@@ -86,6 +91,11 @@ namespace Editor_InteractiveObjectExplorer
                 this.SceneAIObjectsType = GameObject.FindObjectsOfType<AIObjectType>().ToList();
                 this.SceneAIObjectsType.ForEach(sceneAIObjectType => this.AIGizmoDisplay.Add(new AIObjectGizmoDisplay(true, sceneAIObjectType, this.AIObjectTypeDefinitionConfiguration, this.CommonGameConfigurations, InteractiveObjectTypeDefinitionConfiguration)));
             }
+            if (this.ScenePointOfInterestType == null)
+            {
+                this.ScenePointOfInterestType = GameObject.FindObjectsOfType<PointOfInterestType>().ToList();
+                this.ScenePointOfInterestType.ForEach(poiObjectType => this.POIGizmoDisplay.Add(new PointOfInterestGizmoDisplay(true, poiObjectType, this.CommonGameConfigurations, poiObjectType.PointOfInterestDefinitionID, this.PointOfInterestDefinitionConfiguration)));
+            }
             if (this.RegexTextFinder == null) { this.RegexTextFinder = new RegexTextFinder(); }
             this.ClearNullElements();
         }
@@ -95,6 +105,7 @@ namespace Editor_InteractiveObjectExplorer
             this.GizmoDisplay.Select(g => g).Where(g => g.IsNull()).ToList().ForEach(g => this.GizmoDisplay.Remove(g));
             this.AIGizmoDisplay.Select(g => g).Where(g => g.IsNull()).ToList().ForEach(g => this.AIGizmoDisplay.Remove(g));
             this.SceneAIObjectsType.Select(o => o).Where(o => o == null).ToList().ForEach(o => this.SceneAIObjectsType.Remove(o));
+            this.ScenePointOfInterestType.Select(o => o).Where(o => o == null).ToList().ForEach(o => this.ScenePointOfInterestType.Remove(o));
         }
 
         public void OnDisabled()
@@ -145,6 +156,17 @@ namespace Editor_InteractiveObjectExplorer
             }
             EditorGUILayout.EndVertical();
 
+            EditorGUILayout.BeginVertical();
+            EditorGUILayout.LabelField("Scene POI : ");
+            foreach (var PointOfInterestType in ScenePointOfInterestType.Select(o => o).Where(o => this.RegexTextFinder.IsMatchingWith(o.PointOfInterestDefinitionID.ToString())))
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.ObjectField(PointOfInterestType, typeof(AIObjectType), false);
+                EditorGUILayout.ObjectField(this.PointOfInterestDefinitionConfiguration.ConfigurationInherentData[PointOfInterestType.PointOfInterestDefinitionID], typeof(PointOfInterestDefinitionInherentData), false);
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.EndVertical();
+
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
             this.GizmoDisplayArea.OnGUI(() =>
@@ -154,6 +176,10 @@ namespace Editor_InteractiveObjectExplorer
                     gizmoDisplay.OnGUI();
                 }
                 foreach (var gizmoDisplay in this.AIGizmoDisplay.Select(o => o).Where(o => this.RegexTextFinder.IsMatchingWith(o.GetAIObjectTypeDefinitionID().ToString())))
+                {
+                    gizmoDisplay.OnGUI();
+                }
+                foreach (var gizmoDisplay in this.POIGizmoDisplay.Select(o => o).Where(o => this.RegexTextFinder.IsMatchingWith(o.GetPointOfInterestDefinitionID().ToString())))
                 {
                     gizmoDisplay.OnGUI();
                 }
@@ -177,6 +203,10 @@ namespace Editor_InteractiveObjectExplorer
                     gizmoDisplay.OnSceneGUI(sceneView);
                 }
                 foreach (var gizmoDisplay in this.AIGizmoDisplay)
+                {
+                    gizmoDisplay.OnSceneGUI(sceneView);
+                }
+                foreach (var gizmoDisplay in this.POIGizmoDisplay)
                 {
                     gizmoDisplay.OnSceneGUI(sceneView);
                 }
@@ -256,5 +286,42 @@ namespace Editor_InteractiveObjectExplorer
 
         public bool IsNull() { return this.aIObjectType == null; }
         public AIObjectTypeDefinitionID GetAIObjectTypeDefinitionID() { return this.aIObjectType.AIObjectTypeDefinitionID; }
+    }
+
+    class PointOfInterestGizmoDisplay
+    {
+        private PointOfInterestType PointOfInterestType;
+        private PointOfInterestGizmos gizmoEditor;
+
+        private PointOfInterestDefinitionID PointOfInterestDefinitionID;
+        private FoldableArea GUIArea;
+
+        public PointOfInterestGizmoDisplay(bool isDisplayed, PointOfInterestType PointOfInterestType, CommonGameConfigurations CommonGameConfigurations,
+                     PointOfInterestDefinitionID PointOfInterestDefinitionID, PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration)
+        {
+            this.PointOfInterestType = PointOfInterestType;
+            this.PointOfInterestDefinitionID = PointOfInterestDefinitionID;
+            this.gizmoEditor = new PointOfInterestGizmos(PointOfInterestDefinitionConfiguration, PointOfInterestDefinitionID, CommonGameConfigurations);
+            this.GUIArea = new FoldableArea(true, PointOfInterestDefinitionID.ToString(), isDisplayed);
+        }
+
+        public void OnGUI()
+        {
+            this.GUIArea.OnGUI(() =>
+            {
+                this.gizmoEditor.OnGUI();
+            });
+        }
+
+        public void OnSceneGUI(SceneView sceneView)
+        {
+            if (this.GUIArea.IsEnabled)
+            {
+                this.gizmoEditor.OnSceneGUI(sceneView, this.PointOfInterestType.transform);
+            }
+        }
+
+        public bool IsNull() { return this.PointOfInterestType == null; }
+        public PointOfInterestDefinitionID GetPointOfInterestDefinitionID() { return this.PointOfInterestType.PointOfInterestDefinitionID; }
     }
 }

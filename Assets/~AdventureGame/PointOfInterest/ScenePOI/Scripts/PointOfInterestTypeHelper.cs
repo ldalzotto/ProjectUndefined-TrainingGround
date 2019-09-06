@@ -8,7 +8,7 @@ namespace AdventureGame
     {
         public static PointOfInterestType FromCollisionType(CollisionType collisionType)
         {
-            return collisionType.GetComponent<PointOfInterestType>();
+            return collisionType.GetComponentInParent<PointOfInterestType>();
         }
         
     }
