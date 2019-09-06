@@ -119,37 +119,40 @@ namespace AdventureGame
 
             if (this.LastNearestNearestInteractablePOI != null)
             {
-                if (!IsLookingToPOI)
+                if (Mathf.Abs(Vector3.Angle(this.headBone.forward, (this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition() - this.headBone.transform.position).normalized))
+                         <= this.PointOfInterestVisualMovementInherentData.RotationAngleLimit)
                 {
-                    //first time looking
-                    ResetInterpolatedBoneRotationToActual();
+                    if (!IsLookingToPOI)
+                    {
+                        //first time looking
+                        ResetInterpolatedBoneRotationToActual();
+                    }
+
+                    IsLookingToPOI = true;
+                    hasEndedSmoothingOut = false;
+
+                    for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
+                    {
+                        var affectedBone = this.bonesThatReactToPOI[i];
+
+                        // (1) - Target direction is the direction between bone and POI point.
+                        var targetDirection = (this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition() - affectedBone.transform.position).normalized;
+
+                        // (2) - We clamp the bone rotation to a cone.
+                        var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.PointOfInterestVisualMovementInherentData.RotationAngleLimit);
+
+                        // (3) - We rotate the target direction to fit the cone constraint.
+                        var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
+
+                        affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
+                            PointOfInterestVisualMovementInherentData.SmoothMovementSpeed * d);
+                        InterpolatedBoneRotations[i] = affectedBone.rotation;
+                    }
                 }
-
-                IsLookingToPOI = true;
-                hasEndedSmoothingOut = false;
-
-                for (var i = 0; i < this.bonesThatReactToPOI.Count; i++)
+                else
                 {
-                    var affectedBone = this.bonesThatReactToPOI[i];
-
-                    // (1) - Target direction is the direction between bone and POI point.
-                    var targetDirection = (this.LastNearestNearestInteractablePOI.GetLogicColliderWorldPosition() - affectedBone.transform.position).normalized;
-
-                    // (2) - We clamp the bone rotation to a cone.
-                    var coneClampedRotation = QuaternionHelper.ConeReduction(this.headBone.forward, targetDirection, this.PointOfInterestVisualMovementInherentData.RotationAngleLimit);
-
-                    // (3) - We rotate the target direction to fit the cone constraint.
-                    var adjustedDirection = (coneClampedRotation * targetDirection).normalized;
-
-                    /*
-                    Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (playerPOIVisualHeadMovementComponent.HeadBone.forward * 10), Color.blue);
-                    Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (targetDirection.normalized * 10), Color.green);
-                    Debug.DrawLine(playerPOIVisualHeadMovementComponent.HeadBone.transform.position, playerPOIVisualHeadMovementComponent.HeadBone.transform.position + (adjustedDirection.normalized * 10), Color.red);
-                    */
-
-                    affectedBone.rotation = Quaternion.Slerp(InterpolatedBoneRotations[i], Quaternion.LookRotation(adjustedDirection, affectedBone.transform.up),
-                        PointOfInterestVisualMovementInherentData.SmoothMovementSpeed * d);
-                    InterpolatedBoneRotations[i] = affectedBone.rotation;
+                    IsLookingToPOI = false;
+                    SmoothNoLookingTransition(d);
                 }
             }
             else
@@ -169,7 +172,7 @@ namespace AdventureGame
                 {
                     var affectedBone = this.bonesThatReactToPOI[i];
                     var dotProductToTarget = Mathf.Abs(Quaternion.Dot(InterpolatedBoneRotations[i], affectedBone.rotation));
-
+                    
                     //too much angle to smooth -> direct transition
                     if (dotProductToTarget <= PointOfInterestVisualMovementInherentData.SmoothOutMaxDotProductLimit)
                     {
