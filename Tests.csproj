@@ -106,11 +106,13 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\Common\TestPosition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Environment\Ground\GroundEffectManagerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\_1_Level_StartTutorial_InteractiveObjectTest.cs" />
+    <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\PuzzleInteractiveObjectSelectionTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleInitializerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PhysicsPlayerMovementTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PlayerMovementTestPosition.cs" />
+    <Compile Include="Assets\Tests\Common\GameInputManagerMock.cs" />
     <None Include="Assets\Tests\Tests.asmdef" />
     <Reference Include="UnityEngine.TestRunner">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>

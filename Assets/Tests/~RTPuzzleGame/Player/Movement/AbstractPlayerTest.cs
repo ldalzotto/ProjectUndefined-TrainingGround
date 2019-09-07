@@ -1,35 +1,22 @@
-﻿using CoreGame;
-using RTPuzzle;
+﻿using RTPuzzle;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Tests.AbstractPuzzleSceneTest;
 
 namespace Tests
 {
     public abstract class AbstractPlayerTest
     {
-        protected Vector3 currentLocomotionAxisWorld;
-
         protected IEnumerator Before(Nullable<PlayerMovementTestPositionId> playerMovementTestPositionId = null)
         {
             SceneManager.LoadScene("PlayerMovement", LoadSceneMode.Single);
             yield return new WaitForFixedUpdate();
             var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
-            var mockedInputManager = new MockedInputManager(() => { return cameraPivotPoint.transform.InverseTransformDirection(this.currentLocomotionAxisWorld); });
-            var timeflowManager = GameObject.FindObjectOfType<TimeFlowManager>();
-            timeflowManager.Init(
-                    GameObject.FindObjectOfType<PlayerManagerDataRetriever>(),
-                    GameObject.FindObjectOfType<PlayerManager>(),
-                   mockedInputManager,
-                    GameObject.FindObjectOfType<PuzzleGameConfigurationManager>(),
-                    GameObject.FindObjectOfType<TimeFlowBarManager>(),
-                    GameObject.FindObjectOfType<LevelManager>());
-            var playerManager = GameObject.FindObjectOfType<PlayerManager>();
-            playerManager.Init(mockedInputManager);
+
+            //always timeline
+            GameObject.FindObjectOfType<GameTestMockedInputManager>().GetGameTestMockedXInput().timeForwardButtonDH = true;
 
             if (playerMovementTestPositionId.HasValue)
             {
@@ -38,88 +25,11 @@ namespace Tests
             }
             yield return null;
         }
-    }
 
-    class MockedInputManager : IGameInputManager
-    {
-        private Func<Vector3> locomotionAxisProvider;
-
-        public MockedInputManager(Func<Vector3> locomotionAxisProvider)
+        protected void SetLocomotionAxisWorld(Vector3 worldLocomotionAxis)
         {
-            this.locomotionAxisProvider = locomotionAxisProvider;
-        }
-
-        public XInput CurrentInput => new PlayerMovementInput(this.locomotionAxisProvider);
-    }
-
-    public class PlayerMovementInput : XInput
-    {
-        private Func<Vector3> locomotionAxisProvider;
-
-        public PlayerMovementInput(Func<Vector3> locomotionAxisProvider)
-        {
-            this.locomotionAxisProvider = locomotionAxisProvider;
-        }
-
-        public bool ActionButtonD()
-        {
-            return false;
-        }
-
-        public bool ActionButtonDH()
-        {
-            return false;
-        }
-
-        public bool CancelButtonD()
-        {
-            return false;
-        }
-
-        public bool CancelButtonDH()
-        {
-            return false;
-        }
-
-        public Vector3 CursorDisplacement()
-        {
-            return Vector3.zero;
-        }
-
-        public bool InventoryButtonD()
-        {
-            return false;
-        }
-
-        public float LeftRotationCameraDH()
-        {
-            return 0f;
-        }
-
-        public Vector3 LocomotionAxis()
-        {
-            return locomotionAxisProvider.Invoke();
-        }
-
-        public bool PuzzleResetButton()
-        {
-            return false;
-        }
-
-        public float RightRotationCameraDH()
-        {
-            return 0f;
-        }
-
-        public bool SwitchSelectionButtonD()
-        {
-            return false;
-        }
-
-        public bool TimeForwardButtonDH()
-        {
-            return true;
+            var cameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
+            GameObject.FindObjectOfType<GameTestMockedInputManager>().GetGameTestMockedXInput().locomotionAxis = cameraPivotPoint.transform.InverseTransformDirection(worldLocomotionAxis);
         }
     }
-
 }

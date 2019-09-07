@@ -65,13 +65,13 @@ namespace Tests
             var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest1);
 
-            var mockedInput = GameObject.FindObjectOfType<AdventureTstMockedInputManager>();
-            mockedInput.GetAdventureTestMockedXInput().switchSelectionButtonD = true;
+            var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();
+            mockedInput.GetGameTestMockedXInput().switchSelectionButtonD = true;
 
             yield return null;
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest1);
 
-            mockedInput.GetAdventureTestMockedXInput().switchSelectionButtonD = false;
+            mockedInput.GetGameTestMockedXInput().switchSelectionButtonD = false;
         }
 
         [UnityTest]
@@ -99,15 +99,15 @@ namespace Tests
             var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest2);
 
-            var mockedInput = GameObject.FindObjectOfType<AdventureTstMockedInputManager>();
-            mockedInput.GetAdventureTestMockedXInput().switchSelectionButtonD = true;
+            var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();
+            mockedInput.GetGameTestMockedXInput().switchSelectionButtonD = true;
 
             yield return null;
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest1);
             yield return null;
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest2);
 
-            mockedInput.GetAdventureTestMockedXInput().switchSelectionButtonD = false;
+            mockedInput.GetGameTestMockedXInput().switchSelectionButtonD = false;
         }
         #endregion
 
@@ -128,8 +128,8 @@ namespace Tests
             });
 
 
-            var mockedInput = GameObject.FindObjectOfType<AdventureTstMockedInputManager>();
-            mockedInput.GetAdventureTestMockedXInput().actionButtonD = true;
+            var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();
+            mockedInput.GetGameTestMockedXInput().actionButtonD = true;
 
             yield return null;
 
@@ -139,7 +139,7 @@ namespace Tests
 
             var wheelNodeContextAction = ((ContextActionSelectionWheelNodeData)selectionWheelNodes[0].WheelNodeData).Data as AContextAction;
             Assert.IsTrue(wheelNodeContextAction == test1DummyContextAction);
-            mockedInput.GetAdventureTestMockedXInput().actionButtonD = false;
+            mockedInput.GetGameTestMockedXInput().actionButtonD = false;
 
         }
 
@@ -168,12 +168,12 @@ namespace Tests
             var playerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
             Assert.IsTrue(playerPointOfInterestSelectionManager.GetCurrentSelectedPOI() == pointOfInterest2);
 
-            var mockedInput = GameObject.FindObjectOfType<AdventureTstMockedInputManager>();
-            mockedInput.GetAdventureTestMockedXInput().actionButtonD = true;
+            var mockedInput = GameObject.FindObjectOfType<GameTestMockedInputManager>();
+            mockedInput.GetGameTestMockedXInput().actionButtonD = true;
             yield return null;
 
-            mockedInput.GetAdventureTestMockedXInput().actionButtonD = false;
-            mockedInput.GetAdventureTestMockedXInput().switchSelectionButtonD = true;
+            mockedInput.GetGameTestMockedXInput().actionButtonD = false;
+            mockedInput.GetGameTestMockedXInput().switchSelectionButtonD = true;
 
             yield return null;
             yield return new WaitForEndOfFrame(); //Wait for destroy to be taken into account
@@ -185,8 +185,8 @@ namespace Tests
             var wheelNodeContextAction1 = ((ContextActionSelectionWheelNodeData)selectionWheelNodes[0].WheelNodeData).Data as AContextAction;
             Assert.IsTrue(wheelNodeContextAction1 == test1DummyContextAction);
 
-            mockedInput.GetAdventureTestMockedXInput().actionButtonD = false;
-            mockedInput.GetAdventureTestMockedXInput().switchSelectionButtonD = false;
+            mockedInput.GetGameTestMockedXInput().actionButtonD = false;
+            mockedInput.GetGameTestMockedXInput().switchSelectionButtonD = false;
         }
         #endregion
     }

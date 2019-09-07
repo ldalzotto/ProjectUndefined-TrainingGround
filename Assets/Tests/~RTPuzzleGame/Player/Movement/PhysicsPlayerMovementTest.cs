@@ -37,7 +37,7 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             playerRigidBody.position = playerRigidBody.position + (Vector3.up * groundStickComponent.MinimumDistanceToStick * 1.1f);
             yield return new WaitForFixedUpdate();
-            this.currentLocomotionAxisWorld = new Vector3(-1, 0, 0);
+            this.SetLocomotionAxisWorld(new Vector3(-1, 0, 0));
             yield return new WaitForFixedUpdate(); //take into account the input
             //rotation will take place at the end of physics step https://docs.unity3d.com/ScriptReference/Rigidbody-rotation.html
             yield return new WaitForFixedUpdate();

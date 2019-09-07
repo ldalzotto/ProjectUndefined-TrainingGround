@@ -22,6 +22,9 @@ namespace Tests
             var DottedLineRendererManagerGO = DottedLineRendererManager.gameObject;
             MonoBehaviour.DestroyImmediate(DottedLineRendererManager);
             DottedLineRendererManagerGO.AddComponent<MockDottedLineRendererManager>();
+
+            //No input
+            GameTestMockedInputManager.SetupForTestScene();
         }
     }
 
