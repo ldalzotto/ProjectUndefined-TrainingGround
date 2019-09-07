@@ -27,6 +27,7 @@ namespace RTPuzzle
 
         public override void FirstExecution()
         {
+            Debug.Log(MyLog.Format("CutsceneAction : FirstExecution"));
             base.FirstExecution();
 
             #region External Dependencies

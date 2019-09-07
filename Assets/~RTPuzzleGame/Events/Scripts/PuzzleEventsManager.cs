@@ -153,13 +153,13 @@ namespace RTPuzzle
             this.PlayerActionEventManager.OnWheelAwake();
             this.TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
         }
-        public void PZ_EVT_OnPlayerActionWheelSleep()
+        public void PZ_EVT_OnPlayerActionWheelSleep(bool destroyImmediate = false)
         {
-            this.PlayerActionEventManager.OnWheelSleep();
+            this.PlayerActionEventManager.OnWheelSleep(destroyImmediate);
         }
         public void PZ_EVT_OnPlayerActionWheelRefresh()
         {
-            this.PZ_EVT_OnPlayerActionWheelSleep();
+            this.PZ_EVT_OnPlayerActionWheelSleep(true);
             this.PZ_EVT_OnPlayerActionWheelAwake();
         }
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()

@@ -63,7 +63,6 @@ public class SelectionWheel : MonoBehaviour
                 {
                     if (transformToDestroy[i] != null)
                     {
-                        Debug.Log(MyLog.Format("Destroy : " + transformToDestroy[i].gameObject.name));
                         Destroy(transformToDestroy[i].gameObject);
                     }
                 }

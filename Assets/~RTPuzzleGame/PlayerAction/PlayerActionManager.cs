@@ -81,9 +81,9 @@ namespace RTPuzzle
         {
             PLayerSelectionWheelManager.OnWheelAwake(PlayerActionsAvailableManager.CurrentAvailableActions.MultiValueGetValues());
         }
-        public void OnWheelSleep()
+        public void OnWheelSleep(bool destroyImmediate)
         {
-            PLayerSelectionWheelManager.OnWheelSleep();
+            PLayerSelectionWheelManager.OnWheelSleep(destroyImmediate);
         }
         public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
         {
@@ -280,9 +280,9 @@ namespace RTPuzzle
             );
             wheelEnabled = true;
         }
-        public void OnWheelSleep()
+        public void OnWheelSleep(bool destroyImmediate)
         {
-            SelectionWheel.Exit();
+            SelectionWheel.Exit(destroyImmediate);
             wheelEnabled = false;
         }
 

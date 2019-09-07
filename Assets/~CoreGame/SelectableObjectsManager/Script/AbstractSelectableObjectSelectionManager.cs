@@ -45,11 +45,11 @@ namespace CoreGame
             {
                 this.SetCurrentSelectedObject(this.interactableObjects.First().Value);
             }
-            else if (this.CurrentSelectedObject != null && this.GameInputManager.CurrentInput.SwitchSelectionButtonD())
+            if (this.CurrentSelectedObject != null && this.GameInputManager.CurrentInput.SwitchSelectionButtonD())
             {
                 SwitchSelection();
             }
-            else if (this.interactableObjects.Count == 0)
+            if (this.interactableObjects.Count == 0)
             {
                 this.SetCurrentSelectedObject(null);
             }

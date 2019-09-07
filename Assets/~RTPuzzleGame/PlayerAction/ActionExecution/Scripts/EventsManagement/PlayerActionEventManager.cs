@@ -20,9 +20,9 @@ namespace RTPuzzle
         {
             PlayerActionManager.OnWheelAwake();
         }
-        public void OnWheelSleep()
+        public void OnWheelSleep(bool destroyImmediate)
         {
-            PlayerActionManager.OnWheelSleep();
+            PlayerActionManager.OnWheelSleep(destroyImmediate);
         }
         public void OnRTPPlayerActionStop(RTPPlayerAction stoppedAction)
         {
@@ -44,7 +44,7 @@ namespace RTPuzzle
         
         private void OnRTPPlayerActionStart(RTPPlayerAction PlayerAction)
         {
-            OnWheelSleep();
+            OnWheelSleep(false);
             PlayerActionManager.ExecuteAction(PlayerAction);
         }
         

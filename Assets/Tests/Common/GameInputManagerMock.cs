@@ -39,7 +39,7 @@ namespace Tests
         public bool actionButtonD = false;
         public bool timeForwardButtonDH = false;
         public Vector3 locomotionAxis = Vector3.zero;
-
+        
         #region Interface implementation
         public bool ActionButtonD()
         {
