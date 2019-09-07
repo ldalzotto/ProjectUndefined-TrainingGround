@@ -101,7 +101,7 @@ namespace AdventureGame
             MonoBehaviour.Destroy(this.GetRootObject());
         }
 
-        public override void Init()
+        public void Init(PointOfInterestInitializationObject PointOfInterestInitializationObject = null)
         {
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
 
@@ -120,7 +120,7 @@ namespace AdventureGame
                 this.hasBeenDefined = true;
             }
 
-            this.PointOfInteresetModules = new PointOfInterestModules(this);
+            this.PointOfInteresetModules = new PointOfInterestModules(this, this.pointOfInterestDefinitionInherentData, PointOfInterestInitializationObject);
             this.PointOfInterestModulesEventManager = new PointOfInterestModulesEventManager(this.PointOfInteresetModules);
 
             this.ContextActionSynchronizerManager = new ContextActionSynchronizerManager();
@@ -128,7 +128,11 @@ namespace AdventureGame
             this.pointOfInterestScenarioState = new PointOfInterestScenarioState();
             this.pointOfInterestAnimationPositioningState = new PointOfInterestAnimationPositioningState();
             this.pointOfInterestLevelPositioningState = new PointOfInterestLevelPositioningState();
+        }
 
+        public override void Init()
+        {
+            this.Init(null);
         }
 
         public override void Init_EndOfFrame()

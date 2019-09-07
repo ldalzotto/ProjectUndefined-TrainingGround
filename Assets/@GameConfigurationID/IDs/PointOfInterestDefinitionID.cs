@@ -8,24 +8,30 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum PointOfInterestDefinitionID {
-    
-    NONE = 0,
-    
-    _1_Town_GardenDoor = 1,
-    
-    _1_Town_Bouncer = 2,
-    
-    _1_Town_GardenWatchman = 3,
-    
-    _1_Town_Girl = 4,
-    
-    PLAYER = 5,
-    
-    _1_Town_Thief = 6,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum PointOfInterestDefinitionID
+    {
+
+        NONE = 0,
+
+        _1_Town_GardenDoor = 1,
+
+        _1_Town_Bouncer = 2,
+
+        _1_Town_GardenWatchman = 3,
+
+        _1_Town_Girl = 4,
+
+        PLAYER = 5,
+
+        _1_Town_Thief = 6,
+
+        TEST_1 = 7,
+
+        TEST_2 = 8
+    }
 }

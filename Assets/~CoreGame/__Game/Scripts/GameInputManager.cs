@@ -15,11 +15,11 @@ namespace CoreGame
     public class GameInputManager : MonoBehaviour, IGameInputManager
     {
 
-        private XInput currentInput;
+        protected XInput currentInput;
 
         public XInput CurrentInput { get => currentInput; }
 
-        public void Init()
+        public virtual void Init()
         {
             currentInput = new GameInput(new GameInputV2( CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.InputConfiguration), CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
             Cursor.lockState = CursorLockMode.Locked;
@@ -118,7 +118,7 @@ namespace CoreGame
         }
 
         #region Data Retrieval
-        public Dictionary<Key, KeyControl> GetKeyToKeyControlLookup()
+        public virtual Dictionary<Key, KeyControl> GetKeyToKeyControlLookup()
         {
             return ((GameInput)this.currentInput).GameInputV2.KeyToKeyControlLookup;
         }

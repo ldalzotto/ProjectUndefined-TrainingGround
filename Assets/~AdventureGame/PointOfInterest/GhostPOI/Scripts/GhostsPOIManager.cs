@@ -82,13 +82,13 @@ namespace AdventureGame
             this.OnGhostPOIChanged();
         }
 
-        public void OnPOIEnabled(PointOfInterestId pointOfInterestId)
+        public virtual void OnPOIEnabled(PointOfInterestId pointOfInterestId)
         {
 
         }
 
 
-        public void OnGhostPOIChanged()
+        public virtual void OnGhostPOIChanged()
         {
             this.GhostPOIManagerPersister.SaveAsync(this.ghostPOIs);
         }

@@ -7,20 +7,23 @@
         "Editor",
         "Editor_Common",
         "OdinSerializer",
-        "GameConfigurationID"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "GameConfigurationID",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [
         "OdinAOTSupport.dll",
-        "OdinSerializer.dll"
+        "OdinSerializer.dll",
+        "nunit.framework.dll"
     ],
-    "autoReferenced": true,
-    "defineConstraints": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

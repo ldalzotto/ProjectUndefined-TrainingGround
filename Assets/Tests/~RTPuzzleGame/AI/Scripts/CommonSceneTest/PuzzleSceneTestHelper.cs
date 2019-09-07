@@ -47,11 +47,6 @@ namespace Tests
             return InteractiveObjectInitialization.InstanciateAndInit(worldPosition);
         }
 
-        public static InteractiveObjectType SpawnAIDisarmObject(DisarmObjectInherentData disarmObjectInherentData, Vector3 worldPosition)
-        {
-            return DisarmObjectModule.Instanciate(worldPosition, disarmObjectInherentData);
-        }
-
         public static TargetZoneModule FindTargetZone(TargetZoneID targetZoneID)
         {
             return GameObject.FindObjectsOfType<TargetZoneModule>().ToArray().Select(t => t).Where(targetZone => targetZone.TargetZoneID == targetZoneID).First();

@@ -62,7 +62,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Tests\~AdventureGame\Common\PointOfInterestObjectBuilder\ContextActionOnlyDefinition.cs" />
+    <Compile Include="Assets\Tests\~AdventureGame\Common\PointOfInterestObjectBuilder\PointOfInterestIDTree.cs" />
+    <Compile Include="Assets\Tests\~AdventureGame\Common\PointOfInterestObjectBuilder\PointOfInterestInitialization.cs" />
     <Compile Include="Assets\Tests\~AdventureGame\Common\TestAdventureGameManager.cs" />
+    <Compile Include="Assets\Tests\~AdventureGame\PlayerSelection\AdventurePlayerSelectionTest.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\AbstractTimelineTest.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionEdgeProfile.cs" />
     <Compile Include="Assets\Tests\~CoreGame\AbstractTimeline\TestTimelineConfigurationData\Nodes\TestTimelineActionNodeProfile.cs" />
@@ -113,6 +117,9 @@
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

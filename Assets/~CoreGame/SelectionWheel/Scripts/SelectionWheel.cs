@@ -45,7 +45,7 @@ public class SelectionWheel : MonoBehaviour
         ActionWheelActiveNodeManager.SelectedNodeChanged(wheelNodes);
     }
 
-    public void Exit()
+    public void Exit(bool destroyImmediate = false)
     {
         var actionNodeContainerObject = transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
         var transformToDestroy = new Transform[actionNodeContainerObject.childCount];
@@ -53,19 +53,34 @@ public class SelectionWheel : MonoBehaviour
         {
             transformToDestroy[i] = actionNodeContainerObject.GetChild(i);
         }
-        
-        if(transformToDestroy!=null && transformToDestroy.Length > 0)
+
+        if (transformToDestroy != null && transformToDestroy.Length > 0)
         {
-            StartCoroutine(ContextActionWhelleEnterExitAnimationManager.ExitCoroutine(() =>
+            if (destroyImmediate)
             {
+                ContextActionWhelleEnterExitAnimationManager.PlayExitAnimation();
                 for (var i = 0; i < transformToDestroy.Length; i++)
                 {
                     if (transformToDestroy[i] != null)
                     {
+                        Debug.Log(MyLog.Format("Destroy : " + transformToDestroy[i].gameObject.name));
                         Destroy(transformToDestroy[i].gameObject);
                     }
                 }
-            }));
+            }
+            else
+            {
+                StartCoroutine(ContextActionWhelleEnterExitAnimationManager.ExitCoroutine(() =>
+                {
+                    for (var i = 0; i < transformToDestroy.Length; i++)
+                    {
+                        if (transformToDestroy[i] != null)
+                        {
+                            Destroy(transformToDestroy[i].gameObject);
+                        }
+                    }
+                }));
+            }
         }
     }
 
@@ -74,7 +89,7 @@ public class SelectionWheel : MonoBehaviour
     {
         ActionWheelNodePositionManager.Tick(d, wheelNodes);
 
-        foreach(var wheelNode in wheelNodes)
+        foreach (var wheelNode in wheelNodes)
         {
             wheelNode.Tick(d);
         }
@@ -239,9 +254,14 @@ class ContextActionWhelleEnterExitAnimationManager
         ContextActionWheelAnimator.Play("Enter");
     }
 
-    public IEnumerator ExitCoroutine(Action afterAnimationEndCallback)
+    public void PlayExitAnimation()
     {
         ContextActionWheelAnimator.Play("Exit");
+    }
+
+    public IEnumerator ExitCoroutine(Action afterAnimationEndCallback)
+    {
+        this.PlayExitAnimation();
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfAnimation(ContextActionWheelAnimator, "Exit", 0);
         afterAnimationEndCallback.Invoke();

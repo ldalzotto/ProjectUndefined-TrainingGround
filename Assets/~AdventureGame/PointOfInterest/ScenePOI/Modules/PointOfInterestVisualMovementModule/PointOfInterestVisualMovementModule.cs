@@ -12,8 +12,6 @@ namespace AdventureGame
 {
     public class PointOfInterestVisualMovementModule : APointOfInterestModule
     {
-        private PointOfInterestVisualMovementID PointOfInterestVisualMovementID;
-
         private PointOfInterestType pointOfInterestTypeRef;
         private PointOfInterestTrackerModule PointOfInterestTrackerModule;
         #region player POISelection
@@ -25,10 +23,8 @@ namespace AdventureGame
 
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule,
             PointOfInterestTrackerModule PointOfInterestTrackerModule,
-            PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager)
+            PlayerPointOfInterestSelectionManager PlayerPointOfInterestSelectionManager, PointOfInterestVisualMovementInherentData PointOfInterestVisualMovementInherentData)
         {
-            var PointOfInterestVisualMovementInherentData = GameObject.FindObjectOfType<AdventureGameConfigurationManager>().PointOfInterestVisualMovementConfiguration()[this.PointOfInterestVisualMovementID];
-
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
             this.PointOfInterestTrackerModule = PointOfInterestTrackerModule;
             this.PlayerPointOfInterestSelectionManager = PlayerPointOfInterestSelectionManager;
@@ -68,7 +64,6 @@ namespace AdventureGame
         {
             public static void PopuplateFromDefinition(PointOfInterestVisualMovementModule pointOfInterestVisualMovementModule, PointOfInterestVisualMovementModuleDefinition pointOfInterestVisualMovementModuleDefinition)
             {
-                pointOfInterestVisualMovementModule.PointOfInterestVisualMovementID = pointOfInterestVisualMovementModuleDefinition.PointOfInterestVisualMovementID;
             }
         }
 

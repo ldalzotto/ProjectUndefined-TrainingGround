@@ -18,9 +18,9 @@ namespace AdventureGame
             ContextActionWheel = GameObject.FindObjectOfType<SelectionWheel>();
         }
 
-        public void OnWheelDisabled()
+        public void OnWheelDisabled(bool destroyImmediate = false)
         {
-            ContextActionWheel.Exit();
+            ContextActionWheel.Exit(destroyImmediate);
             ContextActionWheelManager.SleepWheel();
             PlayerManager.OnWheelDisabled();
             StartCoroutine(InventoryManager.OnContextActionWheelDisabled());
@@ -33,7 +33,7 @@ namespace AdventureGame
 
         public void OnWheelRefresh(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource)
         {
-            this.OnWheelDisabled();
+            this.OnWheelDisabled(destroyImmediate: true);
             this.OnWheelEnabled(contextActions, wheelTriggerSource);
         }
 

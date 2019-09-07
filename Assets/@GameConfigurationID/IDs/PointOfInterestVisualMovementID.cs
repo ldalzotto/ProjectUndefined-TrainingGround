@@ -41,5 +41,9 @@ namespace GameConfigurationID
         _1_Town_GardenWatchman = 19,
 
         _Town1_PuzzleIntroductionCutscene = 20,
+
+        TEST_1 = 21,
+
+        TEST_2 = 22
     }
 }

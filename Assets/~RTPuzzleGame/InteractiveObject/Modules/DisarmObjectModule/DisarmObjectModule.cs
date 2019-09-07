@@ -28,14 +28,6 @@ namespace RTPuzzle
 
         public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
 
-        public static InteractiveObjectType Instanciate(Vector3 worldPosition, DisarmObjectInherentData DisarmObjectInherentData)
-        {
-            InteractiveObjectType createdDisarmObject = MonoBehaviour.Instantiate(DisarmObjectInherentData.AssociatedInteractiveObjectType);
-            createdDisarmObject.Init(new InteractiveObjectInitializationObject() { DisarmObjectInherentData = DisarmObjectInherentData });
-            createdDisarmObject.transform.position = worldPosition;
-            return createdDisarmObject;
-        }
-
         public void Init(ModelObjectModule ModelObjectModule, InteractiveObjectType AssociatedInteractiveObjectType, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
         {
             this.ModelObjectModule = ModelObjectModule;

@@ -44,8 +44,10 @@ namespace GameConfigurationID {
     
     _Town1_Park = 14,
     
+    _Town1_Park_ToSewerPuzzle = 15,
+    
     NONE = -1,
     
-    _Town1_Park_ToSewerPuzzle = 15,
+    ADVENTURE_PlayerSelectionTest = 16,
   }
 }

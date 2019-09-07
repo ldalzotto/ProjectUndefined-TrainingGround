@@ -126,7 +126,7 @@ namespace RTPuzzle
             CircleFillBarRendererManager.Init();
             PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
-            InteractiveObjectSelectionManager.Init();
+            InteractiveObjectSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();

@@ -20,8 +20,11 @@ namespace AdventureGame
         public PointOfInterestLogicColliderModule PointOfInterestLogicColliderModule { get => pointOfInterestLogicColliderModule; }
         #endregion
 
-        public PointOfInterestModules(PointOfInterestType pointOfInterestTypeRef)
+        public PointOfInterestModules(PointOfInterestType pointOfInterestTypeRef, PointOfInterestDefinitionInherentData PointOfInterestDefinitionInherentData,
+            PointOfInterestInitializationObject PointOfInterestInitializationObject = null)
         {
+            var AdventureConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+
             var retrievedPointOfInterestModules = pointOfInterestTypeRef.GetComponentsInChildren<APointOfInterestModule>();
             if (retrievedPointOfInterestModules != null)
             {
@@ -38,7 +41,12 @@ namespace AdventureGame
             this.pointOfInterestModelObjectModule.IfNotNull((pointOfInterestModelObjectModule) => pointOfInterestModelObjectModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestLogicColliderModule));
             this.pointOfInterestCutsceneController.IfNotNull((pointOfInterestCutsceneController) => pointOfInterestCutsceneController.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule));
             this.pointOfInterestTrackerModule.IfNotNull((pointOfInterestTrackerModule) => pointOfInterestTrackerModule.Init(pointOfInterestTypeRef));
-            this.pointOfInterestVisualMovementModule.IfNotNull((pointOfInterestVisualMovementModule) => pointOfInterestVisualMovementModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestTrackerModule, GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>()));
+            this.pointOfInterestVisualMovementModule.IfNotNull((pointOfInterestVisualMovementModule) => {
+                PointOfInterestVisualMovementInherentData PointOfInterestVisualMovementInherentData = null;
+                if(PointOfInterestInitializationObject!=null && PointOfInterestInitializationObject.PointOfInterestVisualMovementInherentData != null) { PointOfInterestVisualMovementInherentData = PointOfInterestInitializationObject.PointOfInterestVisualMovementInherentData; }
+                else { PointOfInterestVisualMovementInherentData = AdventureConfigurationManager.PointOfInterestVisualMovementConfiguration()[PointOfInterestDefinitionInherentData.GetDefinitionModule<PointOfInterestVisualMovementModuleDefinition>().PointOfInterestVisualMovementID]; }
+                pointOfInterestVisualMovementModule.Init(pointOfInterestTypeRef, this.pointOfInterestModelObjectModule, this.pointOfInterestTrackerModule, GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>(), PointOfInterestVisualMovementInherentData);
+            });
             this.pointOfInterestLogicColliderModule.IfNotNull((pointOfInterestLogicColliderModule) => pointOfInterestLogicColliderModule.Init());
         }
 

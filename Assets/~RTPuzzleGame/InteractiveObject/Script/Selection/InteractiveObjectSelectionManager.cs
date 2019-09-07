@@ -11,10 +11,10 @@ namespace RTPuzzle
 
         public override SelectableObjectSelectionManagerEventListener<SelectableObject> SelectableObjectSelectionManagerEventListener => this.PlayerActionPuzzleEventsManager;
 
-        public override void Init()
+        public override void Init(IGameInputManager GameInputManager)
         {
             this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
-            base.Init();
+            base.Init(GameInputManager);
         }
 
         #region External Events

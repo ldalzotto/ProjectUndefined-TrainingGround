@@ -9,10 +9,10 @@ namespace AdventureGame
 
         private AdventureEventsManager AdventureEventsManager;
 
-        public override void Init()
+        public override void Init(IGameInputManager GameInputManager)
         {
             this.AdventureEventsManager = GameObject.FindObjectOfType<AdventureEventsManager>();
-            base.Init();
+            base.Init(GameInputManager);
         }
 
         public void OnSelectableObjectDeSelected(POISelectableObject SelectableObject) {  }

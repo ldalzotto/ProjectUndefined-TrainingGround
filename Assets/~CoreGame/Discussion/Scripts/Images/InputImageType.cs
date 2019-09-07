@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
 
 namespace CoreGame
@@ -29,7 +30,7 @@ namespace CoreGame
 
             if (parent != null) { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate, parent); }
             else { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate); }
-            
+
             InputImageType.Init(InputImageTypeInstanceType, InputConfigurationInherentData, animate);
             return InputImageType;
         }
@@ -48,13 +49,17 @@ namespace CoreGame
             {
                 GetComponent<Animator>().enabled = false;
             }
-            
-            this.SetKey(CoreGameSingletonInstances.GameInputManager.GetKeyToKeyControlLookup()[InputConfigurationInherentData.AttributedKeys[0]].displayName);
+
+            CoreGameSingletonInstances.GameInputManager.GetKeyToKeyControlLookup().TryGetValue(InputConfigurationInherentData.AttributedKeys[0], out KeyControl retrievedKeyControl);
+            if (retrievedKeyControl != null)
+            {
+                this.SetKey(retrievedKeyControl.displayName);
+            }
         }
 
         public void SetKey(string key)
         {
-            if(this.inputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
+            if (this.inputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
             {
                 this.KeyText.text = key;
             }

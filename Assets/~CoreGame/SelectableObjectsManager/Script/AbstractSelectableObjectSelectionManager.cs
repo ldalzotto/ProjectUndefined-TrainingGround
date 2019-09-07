@@ -12,7 +12,7 @@ namespace CoreGame
         #endregion
 
         #region External Dependencies
-        private GameInputManager GameInputManager;
+        private IGameInputManager GameInputManager;
         public abstract SelectableObjectSelectionManagerEventListener<T> SelectableObjectSelectionManagerEventListener { get; }
         #endregion
 
@@ -28,11 +28,11 @@ namespace CoreGame
         #endregion
 
 
-        public virtual void Init()
+        public virtual void Init(IGameInputManager GameInputManager)
         {
             #region Exnternal Dependencies
             var CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
-            this.GameInputManager = CoreGameSingletonInstances.GameInputManager;
+            this.GameInputManager = GameInputManager;
             #endregion
 
             this.InteractiveObjectSelectionRendererManager = new ObjectSelectionRendererManager(CoreMaterialConfiguration.OutlineImageEffectComputeShader, CoreMaterialConfiguration.OutlineColorShader, CoreMaterialConfiguration.BufferScreenSampleMaterial);
@@ -47,14 +47,7 @@ namespace CoreGame
             }
             else if (this.CurrentSelectedObject != null && this.GameInputManager.CurrentInput.SwitchSelectionButtonD())
             {
-                var availableSelectableObjectList = this.interactableObjects.Values.ToList();
-                var currentSelectedIndex = availableSelectableObjectList.IndexOf(this.CurrentSelectedObject);
-                int nextSelectedIndex = currentSelectedIndex + 1;
-                if (nextSelectedIndex == availableSelectableObjectList.Count)
-                {
-                    nextSelectedIndex = 0;
-                }
-                this.SetCurrentSelectedObject(availableSelectableObjectList[nextSelectedIndex]);
+                SwitchSelection();
             }
             else if (this.interactableObjects.Count == 0)
             {
@@ -62,6 +55,18 @@ namespace CoreGame
             }
 
             this.InteractiveObjectSelectionRendererManager.Tick(this.GetCurrentSelectedObject());
+        }
+
+        private void SwitchSelection()
+        {
+            var availableSelectableObjectList = this.interactableObjects.Values.ToList();
+            var currentSelectedIndex = availableSelectableObjectList.IndexOf(this.CurrentSelectedObject);
+            int nextSelectedIndex = currentSelectedIndex + 1;
+            if (nextSelectedIndex == availableSelectableObjectList.Count)
+            {
+                nextSelectedIndex = 0;
+            }
+            this.SetCurrentSelectedObject(availableSelectableObjectList[nextSelectedIndex]);
         }
 
         private void SetCurrentSelectedObject(T SelectableObject)
