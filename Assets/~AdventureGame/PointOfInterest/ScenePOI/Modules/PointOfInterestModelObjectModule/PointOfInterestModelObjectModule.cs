@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace AdventureGame
@@ -46,7 +45,7 @@ namespace AdventureGame
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
 
             this.allColliders = this.GetComponentsInChildren<Collider>();
-            this.renderers = this.GetComponentsInChildren<Renderer>().ToList();
+            this.renderers = RendererRetrievableHelper.GetAllRederers(this.gameObject, particleRenderers: false);
             this.oneLevelDownChildObjects = this.gameObject.FindOneLevelDownChilds();
             this.animator = this.GetComponent<Animator>();
             if (this.animator == null)

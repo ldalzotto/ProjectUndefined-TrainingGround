@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -37,7 +36,7 @@ namespace RTPuzzle
             }
 
             this.associatedRigidbody = GetComponentInParent<Rigidbody>();
-            this.renderers = GetComponentsInChildren<Renderer>().ToList();
+            this.renderers = RendererRetrievableHelper.GetAllRederers(this.gameObject, particleRenderers: false);
         }
 
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)

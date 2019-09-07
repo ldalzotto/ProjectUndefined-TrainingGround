@@ -104,6 +104,7 @@
     <Compile Include="Assets\~CoreGame\_Helpers\MyEditorStyles.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\ProceduralTextureHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\QuaterionHelper.cs" />
+    <Compile Include="Assets\~CoreGame\_Helpers\RendererRetrievableHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\SerializationHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\TransformChangeListener.cs" />
