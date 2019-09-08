@@ -50,7 +50,7 @@ namespace AdventureGame
     {
         public PointOfInterestType PointOfInterestType;
 
-        public POISelectableObject(IRendererRetrievable modelObjectModule, PointOfInterestType PointOfInterestType) : base(modelObjectModule)
+        public POISelectableObject(IRenderBoundRetrievable modelObjectModule, PointOfInterestType PointOfInterestType) : base(modelObjectModule)
         {
             this.PointOfInterestType = PointOfInterestType;
         }

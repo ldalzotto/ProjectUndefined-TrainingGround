@@ -46,7 +46,7 @@ namespace RTPuzzle
     {
         public RTPPlayerAction AssociatedPlayerAction;
 
-        public SelectableObject(IRendererRetrievable modelObjectModule, RTPPlayerAction AssociatedPlayerAction) : base(modelObjectModule)
+        public SelectableObject(IRenderBoundRetrievable modelObjectModule, RTPPlayerAction AssociatedPlayerAction) : base(modelObjectModule)
         {
             this.AssociatedPlayerAction = AssociatedPlayerAction;
         }

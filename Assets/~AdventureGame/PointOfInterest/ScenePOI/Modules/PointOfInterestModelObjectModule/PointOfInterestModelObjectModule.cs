@@ -5,12 +5,11 @@ using UnityEngine;
 namespace AdventureGame
 {
 
-    public class PointOfInterestModelObjectModule : APointOfInterestModule, IRendererRetrievable
+    public class PointOfInterestModelObjectModule : APointOfInterestModule, IRenderBoundRetrievable
     {
         #region Internal Dependencies
         private List<GameObject> oneLevelDownChildObjects;
         private Collider[] allColliders;
-        private List<Renderer> renderers;
         private Animator animator;
         private PointOfInterestType pointOfInterestTypeRef;
 
@@ -27,9 +26,9 @@ namespace AdventureGame
         #endregion
 
         #region Data Retrieval
-        public List<Renderer> GetAllRenderers()
+        public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
-            return this.renderers;
+            return this.averageModeBounds;
         }
         #endregion
 
@@ -45,7 +44,6 @@ namespace AdventureGame
             this.pointOfInterestTypeRef = pointOfInterestTypeRef;
 
             this.allColliders = this.GetComponentsInChildren<Collider>();
-            this.renderers = RendererRetrievableHelper.GetAllRederers(this.gameObject, particleRenderers: false);
             this.oneLevelDownChildObjects = this.gameObject.FindOneLevelDownChilds();
             this.animator = this.GetComponent<Animator>();
             if (this.animator == null)
@@ -55,7 +53,7 @@ namespace AdventureGame
             this.POIShowHideManager = new POIShowHideManager(pointOfInterestTypeRef, PointOfInterestModelObjectModule, PointOfInterestLogicColliderModule);
             this.InitAnimation();
 
-            this.averageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
+            this.averageModeBounds = BoundsHelper.GetAverageRendererBounds(RendererRetrievableHelper.GetAllRederers(this.gameObject, particleRenderers: false).ToArray());
             this.transform.localScale = Vector3.one;
             this.transform.transform.localPosition = Vector3.zero;
         }
@@ -72,6 +70,11 @@ namespace AdventureGame
         public void OnPOIInit()
         {
             this.POIShowHideManager.OnPOIInit(this.pointOfInterestTypeRef);
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(this.transform.position + new Vector3(0, (this.averageModeBounds.Bounds.max.y / 2f), 0), 0.5f);
         }
 
         #region External Events

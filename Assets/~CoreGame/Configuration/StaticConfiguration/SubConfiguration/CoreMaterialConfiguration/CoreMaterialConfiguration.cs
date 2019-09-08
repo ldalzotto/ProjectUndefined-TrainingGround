@@ -9,6 +9,10 @@ namespace CoreGame
     public class CoreMaterialConfiguration : SerializedScriptableObject
     {
         public Material UnlitVertexColor;
+        
+        [Header("Selection Materials")]
+        public Mesh ForwardPlane;
+        public Material SelectionDoticonMaterial;
 
         [Header("Outline Materials")]
         public ComputeShader OutlineImageEffectComputeShader;

@@ -226,6 +226,7 @@
     <Compile Include="Assets\~CoreGame\Random\RandomHelper.cs" />
     <Compile Include="Assets\~CoreGame\SelectableObjectsManager\Script\AbstractSelectableObjectSelectionManager.cs" />
     <Compile Include="Assets\~CoreGame\SelectableObjectsManager\Script\ObjectSelectionRendererManager.cs" />
+    <Compile Include="Assets\~CoreGame\SelectableObjectsManager\Script\SelectableObjectIconAnimation.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheel.cs" />
     <Compile Include="Assets\~CoreGame\SelectionWheel\Scripts\SelectionWheelNode.cs" />
     <Compile Include="Assets\~CoreGame\Serialization\Scripts\DictionarySerialization.cs" />
@@ -278,6 +279,7 @@
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
+    <None Include="Assets\~CoreGame\SelectableObjectsManager\Textures\SelectedRingIconShader.shader" />
     <None Include="Assets\Test\WindTest\WindShaderTest.shader" />
     <None Include="Assets\Test\ShaderVectorAngleTest\VectorAngleTest.shader" />
     <None Include="Assets\Test\ParticleDeformation\ParticleDeformation.shader" />

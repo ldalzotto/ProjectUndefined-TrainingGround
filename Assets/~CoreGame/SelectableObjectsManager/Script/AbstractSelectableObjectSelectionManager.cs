@@ -35,7 +35,7 @@ namespace CoreGame
             this.GameInputManager = GameInputManager;
             #endregion
 
-            this.InteractiveObjectSelectionRendererManager = new ObjectSelectionRendererManager(CoreMaterialConfiguration.OutlineImageEffectComputeShader, CoreMaterialConfiguration.OutlineColorShader, CoreMaterialConfiguration.BufferScreenSampleMaterial);
+            this.InteractiveObjectSelectionRendererManager = new ObjectSelectionRendererManager(CoreMaterialConfiguration);
             this.interactableObjects = new Dictionary<Object, T>();
         }
 
@@ -54,7 +54,7 @@ namespace CoreGame
                 this.SetCurrentSelectedObject(null);
             }
 
-            this.InteractiveObjectSelectionRendererManager.Tick(this.GetCurrentSelectedObject());
+            this.InteractiveObjectSelectionRendererManager.Tick(d, this.GetCurrentSelectedObject());
         }
 
         private void SwitchSelection()
@@ -115,9 +115,9 @@ namespace CoreGame
 
     public abstract class AbstractSelectableObject
     {
-        public IRendererRetrievable ModelObjectModule;
+        public IRenderBoundRetrievable ModelObjectModule;
 
-        public AbstractSelectableObject(IRendererRetrievable modelObjectModule)
+        public AbstractSelectableObject(IRenderBoundRetrievable modelObjectModule)
         {
             ModelObjectModule = modelObjectModule;
         }
