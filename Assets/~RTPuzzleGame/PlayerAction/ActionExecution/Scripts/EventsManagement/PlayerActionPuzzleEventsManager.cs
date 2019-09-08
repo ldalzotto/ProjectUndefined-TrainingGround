@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PlayerActionPuzzleEventsManager : MonoBehaviour, SelectableObjectSelectionManagerEventListener<SelectableObject>
+    public class PlayerActionPuzzleEventsManager : MonoBehaviour, SelectableObjectSelectionManagerEventListener<ISelectableModule>
     {
 
         #region External Dependencies
@@ -41,11 +41,11 @@ namespace RTPuzzle
           );
         }
 
-        public void OnSelectableObjectSelected(SelectableObject SelectableObject)
+        public void OnSelectableObjectSelected(ISelectableModule SelectableObject)
         {
             this.PlayerActionManager.OnSelectableObjectSelected(SelectableObject);
         }
-        public void OnSelectableObjectDeSelected(SelectableObject SelectableObject)
+        public void OnSelectableObjectDeSelected(ISelectableModule SelectableObject)
         {
             this.PlayerActionManager.OnSelectableObjectDeSelected(SelectableObject);
         }

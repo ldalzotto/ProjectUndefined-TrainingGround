@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
-#endif
-
 namespace AdventureGame
 {
     public class PointOfInterestTrackerModule : APointOfInterestModule
@@ -25,13 +22,21 @@ namespace AdventureGame
         }
 
         #region Data Retrieval
-        public PointOfInterestType NearestInRangeInteractabledPointOfInterest() { return this.POITrackerManager.NearestInRangeInteractabledPointOfInterest; }
+        public PointOfInterestType NearestInRangeInteractabledPointOfInterest()
+        {
+            var poiInteractableSorted = this.GetAllPointOfInterestsInRangeAndInteractable();
+            if (poiInteractableSorted.Count > 0) { return poiInteractableSorted[0]; }
+            return null;
+        }
+
+        public List<PointOfInterestType> GetAllPointOfInterestsInRangeAndInteractable()
+        {
+            return this.POITrackerManager.GetAllPOIInRangeAndInteractableOrderedByDistance();
+        }
         #endregion
 
         public void Tick(float d)
-        {
-            this.POITrackerManager.Tick(d);
-        }
+        { }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -44,10 +49,6 @@ namespace AdventureGame
                     if (otherPointOfInterestType != null && otherPointOfInterestType != this.PointOfInterestTypeRef)
                     {
                         this.POITrackerManager.OnPOIObjectEnter(otherPointOfInterestType);
-                        if (this.PointOfInterestTypeRef.IsPlayer())
-                        {
-                            this.PlayerPointOfInterestSelectionManager.OnPointOfInterestInRange(otherPointOfInterestType);
-                        }
                     }
                 }
             }
@@ -64,10 +65,6 @@ namespace AdventureGame
                     if (otherPointOfInterestType != null && otherPointOfInterestType != this.PointOfInterestTypeRef)
                     {
                         this.POITrackerManager.OnPOIObjectExit(otherPointOfInterestType);
-                        if (this.PointOfInterestTypeRef.IsPlayer())
-                        {
-                            this.PlayerPointOfInterestSelectionManager.OnPointOfInterestExitRange(otherPointOfInterestType);
-                        }
                     }
                 }
             }
@@ -94,20 +91,12 @@ namespace AdventureGame
         private SphereCollider TrackerCollider;
         private Transform ReferenceTransform;
         private List<PointOfInterestType> InRangePointOfInterests = new List<PointOfInterestType>();
-        private PointOfInterestType nearestInRangeInteractabledPointOfInterest;
-
-        public PointOfInterestType NearestInRangeInteractabledPointOfInterest { get => nearestInRangeInteractabledPointOfInterest; }
 
         public POITrackerManager(PointOfInterestType PointOfInterestTypeRef, SphereCollider TrackerCollider)
         {
             this.PointOfInterestTypeRef = PointOfInterestTypeRef;
             this.TrackerCollider = TrackerCollider;
             this.ReferenceTransform = this.TrackerCollider.transform;
-        }
-
-        public void Tick(float d)
-        {
-            nearestInRangeInteractabledPointOfInterest = GetNearestPOIInteractable();
         }
 
         public void OnPOIObjectEnter(PointOfInterestType pointOfInterestType)
@@ -126,25 +115,21 @@ namespace AdventureGame
             }
         }
 
-        private PointOfInterestType GetNearestPOIInteractable()
+        public List<PointOfInterestType> GetAllPOIInRangeAndInteractableOrderedByDistance()
         {
+            List<PointOfInterestType> foundPOI = new List<PointOfInterestType>();
             this.InRangePointOfInterests.Sort((p1, p2) =>
             {
                 return Vector3.Distance(p1.transform.position, TrackerCollider.transform.position).CompareTo(Vector3.Distance(p2.transform.position, TrackerCollider.transform.position));
             });
-
-            //the first is the nearest
-            PointOfInterestType nearestInteractivePoi = null;
             foreach (var POI in InRangePointOfInterests)
             {
                 if (Vector3.Angle(this.PointOfInterestTypeRef.transform.forward, POI.transform.position - this.PointOfInterestTypeRef.transform.position) <= this.PointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit)
                 {
-                    nearestInteractivePoi = POI;
-                    break;
+                    foundPOI.Add(POI);
                 }
             }
-
-            return nearestInteractivePoi;
+            return foundPOI;
         }
 
         public void POIDeleted(PointOfInterestType deletedPOI)
@@ -155,21 +140,5 @@ namespace AdventureGame
             }
         }
 
-        /*
-        public void OnGizmoTick()
-        {
-            if (PlayerPOITrackerManagerComponent != null && TrackerCollider != null)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireSphere(TrackerCollider.transform.position, PlayerPOITrackerManagerComponent.SphereDetectionRadius);
-                var labelStyle = GUI.skin.GetStyle("Label");
-                labelStyle.alignment = TextAnchor.MiddleCenter;
-                labelStyle.normal.textColor = Color.blue;
-#if UNITY_EDITOR
-                Handles.Label(TrackerCollider.transform.position + new Vector3(0, PlayerPOITrackerManagerComponent.SphereDetectionRadius, 0), "POI Trigger Sphere Detection", labelStyle);
-#endif
-            }
-        }
-        */
     }
 }

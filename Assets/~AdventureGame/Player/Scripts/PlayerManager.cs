@@ -28,7 +28,7 @@ namespace AdventureGame
         //Inter dependency
         private PointOfInterestType PointOfInterestType;
 
-        private PointOfInterestTrackerModule PointOfInterestTrackerModule;
+        private PointOfInterestTrackerModule pointOfInterestTrackerModule;
         private PlayerPOIWheelTriggerManager PlayerPOIWheelTriggerManager;
 
         private PlayerContextActionManager PlayerContextActionManager;
@@ -74,11 +74,13 @@ namespace AdventureGame
             #endregion
 
             #region POI Modules
-            this.PointOfInterestTrackerModule = this.PointOfInterestType.GetPointOfInterestTrackerModule();
+            this.pointOfInterestTrackerModule = this.PointOfInterestType.GetPointOfInterestTrackerModule();
             #endregion
+            
+            this.PlayerPointOfInterestSelectionManager.AdventureInit(CoreGameSingletonInstances.GameInputManager, this.pointOfInterestTrackerModule);
 
             this.PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, CameraPivotPoint.transform, GameInputManager, playerRigidBody);
-            this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.PointOfInterestTrackerModule);
+            this.PlayerPOIWheelTriggerManager = new PlayerPOIWheelTriggerManager(playerObject.transform, GameInputManager, ContextActionWheelEventManager, this.pointOfInterestTrackerModule);
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
@@ -107,7 +109,7 @@ namespace AdventureGame
                 playerSpeedMagnitude = this.PointOfInterestType.GetPointOfInterestCutsceneController().GetCurrentNormalizedSpeedMagnitude();
             }
 
-            PointOfInterestTrackerModule.Tick(d);
+            pointOfInterestTrackerModule.Tick(d);
 
             if (IsAllowedToDoAnyInteractions())
             {
@@ -209,7 +211,7 @@ namespace AdventureGame
 
         public PointOfInterestType GetCurrentTargetedPOI()
         {
-            return PointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest();
+            return pointOfInterestTrackerModule.NearestInRangeInteractabledPointOfInterest();
         }
 
     }

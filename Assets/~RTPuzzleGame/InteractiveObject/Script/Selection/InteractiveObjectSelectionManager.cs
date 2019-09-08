@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<SelectableObject>
+    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>
     {
         #region External Dependencies
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         #endregion
 
-        public override SelectableObjectSelectionManagerEventListener<SelectableObject> SelectableObjectSelectionManagerEventListener => this.PlayerActionPuzzleEventsManager;
+        public override SelectableObjectSelectionManagerEventListener<ISelectableModule> SelectableObjectSelectionManagerEventListener => this.PlayerActionPuzzleEventsManager;
 
         public override void Init(IGameInputManager GameInputManager)
         {
@@ -20,7 +20,7 @@ namespace RTPuzzle
         #region External Events
         public void OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.AddInteractiveObjectFromSelectable(actionInteractableObjectModule, new SelectableObject(actionInteractableObjectModule.GetModelObjectModule(), actionInteractableObjectModule.AssociatedPlayerAction));
+            this.AddInteractiveObjectFromSelectable(actionInteractableObjectModule);
         }
 
         public void OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
@@ -30,7 +30,7 @@ namespace RTPuzzle
 
         public void OnGrabObjectEnter(GrabObjectModule grabObjectModule)
         {
-            this.AddInteractiveObjectFromSelectable(grabObjectModule, new SelectableObject(grabObjectModule.ModelObjectModule, grabObjectModule.GrabObjectAction));
+            this.AddInteractiveObjectFromSelectable(grabObjectModule);
         }
 
         public void OnGrabObjectExit(GrabObjectModule grabObjectModule)
@@ -38,17 +38,6 @@ namespace RTPuzzle
             this.RemoveInteractiveObjectFromSelectable(grabObjectModule);
         }
         #endregion
-
-
-    }
-
-    public class SelectableObject : AbstractSelectableObject
-    {
-        public RTPPlayerAction AssociatedPlayerAction;
-
-        public SelectableObject(IRenderBoundRetrievable modelObjectModule, RTPPlayerAction AssociatedPlayerAction) : base(modelObjectModule)
-        {
-            this.AssociatedPlayerAction = AssociatedPlayerAction;
-        }
+        
     }
 }

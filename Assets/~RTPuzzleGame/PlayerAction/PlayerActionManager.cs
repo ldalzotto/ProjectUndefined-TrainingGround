@@ -89,17 +89,17 @@ namespace RTPuzzle
         {
             this.PlayerActionsAvailableManager.IncreaseActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
         }
-        public void OnSelectableObjectSelected(SelectableObject selectableObject)
+        public void OnSelectableObjectSelected(ISelectableModule selectableObject)
         {
-            this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, selectableObject.AssociatedPlayerAction);
+            this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, selectableObject.GetAssociatedPlayerAction());
             if (this.PLayerSelectionWheelManager.WheelEnabled)
             {
                 this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
             }
         }
-        public void OnSelectableObjectDeSelected(SelectableObject selectableObject)
+        public void OnSelectableObjectDeSelected(ISelectableModule selectableObject)
         {
-            this.PlayerActionsAvailableManager.RemoveActionToAvailable(PlayerActionId.NONE, selectableObject.AssociatedPlayerAction);
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(PlayerActionId.NONE, selectableObject.GetAssociatedPlayerAction());
         }
         #endregion
 

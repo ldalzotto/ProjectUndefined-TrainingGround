@@ -3,23 +3,31 @@ using UnityEngine;
 
 namespace AdventureGame
 {
-    public class PlayerPointOfInterestSelectionManager : AbstractSelectableObjectSelectionManager<POISelectableObject>, SelectableObjectSelectionManagerEventListener<POISelectableObject>
+    public class PlayerPointOfInterestSelectionManager : AbstractSelectableObjectSelectionManager<PointOfInterestType>, SelectableObjectSelectionManagerEventListener<PointOfInterestType>
     {
-        public override SelectableObjectSelectionManagerEventListener<POISelectableObject> SelectableObjectSelectionManagerEventListener => this;
+        public override SelectableObjectSelectionManagerEventListener<PointOfInterestType> SelectableObjectSelectionManagerEventListener => this;
 
         private AdventureEventsManager AdventureEventsManager;
+        private PointOfInterestTrackerModule playerPointOfInterestTrackerModule;
 
-        public override void Init(IGameInputManager GameInputManager)
+        public void AdventureInit(IGameInputManager GameInputManager, PointOfInterestTrackerModule playerPointOfInterestTrackerModule)
         {
+            this.Init(GameInputManager);
             this.AdventureEventsManager = GameObject.FindObjectOfType<AdventureEventsManager>();
-            base.Init(GameInputManager);
+            this.playerPointOfInterestTrackerModule = playerPointOfInterestTrackerModule;
         }
 
-        public void OnSelectableObjectDeSelected(POISelectableObject SelectableObject) {  }
+        public void OnSelectableObjectDeSelected(PointOfInterestType SelectableObject) {  }
 
-        public void OnSelectableObjectSelected(POISelectableObject SelectableObject)
+        public void OnSelectableObjectSelected(PointOfInterestType SelectableObject)
         {
             this.AdventureEventsManager.ADV_EVT_OnSelectableObjectSelected(SelectableObject);
+        }
+
+        public override void Tick(float d)
+        {
+           this.ReplaceSelectableObjects(this.playerPointOfInterestTrackerModule.GetAllPointOfInterestsInRangeAndInteractable());
+            base.Tick(d);
         }
 
         #region Data Retrieval
@@ -30,30 +38,9 @@ namespace AdventureGame
             {
                 return null;
             }
-            return currentSelectedObject.PointOfInterestType;
+            return currentSelectedObject;
         }
         #endregion
-
-        #region External Events
-        public void OnPointOfInterestInRange(PointOfInterestType pointOfInterestType)
-        {
-            this.AddInteractiveObjectFromSelectable(pointOfInterestType, new POISelectableObject(pointOfInterestType.GetPointOfInterestModelObject(), pointOfInterestType));
-        }
-        public void OnPointOfInterestExitRange(PointOfInterestType pointOfInterestType)
-        {
-            this.RemoveInteractiveObjectFromSelectable(pointOfInterestType);
-        }
-        #endregion
-    }
-
-    public class POISelectableObject : AbstractSelectableObject
-    {
-        public PointOfInterestType PointOfInterestType;
-
-        public POISelectableObject(IRenderBoundRetrievable modelObjectModule, PointOfInterestType PointOfInterestType) : base(modelObjectModule)
-        {
-            this.PointOfInterestType = PointOfInterestType;
-        }
     }
 
 

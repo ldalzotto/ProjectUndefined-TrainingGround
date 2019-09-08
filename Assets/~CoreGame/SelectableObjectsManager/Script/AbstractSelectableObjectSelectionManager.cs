@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public abstract class AbstractSelectableObjectSelectionManager<T> : MonoBehaviour where T : AbstractSelectableObject
+    public abstract class AbstractSelectableObjectSelectionManager<T> : MonoBehaviour where T : IRenderBoundRetrievable
     {
         #region Internal State
         private T CurrentSelectedObject;
-        private Dictionary<Object, T> interactableObjects;
+        private List<T> interactableObjects;
         #endregion
 
         #region External Dependencies
@@ -36,14 +36,14 @@ namespace CoreGame
             #endregion
 
             this.InteractiveObjectSelectionRendererManager = new ObjectSelectionRendererManager(CoreMaterialConfiguration);
-            this.interactableObjects = new Dictionary<Object, T>();
+            this.interactableObjects = new List<T>();
         }
 
-        public void Tick(float d)
+        public virtual void Tick(float d)
         {
             if (this.interactableObjects.Count > 0 && this.CurrentSelectedObject == null)
             {
-                this.SetCurrentSelectedObject(this.interactableObjects.First().Value);
+                this.SetCurrentSelectedObject(this.interactableObjects.First());
             }
             if (this.CurrentSelectedObject != null && this.GameInputManager.CurrentInput.SwitchSelectionButtonD())
             {
@@ -51,7 +51,7 @@ namespace CoreGame
             }
             if (this.interactableObjects.Count == 0)
             {
-                this.SetCurrentSelectedObject(null);
+                this.SetCurrentSelectedObject(default(T));
             }
 
             this.InteractiveObjectSelectionRendererManager.Tick(d, this.GetCurrentSelectedObject());
@@ -59,21 +59,20 @@ namespace CoreGame
 
         private void SwitchSelection()
         {
-            var availableSelectableObjectList = this.interactableObjects.Values.ToList();
-            var currentSelectedIndex = availableSelectableObjectList.IndexOf(this.CurrentSelectedObject);
+            var currentSelectedIndex = this.interactableObjects.IndexOf(this.CurrentSelectedObject);
             int nextSelectedIndex = currentSelectedIndex + 1;
-            if (nextSelectedIndex == availableSelectableObjectList.Count)
+            if (nextSelectedIndex == this.interactableObjects.Count)
             {
                 nextSelectedIndex = 0;
             }
-            this.SetCurrentSelectedObject(availableSelectableObjectList[nextSelectedIndex]);
+            this.SetCurrentSelectedObject(this.interactableObjects[nextSelectedIndex]);
         }
 
         private void SetCurrentSelectedObject(T SelectableObject)
         {
-            if (this.CurrentSelectedObject != SelectableObject)
+            if (this.CurrentSelectedObject != null)
             {
-                if (this.CurrentSelectedObject != null)
+                if (!this.CurrentSelectedObject.Equals(SelectableObject))
                 {
                     if (SelectableObject == null)
                     {
@@ -85,45 +84,61 @@ namespace CoreGame
                         this.SelectableObjectSelectionManagerEventListener.OnSelectableObjectSelected(SelectableObject);
                     }
                 }
-                else if (this.CurrentSelectedObject == null)
+
+            }
+            else if (this.CurrentSelectedObject == null)
+            {
+                if (SelectableObject != null)
                 {
-                    if (SelectableObject != null)
-                    {
-                        this.SelectableObjectSelectionManagerEventListener.OnSelectableObjectSelected(SelectableObject);
-                    }
+                    this.SelectableObjectSelectionManagerEventListener.OnSelectableObjectSelected(SelectableObject);
                 }
             }
-
-
             this.CurrentSelectedObject = SelectableObject;
         }
 
-        protected void RemoveInteractiveObjectFromSelectable(Object moduleToRemove)
+        protected void RemoveInteractiveObjectFromSelectable(T selectableObject)
         {
-            if (this.CurrentSelectedObject != null && this.CurrentSelectedObject == this.interactableObjects[moduleToRemove])
+            if (this.CurrentSelectedObject != null && this.interactableObjects.Contains(this.CurrentSelectedObject))
             {
-                this.SetCurrentSelectedObject(null);
+                this.SetCurrentSelectedObject(default(T));
             }
-            this.interactableObjects.Remove(moduleToRemove);
+            this.interactableObjects.Remove(selectableObject);
         }
 
-        protected void AddInteractiveObjectFromSelectable(Object moduleToAdd, T selectableObject)
+        protected void AddInteractiveObjectFromSelectable(T selectableObject)
         {
-            this.interactableObjects.Add(moduleToAdd, selectableObject);
+            if (!this.interactableObjects.Contains(selectableObject))
+            {
+                this.interactableObjects.Add(selectableObject);
+            }
         }
+
+        protected void ReplaceSelectableObjects(List<T> selectableObjects)
+        {
+            List<T> currentSelectableObjectsToRemove = null;
+            foreach (var currentSelectableObject in this.interactableObjects)
+            {
+                if (!selectableObjects.Contains(currentSelectableObject))
+                {
+                    if (currentSelectableObjectsToRemove == null) { currentSelectableObjectsToRemove = new List<T>(); }
+                    currentSelectableObjectsToRemove.Add(currentSelectableObject);
+                }
+            }
+
+            if (currentSelectableObjectsToRemove != null)
+            {
+                foreach (var currentSelectableObjectToRemove in currentSelectableObjectsToRemove)
+                {
+                    this.RemoveInteractiveObjectFromSelectable(currentSelectableObjectToRemove);
+                }
+            }
+
+            this.interactableObjects = selectableObjects;
+        }
+
     }
 
-    public abstract class AbstractSelectableObject
-    {
-        public IRenderBoundRetrievable ModelObjectModule;
-
-        public AbstractSelectableObject(IRenderBoundRetrievable modelObjectModule)
-        {
-            ModelObjectModule = modelObjectModule;
-        }
-    }
-
-    public interface SelectableObjectSelectionManagerEventListener<T> where T : AbstractSelectableObject
+    public interface SelectableObjectSelectionManagerEventListener<T> where T : IRenderBoundRetrievable
     {
         void OnSelectableObjectSelected(T SelectableObject);
         void OnSelectableObjectDeSelected(T SelectableObject);

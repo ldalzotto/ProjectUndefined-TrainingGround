@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AdventureGame
 {
 
-    public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission
+    public class PointOfInterestType : APointOfInterestType, IVisualMovementPermission, IRenderBoundRetrievable
     {
         [CustomEnum(ConfigurationType = typeof(PointOfInterestDefinitionConfiguration), OpenToConfiguration = true)]
         public PointOfInterestDefinitionID PointOfInterestDefinitionID;
@@ -253,6 +253,15 @@ namespace AdventureGame
         public GameObject GetRootObject()
         {
             return this.gameObject;
+        }
+        public ExtendedBounds GetAverageModelBoundLocalSpace()
+        {
+            var modelModules = this.PointOfInteresetModules.PointOfInterestModelObjectModule;
+            if (modelModules != null)
+            {
+                return modelModules.GetAverageModelBoundLocalSpace();
+            }
+            return default(ExtendedBounds);
         }
         #endregion
 

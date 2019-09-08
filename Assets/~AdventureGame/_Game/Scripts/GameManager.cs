@@ -69,7 +69,6 @@ namespace AdventureGame
             GameObject.FindObjectOfType<AdventureEventsManager>().Init();
             GameObject.FindObjectOfType<CutscenePositionsManager>().Init();
             CutscenePlayerManagerV2.Init();
-            PlayerPointOfInterestSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
             GameObject.FindObjectOfType<InventoryMenu>().Init();

@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace RTPuzzle
 {
 
 
-    public class GrabObjectModule : RTPuzzle.InteractiveObjectModule
+    public class GrabObjectModule : RTPuzzle.InteractiveObjectModule, ISelectableModule
     {
 
         #region External Dependencies
@@ -35,10 +36,18 @@ namespace RTPuzzle
         private GrabObjectAction grabObjectAction;
 
         #region Data Retrieval
-        public GrabObjectAction GrabObjectAction { get => grabObjectAction; }
         public InteractiveObjectType ParentInteractiveObject { get => parentInteractiveObject; }
         public SphereCollider GrabObjectRange { get => grabObjectRange; }
-        public ModelObjectModule ModelObjectModule { get => modelObjectModule; }
+        public RTPPlayerAction GetAssociatedPlayerAction()
+        {
+            return grabObjectAction;
+        }
+
+        public ExtendedBounds GetAverageModelBoundLocalSpace()
+        {
+            if (this.modelObjectModule != null) { return this.modelObjectModule.GetAverageModelBoundLocalSpace(); };
+            return default(ExtendedBounds);
+        }
         #endregion
 
         public void Init(GrabObjectInherentData GrabObjectInherentData, ModelObjectModule modelObjectModule)
@@ -53,7 +62,7 @@ namespace RTPuzzle
 
             this.grabObjectRange = this.GetComponent<SphereCollider>();
             this.grabObjectRange.radius = this.grabObjectInherentData.EffectRadius;
-            
+
             this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, this.grabObjectInherentData.PlayerActionToIncrement, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
         }
 

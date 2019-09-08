@@ -41,11 +41,11 @@ namespace Tests
             var InteractiveObjectSelectionManager = GameObject.FindObjectOfType<InteractiveObjectSelectionManager>();
 
             Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject() != null);
-            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().AssociatedPlayerAction == actionIntereactableObjectModule1.AssociatedPlayerAction);
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().GetAssociatedPlayerAction() == actionIntereactableObjectModule1.GetAssociatedPlayerAction());
 
             yield return null;
             Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject() != null);
-            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().AssociatedPlayerAction == actionIntereactableObjectModule1.AssociatedPlayerAction);
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().GetAssociatedPlayerAction() == actionIntereactableObjectModule1.GetAssociatedPlayerAction());
         }
 
         [UnityTest]
@@ -77,13 +77,13 @@ namespace Tests
             var InteractiveObjectSelectionManager = GameObject.FindObjectOfType<InteractiveObjectSelectionManager>();
 
             Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject() != null);
-            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().AssociatedPlayerAction == actionIntereactableObjectModule1.AssociatedPlayerAction);
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().GetAssociatedPlayerAction() == actionIntereactableObjectModule1.GetAssociatedPlayerAction());
 
             yield return null;
-            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().AssociatedPlayerAction == actionIntereactableObjectModule2.AssociatedPlayerAction);
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().GetAssociatedPlayerAction() == actionIntereactableObjectModule2.GetAssociatedPlayerAction());
 
             yield return null;
-            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().AssociatedPlayerAction == actionIntereactableObjectModule1.AssociatedPlayerAction);
+            Assert.IsTrue(InteractiveObjectSelectionManager.GetCurrentSelectedObject().GetAssociatedPlayerAction() == actionIntereactableObjectModule1.GetAssociatedPlayerAction());
         }
 
         [UnityTest]
@@ -116,7 +116,7 @@ namespace Tests
 
 
             var wheelNodeContextAction = ((PlayerSelectionWheelNodeData)selectionWheelNodes[0].WheelNodeData).Data as RTPPlayerAction;
-            Assert.IsTrue(wheelNodeContextAction == actionIntereactableObjectModule1.AssociatedPlayerAction);
+            Assert.IsTrue(wheelNodeContextAction == actionIntereactableObjectModule1.GetAssociatedPlayerAction());
             mockedInput.GetGameTestMockedXInput().actionButtonD = false;
         }
 
@@ -153,7 +153,7 @@ namespace Tests
             Assert.IsTrue(selectionWheelNodes.Length == 1);
 
             var wheelNodeContextAction = ((PlayerSelectionWheelNodeData)selectionWheelNodes[0].WheelNodeData).Data as RTPPlayerAction;
-            Assert.IsTrue(wheelNodeContextAction == actionIntereactableObjectModule2.AssociatedPlayerAction);
+            Assert.IsTrue(wheelNodeContextAction == actionIntereactableObjectModule2.GetAssociatedPlayerAction());
             mockedInput.GetGameTestMockedXInput().actionButtonD = false;
         }
     }

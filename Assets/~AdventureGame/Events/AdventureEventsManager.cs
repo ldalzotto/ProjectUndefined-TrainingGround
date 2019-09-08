@@ -19,11 +19,11 @@ namespace AdventureGame
         }
 
         #region Selection POI Events
-        public void ADV_EVT_OnSelectableObjectSelected(POISelectableObject selectableObject)
+        public void ADV_EVT_OnSelectableObjectSelected(PointOfInterestType selectableObject)
         {
             if (this.ContextActionWheelManager.IsWheelEnabled())
             {
-                this.ContextActionWheelEventManager.OnWheelRefresh(selectableObject.PointOfInterestType.GetContextActions(), WheelTriggerSource.PLAYER);
+                this.ContextActionWheelEventManager.OnWheelRefresh(selectableObject.GetContextActions(), WheelTriggerSource.PLAYER);
             }
         }
         #endregion

@@ -19,22 +19,22 @@ namespace CoreGame
             this.SelectableObjectIconAnimation = new SelectableObjectIconAnimation();
         }
 
-        public void Tick(float d, AbstractSelectableObject currentSelectedObject)
+        public void Tick(float d, IRenderBoundRetrievable currentSelectedObject)
         {
             this.commandBufer.Clear();
 
             if (currentSelectedObject != null)
             {
                 this.SelectableObjectIconAnimation.Tick(d);
-                var modelOutlined = currentSelectedObject.ModelObjectModule;
+                var averageBoundsLocalSpace = currentSelectedObject.GetAverageModelBoundLocalSpace();
 
-                if (modelOutlined != null)
+                if (!averageBoundsLocalSpace.IsNull())
                 {
-                    var targetTransform = IRenderBoundRetrievableStatic.FromIRenderBoundRetrievable(modelOutlined).transform;
+                    var targetTransform = IRenderBoundRetrievableStatic.FromIRenderBoundRetrievable(currentSelectedObject).transform;
 
                     //icon
                     this.commandBufer.DrawMesh(this.CoreMaterialConfiguration.ForwardPlane,
-                        Matrix4x4.TRS(targetTransform.position + Vector3.Project(new Vector3(0, modelOutlined.GetAverageModelBoundLocalSpace().SideDistances.y * 0.5f, 0), targetTransform.up),
+                        Matrix4x4.TRS(targetTransform.position + Vector3.Project(new Vector3(0, averageBoundsLocalSpace.SideDistances.y * 0.5f, 0), targetTransform.up),
                          Quaternion.LookRotation(Camera.main.transform.position - targetTransform.position), Vector3.one * this.SelectableObjectIconAnimation.GetIconScale()), this.CoreMaterialConfiguration.SelectionDoticonMaterial);
                 }
             }

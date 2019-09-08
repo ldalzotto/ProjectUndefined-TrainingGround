@@ -1,9 +1,10 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ActionInteractableObjectModule : InteractiveObjectModule
+    public class ActionInteractableObjectModule : InteractiveObjectModule, ISelectableModule
     {
         [CustomEnum()]
         public ActionInteractableObjectID ActionInteractableObjectID;
@@ -22,10 +23,17 @@ namespace RTPuzzle
         private ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
 
         #region Data Retrieval
-        public RTPPlayerAction AssociatedPlayerAction { get => associatedPlayerAction; }
-        public ModelObjectModule GetModelObjectModule()
+        public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
-            return this.modelObjectModule;
+            if (this.modelObjectModule != null)
+            {
+                return this.modelObjectModule.GetAverageModelBoundLocalSpace();
+            }
+            return default(ExtendedBounds);
+        }
+        public RTPPlayerAction GetAssociatedPlayerAction()
+        {
+            return this.associatedPlayerAction;
         }
         #endregion
 
