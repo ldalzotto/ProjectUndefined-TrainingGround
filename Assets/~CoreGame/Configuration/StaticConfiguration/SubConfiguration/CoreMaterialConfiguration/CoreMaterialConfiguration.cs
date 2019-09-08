@@ -13,6 +13,8 @@ namespace CoreGame
         [Header("Selection Materials")]
         public Mesh ForwardPlane;
         public Material SelectionDoticonMaterial;
+        public Texture SelectionDotIconTexture;
+        public Texture SelectionDotSwitchIconTexture;
 
         [Header("Outline Materials")]
         public ComputeShader OutlineImageEffectComputeShader;

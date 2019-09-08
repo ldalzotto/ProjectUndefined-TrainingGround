@@ -54,7 +54,7 @@ namespace CoreGame
                 this.SetCurrentSelectedObject(default(T));
             }
 
-            this.InteractiveObjectSelectionRendererManager.Tick(d, this.GetCurrentSelectedObject());
+            this.InteractiveObjectSelectionRendererManager.Tick(d, this.GetCurrentSelectedObject(), this.interactableObjects.Count > 1);
         }
 
         private void SwitchSelection()
