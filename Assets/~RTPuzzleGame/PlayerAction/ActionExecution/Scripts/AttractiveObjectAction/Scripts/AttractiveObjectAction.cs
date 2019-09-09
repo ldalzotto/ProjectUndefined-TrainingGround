@@ -3,6 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static AnimationConstants;
 
 namespace RTPuzzle
 {
@@ -51,7 +52,7 @@ namespace RTPuzzle
             this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
             this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
-            
+
             this.attractiveObjectId = this.PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[attractiveObjectActionInherentData.AttractiveObjectDefinitionID].GetDefinitionModule<AttractiveObjectModuleDefinition>().AttractiveObjectId;
 
             var attractiveObjectInherentConfigurationData = PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.attractiveObjectId];
@@ -63,7 +64,8 @@ namespace RTPuzzle
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerPuzzleLogicRootCollier());
-            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, animationConfiguration, this.attractiveObject);
+            this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, this.attractiveObject, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
+                 this.InteractiveObjectContainer);
 
             this.attractiveObjectRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
         }
@@ -125,40 +127,47 @@ namespace RTPuzzle
 
     class AttractiveObjectPlayerAnimationManager
     {
-        private PlayerAnimationWithObjectManager PlayerPocketObjectOutAnimationManager;
-        private PlayerAnimationWithObjectManager PlayerObjectLayAnimationManager;
+        private SequencedActionPlayer PocketObjectOutAnimationPlayer;
+        private SequencedActionPlayer PocketObjectLayAnimationPlayer;
 
         private bool isOkInputAnimationRunning = false;
 
         public bool IsOkInputAnimationRunning { get => isOkInputAnimationRunning; }
 
         public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData,
-                AttractiveObjectAction attractiveObjectActionRef, AnimationConfiguration animationConfiguration, InteractiveObjectType attractiveObjectRef)
+                AttractiveObjectAction attractiveObjectActionRef, InteractiveObjectType attractiveObjectRef, PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration, InteractiveObjectContainer InteractiveObjectContainer)
         {
-            this.PlayerPocketObjectOutAnimationManager =
-                new PlayerAnimationWithObjectManager(attractiveObjectRef.gameObject, animationConfiguration, attractiveObjectInherentConfigurationData.PreActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0f, false, null);
-            this.PlayerObjectLayAnimationManager =
-                 new PlayerAnimationWithObjectManager(attractiveObjectRef.gameObject, animationConfiguration, attractiveObjectInherentConfigurationData.PostActionAnimation, playerManagerDataRetriever.GetPlayerAnimator(), 0.05f, false, () => { attractiveObjectActionRef.OnObjectAnimationlayed(); });
-            this.PlayerPocketObjectOutAnimationManager.Play();
+            this.PocketObjectOutAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PreActionAnimationGraph].PuzzleCutsceneGraph,
+                        new PuzzleCutsceneActionInput(InteractiveObjectContainer,
+                            PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, playerManagerDataRetriever.GetPlayerAnimator()).transform,
+                               attractiveObjectRef.gameObject, attractiveObjectInherentConfigurationData.PreActionAnimation)));
+
+            this.PocketObjectLayAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PostActionAnimationGraph].PuzzleCutsceneGraph,
+              new PuzzleCutsceneActionInput(InteractiveObjectContainer,
+                  PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, playerManagerDataRetriever.GetPlayerAnimator()).transform,
+                     attractiveObjectRef.gameObject, attractiveObjectInherentConfigurationData.PostActionAnimation)),
+                    onFinished: attractiveObjectActionRef.OnObjectAnimationlayed);
+
+            this.PocketObjectOutAnimationPlayer.Play();
             this.Tick(0);
         }
 
         public void Tick(float d)
         {
-            this.PlayerPocketObjectOutAnimationManager.Tick(d);
-            this.PlayerObjectLayAnimationManager.Tick(d);
+            this.PocketObjectOutAnimationPlayer.Tick(d);
+            this.PocketObjectLayAnimationPlayer.Tick(d);
         }
 
         public void OnAttractiveObjectActionEnd()
         {
-            this.PlayerPocketObjectOutAnimationManager.Kill();
+            this.PocketObjectOutAnimationPlayer.Kill();
         }
 
         public void OnAttractiveObjectActionOKInput()
         {
             this.isOkInputAnimationRunning = true;
-            this.PlayerPocketObjectOutAnimationManager.Kill();
-            this.PlayerObjectLayAnimationManager.Play();
+            this.PocketObjectOutAnimationPlayer.Kill();
+            this.PocketObjectLayAnimationPlayer.Play();
         }
 
     }

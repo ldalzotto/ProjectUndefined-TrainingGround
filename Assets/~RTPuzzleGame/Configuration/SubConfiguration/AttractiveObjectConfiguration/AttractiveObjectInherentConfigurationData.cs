@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using GameConfigurationID;
-using UnityEngine.Serialization;
+﻿using GameConfigurationID;
+using UnityEngine;
 
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 namespace RTPuzzle
@@ -14,9 +12,14 @@ namespace RTPuzzle
     {
         public float EffectRange;
         public float EffectiveTime;
-        
-        [Header("Animation")]
 
+        [Header("Animation_Graph")]
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID PreActionAnimationGraph;
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID PostActionAnimationGraph;
+
+        [Header("Animation_Parameters")]
         [CustomEnum]
         public AnimationID PreActionAnimation;
         [CustomEnum]
