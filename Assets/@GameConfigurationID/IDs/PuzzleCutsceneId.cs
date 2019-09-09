@@ -19,9 +19,13 @@ namespace GameConfigurationID {
     _1_Town_GardenDoor_InteractiveAction = 1,
     
     _GENERIC_NearPlayerGameOver = 2,
-
+    
     TEST_0 = 3,
+    
     TEST_1 = 4,
-    TEST_2 = 5
+    
+    TEST_2 = 5,
+    
+    _GENERIC_AnimationWithFollowObject = 6,
   }
 }

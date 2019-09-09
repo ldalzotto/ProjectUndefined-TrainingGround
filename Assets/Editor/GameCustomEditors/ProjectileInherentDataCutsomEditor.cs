@@ -24,6 +24,8 @@ public class ProjectileInherentDataCutsomEditor : Editor
 
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Animation : ");
+        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.PreActionAnimationV2)));
+        EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.PostActionAnimationV2)));
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.PreActionAnimation)));
         EditorGUILayout.PropertyField(this.serializedObject.FindProperty(nameof(ProjectileInherentDataTarget.PostActionAnimation)));
 

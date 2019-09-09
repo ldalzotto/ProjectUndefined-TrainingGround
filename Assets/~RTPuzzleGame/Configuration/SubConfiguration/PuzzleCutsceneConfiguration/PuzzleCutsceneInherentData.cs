@@ -8,6 +8,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "PuzzleCutsceneInherentData", menuName = "Configuration/PuzzleGame/PuzzleCutsceneConfiguration/PuzzleCutsceneInherentData", order = 1)]
     public class PuzzleCutsceneInherentData : SerializedScriptableObject
     {
+        [Inline()]
         public PuzzleCutsceneGraph PuzzleCutsceneGraph;
     }
 }

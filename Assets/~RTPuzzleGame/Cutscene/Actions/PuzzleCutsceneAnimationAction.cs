@@ -17,7 +17,7 @@ namespace RTPuzzle
 
         public bool InteractiveObjectParametrized;
         [CustomEnum()]
-        public PuzzleCutsceneParametersName InteractiveObjectParameterName;
+        public CutsceneParametersName InteractiveObjectParameterName;
 
         public PuzzleCutsceneAnimationAction(List<SequencedAction> nextActions) : base(nextActions)
         {
@@ -28,7 +28,7 @@ namespace RTPuzzle
             var PuzzleCutsceneActionInput = (PuzzleCutsceneActionInput)ContextActionInput;
             if (this.InteractiveObjectParametrized)
             {
-                return ((InteractiveObjectType)PuzzleCutsceneActionInput.PuzzleCutsceneGraphParameters[this.InteractiveObjectParameterName]).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
+                return ((InteractiveObjectType)PuzzleCutsceneActionInput.graphParameters[this.InteractiveObjectParameterName]).GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController;
             }
             else
             {
@@ -43,14 +43,14 @@ namespace RTPuzzle
             this.InteractiveObjectParametrized = EditorGUILayout.Toggle(this.InteractiveObjectParametrized);
             if (this.InteractiveObjectParametrized)
             {
-                this.InteractiveObjectParameterName = (PuzzleCutsceneParametersName) NodeEditorGUILayout.EnumField("InteractiveObject param : ", string.Empty, this.InteractiveObjectParameterName);
+                this.InteractiveObjectParameterName = (CutsceneParametersName) NodeEditorGUILayout.EnumField("InteractiveObject param : ", string.Empty, this.InteractiveObjectParameterName);
             }
             else
             {
                 this.InteractiveObjectID = (InteractiveObjectID)NodeEditorGUILayout.EnumField("InteractiveObjectID : ", string.Empty, this.InteractiveObjectID);
             }
             EditorGUILayout.EndHorizontal();
-            this.AnimationId = (AnimationID)NodeEditorGUILayout.EnumField("Animation : ", string.Empty, this.AnimationId);
+            this.AnimationIdV2.ActionGUI("Animation V2 : ");
             this.SkipToNextNode = (bool)NodeEditorGUILayout.BoolField("Skip immediately : ", string.Empty, this.SkipToNextNode);
             this.CrossFade = NodeEditorGUILayout.FloatField("Crossfade : ", string.Empty, this.CrossFade);
             this.PlayImmediately = (bool)NodeEditorGUILayout.BoolField("Update model positions on start : ", string.Empty, this.PlayImmediately);

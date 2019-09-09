@@ -1,5 +1,7 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -9,17 +11,25 @@ namespace RTPuzzle
 
         public InteractiveObjectContainer InteractiveObjectContainer { get => interactiveObjectContainer; }
 
-        public Dictionary<PuzzleCutsceneParametersName, object> PuzzleCutsceneGraphParameters;
-
-        public PuzzleCutsceneActionInput(InteractiveObjectContainer interactiveObjectContainer, Dictionary<PuzzleCutsceneParametersName, object> PuzzleCutsceneGraphParameters = null)
+        public PuzzleCutsceneActionInput(InteractiveObjectContainer interactiveObjectContainer, Dictionary<CutsceneParametersName, object> PuzzleCutsceneGraphParameters = null)
         {
             this.interactiveObjectContainer = interactiveObjectContainer;
-            this.PuzzleCutsceneGraphParameters = PuzzleCutsceneGraphParameters;
+            this.graphParameters = PuzzleCutsceneGraphParameters;
+        }
+
+        /*
+         *
+          *
+         */
+        public static Dictionary<CutsceneParametersName, object> Build_GENERIC_AnimationWithFollowObject_Animation(Transform transformToFollow, GameObject followingGameObject, AnimationID animationPlayed)
+        {
+            return new Dictionary<CutsceneParametersName, object>()
+            {
+                { CutsceneParametersName.TRANSFORM_TO_FOLLOW, transformToFollow },
+                { CutsceneParametersName.FOLLOWING_OBJECT, followingGameObject },
+                { CutsceneParametersName.ANIMATION_ID_1, animationPlayed }
+            };
         }
     }
 
-    public enum PuzzleCutsceneParametersName
-    {
-        INTERACTIVE_OBJECT_0 = 0
-    }
 }

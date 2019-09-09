@@ -17,11 +17,11 @@ namespace Experimental.Editor_NodeEditor
             {typeof(CutsceneAnimationNode).Name, typeof(CutsceneAnimationNode)},
             {typeof(CutsceneDiscussionNode).Name, typeof(CutsceneDiscussionNode)},
             {typeof(CutsceneStartNode).Name,  typeof(CutsceneStartNode)},
-            {typeof(CutsceneWorkflowAbortNode).Name,  typeof(CutsceneWorkflowAbortNode)},
             {typeof(CutsceneSpawnPOINode).Name,  typeof(CutsceneSpawnPOINode)},
             {typeof(CutsceneCameraFollowNode).Name,  typeof(CutsceneCameraFollowNode)},
             {typeof(CutsceneCameraRotationNode).Name,  typeof(CutsceneCameraRotationNode)},
             {typeof(CutsceneDestroyPOINode).Name,  typeof(CutsceneDestroyPOINode)},
+            {typeof(CutsceneWorkflowAbortNode).Name,  typeof(CutsceneWorkflowAbortNode)},
             {typeof(CutsceneWorkflowWaitForSecondsNode).Name,  typeof(CutsceneWorkflowWaitForSecondsNode)},
             {typeof(CutscenePersistPOINode).Name,  typeof(CutscenePersistPOINode)},
         };

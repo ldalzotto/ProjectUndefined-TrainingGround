@@ -12,9 +12,7 @@ namespace CoreGame
 {
     public abstract class AbstractCutsceneAnimationAction : SequencedAction
     {
-        
-        [CustomEnum()]
-        public AnimationID AnimationId;
+        public ParametrizedAnimationID AnimationIdV2;
 
         public bool SkipToNextNode = false;
         public bool InfiniteLoop = false;
@@ -23,8 +21,9 @@ namespace CoreGame
         public bool FramePerfectEndDetection = false;
 
         [NonSerialized]
+        private AnimationID resolvedAnimationID;
+        [NonSerialized]
         private bool animationEnded = false;
-
         [NonSerialized]
         private Coroutine animationCoroutine;
         [NonSerialized]
@@ -49,11 +48,11 @@ namespace CoreGame
         {
             this.animationEnded = false;
             this.pointOfInterestCutsceneController = this.GetAbstractCutsceneController(ContextActionInput);
-
+            this.resolvedAnimationID = this.AnimationIdV2.Resolve(ContextActionInput.graphParameters);
             if (this.SkipToNextNode)
             {
                 this.animationEnded = true;
-                this.pointOfInterestCutsceneController.Play(this.AnimationId, this.CrossFade, this.PlayImmediately);
+                this.pointOfInterestCutsceneController.Play(this.resolvedAnimationID, this.CrossFade, this.PlayImmediately);
             }
             else
             {
@@ -64,7 +63,7 @@ namespace CoreGame
 
         private IEnumerator PlayAnimation(AbstractCutsceneController cutsceneController)
         {
-            this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.AnimationId, this.CrossFade, animationEndCallback: () =>
+            this.animationCoroutine = Coroutiner.Instance.StartCoroutine(cutsceneController.PlayAnimationAndWait(this.resolvedAnimationID, this.CrossFade, animationEndCallback: () =>
             {
                 if (this.InfiniteLoop)
                 {
@@ -90,7 +89,7 @@ namespace CoreGame
             {
                 Coroutiner.Instance.StopCoroutine(this.animationCoroutine);
                 this.animationCoroutine = null;
-                this.pointOfInterestCutsceneController.StopAnimation(this.AnimationId);
+                this.pointOfInterestCutsceneController.StopAnimation(this.resolvedAnimationID);
             }
         }
 

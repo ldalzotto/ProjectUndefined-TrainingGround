@@ -21,7 +21,7 @@ namespace CoreGame
             this.OnNoMoreActionToPlay = OnNoMoreActionToPlay;
         }
 
-        public void Tick(float d)
+        public void Tick(float d, bool eventsTriggered = true)
         {
             foreach (var action in ExecutedActions)
             {
@@ -56,17 +56,19 @@ namespace CoreGame
                 CurrentNexActions.Clear();
 
                 //first tick for removing at the same frame if necessary
-                this.Tick(0f);
+                this.Tick(0f, eventsTriggered: false);
             }
 
-            if (ExecutedActions.Count == 0)
+            if (eventsTriggered)
             {
-                if (this.OnNoMoreActionToPlay != null)
+                if (ExecutedActions.Count == 0)
                 {
-                    this.OnNoMoreActionToPlay.Invoke();
+                    if (this.OnNoMoreActionToPlay != null)
+                    {
+                        this.OnNoMoreActionToPlay.Invoke();
+                    }
                 }
             }
-            
         }
 
         private void ProcessTick(float d, SequencedAction contextAction)
@@ -74,14 +76,6 @@ namespace CoreGame
             contextAction.OnTick(d, this.OnActionFinished);
         }
 
-        public void InterruptAllActions()
-        {
-            foreach (var action in ExecutedActions)
-            {
-                action.Interupt();
-            }
-            this.ExecutedActions.Clear();
-        }
 
         #region External Events
         public void OnAddAction(SequencedAction action, SequencedActionInput actionInput)
@@ -95,10 +89,18 @@ namespace CoreGame
         }
         public void OnAddActions(List<SequencedAction> actions, SequencedActionInput actionInput)
         {
-            foreach(var action in actions)
+            foreach (var action in actions)
             {
                 this.OnAddAction(action, actionInput);
             }
+        }
+        public void InterruptAllActions()
+        {
+            foreach (var action in ExecutedActions)
+            {
+                action.Interupt();
+            }
+            this.ExecutedActions.Clear();
         }
         #endregion
 
@@ -106,6 +108,10 @@ namespace CoreGame
         public List<SequencedAction> GetCurrentActions()
         {
             return this.ExecutedActions;
+        }
+        public bool IsPlaying()
+        {
+            return this.GetCurrentActions().Count > 0;
         }
         #endregion
     }

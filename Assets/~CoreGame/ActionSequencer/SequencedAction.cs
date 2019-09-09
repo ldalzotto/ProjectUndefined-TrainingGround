@@ -84,6 +84,6 @@ namespace CoreGame
     [System.Serializable]
     public abstract class SequencedActionInput
     {
-
+        public Dictionary<CutsceneParametersName, object> graphParameters;
     }
 }

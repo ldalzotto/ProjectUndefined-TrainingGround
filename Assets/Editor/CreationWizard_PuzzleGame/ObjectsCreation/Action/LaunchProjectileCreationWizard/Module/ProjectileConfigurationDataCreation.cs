@@ -20,6 +20,8 @@ namespace Editor_LaunchProjectileCreationWizard
             { 
                 so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_PROJECTILE;
                 so.FindProperty(nameof(this.CreatedObject.PostActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_PROJECTILE_THROW;
+                so.FindProperty(nameof(this.CreatedObject.PostActionAnimationV2)).enumValueIndex = (int)PuzzleCutsceneID._GENERIC_AnimationWithFollowObject;
+                so.FindProperty(nameof(this.CreatedObject.PreActionAnimationV2)).enumValueIndex = (int)PuzzleCutsceneID._GENERIC_AnimationWithFollowObject;
             });
         }
     }

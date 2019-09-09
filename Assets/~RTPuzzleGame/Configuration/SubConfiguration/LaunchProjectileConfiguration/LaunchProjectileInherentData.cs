@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using GameConfigurationID;
+﻿using GameConfigurationID;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace RTPuzzle
@@ -25,14 +25,22 @@ namespace RTPuzzle
         [SerializeField]
         public bool isPersistingToAttractiveObject;
 
-        
-        [Header("Animation")]
 
+        [Header("Animation_Parameters")]
         [CustomEnum]
         public AnimationID PreActionAnimation;
         [CustomEnum]
         public AnimationID PostActionAnimation;
-        
+
+        [Header("Animation Graphs")]
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID PreActionAnimationV2;
+
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID PostActionAnimationV2;
+
+
+
     }
-    
+
 }

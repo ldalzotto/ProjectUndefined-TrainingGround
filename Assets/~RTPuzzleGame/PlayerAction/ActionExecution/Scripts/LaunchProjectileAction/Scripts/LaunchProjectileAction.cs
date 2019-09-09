@@ -3,6 +3,7 @@ using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static AnimationConstants;
 
 namespace RTPuzzle
 {
@@ -59,7 +60,6 @@ namespace RTPuzzle
             var CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
             var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.PUZZLE_CANVAS).GetComponent<Canvas>();
-            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             #endregion
 
@@ -82,7 +82,8 @@ namespace RTPuzzle
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, playerTransform);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
-            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), animationConfiguration, this.projectileInherentData, this.projectileObject);
+            LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
+                interactiveObjectContainer, this.projectileInherentData, this.projectileObject);
             PlayerOrientationManager = new PlayerOrientationManager(PlayerManagerDataRetriever.GetPlayerRigidBody());
             LaunchProjectileRayPositionerManager.Tick(0f, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition);
         }
@@ -446,41 +447,51 @@ namespace RTPuzzle
     #region Launch Projectile player animation manager
     class LaunchProjectilePlayerAnimationManager
     {
-        private AnimationConfiguration animationConfiguration;
+        private PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
+        private InteractiveObjectContainer InteractiveObjectContainer;
 
         private InteractiveObjectType projectileObjectRef;
         private Animator playerAnimator;
         private LaunchProjectileInherentData ProjectileInherentData;
 
-        private PlayerAnimationWithObjectManager ProjectileAnimationManager;
-        private PlayerAnimationWithObjectManager ProjectileLaunchAnimationManager;
+        private SequencedActionPlayer ProjectilePreAnimationPlayer;
+        private SequencedActionPlayer ProjectilePostAnimationPlayer;
 
-        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, AnimationConfiguration animationConfiguration, LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectType projectileObject)
+        public LaunchProjectilePlayerAnimationManager(Animator playerAnimator, PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration,
+            InteractiveObjectContainer InteractiveObjectContainer,
+            LaunchProjectileInherentData ProjectileInherentData, InteractiveObjectType projectileObject)
         {
+            this.PuzzleCutsceneConfiguration = PuzzleCutsceneConfiguration;
+            this.InteractiveObjectContainer = InteractiveObjectContainer;
             this.projectileObjectRef = projectileObject;
             this.playerAnimator = playerAnimator;
-            this.animationConfiguration = animationConfiguration;
             this.ProjectileInherentData = ProjectileInherentData;
 
-            this.ProjectileAnimationManager = new PlayerAnimationWithObjectManager(this.projectileObjectRef.gameObject, animationConfiguration, this.ProjectileInherentData.PreActionAnimation, this.playerAnimator, 0f, false,
-                onAnimationEndAction: null);
-            this.ProjectileAnimationManager.Play();
+            this.ProjectilePreAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[ProjectileInherentData.PreActionAnimationV2].PuzzleCutsceneGraph,
+                     new PuzzleCutsceneActionInput(InteractiveObjectContainer,
+                        PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, this.playerAnimator).transform,
+                                   this.projectileObjectRef.gameObject, this.ProjectileInherentData.PreActionAnimation)));
+            this.ProjectilePreAnimationPlayer.Play();
         }
 
         public bool LaunchProjectileAnimationPlaying()
         {
-            return this.ProjectileLaunchAnimationManager != null && this.ProjectileLaunchAnimationManager.IsPlaying();
+            return this.ProjectilePostAnimationPlayer != null && this.ProjectilePostAnimationPlayer.IsPlaying();
         }
 
         #region External Events
         public void PlayThrowProjectileAnimation(Action onAnimationEnd)
         {
-            this.ProjectileAnimationManager.KillSilently();
+            this.ProjectilePreAnimationPlayer.Kill();
             if (this.ProjectileInherentData.PostActionAnimation != AnimationID.NONE)
             {
-                this.ProjectileLaunchAnimationManager = new PlayerAnimationWithObjectManager(this.projectileObjectRef.gameObject, this.animationConfiguration, this.ProjectileInherentData.PostActionAnimation, this.playerAnimator, 0.1f, false,
-                             onAnimationEndAction: onAnimationEnd);
-                this.ProjectileLaunchAnimationManager.Play();
+                this.ProjectilePostAnimationPlayer = new SequencedActionPlayer(
+                    PuzzleCutsceneConfiguration.ConfigurationInherentData[ProjectileInherentData.PreActionAnimationV2].PuzzleCutsceneGraph,
+                    new PuzzleCutsceneActionInput(this.InteractiveObjectContainer, PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(
+                        BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, this.playerAnimator).transform, this.projectileObjectRef.gameObject, this.ProjectileInherentData.PostActionAnimation)),
+                    onFinished: onAnimationEnd
+                    );
+                this.ProjectilePostAnimationPlayer.Play();
             }
             else
             {
@@ -492,17 +503,21 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            this.ProjectileAnimationManager.Tick(d);
+            this.ProjectilePreAnimationPlayer.Tick(d);
 
-            if (this.ProjectileLaunchAnimationManager != null)
+            if (this.ProjectilePostAnimationPlayer != null)
             {
-                this.ProjectileLaunchAnimationManager.Tick(d);
+                this.ProjectilePostAnimationPlayer.Tick(d);
             }
         }
 
         public void OnExit()
         {
-            this.ProjectileAnimationManager.Kill();
+            this.ProjectilePreAnimationPlayer.Kill();
+            if (this.ProjectilePostAnimationPlayer != null)
+            {
+                this.ProjectilePostAnimationPlayer.Kill();
+            }
         }
     }
 

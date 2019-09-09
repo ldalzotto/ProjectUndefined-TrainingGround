@@ -1,4 +1,5 @@
 ﻿using GameConfigurationID;
+using CoreGame;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,13 +15,13 @@ namespace RTPuzzle
         public InteractiveObjectID InteractiveObjectID;
         public bool InteractiveObjectParametrized;
         [CustomEnum()]
-        public PuzzleCutsceneParametersName InteractiveObjectParameterName;
+        public CutsceneParametersName InteractiveObjectParameterName;
 
         public InteractiveObjectType Resolve(PuzzleCutsceneActionInput PuzzleCutsceneActionInput)
         {
             if (this.InteractiveObjectParametrized)
             {
-                return ((InteractiveObjectType)PuzzleCutsceneActionInput.PuzzleCutsceneGraphParameters[this.InteractiveObjectParameterName]);
+                return ((InteractiveObjectType)PuzzleCutsceneActionInput.graphParameters[this.InteractiveObjectParameterName]);
             }
             else
             {
@@ -35,7 +36,7 @@ namespace RTPuzzle
             this.InteractiveObjectParametrized = EditorGUILayout.Toggle(this.InteractiveObjectParametrized);
             if (this.InteractiveObjectParametrized)
             {
-                this.InteractiveObjectParameterName = (PuzzleCutsceneParametersName)NodeEditorGUILayout.EnumField(label, string.Empty, this.InteractiveObjectParameterName);
+                this.InteractiveObjectParameterName = (CutsceneParametersName)NodeEditorGUILayout.EnumField(label, string.Empty, this.InteractiveObjectParameterName);
             }
             else
             {

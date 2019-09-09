@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,8 +51,8 @@ namespace RTPuzzle
             {
                 if (this.NearPlayerGameOverTriggerInherentData.AnimationCutsceneGraphID != PuzzleCutsceneID.NONE)
                 {
-                    this.BlockingCutscenePlayer.Play(new PuzzleCutsceneActionInput(GameObject.FindObjectOfType<InteractiveObjectContainer>(), new Dictionary<PuzzleCutsceneParametersName, object>() {
-                    {PuzzleCutsceneParametersName.INTERACTIVE_OBJECT_0, this.InteractiveObjectTypeRef }
+                    this.BlockingCutscenePlayer.Play(new PuzzleCutsceneActionInput(GameObject.FindObjectOfType<InteractiveObjectContainer>(), new Dictionary<CutsceneParametersName, object>() {
+                    {CutsceneParametersName.INTERACTIVE_OBJECT_0, this.InteractiveObjectTypeRef }
                         }), this.PuzzleGameConfigurationManager.PuzzleCutsceneConfiguration()[this.NearPlayerGameOverTriggerInherentData.AnimationCutsceneGraphID].PuzzleCutsceneGraph, this.OnCutsceneEnd);
                 }
                 else

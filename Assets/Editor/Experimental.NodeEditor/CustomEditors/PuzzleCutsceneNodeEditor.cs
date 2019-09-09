@@ -17,7 +17,9 @@ namespace Experimental.Editor_NodeEditor
             {typeof(CutsceneStartNode).Name,  typeof(CutsceneStartNode)},
             {typeof(CutsceneWorkflowWaitForSecondsNode).Name, typeof(CutsceneWorkflowWaitForSecondsNode) },
             {typeof(PuzzleFaceTowardsNode).Name, typeof(PuzzleFaceTowardsNode) },
-            
+            {typeof(FollowTransformNode).Name, typeof(FollowTransformNode) },
+            {typeof(CutsceneWorkflowAbortNode).Name,  typeof(CutsceneWorkflowAbortNode)},
+
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

@@ -321,6 +321,7 @@ namespace RTPuzzle
         {
             if (rangeTypeObject.IsRangeConfigurationDefined())
             {
+                Debug.Log(MyLog.Format("RangeID : " + rangeTypeObject.RangeType.RangeTypeID.ToString() + " Instance : " + rangeTypeObject.GetInstanceID()));
                 this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID][rangeTypeObject.GetInstanceID()].OnRangeDestroyed();
                 this.rangeEffectManagers.Remove(rangeTypeObject.RangeType.RangeTypeID);
             }

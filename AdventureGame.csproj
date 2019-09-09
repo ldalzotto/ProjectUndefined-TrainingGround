@@ -135,7 +135,6 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutscenePersistPOINode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneSpawnPOINode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWarpNode.cs" />
-    <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Nodes\CutsceneWorkflowAbortNode.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionMarker.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Scripts\Positioning\CutscenePositionsType.cs" />

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using CoreGame;
 using NodeGraph;
 
-namespace AdventureGame
+namespace CoreGame
 {
     [System.Serializable]
     public class CutsceneWorkflowAbortNode : ACutsceneNode<CutsceneWorkflowAbortAction, CutsceneWorkflowAbortEdge>
