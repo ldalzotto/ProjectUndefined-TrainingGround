@@ -24,9 +24,6 @@ float3 WaveMovement(float2 texcoord, float3 vertex, float3 normal, WaveMovementD
 	float sinusWave = sin(theta * (2 / frequency) + (_Time.x* speed));
 
 	float3 finalLocalPosition = float3(0, 0, 0);
-#if PARTICLE_DEFORMATION
-	finalLocalPosition += ApplyParticleDeformation(vertex, amplitude);
-#endif
 	finalLocalPosition += vertex.xyz + (normal *  amplitude * sinusWave);
 
 	return finalLocalPosition;

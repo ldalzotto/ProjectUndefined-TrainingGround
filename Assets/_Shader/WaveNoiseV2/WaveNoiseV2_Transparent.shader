@@ -1,6 +1,6 @@
 ﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-Shader "Custom/WaveNoiseV2"
+Shader "Custom/WaveNoiseV2_Transparent"
 {
 	Properties
 	{
@@ -32,26 +32,16 @@ Shader "Custom/WaveNoiseV2"
 		[Toggle(DIRECTION_TEXTURE)] _IsDirectionTexture("Direction texture?", Float) = 0.0
 		[ShowOnKeywordDrawer(DIRECTION_TEXTURE)] _DirectionTexture("Direction texture", 2D) = "grey" {}
 
-		/*
-		// Blending state
-		[HideInInspector] _Mode("__mode", Float) = 0.0
-		[HideInInspector] _SrcBlend("__src", Float) = 1.0
-		[HideInInspector] _DstBlend("__dst", Float) = 0.0
-		[HideInInspector] _ZWrite("__zw", Float) = 1.0
-		*/
 	}
 		SubShader
 	{
-		Tags { "RenderType" = "Opaque" }
+		Tags { "RenderType" = "Transparent" "Queue" = "Transparent" }
 
-		/*
-		Blend[_SrcBlend][_DstBlend]
-		ZWrite[_ZWrite]
-		*/
+		ZWrite Off
 
 		CGPROGRAM
 
-		#pragma surface WaveNoiseSurf Standard addshadow vertex:WaveNoiseVert
+		#pragma surface WaveNoiseSurf Standard addshadow vertex:WaveNoiseVert alpha:blend
 
 		#pragma target 3.0
 
