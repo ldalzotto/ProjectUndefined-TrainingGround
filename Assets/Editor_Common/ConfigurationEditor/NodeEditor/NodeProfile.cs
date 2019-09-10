@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using OdinSerializer;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using System.Collections.Generic;
-using System;
 using System.IO;
 using System.Linq;
 
@@ -41,8 +39,11 @@ namespace NodeGraph
 
         public static void CreateNode(NodeProfile nodeInstance, ref NodeEditorProfile nodeEditorProfileRef, Vector2 startPosition)
         {
+            var allCurrentNodesID = AssetDatabase.FindAssets("t:" + typeof(NodeProfile).Name, new string[] { nodeEditorProfileRef.GraphTmpFolderPath })
+                        .ToList().ConvertAll((assetID) => AssetDatabase.LoadAssetAtPath<NodeProfile>(AssetDatabase.GUIDToAssetPath(assetID)).Id);
+
             var randomNodeId = UnityEngine.Random.Range(0, 99999);
-            while (nodeEditorProfileRef.Nodes.ContainsKey(randomNodeId))
+            while (allCurrentNodesID.Contains(randomNodeId))
             {
                 randomNodeId = UnityEngine.Random.Range(0, 99999);
             }
@@ -78,7 +79,7 @@ namespace NodeGraph
             }
 
             EditorGUI.BeginChangeCheck();
-            
+
             GUILayout.BeginArea(this.offsettedBounds, this.NodeTitle(), GUI.skin.window);
             this.currentInnerNodeRect = EditorGUILayout.BeginVertical();
             this.NodeGUI(ref nodeEditorProfileRef);
