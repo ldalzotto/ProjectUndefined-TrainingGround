@@ -122,6 +122,8 @@
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationPositionTrackerManager.cs" />
     <Compile Include="Assets\~CoreGame\Animation\Procedural\AnimationProceduralState.cs" />
     <Compile Include="Assets\~CoreGame\CameraMovement\Scripts\CameraMovementManager.cs" />
+    <Compile Include="Assets\~CoreGame\CitscleFillBar\CircleFillBarRendererManager.cs" />
+    <Compile Include="Assets\~CoreGame\CitscleFillBar\CircleFillBarType.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\Abstract\AbstractObjectDefinitionConfigurationInherentData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedText.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedTextDimensions.cs" />
     <Compile Include="Assets\~CoreGame\Discussion\Scripts\Text\GeneratedTextParameter.cs" />
+    <Compile Include="Assets\~CoreGame\EnumDependantProperty\ByEnumProperty.cs" />
     <Compile Include="Assets\~CoreGame\Event\LevelManagerEventManager.cs" />
     <Compile Include="Assets\~CoreGame\Extensions\Vector3Extensions.cs" />
     <Compile Include="Assets\~CoreGame\Item\Inventory\Scripts\AInventoryMenu.cs" />
@@ -256,19 +259,12 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\AnimatedLayoutCell.cs" />
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
-    <Compile Include="Assets\Test\AnimationReBuilderTest\AniamtionBuilderTestModelScript.cs" />
-    <Compile Include="Assets\Test\CircleBarTest\CircleFillBarRendererManager.cs" />
-    <Compile Include="Assets\Test\CircleBarTest\CircleFillBarType.cs" />
-    <Compile Include="Assets\Test\EnumDependantProperty\ByEnumProperty.cs" />
-    <Compile Include="Assets\Test\InstanciatedBufferTest\InstanciatedBufferTest.cs" />
-    <Compile Include="Assets\Test\ShaderVectorTest.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.cginc" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
-    <None Include="Assets\Test\InstanciatedBufferTest\InstacniatedBufferTest.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
-    <None Include="Assets\Test\CircleBarTest\CircleBarTest.shader" />
+    <None Include="Assets\~CoreGame\CitscleFillBar\CircleBar.shader" />
     <None Include="Assets\_Shader\FX\Outline\OutlineColorWriteShader.shader" />
     <None Include="Assets\_Shader\UI\Selection\NotSelectedWithMaskShader.shader" />
     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2Include.cginc" />
@@ -276,7 +272,6 @@
     <None Include="Assets\_Shader\FX\Outline\BufferScreenSampleShader.shader" />
     <None Include="Assets\_Shader\FX\Outline\RangeEdgeImageEffectComputeShader.compute" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV4_Pass.shader" />
-    <None Include="Assets\Test\DottedLineTest\Shader\DottedLineShader.shader" />
     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2VertexDisplacement.cginc" />
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
     <None Include="Assets\_Shader\Common\VertexUnlitTransparent.shader" />
@@ -284,9 +279,6 @@
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
     <None Include="Assets\~CoreGame\SelectableObjectsManager\Textures\SelectedRingIconShader.shader" />
-    <None Include="Assets\Test\WindTest\WindShaderTest.shader" />
-    <None Include="Assets\Test\ShaderVectorAngleTest\VectorAngleTest.shader" />
-    <None Include="Assets\Test\ParticleDeformation\ParticleDeformation.shader" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeShaderParticles.shader" />
     <None Include="Assets\_Shader\Noise\noiseSimplex.cginc" />
     <None Include="Assets\_Shader\WaveNoiseV2\WaveNoiseV2.shader" />
@@ -295,7 +287,6 @@
     <None Include="Assets\CoreGame.asmdef" />
     <None Include="Assets\_Shader\ImageBlitShader\AddBlitShader.shader" />
     <None Include="Assets\_Shader\FX\Range\RangeShaderV5.shader" />
-    <None Include="Assets\Test\UIMaskShaderTest\UIMaskShader.shader" />
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Postprocessing.Runtime.dll</HintPath>
     </Reference>

@@ -1,4 +1,4 @@
-﻿Shader "Unlit/CircleBarTest"
+﻿Shader "Unlit/CircleBar"
 {
 	Properties
 	{

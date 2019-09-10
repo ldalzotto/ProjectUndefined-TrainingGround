@@ -298,6 +298,7 @@
     <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackMarkType.cs" />
     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
+    <None Include="Assets\~RTPuzzleGame\_FX\DottedLine\Shader\DottedLineShader.shader" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>

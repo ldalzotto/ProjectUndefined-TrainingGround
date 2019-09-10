@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 
 namespace RTPuzzle
 {
