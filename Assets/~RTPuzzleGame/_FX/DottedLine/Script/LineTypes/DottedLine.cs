@@ -45,7 +45,7 @@ namespace RTPuzzle
             this.dottedLineInherentData = dottedLineInherentData;
 
             #region External Dependencies
-            this.DottedLineManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
+            this.DottedLineManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
             #endregion
 
             #region Internal Dependencies

@@ -9,7 +9,7 @@ namespace RTPuzzle
         public override void Init()
         {
             base.Init();
-            var playerPosition = GameObject.FindObjectOfType<PlayerManagerDataRetriever>().GetPlayerTransform();
+            var playerPosition = PuzzleGameSingletonInstances.PlayerManagerDataRetriever.GetPlayerTransform();
             this.transform.position = playerPosition.transform.position;
         }
     }

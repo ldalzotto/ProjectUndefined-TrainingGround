@@ -13,8 +13,8 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
         }
 
         private bool onGameOver = false;

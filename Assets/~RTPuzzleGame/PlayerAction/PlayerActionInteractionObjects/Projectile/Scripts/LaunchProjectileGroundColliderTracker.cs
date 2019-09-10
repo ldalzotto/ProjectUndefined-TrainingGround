@@ -17,7 +17,7 @@ namespace RTPuzzle
 
         public void Init(LaunchProjectileModule LaunchProjectileRef)
         {
-            this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
+            this.LaunchProjectileEventManager = PuzzleGameSingletonInstances.LaunchProjectileEventManager;
             this.LaunchProjectileRef = LaunchProjectileRef;
             this.sphereCollider = GetComponent<SphereCollider>();
         }

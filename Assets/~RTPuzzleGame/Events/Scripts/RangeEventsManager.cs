@@ -14,10 +14,10 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
-            this.InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
-            this.ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
-            this.RangeTypeObjectContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
+            this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
+            this.InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
+            this.ObjectRepelLineVisualFeedbackManager = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
+            this.RangeTypeObjectContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
         }
 
         #region Workflow

@@ -15,7 +15,7 @@ namespace AnimationSystem
         
         public override void Init(AnimationActor AnimationActorRef)
         {
-            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            this.CoreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
             this.associatedAnimator = GetComponent<Animator>();
         }
 

@@ -38,15 +38,14 @@ namespace RTPuzzle
         public NpcInteractionRingManager(AIObjectType npcAiManagerRef)
         {
             #region External Dependencies
-            this.NpcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
+            this.NpcInteractionRingContainer = PuzzleGameSingletonInstances.NpcInteractionRingContainer;
             #endregion
 
             ComputePositionOffset(npcAiManagerRef);
 
             this.npcAiManagerRef = npcAiManagerRef;
-            var npcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
 
-            npcInteractionRingType = GameObject.Instantiate(PrefabContainer.Instance.NpcInteractionRingPrefab, npcInteractionRingContainer.transform);
+            npcInteractionRingType = GameObject.Instantiate(PrefabContainer.Instance.NpcInteractionRingPrefab, this.NpcInteractionRingContainer.transform);
             npcInteractionRingType.transform.rotation = Quaternion.Euler(Vector3.forward);
             npcInteractionRingType.Init();
             this.NpcInteractionRingContainer.OnNpcInteractionRingCreated(npcInteractionRingType);

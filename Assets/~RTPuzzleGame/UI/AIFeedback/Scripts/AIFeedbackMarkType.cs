@@ -24,7 +24,7 @@ namespace RTPuzzle
 
         public static AIFeedbackMarkType Instanciate(AIFeedbackMarkType prefab, Action<AIFeedbackMarkType> afterCreation = null)
         {
-            var aiFeedbackMarkType = MonoBehaviour.Instantiate(prefab, GameObject.FindObjectOfType<AIFeedbackContainer>().transform);
+            var aiFeedbackMarkType = MonoBehaviour.Instantiate(prefab, PuzzleGameSingletonInstances.AIFeedbackContainer.transform);
             if (afterCreation != null) { afterCreation.Invoke(aiFeedbackMarkType); }
             aiFeedbackMarkType.Init();
             return aiFeedbackMarkType;

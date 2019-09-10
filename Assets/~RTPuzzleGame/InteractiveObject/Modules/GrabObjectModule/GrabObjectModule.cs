@@ -55,7 +55,7 @@ namespace RTPuzzle
             this.modelObjectModule = modelObjectModule;
 
             #region External Dependencies
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             #endregion
             this.parentInteractiveObject = GetComponentInParent<InteractiveObjectType>();
             this.grabObjectInherentData = GrabObjectInherentData;

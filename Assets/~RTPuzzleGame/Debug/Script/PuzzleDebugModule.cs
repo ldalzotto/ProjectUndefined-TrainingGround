@@ -24,13 +24,13 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             if (InstantProjectileHit)
             {
             }
             if (InfiniteTime)
             {
-                GameObject.FindObjectOfType<TimeFlowManager>().CHEAT_SetInfiniteTime();
+                PuzzleGameSingletonInstances.TimeFlowManager.CHEAT_SetInfiniteTime();
             }
         }
 

@@ -43,14 +43,14 @@ namespace RTPuzzle
             var attractiveObjectActionInherentData = ((AttractiveObjectActionInherentData)this.playerActionInherentData);
 
             #region External Dependencies
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            this.AttractiveObjectsInstanciatedParent = GameObject.FindObjectOfType<AttractiveObjectsInstanciatedParent>();
-            var playerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration;
-            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            var gameInputManager = CoreGameSingletonInstances.GameInputManager;
+            this.AttractiveObjectsInstanciatedParent = PuzzleGameSingletonInstances.AttractiveObjectsInstanciatedParent;
+            var playerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
+            var animationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             #endregion
 
             this.attractiveObjectId = this.PuzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[attractiveObjectActionInherentData.AttractiveObjectDefinitionID].GetDefinitionModule<AttractiveObjectModuleDefinition>().AttractiveObjectId;

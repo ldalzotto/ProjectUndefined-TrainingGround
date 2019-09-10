@@ -72,12 +72,12 @@
     <Compile Include="Assets\~AnimationSystem\AnimationActor\Modules\AnimationActorMovementModule.cs" />
     <Compile Include="Assets\~AnimationSystem\BaseAnimationSystem\BaseAnimationSystem.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\AsbtractCoreGameManager.cs" />
-    <Compile Include="Assets\~CoreGame\__Game\Scripts\CoreGameSingletonInstances.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Coroutiner.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameLogHandler.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\PrefabContainer.cs" />
+    <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\CoreGameSingletonInstances.cs" />
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\LayerConstants.cs" />

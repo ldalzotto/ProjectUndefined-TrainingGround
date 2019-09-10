@@ -86,9 +86,9 @@ namespace RTPuzzle
             #endregion
 
             #region External Dependencies
-            PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
-            ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
+            PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;;
+            ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
             this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
             #endregion
 

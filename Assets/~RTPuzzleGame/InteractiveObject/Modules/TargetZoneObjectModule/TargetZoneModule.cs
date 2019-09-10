@@ -36,7 +36,7 @@ namespace RTPuzzle
 
         public void Init(LevelCompletionTriggerModule levelCompletionTriggerModule)
         {
-            var gameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var gameConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             this.Init(levelCompletionTriggerModule, gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]);
         }
 

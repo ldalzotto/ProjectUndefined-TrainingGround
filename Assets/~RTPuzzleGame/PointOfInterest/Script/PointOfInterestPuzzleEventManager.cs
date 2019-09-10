@@ -10,7 +10,7 @@ namespace RTPuzzle
   
         public override void Init()
         {
-            this.AGhostPOIManager = GameObject.FindObjectOfType<AGhostPOIManager>();
+            this.AGhostPOIManager = CoreGameSingletonInstances.AGhostPOIManager;
         }
 
         public override void OnPOICreated(APointOfInterestType POICreated)

@@ -25,7 +25,7 @@ namespace RTPuzzle
 
         private void ResolveModuleDependencies()
         {
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             if (this.RangeTypeObject == null)
             {
                 this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();

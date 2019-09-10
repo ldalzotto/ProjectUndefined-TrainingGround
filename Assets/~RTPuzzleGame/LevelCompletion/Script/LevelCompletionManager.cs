@@ -20,14 +20,14 @@ namespace RTPuzzle
         public void Init()
         {
             #region External dependencies
-            var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
+            var PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;;
+            var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
+            var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            var PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
 
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            this.FXContainerManager = GameObject.FindObjectOfType<FXContainerManager>();
+            this.LevelManager = CoreGameSingletonInstances.LevelManager;
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.FXContainerManager = CoreGameSingletonInstances.FXContainerManager;
             #endregion
 
             this.currentLevelConfiguration = PuzzleGameConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()];

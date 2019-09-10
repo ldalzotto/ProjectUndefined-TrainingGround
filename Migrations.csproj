@@ -65,6 +65,7 @@
     <Compile Include="Assets\Migrations\AnimationConfigurationNameReGeneration.cs" />
     <Compile Include="Assets\Migrations\AnimationCutsceneNodeMigration\AnimationCutsceneNodeMigration.cs" />
     <Compile Include="Assets\Migrations\CutsceneParametersNameMigration.cs" />
+    <Compile Include="Assets\Migrations\GameObjectSingletonMigration.cs" />
     <Compile Include="Assets\Migrations\PlayerPosition\PlayerPositionMigration.cs" />
     <Compile Include="Assets\Migrations\PointOfInterestVisualMovementInherentData\PointOfInterestVisualMovementInherentDataMigration.cs" />
     <None Include="Assets\Migrations\Migrations.asmdef" />

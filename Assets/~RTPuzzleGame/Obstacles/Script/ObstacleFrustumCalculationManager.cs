@@ -22,7 +22,7 @@ namespace RTPuzzle
         {
             this.ObstacleFrustumCalculationThreadObject = new ObstacleFrustumCalculationThread();
 
-            this.SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
+            this.SquareObstaclesManager = PuzzleGameSingletonInstances.SquareObstaclesManager;
 
             this.calculationResults = new Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>>();
         }

@@ -18,7 +18,7 @@ namespace RTPuzzle
         public void Init()
         {
             this.NpcInteractionRingCommandBufferManager = new NpcInteractionRingCommandBufferManager(NpcInteractionRingCommandBufferManagerComponent, Camera.main);
-            this.NpcInteractionRingContainer = GameObject.FindObjectOfType<NpcInteractionRingContainer>();
+            this.NpcInteractionRingContainer = PuzzleGameSingletonInstances.NpcInteractionRingContainer;
         }
 
         public void Tick(float d)

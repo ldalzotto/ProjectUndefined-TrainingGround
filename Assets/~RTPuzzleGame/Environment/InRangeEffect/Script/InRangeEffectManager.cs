@@ -22,7 +22,7 @@ namespace RTPuzzle
             this.commandBuffer.name = this.GetType().Name;
             Camera.main.AddCommandBuffer(CameraEvent.AfterForwardOpaque, this.commandBuffer);
 
-            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
         }
 
         #region External Events

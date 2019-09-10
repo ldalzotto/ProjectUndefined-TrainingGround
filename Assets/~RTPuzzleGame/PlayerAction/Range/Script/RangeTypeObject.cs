@@ -34,8 +34,8 @@ namespace RTPuzzle
         {
             if (RangeTypeObjectDefinitionID != RangeTypeObjectDefinitionID.NONE)
             {
-                GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().RangeTypeObjectDefinitionConfiguration()[this.RangeTypeObjectDefinitionID]
-                        .DefineRangeTypeObject(this, GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
+                PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.RangeTypeObjectDefinitionConfiguration()[this.RangeTypeObjectDefinitionID]
+                        .DefineRangeTypeObject(this, PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
             }
 
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
@@ -44,7 +44,7 @@ namespace RTPuzzle
         public void Init(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData,
             RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
         {
-            rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
+            rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
         
@@ -71,7 +71,7 @@ namespace RTPuzzle
         private void CommonInit(RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior)
         {
             #region External Dependencies
-            this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();
+            this.RangeEventsManager = PuzzleGameSingletonInstances.RangeEventsManager;
             #endregion
 
             this.eventListenersFromExterior = eventListenersFromExterior;
@@ -147,7 +147,7 @@ namespace RTPuzzle
         public static RangeTypeObject InstanciateSphereRange(RangeTypeID rangeTypeID, float sphereRange,
                                  Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
         {
-            var rangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
+            var rangeTypeContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
             var sphereRangeTypeObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.BaseRangeTypeObject, rangeTypeContainer.transform);
             sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID),
                 new RangeTypeObjectInitializer(originPositionProvider, rangeColorProvider));

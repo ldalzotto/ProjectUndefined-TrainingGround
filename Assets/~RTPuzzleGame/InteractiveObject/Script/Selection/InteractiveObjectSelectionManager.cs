@@ -13,7 +13,7 @@ namespace RTPuzzle
 
         public override void Init(IGameInputManager GameInputManager)
         {
-            this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
+            this.PlayerActionPuzzleEventsManager = PuzzleGameSingletonInstances.PlayerActionPuzzleEventsManager;
             base.Init(GameInputManager);
         }
 

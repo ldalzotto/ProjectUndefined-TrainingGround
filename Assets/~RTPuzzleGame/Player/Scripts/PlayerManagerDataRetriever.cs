@@ -10,7 +10,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            PlayerManager = PuzzleGameSingletonInstances.PlayerManager;
         }
 
         #region Data Retrieval
