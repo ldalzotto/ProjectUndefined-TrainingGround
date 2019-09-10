@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -12,10 +12,10 @@ namespace AdventureGame
 
         public void Init()
         {
-            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();
-            InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-            ContextActionWheel = GameObject.FindObjectOfType<SelectionWheel>();
+            PlayerManager = AdventureGameSingletonInstances.PlayerManager;
+            ContextActionWheelManager = AdventureGameSingletonInstances.ContextActionWheelManager;
+            InventoryManager = AdventureGameSingletonInstances.InventoryManager;
+            ContextActionWheel = AdventureGameSingletonInstances.AdventureSelectionWheel;
         }
 
         public void OnWheelDisabled(bool destroyImmediate = false)

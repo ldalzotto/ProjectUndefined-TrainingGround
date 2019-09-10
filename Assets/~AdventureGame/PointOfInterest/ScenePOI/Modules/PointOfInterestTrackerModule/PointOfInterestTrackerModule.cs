@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace AdventureGame
         private POITrackerManager POITrackerManager;
         public void Init(PointOfInterestType pointOfInterestTypeRef)
         {
-            this.PlayerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+            this.PlayerPointOfInterestSelectionManager = AdventureGameSingletonInstances.PlayerPointOfInterestSelectionManager;
 
             this.PointOfInterestTypeRef = pointOfInterestTypeRef;
             var trackerCollider = GetComponent<SphereCollider>();

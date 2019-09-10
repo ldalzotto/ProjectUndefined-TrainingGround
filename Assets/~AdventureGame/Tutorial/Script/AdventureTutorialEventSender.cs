@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.tutorialManager = GameObject.FindObjectOfType<TutorialManager>();
+            this.tutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
 
         public void Tick(float d)

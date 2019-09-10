@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,11 +21,11 @@ namespace AdventureGame
         private void Start()
         {
             #region External Dependencies    
-            this.ContextActionManager = GameObject.FindObjectOfType<ContextActionManager>();
-            this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            this.InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-            this.ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
-            this.AnimationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            this.ContextActionManager = AdventureGameSingletonInstances.ContextActionManager;
+            this.PlayerManager = AdventureGameSingletonInstances.PlayerManager;
+            this.InventoryManager = AdventureGameSingletonInstances.InventoryManager;
+            this.ScenarioTimelineEventManager = CoreGameSingletonInstances.TimelinesEventManager;
+            this.AnimationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
             #endregion
 
             this.dynamicContextActionListeners = new Dictionary<AContextAction, List<IContextActionDyamicWorkflowListener>>();

@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections;
 using UnityEngine;
@@ -23,7 +23,7 @@ namespace AdventureGame
 
         private void Start()
         {
-            var AnimationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            var AnimationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
             var PlayerAnimator = GetComponentInChildren<Animator>();
 
             this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);

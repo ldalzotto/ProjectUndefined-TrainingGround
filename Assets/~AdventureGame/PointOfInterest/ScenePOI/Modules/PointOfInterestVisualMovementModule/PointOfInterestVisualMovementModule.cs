@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
 using static AnimationConstants;
@@ -33,7 +33,7 @@ namespace AdventureGame
 
             if (pointOfInterestTypeRef.IsPlayer())
             {
-                this.IVisualMovementPermission = GameObject.FindObjectOfType<PlayerManager>();
+                this.IVisualMovementPermission = AdventureGameSingletonInstances.PlayerManager;
             }
             else
             {

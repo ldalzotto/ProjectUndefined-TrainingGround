@@ -14,7 +14,7 @@ public class GameObjectSingletonMigration : EditorWindow
         GameObjectSingletonMigration.Show();
     }
 
-    private const string Path = "C:\\Users\\Loic\\Documents\\projects\\SoulsLike\\No Entry_0.0.71_Reset\\Assets\\~RTPuzzleGame";
+    private const string Path = "C:\\Users\\Loic\\Documents\\projects\\SoulsLike\\No Entry_0.0.71_Reset\\Assets\\~AdventureGame";
 
 
     private void OnGUI()
@@ -35,7 +35,7 @@ public class GameObjectSingletonMigration : EditorWindow
 
                 while (fileMatche.Success)
                 {
-                    fileContent = fileContent.Replace(fileMatche.Groups[0].Value, "PuzzleGameSingletonInstances." + fileMatche.Groups[2].Value);
+                    fileContent = fileContent.Replace(fileMatche.Groups[0].Value, "AdventureGameSingletonInstances." + fileMatche.Groups[2].Value);
 
                     fileMatche = gameObjectRegex.Match(fileContent);
                 }

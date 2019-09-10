@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections;
 using UnityEngine;
@@ -21,14 +21,14 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
-            this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.CutscenePositionsManager = GameObject.FindObjectOfType<CutscenePositionsManager>();
-            this.ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
-            this.CutsceneGlobalController = GameObject.FindObjectOfType<CutsceneGlobalController>();
-            this.GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.CutsceneEventManager = GameObject.FindObjectOfType<CutsceneEventManager>();
+            this.AdventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
+            this.PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
+            this.CutscenePositionsManager = AdventureGameSingletonInstances.CutscenePositionsManager;
+            this.ContextActionEventManager = AdventureGameSingletonInstances.ContextActionEventManager;
+            this.CutsceneGlobalController = AdventureGameSingletonInstances.CutsceneGlobalController;
+            this.GhostsPOIManager = AdventureGameSingletonInstances.GhostsPOIManager;
+            this.LevelManager = CoreGameSingletonInstances.LevelManager;
+            this.CutsceneEventManager = AdventureGameSingletonInstances.CutsceneEventManager;
             this.BaseInit(this.OnCutsceneStart, this.OnCutsceneEnd);
         }
 

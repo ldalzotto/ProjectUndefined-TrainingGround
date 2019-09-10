@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
@@ -15,7 +15,7 @@ namespace AdventureGame
         public override void Init()
         {
             base.Init();
-            this.DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+            this.DiscussionEventHandler = AdventureGameSingletonInstances.DiscussionEventHandler;
         }
 
         protected override void OnChoiceMade(DiscussionNodeId choice)

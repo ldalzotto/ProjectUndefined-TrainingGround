@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using UnityEngine;
@@ -20,8 +20,8 @@ namespace AdventureGame
             #endregion
 
             #region External Dependencies
-            var adventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
-            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            var adventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
+            var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
             #endregion
 
             this.DiscussionWindow = this.GetComponent<DiscussionWindow>();

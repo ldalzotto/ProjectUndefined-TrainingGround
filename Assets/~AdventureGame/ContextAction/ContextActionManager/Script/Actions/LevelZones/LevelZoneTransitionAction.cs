@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -34,7 +34,7 @@ namespace AdventureGame
 
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
-            var levelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();
+            var levelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             levelTransitionManager.OnAdventureToPuzzleLevel(nextZone);
         }
 

@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -32,7 +32,7 @@ namespace AdventureGame
             if (!hasBeenInit)
             {
                 #region External Dependencies
-                var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+                var GameInputManager = CoreGameSingletonInstances.GameInputManager;
                 #endregion
 
                 InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform, InventoryDimensionsComponent);

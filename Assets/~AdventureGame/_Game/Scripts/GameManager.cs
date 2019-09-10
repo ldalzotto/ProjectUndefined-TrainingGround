@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Linq;
 using UnityEngine;
 
@@ -38,7 +38,7 @@ namespace AdventureGame
             base.OnStart();
 
             //load dynamic POI
-            var allLoadedLevelChunkID = GameObject.FindObjectOfType<LevelManager>().AllLoadedLevelZonesChunkID;
+            var allLoadedLevelChunkID = CoreGameSingletonInstances.LevelManager.AllLoadedLevelZonesChunkID;
             var allActivePOIDefinitionIds = GameObject.FindObjectsOfType<PointOfInterestType>().ToList().ConvertAll(p => p.PointOfInterestDefinitionID);
             foreach (var elligiblePOIDefinitionIdTo in CoreGameSingletonInstances.AGhostPOIManager.GetAllPOIIdElligibleToBeDynamicallyInstanciated(allLoadedLevelChunkID))
             {
@@ -58,27 +58,27 @@ namespace AdventureGame
             NPCManager = FindObjectOfType<NPCManager>();
             InventoryManager = FindObjectOfType<InventoryManager>();
             DiscussionManager = FindObjectOfType<DiscussionManager>();
-            PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
-            CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
-            AdventureTutorialEventSender = GameObject.FindObjectOfType<AdventureTutorialEventSender>();
-            TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
+            PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
+            CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
+            CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            AdventureTutorialEventSender = AdventureGameSingletonInstances.AdventureTutorialEventSender;
+            TutorialManager = CoreGameSingletonInstances.TutorialManager;
 
             //initialization
             CameraMovementManager.Init();
-            GameObject.FindObjectOfType<AdventureEventsManager>().Init();
-            GameObject.FindObjectOfType<CutscenePositionsManager>().Init();
+            AdventureGameSingletonInstances.AdventureEventsManager.Init();
+            AdventureGameSingletonInstances.CutscenePositionsManager.Init();
             CutscenePlayerManagerV2.Init();
             PlayerManager.Init();
             FindObjectOfType<InventoryEventManager>().Init();
-            GameObject.FindObjectOfType<InventoryMenu>().Init();
+            AdventureGameSingletonInstances.InventoryMenu.Init();
             InventoryManager.Init();
             PointOfInterestManager.Init();
-            GameObject.FindObjectOfType<CutsceneGlobalController>().Init();
-            GameObject.FindObjectOfType<CutsceneEventManager>().Init();
+            AdventureGameSingletonInstances.CutsceneGlobalController.Init();
+            AdventureGameSingletonInstances.CutsceneEventManager.Init();
             DiscussionManager.Init();
             AdventureTutorialEventSender.Init();
-            GameObject.FindObjectOfType<ContextActionWheelEventManager>().Init();
+            AdventureGameSingletonInstances.ContextActionWheelEventManager.Init();
             TutorialManager.Init();
 
 #if UNITY_EDITOR
@@ -154,7 +154,7 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.AdventureDebugModule = GameObject.FindObjectOfType<AdventureDebugModule>();
+            this.AdventureDebugModule = AdventureGameSingletonInstances.AdventureDebugModule;
             this.AdventureDebugModule.Init();
         }
 

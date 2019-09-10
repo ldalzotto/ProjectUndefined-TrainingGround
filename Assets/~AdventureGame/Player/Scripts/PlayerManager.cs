@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -37,16 +37,16 @@ namespace AdventureGame
         public void Init()
         {
             #region External dependencies
-            GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            GameInputManager GameInputManager = CoreGameSingletonInstances.GameInputManager;
             GameObject CameraPivotPoint = GameObject.FindGameObjectWithTag(TagConstants.CAMERA_PIVOT_POINT_TAG);
-            ContextActionWheelEventManager ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
-            InventoryEventManager inventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
+            ContextActionWheelEventManager ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
+            InventoryEventManager inventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
+            var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
             this.PlayerPointOfInterestSelectionManager = this.GetComponent<PlayerPointOfInterestSelectionManager>();
             #endregion
 
             #region Load Persisted Position
-            var playerPosition = GameObject.FindObjectOfType<PlayerAdventurePositionManager>().PlayerPositionBeforeLevelLoad;
+            var playerPosition = CoreGameSingletonInstances.PlayerAdventurePositionManager.PlayerPositionBeforeLevelLoad;
             if (playerPosition != null)
             {
                 this.transform.position = playerPosition.GetPosition();
@@ -69,7 +69,7 @@ namespace AdventureGame
             this.PlayerDataComponentContainer.Init();
 
             #region Data Components
-            var TransformMoveManagerComponentV3 = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration.AdventurePlayerMovementConfiguration.PlayerTransformMoveComponent;
+            var TransformMoveManagerComponentV3 = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePlayerMovementConfiguration.PlayerTransformMoveComponent;
             var PlayerPhysicsMovementComponent = this.PlayerDataComponentContainer.GetDataComponent<PlayerPhysicsMovementComponent>();
             #endregion
 

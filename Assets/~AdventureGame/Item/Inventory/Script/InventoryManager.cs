@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections;
@@ -31,15 +31,15 @@ namespace AdventureGame
         {
             Debug.Log(MyLog.Format("Inventory init"));
             #region External dependencies
-            var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-            var ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
-            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            var GameInputManager = CoreGameSingletonInstances.GameInputManager;
+            this.InventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
+            var ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
+            var AdventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
             #endregion
 
             InventoryItemsContainer = transform.Find(INVENTORY_ITEMS_CONTAINER_NAME).gameObject;
 
-            InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
+            InventoryMenu = AdventureGameSingletonInstances.InventoryMenu;
             InventoryItemManager = new InventoryItemManager(InventoryItemsContainer);
             InventoryExitTriggerManager = new InventoryExitTriggerManager(GameInputManager, InventoryEventManager);
             InventoryStateWorkflowManager = new InventoryStateWorkflowManager();

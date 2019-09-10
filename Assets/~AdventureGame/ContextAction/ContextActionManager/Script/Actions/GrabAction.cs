@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
@@ -49,10 +49,10 @@ namespace AdventureGame
         {
 
             #region External Dependencies
-            InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-            PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
-            var GameCanvas = GameObject.FindObjectOfType<Canvas>();
-            var GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            InventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
+            PointOfInterestEventManager = CoreGameSingletonInstances.APointOfInterestEventManager;
+            var GameCanvas = CoreGameSingletonInstances.GameCanvas;
+            var GameInputManager = CoreGameSingletonInstances.GameInputManager;
             #endregion
 
             ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, this.itemInvolved);

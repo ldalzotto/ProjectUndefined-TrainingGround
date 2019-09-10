@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,7 +28,7 @@ namespace AdventureGame
 
         public void Init(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule)
         {
-            this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
+            this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
             this.pointOfInterestCutsceneController = new PointOfInterestCutsceneController(pointOfInterestTypeRef, PointOfInterestModelObjectModule);
         }
 

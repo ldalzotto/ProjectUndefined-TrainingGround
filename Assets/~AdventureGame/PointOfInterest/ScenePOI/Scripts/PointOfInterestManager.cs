@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
+            this.PointOfInterestEventManager = CoreGameSingletonInstances.APointOfInterestEventManager;
             this.PointOfInterestContainerManager = new PointOfInterestContainerManager(this.PointOfInterestEventManager);
         }
 

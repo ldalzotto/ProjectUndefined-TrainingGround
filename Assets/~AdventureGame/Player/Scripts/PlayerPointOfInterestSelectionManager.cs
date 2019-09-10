@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 
 namespace AdventureGame
@@ -13,7 +13,7 @@ namespace AdventureGame
         public void AdventureInit(IGameInputManager GameInputManager, PointOfInterestTrackerModule playerPointOfInterestTrackerModule)
         {
             this.Init(GameInputManager);
-            this.AdventureEventsManager = GameObject.FindObjectOfType<AdventureEventsManager>();
+            this.AdventureEventsManager = AdventureGameSingletonInstances.AdventureEventsManager;
             this.playerPointOfInterestTrackerModule = playerPointOfInterestTrackerModule;
         }
 

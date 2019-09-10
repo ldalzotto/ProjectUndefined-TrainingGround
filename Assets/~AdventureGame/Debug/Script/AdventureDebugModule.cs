@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -42,10 +42,10 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.CutscenePlayerManagerV2 = GameObject.FindObjectOfType<CutscenePlayerManagerV2>();
-            this.CutsceneGlobalController = GameObject.FindObjectOfType<CutsceneGlobalController>();
-            this.CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
-            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
+            this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
+            this.CutsceneGlobalController = AdventureGameSingletonInstances.CutsceneGlobalController;
+            this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
 
         public void Tick(float d)
@@ -68,7 +68,7 @@ namespace AdventureGame
             if (this.ItemReceivedPopup)
             {
                 this.ItemReceivedPopup = false;
-                this.ItemReceivedPopupObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, GameObject.FindObjectOfType<Canvas>().transform);
+                this.ItemReceivedPopupObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, CoreGameSingletonInstances.GameCanvas.transform);
                 this.ItemReceivedPopupObject.Init(this.PopupItem, () => { });
             }
             if (this.ItemReceivedPopupObject != null)

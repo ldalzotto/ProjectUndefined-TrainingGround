@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 
 namespace AdventureGame
@@ -13,10 +13,10 @@ namespace AdventureGame
 
         public override void Init()
         {
-            this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.GhostsPOIManager = GameObject.FindObjectOfType<GhostsPOIManager>();
-            this.PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            this.LevelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();
+            this.PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
+            this.GhostsPOIManager = AdventureGameSingletonInstances.GhostsPOIManager;
+            this.PlayerManager = AdventureGameSingletonInstances.PlayerManager;
+            this.LevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
         }
 
         public override void OnPOICreated(APointOfInterestType POICreated)

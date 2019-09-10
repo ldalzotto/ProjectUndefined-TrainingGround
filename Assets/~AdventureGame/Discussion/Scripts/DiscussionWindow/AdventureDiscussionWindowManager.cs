@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -19,8 +19,8 @@ namespace AdventureGame
 
         public AdventureDiscussionWindowManager(DiscussionTreeId DiscussionTreeId, DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy = null)
         {
-            this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
-            this.DiscussionEventHandler = GameObject.FindObjectOfType<DiscussionEventHandler>();
+            this.PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
+            this.DiscussionEventHandler = AdventureGameSingletonInstances.DiscussionEventHandler;
             this.DiscussionPOIAnimationManager = new DiscussionPOIAnimationManager();
             this.BaseInit(DiscussionTreeId, DiscussionWindowManagerStrategy);
         }

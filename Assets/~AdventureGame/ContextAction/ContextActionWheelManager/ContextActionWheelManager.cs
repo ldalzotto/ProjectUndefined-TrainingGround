@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,11 +26,11 @@ namespace AdventureGame
         private void Start()
         {
             #region External Dependencies
-            ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
-            ContextActionWheel = GameObject.FindObjectOfType<SelectionWheel>();
-            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
-            GameInputManager GameInputManager = GameObject.FindObjectOfType<GameInputManager>();
+            ContextActionEventManager = AdventureGameSingletonInstances.ContextActionEventManager;
+            ContextActionWheel = AdventureGameSingletonInstances.AdventureSelectionWheel;
+            PlayerManager = AdventureGameSingletonInstances.PlayerManager;
+            ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
+            GameInputManager GameInputManager = CoreGameSingletonInstances.GameInputManager;
             #endregion
 
             WheelActivityManager = new WheelActivityManager(GameInputManager);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
@@ -15,8 +15,8 @@ namespace AdventureGame
 
         private void Start()
         {
-            DiscussionManager = GameObject.FindObjectOfType<DiscussionManager>();
-            ScenarioTimelineEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
+            DiscussionManager = AdventureGameSingletonInstances.DiscussionManager;
+            ScenarioTimelineEventManager = CoreGameSingletonInstances.TimelinesEventManager;
         }
         
         public AbstractDiscussionWindowManager OnDiscussionTreeStart(DiscussionTreeId discussionTreeId)

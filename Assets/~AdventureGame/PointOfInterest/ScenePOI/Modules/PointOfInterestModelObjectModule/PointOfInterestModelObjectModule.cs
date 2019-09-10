@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -124,7 +124,7 @@ namespace AdventureGame
 
         public POIShowHideManager(PointOfInterestType pointOfInterestTypeRef, PointOfInterestModelObjectModule PointOfInterestModelObjectModule, PointOfInterestLogicColliderModule PointOfInterestLogicColliderModule)
         {
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.PointOfInterestTypeRef = pointOfInterestTypeRef;
             this.PointOfInterestLogicColliderModule = PointOfInterestLogicColliderModule;
             this.PointOfInterestModelObjectModule = PointOfInterestModelObjectModule;

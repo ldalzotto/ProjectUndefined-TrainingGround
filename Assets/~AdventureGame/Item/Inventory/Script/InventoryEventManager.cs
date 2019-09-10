@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace AdventureGame
@@ -17,10 +17,10 @@ namespace AdventureGame
 
         public void Init()
         {
-            InventoryManager = GameObject.FindObjectOfType<InventoryManager>();
-            InventoryMenu = GameObject.FindObjectOfType<InventoryMenu>();
-            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
+            InventoryManager = AdventureGameSingletonInstances.InventoryManager;
+            InventoryMenu = AdventureGameSingletonInstances.InventoryMenu;
+            PlayerManager = AdventureGameSingletonInstances.PlayerManager;
+            this.AdventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
         }
 
         public void OnAddItem(ItemID itemID, bool persistAddedItem = true)

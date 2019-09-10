@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace AdventureGame
@@ -13,9 +13,9 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.ContextActionWheelManager = GameObject.FindObjectOfType<ContextActionWheelManager>();
-            this.ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
-            this.PlayerPointOfInterestSelectionManager = GameObject.FindObjectOfType<PlayerPointOfInterestSelectionManager>();
+            this.ContextActionWheelManager = AdventureGameSingletonInstances.ContextActionWheelManager;
+            this.ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
+            this.PlayerPointOfInterestSelectionManager = AdventureGameSingletonInstances.PlayerPointOfInterestSelectionManager;
         }
 
         #region Selection POI Events

@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace AdventureGame
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
             #region External Dependencies
-            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            var animationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
             #endregion
 
             InteractionResolved = false;

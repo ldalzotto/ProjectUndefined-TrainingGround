@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -16,7 +16,7 @@ namespace AdventureGame
 
         public DiscussionPOIAnimationManager()
         {
-            this.AdventureDiscussionStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration.AdventureDiscussionStaticConfiguration;
+            this.AdventureDiscussionStaticConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventureDiscussionStaticConfiguration;
             this.CurrentAnimations = new Dictionary<PointOfInterestModelObjectModule, DiscussionScaleAnimation>();
         }
 

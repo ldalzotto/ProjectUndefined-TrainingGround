@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System;
 using UnityEngine;
 
@@ -14,7 +14,7 @@ namespace AdventureGame
 
         private void Start()
         {
-            ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
+            ContextActionEventManager = AdventureGameSingletonInstances.ContextActionEventManager;
 
             this.SequencedActionManager = new SequencedActionManager(OnActionAdd: ContextActionEventManager.OnContextActionAdd, OnActionFinished: ContextActionEventManager.OnContextActionFinished);
         }

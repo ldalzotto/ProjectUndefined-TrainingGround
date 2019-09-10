@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using System;
 using UnityEngine;
 using CoreGame;
@@ -52,7 +52,7 @@ namespace AdventureGame
 
         public override void FirstExecutionAction(SequencedActionInput ContextActionInput)
         {
-            this.PlayedDiscussionWindowManager = GameObject.FindObjectOfType<DiscussionEventHandler>().OnDiscussionTreeStart(this.DiscussionTreeId);
+            this.PlayedDiscussionWindowManager = AdventureGameSingletonInstances.DiscussionEventHandler.OnDiscussionTreeStart(this.DiscussionTreeId);
         }
         
         public override void Tick(float d)

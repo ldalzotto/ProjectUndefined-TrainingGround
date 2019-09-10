@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -13,8 +13,8 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
-            this.PointOfInterestManager = GameObject.FindObjectOfType<PointOfInterestManager>();
+            this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            this.PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
         }
 
         #region External Events

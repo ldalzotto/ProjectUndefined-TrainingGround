@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.DiscussionWindowsContainer = GameObject.FindObjectOfType<DiscussionWindowsContainer>();
+            this.DiscussionWindowsContainer = AdventureGameSingletonInstances.DiscussionWindowsContainer;
             this.DiscussionWindowsContainer.Init();
             this.DiscussionPOIAnimationManager = new DiscussionPOIAnimationManager();
         }

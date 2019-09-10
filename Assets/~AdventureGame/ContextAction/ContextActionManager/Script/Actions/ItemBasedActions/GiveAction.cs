@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections;
@@ -59,9 +59,9 @@ namespace AdventureGame
         {
 
             #region External Dependencies
-            this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-            var AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
-            var animationConfiguration = GameObject.FindObjectOfType<CoreConfigurationManager>().AnimationConfiguration();
+            this.InventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
+            var AdventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
+            var animationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
             #endregion
             GiveActionAnimationManager = new GiveActionAnimationManager(itemGiven, AdventureGameConfigurationManager, animationConfiguration);
 

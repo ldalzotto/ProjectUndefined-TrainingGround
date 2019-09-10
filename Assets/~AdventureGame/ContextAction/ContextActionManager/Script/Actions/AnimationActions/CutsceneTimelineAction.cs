@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections;
@@ -60,7 +60,7 @@ namespace AdventureGame
         {
             Coroutiner.Instance.StartCoroutine(this.PlayCutscene());
             #region External dependencies
-            PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
+            PointOfInterestEventManager = CoreGameSingletonInstances.APointOfInterestEventManager;
             #endregion
             var cutsceneTimelineContextActionInput = (CutsceneTimelineActionInput)ContextActionInput;
             this.CutsceneTimelineActionInput = cutsceneTimelineContextActionInput;
@@ -73,7 +73,7 @@ namespace AdventureGame
 
         private IEnumerator PlayCutscene()
         {
-            yield return GameObject.FindObjectOfType<CutscenePlayerManagerV2>().PlayCutscene(this.cutsceneId);
+            yield return AdventureGameSingletonInstances.CutscenePlayerManagerV2.PlayCutscene(this.cutsceneId);
             isActionEnded = true;
         }
 

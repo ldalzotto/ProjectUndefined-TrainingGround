@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -15,10 +15,10 @@ namespace AdventureGame
 
         public void Init()
         {
-            this.InventoryEventManager = GameObject.FindObjectOfType<InventoryEventManager>();
-            this.ContextActionWheelEventManager = GameObject.FindObjectOfType<ContextActionWheelEventManager>();
-            this.CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
-            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
+            this.InventoryEventManager = AdventureGameSingletonInstances.InventoryEventManager;
+            this.ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
+            this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
         }
 
         public void OnCutscneStarted()

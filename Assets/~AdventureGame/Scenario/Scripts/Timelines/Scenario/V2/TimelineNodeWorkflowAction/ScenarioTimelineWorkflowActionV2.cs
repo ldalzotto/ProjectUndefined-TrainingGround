@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
@@ -496,7 +496,7 @@ namespace AdventureGame
 
         public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
         {
-            var ContextActionEventManager = GameObject.FindObjectOfType<ContextActionEventManager>();
+            var ContextActionEventManager = AdventureGameSingletonInstances.ContextActionEventManager;
             ContextActionEventManager.OnContextActionAdd(this.ContextAction);
         }
 

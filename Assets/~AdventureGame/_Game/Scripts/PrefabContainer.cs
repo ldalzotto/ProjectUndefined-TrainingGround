@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AdventureGame
@@ -24,7 +24,7 @@ namespace AdventureGame
             {
                 if (instance == null)
                 {
-                    instance = GameObject.FindObjectOfType<PrefabContainer>();
+                    instance = AdventureGameSingletonInstances.AdventurePrefabContainer;
                 }
                 return instance;
             }

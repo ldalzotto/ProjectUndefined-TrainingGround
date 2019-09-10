@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,7 +44,7 @@ namespace AdventureGame
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
 
             #region External Dependencies
-            var PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
+            var PlayerManager = AdventureGameSingletonInstances.PlayerManager;
             #endregion
 
             var playerAnimator = PlayerManager.GetPlayerAnimator();

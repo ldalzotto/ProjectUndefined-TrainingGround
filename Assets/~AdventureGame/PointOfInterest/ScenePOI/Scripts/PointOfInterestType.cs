@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEditor;
@@ -82,8 +82,8 @@ namespace AdventureGame
 
         public static PointOfInterestType Instanciate(PointOfInterestDefinitionID PointOfInterestDefinitionID)
         {
-            var AdventureGameStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration;
-            var pointOfInterestType = MonoBehaviour.Instantiate(AdventureGameStaticConfiguration.AdventurePrefabConfiguration.BasePointOfInterestType, GameObject.FindObjectOfType<LevelManager>().transform);
+            var AdventureGameStaticConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration;
+            var pointOfInterestType = MonoBehaviour.Instantiate(AdventureGameStaticConfiguration.AdventurePrefabConfiguration.BasePointOfInterestType, CoreGameSingletonInstances.LevelManager.transform);
             pointOfInterestType.PointOfInterestDefinitionID = PointOfInterestDefinitionID;
             pointOfInterestType.Init();
             return pointOfInterestType;
@@ -106,11 +106,11 @@ namespace AdventureGame
             Debug.Log(MyLog.Format(this.PointOfInterestId.ToString()));
 
             #region External Dependencies
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.PointOfInterestEventManager = GameObject.FindObjectOfType<APointOfInterestEventManager>();
-            this.AdventureGameConfigurationManager = GameObject.FindObjectOfType<AdventureGameConfigurationManager>();
-            this.CoreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            var adventureStaticConfiguration = GameObject.FindObjectOfType<AdventureStaticConfigurationContainer>().AdventureStaticConfiguration;
+            this.LevelManager = CoreGameSingletonInstances.LevelManager;
+            this.PointOfInterestEventManager = CoreGameSingletonInstances.APointOfInterestEventManager;
+            this.AdventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
+            this.CoreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
+            var adventureStaticConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration;
             #endregion
 
             if (this.PointOfInterestDefinitionID != PointOfInterestDefinitionID.NONE && !this.hasBeenDefined)
