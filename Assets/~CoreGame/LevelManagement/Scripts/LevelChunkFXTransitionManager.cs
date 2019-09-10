@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CoreGame
@@ -14,8 +13,7 @@ namespace CoreGame
 
         public void Init()
         {
-            this.CurrentTransitionableLevelFXTypeManager = new CurrentTransitionableLevelFXTypeManager(this);
-            this.FXTransitionAnimationManager = new FXTransitionAnimationManager();
+            this.CurrentTransitionableLevelFXTypeManager = new CurrentTransitionableLevelFXTypeManager();
         }
 
         #region External Events
@@ -44,30 +42,27 @@ namespace CoreGame
         }
         #endregion
 
-        #region Internal Events
-        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current, ChunkFXTransitionType TransitionType)
-        {
-            this.FXTransitionAnimationManager.OnNewChunkLevel(old, current, TransitionType);
-        }
-        #endregion
-
         public void Tick(float d)
         {
-            this.FXTransitionAnimationManager.Tick(d);
+            this.CurrentTransitionableLevelFXTypeManager.Tick(d);
         }
     }
 
     class CurrentTransitionableLevelFXTypeManager
     {
-        private LevelChunkFXTransitionManager AdventureLevelChunkFXTransitionManagerRef;
-
-        public CurrentTransitionableLevelFXTypeManager(LevelChunkFXTransitionManager adventureLevelChunkFXTransitionManagerRef)
+        public CurrentTransitionableLevelFXTypeManager()
         {
-            AdventureLevelChunkFXTransitionManagerRef = adventureLevelChunkFXTransitionManagerRef;
+            this.AnimationManagers = new List<FXTransitionAnimationManager>()
+            {
+                new FXTransitionAnimationManager(new PostProcessingTransitionAnimationManager()),
+                new FXTransitionAnimationManager(new MainDirectionalLightTransitionAnimationManager())
+            };
         }
 
         private TransitionableLevelFXType current;
         private TransitionableLevelFXType old;
+
+        private List<FXTransitionAnimationManager> AnimationManagers;
 
         public void OnChunkLevelEnter(LevelChunkTracker nextLevelChunkTracker)
         {
@@ -75,21 +70,14 @@ namespace CoreGame
             {
                 this.old = nextLevelChunkTracker.TransitionableLevelFXType;
                 Debug.Log(MyLog.Format("SAME"));
-                AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
+                this.OnNewChunkLevel(this.old, this.current, forceInstantTransition: true);
             }
             else if (current == null)
             {
                 if (this.old != nextLevelChunkTracker.TransitionableLevelFXType)
                 {
                     this.current = nextLevelChunkTracker.TransitionableLevelFXType;
-                    if (!this.IsNewPostProcessDifferent(nextLevelChunkTracker))
-                    {
-                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
-                    }
-                    else
-                    {
-                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.SMOOTH);
-                    }
+                    this.OnNewChunkLevel(this.old, this.current);
                 }
             }
             else
@@ -98,39 +86,40 @@ namespace CoreGame
                 {
                     this.old = this.current;
                     this.current = nextLevelChunkTracker.TransitionableLevelFXType;
-                    if (!this.IsNewPostProcessDifferent(nextLevelChunkTracker))
-                    {
-                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.INSTANT);
-                    }
-                    else
-                    {
-                        AdventureLevelChunkFXTransitionManagerRef.OnNewChunkLevel(this.old, this.current, ChunkFXTransitionType.SMOOTH);
-                    }
+                    this.OnNewChunkLevel(this.old, this.current);
                 }
             }
         }
 
-        #region Logical conditions
-        private bool IsNewPostProcessDifferent(LevelChunkTracker nextLevelChunkTracker)
+        public void Tick(float d)
         {
-            return this.old.PostProcessVolume.sharedProfile.name != nextLevelChunkTracker.TransitionableLevelFXType.PostProcessVolume.sharedProfile.name;
+            foreach (var AnimationManager in this.AnimationManagers)
+            {
+                AnimationManager.Tick(d);
+            }
         }
 
+        #region Logical conditions
         public bool IsCurrentChunkTrackerEqualsTo(LevelChunkTracker compareChunkTracker)
         {
             return this.current != null && this.current == compareChunkTracker;
         }
         #endregion
 
+        private void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current, bool forceInstantTransition = false)
+        {
+            foreach (var AnimationManager in this.AnimationManagers)
+            {
+                bool isSmooth = !forceInstantTransition && AnimationManager.IsNextDifferent(old, current);
+                AnimationManager.OnNewChunkLevel(old, current, isSmooth ? ChunkFXTransitionType.SMOOTH : ChunkFXTransitionType.INSTANT);
+            }
+        }
     }
 
     class FXTransitionAnimationManager
     {
-
         #region State
         private bool isTransitioning;
-        private float oldPostProcessingStartingWeight = 1f;
-        private float currentPostProcessingStartingWeight = 0f;
         #endregion
 
         private float elapsedTime;
@@ -139,20 +128,26 @@ namespace CoreGame
         private TransitionableLevelFXType old;
         private TransitionableLevelFXType current;
 
+        private ITransitionAnimationManager associatedAnimationManager;
+
+        public FXTransitionAnimationManager(ITransitionAnimationManager associatedAnimationManager)
+        {
+            this.associatedAnimationManager = associatedAnimationManager;
+        }
+
         public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current, ChunkFXTransitionType TransitionType)
         {
             this.old = old;
             this.current = current;
 
-            old.PostProcessVolume.gameObject.SetActive(true);
+            this.associatedAnimationManager.OnNewChunkLevel(old, current);
+
             if (current == null)
             {
                 this.isTransitioning = false;
             }
             else
             {
-                current.PostProcessVolume.gameObject.SetActive(true);
-
                 if (TransitionType == ChunkFXTransitionType.SMOOTH)
                 {
                     if (this.isTransitioning)
@@ -175,23 +170,22 @@ namespace CoreGame
         private void ResetState()
         {
             this.elapsedTime = 0f;
-            this.oldPostProcessingStartingWeight = 1f;
-            this.currentPostProcessingStartingWeight = 0f;
+            this.associatedAnimationManager.ResetState();
         }
 
         public void Tick(float d)
         {
             if (this.isTransitioning)
             {
-                UpdateElapsedTime(d);
-                float completionPercent = CalculateCompletionPercent();
+                this.elapsedTime += d;
+                float completionPercent = this.elapsedTime / MAX_TIME;
                 if (IsTransitionFinished(completionPercent))
                 {
                     this.OnTransitionEnd();
                 }
                 else
                 {
-                    UpdatePostProcessesWeight(completionPercent);
+                    this.associatedAnimationManager.UpdateAnimatedData(completionPercent, this.old, this.current);
                 }
             }
         }
@@ -201,40 +195,130 @@ namespace CoreGame
             return completionPercent >= 1;
         }
 
-        private void UpdateElapsedTime(float d)
-        {
-            this.elapsedTime += d;
-        }
-
-        private float CalculateCompletionPercent()
-        {
-            return this.elapsedTime / MAX_TIME;
-        }
-
-        private void UpdatePostProcessesWeight(float completionPercent)
-        {
-            //the completionPercent - 0.3f is for delaying the old postprecessing transition -> causing artifacts
-            this.old.PostProcessVolume.weight = Mathf.SmoothStep(this.oldPostProcessingStartingWeight, 0, completionPercent - 0.3f);
-            this.current.PostProcessVolume.weight = Mathf.SmoothStep(this.currentPostProcessingStartingWeight, 1, completionPercent);
-        }
-
         private void OnTransitionEnd()
         {
-            Debug.Log(MyLog.Format("Transition end"));
+            this.associatedAnimationManager.OnTransitionEnd(this.old, this.current);
             this.isTransitioning = false;
-            this.old.PostProcessVolume.gameObject.SetActive(false);
-            this.current.PostProcessVolume.weight = 1f;
-            this.old.PostProcessVolume.weight = 0f;
         }
 
         private void OnTimeElapsingReverse()
         {
-            //we reverse PP weight to have continuity in weight
-            this.oldPostProcessingStartingWeight = this.old.PostProcessVolume.weight;
-            this.currentPostProcessingStartingWeight = this.current.PostProcessVolume.weight;
+            this.associatedAnimationManager.OnTimeElapsingReverse(this.old, this.current);
             this.elapsedTime = 0f;
         }
 
+        public bool IsNextDifferent(TransitionableLevelFXType current, TransitionableLevelFXType next)
+        {
+            return this.associatedAnimationManager.IsNextDifferent(current, next);
+        }
+    }
+
+    interface ITransitionAnimationManager
+    {
+        void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current);
+        void OnTimeElapsingReverse(TransitionableLevelFXType old, TransitionableLevelFXType current);
+        void UpdateAnimatedData(float completionPercent, TransitionableLevelFXType old, TransitionableLevelFXType current);
+        void ResetState();
+        void OnTransitionEnd(TransitionableLevelFXType old, TransitionableLevelFXType current);
+        bool IsNextDifferent(TransitionableLevelFXType current, TransitionableLevelFXType next);
+    }
+
+    class PostProcessingTransitionAnimationManager : ITransitionAnimationManager
+    {
+        private float oldPostProcessingStartingWeight = 1f;
+        private float currentPostProcessingStartingWeight = 0f;
+
+        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            old.PostProcessVolume.gameObject.SetActive(true);
+            if (current != null)
+            {
+                current.PostProcessVolume.gameObject.SetActive(true);
+            }
+        }
+
+        public void OnTimeElapsingReverse(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            //we reverse PP weight to have continuity in weight
+            this.oldPostProcessingStartingWeight = old.PostProcessVolume.weight;
+            this.currentPostProcessingStartingWeight = current.PostProcessVolume.weight;
+        }
+
+        public void UpdateAnimatedData(float completionPercent, TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            //the completionPercent - 0.3f is for delaying the old postprecessing transition -> causing artifacts
+            old.PostProcessVolume.weight = Mathf.SmoothStep(this.oldPostProcessingStartingWeight, 0, completionPercent - 0.3f);
+            current.PostProcessVolume.weight = Mathf.SmoothStep(this.currentPostProcessingStartingWeight, 1, completionPercent);
+        }
+
+        public void ResetState()
+        {
+            this.oldPostProcessingStartingWeight = 1f;
+            this.currentPostProcessingStartingWeight = 0f;
+        }
+
+        public void OnTransitionEnd(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            old.PostProcessVolume.gameObject.SetActive(false);
+            current.PostProcessVolume.weight = 1f;
+            old.PostProcessVolume.weight = 0f;
+        }
+
+        public bool IsNextDifferent(TransitionableLevelFXType current, TransitionableLevelFXType next)
+        {
+            return current.PostProcessVolume.sharedProfile.name != next.PostProcessVolume.sharedProfile.name;
+        }
+    }
+
+    class MainDirectionalLightTransitionAnimationManager : ITransitionAnimationManager
+    {
+        private float oldLightIntensity;
+        private float currentLightIntensity;
+
+        public void OnNewChunkLevel(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            old.MainDirectionalLight.gameObject.SetActive(true);
+            old.MainDirectionalLight.enabled = true;
+
+            if (current != null)
+            {
+                current.MainDirectionalLight.gameObject.SetActive(true);
+                current.MainDirectionalLight.enabled = true;
+            }
+        }
+
+        public void OnTimeElapsingReverse(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            this.oldLightIntensity = old.MainDirectionalLight.intensity;
+            this.currentLightIntensity = current.MainDirectionalLight.intensity;
+        }
+
+        public void UpdateAnimatedData(float completionPercent, TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            old.MainDirectionalLight.intensity = Mathf.SmoothStep(this.oldLightIntensity, 0, completionPercent);
+            current.MainDirectionalLight.intensity = Mathf.SmoothStep(this.currentLightIntensity, 1, completionPercent);
+        }
+
+        public void ResetState()
+        {
+            this.oldLightIntensity = 1f;
+            this.currentLightIntensity = 0f;
+        }
+
+        public void OnTransitionEnd(TransitionableLevelFXType old, TransitionableLevelFXType current)
+        {
+            old.MainDirectionalLight.gameObject.SetActive(false);
+            old.MainDirectionalLight.enabled = false;
+
+            current.MainDirectionalLight.intensity = 1f;
+            old.MainDirectionalLight.intensity = 0f;
+        }
+
+        public bool IsNextDifferent(TransitionableLevelFXType current, TransitionableLevelFXType next)
+        {
+            return (current.MainDirectionalLight.intensity != next.MainDirectionalLight.intensity)
+                 || (current.MainDirectionalLight.color != next.MainDirectionalLight.color);
+        }
     }
 
     public enum ChunkFXTransitionType
