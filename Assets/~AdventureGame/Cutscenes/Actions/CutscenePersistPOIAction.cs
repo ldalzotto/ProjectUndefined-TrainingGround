@@ -40,14 +40,9 @@ namespace AdventureGame
             if (ghostPOI != null)
             {
                 var pointOfInterestType = cutsceneActionInput.PointOfInterestManager.GetActivePointOfInterest(this.PointOfInterestId);
-                var pointOfInterestCutsceneController = pointOfInterestType.GetPointOfInterestCutsceneController();
-
-                ghostPOI.OnPositionChanged(pointOfInterestType.GetRootObject().transform, cutsceneActionInput.LevelManager.CurrentLevelZoneChunkWherePlayerIsID);
-
-                if(this.PoseAnimationID!= AnimationID.NONE)
-                {
-                    ghostPOI.OnAnimationPositioningPlayed(this.PoseAnimationID);
-                }               
+                cutsceneActionInput.CutsceneEventManager.PushDeferredPersistance(new CutsceneDeferredPOIpersistanceInput(
+                        this.PointOfInterestId, new TransformBinarry(pointOfInterestType.GetRootObject().transform), this.PoseAnimationID, cutsceneActionInput.LevelManager.CurrentLevelZoneChunkWherePlayerIsID
+                    ));
             }
         }
 

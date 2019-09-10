@@ -116,6 +116,7 @@
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutsceneEventManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutsceneGlobalController.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\CutscenePlayerManagerV2.cs" />
+    <Compile Include="Assets\~AdventureGame\Cutscenes\DeferredPersistance\CutsceneDeferredPersistanceManager.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\CutsceneGraph.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneAnimationEdge.cs" />
     <Compile Include="Assets\~AdventureGame\Cutscenes\Graph\Edges\CutsceneCameraFollowEdge.cs" />

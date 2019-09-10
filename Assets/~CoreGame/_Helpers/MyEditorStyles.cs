@@ -40,6 +40,7 @@ public class MyColors
     public static Color Coral;
     public static Color HotPink;
     public static Color MayaBlue;
+    public static Color MintGreen;
 
     static MyColors()
     {
@@ -48,5 +49,6 @@ public class MyColors
         MyColors.Coral = new Color(1f, 127f / 255f, 80f / 255f);
         MyColors.HotPink = new Color(1f, 105f / 255f, 180f / 255f);
         MyColors.MayaBlue = new Color(115f / 255f, 194f / 255f, 251f / 255f);
+        MyColors.MintGreen = new Color(62f / 255f, 180f / 255f, 137f / 255f);
     }
 }

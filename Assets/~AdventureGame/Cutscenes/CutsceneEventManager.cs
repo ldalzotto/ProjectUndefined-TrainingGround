@@ -11,6 +11,7 @@ namespace AdventureGame
         private ContextActionWheelEventManager ContextActionWheelEventManager;
         private CameraMovementManager CameraMovementManager;
         private TutorialManager TutorialManager;
+        private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         #endregion
 
         public void Init()
@@ -19,6 +20,7 @@ namespace AdventureGame
             this.ContextActionWheelEventManager = AdventureGameSingletonInstances.ContextActionWheelEventManager;
             this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
+            this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
         }
 
         public void OnCutscneStarted()
@@ -32,6 +34,11 @@ namespace AdventureGame
         public void OnCutsceneEnded()
         {
             this.CameraMovementManager.EnableInput();
+        }
+
+        public void PushDeferredPersistance(CutsceneDeferredPOIpersistanceInput CutsceneDeferredPOIpersistanceInput)
+        {
+            this.CutscenePlayerManagerV2.PushDeferredPersistance(CutsceneDeferredPOIpersistanceInput);
         }
     }
 }

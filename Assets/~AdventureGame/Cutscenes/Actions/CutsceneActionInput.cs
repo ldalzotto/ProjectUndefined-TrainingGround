@@ -13,10 +13,11 @@ namespace AdventureGame
         private CutsceneGlobalController cutsceneGlobalController;
         private GhostsPOIManager ghostsPOIManager;
         private LevelManager levelManager;
+        private CutsceneEventManager cutsceneEventManager;
 
         public CutsceneActionInput(CutsceneId cutsceneId, PointOfInterestManager pointOfInterestManager,
             CutscenePositionsManager cutscenePositionsManager, ContextActionEventManager contextActionEventManager, AdventureGameConfigurationManager AdventureGameConfigurationManager, CutsceneGlobalController CutsceneGlobalController,
-            GhostsPOIManager ghostsPOIManager, LevelManager levelManager)
+            GhostsPOIManager ghostsPOIManager, LevelManager levelManager, CutsceneEventManager cutsceneEventManager)
         {
             this.cutsceneId = cutsceneId;
             this.pointOfInterestManager = pointOfInterestManager;
@@ -26,6 +27,7 @@ namespace AdventureGame
             this.cutsceneGlobalController = CutsceneGlobalController;
             this.ghostsPOIManager = ghostsPOIManager;
             this.levelManager = levelManager;
+            this.cutsceneEventManager = cutsceneEventManager;
         }
 
         public CutsceneId CutsceneId { get => cutsceneId; }
@@ -33,8 +35,9 @@ namespace AdventureGame
         public PointOfInterestManager PointOfInterestManager { get => pointOfInterestManager; }
         public ContextActionEventManager ContextActionEventManager { get => contextActionEventManager; }
         public AdventureGameConfigurationManager AdventureGameConfigurationManager { get => adventureGameConfigurationManager; }
-        public CutsceneGlobalController CutsceneGlobalController { get => cutsceneGlobalController;  }
-        public GhostsPOIManager GhostsPOIManager { get => ghostsPOIManager;}
-        public LevelManager LevelManager { get => levelManager;  }
+        public CutsceneGlobalController CutsceneGlobalController { get => cutsceneGlobalController; }
+        public GhostsPOIManager GhostsPOIManager { get => ghostsPOIManager; }
+        public LevelManager LevelManager { get => levelManager; }
+        public CutsceneEventManager CutsceneEventManager { get => cutsceneEventManager; }
     }
 }

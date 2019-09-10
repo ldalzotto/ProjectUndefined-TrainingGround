@@ -230,14 +230,14 @@ namespace AdventureGame
             this.OnGhostPOIChanged();
         }
 
-        public void OnPositionChanged(Transform position, LevelZoneChunkID levelZoneChunkID)
+        public void OnPositionChanged(TransformBinarry position, LevelZoneChunkID levelZoneChunkID)
         {
             if (this.pointOfInterestLevelPositioningState == null)
             {
                 this.pointOfInterestLevelPositioningState = new PointOfInterestLevelPositioningState();
             }
             this.pointOfInterestLevelPositioningState.LevelZoneChunkID = levelZoneChunkID;
-            this.pointOfInterestLevelPositioningState.TransformBinarry = new TransformBinarry(position);
+            this.pointOfInterestLevelPositioningState.TransformBinarry = position;
             this.OnGhostPOIChanged();
         }
 

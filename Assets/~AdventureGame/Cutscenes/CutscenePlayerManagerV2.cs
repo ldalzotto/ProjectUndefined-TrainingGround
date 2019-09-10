@@ -19,6 +19,10 @@ namespace AdventureGame
         private CutsceneEventManager CutsceneEventManager;
         #endregion
 
+        #region Internal Dependencies
+        private CutsceneDeferredPersistanceManager CutsceneDeferredPersistanceManager;
+        #endregion
+
         public void Init()
         {
             this.AdventureGameConfigurationManager = AdventureGameSingletonInstances.AdventureGameConfigurationManager;
@@ -29,6 +33,9 @@ namespace AdventureGame
             this.GhostsPOIManager = AdventureGameSingletonInstances.GhostsPOIManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.CutsceneEventManager = AdventureGameSingletonInstances.CutsceneEventManager;
+
+            this.CutsceneDeferredPersistanceManager = new CutsceneDeferredPersistanceManager();
+
             this.BaseInit(this.OnCutsceneStart, this.OnCutsceneEnd);
         }
 
@@ -41,13 +48,19 @@ namespace AdventureGame
         {
             //Reset some state to ensure that nothing wrong persist
             this.CutsceneGlobalController.SetCameraFollow(PointOfInterestId.PLAYER);
+            this.CutsceneDeferredPersistanceManager.OnCutsceneEnd();
             this.CutsceneEventManager.OnCutsceneEnded();
         }
-
+        
         #region External Event
         public void ManualCutsceneStart(CutsceneId cutsceneId)
         {
             Coroutiner.Instance.StartCoroutine(this.ManualPlayCutscene(cutsceneId));
+        }
+
+        public void PushDeferredPersistance(CutsceneDeferredPOIpersistanceInput CutsceneDeferredPOIpersistanceInput)
+        {
+            this.CutsceneDeferredPersistanceManager.PushDeferredPersistance(CutsceneDeferredPOIpersistanceInput);
         }
         #endregion
 
@@ -61,7 +74,7 @@ namespace AdventureGame
         {
             var cutsceneGraph = this.AdventureGameConfigurationManager.CutsceneConf()[cutsceneId].CutsceneGraph;
             var cutsceneInput = new CutsceneActionInput(cutsceneId, this.PointOfInterestManager, this.CutscenePositionsManager,
-                this.ContextActionEventManager, this.AdventureGameConfigurationManager, this.CutsceneGlobalController, this.GhostsPOIManager, this.LevelManager);
+                this.ContextActionEventManager, this.AdventureGameConfigurationManager, this.CutsceneGlobalController, this.GhostsPOIManager, this.LevelManager, this.CutsceneEventManager);
             yield return base.PlayCutscene(cutsceneGraph, cutsceneInput);
         }
     }
