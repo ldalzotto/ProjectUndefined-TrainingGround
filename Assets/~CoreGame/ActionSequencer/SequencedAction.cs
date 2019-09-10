@@ -60,7 +60,7 @@ namespace CoreGame
         public SequencedActionInput ActionInput { get => actionInput; set => actionInput = value; }
         public List<SequencedAction> NextActions { get => nextActions; }
 
-        public void SetNextContextAction(List<SequencedAction> nextActions)
+        public virtual void SetNextContextAction(List<SequencedAction> nextActions)
         {
             this.nextActions = nextActions;
         }

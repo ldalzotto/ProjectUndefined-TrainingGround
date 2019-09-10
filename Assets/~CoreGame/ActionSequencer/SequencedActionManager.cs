@@ -102,6 +102,12 @@ namespace CoreGame
             }
             this.ExecutedActions.Clear();
         }
+        public void CleatAllActions()
+        {
+            this.ExecutedActions.Clear();
+            this.FinishedActions.Clear();
+            this.CurrentNexActions.Clear();
+        }
         #endregion
 
         #region Data Retrieval

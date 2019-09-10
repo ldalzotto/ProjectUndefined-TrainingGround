@@ -27,5 +27,7 @@ namespace GameConfigurationID {
     TEST_2 = 5,
     
     _GENERIC_AnimationWithFollowObject = 6,
+    
+    _1_Town_StartTutorial_Speaker_DisarmAnimation = 7,
   }
 }

@@ -199,6 +199,7 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PointOfInterestVisualMovement\PointOfInterestVisualMovementCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\Modules\EditorInformations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\Modules\PuzzleCutsceneConfigurationCreation.cs" />
+    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\Modules\PuzzleCutsceneGraphCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\PuzzleCutsceneCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\PuzzleCutscene\PuzzleCutsceneCreationWizardProfile.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\ObjectsCreation\RangeTypeObjectDefinition\Modules\EditorInformations.cs" />

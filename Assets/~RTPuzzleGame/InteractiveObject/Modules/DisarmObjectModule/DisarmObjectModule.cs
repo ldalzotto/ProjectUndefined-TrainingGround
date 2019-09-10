@@ -13,7 +13,7 @@ namespace RTPuzzle
 
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
-        private InteractiveObjectType AssociatedInteractiveObjectType;
+        private InteractiveObjectType associatedInteractiveObjectType;
         #endregion
 
         #region Internal Dependencies
@@ -31,7 +31,7 @@ namespace RTPuzzle
         public void Init(ModelObjectModule ModelObjectModule, InteractiveObjectType AssociatedInteractiveObjectType, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
         {
             this.ModelObjectModule = ModelObjectModule;
-            this.AssociatedInteractiveObjectType = AssociatedInteractiveObjectType;
+            this.associatedInteractiveObjectType = AssociatedInteractiveObjectType;
             this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
             this.AiThatCanInteract = new List<AIObjectType>();
 
@@ -66,6 +66,7 @@ namespace RTPuzzle
         {
             return this.disarmObjectRange.radius;
         }
+        public InteractiveObjectType AssociatedInteractiveObjectType { get => associatedInteractiveObjectType; }
         #endregion
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -91,12 +92,12 @@ namespace RTPuzzle
         }
         public void OnDisarmObjectStart()
         {
-            this.AssociatedInteractiveObjectType.DisableModule(typeof(GrabObjectModule));
+            this.associatedInteractiveObjectType.DisableModule(typeof(GrabObjectModule));
         }
 
         public void OnDisarmObjectEnd()
         {
-            this.AssociatedInteractiveObjectType.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
+            this.associatedInteractiveObjectType.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
         }
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CoreGame
 {
@@ -6,18 +7,20 @@ namespace CoreGame
     {
         private SequencedActionManager SequencedActionManager;
         private SequencedActionInput SequencedActionInput;
-        private AbstractCutsceneGraph AbstractCutsceneGraph;
+        public List<SequencedAction> SequencedActions;
 
-        public SequencedActionPlayer(AbstractCutsceneGraph cutsceneGraph, SequencedActionInput SequencedActionInput, Action onFinished = null)
+        public SequencedActionPlayer(List<SequencedAction> SequencedActions, SequencedActionInput SequencedActionInput, Action onFinished = null)
         {
-            AbstractCutsceneGraph = cutsceneGraph;
+            this.SequencedActions = SequencedActions;
             this.SequencedActionInput = SequencedActionInput;
             this.SequencedActionManager = new SequencedActionManager((action) => this.SequencedActionManager.OnAddAction(action, this.SequencedActionInput), null, onFinished);
         }
 
+
+
         public void Play()
         {
-            this.SequencedActionManager.OnAddActions(this.AbstractCutsceneGraph.GetRootActions(), this.SequencedActionInput);
+            this.SequencedActionManager.OnAddActions(this.SequencedActions, this.SequencedActionInput);
         }
 
         public void Tick(float d)
@@ -31,6 +34,7 @@ namespace CoreGame
         public void Kill()
         {
             this.SequencedActionManager.InterruptAllActions();
+            this.SequencedActionManager.CleatAllActions();
         }
 
         public bool IsPlaying()

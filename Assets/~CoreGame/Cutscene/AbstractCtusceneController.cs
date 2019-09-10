@@ -224,7 +224,7 @@ namespace CoreGame
                     this.isRotating = false;
                 }
 
-                Debug.Log(this.rotatingRigidBody.transform.eulerAngles.ToString("F4"));
+           //     Debug.Log(this.rotatingRigidBody.transform.eulerAngles.ToString("F4"));
             }
         }
     }

@@ -467,7 +467,7 @@ namespace RTPuzzle
             this.playerAnimator = playerAnimator;
             this.ProjectileInherentData = ProjectileInherentData;
 
-            this.ProjectilePreAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[ProjectileInherentData.PreActionAnimationV2].PuzzleCutsceneGraph,
+            this.ProjectilePreAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[ProjectileInherentData.PreActionAnimationV2].PuzzleCutsceneGraph.GetRootActions(),
                      new PuzzleCutsceneActionInput(InteractiveObjectContainer,
                         PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, this.playerAnimator).transform,
                                    this.projectileObjectRef.gameObject, this.ProjectileInherentData.PreActionAnimation)));
@@ -486,7 +486,7 @@ namespace RTPuzzle
             if (this.ProjectileInherentData.PostActionAnimation != AnimationID.NONE)
             {
                 this.ProjectilePostAnimationPlayer = new SequencedActionPlayer(
-                    PuzzleCutsceneConfiguration.ConfigurationInherentData[ProjectileInherentData.PreActionAnimationV2].PuzzleCutsceneGraph,
+                    PuzzleCutsceneConfiguration.ConfigurationInherentData[ProjectileInherentData.PreActionAnimationV2].PuzzleCutsceneGraph.GetRootActions(),
                     new PuzzleCutsceneActionInput(this.InteractiveObjectContainer, PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(
                         BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, this.playerAnimator).transform, this.projectileObjectRef.gameObject, this.ProjectileInherentData.PostActionAnimation)),
                     onFinished: onAnimationEnd

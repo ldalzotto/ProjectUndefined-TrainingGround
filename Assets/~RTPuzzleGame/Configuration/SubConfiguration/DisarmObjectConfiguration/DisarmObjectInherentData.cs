@@ -1,6 +1,5 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
@@ -11,9 +10,8 @@ namespace RTPuzzle
         public float DisarmTime;
         public float DisarmInteractionRange = 2.5f;
 
-        [Header("Animation")]
-        [CustomEnum()]
-        public AnimationID DisarmObjectAnimationLooped = AnimationID.CA_CrushDownItem;
-        
+        [Header("Animation Graph")]
+        [CustomEnum(ConfigurationType = typeof(PuzzleCutsceneConfiguration))]
+        public PuzzleCutsceneID DisarmObjectAnimationGraph;
     }
 }

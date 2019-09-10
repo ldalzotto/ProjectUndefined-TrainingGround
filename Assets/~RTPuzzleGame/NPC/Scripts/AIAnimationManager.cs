@@ -1,95 +1,53 @@
 ﻿using CoreGame;
-using GameConfigurationID;
-using System.Collections;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class AIAnimationManager : MonoBehaviour
+    public class AIAnimationManager
     {
 
         private PlayerAnimationDataManager NPCPAnimationDataManager;
-        private INPCAIAnimationWorkflow CurrentNPCAIAnimationWorkflow;
+        private InteractiveObjectType InteractiveObjectType;
+        private PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
+        private AnimationConfiguration AnimationConfiguration;
         private Animator animator;
-        private AnimationConfiguration animationConfiguration;
+        private InteractiveObjectContainer InteractiveObjectContainer;
 
-        public AIAnimationManager(Animator animator, AnimationConfiguration animationConfiguration)
+        private SequencedActionPlayer CurrentAnimationPlayed;
+
+        public AIAnimationManager(Animator animator, InteractiveObjectType InteractiveObjectType, AnimationConfiguration AnimationConfiguration, PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration,
+            InteractiveObjectContainer InteractiveObjectContainer)
         {
             this.animator = animator;
-            this.animationConfiguration = animationConfiguration;
+            this.InteractiveObjectType = InteractiveObjectType;
+            this.PuzzleCutsceneConfiguration = PuzzleCutsceneConfiguration;
+            this.AnimationConfiguration = AnimationConfiguration;
+            this.InteractiveObjectContainer = InteractiveObjectContainer;
 
             this.NPCPAnimationDataManager = new PlayerAnimationDataManager(animator);
 
             //Initialize movement animation
-            GenericAnimatorHelper.SetMovementLayer(animator, animationConfiguration, LevelType.PUZZLE);
+            GenericAnimatorHelper.SetMovementLayer(animator, AnimationConfiguration, LevelType.PUZZLE);
         }
 
-        public void TickAlways(float normalizedCurrentSpeed)
+        public void TickAlways(float d, float normalizedCurrentSpeed)
         {
             this.NPCPAnimationDataManager.Tick(normalizedCurrentSpeed);
+            if (this.CurrentAnimationPlayed != null) { this.CurrentAnimationPlayed.Tick(d); }
         }
 
         #region External Events
         public void OnDisarmObjectStart(DisarmObjectModule disarmObjectModule)
         {
-            this.CurrentNPCAIAnimationWorkflow = new DisarmObjectAnimationWorkflow(this.animator, this.animationConfiguration, disarmObjectModule);
-            this.CurrentNPCAIAnimationWorkflow.OnStart();
+
+            this.CurrentAnimationPlayed = new SequencedActionPlayer(this.PuzzleCutsceneConfiguration.ConfigurationInherentData[disarmObjectModule.DisarmObjectInherentConfigurationData.DisarmObjectAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
+                    new PuzzleCutsceneActionInput(this.InteractiveObjectContainer, PuzzleCutsceneActionInput.Build_1_Town_StartTutorial_Speaker_DisarmAnimation(this.InteractiveObjectType)));
+            this.CurrentAnimationPlayed.Play();
         }
         public void OnDisarmObjectEnd()
         {
-            this.CurrentNPCAIAnimationWorkflow.OnExit();
+            this.CurrentAnimationPlayed.Kill();
         }
         #endregion
-    }
-
-    abstract class INPCAIAnimationWorkflow
-    {
-        protected Animator animator;
-        protected AnimationConfiguration animationConfiguration;
-
-        protected INPCAIAnimationWorkflow(Animator animator, AnimationConfiguration animationConfiguration)
-        {
-            this.animator = animator;
-            this.animationConfiguration = animationConfiguration;
-        }
-
-        public abstract void OnStart();
-
-        public virtual void OnExit()
-        {
-            GenericAnimatorHelper.ResetAllLayers(this.animator, this.animationConfiguration, LevelType.PUZZLE);
-        }
-    }
-
-    class DisarmObjectAnimationWorkflow : INPCAIAnimationWorkflow
-    {
-        private Coroutine animationCoroutine;
-        private DisarmObjectModule disarmObjectModule;
-
-        public DisarmObjectAnimationWorkflow(Animator animator, AnimationConfiguration animationConfiguration, DisarmObjectModule disarmObjectModule) : base(animator, animationConfiguration)
-        {
-            this.disarmObjectModule = disarmObjectModule;
-        }
-
-        public override void OnStart()
-        {
-            this.animationCoroutine = Coroutiner.Instance.StartCoroutine(this.DisarmObjectAnimationWorkflowPlayAnimations());
-        }
-
-        private IEnumerator DisarmObjectAnimationWorkflowPlayAnimations()
-        {
-            yield return AnimationPlayerHelper.PlayAndWait(this.animator, this.animationConfiguration.ConfigurationInherentData[this.disarmObjectModule.DisarmObjectInherentConfigurationData.DisarmObjectAnimationLooped], 0.25f, animationEndCallback: null, framePerfectEndDetection: true);
-            AnimationPlayerHelper.Play(this.animator, this.animationConfiguration.ConfigurationInherentData[AnimationID.ACTION_LISTENING], 0.25f);
-            yield return new WaitForSeconds(1.5f);
-            yield return this.DisarmObjectAnimationWorkflowPlayAnimations();
-        }
-
-        public override void OnExit()
-        {
-            base.OnExit();
-            if (this.animationCoroutine != null) { Coroutiner.Instance.StopCoroutine(this.animationCoroutine); }
-        }
-
-
     }
 }

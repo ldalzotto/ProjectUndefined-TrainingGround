@@ -20,6 +20,7 @@ namespace Editor_PuzzleCutsceneCreationWizard
         private List<CreationWizardOrderConfiguration> ModuleTypes_IMPL = new List<CreationWizardOrderConfiguration>() {
             new CreationWizardOrderConfiguration(typeof(EditorInformations), -1),
             new CreationWizardOrderConfiguration(typeof(PuzzleCutsceneConfigurationCreation), 0),
+            new CreationWizardOrderConfiguration(typeof(PuzzleCutsceneGraphCreation), 1)
         };
 
         public override List<CreationWizardOrderConfiguration> ModulesConfiguration => this.ModuleTypes_IMPL;

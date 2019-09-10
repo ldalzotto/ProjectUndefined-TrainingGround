@@ -157,14 +157,17 @@
     <Compile Include="Assets\~CoreGame\Cutscene\AbstractCutscenePlayerManager.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractCutsceneAnimationAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\AbstractRotateAction.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Actions\Branch\BranchInfiniteLoopAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowAbortAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Actions\CutsceneWorkflowWaitForSecondsAction.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\AbstractCutsceneGraph.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Abstract\ACutsceneEdge.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\Branch\BranchInfiniteLoopEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneActionConnectionEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneWorkflowAbortEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Edges\CutsceneWorkflowWaitForSecondsEdge.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\Abstract\ACutsceneNode.cs" />
+    <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\Branch\BranchInfiniteLoopNode.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneStartNode.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneWorkflowAbortNode.cs" />
     <Compile Include="Assets\~CoreGame\Cutscene\Graph\Nodes\CutsceneWorkflowWaitForSecondsNode.cs" />

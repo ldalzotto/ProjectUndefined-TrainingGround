@@ -19,6 +19,7 @@ namespace Experimental.Editor_NodeEditor
             {typeof(PuzzleFaceTowardsNode).Name, typeof(PuzzleFaceTowardsNode) },
             {typeof(FollowTransformNode).Name, typeof(FollowTransformNode) },
             {typeof(CutsceneWorkflowAbortNode).Name,  typeof(CutsceneWorkflowAbortNode)},
+            {typeof(BranchInfiniteLoopNode).Name, typeof(BranchInfiniteLoopNode) }
 
         };
 

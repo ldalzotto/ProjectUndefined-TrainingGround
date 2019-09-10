@@ -121,7 +121,8 @@ namespace RTPuzzle
             if (animator != null)
             {
                 AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
-                NPCAIAnimationManager = new AIAnimationManager(animator, animationConfiguration);
+                NPCAIAnimationManager = new AIAnimationManager(animator, this.GetComponent<InteractiveObjectType>(), 
+                        animationConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration, interactiveObjectContainer);
             }
 
             this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
@@ -142,7 +143,7 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(this.agent.velocity.normalized.magnitude));
+            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.normalized.magnitude));
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);

@@ -137,12 +137,12 @@ namespace RTPuzzle
         public AttractiveObjectPlayerAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData,
                 AttractiveObjectAction attractiveObjectActionRef, InteractiveObjectType attractiveObjectRef, PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration, InteractiveObjectContainer InteractiveObjectContainer)
         {
-            this.PocketObjectOutAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PreActionAnimationGraph].PuzzleCutsceneGraph,
+            this.PocketObjectOutAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PreActionAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
                         new PuzzleCutsceneActionInput(InteractiveObjectContainer,
                             PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, playerManagerDataRetriever.GetPlayerAnimator()).transform,
                                attractiveObjectRef.gameObject, attractiveObjectInherentConfigurationData.PreActionAnimation)));
 
-            this.PocketObjectLayAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PostActionAnimationGraph].PuzzleCutsceneGraph,
+            this.PocketObjectLayAnimationPlayer = new SequencedActionPlayer(PuzzleCutsceneConfiguration.ConfigurationInherentData[attractiveObjectInherentConfigurationData.PostActionAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
               new PuzzleCutsceneActionInput(InteractiveObjectContainer,
                   PuzzleCutsceneActionInput.Build_GENERIC_AnimationWithFollowObject_Animation(BipedBoneRetriever.GetPlayerBone(BipedBone.RIGHT_HAND_CONTEXT, playerManagerDataRetriever.GetPlayerAnimator()).transform,
                      attractiveObjectRef.gameObject, attractiveObjectInherentConfigurationData.PostActionAnimation)),
