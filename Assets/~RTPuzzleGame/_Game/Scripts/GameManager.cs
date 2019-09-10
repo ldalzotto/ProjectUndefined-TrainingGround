@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections;
 using UnityEngine;
 
@@ -60,39 +60,39 @@ namespace RTPuzzle
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
 
-            PlayerManager = GameObject.FindObjectOfType<PlayerManager>();
-            NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
-            PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
-            GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
-            InRangeEffectManager = GameObject.FindObjectOfType<InRangeEffectManager>();
-            RangeTypeContainer = GameObject.FindObjectOfType<RangeTypeObjectContainer>();
-            InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
-            TimeFlowPlayPauseManager = GameObject.FindObjectOfType<TimeFlowPlayPauseManager>();
-            NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
-            GameOverManager = GameObject.FindObjectOfType<GameOverManager>();
-            DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
-            ObjectRepelLineVisualFeedbackManager = GameObject.FindObjectOfType<ObjectRepelLineVisualFeedbackManager>();
-            ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
-            SquareObstaclesManager = GameObject.FindObjectOfType<SquareObstaclesManager>();
-            ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
-            CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
-            CircleFillBarRendererManager = GameObject.FindObjectOfType<CircleFillBarRendererManager>();
-            PuzzleTutorialEventSender = GameObject.FindObjectOfType<PuzzleTutorialEventSender>();
-            BlockingCutscenePlayer = GameObject.FindObjectOfType<BlockingCutscenePlayer>();
-            TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
-            InteractiveObjectSelectionManager = GameObject.FindObjectOfType<InteractiveObjectSelectionManager>();
+            PlayerManager = PuzzleGameSingletonInstances.PlayerManager;
+            NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
+            PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
+            PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
+            GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
+            InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
+            RangeTypeContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
+            InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
+            TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
+            NpcInteractionRingRendererManager = PuzzleGameSingletonInstances.NpcInteractionRingRendererManager;
+            GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
+            DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
+            ObjectRepelLineVisualFeedbackManager = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
+            ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
+            SquareObstaclesManager = PuzzleGameSingletonInstances.SquareObstaclesManager;
+            ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
+            CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            CircleFillBarRendererManager = CoreGameSingletonInstances.CircleFillBarRendererManager;
+            PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
+            BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
+            TutorialManager = CoreGameSingletonInstances.TutorialManager;
+            InteractiveObjectSelectionManager = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
 
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var TimeFlowBarManager = GameObject.FindObjectOfType<TimeFlowBarManager>();
-            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            var LevelManager = GameObject.FindObjectOfType<LevelManager>();
+            var gameInputManager = CoreGameSingletonInstances.GameInputManager;
+            var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            var TimeFlowBarManager = PuzzleGameSingletonInstances.TimeFlowBarManager;
+            var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            var LevelManager = CoreGameSingletonInstances.LevelManager;
 
             //Initialisations
-            GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().Init();
+            PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.Init();
 
             CameraMovementManager.Init();
             ObstacleFrustumCalculationManager.Init();
@@ -100,28 +100,28 @@ namespace RTPuzzle
             SquareObstaclesManager.Init();
 
             GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
-            GameObject.FindObjectOfType<RangeEventsManager>().Init();
+            PuzzleGameSingletonInstances.RangeEventsManager.Init();
             InteractiveObjectContainer.Init();
             PlayerManagerDataRetriever.Init();
             PlayerManager.Init(gameInputManager);
             TimeFlowBarManager.Init(puzzleConfigurationManager.LevelConfiguration()[LevelManager.GetCurrentLevel()].AvailableTimeAmount);
             TimeFlowManager.Init(PlayerManagerDataRetriever, PlayerManager, gameInputManager, puzzleConfigurationManager, TimeFlowBarManager, LevelManager);
             GameOverManager.Init();
-            GameObject.FindObjectOfType<PlayerActionEventManager>().Init();
+            PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             PlayerActionManager.Init();
-            GameObject.FindObjectOfType<LaunchProjectileEventManager>().Init();
+            PuzzleGameSingletonInstances.LaunchProjectileEventManager.Init();
             InRangeEffectManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
-            GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>().Init();
-            GameObject.FindObjectOfType<NpcInteractionRingContainer>().Init();
+            PuzzleGameSingletonInstances.PlayerActionPuzzleEventsManager.Init();
+            PuzzleGameSingletonInstances.NpcInteractionRingContainer.Init();
             //TODO here
             NpcInteractionRingRendererManager.Init();
-            GameObject.FindObjectOfType<AIPositionsManager>().Init();
-            GameObject.FindObjectOfType<AIManagerContainer>().Init();
+            PuzzleGameSingletonInstances.AIPositionsManager.Init();
+            PuzzleGameSingletonInstances.AIManagerContainer.Init();
             ObjectRepelLineVisualFeedbackManager.Init();
-            GameObject.FindObjectOfType<LevelCompletionManager>().Init();
+            PuzzleGameSingletonInstances.LevelCompletionManager.Init();
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
             PuzzleTutorialEventSender.Init();
@@ -262,7 +262,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            PuzzleDebugModule = GameObject.FindObjectOfType<PuzzleDebugModule>();
+            PuzzleDebugModule = PuzzleGameSingletonInstances.PuzzleDebugModule;
             PuzzleDebugModule.Init();
         }
 

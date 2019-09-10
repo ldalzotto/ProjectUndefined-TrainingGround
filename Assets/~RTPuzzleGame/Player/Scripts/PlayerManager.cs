@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -42,11 +42,11 @@ namespace RTPuzzle
         public void Init(IGameInputManager gameInputManager)
         {
             #region External Dependencies
-            PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
-            var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
-            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            this.BlockingCutscenePlayer = GameObject.FindObjectOfType<BlockingCutscenePlayer>();
+            PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
+            var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
+            var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
+            this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             #endregion
 
             this.playerRigidbody = GetComponent<Rigidbody>();

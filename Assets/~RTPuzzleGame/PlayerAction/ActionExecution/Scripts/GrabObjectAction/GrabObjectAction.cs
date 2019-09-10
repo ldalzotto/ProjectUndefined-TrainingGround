@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using GameConfigurationID;
 
@@ -28,10 +28,10 @@ namespace RTPuzzle
         {
             base.FirstExecution();
             GrabActionInherentData GrabActionInherentData = (GrabActionInherentData)this.playerActionInherentData;
-            this.PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
             this.PlayerActionManager.IncreaseActionsRemainingExecutionAmount(GrabActionInherentData.PlayerActionToIncrement, 1);
 
-            var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             InteractiveObjectContainer.OnInteractiveObjectDestroyed(InteractiveObjectContainer.GrabObjectModules[GrabActionInherentData.GrabObjectID].ParentInteractiveObject);
         }
         

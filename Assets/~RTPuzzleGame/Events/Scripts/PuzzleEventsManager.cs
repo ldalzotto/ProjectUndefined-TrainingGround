@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
@@ -24,18 +24,18 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            this.PlayerActionPuzzleEventsManager = GameObject.FindObjectOfType<PlayerActionPuzzleEventsManager>();
-            this.LevelCompletionManager = GameObject.FindObjectOfType<LevelCompletionManager>();
-            this.PuzzleLevelTransitionManager = GameObject.FindObjectOfType<LevelTransitionManager>();
-            this.TimelinesEventManager = GameObject.FindObjectOfType<TimelinesEventManager>();
-            this.LevelManager = GameObject.FindObjectOfType<LevelManager>();
-            this.DottedLineRendererManager = GameObject.FindObjectOfType<DottedLineRendererManager>();
-            this.GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
-            this.PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
-            this.TutorialManager = GameObject.FindObjectOfType<TutorialManager>();
-            this.LevelMemoryManager = GameObject.FindObjectOfType<LevelMemoryManager>();
-            this.InteractiveObjectSelectionManager = GameObject.FindObjectOfType<InteractiveObjectSelectionManager>();
+            this.NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
+            this.PlayerActionPuzzleEventsManager = PuzzleGameSingletonInstances.PlayerActionPuzzleEventsManager;
+            this.LevelCompletionManager = PuzzleGameSingletonInstances.LevelCompletionManager;
+            this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
+            this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
+            this.LevelManager = CoreGameSingletonInstances.LevelManager;
+            this.DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
+            this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
+            this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
+            this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
+            this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
+            this.InteractiveObjectSelectionManager = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
         }
 
         #region AI related events

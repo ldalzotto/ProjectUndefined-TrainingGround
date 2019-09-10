@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -50,7 +50,7 @@ namespace RTPuzzle
             if (playCutsceneGraph)
             {
                 playCutsceneGraph = false;
-                this.cutsceneGraphPlayer = new SequencedActionPlayer(this.Graph.GetRootActions(), new PuzzleCutsceneActionInput(GameObject.FindObjectOfType<InteractiveObjectContainer>()));
+                this.cutsceneGraphPlayer = new SequencedActionPlayer(this.Graph.GetRootActions(), new PuzzleCutsceneActionInput(PuzzleGameSingletonInstances.InteractiveObjectContainer));
                 this.cutsceneGraphPlayer.Play();
             }
             if (this.cutsceneGraphPlayer != null)

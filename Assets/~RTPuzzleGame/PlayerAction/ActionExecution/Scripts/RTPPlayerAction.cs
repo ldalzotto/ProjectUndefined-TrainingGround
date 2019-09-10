@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -30,7 +30,7 @@ namespace RTPuzzle
 
         public virtual void FirstExecution()
         {
-            var playerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
+            var playerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             this.CooldownEventTrackerManager = new CooldownEventTrackerManager(playerActionEventManager);
         }
 

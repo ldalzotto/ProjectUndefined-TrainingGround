@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,8 +23,8 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            this.ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
-            this.ObstaclesListenerManager = GameObject.FindObjectOfType<ObstaclesListenerManager>();
+            this.ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
+            this.ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
             #endregion
 
             this.nearSquareObstacles = new List<SquareObstacle>();

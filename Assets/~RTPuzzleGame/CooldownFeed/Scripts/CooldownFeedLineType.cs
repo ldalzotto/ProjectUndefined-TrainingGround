@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +23,7 @@ namespace RTPuzzle
 
         public static CooldownFeedLineType Instanciate(Transform parent, RTPPlayerAction associatedAction)
         {
-            var puzzleCOnfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var puzzleCOnfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
 
             var cooldownFeedLine = MonoBehaviour.Instantiate(PrefabContainer.Instance.CooldownFeedLineType, parent);
             cooldownFeedLine.AssociatedAction = associatedAction;

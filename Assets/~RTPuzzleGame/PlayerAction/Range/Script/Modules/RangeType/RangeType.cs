@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -21,7 +21,7 @@ namespace RTPuzzle
 
         public virtual void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
-            this.rangeTypeInherentConfigurationData = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().RangeTypeConfiguration()[this.rangeTypeID];
+            this.rangeTypeInherentConfigurationData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.RangeTypeConfiguration()[this.rangeTypeID];
             this.RangeTypeObjectRef = RangeTypeObjectRef;
             this.associatedCollisionType = GetComponent<CollisionType>();
         }

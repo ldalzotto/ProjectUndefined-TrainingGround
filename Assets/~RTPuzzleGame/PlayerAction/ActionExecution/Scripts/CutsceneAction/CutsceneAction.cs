@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,8 +31,8 @@ namespace RTPuzzle
             base.FirstExecution();
 
             #region External Dependencies
-            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var puzzleConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             #endregion
 
             this.cutscenePlayerInput = new PuzzleCutsceneActionInput(this.InteractiveObjectContainer);

@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,14 +23,14 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            var PlayerActionEventManager = GameObject.FindObjectOfType<PlayerActionEventManager>();
-            var PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            var puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var levelManager = GameObject.FindObjectOfType<LevelManager>();
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
+            var PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            var levelManager = CoreGameSingletonInstances.LevelManager;
             #endregion
 
-            SelectionWheel = GameObject.FindObjectOfType<SelectionWheel>();
+            SelectionWheel = PuzzleGameSingletonInstances.PuzzleSelectionWheel;
 
             PlayerActionExecutionManager = new PlayerActionExecutionManager(PlayerActionEventManager);
             PlayerActionsAvailableManager = new PlayerActionsAvailableManager(levelManager.GetCurrentLevel(), puzzleGameConfigurationManager);

@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            this.RangeEventsManager = GameObject.FindObjectOfType<RangeEventsManager>();
+            this.RangeEventsManager = PuzzleGameSingletonInstances.RangeEventsManager;
             #endregion
 
             var r = this.GetAllowedRenderer();

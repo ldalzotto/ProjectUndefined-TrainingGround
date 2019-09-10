@@ -27,6 +27,8 @@ namespace CoreGame
         private static AutoSaveIcon autoSaveIcon;
         private static DiscussionPositionsType discussionPositionsType;
         private static FXContainerManager fXContainerManager;
+        private static TutorialManager tutorialManager;
+        private static CameraMovementManager cameraMovementManager;
 
         public static PersistanceManager PersistanceManager { get => FindAndSetInstanceIfNull(persistanceManager, obj => persistanceManager = obj); }
         public static ATimelinesManager ATimelinesManager { get => FindAndSetInstanceIfNull(aTimelinesManager, obj => aTimelinesManager = obj); }
@@ -64,6 +66,8 @@ namespace CoreGame
         }
         public static DiscussionPositionsType DiscussionPositionsType { get => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj); }
         public static FXContainerManager FXContainerManager { get => FindAndSetInstanceIfNull(fXContainerManager, obj => fXContainerManager = obj); }
+        public static TutorialManager TutorialManager { get => FindAndSetInstanceIfNull(tutorialManager, obj => tutorialManager = obj); }
+        public static CameraMovementManager CameraMovementManager { get => FindAndSetInstanceIfNull(cameraMovementManager, obj => cameraMovementManager = obj); }
 
         public static T FindAndSetInstanceIfNull<T>(T obj, Action<T> setter) where T : Behaviour
         {

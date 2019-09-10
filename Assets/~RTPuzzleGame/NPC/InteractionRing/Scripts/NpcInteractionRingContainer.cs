@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -11,7 +11,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.NpcInteractionRingRendererManager = GameObject.FindObjectOfType<NpcInteractionRingRendererManager>();
+            this.NpcInteractionRingRendererManager = PuzzleGameSingletonInstances.NpcInteractionRingRendererManager;
         }
 
         private HashSet<NpcInteractionRingType> activeNpcInteractionRings = new HashSet<NpcInteractionRingType>();

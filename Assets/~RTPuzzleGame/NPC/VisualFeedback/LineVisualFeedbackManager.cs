@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -15,9 +15,9 @@ namespace RTPuzzle
 
         public LineVisualFeedbackManager(AIObjectType nPCAIManagerRef)
         {
-            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            this.PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            this.DottedLineContainer = GameObject.FindObjectOfType<DottedLineContainer>();
+            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            this.DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
 
             //position calculation
             this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(nPCAIManagerRef);

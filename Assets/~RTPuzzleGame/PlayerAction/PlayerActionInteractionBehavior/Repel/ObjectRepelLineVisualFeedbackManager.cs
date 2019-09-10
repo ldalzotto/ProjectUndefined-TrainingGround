@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,8 +18,8 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            this.dottedLineContainer = GameObject.FindObjectOfType<DottedLineContainer>();
+            this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            this.dottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
             #endregion
 
             this.inRangeRepelableObjects = new Dictionary<RangeType, List<ObjectRepelModule>>();

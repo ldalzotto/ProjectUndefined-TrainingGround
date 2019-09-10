@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 using CoreGame;
 using GameConfigurationID;
@@ -72,8 +72,8 @@ namespace RTPuzzle
 
         public void Init()
         {
-            var puzzleCOnfigurationmanager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration;
+            var puzzleCOnfigurationmanager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
 
             if (this.AIObjectTypeDefinitionID != AIObjectTypeDefinitionID.NONE)
             {
@@ -82,14 +82,14 @@ namespace RTPuzzle
                 this.GetComponent<InteractiveObjectType>().IfNotNull(InteractiveObjectType => InteractiveObjectType.Init(new InteractiveObjectInitializationObject()));
             }
 
-            this.PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            var NPCAIManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
-            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            var coreConfigurationManager = GameObject.FindObjectOfType<CoreConfigurationManager>();
-            var coreStaticConfiguration = GameObject.FindObjectOfType<CoreStaticConfigurationContainer>().CoreStaticConfiguration;
-            var aiPositionsManager = GameObject.FindObjectOfType<AIPositionsManager>();
+            var interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            var playerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            var coreConfigurationManager = CoreGameSingletonInstances.CoreConfigurationManager;
+            var coreStaticConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration;
+            var aiPositionsManager = PuzzleGameSingletonInstances.AIPositionsManager;
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
             var animator = GetComponentInChildren<Animator>();
@@ -102,7 +102,7 @@ namespace RTPuzzle
             agent.updatePosition = false;
             agent.updateRotation = false;
 
-            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
+            var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
 
             NpcFOVRingManager = new NpcInteractionRingManager(this);
 

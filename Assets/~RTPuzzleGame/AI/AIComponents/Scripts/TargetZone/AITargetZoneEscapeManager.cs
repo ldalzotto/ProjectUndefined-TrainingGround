@@ -1,4 +1,4 @@
-﻿using GameConfigurationID;
+using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,8 +34,8 @@ namespace RTPuzzle
             this.agent = agent;
             this.aiCollider = aiCollider;
 
-            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             this.AIFOVManager = AIFOVManager;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
             this.aiID = aiID;

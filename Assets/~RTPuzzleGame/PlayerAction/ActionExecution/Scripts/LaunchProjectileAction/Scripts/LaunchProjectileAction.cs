@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
@@ -50,17 +50,17 @@ namespace RTPuzzle
             isActionFinished = false;
 
             #region External Dependencies
-            var gameInputManager = GameObject.FindObjectOfType<GameInputManager>();
-            this.PlayerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
-            var DottedLineContainer = GameObject.FindObjectOfType<DottedLineContainer>();
+            var gameInputManager = CoreGameSingletonInstances.GameInputManager;
+            this.PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
+            var DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
             var camera = Camera.main;
-            var launchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
-            PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            var CameraMovementManager = GameObject.FindObjectOfType<CameraMovementManager>();
-            var PuzzleStaticConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
+            var launchProjectileEventManager = PuzzleGameSingletonInstances.LaunchProjectileEventManager;
+            PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            var CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
+            var PuzzleStaticConfigurationContainer = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer;
             var canvas = GameObject.FindGameObjectWithTag(TagConstants.PUZZLE_CANVAS).GetComponent<Canvas>();
-            var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
+            var interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             #endregion
 
             var playerTransform = PlayerManagerDataRetriever.GetPlayerTransform();

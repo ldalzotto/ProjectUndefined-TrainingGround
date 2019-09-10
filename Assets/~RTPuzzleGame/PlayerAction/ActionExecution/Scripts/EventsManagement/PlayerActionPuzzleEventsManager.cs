@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using UnityEngine;
@@ -14,7 +14,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
+            this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
         }
 
         #region External Puzzle Events

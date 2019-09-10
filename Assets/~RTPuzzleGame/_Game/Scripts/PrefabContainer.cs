@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -42,7 +42,7 @@ namespace RTPuzzle
             {
                 if (instance == null)
                 {
-                    instance = GameObject.FindObjectOfType<PrefabContainer>();
+                    instance = PuzzleGameSingletonInstances.PrefabContainer;
                 }
                 return instance;
             }

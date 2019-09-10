@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
@@ -107,10 +107,10 @@ namespace RTPuzzle
             //   Debug.Log(MyLog.Format(this.InteractiveObjectTypeDefinitionID.ToString()));
 
             #region External Dependencies
-            this.puzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
-            this.interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            this.puzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            var puzzleGameStatciConfigurationContainer = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
+            this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+            this.interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            this.puzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            var puzzleGameStatciConfigurationContainer = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer;
             #endregion
 
             if (InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)

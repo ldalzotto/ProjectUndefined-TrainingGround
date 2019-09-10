@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
 using UnityEngine;
@@ -69,9 +69,9 @@ namespace RTPuzzle
         {
             this.puzzleTimeElapsed = 0f;
             this.lastFrameTimeFlowCurrentTime = -1f;
-            this.TimeFlowManager = GameObject.FindObjectOfType<TimeFlowManager>();
+            this.TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
             discussionWindow.OnDiscussionWindowAwakeV2(TutorialActionInput.DiscussionTextConfiguration.ConfigurationInherentData[DiscussionTextID],
-                                GameObject.FindObjectOfType<TimeFlowBarManager>().transform.position + new Vector3(0, Screen.height * 0.05f), WindowPositionType.SCREEN);
+                                PuzzleGameSingletonInstances.TimeFlowBarManager.transform.position + new Vector3(0, Screen.height * 0.05f), WindowPositionType.SCREEN);
         }
 
         public bool Tick(float d)

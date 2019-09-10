@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -12,8 +12,8 @@ namespace RTPuzzle
 
         public void Init()
         {
-            PlayerActionManager = GameObject.FindObjectOfType<PlayerActionManager>();
-            CooldownFeedManager = GameObject.FindObjectOfType<CooldownFeedManager>();
+            PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
+            CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
         }
         
         public void OnWheelAwake()

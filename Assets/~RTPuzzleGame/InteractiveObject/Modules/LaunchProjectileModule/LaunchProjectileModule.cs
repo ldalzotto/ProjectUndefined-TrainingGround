@@ -1,4 +1,4 @@
-﻿using CoreGame;
+using CoreGame;
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
@@ -42,12 +42,12 @@ namespace RTPuzzle
         public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
         {
             #region External Dependencies
-            var npcAiManagerContainer = GameObject.FindObjectOfType<AIManagerContainer>();
-            this.LaunchProjectileEventManager = GameObject.FindObjectOfType<LaunchProjectileEventManager>();
-            this.InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var InteractiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            var PuzzleEventsManager = GameObject.FindObjectOfType<PuzzleEventsManager>();
-            var PuzzleGameConfigurationManager = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>();
+            var npcAiManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
+            this.LaunchProjectileEventManager = PuzzleGameSingletonInstances.LaunchProjectileEventManager;
+            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
+            var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            var PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             #endregion
 
             #region Internal Dependencies

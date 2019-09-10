@@ -29,6 +29,19 @@ namespace RTPuzzle
         private static ObstacleFrustumCalculationManager obstacleFrustumCalculationManager;
         private static SquareObstaclesManager squareObstaclesManager;
         private static AIManagerContainer aIManagerContainer;
+        private static CooldownFeedManager cooldownFeedManager;
+        private static TimeFlowPlayPauseManager timeFlowPlayPauseManager;
+        private static NpcInteractionRingRendererManager npcInteractionRingRendererManager;
+        private static GameOverManager gameOverManager;
+        private static PuzzleTutorialEventSender puzzleTutorialEventSender;
+        private static InteractiveObjectSelectionManager interactiveObjectSelectionManager;
+        private static TimeFlowBarManager timeFlowBarManager;
+        private static PlayerActionEventManager playerActionEventManager;
+        private static AIPositionsManager aIPositionsManager;
+        private static LevelCompletionManager levelCompletionManager;
+        private static PuzzleDebugModule puzzleDebugModule;
+        private static SelectionWheel puzzleSelectionWheel;
+        private static DottedLineContainer dottedLineContainer;
 
         public static PlayerManager PlayerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerManager, obj => playerManager = obj); }
         public static PuzzleEventsManager PuzzleEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleEventsManager, obj => puzzleEventsManager = obj); }
@@ -55,5 +68,18 @@ namespace RTPuzzle
         public static ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstacleFrustumCalculationManager, obj => obstacleFrustumCalculationManager = obj); }
         public static SquareObstaclesManager SquareObstaclesManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(squareObstaclesManager, obj => squareObstaclesManager = obj); }
         public static AIManagerContainer AIManagerContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIManagerContainer, obj => aIManagerContainer = obj); }
+        public static CooldownFeedManager CooldownFeedManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cooldownFeedManager, obj => cooldownFeedManager = obj); }
+        public static TimeFlowPlayPauseManager TimeFlowPlayPauseManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowPlayPauseManager, obj => timeFlowPlayPauseManager = obj); }
+        public static NpcInteractionRingRendererManager NpcInteractionRingRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(npcInteractionRingRendererManager, obj => npcInteractionRingRendererManager = obj); }
+        public static GameOverManager GameOverManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(gameOverManager, obj => gameOverManager = obj); }
+        public static PuzzleTutorialEventSender PuzzleTutorialEventSender { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleTutorialEventSender, obj => puzzleTutorialEventSender = obj); }
+        public static InteractiveObjectSelectionManager InteractiveObjectSelectionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(interactiveObjectSelectionManager, obj => interactiveObjectSelectionManager = obj); }
+        public static TimeFlowBarManager TimeFlowBarManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowBarManager, obj => timeFlowBarManager = obj); }
+        public static PlayerActionEventManager PlayerActionEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionEventManager, obj => playerActionEventManager = obj); }
+        public static AIPositionsManager AIPositionsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIPositionsManager, obj => aIPositionsManager = obj); }
+        public static LevelCompletionManager LevelCompletionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(levelCompletionManager, obj => levelCompletionManager = obj); }
+        public static PuzzleDebugModule PuzzleDebugModule { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDebugModule, obj => puzzleDebugModule = obj); }
+        public static SelectionWheel PuzzleSelectionWheel { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleSelectionWheel, obj => puzzleSelectionWheel = obj); }
+        public static DottedLineContainer DottedLineContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineContainer, obj => dottedLineContainer = obj); }
     }
 }
