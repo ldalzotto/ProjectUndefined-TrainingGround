@@ -37,6 +37,20 @@ namespace RTPuzzle
         public AIFeedbackMarkType BaseAIFeedbackMarkType;
         public AIFeedbackMarkType ProjectileHitPrefab;
         public AIFeedbackMarkType EscapeWithoutTargetPrefab;
+
+        [Header("Projectile Prefabs")]
+        public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
+        
+        [Header("NPC prefabs")]
+        public NpcInteractionRingType NpcInteractionRingPrefab;
+
+        [Header("Cooldown Feed Prefabs")]
+        public CooldownFeedLineType CooldownFeedLineType;
+
+        [Header("Visual Feedback")]
+        public LevelCompleteVisualFeedbackFX LevelCompletedParticleEffect;
+
+        public DottedLine BaseDottedLineBasePrefab;
     }
 }
 

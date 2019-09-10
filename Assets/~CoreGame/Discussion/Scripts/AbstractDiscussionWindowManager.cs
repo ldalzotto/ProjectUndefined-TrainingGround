@@ -177,7 +177,7 @@ namespace CoreGame
 
         private void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices)
         {
-            OpenedChoicePopup = MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.ChoicePopupPrefab, OpenedDiscussion.transform);
+            OpenedChoicePopup = MonoBehaviour.Instantiate(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration.ChoicePopupPrefab, OpenedDiscussion.transform);
             OpenedChoicePopup.OnChoicePopupAwake(nexDiscussionChoices, Vector2.zero, CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfiguration());
         }
 

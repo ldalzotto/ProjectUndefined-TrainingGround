@@ -39,13 +39,14 @@ namespace RTPuzzle
         {
             #region External Dependencies
             this.NpcInteractionRingContainer = PuzzleGameSingletonInstances.NpcInteractionRingContainer;
+            var puzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             #endregion
 
             ComputePositionOffset(npcAiManagerRef);
 
             this.npcAiManagerRef = npcAiManagerRef;
 
-            npcInteractionRingType = GameObject.Instantiate(PrefabContainer.Instance.NpcInteractionRingPrefab, this.NpcInteractionRingContainer.transform);
+            npcInteractionRingType = GameObject.Instantiate(puzzlePrefabConfiguration.NpcInteractionRingPrefab, this.NpcInteractionRingContainer.transform);
             npcInteractionRingType.transform.rotation = Quaternion.Euler(Vector3.forward);
             npcInteractionRingType.Init();
             this.NpcInteractionRingContainer.OnNpcInteractionRingCreated(npcInteractionRingType);

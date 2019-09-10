@@ -25,7 +25,7 @@ namespace CoreGame
         #region Instance
         public static DiscussionWindow Instanciate(Canvas canvas)
         {
-            return MonoBehaviour.Instantiate(CoreGame.PrefabContainer.Instance.DiscussionUIPrefab, canvas.transform, false);
+            return MonoBehaviour.Instantiate(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration.DiscussionUIPrefab, canvas.transform, false);
         }
         #endregion
 

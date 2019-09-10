@@ -17,5 +17,15 @@ namespace AdventureGame
         public PointOfInterestModelObjectModule BasePointOfInterestModelObjectModule;
         public PointOfInterestLogicColliderModule BasePointOfInterestLogicColliderModule;
 //${AdventurePrefabConfiguration:basePointOfInterestModulePrefab}
+
+        [Header("Inventory")]
+        public GameObject InventoryMenuCellPrefab;
+        public GameObject GiveActionMiniaturePrefab;
+
+        [Header("Player FX")]
+        public TriggerableEffect PlayerSmokeEffectPrefab;
+
+        [Header("Item Grab Popup")]
+        public ItemReceivedPopup ItemReceivedPopup;
     }
 }

@@ -33,6 +33,7 @@ namespace AdventureGame
             {
                 #region External Dependencies
                 var GameInputManager = CoreGameSingletonInstances.GameInputManager;
+                var AdventurePrefabConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePrefabConfiguration;
                 #endregion
 
                 InventoryAnimationManager = new InventoryAnimationManager(InventoryAnimationManagerComponent, (RectTransform)transform, InventoryDimensionsComponent);
@@ -58,7 +59,7 @@ namespace AdventureGame
                 InventoryMenuBodyCellContainer.localPosition = new Vector3(InventoryMenuBodySelectionArea.rect.xMin + InventoryDimensionsComponent.ItemIconWidth / 2, InventoryMenuBodySelectionArea.rect.yMax - (InventoryDimensionsComponent.ItemIconWidth / 2) - InventoryDimensionsComponent.ItemSelectionAreaBorder, 0);
                 for (var i = 0; i < InventoryDimensionsComponent.DisplayedRowNb * InventoryDimensionsComponent.MaxNumberOfItemPerRow; i++)
                 {
-                    var inventoryCell = Instantiate(PrefabContainer.Instance.InventoryMenuCellPrefab, InventoryMenuBodyCellContainer, false).GetComponent<InventoryCell>();
+                    var inventoryCell = Instantiate(AdventurePrefabConfiguration.InventoryMenuCellPrefab, InventoryMenuBodyCellContainer, false).GetComponent<InventoryCell>();
                     inventoryCell.Init();
                     ((RectTransform)inventoryCell.transform).sizeDelta = new Vector2(InventoryDimensionsComponent.ItemIconWidth, InventoryDimensionsComponent.ItemIconWidth);
 

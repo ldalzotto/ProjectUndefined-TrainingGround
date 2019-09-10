@@ -23,6 +23,7 @@ namespace AdventureGame
         public float targetAngle;
         public bool targetRotation;
 
+        private AdventurePrefabConfiguration AdventurePrefabConfiguration;
         private CutscenePlayerManagerV2 CutscenePlayerManagerV2;
         private CutsceneGlobalController CutsceneGlobalController;
         private CameraMovementManager CameraMovementManager;
@@ -42,6 +43,7 @@ namespace AdventureGame
 
         public void Init()
         {
+            this.AdventurePrefabConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePrefabConfiguration;
             this.CutscenePlayerManagerV2 = AdventureGameSingletonInstances.CutscenePlayerManagerV2;
             this.CutsceneGlobalController = AdventureGameSingletonInstances.CutsceneGlobalController;
             this.CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
@@ -68,7 +70,7 @@ namespace AdventureGame
             if (this.ItemReceivedPopup)
             {
                 this.ItemReceivedPopup = false;
-                this.ItemReceivedPopupObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, CoreGameSingletonInstances.GameCanvas.transform);
+                this.ItemReceivedPopupObject = MonoBehaviour.Instantiate(this.AdventurePrefabConfiguration.ItemReceivedPopup, CoreGameSingletonInstances.GameCanvas.transform);
                 this.ItemReceivedPopupObject.Init(this.PopupItem, () => { });
             }
             if (this.ItemReceivedPopupObject != null)

@@ -148,7 +148,7 @@ namespace RTPuzzle
                                  Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
         {
             var rangeTypeContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
-            var sphereRangeTypeObject = MonoBehaviour.Instantiate(PrefabContainer.Instance.BaseRangeTypeObject, rangeTypeContainer.transform);
+            var sphereRangeTypeObject = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseRangeTypeObject, rangeTypeContainer.transform);
             sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID),
                 new RangeTypeObjectInitializer(originPositionProvider, rangeColorProvider));
             return sphereRangeTypeObject;

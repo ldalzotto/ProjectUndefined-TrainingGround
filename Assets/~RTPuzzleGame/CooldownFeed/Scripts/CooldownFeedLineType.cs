@@ -25,7 +25,8 @@ namespace RTPuzzle
         {
             var puzzleCOnfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
 
-            var cooldownFeedLine = MonoBehaviour.Instantiate(PrefabContainer.Instance.CooldownFeedLineType, parent);
+            var cooldownFeedLine = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.CooldownFeedLineType
+                , parent);
             cooldownFeedLine.AssociatedAction = associatedAction;
 
             var iconImage = cooldownFeedLine.GetComponentInChildren<Image>();

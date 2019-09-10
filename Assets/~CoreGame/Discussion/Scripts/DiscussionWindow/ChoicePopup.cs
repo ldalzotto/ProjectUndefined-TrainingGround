@@ -32,7 +32,7 @@ namespace CoreGame
         #region External Events
         public void OnChoicePopupAwake(List<DiscussionChoice> nexDiscussionChoices, Vector2 localPosition, DiscussionTextConfiguration DiscussionTextRepertoire)
         {
-
+            var corePrefabConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration;
             #region Internal Dependencies
             choicesContainerObject = gameObject.FindChildObjectRecursively(CHOICES_CONTAINER_OBJECT_NAME);
             var choicesSelectionRectangle = gameObject.FindChildObjectRecursively(CHOICES_SELECTION_RECTANGLE_OBJECT_NAME);
@@ -43,7 +43,7 @@ namespace CoreGame
             var choicePopupTexts = new List<ChoicePopupText>();
             foreach (var choice in nexDiscussionChoices)
             {
-                var choicesPopupText = Instantiate(PrefabContainer.Instance.ChoicePopupTextPrefab, choicesContainerObject.transform);
+                var choicesPopupText = Instantiate(corePrefabConfiguration.ChoicePopupTextPrefab, choicesContainerObject.transform);
                 choicesPopupText.Init(choice, DiscussionTextRepertoire, this.SingleChoiceGeneratedTextDimensionsComponent);
                 choicePopupTexts.Add(choicesPopupText);
             }

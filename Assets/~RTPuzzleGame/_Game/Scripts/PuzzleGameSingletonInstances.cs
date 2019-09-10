@@ -22,7 +22,6 @@ namespace RTPuzzle
         private static PlayerActionPuzzleEventsManager playerActionPuzzleEventsManager;
         private static ObjectRepelLineVisualFeedbackManager objectRepelLineVisualFeedbackManager;
         private static RangeTypeObjectContainer rangeTypeObjectContainer;
-        private static PrefabContainer prefabContainer;
         private static PlayerActionManager playerActionManager;
         private static LaunchProjectileEventManager launchProjectileEventManager;
         private static ObstaclesListenerManager obstaclesListenerManager;
@@ -61,7 +60,6 @@ namespace RTPuzzle
         public static PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionPuzzleEventsManager, obj => playerActionPuzzleEventsManager = obj); }
         public static ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(objectRepelLineVisualFeedbackManager, obj => objectRepelLineVisualFeedbackManager = obj); }
         public static RangeTypeObjectContainer RangeTypeObjectContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeTypeObjectContainer, obj => rangeTypeObjectContainer = obj); }
-        public static PrefabContainer PrefabContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(prefabContainer, obj => prefabContainer = obj); }
         public static PlayerActionManager PlayerActionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionManager, obj => playerActionManager = obj); }
         public static LaunchProjectileEventManager LaunchProjectileEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(launchProjectileEventManager, obj => launchProjectileEventManager = obj); }
         public static ObstaclesListenerManager ObstaclesListenerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstaclesListenerManager, obj => obstaclesListenerManager = obj); }

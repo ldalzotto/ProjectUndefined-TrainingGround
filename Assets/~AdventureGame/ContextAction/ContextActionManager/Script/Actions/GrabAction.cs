@@ -55,8 +55,8 @@ namespace AdventureGame
             var GameInputManager = CoreGameSingletonInstances.GameInputManager;
             #endregion
 
-            ItemReceivedPopupManager = new ItemReceivedPopupManager(GameCanvas, GameInputManager, this.itemInvolved);
-
+            ItemReceivedPopupManager = new ItemReceivedPopupManager(AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePrefabConfiguration
+                    , GameCanvas, GameInputManager, this.itemInvolved);
 
             ItemReceivedPopupManager.ResetState();
             grabActionInput = (GrabActionInput)ContextActionInput;
@@ -93,13 +93,15 @@ namespace AdventureGame
 
     class ItemReceivedPopupManager
     {
+        private AdventurePrefabConfiguration AdventurePrefabConfiguration;
         private Canvas GameCanvas;
         private ItemReceivedPopup ItemReceivedPopup;
         private GameInputManager gameInputManager;
         private ItemID involvedItem;
 
-        public ItemReceivedPopupManager(Canvas gameCanvas, GameInputManager gameInputManager, ItemID involvedItem)
+        public ItemReceivedPopupManager(AdventurePrefabConfiguration AdventurePrefabConfiguration, Canvas gameCanvas, GameInputManager gameInputManager, ItemID involvedItem)
         {
+            this.AdventurePrefabConfiguration = AdventurePrefabConfiguration;
             this.GameCanvas = gameCanvas;
             this.gameInputManager = gameInputManager;
             this.involvedItem = involvedItem;
@@ -132,7 +134,7 @@ namespace AdventureGame
 
         public void ResetState()
         {
-            ItemReceivedPopup = MonoBehaviour.Instantiate(PrefabContainer.Instance.ItemReceivedPopup, GameCanvas.transform);
+            ItemReceivedPopup = MonoBehaviour.Instantiate(this.AdventurePrefabConfiguration.ItemReceivedPopup, GameCanvas.transform);
             ItemReceivedPopup.Init(involvedItem, this.OnPopupClosed);
             isOpened = true;
         }

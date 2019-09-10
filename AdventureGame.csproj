@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\AdventureGameSingletonInstances.cs" />
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\GameManager.cs" />
-    <Compile Include="Assets\~AdventureGame\_Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />

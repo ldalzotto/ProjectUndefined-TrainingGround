@@ -15,7 +15,8 @@ namespace RTPuzzle
 
         public static ThrowProjectileCursorType Instanciate(Transform parent)
         {
-            var throwProjectileCursorType = MonoBehaviour.Instantiate(PrefabContainer.Instance.ThrowProjectileCursorTypePrefab, parent);
+            var throwProjectileCursorType = MonoBehaviour.Instantiate(
+                    PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.ThrowProjectileCursorTypePrefab, parent);
             throwProjectileCursorType.Init();
             return throwProjectileCursorType;
         }

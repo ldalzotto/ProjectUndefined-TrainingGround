@@ -76,7 +76,6 @@
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameInputManager.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\GameLogHandler.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Persistance\GameManagerPersistanceInstance.cs" />
-    <Compile Include="Assets\~CoreGame\__Game\Scripts\PrefabContainer.cs" />
     <Compile Include="Assets\~CoreGame\__Game\Scripts\Singleton\CoreGameSingletonInstances.cs" />
     <Compile Include="Assets\~CoreGame\_Collision\CollisionType.cs" />
     <Compile Include="Assets\~CoreGame\_Constants\AnimationConstants.cs" />
@@ -131,6 +130,7 @@
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CoreMaterialConfiguration\CoreMaterialConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CorePrefabConfiguration\CorePrefabConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\DiscussionTextConfiguration\DiscussionTextConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\Input\CoreInputConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\AnimationConfiguration\AnimationConfiguration.cs" />

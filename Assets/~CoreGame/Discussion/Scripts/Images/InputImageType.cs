@@ -10,6 +10,8 @@ namespace CoreGame
 
         public static InputImageType Instantiate(InputConfigurationInherentData InputConfigurationInherentData, Transform parent = null, bool animate = false)
         {
+            var corePrefabConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration;
+
             InputImageType InputImageType = null;
             InputImageType prefabToInstanciate = null;
 
@@ -17,15 +19,15 @@ namespace CoreGame
 
             if (InputImageTypeInstanceType == InputImageTypeInstanceType.KEY)
             {
-                prefabToInstanciate = PrefabContainer.Instance.InputBaseImage;
+                prefabToInstanciate = corePrefabConfiguration.InputBaseImage;
             }
             else if (InputImageTypeInstanceType == InputImageTypeInstanceType.LEFT_MOUSE)
             {
-                prefabToInstanciate = PrefabContainer.Instance.LeftMouseBaseImage;
+                prefabToInstanciate = corePrefabConfiguration.LeftMouseBaseImage;
             }
             else if (InputImageTypeInstanceType == InputImageTypeInstanceType.RIGHT_MOUSE)
             {
-                prefabToInstanciate = PrefabContainer.Instance.RightMouseBaseImage;
+                prefabToInstanciate = corePrefabConfiguration.RightMouseBaseImage;
             }
 
             if (parent != null) { InputImageType = MonoBehaviour.Instantiate(prefabToInstanciate, parent); }

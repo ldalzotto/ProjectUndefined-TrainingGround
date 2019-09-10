@@ -15,7 +15,6 @@ namespace AdventureGame
         private static CutsceneGlobalController cutsceneGlobalController;
         private static CutsceneEventManager cutsceneEventManager;
         private static ContextActionWheelEventManager contextActionWheelEventManager;
-        private static PrefabContainer adventurePrefabContainer;
         private static ContextActionEventManager contextActionEventManager;
         private static AdventureGameConfigurationManager adventureGameConfigurationManager;
         private static DiscussionEventHandler discussionEventHandler;
@@ -42,7 +41,6 @@ namespace AdventureGame
         public static CutsceneGlobalController CutsceneGlobalController { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cutsceneGlobalController, obj => cutsceneGlobalController = obj); }
         public static CutsceneEventManager CutsceneEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cutsceneEventManager, obj => cutsceneEventManager = obj); }
         public static ContextActionWheelEventManager ContextActionWheelEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(contextActionWheelEventManager, obj => contextActionWheelEventManager = obj); }
-        public static PrefabContainer AdventurePrefabContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(adventurePrefabContainer, obj => adventurePrefabContainer = obj); }
         public static ContextActionEventManager ContextActionEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(contextActionEventManager, obj => contextActionEventManager = obj); }
         public static AdventureGameConfigurationManager AdventureGameConfigurationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(adventureGameConfigurationManager, obj => adventureGameConfigurationManager = obj); }
         public static DiscussionEventHandler DiscussionEventHandler { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(discussionEventHandler, obj => discussionEventHandler = obj); }

@@ -8,7 +8,8 @@ namespace AdventureGame
 
         public static GameObject Instance(GameObject itemModel, Transform parent, Vector3 itemModelScaleFactor)
         {
-            var giveActionMiniature = MonoBehaviour.Instantiate(PrefabContainer.Instance.GiveActionMiniaturePrefab, parent, false);
+            var AdventurePrefabConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePrefabConfiguration;
+            var giveActionMiniature = MonoBehaviour.Instantiate(AdventurePrefabConfiguration.GiveActionMiniaturePrefab, parent, false);
             var itemModelInstance = MonoBehaviour.Instantiate(itemModel, giveActionMiniature.transform, false);
             itemModelInstance.transform.localScale = new Vector3(
                   itemModelInstance.transform.localScale.x / itemModelScaleFactor.x,

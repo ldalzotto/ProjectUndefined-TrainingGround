@@ -12,6 +12,7 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         private FXContainerManager FXContainerManager;
         private LevelManager LevelManager;
+        private PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
         #endregion
 
         private LevelConfigurationData currentLevelConfiguration;
@@ -28,6 +29,7 @@ namespace RTPuzzle
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.FXContainerManager = CoreGameSingletonInstances.FXContainerManager;
+            this.PuzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             #endregion
 
             this.currentLevelConfiguration = PuzzleGameConfigurationManager.LevelConfiguration()[this.LevelManager.GetCurrentLevel()];
@@ -47,7 +49,7 @@ namespace RTPuzzle
 
         private void OnLevelCompleted()
         {
-            this.FXContainerManager.TriggerFX(PrefabContainer.Instance.LevelCompletedParticleEffect);
+            this.FXContainerManager.TriggerFX(this.PuzzlePrefabConfiguration.LevelCompletedParticleEffect);
             this.PuzzleEventsManager.PZ_EVT_LevelCompleted();
         }
     }

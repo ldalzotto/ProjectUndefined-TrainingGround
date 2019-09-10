@@ -23,12 +23,13 @@ namespace AdventureGame
 
         private void Start()
         {
+            var AdventurePrefabConfiguration = AdventureGameSingletonInstances.AdventureStaticConfigurationContainer.AdventureStaticConfiguration.AdventurePrefabConfiguration;
             var AnimationConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.AnimationConfiguration();
             var PlayerAnimator = GetComponentInChildren<Animator>();
 
             this.playerAnimationDataManager = new PlayerAnimationDataManager(PlayerAnimator);
             this.playerIdleAnimationManager = new PlayerIdleAnimationManager(PlayerIdleAnimationManagerComponent, PlayerAnimator, this, AnimationConfiguration);
-            this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<FXContainerManager>(), PlayerAnimator);
+            this.PlayerAnimationFXHandler = new PlayerAnimationFXHandler(FindObjectOfType<FXContainerManager>(), PlayerAnimator, AdventurePrefabConfiguration);
 
             GenericAnimatorHelper.SetMovementLayer(PlayerAnimator, AnimationConfiguration, LevelType.ADVENTURE);
         }
@@ -155,17 +156,19 @@ namespace AdventureGame
         private Animator PlayerAnimator;
 
         private TriggerableEffect CurrentEffectPlaying;
+        private AdventurePrefabConfiguration AdventurePrefabConfiguration;
 
-        public PlayerAnimationFXHandler(FXContainerManager fXContainerManager, Animator playerAnimator)
+        public PlayerAnimationFXHandler(FXContainerManager fXContainerManager, Animator playerAnimator, AdventurePrefabConfiguration AdventurePrefabConfiguration)
         {
             FXContainerManager = fXContainerManager;
             this.PlayerAnimator = playerAnimator;
+            this.AdventurePrefabConfiguration = AdventurePrefabConfiguration;
         }
 
         #region Idle animations
         public void OnSpawnFireSmoke()
         {
-            CurrentEffectPlaying = FXContainerManager.TriggerFX(PrefabContainer.Instance.PlayerSmokeEffectPrefab, AnimationConstants.BipedBoneRetriever.GetPlayerBone(BipedBone.HEAD, PlayerAnimator).transform);
+            CurrentEffectPlaying = FXContainerManager.TriggerFX(this.AdventurePrefabConfiguration.PlayerSmokeEffectPrefab, AnimationConstants.BipedBoneRetriever.GetPlayerBone(BipedBone.HEAD, PlayerAnimator).transform);
         }
         #endregion
 
