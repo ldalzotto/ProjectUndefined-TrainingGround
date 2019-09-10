@@ -5,9 +5,10 @@ namespace CoreGame
 {
     public enum CutsceneParametersName
     {
-        INTERACTIVE_OBJECT_0 = 0,
-        TRANSFORM_TO_FOLLOW = 1,
-        FOLLOWING_OBJECT = 2,
-        ANIMATION_ID_1 = 3
+        NONE = 0,
+        INTERACTIVE_OBJECT_0 = 1,
+        TRANSFORM_TO_FOLLOW = 2,
+        FOLLOWING_OBJECT = 3,
+        ANIMATION_ID_1 = 4
     }
 }
