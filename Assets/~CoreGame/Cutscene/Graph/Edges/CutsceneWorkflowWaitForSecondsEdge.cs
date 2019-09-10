@@ -8,6 +8,7 @@ namespace CoreGame
     [System.Serializable]
     public class CutsceneWorkflowWaitForSecondsEdge : ACutsceneEdge<CutsceneWorkflowWaitForSecondsAction>
     {
+        [SerializeField]
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>() { typeof(CutsceneWorkflowAbortEdge) };
 
 

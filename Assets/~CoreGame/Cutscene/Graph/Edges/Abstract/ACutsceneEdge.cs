@@ -11,6 +11,7 @@ namespace CoreGame
     {
         public T associatedAction;
 
+        [SerializeField]
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>();
 
 #if UNITY_EDITOR
