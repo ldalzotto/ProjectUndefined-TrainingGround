@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{1AC43593-56B8-5683-0EFA-32C670B87EE9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -62,12 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Migrations\AnimationConfigurationNameReGeneration.cs" />
-    <Compile Include="Assets\Migrations\AnimationCutsceneNodeMigration\AnimationCutsceneNodeMigration.cs" />
-    <Compile Include="Assets\Migrations\CutsceneParametersNameMigration.cs" />
-    <Compile Include="Assets\Migrations\GameObjectSingletonMigration.cs" />
-    <Compile Include="Assets\Migrations\PlayerPosition\PlayerPositionMigration.cs" />
-    <Compile Include="Assets\Migrations\PointOfInterestVisualMovementInherentData\PointOfInterestVisualMovementInherentDataMigration.cs" />
     <None Include="Assets\Migrations\Migrations.asmdef" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
