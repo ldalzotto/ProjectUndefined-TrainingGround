@@ -111,9 +111,26 @@ namespace CoreGame
         #endregion
 
         #region Data Retrieval
-        public List<SequencedAction> GetCurrentActions()
+        public List<SequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
         {
-            return this.ExecutedActions;
+            if (includeWorkflowNested)
+            {
+                var returnActions = new List<SequencedAction>();
+                foreach (var executedAction in this.ExecutedActions)
+                {
+                    if (executedAction.GetType() == typeof(BranchInfiniteLoopAction))
+                    {
+                        var BranchInfiniteLoopAction = (BranchInfiniteLoopAction)executedAction;
+                        returnActions.AddRange(BranchInfiniteLoopAction.GetCurrentActions(includeWorkflowNested));
+                    }
+                    returnActions.Add(executedAction);
+                }
+                return returnActions;
+            }
+            else
+            {
+                return this.ExecutedActions;
+            }
         }
         public bool IsPlaying()
         {

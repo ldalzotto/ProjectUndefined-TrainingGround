@@ -1,36 +1,35 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using GameConfigurationID;
 using System.Collections.Generic;
-using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
     public class AIPositionsManager : MonoBehaviour
     {
-        private Dictionary<AIObjectID, AIPositionsType> aiPositionsType;
+        private Dictionary<AIPositionMarkerID, AIPositionMarker> aiPositionsType;
 
         public void Init()
         {
-            this.aiPositionsType = new Dictionary<AIObjectID, AIPositionsType>();
-            var AIPositionsType = GameObject.FindObjectsOfType<AIPositionsType>();
-            if (AIPositionsType != null)
+            this.aiPositionsType = new Dictionary<AIPositionMarkerID, AIPositionMarker>();
+            var AIPositionMarkers = GameObject.FindObjectsOfType<AIPositionMarker>();
+            if (AIPositionMarkers != null)
             {
-                foreach (var AIPositionType in AIPositionsType)
+                foreach (var AIPositionMarker in AIPositionMarkers)
                 {
-                    this.AddPositions(AIPositionType);
+                    this.AddPositions(AIPositionMarker);
                 }
             }
         }
-        
-        private void AddPositions(AIPositionsType AIPositionsType)
+
+        private void AddPositions(AIPositionMarker AIPositionMarker)
         {
-            this.aiPositionsType[AIPositionsType.AiID] = AIPositionsType;
+            this.aiPositionsType[AIPositionMarker.PositionMarkerID] = AIPositionMarker;
         }
 
-        public AIPositionsType GetAIPositions(AIObjectID aiID)
+        public AIPositionMarker GetPosition(AIPositionMarkerID AIPositionMarkerID)
         {
-            this.aiPositionsType.TryGetValue(aiID, out AIPositionsType aiPositionsType);
-            return aiPositionsType;
+            this.aiPositionsType.TryGetValue(AIPositionMarkerID, out AIPositionMarker AIPositionMarker);
+            return AIPositionMarker;
         }
     }
 }

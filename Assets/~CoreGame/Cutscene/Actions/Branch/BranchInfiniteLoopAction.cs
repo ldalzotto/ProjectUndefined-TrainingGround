@@ -56,5 +56,13 @@ namespace CoreGame
             this.hasEnded = true;
             if (this.loopActionPlayer != null) { this.loopActionPlayer.Kill(); }
         }
+
+
+        #region Data Retrieval
+        public List<SequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
+        {
+            return this.loopActionPlayer.GetCurrentActions(includeWorkflowNested);
+        }
+        #endregion
     }
 }

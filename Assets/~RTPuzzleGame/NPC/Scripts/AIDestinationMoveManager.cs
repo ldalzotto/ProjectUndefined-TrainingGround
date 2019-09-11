@@ -70,7 +70,6 @@ namespace RTPuzzle
             {
                 this.StopAgent();
             }
-
         }
 
         public void StopAgent()

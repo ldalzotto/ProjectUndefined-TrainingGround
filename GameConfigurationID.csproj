@@ -65,6 +65,7 @@
     <Compile Include="Assets\@GameConfigurationID\IDs\ActionInteractableObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AIObjectID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AIObjectTypeDefinitionID.cs" />
+    <Compile Include="Assets\@GameConfigurationID\IDs\AIPatrolGraphID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AIPositionMarkerID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AnimationID.cs" />
     <Compile Include="Assets\@GameConfigurationID\IDs\AnimationLayerID.cs" />

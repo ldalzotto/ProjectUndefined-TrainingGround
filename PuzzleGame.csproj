@@ -106,8 +106,15 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\StateTracker\EscapeWhileIgnoringTargetZoneTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Positioning\AIPositionMarker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Positioning\AIPositionsManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\Positioning\AIPositionsType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Prefabs\Mouse\Animation\MouseAIFearBlendAnimation.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Actions\AIMoveToAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Actions\AIPatrolActionInput.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Actions\AIWarpAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Graph\AIPatrolGraph.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Graph\Edges\AIMoveToEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Graph\Edges\AIWarpEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Graph\Nodes\AIMoveToNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\AIPatrol\Graph\Nodes\AIWarpNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\PuzzleGameConfigurationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\PuzzleStaticConfiguration.cs" />
@@ -120,6 +127,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectConfiguration\AIObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectConfiguration.cs" />
@@ -198,7 +207,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneActionInput.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneAnimationAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleFaceTowardsAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\CutsceneControllers\PuzzleCutsceneController.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\GlobalPlayers\BlockingCutscenePlayer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\FollowTransformEdge.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleCutsceneAnimationEdge.cs" />

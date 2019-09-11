@@ -168,5 +168,9 @@ namespace Editor_MainGameCreationWizard
         [ReadOnly()]
         public static string PointOfInterestModuleTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestModuleTestCon" +
             "figuration/Data";
+        
+        [ReadOnly()]
+        public static string AIPatrolGraphInherentDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/AIPatrolGraphConfiguration/Da" +
+            "ta";
     }
 }

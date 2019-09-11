@@ -110,7 +110,7 @@ namespace RTPuzzle
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
 
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
-                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this);
+                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.genericPuzzleAIBehaviorContainer, aIBheaviorBuildInputData);
 

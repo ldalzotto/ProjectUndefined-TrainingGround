@@ -76,6 +76,8 @@ namespace Editor_GameDesigner
 {"Configuration//.PointOfInterestDefinitionConfigurationModule", typeof(Editor_GameDesigner.PointOfInterestDefinitionConfigurationModule)},
 {"Puzzle//PointOfInterestVisualMovement//.CreatePointOfInterestVisualMovement", typeof(Editor_GameDesigner.CreatePointOfInterestVisualMovement)},
 {"Configuration//.PointOfInterestVisualMovementConfigurationModule", typeof(Editor_GameDesigner.PointOfInterestVisualMovementConfigurationModule)},
+{"Puzzle//AIPatrolGraph//.CreateAIPatrolGraph", typeof(Editor_GameDesigner.CreateAIPatrolGraph)},
+{"Configuration//.AIPatrolGraphConfigurationModule", typeof(Editor_GameDesigner.AIPatrolGraphConfigurationModule)},
 //${addNewEntry}
 };
     }

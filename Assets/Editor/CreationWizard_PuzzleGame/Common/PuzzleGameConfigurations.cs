@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Editor_MainGameCreationWizard
+namespace RTPuzzle
 {
     
     
@@ -66,5 +66,8 @@ namespace Editor_MainGameCreationWizard
         
         [ReadOnly()]
         public RTPuzzle.PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
+        
+        [ReadOnly()]
+        public RTPuzzle.AIPatrolGraphConfiguration AIPatrolGraphConfiguration;
     }
 }

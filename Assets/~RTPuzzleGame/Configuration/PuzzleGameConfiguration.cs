@@ -51,6 +51,8 @@ namespace RTPuzzle
         
         public RTPuzzle.AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;
         
-        public AIObjectConfiguration AIObjectConfiguration;
+        public RTPuzzle.AIObjectConfiguration AIObjectConfiguration;
+        
+        public AIPatrolGraphConfiguration AIPatrolGraphConfiguration;
     }
 }

@@ -1,5 +1,4 @@
 ﻿using GameConfigurationID;
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,9 +10,13 @@ namespace RTPuzzle
     {
         [CustomEnum()]
         public AIPatrolManagerType AIPatrolManagerType;
+
+        [CustomEnum(ConfigurationType = typeof(AIPatrolGraphConfiguration), OpenToConfiguration = true)]
+        public AIPatrolGraphID AIPatrolGraphID;
+
         public float MaxDistance;
     }
-    
+
     public enum AIPatrolManagerType
     {
         RANDOM = 0,
@@ -52,7 +55,7 @@ namespace RTPuzzle
         {
             return this.IsPatrolling();
         }
-        
+
     }
 
 }

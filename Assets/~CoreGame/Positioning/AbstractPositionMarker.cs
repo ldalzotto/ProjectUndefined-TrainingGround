@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 using UnityEngine.Serialization;
 
@@ -16,10 +15,19 @@ namespace CoreGame
         [CustomEnum(isCreateable: true)]
         public ID PositionMarkerID;
 
+#if UNITY_EDITOR
         [Header("GIZMO")]
         public float DirectionLineLength = 10f;
+        public bool SingleGizmoEnabled = true;
 
-#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (this.SingleGizmoEnabled)
+            {
+                this.GizmoTick();
+            }
+        }
+
         public void GizmoTick()
         {
             var labelStyle = GUI.skin.GetStyle("Label");

@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
@@ -10,6 +11,7 @@ namespace RTPuzzle
         private ExtendedBounds AverageModeBounds;
         private Animator animator;
         private Rigidbody associatedRigidbody;
+        private NavMeshAgent associatedAgent;
         private List<Renderer> renderers;
         #endregion
 
@@ -20,6 +22,8 @@ namespace RTPuzzle
         }
         public Animator Animator { get => animator; }
         public Rigidbody AssociatedRigidbody { get => associatedRigidbody; }
+        public NavMeshAgent AssociatedAgent { get => associatedAgent; }
+
         public List<Renderer> GetAllRenderers()
         {
             return this.renderers;
@@ -36,6 +40,7 @@ namespace RTPuzzle
             }
 
             this.associatedRigidbody = GetComponentInParent<Rigidbody>();
+            this.associatedAgent = GetComponentInParent<NavMeshAgent>();
             this.renderers = RendererRetrievableHelper.GetAllRederers(this.gameObject, particleRenderers: false);
         }
 

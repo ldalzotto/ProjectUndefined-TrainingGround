@@ -15,9 +15,7 @@ namespace CoreGame
             this.SequencedActionInput = SequencedActionInput;
             this.SequencedActionManager = new SequencedActionManager((action) => this.SequencedActionManager.OnAddAction(action, this.SequencedActionInput), null, onFinished);
         }
-
-
-
+        
         public void Play()
         {
             this.SequencedActionManager.OnAddActions(this.SequencedActions, this.SequencedActionInput);
@@ -40,6 +38,11 @@ namespace CoreGame
         public bool IsPlaying()
         {
             return this.SequencedActionManager.IsPlaying();
+        }
+
+        public List<SequencedAction> GetCurrentActions(bool includeWorkflowNested = false)
+        {
+            return this.SequencedActionManager.GetCurrentActions(includeWorkflowNested);
         }
     }
 

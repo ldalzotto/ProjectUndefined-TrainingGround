@@ -41,7 +41,7 @@ namespace RTPuzzle
     {
         public InteractiveObjectCutsceneController(ModelObjectModule ModelObjectModule, InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
         {
-            base.BaseInit(ModelObjectModule.AssociatedRigidbody, null, ModelObjectModule.Animator, InteractiveObjectInitializationObject.TransformMoveManagerComponent.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, null);
+            base.BaseInit(ModelObjectModule.AssociatedRigidbody, ModelObjectModule.AssociatedAgent, ModelObjectModule.Animator, InteractiveObjectInitializationObject.TransformMoveManagerComponent.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, null);
         }
     }
 }

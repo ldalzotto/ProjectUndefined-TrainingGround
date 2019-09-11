@@ -1,14 +1,16 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class AIScriptedPatrolComponentManager : AbstractAIPatrolComponentManager
+    public class AIScriptedPatrolComponentManager : AbstractAIPatrolComponentManager, IAIPatrolGraphEventListener
     {
         private bool isPatrolling;
 
-        private AIPositionsManager aIPositionsManager;
+        private SequencedActionPlayer PatrolGraphPlayer;
 
         private Transform anchorPosition;
 
@@ -16,32 +18,36 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager)
+        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager, InteractiveObjectType associatedInteractiveObject)
         {
             this.BaseInit(patrollingAgent, aIFOVManager, aiID);
-            this.aIPositionsManager = aIPositionsManager;
 
-            var aiPositions = aIPositionsManager.GetAIPositions(aiID);
-            if (aiPositions != null)
-            {
-                var anchorPositionMarker = aiPositions.GetPosition(AIPositionMarkerID._1_Town_GardenWatchman_1);
-                if (anchorPositionMarker != null)
-                {
-                    this.anchorPosition = anchorPositionMarker.transform;
-                }
-            }
-
+            var AIPatrolGraph = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AIPatrolGraphConfiguration()[this.AssociatedAIComponent.AIPatrolGraphID].AIPatrolGraph;
+            this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, new Dictionary<CutsceneParametersName, object>() { { CutsceneParametersName.AIPatrol_InteractiveObject, associatedInteractiveObject } }), null);
+            this.PatrolGraphPlayer.Play();
         }
 
         public override void GizmoTick() { }
 
         public override void OnDestinationReached()
         {
+            if (this.IsManagerEnabled())
+            {
+                foreach (var action in this.PatrolGraphPlayer.GetCurrentActions(includeWorkflowNested: true))
+                {
+                    if (action.GetType() == typeof(AIMoveToAction))
+                    {
+                        var AIMoveToAction = (AIMoveToAction)action;
+                        AIMoveToAction.OnDestinationReached();
+                    }
+                }
+            }
         }
 
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             this.isPatrolling = true;
+            this.PatrolGraphPlayer.Tick(d * timeAttenuationFactor);
             if (this.anchorPosition != null)
             {
                 NPCAIDestinationContext.TargetPosition = this.anchorPosition.position;
@@ -58,6 +64,15 @@ namespace RTPuzzle
         {
             return isPatrolling;
         }
+
+        public void DestinationSettedFromPatrolGraph(Transform destination)
+        {
+            this.anchorPosition = destination;
+        }
     }
 
+    public interface IAIPatrolGraphEventListener
+    {
+        void DestinationSettedFromPatrolGraph(Transform destination);
+    }
 }

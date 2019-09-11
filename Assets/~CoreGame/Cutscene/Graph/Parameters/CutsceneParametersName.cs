@@ -9,6 +9,7 @@ namespace CoreGame
         INTERACTIVE_OBJECT_0 = 1,
         TRANSFORM_TO_FOLLOW = 2,
         FOLLOWING_OBJECT = 3,
-        ANIMATION_ID_1 = 4
+        ANIMATION_ID_1 = 4,
+        AIPatrol_InteractiveObject = 5
     }
 }
