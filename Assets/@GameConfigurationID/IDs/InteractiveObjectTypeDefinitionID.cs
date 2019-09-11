@@ -47,6 +47,8 @@ namespace GameConfigurationID
         _Sewers_1_Mouse = 17,
 
         _Sewers_2_Mouse = 18,
-        TEST_3 = 15
+        TEST_3 = 15,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 19,
     }
 }
