@@ -14,7 +14,7 @@ namespace RTPuzzle
 
         private CommandBuffer commandBuffer;
 
-        private Dictionary<RangeTypeID, List<InRangeColliderTracker>> activeInRangeTrackers = new Dictionary<RangeTypeID, List<InRangeColliderTracker>>();
+        private Dictionary<RangeTypeID, List<InRangeColliderTrackerModule>> activeInRangeTrackers = new Dictionary<RangeTypeID, List<InRangeColliderTrackerModule>>();
 
         public void Init()
         {
@@ -26,18 +26,18 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnInRangeAdd(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        public void OnInRangeAdd(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             if (rangeType.IsInRangeEffectEnabled())
             {
                 if (!this.activeInRangeTrackers.ContainsKey(rangeType.RangeTypeID))
                 {
-                    this.activeInRangeTrackers[rangeType.RangeTypeID] = new List<InRangeColliderTracker>();
+                    this.activeInRangeTrackers[rangeType.RangeTypeID] = new List<InRangeColliderTrackerModule>();
                 }
-                this.activeInRangeTrackers[rangeType.RangeTypeID].Add(InRangeColliderTracker);
+                this.activeInRangeTrackers[rangeType.RangeTypeID].Add(InRangeColliderTrackerModule);
             }
         }
-        public void OnInRangeRemove(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        public void OnInRangeRemove(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             if (rangeType.IsInRangeEffectEnabled())
             {
@@ -45,7 +45,7 @@ namespace RTPuzzle
                 bool delete = false;
                 foreach (var trackedRange in trackedRanges)
                 {
-                    if (trackedRange == InRangeColliderTracker)
+                    if (trackedRange == InRangeColliderTrackerModule)
                     {
                         delete = true;
                         break;
@@ -53,7 +53,7 @@ namespace RTPuzzle
                 }
                 if (delete)
                 {
-                    trackedRanges.Remove(InRangeColliderTracker);
+                    trackedRanges.Remove(InRangeColliderTrackerModule);
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace RTPuzzle
                 var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[listActiveInRangeTrackersPerId.Key].InRangeEffectMaterial;
                 foreach (var activeInRangeTracker in listActiveInRangeTrackersPerId.Value)
                 {
-                    foreach (var r in activeInRangeTracker.InvolvedRenderers)
+                    foreach (var r in activeInRangeTracker.GetRenderers())
                     {
                         this.commandBuffer.DrawRenderer(r, effectMaterial);
                     }

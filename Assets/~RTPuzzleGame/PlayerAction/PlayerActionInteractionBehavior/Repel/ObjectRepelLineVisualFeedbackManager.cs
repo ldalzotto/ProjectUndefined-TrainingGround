@@ -63,9 +63,9 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeInsideRangeTracker(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        public void OnRangeInsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
-            var objectRepelType = this.IsElligibleToRepelLineVisualEffect(InRangeColliderTracker, rangeType);
+            var objectRepelType = this.IsElligibleToRepelLineVisualEffect(InRangeColliderTrackerModule, rangeType);
             if (objectRepelType != null)
             {
                 if (!this.inRangeRepelableObjects.ContainsKey(rangeType))
@@ -83,9 +83,9 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeOutsideRangeTracker(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        public void OnRangeOutsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
-            var objectRepelType = this.IsElligibleToRepelLineVisualEffect(InRangeColliderTracker, rangeType);
+            var objectRepelType = this.IsElligibleToRepelLineVisualEffect(InRangeColliderTrackerModule, rangeType);
             if (objectRepelType != null)
             {
                 if (this.inRangeRepelableObjects.ContainsKey(rangeType))
@@ -109,11 +109,11 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        private ObjectRepelModule IsElligibleToRepelLineVisualEffect(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        private ObjectRepelModule IsElligibleToRepelLineVisualEffect(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             if (rangeType.RangeTypeID == RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
             {
-                return InRangeColliderTracker.GetTrackedRepelableObject();
+                return InRangeColliderTrackerModule.GetTrackedRepelableObject();
             }
             return null;
         }

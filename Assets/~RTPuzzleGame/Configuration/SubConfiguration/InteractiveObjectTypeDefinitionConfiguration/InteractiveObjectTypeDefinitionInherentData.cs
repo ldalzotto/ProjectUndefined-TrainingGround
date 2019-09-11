@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static RTPuzzle.ActionInteractableObjectModule;
+using static RTPuzzle.AILogicColliderModule;
 using static RTPuzzle.AttractiveObjectModule;
 using static RTPuzzle.DisarmObjectModule;
 using static RTPuzzle.GrabObjectModule;
@@ -116,6 +117,17 @@ namespace RTPuzzle
                             var ObjectSightModuleDefinition = (ObjectSightModuleDefinition)moduleConfiguration;
                             var ObjectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, InteractiveObjectType.transform);
                             ObjectSightModuleInstancer.PopuplateFromDefinition(ObjectSightModule, ObjectSightModuleDefinition, puzzlePrefabConfiguration);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(AILogicColliderModuleDefinition))
+                        {
+                            var AILogicColliderModuleDefinition = (AILogicColliderModuleDefinition)moduleConfiguration;
+                            var AILogicColliderModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseAILogicColliderModule, InteractiveObjectType.transform);
+                            AILogicColliderModuleInstancer.PopulateFromDefinition(AILogicColliderModule, AILogicColliderModuleDefinition);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(InRangeColliderTrackerModuleDefinition))
+                        {
+                            var InRangeColliderTrackerModuleDefinition = (InRangeColliderTrackerModuleDefinition)moduleConfiguration;
+                            var InRangeColliderTrackerModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInRangeColliderTrackerModule, InteractiveObjectType.transform);
                         }
 //${addNewEntry}
                     }

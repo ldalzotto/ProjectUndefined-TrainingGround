@@ -35,5 +35,7 @@ namespace RTPuzzle
         public InteractiveObjectSharedDataType TransformMoveManagerComponent;
 
         public Rigidbody RigidBody;
+
+        public AIObjectType ParentAIObjectTypeReference;
     }
 }

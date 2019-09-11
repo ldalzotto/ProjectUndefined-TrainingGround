@@ -14,7 +14,10 @@ public class HandlesHelper
         var oldColor = Handles.color;
         Handles.color = color;
         Handles.Label(transform.TransformPoint(center + new Vector3(0, size.y * 0.75f, 0)), label, labelStyle);
-        Handles.DrawWireCube(transform.TransformPoint(center), size);
+        var oldMatrix = Handles.matrix;
+        Handles.matrix = Matrix4x4.TRS(transform.position, transform.rotation, transform.lossyScale);
+        Handles.DrawWireCube(center, size);
+        Handles.matrix = oldMatrix;
         Handles.color = oldColor;
     }
 }

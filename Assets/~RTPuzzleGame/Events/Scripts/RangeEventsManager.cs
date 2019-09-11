@@ -37,16 +37,16 @@ namespace RTPuzzle
         #endregion
 
         #region Collision
-        public void RANGE_EVT_InsideRangeTracker(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        public void RANGE_EVT_InsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
-            this.InRangeEffectManager.OnInRangeAdd(InRangeColliderTracker, rangeType);
-            this.ObjectRepelLineVisualFeedbackManager.OnRangeInsideRangeTracker(InRangeColliderTracker, rangeType);
+            this.InRangeEffectManager.OnInRangeAdd(InRangeColliderTrackerModule, rangeType);
+            this.ObjectRepelLineVisualFeedbackManager.OnRangeInsideRangeTracker(InRangeColliderTrackerModule, rangeType);
         }
 
-        public void RANGE_EVT_OutsideRangeTracker(InRangeColliderTracker InRangeColliderTracker, RangeType rangeType)
+        public void RANGE_EVT_OutsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
-            this.InRangeEffectManager.OnInRangeRemove(InRangeColliderTracker, rangeType);
-            this.ObjectRepelLineVisualFeedbackManager.OnRangeOutsideRangeTracker(InRangeColliderTracker, rangeType);
+            this.InRangeEffectManager.OnInRangeRemove(InRangeColliderTrackerModule, rangeType);
+            this.ObjectRepelLineVisualFeedbackManager.OnRangeOutsideRangeTracker(InRangeColliderTrackerModule, rangeType);
         }
         #endregion
 

@@ -48,5 +48,11 @@ namespace RTPuzzle
         
         [ReadOnly()]
         public RTPuzzle.NearPlayerGameOverTriggerModule BaseNearPlayerGameOverTriggerModule;
+        
+        [ReadOnly()]
+        public RTPuzzle.AILogicColliderModule BaseAILogicColliderModule;
+        
+        [ReadOnly()]
+        public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
     }
 }

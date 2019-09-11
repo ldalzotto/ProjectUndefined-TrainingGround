@@ -26,7 +26,7 @@ namespace RTPuzzle
             }
             else
             {
-               return new IObjectGizmoDisplayEnableArea(true, moduleDefinitionType);
+                return new IObjectGizmoDisplayEnableArea(true, moduleDefinitionType);
             }
         }
 
@@ -36,8 +36,8 @@ namespace RTPuzzle
             this.InteractiveObjectTypeDefinitionConfigurationInherentData = interactiveObjectTypeDefinitionConfigurationInherentData;
             return this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules;
         }
-        
-        public InteractiveObjectTypeGizmos(CommonGameConfigurations commonGameConfigurations, InteractiveObjectTypeDefinitionConfiguration interactiveObjectTypeDefinitionConfiguration, InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID) 
+
+        public InteractiveObjectTypeGizmos(CommonGameConfigurations commonGameConfigurations, InteractiveObjectTypeDefinitionConfiguration interactiveObjectTypeDefinitionConfiguration, InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID)
                 : base(commonGameConfigurations)
         {
             CommonGameConfigurations = commonGameConfigurations;
@@ -45,7 +45,7 @@ namespace RTPuzzle
             this.InteractiveObjectTypeDefinitionID = InteractiveObjectTypeDefinitionID;
             base.Init();
         }
-        
+
         protected override void DrawGizmo(string moduleDefinitionType, Transform objectTransform)
         {
             if (moduleDefinitionType == typeof(TargetZoneModuleDefinition).Name)
@@ -241,9 +241,34 @@ namespace RTPuzzle
                     }
                 }
             }
+            else if (moduleDefinitionType == typeof(AILogicColliderModuleDefinition).Name)
+            {
+                var drawArea = this.GetDrawDisplay(typeof(AILogicColliderModuleDefinition).Name);
+                if (drawArea.IsEnabled)
+                {
+                    this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(AILogicColliderModuleDefinition), out ScriptableObject definitionSO);
+                    if (definitionSO != null)
+                    {
+                        var AILogicColliderModuleDefinition = (AILogicColliderModuleDefinition)definitionSO;
+                        HandlesHelper.DrawBox(AILogicColliderModuleDefinition.Center, AILogicColliderModuleDefinition.Size, objectTransform, Color.green, "AI Logic collider", MyEditorStyles.LabelGreen);
+                    }
+                }
+            }
+                         else if (moduleDefinitionType == typeof(InRangeColliderTrackerModuleDefinition).Name)
+             {
+                var drawArea = this.GetDrawDisplay(typeof(InRangeColliderTrackerModuleDefinition).Name);
+                if (drawArea.IsEnabled)
+                {
+				   this.InteractiveObjectTypeDefinitionConfigurationInherentData.RangeDefinitionModules.TryGetValue(typeof(InRangeColliderTrackerModuleDefinition), out ScriptableObject definitionSO);
+                   if (definitionSO != null)
+                   {
+				      var InRangeColliderTrackerModuleDefinition = (InRangeColliderTrackerModuleDefinition)definitionSO;
+                   }
+                }
+            }
 //${addNewEntry}
         }
-         
+
         private void DrawRangeDefinition(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData, Transform transform, Color color, string label, GUIStyle labelStyle)
         {
             foreach (var rangeTypeDefinitionModule in rangeTypeObjectDefinitionConfigurationInherentData.RangeDefinitionModules)

@@ -28,6 +28,8 @@ namespace RTPuzzle
         public GrabObjectModule BaseGrabObjectModule;
         public ObjectRepelModule BaseObjectRepelModule;
         public ObjectSightModule BaseObjectSightModule;
+        public AILogicColliderModule BaseAILogicColliderModule;
+        public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
 //${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
         [Header("AI")]

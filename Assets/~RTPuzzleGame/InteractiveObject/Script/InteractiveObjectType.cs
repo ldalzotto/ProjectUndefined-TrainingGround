@@ -104,7 +104,7 @@ namespace RTPuzzle
 
         public void Init(InteractiveObjectInitializationObject InteractiveObjectInitializationObject, List<Type> exclusiveInitialEnabledModules = null)
         {
-            //   Debug.Log(MyLog.Format(this.InteractiveObjectTypeDefinitionID.ToString()));
+            Debug.Log(MyLog.Format("InteractiveObjectType Init : " + this.InteractiveObjectTypeDefinitionID.ToString()));
 
             #region External Dependencies
             this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -121,6 +121,7 @@ namespace RTPuzzle
 
             #region Internal Dependencies
             InteractiveObjectInitializationObject.TransformMoveManagerComponent = GetComponent<InteractiveObjectSharedDataType>();
+            InteractiveObjectInitializationObject.ParentAIObjectTypeReference = GetComponent<AIObjectType>();
             #endregion
 
             this.PopulateModules(exclusiveInitialEnabledModules);

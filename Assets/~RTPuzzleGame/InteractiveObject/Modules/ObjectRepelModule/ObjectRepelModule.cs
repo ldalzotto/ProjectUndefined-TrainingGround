@@ -27,7 +27,6 @@ namespace RTPuzzle
         {
             this.ModelObjectModule = ModelObjectModule;
             this.objectRepelCollider = GetComponent<Collider>();
-            this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
         }
 
         public static ObjectRepelModule FromCollisionType(CollisionType collisionType)

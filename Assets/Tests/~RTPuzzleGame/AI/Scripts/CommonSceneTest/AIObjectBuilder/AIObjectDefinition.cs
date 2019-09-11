@@ -30,7 +30,7 @@ namespace Tests
                 },
                 InteractiveObjectInitialization = new InteractiveObjectInitialization()
                 {
-                    InteractiveObjectID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].InteractiveObjectID,
+                   // InteractiveObjectID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].InteractiveObjectID,
                     InteractiveObjectTypeDefinitionID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID].InteractiveObjectTypeDefinitionID,
                     InteractiveObjectTypeDefinitionInherentData = new InteractiveObjectTypeDefinitionInherentData()
                     {
@@ -43,8 +43,12 @@ namespace Tests
                                 RotationSpeed = 120
                             }
                         },
-                        RangeDefinitionModules = new Dictionary<Type, ScriptableObject>() { },
-                        RangeDefinitionModulesActivation = new Dictionary<Type, bool>() { }
+                        RangeDefinitionModules = new Dictionary<Type, ScriptableObject>() {
+                            {typeof(AILogicColliderModuleDefinition), new AILogicColliderModuleDefinition(){ Center = Vector3.zero, Size = Vector3.one } }
+                        },
+                        RangeDefinitionModulesActivation = new Dictionary<Type, bool>() {
+                            {typeof(AILogicColliderModuleDefinition), true }
+                        }
                     }
                 }
             };

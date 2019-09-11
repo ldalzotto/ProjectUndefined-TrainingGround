@@ -28,6 +28,8 @@ namespace RTPuzzle
 {typeof(RTPuzzle.InteractiveObjectCutsceneControllerModule),InteractiveObjectModulesInitializationOperations.InitializeInteractiveObjectCutsceneControllerModule},
 {typeof(RTPuzzle.NearPlayerGameOverTriggerModule),InteractiveObjectModulesInitializationOperations.InitializeNearPlayerGameOverTriggerModule},
 {typeof(RTPuzzle.ObjectSightModule),InteractiveObjectModulesInitializationOperations.InitializeObjectSightModule},
+{typeof(RTPuzzle.AILogicColliderModule),InteractiveObjectModulesInitializationOperations.InitializeAILogicColliderModule},
+{typeof(RTPuzzle.InRangeColliderTrackerModule),InteractiveObjectModulesInitializationOperations.InitializeInRangeColliderTrackerModule},
 };
     }
 }

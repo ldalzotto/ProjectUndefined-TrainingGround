@@ -173,7 +173,7 @@ namespace RTPuzzle
             #region AI escape
             foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {
-                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(npcAIManager.GetCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
+                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(npcAIManager.GetLogicCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     npcAIManager.OnProjectileTriggerEnter(launchProjectileRef);
                 }

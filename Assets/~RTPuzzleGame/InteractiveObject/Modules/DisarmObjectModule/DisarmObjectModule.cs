@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -70,8 +69,8 @@ namespace RTPuzzle
         #endregion
 
         public void Tick(float d, float timeAttenuationFactor)
-        {        }
-        
+        { }
+
         public void TickAlways(float d)
         {
             if (this.progressbar.gameObject.activeSelf)
@@ -106,9 +105,9 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsAI)
             {
-                var npcAIManager = AIObjectType.FromCollisionType(collisionType);
-                this.AiThatCanInteract.Add(npcAIManager);
-                npcAIManager.OnDisarmObjectTriggerEnter(this);
+                var aiObjectType = AILogicColliderModule.FromCollisionType(collisionType);
+                this.AiThatCanInteract.Add(aiObjectType);
+                aiObjectType.OnDisarmObjectTriggerEnter(this);
             }
         }
 
@@ -117,9 +116,9 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsAI)
             {
-                var npcAIManager = AIObjectType.FromCollisionType(collisionType);
-                this.AiThatCanInteract.Remove(npcAIManager);
-                npcAIManager.OnDisarmObjectTriggerExit(this);
+                var aiObjectType = AILogicColliderModule.FromCollisionType(collisionType);
+                this.AiThatCanInteract.Remove(aiObjectType);
+                aiObjectType.OnDisarmObjectTriggerExit(this);
             }
         }
 

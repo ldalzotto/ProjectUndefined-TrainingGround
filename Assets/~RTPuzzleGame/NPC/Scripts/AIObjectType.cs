@@ -29,7 +29,6 @@ namespace RTPuzzle
 
         #region Internal Dependencies
         private NavMeshAgent agent;
-        private Collider objectCollider;
         #endregion
 
         #region AI Behavior Components
@@ -48,18 +47,14 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public static AIObjectType FromCollisionType(CollisionType collisionType)
-        {
-            if (collisionType == null) { return null; }
-            return collisionType.GetComponent<AIObjectType>();
-        }
-
 #if UNITY_EDITOR
         public AIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
 #endif
         #endregion
 
         private InteractiveObjectSharedDataType interactiveObjectSharedData;
+        private InteractiveObjectType associatedInteractivObject;
+
         private AIDestinationMoveManager AIDestinationMoveManager;
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
@@ -72,6 +67,8 @@ namespace RTPuzzle
 
         public void Init()
         {
+            Debug.Log(MyLog.Format("AIObjectType Init : " + this.AIObjectTypeDefinitionID.ToString()));
+
             var puzzleCOnfigurationmanager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
 
@@ -79,7 +76,7 @@ namespace RTPuzzle
             {
                 puzzleCOnfigurationmanager.AIObjectTypeDefinitionConfiguration()[this.AIObjectTypeDefinitionID]
                     .DefineAIObject(this, puzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration);
-                this.GetComponent<InteractiveObjectType>().IfNotNull(InteractiveObjectType => InteractiveObjectType.Init(new InteractiveObjectInitializationObject()));
+                this.GetComponent<InteractiveObjectType>().IfNotNull(InteractiveObjectType => InteractiveObjectType.Init(new InteractiveObjectInitializationObject() { ParentAIObjectTypeReference = this }));
             }
 
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
@@ -93,8 +90,9 @@ namespace RTPuzzle
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
 
             var animator = GetComponentInChildren<Animator>();
-            this.objectCollider = GetComponent<Collider>();
+
             this.interactiveObjectSharedData = GetComponent<InteractiveObjectSharedDataType>();
+            this.associatedInteractivObject = GetComponent<InteractiveObjectType>();
 
             this.NPCAIDestinationContext = new NPCAIDestinationContext();
 
@@ -112,7 +110,7 @@ namespace RTPuzzle
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
 
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
-                     interactiveObjectContainer, this.AiID, this.objectCollider, aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this);
+                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.genericPuzzleAIBehaviorContainer, aIBheaviorBuildInputData);
 
@@ -121,11 +119,9 @@ namespace RTPuzzle
             if (animator != null)
             {
                 AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
-                NPCAIAnimationManager = new AIAnimationManager(animator, this.GetComponent<InteractiveObjectType>(), 
+                NPCAIAnimationManager = new AIAnimationManager(animator, this.GetComponent<InteractiveObjectType>(),
                         animationConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration, interactiveObjectContainer);
             }
-
-            this.GetComponent<InRangeColliderTracker>().IfNotNull((InRangeColliderTracker) => InRangeColliderTracker.Init());
 
             //Sight listeners
             this.GetComponent<InteractiveObjectType>().IfNotNull((InteractiveObjectType) => InteractiveObjectType.GetEnabledOrDisabledModule<ObjectSightModule>().IfNotNull((ObjectSightModule) => ObjectSightModule.RegisterSightTrackingListener(this)));
@@ -328,9 +324,9 @@ namespace RTPuzzle
         {
             return this.agent;
         }
-        public Collider GetCollider()
+        public Collider GetLogicCollider()
         {
-            return this.objectCollider;
+            return this.associatedInteractivObject.GetModule<AILogicColliderModule>().GetCollider();
         }
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {

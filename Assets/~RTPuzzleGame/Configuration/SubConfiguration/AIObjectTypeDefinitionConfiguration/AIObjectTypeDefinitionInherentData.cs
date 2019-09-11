@@ -30,6 +30,12 @@ namespace RTPuzzle
 
         public void DefineAIObject(AIObjectType aIObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration)
         {
+            DefineAI(aIObjectType);
+            DefineInteractiveObject(aIObjectType, puzzlePrefabConfiguration, puzzleGameConfiguration);
+        }
+
+        private void DefineInteractiveObject(AIObjectType aIObjectType, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration)
+        {
             if (this.InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
             {
                 puzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData.TryGetValue(this.InteractiveObjectTypeDefinitionID, out InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData);
@@ -38,79 +44,103 @@ namespace RTPuzzle
                     var InteractiveObjectType = aIObjectType.gameObject.AddComponent<InteractiveObjectType>();
                     InteractiveObjectTypeDefinitionInherentData.DefineInteractiveObject(InteractiveObjectType, puzzlePrefabConfiguration, puzzleGameConfiguration);
                 }
+            }
+        }
 
-                aIObjectType.AiID = this.AIObjectID;
+        private void DefineAI(AIObjectType aIObjectType)
+        {
+            aIObjectType.AiID = this.AIObjectID;
 
-                var GenericPuzzleAIBehaviorContainer = new GenericPuzzleAIBehaviorContainer();
-                foreach (var definitionModuleAction in this.GenericPuzzleAIComponents.RangeDefinitionModulesActivation)
+            var GenericPuzzleAIBehaviorContainer = new GenericPuzzleAIBehaviorContainer();
+            foreach (var definitionModuleAction in this.GenericPuzzleAIComponents.RangeDefinitionModulesActivation)
+            {
+                if (definitionModuleAction.Value)
                 {
-                    if (definitionModuleAction.Value)
-                    {
-                        var moduleConfiguration = this.GenericPuzzleAIComponents.RangeDefinitionModules[definitionModuleAction.Key];
+                    var moduleConfiguration = this.GenericPuzzleAIComponents.RangeDefinitionModules[definitionModuleAction.Key];
 
-                        if (moduleConfiguration.GetType() == typeof(AIPatrolComponent))
+                    if (moduleConfiguration.GetType() == typeof(AIPatrolComponent))
+                    {
+                        var AIPatrolComponent = (AIPatrolComponent)moduleConfiguration;
+                        if (AIPatrolComponent.AIPatrolManagerType == AIPatrolManagerType.RANDOM)
                         {
-                            var AIPatrolComponent = (AIPatrolComponent)moduleConfiguration;
-                            if (AIPatrolComponent.AIPatrolManagerType == AIPatrolManagerType.RANDOM)
-                            {
-                                GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager = new AIRandomPatrolComponentMananger(AIPatrolComponent);
-                            }
-                            else
-                            {
-                                GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager = new AIScriptedPatrolComponentManager(AIPatrolComponent);
-                            }
+                            GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager = new AIRandomPatrolComponentMananger(AIPatrolComponent);
                         }
-                        else if (moduleConfiguration.GetType() == typeof(AIProjectileEscapeComponent))
+                        else
                         {
-                            var AIProjectileEscapeComponent = (AIProjectileEscapeComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.AIProjectileEscapeManager = new AIProjectileWithCollisionEscapeManager(AIProjectileEscapeComponent);
+                            GenericPuzzleAIBehaviorContainer.AIPatrolComponentManager = new AIScriptedPatrolComponentManager(AIPatrolComponent);
                         }
-                        else if (moduleConfiguration.GetType() == typeof(AIEscapeWithoutTriggerComponent))
-                        {
-                            var AIEscapeWithoutTriggerComponent = (AIEscapeWithoutTriggerComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.AIEscapeWithoutTriggerManager = new AIEscapeWithoutTriggerManager(AIEscapeWithoutTriggerComponent);
-                        }
-                        else if (moduleConfiguration.GetType() == typeof(AITargetZoneComponent))
-                        {
-                            var AITargetZoneComponent = (AITargetZoneComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.AITargetZoneManager = new AITargetZoneEscapeManager(AITargetZoneComponent);
-                        }
-                        else if (moduleConfiguration.GetType() == typeof(AIAttractiveObjectComponent))
-                        {
-                            var AIAttractiveObjectComponent = (AIAttractiveObjectComponent)moduleConfiguration;
-                            if (AIAttractiveObjectComponent.AttractiveObjectStrategyType == AttractiveObjectStrategyType.LOOSE)
-                            {
-                                GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager = new AIAttractiveObjectLooseManager(AIAttractiveObjectComponent);
-                            }
-                            else
-                            {
-                                GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager = new AIAttractiveObjectPersistantManager(AIAttractiveObjectComponent);
-                            }
-                        }
-                        else if (moduleConfiguration.GetType() == typeof(AIFearStunComponent))
-                        {
-                            var AIFearStunComponent = (AIFearStunComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.AIFearStunManager = new AIFearStunManager(AIFearStunComponent);
-                        }
-                        else if (moduleConfiguration.GetType() == typeof(AIPlayerEscapeComponent))
-                        {
-                            var AIPlayerEscapeComponent = (AIPlayerEscapeComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.PlayerEscapeManager = new AIPlayerEscapeManager(AIPlayerEscapeComponent);
-                        }
-                        else if (moduleConfiguration.GetType() == typeof(AIMoveTowardPlayerComponent))
-                        {
-                            var AIMoveTowardPlayerComponent = (AIMoveTowardPlayerComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.AIMoveTowardPlayerManager = new AIMoveTowardPlayerManager(AIMoveTowardPlayerComponent);
-                        }
-                        else if (moduleConfiguration.GetType() == typeof(AIDisarmObjectComponent))
-                        {
-                            var AIDisarmObjectComponent = (AIDisarmObjectComponent)moduleConfiguration;
-                            GenericPuzzleAIBehaviorContainer.AIDisarmObjectManager = new AIDisarmObjectManager(AIDisarmObjectComponent);
-                        }
-                        //${addNewEntry}
                     }
+                    else if (moduleConfiguration.GetType() == typeof(AIProjectileEscapeComponent))
+                    {
+                        var AIProjectileEscapeComponent = (AIProjectileEscapeComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.AIProjectileEscapeManager = new AIProjectileWithCollisionEscapeManager(AIProjectileEscapeComponent);
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AIEscapeWithoutTriggerComponent))
+                    {
+                        var AIEscapeWithoutTriggerComponent = (AIEscapeWithoutTriggerComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.AIEscapeWithoutTriggerManager = new AIEscapeWithoutTriggerManager(AIEscapeWithoutTriggerComponent);
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AITargetZoneComponent))
+                    {
+                        var AITargetZoneComponent = (AITargetZoneComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.AITargetZoneManager = new AITargetZoneEscapeManager(AITargetZoneComponent);
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AIAttractiveObjectComponent))
+                    {
+                        var AIAttractiveObjectComponent = (AIAttractiveObjectComponent)moduleConfiguration;
+                        if (AIAttractiveObjectComponent.AttractiveObjectStrategyType == AttractiveObjectStrategyType.LOOSE)
+                        {
+                            GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager = new AIAttractiveObjectLooseManager(AIAttractiveObjectComponent);
+                        }
+                        else
+                        {
+                            GenericPuzzleAIBehaviorContainer.AIAttractiveObjectManager = new AIAttractiveObjectPersistantManager(AIAttractiveObjectComponent);
+                        }
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AIFearStunComponent))
+                    {
+                        var AIFearStunComponent = (AIFearStunComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.AIFearStunManager = new AIFearStunManager(AIFearStunComponent);
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AIPlayerEscapeComponent))
+                    {
+                        var AIPlayerEscapeComponent = (AIPlayerEscapeComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.PlayerEscapeManager = new AIPlayerEscapeManager(AIPlayerEscapeComponent);
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AIMoveTowardPlayerComponent))
+                    {
+                        var AIMoveTowardPlayerComponent = (AIMoveTowardPlayerComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.AIMoveTowardPlayerManager = new AIMoveTowardPlayerManager(AIMoveTowardPlayerComponent);
+                    }
+                    else if (moduleConfiguration.GetType() == typeof(AIDisarmObjectComponent))
+                    {
+                        var AIDisarmObjectComponent = (AIDisarmObjectComponent)moduleConfiguration;
+                        GenericPuzzleAIBehaviorContainer.AIDisarmObjectManager = new AIDisarmObjectManager(AIDisarmObjectComponent);
+                    }
+                    //${addNewEntry}
                 }
-                aIObjectType.GenericPuzzleAIBehaviorContainer = GenericPuzzleAIBehaviorContainer;
+            }
+            aIObjectType.GenericPuzzleAIBehaviorContainer = GenericPuzzleAIBehaviorContainer;
+
+            this.CreateNavMeshAgentIfNecessary(aIObjectType);
+        }
+
+        private void CreateNavMeshAgentIfNecessary(AIObjectType aIObjectType)
+        {
+            if (aIObjectType.GetComponent<NavMeshAgent>() == null)
+            {
+                var aiAgent = aIObjectType.gameObject.AddComponent<NavMeshAgent>();
+                aiAgent.baseOffset = 0f;
+                aiAgent.speed = 0f;
+                aiAgent.angularSpeed = 120f;
+                aiAgent.acceleration = 999999f;
+                aiAgent.stoppingDistance = 0f;
+                aiAgent.autoBraking = true;
+                aiAgent.radius = 0.5f;
+                aiAgent.height = 2f;
+                aiAgent.avoidancePriority = 50;
+                aiAgent.autoTraverseOffMeshLink = true;
+                aiAgent.autoRepath = true;
             }
         }
     }

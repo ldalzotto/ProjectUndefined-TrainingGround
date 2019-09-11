@@ -18,6 +18,8 @@ namespace RTPuzzle
             typeof(GrabObjectModuleDefinition),
             typeof(ObjectRepelModuleDefinition),
             typeof(ObjectSightModuleDefinition),
+            typeof(AILogicColliderModuleDefinition),
+            typeof(InRangeColliderTrackerModuleDefinition),
 //${addNewEntry}
         };
     }
