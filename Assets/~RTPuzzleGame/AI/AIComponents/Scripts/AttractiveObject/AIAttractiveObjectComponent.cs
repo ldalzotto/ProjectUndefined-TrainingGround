@@ -20,9 +20,10 @@ namespace RTPuzzle
 
     public abstract class AbstractAIAttractiveObjectManager : AbstractAIManager<AIAttractiveObjectComponent>, InterfaceAIManager
     {
-
         protected NavMeshAgent selfAgent;
         protected AIObjectID aiID;
+
+        private AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
 
         #region State
         protected bool isAttracted;
@@ -39,11 +40,12 @@ namespace RTPuzzle
         {
         }
 
-        protected void BaseInit(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager PuzzleEventsManager)
+        protected void BaseInit(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager PuzzleEventsManager, AIObjectTypeSpeedSetter aIObjectTypeSpeedSetter)
         {
             this.selfAgent = selfAgent;
             this.aiID = aiID;
             this.PuzzleEventsManager = PuzzleEventsManager;
+            this.AIObjectTypeSpeedSetter = aIObjectTypeSpeedSetter;
         }
 
         #region External Events
@@ -110,6 +112,7 @@ namespace RTPuzzle
         {
             if (isAttracted)
             {
+                this.AIObjectTypeSpeedSetter.SetSpeedAttenuationFactor(AIMovementDefinitions.AIMovementSpeedDefinition.RUN);
                 NPCAIDestinationContext.TargetPosition = attractionPosition;
             }
         }

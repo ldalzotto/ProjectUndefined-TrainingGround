@@ -63,7 +63,7 @@ namespace RTPuzzle
             this.grabObjectRange = this.GetComponent<SphereCollider>();
             this.grabObjectRange.radius = this.grabObjectInherentData.EffectRadius;
 
-            this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, this.grabObjectInherentData.PlayerActionToIncrement, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
+            this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, this.grabObjectInherentData.PlayerActionToIncrementOrAdd, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
         }
 
         public virtual void Tick(float d, float timeAttenuationFactor)

@@ -11,12 +11,12 @@ namespace RTPuzzle
         public GrabObjectID GrabObjectID;
 
         [CustomEnum()]
-        public PlayerActionId PlayerActionToIncrement;
+        public PlayerActionId PlayerActionToIncrementOrAdd;
 
-        public GrabActionInherentData(GrabObjectID grabObjectID, PlayerActionId PlayerActionToIncrement, SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
+        public GrabActionInherentData(GrabObjectID grabObjectID, PlayerActionId PlayerActionToIncrementOrAdd, SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
         {
             this.GrabObjectID = grabObjectID;
-            this.PlayerActionToIncrement = PlayerActionToIncrement;
+            this.PlayerActionToIncrementOrAdd = PlayerActionToIncrementOrAdd;
         }
     }
 }

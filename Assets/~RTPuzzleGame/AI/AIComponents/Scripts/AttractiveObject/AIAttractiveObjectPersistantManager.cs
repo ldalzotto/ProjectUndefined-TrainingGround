@@ -11,9 +11,9 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager puzzleEventsManager)
+        public void Init(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager puzzleEventsManager, AIObjectTypeSpeedSetter aIObjectTypeSpeedSetter)
         {
-            this.BaseInit(selfAgent, aiID, puzzleEventsManager);
+            this.BaseInit(selfAgent, aiID, puzzleEventsManager, aIObjectTypeSpeedSetter);
         }
 
         public override void ComponentTriggerEnter(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)

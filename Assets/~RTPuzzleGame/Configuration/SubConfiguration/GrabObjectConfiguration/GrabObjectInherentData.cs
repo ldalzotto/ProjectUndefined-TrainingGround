@@ -12,14 +12,16 @@ namespace RTPuzzle
 {
     using GameConfigurationID;
     using UnityEngine;
-    
-    
+    using UnityEngine.Serialization;
+
     [System.Serializable()]
     [UnityEngine.CreateAssetMenu(fileName="GrabObjectInherentData", menuName="Configuration/PuzzleGame/GrabObjectConfiguration/GrabObjectInherentData", order=1)]
     public class GrabObjectInherentData : ScriptableObject
     {
         public float EffectRadius;
+
+        [FormerlySerializedAs("PlayerActionToIncrement")]
         [CustomEnum()]
-        public PlayerActionId PlayerActionToIncrement;
+        public PlayerActionId PlayerActionToIncrementOrAdd;
     }
 }

@@ -297,7 +297,7 @@ namespace Tests
                     currentAvailablePlayerActionsContainsGrabObjectAction = true;
 
                     var grabAction = (GrabObjectAction)playerAction;
-                    grabObjectActionReferToGrabObjectConfiguredAction = (grabAction.GetPlayerActionToIncrement() == puzzleConfigurationManager.GrabObjectConfiguration()[grabObjectModule.GrabObjectID].PlayerActionToIncrement);
+                    grabObjectActionReferToGrabObjectConfiguredAction = (grabAction.GetPlayerActionToIncrementOrAdd() == puzzleConfigurationManager.GrabObjectConfiguration()[grabObjectModule.GrabObjectID].PlayerActionToIncrementOrAdd);
                 }
             }
 

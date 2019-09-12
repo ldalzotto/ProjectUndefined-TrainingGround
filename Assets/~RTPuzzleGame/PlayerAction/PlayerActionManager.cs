@@ -85,9 +85,9 @@ namespace RTPuzzle
         {
             PLayerSelectionWheelManager.OnWheelSleep(destroyImmediate);
         }
-        public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
+        public void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
         {
-            this.PlayerActionsAvailableManager.IncreaseActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
+            this.PlayerActionsAvailableManager.IncreaseOrAddActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
         }
         public void OnSelectableObjectSelected(ISelectableModule selectableObject)
         {
@@ -213,11 +213,17 @@ namespace RTPuzzle
     #region RTPPlayer actions availability
     class PlayerActionsAvailableManager
     {
+
+        #region External Dependencies
+        private PlayerActionConfiguration PlayerActionConfiguration;
+        #endregion
+
         private MultiValueDictionary<PlayerActionId, RTPPlayerAction> currentAvailableActions;
 
         public PlayerActionsAvailableManager(LevelZonesID puzzleId, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
             this.currentAvailableActions = puzzleGameConfigurationManager.LevelConfiguration()[puzzleId].PlayerActions;
+            this.PlayerActionConfiguration = puzzleGameConfigurationManager.PuzzleGameConfiguration.PlayerActionConfiguration;
         }
 
         public void Tick(float d, float timeAttenuation)
@@ -239,12 +245,21 @@ namespace RTPuzzle
         {
             this.currentAvailableActions.MultiValueRemove(playerActionId, rTPPlayerActionToRemove);
         }
-        public void IncreaseActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
+        public void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
         {
-            foreach (var action in this.currentAvailableActions[playerActionId])
+            this.currentAvailableActions.TryGetValue(playerActionId, out List<RTPPlayerAction> retrievedActions);
+            if (retrievedActions != null && retrievedActions.Count > 0)
             {
-                action.IncreaseActionRemainingExecutionAmount(deltaRemaining);
+                foreach (var action in retrievedActions)
+                {
+                    action.IncreaseActionRemainingExecutionAmount(deltaRemaining);
+                }
             }
+            else //Wa add
+            {
+                this.currentAvailableActions.MultiValueAdd(playerActionId, PlayerActionBuilder.BuildAction(this.PlayerActionConfiguration.ConfigurationInherentData[playerActionId]));
+            }
+
         }
 
         public MultiValueDictionary<PlayerActionId, RTPPlayerAction> CurrentAvailableActions { get => currentAvailableActions; }

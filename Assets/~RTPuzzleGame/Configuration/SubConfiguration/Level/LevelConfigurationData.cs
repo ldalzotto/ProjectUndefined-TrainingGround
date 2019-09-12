@@ -28,7 +28,7 @@ namespace RTPuzzle
 
         [NonSerialized]
         private MultiValueDictionary<PlayerActionId, RTPPlayerAction> playerActions;
-        
+
         public void Init(PlayerActionConfiguration playerActionConfiguration)
         {
             this.playerActions = new MultiValueDictionary<PlayerActionId, RTPPlayerAction>();
@@ -36,14 +36,7 @@ namespace RTPuzzle
             foreach (var playerActionid in playerActionIds)
             {
                 var playerActionInherentData = playerActionConfiguration.ConfigurationInherentData[playerActionid.playerActionId];
-                if (playerActionInherentData.GetType() == typeof(LaunchProjectileActionInherentData))
-                {
-                    this.playerActions.MultiValueAdd(playerActionid.playerActionId, new LaunchProjectileAction((LaunchProjectileActionInherentData)playerActionInherentData));
-                }
-                else if (playerActionInherentData.GetType() == typeof(AttractiveObjectActionInherentData))
-                {
-                    this.playerActions.MultiValueAdd(playerActionid.playerActionId, new AttractiveObjectAction((AttractiveObjectActionInherentData)playerActionInherentData));
-                }
+                this.playerActions.MultiValueAdd(playerActionid.playerActionId, PlayerActionBuilder.BuildAction(playerActionInherentData));
             }
         }
 
@@ -122,7 +115,7 @@ namespace RTPuzzle
                 Editor.CreateEditor(myTarget.LevelCompletionInherentData).OnInspectorGUI();
                 EditorGUI.indentLevel -= 1;
             }
-            
+
 
             serializedObject.ApplyModifiedProperties();
         }

@@ -13,9 +13,9 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval 
-        public PlayerActionId GetPlayerActionToIncrement()
+        public PlayerActionId GetPlayerActionToIncrementOrAdd()
         {
-            return ((GrabActionInherentData)this.playerActionInherentData).PlayerActionToIncrement;
+            return ((GrabActionInherentData)this.playerActionInherentData).PlayerActionToIncrementOrAdd;
         }
         #endregion
 
@@ -29,7 +29,7 @@ namespace RTPuzzle
             base.FirstExecution();
             GrabActionInherentData GrabActionInherentData = (GrabActionInherentData)this.playerActionInherentData;
             this.PlayerActionManager = PuzzleGameSingletonInstances.PlayerActionManager;
-            this.PlayerActionManager.IncreaseActionsRemainingExecutionAmount(GrabActionInherentData.PlayerActionToIncrement, 1);
+            this.PlayerActionManager.IncreaseOrAddActionsRemainingExecutionAmount(GrabActionInherentData.PlayerActionToIncrementOrAdd, 1);
 
             var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             InteractiveObjectContainer.OnInteractiveObjectDestroyed(InteractiveObjectContainer.GrabObjectModules[GrabActionInherentData.GrabObjectID].ParentInteractiveObject);

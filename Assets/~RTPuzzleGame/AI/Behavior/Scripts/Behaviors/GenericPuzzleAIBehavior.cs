@@ -59,11 +59,11 @@ namespace RTPuzzle
             {
                 if (AIAttractiveObjectManager.GetType() == typeof(AIAttractiveObjectPersistantManager))
                 {
-                    ((AIAttractiveObjectPersistantManager)AIAttractiveObjectManager).Init(selfAgent, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager);
+                    ((AIAttractiveObjectPersistantManager)AIAttractiveObjectManager).Init(selfAgent, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.AIObjectTypeSpeedSetter);
                 }
                 else if (AIAttractiveObjectManager.GetType() == typeof(AIAttractiveObjectLooseManager))
                 {
-                    ((AIAttractiveObjectLooseManager)AIAttractiveObjectManager).Init(selfAgent, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager);
+                    ((AIAttractiveObjectLooseManager)AIAttractiveObjectManager).Init(selfAgent, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.AIObjectTypeSpeedSetter);
                 }
             });
             GenericPuzzleAIBehaviorContainer.AITargetZoneManager.IfNotNull(AITargetZoneEscapeManager =>
