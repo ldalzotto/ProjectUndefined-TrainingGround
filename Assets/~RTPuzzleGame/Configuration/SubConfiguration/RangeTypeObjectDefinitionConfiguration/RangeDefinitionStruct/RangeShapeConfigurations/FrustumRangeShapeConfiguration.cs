@@ -35,8 +35,7 @@ namespace RTPuzzle
             Handles.DrawLine(C3, C4);
             Handles.DrawLine(C4, C1);
         }
-
-    }
 #endif
+    }
 }
 

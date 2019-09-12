@@ -5,7 +5,9 @@ namespace AdventureGame
     public static class AdventureGameSingletonInstances
     {
         private static InventoryEventManager inventoryEventManager;
+#if UNITY_EDITOR
         private static AdventureDebugModule adventureDebugModule;
+#endif
         private static PointOfInterestManager pointOfInterestManager;
         private static CutscenePlayerManagerV2 cutscenePlayerManagerV2;
         private static AdventureTutorialEventSender adventureTutorialEventSender;
@@ -31,7 +33,9 @@ namespace AdventureGame
         private static PointOfInterestAdventureEventManager pointOfInterestAdventureEventManager;
 
         public static InventoryEventManager InventoryEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inventoryEventManager, obj => inventoryEventManager = obj); }
+#if UNITY_EDITOR
         public static AdventureDebugModule AdventureDebugModule { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(adventureDebugModule, obj => adventureDebugModule = obj); }
+#endif
         public static PointOfInterestManager PointOfInterestManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(pointOfInterestManager, obj => pointOfInterestManager = obj); }
         public static CutscenePlayerManagerV2 CutscenePlayerManagerV2 { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cutscenePlayerManagerV2, obj => cutscenePlayerManagerV2 = obj); }
         public static AdventureTutorialEventSender AdventureTutorialEventSender { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(adventureTutorialEventSender, obj => adventureTutorialEventSender = obj); }
