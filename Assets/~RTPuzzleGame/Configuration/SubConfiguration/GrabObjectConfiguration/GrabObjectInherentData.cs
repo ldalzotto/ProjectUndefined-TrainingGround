@@ -18,7 +18,6 @@ namespace RTPuzzle
     [UnityEngine.CreateAssetMenu(fileName="GrabObjectInherentData", menuName="Configuration/PuzzleGame/GrabObjectConfiguration/GrabObjectInherentData", order=1)]
     public class GrabObjectInherentData : ScriptableObject
     {
-        public RTPuzzle.InteractiveObjectType AssociatedInteractiveObjectType;
         public float EffectRadius;
         [CustomEnum()]
         public PlayerActionId PlayerActionToIncrement;

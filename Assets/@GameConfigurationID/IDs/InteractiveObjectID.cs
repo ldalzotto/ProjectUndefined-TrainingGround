@@ -8,26 +8,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum InteractiveObjectID {
-    
-    NONE = 0,
-    
-    Player = 1,
-    
-    _1_Town_GardenDoor = 2,
-    
-    _1_Town_GardenWatchman = 4,
-    
-    TEST_1 = 5,
-    
-    TEST_2 = 6,
-    
-    TEST_3 = 7,
-    
-    _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 8,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum InteractiveObjectID
+    {
+
+        NONE = 0,
+
+        Player = 1,
+
+        _1_Town_GardenDoor = 2,
+
+        _1_Town_GardenWatchman = 4,
+
+        TEST_1 = 5,
+
+        TEST_2 = 6,
+
+        TEST_3 = 7,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 8,
+        _Town1_Park_GrabbedProjectile = 9
+    }
 }

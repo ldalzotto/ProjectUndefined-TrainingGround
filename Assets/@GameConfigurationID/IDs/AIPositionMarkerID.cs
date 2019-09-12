@@ -27,5 +27,17 @@ namespace GameConfigurationID
         _Town1_Park_ToSewerPuzzle_FrontGuard_1_5 = 6,
         _Town1_Park_ToSewerPuzzle_FrontGuard_1_6 = 7,
         _Town1_Park_ToSewerPuzzle_FrontGuard_1_7 = 8,
+
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_1 = 9,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_2 = 10,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_3 = 11,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_4 = 12,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_5 = 13,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_6 = 14,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_7 = 15,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2_8 = 16,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_3_1 = 17
     }
 }

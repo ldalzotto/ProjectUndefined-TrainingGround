@@ -32,7 +32,7 @@ namespace Editor_GameDesigner
 {"Puzzle//Projectile//.CreateProjectile",typeof(Editor_GameDesigner.CreateProjectile)},
 {"Puzzle//Projectile//.ExploreProjectile",typeof(Editor_GameDesigner.ExploreProjectile)},
 {"Puzzle//DisarmObject//.CreateDisarmObject",typeof(Editor_GameDesigner.CreateDisarmObject)},
-{"Puzzle//InteractiveObject//.CreateInteractiveObject",typeof(Editor_GameDesigner.CreateInteractiveObject)},
+{"Puzzle//InteractiveObject//.CreateInteractiveObject",typeof(Editor_GameDesigner.CreateInteractiveObjectDefinition)},
 {"Puzzle//AttractiveObject//.CreateAttractiveObject",typeof(Editor_GameDesigner.CreateAttractiveObject)},
 {"Puzzle//AttractiveObject//.ExploreAttractiveObject",typeof(Editor_GameDesigner.ExploreAttractiveObject)},
 {"Puzzle//PlayerAction//.ExplorePlayerActions",typeof(Editor_GameDesigner.ExplorePlayerActions)},

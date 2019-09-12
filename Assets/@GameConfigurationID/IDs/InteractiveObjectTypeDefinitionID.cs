@@ -50,5 +50,8 @@ namespace GameConfigurationID
         TEST_3 = 15,
 
         _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 19,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2 = 20,
+        _Town1_Park_GrabbedProjectile = 21,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_3 = 22
     }
 }

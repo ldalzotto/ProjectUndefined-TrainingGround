@@ -8,6 +8,8 @@ namespace RTPuzzle
 {
     public class AIScriptedPatrolComponentManager : AbstractAIPatrolComponentManager, IAIPatrolGraphEventListener
     {
+        private AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
+
         private bool isPatrolling;
 
         private SequencedActionPlayer PatrolGraphPlayer;
@@ -19,11 +21,10 @@ namespace RTPuzzle
         }
 
         public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager, InteractiveObjectType associatedInteractiveObject,
-            AIObjectType associatedAIObjectType)
+            AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter)
         {
             this.BaseInit(patrollingAgent, aIFOVManager, aiID);
-
-            associatedAIObjectType.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);
+            this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
             var AIPatrolGraph = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AIPatrolGraphConfiguration()[this.AssociatedAIComponent.AIPatrolGraphID].AIPatrolGraph;
             this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, AIPatrolActionInput.BuildParameters(associatedInteractiveObject)), null);
             this.PatrolGraphPlayer.Play();
@@ -48,6 +49,7 @@ namespace RTPuzzle
 
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
+            AIObjectTypeSpeedSetter.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);
             this.isPatrolling = true;
             this.PatrolGraphPlayer.Tick(d * timeAttenuationFactor);
             if (this.anchorPosition != null)

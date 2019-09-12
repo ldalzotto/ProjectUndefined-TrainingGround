@@ -36,7 +36,7 @@ namespace RTPuzzle
                 else if (AIPatrolComponentManager.GetType() == typeof(AIScriptedPatrolComponentManager))
                 {
                     ((AIScriptedPatrolComponentManager)AIRandomPatrolComponentMananger).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.AIPositionsManager,
-                            AIBheaviorBuildInputData.AssociatedInteractiveObject, AIBheaviorBuildInputData.AssociatedAIObjectType);
+                            AIBheaviorBuildInputData.AssociatedInteractiveObject, AIBheaviorBuildInputData.AIObjectTypeSpeedSetter);
                 }
             });
 
@@ -77,6 +77,10 @@ namespace RTPuzzle
             GenericPuzzleAIBehaviorContainer.AIDisarmObjectManager.IfNotNull(AIDisarmObjectManager =>
             {
                 ((AIDisarmObjectManager)AIDisarmObjectManager).Init(selfAgent, AIBheaviorBuildInputData.PuzzleEventsManager, AIBheaviorBuildInputData.aiID);
+            });
+            GenericPuzzleAIBehaviorContainer.AIMoveTowardPlayerManager.IfNotNull(AIMoveTowardPlayerManager =>
+            {
+                ((AIMoveTowardPlayerManager)AIMoveTowardPlayerManager).Init(AIBheaviorBuildInputData.AIObjectTypeSpeedSetter);
             });
 
             var dic = new Dictionary<int, InterfaceAIManager>()

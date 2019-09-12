@@ -8,16 +8,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum AIPatrolGraphID {
-    
-    NONE = 0,
-    
-    _1_Town_StartTutorial_Speaker = 1,
-    
-    _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 2,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum AIPatrolGraphID
+    {
+
+        NONE = 0,
+
+        _1_Town_StartTutorial_Speaker = 1,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 2,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2 = 3,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_3 = 4
+    }
 }

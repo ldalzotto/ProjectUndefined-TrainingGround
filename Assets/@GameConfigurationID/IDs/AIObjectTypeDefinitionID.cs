@@ -8,22 +8,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameConfigurationID {
-  
-  
-  [System.Serializable()]
-  public enum AIObjectTypeDefinitionID {
-    
-    NONE = 0,
-    
-    _1_Town_GardenWatchman = 1,
-    
-    _Sewers_1_Mouse = 2,
-    
-    _Sewers_2_Mouse = 3,
-    
-    TEST_1 = 4,
-    
-    _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 5,
-  }
+namespace GameConfigurationID
+{
+
+
+    [System.Serializable()]
+    public enum AIObjectTypeDefinitionID
+    {
+
+        NONE = 0,
+
+        _1_Town_GardenWatchman = 1,
+
+        _Sewers_1_Mouse = 2,
+
+        _Sewers_2_Mouse = 3,
+
+        TEST_1 = 4,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_1 = 5,
+
+        _Town1_Park_ToSewerPuzzle_FrontGuard_2 = 6,
+        _Town1_Park_ToSewerPuzzle_FrontGuard_3 = 7,
+    }
 }

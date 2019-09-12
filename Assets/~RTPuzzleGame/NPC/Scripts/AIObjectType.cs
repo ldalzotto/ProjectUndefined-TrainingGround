@@ -16,7 +16,12 @@ namespace RTPuzzle
         void OnFOVChange(FOV currentFOV);
     }
 
-    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener
+    public interface AIObjectTypeSpeedSetter
+    {
+        void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition);
+    }
+
+    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter
     {
 
 #if UNITY_EDITOR

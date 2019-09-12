@@ -4,6 +4,7 @@ namespace RTPuzzle
 {
     public class AIMoveTowardPlayerManager : AbstractAIManager<AIMoveTowardPlayerComponent>, InterfaceAIManager
     {
+        private AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
         #region State
         protected bool playerInSight;
         protected ColliderWithCollisionType currentTarget;
@@ -11,7 +12,11 @@ namespace RTPuzzle
         #endregion
 
         public AIMoveTowardPlayerManager(AIMoveTowardPlayerComponent associatedAIComponent) : base(associatedAIComponent)
+        {        }
+
+        public void Init(AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter)
         {
+            this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
         }
 
         #region External Events
@@ -50,6 +55,7 @@ namespace RTPuzzle
 
         public virtual void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
+            this.AIObjectTypeSpeedSetter.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);
             if (this.playerInSight && this.currentTarget != null)
             {
                 this.currentDestination = this.currentTarget.collider.transform.position;

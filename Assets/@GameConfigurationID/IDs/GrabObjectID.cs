@@ -22,6 +22,7 @@ namespace GameConfigurationID
         _1_Town_StartTutorial_Test = 2,
         TEST_1 = 3,
         TEST_2 = 4,
-        TEST_3= 5
+        TEST_3= 5,
+        _Town1_Park_GrabbedProjectile = 6
     }
 }
