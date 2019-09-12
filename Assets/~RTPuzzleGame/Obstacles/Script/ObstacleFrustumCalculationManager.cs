@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,6 +51,12 @@ namespace RTPuzzle
             calculation.AskCalculation();
             this.calculationResults[obstacleListener][squareObstacle] = calculation;
         }
+
+        public void OnObstacleListenerDestroyed(ObstacleListener obstacleListener)
+        {
+            this.calculationResults.Remove(obstacleListener);
+        }
+
         public void OnObstacleRemovedToListener(ObstacleListener obstacleListener, SquareObstacle squareObstacle)
         {
             this.calculationResults[obstacleListener].Remove(squareObstacle);

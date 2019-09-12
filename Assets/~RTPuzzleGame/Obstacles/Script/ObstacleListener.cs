@@ -35,7 +35,9 @@ namespace RTPuzzle
 
         public void OnObstacleListenerDestroyed()
         {
+            Debug.Log(MyLog.Format("OnObstacleListenerDestroyed"));
             this.ObstaclesListenerManager.OnObstacleListenerDestroyed(this);
+            this.ObstacleFrustumCalculationManager.OnObstacleListenerDestroyed(this);
         }
 
         public void Tick(float d)

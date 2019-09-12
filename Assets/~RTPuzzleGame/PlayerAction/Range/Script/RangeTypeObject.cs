@@ -47,7 +47,7 @@ namespace RTPuzzle
             rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
-        
+
         public void PopulateBoxRangeData(RangeTypeDefinition rangeTypeDefinition)
         {
             this.PopulateModules();

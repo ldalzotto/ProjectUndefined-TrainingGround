@@ -17,6 +17,7 @@ namespace Experimental.Editor_NodeEditor
             {typeof(AIWarpNode).Name, typeof(AIWarpNode) },
             {typeof(CutsceneWorkflowWaitForSecondsNode).Name, typeof(CutsceneWorkflowWaitForSecondsNode) },
             {typeof(BranchInfiniteLoopNode).Name, typeof(BranchInfiniteLoopNode) },
+            {typeof(DummyCutsceneNode).Name, typeof(DummyCutsceneNode) }
         };
 
         public static void Init(NodeEditorProfile nodeEditorProfile)

@@ -94,7 +94,8 @@ namespace RTPuzzle
             LaunchProjectilePlayerAnimationManager.Tick(d);
 
             //If launch animation is not playng (animation exit callback is exiting the action)
-            if (!this.LaunchProjectilePlayerAnimationManager.LaunchProjectileAnimationPlaying())
+            // LaunchProjectilePlayerAnimationManager.Tick(d); may trigger the exit event -> we check 
+            if (!this.LaunchProjectilePlayerAnimationManager.LaunchProjectileAnimationPlaying() && !this.FinishedCondition())
             {
                 if (LaunchProjectileRayPositionerManager.IsCursorPositioned)
                 {
