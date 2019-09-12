@@ -1,7 +1,5 @@
 ﻿using CoreGame;
-using GameConfigurationID;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -16,6 +14,15 @@ namespace RTPuzzle
         }
 
         public IAIPatrolGraphEventListener AIPatrolGraphEventListener { get => aIPatrolGraphEventListener; }
+
+        public static Dictionary<CutsceneParametersName, object> BuildParameters(InteractiveObjectType associatedInteractiveObject)
+        {
+            return new Dictionary<CutsceneParametersName, object>() {
+
+                { CutsceneParametersName.AIPatrol_InteractiveObject, associatedInteractiveObject },
+            };
+        }
+        
     }
 
 }

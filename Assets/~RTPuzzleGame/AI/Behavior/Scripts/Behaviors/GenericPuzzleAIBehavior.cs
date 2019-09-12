@@ -35,7 +35,8 @@ namespace RTPuzzle
                 }
                 else if (AIPatrolComponentManager.GetType() == typeof(AIScriptedPatrolComponentManager))
                 {
-                    ((AIScriptedPatrolComponentManager)AIRandomPatrolComponentMananger).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.AIPositionsManager, AIBheaviorBuildInputData.AssociatedInteractiveObject);
+                    ((AIScriptedPatrolComponentManager)AIRandomPatrolComponentMananger).Init(selfAgent, aIFOVManager, AIBheaviorBuildInputData.aiID, AIBheaviorBuildInputData.AIPositionsManager,
+                            AIBheaviorBuildInputData.AssociatedInteractiveObject, AIBheaviorBuildInputData.AssociatedAIObjectType);
                 }
             });
 

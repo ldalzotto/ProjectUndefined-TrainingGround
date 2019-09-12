@@ -1,6 +1,7 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.AI;
+using static AIMovementDefinitions;
 
 namespace RTPuzzle
 {
@@ -13,6 +14,7 @@ namespace RTPuzzle
 
         [CustomEnum(ConfigurationType = typeof(AIPatrolGraphConfiguration), OpenToConfiguration = true)]
         public AIPatrolGraphID AIPatrolGraphID;
+        public AIMovementSpeedDefinition AISpeed;
 
         public float MaxDistance;
     }

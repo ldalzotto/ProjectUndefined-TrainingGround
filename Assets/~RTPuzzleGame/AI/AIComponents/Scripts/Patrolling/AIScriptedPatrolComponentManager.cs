@@ -18,12 +18,14 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager, InteractiveObjectType associatedInteractiveObject)
+        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager, InteractiveObjectType associatedInteractiveObject,
+            AIObjectType associatedAIObjectType)
         {
             this.BaseInit(patrollingAgent, aIFOVManager, aiID);
 
+            associatedAIObjectType.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);
             var AIPatrolGraph = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AIPatrolGraphConfiguration()[this.AssociatedAIComponent.AIPatrolGraphID].AIPatrolGraph;
-            this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, new Dictionary<CutsceneParametersName, object>() { { CutsceneParametersName.AIPatrol_InteractiveObject, associatedInteractiveObject } }), null);
+            this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, AIPatrolActionInput.BuildParameters(associatedInteractiveObject)), null);
             this.PatrolGraphPlayer.Play();
         }
 

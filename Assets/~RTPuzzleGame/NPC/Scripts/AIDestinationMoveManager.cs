@@ -1,7 +1,9 @@
 ﻿using CoreGame;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static AIMovementDefinitions;
 
 namespace RTPuzzle
 {
@@ -16,10 +18,16 @@ namespace RTPuzzle
             AIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
             this.objectAgent = objectAgent;
             this.OnDestinationReachedEvent = OnDestinationReachedEvent;
+            this.currentSpeedAttenuationFactor = AIMovementSpeedDefinition.RUN;
         }
 
+        #region State
         private float CurrentTimeAttenuated;
         private Vector3? currentDestination;
+
+        //Used to change the agent speed
+        private AIMovementSpeedDefinition currentSpeedAttenuationFactor;
+        #endregion
 
         public void Tick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
@@ -82,6 +90,23 @@ namespace RTPuzzle
             }
         }
 
+        public void EnableAgent()
+        {
+            objectAgent.isStopped = false;
+        }
+        public void DisableAgent()
+        {
+            // Debug.Log(MyLog.Format("Agent disabled"));
+            objectAgent.isStopped = true;
+            objectAgent.nextPosition = objectAgent.transform.position;
+        }
+
+        public void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+            this.currentSpeedAttenuationFactor = AIMovementSpeedDefinition;
+        }
+
+        #endregion
         private void ManuallyUpdateAgent()
         {
             Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
@@ -96,7 +121,7 @@ namespace RTPuzzle
 
         private void UpdateAgentTransform(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
-            objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor;
+            objectAgent.speed = AIDestimationMoveManagerComponent.SpeedMultiplicationFactor * AIMovementSpeedAttenuationFactorLookup[this.currentSpeedAttenuationFactor];
 
             bool updatePosition = true;
             // We use a minimal velocity amplitude to avoid precision loss occured by the navmesh agent velocity calculation.
@@ -136,19 +161,7 @@ namespace RTPuzzle
                 objectAgent.nextPosition = objectAgent.transform.position;
             }
         }
-
-        public void EnableAgent()
-        {
-            objectAgent.isStopped = false;
-        }
-        public void DisableAgent()
-        {
-            // Debug.Log(MyLog.Format("Agent disabled"));
-            objectAgent.isStopped = true;
-            objectAgent.nextPosition = objectAgent.transform.position;
-        }
-
-        #endregion
+        
     }
 
     public class NPCAIDestinationContext
@@ -162,4 +175,21 @@ namespace RTPuzzle
             this.TargetRotation = null;
         }
     }
+}
+
+public static class AIMovementDefinitions
+{
+    public enum AIMovementSpeedDefinition
+    {
+        RUN = 0,
+        WALK = 1,
+        ZERO = 2
+    }
+
+    public static Dictionary<AIMovementSpeedDefinition, float> AIMovementSpeedAttenuationFactorLookup = new Dictionary<AIMovementSpeedDefinition, float>()
+    {
+        { AIMovementSpeedDefinition.ZERO, 0f },
+        { AIMovementSpeedDefinition.WALK, 0.5f },
+        { AIMovementSpeedDefinition.RUN, 1f }
+    };
 }

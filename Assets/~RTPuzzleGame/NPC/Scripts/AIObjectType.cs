@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using CoreGame;
 using GameConfigurationID;
+using static AIMovementDefinitions;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -110,7 +111,7 @@ namespace RTPuzzle
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
 
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
-                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject);
+                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.genericPuzzleAIBehaviorContainer, aIBheaviorBuildInputData);
 
@@ -139,7 +140,7 @@ namespace RTPuzzle
 
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
-            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.normalized.magnitude));
+            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.magnitude / this.interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent.SpeedMultiplicationFactor));
             NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
@@ -293,6 +294,11 @@ namespace RTPuzzle
         public void SightInRangeExit(ColliderWithCollisionType trackedCollider)
         {
             this.puzzleAIBehavior.ReceiveEvent(new SightInRangeExitAIBehaviorEvent(trackedCollider));
+        }
+
+        public void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+            this.AIDestinationMoveManager.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
         #endregion
 
