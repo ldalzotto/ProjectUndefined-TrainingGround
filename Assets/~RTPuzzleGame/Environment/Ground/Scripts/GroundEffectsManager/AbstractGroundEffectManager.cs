@@ -1,28 +1,28 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace RTPuzzle
 {
     public interface IAbstractGroundEffectManager
     {
         void OnRangeCreated(RangeTypeObject rangeTypeObject);
-        void Tick(float d);
-        List<MeshRenderer> MeshRenderToRender(List<GroundEffectType> affectedGroundEffectsType);
-        List<GroundEffectType> GroundEffectTypeToRender(List<GroundEffectType> affectedGroundEffectsType);
+        void Tick(float d, List<GroundEffectType> affectedGroundEffectsType);
         RangeTypeObject GetAssociatedRangeObject();
         void OnRangeDestroyed();
+        bool MeshMustBeRebuild();
+        List<GroundEffectType> GroundEffectTypeToRender();
     }
 
     public abstract class AbstractGroundEffectManager<T> : IAbstractGroundEffectManager
     {
         private RangeTypeObject associatedRangeObject;
+        private List<GroundEffectType> groundEffectTypesToRender;
         protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
         protected FloatAnimation rangeAnimation;
         protected bool isAttractiveObjectRangeEnabled;
+        private bool isGroundEffectTypeToRenderChanged;
 
-        public bool IsAttractiveObjectRangeEnabled { get => isAttractiveObjectRangeEnabled; }
         public RangeTypeObject GetAssociatedRangeObject()
         {
             return associatedRangeObject;
@@ -31,15 +31,55 @@ namespace RTPuzzle
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
             this.rangeTypeInherentConfigurationData = rangeTypeInherentConfigurationData;
-            this.isAttractiveObjectRangeEnabled = false;
+            this.isGroundEffectTypeToRenderChanged = false;
+            this.groundEffectTypesToRender = new List<GroundEffectType>();
         }
 
-        public void Tick(float d)
+        public void Tick(float d, List<GroundEffectType> affectedGroundEffectsType)
         {
             if (isAttractiveObjectRangeEnabled)
             {
                 this.rangeAnimation.Tick(d);
             }
+
+            List<GroundEffectType> involvedGroundEffectsType = new List<GroundEffectType>();
+
+            if (affectedGroundEffectsType != null)
+            {
+                foreach (var affectedGroundEffectType in affectedGroundEffectsType)
+                {
+                    if (affectedGroundEffectType.MeshRenderer.isVisible
+                        && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
+                    {
+                        involvedGroundEffectsType.Add(affectedGroundEffectType);
+                    }
+                }
+
+                this.isGroundEffectTypeToRenderChanged = false;
+                if (involvedGroundEffectsType.Count != this.groundEffectTypesToRender.Count)
+                {
+                    this.isGroundEffectTypeToRenderChanged = true;
+                }
+                if (!this.isGroundEffectTypeToRenderChanged)
+                {
+                    foreach (var involvedGroundEffectType in involvedGroundEffectsType)
+                    {
+                        if (!this.groundEffectTypesToRender.Contains(involvedGroundEffectType))
+                        {
+                            this.isGroundEffectTypeToRenderChanged = true;
+                            break;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                this.isGroundEffectTypeToRenderChanged = true;
+            }
+
+            this.groundEffectTypesToRender = involvedGroundEffectsType;
+
         }
 
         public void OnRangeCreated(RangeTypeObject rangeTypeObject)
@@ -47,7 +87,7 @@ namespace RTPuzzle
             this.associatedRangeObject = rangeTypeObject;
             this.rangeAnimation = new FloatAnimation(this.associatedRangeObject.RangeType.GetRadiusRange(), rangeTypeInherentConfigurationData.RangeAnimationSpeed, 0f);
             this.isAttractiveObjectRangeEnabled = true;
-            this.Tick(0);
+            this.Tick(0, null);
         }
 
         public void OnRangeDestroyed()
@@ -60,37 +100,15 @@ namespace RTPuzzle
             return this.associatedRangeObject.RangeType.RangeTypeID;
         }
 
-        public List<MeshRenderer> MeshRenderToRender(List<GroundEffectType> affectedGroundEffectsType)
+        public bool MeshMustBeRebuild()
         {
-            List<MeshRenderer> involvedRenderers = new List<MeshRenderer>();
-            foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-            {
-                if (affectedGroundEffectType.MeshRenderer.isVisible
-                    && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
-                {
-                    involvedRenderers.Add(affectedGroundEffectType.MeshRenderer);
-                }
-            }
-            return involvedRenderers;
+            return this.isGroundEffectTypeToRenderChanged;
         }
 
-        public List<GroundEffectType> GroundEffectTypeToRender(List<GroundEffectType> affectedGroundEffectsType)
+        public List<GroundEffectType> GroundEffectTypeToRender()
         {
-            List<GroundEffectType> involvedGroundEffectType = new List<GroundEffectType>();
-            foreach (var affectedGroundEffectType in affectedGroundEffectsType)
-            {
-                if (affectedGroundEffectType.MeshRenderer.isVisible
-                    && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
-                {
-                    involvedGroundEffectType.Add(affectedGroundEffectType);
-                }
-            }
-            return involvedGroundEffectType;
+            return this.groundEffectTypesToRender;
         }
-
-
-
-
     }
 
 }

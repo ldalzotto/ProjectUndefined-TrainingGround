@@ -10,28 +10,39 @@ namespace CoreGame
         private List<T> computeBufferData;
 
         private BufferReAllocateStrategy BufferReAllocateStrategy;
-        private List<Material> materials;
         private string materialPropertyName;
         private string materialCountPropertyName;
         private int objectByteSize;
 
+        private AbstractDynamicComputeBufferManagerSetter<T> AbstractDynamicComputeBufferManagerSetter;
+
         public DynamicComputeBufferManager(int objectByteSize, string materialPropertyName, string materialCountPropertyName, List<Material> materials, BufferReAllocateStrategy BufferReAllocateStrategy = BufferReAllocateStrategy.NONE, ComputeBufferType ComputeBufferType = ComputeBufferType.Default)
+        {
+            this.CommonInit(objectByteSize, materialPropertyName, materialCountPropertyName, BufferReAllocateStrategy, ComputeBufferType);
+            this.AbstractDynamicComputeBufferManagerSetter = new MaterialDynamicComputeBufferManagerSetter<T>(materials);
+            this.AbstractDynamicComputeBufferManagerSetter.SetBuffer(this.customComputeBuffer, this.materialPropertyName);
+        }
+
+        public DynamicComputeBufferManager(int objectByteSize, string materialPropertyName, string materialCountPropertyName, MaterialPropertyBlock MaterialPropertyBlock, BufferReAllocateStrategy BufferReAllocateStrategy = BufferReAllocateStrategy.NONE, ComputeBufferType ComputeBufferType = ComputeBufferType.Default)
+        {
+            this.CommonInit(objectByteSize, materialPropertyName, materialCountPropertyName, BufferReAllocateStrategy, ComputeBufferType);
+            this.AbstractDynamicComputeBufferManagerSetter = new MaterialPropertyDynamicComputeBufferManagerSetter<T>(MaterialPropertyBlock);
+            this.AbstractDynamicComputeBufferManagerSetter.SetBuffer(this.customComputeBuffer, this.materialPropertyName);
+        }
+
+        private void CommonInit(int objectByteSize, string materialPropertyName, string materialCountPropertyName, BufferReAllocateStrategy BufferReAllocateStrategy, ComputeBufferType ComputeBufferType)
         {
             this.objectByteSize = objectByteSize;
             this.materialPropertyName = materialPropertyName;
             this.materialCountPropertyName = materialCountPropertyName;
-            this.materials = materials;
+
             this.BufferReAllocateStrategy = BufferReAllocateStrategy;
 
             this.customComputeBuffer = new ComputeBuffer(1, objectByteSize, ComputeBufferType);
             this.computeBufferData = new List<T>();
-            foreach (var material in this.materials)
-            {
-                material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
-            }
         }
 
-        public void Tick(float d, Action<List<T>> bufferDataSetter)
+        public void Tick(Action<List<T>> bufferDataSetter)
         {
             if (this.customComputeBuffer != null && this.customComputeBuffer.IsValid())
             {
@@ -45,20 +56,12 @@ namespace CoreGame
                     {
                         this.Dispose();
                         this.customComputeBuffer = new ComputeBuffer(this.computeBufferData.Count, this.objectByteSize);
-                        foreach (var material in this.materials)
-                        {
-                            material.SetBuffer(this.materialPropertyName, this.customComputeBuffer);
-                        }
+                        this.AbstractDynamicComputeBufferManagerSetter.SetBuffer(this.customComputeBuffer, this.materialPropertyName);
                     }
                 }
 
-                if (!string.IsNullOrEmpty(this.materialCountPropertyName))
-                {
-                    foreach (var material in this.materials)
-                    {
-                        material.SetFloat(this.materialCountPropertyName, this.computeBufferData.Count);
-                    }
-                }
+                this.AbstractDynamicComputeBufferManagerSetter.SetCounter(this.computeBufferData, this.materialCountPropertyName);
+
                 this.customComputeBuffer.SetData(this.computeBufferData);
             }
 
@@ -76,4 +79,67 @@ namespace CoreGame
         SUPERIOR_ONLY = 1
     }
 
+    abstract class AbstractDynamicComputeBufferManagerSetter<T> where T : struct
+    {
+        public abstract void SetBuffer(ComputeBuffer computeBuffer, string bufferPrepertyName);
+        public abstract void SetCounter(List<T> computeBufferData, string countPrepertyName);
+    }
+
+    class MaterialDynamicComputeBufferManagerSetter<T> : AbstractDynamicComputeBufferManagerSetter<T> where T : struct
+    {
+        private List<Material> materials;
+
+        public MaterialDynamicComputeBufferManagerSetter(List<Material> materials)
+        {
+            this.materials = materials;
+        }
+
+        public override void SetBuffer(ComputeBuffer computeBuffer, string bufferPrepertyName)
+        {
+            if (!string.IsNullOrEmpty(bufferPrepertyName))
+            {
+                foreach (var material in this.materials)
+                {
+                    material.SetBuffer(bufferPrepertyName, computeBuffer);
+                }
+            }
+        }
+
+        public override void SetCounter(List<T> computeBufferData, string countPrepertyName)
+        {
+            if (!string.IsNullOrEmpty(countPrepertyName))
+            {
+                foreach (var material in this.materials)
+                {
+                    material.SetInt(countPrepertyName, computeBufferData.Count);
+                }
+            }
+        }
+    }
+
+    class MaterialPropertyDynamicComputeBufferManagerSetter<T> : AbstractDynamicComputeBufferManagerSetter<T> where T : struct
+    {
+        private MaterialPropertyBlock MaterialPropertyBlock;
+
+        public MaterialPropertyDynamicComputeBufferManagerSetter(MaterialPropertyBlock materialPropertyBlock)
+        {
+            MaterialPropertyBlock = materialPropertyBlock;
+        }
+
+        public override void SetBuffer(ComputeBuffer computeBuffer, string bufferPrepertyName)
+        {
+            if (!string.IsNullOrEmpty(bufferPrepertyName))
+            {
+                this.MaterialPropertyBlock.SetBuffer(bufferPrepertyName, computeBuffer);
+            }
+        }
+
+        public override void SetCounter(List<T> computeBufferData, string countPrepertyName)
+        {
+            if (!string.IsNullOrEmpty(countPrepertyName))
+            {
+                this.MaterialPropertyBlock.SetFloat(countPrepertyName, computeBufferData.Count);
+            }
+        }
+    }
 }
