@@ -1,5 +1,6 @@
 using CoreGame;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -44,6 +45,14 @@ namespace RTPuzzle
         {
             this.ObstacleListenerChangePositionTracker.Tick();
         }
+
+        #region Data Retrieval
+        public List<FrustumPointsPositions> GetCalculatedFrustums()
+        {
+            return this.ObstacleFrustumCalculationManager.GetResults(this).ConvertAll(obstacleFrustumCalculation => obstacleFrustumCalculation.CalculatedFrustumPositions)
+                    .SelectMany(r => r).ToList();
+        }
+        #endregion
 
         #region Logical Conditions
         public bool HasPositionChanged()

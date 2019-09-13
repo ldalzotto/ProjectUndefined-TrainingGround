@@ -79,6 +79,7 @@ namespace RTPuzzle
         {
             this.commandBuffer.Clear();
 
+            /*
             foreach (var listActiveInRangeTrackersPerId in this.activeInRangeTrackers)
             {
                 var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[listActiveInRangeTrackersPerId.Key].InRangeEffectMaterial;
@@ -90,6 +91,7 @@ namespace RTPuzzle
                     }
                 }
             }
+            */
         }
 
     }

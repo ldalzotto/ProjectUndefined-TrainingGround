@@ -38,6 +38,10 @@ namespace RTPuzzle
         {
             return this.calculationResults[ObstacleListener][SquareObstacle];
         }
+        public List<SquareObstacleFrustumCalculationResult> GetResults(ObstacleListener ObstacleListener)
+        {
+            return this.calculationResults[ObstacleListener].Values.ToList();
+        }
         #endregion
 
         #region External Events

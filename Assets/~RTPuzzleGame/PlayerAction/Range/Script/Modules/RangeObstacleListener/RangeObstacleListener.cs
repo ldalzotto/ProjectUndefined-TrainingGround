@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoreGame;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -45,6 +47,13 @@ namespace RTPuzzle
         public void OnRangeObstacleListenerDestroyed(RangeType rangeType)
         {
             this.obstacleListener.OnObstacleListenerDestroyed();
+        }
+        #endregion
+
+        #region Data Retrieval
+        public List<FrustumPointsPositions> GetCalculatedFrustums()
+        {
+            return this.obstacleListener.GetCalculatedFrustums();
         }
         #endregion
     }

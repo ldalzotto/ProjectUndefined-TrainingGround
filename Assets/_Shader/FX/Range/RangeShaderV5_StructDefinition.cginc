@@ -8,12 +8,6 @@ struct CircleRangeBufferData {
 	int OccludedByFrustums;
 };
 
-struct RangeExecutionOrderBufferData
-{
-	int RangeType;
-	int Index;
-};
-
 struct BoxRangeBufferData
 {
 	float3 Forward;
@@ -69,9 +63,4 @@ struct FrustumBufferData
 	float3 FC8;
 };
 
-struct RangeToFrustumBufferLink {
-	int RangeIndex;
-	int RangeType;
-	int FrustumIndex;
-};
 #endif

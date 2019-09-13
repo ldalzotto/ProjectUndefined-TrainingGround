@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace Tests
-{
+{/*
     public class GroundEffectManagerTest : AbstractPuzzleSceneTest
     {
         [UnityTest]
@@ -99,5 +99,5 @@ namespace Tests
         }
 
     }
-
+    */
 }
