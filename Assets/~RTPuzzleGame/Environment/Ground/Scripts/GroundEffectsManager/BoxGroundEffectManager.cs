@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -10,12 +11,22 @@ namespace RTPuzzle
 
         public BoxRangeBufferData ToBoxBuffer()
         {
+            var BoxRangeType = (BoxRangeType)this.GetAssociatedRangeObject().RangeType;
+            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(BoxRangeType.BoxCollider);
             var boxRangeBufferData = new BoxRangeBufferData();
-            boxRangeBufferData.Forward = this.GetAssociatedRangeObject().transform.forward;
-            boxRangeBufferData.Up = this.GetAssociatedRangeObject().transform.up;
-            boxRangeBufferData.Right = this.GetAssociatedRangeObject().transform.right;
-            boxRangeBufferData.Center = this.GetAssociatedRangeObject().RangeType.GetCenterWorldPos();
-            boxRangeBufferData.LocalSize = ((BoxRangeType)this.GetAssociatedRangeObject().RangeType).LocalSize;
+
+            boxRangeBufferData.FC1 = boxFrustum.FC1;
+            boxRangeBufferData.FC2 = boxFrustum.FC2;
+            boxRangeBufferData.FC3 = boxFrustum.FC3;
+            boxRangeBufferData.FC4 = boxFrustum.FC4;
+            boxRangeBufferData.FC5 = boxFrustum.FC5;
+
+            boxRangeBufferData.normal1 = boxFrustum.normal1;
+            boxRangeBufferData.normal2 = boxFrustum.normal2;
+            boxRangeBufferData.normal3 = boxFrustum.normal3;
+            boxRangeBufferData.normal4 = boxFrustum.normal4;
+            boxRangeBufferData.normal5 = boxFrustum.normal5;
+            boxRangeBufferData.normal6 = boxFrustum.normal6;
 
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
@@ -33,17 +44,24 @@ namespace RTPuzzle
 
     public struct BoxRangeBufferData
     {
-        public Vector3 Forward;
-        public Vector3 Up;
-        public Vector3 Right;
-        public Vector3 Center;
-        public Vector3 LocalSize;
+        public Vector3 FC1;
+        public Vector3 FC2;
+        public Vector3 FC3;
+        public Vector3 FC4;
+        public Vector3 FC5;
+
+        public Vector3 normal1;
+        public Vector3 normal2;
+        public Vector3 normal3;
+        public Vector3 normal4;
+        public Vector3 normal5;
+        public Vector3 normal6;
 
         public Vector4 AuraColor;
 
         public static int GetByteSize()
         {
-            return ((5 * 3) + 4 ) * sizeof(float);
+            return ((11 * 3) + 4) * sizeof(float);
         }
     }
 

@@ -6,11 +6,10 @@
 		_RangeMixFactor("Range Mix Factor", Range(0.0, 1.0)) = 0.5
 	}
 
-	CGINCLUDE
-
+	HLSLINCLUDE
 		#include "UnityCG.cginc"
-		#include "RangeShaderV5_StructDefinition.cginc"
-		#include "RangeShaderV5_Calculations.cginc"
+		#include "RangeShaderV5_StructDefinition.hlsl"
+		#include "RangeShaderV5_Calculations.hlsl"
 
 	    struct appdata
 		{
@@ -44,7 +43,7 @@
 			o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 			return o;
 		}
-	ENDCG
+	ENDHLSL
 
 	SubShader
 	{
@@ -55,7 +54,7 @@
 			Name "SphereBuffer"
 			ZWrite Off
 			Blend One One
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -69,7 +68,15 @@
 				float calcDistance = abs(distance(worldPos, rangeBuffer.CenterWorldPosition));
 				fixed4 newCol = rangeBuffer.AuraColor * (1 - step(rangeBuffer.Radius, calcDistance));
 				newCol = saturate(newCol) * _AlbedoBoost;
-				computeCol = lerp(computeCol, newCol, _RangeMixFactor * (calcDistance <= rangeBuffer.Radius) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustumV2(worldPos)) || (rangeBuffer.OccludedByFrustums == 0)));
+
+				int isInside = (calcDistance <= rangeBuffer.Radius);
+				if (isInside) {
+					if (rangeBuffer.OccludedByFrustums) {
+						isInside = !PointIsOccludedByFrustumV2(worldPos);
+					}
+				}
+
+				computeCol = lerp(computeCol, newCol, _RangeMixFactor * isInside);
 
 				if (computeCol.a == 0) {
 					discard;
@@ -77,7 +84,7 @@
 
 				return saturate(computeCol);
 			}
-			ENDCG
+			ENDHLSL
 		}
 
 		Pass
@@ -85,7 +92,7 @@
 			Name "BoxBuffer"
 			ZWrite Off
 			Blend One One
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -97,7 +104,7 @@
 				BoxRangeBufferData rangeBuffer = BoxRangeBuffer[0];
 				fixed4 newCol = rangeBuffer.AuraColor;
 				newCol = saturate(newCol) * _AlbedoBoost;
-				computeCol = lerp(computeCol, newCol, _RangeMixFactor * BoxIntersectsPoint(rangeBuffer, worldPos));
+				computeCol = lerp(computeCol, newCol, _RangeMixFactor *  PointInsideFrustumV2(worldPos, rangeBuffer));
 
 				if (computeCol.a == 0) {
 					discard;
@@ -105,7 +112,7 @@
 
 				return saturate(computeCol);
 			}
-		ENDCG
+		ENDHLSL
 		}
 
 		Pass
@@ -113,7 +120,7 @@
 			Name "FrustumBuffer"
 			ZWrite Off
 			Blend One One
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -125,7 +132,15 @@
 				FrustumRangeBufferData rangeBuffer = FrustumRangeBuffer[0];
 				fixed4 newCol = rangeBuffer.AuraColor;
 				newCol = saturate(newCol) * _AlbedoBoost;
-				computeCol = lerp(computeCol, newCol, _RangeMixFactor * PointInsideFrustumV2(worldPos, rangeBuffer) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustumV2(worldPos)) || (rangeBuffer.OccludedByFrustums == 0)));
+
+				int isInside = PointInsideFrustumV2(worldPos, rangeBuffer);
+				if (isInside) {
+					if (rangeBuffer.OccludedByFrustums) {
+						isInside = !PointIsOccludedByFrustumV2(worldPos);
+					}
+				}
+
+				computeCol = lerp(computeCol, newCol, _RangeMixFactor * isInside);
 
 				if (computeCol.a == 0) {
 					discard;
@@ -133,7 +148,7 @@
 
 				return saturate(computeCol);
 			}
-		ENDCG
+		ENDHLSL
 		}
 
 		Pass
@@ -141,7 +156,7 @@
 			Name "RoundedFrustumBuffer"
 			ZWrite Off
 			Blend One One
-			CGPROGRAM
+			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -155,7 +170,18 @@
 				float calcDistance = abs(distance(worldPos, rangeBuffer.CenterWorldPosition));
 				fixed4 newCol = rangeBuffer.AuraColor;
 				newCol = newCol * _AlbedoBoost;
-				computeCol = lerp(computeCol, newCol, _RangeMixFactor * (calcDistance <= rangeBuffer.RangeRadius) * PointInsideFrustumV2(worldPos, rangeBuffer) * ((rangeBuffer.OccludedByFrustums == 1 && !PointIsOccludedByFrustumV2(worldPos)) || (rangeBuffer.OccludedByFrustums == 0)));
+
+				int isInside = (calcDistance <= rangeBuffer.RangeRadius);
+				if (isInside) {
+					isInside = PointInsideFrustumV2(worldPos, rangeBuffer);
+					if (isInside) {
+						if (rangeBuffer.OccludedByFrustums) {
+							isInside = !PointIsOccludedByFrustumV2(worldPos);
+						}
+					}
+				}
+				
+				computeCol = lerp(computeCol, newCol, _RangeMixFactor * isInside);
 
 				if (computeCol.a == 0) {
 					discard;
@@ -163,7 +189,7 @@
 
 				return saturate(computeCol);
 			}
-		ENDCG
+		ENDHLSL
 		}
 	}
 	

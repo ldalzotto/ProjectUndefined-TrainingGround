@@ -20,12 +20,12 @@ namespace CoreGame
             ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
             //Face intersection
-            return FaceIntersectSphere(BC6, BC8, BC5, BC7, SphereWorldPosition, SphereRadius)
-                || FaceIntersectSphere(BC2, BC4, BC1, BC3, SphereWorldPosition, SphereRadius)
-                || FaceIntersectSphere(BC6, BC8, BC2, BC4, SphereWorldPosition, SphereRadius)
-                || FaceIntersectSphere(BC5, BC7, BC1, BC3, SphereWorldPosition, SphereRadius)
+            return FaceIntersectSphere(BC6, BC7, BC5, BC8, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC2, BC3, BC1, BC4, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC6, BC7, BC2, BC3, SphereWorldPosition, SphereRadius)
+                || FaceIntersectSphere(BC5, BC8, BC1, BC4, SphereWorldPosition, SphereRadius)
                 || FaceIntersectSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
-                || FaceIntersectSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
+                || FaceIntersectSphere(BC7, BC3, BC8, BC4, SphereWorldPosition, SphereRadius);
         }
         public static bool BoxEntirelyContainedInSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
         {
@@ -33,12 +33,12 @@ namespace CoreGame
             // -> Also, order of faces can be sorted by distance check.
             ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
             //Face contains
-            return FaceEntirelyContainedInSphere(BC6, BC8, BC5, BC7, SphereWorldPosition, SphereRadius)
-                || FaceEntirelyContainedInSphere(BC2, BC4, BC1, BC3, SphereWorldPosition, SphereRadius)
-                || FaceEntirelyContainedInSphere(BC6, BC8, BC2, BC4, SphereWorldPosition, SphereRadius)
-                || FaceEntirelyContainedInSphere(BC5, BC7, BC1, BC3, SphereWorldPosition, SphereRadius)
+            return FaceEntirelyContainedInSphere(BC6, BC7, BC5, BC8, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC2, BC3, BC1, BC4, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC6, BC7, BC2, BC3, SphereWorldPosition, SphereRadius)
+                || FaceEntirelyContainedInSphere(BC5, BC8, BC1, BC4, SphereWorldPosition, SphereRadius)
                 || FaceEntirelyContainedInSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
-                || FaceEntirelyContainedInSphere(BC8, BC4, BC7, BC3, SphereWorldPosition, SphereRadius);
+                || FaceEntirelyContainedInSphere(BC7, BC3, BC8, BC4, SphereWorldPosition, SphereRadius);
         }
         #endregion
 
@@ -176,9 +176,9 @@ namespace CoreGame
         {
             ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
-            if (!LineFrustumIntersection(BC1, BC2, frustumPoints) && !LineFrustumIntersection(BC2, BC3, frustumPoints) && !LineFrustumIntersection(BC3, BC4, frustumPoints) && !LineFrustumIntersection(BC4, BC1, frustumPoints)
-                && !LineFrustumIntersection(BC1, BC5, frustumPoints) && !LineFrustumIntersection(BC2, BC6, frustumPoints) && !LineFrustumIntersection(BC4, BC8, frustumPoints) && !LineFrustumIntersection(BC3, BC7, frustumPoints)
-                && !LineFrustumIntersection(BC8, BC7, frustumPoints) && !LineFrustumIntersection(BC7, BC6, frustumPoints) && !LineFrustumIntersection(BC6, BC5, frustumPoints) && !LineFrustumIntersection(BC5, BC8, frustumPoints))
+            if (!LineFrustumIntersection(BC1, BC2, frustumPoints) && !LineFrustumIntersection(BC2, BC4, frustumPoints) && !LineFrustumIntersection(BC4, BC3, frustumPoints) && !LineFrustumIntersection(BC3, BC1, frustumPoints)
+                && !LineFrustumIntersection(BC1, BC5, frustumPoints) && !LineFrustumIntersection(BC2, BC6, frustumPoints) && !LineFrustumIntersection(BC3, BC7, frustumPoints) && !LineFrustumIntersection(BC4, BC8, frustumPoints)
+                && !LineFrustumIntersection(BC7, BC8, frustumPoints) && !LineFrustumIntersection(BC8, BC6, frustumPoints) && !LineFrustumIntersection(BC6, BC5, frustumPoints) && !LineFrustumIntersection(BC5, BC7, frustumPoints))
             {
                 return false;
             }
@@ -272,6 +272,15 @@ namespace CoreGame
             return true;
         }
 
+        /*
+   *     C5----C6
+   *    / |    /|
+   *   C1----C2 |
+   *   |  C8  | C7   
+   *   | /    |/     C3->C7  Forward
+   *   C4----C3     
+   */
+
         public static void ExtractBoxColliderWorldPoints(BoxCollider boxCollider, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
         {
             Vector3 diagDirection = Vector3.zero;
@@ -283,10 +292,10 @@ namespace CoreGame
             diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
             C2 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
             C3 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
             C4 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
             diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
@@ -295,12 +304,18 @@ namespace CoreGame
             diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
             C6 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
             C7 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
-            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
             C8 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
 
+        }
+
+        public static FrustumPointsPositions ConvertBoxColliderToFrustumPoints(BoxCollider boxCollider)
+        {
+            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 FC1, out Vector3 FC2, out Vector3 FC3, out Vector3 FC4, out Vector3 FC5, out Vector3 FC6, out Vector3 FC7, out Vector3 FC8);
+            return new FrustumPointsPositions(FC1, FC2, FC3, FC4, FC5, FC6, FC7, FC8);
         }
 
     }

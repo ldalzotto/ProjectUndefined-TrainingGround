@@ -207,7 +207,6 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
-    <Compile Include="Assets\~CoreGame\Math\FrustumPointsLocalPositions.cs" />
     <Compile Include="Assets\~CoreGame\Math\FrustumPointsPositions.cs" />
     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />
@@ -261,7 +260,7 @@
     <Compile Include="Assets\~CoreGame\UI\Layout\Animated\InOutLayoutCellAnimation.cs" />
     <Compile Include="Assets\~CoreGame\UI\UILayoutHelper.cs" />
     <None Include="Assets\_Shader\FX\InteractionRing\InteractionRingShader.shader" />
-    <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.cginc" />
+    <None Include="Assets\_Shader\FX\Range\RangeShaderV5_Calculations.hlsl" />
     <None Include="Assets\_Shader\Common\VertexLit.shader" />
     <None Include="Assets\_Shader\Wave\WaveMovementV2.cginc" />
     <None Include="Assets\_Shader\Common\VertexUnlit.shader" />
@@ -277,7 +276,7 @@
     <None Include="Assets\_Shader\FX\Range\InsideRange\InsideRangeShader.shader" />
     <None Include="Assets\_Shader\Common\VertexUnlitTransparent.shader" />
     <None Include="Assets\_Shader\Common\FragmentFlatShade.cginc" />
-    <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.cginc" />
+    <None Include="Assets\_Shader\FX\Range\RangeShaderV5_StructDefinition.hlsl" />
     <None Include="Assets\_Shader\WaterV2\WaterWaveMovement.cginc" />
     <None Include="Assets\~CoreGame\SelectableObjectsManager\Textures\SelectedRingIconShader.shader" />
     <None Include="Assets\_Shader\FX\Smoke\SmokeShaderParticles.shader" />

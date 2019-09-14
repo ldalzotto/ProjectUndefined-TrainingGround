@@ -212,7 +212,6 @@ namespace RTPuzzle
         {
             if (this.GroundEffectManager.MeshMustBeRebuild() || this.combinedMesh == null)
             {
-                Debug.Log("BUILD MESH");
                 this.combinedMesh = new Mesh();
                 this.combinedMesh.CombineMeshes(
                     this.GroundEffectManager.GroundEffectTypeToRender().ConvertAll(groundEffectType => new CombineInstance() { mesh = groundEffectType.GroundEffectMesh, transform = groundEffectType.transform.localToWorldMatrix }).ToArray(),
