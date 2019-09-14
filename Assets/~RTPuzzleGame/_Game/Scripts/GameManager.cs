@@ -56,7 +56,6 @@ namespace RTPuzzle
             base.OnStart();
 
             Coroutiner.Instance.StartCoroutine(this.EndOfFixedUpdate());
-            Coroutiner.Instance.StartCoroutine(this.EndOfFrameUpdate());
 
             InventoryMenu = AInventoryMenu.FindCurrentInstance();
             InventoryMenu.gameObject.SetActive(false);
@@ -155,6 +154,8 @@ namespace RTPuzzle
 
                     CameraMovementManager.Tick(d);
 
+                    RangeTypeContainer.Tick(d);
+
                     ObstaclesListenerManager.Tick(d);
                     SquareObstaclesManager.Tick(d);
                     ObstacleFrustumCalculationManager.Tick(d);
@@ -166,8 +167,6 @@ namespace RTPuzzle
 
                     NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
                     InteractiveObjectContainer.TickAlways(d);
-
-                    RangeTypeContainer.Tick(d);
 
                     if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
                     {
@@ -227,15 +226,6 @@ namespace RTPuzzle
             }
 
             yield return this.EndOfFixedUpdate();
-        }
-
-        private IEnumerator EndOfFrameUpdate()
-        {
-            yield return new WaitForEndOfFrame();
-
-            this.RangeTypeContainer.EndOfFrameTick();
-
-            yield return this.EndOfFrameUpdate();
         }
 
         private void OnDrawGizmos()

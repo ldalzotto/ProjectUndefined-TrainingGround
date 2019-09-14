@@ -95,12 +95,7 @@ namespace RTPuzzle
         {
             this.rangeType.Tick(d);
         }
-
-        public void EndOfFrameTick()
-        {
-            this.rangeType.EndOfFrameTick();
-        }
-
+        
         #region Internal Events
         public void OnRangeTriggerEnter(Collider other)
         {

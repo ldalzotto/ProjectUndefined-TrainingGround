@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public abstract class AbstractFrustumRangeType : RangeType
+    public abstract class AbstractFrustumRangeType : RangeType, TransformChangeListener
     {
         [SerializeField]
         protected FrustumV2 frustum;
 
         protected BoxCollider frustumBoundingBox;
 
+        private TransformChangeListenerManager positionChangeListener;
         protected Nullable<FrustumPointsPositions> frustumPointsWorldPositions;
 
         public FrustumPointsPositions GetFrustumPointsWorldPositions()
@@ -41,12 +42,18 @@ namespace RTPuzzle
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
+            this.positionChangeListener = new TransformChangeListenerManager(this.transform, true, true, this);
             this.frustumBoundingBox = GetComponent<BoxCollider>();
             this.frustumBoundingBox.center = new Vector3(0, 0, this.frustum.F2.FaceOffsetFromCenter.z / 4f);
             this.frustumBoundingBox.size = new Vector3(Mathf.Max(this.frustum.F1.Width, this.frustum.F2.Width), Math.Max(this.frustum.F1.Height, this.frustum.F2.Height), this.frustum.F2.FaceOffsetFromCenter.z / 2f);
         }
 
-        public override void EndOfFrameTick()
+        public override void Tick(float d)
+        {
+            this.positionChangeListener.Tick();
+        }
+
+        private void ClearFrustumWorldPositions()
         {
             this.frustumPointsWorldPositions = null;
         }
@@ -65,6 +72,16 @@ namespace RTPuzzle
         {
             this.frustum.SetCalculationDataForFaceBasedCalculation(this.transform.position, this.transform.rotation, this.transform.lossyScale);
             this.frustumPointsWorldPositions = this.frustum.CalculateFrustumPointsWorldPosV2();
+        }
+
+        public void onPositionChange()
+        {
+            this.ClearFrustumWorldPositions();
+        }
+
+        public void onRotationChange()
+        {
+            this.ClearFrustumWorldPositions();
         }
     }
 }

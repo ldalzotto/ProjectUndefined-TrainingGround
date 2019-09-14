@@ -8,33 +8,25 @@ namespace RTPuzzle
 {
     public class RangeTypeObjectContainer : MonoBehaviour
     {
-        private Dictionary<RangeTypeID, RangeTypeObject> rangeTypes = new Dictionary<RangeTypeID, RangeTypeObject>();
+        private HashSet<RangeTypeObject> rangeTypes = new HashSet<RangeTypeObject>();
 
         #region External events
         public void AddRange(RangeTypeObject rangeTypeObject)
         {
-            this.rangeTypes[rangeTypeObject.RangeType.RangeTypeID] = rangeTypeObject;
+            this.rangeTypes.Add(rangeTypeObject);
         }
 
         public void RemoveRange(RangeTypeObject rangeTypeObject)
         {
-            this.rangeTypes.Remove(rangeTypeObject.RangeType.RangeTypeID);
+            this.rangeTypes.Remove(rangeTypeObject);
         }
         #endregion
 
         public void Tick(float d)
         {
-            foreach (var rangeType in rangeTypes.Values)
+            foreach (var rangeType in rangeTypes)
             {
                 rangeType.Tick(d);
-            }
-        }
-
-        public void EndOfFrameTick()
-        {
-            foreach (var rangeType in rangeTypes.Values)
-            {
-                rangeType.EndOfFrameTick();
             }
         }
     }
