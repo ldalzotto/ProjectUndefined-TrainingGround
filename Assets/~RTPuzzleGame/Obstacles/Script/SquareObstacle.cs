@@ -133,22 +133,22 @@ namespace RTPuzzle
             {
                 faceFrustum.SetCalculationDataForPointProjection(obstacleCalucation.WorldPositionStartAngleDefinition, obstacleCalucation.ObstaclePosition, obstacleCalucation.ObstacleRotation, obstacleCalucation.ObstacleLossyScale);
 
-                faceFrustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
+                var FrustumPointsPositions = faceFrustum.CalculateFrustumPointsWorldPosV2();
 
-                Vector3 frontFaceNormal = Vector3.Cross(C2 - C1, C4 - C1).normalized;
+                Vector3 frontFaceNormal = Vector3.Cross(FrustumPointsPositions.FC2 - FrustumPointsPositions.FC1, FrustumPointsPositions.FC4 - FrustumPointsPositions.FC1).normalized;
 
                 //We filter faceFrustums that are not facing the initial calculation point -> they are useless because always occluded by front faces
-                if (Vector3.Dot(frontFaceNormal, C1 - obstacleCalucation.WorldPositionStartAngleDefinition) < 0)
+                if (Vector3.Dot(frontFaceNormal, FrustumPointsPositions.FC1 - obstacleCalucation.WorldPositionStartAngleDefinition) < 0)
                 {
                     continue;
                 }
 
-                frustumPointsWorldPositions.Add(new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8));
+                frustumPointsWorldPositions.Add(FrustumPointsPositions);
 #if UNITY_EDITOR
                 if (this.DebugGizmo)
                 {
-                    FrustumToDisplay.Add(new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8));
-                    this.FrustumFacesNormal[faceFrustum] = new NormalGizmo(frontFaceNormal, C1);
+                    FrustumToDisplay.Add(FrustumPointsPositions);
+                    this.FrustumFacesNormal[faceFrustum] = new NormalGizmo(frontFaceNormal, FrustumPointsPositions.FC1);
                 }
 #endif
             }

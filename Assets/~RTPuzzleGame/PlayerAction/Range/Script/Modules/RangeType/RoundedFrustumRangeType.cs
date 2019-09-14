@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using UnityEngine;
-using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,7 +10,7 @@ namespace RTPuzzle
     public class RoundedFrustumRangeType : AbstractFrustumRangeType
     {
         private float rangeRadius;
-        
+
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
@@ -27,18 +26,18 @@ namespace RTPuzzle
         {
 
             var RoundedFrustumRangeBufferData = new RoundedFrustumRangeBufferData();
-            this.GetFrustumPointsWorldPositions();
-            RoundedFrustumRangeBufferData.FC1 = this.frustumPointsWorldPositions.FC1;
-            RoundedFrustumRangeBufferData.FC2 = this.frustumPointsWorldPositions.FC2;
-            RoundedFrustumRangeBufferData.FC3 = this.frustumPointsWorldPositions.FC3;
-            RoundedFrustumRangeBufferData.FC4 = this.frustumPointsWorldPositions.FC4;
-            RoundedFrustumRangeBufferData.FC5 = this.frustumPointsWorldPositions.FC5;
-            RoundedFrustumRangeBufferData.normal1 = this.frustumPointsWorldPositions.normal1;
-            RoundedFrustumRangeBufferData.normal2 = this.frustumPointsWorldPositions.normal2;
-            RoundedFrustumRangeBufferData.normal3 = this.frustumPointsWorldPositions.normal3;
-            RoundedFrustumRangeBufferData.normal4 = this.frustumPointsWorldPositions.normal4;
-            RoundedFrustumRangeBufferData.normal5 = this.frustumPointsWorldPositions.normal5;
-            RoundedFrustumRangeBufferData.normal6 = this.frustumPointsWorldPositions.normal6;
+            var frustumPointsWorldPositions = this.GetFrustumPointsWorldPositions();
+            RoundedFrustumRangeBufferData.FC1 = frustumPointsWorldPositions.FC1;
+            RoundedFrustumRangeBufferData.FC2 = frustumPointsWorldPositions.FC2;
+            RoundedFrustumRangeBufferData.FC3 = frustumPointsWorldPositions.FC3;
+            RoundedFrustumRangeBufferData.FC4 = frustumPointsWorldPositions.FC4;
+            RoundedFrustumRangeBufferData.FC5 = frustumPointsWorldPositions.FC5;
+            RoundedFrustumRangeBufferData.normal1 = frustumPointsWorldPositions.normal1;
+            RoundedFrustumRangeBufferData.normal2 = frustumPointsWorldPositions.normal2;
+            RoundedFrustumRangeBufferData.normal3 = frustumPointsWorldPositions.normal3;
+            RoundedFrustumRangeBufferData.normal4 = frustumPointsWorldPositions.normal4;
+            RoundedFrustumRangeBufferData.normal5 = frustumPointsWorldPositions.normal5;
+            RoundedFrustumRangeBufferData.normal6 = frustumPointsWorldPositions.normal6;
 
             RoundedFrustumRangeBufferData.RangeRadius = this.rangeRadius;
             RoundedFrustumRangeBufferData.CenterWorldPosition = this.transform.position;
@@ -48,9 +47,9 @@ namespace RTPuzzle
 
         public override bool IsInside(Vector3 worldPointComparison)
         {
-            return Vector3.Distance(this.transform.position, worldPointComparison) <= rangeRadius && Intersection.PointInsideFrustum(this.frustumPointsWorldPositions, worldPointComparison);
+            return Vector3.Distance(this.transform.position, worldPointComparison) <= rangeRadius && Intersection.PointInsideFrustum(this.GetFrustumPointsWorldPositions(), worldPointComparison);
         }
-        
+
         public override bool IsInside(BoxCollider boxCollider)
         {
             return Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider, this.transform.position, this.rangeRadius)

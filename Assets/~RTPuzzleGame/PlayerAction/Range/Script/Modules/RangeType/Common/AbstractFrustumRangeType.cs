@@ -11,29 +11,17 @@ namespace RTPuzzle
 
         protected BoxCollider frustumBoundingBox;
 
-        protected Nullable<FrustumPointsLocalPositions> frustumPointsLocalPositions;
         protected FrustumPointsPositions frustumPointsWorldPositions;
+        private int frustumCalculationFrame = 0;
 
         public FrustumPointsPositions GetFrustumPointsWorldPositions()
         {
-            if (!this.frustumPointsLocalPositions.HasValue)
+            if (Time.frameCount != this.frustumCalculationFrame)
             {
                 this.DoFrustumCalculation();
             }
-
-            this.frustumPointsWorldPositions = new FrustumPointsPositions(
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC1),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC2),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC3),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC4),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC5),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC6),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC7),
-                    this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC8)
-             );
             return this.frustumPointsWorldPositions;
         }
-
 
         public override void PopulateFromDefinition(RangeTypeDefinition RangeTypeDefinition)
         {
@@ -71,9 +59,9 @@ namespace RTPuzzle
 
         protected void DoFrustumCalculation()
         {
-            this.frustum.SetCalculationDataForFaceBasedCalculation(Vector3.zero, Quaternion.identity, Vector3.one);
-            this.frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-            this.frustumPointsLocalPositions = new FrustumPointsLocalPositions(C1, C2, C3, C4, C5, C6, C7, C8);
+            this.frustum.SetCalculationDataForFaceBasedCalculation(this.transform.position, this.transform.rotation, this.transform.lossyScale);
+            this.frustumPointsWorldPositions = this.frustum.CalculateFrustumPointsWorldPosV2();
+            this.frustumCalculationFrame = Time.frameCount;
         }
     }
 }

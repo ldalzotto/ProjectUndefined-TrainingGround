@@ -44,11 +44,10 @@ namespace CoreGame
 
         #region FRUSTUM<->POINT
 
+#warning Trigger frustum points recalculation
         public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
         {
-#warning PointInsideFrustum trigger frustum points recalculation
-            frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-            return PointInsideFrustumComputation(worldPositionPoint, C1, C2, C3, C4, C5, C6, C7, C8);
+            return PointInsideFrustumComputationV2(worldPositionPoint, frustum.CalculateFrustumPointsWorldPosV2());
         }
 
         public static bool PointInsideFrustum(FrustumPointsPositions FrustumPointsWorldPositions, Vector3 worldPositionPoint)
@@ -67,50 +66,7 @@ namespace CoreGame
              && (Vector3.Dot(FrustumPointsWorldPositions.normal6, worldPositionPoint - FrustumPointsWorldPositions.FC5) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal6, FrustumPointsWorldPositions.FC1 - FrustumPointsWorldPositions.FC5) > 0)
             ;
         }
-
-        [Obsolete("Use V2")]
-        private static bool PointInsideFrustumComputation(Vector3 worldPositionPoint, Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 C5, Vector3 C6, Vector3 C7, Vector3 C8)
-        {
-            bool pointInsideFrustum = false;
-
-            float crossSign = Mathf.Sign(Vector3.Dot(C5 - C1, Vector3.Cross(C2 - C1, C4 - C1)));
-            Vector3 normal = Vector3.zero;
-            normal = crossSign * Vector3.Cross(C2 - C1, C3 - C1);
-            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0) && (Vector3.Dot(normal, C5 - C1) > 0);
-
-            if (pointInsideFrustum)
-            {
-                normal = crossSign * Vector3.Cross(C5 - C1, C2 - C1);
-                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C1) >= 0) && (Vector3.Dot(normal, C4 - C1) > 0);
-
-                if (pointInsideFrustum)
-                {
-                    normal = crossSign * Vector3.Cross(C6 - C2, C3 - C2);
-                    pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C2) >= 0) && (Vector3.Dot(normal, C1 - C2) > 0);
-
-                    if (pointInsideFrustum)
-                    {
-                        normal = crossSign * Vector3.Cross(C7 - C3, C4 - C3);
-                        pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C3) >= 0) && (Vector3.Dot(normal, C2 - C3) > 0);
-
-                        if (pointInsideFrustum)
-                        {
-                            normal = crossSign * Vector3.Cross(C8 - C4, C1 - C4);
-                            pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C4) >= 0) && (Vector3.Dot(normal, C3 - C4) > 0);
-
-                            if (pointInsideFrustum)
-                            {
-                                normal = crossSign * Vector3.Cross(C8 - C5, C6 - C5);
-                                pointInsideFrustum = (Vector3.Dot(normal, worldPositionPoint - C5) >= 0) && (Vector3.Dot(normal, C1 - C5) > 0);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return pointInsideFrustum;
-        }
-
+        
         public static bool FaceIntersectSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
             bool planeIntersected = false;

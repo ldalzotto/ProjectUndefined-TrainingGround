@@ -16,16 +16,16 @@ namespace RTPuzzle
         public override void HandleDraw(Vector3 worldPosition, Quaternion worldRotation, Vector3 lossyScale)
         {
             this.frustum.SetCalculationDataForFaceBasedCalculation(worldPosition, worldRotation, lossyScale);
-            this.frustum.CalculateFrustumPoints(out Vector3 FC1, out Vector3 FC2, out Vector3 FC3, out Vector3 FC4, out Vector3 FC5, out Vector3 FC6, out Vector3 FC7, out Vector3 FC8);
+         var FrustumPointsPositions =   this.frustum.CalculateFrustumPointsWorldPosV2();
 
             var oldGizmoColor = Handles.color;
             Handles.color = MyColors.HotPink;
-            this.DrawFace(FC1, FC2, FC3, FC4);
-            this.DrawFace(FC1, FC5, FC6, FC2);
-            this.DrawFace(FC2, FC6, FC7, FC3);
-            this.DrawFace(FC3, FC7, FC8, FC4);
-            this.DrawFace(FC4, FC8, FC5, FC1);
-            this.DrawFace(FC5, FC6, FC7, FC8);
+            this.DrawFace(FrustumPointsPositions.FC1, FrustumPointsPositions.FC2, FrustumPointsPositions.FC3, FrustumPointsPositions.FC4);
+            this.DrawFace(FrustumPointsPositions.FC1, FrustumPointsPositions.FC5, FrustumPointsPositions.FC6, FrustumPointsPositions.FC2);
+            this.DrawFace(FrustumPointsPositions.FC2, FrustumPointsPositions.FC6, FrustumPointsPositions.FC7, FrustumPointsPositions.FC3);
+            this.DrawFace(FrustumPointsPositions.FC3, FrustumPointsPositions.FC7, FrustumPointsPositions.FC8, FrustumPointsPositions.FC4);
+            this.DrawFace(FrustumPointsPositions.FC4, FrustumPointsPositions.FC8, FrustumPointsPositions.FC5, FrustumPointsPositions.FC1);
+            this.DrawFace(FrustumPointsPositions.FC5, FrustumPointsPositions.FC6, FrustumPointsPositions.FC7, FrustumPointsPositions.FC8);
 
             Handles.DrawWireDisc(worldPosition, worldRotation * Vector3.up, this.frustum.F2.FaceOffsetFromCenter.z / 2f);
 

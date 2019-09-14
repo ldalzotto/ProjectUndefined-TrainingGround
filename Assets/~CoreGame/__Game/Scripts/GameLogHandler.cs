@@ -19,6 +19,8 @@ namespace CoreGame
 
                 string filePath = Application.persistentDataPath + "/GameLogs.txt";
 
+                Debug.Log(filePath);
+
                 GameLogHandler.m_FileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 m_StreamWriter = new StreamWriter(m_FileStream);
 

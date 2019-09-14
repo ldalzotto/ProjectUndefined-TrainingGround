@@ -17,20 +17,17 @@ namespace RTPuzzle
 
         public FrustumRangeBufferData GetFrustumRangeBufferData()
         {
-            if (!this.frustumPointsLocalPositions.HasValue)
-            {
-                this.DoFrustumCalculation();
-            }
+            var frustumPointsLocalPositions = this.GetFrustumPointsWorldPositions();
 
             var FrustumRangeBufferData = new FrustumRangeBufferData();
-            FrustumRangeBufferData.FC1 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC1);
-            FrustumRangeBufferData.FC2 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC2);
-            FrustumRangeBufferData.FC3 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC3);
-            FrustumRangeBufferData.FC4 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC4);
-            FrustumRangeBufferData.FC5 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC5);
-            FrustumRangeBufferData.FC6 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC6);
-            FrustumRangeBufferData.FC7 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC7);
-            FrustumRangeBufferData.FC8 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC8);
+            FrustumRangeBufferData.FC1 = this.transform.TransformPoint(frustumPointsLocalPositions.FC1);
+            FrustumRangeBufferData.FC2 = this.transform.TransformPoint(frustumPointsLocalPositions.FC2);
+            FrustumRangeBufferData.FC3 = this.transform.TransformPoint(frustumPointsLocalPositions.FC3);
+            FrustumRangeBufferData.FC4 = this.transform.TransformPoint(frustumPointsLocalPositions.FC4);
+            FrustumRangeBufferData.FC5 = this.transform.TransformPoint(frustumPointsLocalPositions.FC5);
+            FrustumRangeBufferData.FC6 = this.transform.TransformPoint(frustumPointsLocalPositions.FC6);
+            FrustumRangeBufferData.FC7 = this.transform.TransformPoint(frustumPointsLocalPositions.FC7);
+            FrustumRangeBufferData.FC8 = this.transform.TransformPoint(frustumPointsLocalPositions.FC8);
             return FrustumRangeBufferData;
         }
 
@@ -42,7 +39,7 @@ namespace RTPuzzle
 
         public override bool IsInside(Vector3 worldPointComparison)
         {
-            return Intersection.PointInsideFrustum(this.frustumPointsWorldPositions, worldPointComparison);
+            return Intersection.PointInsideFrustum(this.GetFrustumPointsWorldPositions(), worldPointComparison);
         }
 
 #if UNITY_EDITOR
