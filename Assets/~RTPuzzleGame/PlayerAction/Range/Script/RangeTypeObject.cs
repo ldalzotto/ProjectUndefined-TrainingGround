@@ -40,7 +40,7 @@ namespace RTPuzzle
 
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
-
+        
         public void Init(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData,
             RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
         {
@@ -94,6 +94,11 @@ namespace RTPuzzle
         public void Tick(float d)
         {
             this.rangeType.Tick(d);
+        }
+
+        public void EndOfFrameTick()
+        {
+            this.rangeType.EndOfFrameTick();
         }
 
         #region Internal Events

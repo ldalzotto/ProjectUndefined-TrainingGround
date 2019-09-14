@@ -11,16 +11,15 @@ namespace RTPuzzle
 
         protected BoxCollider frustumBoundingBox;
 
-        protected FrustumPointsPositions frustumPointsWorldPositions;
-        private int frustumCalculationFrame = 0;
+        protected Nullable<FrustumPointsPositions> frustumPointsWorldPositions;
 
         public FrustumPointsPositions GetFrustumPointsWorldPositions()
         {
-            if (Time.frameCount != this.frustumCalculationFrame)
+            if(this.frustumPointsWorldPositions == null || !this.frustumPointsWorldPositions.HasValue)
             {
                 this.DoFrustumCalculation();
             }
-            return this.frustumPointsWorldPositions;
+            return this.frustumPointsWorldPositions.Value;
         }
 
         public override void PopulateFromDefinition(RangeTypeDefinition RangeTypeDefinition)
@@ -47,6 +46,11 @@ namespace RTPuzzle
             this.frustumBoundingBox.size = new Vector3(Mathf.Max(this.frustum.F1.Width, this.frustum.F2.Width), Math.Max(this.frustum.F1.Height, this.frustum.F2.Height), this.frustum.F2.FaceOffsetFromCenter.z / 2f);
         }
 
+        public override void EndOfFrameTick()
+        {
+            this.frustumPointsWorldPositions = null;
+        }
+
         public override Vector3 GetCenterWorldPos()
         {
             return this.transform.position;
@@ -61,7 +65,6 @@ namespace RTPuzzle
         {
             this.frustum.SetCalculationDataForFaceBasedCalculation(this.transform.position, this.transform.rotation, this.transform.lossyScale);
             this.frustumPointsWorldPositions = this.frustum.CalculateFrustumPointsWorldPosV2();
-            this.frustumCalculationFrame = Time.frameCount;
         }
     }
 }

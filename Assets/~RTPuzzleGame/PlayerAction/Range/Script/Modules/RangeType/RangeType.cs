@@ -27,7 +27,7 @@ namespace RTPuzzle
         }
         
         public virtual void Tick(float d) { }
-
+        public virtual void EndOfFrameTick() { }
 #if UNITY_EDITOR
         public virtual void HandlesDraw() { }
 #endif
@@ -75,6 +75,7 @@ namespace RTPuzzle
         {
             return this.rangeTypeInherentConfigurationData != null;
         }
+
         #endregion
     }
 

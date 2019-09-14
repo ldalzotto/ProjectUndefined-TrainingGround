@@ -29,6 +29,14 @@ namespace RTPuzzle
                 rangeType.Tick(d);
             }
         }
+
+        public void EndOfFrameTick()
+        {
+            foreach (var rangeType in rangeTypes.Values)
+            {
+                rangeType.EndOfFrameTick();
+            }
+        }
     }
 
 }

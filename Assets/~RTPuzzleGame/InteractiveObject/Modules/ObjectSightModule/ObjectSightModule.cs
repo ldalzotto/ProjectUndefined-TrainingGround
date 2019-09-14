@@ -27,7 +27,8 @@ namespace RTPuzzle
 
         public void TickBeforeAIUpdate(float d)
         {
-            this.sightVisionRange.Tick(d);
+            //Ranges are update in container
+          //  this.sightVisionRange.Tick(d);
             this.AISightInteresectionManager.Tick(d, ref this.sightVisionRange);
         }
 
