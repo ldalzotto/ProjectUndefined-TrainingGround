@@ -31,16 +31,8 @@ int BoxIntersectsPoint(BoxRangeBufferData boxRangeBufferData, float3 pointWorldP
  *   C4----C3
  */
 
-int PointInsideFrustumV2(float3 comparisonPoint, float3 FC1, float3 FC2, float3 FC3, float3 FC4, float3 FC5, float3 FC6, float3 FC7, float3 FC8) {
-
-	float crossSign = sign(dot(FC5 - FC1, cross(FC2 - FC1, FC4 - FC1)));
-
-	float3 normal1 = crossSign * cross(FC2 - FC1, FC3 - FC1);
-	float3 normal2 = crossSign * cross(FC5 - FC1, FC2 - FC1);
-	float3 normal3 = crossSign * cross(FC6 - FC2, FC3 - FC2);
-	float3 normal4 = crossSign * cross(FC7 - FC3, FC4 - FC3);
-	float3 normal5 = crossSign * cross(FC8 - FC4, FC1 - FC4);
-	float3 normal6 = crossSign * cross(FC8 - FC5, FC6 - FC5);
+int PointInsideFrustumV2(float3 comparisonPoint, float3 FC1, float3 FC2, float3 FC3, float3 FC4, float3 FC5,
+				float3 normal1, float3 normal2, float3 normal3, float3 normal4, float3 normal5, float3 normal6) {
 
 	return ((dot(normal1, comparisonPoint - FC1) > 0) *
 			(dot(normal2, comparisonPoint - FC1) > 0) * 
@@ -53,17 +45,17 @@ int PointInsideFrustumV2(float3 comparisonPoint, float3 FC1, float3 FC2, float3 
 
 int PointInsideFrustumV2(float3 comparisonPoint, FrustumRangeBufferData frustumRangeBufferData) {
 	return PointInsideFrustumV2(comparisonPoint, frustumRangeBufferData.FC1, frustumRangeBufferData.FC2, frustumRangeBufferData.FC3, frustumRangeBufferData.FC4,
-		frustumRangeBufferData.FC5, frustumRangeBufferData.FC6, frustumRangeBufferData.FC7, frustumRangeBufferData.FC8);
+		frustumRangeBufferData.FC5, frustumRangeBufferData.normal1, frustumRangeBufferData.normal2, frustumRangeBufferData.normal3, frustumRangeBufferData.normal4, frustumRangeBufferData.normal5, frustumRangeBufferData.normal6);
 }
 
 int PointInsideFrustumV2(float3 comparisonPoint, RoundedFrustumRangeBufferData frustumBufferData) {
 	return PointInsideFrustumV2(comparisonPoint, frustumBufferData.FC1, frustumBufferData.FC2, frustumBufferData.FC3, frustumBufferData.FC4,
-		frustumBufferData.FC5, frustumBufferData.FC6, frustumBufferData.FC7, frustumBufferData.FC8);
+		frustumBufferData.FC5, frustumBufferData.normal1, frustumBufferData.normal2, frustumBufferData.normal3, frustumBufferData.normal4, frustumBufferData.normal5, frustumBufferData.normal6);
 }
 
 int PointInsideFrustumV2(float3 comparisonPoint, FrustumBufferData frustumBufferData) {
 	return PointInsideFrustumV2(comparisonPoint, frustumBufferData.FC1, frustumBufferData.FC2, frustumBufferData.FC3, frustumBufferData.FC4,
-		frustumBufferData.FC5, frustumBufferData.FC6, frustumBufferData.FC7, frustumBufferData.FC8);
+		frustumBufferData.FC5, frustumBufferData.normal1, frustumBufferData.normal2, frustumBufferData.normal3, frustumBufferData.normal4, frustumBufferData.normal5, frustumBufferData.normal6);
 }
 
 int PointIsOccludedByFrustumV2(float3 comparisonPoint) {

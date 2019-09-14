@@ -207,6 +207,7 @@
     <Compile Include="Assets\~CoreGame\LevelManagement\Scripts\LevelTransitionManager.cs" />
     <Compile Include="Assets\~CoreGame\LevelManagement\TransitionableLevelFX\Script\TransitionableLevelFXType.cs" />
     <Compile Include="Assets\~CoreGame\Log\MyLog.cs" />
+    <Compile Include="Assets\~CoreGame\Math\FrustumPointsLocalPositions.cs" />
     <Compile Include="Assets\~CoreGame\Math\FrustumPointsPositions.cs" />
     <Compile Include="Assets\~CoreGame\Math\Intersection.cs" />
     <Compile Include="Assets\~CoreGame\Math\QuaternionHelper.cs" />

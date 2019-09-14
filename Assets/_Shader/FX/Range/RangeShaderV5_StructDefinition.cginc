@@ -25,9 +25,13 @@ struct FrustumRangeBufferData
 	float3 FC3;
 	float3 FC4;
 	float3 FC5;
-	float3 FC6;
-	float3 FC7;
-	float3 FC8;
+
+	float3 normal1;
+	float3 normal2;
+	float3 normal3;
+	float3 normal4;
+	float3 normal5;
+	float3 normal6;
 
 	int OccludedByFrustums;
 	float4 AuraColor;
@@ -40,9 +44,13 @@ struct RoundedFrustumRangeBufferData
 	float3 FC3;
 	float3 FC4;
 	float3 FC5;
-	float3 FC6;
-	float3 FC7;
-	float3 FC8;
+
+	float3 normal1;
+	float3 normal2;
+	float3 normal3;
+	float3 normal4;
+	float3 normal5;
+	float3 normal6;
 
 	float RangeRadius;
 	float3 CenterWorldPosition;
@@ -61,6 +69,13 @@ struct FrustumBufferData
 	float3 FC6;
 	float3 FC7;
 	float3 FC8;
+
+	float3 normal1;
+	float3 normal2;
+	float3 normal3;
+	float3 normal4;
+	float3 normal5;
+	float3 normal6;
 };
 
 #endif

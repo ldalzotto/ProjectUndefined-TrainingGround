@@ -11,7 +11,7 @@ namespace RTPuzzle
 
         protected BoxCollider frustumBoundingBox;
 
-        protected Nullable<FrustumPointsPositions> frustumPointsLocalPositions;
+        protected Nullable<FrustumPointsLocalPositions> frustumPointsLocalPositions;
         protected FrustumPointsPositions frustumPointsWorldPositions;
 
         public FrustumPointsPositions GetFrustumPointsWorldPositions()
@@ -73,7 +73,7 @@ namespace RTPuzzle
         {
             this.frustum.SetCalculationDataForFaceBasedCalculation(Vector3.zero, Quaternion.identity, Vector3.one);
             this.frustum.CalculateFrustumPoints(out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8);
-            this.frustumPointsLocalPositions = new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8);
+            this.frustumPointsLocalPositions = new FrustumPointsLocalPositions(C1, C2, C3, C4, C5, C6, C7, C8);
         }
     }
 }

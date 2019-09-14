@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CoreGame
 {
@@ -52,10 +53,22 @@ namespace CoreGame
 
         public static bool PointInsideFrustum(FrustumPointsPositions FrustumPointsWorldPositions, Vector3 worldPositionPoint)
         {
-            return PointInsideFrustumComputation(worldPositionPoint, FrustumPointsWorldPositions.FC1, FrustumPointsWorldPositions.FC2, FrustumPointsWorldPositions.FC3
-                , FrustumPointsWorldPositions.FC4, FrustumPointsWorldPositions.FC5, FrustumPointsWorldPositions.FC6, FrustumPointsWorldPositions.FC7, FrustumPointsWorldPositions.FC8);
+            return PointInsideFrustumComputationV2(worldPositionPoint, FrustumPointsWorldPositions);
         }
 
+        private static bool PointInsideFrustumComputationV2(Vector3 worldPositionPoint, FrustumPointsPositions FrustumPointsWorldPositions)
+        {
+            return
+                (Vector3.Dot(FrustumPointsWorldPositions.normal1, worldPositionPoint - FrustumPointsWorldPositions.FC1) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal1, FrustumPointsWorldPositions.FC5 - FrustumPointsWorldPositions.FC1) > 0)
+             && (Vector3.Dot(FrustumPointsWorldPositions.normal2, worldPositionPoint - FrustumPointsWorldPositions.FC1) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal2, FrustumPointsWorldPositions.FC4 - FrustumPointsWorldPositions.FC1) > 0)
+             && (Vector3.Dot(FrustumPointsWorldPositions.normal3, worldPositionPoint - FrustumPointsWorldPositions.FC2) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal3, FrustumPointsWorldPositions.FC1 - FrustumPointsWorldPositions.FC2) > 0)
+             && (Vector3.Dot(FrustumPointsWorldPositions.normal4, worldPositionPoint - FrustumPointsWorldPositions.FC3) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal4, FrustumPointsWorldPositions.FC2 - FrustumPointsWorldPositions.FC3) > 0)
+             && (Vector3.Dot(FrustumPointsWorldPositions.normal5, worldPositionPoint - FrustumPointsWorldPositions.FC4) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal5, FrustumPointsWorldPositions.FC3 - FrustumPointsWorldPositions.FC4) > 0)
+             && (Vector3.Dot(FrustumPointsWorldPositions.normal6, worldPositionPoint - FrustumPointsWorldPositions.FC5) >= 0) && (Vector3.Dot(FrustumPointsWorldPositions.normal6, FrustumPointsWorldPositions.FC1 - FrustumPointsWorldPositions.FC5) > 0)
+            ;
+        }
+
+        [Obsolete("Use V2")]
         private static bool PointInsideFrustumComputation(Vector3 worldPositionPoint, Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 C5, Vector3 C6, Vector3 C7, Vector3 C8)
         {
             bool pointInsideFrustum = false;
@@ -193,14 +206,14 @@ namespace CoreGame
         public static bool BoxEntirelyContainedInFrustum(FrustumPointsPositions frustumPoints, BoxCollider boxCollider)
         {
             ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
-            return (PointInsideFrustumComputation(BC1, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC2, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC3, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC4, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC5, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC6, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC7, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8)
-                && PointInsideFrustumComputation(BC8, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8));
+            return (PointInsideFrustumComputationV2(BC1, frustumPoints)
+                && PointInsideFrustumComputationV2(BC2, frustumPoints)
+                && PointInsideFrustumComputationV2(BC3, frustumPoints)
+                && PointInsideFrustumComputationV2(BC4, frustumPoints)
+                && PointInsideFrustumComputationV2(BC5, frustumPoints)
+                && PointInsideFrustumComputationV2(BC6, frustumPoints)
+                && PointInsideFrustumComputationV2(BC7, frustumPoints)
+                && PointInsideFrustumComputationV2(BC8, frustumPoints));
         }
 
         public static bool FrustumBoxIntersection(FrustumPointsPositions frustumPoints, BoxCollider boxCollider)
@@ -219,34 +232,12 @@ namespace CoreGame
 
         public static bool LineFrustumIntersection(Vector3 lineOrigin, Vector3 lineEnd, FrustumPointsPositions frustumPoints)
         {
-            //First face for now
-            float crossSign = Mathf.Sign(Vector3.Dot(frustumPoints.FC5 - frustumPoints.FC1, Vector3.Cross(frustumPoints.FC2 - frustumPoints.FC1, frustumPoints.FC4 - frustumPoints.FC1)));
-            Vector3 normal = crossSign * Vector3.Cross(frustumPoints.FC2 - frustumPoints.FC1, frustumPoints.FC3 - frustumPoints.FC1);
-            if (!SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, normal))
-            {
-                normal = crossSign * Vector3.Cross(frustumPoints.FC5 - frustumPoints.FC1, frustumPoints.FC2 - frustumPoints.FC1);
-                if (!SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC1, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC2, normal))
-                {
-                    normal = crossSign * Vector3.Cross(frustumPoints.FC6 - frustumPoints.FC2, frustumPoints.FC3 - frustumPoints.FC2);
-                    if (!SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC2, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC3, normal))
-                    {
-                        normal = crossSign * Vector3.Cross(frustumPoints.FC7 - frustumPoints.FC3, frustumPoints.FC4 - frustumPoints.FC3);
-                        if (!SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC3, frustumPoints.FC7, frustumPoints.FC8, frustumPoints.FC4, normal))
-                        {
-                            normal = crossSign * Vector3.Cross(frustumPoints.FC8 - frustumPoints.FC4, frustumPoints.FC1 - frustumPoints.FC4);
-                            if (!SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC4, frustumPoints.FC8, frustumPoints.FC5, frustumPoints.FC1, normal))
-                            {
-                                normal = crossSign * Vector3.Cross(frustumPoints.FC8 - frustumPoints.FC5, frustumPoints.FC6 - frustumPoints.FC5);
-                                if (!SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8, -normal))
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
+            return SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC1, frustumPoints.FC2, frustumPoints.FC3, frustumPoints.FC4, frustumPoints.normal1)
+                || SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC1, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC2, frustumPoints.normal2)
+                || SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC2, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC3, frustumPoints.normal3)
+                || SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC3, frustumPoints.FC7, frustumPoints.FC8, frustumPoints.FC4, frustumPoints.normal4)
+                || SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC4, frustumPoints.FC8, frustumPoints.FC5, frustumPoints.FC1, frustumPoints.normal5)
+                || SegmentAccuratePlaneIntersection(lineOrigin, lineEnd, frustumPoints.FC5, frustumPoints.FC6, frustumPoints.FC7, frustumPoints.FC8, -frustumPoints.normal6);
         }
 
         //http://geomalgorithms.com/a05-_intersect-1.html

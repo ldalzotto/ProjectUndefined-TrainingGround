@@ -30,7 +30,6 @@ namespace RTPuzzle
         private List<GroundEffectType> AffectedGroundEffectsType;
 
         private Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> RangeRenderDatas;
-        //private Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>> rangeEffectManagers;
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
             RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
@@ -41,14 +40,10 @@ namespace RTPuzzle
             RangeTypeID.TARGET_ZONE
         };
 
-        //  private List<AbstractRangeRenderData> RangeRenderDatas;
-
         public void Init(LevelZonesID currentLevelID)
         {
             #region Init Values
             this.RangeRenderDatas = new Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>>();
-            //  this.RangeRenderDatas = new List<AbstractRangeRenderData>();
-            // this.rangeEffectManagers = new Dictionary<RangeTypeID, Dictionary<int, IAbstractGroundEffectManager>>();
             #endregion
 
             #region External Dependencies

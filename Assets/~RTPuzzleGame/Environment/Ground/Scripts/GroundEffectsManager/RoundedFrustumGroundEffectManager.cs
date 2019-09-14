@@ -41,9 +41,13 @@ namespace RTPuzzle
         public Vector3 FC3;
         public Vector3 FC4;
         public Vector3 FC5;
-        public Vector3 FC6;
-        public Vector3 FC7;
-        public Vector3 FC8;
+
+        public Vector3 normal1;
+        public Vector3 normal2;
+        public Vector3 normal3;
+        public Vector3 normal4;
+        public Vector3 normal5;
+        public Vector3 normal6;
 
         public float RangeRadius;
 
@@ -54,7 +58,7 @@ namespace RTPuzzle
 
         public static int GetByteSize()
         {
-            return (((3 * 8) + 4 + 1 + 3) * sizeof(float)) + ((1) * sizeof(int));
+            return (((3 * 5) + (3 * 6) + 4 + 1 + 3) * sizeof(float)) + ((1) * sizeof(int));
         }
     };
 }

@@ -25,20 +25,20 @@ namespace RTPuzzle
 
         public RoundedFrustumRangeBufferData GetRoundedFrustumRangeBufferData()
         {
-            if (!this.frustumPointsLocalPositions.HasValue)
-            {
-                this.DoFrustumCalculation();
-            }
 
             var RoundedFrustumRangeBufferData = new RoundedFrustumRangeBufferData();
-            RoundedFrustumRangeBufferData.FC1 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC1);
-            RoundedFrustumRangeBufferData.FC2 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC2);
-            RoundedFrustumRangeBufferData.FC3 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC3);
-            RoundedFrustumRangeBufferData.FC4 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC4);
-            RoundedFrustumRangeBufferData.FC5 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC5);
-            RoundedFrustumRangeBufferData.FC6 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC6);
-            RoundedFrustumRangeBufferData.FC7 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC7);
-            RoundedFrustumRangeBufferData.FC8 = this.transform.TransformPoint(frustumPointsLocalPositions.Value.FC8);
+            this.GetFrustumPointsWorldPositions();
+            RoundedFrustumRangeBufferData.FC1 = this.frustumPointsWorldPositions.FC1;
+            RoundedFrustumRangeBufferData.FC2 = this.frustumPointsWorldPositions.FC2;
+            RoundedFrustumRangeBufferData.FC3 = this.frustumPointsWorldPositions.FC3;
+            RoundedFrustumRangeBufferData.FC4 = this.frustumPointsWorldPositions.FC4;
+            RoundedFrustumRangeBufferData.FC5 = this.frustumPointsWorldPositions.FC5;
+            RoundedFrustumRangeBufferData.normal1 = this.frustumPointsWorldPositions.normal1;
+            RoundedFrustumRangeBufferData.normal2 = this.frustumPointsWorldPositions.normal2;
+            RoundedFrustumRangeBufferData.normal3 = this.frustumPointsWorldPositions.normal3;
+            RoundedFrustumRangeBufferData.normal4 = this.frustumPointsWorldPositions.normal4;
+            RoundedFrustumRangeBufferData.normal5 = this.frustumPointsWorldPositions.normal5;
+            RoundedFrustumRangeBufferData.normal6 = this.frustumPointsWorldPositions.normal6;
 
             RoundedFrustumRangeBufferData.RangeRadius = this.rangeRadius;
             RoundedFrustumRangeBufferData.CenterWorldPosition = this.transform.position;
