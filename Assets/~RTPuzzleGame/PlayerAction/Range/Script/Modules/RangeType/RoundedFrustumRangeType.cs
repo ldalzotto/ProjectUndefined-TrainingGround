@@ -39,6 +39,9 @@ namespace RTPuzzle
             RoundedFrustumRangeBufferData.normal5 = frustumPointsWorldPositions.normal5;
             RoundedFrustumRangeBufferData.normal6 = frustumPointsWorldPositions.normal6;
 
+            RoundedFrustumRangeBufferData.BoundingBoxMax = this.frustumBoundingBox.bounds.max;
+            RoundedFrustumRangeBufferData.BoundingBoxMin = this.frustumBoundingBox.bounds.min;
+
             RoundedFrustumRangeBufferData.RangeRadius = this.rangeRadius;
             RoundedFrustumRangeBufferData.CenterWorldPosition = this.transform.position;
 
@@ -60,6 +63,9 @@ namespace RTPuzzle
 
         private void OnDrawGizmos()
         {
+            var oldCol = Gizmos.color;
+            Gizmos.color = Color.blue;
+            Gizmos.color = oldCol;
             this.HandlesDraw();
         }
 

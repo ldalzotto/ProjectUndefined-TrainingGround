@@ -22,6 +22,9 @@ struct BoxRangeBufferData
 	float3 normal4;
 	float3 normal5;
 	float3 normal6;
+
+	float3 BoundingBoxMax;
+	float3 BoundingBoxMin;
 	
 	float4 AuraColor;
 };
@@ -59,6 +62,9 @@ struct RoundedFrustumRangeBufferData
 	float3 normal4;
 	float3 normal5;
 	float3 normal6;
+
+	float3 BoundingBoxMax;
+	float3 BoundingBoxMin;
 
 	float RangeRadius;
 	float3 CenterWorldPosition;

@@ -28,6 +28,9 @@ namespace RTPuzzle
             boxRangeBufferData.normal5 = boxFrustum.normal5;
             boxRangeBufferData.normal6 = boxFrustum.normal6;
 
+            boxRangeBufferData.BoundingBoxMax = BoxRangeType.BoxCollider.bounds.max;
+            boxRangeBufferData.BoundingBoxMin = BoxRangeType.BoxCollider.bounds.min;
+
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
                 boxRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
@@ -57,11 +60,14 @@ namespace RTPuzzle
         public Vector3 normal5;
         public Vector3 normal6;
 
+        public Vector3 BoundingBoxMax;
+        public Vector3 BoundingBoxMin;
+
         public Vector4 AuraColor;
 
         public static int GetByteSize()
         {
-            return ((11 * 3) + 4) * sizeof(float);
+            return ((13 * 3) + 4) * sizeof(float);
         }
     }
 

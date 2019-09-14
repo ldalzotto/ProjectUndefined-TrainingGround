@@ -49,16 +49,18 @@ namespace RTPuzzle
         public Vector3 normal5;
         public Vector3 normal6;
 
+        public Vector3 BoundingBoxMax;
+        public Vector3 BoundingBoxMin;
+
         public float RangeRadius;
-
         public Vector3 CenterWorldPosition;
-
+        
         public int OccludedByFrustums;
         public Vector4 AuraColor;
 
         public static int GetByteSize()
         {
-            return (((3 * 5) + (3 * 6) + 4 + 1 + 3) * sizeof(float)) + ((1) * sizeof(int));
+            return (((3 * 5) + (3 * 6) + (3 * 2) + 4 + 1 + 3) * sizeof(float)) + ((1) * sizeof(int));
         }
     };
 }

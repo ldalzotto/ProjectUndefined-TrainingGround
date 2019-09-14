@@ -67,5 +67,10 @@ int PointIsOccludedByFrustumV2(float3 comparisonPoint) {
 	return isInsideFrustum;
 }
 
+int PointIsInsideAABB(float3 comparisonPoint, float3 minBound, float3 maxBound) {
+	return (comparisonPoint.x >= minBound.x && comparisonPoint.x <= maxBound.x)
+		&& (comparisonPoint.y >= minBound.y && comparisonPoint.y <= maxBound.y)
+		&& (comparisonPoint.z >= minBound.z && comparisonPoint.z <= maxBound.z);
+}
 
 #endif

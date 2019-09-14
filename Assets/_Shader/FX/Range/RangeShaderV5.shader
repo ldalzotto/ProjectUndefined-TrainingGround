@@ -104,7 +104,13 @@
 				BoxRangeBufferData rangeBuffer = BoxRangeBuffer[0];
 				fixed4 newCol = rangeBuffer.AuraColor;
 				newCol = saturate(newCol) * _AlbedoBoost;
-				computeCol = lerp(computeCol, newCol, _RangeMixFactor *  PointInsideFrustumV2(worldPos, rangeBuffer));
+
+				int isInside = PointIsInsideAABB(worldPos, rangeBuffer.BoundingBoxMin, rangeBuffer.BoundingBoxMax);
+				if (isInside) {
+					isInside = PointInsideFrustumV2(worldPos, rangeBuffer);
+				}
+				
+				computeCol = lerp(computeCol, newCol, _RangeMixFactor * isInside);
 
 				if (computeCol.a == 0) {
 					discard;
@@ -171,16 +177,19 @@
 				fixed4 newCol = rangeBuffer.AuraColor;
 				newCol = newCol * _AlbedoBoost;
 
-				int isInside = (calcDistance <= rangeBuffer.RangeRadius);
+				int isInside = PointIsInsideAABB(worldPos, rangeBuffer.BoundingBoxMin, rangeBuffer.BoundingBoxMax);
 				if (isInside) {
-					isInside = PointInsideFrustumV2(worldPos, rangeBuffer);
+					isInside = (calcDistance <= rangeBuffer.RangeRadius);
 					if (isInside) {
-						if (rangeBuffer.OccludedByFrustums) {
-							isInside = !PointIsOccludedByFrustumV2(worldPos);
+						isInside = PointInsideFrustumV2(worldPos, rangeBuffer);
+						if (isInside) {
+							if (rangeBuffer.OccludedByFrustums) {
+								isInside = !PointIsOccludedByFrustumV2(worldPos);
+							}
 						}
 					}
 				}
-				
+
 				computeCol = lerp(computeCol, newCol, _RangeMixFactor * isInside);
 
 				if (computeCol.a == 0) {
