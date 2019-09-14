@@ -134,9 +134,9 @@ namespace RTPuzzle
                 aiAgent.speed = 0f;
                 aiAgent.angularSpeed = 120f;
                 aiAgent.acceleration = 999999f;
-                aiAgent.stoppingDistance = 0f;
+                aiAgent.stoppingDistance = 1.5f;
                 aiAgent.autoBraking = true;
-                aiAgent.radius = 0.5f;
+                aiAgent.radius = 1.5f;
                 aiAgent.height = 2f;
                 aiAgent.avoidancePriority = 50;
                 aiAgent.autoTraverseOffMeshLink = true;

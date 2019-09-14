@@ -29,7 +29,7 @@ namespace RTPuzzle
 
         private List<GroundEffectType> AffectedGroundEffectsType;
 
-        private Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> RangeRenderDatas;
+        private Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> rangeRenderDatas;
 
         private List<RangeTypeID> rangeEffectRenderOrder = new List<RangeTypeID>() {
             RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
@@ -40,10 +40,13 @@ namespace RTPuzzle
             RangeTypeID.TARGET_ZONE
         };
 
+#if UNITY_EDITOR
+        public Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> RangeRenderDatas { get => rangeRenderDatas; }
+#endif
         public void Init(LevelZonesID currentLevelID)
         {
             #region Init Values
-            this.RangeRenderDatas = new Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>>();
+            this.rangeRenderDatas = new Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>>();
             #endregion
 
             #region External Dependencies
@@ -82,7 +85,7 @@ namespace RTPuzzle
         {
             Profiler.BeginSample("GroundEffectsManagerV2Tick");
 
-            foreach (var RangeRenderData in this.RangeRenderDatas.Values.SelectMany(kv => kv.Values))
+            foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
             {
                 if (RangeRenderData != null)
                 {
@@ -104,7 +107,7 @@ namespace RTPuzzle
             this.rangeDrawCommand.Clear();
             this.rangeDrawCommand.BeginSample("rangeDrawCommand");
 
-            foreach (var RangeRenderData in this.RangeRenderDatas.Values.SelectMany(kv => kv.Values))
+            foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
             {
                 if (RangeRenderData != null)
                 {
@@ -121,9 +124,9 @@ namespace RTPuzzle
         {
             if (rangeTypeObject.RangeType.IsRangeConfigurationDefined())
             {
-                if (!this.RangeRenderDatas.ContainsKey(rangeTypeObject.RangeType.RangeTypeID))
+                if (!this.rangeRenderDatas.ContainsKey(rangeTypeObject.RangeType.RangeTypeID))
                 {
-                    this.RangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID] = new Dictionary<int, AbstractRangeRenderData>();
+                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID] = new Dictionary<int, AbstractRangeRenderData>();
                 }
 
                 if (rangeTypeObject.RangeType.GetType() == typeof(SphereRangeType))
@@ -131,14 +134,14 @@ namespace RTPuzzle
                     var sphereRangeType = (SphereRangeType)rangeTypeObject.RangeType;
                     var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
                     addedRange.OnRangeCreated(rangeTypeObject);
-                    this.RangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new CircleRangeRenderData(addedRange));
+                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new CircleRangeRenderData(addedRange));
                 }
                 else if (rangeTypeObject.RangeType.GetType() == typeof(BoxRangeType))
                 {
                     var boxRangeType = (BoxRangeType)rangeTypeObject.RangeType;
                     var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
                     addedRange.OnRangeCreated(rangeTypeObject);
-                    this.RangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new BoxRangeRenderData(addedRange));
+                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new BoxRangeRenderData(addedRange));
                 }
                 /*
                 else if (rangeTypeObject.RangeType.GetType() == typeof(FrustumRangeType))
@@ -154,7 +157,7 @@ namespace RTPuzzle
                     var roundedFrustumRangeType = (RoundedFrustumRangeType)rangeTypeObject.RangeType;
                     var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
                     addedRange.OnRangeCreated(rangeTypeObject);
-                    this.RangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
+                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
                 }
             }
         }
@@ -162,7 +165,7 @@ namespace RTPuzzle
         public void OnLevelExit()
         {
             //release buffers
-            foreach (var RangeRenderData in this.RangeRenderDatas.Values.SelectMany(kv => kv.Values))
+            foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
             {
                 if (RangeRenderData != null)
                 {
@@ -175,8 +178,8 @@ namespace RTPuzzle
         {
             if (rangeTypeObject.IsRangeConfigurationDefined())
             {
-                this.RangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID][rangeTypeObject.GetInstanceID()].OnRangeDestroyed();
-                this.RangeRenderDatas.Remove(rangeTypeObject.RangeType.RangeTypeID);
+                this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID][rangeTypeObject.GetInstanceID()].OnRangeDestroyed();
+                this.rangeRenderDatas.Remove(rangeTypeObject.RangeType.RangeTypeID);
             }
         }
 
@@ -192,21 +195,25 @@ namespace RTPuzzle
     {
         protected IAbstractGroundEffectManager GroundEffectManager;
 
-        protected DynamicComputeBufferManager<FrustumPointsPositions> ObstacleFrustumBuffer;
+        private DynamicComputeBufferManager<FrustumPointsPositions> obstacleFrustumBuffer;
         protected MaterialPropertyBlock matPro;
 
         protected AbstractRangeRenderData()
         {
             this.matPro = new MaterialPropertyBlock();
-            this.ObstacleFrustumBuffer = new DynamicComputeBufferManager<FrustumPointsPositions>(FrustumPointsPositions.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", this.matPro);
+            this.obstacleFrustumBuffer = new DynamicComputeBufferManager<FrustumPointsPositions>(FrustumPointsPositions.GetByteSize(), "FrustumBufferDataBuffer", "_FrustumBufferDataBufferCount", this.matPro);
         }
 
         private Mesh combinedMesh;
 
+#if UNITY_EDITOR
+        public DynamicComputeBufferManager<FrustumPointsPositions> ObstacleFrustumBuffer { get => obstacleFrustumBuffer; }
+#endif
+
         public abstract void ProcessCommandBuffer(CommandBuffer commandBuffer, ref List<GroundEffectType> AffectedGroundEffectsType, Material MasterRangeMaterial);
         public virtual void Dispose()
         {
-            this.ObstacleFrustumBuffer.Dispose();
+            this.obstacleFrustumBuffer.Dispose();
         }
         protected Mesh CombineMesh(ref List<GroundEffectType> AffectedGroundEffectsType)
         {
@@ -227,7 +234,7 @@ namespace RTPuzzle
             if (rangeObjectListener != null)
             {
                 var obstacleFrustums = rangeObjectListener.GetCalculatedFrustums();
-                this.ObstacleFrustumBuffer.Tick((bufferData) => bufferData.AddRange(obstacleFrustums));
+                this.obstacleFrustumBuffer.Tick((bufferData) => bufferData.AddRange(obstacleFrustums));
             }
         }
 
@@ -245,18 +252,20 @@ namespace RTPuzzle
 
     public class CircleRangeRenderData : AbstractRangeRenderData
     {
-        private DynamicComputeBufferManager<CircleRangeBufferData> CircleRangeBuffer;
+        private DynamicComputeBufferManager<CircleRangeBufferData> circleRangeBuffer;
+
+        public DynamicComputeBufferManager<CircleRangeBufferData> CircleRangeBuffer { get => circleRangeBuffer; }
 
         public CircleRangeRenderData(SphereGroundEffectManager sphereGroundEffectManager) : base()
         {
             this.GroundEffectManager = sphereGroundEffectManager;
-            this.CircleRangeBuffer = new DynamicComputeBufferManager<CircleRangeBufferData>(CircleRangeBufferData.GetByteSize(), "CircleRangeBuffer", string.Empty, this.matPro);
+            this.circleRangeBuffer = new DynamicComputeBufferManager<CircleRangeBufferData>(CircleRangeBufferData.GetByteSize(), "CircleRangeBuffer", string.Empty, this.matPro);
         }
 
         public override void ProcessCommandBuffer(CommandBuffer commandBuffer, ref List<GroundEffectType> AffectedGroundEffectsType, Material MasterRangeMaterial)
         {
             var combinedMesh = this.CombineMesh(ref AffectedGroundEffectsType);
-            this.CircleRangeBuffer.Tick((bufferData) => bufferData.Add(((SphereGroundEffectManager)this.GroundEffectManager).ToSphereBuffer()));
+            this.circleRangeBuffer.Tick((bufferData) => bufferData.Add(((SphereGroundEffectManager)this.GroundEffectManager).ToSphereBuffer()));
             this.ProcessObstacleFrustums(commandBuffer, matPro);
             commandBuffer.DrawMesh(combinedMesh, Matrix4x4.identity, MasterRangeMaterial, 0, 0, matPro);
         }
@@ -264,25 +273,27 @@ namespace RTPuzzle
         public override void Dispose()
         {
             base.Dispose();
-            this.CircleRangeBuffer.Dispose();
+            this.circleRangeBuffer.Dispose();
         }
     }
 
     public class RoundedFrustumRenderData : AbstractRangeRenderData
     {
-        private DynamicComputeBufferManager<RoundedFrustumRangeBufferData> RoundedFrustumRangeBuffer;
+        private DynamicComputeBufferManager<RoundedFrustumRangeBufferData> roundedFrustumRangeBuffer;
+
+        public DynamicComputeBufferManager<RoundedFrustumRangeBufferData> RoundedFrustumRangeBuffer { get => roundedFrustumRangeBuffer; }
 
         public RoundedFrustumRenderData(RoundedFrustumGroundEffectManager roundedFrustumGroundEffectManager) : base()
         {
             this.GroundEffectManager = roundedFrustumGroundEffectManager;
-            this.RoundedFrustumRangeBuffer = new DynamicComputeBufferManager<RoundedFrustumRangeBufferData>(RoundedFrustumRangeBufferData.GetByteSize(), "RoundedFrustumRangeBuffer", string.Empty, this.matPro);
+            this.roundedFrustumRangeBuffer = new DynamicComputeBufferManager<RoundedFrustumRangeBufferData>(RoundedFrustumRangeBufferData.GetByteSize(), "RoundedFrustumRangeBuffer", string.Empty, this.matPro);
         }
 
         public override void ProcessCommandBuffer(CommandBuffer commandBuffer, ref List<GroundEffectType> AffectedGroundEffectsType, Material MasterRangeMaterial)
         {
             Mesh combinedMesh = this.CombineMesh(ref AffectedGroundEffectsType);
 
-            this.RoundedFrustumRangeBuffer.Tick((bufferData) => bufferData.Add(((RoundedFrustumGroundEffectManager)this.GroundEffectManager).ToFrustumBuffer()));
+            this.roundedFrustumRangeBuffer.Tick((bufferData) => bufferData.Add(((RoundedFrustumGroundEffectManager)this.GroundEffectManager).ToFrustumBuffer()));
             this.ProcessObstacleFrustums(commandBuffer, matPro);
             commandBuffer.DrawMesh(combinedMesh, Matrix4x4.identity, MasterRangeMaterial, 0, 3, matPro);
         }
@@ -290,7 +301,7 @@ namespace RTPuzzle
         public override void Dispose()
         {
             base.Dispose();
-            this.RoundedFrustumRangeBuffer.Dispose();
+            this.roundedFrustumRangeBuffer.Dispose();
         }
     }
 

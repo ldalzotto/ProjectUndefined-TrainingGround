@@ -177,9 +177,9 @@
 				fixed4 newCol = rangeBuffer.AuraColor;
 				newCol = newCol * _AlbedoBoost;
 
-				int isInside = PointIsInsideAABB(worldPos, rangeBuffer.BoundingBoxMin, rangeBuffer.BoundingBoxMax);
+				int isInside = (calcDistance <= rangeBuffer.RangeRadius);
 				if (isInside) {
-					isInside = (calcDistance <= rangeBuffer.RangeRadius);
+					isInside = PointIsInsideAABB(worldPos, rangeBuffer.BoundingBoxMin, rangeBuffer.BoundingBoxMax);
 					if (isInside) {
 						isInside = PointInsideFrustumV2(worldPos, rangeBuffer);
 						if (isInside) {

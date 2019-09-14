@@ -71,6 +71,11 @@ namespace CoreGame
         {
             ComputeBufferHelper.SafeCommandBufferReleaseAndDispose(this.customComputeBuffer);
         }
+
+        public int GetSize()
+        {
+            return this.computeBufferData.Count;
+        }
     }
 
     public enum BufferReAllocateStrategy

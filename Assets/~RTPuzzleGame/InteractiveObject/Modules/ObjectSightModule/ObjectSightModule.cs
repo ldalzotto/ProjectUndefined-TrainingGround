@@ -12,6 +12,8 @@ namespace RTPuzzle
         private AISightVisionTargetTracker AISightVisionTargetTracker;
         private AISightIntersectionManager AISightInteresectionManager;
 
+        public RangeTypeObject SightVisionRange { get => sightVisionRange; }
+
         public void Init()
         {
             this.ResolveInternalDependencies();
