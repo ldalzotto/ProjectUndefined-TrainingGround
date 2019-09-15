@@ -19,14 +19,14 @@ namespace CoreGame
     public abstract class ACutsceneNode<T, E> : NodeProfile, ICutsceneNode where T : SequencedAction where E : ACutsceneEdge<T>
     {
         [SerializeField]
-        protected CutsceneActionConnectionEdge inputCutsceneConnectionEdge;
+        public CutsceneActionConnectionEdge inputCutsceneConnectionEdge;
         [SerializeField]
-        protected CutsceneActionConnectionEdge outputCutsceneConnectionEdge;
+        public CutsceneActionConnectionEdge outputCutsceneConnectionEdge;
         [SerializeField]
-        protected CutsceneWorkflowAbortEdge workflowNodeReferenceEdge;
+        public CutsceneWorkflowAbortEdge workflowNodeReferenceEdge;
 
         [SerializeField]
-        protected E actionEdge;
+        public E actionEdge;
 
         public SequencedAction GetAction()
         {

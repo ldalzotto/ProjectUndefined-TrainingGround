@@ -165,13 +165,17 @@ namespace RTPuzzle
         public void OnLevelExit()
         {
             //release buffers
-            foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
+            if (this.rangeRenderDatas != null)
             {
-                if (RangeRenderData != null)
+                foreach (var RangeRenderData in this.rangeRenderDatas.Values.SelectMany(kv => kv.Values))
                 {
-                    RangeRenderData.Dispose();
+                    if (RangeRenderData != null)
+                    {
+                        RangeRenderData.Dispose();
+                    }
                 }
             }
+            
         }
 
         public void OnRangeDestroy(RangeTypeObject rangeTypeObject)

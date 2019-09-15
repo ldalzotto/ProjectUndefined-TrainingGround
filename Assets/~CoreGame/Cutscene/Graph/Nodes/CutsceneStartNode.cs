@@ -1,6 +1,7 @@
 ﻿using NodeGraph;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CoreGame
 {
@@ -8,14 +9,15 @@ namespace CoreGame
     public class CutsceneStartNode : NodeProfile
     {
         [SerializeField]
-        private CutsceneActionConnectionEdge startEdge;
+        [FormerlySerializedAs("startEdge")]
+        public CutsceneActionConnectionEdge StartEdge;
 
         public List<ICutsceneNode> GetFirstNodes()
         {
             List<ICutsceneNode> nextNodes = new List<ICutsceneNode>();
-            if (startEdge != null) //when instanciated by test
+            if (StartEdge != null) //when instanciated by test
             {
-                foreach (var connectedNode in startEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge)e))
+                foreach (var connectedNode in StartEdge.ConnectedNodeEdges.ConvertAll(e => (CutsceneActionConnectionEdge)e))
                 {
                     var ICutsceneNode = connectedNode.NodeProfileRef as ICutsceneNode;
                     if (ICutsceneNode != null)
@@ -35,8 +37,8 @@ namespace CoreGame
 
         public override List<NodeEdgeProfile> InitOutputEdges()
         {
-            this.startEdge = CutsceneActionConnectionEdge.CreateNodeEdge<CutsceneActionConnectionEdge>(this, NodeEdgeType.SINGLE_INPUT);
-            return new List<NodeEdgeProfile>() { this.startEdge };
+            this.StartEdge = CutsceneActionConnectionEdge.CreateNodeEdge<CutsceneActionConnectionEdge>(this, NodeEdgeType.SINGLE_INPUT);
+            return new List<NodeEdgeProfile>() { this.StartEdge };
         }
 
         protected override Color NodeColor()

@@ -39,7 +39,6 @@ namespace RTPuzzle
         #region External Events
         public void OnDisarmObjectStart(DisarmObjectModule disarmObjectModule)
         {
-
             this.CurrentAnimationPlayed = new SequencedActionPlayer(this.PuzzleCutsceneConfiguration.ConfigurationInherentData[disarmObjectModule.DisarmObjectInherentConfigurationData.DisarmObjectAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
                     new PuzzleCutsceneActionInput(this.InteractiveObjectContainer, PuzzleCutsceneActionInput.Build_1_Town_StartTutorial_Speaker_DisarmAnimation(this.InteractiveObjectType)));
             this.CurrentAnimationPlayed.Play();

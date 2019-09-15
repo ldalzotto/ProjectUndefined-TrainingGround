@@ -24,6 +24,8 @@ namespace GameConfigurationID
 
         _Town1_Park_ToSewerPuzzle_FrontGuard_2 = 3,
 
-        _Town1_Park_ToSewerPuzzle_FrontGuard_3 = 4
+        _Town1_Park_ToSewerPuzzle_FrontGuard_3 = 4,
+
+        TEST_1 = 5,
     }
 }
