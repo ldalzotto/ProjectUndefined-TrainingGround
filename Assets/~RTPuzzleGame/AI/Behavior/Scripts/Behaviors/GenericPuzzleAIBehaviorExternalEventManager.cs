@@ -38,16 +38,15 @@ namespace RTPuzzle
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior aiBehavior)
         {
-            // Debug.Log(MyLog.Format("AI - ProcessingEvent - " + externalEvent.GetType().Name));
             var genericAiBehavior = (GenericPuzzleAIBehavior)aiBehavior;
             EventTypeCheck<ProjectileTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, Projectile_TriggerEnter);
             EventTypeCheck<EscapeWithoutTriggerStartAIBehaviorEvent>(genericAiBehavior, externalEvent, EscapeWithoutTrigger_Start);
             EventTypeCheck<FearedStartAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Start);
             EventTypeCheck<FearedForcedAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_Forced);
             EventTypeCheck<FearedEndAIBehaviorEvent>(genericAiBehavior, externalEvent, Feared_End);
-            EventTypeCheck<AttractiveObjectTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerEnter);
-            EventTypeCheck<AttractiveObjectTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerStay);
-            EventTypeCheck<AttractiveObjectTriggerExitAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_TriggerExit);
+            EventTypeCheck<AttractiveObjectTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObjectAIEvents.AttractiveObject_TriggerEnter);
+            EventTypeCheck<AttractiveObjectTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObjectAIEvents.AttractiveObject_TriggerStay);
+            EventTypeCheck<AttractiveObjectTriggerExitAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObjectAIEvents.AttractiveObject_TriggerExit);
             EventTypeCheck<AttractiveObectDestroyedAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_Destroyed);
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
@@ -135,39 +134,7 @@ namespace RTPuzzle
             }
         }
 
-        private void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerEnterAIBehaviorEvent attractiveObjectTriggerEnterAIBehaviorEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
-            {
-                Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
-                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
-                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());
-            }
-        }
 
-        private void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerStayAIBehaviorEvent attractiveObjectTriggerStayAIBehaviorEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
-            {
-                //Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
-                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
-                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());
-            }
-        }
-
-        private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
-            {
-                Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
-                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
-                if (!genericAiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>())
-                {
-                    genericAiBehavior.SetManagerState(null);
-                    genericAiBehavior.ForceUpdateAIBehavior();
-                }
-            }
-        }
 
         private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
         {
@@ -359,49 +326,6 @@ namespace RTPuzzle
         {
             this.eventProcessedCallback = eventProcessedCallback;
         }
-    }
-
-    public class AttractiveObjectTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private Vector3 attractivePosition;
-        private AttractiveObjectModule attractiveObjectType;
-
-        public AttractiveObjectTriggerEnterAIBehaviorEvent(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)
-        {
-            this.attractivePosition = attractivePosition;
-            this.attractiveObjectType = attractiveObjectType;
-        }
-
-        public Vector3 AttractivePosition { get => attractivePosition; }
-        public AttractiveObjectModule AttractiveObjectType { get => attractiveObjectType; }
-    }
-
-    public class AttractiveObjectTriggerStayAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private Vector3 attractivePosition;
-        private AttractiveObjectModule attractiveObjectType;
-
-        public AttractiveObjectTriggerStayAIBehaviorEvent(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)
-        {
-            this.attractivePosition = attractivePosition;
-            this.attractiveObjectType = attractiveObjectType;
-        }
-
-        public Vector3 AttractivePosition { get => attractivePosition; }
-        public AttractiveObjectModule AttractiveObjectType { get => attractiveObjectType; }
-    }
-
-    public class AttractiveObjectTriggerExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-
-        private AttractiveObjectModule attractiveObjectType;
-
-        public AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectModule attractiveObjectType)
-        {
-            this.attractiveObjectType = attractiveObjectType;
-        }
-
-        public AttractiveObjectModule AttractiveObjectType { get => attractiveObjectType; }
     }
 
     public class AttractiveObectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
