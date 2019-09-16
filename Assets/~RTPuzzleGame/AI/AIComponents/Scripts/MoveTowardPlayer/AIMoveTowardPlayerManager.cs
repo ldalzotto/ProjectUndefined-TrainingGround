@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class AIMoveTowardPlayerManager : AbstractAIManager<AIMoveTowardPlayerComponent>, InterfaceAIManager
+    public class AIMoveTowardPlayerManager : AbstractAIMoveTowardPlayerManager
     {
         private AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
         #region State
@@ -12,20 +12,20 @@ namespace RTPuzzle
         #endregion
 
         public AIMoveTowardPlayerManager(AIMoveTowardPlayerComponent associatedAIComponent) : base(associatedAIComponent)
-        {        }
+        { }
 
-        public void Init(AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
+            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter;
         }
 
         #region External Events
-        public virtual void OnDestinationReached()
+        public override void OnDestinationReached()
         {
             this.OnStateReset();
         }
 
-        public virtual void OnStateReset()
+        public override void OnStateReset()
         {
             this.playerInSight = false;
             this.currentDestination = null;
@@ -33,7 +33,7 @@ namespace RTPuzzle
 
         #endregion
 
-        public bool OnSightInRangeEnter(SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
+        public override bool OnSightInRangeEnter(SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
         {
             if (sightInRangeEnterAIBehaviorEvent.ColliderWithCollisionType.collisionType.IsPlayer)
             {
@@ -44,7 +44,7 @@ namespace RTPuzzle
             return false;
         }
 
-        public void OnSightInRangeExit(SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
+        public override void OnSightInRangeExit(SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
         {
             if (sightInRangeExitAIBehaviorEvent.ColliderWithCollisionType.collisionType.IsPlayer)
             {
@@ -53,7 +53,7 @@ namespace RTPuzzle
             }
         }
 
-        public virtual void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
+        public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             this.AIObjectTypeSpeedSetter.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);
             if (this.playerInSight && this.currentTarget != null)
@@ -63,18 +63,20 @@ namespace RTPuzzle
             NPCAIDestinationContext.TargetPosition = this.currentDestination;
         }
 
-        public bool IsManagerEnabled()
+        public override bool IsManagerEnabled()
         {
             return this.playerInSight || (this.currentDestination != null && this.currentDestination.HasValue);
         }
 
-        public void BeforeManagersUpdate(float d, float timeAttenuationFactor)
+        public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
         {
         }
 
 #if UNITY_EDITOR
         #region Test data retrieval
-        public ColliderWithCollisionType GetCurrentTarget() { return this.currentTarget; }
+        public override ColliderWithCollisionType GetCurrentTarget() { return this.currentTarget; }
+
+        
         #endregion
 #endif
     }

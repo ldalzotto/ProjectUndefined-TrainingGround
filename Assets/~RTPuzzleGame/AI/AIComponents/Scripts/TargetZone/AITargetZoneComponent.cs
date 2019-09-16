@@ -8,6 +8,11 @@ namespace RTPuzzle
     public class AITargetZoneComponent : AbstractAIComponent
     {
         public float TargetZoneEscapeDistance;
+
+        public override InterfaceAIManager BuildManager()
+        {
+            return new AITargetZoneEscapeManager(this);
+        }
     }
 
     public abstract class AbstractAITargetZoneManager : AbstractAIManager<AITargetZoneComponent>, InterfaceAIManager
@@ -18,6 +23,8 @@ namespace RTPuzzle
         protected AbstractAITargetZoneManager(AITargetZoneComponent associatedAIComponent) : base(associatedAIComponent)
         {
         }
+
+        public abstract void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData);
 
         public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         public abstract void TriggerTargetZoneEscape(TargetZoneModule targetZone);

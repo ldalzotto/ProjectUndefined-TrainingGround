@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace RTPuzzle
+﻿namespace RTPuzzle
 {
     public class EscapeWhileIgnoringTargetZoneTracker : BehaviorStateTracker
     {
@@ -37,7 +34,9 @@ namespace RTPuzzle
 
         private bool IsGenericBehaviorInAStateThatAllowsEscapingWhileIgnoringTargets(GenericPuzzleAIBehavior genericBehavior)
         {
-            return genericBehavior.IsEscapingFromProjectileWithTargetZones() || genericBehavior.IsEscapingWithoutTarget() || genericBehavior.IsEscapingFromPlayer();
+            return genericBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>() ||
+                    genericBehavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>() ||
+                    genericBehavior.IsManagerEnabled<AbstractPlayerEscapeManager>();
         }
     }
 

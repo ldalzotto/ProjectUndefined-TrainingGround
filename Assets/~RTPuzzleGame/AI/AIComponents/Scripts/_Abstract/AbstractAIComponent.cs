@@ -10,6 +10,7 @@ namespace RTPuzzle
     [System.Serializable]
     public abstract class AbstractAIComponent : SerializedScriptableObject
     {
+        public abstract InterfaceAIManager BuildManager();
     }
 
     public static class AIManagerTypeOperation

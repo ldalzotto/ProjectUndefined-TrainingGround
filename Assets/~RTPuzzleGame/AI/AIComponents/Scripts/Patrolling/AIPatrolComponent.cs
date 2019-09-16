@@ -17,6 +17,18 @@ namespace RTPuzzle
         public AIMovementSpeedDefinition AISpeed;
 
         public float MaxDistance;
+
+        public override InterfaceAIManager BuildManager()
+        {
+            if (this.AIPatrolManagerType == AIPatrolManagerType.RANDOM)
+            {
+                return new AIRandomPatrolComponentMananger(this);
+            }
+            else
+            {
+                return new AIScriptedPatrolComponentManager(this);
+            }
+        }
     }
 
     public enum AIPatrolManagerType
@@ -37,12 +49,12 @@ namespace RTPuzzle
         protected AbstractAIPatrolComponentManager(AIPatrolComponent associatedAIComponent) : base(associatedAIComponent)
         {
         }
-
-        protected void BaseInit(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID)
+        
+        public virtual void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.aiID = aiID;
-            this.patrollingAgent = patrollingAgent;
-            this.AIFOVManager = aIFOVManager;
+            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.patrollingAgent = AIBheaviorBuildInputData.selfAgent;
+            this.AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
         }
 
         public abstract void OnDestinationReached();

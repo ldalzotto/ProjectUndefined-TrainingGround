@@ -50,11 +50,11 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(NavMeshAgent agent, PuzzleEventsManager PuzzleEventsManager, AIObjectID aiID)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.agent = agent;
-            this.aiID = aiID;
-            this.PuzzleEventsManager = PuzzleEventsManager;
+            this.agent = AIBheaviorBuildInputData.selfAgent;
+            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.PuzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
         }
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)

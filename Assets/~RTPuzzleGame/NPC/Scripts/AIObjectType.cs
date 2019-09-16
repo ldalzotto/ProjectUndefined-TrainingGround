@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using CoreGame;
 using GameConfigurationID;
 using static AIMovementDefinitions;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -48,8 +49,8 @@ namespace RTPuzzle
 
         #region State
         private NPCAIDestinationContext NPCAIDestinationContext;
-        private GenericPuzzleAIBehaviorContainer genericPuzzleAIBehaviorContainer;
-        public GenericPuzzleAIBehaviorContainer GenericPuzzleAIBehaviorContainer { get => genericPuzzleAIBehaviorContainer; set => genericPuzzleAIBehaviorContainer = value; }
+        private List<InterfaceAIManager> aiManagers;
+        public List<InterfaceAIManager> AiManagers { get => aiManagers; set => aiManagers = value; }
         #endregion
 
         #region Data Retrieval
@@ -70,7 +71,7 @@ namespace RTPuzzle
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
         private AIAnimationManager NPCAIAnimationManager;
-
+        
         public void Init()
         {
             Debug.Log(MyLog.Format("AIObjectType Init : " + this.AIObjectTypeDefinitionID.ToString()));
@@ -118,7 +119,7 @@ namespace RTPuzzle
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
                      interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this);
 
-            ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.genericPuzzleAIBehaviorContainer, aIBheaviorBuildInputData);
+            ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
 
             ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleStaticConfiguration.PuzzlePrefabConfiguration, coreStaticConfiguration.CoreMaterialConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);

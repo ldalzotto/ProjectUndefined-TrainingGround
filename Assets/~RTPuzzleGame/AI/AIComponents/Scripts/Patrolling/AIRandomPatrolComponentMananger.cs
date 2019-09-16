@@ -19,11 +19,6 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID)
-        {
-            this.BaseInit(patrollingAgent, aIFOVManager, aiID);
-        }
-
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             if (!isMovingTowardsDestination)

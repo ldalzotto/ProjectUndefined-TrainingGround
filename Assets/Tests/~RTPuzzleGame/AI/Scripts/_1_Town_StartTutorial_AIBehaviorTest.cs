@@ -22,16 +22,15 @@ namespace Tests
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManagerDataRetriever = GameObject.FindObjectOfType<PlayerManagerDataRetriever>();
 
-            Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
-            Assert.IsTrue(aiBehavior.IsPatrolling());
-
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+            Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
             //The player move to ai sight
             yield return PuzzleSceneTestHelper.MoveTowardPlayerYield(TestPositionID.MOVE_TOWARDS_PLAYER_INSIGHT,
                        OnPlayerInSight: () =>
                        {
-                           Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
-                           Assert.IsFalse(aiBehavior.IsPatrolling());
-                           Assert.AreEqual(aiBehavior.AIPlayerMoveTowardPlayerManager.GetCurrentTarget().collider, playerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier());
+                           Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+                           Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                           Assert.AreEqual(aiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().GetCurrentTarget().collider, playerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier());
                            return null;
                        }
                    );
@@ -111,22 +110,21 @@ namespace Tests
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
-            Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
-            Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
-
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
             //The player move to ai sight
             yield return PuzzleSceneTestHelper.MoveTowardPlayerYield(TestPositionID.MOVE_TOWARDS_PLAYER_INSIGHT,
                          OnPlayerInSight: () =>
                          {
-                             Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
-                             Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+                             Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+                             Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
 
                              return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), aiManager, playerManager.transform.position,
                                          OnProjectileSpawn: null,
                                          OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                                          {
-                                             Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
-                                             Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+                                             Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+                                             Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                                              return null;
                                          },
                                          OnDistanceReached: null
@@ -147,21 +145,20 @@ namespace Tests
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
-            Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
-            Assert.IsFalse(aiBehavior.IsDisarmingObject());
-
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
             //The player move to ai sight
             yield return PuzzleSceneTestHelper.MoveTowardPlayerYield(TestPositionID.MOVE_TOWARDS_PLAYER_INSIGHT,
                          OnPlayerInSight: () =>
                          {
-                             Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
-                             Assert.IsFalse(aiBehavior.IsDisarmingObject());
+                             Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+                             Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
 
                              return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                                     {
-                                        Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
-                                        Assert.IsFalse(aiBehavior.IsDisarmingObject());
+                                        Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
+                                        Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
                                         return null;
                                     },
                                     OnDisarmTimerOver: null
@@ -180,9 +177,9 @@ namespace Tests
             });
 
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
-            Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
             yield return new WaitForFixedUpdate();
-            Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
+            Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
         }
 
         [UnityTest]
@@ -199,16 +196,16 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileToAttractiveYield(ProjectileInteractiveObjectDefinitions.MutateToAttractiveProjectile(InteractiveObjectTestID.TEST_1, 9999f, 9999f, 9999f, 9999f), aiManager, TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
                 OnProjectileSpawn: (InteractiveObjectType projectile) =>
                 {
-                    Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
-                    Assert.IsFalse(aiBehavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(aiBehavior.IsEscapingWithoutTarget());
+                    Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                    Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     return null;
                 },
                 OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                 {
-                    Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
-                    Assert.IsFalse(aiBehavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(aiBehavior.IsEscapingWithoutTarget());
+                    Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                    Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
 
                     Assert.IsTrue(projectile.GetModule<LaunchProjectileModule>() == null);
 
@@ -233,15 +230,15 @@ namespace Tests
                 OnProjectileTurnedIntoAttractive: (InteractiveObjectType projectile) =>
                 {
                     //   Debug.Break();
-                    Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
-                    Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
+                    Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                    Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
 
                     return PuzzleSceneTestHelper.MoveTowardPlayerYield(TestPositionID.PROJECTILE_TOATTRACTIVE_NOMINAL,
                             OnPlayerInSight: () =>
                             {
                                 Debug.Log(MyLog.Format("END"));
-                                Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
-                                Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
+                                Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                                Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
                                 return null;
                             }
                         );
@@ -260,19 +257,19 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
-            Assert.IsFalse(aiBehavior.IsDisarmingObject());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
 
             yield return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
-                        Assert.IsTrue(aiBehavior.IsDisarmingObject());
+                        Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
                         //We ensure that the AI is not moving
                         Assert.IsFalse(aiManager.GetAgent().hasPath);
                         return null;
                     },
                     OnDisarmTimerOver: (InteractiveObjectType disarmObject) =>
                     {
-                        Assert.IsFalse(aiBehavior.IsDisarmingObject());
+                        Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
                         return null;
                     }
                 );
@@ -289,20 +286,20 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
-            Assert.IsFalse(aiBehavior.IsDisarmingObject());
-            Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
 
             yield return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
-                        Assert.IsTrue(aiBehavior.IsDisarmingObject());
-                        Assert.IsFalse(aiBehavior.IsMovingTowardPlayer());
+                        Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+                        Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
 
                         return PuzzleSceneTestHelper.MoveTowardPlayerYield(TestPositionID.MOVE_TOWARDS_PLAYER_INSIGHT,
                             OnPlayerInSight: () =>
                             {
-                                Assert.IsFalse(aiBehavior.IsDisarmingObject());
-                                Assert.IsTrue(aiBehavior.IsMovingTowardPlayer());
+                                Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+                                Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
                                 return null;
                             }
                          );
@@ -322,20 +319,20 @@ namespace Tests
             yield return new WaitForFixedUpdate();
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
-            Assert.IsFalse(aiBehavior.IsDisarmingObject());
-            Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
 
             yield return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_1, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
-                        Assert.IsTrue(aiBehavior.IsDisarmingObject());
-                        Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+                        Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+                        Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
 
                         return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_2, 999999f, 0.2f), aiManager.transform.position,
                            OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                            {
-                               Assert.IsTrue(aiBehavior.IsDisarmingObject());
-                               Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+                               Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+                               Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                                return null;
                            },
                            OnAttractiveObjectDestroyed: null
@@ -357,19 +354,19 @@ namespace Tests
             yield return null;
             var aiBehavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
 
-            Assert.IsFalse(aiBehavior.IsDisarmingObject());
-            Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
 
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
                OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                {
-                   Assert.IsFalse(aiBehavior.IsDisarmingObject());
-                   Assert.IsTrue(aiBehavior.IsInfluencedByAttractiveObject());
+                   Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+                   Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                    return PuzzleSceneTestHelper.DisarmObjectYield(DisarmInteractiveObjectDefinition.OnlyDisarmObject(InteractiveObjectTestID.TEST_2, 999f, 0.05f), aiManager.transform.position,
                     OnDisarmObjectSpawn: (InteractiveObjectType disarmObject) =>
                     {
-                        Assert.IsTrue(aiBehavior.IsDisarmingObject());
-                        Assert.IsFalse(aiBehavior.IsInfluencedByAttractiveObject());
+                        Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>());
+                        Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                         return null;
                     },
                     OnDisarmTimerOver: null

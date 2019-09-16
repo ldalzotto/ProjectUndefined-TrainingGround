@@ -73,26 +73,26 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("AI - OnProjectileTriggerEnter"));
 
-            if (genericAiBehavior.IsEscapingFromProjectileWithTargetZonesEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIProjectileEscapeManager>())
             {
                 // If the player is already escaping without taking into account colliders
-                if (genericAiBehavior.IsEscapeWithoutTriggerEnabled()
-                        && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIEscapeWithoutTriggerManager)
+                if (genericAiBehavior.IsManagerInstanciated<AbstractAIEscapeWithoutTriggerManager>()
+                        && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIEscapeWithoutTriggerManager>())
                         && this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                 {
                     genericAiBehavior.SetManagerState(null);
                     this.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(projectileTriggerEnterEvent.CollisionPosition,
-                             genericAiBehavior.AIProjectileEscapeManager.GetSemiAngle(projectileTriggerEnterEvent.LaunchProjectileId),
-                             genericAiBehavior.AIProjectileEscapeManager.GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)),
+                             genericAiBehavior.GetAIManager<AbstractAIProjectileEscapeManager>().GetSemiAngle(projectileTriggerEnterEvent.LaunchProjectileId),
+                             genericAiBehavior.GetAIManager<AbstractAIProjectileEscapeManager>().GetMaxEscapeDistance(projectileTriggerEnterEvent.LaunchProjectileId)),
                              genericAiBehavior);
                 }
-                else if ((genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIProjectileEscapeManager)
+                else if ((genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIProjectileEscapeManager>())
                     && !this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
                         || genericAiBehavior.IsProjectileTriggerAllowedToInterruptOtherStates())
                 {
                     genericAiBehavior.SetManagerState(null);
-                    genericAiBehavior.AIProjectileEscapeManager.ComponentTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.AIProjectileEscapeManager);
+                    genericAiBehavior.GetAIManager<AbstractAIProjectileEscapeManager>().ComponentTriggerEnter(projectileTriggerEnterEvent.CollisionPosition, projectileTriggerEnterEvent);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIProjectileEscapeManager>());
                 }
             }
         }
@@ -100,34 +100,34 @@ namespace RTPuzzle
         private void EscapeWithoutTrigger_Start(GenericPuzzleAIBehavior genericAiBehavior, EscapeWithoutTriggerStartAIBehaviorEvent escapeWithoutTriggerStartAIBehaviorEvent)
         {
             Debug.Log(MyLog.Format("AI - EscapeWithoutTrigger_Start"));
-            if (genericAiBehavior.IsEscapeWithoutTriggerEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIEscapeWithoutTriggerManager>())
             {
-                genericAiBehavior.AIEscapeWithoutTriggerManager.OnEscapeStart(escapeWithoutTriggerStartAIBehaviorEvent);
-                genericAiBehavior.SetManagerState(genericAiBehavior.AIEscapeWithoutTriggerManager);
+                genericAiBehavior.GetAIManager<AbstractAIEscapeWithoutTriggerManager>().OnEscapeStart(escapeWithoutTriggerStartAIBehaviorEvent);
+                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIEscapeWithoutTriggerManager>());
             }
         }
 
         private void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, FearedStartAIBehaviorEvent fearedStartAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsFearEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIFearStunManager>())
             {
-                genericAiBehavior.AIFearStunManager.OnFearStarted(fearedStartAIBehaviorEvent);
-                genericAiBehavior.SetManagerState(genericAiBehavior.AIFearStunManager);
+                genericAiBehavior.GetAIManager<AbstractAIFearStunManager>().OnFearStarted(fearedStartAIBehaviorEvent);
+                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIFearStunManager>());
             }
         }
 
         private void Feared_Forced(GenericPuzzleAIBehavior genericAiBehavior, FearedForcedAIBehaviorEvent fearedForcedAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsFearEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIFearStunManager>())
             {
-                genericAiBehavior.AIFearStunManager.OnFearedForced(fearedForcedAIBehaviorEvent);
-                genericAiBehavior.SetManagerState(genericAiBehavior.AIFearStunManager);
+                genericAiBehavior.GetAIManager<AbstractAIFearStunManager>().OnFearedForced(fearedForcedAIBehaviorEvent);
+                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIFearStunManager>());
             }
         }
 
         private void Feared_End(GenericPuzzleAIBehavior genericAiBehavior, FearedEndAIBehaviorEvent fearedEndAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsFearEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIFearStunManager>())
             {
                 genericAiBehavior.SetManagerState(null);
                 // to not have inactive frame.
@@ -137,31 +137,31 @@ namespace RTPuzzle
 
         private void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerEnterAIBehaviorEvent attractiveObjectTriggerEnterAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsAttractiveObjectsEnabled() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIAttractiveObjectManager))
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
-                genericAiBehavior.AIAttractiveObjectManager.ComponentTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
-                genericAiBehavior.SetManagerState(genericAiBehavior.AIAttractiveObjectManager);
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());
             }
         }
 
         private void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerStayAIBehaviorEvent attractiveObjectTriggerStayAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsAttractiveObjectsEnabled() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIAttractiveObjectManager))
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
                 //Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
-                genericAiBehavior.AIAttractiveObjectManager.ComponentTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
-                genericAiBehavior.SetManagerState(genericAiBehavior.AIAttractiveObjectManager);
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());
             }
         }
 
         private void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsAttractiveObjectsEnabled() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIAttractiveObjectManager))
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
-                genericAiBehavior.AIAttractiveObjectManager.ComponentTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
-                if (!genericAiBehavior.AIAttractiveObjectManager.IsManagerEnabled())
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
+                if (!genericAiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>())
                 {
                     genericAiBehavior.SetManagerState(null);
                     genericAiBehavior.ForceUpdateAIBehavior();
@@ -171,9 +171,9 @@ namespace RTPuzzle
 
         private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsAttractiveObjectsEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>())
             {
-                genericAiBehavior.AIAttractiveObjectManager.OnAttractiveObjectDestroyed(attractiveObectDestroyedAIBehaviorEvent.DestroyedAttractiveObject);
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().OnAttractiveObjectDestroyed(attractiveObectDestroyedAIBehaviorEvent.DestroyedAttractiveObject);
                 // to not have inactive frame.
                 genericAiBehavior.ForceUpdateAIBehavior();
             }
@@ -181,30 +181,30 @@ namespace RTPuzzle
 
         private void TargetZone_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerEnterAIBehaviorEvent targetZoneTriggerEnterAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsEscapeFromTargetZoneEnabled() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager))
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAITargetZoneManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>()))
             {
                 if (targetZoneTriggerEnterAIBehaviorEvent.TargetZone != null)
                 {
-                    if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
+                    if (!genericAiBehavior.IsManagerEnabled<AbstractAITargetZoneManager>())
                     {
                         Debug.Log(MyLog.Format("Target zone reset FOV"));
                         genericAiBehavior.AIFOVManager.ResetFOV();
                     }
 
                     Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerEnter"));
-                    genericAiBehavior.AITargetZoneManager.TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.AITargetZoneManager);
+                    genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>().TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>());
                 }
             }
         }
 
         private void TargetZone_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, TargetZoneTriggerStayAIBehaviorEvent targetZoneTriggerStayAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsEscapeFromTargetZoneEnabled()
-                        && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.AITargetZoneManager)
-                        && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AITargetZoneManager))
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAITargetZoneManager>()
+                        && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>())
+                        && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>()))
             {
-                if (!genericAiBehavior.IsEscapingFromProjectileWithTargetZones())
+                if (!genericAiBehavior.IsManagerEnabled<AbstractAITargetZoneManager>())
                 {
                     Debug.Log(MyLog.Format("Target zone reset FOV"));
                     genericAiBehavior.AIFOVManager.ResetFOV();
@@ -212,17 +212,17 @@ namespace RTPuzzle
                 if (targetZoneTriggerStayAIBehaviorEvent.TargetZone != null)
                 {
                     Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerStay"));
-                    genericAiBehavior.AITargetZoneManager.TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.AITargetZoneManager);
+                    genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>().TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>());
                 }
             }
         }
 
         private void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, PlayerEscapeStartAIBehaviorEvent playerEscapeStartAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsPlayerEscapeEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractPlayerEscapeManager>())
             {
-                if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.PlayerEscapeManager)
+                if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractPlayerEscapeManager>())
                  || genericAiBehavior.IsPlayerEscapeAllowedToInterruptOtherStates())
                 {
                     if (this.trackerContainer.GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
@@ -235,8 +235,8 @@ namespace RTPuzzle
                     else
                     {
                         Debug.Log(MyLog.Format("AI - Player escape with colliders."));
-                        genericAiBehavior.PlayerEscapeManager.OnPlayerEscapeStart();
-                        genericAiBehavior.SetManagerState(genericAiBehavior.PlayerEscapeManager);
+                        genericAiBehavior.GetAIManager<AbstractPlayerEscapeManager>().OnPlayerEscapeStart();
+                        genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractPlayerEscapeManager>());
                     }
 
                 }
@@ -245,33 +245,33 @@ namespace RTPuzzle
 
         private void SightInRange_Enter(GenericPuzzleAIBehavior genericAiBehavior, SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsMovignTowardPlayerEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIMoveTowardPlayerManager>())
             {
                 Debug.Log(MyLog.Format("AI - Sight in range enter."));
-                if (genericAiBehavior.AIPlayerMoveTowardPlayerManager.OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
+                if (genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().OnSightInRangeEnter(sightInRangeEnterAIBehaviorEvent))
                 {
-                    genericAiBehavior.SetManagerState(genericAiBehavior.AIPlayerMoveTowardPlayerManager);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>());
                 }
             }
         }
 
         private void SightInRange_Exit(GenericPuzzleAIBehavior genericAiBehavior, SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
         {
-            if (genericAiBehavior.IsMovignTowardPlayerEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIMoveTowardPlayerManager>())
             {
                 Debug.Log(MyLog.Format("AI - Sight in range exit."));
-                genericAiBehavior.AIPlayerMoveTowardPlayerManager.OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
+                genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().OnSightInRangeExit(sightInRangeExitAIBehaviorEvent);
             }
         }
 
         private void DisarmingObject_Enter(GenericPuzzleAIBehavior genericAiBehavior, DisarmingObjectEnterAIbehaviorEvent disarmingObjectEnterAIbehaviorEvent)
         {
-            if (genericAiBehavior.IsDisarmingObjectEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIDisarmObjectManager>())
             {
-                if (!genericAiBehavior.IsDisarmingObject() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.AIDisarmObjectManager))
+                if (!genericAiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>()))
                 {
-                    genericAiBehavior.AIDisarmObjectManager.OnDisarmingObjectStart(disarmingObjectEnterAIbehaviorEvent.DisarmObjectModule);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.AIDisarmObjectManager);
+                    genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>().OnDisarmingObjectStart(disarmingObjectEnterAIbehaviorEvent.DisarmObjectModule);
+                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>());
                 }
 
             }
@@ -279,12 +279,12 @@ namespace RTPuzzle
 
         private void DisarmingObject_Exit(GenericPuzzleAIBehavior genericAiBehavior, DisarmingObjectExitAIbehaviorEvent disarmingObjectExitAIbehaviorEvent)
         {
-            if (genericAiBehavior.IsDisarmingObjectEnabled())
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIDisarmObjectManager>())
             {
-                if (genericAiBehavior.IsDisarmingObject())
+                if (genericAiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>())
                 {
-                    genericAiBehavior.AIDisarmObjectManager.OnDisarmingObjectExit(disarmingObjectExitAIbehaviorEvent.DisarmObjectModule);
-                    if (!genericAiBehavior.IsDisarmingObject())
+                    genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>().OnDisarmingObjectExit(disarmingObjectExitAIbehaviorEvent.DisarmObjectModule);
+                    if (!genericAiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>())
                     {
                         genericAiBehavior.SetManagerState(null);
                     }

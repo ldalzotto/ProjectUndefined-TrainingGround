@@ -9,8 +9,21 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIAttractiveObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIAttractiveObjectComponent", order = 1)]
     public class AIAttractiveObjectComponent : AbstractAIComponent
     {
+        public override InterfaceAIManager BuildManager()
+        {
+            if (this.AttractiveObjectStrategyType == AttractiveObjectStrategyType.LOOSE)
+            {
+               return new AIAttractiveObjectLooseManager(this);
+            }
+            else
+            {
+                return new AIAttractiveObjectPersistantManager(this);
+            }
+        }
+
         [CustomEnum()]
         public AttractiveObjectStrategyType AttractiveObjectStrategyType;
+        
     }
 
     public enum AttractiveObjectStrategyType
@@ -40,12 +53,12 @@ namespace RTPuzzle
         {
         }
 
-        protected void BaseInit(NavMeshAgent selfAgent, AIObjectID aiID, PuzzleEventsManager PuzzleEventsManager, AIObjectTypeSpeedSetter aIObjectTypeSpeedSetter)
+        public void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.selfAgent = selfAgent;
-            this.aiID = aiID;
-            this.PuzzleEventsManager = PuzzleEventsManager;
-            this.AIObjectTypeSpeedSetter = aIObjectTypeSpeedSetter;
+            this.selfAgent = AIBheaviorBuildInputData.selfAgent;
+            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.PuzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
+            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter;
         }
 
         #region External Events

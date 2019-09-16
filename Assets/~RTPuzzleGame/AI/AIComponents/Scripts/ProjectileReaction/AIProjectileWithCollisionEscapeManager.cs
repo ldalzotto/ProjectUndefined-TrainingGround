@@ -6,23 +6,23 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
+    // () => { return ; }
     public class AIProjectileWithCollisionEscapeManager : AbstractAIProjectileEscapeManager
     {
 
         #region External Dependencies
-        private Func<Collider[]> targetZoneTriggerColliderProvider;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         public AIProjectileWithCollisionEscapeManager(AIProjectileEscapeComponent associatedAIComponent) : base(associatedAIComponent)
         {
+          
         }
 
-        public void Init(NavMeshAgent escapingAgent,
-                AIFOVManager AIFOVManager, PuzzleEventsManager PuzzleEventsManager, AIObjectID aiID, Func<Collider[]> targetZoneTriggerColliderProvider,
-                TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.BaseInit(escapingAgent, AIFOVManager, aiID, PuzzleEventsManager, AIDestimationMoveManagerComponent);
-            this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
+            base.Init(AIBheaviorBuildInputData);
+            this.InteractiveObjectContainer = AIBheaviorBuildInputData.InteractiveObjectContainer;
         }
 
         protected override void SetIsEscapingFromProjectile(bool value)
@@ -38,12 +38,12 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("EscapeToFarestWithTargetZone"));
             this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID);
-            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
+            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
         };
 
         protected override Action<NavMeshRaycastStrategy> DestinationCalulationMethod => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
-            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
+            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
         };
 
         public override void OnLaunchProjectileDestroyed(LaunchProjectileModule launchProjectile)

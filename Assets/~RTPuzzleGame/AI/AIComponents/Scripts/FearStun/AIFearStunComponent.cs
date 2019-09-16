@@ -14,6 +14,11 @@ namespace RTPuzzle
     {
         public float FOVSumThreshold;
         public float TimeWhileBeginFeared;
+
+        public override InterfaceAIManager BuildManager()
+        {
+            return new AIFearStunManager(this);
+        }
     }
 
     public abstract class AbstractAIFearStunManager : AbstractAIManager<AIFearStunComponent>, InterfaceAIManager
@@ -31,10 +36,10 @@ namespace RTPuzzle
         {
         }
 
-        protected void BaseInit(AIObjectID aiID, PuzzleEventsManager puzzleEventsManager)
+        public virtual void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            AiID = aiID;
-            PuzzleEventsManager = puzzleEventsManager;
+            AiID = AIBheaviorBuildInputData.aiID;
+            PuzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
         }
 
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);

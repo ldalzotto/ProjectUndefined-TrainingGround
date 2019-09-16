@@ -10,7 +10,6 @@ namespace RTPuzzle
     public class AttractiveObjectAction : RTPPlayerAction
     {
         #region External Dependencies
-        private AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private PuzzleEventsManager PuzzleEventsManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
@@ -44,7 +43,6 @@ namespace RTPuzzle
 
             #region External Dependencies
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
-            this.AttractiveObjectsInstanciatedParent = PuzzleGameSingletonInstances.AttractiveObjectsInstanciatedParent;
             var playerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var puzzleStaticConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration;
@@ -60,7 +58,7 @@ namespace RTPuzzle
 
             this.attractiveObject =
                 AttractiveObjectActionInstanceHelper.CreateAttractiveObjectAtStart(attractiveObjectDefinition, puzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration,
-                        this.AttractiveObjectsInstanciatedParent.transform);
+                        this.InteractiveObjectContainer.transform);
 
             this.AttractiveObjectInputManager = new AttractiveObjectInputManager(gameInputManager);
             this.AttractiveObjectGroundPositioner = new AttractiveObjectGroundPositioner(playerDataRetriever.GetPlayerRigidBody(), playerDataRetriever.GetPlayerPuzzleLogicRootCollier());
@@ -110,7 +108,7 @@ namespace RTPuzzle
             if (objectSpawnPosition.HasValue)
             {
                 this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject());
-                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, this.attractiveObject, this.PuzzleGameConfigurationManager, this.AttractiveObjectsInstanciatedParent);
+                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, this.attractiveObject, this.PuzzleGameConfigurationManager);
             }
 
             this.OnEndAction();

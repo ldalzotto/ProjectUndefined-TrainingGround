@@ -20,11 +20,11 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent currentAgent, PuzzleEventsManager PuzzleEventsManager, AIFOVManager aiFovManager, AIObjectID AiID)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.BaseInit(AiID, PuzzleEventsManager);
-            this.currentAgent = currentAgent;
-            this.aiFovManager = aiFovManager;
+            base.Init(AIBheaviorBuildInputData);
+            this.currentAgent = AIBheaviorBuildInputData.selfAgent;
+            this.aiFovManager = AIBheaviorBuildInputData.AIFOVManager;
             this.AIFearTimeCounterManager = new AIFearTimeCounterManager();
         }
         
@@ -68,10 +68,6 @@ namespace RTPuzzle
             this.AIFearTimeCounterManager.InitFearTimer(0, fearedForcedAIBehaviorEvent.FearedTime);
         }
         #endregion
-
-
-
-
     }
 
     class AIFearTimeCounterManager

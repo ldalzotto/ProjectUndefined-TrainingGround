@@ -12,19 +12,25 @@ namespace RTPuzzle
 {
     using UnityEngine;
     using System;
-    
-    
+
+
     [Serializable()]
-    [CreateAssetMenu(fileName="AIDisarmObjectComponent", menuName="Configuration/PuzzleGame/AIComponentsConfiguration/AIDisarmObjectComponent", order=1)]
+    [CreateAssetMenu(fileName = "AIDisarmObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIDisarmObjectComponent", order = 1)]
     public class AIDisarmObjectComponent : AbstractAIComponent
     {
+        public override InterfaceAIManager BuildManager()
+        {
+            return new AIDisarmObjectManager(this);
+        }
     }
-    
+
     public abstract class AbstractAIDisarmObjectManager : AbstractAIManager<AIDisarmObjectComponent>, InterfaceAIManager
     {
         protected AbstractAIDisarmObjectManager(AIDisarmObjectComponent associatedAIComponent) : base(associatedAIComponent)
         {
         }
+
+        public abstract void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData);
 
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
         
@@ -39,6 +45,6 @@ namespace RTPuzzle
         #region External Evetns      
         public abstract void OnDisarmingObjectStart(DisarmObjectModule disarmingObject);
         public abstract void OnDisarmingObjectExit(DisarmObjectModule disarmingObject);
-    #endregion
-}
+        #endregion
+    }
 }

@@ -28,7 +28,7 @@ namespace Tests
 
             var agent = aiObject.GetAgent();
             var AIBehavior = (GenericPuzzleAIBehavior)aiObject.GetAIBehavior();
-            Assert.IsTrue(AIBehavior.IsPatrolling());
+            Assert.IsTrue(AIBehavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
             Assert.IsTrue(agent.destination - initialAIObjectPosition == position1.transform.position);
         }
 
@@ -55,7 +55,7 @@ namespace Tests
             TestHelperMethods.SetAgentDestinationPositionReached(agent);
             yield return null;
 
-            Assert.IsTrue(AIBehavior.IsPatrolling());
+            Assert.IsTrue(AIBehavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
             Assert.IsTrue(agent.destination - initialAIObjectPosition == position2.transform.position);
         }
 
@@ -87,13 +87,13 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_2, 9999f, 0.1f), Vector3.zero,
                OnAttractiveObjectSpawn: (o) =>
               {
-                  Assert.IsTrue(AIBehavior.IsInfluencedByAttractiveObject());
+                  Assert.IsTrue(AIBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                   return null;
               },
                 OnAttractiveObjectDestroyed: () =>
                 {
                     Debug.Log("TEST OnAttractiveObjectDestroyed");
-                    Assert.IsTrue(AIBehavior.IsPatrolling());
+                    Assert.IsTrue(AIBehavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                     Assert.IsTrue(agent.destination - initialAIObjectPosition == position2.transform.position);
                     return null;
                 });

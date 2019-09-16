@@ -21,8 +21,7 @@ namespace RTPuzzle
 
         private DisarmObjectInherentData disarmObjectInherentConfigurationData;
         private SphereCollider disarmObjectRange;
-
-        private List<AIObjectType> AiThatCanInteract;
+        
         private float elapsedTime;
 
         public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
@@ -32,7 +31,6 @@ namespace RTPuzzle
             this.ModelObjectModule = ModelObjectModule;
             this.associatedInteractiveObjectType = AssociatedInteractiveObjectType;
             this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
-            this.AiThatCanInteract = new List<AIObjectType>();
 
             this.disarmObjectRange = this.GetComponent<SphereCollider>();
             this.disarmObjectRange.radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
@@ -106,7 +104,6 @@ namespace RTPuzzle
             if (collisionType != null && collisionType.IsAI)
             {
                 var aiObjectType = AILogicColliderModule.FromCollisionType(collisionType);
-                this.AiThatCanInteract.Add(aiObjectType);
                 aiObjectType.OnDisarmObjectTriggerEnter(this);
             }
         }
@@ -117,7 +114,6 @@ namespace RTPuzzle
             if (collisionType != null && collisionType.IsAI)
             {
                 var aiObjectType = AILogicColliderModule.FromCollisionType(collisionType);
-                this.AiThatCanInteract.Remove(aiObjectType);
                 aiObjectType.OnDisarmObjectTriggerExit(this);
             }
         }

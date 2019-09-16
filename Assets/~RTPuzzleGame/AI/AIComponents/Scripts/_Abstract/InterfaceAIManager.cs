@@ -10,6 +10,7 @@ namespace RTPuzzle
     /// </summary>
     public interface InterfaceAIManager
     {
+        void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData);
         void BeforeManagersUpdate(float d, float timeAttenuationFactor);
         bool IsManagerEnabled();
         void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);

@@ -52,6 +52,10 @@ namespace RTPuzzle
         {
             return this.aIBehaviorManagerContainer.AIManagersByExecutionOrder.Values.ToList();
         }
+        public T GetAIManager<T>() where T : InterfaceAIManager
+        {
+            return (T)this.aIBehaviorManagerContainer.GetAIManager<T>();
+        }
         #endregion
 
         #region AI Manager Availability
@@ -82,15 +86,35 @@ namespace RTPuzzle
         }
         #endregion
 
+        #region Logic Conditions
+        public bool IsManagerInstanciated<T>() where T : InterfaceAIManager
+        {
+            return this.GetAIManager<T>() != null;
+        }
+        public bool IsManagerEnabled<T>() where T : InterfaceAIManager
+        {
+            if (IsManagerInstanciated<T>())
+            {
+                return this.GetAIManager<T>().IsManagerEnabled();
+            }
+            return false;
+        }
+        #endregion
+
         protected AIFOVManager aIFOVManager;
 
-        protected void BaseInit(AIBheaviorBuildInputData AIBheaviorBuildInputData)
+        protected void BaseInit(List<InterfaceAIManager> aiManagers, AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.AIObjectTypeInternalEventsListener = AIBheaviorBuildInputData.AIObjectTypeInternalEventsListener;
             this.selfAgent = AIBheaviorBuildInputData.selfAgent;
+            this.AIObjectTypeInternalEventsListener = AIBheaviorBuildInputData.AIObjectTypeInternalEventsListener;
+            this.aIFOVManager = new AIFOVManager(selfAgent, this.AIObjectTypeInternalEventsListener.OnFOVChange);
+            AIBheaviorBuildInputData.AIFOVManager = this.AIFOVManager;
+            foreach (var aiManager in aiManagers)
+            {
+                aiManager.Init(AIBheaviorBuildInputData);
+            }
             this.puzzleAIBehaviorExternalEventManager = AIBheaviorBuildInputData.GenericPuzzleAIBehaviorExternalEventManager;
             this.puzzleAIBehaviorExternalEventManager.Init(this);
-            this.aIFOVManager = new AIFOVManager(selfAgent, this.AIObjectTypeInternalEventsListener.OnFOVChange);
         }
 
         protected void AfterChildInit()
@@ -182,6 +206,7 @@ namespace RTPuzzle
         public AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener;
         public InteractiveObjectType AssociatedInteractiveObject;
         public AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
+        public AIFOVManager AIFOVManager;
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
             InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, Collider aiCollider, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
@@ -199,6 +224,7 @@ namespace RTPuzzle
             this.AIObjectTypeInternalEventsListener = AIObjectTypeInternalEventsListener;
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
             this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
+            this.AIFOVManager = null;
         }
     }
 

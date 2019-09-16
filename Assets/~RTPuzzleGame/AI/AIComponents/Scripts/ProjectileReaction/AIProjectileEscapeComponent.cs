@@ -16,6 +16,11 @@ namespace RTPuzzle
 
         [Inline(createSubIfAbsent: true, FileName = "EscapeSemiAngle")]
         public ProjectileEscapeSemiAngle EscapeSemiAngleV2;
+
+        public override InterfaceAIManager BuildManager()
+        {
+            return new AIProjectileWithCollisionEscapeManager(this);
+        }
     }
 
     public abstract class AbstractAIProjectileEscapeManager : AbstractAIManager<AIProjectileEscapeComponent>, InterfaceAIManager
@@ -41,14 +46,14 @@ namespace RTPuzzle
         {
         }
 
-        protected void BaseInit(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent)
+        public virtual void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.escapingAgent = escapingAgent;
-            this.AIFOVManager = aIFOVManager;
-            this.aiID = aiID;
+            this.escapingAgent = AIBheaviorBuildInputData.selfAgent;
+            this.AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.aiID = AIBheaviorBuildInputData.aiID;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
-            this.puzzleEventsManager = puzzleEventsManager;
-            this.AIDestimationMoveManagerComponent = AIDestimationMoveManagerComponent;
+            this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
+            this.AIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
         }
 
         #region Internal Events

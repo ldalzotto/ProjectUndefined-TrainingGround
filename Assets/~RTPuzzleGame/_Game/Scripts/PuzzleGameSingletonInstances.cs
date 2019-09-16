@@ -7,7 +7,6 @@ namespace RTPuzzle
         private static PlayerManager playerManager;
         private static PuzzleEventsManager puzzleEventsManager;
         private static TimeFlowManager timeFlowManager;
-        private static AttractiveObjectsInstanciatedParent attractiveObjectsInstanciatedParent;
         private static PlayerManagerDataRetriever playerManagerDataRetriever;
         private static PuzzleGameConfigurationManager puzzleGameConfigurationManager;
         private static BlockingCutscenePlayer blockingCutscenePlayer;
@@ -45,7 +44,6 @@ namespace RTPuzzle
         public static PlayerManager PlayerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerManager, obj => playerManager = obj); }
         public static PuzzleEventsManager PuzzleEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleEventsManager, obj => puzzleEventsManager = obj); }
         public static TimeFlowManager TimeFlowManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowManager, obj => timeFlowManager = obj); }
-        public static AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(attractiveObjectsInstanciatedParent, obj => attractiveObjectsInstanciatedParent = obj); }
         public static PlayerManagerDataRetriever PlayerManagerDataRetriever { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerManagerDataRetriever, obj => playerManagerDataRetriever = obj); }
         public static PuzzleGameConfigurationManager PuzzleGameConfigurationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleGameConfigurationManager, obj => puzzleGameConfigurationManager = obj); }
         public static BlockingCutscenePlayer BlockingCutscenePlayer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(blockingCutscenePlayer, obj => blockingCutscenePlayer = obj); }

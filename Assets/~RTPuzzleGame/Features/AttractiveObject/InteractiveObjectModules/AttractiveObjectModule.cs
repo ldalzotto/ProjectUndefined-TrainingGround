@@ -1,11 +1,7 @@
-﻿using UnityEngine;
-using GameConfigurationID;
-using System.Collections.Generic;
+﻿using GameConfigurationID;
 using System;
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -73,17 +69,6 @@ namespace RTPuzzle
         }
         #endregion
 
-        private void OnDrawGizmos()
-        {
-#if UNITY_EDITOR
-            var labelStyle = new GUIStyle(EditorStyles.label);
-            labelStyle.alignment = TextAnchor.MiddleCenter;
-            labelStyle.normal.textColor = Color.yellow;
-            Handles.Label(transform.position + new Vector3(0, 3f, 0), AttractiveObjectId.ToString(), labelStyle);
-            Gizmos.DrawIcon(transform.position + new Vector3(0, 5.5f, 0), "Gizmo_AttractiveObject", true);
-#endif
-        }
-
         public static class AttractiveObjectModuleInstancer
         {
             public static void PopuplateFromDefinition(AttractiveObjectModule attractiveObjectModule, AttractiveObjectModuleDefinition attractiveObjectModuleDefinition,
@@ -145,7 +130,7 @@ namespace RTPuzzle
     public static class AttractiveObjectTypeModuleEventHandling
     {
         public static void OnAttractiveObjectActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject,
-                    PuzzleGameConfigurationManager puzzleGameConfigurationManager, AttractiveObjectsInstanciatedParent AttractiveObjectsInstanciatedParent)
+                    PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
             attractiveObject.transform.position = attractiveObjectWorldPositionHit.point;
 

@@ -20,16 +20,15 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent patrollingAgent, AIFOVManager aIFOVManager, AIObjectID aiID, AIPositionsManager aIPositionsManager, InteractiveObjectType associatedInteractiveObject,
-            AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.BaseInit(patrollingAgent, aIFOVManager, aiID);
-            this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
+            base.Init(AIBheaviorBuildInputData);
+            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter;
             var AIPatrolGraph = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AIPatrolGraphConfiguration()[this.AssociatedAIComponent.AIPatrolGraphID].AIPatrolGraph;
-            this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, AIPatrolActionInput.BuildParameters(associatedInteractiveObject)), null);
+            this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, AIPatrolActionInput.BuildParameters(AIBheaviorBuildInputData.AssociatedInteractiveObject)), null);
             this.PatrolGraphPlayer.Play();
         }
-
+        
         public override void GizmoTick() { }
 
         public override void OnDestinationReached()

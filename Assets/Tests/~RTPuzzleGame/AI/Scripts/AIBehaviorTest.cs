@@ -36,7 +36,7 @@ namespace Tests
             Assert.AreNotEqual(newPosition, oldPosition);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             // (3) - The AI is in a patrolling state
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
             // (4) - The AI FOV is not modified for patrolling
             Assert.AreEqual(new StartEndSlice(0, 360), mouseAIBheavior.GetFOV().FovSlices[0]);
             var beforeReachDestination = aiManager.GetAgent().destination;
@@ -45,7 +45,7 @@ namespace Tests
             yield return null;
             this.MockPuzzleEventsManagerTest.ClearCalls();
             // (6) - The AI is still in a patrolling state because nothing has happened
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
             var afterReachDestination = aiManager.GetAgent().destination;
             Assert.AreNotEqual(beforeReachDestination, afterReachDestination);
         }
@@ -60,19 +60,19 @@ namespace Tests
             });
             yield return null;
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 1000, 0.02f), aiManager.transform.position,
                 OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObjectType) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsPatrolling());
-                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     return null;
                 },
                 OnAttractiveObjectDestroyed: () =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     return null;
                 });
         }
@@ -92,21 +92,21 @@ namespace Tests
             var projectile = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_2, 1000, 0.1f);
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_2, aIObjectInitialization, 175f);
 
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(projectile, aiManager.transform.position,
                 OnProjectileSpawn: (InteractiveObjectType p) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsPatrolling());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     return null;
                 },
                 OnDistanceReached: () =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
                 },
@@ -131,15 +131,15 @@ namespace Tests
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsPatrolling());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     return null;
                 },
                 OnDistanceReached: () =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
                 },
@@ -172,18 +172,18 @@ namespace Tests
                 },
                 OnSecondProjectileSpawned: (InteractiveObjectType projectile) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsPatrolling());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                     currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                     return null;
                 },
                 OnSecondProjectileDistanceReached: () =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
                 },
@@ -210,15 +210,15 @@ namespace Tests
                 OnFearTriggered: () =>
                 {
                     Debug.Log(mouseAIBheavior.ToString());
-                    Assert.IsFalse(mouseAIBheavior.IsPatrolling());
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     return null;
                 },
                 OnFearEnded: () =>
                 {
                     Debug.Log(mouseAIBheavior.ToString());
-                    Assert.IsTrue(mouseAIBheavior.IsPatrolling());
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     return null;
                 },
                 fearTime: fearTime,
@@ -243,16 +243,16 @@ namespace Tests
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_2, aIObjectInitialization, 90f);
             // (1) - Initialization process
             yield return null;
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>(), "The AI has no interaction -> Patrolling.");
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_2, 99999f, 30f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, aiManager.transform.position);
             // (2) - Wait for projectile to be processed by physics engine. The AI must be in escape from projectile state.
             yield return new WaitForFixedUpdate();
-            Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been hit, no more patrolling.");
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "The AI has been hit, escaping from projectile while taking into account target zones.");
-            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should not ignore target zones while escaping from projectile for the first time.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>(), "The AI has been hit, no more patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "The AI has been hit, escaping from projectile while taking into account target zones.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>(), "The AI should not ignore target zones while escaping from projectile for the first time.");
             Assert.AreEqual(this.MockPuzzleEventsManagerTest.AiHittedByProjectileCallCount, 1, "The 'hitted by projectile event' must be triggered only once.");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
@@ -274,7 +274,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_2, aIObjectInitialization, 90f);
             yield return null;
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>(), "The AI has no interaction -> Patrolling.");
             var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_2, 99999f, 30f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, aiManager.transform.position);
             yield return new WaitForFixedUpdate();
@@ -285,8 +285,8 @@ namespace Tests
             TestHelperMethods.SetAgentDestinationPositionReached(agent);
             // wait for set destination
             yield return null;
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "The AI should no more escape from projectile when destination is reached.");
-            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should no more escape from projectile when destination is reached.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "The AI should no more escape from projectile when destination is reached.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>(), "The AI should no more escape from projectile when destination is reached.");
             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
         }
 
@@ -330,8 +330,8 @@ namespace Tests
             var aiDestination = mouseTestAIManager.GetAgent().destination;
             var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[targetZoneInteractiveObjectTestID].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             Assert.IsTrue(targetZoneCollider.bounds.Contains(aiDestination), "AI Destination should contains the target zone the second hit.");
-            Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should ignore target zones while escaping from projectile for the second time.");
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "The AI should not escape with target zone consideration.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>(), "The AI should ignore target zones while escaping from projectile for the second time.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "The AI should not escape with target zone consideration.");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
         }
 
@@ -372,14 +372,14 @@ namespace Tests
             yield return new WaitForFixedUpdate(); //projectile processing
             currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
             TestHelperMethods.SetAgentDestinationPositionReached(aiManager.GetAgent());
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone(), "AI should not escape from target zone when a projectile is triggered.");
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "AI should escape form projectile when a projectile is triggered.");
-            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget(), "AI should escape while ignoring target zones when a projectile is triggered for the first time.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>(), "AI should not escape from target zone when a projectile is triggered.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "AI should escape form projectile when a projectile is triggered.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>(), "AI should escape while ignoring target zones when a projectile is triggered for the first time.");
             Assert.IsTrue(currentFOVSum < 360f);
             yield return new WaitForFixedUpdate();
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone(), "AI should escape from target zone when target zone distance check is triggered.");
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "AI should not escape form projectile because target zone is cancelling it.");
-            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>(), "AI should escape from target zone when target zone distance check is triggered.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "AI should not escape form projectile because target zone is cancelling it.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() != currentFOVSum, "The AI FOV must be reseted before processing target zone event.");
         }
 
@@ -398,12 +398,12 @@ namespace Tests
             aiManager.GetAgent().Warp(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PITFAL_Z_POSITION_1).transform.position);
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 20f);
             yield return null;
-            Assert.IsFalse(mouseAIBheavior.IsFeared());
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position - Vector3.forward,
                 OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     return null;
                 },
@@ -431,16 +431,16 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position,
                  OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                  {
-                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                     Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                     Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                      Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                      Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                      currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                      return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 170), aiManager.transform.position,
                          OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                          {
-                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                             Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
+                             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                             Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                              Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                              Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                              currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -448,8 +448,8 @@ namespace Tests
                          },
                          OnDistanceReached: () =>
                          {
-                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                              Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                              Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360);
                              return null;
@@ -482,22 +482,22 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position,
                  OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                  {
-                     Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                     Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                     Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                      Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                      currentFOVSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                      return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position,
                          OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                          {
-                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                             Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
+                             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                             Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                              Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                              return null;
                          },
                          OnDistanceReached: () =>
                          {
-                             Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                             Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                              Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360);
                              return null;
                          },
@@ -529,9 +529,9 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 9999f, 30f), aiManager.transform.position,
                 OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
@@ -541,19 +541,19 @@ namespace Tests
                         OnBeforeSettingPosition: null,
                         OnSamePositionSetted: () =>
                         {
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
                             return null;
                         },
                         OnDestinationReached: () =>
                         {
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360);
                             return null;
                         },
@@ -583,23 +583,23 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position,
                 OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
                         OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObjectType) =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                             return null;
                         },
                         OnAttractiveObjectDestroyed: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                             return null;
@@ -607,8 +607,8 @@ namespace Tests
                 },
                 OnDistanceReached: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
@@ -631,8 +631,8 @@ namespace Tests
             yield return null;
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, attractiveObjectEffectiveTime), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
-            Assert.IsFalse(mouseAIBheavior.IsPatrolling(), "The AI has been attracted, no more patrolling.");
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is being attracted.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>(), "The AI has been attracted, no more patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI is being attracted.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return new WaitForSeconds(attractiveObjectEffectiveTime);
             Assert.IsNull(attractiveObjectType);
@@ -654,12 +654,12 @@ namespace Tests
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 1f), aiManager.transform.position);
             yield return new WaitForFixedUpdate();
             yield return null; //Wait for AI to set the destination
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
             Assert.AreEqual(attractiveObjectType.transform.position, aiManager.GetAgent().destination);
             attractiveObjectType.transform.position = attractiveObjectType.transform.position + Vector3.forward;
             yield return new WaitForFixedUpdate();
             yield return null; //Wait for AI to set the destination
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
             Assert.AreEqual(attractiveObjectType.transform.position, aiManager.GetAgent().destination);
         }
 
@@ -679,24 +679,24 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
                 OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position,
                         OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
-                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                             return null;
                         },
                         OnDistanceReached: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The attractive object is stille living and in range. AttractiveObject_TriggerStay -> attracted = true.");
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The attractive object is stille living and in range. AttractiveObject_TriggerStay -> attracted = true.");
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                             return null;
                         },
@@ -705,9 +705,9 @@ namespace Tests
                 },
                 OnAttractiveObjectDestroyed: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
                 }
@@ -729,21 +729,21 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
                OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                {
-                   Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                   Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                   Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                   Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                    Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                    return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 170), aiManager.transform.position,
                        OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                        {
-                           Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                           Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
+                           Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                           Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                            return null;
                        },
                        OnDistanceReached: () =>
                        {
-                           Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                           Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                           Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                           Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                            return null;
                        },
@@ -752,8 +752,8 @@ namespace Tests
                },
                OnAttractiveObjectDestroyed: () =>
                {
-                   Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                   Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                   Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                   Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                    Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                    return null;
                }
@@ -777,22 +777,22 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
              OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
              {
-                 Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                 Assert.IsFalse(mouseAIBheavior.IsFeared());
+                 Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                 Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                  Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
 
                  return PuzzleSceneTestHelper.FearYield(aiManager.transform.position, InteractiveObjectTestID.TEST_2, aIObjectInitialization,
                      OnFearTriggered: () =>
                      {
-                         Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                         Assert.IsTrue(mouseAIBheavior.IsFeared());
+                         Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                         Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                          Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                          return null;
                      },
                      OnFearEnded: () =>
                      {
-                         Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                         Assert.IsFalse(mouseAIBheavior.IsFeared());
+                         Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                         Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                          Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                          return null;
                      },
@@ -823,8 +823,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 999f), aiManager.transform.position,
             OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
             {
-                Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                 Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                 Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
 
@@ -834,8 +834,8 @@ namespace Tests
                     OnBeforeSettingPosition: null,
                     OnSamePositionSetted: () =>
                     {
-                        Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                        Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+                        Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                        Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                         Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                         Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                         PuzzleSceneTestHelper.SetPlayerEscapeComponentValues(aIObjectInitialization, 0f, 0f, 1f);
@@ -844,8 +844,8 @@ namespace Tests
                     OnDestinationReached: () =>
                     {
                         //  yield return new WaitForFixedUpdate();
-                        Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
-                        Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                        Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
+                        Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                         Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                         Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                         return null;
@@ -873,12 +873,12 @@ namespace Tests
             yield return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999999f, 0.2f), aiManager.transform.position,
                 OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObjectType) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     TestHelperMethods.SetAgentPosition(aiManager.GetAgent(), aiManager.transform.position + new Vector3(attractiveRange * 2, 0f, 0f));
                     return null;
                 },
                 OnAttractiveObjectDestroyed: null);
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
         }
 
         [UnityTest]
@@ -895,7 +895,7 @@ namespace Tests
             yield return null;
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 0.001f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
-            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is too far from attractive object zone.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI is too far from attractive object zone.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
         }
 
@@ -913,12 +913,12 @@ namespace Tests
             yield return null;
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 0.01f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
-            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI is too far from attractive object zone.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI is too far from attractive object zone.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return new WaitForEndOfFrame(); //We wait to the end of frame in order to not take into account the natural movement of AI
             attractiveObjectType.transform.position = aiManager.transform.position;
             yield return new WaitForFixedUpdate();
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI has entered the attractive object zone.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI has entered the attractive object zone.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
         }
 
@@ -940,7 +940,7 @@ namespace Tests
             aiManager.GetAgent().Warp(aiManager.GetAgent().destination);
             yield return null;
             yield return new WaitForEndOfFrame();
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must still be attracted by object at the end of frame.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI must still be attracted by object at the end of frame.");
             Assert.AreEqual(attractiveObjectType.transform.position.x, aiManager.GetAgent().destination.x, "The AI must have the target position to the attractive object.");
             Assert.AreEqual(attractiveObjectType.transform.position.z, aiManager.GetAgent().destination.z, "The AI must have the target position to the attractive object.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
@@ -961,11 +961,11 @@ namespace Tests
             yield return null;
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 9999f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
-            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must not be attracted by attractive object because it is occluded.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI must not be attracted by attractive object because it is occluded.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             TestHelperMethods.SetAgentPosition(aiManager.GetAgent(), PuzzleSceneTestHelper.FindTestPosition(TestPositionID.OBSTACLE_LISTENER_POSITION_2).transform.position);
             yield return new WaitForFixedUpdate();
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must be attracted by attractive object because it is not occluded.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI must be attracted by attractive object because it is not occluded.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
         }
 
@@ -984,11 +984,11 @@ namespace Tests
             yield return null;
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 99999f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
-            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must not be attracted by attractive object because it is occluded.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI must not be attracted by attractive object because it is occluded.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             TestHelperMethods.SetAgentPosition(aiManager.GetAgent(), PuzzleSceneTestHelper.FindTestPosition(TestPositionID.OBSTACLE_LISTENER_POSITION_3).transform.position);
             yield return new WaitForFixedUpdate();
-            Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject(), "The AI must be attracted by attractive object because it is not occluded. (Only AI transform position is taken into account.)");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI must be attracted by attractive object because it is not occluded. (Only AI transform position is taken into account.)");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
         }
 
@@ -1008,7 +1008,7 @@ namespace Tests
             //high projectile escape distance
             PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(projectileInteractiveTestID, AIObjectInitialization, 9999f);
             yield return null;
-            Assert.IsTrue(mouseAIBheavior.IsPatrolling(), "The AI has no interaction -> Patrolling.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>(), "The AI has no interaction -> Patrolling.");
             //wide angle to avoid navmesh ray cast to hit the same point.
             var projectileData = ProjectileInteractiveObjectDefinitions.ExplodingProjectile(projectileInteractiveTestID, 99999f, 30f);
             var lpTest = PuzzleSceneTestHelper.SpawnProjectile(projectileData, aiManager.transform.position);
@@ -1029,7 +1029,7 @@ namespace Tests
             yield return this.SetupProjectileReceived_ThenDestinationReached_WhenThereIsStillEscapeDistanceToTravel(SceneConstants.OneAINoTargetZone, InteractiveObjectTestID.TEST_1, aIObjectInitialization,
                     (instacniatedAIManager) => aiManager = instacniatedAIManager);
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "The AI should still escape from projectile when destination has been reached one time but there is still distance to travel.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "The AI should still escape from projectile when destination has been reached one time but there is still distance to travel.");
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
         }
         [UnityTest]
@@ -1042,8 +1042,8 @@ namespace Tests
             var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 99999f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones(), "The AI should still escape from projectile when destination has been reached one time but there is still distance to travel. And an attractive object has spawn in range.");
-            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject(), "");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>(), "The AI should still escape from projectile when destination has been reached one time but there is still distance to travel. And an attractive object has spawn in range.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
         }
@@ -1065,7 +1065,7 @@ namespace Tests
             Debug.Log("Destination before AI update : " + aiManager.GetAgent().destination);
             yield return null;
             Debug.Log("Destination after AI update : " + aiManager.GetAgent().destination);
-            Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should ignore target zones while escaping from projectile for the second time.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>(), "The AI should ignore target zones while escaping from projectile for the second time.");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
             //second projectile hit when destination has been reached one time but there is still distance
@@ -1077,7 +1077,7 @@ namespace Tests
             yield return new WaitForEndOfFrame(); //wait for destination position to update
             var targetZoneCollider = PuzzleSceneTestHelper.FindTargetZone(InteractiveObjectTestIDTree.InteractiveObjectTestIDs[InteractiveObjectTestID.TEST_2].TargetZoneID).LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
             Assert.IsTrue(targetZoneCollider.bounds.Contains(aiManager.GetAgent().destination), "AI Destination should contains the target zone the second (or more) hit.");
-            Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget(), "The AI should ignore target zones while escaping from projectile for the second (or more) time.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>(), "The AI should ignore target zones while escaping from projectile for the second (or more) time.");
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVSum);
         }
@@ -1128,11 +1128,11 @@ namespace Tests
             yield return null; //AI is inside the target zone
             TestHelperMethods.SetAgentDestinationPositionReached(aiManager, PuzzleSceneTestHelper.FindTestPosition(TestPositionID.FAR_AWAY_POSITION_1).position);
             yield return null;
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone(), "AI should still escape as there are distance to cross.");
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>(), "AI should still escape as there are distance to cross.");
             Assert.AreNotEqual(new StartEndSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0], "AI fov must not be resetted after destination reached and still distance to cross.");
             TestHelperMethods.SetAgentDestinationPositionReached(aiManager.GetAgent());
             yield return null;
-            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone(), "AI should stop escape when destination is reached.");
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>(), "AI should stop escape when destination is reached.");
             Assert.AreEqual(new StartEndSlice(0f, 360f), mouseAIBheavior.GetFOV().FovSlices[0]);
         }
 
@@ -1153,8 +1153,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     var currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                     //Target zone is destroyed to simulate the fact that the AI is exiting the target zone
@@ -1163,16 +1163,16 @@ namespace Tests
                         OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
                             Assert.AreEqual(1, this.MockPuzzleEventsManagerTest.AiHittedByProjectileCallCount);
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVAngleSum);
                             return null;
                         },
                         OnDistanceReached: () =>
                         {
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                             return null;
@@ -1199,16 +1199,16 @@ namespace Tests
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     var currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                     return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 1000f, 1), aiManager.transform.position,
                         OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
                             Assert.AreEqual(1, this.MockPuzzleEventsManagerTest.AiHittedByProjectileCallCount);
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
 
                             //Event if not interrupted by projectile, FOV is still reduced to take the projectile into account.
@@ -1218,8 +1218,8 @@ namespace Tests
                         },
                         OnDistanceReached: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() != currentFOVAngleSum); //The FOV have been resetted, then recalculated by target zone stay
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
@@ -1249,8 +1249,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     var currentFOVnalgeSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -1260,9 +1260,9 @@ namespace Tests
                     return PuzzleSceneTestHelper.ProjectileIngoreTargetYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 1000, 1), aiManager.transform.position,
                         OnBeforeSecondProjectileSpawn: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVnalgeSum);
                             currentFOVnalgeSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -1270,9 +1270,9 @@ namespace Tests
                         },
                         OnSecondProjectileSpawned: (InteractiveObjectType projectile) =>
                         {
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVnalgeSum);
                             currentFOVnalgeSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -1303,8 +1303,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                {
-                   Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                   Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                   Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                   Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                    Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                    Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
@@ -1314,8 +1314,8 @@ namespace Tests
                        OnBeforeSettingPosition: null,
                        OnSamePositionSetted: () =>
                        {
-                           Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                           Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
+                           Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                           Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                            Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVAngleSum);
 
@@ -1325,8 +1325,8 @@ namespace Tests
                        },
                        OnDestinationReached: () =>
                        {
-                           Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                           Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                           Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                           Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                            Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
 
                            Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() != currentFOVAngleSum); //The FOV have been resetted, then recalculated by target zone stay
@@ -1357,8 +1357,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
                     interactiveObjectContainer.TEST_OnInteractiveObjectDestroyed(targetZone);
@@ -1367,8 +1367,8 @@ namespace Tests
                     return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 99999f, 99f), aiManager.transform.position,
                         OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
-                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == currentFOVAngleSum);
                             return null;
                         },
@@ -1376,8 +1376,8 @@ namespace Tests
                 },
                 OnDistanceReached: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
-                    Assert.IsTrue(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                     return null;
                 },
@@ -1405,9 +1405,9 @@ namespace Tests
 
             yield return new WaitForFixedUpdate();
             yield return new WaitForEndOfFrame();
-            Assert.IsTrue(mouseAIBheavior.IsFeared());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
             yield return new WaitForSeconds(fearTime);
-            Assert.IsFalse(mouseAIBheavior.IsFeared());
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
         }
 
         [UnityTest]
@@ -1427,12 +1427,12 @@ namespace Tests
             aIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIFearStunComponent>().FOVSumThreshold = 0f;
             PuzzleSceneTestHelper.SetAIEscapeDistanceFromProjectile(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 5f);
             yield return null;
-            Assert.IsFalse(mouseAIBheavior.IsFeared());
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position - Vector3.forward,
                 OnProjectileSpawn: (InteractiveObjectType lauinchProjectile) =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                     return null;
                 },
@@ -1459,27 +1459,27 @@ namespace Tests
             yield return PuzzleSceneTestHelper.FearYield(aiManager.transform.position, InteractiveObjectTestID.TEST_2, aIObjectInitialization,
                 OnFearTriggered: () =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     return PuzzleSceneTestHelper.AttractiveObjectYield(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 999f, 0.1f), aiManager.transform.position,
                         OnAttractiveObjectSpawn: (InteractiveObjectType attractiveObject) =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                             return null;
                         },
                         OnAttractiveObjectDestroyed: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                             return null;
                         }
                         );
                 },
                 OnFearEnded: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsInfluencedByAttractiveObject());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                     return null;
                 },
                fearTime,
@@ -1507,14 +1507,14 @@ namespace Tests
                 {
                     PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 170f);
 
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 9999f, 1), aiManager.transform.position,
                         OnProjectileSpawn: (InteractiveObjectType projectile) =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                             Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                             return null;
                         },
@@ -1524,8 +1524,8 @@ namespace Tests
                 },
                 OnFearEnded: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return null;
                 },
@@ -1554,15 +1554,15 @@ namespace Tests
                 {
                     PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 170f);
 
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return PuzzleSceneTestHelper.ProjectileIngoreTargetYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 999f, 1), aiManager.transform.position,
                        OnBeforeSecondProjectileSpawn: null,
                        OnSecondProjectileSpawned: (InteractiveObjectType projectile) =>
                        {
-                           Assert.IsTrue(mouseAIBheavior.IsFeared());
-                           Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                           Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                           Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                            Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                            return null;
                        },
@@ -1572,8 +1572,8 @@ namespace Tests
                 },
                 OnFearEnded: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return null;
                 },
@@ -1600,13 +1600,13 @@ namespace Tests
             yield return PuzzleSceneTestHelper.FearYield(aiManager.transform.position, InteractiveObjectTestID.TEST_2, aIObjectInitialization,
                 OnFearTriggered: () =>
                 {
-                    Assert.IsTrue(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                     return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 170), aiManager.transform.position,
                         OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                             return null;
                         },
                         OnDistanceReached: null,
@@ -1615,8 +1615,8 @@ namespace Tests
                 },
                 OnFearEnded: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                     return null;
                 },
                 fearTime,
@@ -1643,24 +1643,24 @@ namespace Tests
             yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, aiManager,
                    OnBeforeSettingPosition: () =>
                    {
-                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                        return null;
                    },
                    OnSamePositionSetted: () =>
                    {
-                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                        return null;
                    },
                    OnDestinationReached: () =>
                    {
-                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                        return null;
@@ -1688,16 +1688,16 @@ namespace Tests
             yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, aiManager,
                    OnBeforeSettingPosition: () =>
                    {
-                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                        return null;
                    },
                    OnSamePositionSetted: () =>
                    {
-                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
@@ -1707,8 +1707,8 @@ namespace Tests
                    },
                    OnDestinationReached: () =>
                    {
-                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == currentFOVAngleSum);
                        return null;
@@ -1736,7 +1736,7 @@ namespace Tests
             playerDataRetriver.GetPlayerRigidBody().transform.position = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.PITFAL_Z_POSITION_1).transform.position - (Vector3.forward * 0.5f);
             yield return null;
             playerDataRetriver.GetPlayerRigidBody().transform.position = Vector3.zero;
-            Assert.IsTrue(mouseAIBheavior.IsFeared());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
         }
 
@@ -1760,16 +1760,16 @@ namespace Tests
             yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, aiManager,
                    OnBeforeSettingPosition: () =>
                    {
-                       Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsTrue(mouseAIBheavior.IsPatrolling());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                        return null;
                    },
                    OnSamePositionSetted: () =>
                    {
-                       Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-                       Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+                       Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                       Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
                        Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                        Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
@@ -1779,8 +1779,8 @@ namespace Tests
                    OnDestinationReached: null,
                    OnDestinationReachedAIObjectType: null);
             TestHelperMethods.SetAgentDestinationPositionReached(aiManager, aiManager.transform.position + (Vector3.forward * 10f));
-            Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-            Assert.IsFalse(mouseAIBheavior.IsPatrolling());
+            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
             Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == currentFOVAngleSum);
         }
@@ -1812,9 +1812,9 @@ namespace Tests
                 ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 99999f, 30f), aiManager.transform.position + (Vector3.right * 0.1f),
                 OnBeforeSettingPosition: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
                     currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -1823,9 +1823,9 @@ namespace Tests
                 },
                 OnSamePositionSetted: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromProjectileWithTargetZones());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
                     Assert.IsTrue(targetZoneCollider.bounds.Contains(aiManager.GetAgent().destination));
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVAngleSum);
                     return null;
@@ -1853,8 +1853,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, aiManager,
                   OnBeforeSettingPosition: () =>
                   {
-                      Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                      Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                      Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                      Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                       Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                       Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                       currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -1862,16 +1862,16 @@ namespace Tests
                   },
                   OnSamePositionSetted: () =>
                   {
-                      Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-                      Assert.IsFalse(mouseAIBheavior.IsEscapingFromExitZone());
+                      Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                      Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                       Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                       Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
                       currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
                       return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 170), aiManager.transform.position,
                           OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                           {
-                              Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                              Assert.IsTrue(mouseAIBheavior.IsEscapingFromExitZone());
+                              Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                              Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                               Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                               //AI FOV is resetted when playerescape is interrupted by target zone
                               Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() > currentFOVAngleSum);
@@ -1904,8 +1904,8 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 999f, 999999f), aiManager.transform.position,
                 OnProjectileSpawn: (InteractiveObjectType launchProjectile) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                     Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < 360f);
 
                     currentFOVAngleSum = mouseAIBheavior.AIFOVManager.GetFOVAngleSum();
@@ -1914,15 +1914,15 @@ namespace Tests
                         OnBeforeSettingPosition: null,
                         OnSamePositionSetted: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() < currentFOVAngleSum);
                             return null;
                         },
                         OnDestinationReached: () =>
                         {
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
                             Assert.IsTrue(mouseAIBheavior.AIFOVManager.GetFOVAngleSum() == 360f);
                             return null;
                         },
@@ -1950,22 +1950,22 @@ namespace Tests
             yield return PuzzleSceneTestHelper.EscapeFromPlayerYield(playerManager, aiManager,
                 OnBeforeSettingPosition: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     Assert.IsFalse(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return null;
                 },
                 OnSamePositionSetted: () =>
                 {
 
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingFromPlayer());
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                     return PuzzleSceneTestHelper.FearYield(aiManager.transform.position, InteractiveObjectTestID.TEST_2, aIObjectInitialization,
                        OnFearTriggered: () =>
                        {
-                           Assert.IsFalse(mouseAIBheavior.IsEscapingFromPlayer());
-                           Assert.IsTrue(mouseAIBheavior.IsFeared());
+                           Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
+                           Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                            return null;
                        },
                        OnFearEnded: null, 1f, mouseAIBheavior);
@@ -1993,19 +1993,19 @@ namespace Tests
             yield return PuzzleSceneTestHelper.ProjectileIngoreTargetYield(ProjectileInteractiveObjectDefinitions.ExplodingProjectile(InteractiveObjectTestID.TEST_1, 9999f, 30f), aiManager.transform.position,
                 OnBeforeSecondProjectileSpawn: () =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
-                    Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     return null;
                 },
                 OnSecondProjectileSpawned: (InteractiveObjectType launchProjectile) =>
                 {
-                    Assert.IsFalse(mouseAIBheavior.IsFeared());
-                    Assert.IsTrue(mouseAIBheavior.IsEscapingWithoutTarget());
+                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                     return PuzzleSceneTestHelper.FearYield(aiManager.transform.position, InteractiveObjectTestID.TEST_2, aIObjectInitialization,
                         OnFearTriggered: () =>
                         {
-                            Assert.IsTrue(mouseAIBheavior.IsFeared());
-                            Assert.IsFalse(mouseAIBheavior.IsEscapingWithoutTarget());
+                            Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
+                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>());
                             return null;
                         },
                         OnFearEnded: null, 0f, mouseAIBheavior);

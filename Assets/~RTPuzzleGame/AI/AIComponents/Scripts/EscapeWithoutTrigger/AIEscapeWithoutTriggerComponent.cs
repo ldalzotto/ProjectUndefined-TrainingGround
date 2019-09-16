@@ -8,6 +8,10 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIEscapeWithoutTriggerComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIEscapeWithoutTriggerComponent", order = 1)]
     public class AIEscapeWithoutTriggerComponent : AbstractAIComponent
     {
+        public override InterfaceAIManager BuildManager()
+        {
+            return new AIEscapeWithoutTriggerManager(this);
+        }
     }
 
     public abstract class AbstractAIEscapeWithoutTriggerManager : AbstractAIManager<AIEscapeWithoutTriggerComponent>, InterfaceAIManager
@@ -15,6 +19,8 @@ namespace RTPuzzle
         protected AbstractAIEscapeWithoutTriggerManager(AIEscapeWithoutTriggerComponent associatedAIComponent) : base(associatedAIComponent)
         {
         }
+
+        public abstract void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData);
 
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 

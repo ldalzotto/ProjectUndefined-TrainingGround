@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.AI;
-using System;
+﻿using CoreGame;
 using GameConfigurationID;
-using CoreGame;
+using UnityEngine;
+using UnityEngine.AI;
 
 namespace RTPuzzle
 {
@@ -12,7 +10,7 @@ namespace RTPuzzle
         #region External dependencies
         private PlayerManagerDataRetriever playerManagerDataRetriever;
         private AIFOVManager aIFOVManager;
-        private Func<Collider[]> targetZoneTriggerColliderProvider;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleEventsManager puzzleEventsManager;
         private TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent;
         #endregion
@@ -37,19 +35,17 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(NavMeshAgent selfAgent, PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager,
-            PlayerManagerDataRetriever playerManagerDataRetriever, AIFOVManager aIFOVManager, Func<Collider[]> targetZoneTriggerColliderProvider, AIObjectID aiID,
-            PuzzleEventsManager puzzleEventsManager, TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.selfAgent = selfAgent;
-            this.puzzleAIBehaviorExternalEventManager = puzzleAIBehaviorExternalEventManager;
-            this.playerManagerDataRetriever = playerManagerDataRetriever;
-            this.aIFOVManager = aIFOVManager;
-            this.targetZoneTriggerColliderProvider = targetZoneTriggerColliderProvider;
+            this.selfAgent = AIBheaviorBuildInputData.selfAgent;
+            this.puzzleAIBehaviorExternalEventManager = AIBheaviorBuildInputData.GenericPuzzleAIBehaviorExternalEventManager;
+            this.playerManagerDataRetriever = AIBheaviorBuildInputData.PlayerManagerDataRetriever;
+            this.aIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.InteractiveObjectContainer = AIBheaviorBuildInputData.InteractiveObjectContainer;
             this.escapeDestinationManager = new EscapeDestinationManager(this.selfAgent);
-            this.aiID = aiID;
-            this.puzzleEventsManager = puzzleEventsManager;
-            this.aIDestimationMoveManagerComponent = aIDestimationMoveManagerComponent;
+            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
+            this.aIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
             this.OnStateReset();
         }
 
@@ -87,7 +83,7 @@ namespace RTPuzzle
             }
             else
             {
-                Debug.Log(MyLog.Format("AI Player escape destination reached - calculate escape direction. Remaining disance : " + this.escapeDestinationManager.GetRemainingDistance())) ;
+                Debug.Log(MyLog.Format("AI Player escape destination reached - calculate escape direction. Remaining disance : " + this.escapeDestinationManager.GetRemainingDistance()));
                 this.CalculateEscapeDirection();
             }
         }
@@ -108,7 +104,7 @@ namespace RTPuzzle
             this.escapeDestinationManager.EscapeDestinationCalculationStrategy(
                 escapeDestinationCalculationMethod: (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
                 {
-                    this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, this.targetZoneTriggerColliderProvider.Invoke());
+                    this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
                 },
                 ifAllFailsAction: EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.aIDestimationMoveManagerComponent))
              );

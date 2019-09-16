@@ -10,6 +10,11 @@ namespace RTPuzzle
         public float EscapeDistance;
         public float PlayerDetectionRadius;
         public float EscapeSemiAngle;
+
+        public override InterfaceAIManager BuildManager()
+        {
+            return new AIPlayerEscapeManager(this);
+        }
     }
 
     public abstract class AbstractPlayerEscapeManager : AbstractAIManager<AIPlayerEscapeComponent>, InterfaceAIManager
@@ -17,6 +22,8 @@ namespace RTPuzzle
         protected AbstractPlayerEscapeManager(AIPlayerEscapeComponent associatedAIComponent) : base(associatedAIComponent)
         {
         }
+
+        public abstract void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData);
 
         public abstract void BeforeManagersUpdate(float d, float timeAttenuationFactor);
 

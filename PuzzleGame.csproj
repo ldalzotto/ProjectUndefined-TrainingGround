@@ -230,10 +230,11 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\Events\PuzzleEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AttractiveObjectModule\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\DisarmObjectModule\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\GrabObjectModule\GrabObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InRangeColliderTrackerModule\InRangeColliderTrackerModule.cs" />
@@ -274,7 +275,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\AttractiveObjectAction\Scripts\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\CutsceneAction\CutsceneAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionPuzzleEventsManager.cs" />
@@ -284,7 +284,6 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionBuilder.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelLineVisualFeedbackManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\AttractiveObject\Scripts\AttractiveObjectsInstanciatedParent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionObjects\Projectile\Scripts\LaunchProjectileGroundColliderTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionManager.cs" />

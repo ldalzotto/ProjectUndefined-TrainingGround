@@ -25,13 +25,13 @@ namespace RTPuzzle
         {
         }
 
-        public void Init(NavMeshAgent escapingAgent, AIFOVManager aIFOVManager, PuzzleEventsManager puzzleEventsManager, AIObjectID aiID, TransformMoveManagerComponentV3 playerAIDestimationMoveManagerComponent)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.escapingAgent = escapingAgent;
-            AIFOVManager = aIFOVManager;
-            this.puzzleEventsManager = puzzleEventsManager;
-            this.aiID = aiID;
-            this.playerAIDestimationMoveManagerComponent = playerAIDestimationMoveManagerComponent;
+            this.escapingAgent = AIBheaviorBuildInputData.selfAgent;
+            AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
+            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.playerAIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
         }
         

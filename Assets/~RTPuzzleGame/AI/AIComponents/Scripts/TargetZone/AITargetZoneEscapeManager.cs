@@ -24,21 +24,21 @@ namespace RTPuzzle
         private EscapeDestinationManager EscapeDestinationManager;
 
         #endregion
-        
+
         public AITargetZoneEscapeManager(AITargetZoneComponent associatedAIComponent) : base(associatedAIComponent)
         {
         }
 
-        public void Init(NavMeshAgent agent, Collider aiCollider, AIFOVManager AIFOVManager, AIObjectID aiID)
+        public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.agent = agent;
-            this.aiCollider = aiCollider;
+            this.agent = AIBheaviorBuildInputData.selfAgent;
+            this.aiCollider = AIBheaviorBuildInputData.aiCollider;
 
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            this.AIFOVManager = AIFOVManager;
+            this.AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
-            this.aiID = aiID;
+            this.aiID = AIBheaviorBuildInputData.aiID;
         }
 
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)

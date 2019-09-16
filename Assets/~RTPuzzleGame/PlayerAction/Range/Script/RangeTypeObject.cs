@@ -47,22 +47,7 @@ namespace RTPuzzle
             rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
-
-        public void PopulateBoxRangeData(RangeTypeDefinition rangeTypeDefinition)
-        {
-            this.PopulateModules();
-            this.SetRangeID(rangeTypeDefinition.RangeTypeID);
-            ((BoxRangeType)this.rangeType).PopulateFromDefinition(rangeTypeDefinition);
-        }
-
-        public void PopuplateSphereRangeData(float sphereRange, RangeTypeID rangeTypeID, RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
-        {
-            this.PopulateModules();
-            this.SetRangeID(rangeTypeID);
-            ((SphereRangeType)this.rangeType).PopupulateFromData(sphereRange);
-            this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
-        }
-
+        
         public void SetIsAttractiveObject()
         {
             this.rangeType.IfNotNull((RangeType rangeType) => rangeType.GetCollisionType().IsRTAttractiveObject = true);
