@@ -9,10 +9,10 @@ namespace Tests
     public class AIFOVManagerTest
     {
 
-        private AIFOVManager InitializeFOVManager()
+        private FovManager InitializeFOVManager()
         {
             NavMeshAgent agent = new NavMeshAgent();
-            return new AIFOVManager(agent, null);
+            return new FovManager(agent, null);
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(50, 150), new StartEndSlice(200, 250) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
+            var calculatedAngles = FovManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
         }
 
@@ -100,7 +100,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(50, 150), new StartEndSlice(150, 200) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
+            var calculatedAngles = FovManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 150f }, calculatedAngles);
         }
 
@@ -109,7 +109,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(50, 150), new StartEndSlice(250, 200) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
+            var calculatedAngles = FovManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 50f, 100f, 200f }, calculatedAngles);
         }
 
@@ -118,7 +118,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(250, 200), new StartEndSlice(50, 150) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(3, fov, false);
+            var calculatedAngles = FovManager.CalculateAnglesForRayCast(3, fov, false);
             Assert.AreEqual(new float[3] { 200f, 50f, 100f }, calculatedAngles);
         }
 
@@ -127,7 +127,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(250, 200), new StartEndSlice(50, 150) });
-            var calculatedAngles = AIFOVManager.CalculateAnglesForRayCast(30, fov, true);
+            var calculatedAngles = FovManager.CalculateAnglesForRayCast(30, fov, true);
             for (var i = 0; i < calculatedAngles.Length; i++)
             {
                 Assert.IsTrue((calculatedAngles[i] >= 50f && calculatedAngles[i] <= 150f) || (calculatedAngles[i] >= 200f && calculatedAngles[i] <= 250f));
@@ -139,7 +139,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(100, 370) });
-            var calculatedAngles = AIFOVManager.GetEndAnglesForRayCast(fov);
+            var calculatedAngles = FovManager.GetEndAnglesForRayCast(fov);
             Assert.AreEqual(new float[2] { 100f, 370f }, calculatedAngles);
         }
 
@@ -148,7 +148,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(100, 200), new StartEndSlice(250, 300) });
-            var calculatedAngles = AIFOVManager.GetEndAnglesForRayCast(fov);
+            var calculatedAngles = FovManager.GetEndAnglesForRayCast(fov);
             Assert.AreEqual(new float[4] { 100f, 200f, 250f, 300f }, calculatedAngles);
         }
 
@@ -157,7 +157,7 @@ namespace Tests
         {
             var fov = new FOV(null);
             fov.ReplaceFovSlices(new List<StartEndSlice>() { new StartEndSlice(100, 200), new StartEndSlice(200, 300) });
-            var calculatedAngles = AIFOVManager.GetEndAnglesForRayCast(fov);
+            var calculatedAngles = FovManager.GetEndAnglesForRayCast(fov);
             Assert.AreEqual(new float[2] { 100f, 300f }, calculatedAngles);
         }
 

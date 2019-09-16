@@ -46,7 +46,6 @@ namespace RTPuzzle
         public PuzzleAIBehaviorExternalEventManager PuzzleAIBehaviorExternalEventManager { get => puzzleAIBehaviorExternalEventManager; }
 #endif
         public void ForceUpdateAIBehavior() { this.AIObjectTypeInternalEventsListener.ForceTickAI(); }
-        public AIFOVManager AIFOVManager { get => aIFOVManager; }
 
         protected List<InterfaceAIManager> GetAllManagers()
         {
@@ -100,15 +99,11 @@ namespace RTPuzzle
             return false;
         }
         #endregion
-
-        protected AIFOVManager aIFOVManager;
-
+        
         protected void BaseInit(List<InterfaceAIManager> aiManagers, AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.selfAgent = AIBheaviorBuildInputData.selfAgent;
             this.AIObjectTypeInternalEventsListener = AIBheaviorBuildInputData.AIObjectTypeInternalEventsListener;
-            this.aIFOVManager = new AIFOVManager(selfAgent, this.AIObjectTypeInternalEventsListener.OnFOVChange);
-            AIBheaviorBuildInputData.AIFOVManager = this.AIFOVManager;
             foreach (var aiManager in aiManagers)
             {
                 aiManager.Init(AIBheaviorBuildInputData);
@@ -206,11 +201,12 @@ namespace RTPuzzle
         public AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener;
         public InteractiveObjectType AssociatedInteractiveObject;
         public AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
-        public AIFOVManager AIFOVManager;
+        public IFovManagerCalcuation FovManagerCalcuation;
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
             InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, Collider aiCollider, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
-            AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener, InteractiveObjectType AssociatedInteractiveObject, AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter)
+            AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener, InteractiveObjectType AssociatedInteractiveObject, AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter,
+            IFovManagerCalcuation FovManagerCalcuation)
         {
             this.selfAgent = selfAgent;
             PuzzleEventsManager = puzzleEventsManager;
@@ -224,7 +220,7 @@ namespace RTPuzzle
             this.AIObjectTypeInternalEventsListener = AIObjectTypeInternalEventsListener;
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
             this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
-            this.AIFOVManager = null;
+            this.FovManagerCalcuation = FovManagerCalcuation;
         }
     }
 

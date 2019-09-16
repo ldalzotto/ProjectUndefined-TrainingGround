@@ -30,6 +30,7 @@ namespace RTPuzzle
         public ObjectSightModule BaseObjectSightModule;
         public AILogicColliderModule BaseAILogicColliderModule;
         public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
+        public FovModule BaseFovModule;
 //${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
         [Header("AI")]
@@ -42,9 +43,6 @@ namespace RTPuzzle
 
         [Header("Projectile Prefabs")]
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
-        
-        [Header("NPC prefabs")]
-        public NpcInteractionRingType NpcInteractionRingPrefab;
 
         [Header("Cooldown Feed Prefabs")]
         public CooldownFeedLineType CooldownFeedLineType;

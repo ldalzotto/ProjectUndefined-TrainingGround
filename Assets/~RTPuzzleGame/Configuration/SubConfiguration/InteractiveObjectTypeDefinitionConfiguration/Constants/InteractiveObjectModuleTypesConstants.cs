@@ -20,6 +20,7 @@ namespace RTPuzzle
             typeof(ObjectSightModuleDefinition),
             typeof(AILogicColliderModuleDefinition),
             typeof(InRangeColliderTrackerModuleDefinition),
+            typeof(FovModuleDefinition)
 //${addNewEntry}
         };
     }

@@ -133,6 +133,12 @@ namespace RTPuzzle
             interactiveObjectType.GetModule<InRangeColliderTrackerModule>().IfNotNull((InRangeColliderTrackerModule InRangeColliderTrackerModule) => InRangeColliderTrackerModule.Init(interactiveObjectType.GetModule<ModelObjectModule>(),
                                interactiveObjectType.GetModule<AILogicColliderModule>(), interactiveObjectType.GetModule<ObjectRepelModule>()));
         }
+
+        public static void InitializeFovModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        {
+            interactiveObjectType.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.Init(interactiveObjectType.GetModule<ModelObjectModule>(),
+                        interactiveObjectInitializationObject.ParentAIObjectTypeReference));
+        }
 //${addNewEntry}
         #endregion
     }

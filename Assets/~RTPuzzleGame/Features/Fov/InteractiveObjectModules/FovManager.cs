@@ -8,13 +8,13 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class AIFOVManager
+ 
+    public class FovManager
     {
-
         private NavMeshAgent agent;
         private FOV aiFov;
 
-        public AIFOVManager(NavMeshAgent agent, Action<FOV> onFOVChange)
+        public FovManager(NavMeshAgent agent, Action<FOV> onFOVChange)
         {
             this.agent = agent;
             aiFov = new FOV(onFOVChange);
@@ -32,7 +32,7 @@ namespace RTPuzzle
         {
             var navMeshHits = new NavMeshHit[sampleNB];
 
-            float[] anglesRayCast = AIFOVManager.CalculateAnglesForRayCast(sampleNB, aiFov, true);
+            float[] anglesRayCast = FovManager.CalculateAnglesForRayCast(sampleNB, aiFov, true);
 
             for (var i = 0; i < sampleNB; i++)
             {
@@ -50,7 +50,7 @@ namespace RTPuzzle
         /// <returns></returns>
         public NavMeshHit[] NavMeshRaycastEndOfRanges(Transform sourceTransform, float raySampleDistance)
         {
-            var anglesRayCast = AIFOVManager.GetEndAnglesForRayCast(aiFov);
+            var anglesRayCast = FovManager.GetEndAnglesForRayCast(aiFov);
             var navMeshHits = new NavMeshHit[anglesRayCast.Length];
             for (var i = 0; i < navMeshHits.Length; i++)
             {
@@ -87,6 +87,11 @@ namespace RTPuzzle
             aiFov.ReplaceFovSlices(newSlices);
             Debug.Log("Intersect FOV. Result : " + aiFov);
             return newSlices;
+        }
+
+        public void ResetFOV()
+        {
+            SetAvailableFOVRange(0f, 360f);
         }
 
         public static StartEndSlice IntersectSlice(StartEndSlice sourceSlice, StartEndSlice newSlice)
@@ -348,12 +353,6 @@ namespace RTPuzzle
         {
             aiFov.ReplaceFovSlices(CutInputAnglesToSlice(beginAngle, endAngle));
         }
-
-        public void ResetFOV()
-        {
-            SetAvailableFOVRange(0f, 360f);
-        }
-
 
         public void GizmoTick()
         {

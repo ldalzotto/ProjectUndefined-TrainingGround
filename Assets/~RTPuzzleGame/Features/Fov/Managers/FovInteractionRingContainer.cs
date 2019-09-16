@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class NpcInteractionRingContainer : MonoBehaviour
+    public class FovInteractionRingContainer : MonoBehaviour
     {
         #region External dependencies
-        private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
+        private FovInteractionRingRendererManager NpcInteractionRingRendererManager;
         #endregion
 
         public void Init()
@@ -14,24 +14,24 @@ namespace RTPuzzle
             this.NpcInteractionRingRendererManager = PuzzleGameSingletonInstances.NpcInteractionRingRendererManager;
         }
 
-        private HashSet<NpcInteractionRingType> activeNpcInteractionRings = new HashSet<NpcInteractionRingType>();
-        private HashSet<NpcInteractionRingType> inactiveInteractionRings = new HashSet<NpcInteractionRingType>();
+        private HashSet<FovInteractionRingType> activeNpcInteractionRings = new HashSet<FovInteractionRingType>();
+        private HashSet<FovInteractionRingType> inactiveInteractionRings = new HashSet<FovInteractionRingType>();
 
-        public HashSet<NpcInteractionRingType> ActiveNpcInteractionRings { get => activeNpcInteractionRings; }
+        public HashSet<FovInteractionRingType> ActiveNpcInteractionRings { get => activeNpcInteractionRings; }
 
         #region External Events
-        public void OnNpcInteractionRingCreated(NpcInteractionRingType createdNpcInteractionRingType)
+        public void OnNpcInteractionRingCreated(FovInteractionRingType createdNpcInteractionRingType)
         {
             this.activeNpcInteractionRings.Add(createdNpcInteractionRingType);
         }
-        public void OnNpcInteractionRingSetTo360(NpcInteractionRingType disabledNpcInteractionRingType)
+        public void OnNpcInteractionRingSetTo360(FovInteractionRingType disabledNpcInteractionRingType)
         {
             Debug.Log(MyLog.Format("DISABLING : " + disabledNpcInteractionRingType.name));
             disabledNpcInteractionRingType.OnDeactivate();
             this.activeNpcInteractionRings.Remove(disabledNpcInteractionRingType);
             this.inactiveInteractionRings.Add(disabledNpcInteractionRingType);
         }
-        public void OnNpcInteractionRingSetUnder360(NpcInteractionRingType enabledNpcInteractionRingType)
+        public void OnNpcInteractionRingSetUnder360(FovInteractionRingType enabledNpcInteractionRingType)
         {
             Debug.Log(MyLog.Format("ENABLING : " + enabledNpcInteractionRingType.name));
             enabledNpcInteractionRingType.OnActivate();

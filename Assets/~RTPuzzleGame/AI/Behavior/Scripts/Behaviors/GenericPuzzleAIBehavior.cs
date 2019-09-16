@@ -8,10 +8,13 @@ namespace RTPuzzle
 {
     public class GenericPuzzleAIBehavior : PuzzleAIBehavior
     {
+        public IFovManagerCalcuation FovManagerCalcuation;
+
         public void Init(List<InterfaceAIManager> aiManagers, AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.BaseInit(aiManagers, AIBheaviorBuildInputData);
 
+            this.FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.aIBehaviorManagerContainer = new AIBehaviorManagerContainer(aiManagers);
 
             var dic = new Dictionary<int, InterfaceAIManager>()
@@ -22,9 +25,9 @@ namespace RTPuzzle
                  { 4, this.aIBehaviorManagerContainer.GetAIManager<AbstractPlayerEscapeManager>() },
                  { 5, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIProjectileEscapeManager>() },
                  { 6, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIMoveTowardPlayerManager>() },
-                 { 7,  this.aIBehaviorManagerContainer.GetAIManager<AbstractAIDisarmObjectManager>()},
-                 { 8,  this.aIBehaviorManagerContainer.GetAIManager<AbstractAIAttractiveObjectManager>() },
-                 { 9,  this.aIBehaviorManagerContainer.GetAIManager<AbstractAIPatrolComponentManager>() }
+                 { 7, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIDisarmObjectManager>()},
+                 { 8, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIAttractiveObjectManager>() },
+                 { 9, this.aIBehaviorManagerContainer.GetAIManager<AbstractAIPatrolComponentManager>() }
             };
             this.aIBehaviorManagerContainer.SetAIManagersByExecutionOrder(new SortedList<int, InterfaceAIManager>(
                 dic.Select(s => s).Where(s => s.Value != null).ToDictionary(s => s.Key, s => s.Value)
@@ -66,10 +69,13 @@ namespace RTPuzzle
             this.GetAIManager<AbstractPlayerEscapeManager>().IfNotNull((playerEscapeManager) => playerEscapeManager.OnDestinationReached());
             this.GetAIManager<AbstractAIMoveTowardPlayerManager>().IfNotNull((aIPlayerAttractiveManager) => aIPlayerAttractiveManager.OnDestinationReached());
 
-            if (!this.IsManagerEnabled<AbstractAIFearStunManager>() && !this.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>() && !this.IsManagerEnabled<AbstractAITargetZoneManager>()
-                    && !this.IsManagerEnabled<AbstractAIProjectileEscapeManager>() && !this.IsManagerEnabled<AbstractPlayerEscapeManager>())
+            if (this.FovManagerCalcuation != null)
             {
-                this.aIFOVManager.ResetFOV();
+                if (!this.IsManagerEnabled<AbstractAIFearStunManager>() && !this.IsManagerEnabled<AbstractAIEscapeWithoutTriggerManager>() && !this.IsManagerEnabled<AbstractAITargetZoneManager>()
+                                   && !this.IsManagerEnabled<AbstractAIProjectileEscapeManager>() && !this.IsManagerEnabled<AbstractPlayerEscapeManager>())
+                {
+                    this.FovManagerCalcuation.ResetFOV();
+                }
             }
 
             this.puzzleAIBehaviorExternalEventManager.AfterDestinationReached(this);
@@ -125,18 +131,10 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Data Retrieval
-        public FOV GetFOV()
-        {
-            return this.aIFOVManager.GetFOV();
-        }
-        #endregion
-
         public override void TickGizmo()
         {
             this.GetAIManager<AbstractAIPatrolComponentManager>().IfNotNull(aIPatrolComponentManager => aIPatrolComponentManager.GizmoTick());
             this.GetAIManager<AbstractAIProjectileEscapeManager>().IfNotNull(aIProjectileEscapeManager => aIProjectileEscapeManager.GizmoTick());
-            aIFOVManager.GizmoTick();
         }
 
         public void DebugGUITick()

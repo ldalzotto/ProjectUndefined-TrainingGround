@@ -31,7 +31,7 @@ namespace RTPuzzle
         private Nullable<Vector3> SetRandomDestination()
         {
 
-            navMeshHits = this.AIFOVManager.NavMeshRaycastSample(8, patrollingAgent.transform, this.AssociatedAIComponent.MaxDistance);
+            navMeshHits = this.FovManagerCalculation.NavMeshRaycastSample(8, patrollingAgent.transform, this.AssociatedAIComponent.MaxDistance);
 
             var maxDistance = 0f;
             Nullable<NavMeshHit> selectedHit = null; ;

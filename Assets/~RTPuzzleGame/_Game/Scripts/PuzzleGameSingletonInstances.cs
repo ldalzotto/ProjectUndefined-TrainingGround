@@ -14,7 +14,7 @@ namespace RTPuzzle
         private static InteractiveObjectContainer interactiveObjectContainer;
         private static DottedLineRendererManager dottedLineRendererManager;
         private static GroundEffectsManagerV2 groundEffectsManagerV2;
-        private static NpcInteractionRingContainer npcInteractionRingContainer;
+        private static FovInteractionRingContainer npcInteractionRingContainer;
         private static InRangeEffectManager inRangeEffectManager;
         private static RangeEventsManager rangeEventsManager;
         private static AIFeedbackContainer aIFeedbackContainer;
@@ -29,7 +29,7 @@ namespace RTPuzzle
         private static AIManagerContainer aIManagerContainer;
         private static CooldownFeedManager cooldownFeedManager;
         private static TimeFlowPlayPauseManager timeFlowPlayPauseManager;
-        private static NpcInteractionRingRendererManager npcInteractionRingRendererManager;
+        private static FovInteractionRingRendererManager npcInteractionRingRendererManager;
         private static GameOverManager gameOverManager;
         private static PuzzleTutorialEventSender puzzleTutorialEventSender;
         private static InteractiveObjectSelectionManager interactiveObjectSelectionManager;
@@ -51,7 +51,7 @@ namespace RTPuzzle
         public static InteractiveObjectContainer InteractiveObjectContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(interactiveObjectContainer, obj => interactiveObjectContainer = obj); }
         public static DottedLineRendererManager DottedLineRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineRendererManager, obj => dottedLineRendererManager = obj); }
         public static GroundEffectsManagerV2 GroundEffectsManagerV2 { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(groundEffectsManagerV2, obj => groundEffectsManagerV2 = obj); }
-        public static NpcInteractionRingContainer NpcInteractionRingContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(npcInteractionRingContainer, obj => npcInteractionRingContainer = obj); }
+        public static FovInteractionRingContainer NpcInteractionRingContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(npcInteractionRingContainer, obj => npcInteractionRingContainer = obj); }
         public static InRangeEffectManager InRangeEffectManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inRangeEffectManager, obj => inRangeEffectManager = obj); }
         public static RangeEventsManager RangeEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeEventsManager, obj => rangeEventsManager = obj); }
         public static AIFeedbackContainer AIFeedbackContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIFeedbackContainer, obj => aIFeedbackContainer = obj); }
@@ -66,7 +66,7 @@ namespace RTPuzzle
         public static AIManagerContainer AIManagerContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIManagerContainer, obj => aIManagerContainer = obj); }
         public static CooldownFeedManager CooldownFeedManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cooldownFeedManager, obj => cooldownFeedManager = obj); }
         public static TimeFlowPlayPauseManager TimeFlowPlayPauseManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowPlayPauseManager, obj => timeFlowPlayPauseManager = obj); }
-        public static NpcInteractionRingRendererManager NpcInteractionRingRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(npcInteractionRingRendererManager, obj => npcInteractionRingRendererManager = obj); }
+        public static FovInteractionRingRendererManager NpcInteractionRingRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(npcInteractionRingRendererManager, obj => npcInteractionRingRendererManager = obj); }
         public static GameOverManager GameOverManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(gameOverManager, obj => gameOverManager = obj); }
         public static PuzzleTutorialEventSender PuzzleTutorialEventSender { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleTutorialEventSender, obj => puzzleTutorialEventSender = obj); }
         public static InteractiveObjectSelectionManager InteractiveObjectSelectionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(interactiveObjectSelectionManager, obj => interactiveObjectSelectionManager = obj); }

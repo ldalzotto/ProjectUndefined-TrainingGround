@@ -10,7 +10,7 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private NavMeshAgent escapingAgent;
-        private AIFOVManager AIFOVManager;
+        private IFovManagerCalcuation FovManagerCalcuation;
         private PuzzleEventsManager puzzleEventsManager;
         private AIObjectID aiID;
         private TransformMoveManagerComponentV3 playerAIDestimationMoveManagerComponent;
@@ -28,7 +28,7 @@ namespace RTPuzzle
         public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.escapingAgent = AIBheaviorBuildInputData.selfAgent;
-            AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
             this.aiID = AIBheaviorBuildInputData.aiID;
             this.playerAIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
@@ -64,7 +64,7 @@ namespace RTPuzzle
             if (escapeWithoutTriggerStartAIBehaviorEvent != null && escapeWithoutTriggerStartAIBehaviorEvent.ThreatStartPoint != null)
             {
                 this.escapeDestinationManager.ResetDistanceComputation(escapeWithoutTriggerStartAIBehaviorEvent.EscapeDistance);
-                this.AIFOVManager.IntersectFOV_FromEscapeDirection(escapeWithoutTriggerStartAIBehaviorEvent.ThreatStartPoint, this.escapingAgent.transform.position, escapeWithoutTriggerStartAIBehaviorEvent.EscapeSemiAngle);
+                this.FovManagerCalcuation.IntersectFOV_FromEscapeDirection(escapeWithoutTriggerStartAIBehaviorEvent.ThreatStartPoint, this.escapingAgent.transform.position, escapeWithoutTriggerStartAIBehaviorEvent.EscapeSemiAngle);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.EscapeCaluclation,
                         EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.playerAIDestimationMoveManagerComponent)));
             }
@@ -92,7 +92,7 @@ namespace RTPuzzle
         private void EscapeCaluclation(NavMeshRaycastStrategy navMeshRaycastStrategy)
         {
             Debug.Log("EscapeToFarest");
-            this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.AIFOVManager);
+            this.escapeDestinationManager.EscapeToFarest(5, navMeshRaycastStrategy, this.FovManagerCalcuation);
         }
 
         public override void OnStateReset()

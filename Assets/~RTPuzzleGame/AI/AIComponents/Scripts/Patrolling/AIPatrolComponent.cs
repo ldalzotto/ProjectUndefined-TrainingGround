@@ -41,7 +41,7 @@ namespace RTPuzzle
     {
         #region External Dependencies
         protected NavMeshAgent patrollingAgent;
-        protected AIFOVManager AIFOVManager;
+        protected IFovManagerCalcuation FovManagerCalculation;
         #endregion
 
         protected AIObjectID aiID;
@@ -54,7 +54,7 @@ namespace RTPuzzle
         {
             this.aiID = AIBheaviorBuildInputData.aiID;
             this.patrollingAgent = AIBheaviorBuildInputData.selfAgent;
-            this.AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.FovManagerCalculation = AIBheaviorBuildInputData.FovManagerCalcuation;
         }
 
         public abstract void OnDestinationReached();

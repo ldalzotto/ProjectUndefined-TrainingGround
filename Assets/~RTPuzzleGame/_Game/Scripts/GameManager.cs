@@ -21,7 +21,7 @@ namespace RTPuzzle
         private InRangeEffectManager InRangeEffectManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
-        private NpcInteractionRingRendererManager NpcInteractionRingRendererManager;
+        private FovInteractionRingRendererManager NpcInteractionRingRendererManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;

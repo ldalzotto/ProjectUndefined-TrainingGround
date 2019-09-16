@@ -10,11 +10,11 @@
 
 namespace RTPuzzle
 {
-    
-    
+
+
     public class InteractiveObjectTypeConfiguration
     {
-        
+
         public static System.Collections.Generic.Dictionary<System.Type, System.Action<RTPuzzle.InteractiveObjectInitializationObject, RTPuzzle.InteractiveObjectType>> InitializationConfiguration = new System.Collections.Generic.Dictionary<System.Type, System.Action<InteractiveObjectInitializationObject, InteractiveObjectType>>(){
 {typeof(RTPuzzle.ModelObjectModule),InteractiveObjectModulesInitializationOperations.InitializeModelObjectModule},
 {typeof(RTPuzzle.AttractiveObjectModule),InteractiveObjectModulesInitializationOperations.InitializeAttractiveObjectModule},
@@ -30,6 +30,7 @@ namespace RTPuzzle
 {typeof(RTPuzzle.ObjectSightModule),InteractiveObjectModulesInitializationOperations.InitializeObjectSightModule},
 {typeof(RTPuzzle.AILogicColliderModule),InteractiveObjectModulesInitializationOperations.InitializeAILogicColliderModule},
 {typeof(RTPuzzle.InRangeColliderTrackerModule),InteractiveObjectModulesInitializationOperations.InitializeInRangeColliderTrackerModule},
+{typeof(RTPuzzle.FovModule), InteractiveObjectModulesInitializationOperations.InitializeFovModule}
 };
     }
 }

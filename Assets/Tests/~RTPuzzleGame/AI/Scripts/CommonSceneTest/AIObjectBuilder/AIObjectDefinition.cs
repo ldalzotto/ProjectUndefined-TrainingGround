@@ -138,7 +138,9 @@ namespace Tests
                      new AIEscapeWithoutTriggerComponent() { },
                      new AIAttractiveObjectComponent(){ AttractiveObjectStrategyType = AttractiveObjectStrategyType.PERSISTANT }
                 },
-                new List<SerializedScriptableObject>() { }
+                new List<SerializedScriptableObject>() {
+                    new FovModuleDefinition()
+                }
             );
         }
 

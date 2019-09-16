@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class NpcInteractionRingType : MonoBehaviour
+    public class FovInteractionRingType : MonoBehaviour
     {
 
         public Color AvailableColor;

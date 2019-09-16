@@ -7,7 +7,7 @@ namespace RTPuzzle
     public class AIFearStunManager : AbstractAIFearStunManager
     {
         #region External Dependencies
-        private AIFOVManager aiFovManager;
+        private IFovManagerCalcuation fovManagerCalcuation;
         #endregion
 
         #region Internal Managers
@@ -24,7 +24,7 @@ namespace RTPuzzle
         {
             base.Init(AIBheaviorBuildInputData);
             this.currentAgent = AIBheaviorBuildInputData.selfAgent;
-            this.aiFovManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.fovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.AIFearTimeCounterManager = new AIFearTimeCounterManager();
         }
         
@@ -32,7 +32,7 @@ namespace RTPuzzle
         {
             if (!this.isFeared)
             {
-                if (this.aiFovManager.GetFOVAngleSum() <= this.AssociatedAIComponent.FOVSumThreshold)
+                if (this.fovManagerCalcuation.GetFOVAngleSum() <= this.AssociatedAIComponent.FOVSumThreshold)
                 {
                     this.SetIsFeared(true);
                     //because BeforeManagersUpdate is called before OnManagerTick, we anticipate the fact that the mananger will be called.
@@ -46,7 +46,7 @@ namespace RTPuzzle
         {
             if (this.AIFearTimeCounterManager.Tick(d, timeAttenuationFactor))
             {
-                this.aiFovManager.ResetFOV();
+                this.fovManagerCalcuation.ResetFOV();
                 this.SetIsFeared(false);
             }
 

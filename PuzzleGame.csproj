@@ -92,7 +92,6 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\ProjectileReaction\AIProjectileWithCollisionEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\TargetZone\AITargetZoneEscapeManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIFOV\AIFOVManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehaviorExternalEventManager.cs" />
@@ -233,6 +232,13 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovManagerCalcuation.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectDefinitions\FovModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectModules\FovManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectModules\FovModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingRendererManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />
@@ -258,10 +264,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\StaticConfiguration\InteractiveObjectTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingRendererManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\InteractionRing\Scripts\NpcInteractionRingType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIAnimationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIManagerContainer.cs" />

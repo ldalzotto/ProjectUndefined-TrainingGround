@@ -9,7 +9,7 @@ namespace RTPuzzle
     {
         #region External dependencies
         private PlayerManagerDataRetriever playerManagerDataRetriever;
-        private AIFOVManager aIFOVManager;
+        private IFovManagerCalcuation fovManagerCalcuation;
         private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleEventsManager puzzleEventsManager;
         private TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent;
@@ -40,7 +40,7 @@ namespace RTPuzzle
             this.selfAgent = AIBheaviorBuildInputData.selfAgent;
             this.puzzleAIBehaviorExternalEventManager = AIBheaviorBuildInputData.GenericPuzzleAIBehaviorExternalEventManager;
             this.playerManagerDataRetriever = AIBheaviorBuildInputData.PlayerManagerDataRetriever;
-            this.aIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.fovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.InteractiveObjectContainer = AIBheaviorBuildInputData.InteractiveObjectContainer;
             this.escapeDestinationManager = new EscapeDestinationManager(this.selfAgent);
             this.aiID = AIBheaviorBuildInputData.aiID;
@@ -64,7 +64,7 @@ namespace RTPuzzle
         {
             this.isNearPlayer = true;
             this.escapeDestinationManager.ResetDistanceComputation(this.AssociatedAIComponent.EscapeDistance);
-            this.aIFOVManager.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngle);
+            this.fovManagerCalcuation.IntersectFOV_FromEscapeDirection(this.playerManagerDataRetriever.GetPlayerRigidBody().position, selfAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngle);
             this.CalculateEscapeDirection();
         }
         #endregion
@@ -104,7 +104,7 @@ namespace RTPuzzle
             this.escapeDestinationManager.EscapeDestinationCalculationStrategy(
                 escapeDestinationCalculationMethod: (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
                 {
-                    this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.aIFOVManager, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
+                    this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.fovManagerCalcuation, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
                 },
                 ifAllFailsAction: EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.aIDestimationMoveManagerComponent))
              );

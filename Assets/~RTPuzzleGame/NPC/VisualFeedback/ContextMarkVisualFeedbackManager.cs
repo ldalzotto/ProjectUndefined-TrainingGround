@@ -9,20 +9,24 @@ namespace RTPuzzle
 
         #region External Dependencies
         private AIObjectType NPCAIManagerRef;
-        private NpcInteractionRingManager NpcInteractionRingManager;
+        private FovModule FovModule;
         private PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
         private CoreMaterialConfiguration CoreMaterialConfiguration;
         #endregion
 
-        public ContextMarkVisualFeedbackManager(AIObjectType NPCAIManagerRef, NpcInteractionRingManager npcFOVRingManager,
+        private Vector3 fallbackPositionOffset;
+
+        public ContextMarkVisualFeedbackManager(AIObjectType NPCAIManagerRef, FovModule fovModule, ModelObjectModule ModelObjectModule,
                     PuzzlePrefabConfiguration PuzzlePrefabConfiguration, CoreMaterialConfiguration CoreMaterialConfiguration)
         {
             this.NPCAIManagerRef = NPCAIManagerRef;
             this.DeleteOperation();
             this.visualFeedbackMark = null;
-            this.NpcInteractionRingManager = npcFOVRingManager;
+            this.FovModule = fovModule;
             this.PuzzlePrefabConfiguration = PuzzlePrefabConfiguration;
             this.CoreMaterialConfiguration = CoreMaterialConfiguration;
+
+            this.fallbackPositionOffset = new Vector3(0, ModelObjectModule.GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
         }
 
         private AIFeedbackMarkType visualFeedbackMark;
@@ -31,8 +35,15 @@ namespace RTPuzzle
         {
             if (this.visualFeedbackMark != null)
             {
-                var visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.NPCAIManagerRef.GetInteractionRingOffset();
-                visualMarkPosition.y += (this.NpcInteractionRingManager.GetInteractionRingHeight() * 4);
+                Vector3 visualMarkPosition;
+                if (this.FovModule != null)
+                {
+                    visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.FovModule.RingPositionOffset;
+                    visualMarkPosition.y += (this.FovModule.GetInteractionRingHeight() * 4);
+                } else
+                {
+                    visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.fallbackPositionOffset;
+                }
                 this.visualFeedbackMark.transform.position = visualMarkPosition;
                 this.visualFeedbackMark.Tick(d);
             }

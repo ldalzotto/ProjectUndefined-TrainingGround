@@ -28,7 +28,7 @@ namespace RTPuzzle
         protected AIObjectID aiID;
         #region External Dependencies
         protected NavMeshAgent escapingAgent;
-        protected AIFOVManager AIFOVManager;
+        protected IFovManagerCalcuation FovManagerCalcuation;
         protected PuzzleEventsManager puzzleEventsManager;
         private TransformMoveManagerComponentV3 AIDestimationMoveManagerComponent;
         #endregion
@@ -49,7 +49,7 @@ namespace RTPuzzle
         public virtual void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.escapingAgent = AIBheaviorBuildInputData.selfAgent;
-            this.AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.aiID = AIBheaviorBuildInputData.aiID;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
             this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
@@ -105,7 +105,7 @@ namespace RTPuzzle
             if (impactPoint != null)
             {
                 this.OnDestinationSetFromProjectileContact(projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId);
-                this.AIFOVManager.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngleV2.Values[projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId]);
+                this.FovManagerCalcuation.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngleV2.Values[projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId]);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation,
                         EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }

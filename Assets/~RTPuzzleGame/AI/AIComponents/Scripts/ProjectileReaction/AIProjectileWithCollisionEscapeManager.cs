@@ -38,12 +38,12 @@ namespace RTPuzzle
         {
             Debug.Log(MyLog.Format("EscapeToFarestWithTargetZone"));
             this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID);
-            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
+            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.FovManagerCalcuation, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
         };
 
         protected override Action<NavMeshRaycastStrategy> DestinationCalulationMethod => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
-            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.AIFOVManager, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
+            this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.FovManagerCalcuation, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
         };
 
         public override void OnLaunchProjectileDestroyed(LaunchProjectileModule launchProjectile)

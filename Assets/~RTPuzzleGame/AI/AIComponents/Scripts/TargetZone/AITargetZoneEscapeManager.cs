@@ -17,7 +17,7 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Dependencies
-        private AIFOVManager AIFOVManager;
+        private IFovManagerCalcuation FovManagerCalcuation;
         #endregion
 
         #region Internal Managers
@@ -36,7 +36,7 @@ namespace RTPuzzle
 
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            this.AIFOVManager = AIBheaviorBuildInputData.AIFOVManager;
+            this.FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
             this.aiID = AIBheaviorBuildInputData.aiID;
         }
@@ -90,7 +90,7 @@ namespace RTPuzzle
             this.isEscapingFromTargetZone = true;
             this.EscapeDestinationManager.ResetDistanceComputation(this.AssociatedAIComponent.TargetZoneEscapeDistance);
 
-            AIFOVManager.IntersectFOV_FromEscapeDirection(targetZone.transform.position, agent.transform.position, targetZoneConfigurationData.EscapeFOVSemiAngle);
+            FovManagerCalcuation.IntersectFOV_FromEscapeDirection(targetZone.transform.position, agent.transform.position, targetZoneConfigurationData.EscapeFOVSemiAngle);
 
             this.CalculateEscapeDirection();
         }
@@ -100,7 +100,7 @@ namespace RTPuzzle
             this.EscapeDestinationManager.EscapeDestinationCalculationStrategy(
                 escapeDestinationCalculationMethod: (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
                 {
-                    this.EscapeDestinationManager.EscapeToFarest(7, navMeshRaycastStrategy, this.AIFOVManager);
+                    this.EscapeDestinationManager.EscapeToFarest(7, navMeshRaycastStrategy, this.FovManagerCalcuation);
                 },
                 ifAllFailsAction: this.OnStateReset
              );

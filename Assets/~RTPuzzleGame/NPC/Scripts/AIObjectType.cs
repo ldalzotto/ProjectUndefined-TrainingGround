@@ -14,7 +14,6 @@ namespace RTPuzzle
     public interface AIObjectTypeInternalEventsListener
     {
         void ForceTickAI();
-        void OnFOVChange(FOV currentFOV);
     }
 
     public interface AIObjectTypeSpeedSetter
@@ -66,12 +65,11 @@ namespace RTPuzzle
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
         private IPuzzleAIBehavior puzzleAIBehavior;
-        private NpcInteractionRingManager NpcFOVRingManager;
         private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
         private AIAnimationManager NPCAIAnimationManager;
-        
+
         public void Init()
         {
             Debug.Log(MyLog.Format("AIObjectType Init : " + this.AIObjectTypeDefinitionID.ToString()));
@@ -109,7 +107,8 @@ namespace RTPuzzle
 
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
 
-            NpcFOVRingManager = new NpcInteractionRingManager(this);
+            //FOV
+            var FovModule = this.GetComponent<InteractiveObjectType>().GetModule<FovModule>();
 
             AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
@@ -117,11 +116,11 @@ namespace RTPuzzle
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
 
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
-                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this);
+                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
 
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, NpcFOVRingManager, puzzleStaticConfiguration.PuzzlePrefabConfiguration, coreStaticConfiguration.CoreMaterialConfiguration);
+            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, FovModule, this.GetComponent<InteractiveObjectType>().GetModule<ModelObjectModule>(), puzzleStaticConfiguration.PuzzlePrefabConfiguration, coreStaticConfiguration.CoreMaterialConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
             if (animator != null)
             {
@@ -147,7 +146,6 @@ namespace RTPuzzle
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
             NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.magnitude / this.interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent.SpeedMultiplicationFactor));
-            NpcFOVRingManager.Tick(d);
             ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
         }
@@ -309,10 +307,6 @@ namespace RTPuzzle
         #endregion
 
         #region Internal Events
-        public void OnFOVChange(FOV currentFOV)
-        {
-            NpcFOVRingManager.OnFOVChanged(currentFOV);
-        }
         private void SendOnDestinationReachedEvent()
         {
             this.PuzzleEventsManager.PZ_EVT_AI_DestinationReached(this.AiID);
@@ -324,16 +318,13 @@ namespace RTPuzzle
         {
             return GetComponentsInChildren<Renderer>();
         }
-        public Vector3 GetInteractionRingOffset()
-        {
-            return this.NpcFOVRingManager.RingPositionOffset;
-        }
         public IPuzzleAIBehavior GetAIBehavior()
         {
             return this.puzzleAIBehavior;
         }
         public NavMeshAgent GetAgent()
         {
+            if (this.agent == null) { this.agent = GetComponent<NavMeshAgent>(); }
             return this.agent;
         }
         public Collider GetLogicCollider()

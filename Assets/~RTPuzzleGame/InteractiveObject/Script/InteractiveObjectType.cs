@@ -41,10 +41,13 @@ namespace RTPuzzle
 
         public InteractiveObjectModule GetModule(Type moduleType)
         {
-            this.enabledModules.TryGetValue(moduleType, out InteractiveObjectModule returnModule);
-            if (returnModule != null)
+            if (this.enabledModules != null)
             {
-                return returnModule;
+                this.enabledModules.TryGetValue(moduleType, out InteractiveObjectModule returnModule);
+                if (returnModule != null)
+                {
+                    return returnModule;
+                }
             }
             return null;
         }
@@ -177,6 +180,7 @@ namespace RTPuzzle
         {
             this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.TickAlways(d));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.TickAlways(d));
+            this.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.TickAlways(d));
         }
 
         public void DisableModule(Type moduleType)
@@ -231,6 +235,8 @@ namespace RTPuzzle
         {
             var labelStyle = new GUIStyle(EditorStyles.label);
             Handles.Label(this.transform.position + new Vector3(0, -2f, 0), this.InteractiveObjectTypeDefinitionID.ToString(), MyEditorStyles.LabelWhite);
+
+            this.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.GizmoTick());
         }
 #endif
     }
