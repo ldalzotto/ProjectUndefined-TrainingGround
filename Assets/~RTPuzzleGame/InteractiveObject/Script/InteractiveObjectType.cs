@@ -181,6 +181,7 @@ namespace RTPuzzle
             this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.TickAlways(d));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.TickAlways(d));
             this.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.TickAlways(d));
+            this.GetModule<ContextMarkVisualFeedbackModule>().IfNotNull((ContextMarkVisualFeedbackModule ContextMarkVisualFeedbackModule) => ContextMarkVisualFeedbackModule.TickAlways(d));
         }
 
         public void DisableModule(Type moduleType)

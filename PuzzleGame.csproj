@@ -232,7 +232,13 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Events\ContextMarkVisualFeedbackEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectDefinitions\ContextMarkVisualFeedbackModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectModules\ContextMarkVisualFeedbackModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackMarkType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovManagerCalcuation.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovModuleDataRetrieval.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectDefinitions\FovModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectModules\FovManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectModules\FovModule.cs" />
@@ -268,8 +274,6 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIObjectType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\ContextMarkVisualFeedbackEvents.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\ContextMarkVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\LineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleFrustumCalculationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleListener.cs" />
@@ -309,8 +313,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Nodes\PuzzleTutorialTextNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\PuzzleTutorialEventSender.cs" />
     <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\Scripts\AIFeedbackMarkType.cs" />
+    <None Include="Assets\~RTPuzzleGame\Features\Fov\Material\InteractionRingShader.shader" />
     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
     <None Include="Assets\~RTPuzzleGame\_FX\DottedLine\Shader\DottedLineShader.shader" />
     <Reference Include="UnityEditor.UI">

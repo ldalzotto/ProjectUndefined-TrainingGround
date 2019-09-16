@@ -31,15 +31,16 @@ namespace RTPuzzle
         public AILogicColliderModule BaseAILogicColliderModule;
         public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
         public FovModule BaseFovModule;
+        public ContextMarkVisualFeedbackModule BaseContextMarkVisualFeedbackModule;
 //${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
         [Header("AI")]
         public AIObjectType BaseAIObjectType;
 
         [Header("AI Feedback")]
-        public AIFeedbackMarkType BaseAIFeedbackMarkType;
-        public AIFeedbackMarkType ProjectileHitPrefab;
-        public AIFeedbackMarkType EscapeWithoutTargetPrefab;
+        public ContextMarkVisualFeedbackMarkType BaseAIFeedbackMarkType;
+        public ContextMarkVisualFeedbackMarkType ProjectileHitPrefab;
+        public ContextMarkVisualFeedbackMarkType EscapeWithoutTargetPrefab;
 
         [Header("Projectile Prefabs")]
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;

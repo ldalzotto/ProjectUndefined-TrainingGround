@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class FovModule : InteractiveObjectModule, IFovManagerCalcuation
+    public class FovModule : InteractiveObjectModule, IFovManagerCalcuation, IFovModuleDataRetrieval
     {
 
         private const string INTERACTION_RING_OBJECT_NAME = "InteractionRing";
@@ -24,25 +24,8 @@ namespace RTPuzzle
 
         #region Data Retrieval
         public FovManager FovManager { get => fovManager; }
-        public Vector3 RingPositionOffset { get => ringPositionOffset;}
-
-        public Vector3 GetRingPosition()
-        {
-            return this.npcInteractionRingType.transform.position;
-        }
         #endregion
-
-        #region Logical Conditions
-        public float GetInteractionRingHeight()
-        {
-            if (this.npcInteractionRingType.IsActive())
-            {
-                return this.npcInteractionRingType.GetBounds().size.y;
-            }
-            return 0f;
-        }
-        #endregion
-
+        
         public void Init(IRenderBoundRetrievable IRenderBoundRetrievable, AIObjectType npcAiManagerRef)
         {
             this.IRenderBoundRetrievable = IRenderBoundRetrievable;
@@ -117,6 +100,22 @@ namespace RTPuzzle
         public float GetFOVAngleSum()
         {
             return this.fovManager.GetFOVAngleSum();
+        }
+        #endregion
+
+        #region IFovModuleDataRetrieval
+        public Vector3 GetRingPositionOffset()
+        {
+            return this.ringPositionOffset;
+        }
+
+        public float GetInteractionRingHeight()
+        {
+            if (this.npcInteractionRingType.IsActive())
+            {
+                return this.npcInteractionRingType.GetBounds().size.y;
+            }
+            return 0f;
         }
         #endregion
     }

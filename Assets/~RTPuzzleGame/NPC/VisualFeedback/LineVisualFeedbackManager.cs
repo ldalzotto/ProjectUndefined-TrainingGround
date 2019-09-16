@@ -49,6 +49,7 @@ namespace RTPuzzle
             var attractiveObject = this.InteractiveObjectContainer.GetAttractiveObjectType(AttractiveObjectId);
             this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(attractiveObject.GetModel());
         }
+
         public void OnAttractiveObjectEnd()
         {
             if (this.AttractiveObjectDottedLine != null)

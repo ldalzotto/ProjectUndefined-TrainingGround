@@ -65,7 +65,7 @@ namespace RTPuzzle
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
         private IPuzzleAIBehavior puzzleAIBehavior;
-        private ContextMarkVisualFeedbackManager ContextMarkVisualFeedbackManager;
+        private ContextMarkVisualFeedbackModule ContextMarkVisualFeedbackManager;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
         private AIAnimationManager NPCAIAnimationManager;
@@ -109,6 +109,7 @@ namespace RTPuzzle
 
             //FOV
             var FovModule = this.GetComponent<InteractiveObjectType>().GetModule<FovModule>();
+            this.ContextMarkVisualFeedbackManager = this.GetComponent<InteractiveObjectType>().GetModule<ContextMarkVisualFeedbackModule>();
 
             AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
@@ -120,7 +121,6 @@ namespace RTPuzzle
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
 
-            ContextMarkVisualFeedbackManager = new ContextMarkVisualFeedbackManager(this, FovModule, this.GetComponent<InteractiveObjectType>().GetModule<ModelObjectModule>(), puzzleStaticConfiguration.PuzzlePrefabConfiguration, coreStaticConfiguration.CoreMaterialConfiguration);
             LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
             if (animator != null)
             {
@@ -146,7 +146,6 @@ namespace RTPuzzle
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
             NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.magnitude / this.interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent.SpeedMultiplicationFactor));
-            ContextMarkVisualFeedbackManager.Tick(d);
             LineVisualFeedbackManager.Tick(d, this.transform.position);
         }
 
@@ -203,28 +202,44 @@ namespace RTPuzzle
 
         public void OnHittedByProjectileFirstTime()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new ProjectileHittedFirstTimeEvent(), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new ProjectileHittedFirstTimeEvent(), this.AiID);
+            }
+           
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime());
         }
 
         public void OnEscapeWithoutTargetStart()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new EscapeWithoutTargetEvent(), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new EscapeWithoutTargetEvent(), this.AiID);
+            }
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart());
         }
         public void OnEscapeWithoutTargetEnd()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            }
         }
 
         public void OnAiAffectedByProjectileEnd()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            }
         }
 
         internal void OnGameOver()
         {
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            }
         }
 
         internal void OnAIFearedStunnedEnded()
@@ -255,12 +270,18 @@ namespace RTPuzzle
         internal void OnAIAttractedStart(AttractiveObjectModule attractiveObject)
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectStart(attractiveObject.AttractiveObjectId);
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new AttractedStartEvent(attractiveObject.GetModel()), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new AttractedStartEvent(attractiveObject.GetModel()), this.AiID);
+            }
         }
         internal void OnAIAttractedEnd()
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectEnd();
-            this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            if (this.ContextMarkVisualFeedbackManager != null)
+            {
+                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+            }
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {

@@ -4,27 +4,17 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class AIFeedbackMarkType : MonoBehaviour
+    public class ContextMarkVisualFeedbackMarkType : MonoBehaviour
     {
 
         private const string MarkObjectBaseName = "MarkObject";
         private const string ParticleObjectBaseName = "MarkParticles";
-
-        public static string GetMarkObjectName(int nb)
-        {
-            return AIFeedbackMarkType.MarkObjectBaseName + nb;
-        }
-        public static string GetParticleObjectName(int nb)
-        {
-            return AIFeedbackMarkType.ParticleObjectBaseName + nb;
-        }
-
+        
         private VertexUnlitInstanciatedPropertySetter[] materialPropertySetters;
-
-
-        public static AIFeedbackMarkType Instanciate(AIFeedbackMarkType prefab, Action<AIFeedbackMarkType> afterCreation = null)
+        
+        public static ContextMarkVisualFeedbackMarkType Instanciate(ContextMarkVisualFeedbackMarkType prefab, Action<ContextMarkVisualFeedbackMarkType> afterCreation = null)
         {
-            var aiFeedbackMarkType = MonoBehaviour.Instantiate(prefab, PuzzleGameSingletonInstances.AIFeedbackContainer.transform);
+            var aiFeedbackMarkType = MonoBehaviour.Instantiate(prefab, PuzzleGameSingletonInstances.ContextMarkVisualFeedbackContainer.transform);
             if (afterCreation != null) { afterCreation.Invoke(aiFeedbackMarkType); }
             aiFeedbackMarkType.Init();
             return aiFeedbackMarkType;

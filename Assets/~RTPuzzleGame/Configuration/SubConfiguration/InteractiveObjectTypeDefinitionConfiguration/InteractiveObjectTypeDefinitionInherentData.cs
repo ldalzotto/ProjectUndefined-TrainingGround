@@ -129,10 +129,15 @@ namespace RTPuzzle
                             var InRangeColliderTrackerModuleDefinition = (InRangeColliderTrackerModuleDefinition)moduleConfiguration;
                             var InRangeColliderTrackerModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInRangeColliderTrackerModule, InteractiveObjectType.transform);
                         }
-                        else if(moduleConfiguration.GetType() == typeof(FovModuleDefinition))
+                        else if (moduleConfiguration.GetType() == typeof(FovModuleDefinition))
                         {
                             var FovModuleDefinition = (FovModuleDefinition)moduleConfiguration;
                             var FovModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseFovModule, InteractiveObjectType.transform);
+                        }
+                        else if (moduleConfiguration.GetType() == typeof(ContextMarkVisualFeedbackModuleDefinition))
+                        {
+                            var ContextMarkVisualFeedbackModuleDefinition = (ContextMarkVisualFeedbackModuleDefinition)moduleConfiguration;
+                            var ContextMarkVisualFeedbackModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseContextMarkVisualFeedbackModule, InteractiveObjectType.transform);
                         }
 //${addNewEntry}
                     }

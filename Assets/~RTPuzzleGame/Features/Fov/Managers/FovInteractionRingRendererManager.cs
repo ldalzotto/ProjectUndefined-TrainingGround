@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -6,9 +7,7 @@ namespace RTPuzzle
 {
     public class FovInteractionRingRendererManager : MonoBehaviour
     {
-
-        public FovInteractionRingCommandBufferManagerComponent FovInteractionRingCommandBufferManagerComponent;
-
+        
         private FovInteractionRingCommandBufferManager FovInteractionRingCommandBufferManager;
 
         #region External Dependencies
@@ -17,7 +16,8 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.FovInteractionRingCommandBufferManager = new FovInteractionRingCommandBufferManager(FovInteractionRingCommandBufferManagerComponent, Camera.main);
+            this.FovInteractionRingCommandBufferManager = new FovInteractionRingCommandBufferManager(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration,
+                    Camera.main);
             this.NpcInteractionRingContainer = PuzzleGameSingletonInstances.NpcInteractionRingContainer;
         }
 
@@ -28,20 +28,14 @@ namespace RTPuzzle
 
     }
 
-    [System.Serializable]
-    public class FovInteractionRingCommandBufferManagerComponent
-    {
-        public Material shaderInteractionRingMaterial;
-    }
-
     class FovInteractionRingCommandBufferManager
     {
-        private FovInteractionRingCommandBufferManagerComponent FovInteractionRingCommandBufferManagerComponent;
         private Camera mainCamera;
+        private CoreMaterialConfiguration CoreMaterialConfiguration;
 
-        public FovInteractionRingCommandBufferManager(FovInteractionRingCommandBufferManagerComponent FovInteractionRingCommandBufferManagerComponent, Camera mainCamera)
+        public FovInteractionRingCommandBufferManager(CoreMaterialConfiguration CoreMaterialConfiguration, Camera mainCamera)
         {
-            this.FovInteractionRingCommandBufferManagerComponent = FovInteractionRingCommandBufferManagerComponent;
+            this.CoreMaterialConfiguration = CoreMaterialConfiguration;
             this.mainCamera = mainCamera;
             this.interactionRingBuffer = new CommandBuffer();
             this.interactionRingBuffer.name = "Interaction Ring Render";
@@ -60,7 +54,7 @@ namespace RTPuzzle
                 foreach (var interactionRing in activeNpcInteractionRings)
                 {
                     materialProperty.SetTexture("_MainTex", interactionRing.RingTexture);
-                    this.interactionRingBuffer.DrawMesh(interactionRing.MeshFilter.mesh, interactionRing.MeshRenderer.localToWorldMatrix, FovInteractionRingCommandBufferManagerComponent.shaderInteractionRingMaterial, 0, 0, materialProperty);
+                    this.interactionRingBuffer.DrawMesh(interactionRing.MeshFilter.mesh, interactionRing.MeshRenderer.localToWorldMatrix, this.CoreMaterialConfiguration.InteractionRingMaterial, 0, 0, materialProperty);
                 }
             }
         }

@@ -139,6 +139,12 @@ namespace RTPuzzle
             interactiveObjectType.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.Init(interactiveObjectType.GetModule<ModelObjectModule>(),
                         interactiveObjectInitializationObject.ParentAIObjectTypeReference));
         }
+
+        public static void InitializeContextMarkVisualFeedbackModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        {
+            interactiveObjectType.GetModule<ContextMarkVisualFeedbackModule>().IfNotNull((ContextMarkVisualFeedbackModule ContextMarkVisualFeedbackModule) => 
+                ContextMarkVisualFeedbackModule.Init(interactiveObjectType.GetModule<FovModule>(), interactiveObjectType.GetModule<ModelObjectModule>()));
+        }
 //${addNewEntry}
         #endregion
     }

@@ -4,45 +4,45 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ContextMarkVisualFeedbackManager
+    public class ContextMarkVisualFeedbackModule : InteractiveObjectModule
     {
+        #region Module Dependencies
+        private IFovModuleDataRetrieval IFovModuleDataRetrieval;
+        #endregion
 
         #region External Dependencies
-        private AIObjectType NPCAIManagerRef;
-        private FovModule FovModule;
         private PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
         private CoreMaterialConfiguration CoreMaterialConfiguration;
         #endregion
 
         private Vector3 fallbackPositionOffset;
 
-        public ContextMarkVisualFeedbackManager(AIObjectType NPCAIManagerRef, FovModule fovModule, ModelObjectModule ModelObjectModule,
-                    PuzzlePrefabConfiguration PuzzlePrefabConfiguration, CoreMaterialConfiguration CoreMaterialConfiguration)
+        public void Init(IFovModuleDataRetrieval IFovModuleDataRetrieval, IRenderBoundRetrievable IRenderBoundRetrievable)
         {
-            this.NPCAIManagerRef = NPCAIManagerRef;
             this.DeleteOperation();
             this.visualFeedbackMark = null;
-            this.FovModule = fovModule;
-            this.PuzzlePrefabConfiguration = PuzzlePrefabConfiguration;
-            this.CoreMaterialConfiguration = CoreMaterialConfiguration;
+            this.IFovModuleDataRetrieval = IFovModuleDataRetrieval;
+            this.PuzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
+            this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
 
-            this.fallbackPositionOffset = new Vector3(0, ModelObjectModule.GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
+            this.fallbackPositionOffset = new Vector3(0, IRenderBoundRetrievable.GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
         }
 
-        private AIFeedbackMarkType visualFeedbackMark;
+        private ContextMarkVisualFeedbackMarkType visualFeedbackMark;
 
-        public void Tick(float d)
+        public void TickAlways(float d)
         {
             if (this.visualFeedbackMark != null)
             {
                 Vector3 visualMarkPosition;
-                if (this.FovModule != null)
+                if (this.IFovModuleDataRetrieval != null)
                 {
-                    visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.FovModule.RingPositionOffset;
-                    visualMarkPosition.y += (this.FovModule.GetInteractionRingHeight() * 4);
-                } else
+                    visualMarkPosition = this.transform.position + this.IFovModuleDataRetrieval.GetRingPositionOffset();
+                    visualMarkPosition.y += (this.IFovModuleDataRetrieval.GetInteractionRingHeight() * 4);
+                }
+                else
                 {
-                    visualMarkPosition = this.NPCAIManagerRef.GetAgent().transform.position + this.fallbackPositionOffset;
+                    visualMarkPosition = this.transform.position + this.fallbackPositionOffset;
                 }
                 this.visualFeedbackMark.transform.position = visualMarkPosition;
                 this.visualFeedbackMark.Tick(d);
@@ -54,7 +54,7 @@ namespace RTPuzzle
             if (contextMarkVisualFeedbackEvent.GetType() == typeof(AttractedStartEvent))
             {
                 var AttractedStartEvent = (AttractedStartEvent)contextMarkVisualFeedbackEvent;
-                this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(this.PuzzlePrefabConfiguration.BaseAIFeedbackMarkType, (AIFeedbackMarkType) =>
+                this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(this.PuzzlePrefabConfiguration.BaseAIFeedbackMarkType, (AIFeedbackMarkType) =>
                 {
                     var modelObjectModuleInstanciated = Object.Instantiate(AttractedStartEvent.ModelObjectModule, AIFeedbackMarkType.transform);
                     modelObjectModuleInstanciated.CleanObjectForFeedbackIcon(this.CoreMaterialConfiguration);
@@ -62,11 +62,11 @@ namespace RTPuzzle
             }
             else if (contextMarkVisualFeedbackEvent.GetType() == typeof(ProjectileHittedFirstTimeEvent))
             {
-                this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.ProjectileHitPrefab);
+                this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.ProjectileHitPrefab);
             }
             else if (contextMarkVisualFeedbackEvent.GetType() == typeof(EscapeWithoutTargetEvent))
             {
-                this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.EscapeWithoutTargetPrefab);
+                this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.EscapeWithoutTargetPrefab);
             }
             else if (contextMarkVisualFeedbackEvent.GetType() == typeof(DeleteEvent))
             {
@@ -82,9 +82,9 @@ namespace RTPuzzle
             }
         }
 
-        private void CreateOperation(AIFeedbackMarkType visualFeedbackMarkPrefab)
+        private void CreateOperation(ContextMarkVisualFeedbackMarkType visualFeedbackMarkPrefab)
         {
-            this.visualFeedbackMark = AIFeedbackMarkType.Instanciate(visualFeedbackMarkPrefab);
+            this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(visualFeedbackMarkPrefab);
         }
     }
 }

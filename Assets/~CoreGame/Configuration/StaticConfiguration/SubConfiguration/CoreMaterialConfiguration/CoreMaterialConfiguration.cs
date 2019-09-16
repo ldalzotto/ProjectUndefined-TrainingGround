@@ -20,5 +20,8 @@ namespace CoreGame
         public ComputeShader OutlineImageEffectComputeShader;
         public Material BufferScreenSampleMaterial;
         public Material OutlineColorShader;
+
+        [Header("InteractionRing Materials")]
+        public Material InteractionRingMaterial;
     }
 }
