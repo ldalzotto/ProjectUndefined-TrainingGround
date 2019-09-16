@@ -185,7 +185,7 @@ namespace RTPuzzle
             {
                 if (targetZoneTriggerEnterAIBehaviorEvent.TargetZone != null)
                 {
-                    if (!genericAiBehavior.IsManagerEnabled<AbstractAITargetZoneManager>())
+                    if (!genericAiBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>())
                     {
                         Debug.Log(MyLog.Format("Target zone reset FOV"));
                         genericAiBehavior.AIFOVManager.ResetFOV();
@@ -204,7 +204,7 @@ namespace RTPuzzle
                         && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>())
                         && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>()))
             {
-                if (!genericAiBehavior.IsManagerEnabled<AbstractAITargetZoneManager>())
+                if (!genericAiBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>())
                 {
                     Debug.Log(MyLog.Format("Target zone reset FOV"));
                     genericAiBehavior.AIFOVManager.ResetFOV();
