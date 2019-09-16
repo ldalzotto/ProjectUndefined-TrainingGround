@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ContextMarkVisualFeedbackModule : InteractiveObjectModule
+    public class ContextMarkVisualFeedbackModule : InteractiveObjectModule, IContextMarkVisualFeedbackEvent
     {
         #region Module Dependencies
         private IFovModuleDataRetrieval IFovModuleDataRetrieval;
@@ -49,31 +49,7 @@ namespace RTPuzzle
             }
         }
 
-        public void ReceiveEvent(AbstractContextMarkVisualFeedbackEvent contextMarkVisualFeedbackEvent, AIObjectID aiID)
-        {
-            if (contextMarkVisualFeedbackEvent.GetType() == typeof(AttractedStartEvent))
-            {
-                var AttractedStartEvent = (AttractedStartEvent)contextMarkVisualFeedbackEvent;
-                this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(this.PuzzlePrefabConfiguration.BaseAIFeedbackMarkType, (AIFeedbackMarkType) =>
-                {
-                    var modelObjectModuleInstanciated = Object.Instantiate(AttractedStartEvent.ModelObjectModule, AIFeedbackMarkType.transform);
-                    modelObjectModuleInstanciated.CleanObjectForFeedbackIcon(this.CoreMaterialConfiguration);
-                });
-            }
-            else if (contextMarkVisualFeedbackEvent.GetType() == typeof(ProjectileHittedFirstTimeEvent))
-            {
-                this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.ProjectileHitPrefab);
-            }
-            else if (contextMarkVisualFeedbackEvent.GetType() == typeof(EscapeWithoutTargetEvent))
-            {
-                this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.EscapeWithoutTargetPrefab);
-            }
-            else if (contextMarkVisualFeedbackEvent.GetType() == typeof(DeleteEvent))
-            {
-                this.DeleteOperation();
-            }
-        }
-
+        
         private void DeleteOperation()
         {
             if (this.visualFeedbackMark != null)
@@ -86,5 +62,31 @@ namespace RTPuzzle
         {
             this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(visualFeedbackMarkPrefab);
         }
+
+        #region IContextMarkVisualFeedbackEvent
+        public void CreateGenericMark(ModelObjectModule modelObjectModule)
+        {
+            this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(this.PuzzlePrefabConfiguration.BaseAIFeedbackMarkType, (AIFeedbackMarkType) =>
+            {
+                var modelObjectModuleInstanciated = Object.Instantiate(modelObjectModule, AIFeedbackMarkType.transform);
+                modelObjectModuleInstanciated.CleanObjectForFeedbackIcon(this.CoreMaterialConfiguration);
+            });
+        }
+
+        public void CreateExclamationMark()
+        {
+            this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.ExclamationMarkContextMarkPrefab);
+        }
+
+        public void CreateDoubleExclamationMark()
+        {
+            this.visualFeedbackMark = ContextMarkVisualFeedbackMarkType.Instanciate(PuzzlePrefabConfiguration.DoubleExclamationMarkPrefab);
+        }
+
+        public void Delete()
+        {
+            this.DeleteOperation();
+        }
+        #endregion
     }
 }

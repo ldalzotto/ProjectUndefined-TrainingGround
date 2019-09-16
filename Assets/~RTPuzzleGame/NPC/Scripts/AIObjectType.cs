@@ -65,7 +65,7 @@ namespace RTPuzzle
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
         private IPuzzleAIBehavior puzzleAIBehavior;
-        private ContextMarkVisualFeedbackModule ContextMarkVisualFeedbackManager;
+        private IContextMarkVisualFeedbackEvent IContextMarkVisualFeedbackEvent;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
         private LineVisualFeedbackManager LineVisualFeedbackManager;
         private AIAnimationManager NPCAIAnimationManager;
@@ -109,7 +109,7 @@ namespace RTPuzzle
 
             //FOV
             var FovModule = this.GetComponent<InteractiveObjectType>().GetModule<FovModule>();
-            this.ContextMarkVisualFeedbackManager = this.GetComponent<InteractiveObjectType>().GetModule<ContextMarkVisualFeedbackModule>();
+            this.IContextMarkVisualFeedbackEvent = this.GetComponent<InteractiveObjectType>().GetModule<ContextMarkVisualFeedbackModule>();
 
             AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
@@ -202,9 +202,9 @@ namespace RTPuzzle
 
         public void OnHittedByProjectileFirstTime()
         {
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new ProjectileHittedFirstTimeEvent(), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.CreateExclamationMark();
             }
            
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime());
@@ -212,33 +212,33 @@ namespace RTPuzzle
 
         public void OnEscapeWithoutTargetStart()
         {
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new EscapeWithoutTargetEvent(), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.CreateDoubleExclamationMark();
             }
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart());
         }
         public void OnEscapeWithoutTargetEnd()
         {
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.Delete();
             }
         }
 
         public void OnAiAffectedByProjectileEnd()
         {
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.Delete();
             }
         }
 
         internal void OnGameOver()
         {
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.Delete();
             }
         }
 
@@ -270,17 +270,17 @@ namespace RTPuzzle
         internal void OnAIAttractedStart(AttractiveObjectModule attractiveObject)
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectStart(attractiveObject.AttractiveObjectId);
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new AttractedStartEvent(attractiveObject.GetModel()), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.CreateGenericMark(attractiveObject.GetModel());
             }
         }
         internal void OnAIAttractedEnd()
         {
             this.LineVisualFeedbackManager.OnAttractiveObjectEnd();
-            if (this.ContextMarkVisualFeedbackManager != null)
+            if (this.IContextMarkVisualFeedbackEvent != null)
             {
-                this.ContextMarkVisualFeedbackManager.ReceiveEvent(new DeleteEvent(), this.AiID);
+                this.IContextMarkVisualFeedbackEvent.Delete();
             }
         }
         public void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)

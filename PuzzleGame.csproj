@@ -232,11 +232,12 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Events\ContextMarkVisualFeedbackEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectDefinitions\ContextMarkVisualFeedbackModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectModules\ContextMarkVisualFeedbackModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackMarkType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Models\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovManagerCalcuation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovModuleDataRetrieval.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectDefinitions\FovModuleDefinition.cs" />
@@ -312,7 +313,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Edges\PuzzleTutorialTextEdge.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\Nodes\PuzzleTutorialTextNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\PuzzleTutorialEventSender.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\UI\AIFeedback\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
     <None Include="Assets\~RTPuzzleGame\Features\Fov\Material\InteractionRingShader.shader" />
     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
     <None Include="Assets\~RTPuzzleGame\_FX\DottedLine\Shader\DottedLineShader.shader" />

@@ -39,8 +39,8 @@ namespace RTPuzzle
 
         [Header("AI Feedback")]
         public ContextMarkVisualFeedbackMarkType BaseAIFeedbackMarkType;
-        public ContextMarkVisualFeedbackMarkType ProjectileHitPrefab;
-        public ContextMarkVisualFeedbackMarkType EscapeWithoutTargetPrefab;
+        public ContextMarkVisualFeedbackMarkType ExclamationMarkContextMarkPrefab;
+        public ContextMarkVisualFeedbackMarkType DoubleExclamationMarkPrefab;
 
         [Header("Projectile Prefabs")]
         public ThrowProjectileCursorType ThrowProjectileCursorTypePrefab;
