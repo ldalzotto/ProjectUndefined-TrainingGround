@@ -32,6 +32,8 @@ namespace RTPuzzle
         public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
         public FovModule BaseFovModule;
         public ContextMarkVisualFeedbackModule BaseContextMarkVisualFeedbackModule;
+        public LineVisualFeedbackModule BaseLineVisualFeedbackModule;
+
 //${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
         [Header("AI")]

@@ -147,6 +147,13 @@ namespace RTPuzzle
             interactiveObjectType.GetModule<ContextMarkVisualFeedbackModule>().IfNotNull((ContextMarkVisualFeedbackModule ContextMarkVisualFeedbackModule) => 
                 ContextMarkVisualFeedbackModule.Init(interactiveObjectType.GetModule<FovModule>(), interactiveObjectType.GetModule<ModelObjectModule>()));
         }
+
+        public static void InitializeLineVisualFeedbackModule(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        {
+            interactiveObjectType.GetModule<LineVisualFeedbackModule>().IfNotNull((LineVisualFeedbackModule LineVisualFeedbackModule) =>
+                LineVisualFeedbackModule.Init(interactiveObjectType.GetModule<ModelObjectModule>()));
+        }
+
 //${addNewEntry}
         #endregion
     }

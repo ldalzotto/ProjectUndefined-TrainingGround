@@ -31,7 +31,8 @@ namespace RTPuzzle
 {typeof(RTPuzzle.AILogicColliderModule),InteractiveObjectModulesInitializationOperations.InitializeAILogicColliderModule},
 {typeof(RTPuzzle.InRangeColliderTrackerModule),InteractiveObjectModulesInitializationOperations.InitializeInRangeColliderTrackerModule},
 {typeof(RTPuzzle.FovModule), InteractiveObjectModulesInitializationOperations.InitializeFovModule},
-{typeof(RTPuzzle.ContextMarkVisualFeedbackModule), InteractiveObjectModulesInitializationOperations.InitializeContextMarkVisualFeedbackModule}
+{typeof(RTPuzzle.ContextMarkVisualFeedbackModule), InteractiveObjectModulesInitializationOperations.InitializeContextMarkVisualFeedbackModule},
+{typeof(RTPuzzle.LineVisualFeedbackModule), InteractiveObjectModulesInitializationOperations.InitializeLineVisualFeedbackModule}
 };
     }
 }

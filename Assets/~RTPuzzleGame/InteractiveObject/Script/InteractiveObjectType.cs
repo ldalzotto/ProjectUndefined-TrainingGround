@@ -13,7 +13,9 @@ namespace RTPuzzle
 {
     public interface IInteractiveObjectTypeDataRetrieval
     {
+        ModelObjectModule GetModelObjectModule();
         IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent();
+        ILineVisualFeedbackEvent GetILineVisualFeedbackEvent();
     }
 
     public class InteractiveObjectType : MonoBehaviour, IInteractiveObjectTypeDataRetrieval
@@ -92,9 +94,17 @@ namespace RTPuzzle
         #endregion
 
         #region IInteractiveObjectTypeDataRetrieval
+        public ModelObjectModule GetModelObjectModule()
+        {
+            return this.GetModule<ModelObjectModule>();
+        }
         public IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent()
         {
             return this.GetModule<ContextMarkVisualFeedbackModule>();
+        }
+        public ILineVisualFeedbackEvent GetILineVisualFeedbackEvent()
+        {
+            return this.GetModule<LineVisualFeedbackModule>();
         }
         #endregion
 
@@ -194,6 +204,7 @@ namespace RTPuzzle
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.TickAlways(d));
             this.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.TickAlways(d));
             this.GetModule<ContextMarkVisualFeedbackModule>().IfNotNull((ContextMarkVisualFeedbackModule ContextMarkVisualFeedbackModule) => ContextMarkVisualFeedbackModule.TickAlways(d));
+            this.GetModule<LineVisualFeedbackModule>().IfNotNull((LineVisualFeedbackModule LineVisualFeedbackModule) => LineVisualFeedbackModule.TickAlways(d));
         }
 
         public void DisableModule(Type moduleType)

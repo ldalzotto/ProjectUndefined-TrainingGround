@@ -65,8 +65,15 @@ namespace RTPuzzle
         #region IAIAttractiveObjectEventListener
         public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
-            AIObjectDataRetriever.GetLineVisualFeedbackManager().OnAttractiveObjectStart(InvolvedAttractiveObjectModuleDataRetriever);
-            var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
+            var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
+
+            var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
+            if (ILineVisualFeedbackEvent != null)
+            {
+                ILineVisualFeedbackEvent.CreateLine(DottedLineID.ATTRACTIVE_OBJECT, InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule());
+            }
+
+            var IContextMarkVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetIContextMarkVisualFeedbackEvent();
             if (IContextMarkVisualFeedbackEvent != null)
             {
                 IContextMarkVisualFeedbackEvent.CreateGenericMark(InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule());
@@ -74,7 +81,13 @@ namespace RTPuzzle
         }
         public void AI_AttractedObject_End(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
-            AIObjectDataRetriever.GetLineVisualFeedbackManager().OnAttractiveObjectEnd();
+            var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
+            var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
+            if (ILineVisualFeedbackEvent != null)
+            {
+                ILineVisualFeedbackEvent.DestroyLine();
+            }
+            
             var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
             if (IContextMarkVisualFeedbackEvent != null)
             {

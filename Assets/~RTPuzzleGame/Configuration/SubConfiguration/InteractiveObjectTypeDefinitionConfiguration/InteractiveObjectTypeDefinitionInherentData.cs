@@ -139,6 +139,11 @@ namespace RTPuzzle
                             var ContextMarkVisualFeedbackModuleDefinition = (ContextMarkVisualFeedbackModuleDefinition)moduleConfiguration;
                             var ContextMarkVisualFeedbackModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseContextMarkVisualFeedbackModule, InteractiveObjectType.transform);
                         }
+                        else if (moduleConfiguration.GetType() == typeof(LineVisualFeedbackModuleDefinition))
+                        {
+                            var LineVisualFeedbackModuleDefinition = (LineVisualFeedbackModuleDefinition)moduleConfiguration;
+                            var LineVisualFeedbackModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseLineVisualFeedbackModule, InteractiveObjectType.transform);
+                        }
 //${addNewEntry}
                     }
                 }

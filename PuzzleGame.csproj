@@ -64,9 +64,6 @@
   <ItemGroup>
     <Compile Include="Assets\~RTPuzzleGame\_Collision\Scripts\CollisionTypeHelper.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Collision\Scripts\PuzzleLogic\RootPuzzleLogicCollider.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\DottedLineContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\DottedLineRendererManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\_FX\DottedLine\Script\LineTypes\DottedLine.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_FX\LevelCompleted\Scripts\LevelCompleteVisualFeedbackFX.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
@@ -129,8 +126,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DottedLineConfiguration\DottedLineInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\Matrix\RepelableObjectDistance.cs" />
@@ -235,17 +230,25 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectDefinitions\ContextMarkVisualFeedbackModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectModules\ContextMarkVisualFeedbackModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Lib\ContextMarkVisualFeedbackMarkType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackContainer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackMarkType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Models\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovManagerCalcuation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovModuleDataRetrieval.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectDefinitions\FovModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectModules\FovManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectModules\FovModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Lib\FovInteractionRingContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Lib\FovInteractionRingType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingRendererManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\ExposedInterfaces\ILineVisualFeedbackEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\InteractiveObjectDefinitions\LineVisualFeedbackModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\InteractiveObjectModules\LineVisualFeedbackModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Lib\DottedLineContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />
@@ -275,7 +278,6 @@
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIObjectType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\VisualFeedback\LineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleFrustumCalculationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstaclesListenerManager.cs" />
@@ -315,7 +317,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Tutorial\Script\PuzzleTutorialEventSender.cs" />
     <None Include="Assets\~RTPuzzleGame\Features\Fov\Material\InteractionRingShader.shader" />
     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
-    <None Include="Assets\~RTPuzzleGame\_FX\DottedLine\Shader\DottedLineShader.shader" />
+    <None Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Shader\DottedLineShader.shader" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>

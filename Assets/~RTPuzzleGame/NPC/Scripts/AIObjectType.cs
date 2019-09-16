@@ -25,8 +25,6 @@ namespace RTPuzzle
     {
         IPuzzleAIBehavior GetAIBehavior();
         IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval();
-        //TODO -> remove when AnimationVisualFeedbackManager is migrated to module
-        LineVisualFeedbackManager GetLineVisualFeedbackManager();
     }
 
     public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter, AIObjectDataRetriever
@@ -69,7 +67,6 @@ namespace RTPuzzle
         private IPuzzleAIBehavior puzzleAIBehavior;
         private IContextMarkVisualFeedbackEvent IContextMarkVisualFeedbackEvent;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
-        private LineVisualFeedbackManager LineVisualFeedbackManager;
         private AIAnimationManager NPCAIAnimationManager;
 
         public void Init()
@@ -122,8 +119,7 @@ namespace RTPuzzle
                      interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
-
-            LineVisualFeedbackManager = new LineVisualFeedbackManager(this);
+            
             if (animator != null)
             {
                 AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
@@ -148,7 +144,6 @@ namespace RTPuzzle
         internal void TickAlways(float d, float timeAttenuationFactor)
         {
             NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.magnitude / this.interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent.SpeedMultiplicationFactor));
-            LineVisualFeedbackManager.Tick(d, this.transform.position);
         }
 
         internal void EndOfFixedTick()
@@ -205,6 +200,7 @@ namespace RTPuzzle
             }
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart());
         }
+
         public void OnEscapeWithoutTargetEnd()
         {
             if (this.IContextMarkVisualFeedbackEvent != null)
@@ -319,12 +315,7 @@ namespace RTPuzzle
         {
             return this.associatedInteractivObject;
         }
-
-        public LineVisualFeedbackManager GetLineVisualFeedbackManager()
-        {
-            return this.LineVisualFeedbackManager;
-        }
-
+        
         public NavMeshAgent GetAgent()
         {
             if (this.agent == null) { this.agent = GetComponent<NavMeshAgent>(); }

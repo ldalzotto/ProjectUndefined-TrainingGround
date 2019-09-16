@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class LineVisualFeedbackManager
+    public class LineVisualFeedbackModule : InteractiveObjectModule, ILineVisualFeedbackEvent
     {
 
         #region External Dependencies
@@ -13,42 +13,42 @@ namespace RTPuzzle
         private DottedLineContainer DottedLineContainer;
         #endregion
 
-        public LineVisualFeedbackManager(AIObjectType nPCAIManagerRef)
+        public void Init(ModelObjectModule ModelObjectModule)
         {
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             this.DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
 
             //position calculation
-            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(nPCAIManagerRef);
+            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(ModelObjectModule);
         }
 
         private Vector3 positionOffsetFromNPC;
         private Vector3 targetWorldPositionOffset;
         private DottedLine AttractiveObjectDottedLine;
-        private IAttractiveObjectModuleDataRetriever IAttractiveObjectModuleDataRetriever;
+        private ModelObjectModule AttractiveObjectModelObjectModule;
 
 
-        public void Tick(float d, Vector3 npcAIBoundsCenterWorldPosition)
+        public void TickAlways(float d)
         {
             if (this.AttractiveObjectDottedLine != null)
             {
-                this.AttractiveObjectDottedLine.Tick(d, npcAIBoundsCenterWorldPosition + this.positionOffsetFromNPC, IAttractiveObjectModuleDataRetriever.GetTransform().position + this.targetWorldPositionOffset);
+                this.AttractiveObjectDottedLine.Tick(d, this.transform.position + this.positionOffsetFromNPC, AttractiveObjectModelObjectModule.transform.position + this.targetWorldPositionOffset);
             }
         }
 
-        #region External Events
-        public void OnAttractiveObjectStart(IAttractiveObjectModuleDataRetriever IAttractiveObjectModuleDataRetriever)
+        #region ILineVisualFeedbackEvent
+        public void CreateLine(DottedLineID DottedLineID, ModelObjectModule TargetModelObjectModule)
         {
             if (this.AttractiveObjectDottedLine == null)
             {
-                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID.ATTRACTIVE_OBJECT, this.PuzzleGameConfigurationManager, this.DottedLineContainer);
+                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager, this.DottedLineContainer);
             }
-            this.IAttractiveObjectModuleDataRetriever = IAttractiveObjectModuleDataRetriever;
-            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(IAttractiveObjectModuleDataRetriever.GetModelObjectModule());
+            this.AttractiveObjectModelObjectModule = TargetModelObjectModule;
+            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(TargetModelObjectModule);
         }
 
-        public void OnAttractiveObjectEnd()
+        public void DestroyLine()
         {
             if (this.AttractiveObjectDottedLine != null)
             {
@@ -56,6 +56,5 @@ namespace RTPuzzle
             }
         }
         #endregion
-
     }
 }
