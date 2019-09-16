@@ -17,7 +17,7 @@ namespace RTPuzzle
     public class AILogicColliderModule : RTPuzzle.InteractiveObjectModule
     {
         #region Internal Dependencies
-        private AIObjectType associatedAIObjectType;
+        private AIObjectDataRetriever AIObjectDataRetirever;
         #endregion
 
         #region State
@@ -32,9 +32,9 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(AIObjectType AIObjectType)
+        public void Init(AIObjectDataRetriever AIObjectDataRetirever)
         {
-            this.associatedAIObjectType = AIObjectType;
+            this.AIObjectDataRetirever = AIObjectDataRetirever;
             this.associatedCollider = GetComponent<BoxCollider>();
         }
 
@@ -45,7 +45,7 @@ namespace RTPuzzle
         #region Physics Events
         private void OnTriggerEnter(Collider other)
         {
-            this.associatedAIObjectType.GetAIBehavior().OnTriggerEnter(other);
+            this.AIObjectDataRetirever.GetAIBehavior().OnTriggerEnter(other);
             if (this.PhysicsEventListeners != null)
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
@@ -57,7 +57,7 @@ namespace RTPuzzle
 
         private void OnTriggerStay(Collider other)
         {
-            this.associatedAIObjectType.GetAIBehavior().OnTriggerStay(other);
+            this.AIObjectDataRetirever.GetAIBehavior().OnTriggerStay(other);
             if (this.PhysicsEventListeners != null)
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
@@ -69,7 +69,7 @@ namespace RTPuzzle
 
         private void OnTriggerExit(Collider other)
         {
-            this.associatedAIObjectType.GetAIBehavior().OnTriggerExit(other);
+            this.AIObjectDataRetirever.GetAIBehavior().OnTriggerExit(other);
             if (this.PhysicsEventListeners != null)
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)

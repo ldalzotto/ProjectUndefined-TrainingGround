@@ -21,7 +21,15 @@ namespace RTPuzzle
         void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition);
     }
 
-    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter
+    public interface AIObjectDataRetriever
+    {
+        IPuzzleAIBehavior GetAIBehavior();
+        IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval();
+        //TODO -> remove when AnimationVisualFeedbackManager is migrated to module
+        LineVisualFeedbackManager GetLineVisualFeedbackManager();
+    }
+
+    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter, AIObjectDataRetriever
     {
 
 #if UNITY_EDITOR
@@ -50,12 +58,6 @@ namespace RTPuzzle
         private NPCAIDestinationContext NPCAIDestinationContext;
         private List<InterfaceAIManager> aiManagers;
         public List<InterfaceAIManager> AiManagers { get => aiManagers; set => aiManagers = value; }
-        #endregion
-
-        #region Data Retrieval
-#if UNITY_EDITOR
-        public AIDestinationMoveManager GetNPCAIDestinationMoveManager() { return this.AIDestinationMoveManager; }
-#endif
         #endregion
 
         private InteractiveObjectSharedDataType interactiveObjectSharedData;
@@ -165,21 +167,6 @@ namespace RTPuzzle
             AIDestinationMoveManager.SetDestination(ref this.NPCAIDestinationContext);
         }
 
-        public void OnTriggerEnter(Collider other)
-        {
-            puzzleAIBehavior.OnTriggerEnter(other);
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            puzzleAIBehavior.OnTriggerStay(other);
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            puzzleAIBehavior.OnTriggerExit(other);
-        }
-
         public void GizmoTick()
         {
             puzzleAIBehavior.TickGizmo();
@@ -206,7 +193,7 @@ namespace RTPuzzle
             {
                 this.IContextMarkVisualFeedbackEvent.CreateExclamationMark();
             }
-           
+
             this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnHittedByProjectileFirstTime());
         }
 
@@ -267,22 +254,6 @@ namespace RTPuzzle
             ));
         }
 
-        internal void OnAIAttractedStart(AttractiveObjectModule attractiveObject)
-        {
-            this.LineVisualFeedbackManager.OnAttractiveObjectStart(attractiveObject.AttractiveObjectId);
-            if (this.IContextMarkVisualFeedbackEvent != null)
-            {
-                this.IContextMarkVisualFeedbackEvent.CreateGenericMark(attractiveObject.GetModel());
-            }
-        }
-        internal void OnAIAttractedEnd()
-        {
-            this.LineVisualFeedbackManager.OnAttractiveObjectEnd();
-            if (this.IContextMarkVisualFeedbackEvent != null)
-            {
-                this.IContextMarkVisualFeedbackEvent.Delete();
-            }
-        }
         public void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {
             this.puzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
@@ -343,6 +314,17 @@ namespace RTPuzzle
         {
             return this.puzzleAIBehavior;
         }
+
+        public IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval()
+        {
+            return this.associatedInteractivObject;
+        }
+
+        public LineVisualFeedbackManager GetLineVisualFeedbackManager()
+        {
+            return this.LineVisualFeedbackManager;
+        }
+
         public NavMeshAgent GetAgent()
         {
             if (this.agent == null) { this.agent = GetComponent<NavMeshAgent>(); }
@@ -417,7 +399,7 @@ namespace RTPuzzle
         }
     }
 
-    class AnimationVisualFeedbackManager
+    public class AnimationVisualFeedbackManager
     {
         private Animator Animator;
         private AnimationConfiguration AnimationConfiguration;

@@ -223,13 +223,13 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeEffectManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\Events\PuzzleEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectLooseManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectPersistantManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAIAttractiveObjectEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />

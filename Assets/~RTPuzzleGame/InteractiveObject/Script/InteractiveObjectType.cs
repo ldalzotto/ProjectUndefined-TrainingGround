@@ -11,7 +11,12 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public class InteractiveObjectType : MonoBehaviour
+    public interface IInteractiveObjectTypeDataRetrieval
+    {
+        IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent();
+    }
+
+    public class InteractiveObjectType : MonoBehaviour, IInteractiveObjectTypeDataRetrieval
     {
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
@@ -83,6 +88,13 @@ namespace RTPuzzle
             foundModule = this.GetModule<T>();
             if (foundModule == null) { foundModule = this.GetDisabledModule<T>(); }
             return foundModule;
+        }
+        #endregion
+
+        #region IInteractiveObjectTypeDataRetrieval
+        public IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent()
+        {
+            return this.GetModule<ContextMarkVisualFeedbackModule>();
         }
         #endregion
 

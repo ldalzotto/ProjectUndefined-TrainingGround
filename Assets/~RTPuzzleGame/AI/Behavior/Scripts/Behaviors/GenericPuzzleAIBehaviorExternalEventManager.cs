@@ -19,7 +19,7 @@ namespace RTPuzzle
             {typeof(DisarmingObjectEnterAIbehaviorEvent).Name, 7 },
             {typeof(DisarmingObjectExitAIbehaviorEvent).Name, 8 },
             {typeof(AttractiveObjectTriggerExitAIBehaviorEvent).Name, 9 },
-            {typeof(AttractiveObectDestroyedAIBehaviorEvent).Name, 10 },
+            {typeof(AttractiveObjectDestroyedAIBehaviorEvent).Name, 10 },
             {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 11 },
             {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 12 },
             {typeof(SightInRangeEnterAIBehaviorEvent).Name, 13 },
@@ -47,7 +47,7 @@ namespace RTPuzzle
             EventTypeCheck<AttractiveObjectTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObjectAIEvents.AttractiveObject_TriggerEnter);
             EventTypeCheck<AttractiveObjectTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObjectAIEvents.AttractiveObject_TriggerStay);
             EventTypeCheck<AttractiveObjectTriggerExitAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObjectAIEvents.AttractiveObject_TriggerExit);
-            EventTypeCheck<AttractiveObectDestroyedAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_Destroyed);
+            EventTypeCheck<AttractiveObjectDestroyedAIBehaviorEvent>(genericAiBehavior, externalEvent, AttractiveObject_Destroyed);
             EventTypeCheck<TargetZoneTriggerEnterAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerEnter);
             EventTypeCheck<TargetZoneTriggerStayAIBehaviorEvent>(genericAiBehavior, externalEvent, TargetZone_TriggerStay);
             EventTypeCheck<PlayerEscapeStartAIBehaviorEvent>(genericAiBehavior, externalEvent, PlayerEscape_Start);
@@ -136,7 +136,7 @@ namespace RTPuzzle
 
 
 
-        private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
+        private void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectDestroyedAIBehaviorEvent attractiveObectDestroyedAIBehaviorEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>())
             {
@@ -328,11 +328,11 @@ namespace RTPuzzle
         }
     }
 
-    public class AttractiveObectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    public class AttractiveObjectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
         private AttractiveObjectModule destroyedAttractiveObject;
 
-        public AttractiveObectDestroyedAIBehaviorEvent(AttractiveObjectModule destroyedAttractiveObject)
+        public AttractiveObjectDestroyedAIBehaviorEvent(AttractiveObjectModule destroyedAttractiveObject)
         {
             this.destroyedAttractiveObject = destroyedAttractiveObject;
         }

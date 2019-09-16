@@ -1,11 +1,10 @@
-using System;
 using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener
     {
         #region External Dependencies
         private AIManagerContainer NPCAIManagerContainer;
@@ -61,14 +60,28 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
         }
-        public void PZ_EVT_AI_Attracted_Start(AttractiveObjectModule attractiveObject, AIObjectID aiID)
+        #endregion
+
+        #region IAIAttractiveObjectEventListener
+        public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedStart(attractiveObject);
+            AIObjectDataRetriever.GetLineVisualFeedbackManager().OnAttractiveObjectStart(InvolvedAttractiveObjectModuleDataRetriever);
+            var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
+            if (IContextMarkVisualFeedbackEvent != null)
+            {
+                IContextMarkVisualFeedbackEvent.CreateGenericMark(InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule());
+            }
         }
-        internal void PZ_EVT_AI_Attracted_End(AttractiveObjectModule involvedAttractiveObject, AIObjectID aiID)
+        public void AI_AttractedObject_End(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIAttractedEnd();
+            AIObjectDataRetriever.GetLineVisualFeedbackManager().OnAttractiveObjectEnd();
+            var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
+            if (IContextMarkVisualFeedbackEvent != null)
+            {
+                IContextMarkVisualFeedbackEvent.Delete();
+            }
         }
+        #endregion
 
         public virtual void PZ_EVT_AI_Projectile_Hitted(AIObjectID aiID)
         {
@@ -79,7 +92,6 @@ namespace RTPuzzle
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
         }
-        #endregion
 
         #region Escape without target zone events
         public void PZ_EVT_AI_EscapeWithoutTarget_Start(AIObjectID aiID)
@@ -94,7 +106,6 @@ namespace RTPuzzle
         #endregion
 
         #region Projectile throw action events
-
         public void PZ_EVT_ThrowProjectileCursor_OnProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
@@ -111,7 +122,7 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
         }
 
-        public void PZ_EVT_AttractiveObject_OnPlayerActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject, 
+        public void PZ_EVT_AttractiveObject_OnPlayerActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject,
                             PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
             AttractiveObjectTypeModuleEventHandling.OnAttractiveObjectActionExecuted(attractiveObjectWorldPositionHit, attractiveObject, puzzleGameConfigurationManager);
@@ -169,7 +180,7 @@ namespace RTPuzzle
         #endregion
 
         #region Disarm object event
-        public void PZ_EVT_DisarmObject_Start(AIObjectID aiID,  DisarmObjectModule disarmObjectModule)
+        public void PZ_EVT_DisarmObject_Start(AIObjectID aiID, DisarmObjectModule disarmObjectModule)
         {
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart(disarmObjectModule);
             disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectStart());

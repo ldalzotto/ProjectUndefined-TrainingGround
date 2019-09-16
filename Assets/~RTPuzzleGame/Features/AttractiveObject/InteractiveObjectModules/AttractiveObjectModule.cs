@@ -5,7 +5,13 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class AttractiveObjectModule : InteractiveObjectModule
+    public interface IAttractiveObjectModuleDataRetriever
+    {
+        ModelObjectModule GetModelObjectModule();
+        Transform GetTransform();
+    }
+
+    public class AttractiveObjectModule : InteractiveObjectModule, IAttractiveObjectModuleDataRetriever
     {
 
         public static AttractiveObjectModule GetAttractiveObjectFromCollisionType(CollisionType collisionType)
@@ -31,11 +37,15 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public ModelObjectModule GetModel()
+        public RangeTypeObject SphereRange { get => sphereRange; }
+        #endregion
+
+        #region IAttractiveObjectModuleDataRetriever
+        public ModelObjectModule GetModelObjectModule()
         {
             return this.modelObjectModule;
         }
-        public RangeTypeObject SphereRange { get => sphereRange; }
+        public Transform GetTransform() { return this.transform; }
         #endregion
 
         public AttractiveObjectId AttractiveObjectId;

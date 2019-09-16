@@ -26,28 +26,26 @@ namespace RTPuzzle
         private Vector3 positionOffsetFromNPC;
         private Vector3 targetWorldPositionOffset;
         private DottedLine AttractiveObjectDottedLine;
-        private AttractiveObjectId AttractiveObjectId;
+        private IAttractiveObjectModuleDataRetriever IAttractiveObjectModuleDataRetriever;
 
 
         public void Tick(float d, Vector3 npcAIBoundsCenterWorldPosition)
         {
             if (this.AttractiveObjectDottedLine != null)
             {
-                var attractiveObject = this.InteractiveObjectContainer.GetAttractiveObjectType(AttractiveObjectId);
-                this.AttractiveObjectDottedLine.Tick(d, npcAIBoundsCenterWorldPosition + this.positionOffsetFromNPC, attractiveObject.transform.position + this.targetWorldPositionOffset);
+                this.AttractiveObjectDottedLine.Tick(d, npcAIBoundsCenterWorldPosition + this.positionOffsetFromNPC, IAttractiveObjectModuleDataRetriever.GetTransform().position + this.targetWorldPositionOffset);
             }
         }
 
         #region External Events
-        public void OnAttractiveObjectStart(AttractiveObjectId attractiveObjectId)
+        public void OnAttractiveObjectStart(IAttractiveObjectModuleDataRetriever IAttractiveObjectModuleDataRetriever)
         {
             if (this.AttractiveObjectDottedLine == null)
             {
                 this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID.ATTRACTIVE_OBJECT, this.PuzzleGameConfigurationManager, this.DottedLineContainer);
             }
-            this.AttractiveObjectId = attractiveObjectId;
-            var attractiveObject = this.InteractiveObjectContainer.GetAttractiveObjectType(AttractiveObjectId);
-            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(attractiveObject.GetModel());
+            this.IAttractiveObjectModuleDataRetriever = IAttractiveObjectModuleDataRetriever;
+            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(IAttractiveObjectModuleDataRetriever.GetModelObjectModule());
         }
 
         public void OnAttractiveObjectEnd()

@@ -16,7 +16,7 @@ namespace RTPuzzle
 
         public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter;
+            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter();
         }
 
         #region External Events

@@ -36,11 +36,13 @@ namespace RTPuzzle
             {
                 if (InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData == null)
                 {
-                    attractiveObjectTypeModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], interactiveObjectType.GetModule<ModelObjectModule>(), interactiveObjectType.PuzzleEventsManager);
+                    attractiveObjectTypeModule.Init(interactiveObjectType.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectTypeModule.AttractiveObjectId], 
+                            interactiveObjectType.GetModule<ModelObjectModule>(), interactiveObjectType.PuzzleEventsManager);
                 }
                 else
                 {
-                    attractiveObjectTypeModule.Init(InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData, interactiveObjectType.GetModule<ModelObjectModule>(), interactiveObjectType.PuzzleEventsManager);
+                    attractiveObjectTypeModule.Init(InteractiveObjectInitializationObject.AttractiveObjectInherentConfigurationData, interactiveObjectType.GetModule<ModelObjectModule>(),
+                            interactiveObjectType.PuzzleEventsManager);
                 }
             }
             );

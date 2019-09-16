@@ -34,9 +34,9 @@ namespace RTPuzzle
     public abstract class AbstractAIAttractiveObjectManager : AbstractAIManager<AIAttractiveObjectComponent>, InterfaceAIManager
     {
         protected NavMeshAgent selfAgent;
-        protected AIObjectID aiID;
 
         private AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
+        private AIObjectDataRetriever AIObjectDataRetriever;
 
         #region State
         protected bool isAttracted;
@@ -44,6 +44,7 @@ namespace RTPuzzle
         #endregion
 
         #region External Events
+        private IAIAttractiveObjectEventListener IAIAttractiveObjectEventListener;
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
@@ -56,9 +57,10 @@ namespace RTPuzzle
         public void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.selfAgent = AIBheaviorBuildInputData.selfAgent;
-            this.aiID = AIBheaviorBuildInputData.aiID;
             this.PuzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
-            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter;
+            this.IAIAttractiveObjectEventListener = this.PuzzleEventsManager;
+            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter();
+            this.AIObjectDataRetriever = AIBheaviorBuildInputData.AIObjectDataRetriever();
         }
 
         #region External Events
@@ -110,11 +112,11 @@ namespace RTPuzzle
         {
             if (this.isAttracted && !value)
             {
-                this.PuzzleEventsManager.PZ_EVT_AI_Attracted_End(this.involvedAttractiveObject, this.aiID);
+                this.IAIAttractiveObjectEventListener.AI_AttractedObject_End(this.involvedAttractiveObject, this.AIObjectDataRetriever);
             }
             else if (!this.isAttracted && value)
             {
-                this.PuzzleEventsManager.PZ_EVT_AI_Attracted_Start(this.involvedAttractiveObject, this.aiID);
+                this.IAIAttractiveObjectEventListener.AI_AttractedObject_Start(this.involvedAttractiveObject, this.AIObjectDataRetriever);
             }
             this.isAttracted = value;
         }

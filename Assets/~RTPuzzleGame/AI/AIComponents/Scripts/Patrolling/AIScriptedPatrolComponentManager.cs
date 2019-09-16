@@ -23,7 +23,7 @@ namespace RTPuzzle
         public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             base.Init(AIBheaviorBuildInputData);
-            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter;
+            this.AIObjectTypeSpeedSetter = AIBheaviorBuildInputData.AIObjectTypeSpeedSetter();
             var AIPatrolGraph = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AIPatrolGraphConfiguration()[this.AssociatedAIComponent.AIPatrolGraphID].AIPatrolGraph;
             this.PatrolGraphPlayer = new SequencedActionPlayer(AIPatrolGraph.GetRootActions(), new AIPatrolActionInput(this, AIPatrolActionInput.BuildParameters(AIBheaviorBuildInputData.AssociatedInteractiveObject)), null);
             this.PatrolGraphPlayer.Play();

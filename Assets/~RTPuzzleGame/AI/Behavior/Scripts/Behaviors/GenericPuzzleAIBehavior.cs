@@ -84,7 +84,7 @@ namespace RTPuzzle
         #region External Events
         public override void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
         {
-            this.ReceiveEvent(new AttractiveObectDestroyedAIBehaviorEvent(attractiveObjectToDestroy));
+            this.ReceiveEvent(new AttractiveObjectDestroyedAIBehaviorEvent(attractiveObjectToDestroy));
         }
         public override void OnTriggerEnter(Collider collider)
         {

@@ -200,12 +200,16 @@ namespace RTPuzzle
         public PuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager;
         public AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener;
         public InteractiveObjectType AssociatedInteractiveObject;
-        public AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
+        public AIObjectType AssociatedAIObjectType;
         public IFovManagerCalcuation FovManagerCalcuation;
+
+
+        public AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter() { return this.AssociatedAIObjectType; }
+        public AIObjectDataRetriever AIObjectDataRetriever() { return this.AssociatedAIObjectType; }
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
             InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, Collider aiCollider, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
-            AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener, InteractiveObjectType AssociatedInteractiveObject, AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter,
+            AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener, InteractiveObjectType AssociatedInteractiveObject, AIObjectType AssociatedAIObjectType,
             IFovManagerCalcuation FovManagerCalcuation)
         {
             this.selfAgent = selfAgent;
@@ -219,7 +223,7 @@ namespace RTPuzzle
             this.GenericPuzzleAIBehaviorExternalEventManager = new GenericPuzzleAIBehaviorExternalEventManager();
             this.AIObjectTypeInternalEventsListener = AIObjectTypeInternalEventsListener;
             this.AssociatedInteractiveObject = AssociatedInteractiveObject;
-            this.AIObjectTypeSpeedSetter = AIObjectTypeSpeedSetter;
+            this.AssociatedAIObjectType = AssociatedAIObjectType;
             this.FovManagerCalcuation = FovManagerCalcuation;
         }
     }
