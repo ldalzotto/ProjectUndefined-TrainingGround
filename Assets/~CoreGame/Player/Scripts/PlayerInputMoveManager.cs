@@ -25,6 +25,7 @@ namespace CoreGame
 
         public void Tick(float d)
         {
+            this.playerSpeedProcessingInput = ComputePlayerSpeedProcessingInput();
             this.playerSpeedMagnitude = playerSpeedProcessingInput.PlayerSpeedMagnitude;
             if (playerSpeedMagnitude > float.Epsilon)
             {
@@ -35,7 +36,6 @@ namespace CoreGame
         public void FixedTick(float d)
         {
             //move rigid body rotation
-            this.playerSpeedProcessingInput = ComputePlayerSpeedProcessingInput();
             if (playerSpeedProcessingInput.PlayerMovementOrientation.sqrMagnitude > .05)
             {
                 PlayerRigidBody.rotation = Quaternion.LookRotation(playerSpeedProcessingInput.PlayerMovementOrientation);
