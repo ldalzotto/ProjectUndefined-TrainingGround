@@ -203,16 +203,27 @@ namespace RTPuzzle
             disarmObjectModule.GetAIBehavior().ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(IDisarmObjectModuleDataRetrieval));
         }
 
-        public void AI_EVT_DisarmObject_Start(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleEvent disarmObjectModule)
+        public void AI_EVT_DisarmObject_Start(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleDataRetrieval disarmedObjectModule)
         {
-         //   AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectStart((IDisarmObjectModuleDataRetrieval)disarmObjectModule));
-            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectStart(AIObjectDataRetriever));
+            var aiLocalPuzzleCutsceneModule = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetILocalPuzzleCutsceneModuleEvent();
+            if (aiLocalPuzzleCutsceneModule != null)
+            {
+                aiLocalPuzzleCutsceneModule.PlayLocalCutscene(disarmedObjectModule.GetInstanceID(), disarmedObjectModule.GetDisarmAnimation(),
+                    disarmedObjectModule.GetDisarmAnimationInputParameters(AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval()));
+            }
+
+            disarmedObjectModule.GetIDisarmObjectModuleEvent().IfNotNull(IDisarmObjectModuleEvent => IDisarmObjectModuleEvent.OnDisarmObjectStart(AIObjectDataRetriever));
         }
 
-        public void AI_EVT_DisarmObject_End(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleEvent disarmObjectModule)
+        public void AI_EVT_DisarmObject_End(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleDataRetrieval disarmedObjectModule)
         {
-          //  AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectEnd());
-            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectEnd(AIObjectDataRetriever));
+            var aiLocalPuzzleCutsceneModule = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetILocalPuzzleCutsceneModuleEvent();
+            if (aiLocalPuzzleCutsceneModule != null)
+            {
+                aiLocalPuzzleCutsceneModule.StopLocalCutscene(disarmedObjectModule.GetInstanceID());
+            }
+
+            disarmedObjectModule.GetIDisarmObjectModuleEvent().IfNotNull(IDisarmObjectModuleEvent => IDisarmObjectModuleEvent.OnDisarmObjectEnd(AIObjectDataRetriever));
         }
         #endregion
 

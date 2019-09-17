@@ -159,6 +159,10 @@ namespace RTPuzzle
                         {
                             InteractiveObjectAnimationModuleInstancer.PopuplateFromDefinition((InteractiveObjectAnimationModuleDefinition)moduleConfiguration, InteractiveObjectType.transform);
                         }
+                        else if(moduleConfiguration.GetType() == typeof(LocalPuzzleCutsceneModuleDefinition))
+                        {
+                            LocalPuzzleCutsceneModuleInstancer.PopuplateFromDefinition((LocalPuzzleCutsceneModuleDefinition)moduleConfiguration, InteractiveObjectType.transform);
+                        }
 //${addNewEntry}
                     }
                 }

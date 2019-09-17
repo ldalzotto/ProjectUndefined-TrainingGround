@@ -21,7 +21,7 @@ namespace RTPuzzle
 
         #region External Dependencies
         private ObjectSightModule AISightVision;
-        private BlockingCutscenePlayer BlockingCutscenePlayer;
+        private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private PuzzleEventsManager PuzzleEventsManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion

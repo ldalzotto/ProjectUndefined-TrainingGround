@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using GameConfigurationID;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -30,12 +31,17 @@ namespace RTPuzzle
 
         #region IDisarmObjectModuleDataRetrieval
         public Transform GetTransform() { return this.transform; }
-
         public PuzzleCutsceneGraph GetDisarmAnimation()
         {
             var disarmCutsceneID = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[this.DisarmObjectID].DisarmObjectAnimationGraph;
             return PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleCutsceneConfiguration()[disarmCutsceneID].PuzzleCutsceneGraph;
         }
+        public Dictionary<CutsceneParametersName, object> GetDisarmAnimationInputParameters(IInteractiveObjectTypeDataRetrieval animatedInteractiveObject)
+        {
+            return PuzzleCutsceneActionInput.Build_1_Town_StartTutorial_Speaker_DisarmAnimation(animatedInteractiveObject);
+        }
+
+        public IDisarmObjectModuleEvent GetIDisarmObjectModuleEvent() { return this; }
         #endregion
 
         private DisarmObjectInherentData disarmObjectInherentConfigurationData;
@@ -113,16 +119,25 @@ namespace RTPuzzle
 
         public override void OnInteractiveObjectDestroyed()
         {
-            foreach (var involvedAI in this.AIDisarmingTheObject)
+            var firstElement = this.AIDisarmingTheObject.First();
+            while (firstElement != null)
             {
-                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerExit(this, involvedAI);
+                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerExit(this, firstElement);
+                firstElement = null;
+                if (this.AIDisarmingTheObject.Count > 0)
+                {
+                    firstElement = this.AIDisarmingTheObject.First();
+                }
             }
+
             this.AIDisarmingTheObject.Clear();
         }
+
         #region External Event
         public void OnDisarmObjectStart(AIObjectDataRetriever InvolvedAI)
         {
             this.AIDisarmingTheObject.Add(InvolvedAI);
+
             this.associatedIInteractiveObjectTypeEvents.DisableModule(typeof(GrabObjectModule));
         }
 

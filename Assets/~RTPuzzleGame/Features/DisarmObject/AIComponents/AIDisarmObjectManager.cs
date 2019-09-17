@@ -44,8 +44,8 @@ namespace RTPuzzle
         {
             if (this.disarmingObject != null && this.disarmingObject == disarmingObject)
             {
-                this.disarmingObject = null;
                 this.SetIsDisarmingObject(false);
+                this.disarmingObject = null;
             }
         }
         #endregion
@@ -84,11 +84,11 @@ namespace RTPuzzle
         {
             if (this.isDisarmingObject && !value)
             {
-                this.disarmingObjectIDisarmObjectAIEventListener.AI_EVT_DisarmObject_End(this.AIObjectDataRetriever, (IDisarmObjectModuleEvent) this.disarmingObject);
+                this.disarmingObjectIDisarmObjectAIEventListener.AI_EVT_DisarmObject_End(this.AIObjectDataRetriever, this.disarmingObject);
             }
             else if (!this.isDisarmingObject && value)
             {
-                this.disarmingObjectIDisarmObjectAIEventListener.AI_EVT_DisarmObject_Start(this.AIObjectDataRetriever, (IDisarmObjectModuleEvent) this.disarmingObject);
+                this.disarmingObjectIDisarmObjectAIEventListener.AI_EVT_DisarmObject_Start(this.AIObjectDataRetriever, this.disarmingObject);
             }
             this.isDisarmingObject = value;
         }

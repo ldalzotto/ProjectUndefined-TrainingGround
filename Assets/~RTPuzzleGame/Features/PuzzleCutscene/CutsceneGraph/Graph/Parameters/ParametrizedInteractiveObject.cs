@@ -17,7 +17,7 @@ namespace RTPuzzle
         [CustomEnum()]
         public CutsceneParametersName InteractiveObjectParameterName;
 
-        public InteractiveObjectType Resolve(PuzzleCutsceneActionInput PuzzleCutsceneActionInput)
+        public IInteractiveObjectTypeDataRetrieval Resolve(PuzzleCutsceneActionInput PuzzleCutsceneActionInput)
         {
             if (this.InteractiveObjectParametrized)
             {

@@ -26,9 +26,9 @@ namespace RTPuzzle
         {
             var rotatingObject = this.RotatingInteractiveObjectParameter.Resolve((PuzzleCutsceneActionInput)ContextActionInput);
             var targetObject = this.TargetInteractiveObjectParameter.Resolve((PuzzleCutsceneActionInput)ContextActionInput);
-            Quaternion targetQuaterion = Quaternion.LookRotation(targetObject.transform.position - rotatingObject.transform.position, rotatingObject.transform.up);
-            targetQuaterion.eulerAngles = targetQuaterion.eulerAngles.Mul(rotatingObject.transform.up);
-            return new RotateActionRequiredData(rotatingObject.GetModule<InteractiveObjectCutsceneControllerModule>().InteractiveObjectCutsceneController, targetQuaterion);
+            Quaternion targetQuaterion = Quaternion.LookRotation(targetObject.GetTransform().position - rotatingObject.GetTransform().position, rotatingObject.GetTransform().up);
+            targetQuaterion.eulerAngles = targetQuaterion.eulerAngles.Mul(rotatingObject.GetTransform().up);
+            return new RotateActionRequiredData(rotatingObject.GetInteractiveObjectCutsceneControllerModule().InteractiveObjectCutsceneController, targetQuaterion);
         }
 
 #if UNITY_EDITOR

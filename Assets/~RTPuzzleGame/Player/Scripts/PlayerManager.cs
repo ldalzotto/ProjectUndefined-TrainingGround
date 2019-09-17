@@ -9,7 +9,7 @@ namespace RTPuzzle
 
         #region External Dependencies
         private PlayerActionManager PlayerActionManager;
-        private BlockingCutscenePlayer BlockingCutscenePlayer;
+        private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         #endregion
 
         #region Internal Components

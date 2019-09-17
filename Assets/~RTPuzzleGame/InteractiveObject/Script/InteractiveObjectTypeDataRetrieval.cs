@@ -10,12 +10,14 @@ namespace RTPuzzle
         IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent();
         ILineVisualFeedbackEvent GetILineVisualFeedbackEvent();
         IFovModuleDataRetrieval GetIFovModuleDataRetrieval();
+        ILocalPuzzleCutsceneModuleEvent GetILocalPuzzleCutsceneModuleEvent();
 
         //TODO use interfaces when feature is enabled
         ObjectRepelModule GetObjectRepelModule();
         AILogicColliderModule GetAILogicColliderModule();
         ObjectSightModule GetObjectSightModule();
         LevelCompletionTriggerModule GetLevelCompletionTriggerModule();
+        InteractiveObjectCutsceneControllerModule GetInteractiveObjectCutsceneControllerModule();
     }
 
     public partial class InteractiveObjectType : IInteractiveObjectTypeDataRetrieval
@@ -55,6 +57,16 @@ namespace RTPuzzle
         public LevelCompletionTriggerModule GetLevelCompletionTriggerModule()
         {
             return this.GetModule<LevelCompletionTriggerModule>();
+        }
+
+        public ILocalPuzzleCutsceneModuleEvent GetILocalPuzzleCutsceneModuleEvent()
+        {
+            return this.GetModule<LocalPuzzleCutsceneModule>();
+        }
+
+        public InteractiveObjectCutsceneControllerModule GetInteractiveObjectCutsceneControllerModule()
+        {
+            return this.GetModule<InteractiveObjectCutsceneControllerModule>();
         }
     }
 

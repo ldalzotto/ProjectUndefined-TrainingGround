@@ -33,7 +33,7 @@ namespace RTPuzzle
         private CameraMovementManager CameraMovementManager;
         private CircleFillBarRendererManager CircleFillBarRendererManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
-        private BlockingCutscenePlayer BlockingCutscenePlayer;
+        private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private TutorialManager TutorialManager;
         private InteractiveObjectSelectionManager InteractiveObjectSelectionManager;
 

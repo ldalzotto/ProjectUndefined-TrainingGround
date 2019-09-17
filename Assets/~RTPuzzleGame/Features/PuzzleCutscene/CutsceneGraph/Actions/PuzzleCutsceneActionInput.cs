@@ -16,7 +16,7 @@ namespace RTPuzzle
             this.interactiveObjectContainer = interactiveObjectContainer;
             this.graphParameters = PuzzleCutsceneGraphParameters;
         }
-        
+
         public static Dictionary<CutsceneParametersName, object> Build_GENERIC_AnimationWithFollowObject_Animation(Transform transformToFollow, GameObject followingGameObject, AnimationID animationPlayed)
         {
             return new Dictionary<CutsceneParametersName, object>()
@@ -27,11 +27,11 @@ namespace RTPuzzle
             };
         }
 
-        public static Dictionary<CutsceneParametersName, object> Build_1_Town_StartTutorial_Speaker_DisarmAnimation(InteractiveObjectType animatedInteractiveObject)
+        public static Dictionary<CutsceneParametersName, object> Build_1_Town_StartTutorial_Speaker_DisarmAnimation(IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval)
         {
             return new Dictionary<CutsceneParametersName, object>()
             {
-                { CutsceneParametersName.INTERACTIVE_OBJECT_0, animatedInteractiveObject },
+                { CutsceneParametersName.INTERACTIVE_OBJECT_0, IInteractiveObjectTypeDataRetrieval },
             };
         }
     }

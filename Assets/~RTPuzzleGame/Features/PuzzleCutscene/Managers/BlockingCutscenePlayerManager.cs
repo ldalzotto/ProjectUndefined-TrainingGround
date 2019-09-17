@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class BlockingCutscenePlayer : MonoBehaviour
+    public class BlockingCutscenePlayerManager : MonoBehaviour
     {
         private bool playing;
 

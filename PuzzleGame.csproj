@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -168,8 +167,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\CutsceneAction\CutsceneActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\GrabAction\GrabActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\LaunchProjectileAction\LaunchProjectileActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PuzzleCutsceneConfiguration\PuzzleCutsceneConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PuzzleCutsceneConfiguration\PuzzleCutsceneInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeObstacleListenerDefinition.cs" />
@@ -187,20 +184,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\TargetZoneConfiguration\TargetZoneInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\FollowTransformAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneActionInput.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleCutsceneAnimationAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Actions\PuzzleFaceTowardsAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\GlobalPlayers\BlockingCutscenePlayer.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\FollowTransformEdge.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleCutsceneAnimationEdge.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Edges\PuzzleFaceTowardsEdge.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\FollowTransformNode.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleCutsceneAnimationNode.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Nodes\PuzzleFaceTowardsNode.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Parameters\ParametrizedInteractiveObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\Parameters\ParametrizedObject.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Cutscene\Graph\PuzzleCutsceneGraph.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectIgnoredGroundObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Environment\Ground\Scripts\GroundEffectsManager\AbstractGroundEffectManager.cs" />
@@ -259,6 +242,26 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Lib\DottedLineContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Configuration\PuzzleCutsceneConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Configuration\PuzzleCutsceneInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Actions\FollowTransformAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Actions\PuzzleCutsceneActionInput.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Actions\PuzzleCutsceneAnimationAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Actions\PuzzleFaceTowardsAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Edges\FollowTransformEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Edges\PuzzleCutsceneAnimationEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Edges\PuzzleFaceTowardsEdge.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Nodes\FollowTransformNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Nodes\PuzzleCutsceneAnimationNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Nodes\PuzzleFaceTowardsNode.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Parameters\ParametrizedInteractiveObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\Parameters\ParametrizedObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Graph\PuzzleCutsceneGraph.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\ExposedInterfaces\ILocalPuzzleCutsceneModuleEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\InteractiveObjectDefinitions\LocalPuzzleCutsceneModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModuleInstancer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />

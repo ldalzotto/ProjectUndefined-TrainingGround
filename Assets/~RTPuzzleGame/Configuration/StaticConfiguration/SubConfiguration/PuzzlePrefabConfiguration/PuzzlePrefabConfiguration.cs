@@ -34,7 +34,7 @@ namespace RTPuzzle
         public ContextMarkVisualFeedbackModule BaseContextMarkVisualFeedbackModule;
         public LineVisualFeedbackModule BaseLineVisualFeedbackModule;
         public InteractiveObjectAnimationModule BaseInteractiveObjectAnimationModule;
-
+        public LocalPuzzleCutsceneModule BaseLocalPuzzleCutsceneModule;
 //${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
         [Header("AI")]
