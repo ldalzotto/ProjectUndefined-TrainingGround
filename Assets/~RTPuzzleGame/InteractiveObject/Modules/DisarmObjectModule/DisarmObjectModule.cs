@@ -26,11 +26,15 @@ namespace RTPuzzle
 
         public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
 
-        public void Init(ModelObjectModule ModelObjectModule, InteractiveObjectType AssociatedInteractiveObjectType, DisarmObjectInherentData DisarmObjectInherentConfigurationData)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-            this.ModelObjectModule = ModelObjectModule;
-            this.associatedInteractiveObjectType = AssociatedInteractiveObjectType;
-            this.disarmObjectInherentConfigurationData = DisarmObjectInherentConfigurationData;
+            this.disarmObjectInherentConfigurationData = interactiveObjectInitializationObject.DisarmObjectInherentData;
+            if(this.disarmObjectInherentConfigurationData == null)
+            {
+                this.disarmObjectInherentConfigurationData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[this.DisarmObjectID];
+            }
+
+            this.ModelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
 
             this.disarmObjectRange = this.GetComponent<SphereCollider>();
             this.disarmObjectRange.radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
@@ -41,6 +45,7 @@ namespace RTPuzzle
             this.progressbar.gameObject.SetActive(false);
 
             this.elapsedTime = 0f;
+            this.associatedInteractiveObjectType = interactiveObjectType;
         }
 
         #region Logical Conditions

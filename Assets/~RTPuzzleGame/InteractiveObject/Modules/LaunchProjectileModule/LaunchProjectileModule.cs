@@ -38,9 +38,15 @@ namespace RTPuzzle
             return this.LaunchProjectileMovementManager.GetTargetPosition();
         }
         #endregion
-        
-        public void Init(LaunchProjectileInherentData LaunchProjectileInherentData, BeziersControlPoints ProjectilePath, Transform baseObjectTransform)
+
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
+            LaunchProjectileInherentData LaunchProjectileInherentData = interactiveObjectInitializationObject.LaunchProjectileInherentData;
+            if (LaunchProjectileInherentData == null)
+            {
+                LaunchProjectileInherentData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.ProjectileConf()[this.LaunchProjectileID];
+            }
+
             #region External Dependencies
             var npcAiManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             this.LaunchProjectileEventManager = PuzzleGameSingletonInstances.LaunchProjectileEventManager;
@@ -58,12 +64,11 @@ namespace RTPuzzle
             this.LaunchProjectileGroundColliderTracker.Init(this);
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
-            baseObjectTransform.position = ProjectilePath.ResolvePoint(0.1f);
-            var projectilePathDeepCopy = ProjectilePath.Clone();
+            interactiveObjectType.transform.position = interactiveObjectInitializationObject.ProjectilePath.ResolvePoint(0.1f);
+            var projectilePathDeepCopy = interactiveObjectInitializationObject.ProjectilePath.Clone();
 
             this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, InteractiveObjectContainer, PuzzleGameConfigurationManager, PuzzleEventsManager, this);
-            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, baseObjectTransform, projectilePathDeepCopy);
-
+            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, interactiveObjectType.transform, projectilePathDeepCopy);
         }
 
         public void Tick(float d, float timeAttenuationFactor)

@@ -13,14 +13,14 @@ namespace RTPuzzle
         private DottedLineContainer DottedLineContainer;
         #endregion
 
-        public void Init(ModelObjectModule ModelObjectModule)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             this.DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
 
             //position calculation
-            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(ModelObjectModule);
+            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(interactiveObjectType.GetModule<ModelObjectModule>());
         }
 
         private Vector3 positionOffsetFromNPC;

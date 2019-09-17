@@ -36,7 +36,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
                     this.DoGenerateModule();
-                    this.UpdateInteractiveObjectModulesConfiguration();
                     if (this.isIdentified)
                     {
                         this.UpdateInteractiveObjectInitializationObject();
@@ -134,72 +133,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
     }
 
-    private void UpdateInteractiveObjectModulesConfiguration()
-    {
-        //Generate a new initialisation method
-        var interactiveObjectModulesInitializationOperationsClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModulesInitializationOperations));
-        if (!interactiveObjectModulesInitializationOperationsClassFile.Content.Contains("Initialize" + this.baseName + "Module"))
-        {
-            if (this.isIdentified)
-            {
-                interactiveObjectModulesInitializationOperationsClassFile.Content =
-                        interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
-                           CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
-                                             {"${baseName}", this.baseName }
-                         }));
-
-                File.WriteAllText(interactiveObjectModulesInitializationOperationsClassFile.Path, interactiveObjectModulesInitializationOperationsClassFile.Content);
-            }
-            else
-            {
-                interactiveObjectModulesInitializationOperationsClassFile.Content =
-                             interactiveObjectModulesInitializationOperationsClassFile.Content.Insert(interactiveObjectModulesInitializationOperationsClassFile.Content.IndexOf("//${addNewEntry}"),
-                                CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplatePath), new Dictionary<string, string>() {
-                                             {"${baseName}", this.baseName }
-                              }));
-
-                File.WriteAllText(interactiveObjectModulesInitializationOperationsClassFile.Path, interactiveObjectModulesInitializationOperationsClassFile.Content);
-            }
-
-        }
-
-        //Regenerate coniguration
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectTypeConfiguration).Namespace);
-        var moduleClass = new CodeTypeDeclaration();
-        moduleClass.Name = typeof(InteractiveObjectTypeConfiguration).Name;
-        moduleClass.IsClass = true;
-        moduleClass.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-
-        var initializationConfigurationField = new CodeMemberField();
-        initializationConfigurationField.Name = nameof(InteractiveObjectTypeConfiguration.InitializationConfiguration);
-        initializationConfigurationField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-        initializationConfigurationField.Type = new CodeTypeReference(InteractiveObjectTypeConfiguration.InitializationConfiguration.GetType());
-        var initializationConfigurationFieldDic = InteractiveObjectTypeConfiguration.InitializationConfiguration.ToList()
-           .ConvertAll(kv => new KeyValuePair<string, string>("typeof(" + kv.Key.FullName + ")", "InteractiveObjectModulesInitializationOperations.Initialize" + kv.Key.Name))
-             .Union(new List<KeyValuePair<string, string>>() {
-                  new KeyValuePair<string, string>("typeof(" + "RTPuzzle." + this.baseName + "Module)", "InteractiveObjectModulesInitializationOperations.Initialize" + this.baseName + "Module") })
-           .GroupBy(kv => kv.Key)
-           .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        initializationConfigurationField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<System.Type, System.Action<InteractiveObjectInitializationObject, InteractiveObjectType>>()" +
-            CodeGenerationHelper.FormatDictionaryToCodeSnippet(initializationConfigurationFieldDic));
-        moduleClass.Members.Add(initializationConfigurationField);
-
-        samples.Types.Add(moduleClass);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.INteractiveObjectStaticConfigurationPath + "/" + typeof(InteractiveObjectTypeConfiguration).Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-
-    }
-
     private void UpdateInteractiveObjectInitializationObject()
     {
         if (!typeof(InteractiveObjectInitializationObject).GetFields().ToList().ConvertAll(f => f.Name).Contains(this.baseName + "InherentData"))
@@ -229,7 +162,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
     private void UpdatePuzzleInteractiveObjectModulePrefabs()
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectTypeConfiguration).Namespace);
+        CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectType).Namespace);
         var puzzleInteractiveObjectModulePrefab = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(PuzzleInteractiveObjectModulePrefabs));
 
 

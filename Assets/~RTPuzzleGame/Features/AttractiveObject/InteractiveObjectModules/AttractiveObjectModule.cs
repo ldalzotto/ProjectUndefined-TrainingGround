@@ -51,14 +51,21 @@ namespace RTPuzzle
         public AttractiveObjectId AttractiveObjectId;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public void Init(AttractiveObjectInherentConfigurationData attractiveObjectInherentConfigurationData, ModelObjectModule ModelObjectModule, PuzzleEventsManager puzzleEventsManager)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-            this.modelObjectModule = ModelObjectModule;
+            AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData = interactiveObjectInitializationObject.AttractiveObjectInherentConfigurationData;
+
+            if (interactiveObjectInitializationObject.AttractiveObjectInherentConfigurationData == null)
+            {
+                AttractiveObjectInherentConfigurationData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.AttractiveObjectId];
+            } 
+
+            this.modelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
             this.sphereRange = GetComponentInChildren<RangeTypeObject>();
             this.sphereRange.Init(new RangeTypeObjectInitializer(), null);
             this.sphereRange.SetIsAttractiveObject();
-            this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(attractiveObjectInherentConfigurationData.EffectiveTime);
-            this.PuzzleEventsManager = puzzleEventsManager;
+            this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(AttractiveObjectInherentConfigurationData.EffectiveTime);
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
         }
 
         public void Tick(float d, float timeAttenuationFactor)

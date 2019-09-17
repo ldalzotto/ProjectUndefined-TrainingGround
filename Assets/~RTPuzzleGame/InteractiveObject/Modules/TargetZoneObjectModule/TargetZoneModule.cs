@@ -34,19 +34,19 @@ namespace RTPuzzle
         private bool hasInit;
         #endregion
 
-        public void Init(LevelCompletionTriggerModule levelCompletionTriggerModule)
-        {
-            var gameConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            this.Init(levelCompletionTriggerModule, gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]);
-        }
 
-        public void Init(LevelCompletionTriggerModule levelCompletionTriggerModule, TargetZoneInherentData targetZoneInherentData)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             if (!this.hasInit)
             {
-                this.levelCompletionTriggerModule = levelCompletionTriggerModule;
+                TargetZoneInherentData TargetZoneInherentData = null;
+                var gameConfiguration = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+                if (interactiveObjectInitializationObject.TargetZoneInherentData == null) { TargetZoneInherentData = gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]; }
+                else { TargetZoneInherentData = interactiveObjectInitializationObject.TargetZoneInherentData; }
+
+                this.levelCompletionTriggerModule = interactiveObjectType.GetModule<LevelCompletionTriggerModule>();
                 this.ResolveModuleDependencies();
-                this.zoneDistanceDetectionCollider.radius = targetZoneInherentData.AIDistanceDetection;
+                this.zoneDistanceDetectionCollider.radius = TargetZoneInherentData.AIDistanceDetection;
 
                 this.hasInit = true;
             }

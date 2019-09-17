@@ -37,14 +37,14 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(ModelObjectModule ModelObjectModule, AILogicColliderModule AILogicColliderModule, ObjectRepelModule ObjectRepelModule)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             #region Module Dependencies
-            this.ModelObjectModule = ModelObjectModule;
-            this.ObjectRepelModule = ObjectRepelModule;
+            this.ModelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
+            this.ObjectRepelModule = interactiveObjectType.GetModule<ObjectRepelModule>();
             #endregion
 
-            AILogicColliderModule.AddListener(this);
+            interactiveObjectType.GetModule<AILogicColliderModule>().AddListener(this);
 
             #region External Dependencies
             this.RangeEventsManager = PuzzleGameSingletonInstances.RangeEventsManager;

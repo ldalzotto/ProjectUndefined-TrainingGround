@@ -50,9 +50,15 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(GrabObjectInherentData GrabObjectInherentData, ModelObjectModule modelObjectModule)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-            this.modelObjectModule = modelObjectModule;
+            GrabObjectInherentData GrabObjectInherentData = interactiveObjectInitializationObject.GrabObjectInherentData;
+            if(GrabObjectInherentData == null)
+            {
+                GrabObjectInherentData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.GrabObjectConfiguration()[this.GrabObjectID];
+            }
+
+            this.modelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
 
             #region External Dependencies
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
@@ -64,8 +70,9 @@ namespace RTPuzzle
             this.grabObjectRange.radius = this.grabObjectInherentData.EffectRadius;
 
             this.grabObjectAction = new GrabObjectAction(new GrabActionInherentData(this.GrabObjectID, this.grabObjectInherentData.PlayerActionToIncrementOrAdd, SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG, 0f));
-        }
 
+        }
+        
         public virtual void Tick(float d, float timeAttenuationFactor)
         {
         }

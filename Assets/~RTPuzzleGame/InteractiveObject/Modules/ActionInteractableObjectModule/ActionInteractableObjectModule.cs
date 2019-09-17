@@ -37,17 +37,22 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init(ActionInteractableObjectInherentData ActionInteractableObjectInherentData, InteractiveObjectType baseInteractiveObjectType, 
-            PuzzleGameConfigurationManager puzzleGameConfigurationManager, PuzzleEventsManager PuzzleEventsManager, ModelObjectModule ModelObjectModule)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
+            ActionInteractableObjectInherentData ActionInteractableObjectInherentData = interactiveObjectInitializationObject.ActionInteractableObjectInherentData;
+            if (ActionInteractableObjectInherentData == null)
+            {
+                ActionInteractableObjectInherentData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.ActionInteractableObjectConfiguration()[this.ActionInteractableObjectID];
+            }
+
             this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
-            this.baseInteractiveObjectType = baseInteractiveObjectType;
-            this.PuzzleEventsManager = PuzzleEventsManager;
-            this.modelObjectModule = ModelObjectModule;
+            this.baseInteractiveObjectType = interactiveObjectType;
+            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.modelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
             var triggerCollider = GetComponent<SphereCollider>();
             triggerCollider.radius = this.ActionInteractableObjectInherentData.InteractionRange;
 
-            this.associatedPlayerAction = new CutsceneAction((CutsceneActionInherentData)puzzleGameConfigurationManager.PlayerActionConfiguration()[ActionInteractableObjectInherentData.PlayerActionId]);
+            this.associatedPlayerAction = new CutsceneAction((CutsceneActionInherentData)PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PlayerActionConfiguration()[ActionInteractableObjectInherentData.PlayerActionId]);
         }
 
         public void TickAlways(float d)

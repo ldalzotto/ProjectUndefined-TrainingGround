@@ -17,7 +17,7 @@ namespace RTPuzzle
             return this.RangeTypeObject.RangeType.GetCollider();
         }
 
-        public void Init()
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             this.ResolveModuleDependencies();
             this.RangeTypeObject.Init(null, eventListenersFromExterior: new List<RangeTypeObjectEventListener>() { this });

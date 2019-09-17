@@ -23,9 +23,9 @@ namespace RTPuzzle
 
         private ObjectRepelTypeAnimationComponent objectRepelTypeAnimationComponent = new ObjectRepelTypeAnimationComponent();
 
-        public void Init(ModelObjectModule ModelObjectModule)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-            this.ModelObjectModule = ModelObjectModule;
+            this.ModelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
             this.objectRepelCollider = GetComponent<Collider>();
         }
 

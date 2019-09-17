@@ -151,9 +151,9 @@ namespace RTPuzzle
 
             this.PopulateModules(exclusiveInitialEnabledModules);
 
-            foreach (var initializationStatement in InteractiveObjectTypeConfiguration.InitializationConfiguration.Values)
+            foreach (var enabledModule in this.enabledModules.Values)
             {
-                initializationStatement.Invoke(InteractiveObjectInitializationObject, this);
+                enabledModule.Init(InteractiveObjectInitializationObject, this);
             }
 
             this.interactiveObjectContainer.OnInteractiveObjectAdded(this);
@@ -233,7 +233,7 @@ namespace RTPuzzle
                 this.disabledModules.Remove(moduleType);
                 this.enabledModules[moduleType] = m;
                 this.interactiveObjectContainer.OnModuleEnabled(m);
-                InteractiveObjectTypeConfiguration.InitializationConfiguration[moduleType].Invoke(InteractiveObjectInitializationObject, this);
+                m.Init(InteractiveObjectInitializationObject, this);
             });
 
         }

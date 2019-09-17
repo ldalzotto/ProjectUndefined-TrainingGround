@@ -25,10 +25,10 @@ namespace RTPuzzle
         #region Data Retrieval
         public FovManager FovManager { get => fovManager; }
         #endregion
-        
-        public void Init(IRenderBoundRetrievable IRenderBoundRetrievable, AIObjectType npcAiManagerRef)
+
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-            this.IRenderBoundRetrievable = IRenderBoundRetrievable;
+            this.IRenderBoundRetrievable = interactiveObjectType.GetModule<ModelObjectModule>();
 
             #region External Dependencies
             this.FovInteractionRingContainer = PuzzleGameSingletonInstances.NpcInteractionRingContainer;
@@ -40,7 +40,7 @@ namespace RTPuzzle
 
             this.FovInteractionRingContainer.OnNpcInteractionRingCreated(npcInteractionRingType);
 
-            this.fovManager = new FovManager(npcAiManagerRef.GetAgent(), this.OnFOVChanged);
+            this.fovManager = new FovManager(interactiveObjectInitializationObject.ParentAIObjectTypeReference.GetAgent(), this.OnFOVChanged);
 
             this.ringPositionOffset = new Vector3(0, this.IRenderBoundRetrievable.GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
         }

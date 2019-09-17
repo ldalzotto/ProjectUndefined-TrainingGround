@@ -7,6 +7,8 @@ namespace RTPuzzle
         public virtual void OnInteractiveObjectDestroyed() { }
 
         public virtual void OnModuleDisabled() { }
+
+        public abstract void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType);
     }
     
 }

@@ -22,9 +22,9 @@ namespace RTPuzzle
 
         internal InteractiveObjectCutsceneController InteractiveObjectCutsceneController { get => interactiveObjectCutsceneController; }
 
-        public void Init(ModelObjectModule ModelObjectModule, InteractiveObjectInitializationObject InteractiveObjectInitializationObject)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
-            this.interactiveObjectCutsceneController = new InteractiveObjectCutsceneController(ModelObjectModule, InteractiveObjectInitializationObject);
+            this.interactiveObjectCutsceneController = new InteractiveObjectCutsceneController(interactiveObjectType.GetModule<ModelObjectModule>(), interactiveObjectInitializationObject);
         }
 
         public void Tick(float d, float timeAttenuationFactor)

@@ -30,7 +30,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Init()
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
         {
             this.AverageModeBounds = BoundsHelper.GetAverageRendererBounds(this.GetComponentsInChildren<Renderer>());
             this.animator = GetComponent<Animator>();
