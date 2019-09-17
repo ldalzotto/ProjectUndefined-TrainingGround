@@ -32,7 +32,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.AIObjectDataRetirever = interactiveObjectInitializationObject.ParentAIObjectTypeReference;
             this.associatedCollider = GetComponent<BoxCollider>();

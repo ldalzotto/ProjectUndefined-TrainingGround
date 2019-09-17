@@ -39,7 +39,8 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             LaunchProjectileInherentData LaunchProjectileInherentData = interactiveObjectInitializationObject.LaunchProjectileInherentData;
             if (LaunchProjectileInherentData == null)
@@ -64,11 +65,11 @@ namespace RTPuzzle
             this.LaunchProjectileGroundColliderTracker.Init(this);
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
-            interactiveObjectType.transform.position = interactiveObjectInitializationObject.ProjectilePath.ResolvePoint(0.1f);
+            IInteractiveObjectTypeDataRetrieval.GetTransform().position = interactiveObjectInitializationObject.ProjectilePath.ResolvePoint(0.1f);
             var projectilePathDeepCopy = interactiveObjectInitializationObject.ProjectilePath.Clone();
 
             this.SphereCollisionManager = new SphereCollisionManager(this.launchProjectileInherentData, npcAiManagerContainer, InteractiveObjectContainer, PuzzleGameConfigurationManager, PuzzleEventsManager, this);
-            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, interactiveObjectType.transform, projectilePathDeepCopy);
+            this.LaunchProjectileMovementManager = new LaunchProjectileMovementManager(this.launchProjectileInherentData, IInteractiveObjectTypeDataRetrieval.GetTransform(), projectilePathDeepCopy);
         }
 
         public void Tick(float d, float timeAttenuationFactor)

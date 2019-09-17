@@ -50,15 +50,15 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             GrabObjectInherentData GrabObjectInherentData = interactiveObjectInitializationObject.GrabObjectInherentData;
-            if(GrabObjectInherentData == null)
+            if (GrabObjectInherentData == null)
             {
                 GrabObjectInherentData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.GrabObjectConfiguration()[this.GrabObjectID];
             }
 
-            this.modelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
+            this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
 
             #region External Dependencies
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;

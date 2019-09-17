@@ -34,8 +34,8 @@ namespace RTPuzzle
         private bool hasInit;
         #endregion
 
-
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             if (!this.hasInit)
             {
@@ -44,7 +44,7 @@ namespace RTPuzzle
                 if (interactiveObjectInitializationObject.TargetZoneInherentData == null) { TargetZoneInherentData = gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]; }
                 else { TargetZoneInherentData = interactiveObjectInitializationObject.TargetZoneInherentData; }
 
-                this.levelCompletionTriggerModule = interactiveObjectType.GetModule<LevelCompletionTriggerModule>();
+                this.levelCompletionTriggerModule = IInteractiveObjectTypeDataRetrieval.GetLevelCompletionTriggerModule();
                 this.ResolveModuleDependencies();
                 this.zoneDistanceDetectionCollider.radius = TargetZoneInherentData.AIDistanceDetection;
 

@@ -12,7 +12,7 @@ namespace RTPuzzle
 
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
-        private InteractiveObjectType associatedInteractiveObjectType;
+        private IInteractiveObjectTypeEvents associatedIInteractiveObjectTypeEvents;
         #endregion
 
         #region Internal Dependencies
@@ -26,15 +26,16 @@ namespace RTPuzzle
 
         public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.disarmObjectInherentConfigurationData = interactiveObjectInitializationObject.DisarmObjectInherentData;
-            if(this.disarmObjectInherentConfigurationData == null)
+            if (this.disarmObjectInherentConfigurationData == null)
             {
                 this.disarmObjectInherentConfigurationData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[this.DisarmObjectID];
             }
 
-            this.ModelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
+            this.ModelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
 
             this.disarmObjectRange = this.GetComponent<SphereCollider>();
             this.disarmObjectRange.radius = this.disarmObjectInherentConfigurationData.DisarmInteractionRange;
@@ -45,7 +46,7 @@ namespace RTPuzzle
             this.progressbar.gameObject.SetActive(false);
 
             this.elapsedTime = 0f;
-            this.associatedInteractiveObjectType = interactiveObjectType;
+            this.associatedIInteractiveObjectTypeEvents = IInteractiveObjectTypeEvents;
         }
 
         #region Logical Conditions
@@ -68,7 +69,6 @@ namespace RTPuzzle
         {
             return this.disarmObjectRange.radius;
         }
-        public InteractiveObjectType AssociatedInteractiveObjectType { get => associatedInteractiveObjectType; }
         #endregion
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -94,12 +94,12 @@ namespace RTPuzzle
         }
         public void OnDisarmObjectStart()
         {
-            this.associatedInteractiveObjectType.DisableModule(typeof(GrabObjectModule));
+            this.associatedIInteractiveObjectTypeEvents.DisableModule(typeof(GrabObjectModule));
         }
 
         public void OnDisarmObjectEnd()
         {
-            this.associatedInteractiveObjectType.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
+            this.associatedIInteractiveObjectTypeEvents.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
         }
         #endregion
 

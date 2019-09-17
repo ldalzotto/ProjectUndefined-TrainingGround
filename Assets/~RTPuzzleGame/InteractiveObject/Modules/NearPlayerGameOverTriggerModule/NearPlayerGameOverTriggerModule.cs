@@ -29,9 +29,10 @@ namespace RTPuzzle
         private InteractiveObjectType InteractiveObjectTypeRef;
         private NearPlayerGameOverTriggerInherentData NearPlayerGameOverTriggerInherentData;
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            this.AISightVision = interactiveObjectType.GetModule<ObjectSightModule>();
+            this.AISightVision = IInteractiveObjectTypeDataRetrieval.GetObjectSightModule();
             this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -40,7 +41,7 @@ namespace RTPuzzle
 
             this.GetComponent<SphereCollider>().radius = this.NearPlayerGameOverTriggerInherentData.NearPlayerDetectionRadius;
 
-            this.InteractiveObjectTypeRef = interactiveObjectType;
+            this.InteractiveObjectTypeRef = (InteractiveObjectType)IInteractiveObjectTypeDataRetrieval;
         }
 
         private void OnTriggerEnter(Collider other)

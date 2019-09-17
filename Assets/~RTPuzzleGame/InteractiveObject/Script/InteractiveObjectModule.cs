@@ -8,7 +8,8 @@ namespace RTPuzzle
 
         public virtual void OnModuleDisabled() { }
 
-        public abstract void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType);
+        public abstract void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents);
     }
     
 }

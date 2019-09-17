@@ -17,15 +17,16 @@ namespace RTPuzzle
 
         private Vector3 fallbackPositionOffset;
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.DeleteOperation();
             this.visualFeedbackMark = null;
-            this.IFovModuleDataRetrieval = interactiveObjectType.GetModule<FovModule>();
+            this.IFovModuleDataRetrieval = IInteractiveObjectTypeDataRetrieval.GetIFovModuleDataRetrieval();
             this.PuzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
 
-            this.fallbackPositionOffset = new Vector3(0, interactiveObjectType.GetModule<ModelObjectModule>().GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
+            this.fallbackPositionOffset = new Vector3(0, IInteractiveObjectTypeDataRetrieval.GetModelObjectModule().GetAverageModelBoundLocalSpace().Bounds.max.y, 0);
         }
 
         private ContextMarkVisualFeedbackMarkType visualFeedbackMark;

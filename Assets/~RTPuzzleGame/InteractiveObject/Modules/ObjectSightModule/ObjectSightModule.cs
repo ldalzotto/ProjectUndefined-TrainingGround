@@ -14,7 +14,8 @@ namespace RTPuzzle
 
         public RangeTypeObject SightVisionRange { get => sightVisionRange; }
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.ResolveInternalDependencies();
             this.AISightVisionTargetTracker = new AISightVisionTargetTracker(this);

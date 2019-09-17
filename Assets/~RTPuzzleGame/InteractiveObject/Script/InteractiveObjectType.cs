@@ -11,14 +11,13 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public interface IInteractiveObjectTypeDataRetrieval
+    public interface IInteractiveObjectTypeEvents
     {
-        ModelObjectModule GetModelObjectModule();
-        IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent();
-        ILineVisualFeedbackEvent GetILineVisualFeedbackEvent();
+        void EnableModule(Type moduleType, InteractiveObjectInitializationObject InteractiveObjectInitializationObject);
+        void DisableModule(Type moduleType);
     }
-
-    public class InteractiveObjectType : MonoBehaviour, IInteractiveObjectTypeDataRetrieval
+    
+    public partial class InteractiveObjectType : MonoBehaviour, IInteractiveObjectTypeEvents
     {
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
@@ -92,22 +91,7 @@ namespace RTPuzzle
             return foundModule;
         }
         #endregion
-
-        #region IInteractiveObjectTypeDataRetrieval
-        public ModelObjectModule GetModelObjectModule()
-        {
-            return this.GetModule<ModelObjectModule>();
-        }
-        public IContextMarkVisualFeedbackEvent GetIContextMarkVisualFeedbackEvent()
-        {
-            return this.GetModule<ContextMarkVisualFeedbackModule>();
-        }
-        public ILineVisualFeedbackEvent GetILineVisualFeedbackEvent()
-        {
-            return this.GetModule<LineVisualFeedbackModule>();
-        }
-        #endregion
-
+        
         public static InteractiveObjectType Instantiate(InteractiveObjectTypeDefinitionInherentData InteractiveObjectTypeDefinitionInherentData,
                         InteractiveObjectInitializationObject InteractiveObjectInitializationObject, PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration,
                         Transform parent = null,
@@ -153,7 +137,7 @@ namespace RTPuzzle
 
             foreach (var enabledModule in this.enabledModules.Values)
             {
-                enabledModule.Init(InteractiveObjectInitializationObject, this);
+                enabledModule.Init(InteractiveObjectInitializationObject, this, this);
             }
 
             this.interactiveObjectContainer.OnInteractiveObjectAdded(this);
@@ -233,7 +217,7 @@ namespace RTPuzzle
                 this.disabledModules.Remove(moduleType);
                 this.enabledModules[moduleType] = m;
                 this.interactiveObjectContainer.OnModuleEnabled(m);
-                m.Init(InteractiveObjectInitializationObject, this);
+                m.Init(InteractiveObjectInitializationObject, this, this);
             });
 
         }

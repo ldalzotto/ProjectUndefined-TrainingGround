@@ -17,7 +17,7 @@ namespace RTPuzzle
         private PuzzleEventsManager PuzzleEventsManager;
         #endregion
 
-        private InteractiveObjectType baseInteractiveObjectType;
+        private IInteractiveObjectTypeEvents associatedIInteractiveObjectTypeEvents;
 
         private RTPPlayerAction associatedPlayerAction;
         private ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
@@ -37,7 +37,8 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+                IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             ActionInteractableObjectInherentData ActionInteractableObjectInherentData = interactiveObjectInitializationObject.ActionInteractableObjectInherentData;
             if (ActionInteractableObjectInherentData == null)
@@ -46,9 +47,9 @@ namespace RTPuzzle
             }
 
             this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
-            this.baseInteractiveObjectType = interactiveObjectType;
+            this.associatedIInteractiveObjectTypeEvents = IInteractiveObjectTypeEvents;
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
-            this.modelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
+            this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
             var triggerCollider = GetComponent<SphereCollider>();
             triggerCollider.radius = this.ActionInteractableObjectInherentData.InteractionRange;
 
@@ -59,7 +60,7 @@ namespace RTPuzzle
         {
             if (!this.associatedPlayerAction.HasStillSomeExecutionAmount())
             {
-                this.baseInteractiveObjectType.DisableModule(this.GetType());
+                this.associatedIInteractiveObjectTypeEvents.DisableModule(this.GetType());
             }
         }
 

@@ -9,7 +9,6 @@
 //------------------------------------------------------------------------------
 
 using CoreGame;
-using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -17,14 +16,15 @@ namespace RTPuzzle
 
     public class InteractiveObjectCutsceneControllerModule : RTPuzzle.InteractiveObjectModule
     {
-        
+
         private InteractiveObjectCutsceneController interactiveObjectCutsceneController;
 
         internal InteractiveObjectCutsceneController InteractiveObjectCutsceneController { get => interactiveObjectCutsceneController; }
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            this.interactiveObjectCutsceneController = new InteractiveObjectCutsceneController(interactiveObjectType.GetModule<ModelObjectModule>(), interactiveObjectInitializationObject);
+            this.interactiveObjectCutsceneController = new InteractiveObjectCutsceneController(IInteractiveObjectTypeDataRetrieval.GetModelObjectModule(), interactiveObjectInitializationObject);
         }
 
         public void Tick(float d, float timeAttenuationFactor)

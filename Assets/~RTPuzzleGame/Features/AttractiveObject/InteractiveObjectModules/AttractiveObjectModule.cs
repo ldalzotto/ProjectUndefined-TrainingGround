@@ -51,16 +51,17 @@ namespace RTPuzzle
         public AttractiveObjectId AttractiveObjectId;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, InteractiveObjectType interactiveObjectType)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             AttractiveObjectInherentConfigurationData AttractiveObjectInherentConfigurationData = interactiveObjectInitializationObject.AttractiveObjectInherentConfigurationData;
 
             if (interactiveObjectInitializationObject.AttractiveObjectInherentConfigurationData == null)
             {
                 AttractiveObjectInherentConfigurationData = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[this.AttractiveObjectId];
-            } 
+            }
 
-            this.modelObjectModule = interactiveObjectType.GetModule<ModelObjectModule>();
+            this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
             this.sphereRange = GetComponentInChildren<RangeTypeObject>();
             this.sphereRange.Init(new RangeTypeObjectInitializer(), null);
             this.sphereRange.SetIsAttractiveObject();
