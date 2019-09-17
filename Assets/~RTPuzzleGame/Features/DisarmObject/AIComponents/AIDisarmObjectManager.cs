@@ -20,11 +20,11 @@ namespace RTPuzzle
         private bool isDisarmingObject;
 
         #region External Dependencies
-        private DisarmObjectModule disarmingObject;
-        private PuzzleEventsManager PuzzleEventsManager;
+        private IDisarmObjectModuleDataRetrieval disarmingObject;
+        private IDisarmObjectAIEventListener disarmingObjectIDisarmObjectAIEventListener;
         #endregion
-
-        private AIObjectID aiID;
+        
+        private AIObjectDataRetriever AIObjectDataRetriever;
         private NavMeshAgent agent;
 
         public AIDisarmObjectManager(AIDisarmObjectComponent associatedAIComponent) : base(associatedAIComponent)
@@ -32,15 +32,15 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public override void OnDisarmingObjectStart(DisarmObjectModule disarmingObject)
+        public override void OnDisarmingObjectStart(IDisarmObjectModuleDataRetrieval disarmingObject)
         {
             this.disarmingObject = disarmingObject;
             //Make agent to look at object
-            this.agent.transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(this.disarmingObject.transform.position - this.agent.transform.position, this.agent.transform.up));
+            this.agent.transform.rotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(this.disarmingObject.GetTransform().position - this.agent.transform.position, this.agent.transform.up));
             this.SetIsDisarmingObject(true);
         }
 
-        public override void OnDisarmingObjectExit(DisarmObjectModule disarmingObject)
+        public override void OnDisarmingObjectExit(IDisarmObjectModuleDataRetrieval disarmingObject)
         {
             if (this.disarmingObject != null && this.disarmingObject == disarmingObject)
             {
@@ -53,8 +53,8 @@ namespace RTPuzzle
         public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.agent = AIBheaviorBuildInputData.selfAgent;
-            this.aiID = AIBheaviorBuildInputData.aiID;
-            this.PuzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
+            this.AIObjectDataRetriever = AIBheaviorBuildInputData.AIObjectDataRetriever();
+            this.disarmingObjectIDisarmObjectAIEventListener = AIBheaviorBuildInputData.PuzzleEventsManager;
         }
 
         public override void BeforeManagersUpdate(float d, float timeAttenuationFactor)
@@ -68,11 +68,6 @@ namespace RTPuzzle
 
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
-            this.disarmingObject.IncreaseTimeElapsedBy(d * timeAttenuationFactor);
-            if (this.disarmingObject.IsAskingToBeDestroyed())
-            {
-                this.OnDisarmingObjectExit(this.disarmingObject);
-            }
             //don't move while disarming
         }
 
@@ -89,11 +84,11 @@ namespace RTPuzzle
         {
             if (this.isDisarmingObject && !value)
             {
-                this.PuzzleEventsManager.PZ_EVT_DisarmObject_End(this.aiID, this.disarmingObject);
+                this.disarmingObjectIDisarmObjectAIEventListener.AI_EVT_DisarmObject_End(this.AIObjectDataRetriever, (IDisarmObjectModuleEvent) this.disarmingObject);
             }
             else if (!this.isDisarmingObject && value)
             {
-                this.PuzzleEventsManager.PZ_EVT_DisarmObject_Start(this.aiID, this.disarmingObject);
+                this.disarmingObjectIDisarmObjectAIEventListener.AI_EVT_DisarmObject_Start(this.AIObjectDataRetriever, (IDisarmObjectModuleEvent) this.disarmingObject);
             }
             this.isDisarmingObject = value;
         }

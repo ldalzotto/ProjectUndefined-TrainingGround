@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class DisarmObjectModule : InteractiveObjectModule
+
+    public class DisarmObjectModule : InteractiveObjectModule, IDisarmObjectModuleDataRetrieval, IDisarmObjectModuleEvent
     {
         [CustomEnum()]
         public DisarmObjectID DisarmObjectID;
@@ -19,9 +20,27 @@ namespace RTPuzzle
         private CircleFillBarType progressbar;
         #endregion
 
+        #region Events Listener
+        private IDisarmObjectModuleEventListener IAIDisarmObjectEventListener;
+        #endregion
+
+        #region State
+        private HashSet<AIObjectDataRetriever> AIDisarmingTheObject;
+        #endregion
+
+        #region IDisarmObjectModuleDataRetrieval
+        public Transform GetTransform() { return this.transform; }
+
+        public PuzzleCutsceneGraph GetDisarmAnimation()
+        {
+            var disarmCutsceneID = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.DisarmObjectsConfiguration()[this.DisarmObjectID].DisarmObjectAnimationGraph;
+            return PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.PuzzleCutsceneConfiguration()[disarmCutsceneID].PuzzleCutsceneGraph;
+        }
+        #endregion
+
         private DisarmObjectInherentData disarmObjectInherentConfigurationData;
         private SphereCollider disarmObjectRange;
-        
+
         private float elapsedTime;
 
         public DisarmObjectInherentData DisarmObjectInherentConfigurationData { get => disarmObjectInherentConfigurationData; }
@@ -47,6 +66,8 @@ namespace RTPuzzle
 
             this.elapsedTime = 0f;
             this.associatedIInteractiveObjectTypeEvents = IInteractiveObjectTypeEvents;
+            this.IAIDisarmObjectEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.AIDisarmingTheObject = new HashSet<AIObjectDataRetriever>();
         }
 
         #region Logical Conditions
@@ -71,9 +92,6 @@ namespace RTPuzzle
         }
         #endregion
 
-        public void Tick(float d, float timeAttenuationFactor)
-        { }
-
         public void TickAlways(float d)
         {
             if (this.progressbar.gameObject.activeSelf)
@@ -82,24 +100,39 @@ namespace RTPuzzle
             }
         }
 
-        #region External Event
-        public void IncreaseTimeElapsedBy(float increasedTime)
+        public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
         {
-            this.elapsedTime += increasedTime;
-
-            if (this.GetDisarmPercentage01() > 0 && !this.progressbar.gameObject.activeSelf)
+            if (this.AIDisarmingTheObject.Count > 0)
             {
-                CircleFillBarType.EnableInstace(this.progressbar);
+                for (var i = 0; i < this.AIDisarmingTheObject.Count; i++)
+                {
+                    this.IncreaseTimeElapsedBy(d * timeAttenuationFactor);
+                }
             }
         }
-        public void OnDisarmObjectStart()
+
+        public override void OnInteractiveObjectDestroyed()
         {
+            foreach (var involvedAI in this.AIDisarmingTheObject)
+            {
+                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerExit(this, involvedAI);
+            }
+            this.AIDisarmingTheObject.Clear();
+        }
+        #region External Event
+        public void OnDisarmObjectStart(AIObjectDataRetriever InvolvedAI)
+        {
+            this.AIDisarmingTheObject.Add(InvolvedAI);
             this.associatedIInteractiveObjectTypeEvents.DisableModule(typeof(GrabObjectModule));
         }
 
-        public void OnDisarmObjectEnd()
+        public void OnDisarmObjectEnd(AIObjectDataRetriever InvolvedAI)
         {
-            this.associatedIInteractiveObjectTypeEvents.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
+            this.AIDisarmingTheObject.Remove(InvolvedAI);
+            if (this.AIDisarmingTheObject.Count == 0)
+            {
+                this.associatedIInteractiveObjectTypeEvents.EnableModule(typeof(GrabObjectModule), new InteractiveObjectInitializationObject());
+            }
         }
         #endregion
 
@@ -108,8 +141,8 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsAI)
             {
-                var aiObjectType = AILogicColliderModule.FromCollisionType(collisionType);
-                aiObjectType.OnDisarmObjectTriggerEnter(this);
+                var AIObjectDataRetriever = AILogicColliderModule.FromCollisionType(collisionType);
+                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerEnter(this, AIObjectDataRetriever);
             }
         }
 
@@ -118,16 +151,27 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsAI)
             {
-                var aiObjectType = AILogicColliderModule.FromCollisionType(collisionType);
-                aiObjectType.OnDisarmObjectTriggerExit(this);
+                var AIObjectDataRetriever = AILogicColliderModule.FromCollisionType(collisionType);
+                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerExit(this, AIObjectDataRetriever);
+            }
+        }
+
+        private void IncreaseTimeElapsedBy(float increasedTime)
+        {
+            this.elapsedTime += increasedTime;
+
+            if (this.GetDisarmPercentage01() > 0 && !this.progressbar.gameObject.activeSelf)
+            {
+                CircleFillBarType.EnableInstace(this.progressbar);
             }
         }
 
         public static class DisarmObjectModuleInstancer
         {
-            public static void PopuplateFromDefinition(DisarmObjectModule disarmObjectModule, DisarmObjectModuleDefinition disarmObjectModuleDefinition)
+            public static void PopuplateFromDefinition(DisarmObjectModuleDefinition DisarmObjectModuleDefinition, Transform parent)
             {
-                disarmObjectModule.DisarmObjectID = disarmObjectModuleDefinition.DisarmObjectID;
+                var DisarmObjectModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseDisarmObjectModule, parent);
+                DisarmObjectModule.DisarmObjectID = DisarmObjectModuleDefinition.DisarmObjectID;
             }
         }
     }

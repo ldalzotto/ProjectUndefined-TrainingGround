@@ -86,38 +86,6 @@ namespace RTPuzzle
             return this.AttractiveObjectLifetimeTimer.IsTimeOver();
         }
         #endregion
-
-        public static class AttractiveObjectModuleInstancer
-        {
-            public static void PopuplateFromDefinition(AttractiveObjectModule attractiveObjectModule, AttractiveObjectModuleDefinition attractiveObjectModuleDefinition,
-                        PuzzlePrefabConfiguration puzzlePrefabConfiguration, PuzzleGameConfiguration puzzleGameConfiguration)
-            {
-                attractiveObjectModule.AttractiveObjectId = attractiveObjectModuleDefinition.AttractiveObjectId;
-                var RangeTypeObject = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseRangeTypeObject, attractiveObjectModule.transform);
-                new RangeTypeObjectDefinitionInherentData()
-                {
-                    RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
-                    {
-                        { typeof(RangeTypeDefinition),  new RangeTypeDefinition()
-                            {
-                                RangeTypeID = RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
-                                RangeShapeConfiguration = new SphereRangeShapeConfiguration()
-                                {
-                                    Radius = puzzleGameConfiguration.AttractiveObjectConfiguration.ConfigurationInherentData[attractiveObjectModule.AttractiveObjectId].EffectRange
-                                }
-                            }
-                        },
-                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
-                    },
-                    RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
-                    {
-                        {typeof(RangeTypeDefinition), true },
-                        {typeof(RangeObstacleListenerDefinition), true }
-                    }
-                }.DefineRangeTypeObject(RangeTypeObject, puzzlePrefabConfiguration);
-                RangeTypeObject.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
-            }
-        }
     }
 
     class AttractiveObjectLifetimeTimer

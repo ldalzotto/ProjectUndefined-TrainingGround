@@ -8,20 +8,16 @@ namespace RTPuzzle
 
         private PlayerAnimationDataManager NPCPAnimationDataManager;
         private InteractiveObjectType InteractiveObjectType;
-        private PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration;
-        private AnimationConfiguration AnimationConfiguration;
         private Animator animator;
         private InteractiveObjectContainer InteractiveObjectContainer;
 
         private SequencedActionPlayer CurrentAnimationPlayed;
 
-        public AIAnimationManager(Animator animator, InteractiveObjectType InteractiveObjectType, AnimationConfiguration AnimationConfiguration, PuzzleCutsceneConfiguration PuzzleCutsceneConfiguration,
+        public AIAnimationManager(Animator animator, InteractiveObjectType InteractiveObjectType, AnimationConfiguration AnimationConfiguration,
             InteractiveObjectContainer InteractiveObjectContainer)
         {
             this.animator = animator;
             this.InteractiveObjectType = InteractiveObjectType;
-            this.PuzzleCutsceneConfiguration = PuzzleCutsceneConfiguration;
-            this.AnimationConfiguration = AnimationConfiguration;
             this.InteractiveObjectContainer = InteractiveObjectContainer;
 
             this.NPCPAnimationDataManager = new PlayerAnimationDataManager(animator);
@@ -37,9 +33,9 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnDisarmObjectStart(DisarmObjectModule disarmObjectModule)
+        public void OnDisarmObjectStart(IDisarmObjectModuleDataRetrieval disarmObjectModule)
         {
-            this.CurrentAnimationPlayed = new SequencedActionPlayer(this.PuzzleCutsceneConfiguration.ConfigurationInherentData[disarmObjectModule.DisarmObjectInherentConfigurationData.DisarmObjectAnimationGraph].PuzzleCutsceneGraph.GetRootActions(),
+            this.CurrentAnimationPlayed = new SequencedActionPlayer(disarmObjectModule.GetDisarmAnimation().GetRootActions(),
                     new PuzzleCutsceneActionInput(this.InteractiveObjectContainer, PuzzleCutsceneActionInput.Build_1_Town_StartTutorial_Speaker_DisarmAnimation(this.InteractiveObjectType)));
             this.CurrentAnimationPlayed.Play();
         }

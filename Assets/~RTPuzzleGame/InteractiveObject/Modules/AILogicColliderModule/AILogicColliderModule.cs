@@ -98,7 +98,7 @@ namespace RTPuzzle
             }
         }
 
-        public static AIObjectType FromCollisionType(CollisionType collisionType)
+        public static AIObjectDataRetriever FromCollisionType(CollisionType collisionType)
         {
             if (collisionType == null) { return null; }
             var AILogicColliderModule = collisionType.GetComponent<AILogicColliderModule>();

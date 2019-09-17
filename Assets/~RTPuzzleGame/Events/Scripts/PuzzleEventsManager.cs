@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectModuleEventListener, IDisarmObjectAIEventListener
     {
         #region External Dependencies
         private AIManagerContainer NPCAIManagerContainer;
@@ -87,7 +87,7 @@ namespace RTPuzzle
             {
                 ILineVisualFeedbackEvent.DestroyLine();
             }
-            
+
             var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
             if (IContextMarkVisualFeedbackEvent != null)
             {
@@ -193,16 +193,27 @@ namespace RTPuzzle
         #endregion
 
         #region Disarm object event
-        public void PZ_EVT_DisarmObject_Start(AIObjectID aiID, DisarmObjectModule disarmObjectModule)
+
+        public void PZ_DisarmObject_TriggerEnter(IDisarmObjectModuleDataRetrieval IDisarmObjectModuleDataRetrieval, AIObjectDataRetriever disarmObjectModule)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectStart(disarmObjectModule);
-            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectStart());
+            disarmObjectModule.GetAIBehavior().ReceiveEvent(new DisarmingObjectEnterAIbehaviorEvent(IDisarmObjectModuleDataRetrieval));
         }
 
-        public void PZ_EVT_DisarmObject_End(AIObjectID aiID, DisarmObjectModule disarmObjectModule)
+        public void PZ_DisarmObject_TriggerExit(IDisarmObjectModuleDataRetrieval IDisarmObjectModuleDataRetrieval, AIObjectDataRetriever disarmObjectModule)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnDisarmObjectEnd();
-            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectEnd());
+            disarmObjectModule.GetAIBehavior().ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(IDisarmObjectModuleDataRetrieval));
+        }
+
+        public void AI_EVT_DisarmObject_Start(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleEvent disarmObjectModule)
+        {
+            AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectStart((IDisarmObjectModuleDataRetrieval)disarmObjectModule));
+            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectStart(AIObjectDataRetriever));
+        }
+
+        public void AI_EVT_DisarmObject_End(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleEvent disarmObjectModule)
+        {
+            AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectEnd());
+            disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectEnd(AIObjectDataRetriever));
         }
         #endregion
 

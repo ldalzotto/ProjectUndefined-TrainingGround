@@ -99,9 +99,7 @@ namespace RTPuzzle
                         }
                         else if (moduleConfiguration.GetType() == typeof(AttractiveObjectModuleDefinition))
                         {
-                            var AttractiveObjectModuleDefinition = (AttractiveObjectModuleDefinition)moduleConfiguration;
-                            var AttractiveObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseAttractiveObjectModule, InteractiveObjectType.transform);
-                            AttractiveObjectModuleInstancer.PopuplateFromDefinition(AttractiveObjectModule, AttractiveObjectModuleDefinition, puzzlePrefabConfiguration, puzzleGameConfiguration);
+                            AttractiveObjectModuleInstancer.PopuplateFromDefinition((AttractiveObjectModuleDefinition)moduleConfiguration, InteractiveObjectType.transform);
                         }
                         else if (moduleConfiguration.GetType() == typeof(ModelObjectModuleDefinition))
                         {
@@ -111,9 +109,7 @@ namespace RTPuzzle
                         }
                         else if (moduleConfiguration.GetType() == typeof(DisarmObjectModuleDefinition))
                         {
-                            var DisarmObjectModuleDefinition = (DisarmObjectModuleDefinition)moduleConfiguration;
-                            var DisarmObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseDisarmObjectModule, InteractiveObjectType.transform);
-                            DisarmObjectModuleInstancer.PopuplateFromDefinition(DisarmObjectModule, DisarmObjectModuleDefinition);
+                            DisarmObjectModuleInstancer.PopuplateFromDefinition((DisarmObjectModuleDefinition)moduleConfiguration, InteractiveObjectType.transform);
                         }
                         else if (moduleConfiguration.GetType() == typeof(GrabObjectModuleDefinition))
                         {

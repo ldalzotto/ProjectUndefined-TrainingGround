@@ -43,8 +43,8 @@ namespace RTPuzzle
         public abstract void OnStateReset();
 
         #region External Evetns      
-        public abstract void OnDisarmingObjectStart(DisarmObjectModule disarmingObject);
-        public abstract void OnDisarmingObjectExit(DisarmObjectModule disarmingObject);
+        public abstract void OnDisarmingObjectStart(IDisarmObjectModuleDataRetrieval disarmingObject);
+        public abstract void OnDisarmingObjectExit(IDisarmObjectModuleDataRetrieval disarmingObject);
         #endregion
     }
 }

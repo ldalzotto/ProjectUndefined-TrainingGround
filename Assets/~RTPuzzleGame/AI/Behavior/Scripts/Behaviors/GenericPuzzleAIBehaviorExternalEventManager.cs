@@ -53,8 +53,8 @@ namespace RTPuzzle
                 {typeof(PlayerEscapeStartAIBehaviorEvent), PlayerEscape_Start },
                 {typeof(SightInRangeEnterAIBehaviorEvent), SightInRange_Enter },
                 {typeof(SightInRangeExitAIBehaviorEvent), SightInRange_Exit },
-                {typeof(DisarmingObjectEnterAIbehaviorEvent), DisarmingObject_Enter },
-                {typeof(DisarmingObjectExitAIbehaviorEvent), DisarmingObject_Exit },
+                {typeof(DisarmingObjectEnterAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Enter },
+                {typeof(DisarmingObjectExitAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Exit },
         };
 
         public override void ProcessEvent(PuzzleAIBehaviorExternalEvent externalEvent, IPuzzleAIBehavior aiBehavior)
@@ -244,37 +244,6 @@ namespace RTPuzzle
                 genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().OnSightInRangeExit(PuzzleAIBehaviorExternalEvent.Cast<SightInRangeExitAIBehaviorEvent>());
             }
         }
-
-        private static void DisarmingObject_Enter(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIDisarmObjectManager>())
-            {
-                if (!genericAiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>()))
-                {
-                    genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>().OnDisarmingObjectStart(PuzzleAIBehaviorExternalEvent.Cast<DisarmingObjectEnterAIbehaviorEvent>().DisarmObjectModule);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>());
-                }
-
-            }
-        }
-
-        private static void DisarmingObject_Exit(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIDisarmObjectManager>())
-            {
-                if (genericAiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>())
-                {
-                    genericAiBehavior.GetAIManager<AbstractAIDisarmObjectManager>().OnDisarmingObjectExit(PuzzleAIBehaviorExternalEvent.Cast<DisarmingObjectEnterAIbehaviorEvent>().DisarmObjectModule);
-                    if (!genericAiBehavior.IsManagerEnabled<AbstractAIDisarmObjectManager>())
-                    {
-                        genericAiBehavior.SetManagerState(null);
-                    }
-                }
-            }
-        }
-
     }
 
     public class ProjectileTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
@@ -406,25 +375,4 @@ namespace RTPuzzle
 
         public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
     }
-
-    public class DisarmingObjectEnterAIbehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        public DisarmObjectModule DisarmObjectModule;
-
-        public DisarmingObjectEnterAIbehaviorEvent(DisarmObjectModule disarmObjectModule)
-        {
-            DisarmObjectModule = disarmObjectModule;
-        }
-    }
-
-    public class DisarmingObjectExitAIbehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        public DisarmObjectModule DisarmObjectModule;
-
-        public DisarmingObjectExitAIbehaviorEvent(DisarmObjectModule disarmObjectModule)
-        {
-            DisarmObjectModule = disarmObjectModule;
-        }
-    }
-
 }

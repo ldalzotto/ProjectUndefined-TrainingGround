@@ -168,18 +168,18 @@ namespace RTPuzzle
             }
         }
 
+        public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
+        {
+            this.GetModule<ObjectSightModule>().IfNotNull((ObjectSightModule ObjectSightModule) => ObjectSightModule.TickBeforeAIUpdate(d));
+            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => DisarmObjectModule.TickBeforeAIUpdate(d, timeAttenuationFactor));
+        }
+
         public void Tick(float d, float timeAttenuationFactor)
         {
-            this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.Tick(d, timeAttenuationFactor));
             this.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule attractiveObjectTypeModule) => attractiveObjectTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule objectRepelTypeModule) => objectRepelTypeModule.Tick(d, timeAttenuationFactor));
             this.GetModule<LaunchProjectileModule>().IfNotNull((LaunchProjectileModule launchProjectileModule) => launchProjectileModule.Tick(d, timeAttenuationFactor));
             this.GetModule<InteractiveObjectCutsceneControllerModule>().IfNotNull((InteractiveObjectCutsceneControllerModule interactiveObjectCutsceneControllerModule) => interactiveObjectCutsceneControllerModule.Tick(d, timeAttenuationFactor));
-        }
-
-        public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
-        {
-            this.GetModule<ObjectSightModule>().IfNotNull((ObjectSightModule ObjectSightModule) => ObjectSightModule.TickBeforeAIUpdate(d));
         }
 
         public void TickAlways(float d)

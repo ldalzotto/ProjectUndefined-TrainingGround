@@ -72,8 +72,6 @@
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\InterfaceAIManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\DisarmObject\AIDisarmObjectComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\DisarmObject\AIDisarmObjectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\EscapeWithoutTrigger\AIEscapeWithoutTriggerComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\EscapeWithoutTrigger\AIEscapeWithoutTriggerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\FearStun\AIFearStunComponent.cs" />
@@ -122,8 +120,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\Matrix\RepelableObjectDistance.cs" />
@@ -133,7 +129,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ActionInteractableObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AILogicColliderModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AttractiveObjectModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\DisarmObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\GrabObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\InRangeColliderTrackerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\InteractiveObjectCutsceneControllerModuleDefinition.cs" />
@@ -225,6 +220,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAIAttractiveObjectEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectDefinitions\ContextMarkVisualFeedbackModuleDefinition.cs" />
@@ -232,6 +228,17 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Lib\ContextMarkVisualFeedbackMarkType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Managers\ContextMarkVisualFeedbackContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\Models\ExclamationMark\Scripts\ExclamationmarkColorSetter.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\AIComponents\AIDisarmObjectComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\AIComponents\AIDisarmObjectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\Configuration\DisarmObjectConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\Configuration\DisarmObjectInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\Events\DisarmObjectAIEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectAIEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleDataRetrieval.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\InteractiveObjectDefinitions\DisarmObjectModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\InteractiveObjectModules\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovManagerCalcuation.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovModuleDataRetrieval.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\InteractiveObjectDefinitions\FovModuleDefinition.cs" />
@@ -251,7 +258,6 @@
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\DisarmObjectModule\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\GrabObjectModule\GrabObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InRangeColliderTrackerModule\InRangeColliderTrackerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InteractiveObjectCutsceneControllerModule\InteractiveObjectCutsceneControllerModule.cs" />

@@ -25,6 +25,9 @@ namespace RTPuzzle
     {
         IPuzzleAIBehavior GetAIBehavior();
         IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval();
+
+        //To remove when migrated to module
+        AIAnimationManager GetAIAnimationManager();
     }
 
     public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter, AIObjectDataRetriever
@@ -119,12 +122,12 @@ namespace RTPuzzle
                      interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
-            
+
             if (animator != null)
             {
                 AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
                 NPCAIAnimationManager = new AIAnimationManager(animator, this.GetComponent<InteractiveObjectType>(),
-                        animationConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration, interactiveObjectContainer);
+                        animationConfiguration, interactiveObjectContainer);
             }
 
             //Sight listeners
@@ -261,23 +264,6 @@ namespace RTPuzzle
             this.ForceTickAI();
         }
 
-        public void OnDisarmObjectTriggerEnter(DisarmObjectModule disarmObjectModule)
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new DisarmingObjectEnterAIbehaviorEvent(disarmObjectModule));
-        }
-        public void OnDisarmObjectTriggerExit(DisarmObjectModule disarmObjectModule)
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(disarmObjectModule));
-        }
-
-        public void OnDisarmObjectStart(DisarmObjectModule disarmObjectModule)
-        {
-            this.NPCAIAnimationManager.IfNotNull(NPCAIAnimationManager => NPCAIAnimationManager.OnDisarmObjectStart(disarmObjectModule));
-        }
-        public void OnDisarmObjectEnd()
-        {
-            this.NPCAIAnimationManager.IfNotNull(NPCAIAnimationManager => NPCAIAnimationManager.OnDisarmObjectEnd());
-        }
         public void SightInRangeEnter(ColliderWithCollisionType trackedCollider)
         {
             this.puzzleAIBehavior.ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(trackedCollider));
@@ -315,7 +301,7 @@ namespace RTPuzzle
         {
             return this.associatedInteractivObject;
         }
-        
+
         public NavMeshAgent GetAgent()
         {
             if (this.agent == null) { this.agent = GetComponent<NavMeshAgent>(); }
@@ -328,6 +314,10 @@ namespace RTPuzzle
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
             return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
+        }
+        public AIAnimationManager GetAIAnimationManager()
+        {
+            return this.NPCAIAnimationManager;
         }
         #endregion
 
