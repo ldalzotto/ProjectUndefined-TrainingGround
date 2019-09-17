@@ -155,6 +155,10 @@ namespace RTPuzzle
                             var LineVisualFeedbackModuleDefinition = (LineVisualFeedbackModuleDefinition)moduleConfiguration;
                             var LineVisualFeedbackModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseLineVisualFeedbackModule, InteractiveObjectType.transform);
                         }
+                        else if(moduleConfiguration.GetType() == typeof(InteractiveObjectAnimationModuleDefinition))
+                        {
+                            InteractiveObjectAnimationModuleInstancer.PopuplateFromDefinition((InteractiveObjectAnimationModuleDefinition)moduleConfiguration, InteractiveObjectType.transform);
+                        }
 //${addNewEntry}
                     }
                 }

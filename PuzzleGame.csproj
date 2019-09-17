@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -247,6 +248,9 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Lib\FovInteractionRingContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Lib\FovInteractionRingType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingRendererManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectDefinitions\InteractiveObjectAnimationModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Configuration\DottedLineConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Configuration\DottedLineInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\ExposedInterfaces\ILineVisualFeedbackEvent.cs" />
@@ -278,7 +282,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\SharedData\InteractiveObjectSharedDataType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\LevelCompletion\Script\LevelCompletionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIAnimationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\NPC\Scripts\AIObjectType.cs" />

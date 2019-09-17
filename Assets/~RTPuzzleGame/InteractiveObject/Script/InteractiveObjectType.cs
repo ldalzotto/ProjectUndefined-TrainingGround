@@ -184,6 +184,7 @@ namespace RTPuzzle
 
         public void TickAlways(float d)
         {
+            this.GetModule<InteractiveObjectAnimationModule>().IfNotNull((InteractiveObjectAnimationModule InteractiveObjectAnimationModule) => InteractiveObjectAnimationModule.TickAlways(d));
             this.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule disarmObjectModule) => disarmObjectModule.TickAlways(d));
             this.GetModule<ActionInteractableObjectModule>().IfNotNull((ActionInteractableObjectModule actionInteractableObjectModule) => actionInteractableObjectModule.TickAlways(d));
             this.GetModule<FovModule>().IfNotNull((FovModule FovModule) => FovModule.TickAlways(d));

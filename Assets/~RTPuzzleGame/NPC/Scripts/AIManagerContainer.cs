@@ -58,10 +58,7 @@ namespace RTPuzzle
 
         public void TickAlways(float d, float timeAttenuationFactor)
         {
-            foreach (var npcAiManager in npcAiManagers.Values)
-            {
-                npcAiManager.TickAlways(d, timeAttenuationFactor);
-            }
+            
         }
 
         public void TickWhenTimeFlows(float d, float timeAttenuationFactor)

@@ -25,9 +25,6 @@ namespace RTPuzzle
     {
         IPuzzleAIBehavior GetAIBehavior();
         IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval();
-
-        //To remove when migrated to module
-        AIAnimationManager GetAIAnimationManager();
     }
 
     public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter, AIObjectDataRetriever
@@ -70,7 +67,6 @@ namespace RTPuzzle
         private IPuzzleAIBehavior puzzleAIBehavior;
         private IContextMarkVisualFeedbackEvent IContextMarkVisualFeedbackEvent;
         private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
-        private AIAnimationManager NPCAIAnimationManager;
 
         public void Init()
         {
@@ -126,8 +122,6 @@ namespace RTPuzzle
             if (animator != null)
             {
                 AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
-                NPCAIAnimationManager = new AIAnimationManager(animator, this.GetComponent<InteractiveObjectType>(),
-                        animationConfiguration, interactiveObjectContainer);
             }
 
             //Sight listeners
@@ -142,11 +136,6 @@ namespace RTPuzzle
             this.ComputeAINewDestination(d, timeAttenuationFactor);
             AIDestinationMoveManager.Tick(d, timeAttenuationFactor, ref this.NPCAIDestinationContext);
             NPCSpeedAdjusterManager.Tick(d, timeAttenuationFactor);
-        }
-
-        internal void TickAlways(float d, float timeAttenuationFactor)
-        {
-            NPCAIAnimationManager.IfNotNull((NPCAIAnimationManager) => NPCAIAnimationManager.TickAlways(d, this.agent.velocity.magnitude / this.interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent.SpeedMultiplicationFactor));
         }
 
         internal void EndOfFixedTick()
@@ -314,10 +303,6 @@ namespace RTPuzzle
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
             return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
-        }
-        public AIAnimationManager GetAIAnimationManager()
-        {
-            return this.NPCAIAnimationManager;
         }
         #endregion
 

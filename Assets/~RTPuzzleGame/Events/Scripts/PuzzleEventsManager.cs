@@ -62,7 +62,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region IAIAttractiveObjectEventListener
+        #region Attractive Object Events
         public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
             var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
@@ -193,7 +193,6 @@ namespace RTPuzzle
         #endregion
 
         #region Disarm object event
-
         public void PZ_DisarmObject_TriggerEnter(IDisarmObjectModuleDataRetrieval IDisarmObjectModuleDataRetrieval, AIObjectDataRetriever disarmObjectModule)
         {
             disarmObjectModule.GetAIBehavior().ReceiveEvent(new DisarmingObjectEnterAIbehaviorEvent(IDisarmObjectModuleDataRetrieval));
@@ -206,17 +205,18 @@ namespace RTPuzzle
 
         public void AI_EVT_DisarmObject_Start(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleEvent disarmObjectModule)
         {
-            AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectStart((IDisarmObjectModuleDataRetrieval)disarmObjectModule));
+         //   AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectStart((IDisarmObjectModuleDataRetrieval)disarmObjectModule));
             disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectStart(AIObjectDataRetriever));
         }
 
         public void AI_EVT_DisarmObject_End(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleEvent disarmObjectModule)
         {
-            AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectEnd());
+          //  AIObjectDataRetriever.GetAIAnimationManager().IfNotNull(AIAnimationManager => AIAnimationManager.OnDisarmObjectEnd());
             disarmObjectModule.IfNotNull(a => disarmObjectModule.OnDisarmObjectEnd(AIObjectDataRetriever));
         }
         #endregion
 
+        #region Level Transition Events
         public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
@@ -251,6 +251,7 @@ namespace RTPuzzle
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
         }
+        #endregion
 
         #region Level Completion Events
         public void PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate()

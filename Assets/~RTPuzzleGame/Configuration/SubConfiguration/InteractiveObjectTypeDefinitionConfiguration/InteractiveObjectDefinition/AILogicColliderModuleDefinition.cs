@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class AILogicColliderModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class AILogicColliderModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public Vector3 Center;
         public Vector3 Size;

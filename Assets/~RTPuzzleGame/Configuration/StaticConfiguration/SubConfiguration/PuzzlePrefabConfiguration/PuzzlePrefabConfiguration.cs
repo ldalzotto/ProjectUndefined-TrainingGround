@@ -33,6 +33,7 @@ namespace RTPuzzle
         public FovModule BaseFovModule;
         public ContextMarkVisualFeedbackModule BaseContextMarkVisualFeedbackModule;
         public LineVisualFeedbackModule BaseLineVisualFeedbackModule;
+        public InteractiveObjectAnimationModule BaseInteractiveObjectAnimationModule;
 
 //${PuzzlePrefabConfiguration:baseInteractiveObjectPrefabs}
 
