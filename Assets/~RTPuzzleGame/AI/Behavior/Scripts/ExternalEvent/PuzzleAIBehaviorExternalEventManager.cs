@@ -128,5 +128,10 @@ namespace RTPuzzle
         protected Action eventProcessedCallback;
 
         public Action EventProcessedCallback { get => eventProcessedCallback; }
+
+        public T Cast<T>() where T : PuzzleAIBehaviorExternalEvent
+        {
+            return (T)this;
+        }
     }
 }

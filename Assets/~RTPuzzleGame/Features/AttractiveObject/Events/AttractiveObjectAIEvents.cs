@@ -6,32 +6,34 @@ namespace RTPuzzle
 {
     public static class AttractiveObjectAIEvents 
     {
-        public static void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerEnterAIBehaviorEvent attractiveObjectTriggerEnterAIBehaviorEvent)
+        public static void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerEnter"));
-                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerEnter(attractiveObjectTriggerEnterAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerEnterAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerEnter(PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerEnterAIBehaviorEvent>().AttractivePosition,
+                        PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerEnterAIBehaviorEvent>().AttractiveObjectType);
                 genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());
             }
         }
 
-        public static void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerStayAIBehaviorEvent attractiveObjectTriggerStayAIBehaviorEvent)
+        public static void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
                 //Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
-                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerStay(attractiveObjectTriggerStayAIBehaviorEvent.AttractivePosition, attractiveObjectTriggerStayAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerStay(PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerStayAIBehaviorEvent>().AttractivePosition,
+                        PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerStayAIBehaviorEvent>().AttractiveObjectType);
                 genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());
             }
         }
 
-        public static void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, AttractiveObjectTriggerExitAIBehaviorEvent attractiveObjectTriggerExitAIBehaviorEvent)
+        public static void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
                 Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerExit"));
-                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerExit(attractiveObjectTriggerExitAIBehaviorEvent.AttractiveObjectType);
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerExit(PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerExitAIBehaviorEvent>().AttractiveObjectType);
                 if (!genericAiBehavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>())
                 {
                     genericAiBehavior.SetManagerState(null);

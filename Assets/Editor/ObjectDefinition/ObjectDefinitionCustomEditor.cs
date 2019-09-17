@@ -86,6 +86,15 @@ public class ObjectDefinitionCustomEditor : Editor
                         RangeDefinitionTarget.RangeDefinitionModulesActivation[moduleDefinitionType] = false;
                     }
                 });
+
+                RangeDefinitionTarget.RangeDefinitionModulesActivation.Keys.ToList().ForEach((definitionModuleType) =>
+                {
+                    if (!RangeDefinitionTarget.ModuleTypes.Contains(definitionModuleType))
+                    {
+                        RangeDefinitionTarget.RangeDefinitionModulesActivation.Remove(definitionModuleType);
+                        RangeDefinitionTarget.RangeDefinitionModules.Remove(definitionModuleType);
+                    }
+                });
             }
         }
 

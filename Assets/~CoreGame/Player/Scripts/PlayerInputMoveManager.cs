@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CoreGame
 {
@@ -8,9 +7,11 @@ namespace CoreGame
     {
         private TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent;
         protected Rigidbody PlayerRigidBody;
-        protected PlayerSpeedProcessingInput playerSpeedProcessingInput;
         private bool hasMoved;
         protected float playerSpeedMagnitude;
+        protected PlayerSpeedProcessingInput playerSpeedProcessingInput;
+
+        protected abstract PlayerSpeedProcessingInput ComputePlayerSpeedProcessingInput();
 
         public PlayerMoveManager(TransformMoveManagerComponentV3 PlayerInputMoveManagerComponent, Rigidbody playerRigidBody)
         {
@@ -22,11 +23,8 @@ namespace CoreGame
         public bool HasMoved { get => hasMoved; }
         public float PlayerSpeedMagnitude { get => playerSpeedMagnitude; }
 
-        protected abstract PlayerSpeedProcessingInput ComputePlayerSpeedProcessingInput();
-
         public void Tick(float d)
         {
-            this.playerSpeedProcessingInput = this.ComputePlayerSpeedProcessingInput();
             this.playerSpeedMagnitude = playerSpeedProcessingInput.PlayerSpeedMagnitude;
             if (playerSpeedMagnitude > float.Epsilon)
             {
@@ -36,24 +34,21 @@ namespace CoreGame
 
         public void FixedTick(float d)
         {
-            if (playerSpeedProcessingInput != null)
+            //move rigid body rotation
+            this.playerSpeedProcessingInput = ComputePlayerSpeedProcessingInput();
+            if (playerSpeedProcessingInput.PlayerMovementOrientation.sqrMagnitude > .05)
             {
-                //move rigid body rotation
-                if (playerSpeedProcessingInput.PlayerMovementOrientation.sqrMagnitude > .05)
-                {
-                    PlayerRigidBody.rotation = Quaternion.LookRotation(playerSpeedProcessingInput.PlayerMovementOrientation);
-                    //rotation will take place at the end of physics step https://docs.unity3d.com/ScriptReference/Rigidbody-rotation.html
-                }
+                PlayerRigidBody.rotation = Quaternion.LookRotation(playerSpeedProcessingInput.PlayerMovementOrientation);
+                //rotation will take place at the end of physics step https://docs.unity3d.com/ScriptReference/Rigidbody-rotation.html
+            }
 
-                //move rigid body
-                PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * PlayerInputMoveManagerComponent.SpeedMultiplicationFactor;
-                if (playerSpeedProcessingInput.PlayerSpeedMagnitude <= float.Epsilon)
-                {
-                    hasMoved = false;
-                }
+            //move rigid body
+            PlayerRigidBody.velocity = playerSpeedProcessingInput.PlayerMovementOrientation * playerSpeedProcessingInput.PlayerSpeedMagnitude * PlayerInputMoveManagerComponent.SpeedMultiplicationFactor;
+            if (playerSpeedProcessingInput.PlayerSpeedMagnitude <= float.Epsilon)
+            {
+                hasMoved = false;
             }
         }
-
     }
 
     public class PlayerInputMoveManager : PlayerMoveManager
@@ -66,6 +61,7 @@ namespace CoreGame
         {
             CameraPivotPoint = cameraPivotPoint;
             GameInputManager = gameInputManager;
+            this.playerSpeedProcessingInput = ComputePlayerSpeedProcessingInput();
         }
 
         protected override PlayerSpeedProcessingInput ComputePlayerSpeedProcessingInput()
@@ -83,8 +79,8 @@ namespace CoreGame
         public void ResetSpeed()
         {
             this.playerSpeedMagnitude = 0;
-            playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
-            playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
+            base.playerSpeedProcessingInput.PlayerSpeedMagnitude = 0;
+            base.playerSpeedProcessingInput.PlayerMovementOrientation = Vector3.zero;
         }
     }
 

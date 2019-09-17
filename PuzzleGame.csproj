@@ -122,8 +122,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AttractiveObjectConfiguration\AttractiveObjectInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\DisarmObjectConfiguration\DisarmObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectConfiguration.cs" />
@@ -223,6 +221,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectLooseManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectPersistantManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Configuration\AttractiveObjectConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Configuration\AttractiveObjectInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAIAttractiveObjectEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
