@@ -1,6 +1,7 @@
 using GameConfigurationID;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static RTPuzzle.ActionInteractableObjectModule;
 using static RTPuzzle.AILogicColliderModule;
@@ -24,7 +25,21 @@ namespace RTPuzzle
         [CustomEnum()]
         public InteractiveObjectID InteractiveObjectID;
 
-        public override List<Type> ModuleTypes => InteractiveObjectModuleTypesConstants.InteractiveObjectModuleTypes;
+        public static List<Type> AbstractInteractiveObjectDefinitionTypes;
+
+        private List<Type> GetAbstractInteractiveObjectDefinitionTypes()
+        {
+            if (AbstractInteractiveObjectDefinitionTypes == null)
+            {
+                AbstractInteractiveObjectDefinitionTypes = typeof(AbstractInteractiveObjectDefinition)
+                    .Assembly.GetTypes()
+                    .Where(t => t.IsSubclassOf(typeof(AbstractInteractiveObjectDefinition)) && !t.IsAbstract)
+                    .ToList();
+            }
+            return AbstractInteractiveObjectDefinitionTypes;
+        }
+
+        public override List<Type> ModuleTypes => GetAbstractInteractiveObjectDefinitionTypes();
 
         public InteractiveObjectSharedDataTypeInherentData InteractiveObjectSharedDataTypeInherentData;
 

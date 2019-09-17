@@ -1,24 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RTPuzzle
 {
     [System.Serializable]
     public class GenericPuzzleAIComponentsV2 : AbstractObjectDefinitionConfigurationInherentData
     {
-        public override List<Type> ModuleTypes => new List<Type>()
+        private static List<Type> AbstractAIComponentTypes;
+
+        private List<Type> GetAbstractAIComponentTypes()
         {
-            typeof(AIPatrolComponent),
-            typeof(AIProjectileEscapeComponent),
-            typeof(AIEscapeWithoutTriggerComponent),
-            typeof(AITargetZoneComponent),
-            typeof(AIAttractiveObjectComponent),
-            typeof(AIFearStunComponent),
-            typeof(AIPlayerEscapeComponent),
-            typeof(AIMoveTowardPlayerComponent),
-            typeof(AIDisarmObjectComponent),
-//${addNewEntry}
-        };
+            if (AbstractAIComponentTypes == null)
+            {
+                AbstractAIComponentTypes = typeof(AbstractAIComponent)
+                    .Assembly.GetTypes()
+                    .Where(t => t.IsSubclassOf(typeof(AbstractAIComponent)) && !t.IsAbstract)
+                    .ToList();
+            }
+            return AbstractAIComponentTypes;
+        }
+
+        public override List<Type> ModuleTypes => GetAbstractAIComponentTypes();
     }
 }
 

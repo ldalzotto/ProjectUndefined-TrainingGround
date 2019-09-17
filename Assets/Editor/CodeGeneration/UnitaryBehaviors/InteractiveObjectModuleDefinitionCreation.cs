@@ -75,6 +75,7 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
 
     private static void UpdateDefinitionConfigurations(string baseName)
     {
+        /*
         var InteractiveObjectModuleTypesConstantsClassFile = CodeGenerationHelper.ClassFileFromType(typeof(InteractiveObjectModuleTypesConstants));
 
         if (!InteractiveObjectModuleTypesConstantsClassFile.Content.Contains(baseName + "ModuleDefinition"))
@@ -87,6 +88,7 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
             File.WriteAllText(InteractiveObjectModuleTypesConstantsClassFile.Path, InteractiveObjectModuleTypesConstantsClassFile.Content);
 
         }
+        */
     }
 
     private static void AddDefinitionCondition(string baseName)

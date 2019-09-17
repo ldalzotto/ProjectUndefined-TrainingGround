@@ -200,10 +200,9 @@ namespace RTPuzzle
         public PuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager;
         public AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener;
         public InteractiveObjectType AssociatedInteractiveObject;
-        public AIObjectType AssociatedAIObjectType;
         public IFovManagerCalcuation FovManagerCalcuation;
 
-
+        private AIObjectType AssociatedAIObjectType;
         public AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter() { return this.AssociatedAIObjectType; }
         public AIObjectDataRetriever AIObjectDataRetriever() { return this.AssociatedAIObjectType; }
 
