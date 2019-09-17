@@ -6,7 +6,8 @@ namespace RTPuzzle
 {
     public static class AttractiveObjectAIEvents 
     {
-        public static void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
+        public static void AttractiveObject_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
+            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
@@ -17,7 +18,8 @@ namespace RTPuzzle
             }
         }
 
-        public static void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
+        public static void AttractiveObject_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
+            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
@@ -28,7 +30,8 @@ namespace RTPuzzle
             }
         }
 
-        public static void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
+        public static void AttractiveObject_TriggerExit(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
+            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
@@ -39,6 +42,17 @@ namespace RTPuzzle
                     genericAiBehavior.SetManagerState(null);
                     genericAiBehavior.ForceUpdateAIBehavior();
                 }
+            }
+        }
+
+        public static void AttractiveObject_Destroyed(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
+            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
+        {
+            if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>())
+            {
+                genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().OnAttractiveObjectDestroyed(PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectDestroyedAIBehaviorEvent>().DestroyedAttractiveObject);
+                // to not have inactive frame.
+                genericAiBehavior.ForceUpdateAIBehavior();
             }
         }
     }
@@ -86,4 +100,15 @@ namespace RTPuzzle
         public AttractiveObjectModule AttractiveObjectType { get => attractiveObjectType; }
     }
 
+    public class AttractiveObjectDestroyedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
+    {
+        private AttractiveObjectModule destroyedAttractiveObject;
+
+        public AttractiveObjectDestroyedAIBehaviorEvent(AttractiveObjectModule destroyedAttractiveObject)
+        {
+            this.destroyedAttractiveObject = destroyedAttractiveObject;
+        }
+
+        public AttractiveObjectModule DestroyedAttractiveObject { get => destroyedAttractiveObject; }
+    }
 }

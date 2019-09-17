@@ -25,10 +25,8 @@ namespace RTPuzzle
         private bool isConsumingEvents = false;
 
         protected abstract BehaviorStateTrackerContainer BehaviorStateTrackerContainer { get; }
-
-#if UNITY_EDITOR
+        
         public BehaviorStateTrackerContainer GetBehaviorStateTrackerContainer() { return BehaviorStateTrackerContainer; }
-#endif
 
         public void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent)
         {
