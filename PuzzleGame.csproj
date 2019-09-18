@@ -68,12 +68,9 @@
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\_Game\Scripts\PuzzleGameSingletonInstances.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\AIComponentContainer\Scripts\GenericPuzzleAIComponentsV2.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Managers\EscapeDestinationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\AbstractAIManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\_Abstract\InterfaceAIManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\EscapeWithoutTrigger\AIEscapeWithoutTriggerComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\EscapeWithoutTrigger\AIEscapeWithoutTriggerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\FearStun\AIFearStunComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\FearStun\AIFearStunManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\AI\AIComponents\Scripts\MoveTowardPlayer\AIMoveTowardPlayerComponent.cs" />
@@ -184,6 +181,11 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\Events\AgentEscapeAIEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\ExposedInterfaces\IAgentEscapeEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\Lib\EscapeDestinationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectLooseManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectPersistantManager.cs" />

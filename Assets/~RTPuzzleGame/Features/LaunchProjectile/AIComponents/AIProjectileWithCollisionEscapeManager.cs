@@ -28,7 +28,7 @@ namespace RTPuzzle
         {
             if (this.isEscapingFromProjectile && !value)
             {
-                this.puzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.AIObjectDataRetriever);
+                this.puzzleEventsManager.PZ_EVT_AI_NoMoreEscaping(this.AIObjectDataRetriever);
             }
             base.SetIsEscapingFromProjectile(value);
         }

@@ -169,23 +169,6 @@ namespace RTPuzzle
             AIDestinationMoveManager.DisableAgent();
         }
 
-        public void OnEscapeWithoutTargetStart()
-        {
-            if (this.IContextMarkVisualFeedbackEvent != null)
-            {
-                this.IContextMarkVisualFeedbackEvent.CreateDoubleExclamationMark();
-            }
-            this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnEscapeWithoutTargetStart());
-        }
-
-        public void OnEscapeWithoutTargetEnd()
-        {
-            if (this.IContextMarkVisualFeedbackEvent != null)
-            {
-                this.IContextMarkVisualFeedbackEvent.Delete();
-            }
-        }
-
         internal void OnGameOver()
         {
             if (this.IContextMarkVisualFeedbackEvent != null)
@@ -349,11 +332,6 @@ namespace RTPuzzle
             this.AnimationConfiguration = AnimationConfiguration;
         }
         
-        internal void OnEscapeWithoutTargetStart()
-        {
-            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.HITTED_BY_PROJECTILE_2ND], 0f);
-        }
-
         internal void OnAIFearedStunnedEnded()
         {
             AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.POSE_OVERRIVE_LISTENING], 0f);

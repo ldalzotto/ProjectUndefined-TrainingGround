@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener, ILaunchProjectileAIEventListener
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener, ILaunchProjectileAIEventListener, IAgentEscapeEvent
     {
         #region External Dependencies
         private AIManagerContainer NPCAIManagerContainer;
-        private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
         private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
@@ -24,7 +23,6 @@ namespace RTPuzzle
         public void Init()
         {
             this.NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
-            this.PlayerActionPuzzleEventsManager = PuzzleGameSingletonInstances.PlayerActionPuzzleEventsManager;
             this.LevelCompletionManager = PuzzleGameSingletonInstances.LevelCompletionManager;
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
@@ -62,7 +60,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Attractive Object Events
+        #region IAIAttractiveObjectEventListener
         public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
             InvolvedAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAIAttractedStart(AIObjectDataRetriever);
@@ -103,38 +101,40 @@ namespace RTPuzzle
         #region ILaunchProjectileAIEventListener
         public virtual void PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever AIObjectDataRetriever)
         {
+            this.PZ_EVT_AI_EscapingStart(AIObjectDataRetriever, AnimationID.HITTED_BY_PROJECTILE_1ST);
+        }
+
+        public void PZ_EVT_AI_Projectile_NoMoreAffected(AIObjectDataRetriever AIObjectDataRetriever)
+        {
+            this.PZ_EVT_AI_NoMoreEscaping(AIObjectDataRetriever);
+        }
+        #endregion
+
+        #region IAgentEscapeEvent
+        public void PZ_EVT_AI_EscapingStart(AIObjectDataRetriever AIObjectDataRetriever, AnimationID playedAnimation)
+        {
             var interactiveObjectTypeDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
             var IContextMarkVisualFeedbackEvent = interactiveObjectTypeDataRetrieval.GetIContextMarkVisualFeedbackEvent();
             if (IContextMarkVisualFeedbackEvent != null)
             {
-                IContextMarkVisualFeedbackEvent.CreateExclamationMark();
+                IContextMarkVisualFeedbackEvent.CreateDoubleExclamationMark();
             }
 
             var InteractiveObjectCutsceneControllerModule = interactiveObjectTypeDataRetrieval.GetInteractiveObjectCutsceneControllerModule();
             if (InteractiveObjectCutsceneControllerModule != null)
             {
-                InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(AnimationID.HITTED_BY_PROJECTILE_1ST, 0f, false);
+                InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(playedAnimation, 0f, false);
             }
         }
-        public void PZ_EVT_AI_Projectile_NoMoreAffected(AIObjectDataRetriever AIObjectDataRetriever)
+
+        public void PZ_EVT_AI_NoMoreEscaping(AIObjectDataRetriever AIObjectDataRetriever)
         {
-            var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
+            var interactiveObjectTypeDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
+            var IContextMarkVisualFeedbackEvent = interactiveObjectTypeDataRetrieval.GetIContextMarkVisualFeedbackEvent();
             if (IContextMarkVisualFeedbackEvent != null)
             {
                 IContextMarkVisualFeedbackEvent.Delete();
             }
-        }
-        #endregion
-
-        #region Escape without target zone events
-        public void PZ_EVT_AI_EscapeWithoutTarget_Start(AIObjectID aiID)
-        {
-            Debug.Log(MyLog.Format("PZ_EVT_AI_EscapeWithoutTarget_Start"));
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetStart();
-        }
-        public void PZ_EVT_AI_EscapeWithoutTarget_End(AIObjectID aiID)
-        {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetEnd();
         }
         #endregion
 

@@ -40,7 +40,7 @@ namespace RTPuzzle
             new Dictionary<Type, Action<GenericPuzzleAIBehavior, GenericPuzzleAIBehaviorExternalEventManager, PuzzleAIBehaviorExternalEvent>>()
         {
                 {typeof(ProjectileTriggerEnterAIBehaviorEvent), LaunchProjectileAIEvents.Projectile_TriggerEnter },
-                {typeof(EscapeWithoutTriggerStartAIBehaviorEvent), LaunchProjectileAIEvents.EscapeWithoutTrigger_Start },
+                {typeof(EscapeWithoutTriggerStartAIBehaviorEvent), AgentEscapeAIEvents.EscapeWithoutTrigger_Start },
                 {typeof(FearedStartAIBehaviorEvent),  Feared_Start},
                 {typeof(FearedForcedAIBehaviorEvent), Feared_Forced },
                 {typeof(FearedEndAIBehaviorEvent), Feared_End },
