@@ -21,13 +21,13 @@ namespace RTPuzzle
         void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition);
     }
 
-    public interface AIObjectDataRetriever
+    public interface AIObjectDataRetriever : IRenderBoundRetrievable
     {
         IPuzzleAIBehavior GetAIBehavior();
         IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval();
     }
 
-    public class AIObjectType : MonoBehaviour, IRenderBoundRetrievable, SightTrackingListener, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter, AIObjectDataRetriever
+    public class AIObjectType : MonoBehaviour, SightTrackingListener, AIObjectDataRetriever, IAIObjectTypeEvent, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter
     {
 
 #if UNITY_EDITOR
@@ -65,8 +65,6 @@ namespace RTPuzzle
         private NPCSpeedAdjusterManager NPCSpeedAdjusterManager;
 
         private IPuzzleAIBehavior puzzleAIBehavior;
-        private IContextMarkVisualFeedbackEvent IContextMarkVisualFeedbackEvent;
-        private AnimationVisualFeedbackManager AnimationVisualFeedbackManager;
 
         public void Init()
         {
@@ -91,9 +89,7 @@ namespace RTPuzzle
             var coreStaticConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration;
             var aiPositionsManager = PuzzleGameSingletonInstances.AIPositionsManager;
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
-
-            var animator = GetComponentInChildren<Animator>();
-
+            
             this.interactiveObjectSharedData = GetComponent<InteractiveObjectSharedDataType>();
             this.associatedInteractivObject = GetComponent<InteractiveObjectType>();
 
@@ -107,9 +103,8 @@ namespace RTPuzzle
 
             //FOV
             var FovModule = this.GetComponent<InteractiveObjectType>().GetModule<FovModule>();
-            this.IContextMarkVisualFeedbackEvent = this.GetComponent<InteractiveObjectType>().GetModule<ContextMarkVisualFeedbackModule>();
 
-            AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, this.SendOnDestinationReachedEvent);
+            AIDestinationMoveManager = new AIDestinationMoveManager(interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, agent, () => this.OnDestinationReached());
             NPCSpeedAdjusterManager = new NPCSpeedAdjusterManager(agent);
 
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
@@ -118,12 +113,7 @@ namespace RTPuzzle
                      interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
-
-            if (animator != null)
-            {
-                AnimationVisualFeedbackManager = new AnimationVisualFeedbackManager(animator, animationConfiguration);
-            }
-
+            
             //Sight listeners
             this.GetComponent<InteractiveObjectType>().IfNotNull((InteractiveObjectType) => InteractiveObjectType.GetEnabledOrDisabledModule<ObjectSightModule>().IfNotNull((ObjectSightModule) => ObjectSightModule.RegisterSightTrackingListener(this)));
 
@@ -168,39 +158,6 @@ namespace RTPuzzle
         {
             AIDestinationMoveManager.DisableAgent();
         }
-
-        internal void OnGameOver()
-        {
-            if (this.IContextMarkVisualFeedbackEvent != null)
-            {
-                this.IContextMarkVisualFeedbackEvent.Delete();
-            }
-        }
-
-        internal void OnAIFearedStunnedEnded()
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new FearedEndAIBehaviorEvent(
-                eventProcessedCallback: () =>
-                {
-                    this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnAIFearedStunnedEnded());
-                }
-           ));
-        }
-
-        internal void OnAIFearedForced(float fearTime)
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new FearedForcedAIBehaviorEvent(fearTime));
-        }
-
-        internal void OnAIFearedStunned()
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new FearedStartAIBehaviorEvent(
-                eventProcessedCallback: () =>
-                {
-                    this.AnimationVisualFeedbackManager.IfNotNull(AnimationVisualFeedbackManager => AnimationVisualFeedbackManager.OnAIFearedStunned());
-                }
-            ));
-        }
         
         public void OnDestinationReached()
         {
@@ -224,14 +181,7 @@ namespace RTPuzzle
             this.AIDestinationMoveManager.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
         #endregion
-
-        #region Internal Events
-        private void SendOnDestinationReachedEvent()
-        {
-            this.PuzzleEventsManager.PZ_EVT_AI_DestinationReached(this.AiID);
-        }
-        #endregion
-
+        
         #region Data Retrieval
         public Renderer[] GetRenderers()
         {
@@ -318,28 +268,6 @@ namespace RTPuzzle
         public void Tick(float d, float playerSpeedMagnitude)
         {
             this.agent.speed = this.agent.speed * playerSpeedMagnitude;
-        }
-    }
-
-    public class AnimationVisualFeedbackManager
-    {
-        private Animator Animator;
-        private AnimationConfiguration AnimationConfiguration;
-
-        public AnimationVisualFeedbackManager(Animator animator, AnimationConfiguration AnimationConfiguration)
-        {
-            Animator = animator;
-            this.AnimationConfiguration = AnimationConfiguration;
-        }
-        
-        internal void OnAIFearedStunnedEnded()
-        {
-            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.POSE_OVERRIVE_LISTENING], 0f);
-        }
-
-        internal void OnAIFearedStunned()
-        {
-            AnimationPlayerHelper.Play(this.Animator, this.AnimationConfiguration.ConfigurationInherentData[AnimationID.FEAR], 0f);
         }
     }
 }

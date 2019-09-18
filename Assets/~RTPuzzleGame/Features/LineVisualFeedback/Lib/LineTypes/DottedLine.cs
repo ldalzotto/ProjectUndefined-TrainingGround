@@ -17,7 +17,7 @@ namespace RTPuzzle
         #endregion
 
         #region External Dependencies
-        private DottedLineRendererManager DottedLineManager;
+        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent;
         #endregion
 
         public static DottedLine CreateInstance(DottedLineID DottedLineID, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
@@ -35,7 +35,7 @@ namespace RTPuzzle
         {
             if (this != null)
             {
-                this.DottedLineManager.OnDottedLineDestroyed(this);
+                this.IDottedLineRendererManagerEvent.OnDottedLineDestroyed(this);
                 MonoBehaviour.Destroy(this.gameObject);
             }
         }
@@ -46,7 +46,7 @@ namespace RTPuzzle
             this.dottedLineInherentData = dottedLineInherentData;
 
             #region External Dependencies
-            this.DottedLineManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
+            this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
             #endregion
 
             #region Internal Dependencies
@@ -112,7 +112,7 @@ namespace RTPuzzle
                 BeziersControlPointsShape = BeziersControlPointsShape.STRAIGHT;
             }
             this.BeziersControlPoints = BeziersControlPoints.Build(this.transform.InverseTransformDirection(worldSpaceStartPoint), this.transform.InverseTransformDirection(worldSpaceEndPoint), Vector3.up, BeziersControlPointsShape);
-            this.DottedLineManager.OnComputeBeziersInnerPointEvent(this);
+            this.IDottedLineRendererManagerEvent.OnComputeBeziersInnerPointEvent(this);
         }
 
         private void ClearLine()

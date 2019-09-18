@@ -8,7 +8,7 @@ namespace RTPuzzle
                                 ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener
     {
         #region External Dependencies
-        private AIManagerContainer NPCAIManagerContainer;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
@@ -23,7 +23,7 @@ namespace RTPuzzle
 
         public void Init()
         {
-            this.NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
+            this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.LevelCompletionManager = PuzzleGameSingletonInstances.LevelCompletionManager;
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
@@ -36,28 +36,36 @@ namespace RTPuzzle
             this.IInteractiveObjectSelectionEvent = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
         }
 
-        #region AI related events
-        public virtual void PZ_EVT_AI_DestinationReached(AIObjectID aiID)
-        {
-            this.NPCAIManagerContainer.OnDestinationReached(aiID);
-        }
-        #endregion
-
         #region Fear Events
-        public void PZ_EVT_AI_FearedStunned_Start(AIObjectID aiID)
+        public void PZ_EVT_AI_FearedStunned_Start(AIObjectDataRetriever AIObjectDataRetriever)
         {
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Start"));
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunned();
+            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new FearedStartAIBehaviorEvent(
+                eventProcessedCallback: () =>
+                {
+                    AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetInteractiveObjectCutsceneControllerModule()
+                        .IfNotNull(InteractiveObjectCutsceneControllerModule => InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(AnimationID.FEAR, 0f, false));
+                }
+            ));
+
         }
-        public void PZ_EVT_AI_FearedForced(AIObjectID aiID, float fearTime)
+
+        public void PZ_EVT_AI_FearedForced(AIObjectDataRetriever AIObjectDataRetriever, float fearTime)
         {
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedForced"));
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedForced(fearTime);
+            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new FearedForcedAIBehaviorEvent(fearTime));
         }
-        public void PZ_EVT_AI_FearedStunned_Ended(AIObjectID aiID)
+
+        public void PZ_EVT_AI_FearedStunned_Ended(AIObjectDataRetriever AIObjectDataRetriever)
         {
             Debug.Log(MyLog.Format("PZ_EVT_AI_FearedStunned_Ended"));
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAIFearedStunnedEnded();
+            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new FearedStartAIBehaviorEvent(
+                eventProcessedCallback: () =>
+                {
+                    AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetInteractiveObjectCutsceneControllerModule()
+                        .IfNotNull(InteractiveObjectCutsceneControllerModule => InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(AnimationID.POSE_OVERRIVE_LISTENING, 0f, false));
+                }
+            ));
         }
         #endregion
 
@@ -229,7 +237,7 @@ namespace RTPuzzle
 
         private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
         {
-            this.NPCAIManagerContainer.OnGameOver();
+            this.InteractiveObjectContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
@@ -237,7 +245,7 @@ namespace RTPuzzle
 
         private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)
         {
-            this.NPCAIManagerContainer.OnGameOver();
+            this.InteractiveObjectContainer.OnGameOver();
             this.DottedLineRendererManager.OnLevelExit();
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);

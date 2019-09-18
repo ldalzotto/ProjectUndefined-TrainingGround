@@ -203,9 +203,9 @@ namespace RTPuzzle
         #endregion
 
         #region Calculation failed fallback
-        public static Action OnDestinationCalculationFailed_ForceAIFear(PuzzleEventsManager puzzleEventsManager, AIObjectID aiID, float fearTime)
+        public static Action OnDestinationCalculationFailed_ForceAIFear(PuzzleEventsManager puzzleEventsManager, AIObjectDataRetriever AIObjectDataRetriever, float fearTime)
         {
-            return () => { puzzleEventsManager.PZ_EVT_AI_FearedForced(aiID, fearTime); };
+            return () => { puzzleEventsManager.PZ_EVT_AI_FearedForced(AIObjectDataRetriever, fearTime); };
         }
 
         public static float ForcedFearRemainingDistanceToFearTime(EscapeDestinationManager escapeDestinationManager, TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent)

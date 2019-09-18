@@ -48,15 +48,8 @@ namespace Tests
 
         public class MockPuzzleEventsManager : PuzzleEventsManager
         {
-
-            public bool OnDestinationReachedCalled;
+            
             public int AiHittedByProjectileCallCount;
-
-            public override void PZ_EVT_AI_DestinationReached(AIObjectID aiID)
-            {
-                base.PZ_EVT_AI_DestinationReached(aiID);
-                this.OnDestinationReachedCalled = true;
-            }
 
             public override void PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever AIObjectDataRetriever)
             {
@@ -66,7 +59,6 @@ namespace Tests
 
             public void ClearCalls()
             {
-                this.OnDestinationReachedCalled = false;
                 this.AiHittedByProjectileCallCount = 0;
             }
         }

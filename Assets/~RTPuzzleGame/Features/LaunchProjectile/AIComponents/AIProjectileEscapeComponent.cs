@@ -25,7 +25,6 @@ namespace RTPuzzle
 
     public abstract class AbstractAIProjectileEscapeManager : AbstractAIManager<AIProjectileEscapeComponent>, InterfaceAIManager
     {
-        protected AIObjectID aiID;
         protected AIObjectDataRetriever AIObjectDataRetriever;
         #region External Dependencies
         protected NavMeshAgent escapingAgent;
@@ -51,7 +50,6 @@ namespace RTPuzzle
         {
             this.escapingAgent = AIBheaviorBuildInputData.selfAgent;
             this.FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
-            this.aiID = AIBheaviorBuildInputData.aiID;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
             this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
             this.AIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
@@ -109,7 +107,7 @@ namespace RTPuzzle
                 this.OnDestinationSetFromProjectileContact(projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId);
                 this.FovManagerCalcuation.IntersectFOV_FromEscapeDirection(impactPoint, escapingAgent.transform.position, this.AssociatedAIComponent.EscapeSemiAngleV2.Values[projectileTriggerEnterAIBehaviorEvent.LaunchProjectileId]);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.OnTriggerEnterDestinationCalculation,
-                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
+                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.AIObjectDataRetriever, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }
             this.SetIsEscapingFromProjectile(true);
         }
@@ -124,7 +122,7 @@ namespace RTPuzzle
             }
             else
             {
-                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.DestinationCalulationMethod, EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID,
+                this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.DestinationCalulationMethod, EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.AIObjectDataRetriever,
                    EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.AIDestimationMoveManagerComponent)));
             }
         }

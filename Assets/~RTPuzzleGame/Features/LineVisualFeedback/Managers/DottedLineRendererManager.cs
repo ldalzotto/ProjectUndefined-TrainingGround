@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class DottedLineRendererManager : MonoBehaviour
+    public class DottedLineRendererManager : MonoBehaviour, IDottedLineRendererManagerEvent
     {
         private DottedLineManagerThread DottedLineManagerThreadObject;
 
@@ -46,7 +46,16 @@ namespace RTPuzzle
                 }
             }
         }
+        
+        protected virtual void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
+        {
+            lock (this.ComputeBeziersInnerPointResponses)
+            {
+                this.ComputeBeziersInnerPointResponses.Enqueue(ComputeBeziersInnerPointResponse);
+            }
+        }
 
+        #region External Events
         public virtual void OnDottedLineDestroyed(DottedLine dottedLine)
         {
             if (this.dottedLines.ContainsKey(dottedLine.GetInstanceID()))
@@ -55,21 +64,12 @@ namespace RTPuzzle
             }
         }
 
-
-        #region External Events
         public virtual void OnComputeBeziersInnerPointEvent(DottedLine DottedLine)
         {
             this.dottedLines[DottedLine.GetInstanceID()] = DottedLine;
             this.DottedLineManagerThreadObject.OnComputeBeziersInnerPointEvent(DottedLine.BuildComputeBeziersInnerPointEvent());
         }
-        public virtual void OnComputeBeziersInnerPointResponse(ComputeBeziersInnerPointResponse ComputeBeziersInnerPointResponse)
-        {
-            lock (this.ComputeBeziersInnerPointResponses)
-            {
-                this.ComputeBeziersInnerPointResponses.Enqueue(ComputeBeziersInnerPointResponse);
-            }
-        }
-
+        
         public virtual void OnLevelExit()
         {
             lock (this.ComputeBeziersInnerPointResponses)

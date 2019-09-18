@@ -11,9 +11,6 @@ namespace RTPuzzle
 
     public class GroundEffectsManagerV2 : MonoBehaviour
     {
-        #region Materials
-        public Material MasterRangeMaterial;
-        #endregion
 
         #region External Dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
@@ -26,6 +23,8 @@ namespace RTPuzzle
         #region Command Buffers
         private CommandBuffer rangeDrawCommand;
         #endregion
+
+        private Material MasterRangeMaterial;
 
         private List<GroundEffectType> AffectedGroundEffectsType;
 
@@ -55,6 +54,8 @@ namespace RTPuzzle
             ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
             this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
             #endregion
+
+            this.MasterRangeMaterial = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzleMaterialConfiguration.MasterRangeMaterial;
 
             var camera = Camera.main;
 

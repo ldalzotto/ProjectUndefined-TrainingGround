@@ -15,7 +15,7 @@ namespace RTPuzzle
         private TransformMoveManagerComponentV3 aIDestimationMoveManagerComponent;
         #endregion
 
-        private AIObjectID aiID;
+        private AIObjectDataRetriever AIObjectDataRetriever;
 
         #region AIBehabvior event manager
         private PuzzleAIBehaviorExternalEventManager puzzleAIBehaviorExternalEventManager;
@@ -43,7 +43,7 @@ namespace RTPuzzle
             this.fovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.InteractiveObjectContainer = AIBheaviorBuildInputData.InteractiveObjectContainer;
             this.escapeDestinationManager = new EscapeDestinationManager(this.selfAgent);
-            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.AIObjectDataRetriever = AIBheaviorBuildInputData.AIObjectDataRetriever();
             this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
             this.aIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
             this.OnStateReset();
@@ -106,7 +106,7 @@ namespace RTPuzzle
                 {
                     this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(7, navMeshRaycastStrategy, this.fovManagerCalcuation, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
                 },
-                ifAllFailsAction: EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.aIDestimationMoveManagerComponent))
+                ifAllFailsAction: EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear(this.puzzleEventsManager, this.AIObjectDataRetriever, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.aIDestimationMoveManagerComponent))
              );
         }
     }

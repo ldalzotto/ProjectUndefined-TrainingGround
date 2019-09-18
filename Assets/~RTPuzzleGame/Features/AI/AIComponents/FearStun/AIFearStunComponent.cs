@@ -23,7 +23,7 @@ namespace RTPuzzle
 
     public abstract class AbstractAIFearStunManager : AbstractAIManager<AIFearStunComponent>, InterfaceAIManager
     {
-        protected AIObjectID AiID;
+        protected AIObjectDataRetriever AIObjectDataRetriever;
 
         #region State
         protected bool isFeared;
@@ -38,7 +38,7 @@ namespace RTPuzzle
 
         public virtual void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
-            AiID = AIBheaviorBuildInputData.aiID;
+            AIObjectDataRetriever = AIBheaviorBuildInputData.AIObjectDataRetriever();
             PuzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
         }
 
@@ -67,14 +67,14 @@ namespace RTPuzzle
             {
                 if (!this.isFeared)
                 {
-                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Start(this.AiID);
+                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Start(this.AIObjectDataRetriever);
                 }
             }
             else
             {
                 if (this.isFeared)
                 {
-                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Ended(this.AiID);
+                    this.PuzzleEventsManager.PZ_EVT_AI_FearedStunned_Ended(this.AIObjectDataRetriever);
                 }
             }
             this.isFeared = newIsFearedValue;

@@ -197,6 +197,13 @@ namespace RTPuzzle
             interactiveObject.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) => this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID));
         }
 
+        public void OnGameOver()
+        {
+            foreach (var interactiveObject in this.interactiveObjects.MultiValueGetValues())
+            {
+                interactiveObject.GetIContextMarkVisualFeedbackEvent().IfNotNull((IContextMarkVisualFeedbackEvent) => IContextMarkVisualFeedbackEvent.Delete());
+            }
+        }
 
 #if UNITY_EDITOR
         public void TEST_OnInteractiveObjectDestroyed(InteractiveObjectType interactiveObject)

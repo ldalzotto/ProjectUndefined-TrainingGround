@@ -1,7 +1,5 @@
 ﻿using GameConfigurationID;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -14,18 +12,6 @@ namespace RTPuzzle
         public void OnNPCAiManagerCreated(AIObjectType NPCAIManager)
         {
             this.npcAiManagers.Add(NPCAIManager.AiID, NPCAIManager);
-        }
-        public void OnGameOver()
-        {
-            foreach (var npcAiManager in npcAiManagers.Values)
-            {
-                npcAiManager.OnGameOver();
-            }
-        }
-
-        internal void OnDestinationReached(AIObjectID aiID)
-        {
-            this.npcAiManagers[aiID].OnDestinationReached();
         }
         #endregion
 
@@ -51,7 +37,7 @@ namespace RTPuzzle
 
         public void TickAlways(float d, float timeAttenuationFactor)
         {
-            
+
         }
 
         public void TickWhenTimeFlows(float d, float timeAttenuationFactor)
