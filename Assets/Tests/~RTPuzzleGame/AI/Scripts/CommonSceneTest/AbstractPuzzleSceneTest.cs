@@ -58,9 +58,9 @@ namespace Tests
                 this.OnDestinationReachedCalled = true;
             }
 
-            public override void PZ_EVT_AI_Projectile_Hitted(AIObjectID aiID)
+            public override void PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever AIObjectDataRetriever)
             {
-                base.PZ_EVT_AI_Projectile_Hitted(aiID);
+                base.PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever);
                 this.AiHittedByProjectileCallCount += 1;
             }
 

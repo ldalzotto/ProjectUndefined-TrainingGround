@@ -26,6 +26,7 @@ namespace RTPuzzle
     public abstract class AbstractAIProjectileEscapeManager : AbstractAIManager<AIProjectileEscapeComponent>, InterfaceAIManager
     {
         protected AIObjectID aiID;
+        protected AIObjectDataRetriever AIObjectDataRetriever;
         #region External Dependencies
         protected NavMeshAgent escapingAgent;
         protected IFovManagerCalcuation FovManagerCalcuation;
@@ -54,6 +55,7 @@ namespace RTPuzzle
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
             this.puzzleEventsManager = AIBheaviorBuildInputData.PuzzleEventsManager;
             this.AIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
+            this.AIObjectDataRetriever = AIBheaviorBuildInputData.AIObjectDataRetriever();
         }
 
         #region Internal Events

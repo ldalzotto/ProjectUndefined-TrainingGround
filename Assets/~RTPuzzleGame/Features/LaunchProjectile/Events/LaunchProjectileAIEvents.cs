@@ -10,13 +10,13 @@ namespace RTPuzzle
         private LaunchProjectileID launchProjectileId;
         private LaunchProjectileInherentData launchProjectileInherentData;
 
-        public ProjectileTriggerEnterAIBehaviorEvent(LaunchProjectileModule launchProjectile)
+        public ProjectileTriggerEnterAIBehaviorEvent(ILaunchProjectileModuleDataRetrieval ILaunchProjectileModuleDataRetrieval)
         {
-            this.collisionPosition = launchProjectile.GetGroundCollisionTrackingCollider().transform.position;
-            if (launchProjectile != null)
+            this.collisionPosition = ILaunchProjectileModuleDataRetrieval.GetGroundCollisionTrackingCollider().transform.position;
+            if (ILaunchProjectileModuleDataRetrieval != null)
             {
-                this.launchProjectileId = launchProjectile.LaunchProjectileID;
-                launchProjectileInherentData = launchProjectile.LaunchProjectileInherentData;
+                this.launchProjectileId = ILaunchProjectileModuleDataRetrieval.GetLaunchProjectileID();
+                launchProjectileInherentData = ILaunchProjectileModuleDataRetrieval.GetLaunchProjectileInherentData();
             }
         }
 

@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    // () => { return ; }
     public class AIProjectileWithCollisionEscapeManager : AbstractAIProjectileEscapeManager
     {
 
@@ -29,7 +28,7 @@ namespace RTPuzzle
         {
             if (this.isEscapingFromProjectile && !value)
             {
-                this.puzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.aiID);
+                this.puzzleEventsManager.PZ_EVT_AI_Projectile_NoMoreAffected(this.AIObjectDataRetriever);
             }
             base.SetIsEscapingFromProjectile(value);
         }
@@ -37,7 +36,7 @@ namespace RTPuzzle
         protected override Action<NavMeshRaycastStrategy> OnTriggerEnterDestinationCalculation => (NavMeshRaycastStrategy navMeshRaycastStrategy) =>
         {
             Debug.Log(MyLog.Format("EscapeToFarestWithTargetZone"));
-            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.aiID);
+            this.puzzleEventsManager.PZ_EVT_AI_Projectile_Hitted(this.AIObjectDataRetriever);
             this.escapeDestinationManager.EscapeToFarestWithCollidersAvoid(5, navMeshRaycastStrategy, this.FovManagerCalcuation, TargetZoneHelper.GetTargetZonesTriggerColliders(this.InteractiveObjectContainer));
         };
 

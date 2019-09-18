@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener, ILaunchProjectileAIEventListener
     {
         #region External Dependencies
         private AIManagerContainer NPCAIManagerContainer;
@@ -100,15 +100,31 @@ namespace RTPuzzle
         }
         #endregion
 
-        public virtual void PZ_EVT_AI_Projectile_Hitted(AIObjectID aiID)
+        #region ILaunchProjectileAIEventListener
+        public virtual void PZ_EVT_AI_Projectile_Hitted(AIObjectDataRetriever AIObjectDataRetriever)
         {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnHittedByProjectileFirstTime();
-        }
+            var interactiveObjectTypeDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
+            var IContextMarkVisualFeedbackEvent = interactiveObjectTypeDataRetrieval.GetIContextMarkVisualFeedbackEvent();
+            if (IContextMarkVisualFeedbackEvent != null)
+            {
+                IContextMarkVisualFeedbackEvent.CreateExclamationMark();
+            }
 
-        public void PZ_EVT_AI_Projectile_NoMoreAffected(AIObjectID aiID)
-        {
-            this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnAiAffectedByProjectileEnd();
+            var InteractiveObjectCutsceneControllerModule = interactiveObjectTypeDataRetrieval.GetInteractiveObjectCutsceneControllerModule();
+            if (InteractiveObjectCutsceneControllerModule != null)
+            {
+                InteractiveObjectCutsceneControllerModule.InteractiveObjectCutsceneController.Play(AnimationID.HITTED_BY_PROJECTILE_1ST, 0f, false);
+            }
         }
+        public void PZ_EVT_AI_Projectile_NoMoreAffected(AIObjectDataRetriever AIObjectDataRetriever)
+        {
+            var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();
+            if (IContextMarkVisualFeedbackEvent != null)
+            {
+                IContextMarkVisualFeedbackEvent.Delete();
+            }
+        }
+        #endregion
 
         #region Escape without target zone events
         public void PZ_EVT_AI_EscapeWithoutTarget_Start(AIObjectID aiID)
@@ -121,7 +137,7 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetEnd();
         }
         #endregion
-        
+
         #region RepelableObject Events
         public void PZ_EVT_RepelableObject_OnObjectRepelled(ObjectRepelModule objectRepelType, Vector3 targetWorldPosition)
         {

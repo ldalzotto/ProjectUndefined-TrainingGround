@@ -6,12 +6,18 @@ using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
-    public class LaunchProjectileModule : InteractiveObjectModule, ILaunchProjectileModuleEvents
+    public interface ILaunchProjectileModuleDataRetrieval
+    {
+        LaunchProjectileID GetLaunchProjectileID();
+        LaunchProjectileInherentData GetLaunchProjectileInherentData();
+        Collider GetGroundCollisionTrackingCollider();
+    }
+
+    public class LaunchProjectileModule : InteractiveObjectModule, ILaunchProjectileModuleDataRetrieval
     {
         [FormerlySerializedAs("LaunchProjectileId")]
         public LaunchProjectileID LaunchProjectileID;
         private LaunchProjectileInherentData launchProjectileInherentData;
-        public LaunchProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
 
         #region Internal Dependencies
         private InteractiveObjectType ParentInteractiveObjectTypeRef;
@@ -29,6 +35,14 @@ namespace RTPuzzle
         public Collider GetGroundCollisionTrackingCollider()
         {
             return this.ProjectileGroundTrigger;
+        }
+        public LaunchProjectileInherentData GetLaunchProjectileInherentData()
+        {
+            return this.launchProjectileInherentData;
+        }
+        public LaunchProjectileID GetLaunchProjectileID()
+        {
+            return this.LaunchProjectileID;
         }
         public Vector3 GetTargetPosition()
         {

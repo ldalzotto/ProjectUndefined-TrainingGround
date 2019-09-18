@@ -230,7 +230,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\Configuration\Matrices\ProjectileEscapeRange.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\Configuration\Matrices\ProjectileEscapeSemiAngle.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\Events\LaunchProjectileAIEvents.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\ExposedInterfaces\ILaunchProjectileModuleEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\ExposedInterfaces\ILaunchProjectileAIEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\InteractiveObjectDefinitions\LaunchProjectileModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\InteractiveObjectModules\LaunchProjectileModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\PlayerActions\LaunchProjectileAction.cs" />
