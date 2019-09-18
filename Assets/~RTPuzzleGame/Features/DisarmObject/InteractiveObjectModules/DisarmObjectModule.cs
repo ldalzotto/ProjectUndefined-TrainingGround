@@ -21,10 +21,6 @@ namespace RTPuzzle
         private CircleFillBarType progressbar;
         #endregion
 
-        #region Events Listener
-        private IDisarmObjectModuleEventListener IAIDisarmObjectEventListener;
-        #endregion
-
         #region State
         private HashSet<AIObjectDataRetriever> AIDisarmingTheObject;
         #endregion
@@ -72,7 +68,6 @@ namespace RTPuzzle
 
             this.elapsedTime = 0f;
             this.associatedIInteractiveObjectTypeEvents = IInteractiveObjectTypeEvents;
-            this.IAIDisarmObjectEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.AIDisarmingTheObject = new HashSet<AIObjectDataRetriever>();
         }
 
@@ -106,7 +101,7 @@ namespace RTPuzzle
             }
         }
 
-        public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
+        public void Tick(float d, float timeAttenuationFactor)
         {
             if (this.AIDisarmingTheObject.Count > 0)
             {
@@ -119,17 +114,17 @@ namespace RTPuzzle
 
         public override void OnInteractiveObjectDestroyed()
         {
+            var disarmingTriggerExitAIEvent = new DisarmingObjectExitAIbehaviorEvent(this);
             var firstElement = this.AIDisarmingTheObject.First();
             while (firstElement != null)
             {
-                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerExit(this, firstElement);
+                firstElement.GetAIBehavior().ReceiveEvent(disarmingTriggerExitAIEvent);
                 firstElement = null;
                 if (this.AIDisarmingTheObject.Count > 0)
                 {
                     firstElement = this.AIDisarmingTheObject.First();
                 }
             }
-
             this.AIDisarmingTheObject.Clear();
         }
 
@@ -137,7 +132,6 @@ namespace RTPuzzle
         public void OnDisarmObjectStart(AIObjectDataRetriever InvolvedAI)
         {
             this.AIDisarmingTheObject.Add(InvolvedAI);
-
             this.associatedIInteractiveObjectTypeEvents.DisableModule(typeof(GrabObjectModule));
         }
 
@@ -157,7 +151,7 @@ namespace RTPuzzle
             if (collisionType != null && collisionType.IsAI)
             {
                 var AIObjectDataRetriever = AILogicColliderModule.FromCollisionType(collisionType);
-                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerEnter(this, AIObjectDataRetriever);
+                AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new DisarmingObjectEnterAIbehaviorEvent(this));
             }
         }
 
@@ -167,7 +161,7 @@ namespace RTPuzzle
             if (collisionType != null && collisionType.IsAI)
             {
                 var AIObjectDataRetriever = AILogicColliderModule.FromCollisionType(collisionType);
-                this.IAIDisarmObjectEventListener.PZ_DisarmObject_TriggerExit(this, AIObjectDataRetriever);
+                AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(this));
             }
         }
 

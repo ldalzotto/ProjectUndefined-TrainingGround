@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectModuleEventListener, IDisarmObjectAIEventListener
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener
     {
         #region External Dependencies
         private AIManagerContainer NPCAIManagerContainer;
@@ -193,16 +193,6 @@ namespace RTPuzzle
         #endregion
 
         #region Disarm object event
-        public void PZ_DisarmObject_TriggerEnter(IDisarmObjectModuleDataRetrieval IDisarmObjectModuleDataRetrieval, AIObjectDataRetriever disarmObjectModule)
-        {
-            disarmObjectModule.GetAIBehavior().ReceiveEvent(new DisarmingObjectEnterAIbehaviorEvent(IDisarmObjectModuleDataRetrieval));
-        }
-
-        public void PZ_DisarmObject_TriggerExit(IDisarmObjectModuleDataRetrieval IDisarmObjectModuleDataRetrieval, AIObjectDataRetriever disarmObjectModule)
-        {
-            disarmObjectModule.GetAIBehavior().ReceiveEvent(new DisarmingObjectExitAIbehaviorEvent(IDisarmObjectModuleDataRetrieval));
-        }
-
         public void AI_EVT_DisarmObject_Start(AIObjectDataRetriever AIObjectDataRetriever, IDisarmObjectModuleDataRetrieval disarmedObjectModule)
         {
             var aiLocalPuzzleCutsceneModule = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetILocalPuzzleCutsceneModuleEvent();

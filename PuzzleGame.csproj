@@ -203,6 +203,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Configuration\AttractiveObjectInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\Events\AttractiveObjectAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAIAttractiveObjectEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAttractiveObjectModuleEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
@@ -220,7 +221,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectAIEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleDataRetrieval.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleEvent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\InteractiveObjectDefinitions\DisarmObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\DisarmObject\InteractiveObjectModules\DisarmObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\ExposedInterfaces\IFovManagerCalcuation.cs" />
