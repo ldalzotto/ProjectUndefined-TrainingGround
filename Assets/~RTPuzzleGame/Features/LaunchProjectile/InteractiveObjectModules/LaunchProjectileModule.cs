@@ -200,21 +200,21 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.InteractiveObjectContainer.ObjectsRepelable)
             {
-                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(repelAbleObject.ObjectRepelCollider as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
+                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(repelAbleObject.GetObjectRepelCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     //float travelDistance = 13;
-                    float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.ObjectRepelID].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileID);
-                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.transform.position - launchProjectileRef.transform.position), repelAbleObject.transform.up).normalized;
+                    float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.GetObjectRepelID()].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileID);
+                    var projectionDirection = Vector3.ProjectOnPlane((repelAbleObject.GetTransform().position - launchProjectileRef.transform.position), repelAbleObject.GetTransform().up).normalized;
                     NavMeshHit navmeshHit;
-                    if (NavMesh.SamplePosition(repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(repelAbleObject.GetTransform().position + (projectionDirection * travelDistance), out navmeshHit, 0.5f, NavMesh.AllAreas))
                     {
-                        this.PuzzleEventsManager.PZ_EVT_RepelableObject_OnObjectRepelled(repelAbleObject, navmeshHit.position);
+                        repelAbleObject.GetIObjectRepelModuleEvent().OnObjectRepelRepelled(navmeshHit.position);
                     }
                     else
                     {
-                        if (NavMesh.Raycast(repelAbleObject.transform.position, repelAbleObject.transform.position + (projectionDirection * travelDistance), out navmeshHit, NavMesh.AllAreas))
+                        if (NavMesh.Raycast(repelAbleObject.GetTransform().position, repelAbleObject.GetTransform().position + (projectionDirection * travelDistance), out navmeshHit, NavMesh.AllAreas))
                         {
-                            this.PuzzleEventsManager.PZ_EVT_RepelableObject_OnObjectRepelled(repelAbleObject, navmeshHit.position);
+                            repelAbleObject.GetIObjectRepelModuleEvent().OnObjectRepelRepelled(navmeshHit.position);
                         }
                     }
                 }

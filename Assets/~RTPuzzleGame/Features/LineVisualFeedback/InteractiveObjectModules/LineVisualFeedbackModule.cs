@@ -10,7 +10,6 @@ namespace RTPuzzle
         #region External Dependencies
         private InteractiveObjectContainer InteractiveObjectContainer;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
-        private DottedLineContainer DottedLineContainer;
         #endregion
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
@@ -18,7 +17,6 @@ namespace RTPuzzle
         {
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            this.DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
 
             //position calculation
             this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
@@ -43,7 +41,7 @@ namespace RTPuzzle
         {
             if (this.AttractiveObjectDottedLine == null)
             {
-                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager, this.DottedLineContainer);
+                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager);
             }
             this.AttractiveObjectModelObjectModule = TargetModelObjectModule;
             this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(TargetModelObjectModule);

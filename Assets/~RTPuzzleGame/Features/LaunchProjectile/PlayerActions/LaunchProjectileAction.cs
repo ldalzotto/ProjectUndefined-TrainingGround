@@ -52,7 +52,6 @@ namespace RTPuzzle
             #region External Dependencies
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
             this.PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
-            var DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
             var camera = Camera.main;
             PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -78,7 +77,7 @@ namespace RTPuzzle
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          this.projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
-            LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
+            LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, this.projectileObject, playerTransform);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
@@ -524,22 +523,20 @@ namespace RTPuzzle
         private PlayerManagerDataRetriever PlayerManagerDataRetriever;
         private LaunchProjectileRayPositionerManager LaunchProjectileRayPositionerManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
-        private DottedLineContainer DottedLineContainer;
         #endregion
 
         private DottedLine ProjectilePath;
 
         public LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever playerManagerDataRetriever, LaunchProjectileRayPositionerManager launchProjectileRayPositionerManager,
-                            PuzzleGameConfigurationManager puzzleGameConfigurationManager, DottedLineContainer DottedLineContainer)
+                            PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
             #region External Dependencies
             PlayerManagerDataRetriever = playerManagerDataRetriever;
             LaunchProjectileRayPositionerManager = launchProjectileRayPositionerManager;
             PuzzleGameConfigurationManager = puzzleGameConfigurationManager;
-            this.DottedLineContainer = DottedLineContainer;
             #endregion
 
-            this.ProjectilePath = DottedLine.CreateInstance(DottedLineID.PROJECTILE_POSITIONING, PuzzleGameConfigurationManager, this.DottedLineContainer);
+            this.ProjectilePath = DottedLine.CreateInstance(DottedLineID.PROJECTILE_POSITIONING, PuzzleGameConfigurationManager);
         }
 
         public void Tick(float d)
@@ -555,7 +552,7 @@ namespace RTPuzzle
         {
             if (this.ProjectilePath == null)
             {
-                this.ProjectilePath = DottedLine.CreateInstance(DottedLineID.PROJECTILE_POSITIONING, PuzzleGameConfigurationManager, this.DottedLineContainer);
+                this.ProjectilePath = DottedLine.CreateInstance(DottedLineID.PROJECTILE_POSITIONING, PuzzleGameConfigurationManager);
             }
         }
 

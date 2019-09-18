@@ -113,9 +113,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\Matrix\RepelableObjectDistance.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\Abstract\AbstractInteractiveObjectDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ActionInteractableObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AILogicColliderModuleDefinition.cs" />
@@ -125,7 +122,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\LevelCompletionTriggerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\NearPlayerGameOverTriggerModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ObjectRepelModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ObjectSightModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectSharedDataTypeInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionConfiguration.cs" />
@@ -248,6 +244,13 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Lib\DottedLineContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Lib\LineTypes\DottedLine.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LineVisualFeedback\Managers\DottedLineRendererManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\Configuration\Matrix\RepelableObjectDistance.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\Configuration\ObjectRepelConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\Configuration\ObjectRepelInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\ExposedInterfaces\IObjectRepelModuleEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\InteractiveObjectDefinitions\ObjectRepelModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\InteractiveObjectModules\ObjectRepelModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ObjectRepel\Managers\ObjectRepelLineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Configuration\PuzzleCutsceneConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Configuration\PuzzleCutsceneInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Actions\FollowTransformAction.cs" />
@@ -286,7 +289,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LevelCompletionTriggerModule\LevelCompletionTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\NearPlayerGameOverTriggerModule\NearPlayerGameOverTriggerModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectRepelModule\ObjectRepelModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectSightModule\ObjectSightModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectInitializationObject.cs" />
@@ -312,7 +314,6 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionPuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionBuilder.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelLineVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\Range\Script\Modules\RangeType\BoxRangeType.cs" />

@@ -1,12 +1,19 @@
-﻿using System;
-using CoreGame;
+﻿using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
-    public class ObjectRepelModule : InteractiveObjectModule
+    public interface IObjectRepelModuleDataRetrieval
+    {
+        ObjectRepelID GetObjectRepelID();
+        Transform GetTransform();
+        Collider GetObjectRepelCollider();
+        IObjectRepelModuleEvent GetIObjectRepelModuleEvent();
+    }
+
+    public class ObjectRepelModule : InteractiveObjectModule, IObjectRepelModuleEvent, IObjectRepelModuleDataRetrieval
     {
         [FormerlySerializedAs("RepelableObjectID")]
         public ObjectRepelID ObjectRepelID;
@@ -18,8 +25,6 @@ namespace RTPuzzle
         #region Internal Dependencies
         private Collider objectRepelCollider;
         #endregion
-
-        public Collider ObjectRepelCollider { get => objectRepelCollider; }
 
         private ObjectRepelTypeAnimationComponent objectRepelTypeAnimationComponent = new ObjectRepelTypeAnimationComponent();
 
@@ -59,9 +64,9 @@ namespace RTPuzzle
             transform.parent.transform.position = worldPosition;
         }
 
-        public void OnObjectRepelRepelled(BeziersControlPoints path)
+        public void OnObjectRepelRepelled(Vector3 targetWorldPosition)
         {
-            this.objectRepelTypeAnimationComponent.path = path;
+            this.objectRepelTypeAnimationComponent.path = BeziersControlPoints.Build(this.transform.position, targetWorldPosition, this.transform.up, BeziersControlPointsShape.CURVED);
             objectRepelTypeAnimationComponent.isMoving = true;
             objectRepelTypeAnimationComponent.elapsedTime = 0.1f;
             this.Tick(0, 0);
@@ -72,6 +77,13 @@ namespace RTPuzzle
         {
             return this.ModelObjectModule;
         }
+        public IObjectRepelModuleEvent GetIObjectRepelModuleEvent() { return this; }
+        public Collider GetObjectRepelCollider()
+        {
+            return this.objectRepelCollider;
+        }
+        public ObjectRepelID GetObjectRepelID() { return this.ObjectRepelID; }
+        public Transform GetTransform() { return this.transform; }
         #endregion
 
         public static class ObjectRepelModuleInstancer
@@ -88,15 +100,6 @@ namespace RTPuzzle
         public bool isMoving;
         public float elapsedTime;
         public BeziersControlPoints path;
-    }
-
-    public static class ObjectRepelTypeModuleEventHandling
-    {
-        public static void OnObjectRepelRepelled(ObjectRepelModule objectRepelType, Vector3 targetWorldPosition)
-        {
-            Debug.Log(MyLog.Format(Vector3.Distance(objectRepelType.transform.position, targetWorldPosition)));
-            objectRepelType.OnObjectRepelRepelled(BeziersControlPoints.Build(objectRepelType.transform.position, targetWorldPosition, objectRepelType.transform.up, BeziersControlPointsShape.CURVED));
-        }
     }
 }
 

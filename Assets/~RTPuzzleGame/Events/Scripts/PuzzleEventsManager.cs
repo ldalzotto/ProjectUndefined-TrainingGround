@@ -139,13 +139,6 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region RepelableObject Events
-        public void PZ_EVT_RepelableObject_OnObjectRepelled(ObjectRepelModule objectRepelType, Vector3 targetWorldPosition)
-        {
-            ObjectRepelTypeModuleEventHandling.OnObjectRepelRepelled(objectRepelType, targetWorldPosition);
-        }
-        #endregion
-
         #region Player action management event
         public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {

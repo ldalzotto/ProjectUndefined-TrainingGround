@@ -20,10 +20,10 @@ namespace RTPuzzle
         private DottedLineRendererManager DottedLineManager;
         #endregion
 
-        public static DottedLine CreateInstance(DottedLineID DottedLineID, PuzzleGameConfigurationManager puzzleGameConfigurationManager, DottedLineContainer DottedLineContainer)
+        public static DottedLine CreateInstance(DottedLineID DottedLineID, PuzzleGameConfigurationManager puzzleGameConfigurationManager)
         {
             var instanciatedDottedLine = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseDottedLineBasePrefab,
-                    DottedLineContainer.transform);
+                   PuzzleGameSingletonInstances.DottedLineContainer.transform);
             instanciatedDottedLine.transform.position = Vector3.zero;
             instanciatedDottedLine.transform.localScale = Vector3.one;
             instanciatedDottedLine.transform.rotation = Quaternion.identity;

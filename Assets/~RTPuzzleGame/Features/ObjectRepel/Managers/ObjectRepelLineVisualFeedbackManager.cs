@@ -9,7 +9,6 @@ namespace RTPuzzle
     {
         #region External Dependencies
         private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
-        private DottedLineContainer dottedLineContainer;
         #endregion
 
         private Dictionary<RangeType, List<ObjectRepelModule>> inRangeRepelableObjects;
@@ -19,7 +18,6 @@ namespace RTPuzzle
         {
             #region External Dependencies
             this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            this.dottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
             #endregion
 
             this.inRangeRepelableObjects = new Dictionary<RangeType, List<ObjectRepelModule>>();
@@ -79,7 +77,7 @@ namespace RTPuzzle
                     this.inRangeRepelableObjectFXManagers[objectRepelType] = new List<InRangeRepelableObjectFXManager>();
                 }
 
-                this.inRangeRepelableObjectFXManagers[objectRepelType].Add(new InRangeRepelableObjectFXManager(DottedLine.CreateInstance(DottedLineID.REPELABLE_OBJECT_FEEDBACK, this.puzzleGameConfigurationManager, this.dottedLineContainer)));
+                this.inRangeRepelableObjectFXManagers[objectRepelType].Add(new InRangeRepelableObjectFXManager(DottedLine.CreateInstance(DottedLineID.REPELABLE_OBJECT_FEEDBACK, this.puzzleGameConfigurationManager)));
             }
         }
 
