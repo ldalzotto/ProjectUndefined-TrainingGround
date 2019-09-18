@@ -18,24 +18,14 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
+        public void OnSelectableEnter(ISelectableModule ISelectableModule)
         {
-            this.AddInteractiveObjectFromSelectable(actionInteractableObjectModule);
+            this.AddInteractiveObjectFromSelectable(ISelectableModule);
         }
 
-        public void OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
+        public void OnSelectableExit(ISelectableModule ISelectableModule)
         {
-            this.RemoveInteractiveObjectFromSelectable(actionInteractableObjectModule);
-        }
-
-        public void OnGrabObjectEnter(GrabObjectModule grabObjectModule)
-        {
-            this.AddInteractiveObjectFromSelectable(grabObjectModule);
-        }
-
-        public void OnGrabObjectExit(GrabObjectModule grabObjectModule)
-        {
-            this.RemoveInteractiveObjectFromSelectable(grabObjectModule);
+            this.RemoveInteractiveObjectFromSelectable(ISelectableModule);
         }
         #endregion
         

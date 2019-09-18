@@ -15,12 +15,16 @@ using UnityEngine;
 namespace RTPuzzle
 {
 
+    public interface IGrabObjectModuleDataRetrieval : ISelectableModule
+    {
 
-    public class GrabObjectModule : RTPuzzle.InteractiveObjectModule, ISelectableModule
+    }
+
+    public class GrabObjectModule : RTPuzzle.InteractiveObjectModule, IGrabObjectModuleDataRetrieval
     {
 
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private IGrabObjectEventListener IGrabObjectEventListener;
         #endregion
 
         [CustomEnum()]
@@ -61,8 +65,9 @@ namespace RTPuzzle
             this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
 
             #region External Dependencies
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.IGrabObjectEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
             #endregion
+
             this.parentInteractiveObject = GetComponentInParent<InteractiveObjectType>();
             this.grabObjectInherentData = GrabObjectInherentData;
 
@@ -82,13 +87,13 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsPlayer)
             {
-                this.PuzzleEventsManager.PZ_EVT_OnGrabObjectEnter(this);
+                this.IGrabObjectEventListener.PZ_EVT_OnGrabObjectEnter(this);
             }
         }
 
         public override void OnInteractiveObjectDestroyed()
         {
-            this.PuzzleEventsManager.PZ_EVT_OnGrabObjectExit(this);
+            this.IGrabObjectEventListener.PZ_EVT_OnGrabObjectExit(this);
         }
 
         private void OnTriggerExit(Collider other)
@@ -96,7 +101,7 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsPlayer)
             {
-                this.PuzzleEventsManager.PZ_EVT_OnGrabObjectExit(this);
+                this.IGrabObjectEventListener.PZ_EVT_OnGrabObjectExit(this);
             }
         }
 

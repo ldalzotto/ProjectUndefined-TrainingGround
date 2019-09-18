@@ -113,8 +113,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\GrabObjectConfiguration\GrabObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\Matrix\RepelableObjectDistance.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjects\RepelableObjectsConfiguration\ObjectRepelInherentData.cs" />
@@ -122,7 +120,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ActionInteractableObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AILogicColliderModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AttractiveObjectModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\GrabObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\InRangeColliderTrackerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\InteractiveObjectCutsceneControllerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\LevelCompletionTriggerModuleDefinition.cs" />
@@ -184,7 +181,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\Events\AgentEscapeAIEvents.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\ExposedInterfaces\IAgentEscapeEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\ExposedInterfaces\IAgentEscapeEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\Lib\EscapeDestinationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\AIComponents\AIAttractiveObjectLooseManager.cs" />
@@ -222,6 +219,12 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Lib\FovInteractionRingContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Lib\FovInteractionRingType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Fov\Managers\FovInteractionRingRendererManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\Configuration\GrabObjectConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\Configuration\GrabObjectInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\ExposedInterfaces\IGrabObjectEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\InteractiveObjectDefinitions\GrabObjectModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\InteractiveObjectModules\GrabObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectDefinitions\InteractiveObjectAnimationModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModuleInstancer.cs" />
@@ -277,7 +280,6 @@
     <Compile Include="Assets\~RTPuzzleGame\GameOver\Script\GameOverManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\GrabObjectModule\GrabObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InRangeColliderTrackerModule\InRangeColliderTrackerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InteractiveObjectCutsceneControllerModule\InteractiveObjectCutsceneControllerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\Interfaces\ISelectableModule.cs" />
@@ -308,7 +310,6 @@
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\CutsceneAction\CutsceneAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionPuzzleEventsManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\GrabObjectAction\GrabObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionBuilder.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionInteractionBehavior\Repel\ObjectRepelLineVisualFeedbackManager.cs" />

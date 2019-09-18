@@ -11,7 +11,7 @@ namespace RTPuzzle
         #region External Dependencies
         private NavMeshAgent escapingAgent;
         private IFovManagerCalcuation FovManagerCalcuation;
-        private IAgentEscapeEvent IAgentEscapeEvent;
+        private IAgentEscapeEventListener IAgentEscapeEventListener;
         private AIObjectID aiID;
         private TransformMoveManagerComponentV3 playerAIDestimationMoveManagerComponent;
         private AIObjectDataRetriever AIObjectDataRetriever;
@@ -30,7 +30,7 @@ namespace RTPuzzle
         {
             this.escapingAgent = AIBheaviorBuildInputData.selfAgent;
             FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
-            this.IAgentEscapeEvent = AIBheaviorBuildInputData.PuzzleEventsManager;
+            this.IAgentEscapeEventListener = AIBheaviorBuildInputData.PuzzleEventsManager;
             this.aiID = AIBheaviorBuildInputData.aiID;
             this.playerAIDestimationMoveManagerComponent = AIBheaviorBuildInputData.TransformMoveManagerComponent;
             this.escapeDestinationManager = new EscapeDestinationManager(this.escapingAgent);
@@ -57,7 +57,7 @@ namespace RTPuzzle
             else
             {
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.EscapeCaluclation,
-                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear((PuzzleEventsManager)this.IAgentEscapeEvent, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.playerAIDestimationMoveManagerComponent)));
+                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear((PuzzleEventsManager)this.IAgentEscapeEventListener, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.playerAIDestimationMoveManagerComponent)));
             }
         }
 
@@ -68,7 +68,7 @@ namespace RTPuzzle
                 this.escapeDestinationManager.ResetDistanceComputation(escapeWithoutTriggerStartAIBehaviorEvent.EscapeDistance);
                 this.FovManagerCalcuation.IntersectFOV_FromEscapeDirection(escapeWithoutTriggerStartAIBehaviorEvent.ThreatStartPoint, this.escapingAgent.transform.position, escapeWithoutTriggerStartAIBehaviorEvent.EscapeSemiAngle);
                 this.escapeDestinationManager.EscapeDestinationCalculationStrategy(this.EscapeCaluclation,
-                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear((PuzzleEventsManager)this.IAgentEscapeEvent, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.playerAIDestimationMoveManagerComponent)));
+                        EscapeDestinationManager.OnDestinationCalculationFailed_ForceAIFear((PuzzleEventsManager)this.IAgentEscapeEventListener, this.aiID, EscapeDestinationManager.ForcedFearRemainingDistanceToFearTime(this.escapeDestinationManager, this.playerAIDestimationMoveManagerComponent)));
             }
             this.SetIsEscaping(true);
         }
@@ -82,11 +82,11 @@ namespace RTPuzzle
         {
             if (value && !this.isEscaping)
             {
-                this.IAgentEscapeEvent.PZ_EVT_AI_EscapingStart(this.AIObjectDataRetriever, AnimationID.HITTED_BY_PROJECTILE_2ND);
+                this.IAgentEscapeEventListener.PZ_EVT_AI_EscapingStart(this.AIObjectDataRetriever, AnimationID.HITTED_BY_PROJECTILE_2ND);
             }
             if (!value && this.isEscaping)
             {
-                this.IAgentEscapeEvent.PZ_EVT_AI_NoMoreEscaping(this.AIObjectDataRetriever);
+                this.IAgentEscapeEventListener.PZ_EVT_AI_NoMoreEscaping(this.AIObjectDataRetriever);
             }
             this.isEscaping = value;
         }

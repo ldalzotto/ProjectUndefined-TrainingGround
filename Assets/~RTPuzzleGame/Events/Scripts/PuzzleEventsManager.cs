@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener, ILaunchProjectileAIEventListener, IAgentEscapeEvent
+    public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener,
+                                ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener
     {
         #region External Dependencies
         private AIManagerContainer NPCAIManagerContainer;
@@ -148,22 +149,22 @@ namespace RTPuzzle
         #region Player action management event
         public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.InteractiveObjectSelectionManager.OnActionInteractableEnter(actionInteractableObjectModule);
+            this.InteractiveObjectSelectionManager.OnSelectableEnter(actionInteractableObjectModule);
         }
         public void PZ_EVT_OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.InteractiveObjectSelectionManager.OnActionInteractableExit(actionInteractableObjectModule);
+            this.InteractiveObjectSelectionManager.OnSelectableExit(actionInteractableObjectModule);
         }
         #endregion
 
         #region GrabObject Events
-        public void PZ_EVT_OnGrabObjectEnter(GrabObjectModule grabObjectModule)
+        public void PZ_EVT_OnGrabObjectEnter(IGrabObjectModuleDataRetrieval IGrabObjectModuleDataRetrieval)
         {
-            this.InteractiveObjectSelectionManager.OnGrabObjectEnter(grabObjectModule);
+            this.InteractiveObjectSelectionManager.OnSelectableEnter(IGrabObjectModuleDataRetrieval);
         }
-        public void PZ_EVT_OnGrabObjectExit(GrabObjectModule grabObjectModule)
+        public void PZ_EVT_OnGrabObjectExit(IGrabObjectModuleDataRetrieval IGrabObjectModuleDataRetrieval)
         {
-            this.InteractiveObjectSelectionManager.OnGrabObjectExit(grabObjectModule);
+            this.InteractiveObjectSelectionManager.OnSelectableExit(IGrabObjectModuleDataRetrieval);
         }
         #endregion
 
