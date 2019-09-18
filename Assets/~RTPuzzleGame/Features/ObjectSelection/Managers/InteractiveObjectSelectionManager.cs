@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>
+    public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>, IInteractiveObjectSelectionEvent
     {
         #region External Dependencies
         private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
@@ -17,7 +17,7 @@ namespace RTPuzzle
             base.Init(GameInputManager);
         }
 
-        #region External Events
+        #region IInteractiveObjectSelectionEvent
         public void OnSelectableEnter(ISelectableModule ISelectableModule)
         {
             this.AddInteractiveObjectFromSelectable(ISelectableModule);

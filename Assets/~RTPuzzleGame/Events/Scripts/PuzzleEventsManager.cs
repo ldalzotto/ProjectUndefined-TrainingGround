@@ -18,7 +18,7 @@ namespace RTPuzzle
         private PlayerActionEventManager PlayerActionEventManager;
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
-        private InteractiveObjectSelectionManager InteractiveObjectSelectionManager;
+        private IInteractiveObjectSelectionEvent IInteractiveObjectSelectionEvent;
         #endregion
 
         public void Init()
@@ -33,7 +33,7 @@ namespace RTPuzzle
             this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
-            this.InteractiveObjectSelectionManager = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
+            this.IInteractiveObjectSelectionEvent = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
         }
 
         #region AI related events
@@ -142,22 +142,22 @@ namespace RTPuzzle
         #region Player action management event
         public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.InteractiveObjectSelectionManager.OnSelectableEnter(actionInteractableObjectModule);
+            this.IInteractiveObjectSelectionEvent.OnSelectableEnter(actionInteractableObjectModule);
         }
         public void PZ_EVT_OnActionInteractableExit(ActionInteractableObjectModule actionInteractableObjectModule)
         {
-            this.InteractiveObjectSelectionManager.OnSelectableExit(actionInteractableObjectModule);
+            this.IInteractiveObjectSelectionEvent.OnSelectableExit(actionInteractableObjectModule);
         }
         #endregion
 
         #region GrabObject Events
         public void PZ_EVT_OnGrabObjectEnter(IGrabObjectModuleDataRetrieval IGrabObjectModuleDataRetrieval)
         {
-            this.InteractiveObjectSelectionManager.OnSelectableEnter(IGrabObjectModuleDataRetrieval);
+            this.IInteractiveObjectSelectionEvent.OnSelectableEnter(IGrabObjectModuleDataRetrieval);
         }
         public void PZ_EVT_OnGrabObjectExit(IGrabObjectModuleDataRetrieval IGrabObjectModuleDataRetrieval)
         {
-            this.InteractiveObjectSelectionManager.OnSelectableExit(IGrabObjectModuleDataRetrieval);
+            this.IInteractiveObjectSelectionEvent.OnSelectableExit(IGrabObjectModuleDataRetrieval);
         }
         #endregion
 
