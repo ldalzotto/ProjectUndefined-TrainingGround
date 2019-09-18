@@ -13,8 +13,6 @@ namespace RTPuzzle
         void EndOfFixedTick();
         void TickGizmo();
         void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent);
-        void OnTriggerEnter(Collider collider);
-        void OnTriggerStay(Collider collider);
 
         void OnDestinationReached();
     }
@@ -175,8 +173,6 @@ namespace RTPuzzle
             this.puzzleAIBehaviorExternalEventManager.ConsumeEventsQueued();
         }
         public abstract void TickGizmo();
-        public abstract void OnTriggerEnter(Collider collider);
-        public abstract void OnTriggerStay(Collider collider);
 
         public abstract void OnDestinationReached();
 

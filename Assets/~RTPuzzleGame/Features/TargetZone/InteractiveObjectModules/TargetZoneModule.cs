@@ -7,7 +7,14 @@ using UnityEditor;
 
 namespace RTPuzzle
 {
-    public class TargetZoneModule : InteractiveObjectModule
+    public interface ITargetZoneModuleDataRetriever
+    {
+        TargetZoneID GetTargetZoneID();
+        Transform GetTransform();
+        ITargetZoneModuleEvent GetITargetZoneModuleEvent();
+    }
+
+    public class TargetZoneModule : InteractiveObjectModule, ITargetZoneModuleDataRetriever, ITargetZoneModuleEvent
     {
         [CustomEnum]
         public TargetZoneID TargetZoneID;
@@ -24,10 +31,14 @@ namespace RTPuzzle
         public Collider ZoneDistanceDetectionCollider { get => zoneDistanceDetectionCollider; }
         public LevelCompletionTriggerModule LevelCompletionTriggerModule { get => levelCompletionTriggerModule; }
 
-        public static TargetZoneModule FromCollisionType(CollisionType collisionType)
+        public static ITargetZoneModuleDataRetriever FromCollisionType(CollisionType collisionType)
         {
             return collisionType.GetComponent<TargetZoneModule>();
         }
+
+        public ITargetZoneModuleEvent GetITargetZoneModuleEvent() { return this; }
+        public Transform GetTransform() { return this.transform; }
+        public TargetZoneID GetTargetZoneID() { return this.TargetZoneID; }
         #endregion
 
         #region State
@@ -51,6 +62,18 @@ namespace RTPuzzle
                 this.hasInit = true;
             }
         }
+
+        #region ITargetZoneModuleEvent
+        public void OnAITriggerEnter(AIObjectDataRetriever AIObjectDataRetriever)
+        {
+            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(this));
+        }
+
+        public void OnAITriggerStay(AIObjectDataRetriever AIObjectDataRetriever)
+        {
+            AIObjectDataRetriever.GetAIBehavior().ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(this));
+        }
+        #endregion
 
         private void ResolveModuleDependencies()
         {

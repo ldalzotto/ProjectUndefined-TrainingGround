@@ -27,7 +27,7 @@ namespace RTPuzzle
         public abstract void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData);
 
         public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
-        public abstract void TriggerTargetZoneEscape(TargetZoneModule targetZone);
+        public abstract void TriggerTargetZoneEscape(ITargetZoneModuleDataRetriever ITargetZoneModuleDataRetriever);
         public abstract void OnDestinationReached();
         public abstract void OnStateReset();
 

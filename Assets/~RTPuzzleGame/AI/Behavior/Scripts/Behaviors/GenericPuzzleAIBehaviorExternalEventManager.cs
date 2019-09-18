@@ -48,8 +48,8 @@ namespace RTPuzzle
                 {typeof(AttractiveObjectTriggerStayAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_TriggerStay },
                 {typeof(AttractiveObjectTriggerExitAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_TriggerExit },
                 {typeof(AttractiveObjectDestroyedAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_Destroyed },
-                {typeof(TargetZoneTriggerEnterAIBehaviorEvent), TargetZone_TriggerEnter },
-                {typeof(TargetZoneTriggerStayAIBehaviorEvent), TargetZone_TriggerStay },
+                {typeof(TargetZoneTriggerEnterAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerEnter },
+                {typeof(TargetZoneTriggerStayAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerStay },
                 {typeof(PlayerEscapeStartAIBehaviorEvent), PlayerEscape_Start },
                 {typeof(SightInRangeEnterAIBehaviorEvent), SightInRange_Enter },
                 {typeof(SightInRangeExitAIBehaviorEvent), SightInRange_Exit },
@@ -149,49 +149,6 @@ namespace RTPuzzle
                 genericAiBehavior.SetManagerState(null);
                 // to not have inactive frame.
                 genericAiBehavior.ForceUpdateAIBehavior();
-            }
-        }
-        
-        private static void TargetZone_TriggerEnter(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAITargetZoneManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>()))
-            {
-                var targetZoneTriggerEnterAIBehaviorEvent = PuzzleAIBehaviorExternalEvent.Cast<TargetZoneTriggerEnterAIBehaviorEvent>();
-                if (targetZoneTriggerEnterAIBehaviorEvent.TargetZone != null)
-                {
-                    if (!genericAiBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>())
-                    {
-                        Debug.Log(MyLog.Format("Target zone reset FOV"));
-                        genericAiBehavior.FovManagerCalcuation.ResetFOV();
-                    }
-
-                    Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerEnter"));
-                    genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>().TriggerTargetZoneEscape(targetZoneTriggerEnterAIBehaviorEvent.TargetZone);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>());
-                }
-            }
-        }
-
-        private static void TargetZone_TriggerStay(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAITargetZoneManager>()
-                        && !genericAiBehavior.IsCurrentManagerEquals(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>())
-                        && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>()))
-            {
-                var targetZoneTriggerStayAIBehaviorEvent = PuzzleAIBehaviorExternalEvent.Cast<TargetZoneTriggerStayAIBehaviorEvent>();
-                if (!genericAiBehavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>())
-                {
-                    Debug.Log(MyLog.Format("Target zone reset FOV"));
-                    genericAiBehavior.FovManagerCalcuation.ResetFOV();
-                }
-                if (targetZoneTriggerStayAIBehaviorEvent.TargetZone != null)
-                {
-                    Debug.Log(MyLog.Format("AI - OnTargetZoneTriggerStay"));
-                    genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>().TriggerTargetZoneEscape(targetZoneTriggerStayAIBehaviorEvent.TargetZone);
-                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAITargetZoneManager>());
-                }
             }
         }
 
@@ -312,31 +269,7 @@ namespace RTPuzzle
             this.eventProcessedCallback = eventProcessedCallback;
         }
     }
-
-    public class TargetZoneTriggerEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private TargetZoneModule targetZone;
-
-        public TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneModule targetZone)
-        {
-            this.targetZone = targetZone;
-        }
-
-        public TargetZoneModule TargetZone { get => targetZone; }
-    }
-
-    public class TargetZoneTriggerStayAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private TargetZoneModule targetZone;
-
-        public TargetZoneTriggerStayAIBehaviorEvent(TargetZoneModule targetZone)
-        {
-            this.targetZone = targetZone;
-        }
-
-        public TargetZoneModule TargetZone { get => targetZone; }
-    }
-
+    
     public class PlayerEscapeStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
         private Vector3 playerPosition;

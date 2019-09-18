@@ -81,32 +81,6 @@ namespace RTPuzzle
             this.puzzleAIBehaviorExternalEventManager.AfterDestinationReached(this);
         }
 
-        #region External Events
-        public override void OnTriggerEnter(Collider collider)
-        {
-            var collisionType = collider.GetComponent<CollisionType>();
-            if (collisionType != null)
-            {
-                if (collisionType.IsTargetZone)
-                {
-                    this.ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneModule.FromCollisionType(collisionType)));
-                }
-            }
-        }
-
-        public override void OnTriggerStay(Collider collider)
-        {
-            var collisionType = collider.GetComponent<CollisionType>();
-            if (collisionType != null)
-            {
-                if (collisionType.IsTargetZone)
-                {
-                    this.ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(TargetZoneModule.FromCollisionType(collisionType)));
-                }
-            }
-        }
-        #endregion
-
         public override void TickGizmo()
         {
             this.GetAIManager<AbstractAIPatrolComponentManager>().IfNotNull(aIPatrolComponentManager => aIPatrolComponentManager.GizmoTick());

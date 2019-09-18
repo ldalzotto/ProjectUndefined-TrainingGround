@@ -81,16 +81,16 @@ namespace RTPuzzle
             isEscapingFromTargetZone = false;
         }
 
-        public override void TriggerTargetZoneEscape(TargetZoneModule targetZone)
+        public override void TriggerTargetZoneEscape(ITargetZoneModuleDataRetriever ITargetZoneModuleDataRetriever)
         {
-            Debug.Log(Time.frameCount + "Target zone trigger : " + targetZone.TargetZoneID);
+            Debug.Log(Time.frameCount + "Target zone trigger : " + ITargetZoneModuleDataRetriever.GetTargetZoneID());
 
-            var targetZoneConfigurationData = this.puzzleGameConfigurationManager.TargetZonesConfiguration()[targetZone.TargetZoneID];
+            var targetZoneConfigurationData = this.puzzleGameConfigurationManager.TargetZonesConfiguration()[ITargetZoneModuleDataRetriever.GetTargetZoneID()];
 
             this.isEscapingFromTargetZone = true;
             this.EscapeDestinationManager.ResetDistanceComputation(this.AssociatedAIComponent.TargetZoneEscapeDistance);
 
-            FovManagerCalcuation.IntersectFOV_FromEscapeDirection(targetZone.transform.position, agent.transform.position, targetZoneConfigurationData.EscapeFOVSemiAngle);
+            FovManagerCalcuation.IntersectFOV_FromEscapeDirection(ITargetZoneModuleDataRetriever.GetTransform().position, agent.transform.position, targetZoneConfigurationData.EscapeFOVSemiAngle);
 
             this.CalculateEscapeDirection();
         }

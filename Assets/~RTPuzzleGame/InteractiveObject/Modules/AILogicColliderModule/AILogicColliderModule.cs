@@ -57,9 +57,14 @@ namespace RTPuzzle
                         IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerEnter(this.AIObjectDataRetirever);
                     }
                 }
-            }
+                if (collisionType.IsTargetZone)
+                {
+                    TargetZoneModule.FromCollisionType(collisionType).GetITargetZoneModuleEvent()
+                        .OnAITriggerEnter(this.AIObjectDataRetirever);
+                }
 
-            this.AIObjectDataRetirever.GetAIBehavior().OnTriggerEnter(other);
+            }
+            
             if (this.PhysicsEventListeners != null)
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
@@ -82,9 +87,13 @@ namespace RTPuzzle
                         IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerStay(this.AIObjectDataRetirever);
                     }
                 }
+                if (collisionType.IsTargetZone)
+                {
+                    TargetZoneModule.FromCollisionType(collisionType).GetITargetZoneModuleEvent()
+                           .OnAITriggerStay(this.AIObjectDataRetirever);
+                }
             }
-
-            this.AIObjectDataRetirever.GetAIBehavior().OnTriggerStay(other);
+            
             if (this.PhysicsEventListeners != null)
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
