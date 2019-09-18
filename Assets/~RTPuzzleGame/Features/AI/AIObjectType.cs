@@ -21,24 +21,21 @@ namespace RTPuzzle
         void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition);
     }
 
-    public interface AIObjectDataRetriever : IRenderBoundRetrievable
+    public interface AIObjectDataRetriever
     {
         IPuzzleAIBehavior GetAIBehavior();
         IInteractiveObjectTypeDataRetrieval GetInteractiveObjectTypeDataRetrieval();
+        NavMeshAgent GetAgent();
     }
 
-    public class AIObjectType : MonoBehaviour, SightTrackingListener, AIObjectDataRetriever, IAIObjectTypeEvent, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter
+    public class AIObjectType : MonoBehaviour, AIObjectDataRetriever, AIObjectTypeInternalEventsListener, AIObjectTypeSpeedSetter
     {
 
 #if UNITY_EDITOR
         [Header("Debug")]
         public bool DebugEabled;
 #endif
-
-        #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
-        #endregion
-
+        
         #region Internal Dependencies
         private NavMeshAgent agent;
         #endregion
@@ -79,8 +76,7 @@ namespace RTPuzzle
                     .DefineAIObject(this, puzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration);
                 this.GetComponent<InteractiveObjectType>().IfNotNull(InteractiveObjectType => InteractiveObjectType.Init(new InteractiveObjectInitializationObject() { ParentAIObjectTypeReference = this }));
             }
-
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            
             var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
@@ -110,13 +106,10 @@ namespace RTPuzzle
             this.puzzleAIBehavior = new GenericPuzzleAIBehavior();
 
             var aIBheaviorBuildInputData = new AIBheaviorBuildInputData(agent, PuzzleEventsManager, playerManagerDataRetriever,
-                     interactiveObjectContainer, this.AiID, this.GetLogicCollider(), aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
+                     interactiveObjectContainer, this.AiID, aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
             
-            //Sight listeners
-            this.GetComponent<InteractiveObjectType>().IfNotNull((InteractiveObjectType) => InteractiveObjectType.GetEnabledOrDisabledModule<ObjectSightModule>().IfNotNull((ObjectSightModule) => ObjectSightModule.RegisterSightTrackingListener(this)));
-
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
         }
@@ -165,17 +158,7 @@ namespace RTPuzzle
             // empty tick to immediately choose the next position
             this.ForceTickAI();
         }
-
-        public void SightInRangeEnter(ColliderWithCollisionType trackedCollider)
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(trackedCollider));
-        }
-
-        public void SightInRangeExit(ColliderWithCollisionType trackedCollider)
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new SightInRangeExitAIBehaviorEvent(trackedCollider));
-        }
-
+        
         public void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
         {
             this.AIDestinationMoveManager.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
@@ -183,10 +166,6 @@ namespace RTPuzzle
         #endregion
         
         #region Data Retrieval
-        public Renderer[] GetRenderers()
-        {
-            return GetComponentsInChildren<Renderer>();
-        }
         public IPuzzleAIBehavior GetAIBehavior()
         {
             return this.puzzleAIBehavior;
@@ -202,17 +181,8 @@ namespace RTPuzzle
             if (this.agent == null) { this.agent = GetComponent<NavMeshAgent>(); }
             return this.agent;
         }
-        public Collider GetLogicCollider()
-        {
-            return this.associatedInteractivObject.GetModule<AILogicColliderModule>().GetCollider();
-        }
-        public ExtendedBounds GetAverageModelBoundLocalSpace()
-        {
-            return BoundsHelper.GetAverageRendererBounds(this.GetRenderers());
-        }
         #endregion
-
-
+        
         private void OnDrawGizmos()
         {
 #if UNITY_EDITOR

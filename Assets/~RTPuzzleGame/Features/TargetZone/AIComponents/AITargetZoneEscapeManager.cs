@@ -7,8 +7,7 @@ namespace RTPuzzle
 
     public class AITargetZoneEscapeManager : AbstractAITargetZoneManager
     {
-        private AIObjectID aiID;
-        private Collider aiCollider;
+        private AIObjectDataRetriever AIObjectDataRetriever;
 
         #region External Dependencies
         private NavMeshAgent agent;
@@ -32,13 +31,12 @@ namespace RTPuzzle
         public override void Init(AIBheaviorBuildInputData AIBheaviorBuildInputData)
         {
             this.agent = AIBheaviorBuildInputData.selfAgent;
-            this.aiCollider = AIBheaviorBuildInputData.aiCollider;
 
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             this.FovManagerCalcuation = AIBheaviorBuildInputData.FovManagerCalcuation;
             this.EscapeDestinationManager = new EscapeDestinationManager(this.agent);
-            this.aiID = AIBheaviorBuildInputData.aiID;
+            this.AIObjectDataRetriever = AIBheaviorBuildInputData.AIObjectDataRetriever();
         }
 
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
@@ -108,7 +106,8 @@ namespace RTPuzzle
 
         private TargetZoneModule IsAIOverlappingWithATargetZone()
         {
-            var overlappingTargetZones = TargetZoneHelper.GetAllTargetZonesWhereDistanceCheckOverlaps(this.aiCollider.bounds, this.InteractiveObjectContainer);
+            var overlappingTargetZones = TargetZoneHelper.GetAllTargetZonesWhereDistanceCheckOverlaps
+                (this.AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetAILogicColliderModule().GetCollider().bounds, this.InteractiveObjectContainer);
             if (overlappingTargetZones != null && overlappingTargetZones.Count > 0)
             {
                 return overlappingTargetZones[0];

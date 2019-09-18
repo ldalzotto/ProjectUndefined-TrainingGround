@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -168,7 +169,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Configuration\AIObjectConfiguration\AIObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Configuration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Configuration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\AI\ExposedInterfaces\IAIObjectTypeEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Managers\AIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Positioning\AIPositionMarker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Positioning\AIPositionsManager.cs" />

@@ -187,7 +187,6 @@ namespace RTPuzzle
         public PlayerManagerDataRetriever PlayerManagerDataRetriever;
         public InteractiveObjectContainer InteractiveObjectContainer;
         public AIObjectID aiID;
-        public Collider aiCollider;
         public AIPositionsManager AIPositionsManager;
         public TransformMoveManagerComponentV3 TransformMoveManagerComponent;
         public PuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager;
@@ -200,7 +199,7 @@ namespace RTPuzzle
         public AIObjectDataRetriever AIObjectDataRetriever() { return this.AssociatedAIObjectType; }
 
         public AIBheaviorBuildInputData(NavMeshAgent selfAgent, PuzzleEventsManager puzzleEventsManager, PlayerManagerDataRetriever PlayerManagerDataRetriever,
-            InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, Collider aiCollider, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
+            InteractiveObjectContainer InteractiveObjectContainer, AIObjectID aiID, AIPositionsManager AIPositionsManager, TransformMoveManagerComponentV3 TransformMoveManagerComponent,
             AIObjectTypeInternalEventsListener AIObjectTypeInternalEventsListener, InteractiveObjectType AssociatedInteractiveObject, AIObjectType AssociatedAIObjectType,
             IFovManagerCalcuation FovManagerCalcuation)
         {
@@ -209,7 +208,6 @@ namespace RTPuzzle
             this.PlayerManagerDataRetriever = PlayerManagerDataRetriever;
             this.InteractiveObjectContainer = InteractiveObjectContainer;
             this.aiID = aiID;
-            this.aiCollider = aiCollider;
             this.AIPositionsManager = AIPositionsManager;
             this.TransformMoveManagerComponent = TransformMoveManagerComponent;
             this.GenericPuzzleAIBehaviorExternalEventManager = new GenericPuzzleAIBehaviorExternalEventManager();

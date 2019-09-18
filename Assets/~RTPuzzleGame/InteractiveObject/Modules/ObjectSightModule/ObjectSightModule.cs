@@ -19,7 +19,7 @@ namespace RTPuzzle
         {
             this.ResolveInternalDependencies();
             this.AISightVisionTargetTracker = new AISightVisionTargetTracker(this);
-            this.AISightInteresectionManager = new AISightIntersectionManager(this.AISightVisionTargetTracker, this);
+            this.AISightInteresectionManager = new AISightIntersectionManager(this.AISightVisionTargetTracker, this, interactiveObjectInitializationObject.ParentAIObjectTypeReference);
             this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AISightVisionTargetTracker });
         }
 
@@ -45,11 +45,6 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsPlayerInSight() { return this.AISightInteresectionManager.IsPlayerInSight(); }
         #endregion
-
-        public void RegisterSightTrackingListener(SightTrackingListener SightTrackingListener)
-        {
-            this.AISightInteresectionManager.RegisterSightTrackingListener(SightTrackingListener);
-        }
 
 #if UNITY_EDITOR
         public void HandlesTick()
@@ -117,8 +112,8 @@ namespace RTPuzzle
 
     public class AISightIntersectionManager
     {
+        private AIObjectDataRetriever associatedAI;
         private AISightVisionTargetTracker aISightVisionTargetTracker;
-        private List<SightTrackingListener> SightTrackingListeners;
 
         private TransformChangeListenerManager sightModuleMovementChangeTracker;
         private Dictionary<ColliderWithCollisionType, TransformChangeListenerManager> inRangeCollidersMovementChangeTrackers;
@@ -126,13 +121,13 @@ namespace RTPuzzle
 
         public Dictionary<ColliderWithCollisionType, bool> IsInside { get => isInside; }
 
-        public AISightIntersectionManager(AISightVisionTargetTracker aISightVisionTargetTracker, ObjectSightModule ObjectSightModule)
+        public AISightIntersectionManager(AISightVisionTargetTracker aISightVisionTargetTracker, ObjectSightModule ObjectSightModule, AIObjectDataRetriever associatedAI)
         {
+            this.associatedAI = associatedAI;
             this.aISightVisionTargetTracker = aISightVisionTargetTracker;
             this.sightModuleMovementChangeTracker = new TransformChangeListenerManager(ObjectSightModule.transform, true, true);
             this.inRangeCollidersMovementChangeTrackers = new Dictionary<ColliderWithCollisionType, TransformChangeListenerManager>();
             this.isInside = new Dictionary<ColliderWithCollisionType, bool>();
-            this.SightTrackingListeners = new List<SightTrackingListener>();
         }
 
         public void Tick(float d, ref RangeTypeObject sightVisionRange)
@@ -197,25 +192,14 @@ namespace RTPuzzle
         #region Internal Event
         private void SightInRangeEnter(ColliderWithCollisionType trackedCollider)
         {
-            foreach (var sightTrackingListener in this.SightTrackingListeners)
-            {
-                sightTrackingListener.SightInRangeEnter(trackedCollider);
-            }
+            associatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(trackedCollider));
         }
         private void SightInRangeExit(ColliderWithCollisionType trackedCollider)
         {
-            foreach (var sightTrackingListener in this.SightTrackingListeners)
-            {
-                sightTrackingListener.SightInRangeExit(trackedCollider);
-            }
+            associatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(trackedCollider));
         }
         #endregion
-
-        public void RegisterSightTrackingListener(SightTrackingListener SightTrackingListener)
-        {
-            this.SightTrackingListeners.Add(SightTrackingListener);
-        }
-
+        
         #region Logical Conditions
         public bool IsPlayerInSight()
         {
@@ -257,11 +241,5 @@ namespace RTPuzzle
             hashCode = hashCode * -1521134295 + EqualityComparer<CollisionType>.Default.GetHashCode(collisionType);
             return hashCode;
         }
-    }
-
-    public interface SightTrackingListener
-    {
-        void SightInRangeEnter(ColliderWithCollisionType trackedCollider);
-        void SightInRangeExit(ColliderWithCollisionType trackedCollider);
     }
 }
