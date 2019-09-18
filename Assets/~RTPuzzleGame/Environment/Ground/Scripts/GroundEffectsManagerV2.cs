@@ -131,14 +131,12 @@ namespace RTPuzzle
 
                 if (rangeTypeObject.RangeType.GetType() == typeof(SphereRangeType))
                 {
-                    var sphereRangeType = (SphereRangeType)rangeTypeObject.RangeType;
                     var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
                     addedRange.OnRangeCreated(rangeTypeObject);
                     this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new CircleRangeRenderData(addedRange));
                 }
                 else if (rangeTypeObject.RangeType.GetType() == typeof(BoxRangeType))
                 {
-                    var boxRangeType = (BoxRangeType)rangeTypeObject.RangeType;
                     var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
                     addedRange.OnRangeCreated(rangeTypeObject);
                     this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new BoxRangeRenderData(addedRange));
@@ -154,7 +152,6 @@ namespace RTPuzzle
                 */
                 else if (rangeTypeObject.RangeType.GetType() == typeof(RoundedFrustumRangeType))
                 {
-                    var roundedFrustumRangeType = (RoundedFrustumRangeType)rangeTypeObject.RangeType;
                     var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
                     addedRange.OnRangeCreated(rangeTypeObject);
                     this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new RoundedFrustumRenderData(addedRange));

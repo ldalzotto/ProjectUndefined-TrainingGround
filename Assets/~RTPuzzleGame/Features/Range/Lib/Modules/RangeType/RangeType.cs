@@ -25,7 +25,7 @@ namespace RTPuzzle
             this.RangeTypeObjectRef = RangeTypeObjectRef;
             this.associatedCollisionType = GetComponent<CollisionType>();
         }
-        
+
         public virtual void Tick(float d) { }
 #if UNITY_EDITOR
         public virtual void HandlesDraw() { }

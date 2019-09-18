@@ -6,11 +6,11 @@ using GameConfigurationID;
 
 namespace RTPuzzle
 {
-    public class RangeTypeObjectContainer : MonoBehaviour
+    public class RangeTypeObjectContainer : MonoBehaviour, IRangeTypeObjectContainerEvent
     {
         private HashSet<RangeTypeObject> rangeTypes = new HashSet<RangeTypeObject>();
 
-        #region External events
+        #region IRangeTypeObjectContainerEvent
         public void AddRange(RangeTypeObject rangeTypeObject)
         {
             this.rangeTypes.Add(rangeTypeObject);

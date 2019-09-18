@@ -23,7 +23,7 @@ namespace RTPuzzle
         #endregion
 
         #region External Dependencies 
-        private RangeEventsManager RangeEventsManager;
+        private IRangeTypeObjectEventListener IRangeTypeObjectEventListener;
         #endregion
 
         #region Event Managements
@@ -56,7 +56,7 @@ namespace RTPuzzle
         private void CommonInit(RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior)
         {
             #region External Dependencies
-            this.RangeEventsManager = PuzzleGameSingletonInstances.RangeEventsManager;
+            this.IRangeTypeObjectEventListener = PuzzleGameSingletonInstances.RangeEventsManager;
             #endregion
 
             this.eventListenersFromExterior = eventListenersFromExterior;
@@ -65,7 +65,7 @@ namespace RTPuzzle
             this.rangeType.IfNotNull((RangeType rangeType) => rangeType.Init(RangeTypeObjectInitializer, this));
             this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.Init(this.rangeType));
 
-            this.RangeEventsManager.RANGE_EVT_Range_Created(this);
+            this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Created(this);
         }
 
         private void PopulateModules()
@@ -117,7 +117,7 @@ namespace RTPuzzle
         {
             this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.OnRangeObstacleListenerDestroyed(this.rangeType));
 
-            this.RangeEventsManager.RANGE_EVT_Range_Destroy(this);
+            this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Destroy(this);
             MonoBehaviour.Destroy(this.gameObject);
         }
         #endregion

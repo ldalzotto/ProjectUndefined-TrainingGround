@@ -2,37 +2,37 @@
 
 namespace RTPuzzle
 {
-    public class RangeEventsManager : MonoBehaviour
+    public class RangeEventsManager : MonoBehaviour, IRangeTypeObjectEventListener
     {
 
         #region External dependencies
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
         private InRangeEffectManager InRangeEffectManager;
-        private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
-        private RangeTypeObjectContainer RangeTypeObjectContainer;
+        private IObjectRepelLineVisualFeedbackManagerEvent IObjectRepelLineVisualFeedbackManagerEvent;
+        private IRangeTypeObjectContainerEvent IRangeTypeObjectContainerEvent;
         #endregion
 
         public void Init()
         {
             this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             this.InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
-            this.ObjectRepelLineVisualFeedbackManager = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
-            this.RangeTypeObjectContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
+            this.IObjectRepelLineVisualFeedbackManagerEvent = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
+            this.IRangeTypeObjectContainerEvent = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
         }
 
         #region Workflow
         public void RANGE_EVT_Range_Created(RangeTypeObject rangeTypeObject)
         {
-            this.RangeTypeObjectContainer.AddRange(rangeTypeObject);
+            this.IRangeTypeObjectContainerEvent.AddRange(rangeTypeObject);
             this.GroundEffectsManagerV2.OnRangeAdded(rangeTypeObject);
         }
 
         public void RANGE_EVT_Range_Destroy(RangeTypeObject rangeTypeObject)
         {
-            this.RangeTypeObjectContainer.RemoveRange(rangeTypeObject);
+            this.IRangeTypeObjectContainerEvent.RemoveRange(rangeTypeObject);
             this.GroundEffectsManagerV2.OnRangeDestroy(rangeTypeObject);
             this.InRangeEffectManager.OnRangeDestroy(rangeTypeObject.RangeType);
-            this.ObjectRepelLineVisualFeedbackManager.OnRangeDestroyed(rangeTypeObject.RangeType);
+            this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeDestroyed(rangeTypeObject.RangeType);
         }
         #endregion
 
@@ -40,13 +40,13 @@ namespace RTPuzzle
         public void RANGE_EVT_InsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             this.InRangeEffectManager.OnInRangeAdd(InRangeColliderTrackerModule, rangeType);
-            this.ObjectRepelLineVisualFeedbackManager.OnRangeInsideRangeTracker(InRangeColliderTrackerModule, rangeType);
+            this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeInsideRangeTracker(InRangeColliderTrackerModule, rangeType);
         }
 
         public void RANGE_EVT_OutsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             this.InRangeEffectManager.OnInRangeRemove(InRangeColliderTrackerModule, rangeType);
-            this.ObjectRepelLineVisualFeedbackManager.OnRangeOutsideRangeTracker(InRangeColliderTrackerModule, rangeType);
+            this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeOutsideRangeTracker(InRangeColliderTrackerModule, rangeType);
         }
         #endregion
 

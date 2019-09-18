@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObjectRepelLineVisualFeedbackManager : MonoBehaviour
+    public class ObjectRepelLineVisualFeedbackManager : MonoBehaviour, IObjectRepelLineVisualFeedbackManagerEvent
     {
         #region External Dependencies
         private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
@@ -38,7 +38,7 @@ namespace RTPuzzle
             }
         }
 
-        #region External Events
+        #region IObjectRepelLineVisualFeedbackManagerEvent
         public void OnRangeDestroyed(RangeType rangeType)
         {
             if (rangeType.RangeTypeID == RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
