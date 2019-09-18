@@ -54,7 +54,6 @@ namespace RTPuzzle
             this.PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
             var DottedLineContainer = PuzzleGameSingletonInstances.DottedLineContainer;
             var camera = Camera.main;
-            var launchProjectileEventManager = PuzzleGameSingletonInstances.LaunchProjectileEventManager;
             PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             var CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
@@ -80,7 +79,7 @@ namespace RTPuzzle
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
                          this.projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager, DottedLineContainer);
-            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, launchProjectileEventManager, this.projectileObject, playerTransform);
+            ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, this.projectileObject, playerTransform);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
             LaunchProjectilePlayerAnimationManager = new LaunchProjectilePlayerAnimationManager(PlayerManagerDataRetriever.GetPlayerAnimator(), PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
                 interactiveObjectContainer, this.projectileInherentData, this.projectileObject);
@@ -115,20 +114,7 @@ namespace RTPuzzle
         public override void LateTick(float d)
         {
         }
-
-        #region External Events
-        public void OnThrowProjectileCursorOnProjectileRange()
-        {
-            LaunchProjectilePathAnimationManager.OnThrowProjectileCursorOnProjectileRange();
-            LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOnProjectileRange();
-        }
-        public void OnThrowProjectileCursorOutOfProjectileRange()
-        {
-            LaunchProjectilePathAnimationManager.OnThrowProjectileCursorOutOfProjectileRange();
-            LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOutOfProjectileRange();
-        }
-        #endregion
-
+        
         #region Internal Events
         public void OnExit()
         {
@@ -160,6 +146,18 @@ namespace RTPuzzle
                     ThrowProjectileManager.OnLaunchProjectileSpawn(this.projectileInherentData, throwPorjectilePath);
                 }
                );
+        }
+
+
+        public void OnThrowProjectileCursorOnProjectileRange()
+        {
+            LaunchProjectilePathAnimationManager.OnThrowProjectileCursorOnProjectileRange();
+            LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOnProjectileRange();
+        }
+        public void OnThrowProjectileCursorOutOfProjectileRange()
+        {
+            LaunchProjectilePathAnimationManager.OnThrowProjectileCursorOutOfProjectileRange();
+            LaunchProjectileScreenPositionManager.OnThrowProjectileCursorOutOfProjectileRange();
         }
         #endregion
 
@@ -335,14 +333,14 @@ namespace RTPuzzle
             {
                 if (!this.isCursorInRange)
                 {
-                    this.PuzzleEventsManager.PZ_EVT_ThrowProjectileCursor_OnProjectileRange();
+                    this.launchProjectileActionRef.OnThrowProjectileCursorOnProjectileRange();
                 }
             }
             else
             {
                 if (this.isCursorInRange)
                 {
-                    this.PuzzleEventsManager.PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange();
+                    this.launchProjectileActionRef.OnThrowProjectileCursorOutOfProjectileRange();
                 }
             }
 
@@ -377,16 +375,14 @@ namespace RTPuzzle
     {
         private LaunchProjectileAction LaunchProjectileRTPActionRef;
         private GameInputManager GameInputManager;
-        private LaunchProjectileEventManager LaunchProjectileEventManager;
         private InteractiveObjectType projectileObjectRef;
         private Transform playerTransform;
 
-        public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager, LaunchProjectileEventManager LaunchProjectileEventManager,
+        public ThrowProjectileManager(LaunchProjectileAction launchProjectileRTPActionRef, GameInputManager gameInputManager,
             InteractiveObjectType projectileObjectRef, Transform playerTransform)
         {
             LaunchProjectileRTPActionRef = launchProjectileRTPActionRef;
             GameInputManager = gameInputManager;
-            this.LaunchProjectileEventManager = LaunchProjectileEventManager;
             this.projectileObjectRef = projectileObjectRef;
             this.playerTransform = playerTransform;
         }

@@ -1,14 +1,12 @@
 using CoreGame;
 using GameConfigurationID;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 
 namespace RTPuzzle
 {
-    public class LaunchProjectileModule : InteractiveObjectModule
+    public class LaunchProjectileModule : InteractiveObjectModule, ILaunchProjectileModuleEvents
     {
         [FormerlySerializedAs("LaunchProjectileId")]
         public LaunchProjectileID LaunchProjectileID;
@@ -16,22 +14,21 @@ namespace RTPuzzle
         public LaunchProjectileInherentData LaunchProjectileInherentData { get => launchProjectileInherentData; }
 
         #region Internal Dependencies
-        private LaunchProjectileGroundColliderTracker LaunchProjectileGroundColliderTracker;
         private InteractiveObjectType ParentInteractiveObjectTypeRef;
+        private SphereCollider ProjectileGroundTrigger;
         #endregion
 
         private LaunchProjectileMovementManager LaunchProjectileMovementManager;
         private SphereCollisionManager SphereCollisionManager;
 
         #region External Dependencies
-        private LaunchProjectileEventManager LaunchProjectileEventManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         #region Data Retrieval
         public Collider GetGroundCollisionTrackingCollider()
         {
-            return this.LaunchProjectileGroundColliderTracker.SphereCollider;
+            return this.ProjectileGroundTrigger;
         }
         public Vector3 GetTargetPosition()
         {
@@ -39,7 +36,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             LaunchProjectileInherentData LaunchProjectileInherentData = interactiveObjectInitializationObject.LaunchProjectileInherentData;
@@ -50,7 +47,6 @@ namespace RTPuzzle
 
             #region External Dependencies
             var npcAiManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
-            this.LaunchProjectileEventManager = PuzzleGameSingletonInstances.LaunchProjectileEventManager;
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             var InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             var PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
@@ -59,10 +55,9 @@ namespace RTPuzzle
 
             #region Internal Dependencies
             this.ParentInteractiveObjectTypeRef = this.GetComponentInParent<InteractiveObjectType>();
-            this.LaunchProjectileGroundColliderTracker = this.GetComponentInChildren<LaunchProjectileGroundColliderTracker>();
             #endregion
 
-            this.LaunchProjectileGroundColliderTracker.Init(this);
+            this.ProjectileGroundTrigger = GetComponent<SphereCollider>();
 
             this.launchProjectileInherentData = LaunchProjectileInherentData;
             IInteractiveObjectTypeDataRetrieval.GetTransform().position = interactiveObjectInitializationObject.ProjectilePath.ResolvePoint(0.1f);
@@ -83,21 +78,23 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnGroundTriggerEnter()
+        private void OnTriggerEnter(Collider other)
         {
-            //We move the projectile to its final position
-            this.ParentInteractiveObjectTypeRef.transform.position = this.GetTargetPosition();
-            if (this.launchProjectileInherentData.isExploding)
+            if (other.gameObject.layer == LayerMask.NameToLayer(LayerConstants.PUZZLE_GROUND_LAYER))
             {
-                SphereCollisionManager.OnProjectileExplode(this);
-                this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.ParentInteractiveObjectTypeRef);
+                //We move the projectile to its final position
+                this.ParentInteractiveObjectTypeRef.transform.position = this.GetTargetPosition();
+                if (this.launchProjectileInherentData.isExploding)
+                {
+                    SphereCollisionManager.OnProjectileExplode(this);
+                    this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.ParentInteractiveObjectTypeRef);
+                }
+                else
+                {
+                    this.ParentInteractiveObjectTypeRef.EnableAllDisabledModules(new InteractiveObjectInitializationObject());
+                    this.ParentInteractiveObjectTypeRef.DisableModule(this.GetType());
+                }
             }
-            else
-            {
-                this.ParentInteractiveObjectTypeRef.EnableAllDisabledModules(new InteractiveObjectInitializationObject());
-                this.ParentInteractiveObjectTypeRef.DisableModule(this.GetType());
-            }
-
         }
         #endregion
 
@@ -181,7 +178,7 @@ namespace RTPuzzle
             {
                 if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(npcAIManager.GetLogicCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
-                    npcAIManager.OnProjectileTriggerEnter(launchProjectileRef);
+                    npcAIManager.GetAIBehavior().ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectileRef));
                 }
             }
             #endregion

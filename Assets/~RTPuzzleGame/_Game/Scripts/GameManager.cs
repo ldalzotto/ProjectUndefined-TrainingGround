@@ -109,7 +109,6 @@ namespace RTPuzzle
             GameOverManager.Init();
             PuzzleGameSingletonInstances.PlayerActionEventManager.Init();
             PlayerActionManager.Init();
-            PuzzleGameSingletonInstances.LaunchProjectileEventManager.Init();
             InRangeEffectManager.Init();
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();

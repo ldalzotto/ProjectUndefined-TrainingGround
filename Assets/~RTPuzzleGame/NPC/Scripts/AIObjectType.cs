@@ -160,11 +160,6 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnProjectileTriggerEnter(LaunchProjectileModule launchProjectile)
-        {
-            this.puzzleAIBehavior.ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectile));
-        }
-
         public void EnableAgent()
         {
             AIDestinationMoveManager.EnableAgent();

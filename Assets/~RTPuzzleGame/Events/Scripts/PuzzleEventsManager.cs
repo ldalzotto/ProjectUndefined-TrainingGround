@@ -121,18 +121,7 @@ namespace RTPuzzle
             this.NPCAIManagerContainer.GetNPCAiManager(aiID).OnEscapeWithoutTargetEnd();
         }
         #endregion
-
-        #region Projectile throw action events
-        public void PZ_EVT_ThrowProjectileCursor_OnProjectileRange()
-        {
-            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOnProjectileRange();
-        }
-        public void PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange()
-        {
-            this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
-        }
-        #endregion
-
+        
         #region RepelableObject Events
         public void PZ_EVT_RepelableObject_OnObjectRepelled(ObjectRepelModule objectRepelType, Vector3 targetWorldPosition)
         {

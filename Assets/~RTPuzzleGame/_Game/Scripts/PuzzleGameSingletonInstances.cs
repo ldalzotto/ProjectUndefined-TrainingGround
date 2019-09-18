@@ -22,7 +22,6 @@ namespace RTPuzzle
         private static ObjectRepelLineVisualFeedbackManager objectRepelLineVisualFeedbackManager;
         private static RangeTypeObjectContainer rangeTypeObjectContainer;
         private static PlayerActionManager playerActionManager;
-        private static LaunchProjectileEventManager launchProjectileEventManager;
         private static ObstaclesListenerManager obstaclesListenerManager;
         private static ObstacleFrustumCalculationManager obstacleFrustumCalculationManager;
         private static SquareObstaclesManager squareObstaclesManager;
@@ -59,7 +58,6 @@ namespace RTPuzzle
         public static ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(objectRepelLineVisualFeedbackManager, obj => objectRepelLineVisualFeedbackManager = obj); }
         public static RangeTypeObjectContainer RangeTypeObjectContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeTypeObjectContainer, obj => rangeTypeObjectContainer = obj); }
         public static PlayerActionManager PlayerActionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionManager, obj => playerActionManager = obj); }
-        public static LaunchProjectileEventManager LaunchProjectileEventManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(launchProjectileEventManager, obj => launchProjectileEventManager = obj); }
         public static ObstaclesListenerManager ObstaclesListenerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstaclesListenerManager, obj => obstaclesListenerManager = obj); }
         public static ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstacleFrustumCalculationManager, obj => obstacleFrustumCalculationManager = obj); }
         public static SquareObstaclesManager SquareObstaclesManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(squareObstaclesManager, obj => squareObstaclesManager = obj); }
