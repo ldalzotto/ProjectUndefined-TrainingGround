@@ -65,6 +65,8 @@ namespace RTPuzzle
         #region Attractive Object Events
         public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
+            InvolvedAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAIAttractedStart(AIObjectDataRetriever);
+
             var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
 
             var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
@@ -81,6 +83,8 @@ namespace RTPuzzle
         }
         public void AI_AttractedObject_End(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
+            InvolvedAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAIAttractedEnd(AIObjectDataRetriever);
+
             var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
             var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
             if (ILineVisualFeedbackEvent != null)
@@ -126,19 +130,6 @@ namespace RTPuzzle
         public void PZ_EVT_ThrowProjectileCursor_OutOfProjectileRange()
         {
             this.PlayerActionPuzzleEventsManager.OnThrowProjectileCursorOutOfProjectileRange();
-        }
-        #endregion
-
-        #region Attractive Objects Event
-        public void PZ_EVT_AttractiveObject_TpeDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
-        {
-            this.NPCAIManagerContainer.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
-        }
-
-        public void PZ_EVT_AttractiveObject_OnPlayerActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject,
-                            PuzzleGameConfigurationManager puzzleGameConfigurationManager)
-        {
-            AttractiveObjectTypeModuleEventHandling.OnAttractiveObjectActionExecuted(attractiveObjectWorldPositionHit, attractiveObject, puzzleGameConfigurationManager);
         }
         #endregion
 

@@ -108,7 +108,8 @@ namespace RTPuzzle
             if (objectSpawnPosition.HasValue)
             {
                 this.attractiveObject.EnableAllDisabledModules(new InteractiveObjectInitializationObject());
-                this.PuzzleEventsManager.PZ_EVT_AttractiveObject_OnPlayerActionExecuted(objectSpawnPosition.Value, this.attractiveObject, this.PuzzleGameConfigurationManager);
+                ((IInteractiveObjectTypeDataRetrieval)this.attractiveObject).GetIAttractiveObjectModuleDataRetriever()
+                        .GetIAttractiveObjectModuleEvent().OnAttractiveObjectPlayerActionExecuted(objectSpawnPosition.Value);
             }
 
             this.OnEndAction();

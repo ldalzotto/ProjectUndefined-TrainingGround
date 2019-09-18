@@ -82,20 +82,12 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public override void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
-        {
-            this.ReceiveEvent(new AttractiveObjectDestroyedAIBehaviorEvent(attractiveObjectToDestroy));
-        }
         public override void OnTriggerEnter(Collider collider)
         {
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (collisionType.IsRTAttractiveObject)
-                {
-                    this.ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(collider.transform.position, AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType)));
-                }
-                else if (collisionType.IsTargetZone)
+                if (collisionType.IsTargetZone)
                 {
                     this.ReceiveEvent(new TargetZoneTriggerEnterAIBehaviorEvent(TargetZoneModule.FromCollisionType(collisionType)));
                 }
@@ -107,25 +99,9 @@ namespace RTPuzzle
             var collisionType = collider.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (collisionType.IsRTAttractiveObject)
-                {
-                    this.ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(collider.transform.position, AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType)));
-                }
-                else if (collisionType.IsTargetZone)
+                if (collisionType.IsTargetZone)
                 {
                     this.ReceiveEvent(new TargetZoneTriggerStayAIBehaviorEvent(TargetZoneModule.FromCollisionType(collisionType)));
-                }
-            }
-        }
-
-        public override void OnTriggerExit(Collider collider)
-        {
-            var collisionType = collider.GetComponent<CollisionType>();
-            if (collisionType != null)
-            {
-                if (collisionType.IsRTAttractiveObject)
-                {
-                    this.ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType)));
                 }
             }
         }

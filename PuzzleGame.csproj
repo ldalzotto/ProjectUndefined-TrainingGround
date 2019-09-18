@@ -205,6 +205,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAIAttractiveObjectEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\ExposedInterfaces\IAttractiveObjectModuleEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleEventImpl.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />

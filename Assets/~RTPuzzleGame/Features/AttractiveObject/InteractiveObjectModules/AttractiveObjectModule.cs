@@ -1,6 +1,6 @@
 ﻿using GameConfigurationID;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -9,12 +9,13 @@ namespace RTPuzzle
     {
         ModelObjectModule GetModelObjectModule();
         Transform GetTransform();
+        IAttractiveObjectModuleEvent GetIAttractiveObjectModuleEvent();
     }
 
-    public class AttractiveObjectModule : InteractiveObjectModule, IAttractiveObjectModuleDataRetriever
+    public partial class AttractiveObjectModule : InteractiveObjectModule, IAttractiveObjectModuleDataRetriever
     {
 
-        public static AttractiveObjectModule GetAttractiveObjectFromCollisionType(CollisionType collisionType)
+        public static IAttractiveObjectModuleDataRetriever GetAttractiveObjectFromCollisionType(CollisionType collisionType)
         {
             var sphereRange = RangeType.RetrieveFromCollisionType(collisionType);
             if (sphereRange != null)
@@ -46,9 +47,12 @@ namespace RTPuzzle
             return this.modelObjectModule;
         }
         public Transform GetTransform() { return this.transform; }
+        public IAttractiveObjectModuleEvent GetIAttractiveObjectModuleEvent() { return this; }
         #endregion
 
         public AttractiveObjectId AttractiveObjectId;
+
+        private HashSet<AIObjectDataRetriever> CurrentlyAttractedAI;
         private AttractiveObjectLifetimeTimer AttractiveObjectLifetimeTimer;
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
@@ -67,6 +71,7 @@ namespace RTPuzzle
             this.sphereRange.SetIsAttractiveObject();
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(AttractiveObjectInherentConfigurationData.EffectiveTime);
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.CurrentlyAttractedAI = new HashSet<AIObjectDataRetriever>();
         }
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -77,7 +82,22 @@ namespace RTPuzzle
         public override void OnInteractiveObjectDestroyed()
         {
             this.sphereRange.OnRangeDestroyed();
-            this.PuzzleEventsManager.PZ_EVT_AttractiveObject_TpeDestroyed(this);
+
+            if (this.CurrentlyAttractedAI.Count > 0)
+            {
+                var attractiveObjectDestroyedAIEvent = new AttractiveObjectDestroyedAIBehaviorEvent(this);
+                AIObjectDataRetriever currentlyAttractedAI = this.CurrentlyAttractedAI.First();
+                while (currentlyAttractedAI != null)
+                {
+                    currentlyAttractedAI.GetAIBehavior().ReceiveEvent(attractiveObjectDestroyedAIEvent);
+                    this.CurrentlyAttractedAI.Remove(currentlyAttractedAI);
+                    currentlyAttractedAI = null;
+                    if (this.CurrentlyAttractedAI.Count > 0)
+                    {
+                        currentlyAttractedAI = this.CurrentlyAttractedAI.First();
+                    }
+                }
+            }
         }
 
         #region Logical Conditions
@@ -111,17 +131,5 @@ namespace RTPuzzle
             this.elapsedTime += (d * timeAttenuationFactor);
         }
 
-    }
-
-    public static class AttractiveObjectTypeModuleEventHandling
-    {
-        public static void OnAttractiveObjectActionExecuted(RaycastHit attractiveObjectWorldPositionHit, InteractiveObjectType attractiveObject,
-                    PuzzleGameConfigurationManager puzzleGameConfigurationManager)
-        {
-            attractiveObject.transform.position = attractiveObjectWorldPositionHit.point;
-
-            //TODO make the rotation relative to the player
-            attractiveObject.transform.LookAt(attractiveObject.transform.position + Vector3.forward);
-        }
     }
 }

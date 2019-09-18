@@ -11,6 +11,7 @@ namespace RTPuzzle
         ILineVisualFeedbackEvent GetILineVisualFeedbackEvent();
         IFovModuleDataRetrieval GetIFovModuleDataRetrieval();
         ILocalPuzzleCutsceneModuleEvent GetILocalPuzzleCutsceneModuleEvent();
+        IAttractiveObjectModuleDataRetriever GetIAttractiveObjectModuleDataRetriever();
 
         //TODO use interfaces when feature is enabled
         ObjectRepelModule GetObjectRepelModule();
@@ -67,6 +68,11 @@ namespace RTPuzzle
         public InteractiveObjectCutsceneControllerModule GetInteractiveObjectCutsceneControllerModule()
         {
             return this.GetModule<InteractiveObjectCutsceneControllerModule>();
+        }
+
+        public IAttractiveObjectModuleDataRetriever GetIAttractiveObjectModuleDataRetriever()
+        {
+            return this.GetModule<AttractiveObjectModule>();
         }
     }
 

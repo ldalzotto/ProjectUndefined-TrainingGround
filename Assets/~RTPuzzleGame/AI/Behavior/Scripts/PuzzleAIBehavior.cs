@@ -15,10 +15,8 @@ namespace RTPuzzle
         void ReceiveEvent(PuzzleAIBehaviorExternalEvent externalEvent);
         void OnTriggerEnter(Collider collider);
         void OnTriggerStay(Collider collider);
-        void OnTriggerExit(Collider collider);
 
         void OnDestinationReached();
-        void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy);
     }
 
     /// <summary>
@@ -179,7 +177,6 @@ namespace RTPuzzle
         public abstract void TickGizmo();
         public abstract void OnTriggerEnter(Collider collider);
         public abstract void OnTriggerStay(Collider collider);
-        public abstract void OnTriggerExit(Collider collider);
 
         public abstract void OnDestinationReached();
 

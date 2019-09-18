@@ -32,7 +32,8 @@ namespace RTPuzzle
         }
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
+            IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.AIObjectDataRetirever = interactiveObjectInitializationObject.ParentAIObjectTypeReference;
             this.associatedCollider = GetComponent<BoxCollider>();
@@ -45,6 +46,19 @@ namespace RTPuzzle
         #region Physics Events
         private void OnTriggerEnter(Collider other)
         {
+            var collisionType = other.GetComponent<CollisionType>();
+            if (collisionType != null)
+            {
+                if (collisionType.IsRTAttractiveObject)
+                {
+                    var IAttractiveObjectModuleDataRetriever = AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType);
+                    if (IAttractiveObjectModuleDataRetriever != null)
+                    {
+                        IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerEnter(this.AIObjectDataRetirever);
+                    }
+                }
+            }
+
             this.AIObjectDataRetirever.GetAIBehavior().OnTriggerEnter(other);
             if (this.PhysicsEventListeners != null)
             {
@@ -57,6 +71,19 @@ namespace RTPuzzle
 
         private void OnTriggerStay(Collider other)
         {
+            var collisionType = other.GetComponent<CollisionType>();
+            if (collisionType != null)
+            {
+                if (collisionType.IsRTAttractiveObject)
+                {
+                    var IAttractiveObjectModuleDataRetriever = AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType);
+                    if (IAttractiveObjectModuleDataRetriever != null)
+                    {
+                        IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerStay(this.AIObjectDataRetirever);
+                    }
+                }
+            }
+
             this.AIObjectDataRetirever.GetAIBehavior().OnTriggerStay(other);
             if (this.PhysicsEventListeners != null)
             {
@@ -69,7 +96,19 @@ namespace RTPuzzle
 
         private void OnTriggerExit(Collider other)
         {
-            this.AIObjectDataRetirever.GetAIBehavior().OnTriggerExit(other);
+            var collisionType = other.GetComponent<CollisionType>();
+            if (collisionType != null)
+            {
+                if (collisionType.IsRTAttractiveObject)
+                {
+                    var IAttractiveObjectModuleDataRetriever = AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType);
+                    if (IAttractiveObjectModuleDataRetriever != null)
+                    {
+                        IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerExit(this.AIObjectDataRetirever);
+                    }
+                }
+            }
+
             if (this.PhysicsEventListeners != null)
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)

@@ -241,11 +241,7 @@ namespace RTPuzzle
                 }
             ));
         }
-
-        public void OnAttractiveObjectDestroyed(AttractiveObjectModule attractiveObjectToDestroy)
-        {
-            this.puzzleAIBehavior.OnAttractiveObjectDestroyed(attractiveObjectToDestroy);
-        }
+        
         public void OnDestinationReached()
         {
             puzzleAIBehavior.OnDestinationReached();
