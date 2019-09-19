@@ -24,17 +24,5 @@ namespace RTPuzzle
                 this.tutorialManager.PlayTutorialStep(TutorialStepID.PUZZLE_CONTEXT_ACTION_AWAKE);
             }
         }
-
-        #region External Events       
-        public void OnPlayerActionWheelAwake()
-        {
-        }
-        public void OnPlayerActionWheelSleep()
-        {
-        }
-        public void OnPlayerActionWheelNodeSelected()
-        {
-        }
-        #endregion
     }
 }

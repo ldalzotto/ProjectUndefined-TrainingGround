@@ -1,7 +1,5 @@
-﻿using GameConfigurationID;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -41,9 +39,9 @@ namespace RTPuzzle
         {
                 {typeof(ProjectileTriggerEnterAIBehaviorEvent), LaunchProjectileAIEvents.Projectile_TriggerEnter },
                 {typeof(EscapeWithoutTriggerStartAIBehaviorEvent), AgentEscapeAIEvents.EscapeWithoutTrigger_Start },
-                {typeof(FearedStartAIBehaviorEvent),  Feared_Start},
-                {typeof(FearedForcedAIBehaviorEvent), Feared_Forced },
-                {typeof(FearedEndAIBehaviorEvent), Feared_End },
+                {typeof(FearedStartAIBehaviorEvent),  AIFearEvents.Feared_Start},
+                {typeof(FearedForcedAIBehaviorEvent),AIFearEvents. Feared_Forced },
+                {typeof(FearedEndAIBehaviorEvent), AIFearEvents.Feared_End },
                 {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_TriggerEnter },
                 {typeof(AttractiveObjectTriggerStayAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_TriggerStay },
                 {typeof(AttractiveObjectTriggerExitAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_TriggerExit },
@@ -79,64 +77,7 @@ namespace RTPuzzle
             }
         }
 
-        private static void Feared_Start(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIFearStunManager>())
-            {
-                genericAiBehavior.GetAIManager<AbstractAIFearStunManager>().OnFearStarted(PuzzleAIBehaviorExternalEvent.Cast<FearedStartAIBehaviorEvent>());
-                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIFearStunManager>());
-            }
-        }
-
-        private static void Feared_Forced(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIFearStunManager>())
-            {
-                genericAiBehavior.GetAIManager<AbstractAIFearStunManager>().OnFearedForced(PuzzleAIBehaviorExternalEvent.Cast<FearedForcedAIBehaviorEvent>());
-                genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIFearStunManager>());
-            }
-        }
-
-        private static void Feared_End(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIFearStunManager>())
-            {
-                genericAiBehavior.SetManagerState(null);
-                // to not have inactive frame.
-                genericAiBehavior.ForceUpdateAIBehavior();
-            }
-        }
-        
     }
 
-    public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        public FearedStartAIBehaviorEvent(Action eventProcessedCallback)
-        {
-            this.eventProcessedCallback = eventProcessedCallback;
-        }
-    }
 
-    public class FearedForcedAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private float fearedTime;
-
-        public FearedForcedAIBehaviorEvent(float fearedTime)
-        {
-            this.fearedTime = fearedTime;
-        }
-
-        public float FearedTime { get => fearedTime; set => fearedTime = value; }
-    }
-
-    public class FearedEndAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        public FearedEndAIBehaviorEvent(Action eventProcessedCallback)
-        {
-            this.eventProcessedCallback = eventProcessedCallback;
-        }
-    }
 }

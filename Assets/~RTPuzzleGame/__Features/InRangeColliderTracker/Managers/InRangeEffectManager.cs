@@ -6,7 +6,7 @@ using GameConfigurationID;
 
 namespace RTPuzzle
 {
-    public class InRangeEffectManager : MonoBehaviour
+    public class InRangeEffectManager : MonoBehaviour, IInRangeEffectManagerEvent
     {
         #region External dependencies
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
@@ -14,7 +14,7 @@ namespace RTPuzzle
 
         private CommandBuffer commandBuffer;
 
-        private Dictionary<RangeTypeID, List<InRangeColliderTrackerModule>> activeInRangeTrackers = new Dictionary<RangeTypeID, List<InRangeColliderTrackerModule>>();
+        private Dictionary<RangeTypeID, List<IInRangeColliderTrackerModuleDataRetriever>> activeInRangeTrackers = new Dictionary<RangeTypeID, List<IInRangeColliderTrackerModuleDataRetriever>>();
 
         public void Init()
         {
@@ -26,18 +26,18 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnInRangeAdd(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType triggeredRangeType)
+        public void OnInRangeAdd(IInRangeColliderTrackerModuleDataRetriever InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
             if (triggeredRangeType.IsInRangeEffectEnabled())
             {
                 if (!this.activeInRangeTrackers.ContainsKey(triggeredRangeType.RangeTypeID))
                 {
-                    this.activeInRangeTrackers[triggeredRangeType.RangeTypeID] = new List<InRangeColliderTrackerModule>();
+                    this.activeInRangeTrackers[triggeredRangeType.RangeTypeID] = new List<IInRangeColliderTrackerModuleDataRetriever>();
                 }
                 this.activeInRangeTrackers[triggeredRangeType.RangeTypeID].Add(InRangeColliderTrackerModule);
             }
         }
-        public void OnInRangeRemove(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType triggeredRangeType)
+        public void OnInRangeRemove(IInRangeColliderTrackerModuleDataRetriever InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
             if (triggeredRangeType.IsInRangeEffectEnabled())
             {
@@ -78,20 +78,18 @@ namespace RTPuzzle
         private void OnCommandBufferUpdate()
         {
             this.commandBuffer.Clear();
-
-            /*
+            
             foreach (var listActiveInRangeTrackersPerId in this.activeInRangeTrackers)
             {
                 var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[listActiveInRangeTrackersPerId.Key].InRangeEffectMaterial;
                 foreach (var activeInRangeTracker in listActiveInRangeTrackersPerId.Value)
                 {
-                    foreach (var r in activeInRangeTracker.GetRenderers())
+                    foreach (var r in activeInRangeTracker.ModelObjectModule.GetAllRenderers())
                     {
                         this.commandBuffer.DrawRenderer(r, effectMaterial);
                     }
                 }
             }
-            */
         }
 
     }

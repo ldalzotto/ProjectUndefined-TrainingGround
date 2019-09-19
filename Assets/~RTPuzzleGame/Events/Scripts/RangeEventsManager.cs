@@ -7,7 +7,7 @@ namespace RTPuzzle
 
         #region External dependencies
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
-        private InRangeEffectManager InRangeEffectManager;
+        private IInRangeEffectManagerEvent IInRangeEffectManagerEvent;
         private IObjectRepelLineVisualFeedbackManagerEvent IObjectRepelLineVisualFeedbackManagerEvent;
         private IRangeTypeObjectContainerEvent IRangeTypeObjectContainerEvent;
         #endregion
@@ -15,7 +15,7 @@ namespace RTPuzzle
         public void Init()
         {
             this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
-            this.InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
+            this.IInRangeEffectManagerEvent = PuzzleGameSingletonInstances.InRangeEffectManager;
             this.IObjectRepelLineVisualFeedbackManagerEvent = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
             this.IRangeTypeObjectContainerEvent = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
         }
@@ -31,7 +31,7 @@ namespace RTPuzzle
         {
             this.IRangeTypeObjectContainerEvent.RemoveRange(rangeTypeObject);
             this.GroundEffectsManagerV2.OnRangeDestroy(rangeTypeObject);
-            this.InRangeEffectManager.OnRangeDestroy(rangeTypeObject.RangeType);
+            this.IInRangeEffectManagerEvent.OnRangeDestroy(rangeTypeObject.RangeType);
             this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeDestroyed(rangeTypeObject.RangeType);
         }
         #endregion
@@ -39,13 +39,13 @@ namespace RTPuzzle
         #region IInRangeColliderTrackerModuleEventListener
         public void RANGE_EVT_InsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
-            this.InRangeEffectManager.OnInRangeAdd(InRangeColliderTrackerModule, triggeredRangeType);
+            this.IInRangeEffectManagerEvent.OnInRangeAdd(InRangeColliderTrackerModule, triggeredRangeType);
             this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeInsideRangeTracker(InRangeColliderTrackerModule, triggeredRangeType);
         }
 
         public void RANGE_EVT_OutsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
-            this.InRangeEffectManager.OnInRangeRemove(InRangeColliderTrackerModule, triggeredRangeType);
+            this.IInRangeEffectManagerEvent.OnInRangeRemove(InRangeColliderTrackerModule, triggeredRangeType);
             this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeOutsideRangeTracker(InRangeColliderTrackerModule, triggeredRangeType);
         }
         #endregion

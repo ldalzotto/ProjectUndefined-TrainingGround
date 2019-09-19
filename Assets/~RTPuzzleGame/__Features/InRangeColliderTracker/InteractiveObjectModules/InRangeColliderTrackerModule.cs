@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -15,13 +16,14 @@ namespace RTPuzzle
     public interface IInRangeColliderTrackerModuleDataRetriever
     {
         IObjectRepelModuleDataRetrieval GetIObjectRepelModuleDataRetrieval();
+        ModelObjectModule ModelObjectModule { get; }
     }
 
     public class InRangeColliderTrackerModule : InteractiveObjectModule, IInRangeColliderTrackerModuleDataRetriever, IAILogicColliderModuleListener
     {
 
         #region Module Dependencies
-        private ModelObjectModule ModelObjectModule;
+        public ModelObjectModule ModelObjectModule { get; private set; }
         private ObjectRepelModule ObjectRepelModule;
         #endregion
 
