@@ -252,6 +252,11 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\ObjectSelection\ExposedInterfaces\IInteractiveObjectSelectionEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Obstacle\Managers\ObstacleFrustumCalculationManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Obstacle\ObstacleListener\ObstacleListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Obstacle\SquareObstacle\SquareObstacle.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Obstacle\SquareObstacle\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
@@ -328,11 +333,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectTypeDataRetrieval.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\SharedData\InteractiveObjectSharedDataType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleFrustumCalculationManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstacleListener.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\ObstaclesListenerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstacle.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
