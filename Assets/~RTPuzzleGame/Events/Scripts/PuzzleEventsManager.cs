@@ -6,7 +6,7 @@ namespace RTPuzzle
 {
     public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener,
                                 ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener, IGameOverManagerEventListener,
-                                ILevelCompletionManagerEventListener
+                                ILevelCompletionManagerEventListener, IActionInteractableObjectModuleEventListener
     {
         #region External Dependencies
         private InteractiveObjectContainer InteractiveObjectContainer;
@@ -148,7 +148,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Player action management event
+        #region IActionInteractableObjectModuleEventListener
         public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
             this.IInteractiveObjectSelectionEvent.OnSelectableEnter(actionInteractableObjectModule);

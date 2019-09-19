@@ -82,12 +82,9 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzleMaterialConfiguration\PuzzleMaterialConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\PuzzlePrefabConfiguration\PuzzlePrefabConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\StaticConfiguration\SubConfiguration\RangeColorConfiguration\RangeColorConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\ActionInteractableObjectConfiguration\ActionInteractableObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\AIPatrolGraphConfiguration\AIPatrolGraphInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\Abstract\AbstractInteractiveObjectDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ActionInteractableObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AILogicColliderModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\AttractiveObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\InRangeColliderTrackerModuleDefinition.cs" />
@@ -120,6 +117,11 @@
     <Compile Include="Assets\~RTPuzzleGame\Environment\InRangeEffect\Script\InRangeEffectManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ActionInteractableObject\Configuration\ActionInteractableObjectConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ActionInteractableObject\Configuration\ActionInteractableObjectInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ActionInteractableObject\ExposedInterfaces\IActionInteractableObjectModuleEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ActionInteractableObject\InteractiveObjectDefinitions\ActionInteractableObjectModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\ActionInteractableObject\InteractiveObjectModules\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIPlayerEscapeComponent.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\PlayerActions\CutsceneAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeObstacleListenerDefinition.cs" />
@@ -309,7 +312,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\TargetZone\InteractiveObjectDefinitions\TargetZoneModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\TargetZone\InteractiveObjectModules\TargetZoneModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\TargetZone\Lib\TargetZoneHelper.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ActionInteractableObjectModule\ActionInteractableObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\AILogicColliderModule\AILogicColliderModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InRangeColliderTrackerModule\InRangeColliderTrackerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\InteractiveObjectCutsceneControllerModule\InteractiveObjectCutsceneControllerModule.cs" />
@@ -328,7 +330,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\CutsceneAction\CutsceneAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionPuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionBuilder.cs" />

@@ -14,7 +14,7 @@ namespace RTPuzzle
         #endregion
 
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private IActionInteractableObjectModuleEventListener IActionInteractableObjectModuleEventListener;
         #endregion
 
         private IInteractiveObjectTypeEvents associatedIInteractiveObjectTypeEvents;
@@ -22,7 +22,7 @@ namespace RTPuzzle
         private RTPPlayerAction associatedPlayerAction;
         private ActionInteractableObjectInherentData ActionInteractableObjectInherentData;
 
-        #region Data Retrieval
+        #region ISelectableModule
         public ExtendedBounds GetAverageModelBoundLocalSpace()
         {
             if (this.modelObjectModule != null)
@@ -48,7 +48,7 @@ namespace RTPuzzle
 
             this.ActionInteractableObjectInherentData = ActionInteractableObjectInherentData;
             this.associatedIInteractiveObjectTypeEvents = IInteractiveObjectTypeEvents;
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.IActionInteractableObjectModuleEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
             var triggerCollider = GetComponent<SphereCollider>();
             triggerCollider.radius = this.ActionInteractableObjectInherentData.InteractionRange;
@@ -66,7 +66,7 @@ namespace RTPuzzle
 
         public override void OnModuleDisabled()
         {
-            this.PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
+            this.IActionInteractableObjectModuleEventListener.PZ_EVT_OnActionInteractableExit(this);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -74,7 +74,7 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsPlayer)
             {
-                this.PuzzleEventsManager.PZ_EVT_OnActionInteractableEnter(this);
+                this.IActionInteractableObjectModuleEventListener.PZ_EVT_OnActionInteractableEnter(this);
             }
         }
 
@@ -83,7 +83,7 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null && collisionType.IsPlayer)
             {
-                this.PuzzleEventsManager.PZ_EVT_OnActionInteractableExit(this);
+                this.IActionInteractableObjectModuleEventListener.PZ_EVT_OnActionInteractableExit(this);
             }
         }
         
