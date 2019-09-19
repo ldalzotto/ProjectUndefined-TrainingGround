@@ -35,14 +35,10 @@ namespace RTPuzzle
         #endregion
 
         #region External Dependencies
-        private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
         private InteractiveObjectContainer interactiveObjectContainer;
-        private PuzzleEventsManager puzzleEventsManager;
         #endregion
 
         #region Data Retrieval
-        public PuzzleGameConfigurationManager PuzzleGameConfigurationManager { get => puzzleGameConfigurationManager; }
-        public PuzzleEventsManager PuzzleEventsManager { get => puzzleEventsManager; }
 
         public T GetModule<T>() where T : InteractiveObjectModule
         {
@@ -122,15 +118,14 @@ namespace RTPuzzle
             this.isGoingToBeDestroyed = false;
 
             #region External Dependencies
-            this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             this.interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
-            this.puzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
-            var puzzleGameStatciConfigurationContainer = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer;
             #endregion
 
             if (InteractiveObjectTypeDefinitionID != InteractiveObjectTypeDefinitionID.NONE)
             {
-                this.puzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[this.InteractiveObjectTypeDefinitionID].DefineInteractiveObject(this,
+                var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
+                var puzzleGameStatciConfigurationContainer = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer;
+                puzzleGameConfigurationManager.InteractiveObjectTypeDefinitionConfiguration()[this.InteractiveObjectTypeDefinitionID].DefineInteractiveObject(this,
                          puzzleGameStatciConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleGameConfigurationManager.PuzzleGameConfiguration);
             }
 
