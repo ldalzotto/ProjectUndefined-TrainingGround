@@ -7,18 +7,18 @@ using NodeGraph;
 namespace RTPuzzle
 {
     [System.Serializable]
-    public class AITargetConditionNode : NodeProfile
+    public class PlayerTargetConditionNode : NodeProfile
     {
         [SerializeField]
-        private AITargetConditionEdge AITargetConditionEdge;
+        private PlayerTargetConditionEdge PlayerTargetConditionEdge;
         [SerializeField]
         private BoolNodeEdge ResultBool;
 
 #if UNITY_EDITOR
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.AITargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<AITargetConditionEdge>(this, NodeEdgeType.SINGLE_INPUT);
-            return new List<NodeEdgeProfile>() { this.AITargetConditionEdge };
+            this.PlayerTargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<PlayerTargetConditionEdge>(this, NodeEdgeType.SINGLE_INPUT);
+            return new List<NodeEdgeProfile>() { this.PlayerTargetConditionEdge };
         }
 
         public override List<NodeEdgeProfile> InitOutputEdges()
@@ -40,9 +40,8 @@ namespace RTPuzzle
 
         public void Resolve(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)
         {
-            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.InteractiveObjectContainer.TargetZones[this.AITargetConditionEdge.TargetZoneID].LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
-            var involvedAI = ConditionGraphResolutionInput.NPCAIManagerContainer.GetNPCAiManager(this.AITargetConditionEdge.AiID).GetInteractiveObjectTypeDataRetrieval().GetAILogicColliderModule().GetCollider();
-            this.ResultBool.Value = (bool)involvedTargetZoneTriggerCollider.bounds.Intersects(involvedAI.bounds);
+            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.InteractiveObjectContainer.TargetZones[this.PlayerTargetConditionEdge.TargetZoneID].ILevelCompletionTriggerModuleDataRetriever.GetTargetZoneTriggerCollider();
+            this.ResultBool.Value = (bool)involvedTargetZoneTriggerCollider.bounds.Intersects(ConditionGraphResolutionInput.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds);
         }
 
         public bool GetResult() { return (bool)this.ResultBool.Value; }

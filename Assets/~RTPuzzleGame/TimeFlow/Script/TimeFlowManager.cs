@@ -3,7 +3,12 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class TimeFlowManager : MonoBehaviour
+    public interface ITimeFlowManagerDataRetrieval
+    {
+        bool NoMoreTimeAvailable();
+    }
+
+    public class TimeFlowManager : MonoBehaviour, ITimeFlowManagerDataRetrieval
     {
 
         private TimeFlowInputManager TimeFlowInputManager;

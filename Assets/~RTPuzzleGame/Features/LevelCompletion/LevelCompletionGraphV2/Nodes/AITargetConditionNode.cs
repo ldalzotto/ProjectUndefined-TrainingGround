@@ -7,18 +7,18 @@ using NodeGraph;
 namespace RTPuzzle
 {
     [System.Serializable]
-    public class PlayerTargetConditionNode : NodeProfile
+    public class AITargetConditionNode : NodeProfile
     {
         [SerializeField]
-        private PlayerTargetConditionEdge PlayerTargetConditionEdge;
+        private AITargetConditionEdge AITargetConditionEdge;
         [SerializeField]
         private BoolNodeEdge ResultBool;
 
 #if UNITY_EDITOR
         public override List<NodeEdgeProfile> InitInputEdges()
         {
-            this.PlayerTargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<PlayerTargetConditionEdge>(this, NodeEdgeType.SINGLE_INPUT);
-            return new List<NodeEdgeProfile>() { this.PlayerTargetConditionEdge };
+            this.AITargetConditionEdge = NodeEdgeProfile.CreateNodeEdge<AITargetConditionEdge>(this, NodeEdgeType.SINGLE_INPUT);
+            return new List<NodeEdgeProfile>() { this.AITargetConditionEdge };
         }
 
         public override List<NodeEdgeProfile> InitOutputEdges()
@@ -40,8 +40,9 @@ namespace RTPuzzle
 
         public void Resolve(ref LevelCompletionConditionResolutionInput ConditionGraphResolutionInput)
         {
-            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.InteractiveObjectContainer.TargetZones[this.PlayerTargetConditionEdge.TargetZoneID].LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
-            this.ResultBool.Value = (bool)involvedTargetZoneTriggerCollider.bounds.Intersects(ConditionGraphResolutionInput.PlayerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier().bounds);
+            var involvedTargetZoneTriggerCollider = ConditionGraphResolutionInput.InteractiveObjectContainer.TargetZones[this.AITargetConditionEdge.TargetZoneID].ILevelCompletionTriggerModuleDataRetriever.GetTargetZoneTriggerCollider();
+            var involvedAI = ConditionGraphResolutionInput.NPCAIManagerContainer.GetNPCAiManager(this.AITargetConditionEdge.AiID).GetInteractiveObjectTypeDataRetrieval().GetAILogicColliderModule().GetCollider();
+            this.ResultBool.Value = (bool)involvedTargetZoneTriggerCollider.bounds.Intersects(involvedAI.bounds);
         }
 
         public bool GetResult() { return (bool)this.ResultBool.Value; }

@@ -6,10 +6,10 @@ using CoreGame;
 namespace RTPuzzle
 {
 
-    public class LevelCompletionManager : MonoBehaviour
+    public class LevelCompletionManager : MonoBehaviour, ILevelCompletionManagerEvent
     {
         #region External dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private ILevelCompletionManagerEventListener ILevelCompletionManagerEventListener;
         private FXContainerManager FXContainerManager;
         private LevelManager LevelManager;
         private PuzzlePrefabConfiguration PuzzlePrefabConfiguration;
@@ -27,7 +27,7 @@ namespace RTPuzzle
             var PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
 
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.ILevelCompletionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.FXContainerManager = CoreGameSingletonInstances.FXContainerManager;
             this.PuzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             #endregion
@@ -36,7 +36,7 @@ namespace RTPuzzle
             this.levelCompletionConditionResolutionInput = new LevelCompletionConditionResolutionInput(NPCAIManagerContainer, InteractiveObjectContainer, PlayerManagerDataRetriever);
         }
 
-        internal void ConditionRecalculationEvaluate()
+        public void ConditionRecalculationEvaluate()
         {
             if (this.currentLevelConfiguration.LevelCompletionInherentData != null && this.currentLevelConfiguration.LevelCompletionInherentData.ConditionGraphEditorProfile != null)
             {
@@ -50,7 +50,7 @@ namespace RTPuzzle
         private void OnLevelCompleted()
         {
             this.FXContainerManager.TriggerFX(this.PuzzlePrefabConfiguration.LevelCompletedParticleEffect);
-            this.PuzzleEventsManager.PZ_EVT_LevelCompleted();
+            this.ILevelCompletionManagerEventListener.PZ_EVT_LevelCompleted();
         }
     }
 }

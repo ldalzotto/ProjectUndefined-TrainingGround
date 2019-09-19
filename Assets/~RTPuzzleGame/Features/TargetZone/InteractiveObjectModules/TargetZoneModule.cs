@@ -12,6 +12,8 @@ namespace RTPuzzle
         TargetZoneID GetTargetZoneID();
         Transform GetTransform();
         ITargetZoneModuleEvent GetITargetZoneModuleEvent();
+        ILevelCompletionTriggerModuleDataRetriever ILevelCompletionTriggerModuleDataRetriever { get; }
+        SphereCollider ZoneDistanceDetectionCollider { get; }
     }
 
     public class TargetZoneModule : InteractiveObjectModule, ITargetZoneModuleDataRetriever, ITargetZoneModuleEvent
@@ -20,16 +22,14 @@ namespace RTPuzzle
         public TargetZoneID TargetZoneID;
 
         #region Internal Dependencies
-        private SphereCollider zoneDistanceDetectionCollider;
+        public SphereCollider ZoneDistanceDetectionCollider { get; private set; }
         #endregion
 
         #region Module Dependencies
-        private LevelCompletionTriggerModule levelCompletionTriggerModule;
+        public ILevelCompletionTriggerModuleDataRetriever ILevelCompletionTriggerModuleDataRetriever { get; private set; }
         #endregion
 
         #region Data Retrieval
-        public Collider ZoneDistanceDetectionCollider { get => zoneDistanceDetectionCollider; }
-        public LevelCompletionTriggerModule LevelCompletionTriggerModule { get => levelCompletionTriggerModule; }
 
         public static ITargetZoneModuleDataRetriever FromCollisionType(CollisionType collisionType)
         {
@@ -55,9 +55,9 @@ namespace RTPuzzle
                 if (interactiveObjectInitializationObject.TargetZoneInherentData == null) { TargetZoneInherentData = gameConfiguration.TargetZonesConfiguration()[this.TargetZoneID]; }
                 else { TargetZoneInherentData = interactiveObjectInitializationObject.TargetZoneInherentData; }
 
-                this.levelCompletionTriggerModule = IInteractiveObjectTypeDataRetrieval.GetLevelCompletionTriggerModule();
+                this.ILevelCompletionTriggerModuleDataRetriever = IInteractiveObjectTypeDataRetrieval.GetLevelCompletionTriggerModule();
                 this.ResolveModuleDependencies();
-                this.zoneDistanceDetectionCollider.radius = TargetZoneInherentData.AIDistanceDetection;
+                this.ZoneDistanceDetectionCollider.radius = TargetZoneInherentData.AIDistanceDetection;
 
                 this.hasInit = true;
             }
@@ -77,7 +77,7 @@ namespace RTPuzzle
 
         private void ResolveModuleDependencies()
         {
-            this.zoneDistanceDetectionCollider = GetComponent<SphereCollider>();
+            this.ZoneDistanceDetectionCollider = GetComponent<SphereCollider>();
         }
 
         private void OnDrawGizmos()

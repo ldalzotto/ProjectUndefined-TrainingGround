@@ -14,22 +14,22 @@ namespace RTPuzzle
             var i = 0;
             foreach (var targetZone in interactiveObjectContainer.TargetZones.Values)
             {
-                foundColliders[i] = targetZone.LevelCompletionTriggerModule.GetTargetZoneTriggerCollider();
+                foundColliders[i] = targetZone.ILevelCompletionTriggerModuleDataRetriever.GetTargetZoneTriggerCollider();
                 i++;
             }
             return foundColliders;
         }
 
-        public static List<TargetZoneModule> GetAllTargetZonesWhereDistanceCheckOverlaps(Bounds testingBound, InteractiveObjectContainer interactiveObjectContainer)
+        public static List<ITargetZoneModuleDataRetriever> GetAllTargetZonesWhereDistanceCheckOverlaps(Bounds testingBound, InteractiveObjectContainer interactiveObjectContainer)
         {
-            List<TargetZoneModule> results = null;
+            List<ITargetZoneModuleDataRetriever> results = null;
             foreach (var targetZone in interactiveObjectContainer.TargetZones.Values)
             {
                 if (targetZone.ZoneDistanceDetectionCollider.bounds.Intersects(testingBound))
                 {
                     if (results == null)
                     {
-                        results = new List<TargetZoneModule>();
+                        results = new List<ITargetZoneModuleDataRetriever>();
                     }
                     results.Add(targetZone);
                 }

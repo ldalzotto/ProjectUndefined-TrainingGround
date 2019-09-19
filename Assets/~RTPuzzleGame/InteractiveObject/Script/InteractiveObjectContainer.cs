@@ -14,7 +14,7 @@ namespace RTPuzzle
         #region Specific Containers
         private Dictionary<AttractiveObjectId, AttractiveObjectModule> attractiveObjectContainer;
         private List<IObjectRepelModuleDataRetrieval> objectsRepelable;
-        private Dictionary<TargetZoneID, TargetZoneModule> targetZones;
+        private Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> targetZones;
         private List<DisarmObjectModule> disarmObjectModules;
         private Dictionary<GrabObjectID, GrabObjectModule> grabObjectModules;
         #endregion
@@ -25,7 +25,7 @@ namespace RTPuzzle
             return this.attractiveObjectContainer[attractiveObjectId];
         }
         public List<IObjectRepelModuleDataRetrieval> ObjectsRepelable { get => objectsRepelable; }
-        public Dictionary<TargetZoneID, TargetZoneModule> TargetZones { get => targetZones; }
+        public Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> TargetZones { get => targetZones; }
         public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
         public Dictionary<GrabObjectID, GrabObjectModule> GrabObjectModules { get => grabObjectModules; }
         public InteractiveObjectType GetInteractiveObjectFirst(InteractiveObjectID interactiveObjectID)
@@ -43,7 +43,7 @@ namespace RTPuzzle
             this.interactiveObjects = new MultiValueDictionary<InteractiveObjectID, InteractiveObjectType>();
             this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectModule>();
             this.objectsRepelable = new List<IObjectRepelModuleDataRetrieval>();
-            this.targetZones = new Dictionary<TargetZoneID, TargetZoneModule>();
+            this.targetZones = new Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever>();
             this.disarmObjectModules = new List<DisarmObjectModule>();
             this.grabObjectModules = new Dictionary<GrabObjectID, GrabObjectModule>();
 

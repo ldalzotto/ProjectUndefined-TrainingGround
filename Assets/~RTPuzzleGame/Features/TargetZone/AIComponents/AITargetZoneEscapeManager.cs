@@ -104,7 +104,7 @@ namespace RTPuzzle
              );
         }
 
-        private TargetZoneModule IsAIOverlappingWithATargetZone()
+        private ITargetZoneModuleDataRetriever IsAIOverlappingWithATargetZone()
         {
             var overlappingTargetZones = TargetZoneHelper.GetAllTargetZonesWhereDistanceCheckOverlaps
                 (this.AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetAILogicColliderModule().GetCollider().bounds, this.InteractiveObjectContainer);

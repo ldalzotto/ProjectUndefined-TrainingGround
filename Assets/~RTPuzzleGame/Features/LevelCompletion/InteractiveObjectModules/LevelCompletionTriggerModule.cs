@@ -4,10 +4,15 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class LevelCompletionTriggerModule : InteractiveObjectModule, RangeTypeObjectEventListener
+    public interface ILevelCompletionTriggerModuleDataRetriever
+    {
+        Collider GetTargetZoneTriggerCollider();
+    }
+
+    public class LevelCompletionTriggerModule : InteractiveObjectModule, ILevelCompletionTriggerModuleDataRetriever, RangeTypeObjectEventListener
     {
         #region External dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private ILevelCompletionManagerEvent ILevelCompletionManagerEvent;
         #endregion
 
         private RangeTypeObject RangeTypeObject;
@@ -25,7 +30,7 @@ namespace RTPuzzle
 
         private void ResolveModuleDependencies()
         {
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.ILevelCompletionManagerEvent = PuzzleGameSingletonInstances.LevelCompletionManager;
             if (this.RangeTypeObject == null)
             {
                 this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();
@@ -53,7 +58,7 @@ namespace RTPuzzle
             var CollisionType = other.GetComponent<CollisionType>();
             if (CollisionType != null && (CollisionType.IsAI || CollisionType.IsPlayer))
             {
-                this.PuzzleEventsManager.PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate();
+                this.ILevelCompletionManagerEvent.ConditionRecalculationEvaluate();
             }
         }
 

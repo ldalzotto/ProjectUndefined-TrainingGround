@@ -5,7 +5,8 @@ using UnityEngine;
 namespace RTPuzzle
 {
     public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener,
-                                ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener
+                                ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener, IGameOverManagerEventListener,
+                                ILevelCompletionManagerEventListener
     {
         #region External Dependencies
         private InteractiveObjectContainer InteractiveObjectContainer;
@@ -13,7 +14,7 @@ namespace RTPuzzle
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
-        private DottedLineRendererManager DottedLineRendererManager;
+        private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
         private PlayerActionEventManager PlayerActionEventManager;
         private TutorialManager TutorialManager;
@@ -28,7 +29,7 @@ namespace RTPuzzle
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
-            this.DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
+            this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
             this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
@@ -146,7 +147,7 @@ namespace RTPuzzle
             }
         }
         #endregion
-        
+
         #region Player action management event
         public void PZ_EVT_OnActionInteractableEnter(ActionInteractableObjectModule actionInteractableObjectModule)
         {
@@ -214,14 +215,16 @@ namespace RTPuzzle
             disarmedObjectModule.GetIDisarmObjectModuleEvent().IfNotNull(IDisarmObjectModuleEvent => IDisarmObjectModuleEvent.OnDisarmObjectEnd(AIObjectDataRetriever));
         }
         #endregion
-
-        #region Level Transition Events
+        
+        #region IGameOverManagerEventListener
         public void PZ_EVT_GameOver()
         {
             Debug.Log(MyLog.Format("PZ_EVT_GameOver"));
             this.OnPuzzleToAdventureLevel(this.LevelMemoryManager.LastAdventureLevel);
         }
+        #endregion
 
+        #region Level Transition Events
         public void PZ_EVT_LevelCompleted()
         {
             Debug.Log(MyLog.Format("PZ_EVT_LevelCompleted"));
@@ -238,7 +241,7 @@ namespace RTPuzzle
         private void OnPuzzleToAdventureLevel(LevelZonesID levelZonesID)
         {
             this.InteractiveObjectContainer.OnGameOver();
-            this.DottedLineRendererManager.OnLevelExit();
+            this.IDottedLineRendererManagerEvent.OnLevelExit();
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToAdventureLevel(levelZonesID);
         }
@@ -246,18 +249,11 @@ namespace RTPuzzle
         private void OnPuzzleToPuzzleLevel(LevelZonesID levelZonesID)
         {
             this.InteractiveObjectContainer.OnGameOver();
-            this.DottedLineRendererManager.OnLevelExit();
+            this.IDottedLineRendererManagerEvent.OnLevelExit();
             this.GroundEffectsManagerV2.OnLevelExit();
             this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
         }
         #endregion
-
-        #region Level Completion Events
-        public void PZ_EVT_LevelCompletion_ConditionRecalculationEvaluate()
-        {
-            this.LevelCompletionManager.ConditionRecalculationEvaluate();
-        }
-        #endregion
-
+        
     }
 }
