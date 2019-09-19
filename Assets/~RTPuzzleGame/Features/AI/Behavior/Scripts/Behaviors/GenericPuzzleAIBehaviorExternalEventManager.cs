@@ -50,9 +50,9 @@ namespace RTPuzzle
                 {typeof(AttractiveObjectDestroyedAIBehaviorEvent), AttractiveObjectAIEvents.AttractiveObject_Destroyed },
                 {typeof(TargetZoneTriggerEnterAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerEnter },
                 {typeof(TargetZoneTriggerStayAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerStay },
-                {typeof(PlayerEscapeStartAIBehaviorEvent), PlayerEscape_Start },
-                {typeof(SightInRangeEnterAIBehaviorEvent), SightInRange_Enter },
-                {typeof(SightInRangeExitAIBehaviorEvent), SightInRange_Exit },
+                {typeof(PlayerEscapeStartAIBehaviorEvent), AgentEscapeAIEvents.PlayerEscape_Start },
+                {typeof(SightInRangeEnterAIBehaviorEvent), SightAIEvents.SightInRange_Enter },
+                {typeof(SightInRangeExitAIBehaviorEvent), SightAIEvents.SightInRange_Exit },
                 {typeof(DisarmingObjectEnterAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Enter },
                 {typeof(DisarmingObjectExitAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Exit },
         };
@@ -109,56 +109,7 @@ namespace RTPuzzle
                 genericAiBehavior.ForceUpdateAIBehavior();
             }
         }
-
-        private static void PlayerEscape_Start(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractPlayerEscapeManager>())
-            {
-                if (genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractPlayerEscapeManager>())
-                 || genericAiBehavior.IsPlayerEscapeAllowedToInterruptOtherStates())
-                {
-                    if (GenericPuzzleAIBehaviorExternalEventManager.GetBehaviorStateTrackerContainer().GetBehavior<EscapeWhileIgnoringTargetZoneTracker>().IsEscapingWhileIgnoringTargets)
-                    {
-                        Debug.Log(MyLog.Format("AI - Player escape without colliders."));
-                        var playerEscapeStartAIBehaviorEvent = PuzzleAIBehaviorExternalEvent.Cast<PlayerEscapeStartAIBehaviorEvent>();
-                        GenericPuzzleAIBehaviorExternalEventManager.ProcessEvent(new EscapeWithoutTriggerStartAIBehaviorEvent(playerEscapeStartAIBehaviorEvent.PlayerPosition,
-                            playerEscapeStartAIBehaviorEvent.AIPlayerEscapeComponent.EscapeSemiAngle,
-                            playerEscapeStartAIBehaviorEvent.AIPlayerEscapeComponent.EscapeDistance), genericAiBehavior);
-                    }
-                    else
-                    {
-                        Debug.Log(MyLog.Format("AI - Player escape with colliders."));
-                        genericAiBehavior.GetAIManager<AbstractPlayerEscapeManager>().OnPlayerEscapeStart();
-                        genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractPlayerEscapeManager>());
-                    }
-
-                }
-            }
-        }
-
-        private static void SightInRange_Enter(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIMoveTowardPlayerManager>())
-            {
-                Debug.Log(MyLog.Format("AI - Sight in range enter."));
-                if (genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().OnSightInRangeEnter(PuzzleAIBehaviorExternalEvent.Cast<SightInRangeEnterAIBehaviorEvent>()))
-                {
-                    genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>());
-                }
-            }
-        }
-
-        private static void SightInRange_Exit(GenericPuzzleAIBehavior genericAiBehavior, GenericPuzzleAIBehaviorExternalEventManager GenericPuzzleAIBehaviorExternalEventManager,
-            PuzzleAIBehaviorExternalEvent PuzzleAIBehaviorExternalEvent)
-        {
-            if (genericAiBehavior.IsManagerInstanciated<AbstractAIMoveTowardPlayerManager>())
-            {
-                Debug.Log(MyLog.Format("AI - Sight in range exit."));
-                genericAiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().OnSightInRangeExit(PuzzleAIBehaviorExternalEvent.Cast<SightInRangeExitAIBehaviorEvent>());
-            }
-        }
+        
     }
 
     public class FearedStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
@@ -187,44 +138,5 @@ namespace RTPuzzle
         {
             this.eventProcessedCallback = eventProcessedCallback;
         }
-    }
-    
-    public class PlayerEscapeStartAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private Vector3 playerPosition;
-        private AIPlayerEscapeComponent aIPlayerEscapeComponent;
-
-        public PlayerEscapeStartAIBehaviorEvent(Vector3 playerPosition, AIPlayerEscapeComponent AIPlayerEscapeComponent)
-        {
-            this.playerPosition = playerPosition;
-            this.aIPlayerEscapeComponent = AIPlayerEscapeComponent;
-        }
-
-        public Vector3 PlayerPosition { get => playerPosition; }
-        public AIPlayerEscapeComponent AIPlayerEscapeComponent { get => aIPlayerEscapeComponent; }
-    }
-
-    public class SightInRangeEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private ColliderWithCollisionType colliderWithCollisionType;
-
-        public SightInRangeEnterAIBehaviorEvent(ColliderWithCollisionType colliderWithCollisionType)
-        {
-            this.colliderWithCollisionType = colliderWithCollisionType;
-        }
-
-        public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
-    }
-
-    public class SightInRangeExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
-    {
-        private ColliderWithCollisionType colliderWithCollisionType;
-
-        public SightInRangeExitAIBehaviorEvent(ColliderWithCollisionType colliderWithCollisionType)
-        {
-            this.colliderWithCollisionType = colliderWithCollisionType;
-        }
-
-        public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
     }
 }

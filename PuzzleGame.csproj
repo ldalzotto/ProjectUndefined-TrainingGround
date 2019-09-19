@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -96,7 +95,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\LevelCompletionTriggerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\NearPlayerGameOverTriggerModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectDefinition\ObjectSightModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectSharedDataTypeInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionInherentData.cs" />
@@ -139,6 +137,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIEscapeWithoutTriggerManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIPlayerEscapeComponent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\AIComponents\AIplayerEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\Events\AgentEscapeAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\ExposedInterfaces\IAgentEscapeEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AgentEscape\Lib\EscapeDestinationManager.cs" />
@@ -153,9 +153,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIComponents\Patrolling\AIPatrolComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIComponents\Patrolling\AIRandomPatrolComponentMananger.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIComponents\Patrolling\AIScriptedPatrolComponentManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIComponents\PlayerEscape\AIPlayerEscapeComponent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIComponents\PlayerEscape\AIplayerEscapeManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\AIObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Behavior\Scripts\AIBehaviorManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Behavior\Scripts\Behaviors\GenericPuzzleAIBehavior.cs" />
@@ -169,6 +166,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Configuration\AIObjectConfiguration\AIObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Configuration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Configuration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AI\Lib\AIDestinationMoveManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Managers\AIManagerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Positioning\AIPositionMarker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AI\Positioning\AIPositionsManager.cs" />
@@ -292,6 +290,9 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Lib\Modules\RangeType\SphereRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Lib\RangeTypeObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Managers\RangeTypeObjectContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Sight\Events\SightAIEvents.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Sight\InteractiveObjectDefinitions\ObjectSightModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\Sight\InteractiveObjectModules\ObjectSightModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\TargetZone\AIComponents\AITargetZoneComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\TargetZone\AIComponents\AITargetZoneEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\TargetZone\Configuration\TargetZoneConfiguration.cs" />
@@ -309,7 +310,6 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\LevelCompletionTriggerModule\LevelCompletionTriggerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ModelObjectModule\ModelObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\NearPlayerGameOverTriggerModule\NearPlayerGameOverTriggerModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Modules\ObjectSightModule\ObjectSightModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectInitializationObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObject\Script\InteractiveObjectModule.cs" />

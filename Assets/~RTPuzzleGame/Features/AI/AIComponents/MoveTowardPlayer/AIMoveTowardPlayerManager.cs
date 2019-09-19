@@ -5,6 +5,7 @@ namespace RTPuzzle
     public class AIMoveTowardPlayerManager : AbstractAIMoveTowardPlayerManager
     {
         private AIObjectTypeSpeedSetter AIObjectTypeSpeedSetter;
+
         #region State
         protected bool playerInSight;
         protected ColliderWithCollisionType currentTarget;
@@ -75,8 +76,6 @@ namespace RTPuzzle
 #if UNITY_EDITOR
         #region Test data retrieval
         public override ColliderWithCollisionType GetCurrentTarget() { return this.currentTarget; }
-
-        
         #endregion
 #endif
     }
