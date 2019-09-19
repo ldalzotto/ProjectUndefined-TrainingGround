@@ -18,5 +18,10 @@ namespace RTPuzzle
             this.GrabObjectID = grabObjectID;
             this.PlayerActionToIncrementOrAdd = PlayerActionToIncrementOrAdd;
         }
+
+        public override RTPPlayerAction BuildPlayerAction()
+        {
+            return new GrabObjectAction(this);
+        }
     }
 }

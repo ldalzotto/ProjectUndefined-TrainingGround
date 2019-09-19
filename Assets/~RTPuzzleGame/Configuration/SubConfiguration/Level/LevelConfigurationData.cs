@@ -36,7 +36,7 @@ namespace RTPuzzle
             foreach (var playerActionid in playerActionIds)
             {
                 var playerActionInherentData = playerActionConfiguration.ConfigurationInherentData[playerActionid.playerActionId];
-                this.playerActions.MultiValueAdd(playerActionid.playerActionId, PlayerActionBuilder.BuildAction(playerActionInherentData));
+                this.playerActions.MultiValueAdd(playerActionid.playerActionId, playerActionInherentData.BuildPlayerAction());
             }
         }
 

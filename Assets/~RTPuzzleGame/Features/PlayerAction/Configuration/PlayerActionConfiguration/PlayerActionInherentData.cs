@@ -18,6 +18,8 @@ namespace RTPuzzle
             ActionWheelNodeConfigurationId = actionWheelNodeConfigurationId;
             CoolDownTime = coolDownTime;
         }
+
+        public abstract RTPPlayerAction BuildPlayerAction();
     }
 
 

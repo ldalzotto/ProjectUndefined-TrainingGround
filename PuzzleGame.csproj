@@ -95,14 +95,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\InteractiveObjectTypeDefinitionConfiguration\InteractiveObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\LevelConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\Level\LevelConfigurationData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\AttractiveObjectAction\AttractiveObjectActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\CutsceneAction\CutsceneActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\GrabAction\GrabActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\PlayerActionConfiguration\PlayerActionInherentData\LaunchProjectileAction\LaunchProjectileActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\Configuration\SubConfiguration\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedLineType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\CooldownFeed\Scripts\CooldownFeedManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
@@ -170,6 +162,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleEventImpl.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\AttractiveObject\PlayerActions\AttractiveObjectActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectDefinitions\ContextMarkVisualFeedbackModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ContextMarkVisualFeedback\InteractiveObjectModules\ContextMarkVisualFeedbackModule.cs" />
@@ -205,6 +198,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\ExposedInterfaces\IGrabObjectEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\InteractiveObjectDefinitions\GrabObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\InteractiveObjectModules\GrabObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\PlayerActions\GrabActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectDefinitions\InteractiveObjectAnimationModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModule.cs" />
@@ -220,6 +214,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\InteractiveObjectDefinitions\LaunchProjectileModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\InteractiveObjectModules\LaunchProjectileModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\PlayerActions\LaunchProjectileAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\PlayerActions\LaunchProjectileActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LaunchProjectile\PlayerActions\ThrowProjectileCursorType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LevelCompletion\Configuration\CompletionConfiguration\LevelCompletionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\LevelCompletion\ExposedInterfaces\ILevelCompletionManagerEvent.cs" />
@@ -257,6 +252,15 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\ObjectSelection\ExposedInterfaces\IInteractiveObjectSelectionEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Configuration\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\ExposedInterfaces\IPlayerActionManagerEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\ExposedInterfaces\IPlayerActionManagerEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Lib\ActionExecution\RTPPlayerAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Managers\PlayerActionEventManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PlayerAction\Managers\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Configuration\PuzzleCutsceneConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Configuration\PuzzleCutsceneInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\CutsceneGraph\Actions\FollowTransformAction.cs" />
@@ -278,6 +282,7 @@
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\PlayerActions\CutsceneAction.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\Features\PuzzleCutscene\PlayerActions\CutsceneActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeObstacleListenerDefinition.cs" />
@@ -330,11 +335,6 @@
     <Compile Include="Assets\~RTPuzzleGame\Obstacles\Script\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionEventManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\EventsManagement\PlayerActionPuzzleEventsManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\PlayerActionBuilder.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\ActionExecution\Scripts\RTPPlayerAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\PlayerAction\PlayerActionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\PointOfInterest\Script\PointOfInterestPuzzleEventManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\Script\TimeFlowManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\TimeFlow\TimeFlowBar\Scripts\TimeFlowBarManager.cs" />

@@ -3,7 +3,13 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class CooldownFeedManager : MonoBehaviour
+    public interface ICooldownFeedManagerEvent
+    {
+        void OnRTPPlayerActionStop(RTPPlayerAction playerAction);
+        void OnCooldownEnded(RTPPlayerAction involvedAction);
+    }
+
+    public class CooldownFeedManager : MonoBehaviour, ICooldownFeedManagerEvent
     {
         private CooldownFeedLineManager CooldownFeedLineManager;
         private AnimatedLayout AnimatedLayout;
@@ -23,7 +29,7 @@ namespace RTPuzzle
         }
 
         #region External Events
-        internal void OnRTPPlayerActionStop(RTPPlayerAction playerAction)
+        public void OnRTPPlayerActionStop(RTPPlayerAction playerAction)
         {
             if (playerAction.IsOnCoolDown())
             {

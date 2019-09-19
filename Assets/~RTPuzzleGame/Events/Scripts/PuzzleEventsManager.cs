@@ -6,17 +6,20 @@ namespace RTPuzzle
 {
     public class PuzzleEventsManager : MonoBehaviour, IAIAttractiveObjectEventListener, IDisarmObjectAIEventListener,
                                 ILaunchProjectileAIEventListener, IAgentEscapeEventListener, IGrabObjectEventListener, IGameOverManagerEventListener,
-                                ILevelCompletionManagerEventListener, IActionInteractableObjectModuleEventListener
+                                ILevelCompletionManagerEventListener, IActionInteractableObjectModuleEventListener, IPlayerActionManagerEventListener
     {
         #region External Dependencies
         private InteractiveObjectContainer InteractiveObjectContainer;
-        private LevelCompletionManager LevelCompletionManager;
         private LevelManager LevelManager;
         private LevelTransitionManager PuzzleLevelTransitionManager;
         private TimelinesEventManager TimelinesEventManager;
         private IDottedLineRendererManagerEvent IDottedLineRendererManagerEvent;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
         private PlayerActionEventManager PlayerActionEventManager;
+
+        private IPlayerActionManagerEvent IPlayerActionManagerEvent;
+        private IPlayerActionManagerDataRetrieval IPlayerActionManagerDataRetrieval;
+
         private TutorialManager TutorialManager;
         private LevelMemoryManager LevelMemoryManager;
         private IInteractiveObjectSelectionEvent IInteractiveObjectSelectionEvent;
@@ -25,13 +28,14 @@ namespace RTPuzzle
         public void Init()
         {
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
-            this.LevelCompletionManager = PuzzleGameSingletonInstances.LevelCompletionManager;
             this.PuzzleLevelTransitionManager = CoreGameSingletonInstances.LevelTransitionManager;
             this.TimelinesEventManager = CoreGameSingletonInstances.TimelinesEventManager;
             this.LevelManager = CoreGameSingletonInstances.LevelManager;
             this.IDottedLineRendererManagerEvent = PuzzleGameSingletonInstances.DottedLineRendererManager;
             this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             this.PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
+            this.IPlayerActionManagerEvent = PuzzleGameSingletonInstances.PlayerActionManager;
+            this.IPlayerActionManagerDataRetrieval = PuzzleGameSingletonInstances.PlayerActionManager;
             this.TutorialManager = CoreGameSingletonInstances.TutorialManager;
             this.LevelMemoryManager = CoreGameSingletonInstances.LevelMemoryManager;
             this.IInteractiveObjectSelectionEvent = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
@@ -170,24 +174,33 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Player Action Wheel Event
-        public void PZ_EVT_OnPlayerActionWheelAwake()
-        {
-            this.PlayerActionEventManager.OnWheelAwake();
-            this.TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
-        }
-        public void PZ_EVT_OnPlayerActionWheelSleep(bool destroyImmediate = false)
-        {
-            this.PlayerActionEventManager.OnWheelSleep(destroyImmediate);
-        }
+        #region IPlayerActionManagerEventListener
         public void PZ_EVT_OnPlayerActionWheelRefresh()
         {
             this.PZ_EVT_OnPlayerActionWheelSleep(true);
             this.PZ_EVT_OnPlayerActionWheelAwake();
         }
+        #endregion
+
+        #region Player Action Wheel Event
+        public void PZ_EVT_OnPlayerActionWheelAwake()
+        {
+            this.IPlayerActionManagerEvent.OnSelectionWheelAwake();
+            this.TutorialManager.SendEventToTutorialGraph(TutorialGraphEventType.PUZZLE_ACTION_WHEEL_AWAKE);
+        }
+        public void PZ_EVT_OnPlayerActionWheelSleep(bool destroyImmediate = false)
+        {
+            this.IPlayerActionManagerEvent.OnSelectionWheelSleep(destroyImmediate);
+        }
+        
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()
         {
-            this.PlayerActionEventManager.OnCurrentNodeSelected();
+            var selectedAction = this.IPlayerActionManagerDataRetrieval.GetCurrentSelectedAction();
+            if (selectedAction.CanBeExecuted())
+            {
+                this.PZ_EVT_OnPlayerActionWheelSleep(false);
+                this.IPlayerActionManagerEvent.ExecuteAction(selectedAction);
+            }
         }
         #endregion
 

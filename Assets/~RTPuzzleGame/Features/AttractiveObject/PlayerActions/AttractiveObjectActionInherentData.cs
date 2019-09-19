@@ -14,5 +14,10 @@ namespace RTPuzzle
         public AttractiveObjectActionInherentData(SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime) : base(actionWheelNodeConfigurationId, coolDownTime)
         {
         }
+
+        public override RTPPlayerAction BuildPlayerAction()
+        {
+            return new AttractiveObjectAction(this);
+        }
     }
 }

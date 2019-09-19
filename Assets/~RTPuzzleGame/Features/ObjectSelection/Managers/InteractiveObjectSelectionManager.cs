@@ -6,14 +6,14 @@ namespace RTPuzzle
     public class InteractiveObjectSelectionManager : AbstractSelectableObjectSelectionManager<ISelectableModule>, IInteractiveObjectSelectionEvent
     {
         #region External Dependencies
-        private PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager;
+        private IPlayerActionManagerEvent IPlayerActionManagerEvent;
         #endregion
 
-        public override SelectableObjectSelectionManagerEventListener<ISelectableModule> SelectableObjectSelectionManagerEventListener => this.PlayerActionPuzzleEventsManager;
+        public override SelectableObjectSelectionManagerEventListener<ISelectableModule> SelectableObjectSelectionManagerEventListener => this.IPlayerActionManagerEvent;
 
         public override void Init(IGameInputManager GameInputManager)
         {
-            this.PlayerActionPuzzleEventsManager = PuzzleGameSingletonInstances.PlayerActionPuzzleEventsManager;
+            this.IPlayerActionManagerEvent = PuzzleGameSingletonInstances.PlayerActionManager;
             base.Init(GameInputManager);
         }
 

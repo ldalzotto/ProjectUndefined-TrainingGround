@@ -5,10 +5,17 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class PlayerActionManager : MonoBehaviour
+    public interface IPlayerActionManagerDataRetrieval
+    {
+        RTPPlayerAction GetCurrentSelectedAction();
+        RTPPlayerAction GetCurrentRunningAction();
+        MultiValueDictionary<PlayerActionId, RTPPlayerAction> GetCurrentAvailablePlayerActions();
+    }
+
+    public class PlayerActionManager : MonoBehaviour, IPlayerActionManagerEvent, IPlayerActionManagerDataRetrieval
     {
         #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
+        private IPlayerActionManagerEventListener IPlayerActionManagerEventListener;
         #endregion
 
         public PlayerSelectioNWheelPositionerComponent PlayerSelectioNWheelPositionerComponent;
@@ -23,7 +30,7 @@ namespace RTPuzzle
         public void Init()
         {
             #region External Dependencies
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
+            this.IPlayerActionManagerEventListener = PuzzleGameSingletonInstances.PuzzleEventsManager;
             var PlayerActionEventManager = PuzzleGameSingletonInstances.PlayerActionEventManager;
             var PlayerManagerDataRetriever = PuzzleGameSingletonInstances.PlayerManagerDataRetriever;
             var puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -68,38 +75,49 @@ namespace RTPuzzle
             PlayerActionExecutionManager.GUITick();
         }
 
-        #region External Events
+        #region IPlayerActionManagerEvent
         public void ExecuteAction(RTPPlayerAction rTPPlayerAction)
         {
             PlayerActionExecutionManager.ExecuteAction(rTPPlayerAction);
         }
-        internal void StopAction()
+        public void StopAction()
         {
             PlayerActionExecutionManager.StopAction();
         }
-        public void OnWheelAwake()
+        public void OnSelectionWheelAwake()
         {
             PLayerSelectionWheelManager.OnWheelAwake(PlayerActionsAvailableManager.CurrentAvailableActions.MultiValueGetValues());
         }
-        public void OnWheelSleep(bool destroyImmediate)
+        public void OnSelectionWheelSleep(bool destroyImmediate)
         {
             PLayerSelectionWheelManager.OnWheelSleep(destroyImmediate);
         }
+
         public void IncreaseOrAddActionsRemainingExecutionAmount(PlayerActionId playerActionId, int deltaRemaining)
         {
             this.PlayerActionsAvailableManager.IncreaseOrAddActionsRemainingExecutionAmount(playerActionId, deltaRemaining);
         }
-        public void OnSelectableObjectSelected(ISelectableModule selectableObject)
+
+        public void AddActionToAvailable(RTPPlayerAction addedAction)
         {
-            this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, selectableObject.GetAssociatedPlayerAction());
+            this.PlayerActionsAvailableManager.AddActionToAvailable(PlayerActionId.NONE, addedAction);
             if (this.PLayerSelectionWheelManager.WheelEnabled)
             {
-                this.PuzzleEventsManager.PZ_EVT_OnPlayerActionWheelRefresh();
+                this.IPlayerActionManagerEventListener.PZ_EVT_OnPlayerActionWheelRefresh();
             }
         }
-        public void OnSelectableObjectDeSelected(ISelectableModule selectableObject)
+        public void RemoveActionToAvailable(RTPPlayerAction removedAction)
         {
-            this.PlayerActionsAvailableManager.RemoveActionToAvailable(PlayerActionId.NONE, selectableObject.GetAssociatedPlayerAction());
+            this.PlayerActionsAvailableManager.RemoveActionToAvailable(PlayerActionId.NONE, removedAction);
+        }
+
+        public void OnSelectableObjectSelected(ISelectableModule SelectableObject)
+        {
+            this.AddActionToAvailable(SelectableObject.GetAssociatedPlayerAction());
+        }
+        public void OnSelectableObjectDeSelected(ISelectableModule SelectableObject)
+        {
+            this.RemoveActionToAvailable(SelectableObject.GetAssociatedPlayerAction());
         }
         #endregion
 
@@ -257,7 +275,7 @@ namespace RTPuzzle
             }
             else //Wa add
             {
-                this.currentAvailableActions.MultiValueAdd(playerActionId, PlayerActionBuilder.BuildAction(this.PlayerActionConfiguration.ConfigurationInherentData[playerActionId]));
+                this.currentAvailableActions.MultiValueAdd(playerActionId, this.PlayerActionConfiguration.ConfigurationInherentData[playerActionId].BuildPlayerAction());
             }
 
         }

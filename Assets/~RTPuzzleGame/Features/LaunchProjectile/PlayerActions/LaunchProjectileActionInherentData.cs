@@ -15,6 +15,11 @@ namespace RTPuzzle
         {
             this.projectedObjectDefinitionID = projectedObjectDefinitionID;
         }
-        
+
+        public override RTPPlayerAction BuildPlayerAction()
+        {
+            return new LaunchProjectileAction(this);
+        }
+
     }
 }

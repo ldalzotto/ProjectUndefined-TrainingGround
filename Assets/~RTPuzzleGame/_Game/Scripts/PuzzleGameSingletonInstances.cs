@@ -18,7 +18,6 @@ namespace RTPuzzle
         private static InRangeEffectManager inRangeEffectManager;
         private static RangeEventsManager rangeEventsManager;
         private static ContextMarkVisualFeedbackContainer aIFeedbackContainer;
-        private static PlayerActionPuzzleEventsManager playerActionPuzzleEventsManager;
         private static ObjectRepelLineVisualFeedbackManager objectRepelLineVisualFeedbackManager;
         private static RangeTypeObjectContainer rangeTypeObjectContainer;
         private static PlayerActionManager playerActionManager;
@@ -54,7 +53,6 @@ namespace RTPuzzle
         public static InRangeEffectManager InRangeEffectManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inRangeEffectManager, obj => inRangeEffectManager = obj); }
         public static RangeEventsManager RangeEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeEventsManager, obj => rangeEventsManager = obj); }
         public static ContextMarkVisualFeedbackContainer ContextMarkVisualFeedbackContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIFeedbackContainer, obj => aIFeedbackContainer = obj); }
-        public static PlayerActionPuzzleEventsManager PlayerActionPuzzleEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionPuzzleEventsManager, obj => playerActionPuzzleEventsManager = obj); }
         public static ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(objectRepelLineVisualFeedbackManager, obj => objectRepelLineVisualFeedbackManager = obj); }
         public static RangeTypeObjectContainer RangeTypeObjectContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeTypeObjectContainer, obj => rangeTypeObjectContainer = obj); }
         public static PlayerActionManager PlayerActionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionManager, obj => playerActionManager = obj); }

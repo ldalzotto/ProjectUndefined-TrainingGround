@@ -17,5 +17,11 @@ namespace RTPuzzle
         public CutsceneActionInherentData()
         {
         }
+
+        public override RTPPlayerAction BuildPlayerAction()
+        {
+            return new CutsceneAction(this);
+        }
+
     }
 }

@@ -113,7 +113,6 @@ namespace RTPuzzle
             CooldownFeedManager.Init();
             PuzzleEventsManager.Init();
             TimeFlowPlayPauseManager.Init();
-            PuzzleGameSingletonInstances.PlayerActionPuzzleEventsManager.Init();
             PuzzleGameSingletonInstances.NpcInteractionRingContainer.Init();
             //TODO here
             NpcInteractionRingRendererManager.Init();
