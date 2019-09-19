@@ -11,6 +11,7 @@ namespace RTPuzzle
         Transform GetTransform();
         Collider GetObjectRepelCollider();
         IObjectRepelModuleEvent GetIObjectRepelModuleEvent();
+        IRenderBoundRetrievable GetModelBounds();
     }
 
     public class ObjectRepelModule : InteractiveObjectModule, IObjectRepelModuleEvent, IObjectRepelModuleDataRetrieval

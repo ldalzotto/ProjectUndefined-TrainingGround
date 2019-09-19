@@ -11,8 +11,8 @@ namespace RTPuzzle
         private PuzzleGameConfigurationManager puzzleGameConfigurationManager;
         #endregion
 
-        private Dictionary<RangeType, List<ObjectRepelModule>> inRangeRepelableObjects;
-        private Dictionary<ObjectRepelModule, List<InRangeRepelableObjectFXManager>> inRangeRepelableObjectFXManagers;
+        private Dictionary<RangeType, List<IObjectRepelModuleDataRetrieval>> inRangeRepelableObjects;
+        private Dictionary<IObjectRepelModuleDataRetrieval, List<InRangeRepelableObjectFXManager>> inRangeRepelableObjectFXManagers;
 
         public void Init()
         {
@@ -20,8 +20,8 @@ namespace RTPuzzle
             this.puzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
             #endregion
 
-            this.inRangeRepelableObjects = new Dictionary<RangeType, List<ObjectRepelModule>>();
-            this.inRangeRepelableObjectFXManagers = new Dictionary<ObjectRepelModule, List<InRangeRepelableObjectFXManager>>();
+            this.inRangeRepelableObjects = new Dictionary<RangeType, List<IObjectRepelModuleDataRetrieval>>();
+            this.inRangeRepelableObjectFXManagers = new Dictionary<IObjectRepelModuleDataRetrieval, List<InRangeRepelableObjectFXManager>>();
         }
 
         public void Tick(float d)
@@ -68,7 +68,7 @@ namespace RTPuzzle
             {
                 if (!this.inRangeRepelableObjects.ContainsKey(rangeType))
                 {
-                    this.inRangeRepelableObjects[rangeType] = new List<ObjectRepelModule>();
+                    this.inRangeRepelableObjects[rangeType] = new List<IObjectRepelModuleDataRetrieval>();
                 }
                 this.inRangeRepelableObjects[rangeType].Add(objectRepelType);
 
@@ -107,11 +107,12 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        private ObjectRepelModule IsElligibleToRepelLineVisualEffect(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
+        private IObjectRepelModuleDataRetrieval IsElligibleToRepelLineVisualEffect(IInRangeColliderTrackerModuleDataRetriever IInRangeColliderTrackerModuleDataRetriever,
+                    RangeType rangeType)
         {
             if (rangeType.RangeTypeID == RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
             {
-                return InRangeColliderTrackerModule.GetTrackedRepelableObject();
+                return IInRangeColliderTrackerModuleDataRetriever.GetIObjectRepelModuleDataRetrieval();
             }
             return null;
         }
@@ -127,7 +128,7 @@ namespace RTPuzzle
             this.repelableFeedbackLine = repelableFeedbackLine;
         }
 
-        public void Tick(float d, RangeType rangeType, ObjectRepelModule associatedObjectRepelType)
+        public void Tick(float d, RangeType rangeType, IObjectRepelModuleDataRetrieval associatedObjectRepelType)
         {
             if (repelableFeedbackLine != null && rangeType != null)
             {
@@ -136,7 +137,7 @@ namespace RTPuzzle
                 var maxRadius = Mathf.Max(startObjectBound.SideDistances.x, startObjectBound.SideDistances.z) * 0.5f;
                 var startObjectTransform = IRenderBoundRetrievableStatic.FromIRenderBoundRetrievable(startObject).transform;
                 var projectedDirection = Vector3.ProjectOnPlane((startObjectTransform.position - rangeType.GetCenterWorldPos()), startObjectTransform.up).normalized;
-                var startPosition = associatedObjectRepelType.transform.position + IRenderBoundRetrievableStatic.GetRepelLineRenderPointLocalOffset(startObject) + (maxRadius * projectedDirection);
+                var startPosition = associatedObjectRepelType.GetTransform().position + IRenderBoundRetrievableStatic.GetRepelLineRenderPointLocalOffset(startObject) + (maxRadius * projectedDirection);
 
                 this.repelableFeedbackLine.Tick(d, startPosition, startPosition + (5f * projectedDirection));
             }

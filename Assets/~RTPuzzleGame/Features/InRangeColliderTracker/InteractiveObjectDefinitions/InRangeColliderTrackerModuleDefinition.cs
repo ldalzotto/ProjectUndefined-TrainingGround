@@ -10,8 +10,6 @@
 
 namespace RTPuzzle
 {
-    
-    
     public class InRangeColliderTrackerModuleDefinition : OdinSerializer.SerializedScriptableObject
     {
     }

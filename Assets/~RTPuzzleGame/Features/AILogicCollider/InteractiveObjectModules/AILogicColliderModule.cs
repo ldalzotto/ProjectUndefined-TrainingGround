@@ -69,7 +69,7 @@ namespace RTPuzzle
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
                 {
-                    physicsEventListener.OnTriggerEnter(other);
+                    physicsEventListener.OnAILogicColliderTriggerEnter(other);
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace RTPuzzle
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
                 {
-                    physicsEventListener.OnTriggerStay(other);
+                    physicsEventListener.OnAILogicColliderTriggerStay(other);
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace RTPuzzle
             {
                 foreach (var physicsEventListener in this.PhysicsEventListeners)
                 {
-                    physicsEventListener.OnTriggerExit(other);
+                    physicsEventListener.OnAILogicColliderTriggerExit(other);
                 }
             }
         }
@@ -157,10 +157,10 @@ namespace RTPuzzle
 
     public interface IAILogicColliderModuleListener
     {
-        void OnTriggerEnter(Collider other);
+        void OnAILogicColliderTriggerEnter(Collider other);
 
-        void OnTriggerStay(Collider other);
+        void OnAILogicColliderTriggerStay(Collider other);
 
-        void OnTriggerExit(Collider other);
+        void OnAILogicColliderTriggerExit(Collider other);
     }
 }

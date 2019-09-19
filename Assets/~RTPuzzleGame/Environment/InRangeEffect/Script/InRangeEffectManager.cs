@@ -26,22 +26,22 @@ namespace RTPuzzle
         }
 
         #region External Events
-        public void OnInRangeAdd(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
+        public void OnInRangeAdd(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
-            if (rangeType.IsInRangeEffectEnabled())
+            if (triggeredRangeType.IsInRangeEffectEnabled())
             {
-                if (!this.activeInRangeTrackers.ContainsKey(rangeType.RangeTypeID))
+                if (!this.activeInRangeTrackers.ContainsKey(triggeredRangeType.RangeTypeID))
                 {
-                    this.activeInRangeTrackers[rangeType.RangeTypeID] = new List<InRangeColliderTrackerModule>();
+                    this.activeInRangeTrackers[triggeredRangeType.RangeTypeID] = new List<InRangeColliderTrackerModule>();
                 }
-                this.activeInRangeTrackers[rangeType.RangeTypeID].Add(InRangeColliderTrackerModule);
+                this.activeInRangeTrackers[triggeredRangeType.RangeTypeID].Add(InRangeColliderTrackerModule);
             }
         }
-        public void OnInRangeRemove(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
+        public void OnInRangeRemove(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
-            if (rangeType.IsInRangeEffectEnabled())
+            if (triggeredRangeType.IsInRangeEffectEnabled())
             {
-                var trackedRanges = this.activeInRangeTrackers[rangeType.RangeTypeID];
+                var trackedRanges = this.activeInRangeTrackers[triggeredRangeType.RangeTypeID];
                 bool delete = false;
                 foreach (var trackedRange in trackedRanges)
                 {
