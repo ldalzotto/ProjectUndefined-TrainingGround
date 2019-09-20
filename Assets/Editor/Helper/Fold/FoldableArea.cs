@@ -20,6 +20,9 @@ public class FoldableArea
 
     public bool IsEnabled { get => isEnabled; }
 
+    public void Enable() { this.isEnabled = true; }
+    public void Disable() { this.isEnabled = false; }
+
     public bool OnGUI(Action guiAction)
     {
         EditorGUILayout.BeginVertical(EditorStyles.textArea);

@@ -393,6 +393,7 @@
     <Compile Include="Assets\Editor\Helper\TypeHelper.cs" />
     <Compile Include="Assets\Editor\Helper\VisualElements\VisualElementsHelper.cs" />
     <Compile Include="Assets\Editor\Helper\Zoom\EditorZoomArea.cs" />
+    <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\AbstractObjectGizmoDisplay.cs" />
     <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\IObjectGizmoDisplayEnableArea.cs" />
     <Compile Include="Assets\Editor\InteractiveObjectExplorer\Abstract\ObjectModulesGizmo.cs" />
     <Compile Include="Assets\Editor\InteractiveObjectExplorer\AIObjectTypeGizmos.cs" />

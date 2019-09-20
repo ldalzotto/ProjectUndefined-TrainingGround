@@ -1,5 +1,4 @@
 ﻿using Editor_MainGameCreationWizard;
-using RTPuzzle;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,6 +9,7 @@ public abstract class ObjectModulesGizmo
     protected CommonGameConfigurations CommonGameConfigurations;
 
     protected abstract Dictionary<Type, ScriptableObject> GetDefinitionModules();
+    protected virtual List<AbstractObjectGizmoDisplay> GetAdditionalDrawAreas() { return new List<AbstractObjectGizmoDisplay>(); }
 
     protected virtual void Init()
     {
@@ -34,7 +34,33 @@ public abstract class ObjectModulesGizmo
     public virtual void OnGUI()
     {
         this.Init();
-        foreach(var drawDisplay in this.DrawDisplay)
+
+        EditorGUILayout.BeginHorizontal(GUILayout.Width(50f));
+        if (GUILayout.Button(new GUIContent("U", "Unselect ALL"), GUILayout.Width(20f)))
+        {
+            foreach (var drawDisplay in this.DrawDisplay)
+            {
+                drawDisplay.Value.Disable();
+            }
+            foreach (var additionalDrawAreas in this.GetAdditionalDrawAreas())
+            {
+                additionalDrawAreas.Disable();
+            }
+        }
+        if (GUILayout.Button(new GUIContent("S", "Select ALL"), GUILayout.Width(20f)))
+        {
+            foreach (var drawDisplay in this.DrawDisplay)
+            {
+                drawDisplay.Value.Enable();
+            }
+            foreach (var additionalDrawAreas in this.GetAdditionalDrawAreas())
+            {
+                additionalDrawAreas.Enable();
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
+        foreach (var drawDisplay in this.DrawDisplay)
         {
             drawDisplay.Value.OnGUI(null);
         }

@@ -173,6 +173,22 @@ namespace Editor_InteractiveObjectExplorer
 
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
+
+            EditorGUILayout.BeginHorizontal(GUILayout.Width(50f));
+            if (GUILayout.Button(new GUIContent("U", "Unselect ALL"), GUILayout.Width(20f)))
+            {
+                foreach (var drawDisplay in this.GizmoDisplay) {drawDisplay.Disable(); }
+                foreach (var drawDisplay in this.AIGizmoDisplay) { drawDisplay.Disable(); }
+                foreach (var drawDisplay in this.POIGizmoDisplay) { drawDisplay.Disable(); }
+            }
+            if (GUILayout.Button(new GUIContent("S", "Select ALL"), GUILayout.Width(20f)))
+            {
+                foreach (var drawDisplay in this.GizmoDisplay) { drawDisplay.Enable(); }
+                foreach (var drawDisplay in this.AIGizmoDisplay) { drawDisplay.Enable(); }
+                foreach (var drawDisplay in this.POIGizmoDisplay) { drawDisplay.Enable(); }
+            }
+            EditorGUILayout.EndHorizontal();
+
             this.GizmoDisplayArea.OnGUI(() =>
             {
                 foreach (var gizmoDisplay in this.GizmoDisplay.Select(o => o).Where(o => this.RegexTextFinder.IsMatchingWith(o.InteractiveObjectTypeDefinitionID.ToString())))
@@ -220,12 +236,11 @@ namespace Editor_InteractiveObjectExplorer
         }
     }
 
-    class InteractiveObjectGizmoDisplay
+    class InteractiveObjectGizmoDisplay : AbstractObjectGizmoDisplay
     {
         private Transform ObjectTransform;
         private InteractiveObjectTypeGizmos gizmoEditor;
         private InteractiveObjectTypeDefinitionID interactiveObjectTypeDefinitionID;
-        private FoldableArea GUIArea;
 
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID { get => interactiveObjectTypeDefinitionID; }
 
@@ -257,12 +272,10 @@ namespace Editor_InteractiveObjectExplorer
         public bool IsNull() { return this.ObjectTransform == null; }
     }
 
-    class AIObjectGizmoDisplay
+    class AIObjectGizmoDisplay : AbstractObjectGizmoDisplay
     {
         private AIObjectType aIObjectType;
         private AIObjectTypeGizmos gizmoEditor;
-
-        private FoldableArea GUIArea;
 
 
         public AIObjectGizmoDisplay(bool isDisplayed, AIObjectType AIObjectType, AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration, CommonGameConfigurations CommonGameConfigurations,
@@ -294,13 +307,12 @@ namespace Editor_InteractiveObjectExplorer
         public AIObjectTypeDefinitionID GetAIObjectTypeDefinitionID() { return this.aIObjectType.AIObjectTypeDefinitionID; }
     }
 
-    class PointOfInterestGizmoDisplay
+    class PointOfInterestGizmoDisplay : AbstractObjectGizmoDisplay
     {
         private PointOfInterestType PointOfInterestType;
         private PointOfInterestGizmos gizmoEditor;
 
         private PointOfInterestDefinitionID PointOfInterestDefinitionID;
-        private FoldableArea GUIArea;
 
         public PointOfInterestGizmoDisplay(bool isDisplayed, PointOfInterestType PointOfInterestType, CommonGameConfigurations CommonGameConfigurations,
                      PointOfInterestDefinitionID PointOfInterestDefinitionID, PointOfInterestDefinitionConfiguration PointOfInterestDefinitionConfiguration)

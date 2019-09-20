@@ -22,16 +22,18 @@ public class RegexTextFinder
 
     public void GUITick()
     {
-        EditorGUI.BeginChangeCheck();
-        this.searchText = this.searchField.OnGUI(this.searchText);
-        if (EditorGUI.EndChangeCheck())
+        if (this.searchField != null)
         {
-            if (!string.IsNullOrEmpty(this.searchText))
+            EditorGUI.BeginChangeCheck();
+            this.searchText = this.searchField.OnGUI(this.searchText);
+            if (EditorGUI.EndChangeCheck())
             {
-                this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+                if (!string.IsNullOrEmpty(this.searchText))
+                {
+                    this.regex = new Regex(this.searchText, RegexOptions.IgnoreCase);
+                }
             }
         }
-
     }
 
     public void SetSearchTest(string searchText)

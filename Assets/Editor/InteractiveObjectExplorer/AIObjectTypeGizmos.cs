@@ -29,6 +29,11 @@ public class AIObjectTypeGizmos : ObjectModulesGizmo
         this.Init();
     }
 
+    protected override List<AbstractObjectGizmoDisplay> GetAdditionalDrawAreas()
+    {
+        return new List<AbstractObjectGizmoDisplay>() { this.AssociatedInteractiveObjectGizmoDisplay };
+    }
+
     public override void OnGUI()
     {
         base.OnGUI();

@@ -28,6 +28,9 @@ public class IObjectGizmoDisplayEnableArea
 
     public bool IsEnabled { get => isEnabled; }
 
+    public void Enable() { this.isEnabled = true; }
+    public void Disable() { this.isEnabled = false; }
+
     public void OnGUI(Action guiAction)
     {
         var areaRect = EditorGUILayout.BeginVertical(EditorStyles.textArea);
