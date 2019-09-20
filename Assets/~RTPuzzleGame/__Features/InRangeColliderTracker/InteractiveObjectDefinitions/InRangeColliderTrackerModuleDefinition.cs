@@ -12,6 +12,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class InRangeColliderTrackerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

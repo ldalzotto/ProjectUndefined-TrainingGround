@@ -13,6 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class LaunchProjectileModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(LaunchProjectileConfiguration))]

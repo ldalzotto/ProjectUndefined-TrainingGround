@@ -14,7 +14,7 @@ using UnityEngine;
 namespace RTPuzzle
 {
 
-
+    [ModuleMetadata("General")]
     public class ActionInteractableObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(ActionInteractableObjectConfiguration))]

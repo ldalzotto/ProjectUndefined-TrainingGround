@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("General")]
     public class LevelCompletionTriggerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [ScriptableObjectSubstitution(substitutionName: nameof(LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionInherentData),

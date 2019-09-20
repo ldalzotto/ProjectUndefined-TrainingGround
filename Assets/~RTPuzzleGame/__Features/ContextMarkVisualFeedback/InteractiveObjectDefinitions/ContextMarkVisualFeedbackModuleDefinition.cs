@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("General")]
     public class ContextMarkVisualFeedbackModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class LocalPuzzleCutsceneModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

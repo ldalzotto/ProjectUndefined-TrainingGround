@@ -13,6 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class ObjectSightModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public Vector3 LocalPosition;

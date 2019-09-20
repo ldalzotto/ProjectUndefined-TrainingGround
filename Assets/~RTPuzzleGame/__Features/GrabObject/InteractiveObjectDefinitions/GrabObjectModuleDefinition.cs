@@ -13,8 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-
-
+    [ModuleMetadata("Interactive")]
     public class GrabObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(GrabObjectConfiguration))]

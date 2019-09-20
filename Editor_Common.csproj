@@ -77,6 +77,7 @@
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\CustomEnum.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Enum\IncludeConfiguration.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\List\ReorderableListAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\ModuleMetadata\ModuleMetadata.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\Foldable.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\Inline.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\ScriptableObjectSubstitution.cs" />

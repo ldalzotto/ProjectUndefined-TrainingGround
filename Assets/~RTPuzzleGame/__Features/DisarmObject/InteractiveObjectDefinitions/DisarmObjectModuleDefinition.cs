@@ -13,8 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    
-    
+    [ModuleMetadata("Interactive")]
     public class DisarmObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(DisarmObjectConfiguration))]

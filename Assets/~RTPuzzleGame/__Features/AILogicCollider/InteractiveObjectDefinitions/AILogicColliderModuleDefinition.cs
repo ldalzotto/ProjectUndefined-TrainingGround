@@ -12,6 +12,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata(header: "AI")]
     public class AILogicColliderModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public Vector3 Center;

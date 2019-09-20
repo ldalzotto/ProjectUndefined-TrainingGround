@@ -52,8 +52,9 @@ public class InteractiveObjectDefinitionCustomEditor : ObjectDefinitionCustomEdi
         EditorGUILayout.Separator();
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
+        base.OnEnable();
         this.RegisterListener(this);
     }
 }

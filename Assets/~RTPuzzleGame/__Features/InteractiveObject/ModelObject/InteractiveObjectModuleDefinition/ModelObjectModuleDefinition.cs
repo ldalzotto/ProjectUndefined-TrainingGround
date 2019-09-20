@@ -12,8 +12,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    
-    
+    [ModuleMetadata("General")]
     public class ModelObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public GameObject ModelPrefab;

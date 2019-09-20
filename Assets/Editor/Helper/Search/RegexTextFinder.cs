@@ -1,11 +1,17 @@
 ﻿using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
+using UnityEngine;
 
+[System.Serializable]
 public class RegexTextFinder
 {
     private SearchField searchField;
+
+    [SerializeField]
     private Regex regex;
+
+    [SerializeField]
     private string searchText;
 
     public RegexTextFinder()

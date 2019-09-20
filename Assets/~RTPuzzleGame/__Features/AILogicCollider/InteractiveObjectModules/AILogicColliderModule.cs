@@ -13,7 +13,6 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-
     public class AILogicColliderModule : RTPuzzle.InteractiveObjectModule
     {
         #region Internal Dependencies

@@ -13,6 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class ObjectRepelModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(ObjectRepelConfiguration))]

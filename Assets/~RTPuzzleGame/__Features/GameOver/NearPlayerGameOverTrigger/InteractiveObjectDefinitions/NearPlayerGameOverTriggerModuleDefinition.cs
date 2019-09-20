@@ -13,6 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class NearPlayerGameOverTriggerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(NearPlayerGameOverTriggerConfiguration))]

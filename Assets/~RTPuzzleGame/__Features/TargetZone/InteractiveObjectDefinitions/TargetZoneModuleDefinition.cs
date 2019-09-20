@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("Interactive")]
     public class TargetZoneModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(configurationType: typeof(TargetZoneConfiguration))]

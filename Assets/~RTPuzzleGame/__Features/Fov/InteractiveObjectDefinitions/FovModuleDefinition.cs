@@ -13,6 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
+    [ModuleMetadata("AI")]
     public class FovModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)
