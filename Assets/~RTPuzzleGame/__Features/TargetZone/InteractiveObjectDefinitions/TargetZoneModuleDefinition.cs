@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("Interactive")]
+    [ModuleMetadata("Interactive", "A zone avoided by AI.")]
     public class TargetZoneModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(configurationType: typeof(TargetZoneConfiguration))]

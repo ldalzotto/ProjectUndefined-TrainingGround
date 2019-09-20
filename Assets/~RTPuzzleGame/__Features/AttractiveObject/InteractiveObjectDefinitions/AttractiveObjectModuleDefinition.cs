@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("Interactive")]
+    [ModuleMetadata("Interactive", "Attract object in range.")]
     public class AttractiveObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(AttractiveObjectConfiguration))]

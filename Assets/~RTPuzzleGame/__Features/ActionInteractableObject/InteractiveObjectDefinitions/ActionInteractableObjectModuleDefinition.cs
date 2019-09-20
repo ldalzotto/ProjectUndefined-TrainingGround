@@ -14,7 +14,7 @@ using UnityEngine;
 namespace RTPuzzle
 {
 
-    [ModuleMetadata("General")]
+    [ModuleMetadata("General", "Tag the object to be selectable by player.")]
     public class ActionInteractableObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(ActionInteractableObjectConfiguration))]

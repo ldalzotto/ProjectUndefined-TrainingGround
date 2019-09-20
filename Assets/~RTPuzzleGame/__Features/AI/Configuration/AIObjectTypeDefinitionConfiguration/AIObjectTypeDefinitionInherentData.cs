@@ -20,10 +20,10 @@ namespace RTPuzzle
         "onInherentData", order = 1)]
     public class AIObjectTypeDefinitionInherentData : ScriptableObject
     {
-        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]
+        [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
-
-        [CustomEnum(ConfigurationType = typeof(AIObjectConfiguration))]
+        
+        [CustomEnum()]
         public AIObjectID AIObjectID;
 
         [Inline(CreateAtSameLevelIfAbsent = true)]

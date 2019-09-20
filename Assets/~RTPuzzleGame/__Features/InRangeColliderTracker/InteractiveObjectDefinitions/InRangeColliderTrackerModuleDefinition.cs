@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("Interactive")]
+    [ModuleMetadata("AI", "Track all RangeType that are triggered by AI logic collider.")]
     public class InRangeColliderTrackerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

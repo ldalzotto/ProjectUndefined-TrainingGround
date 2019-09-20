@@ -4,7 +4,7 @@ using OdinSerializer;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("General")]
+    [ModuleMetadata("General", "Play any scripted movement.")]
     public class InteractiveObjectCutsceneControllerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

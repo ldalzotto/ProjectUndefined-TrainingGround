@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("Interactive")]
+    [ModuleMetadata("Interactive", "Object that trigger event on collision.")]
     public class LaunchProjectileModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(LaunchProjectileConfiguration))]

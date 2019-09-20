@@ -5,6 +5,7 @@ using System;
 namespace RTPuzzle
 {
     [System.Serializable]
+    [ModuleMetadata("AI", "Escaping without taking into account TargetZones.")]
     [CreateAssetMenu(fileName = "AIEscapeWithoutTriggerComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIEscapeWithoutTriggerComponent", order = 1)]
     public class AIEscapeWithoutTriggerComponent : AbstractAIComponent
     {

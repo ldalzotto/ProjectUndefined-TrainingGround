@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("AI")]
+    [ModuleMetadata("AI", "FOV used by random patrolling position picker.")]
     public class FovModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

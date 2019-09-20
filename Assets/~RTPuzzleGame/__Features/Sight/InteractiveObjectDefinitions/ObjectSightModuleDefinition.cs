@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("Interactive")]
+    [ModuleMetadata("Interactive", "A range representing sight vision.")]
     public class ObjectSightModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public Vector3 LocalPosition;

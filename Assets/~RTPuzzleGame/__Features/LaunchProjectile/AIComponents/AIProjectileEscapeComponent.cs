@@ -8,6 +8,7 @@ namespace RTPuzzle
 {
 
     [System.Serializable]
+    [ModuleMetadata("AI", "Escape from projectile.")]
     [CreateAssetMenu(fileName = "AIProjectileEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIProjectileEscapeComponent", order = 1)]
     public class AIProjectileEscapeComponent : AbstractAIComponent
     {

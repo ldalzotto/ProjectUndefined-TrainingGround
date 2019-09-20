@@ -4,6 +4,7 @@ using UnityEngine;
 namespace RTPuzzle
 {
     [System.Serializable]
+    [ModuleMetadata("AI", "Escape from target zone.")]
     [CreateAssetMenu(fileName = "AITargetZoneComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AITargetZoneComponent", order = 1)]
     public class AITargetZoneComponent : AbstractAIComponent
     {

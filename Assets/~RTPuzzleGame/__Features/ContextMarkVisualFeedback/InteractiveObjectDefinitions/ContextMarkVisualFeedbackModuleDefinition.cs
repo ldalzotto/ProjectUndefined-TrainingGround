@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("General")]
+    [ModuleMetadata("General", "Allow display of feedback icons.")]
     public class ContextMarkVisualFeedbackModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

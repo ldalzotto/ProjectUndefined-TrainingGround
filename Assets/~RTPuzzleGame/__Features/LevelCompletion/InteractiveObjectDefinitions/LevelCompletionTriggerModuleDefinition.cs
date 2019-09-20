@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("General")]
+    [ModuleMetadata("General", "Trigger LevelCompleted event when entering.")]
     public class LevelCompletionTriggerModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [ScriptableObjectSubstitution(substitutionName: nameof(LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionInherentData),

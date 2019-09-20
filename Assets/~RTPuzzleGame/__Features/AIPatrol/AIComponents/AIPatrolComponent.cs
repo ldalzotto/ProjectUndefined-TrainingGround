@@ -6,6 +6,7 @@ using static AIMovementDefinitions;
 namespace RTPuzzle
 {
     [System.Serializable]
+    [ModuleMetadata("AI")]
     [CreateAssetMenu(fileName = "AIPatrolComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIPatrolComponent", order = 1)]
     public class AIPatrolComponent : AbstractAIComponent
     {

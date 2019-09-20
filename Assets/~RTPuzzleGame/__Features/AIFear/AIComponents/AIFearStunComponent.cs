@@ -9,6 +9,7 @@ namespace RTPuzzle
 {
 
     [System.Serializable]
+    [ModuleMetadata("AI", "Stay in position for a timer.")]
     [CreateAssetMenu(fileName = "AIFearStunComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIFearStunComponent", order = 1)]
     public class AIFearStunComponent : AbstractAIComponent
     {

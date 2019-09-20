@@ -82,8 +82,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Behavior\Scripts\StateTracker\BehaviorStateTracker.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Behavior\Scripts\StateTracker\BehaviorStateTrackerContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Behavior\Scripts\StateTracker\EscapeWhileIgnoringTargetZoneTracker.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Configuration\AIObjectConfiguration\AIObjectConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Configuration\AIObjectConfiguration\AIObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Configuration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Configuration\AIObjectTypeDefinitionConfiguration\AIObjectTypeDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AI\Lib\AIDestinationMoveManager.cs" />

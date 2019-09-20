@@ -15,6 +15,7 @@ namespace RTPuzzle
 
 
     [Serializable()]
+    [ModuleMetadata("AI", "Send disarm events to interactive object.")]
     [CreateAssetMenu(fileName = "AIDisarmObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIDisarmObjectComponent", order = 1)]
     public class AIDisarmObjectComponent : AbstractAIComponent
     {

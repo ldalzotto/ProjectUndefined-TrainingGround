@@ -93,8 +93,17 @@ public class ObjectDefinitionCustomEditor : Editor
                 {
                     this.ObjectDefinitionCutstomEditorProfile.fold[rangeDefinitionModule] = new FoldableArea(true, rangeDefinitionModule.Name, RangeDefinitionTarget.RangeDefinitionModulesActivation[rangeDefinitionModule]);
                 }
+
                 this.ObjectDefinitionCutstomEditorProfile.fold[rangeDefinitionModule].OnGUI(() =>
                 {
+                    var moduleMetadata = rangeDefinitionModule.GetCustomAttributes(typeof(ModuleMetadata), true).FirstOrDefault() as ModuleMetadata;
+                    string description = string.Empty;
+                    if (moduleMetadata != null) { description = moduleMetadata.ShortDescription; }
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        EditorGUILayout.HelpBox(description, MessageType.None);
+                    }
+
                     if (RangeDefinitionTarget.RangeDefinitionModulesActivation[rangeDefinitionModule])
                     {
                         if (!RangeDefinitionTarget.RangeDefinitionModules.ContainsKey(rangeDefinitionModule) || RangeDefinitionTarget.RangeDefinitionModules[rangeDefinitionModule] == null)

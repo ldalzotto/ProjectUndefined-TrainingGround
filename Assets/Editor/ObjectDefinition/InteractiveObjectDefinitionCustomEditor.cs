@@ -47,9 +47,7 @@ public class InteractiveObjectDefinitionCustomEditor : ObjectDefinitionCustomEdi
                     (InteractiveObjectSharedDataTypeInherentData)AssetHelper.CreateAssetAtSameDirectoryLevel(InteractiveObjectTypeDefinitionInherentData, typeof(InteractiveObjectSharedDataTypeInherentData), "SharedData");
             }
         }
-
-        EditorGUILayout.Separator();
-        EditorGUILayout.Separator();
+        
     }
 
     public override void OnEnable()

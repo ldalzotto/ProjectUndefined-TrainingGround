@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("General")]
+    [ModuleMetadata("General", "Manage animator variables.")]
     public class InteractiveObjectAnimationModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)

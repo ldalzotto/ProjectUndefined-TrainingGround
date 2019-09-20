@@ -4,6 +4,7 @@ using System;
 namespace RTPuzzle
 {
     [System.Serializable]
+    [ModuleMetadata("AI", "Escape from player.")]
     [CreateAssetMenu(fileName = "AIPlayerEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIPlayerEscapeComponent", order = 1)]
     public class AIPlayerEscapeComponent : AbstractAIComponent
     {

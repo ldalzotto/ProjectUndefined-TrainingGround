@@ -6,6 +6,7 @@ namespace RTPuzzle
 {
 
     [System.Serializable]
+    [ModuleMetadata("AI", "Move towards an object.")]
     [CreateAssetMenu(fileName = "AIAttractiveObjectComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIAttractiveObjectComponent", order = 1)]
     public class AIAttractiveObjectComponent : AbstractAIComponent
     {

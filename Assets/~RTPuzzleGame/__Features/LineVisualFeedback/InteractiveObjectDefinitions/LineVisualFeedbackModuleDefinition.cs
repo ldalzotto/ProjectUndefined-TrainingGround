@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("General")]
+    [ModuleMetadata("General", "Allow display of line feedbacks.")]
     public class LineVisualFeedbackModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public override void CreateObject(Transform parent)
