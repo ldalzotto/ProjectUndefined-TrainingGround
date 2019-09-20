@@ -39,8 +39,6 @@ public class IdentifiedObjectGeneration : EditorWindow
                     PuzzleConfigurationCreation.DoGenerateConfiguration(this.baseName, this.GameTypeGeneration);
                     PuzzleConfigurationCreation.UpdateGameConfiguration(this.baseName, this.GameTypeGeneration);
                     CreationWizardCreation.DoGenerateCreationWizardScripts(this.baseName, this.GameTypeGeneration);
-                    this.DoGenerateCreateGameDesignerModule();
-                    PuzzleConfigurationCreation.DoGenerateConfigurationGameDesignerModule(this.baseName);
                 }
             }
         }
@@ -92,29 +90,7 @@ public class IdentifiedObjectGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-
-    private void DoGenerateCreateGameDesignerModule()
-    {
-        DirectoryInfo sourceTemplateDirectory = new DirectoryInfo(PathConstants.CodeGenrationGameDesignerConfigurationCreationTemplatePath);
-        if (sourceTemplateDirectory.Exists)
-        {
-
-            DirectoryInfo targetDirectory = new DirectoryInfo(PathConstants.GameDesignerModulesPath + "/" + this.baseName);
-            if (!targetDirectory.Exists)
-            {
-                targetDirectory.Create();
-            }
-
-            CodeGenerationHelper.DuplicateDirectoryWithParamtersRecursive(sourceTemplateDirectory, targetDirectory, new Dictionary<string, string>() {
-                {"${baseName}", this.baseName}
-            });
-
-            CodeGenerationHelper.AddGameDesignerChoiceTree(new List<KeyValuePair<string, string>>() {
-            new KeyValuePair<string, string>("Puzzle//" + this.baseName + "//.Create" + this.baseName, "Editor_GameDesigner.Create" + this.baseName)
-            });
-
-        }
-    }
+    
 
 
 }

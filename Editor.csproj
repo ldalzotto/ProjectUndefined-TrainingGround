@@ -109,7 +109,6 @@
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizard.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfile.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizardEditorProfileChoiceTree.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelHierarchyCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AbstractModules\ALevelSceneConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\LevelCreation\AdventureBaseLevelCreationWizard\AdventureBaseLevelCreationWizard.cs" />
@@ -327,14 +326,11 @@
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\AbstractGameCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Abstract\GUIDrawModule.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\InteractiveObjectDefinitionCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\LevelManagerCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\ProjectileInherentDataCutsomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\SerializedScriptableObjectFallbackCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\Shader\CustomVertexLitGUI.cs" />
     <Compile Include="Assets\Editor\GameCustomEditors\TextWithParametersCustomEditor.cs" />
-    <Compile Include="Assets\Editor\GameCustomEditors\TimelineInitializerScriptableObjectCustomEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTree.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\ChoiceTree\ChoiceTreeConstant.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditor.cs" />
     <Compile Include="Assets\Editor\GameDesigner\GameDesignerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Helpers\GameDesignerHelper.cs" />
@@ -357,7 +353,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Animation\CreateAnimation.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\CreateAttractiveObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\AttractiveObject\ExploreAttractiveObject.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\Configurations\ConfigurationsModule.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\DisarmObject\CreateDisarmObject.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Discussion\CreateDiscussionTree.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\GrabObject\CreateGrabObject.cs" />

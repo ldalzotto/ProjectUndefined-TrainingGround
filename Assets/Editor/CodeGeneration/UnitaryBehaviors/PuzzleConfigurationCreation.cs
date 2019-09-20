@@ -33,7 +33,6 @@ public class PuzzleConfigurationCreation : EditorWindow
                     DoGenerateInherentData(this.baseName, this.GameTypeGeneration);
                     DoGenerateConfiguration(this.baseName, this.GameTypeGeneration);
                     UpdateGameConfiguration(this.baseName, this.GameTypeGeneration);
-                    DoGenerateConfigurationGameDesignerModule(this.baseName);
                 }
             }
         }
@@ -159,28 +158,6 @@ public class PuzzleConfigurationCreation : EditorWindow
                 new Dictionary<string, string>() { { "${baseName}", baseName } },
                 insertionGuard: (file) => !file.Contains(baseName + "Configuration"));
         #endregion
-    }
-
-    public static void DoGenerateConfigurationGameDesignerModule(string baseName)
-    {
-        string gameDesignerConfigurationModulesFile = File.ReadAllText(PathConstants.GameDesignerConfigurationModulesPath);
-
-        if (!gameDesignerConfigurationModulesFile.Contains(baseName + "ConfigurationModule"))
-        {
-            string configurationToAdd = configurationToAdd = CodeGenerationHelper.ApplyStringParameters(File.ReadAllText(PathConstants.GameDesignerConfigurationModuleTemplatepath), new Dictionary<string, string>() {
-              {"${baseName}", baseName }
-            });
-
-            gameDesignerConfigurationModulesFile =
-               gameDesignerConfigurationModulesFile.Insert(gameDesignerConfigurationModulesFile.IndexOf("//${addNewEntry}"), configurationToAdd);
-
-            File.WriteAllText(PathConstants.GameDesignerConfigurationModulesPath, gameDesignerConfigurationModulesFile);
-
-            CodeGenerationHelper.AddGameDesignerChoiceTree(new List<KeyValuePair<string, string>>() {
-                    new KeyValuePair<string, string>("Configuration//." + baseName + "ConfigurationModule",  "Editor_GameDesigner." + baseName + "ConfigurationModule")
-            });
-
-        }
     }
 
     public static void DoCreateConfigurationAsset(string baseName, GameTypeGeneration GameTypeGeneration)

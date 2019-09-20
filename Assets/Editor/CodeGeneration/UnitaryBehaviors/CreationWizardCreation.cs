@@ -52,7 +52,6 @@ public class CreationWizardCreation : EditorWindow
         UpdateInstancePathEditorConstants(baseName, GameTypeGeneration);
         UpdateNameConstantsEditorConstant(baseName);
         DoGenerateEditorCreation(baseName, GameTypeGeneration);
-        UpdateGameCreationWizardEditorProfileChoiceTree(baseName);
     }
 
     public static void DoGenerateCreationWizardScriptsAssets(string baseName)
@@ -195,40 +194,6 @@ public class CreationWizardCreation : EditorWindow
                 {"${namespaceName}", GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace().Name },
                 {"${editorGameConfigurationsName}",GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType().Name }
             });
-        }
-    }
-
-    private static void UpdateGameCreationWizardEditorProfileChoiceTree(string baseName)
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(GameCreationWizardEditorProfileChoiceTree).Namespace);
-        var generatedCreationWizardEditorProfileChoiceTree = new CodeTypeDeclaration(typeof(GameCreationWizardEditorProfileChoiceTree).Name);
-
-        var configurationTreeFieldName = nameof(GameCreationWizardEditorProfileChoiceTree.configurations);
-        var configurationTreeField = new CodeMemberField(typeof(GameCreationWizardEditorProfileChoiceTree).GetField(configurationTreeFieldName).FieldType, configurationTreeFieldName);
-        configurationTreeField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-        var configurationTreeFieldDic = GameCreationWizardEditorProfileChoiceTree.configurations.ToList()
-            .ConvertAll(kv => new KeyValuePair<string, string>("nameof(" + kv.Value.GetType().FullName + ")", "new " + kv.Value.GetType().FullName + "()"))
-              .Union(new List<KeyValuePair<string, string>>() {
-                  new KeyValuePair<string, string>("nameof(Editor_" + baseName + "CreationWizard." + baseName + "CreationWizard)", "new Editor_" + baseName + "CreationWizard." + baseName + "CreationWizard()") })
-            .GroupBy(kv => kv.Key)
-            .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        configurationTreeField.InitExpression = new CodeSnippetExpression("new System.Collections.Generic.Dictionary<string, ICreationWizardEditor>()" +
-            CodeGenerationHelper.FormatDictionaryToCodeSnippet(configurationTreeFieldDic));
-        generatedCreationWizardEditorProfileChoiceTree.Members.Add(configurationTreeField);
-
-
-        samples.Types.Add(generatedCreationWizardEditorProfileChoiceTree);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.PuzzleGameConfigurationsEditorPath + "/" + generatedCreationWizardEditorProfileChoiceTree.Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
         }
     }
 

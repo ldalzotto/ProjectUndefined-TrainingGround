@@ -26,8 +26,8 @@ namespace ConfigurationEditor
 
         public static void OpenTextRepertoireAtID(string DisucssionSentenceTextId)
         {
-            var gameDesignerEditorWindow = GameDesignerEditor.InitWithSelectedKey(typeof(DiscussionTextConfigurationModule));
-            var discussionConfigurationModule = (DiscussionTextConfigurationModule)gameDesignerEditorWindow.GetCrrentGameDesignerModule();
+            var gameDesignerEditorWindow = GameDesignerEditor.InitWithSelectedKey(typeof(ConfigurationModule<DiscussionTextConfiguration, DiscussionTextID, DiscussionTextInherentData>));
+            var discussionConfigurationModule = (ConfigurationModule<DiscussionTextConfiguration, DiscussionTextID, DiscussionTextInherentData>)gameDesignerEditorWindow.GetCrrentGameDesignerModule();
             ((GenericConfigurationEditor<DiscussionTextID, DiscussionTextInherentData>)discussionConfigurationModule.ConfigurationEditor).ProjectilesConf.SetSearchFilter(DisucssionSentenceTextId);
         }
     }

@@ -140,17 +140,6 @@ public static class CodeGenerationHelper
         }
     }
 
-    public static void AddGameDesignerChoiceTree(List<KeyValuePair<string, string>> entries)
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-
-        foreach (var entry in entries)
-        {
-            CodeGenerationHelper.InsertToFile(new FileInfo(ClassFileFromType(typeof(ChoiceTreeConstant)).Path),
-                       "{\"" + entry.Key + "\"" + ", typeof(" + entry.Value + ")},\n", "//${addNewEntry}", null);
-        }
-    }
-
     public static void CopyFile(DirectoryInfo targetDirectory, Dictionary<string, string> parameters, FileInfo fileToCopy)
     {
         if (fileToCopy.Extension == ".txt")

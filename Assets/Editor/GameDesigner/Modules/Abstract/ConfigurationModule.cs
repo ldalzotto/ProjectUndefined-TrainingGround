@@ -8,7 +8,7 @@ namespace Editor_GameDesigner
         void SetSearchString(string searchString);
     }
 
-    public abstract class ConfigurationModule<CONFIGURATION, ID, VALUE> : IGameDesignerModule, IConfigurationModule where ID : Enum where VALUE : ScriptableObject where CONFIGURATION : IConfigurationSerialization
+    public class ConfigurationModule<CONFIGURATION, ID, VALUE> : IGameDesignerModule, IConfigurationModule where ID : Enum where VALUE : ScriptableObject where CONFIGURATION : IConfigurationSerialization
     {
         [SerializeField]
         private IGenericConfigurationEditor configurationEditor;
