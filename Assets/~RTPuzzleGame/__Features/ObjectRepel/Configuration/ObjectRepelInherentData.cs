@@ -8,7 +8,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "ObjectRepelInherentData", menuName = "Configuration/PuzzleGame/InteractiveObjects/ObjectRpelConfiguration/ObjectRepelInherentData", order = 1)]
     public class ObjectRepelInherentData : SerializedScriptableObject
     {
-        [Inline(createSubIfAbsent: true, FileName = "RepelableObjectDistance")]
+        [Inline(CreateAtSameLevelIfAbsent = true, FileName = "RepelableObjectDistance")]
         public RepelableObjectDistance RepelableObjectDistance;
 
         public float GetRepelableObjectDistance(LaunchProjectileID launchProjectileId)
