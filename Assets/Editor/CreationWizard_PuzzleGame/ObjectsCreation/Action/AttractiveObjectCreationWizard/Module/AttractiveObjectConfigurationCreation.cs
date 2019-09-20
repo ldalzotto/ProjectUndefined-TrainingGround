@@ -11,8 +11,10 @@ namespace Editor_AttractiveObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.AttractiveObjectInherantDataPath, editorInfomrationsData.AttractiveObjectId.ToString() + NameConstants.AttractiveObjectInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.AttractiveObjectId, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration, editorProfile);
+            var AttractiveObjectConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(AttractiveObjectConfiguration), editorInfomrationsData.AttractiveObjectId.ToString() + "_" + 
+                this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.AttractiveObjectId, AttractiveObjectConfiguration, editorProfile);
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>
             {
                 so.FindProperty(nameof(this.CreatedObject.PreActionAnimationGraph)).enumValueIndex = (int)PuzzleCutsceneID._GENERIC_AnimationWithFollowObject;

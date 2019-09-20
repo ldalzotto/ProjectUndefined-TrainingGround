@@ -21,8 +21,10 @@ namespace Editor_AIPatrolGraphCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.AIPatrolGraphInherentDataPath, editorInfomrationsData.AIPatrolGraphID.ToString() + NameConstants.AIPatrolGraphInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.AIPatrolGraphID, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIPatrolGraphConfiguration, editorProfile);
+            var AIPatrolGraphConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIPatrolGraphConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(AIPatrolGraphConfiguration), editorInfomrationsData.AIPatrolGraphID.ToString() + "_" + 
+                this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.AIPatrolGraphID, AIPatrolGraphConfiguration, editorProfile);
         }
     }
 }

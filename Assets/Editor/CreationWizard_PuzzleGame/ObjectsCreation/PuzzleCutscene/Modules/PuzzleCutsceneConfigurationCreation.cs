@@ -21,8 +21,10 @@ namespace Editor_PuzzleCutsceneCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.PuzzleCutsceneInherentDataPath, editorInfomrationsData.PuzzleCutsceneID.ToString() + NameConstants.PuzzleCutsceneInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.PuzzleCutsceneID, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.PuzzleCutsceneConfiguration, editorProfile);
+            var PuzzleCutsceneConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.PuzzleCutsceneConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(PuzzleCutsceneConfiguration), editorInfomrationsData.PuzzleCutsceneID.ToString() + "_" + 
+                this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.PuzzleCutsceneID, PuzzleCutsceneConfiguration, editorProfile);
         }
     }
 }

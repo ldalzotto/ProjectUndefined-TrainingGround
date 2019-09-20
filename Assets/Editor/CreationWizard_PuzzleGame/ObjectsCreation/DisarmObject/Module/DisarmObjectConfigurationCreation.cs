@@ -11,8 +11,10 @@ namespace Editor_DisarmObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.DisarmObjectInherentDatapath, editorInfomrationsData.DisarmObjectID.ToString() + NameConstants.DisarmObjectInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.DisarmObjectID, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration, editorProfile);
+            var DisarmObjectConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(DisarmObjectConfiguration),
+                editorInfomrationsData.DisarmObjectID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.DisarmObjectID, DisarmObjectConfiguration, editorProfile);
         }
     }
 }

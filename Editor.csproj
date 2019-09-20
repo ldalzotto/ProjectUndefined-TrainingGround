@@ -318,8 +318,6 @@
     <Compile Include="Assets\Editor\Experimental.NodeEditor\CustomEditors\TutorialNodeEditor.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\Inspector\NodeEditorCustomInspector.cs" />
     <Compile Include="Assets\Editor\Experimental.NodeEditor\NodeEditor.cs" />
-    <Compile Include="Assets\Editor\FileExplorer\FileExplorer.cs" />
-    <Compile Include="Assets\Editor\FileExplorer\FileExplorerEditorProfile.cs" />
     <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresher.cs" />
     <Compile Include="Assets\Editor\GameConfigurationTools\GameConfigurationRefresher\GameConfigurationRefresherProfile.cs" />
     <Compile Include="Assets\Editor\GameConfigurationTools\PersistanceConfigurationTool\PersistanceConfigurationTool.cs" />

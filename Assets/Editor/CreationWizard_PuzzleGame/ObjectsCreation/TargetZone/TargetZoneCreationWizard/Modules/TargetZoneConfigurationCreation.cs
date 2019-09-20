@@ -11,9 +11,10 @@ namespace Editor_TargetZoneCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.TargetZoneConfigurationDataPath,
-                 editorInformationsData.TargetZoneID.ToString() + NameConstants.TargetZoneInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInformationsData.TargetZoneID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration, editorProfile);
+            var targetZoneConfiguration = editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(targetZoneConfiguration),
+                    editorInformationsData.TargetZoneID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInformationsData.TargetZoneID, targetZoneConfiguration, editorProfile);
         }
     }
 }

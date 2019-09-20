@@ -10,7 +10,9 @@ namespace Editor_PuzzleCutsceneCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var puzzleCutsceneGraph = this.CreateAsset(InstancePath.PuzzleCutsceneInherentDataPath, editorInfomrationsData.PuzzleCutsceneID.ToString() + NameConstants.PuzzleCutsceneGraph, editorProfile);
+            var PuzzleCutsceneConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.PuzzleCutsceneConfiguration;
+
+            var puzzleCutsceneGraph = this.CreateAsset(InstancePath.GetConfigurationDataPath(PuzzleCutsceneConfiguration), editorInfomrationsData.PuzzleCutsceneID.ToString() + NameConstants.PuzzleCutsceneGraph, editorProfile);
             var puzzleCutsceneConfiguration = editorProfile.GetModule<PuzzleCutsceneConfigurationCreation>().CreatedObject;
             puzzleCutsceneConfiguration.PuzzleCutsceneGraph = puzzleCutsceneGraph;
             EditorUtility.SetDirty(puzzleCutsceneConfiguration);

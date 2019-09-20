@@ -11,8 +11,10 @@ namespace Editor_NearPlayerGameOverTriggerCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.NearPlayerGameOverTriggerInherentDataPath, editorInfomrationsData.NearPlayerGameOverTriggerID.ToString() + NameConstants.NearPlayerGameOverTriggerInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.NearPlayerGameOverTriggerID, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.NearPlayerGameOverTriggerConfiguration, editorProfile);
+            var NearPlayerGameOverTriggerConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.NearPlayerGameOverTriggerConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(NearPlayerGameOverTriggerConfiguration), 
+                editorInfomrationsData.NearPlayerGameOverTriggerID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.NearPlayerGameOverTriggerID, NearPlayerGameOverTriggerConfiguration, editorProfile);
         }
     }
 }

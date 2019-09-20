@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 using ConfigurationEditor;
+using Editor_MainGameCreationWizard;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -23,9 +24,7 @@ public abstract class CreateableScriptableObjectComponent<T> : CreationModuleCom
     private UnityEngine.Object lastFrameObject;
 
     protected virtual string objectFieldLabel { get; }
-
-
-
+    
     public bool IsNew { get => isNew; }
     public T CreatedObject { get => createdObject; set => createdObject = value; }
     public GeneratedScriptableObjectManager<T> GenereatedAsset { get => genereatedAsset; }

@@ -21,8 +21,10 @@ namespace Editor_GrabObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.GrabObjectInherentDataPath, editorInfomrationsData.GrabObjectID.ToString() + NameConstants.GrabObjectInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.GrabObjectID, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration, editorProfile);
+            var GrabObjectConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(GrabObjectConfiguration), 
+                editorInfomrationsData.GrabObjectID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.GrabObjectID, GrabObjectConfiguration, editorProfile);
         }
     }
 }

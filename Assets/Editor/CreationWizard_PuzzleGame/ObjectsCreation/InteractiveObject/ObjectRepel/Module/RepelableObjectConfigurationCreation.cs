@@ -9,8 +9,10 @@ namespace Editor_ObjectRepelCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>();
-            this.CreateAsset(InstancePath.RepelableObjectInherentDataPath, editorInformations.EditorInformationsData.RepelableObjectID.ToString() + NameConstants.RepelableObjectInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInformations.EditorInformationsData.RepelableObjectID, editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration, editorProfile);
+            var ObjectRepelConfiguration = editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(ObjectRepelConfiguration),
+                editorInformations.EditorInformationsData.RepelableObjectID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInformations.EditorInformationsData.RepelableObjectID, ObjectRepelConfiguration, editorProfile);
         }
     }
 }

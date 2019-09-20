@@ -24,8 +24,10 @@ namespace Editor_PlayerActionCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.PlayerActionInherentDataPath, editorInformationsData.PlayerActionId.ToString() + "_" + this.PlayerActionType.Name + NameConstants.PlayerActionsInherentData, editorProfile); ;
-            this.AddToGameConfiguration(editorInformationsData.PlayerActionId, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.PlayerActionConfiguration, editorProfile);
+            var PlayerActionConfiguration = editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.PlayerActionConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(PlayerActionConfiguration),
+                editorInformationsData.PlayerActionId.ToString() + "_" + this.PlayerActionType.Name + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile); ;
+            this.AddToGameConfiguration(editorInformationsData.PlayerActionId, PlayerActionConfiguration, editorProfile);
 
             var levelZoneConfiguration = editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration.ConfigurationInherentData[editorInformationsData.LevelZonesID];
             levelZoneConfiguration.AddPlayerActionId(new PlayerActionIdWrapper(editorInformationsData.PlayerActionId));

@@ -11,8 +11,10 @@ namespace Editor_ActionInteractableObjectCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            this.CreateAsset(InstancePath.ActionInteractableObjectInherentDatapath, editorInfomrationsData.ActionInteractableObjectID.ToString() + NameConstants.ActionInteractableObjectInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.ActionInteractableObjectID, editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration, editorProfile);
+            var ActionInteractableObjectConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(ActionInteractableObjectConfiguration), 
+                editorInfomrationsData.ActionInteractableObjectID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.ActionInteractableObjectID, ActionInteractableObjectConfiguration, editorProfile);
         }
     }
 }

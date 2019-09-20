@@ -13,9 +13,10 @@ namespace Editor_LaunchProjectileCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>();
-            this.CreateAsset(InstancePath.ProjectileInherentDataPath, editorInformations.EditorInformationsData.LaunchProjectileId.ToString() + NameConstants.ProjectileInherentData
+            var launchProjectileConfiguration = editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration;
+            this.CreateAsset(InstancePath.GetConfigurationDataPath(launchProjectileConfiguration), editorInformations.EditorInformationsData.LaunchProjectileId.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name
                  , editorProfile);
-            this.AddToGameConfiguration(editorInformations.EditorInformationsData.LaunchProjectileId, editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration, editorProfile);
+            this.AddToGameConfiguration(editorInformations.EditorInformationsData.LaunchProjectileId, launchProjectileConfiguration, editorProfile);
             SerializableObjectHelper.Modify(this.CreatedObject, (SerializedObject so) =>
             { 
                 so.FindProperty(nameof(this.CreatedObject.PreActionAnimation)).enumValueIndex = (int)AnimationID.ACTION_CA_PROJECTILE;
