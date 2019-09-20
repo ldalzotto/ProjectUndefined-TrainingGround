@@ -16,7 +16,7 @@ namespace Editor_PuzzleLevelCreationWizard
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             var levelConfiguration = editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration;
-            var createdAsset = this.CreateAsset(InstancePath.GetConfigurationDataPath(levelConfiguration), editorInformationsData.LevelZonesID.ToString() + "_" + this.GetType().GetGenericArguments()[0].Name, editorProfile);
+            var createdAsset = this.CreateAsset(InstancePath.GetConfigurationDataPath(levelConfiguration), editorInformationsData.LevelZonesID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
             levelConfiguration.SetEntry(editorInformationsData.LevelZonesID, createdAsset);
               editorProfile.GameConfigurationModified(editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration, editorInformationsData.LevelZonesID, createdAsset);
         }
