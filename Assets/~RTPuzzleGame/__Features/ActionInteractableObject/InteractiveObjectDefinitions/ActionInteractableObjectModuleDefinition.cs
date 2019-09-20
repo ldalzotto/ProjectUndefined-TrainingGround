@@ -9,14 +9,21 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    
-    
+
+
     public class ActionInteractableObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(ActionInteractableObjectConfiguration))]
         public ActionInteractableObjectID ActionInteractableObjectID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var ActionInteractableObjectModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseActionInteractableObjectModule, parent);
+            ActionInteractableObjectModule.ActionInteractableObjectID = this.ActionInteractableObjectID;
+        }
     }
 }

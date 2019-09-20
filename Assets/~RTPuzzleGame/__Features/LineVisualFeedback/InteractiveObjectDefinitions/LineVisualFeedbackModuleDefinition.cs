@@ -6,5 +6,9 @@ namespace RTPuzzle
 {
     public class LineVisualFeedbackModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        public override void CreateObject(Transform parent)
+        {
+            MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseLineVisualFeedbackModule, parent);
+        }
     }
 }

@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -16,5 +17,11 @@ namespace RTPuzzle
     {
         [CustomEnum(ConfigurationType = typeof(LaunchProjectileConfiguration))]
         public LaunchProjectileID LaunchProjectileID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var launchProjectileModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseLaunchProjectileModule, parent);
+            launchProjectileModule.LaunchProjectileID = this.LaunchProjectileID;
+        }
     }
 }

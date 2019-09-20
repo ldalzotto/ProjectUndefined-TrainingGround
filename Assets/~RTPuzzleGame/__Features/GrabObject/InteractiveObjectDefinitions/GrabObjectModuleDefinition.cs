@@ -9,14 +9,21 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
-    
-    
+
+
     public class GrabObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(ConfigurationType = typeof(GrabObjectConfiguration))]
         public GrabObjectID GrabObjectID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var grabObjectModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseGrabObjectModule, parent);
+            grabObjectModule.GrabObjectID = this.GrabObjectID;
+        }
     }
 }

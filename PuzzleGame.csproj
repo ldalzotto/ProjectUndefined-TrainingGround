@@ -128,7 +128,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\InteractiveObjectDefinitions\AttractiveObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleEventImpl.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\InteractiveObjectModules\AttractiveObjectModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\PlayerActions\AttractiveObjectAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\PlayerActions\AttractiveObjectActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\ContextMarkVisualFeedback\ExposedInterfaces\IContextMarkVisualFeedbackEvent.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\Configuration\GrabObjectInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\ExposedInterfaces\IGrabObjectEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\InteractiveObjectDefinitions\GrabObjectModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\InteractiveObjectDefinitions\ModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\InteractiveObjectModules\GrabObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
@@ -193,11 +191,11 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\InteractiveObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\InteractiveObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\Managers\InteractiveObjectContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\ModelObject\InteractiveObjectModuleDefinition\ModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\ModelObject\InteractiveObjectModules\ModelObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\SharedData\InteractiveObjectSharedDataType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\InteractiveObjectDefinitions\InteractiveObjectAnimationModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectDefinitions\InteractiveObjectCutsceneControllerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectModules\InteractiveObjectCutsceneControllerModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\LaunchProjectile\AIComponents\AIProjectileEscapeComponent.cs" />
@@ -284,7 +282,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\ExposedInterfaces\ILocalPuzzleCutsceneModuleEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\InteractiveObjectDefinitions\LocalPuzzleCutsceneModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\InteractiveObjectModules\LocalPuzzleCutsceneModuleInstancer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\Managers\BlockingCutscenePlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\PlayerActions\CutsceneAction.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\PlayerActions\CutsceneActionInherentData.cs" />

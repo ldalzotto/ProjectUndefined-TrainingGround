@@ -26,5 +26,23 @@ namespace RTPuzzle
         [Inline()]
         public RangeTypeObjectDefinitionInherentData RangeTypeObjectDefinitionInherentData;
         public bool RangeTypeObjectDefinitionIDPicker;
+
+        public override void CreateObject(Transform parent)
+        {
+            var puzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration();
+            var objectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, parent);
+            objectSightModule.ResolveInternalDependencies();
+            objectSightModule.transform.localPosition = this.LocalPosition;
+            objectSightModule.transform.localRotation = this.LocalRotation;
+            if (this.RangeTypeObjectDefinitionIDPicker)
+            {
+                objectSightModule.SightVisionRange.RangeTypeObjectDefinitionID = this.RangeTypeObjectDefinitionID;
+            }
+            else
+            {
+                objectSightModule.SightVisionRange.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
+                this.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(objectSightModule.SightVisionRange, puzzlePrefabConfiguration);
+            }
+        }
     }
 }

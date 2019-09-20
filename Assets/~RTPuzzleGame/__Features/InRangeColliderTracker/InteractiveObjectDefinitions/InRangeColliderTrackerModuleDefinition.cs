@@ -8,9 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using UnityEngine;
+
 namespace RTPuzzle
 {
-    public class InRangeColliderTrackerModuleDefinition : OdinSerializer.SerializedScriptableObject
+    public class InRangeColliderTrackerModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        public override void CreateObject(Transform parent)
+        {
+            MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseInRangeColliderTrackerModule, parent);
+        }
     }
 }

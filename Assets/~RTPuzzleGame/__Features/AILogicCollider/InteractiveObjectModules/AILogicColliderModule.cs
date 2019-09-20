@@ -135,17 +135,7 @@ namespace RTPuzzle
             this.PhysicsEventListeners.Add(IAILogicColliderModuleListener);
         }
         #endregion
-
-        public static class AILogicColliderModuleInstancer
-        {
-            public static void PopulateFromDefinition(AILogicColliderModule aILogicColliderModule, AILogicColliderModuleDefinition aILogicColliderModuleDefinition)
-            {
-                var boxCollider = aILogicColliderModule.GetComponent<BoxCollider>();
-                boxCollider.center = aILogicColliderModuleDefinition.Center;
-                boxCollider.size = aILogicColliderModuleDefinition.Size;
-            }
-        }
-
+        
         public static AIObjectDataRetriever FromCollisionType(CollisionType collisionType)
         {
             if (collisionType == null) { return null; }

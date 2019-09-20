@@ -7,6 +7,7 @@ namespace RTPuzzle
     public interface ILevelCompletionTriggerModuleDataRetriever
     {
         Collider GetTargetZoneTriggerCollider();
+        RangeTypeObject RangeTypeObject { get; }
     }
 
     public class LevelCompletionTriggerModule : InteractiveObjectModule, ILevelCompletionTriggerModuleDataRetriever, RangeTypeObjectEventListener
@@ -15,7 +16,7 @@ namespace RTPuzzle
         private ILevelCompletionManagerEvent ILevelCompletionManagerEvent;
         #endregion
 
-        private RangeTypeObject RangeTypeObject;
+        public RangeTypeObject RangeTypeObject { get; private set; }
 
         public Collider GetTargetZoneTriggerCollider()
         {
@@ -28,7 +29,7 @@ namespace RTPuzzle
             this.RangeTypeObject.Init(null, eventListenersFromExterior: new List<RangeTypeObjectEventListener>() { this });
         }
 
-        private void ResolveModuleDependencies()
+        public void ResolveModuleDependencies()
         {
             this.ILevelCompletionManagerEvent = PuzzleGameSingletonInstances.LevelCompletionManager;
             if (this.RangeTypeObject == null)
@@ -61,27 +62,7 @@ namespace RTPuzzle
                 this.ILevelCompletionManagerEvent.ConditionRecalculationEvaluate();
             }
         }
-
-        public static class LevelCompletionTriggerModuleInstancer
-        {
-            public static void PopuplateFromDefinition(
-                                LevelCompletionTriggerModule LevelCompletionTriggerModule,
-                                LevelCompletionTriggerModuleDefinition LevelCompletionTriggerModuleDefinition,
-                                PuzzlePrefabConfiguration puzzlePrefabConfiguration)
-            {
-                LevelCompletionTriggerModule.ResolveModuleDependencies();
-                if (LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionIDPicker)
-                {
-                    LevelCompletionTriggerModule.RangeTypeObject.RangeTypeObjectDefinitionID = LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionID;
-                }
-                else
-                {
-                    LevelCompletionTriggerModule.RangeTypeObject.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
-                    LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(LevelCompletionTriggerModule.RangeTypeObject, puzzlePrefabConfiguration);
-                }
-
-            }
-        }
+        
 
     }
 

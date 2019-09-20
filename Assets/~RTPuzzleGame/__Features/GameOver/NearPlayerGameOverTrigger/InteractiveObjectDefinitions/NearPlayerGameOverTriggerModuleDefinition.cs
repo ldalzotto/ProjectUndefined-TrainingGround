@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -16,5 +17,11 @@ namespace RTPuzzle
     {
         [CustomEnum(ConfigurationType = typeof(NearPlayerGameOverTriggerConfiguration))]
         public NearPlayerGameOverTriggerID NearPlayerGameOverTriggerID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var nearPlayerGameOverTriggerModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseNearPlayerGameOverTriggerModule, parent);
+            nearPlayerGameOverTriggerModule.NearPlayerGameOverTriggerID = this.NearPlayerGameOverTriggerID;
+        }
     }
 }

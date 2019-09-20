@@ -17,5 +17,10 @@ namespace RTPuzzle
     public class ModelObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
         public GameObject ModelPrefab;
+
+        public override void CreateObject(Transform parent)
+        {
+            MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseModelObjectModule, parent);
+        }
     }
 }

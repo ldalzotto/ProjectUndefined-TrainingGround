@@ -1,5 +1,5 @@
 ﻿using GameConfigurationID;
-using OdinSerializer;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -7,5 +7,11 @@ namespace RTPuzzle
     {
         [CustomEnum(configurationType: typeof(TargetZoneConfiguration))]
         public TargetZoneID TargetZoneID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var TargetZoneModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseTargetZoneModule, parent);
+            TargetZoneModule.TargetZoneID = this.TargetZoneID;
+        }
     }
 }

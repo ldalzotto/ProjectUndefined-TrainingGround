@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -16,5 +17,11 @@ namespace RTPuzzle
     {
         [CustomEnum(ConfigurationType = typeof(ObjectRepelConfiguration))]
         public ObjectRepelID ObjectRepelID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var objectRepelModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseObjectRepelModule, parent);
+            objectRepelModule.ObjectRepelID = this.ObjectRepelID;
+        }
     }
 }

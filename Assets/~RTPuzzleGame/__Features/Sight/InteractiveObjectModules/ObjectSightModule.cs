@@ -1,5 +1,4 @@
 ﻿using CoreGame;
-using GameConfigurationID;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,7 +13,7 @@ namespace RTPuzzle
 
         public RangeTypeObject SightVisionRange { get => sightVisionRange; }
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.ResolveInternalDependencies();
@@ -23,7 +22,7 @@ namespace RTPuzzle
             this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AISightVisionTargetTracker });
         }
 
-        private void ResolveInternalDependencies()
+        public void ResolveInternalDependencies()
         {
             this.sightVisionRange = GetComponentInChildren<RangeTypeObject>();
         }
@@ -31,7 +30,7 @@ namespace RTPuzzle
         public void TickBeforeAIUpdate(float d)
         {
             //Ranges are update in container
-          //  this.sightVisionRange.Tick(d);
+            //  this.sightVisionRange.Tick(d);
             this.AISightInteresectionManager.Tick(d, ref this.sightVisionRange);
         }
 
@@ -56,25 +55,6 @@ namespace RTPuzzle
         }
 #endif
 
-        public static class ObjectSightModuleInstancer
-        {
-            public static void PopuplateFromDefinition(ObjectSightModule objectSightModule, ObjectSightModuleDefinition objectSightModuleDefinition, PuzzlePrefabConfiguration puzzlePrefabConfiguration)
-            {
-                objectSightModule.ResolveInternalDependencies();
-                objectSightModule.transform.localPosition = objectSightModuleDefinition.LocalPosition;
-                objectSightModule.transform.localRotation = objectSightModuleDefinition.LocalRotation;
-                if (objectSightModuleDefinition.RangeTypeObjectDefinitionIDPicker)
-                {
-                    objectSightModule.sightVisionRange.RangeTypeObjectDefinitionID = objectSightModuleDefinition.RangeTypeObjectDefinitionID;
-                }
-                else
-                {
-                    objectSightModule.sightVisionRange.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
-                    objectSightModuleDefinition.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(objectSightModule.sightVisionRange, puzzlePrefabConfiguration);
-                }
-
-            }
-        }
     }
 
     public class AISightVisionTargetTracker : RangeTypeObjectEventListener
@@ -199,7 +179,7 @@ namespace RTPuzzle
             associatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(trackedCollider));
         }
         #endregion
-        
+
         #region Logical Conditions
         public bool IsPlayerInSight()
         {

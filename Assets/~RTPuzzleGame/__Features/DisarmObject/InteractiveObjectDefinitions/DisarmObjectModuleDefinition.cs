@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -18,5 +19,11 @@ namespace RTPuzzle
     {
         [CustomEnum(ConfigurationType = typeof(DisarmObjectConfiguration))]
         public DisarmObjectID DisarmObjectID;
+
+        public override void CreateObject(Transform parent)
+        {
+            var DisarmObjectModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseDisarmObjectModule, parent);
+            DisarmObjectModule.DisarmObjectID = this.DisarmObjectID;
+        }
     }
 }

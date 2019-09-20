@@ -86,14 +86,7 @@ namespace RTPuzzle
         public ObjectRepelID GetObjectRepelID() { return this.ObjectRepelID; }
         public Transform GetTransform() { return this.transform; }
         #endregion
-
-        public static class ObjectRepelModuleInstancer
-        {
-            public static void PopuplateFromDefinition(ObjectRepelModule objectRepelModule, ObjectRepelModuleDefinition objectRepelModuleDefinition)
-            {
-                objectRepelModule.ObjectRepelID = objectRepelModuleDefinition.ObjectRepelID;
-            }
-        }
+        
     }
 
     public class ObjectRepelTypeAnimationComponent

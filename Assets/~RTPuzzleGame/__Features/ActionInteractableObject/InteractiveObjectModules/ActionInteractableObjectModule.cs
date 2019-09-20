@@ -86,16 +86,6 @@ namespace RTPuzzle
                 this.IActionInteractableObjectModuleEventListener.PZ_EVT_OnActionInteractableExit(this);
             }
         }
-        
-        public static class ActionInteractableObjectModuleInstancer
-        {
-            public static void PopuplateFromDefinition(
-                              ActionInteractableObjectModule ActionInteractableObjectModule,
-                              ActionInteractableObjectModuleDefinition ActionInteractableObjectModuleDefinition)
-            {
-                ActionInteractableObjectModule.ActionInteractableObjectID = ActionInteractableObjectModuleDefinition.ActionInteractableObjectID;
-            }
-        }
     }
 
 }

@@ -9,10 +9,15 @@
 //------------------------------------------------------------------------------
 
 using GameConfigurationID;
+using UnityEngine;
 
 namespace RTPuzzle
 {
     public class FovModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        public override void CreateObject(Transform parent)
+        {
+            MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseFovModule, parent);
+        }
     }
 }

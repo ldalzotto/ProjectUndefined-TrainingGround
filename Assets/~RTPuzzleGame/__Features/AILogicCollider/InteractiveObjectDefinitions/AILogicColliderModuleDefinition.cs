@@ -16,5 +16,13 @@ namespace RTPuzzle
     {
         public Vector3 Center;
         public Vector3 Size;
+
+        public override void CreateObject(Transform parent)
+        {
+            var AILogicColliderModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseAILogicColliderModule, parent);
+            var boxCollider = AILogicColliderModule.GetComponent<BoxCollider>();
+            boxCollider.center = this.Center;
+            boxCollider.size = this.Size;
+        }
     }
 }

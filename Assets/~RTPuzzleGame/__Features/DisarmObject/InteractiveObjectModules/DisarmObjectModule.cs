@@ -174,15 +174,6 @@ namespace RTPuzzle
                 CircleFillBarType.EnableInstace(this.progressbar);
             }
         }
-
-        public static class DisarmObjectModuleInstancer
-        {
-            public static void PopuplateFromDefinition(DisarmObjectModuleDefinition DisarmObjectModuleDefinition, Transform parent)
-            {
-                var DisarmObjectModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseDisarmObjectModule, parent);
-                DisarmObjectModule.DisarmObjectID = DisarmObjectModuleDefinition.DisarmObjectID;
-            }
-        }
     }
 }
 

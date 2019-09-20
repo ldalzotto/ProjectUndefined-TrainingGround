@@ -91,15 +91,6 @@ namespace RTPuzzle
 #endif
         }
 
-        public static class TargetZoneModuleInstancer
-        {
-            public static void PopulateFromDefinition(TargetZoneModule TargetZoneModule, TargetZoneModuleDefinition targetZoneModuleDefinition)
-            {
-                TargetZoneModule.TargetZoneID = targetZoneModuleDefinition.TargetZoneID;
-            }
-
-        }
-
     }
 
 
