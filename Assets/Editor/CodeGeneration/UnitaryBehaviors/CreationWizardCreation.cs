@@ -48,10 +48,7 @@ public class CreationWizardCreation : EditorWindow
 
     public static void DoGenerateCreationWizardScripts(string baseName, GameTypeGeneration GameTypeGeneration)
     {
-        UpdatePuzzleGameConfigurationsEditorConstants(baseName, GameTypeGeneration);
-        UpdateInstancePathEditorConstants(baseName, GameTypeGeneration);
         UpdateNameConstantsEditorConstant(baseName);
-        DoGenerateEditorCreation(baseName, GameTypeGeneration);
     }
 
     public static void DoGenerateCreationWizardScriptsAssets(string baseName)
@@ -59,86 +56,7 @@ public class CreationWizardCreation : EditorWindow
         RegenerateGameCreationWizardEditorProfile();
         DoGenerateCreationWizardProfile(baseName);
     }
-
-    private static void UpdatePuzzleGameConfigurationsEditorConstants(string baseName, GameTypeGeneration GameTypeGeneration)
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace();
-
-        var generatedPuzzleGameConfigurations = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType());
-
-        //Add the new configuration
-        bool add = true;
-        foreach (var field in GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType().GetFields())
-        {
-            if (field.Name == baseName + "Configuration")
-            {
-                add = false;
-            }
-        }
-        if (add)
-        {
-            var newManagerAddedField = new CodeMemberField(GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace().Name + "." + baseName + "Configuration", baseName + "Configuration");
-            newManagerAddedField.Attributes = MemberAttributes.Public;
-            newManagerAddedField.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
-            generatedPuzzleGameConfigurations.Members.Add(newManagerAddedField);
-        }
-
-        samples.Types.Add(generatedPuzzleGameConfigurations);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.PuzzleGameConfigurationsEditorConstantsPath + "/" + generatedPuzzleGameConfigurations.Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-    }
-
-    private static void UpdateInstancePathEditorConstants(string baseName, GameTypeGeneration GameTypeGeneration)
-    {
-        var puzzleConfigurationFodler = CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(baseName, GameTypeGeneration);
-
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(PuzzleGameConfigurations).Namespace);
-        var generatedInstancePath = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(InstancePath));
-
-
-        //Add the new path
-        bool add = true;
-        foreach (var field in typeof(InstancePath).GetFields())
-        {
-            if (field.Name == (baseName + "InherentDataPath"))
-            {
-                add = false;
-            }
-        }
-        if (add)
-        {
-            var newPathAddedField = new CodeMemberField(typeof(string), baseName + "InherentDataPath");
-            newPathAddedField.Attributes = MemberAttributes.Public | MemberAttributes.Static;
-            newPathAddedField.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
-            newPathAddedField.InitExpression = new CodePrimitiveExpression((puzzleConfigurationFodler.FullName.Substring(puzzleConfigurationFodler.FullName.IndexOf("Asset")) + "/Data").Replace("\\", "/"));
-            generatedInstancePath.Members.Add(newPathAddedField);
-        }
-
-        samples.Types.Add(generatedInstancePath);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.PuzzleGameConfigurationsEditorConstantsPath + "/" + generatedInstancePath.Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-    }
-
+    
     private static void UpdateNameConstantsEditorConstant(string baseName)
     {
         CodeCompileUnit compileUnity = new CodeCompileUnit();
@@ -174,26 +92,6 @@ public class CreationWizardCreation : EditorWindow
         {
             provider.GenerateCodeFromCompileUnit(
                 compileUnity, sourceWriter, options);
-        }
-    }
-
-    private static void DoGenerateEditorCreation(string baseName, GameTypeGeneration GameTypeGeneration)
-    {
-        DirectoryInfo sourceTemplateDirectory = new DirectoryInfo(PathConstants.CodeGenerationCreationWizardBasincConfigurationCreationTemplatePath);
-        if (sourceTemplateDirectory.Exists)
-        {
-
-            DirectoryInfo targetDirectory = new DirectoryInfo(PathConstants.EditorCreationWizardFolderPath + "/" + baseName);
-            if (!targetDirectory.Exists)
-            {
-                targetDirectory.Create();
-            }
-
-            CodeGenerationHelper.DuplicateDirectoryWithParamtersRecursive(sourceTemplateDirectory, targetDirectory, new Dictionary<string, string>() {
-                { "${baseName}", baseName},
-                {"${namespaceName}", GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetNamespace().Name },
-                {"${editorGameConfigurationsName}",GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetEditorConfigurationsType().Name }
-            });
         }
     }
 

@@ -57,7 +57,7 @@ namespace Editor_AIPatrolGraphCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AIPatrolGraphID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIPatrolGraphConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AIPatrolGraphID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<AIPatrolGraphConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

@@ -8,6 +8,7 @@ namespace RTPuzzle
     {
         [ScriptableObjectSubstitution(substitutionName: nameof(LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionInherentData),
             sourcePickerName: nameof(LevelCompletionTriggerModuleDefinition.RangeTypeObjectDefinitionIDPicker))]
+        [DrawDefinition(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
         [CustomEnum(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
         public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
 

@@ -57,7 +57,7 @@ namespace Editor_InteractiveObjectTypeDefinitionCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.InteractiveObjectTypeDefinitionID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.InteractiveObjectTypeDefinitionConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.InteractiveObjectTypeDefinitionID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<InteractiveObjectTypeDefinitionConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

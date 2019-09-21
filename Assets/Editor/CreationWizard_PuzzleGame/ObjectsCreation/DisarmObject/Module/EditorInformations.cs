@@ -47,7 +47,7 @@ namespace Editor_DisarmObjectCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.DisarmObjectID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.DisarmObjectConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.DisarmObjectID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<DisarmObjectConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

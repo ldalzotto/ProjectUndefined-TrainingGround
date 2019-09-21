@@ -16,6 +16,7 @@ namespace RTPuzzle
     [ModuleMetadata("Interactive", "Object can be repelled.")]
     public class ObjectRepelModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(ObjectRepelConfiguration))]
         [CustomEnum(ConfigurationType = typeof(ObjectRepelConfiguration))]
         public ObjectRepelID ObjectRepelID;
 

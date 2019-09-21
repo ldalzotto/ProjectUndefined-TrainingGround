@@ -1,4 +1,5 @@
-﻿using CreationWizard;
+﻿using CoreGame;
+using CreationWizard;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 using System.Collections.Generic;
@@ -42,14 +43,14 @@ namespace Editor_LevelChunkCreationWizard
             string associatedPuzzleLevelWargning = string.Empty;
             if (this.EditorInformationsData.AssociatedPuzzleLevelID != LevelZonesID.NONE)
             {
-                associatedPuzzleLevelWargning = ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedPuzzleLevelID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration));
+                associatedPuzzleLevelWargning = ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedPuzzleLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name);
             }
 
             return new List<string>() {
                 associatedPuzzleLevelWargning,
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID,this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration)),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration),
-                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration.GetKeys(), nameof(this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration))
+                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID,this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name),
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZoneChunkID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<ChunkZonesSceneConfiguration>()),
+                ErrorHelper.NotAlreadyPresentInConfiguration(this.EditorInformationsData.AssociatedAdventureLevelID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>().GetKeys(), typeof(LevelHierarchyConfiguration).Name)
             }
             .Find((s) => !string.IsNullOrEmpty(s));
         }

@@ -16,8 +16,8 @@ public abstract class ALevelHierarchyCreation : CreateableScriptableObjectCompon
     {
         var generatedHierarchy = this.CreateAsset(InstancePath.PuzzleLevelHierarchyDataPath, this.GetLevelZonesID(editorProfile) + NameConstants.LevelHierarchyConfigurationData, editorProfile);
 
-        this.GetCommonGameConfigurations(editorProfile).PuzzleGameConfigurations.LevelHierarchyConfiguration.SetEntry(this.GetLevelZonesID(editorProfile), generatedHierarchy);
-        editorProfile.GameConfigurationModified(this.GetCommonGameConfigurations(editorProfile).PuzzleGameConfigurations.LevelHierarchyConfiguration, this.GetLevelZonesID(editorProfile), generatedHierarchy);
+        this.GetCommonGameConfigurations(editorProfile).GetConfiguration<LevelHierarchyConfiguration>().SetEntry(this.GetLevelZonesID(editorProfile), generatedHierarchy);
+        editorProfile.GameConfigurationModified(this.GetCommonGameConfigurations(editorProfile).GetConfiguration<LevelHierarchyConfiguration>(), this.GetLevelZonesID(editorProfile), generatedHierarchy);
 
         var generatedHierarchySerialized = new SerializedObject(generatedHierarchy);
         SerializableObjectHelper.SetArray((new List<LevelZoneChunkID>()).ConvertAll(e => (Enum)e), generatedHierarchySerialized.FindProperty(nameof(generatedHierarchy.LevelHierarchy)));

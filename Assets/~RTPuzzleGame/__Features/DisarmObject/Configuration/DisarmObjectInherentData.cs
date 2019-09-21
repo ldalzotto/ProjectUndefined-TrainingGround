@@ -8,6 +8,8 @@ namespace RTPuzzle
     public class DisarmObjectInherentData : ScriptableObject
     {
         public float DisarmTime;
+
+        [WireCircle(R = 1, G = 0, B = 1)]
         public float DisarmInteractionRange = 2.5f;
 
         [Header("Animation Graph")]

@@ -40,7 +40,7 @@ namespace Editor_ObjectRepelCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.RepelableObjectID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.RepelableObjectID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<ObjectRepelConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

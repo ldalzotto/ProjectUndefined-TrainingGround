@@ -1,7 +1,9 @@
 ﻿using AdventureGame;
+using ConfigurationEditor;
 using CoreGame;
 using CreationWizard;
 using RTPuzzle;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,7 +26,7 @@ namespace Editor_MainGameCreationWizard
             #region Puzzle Interactive Object Modules Prefabs
             foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.GetType().GetFields())
             {
-                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs);
+                var configurationObject = (UnityEngine.Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs);
                 if (configurationObject == null)
                 {
                     var foundAssets = AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name);
@@ -54,35 +56,11 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.AdventureGameManagersNonPersistant, "_AdventureGameManagersNonPersistant");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePointOfInterestTrackerModule, "BasePOITrackerModule");
             #endregion
-
-            foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleGameConfigurations.GetType().GetFields())
+            
+            //TODO configuration initialization
+            foreach(var configurationType in TypeHelper.GetAllGameConfigurationTypes())
             {
-                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleGameConfigurations);
-                if (configurationObject == null)
-                {
-                    AssetFinder.SafeSingleAssetFind(ref configurationObject, "t:" + configurationFieldInfo.FieldType.Name);
-                    configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleGameConfigurations, configurationObject);
-                }
-            }
-
-            foreach (var configurationFieldInfo in CommonGameConfigurations.AdventureGameConfigurations.GetType().GetFields())
-            {
-                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.AdventureGameConfigurations);
-                if (configurationObject == null)
-                {
-                    AssetFinder.SafeSingleAssetFind(ref configurationObject, "t:" + configurationFieldInfo.FieldType.Name);
-                    configurationFieldInfo.SetValue(CommonGameConfigurations.AdventureGameConfigurations, configurationObject);
-                }
-            }
-
-            foreach (var configurationFieldInfo in CommonGameConfigurations.CoreGameConfigurations.GetType().GetFields())
-            {
-                var configurationObject = (Object)configurationFieldInfo.GetValue(CommonGameConfigurations.CoreGameConfigurations);
-                if (configurationObject == null)
-                {
-                    AssetFinder.SafeSingleAssetFind(ref configurationObject, "t:" + configurationFieldInfo.FieldType.Name);
-                    configurationFieldInfo.SetValue(CommonGameConfigurations.CoreGameConfigurations, configurationObject);
-                }
+                CommonGameConfigurations.Configurations.Add(configurationType, (IConfigurationSerialization)AssetFinder.SafeAssetFind("t:" + configurationType.Name)[0]);
             }
 
         }
@@ -90,11 +68,9 @@ namespace Editor_MainGameCreationWizard
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
         {
 
-            return NonNullityFieldCheck(CommonGameConfigurations.PuzzleGameConfigurations)
-                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureGameConfigurations))
-                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.CoreGameConfigurations))
+            return NonNullityFieldCheck(NonNullityFieldCheck(CommonGameConfigurations.AdventureCommonPrefabs)
                         .Concat(NonNullityFieldCheck(CommonGameConfigurations.PuzzleLevelCommonPrefabs))
-                        .Concat(NonNullityFieldCheck(CommonGameConfigurations.AdventureCommonPrefabs))
+                        )
                         .ToList()
                    .Find((s) => !string.IsNullOrEmpty(s));
         }
@@ -103,7 +79,7 @@ namespace Editor_MainGameCreationWizard
         {
             return containerObjectToCheck.GetType().GetFields().ToList().ConvertAll(field =>
              {
-                 return ErrorHelper.NonNullity((Object)field.GetValue(containerObjectToCheck), field.Name);
+                 return ErrorHelper.NonNullity((UnityEngine.Object)field.GetValue(containerObjectToCheck), field.Name);
              });
         }
     }
@@ -111,33 +87,31 @@ namespace Editor_MainGameCreationWizard
     [System.Serializable]
     public class CommonGameConfigurations
     {
-        public CoreGameConfigurations CoreGameConfigurations;
-
-        public AdventureGameConfigurations AdventureGameConfigurations;
         public AdventureCommonPrefabs AdventureCommonPrefabs;
 
+        public Dictionary<Type, IConfigurationSerialization> Configurations;
+
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
-        public PuzzleGameConfigurations PuzzleGameConfigurations;
+
         public PuzzleInteractiveObjectModulePrefabs PuzzleInteractiveObjectModulePrefabs;
+
+        public T GetConfiguration<T>() where T : IConfigurationSerialization
+        {
+            return (T)this.Configurations[typeof(T)];
+        }
+
+        public IConfigurationSerialization GetConfiguration(Type configurationType)
+        {
+            return this.Configurations[configurationType];
+        }
 
         public CommonGameConfigurations()
         {
-            this.CoreGameConfigurations = new CoreGameConfigurations();
-            this.PuzzleGameConfigurations = new PuzzleGameConfigurations();
-            this.AdventureGameConfigurations = new AdventureGameConfigurations();
             this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
             this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
             this.PuzzleInteractiveObjectModulePrefabs = new PuzzleInteractiveObjectModulePrefabs();
+            this.Configurations = new Dictionary<Type, IConfigurationSerialization>();
         }
-    }
-
-    [System.Serializable]
-    public class CoreGameConfigurations
-    {
-        [ReadOnly]
-        public AnimationConfiguration AnimationConfiguration;
-        [ReadOnly]
-        public DiscussionTreeConfiguration DiscussionTreeConfiguration;
     }
 
 

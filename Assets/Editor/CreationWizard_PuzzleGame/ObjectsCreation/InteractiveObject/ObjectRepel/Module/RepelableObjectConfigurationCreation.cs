@@ -9,7 +9,7 @@ namespace Editor_ObjectRepelCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>();
-            var ObjectRepelConfiguration = editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration;
+            var ObjectRepelConfiguration = editorInformations.EditorInformationsData.CommonGameConfigurations.GetConfiguration<ObjectRepelConfiguration>();
             this.CreateAsset(InstancePath.GetConfigurationDataPath(ObjectRepelConfiguration),
                 editorInformations.EditorInformationsData.RepelableObjectID.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
             this.AddToGameConfiguration(editorInformations.EditorInformationsData.RepelableObjectID, ObjectRepelConfiguration, editorProfile);

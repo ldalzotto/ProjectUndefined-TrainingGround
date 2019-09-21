@@ -82,6 +82,15 @@
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\Inline.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Object\ScriptableObjectSubstitution.cs" />
     <Compile Include="Assets\Editor_Common\PropertyAttributes\Property\ReadOnly.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\AbstractSceneHandleAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\DrawConfigurationAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\DrawDefinitionAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\DrawNestedAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireArcAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireBoxAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireCircleAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireFrustumAttribute.cs" />
+    <Compile Include="Assets\Editor_Common\PropertyAttributes\SceneHandle\WireRoundedFrustumAttribute.cs" />
     <None Include="Assets\Editor_Common\Editor_Common.asmdef" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>

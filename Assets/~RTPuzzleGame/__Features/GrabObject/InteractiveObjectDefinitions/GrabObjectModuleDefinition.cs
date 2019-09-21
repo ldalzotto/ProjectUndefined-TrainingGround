@@ -16,6 +16,7 @@ namespace RTPuzzle
     [ModuleMetadata("Interactive", "Object that provides a PlayerAction.")]
     public class GrabObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(GrabObjectConfiguration))]
         [CustomEnum(ConfigurationType = typeof(GrabObjectConfiguration))]
         public GrabObjectID GrabObjectID;
 

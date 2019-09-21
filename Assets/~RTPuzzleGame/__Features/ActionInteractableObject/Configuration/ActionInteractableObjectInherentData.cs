@@ -8,7 +8,9 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "ActionInteractableObjectInherentData", menuName = "Configuration/PuzzleGame/ActionInteractableObjectConfiguration/ActionInteractableObjectInherentData", order = 1)]
     public class ActionInteractableObjectInherentData : ScriptableObject
     {
+        [WireCircle(R = 1, G = 0, B = 1)]
         public float InteractionRange;
+
         [CustomEnum(ConfigurationType = typeof(PlayerActionConfiguration))]
         public PlayerActionId PlayerActionId;
 

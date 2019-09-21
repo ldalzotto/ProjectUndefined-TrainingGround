@@ -47,7 +47,7 @@ namespace Editor_AttractiveObjectCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AttractiveObjectId, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AttractiveObjectConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AttractiveObjectId, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<AttractiveObjectConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

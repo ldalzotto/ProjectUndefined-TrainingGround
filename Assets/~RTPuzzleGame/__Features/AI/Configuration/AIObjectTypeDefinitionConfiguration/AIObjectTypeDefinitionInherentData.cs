@@ -20,12 +20,13 @@ namespace RTPuzzle
         "onInherentData", order = 1)]
     public class AIObjectTypeDefinitionInherentData : ScriptableObject
     {
+        [DrawDefinition(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration))]
         public InteractiveObjectTypeDefinitionID InteractiveObjectTypeDefinitionID;
         
         [CustomEnum()]
         public AIObjectID AIObjectID;
-
+        
         [Inline(CreateAtSameLevelIfAbsent = true)]
         public GenericPuzzleAIComponentsV2 GenericPuzzleAIComponents;
 

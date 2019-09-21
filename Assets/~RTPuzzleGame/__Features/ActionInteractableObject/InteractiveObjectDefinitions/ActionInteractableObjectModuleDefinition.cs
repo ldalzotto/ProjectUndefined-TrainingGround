@@ -17,6 +17,7 @@ namespace RTPuzzle
     [ModuleMetadata("General", "Tag the object to be selectable by player.")]
     public class ActionInteractableObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(ActionInteractableObjectConfiguration))]
         [CustomEnum(ConfigurationType = typeof(ActionInteractableObjectConfiguration))]
         public ActionInteractableObjectID ActionInteractableObjectID;
 

@@ -16,6 +16,7 @@ namespace RTPuzzle
     [ModuleMetadata("Interactive", "Trigger GameOver when player is near.")]
     public class NearPlayerGameOverTriggerModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(NearPlayerGameOverTriggerConfiguration))]
         [CustomEnum(ConfigurationType = typeof(NearPlayerGameOverTriggerConfiguration))]
         public NearPlayerGameOverTriggerID NearPlayerGameOverTriggerID;
 

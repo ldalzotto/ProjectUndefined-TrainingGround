@@ -40,7 +40,7 @@ namespace Editor_PlayerActionCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PlayerActionId, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.PlayerActionConfiguration)
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PlayerActionId, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<PlayerActionConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

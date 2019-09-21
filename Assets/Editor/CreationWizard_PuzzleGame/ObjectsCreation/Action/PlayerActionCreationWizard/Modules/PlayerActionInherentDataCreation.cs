@@ -24,14 +24,14 @@ namespace Editor_PlayerActionCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var PlayerActionConfiguration = editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.PlayerActionConfiguration;
+            var PlayerActionConfiguration = editorInformationsData.CommonGameConfigurations.GetConfiguration<PlayerActionConfiguration>();
             this.CreateAsset(InstancePath.GetConfigurationDataPath(PlayerActionConfiguration),
                 editorInformationsData.PlayerActionId.ToString() + "_" + this.PlayerActionType.Name + this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile); ;
             this.AddToGameConfiguration(editorInformationsData.PlayerActionId, PlayerActionConfiguration, editorProfile);
 
-            var levelZoneConfiguration = editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration.ConfigurationInherentData[editorInformationsData.LevelZonesID];
+            var levelZoneConfiguration = editorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>().ConfigurationInherentData[editorInformationsData.LevelZonesID];
             levelZoneConfiguration.AddPlayerActionId(new PlayerActionIdWrapper(editorInformationsData.PlayerActionId));
-            editorProfile.AddedPlayerAction(editorInformationsData.PlayerActionId, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration, editorInformationsData.LevelZonesID);
+            editorProfile.AddedPlayerAction(editorInformationsData.PlayerActionId, editorInformationsData.CommonGameConfigurations.GetConfiguration<LevelConfiguration>(), editorInformationsData.LevelZonesID);
         }
 
         protected override void OnInspectorGUIImpl(SerializedObject serializedObject, AbstractCreationWizardEditorProfile editorProfile)

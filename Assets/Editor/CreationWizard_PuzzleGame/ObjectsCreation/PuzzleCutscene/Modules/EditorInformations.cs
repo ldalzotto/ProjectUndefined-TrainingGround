@@ -57,7 +57,7 @@ namespace Editor_PuzzleCutsceneCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PuzzleCutsceneID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.PuzzleCutsceneConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PuzzleCutsceneID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<PuzzleCutsceneConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

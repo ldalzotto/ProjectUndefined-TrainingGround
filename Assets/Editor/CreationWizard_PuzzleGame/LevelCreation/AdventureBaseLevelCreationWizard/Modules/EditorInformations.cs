@@ -1,4 +1,5 @@
-﻿using CreationWizard;
+﻿using CoreGame;
+using CreationWizard;
 using Editor_MainGameCreationWizard;
 using GameConfigurationID;
 using System.Collections.Generic;
@@ -40,8 +41,8 @@ namespace Editor_AdventureBaseLevelCreationWizard
         {
             this.InitProperties();
             return new List<string>() {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelZonesSceneConfiguration),
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LevelHierarchyConfiguration)
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelZonesSceneConfiguration>()),
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LevelZonesID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>())
              }
             .Find((s) => !string.IsNullOrEmpty(s));
         }

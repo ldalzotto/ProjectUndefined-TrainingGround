@@ -40,7 +40,7 @@ namespace Editor_LaunchProjectileCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LaunchProjectileId, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.LaunchProjectileId, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LaunchProjectileConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

@@ -57,7 +57,7 @@ namespace Editor_AIObjectTypeDefinitionCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AIObjectTypeDefinitionID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIObjectTypeDefinitionConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AIObjectTypeDefinitionID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<AIObjectTypeDefinitionConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

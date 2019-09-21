@@ -11,7 +11,7 @@ namespace Editor_LevelChunkCreationWizard
         {
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             this.CreateAsset(InstancePath.LevelZoneChunkSceneConfigurationDataPath, editorInformationsData.LevelZoneChunkID.ToString() + NameConstants.LevelChunkSceneConfigurationData, editorProfile);
-            this.AddToGameConfiguration(editorInformationsData.LevelZoneChunkID, editorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ChunkZonesSceneConfiguration, editorProfile);
+            this.AddToGameConfiguration(editorInformationsData.LevelZoneChunkID, editorInformationsData.CommonGameConfigurations.GetConfiguration<ChunkZonesSceneConfiguration>(), editorProfile);
         }
 
         public override void AfterGeneration(AbstractCreationWizardEditorProfile editorProfile)

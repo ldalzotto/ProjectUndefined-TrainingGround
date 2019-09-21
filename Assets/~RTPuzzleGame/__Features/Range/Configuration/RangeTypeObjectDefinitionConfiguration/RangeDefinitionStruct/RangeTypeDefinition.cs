@@ -11,6 +11,7 @@ namespace RTPuzzle
         public RangeTypeID RangeTypeID;
 
         [Inline]
+        [DrawNested()]
         [SerializeField]
         public RangeShapeConfiguration RangeShapeConfiguration;
     }

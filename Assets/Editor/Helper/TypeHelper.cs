@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using ConfigurationEditor;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -23,6 +24,16 @@ public class TypeHelper
                   .ToArray();
         }
 
+    }
+
+    public static Type[] GetAllGameConfigurationTypes()
+    {
+        return
+            typeof(IConfigurationSerialization)
+                   .Assembly.GetTypes()
+                   .Union(typeof(RTPuzzle.GameManager).Assembly.GetTypes())
+                   .Union(typeof(AdventureGame.GameManager).Assembly.GetTypes())
+                   .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface).ToArray();
     }
 
     public static Type GetType(string typeName)

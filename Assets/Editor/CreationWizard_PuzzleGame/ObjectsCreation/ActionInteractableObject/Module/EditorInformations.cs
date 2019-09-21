@@ -47,7 +47,7 @@ namespace Editor_ActionInteractableObjectCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.ActionInteractableObjectID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.ActionInteractableObjectConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.ActionInteractableObjectID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<ActionInteractableObjectConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

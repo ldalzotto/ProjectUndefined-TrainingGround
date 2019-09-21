@@ -60,6 +60,11 @@ public class IObjectGizmoDisplayEnableArea
     {
         return this.AdditionalEnumerationParameters[typeof(T)].SelectedEnum;
     }
+
+    public Enum GetEnumParameter(Type byEnumPropertyType)
+    {
+        return this.AdditionalEnumerationParameters[byEnumPropertyType].SelectedEnum;
+    }
 }
 
 

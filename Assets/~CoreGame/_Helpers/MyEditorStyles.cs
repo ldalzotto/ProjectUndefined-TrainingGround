@@ -6,6 +6,8 @@ using UnityEditor;
 
 public class MyEditorStyles
 {
+    public static GUIStyle SceneDrawDynamicLabelStyle;
+
     public static GUIStyle LabelWhite;
     public static GUIStyle LabelRed;
     public static GUIStyle LabelYellow;
@@ -15,6 +17,7 @@ public class MyEditorStyles
 
     static MyEditorStyles()
     {
+        MyEditorStyles.SceneDrawDynamicLabelStyle = BuildLabelStyle(Color.black);
         MyEditorStyles.LabelWhite = BuildLabelStyle(Color.white);
         MyEditorStyles.LabelRed = BuildLabelStyle(Color.red);
         MyEditorStyles.LabelYellow = BuildLabelStyle(Color.yellow);

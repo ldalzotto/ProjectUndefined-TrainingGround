@@ -9,6 +9,7 @@ namespace RTPuzzle
     public class LaunchProjectileInherentData : ScriptableObject
     {
 
+        [WireCircle(R = 1, G = 0, B = 1)]
         [SerializeField]
         public float ProjectileThrowRange;
 
@@ -19,6 +20,7 @@ namespace RTPuzzle
         public bool isExploding;
 
         [FormerlySerializedAs("EffectRange")]
+        [WireCircle(R = 1, G = 0, B = 1)]
         [SerializeField]
         public float ExplodingEffectRange;
 

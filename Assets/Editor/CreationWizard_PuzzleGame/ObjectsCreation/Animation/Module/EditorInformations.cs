@@ -6,6 +6,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using CreationWizard;
 using GameConfigurationID;
+using CoreGame;
 
 namespace Editor_AnimationCreationWizard
 {
@@ -40,7 +41,7 @@ namespace Editor_AnimationCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AnimationID, this.EditorInformationsData.CommonGameConfigurations.CoreGameConfigurations.AnimationConfiguration)
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.AnimationID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<AnimationConfiguration>())
             }
             .Find(s => !string.IsNullOrEmpty(s));
         }

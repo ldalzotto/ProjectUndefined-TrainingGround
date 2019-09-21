@@ -15,10 +15,10 @@ public abstract class ObjectModulesGizmo
     {
         if (this.DrawDisplay == null)
         {
-            this.DrawDisplay = new Dictionary<string, IObjectGizmoDisplayEnableArea>();
+            this.DrawDisplay = new Dictionary<Type, IObjectGizmoDisplayEnableArea>();
             foreach (var rangeDefinitionModule in this.GetDefinitionModules())
             {
-                this.DrawDisplay[rangeDefinitionModule.Key.Name] =
+                this.DrawDisplay[rangeDefinitionModule.Key] =
                      this.HandleGizmoDisplayAreaCreation(rangeDefinitionModule.Key.Name, rangeDefinitionModule.Value);
             }
         }
@@ -29,7 +29,7 @@ public abstract class ObjectModulesGizmo
         CommonGameConfigurations = commonGameConfigurations;
     }
 
-    private Dictionary<string, IObjectGizmoDisplayEnableArea> DrawDisplay;
+    private Dictionary<Type, IObjectGizmoDisplayEnableArea> DrawDisplay;
 
     public virtual void OnGUI()
     {
@@ -70,17 +70,19 @@ public abstract class ObjectModulesGizmo
     {
         this.Init();
         var oldHandlesColor = Handles.color;
+
         foreach (var drawDisplay in this.DrawDisplay)
         {
             this.DrawGizmo(drawDisplay.Key, objectTransform);
         }
+        Handles.color = oldHandlesColor;
     }
 
-    protected abstract void DrawGizmo(string moduleDefinitionType, Transform objectTransform);
+    protected abstract void DrawGizmo(Type moduleDefinitionType, Transform objectTransform);
     protected abstract IObjectGizmoDisplayEnableArea HandleGizmoDisplayAreaCreation(string moduleDefinitionType, ScriptableObject definitionSO);
 
-    protected IObjectGizmoDisplayEnableArea GetDrawDisplay(string key)
+    protected IObjectGizmoDisplayEnableArea GetDrawDisplay(Type definitionType)
     {
-        return this.DrawDisplay[key];
+        return this.DrawDisplay[definitionType];
     }
 }

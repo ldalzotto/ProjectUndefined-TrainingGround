@@ -47,7 +47,7 @@ namespace Editor_NearPlayerGameOverTriggerCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.NearPlayerGameOverTriggerID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.NearPlayerGameOverTriggerConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.NearPlayerGameOverTriggerID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<NearPlayerGameOverTriggerConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

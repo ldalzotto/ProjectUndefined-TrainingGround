@@ -12,9 +12,11 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIProjectileEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIProjectileEscapeComponent", order = 1)]
     public class AIProjectileEscapeComponent : AbstractAIComponent
     {
+        [WireCircle(R = 0, G = 0, B = 1)]
         [Inline(createAtSameLevelIfAbsent: true, FileName = "EscapeDistance")]
         public ProjectileEscapeRange EscapeDistanceV2;
 
+        [WireCircle(R = 1, G = 1, B = 0)]
         [Inline(createAtSameLevelIfAbsent: true, FileName = "EscapeSemiAngle")]
         public ProjectileEscapeSemiAngle EscapeSemiAngleV2;
 

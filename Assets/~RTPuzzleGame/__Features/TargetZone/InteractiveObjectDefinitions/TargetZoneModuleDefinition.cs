@@ -7,6 +7,7 @@ namespace RTPuzzle
     public class TargetZoneModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [CustomEnum(configurationType: typeof(TargetZoneConfiguration))]
+        [DrawConfiguration(ConfigurationType = typeof(TargetZoneConfiguration))]
         public TargetZoneID TargetZoneID;
 
         public override void CreateObject(Transform parent)

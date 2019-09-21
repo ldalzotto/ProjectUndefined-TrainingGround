@@ -25,8 +25,8 @@ namespace Editor_GameDesigner
             base.OnEnabled();
             this.levelManager = GameObject.FindObjectOfType<LevelManager>();
             this.playerActionsCachedEditors = new Dictionary<PlayerActionInherentData, Editor>();
-            this.levelPlayerActionInherentDatas = this.commonGameConfigurations.PuzzleGameConfigurations.PlayerActionConfiguration.ConfigurationInherentData.Select(p => p)
-              .Where(p => this.commonGameConfigurations.PuzzleGameConfigurations.LevelConfiguration.ConfigurationInherentData[this.levelManager.LevelID].PlayerActionIds.ConvertAll(pl => pl.playerActionId).Contains(p.Key))
+            this.levelPlayerActionInherentDatas = this.commonGameConfigurations.GetConfiguration<PlayerActionConfiguration>().ConfigurationInherentData.Select(p => p)
+              .Where(p => this.commonGameConfigurations.GetConfiguration<LevelConfiguration>().ConfigurationInherentData[this.levelManager.LevelID].PlayerActionIds.ConvertAll(pl => pl.playerActionId).Contains(p.Key))
               .Select(p => p.Value).ToList();
         }
     }

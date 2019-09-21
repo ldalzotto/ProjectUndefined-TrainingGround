@@ -8,8 +8,11 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIPlayerEscapeComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AIPlayerEscapeComponent", order = 1)]
     public class AIPlayerEscapeComponent : AbstractAIComponent
     {
+        [WireCircle(R = 1, G = 1, B = 0)]
         public float EscapeDistance;
+        [WireCircle(R = 1, G = 1, B = 0)]
         public float PlayerDetectionRadius;
+        [WireArc(R = 1, G = 1, B = 0, Radius = 4f)]
         public float EscapeSemiAngle;
 
         public override InterfaceAIManager BuildManager()

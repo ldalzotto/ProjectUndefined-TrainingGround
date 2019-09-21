@@ -13,7 +13,7 @@ namespace Editor_LaunchProjectileCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInformations = editorProfile.GetModule<EditorInformations>();
-            var launchProjectileConfiguration = editorInformations.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.LaunchProjectileConfiguration;
+            var launchProjectileConfiguration = editorInformations.EditorInformationsData.CommonGameConfigurations.GetConfiguration<LaunchProjectileConfiguration>();
             this.CreateAsset(InstancePath.GetConfigurationDataPath(launchProjectileConfiguration), editorInformations.EditorInformationsData.LaunchProjectileId.ToString() + "_" + this.GetType().BaseType.GetGenericArguments()[0].Name
                  , editorProfile);
             this.AddToGameConfiguration(editorInformations.EditorInformationsData.LaunchProjectileId, launchProjectileConfiguration, editorProfile);

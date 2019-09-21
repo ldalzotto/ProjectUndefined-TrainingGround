@@ -23,35 +23,17 @@ public class PointOfInterestGizmos : ObjectModulesGizmo
         base.Init();
     }
 
-    protected override void DrawGizmo(string moduleDefinitionType, Transform objectTransform)
+    protected override void DrawGizmo(Type moduleDefinitionType, Transform objectTransform)
     {
-        if (moduleDefinitionType == typeof(PointOfInterestSharedDataTypeInherentData).Name)
+        var drawArea = this.GetDrawDisplay(moduleDefinitionType);
+        if (drawArea.IsEnabled)
         {
-            var drawArea = this.GetDrawDisplay(typeof(PointOfInterestSharedDataTypeInherentData).Name);
-            if (drawArea.IsEnabled)
+            this.PointOfInterestDefinitionInherentData.RangeDefinitionModules.TryGetValue(moduleDefinitionType, out ScriptableObject definitionSO);
+            if (definitionSO != null)
             {
-                var PointOfInterestSharedDataTypeInherentData = this.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData;
-                Handles.color = Color.yellow;
-                Handles.Label(objectTransform.position + Vector3.up * 10, nameof(PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit), MyEditorStyles.LabelYellow);
-                Handles.DrawWireArc(objectTransform.position, objectTransform.up, objectTransform.forward, PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit, 10);
-                Handles.DrawWireArc(objectTransform.position, objectTransform.up, objectTransform.forward, -PointOfInterestSharedDataTypeInherentData.POIDetectionAngleLimit, 10);
+                SceneHandlerDrawer.Draw(this.PointOfInterestDefinitionConfiguration, objectTransform, this.CommonGameConfigurations, drawArea);
             }
         }
-        else if (moduleDefinitionType == typeof(PointOfInterestCutsceneControllerModuleDefinition).Name) { }
-        else if (moduleDefinitionType == typeof(PointOfInterestTrackerModuleDefinition).Name)
-        {
-            var drawArea = this.GetDrawDisplay(typeof(PointOfInterestTrackerModuleDefinition).Name);
-            if (drawArea.IsEnabled)
-            {
-                var PointOfInterestTrackerModuleDefinition = this.PointOfInterestDefinitionInherentData.GetDefinitionModule<PointOfInterestTrackerModuleDefinition>();
-                Handles.color = Color.green;
-                Handles.Label(objectTransform.position + Vector3.up * PointOfInterestTrackerModuleDefinition.SphereDetectionRadius, "POI Tracker range", MyEditorStyles.LabelGreen);
-                Handles.DrawWireDisc(objectTransform.position, objectTransform.up, PointOfInterestTrackerModuleDefinition.SphereDetectionRadius);
-            }
-        }
-        else if (moduleDefinitionType == typeof(PointOfInterestVisualMovementModuleDefinition).Name) { }
-        else if (moduleDefinitionType == typeof(PointOfInterestModelObjectModuleDefinition).Name) { }
-//${addNewEntry}
     }
 
     protected override Dictionary<Type, ScriptableObject> GetDefinitionModules()

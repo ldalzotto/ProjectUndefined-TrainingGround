@@ -18,6 +18,7 @@ namespace RTPuzzle
     [ModuleMetadata("Interactive", "Attract object in range.")]
     public class AttractiveObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(AttractiveObjectConfiguration))]
         [CustomEnum(ConfigurationType = typeof(AttractiveObjectConfiguration))]
         public AttractiveObjectId AttractiveObjectId;
 

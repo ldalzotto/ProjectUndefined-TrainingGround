@@ -16,6 +16,7 @@ namespace RTPuzzle
     [ModuleMetadata("Interactive", "Destroy object after a timer.")]
     public class DisarmObjectModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(DisarmObjectConfiguration))]
         [CustomEnum(ConfigurationType = typeof(DisarmObjectConfiguration))]
         public DisarmObjectID DisarmObjectID;
 

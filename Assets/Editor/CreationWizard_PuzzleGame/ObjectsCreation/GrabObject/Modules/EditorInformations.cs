@@ -57,7 +57,7 @@ namespace Editor_GrabObjectCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.GrabObjectID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.GrabObjectConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.GrabObjectID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<GrabObjectConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

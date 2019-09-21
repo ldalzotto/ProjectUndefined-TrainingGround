@@ -42,7 +42,7 @@ namespace Editor_TargetZoneCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.TargetZoneID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.TargetZoneConfiguration)
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.TargetZoneID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<TargetZoneConfiguration>())
             }
             .Find(s => !string.IsNullOrEmpty(s));
         }

@@ -15,6 +15,7 @@ namespace RTPuzzle
     [ModuleMetadata(header: "AI", shortDescription: "Collider used for triggering AI Events.")]
     public class AILogicColliderModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [WireBox(R = 0, G = 1, B = 0, CenterFieldName = nameof(AILogicColliderModuleDefinition.Center), SizeFieldName = nameof(AILogicColliderModuleDefinition.Size))]
         public Vector3 Center;
         public Vector3 Size;
 

@@ -46,85 +46,17 @@ public class AIObjectTypeGizmos : ObjectModulesGizmo
         this.AssociatedInteractiveObjectGizmoDisplay.OnSceneGUI(sceneView);
     }
 
-    protected override void DrawGizmo(string moduleDefinitionType, Transform objectTransform)
+    protected override void DrawGizmo(Type moduleDefinitionType, Transform objectTransform)
     {
-        if (moduleDefinitionType == typeof(AIPatrolComponent).Name)
+        var drawArea = this.GetDrawDisplay(moduleDefinitionType);
+        if (drawArea.IsEnabled)
         {
-            var drawArea = this.GetDrawDisplay(typeof(AIPatrolComponent).Name);
-            if (drawArea.IsEnabled)
+            this.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.RangeDefinitionModules.TryGetValue(moduleDefinitionType, out ScriptableObject definitionSO);
+            if (definitionSO != null)
             {
-                Handles.color = Color.magenta;
-                var labelStyle = new GUIStyle(EditorStyles.label);
-                labelStyle.normal.textColor = Color.magenta;
-                Handles.Label(objectTransform.position + (Vector3.up * this.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIPatrolComponent>().MaxDistance), "AI Patrol distance.", labelStyle);
-                Handles.DrawWireDisc(objectTransform.position, Vector3.up, this.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIPatrolComponent>().MaxDistance);
+                SceneHandlerDrawer.Draw(definitionSO, objectTransform, this.CommonGameConfigurations, drawArea);
             }
         }
-        else if (moduleDefinitionType == typeof(AIProjectileEscapeComponent).Name)
-        {
-            var drawArea = this.GetDrawDisplay(typeof(AIProjectileEscapeComponent).Name);
-            if (drawArea.IsEnabled)
-            {
-                var AIProjectileEscapeComponent = this.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIProjectileEscapeComponent>();
-                var projectileIDEscapeRange = (LaunchProjectileID)drawArea.GetEnumParameter<ProjectileEscapeRange>();
-                AIProjectileEscapeComponent.EscapeDistanceV2.Values.TryGetValue(projectileIDEscapeRange, out float projectileEscapeRange);
-                var projectileIDEscapeSemiAngle = (LaunchProjectileID)drawArea.GetEnumParameter<ProjectileEscapeSemiAngle>();
-                AIProjectileEscapeComponent.EscapeSemiAngleV2.Values.TryGetValue(projectileIDEscapeSemiAngle, out float projectileEscapeSemiAngle);
-
-                Handles.color = Color.blue;
-                GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
-                labelStyle.normal.textColor = Handles.color;
-                Handles.Label(objectTransform.position + Vector3.up * projectileEscapeRange,
-                    this.GetType().Name + "_" + projectileIDEscapeRange.ToString(), labelStyle);
-                Handles.DrawWireDisc(objectTransform.position, Vector3.up, projectileEscapeRange);
-
-                Handles.color = Color.yellow;
-                Handles.Label(objectTransform.position + Vector3.up * 5f, nameof(AIProjectileEscapeComponent.EscapeSemiAngleV2) + "_" + projectileIDEscapeSemiAngle.ToString(), MyEditorStyles.LabelYellow);
-                Handles.DrawWireArc(objectTransform.position, Vector3.up, objectTransform.forward, projectileEscapeSemiAngle, 5f);
-                Handles.DrawWireArc(objectTransform.position, Vector3.up, objectTransform.forward, -projectileEscapeSemiAngle, 5f);
-            }
-
-        }
-        else if (moduleDefinitionType == typeof(AIEscapeWithoutTriggerComponent).Name) { }
-        else if (moduleDefinitionType == typeof(AITargetZoneComponent).Name)
-        {
-            var drawArea = this.GetDrawDisplay(typeof(AIPlayerEscapeComponent).Name);
-            if (drawArea.IsEnabled)
-            {
-                var AITargetZoneComponent = this.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AITargetZoneComponent>();
-                Handles.color = Color.green;
-                GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
-                labelStyle.normal.textColor = Handles.color;
-                Handles.Label(objectTransform.position + Vector3.up * AITargetZoneComponent.TargetZoneEscapeDistance, nameof(AITargetZoneComponent.TargetZoneEscapeDistance), labelStyle);
-                Handles.DrawWireDisc(objectTransform.position, Vector3.up, AITargetZoneComponent.TargetZoneEscapeDistance);
-            }
-        }
-        else if (moduleDefinitionType == typeof(AIAttractiveObjectComponent).Name) { }
-        else if (moduleDefinitionType == typeof(AIFearStunComponent).Name) { }
-        else if (moduleDefinitionType == typeof(AIPlayerEscapeComponent).Name)
-        {
-            var drawArea = this.GetDrawDisplay(typeof(AIPlayerEscapeComponent).Name);
-            if (drawArea.IsEnabled)
-            {
-                var AIPlayerEscapeComponent = this.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIPlayerEscapeComponent>();
-                Handles.color = Color.yellow;
-
-                var labelStyle = new GUIStyle(EditorStyles.label);
-                labelStyle.normal.textColor = Handles.color;
-
-                Handles.Label(objectTransform.position + Vector3.up * AIPlayerEscapeComponent.EscapeDistance, nameof(AIPlayerEscapeComponent.EscapeDistance), labelStyle);
-                Handles.DrawWireDisc(objectTransform.position, Vector3.up, AIPlayerEscapeComponent.EscapeDistance);
-
-                Handles.Label(objectTransform.position + Vector3.up * AIPlayerEscapeComponent.PlayerDetectionRadius, nameof(AIPlayerEscapeComponent.PlayerDetectionRadius), labelStyle);
-                Handles.DrawWireDisc(objectTransform.position, Vector3.up, AIPlayerEscapeComponent.PlayerDetectionRadius);
-
-                Handles.Label(objectTransform.position + objectTransform.forward * 4, "Escape angle.", labelStyle);
-                Handles.DrawWireArc(objectTransform.position, Vector3.up, objectTransform.forward, AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
-                Handles.DrawWireArc(objectTransform.position, Vector3.up, objectTransform.forward, -AIPlayerEscapeComponent.EscapeSemiAngle, 5f);
-            }
-        }
-        else if (moduleDefinitionType == typeof(AIMoveTowardPlayerComponent).Name) { }
-        else if (moduleDefinitionType == typeof(AIDisarmObjectComponent).Name) { }
     }
 
     protected override Dictionary<Type, ScriptableObject> GetDefinitionModules()

@@ -10,6 +10,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AttractiveObjectInherentConfigurationData", menuName = "Configuration/PuzzleGame/AttractiveObjectConfiguration/AttractiveObjectInherentConfigurationData", order = 1)]
     public class AttractiveObjectInherentConfigurationData : ScriptableObject
     {
+        [WireArc(R = 1, G = 0, B = 1)]
         public float EffectRange;
         public float EffectiveTime;
 

@@ -57,7 +57,7 @@ namespace Editor_PointOfInterestVisualMovementCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PointOfInterestVisualMovementID, this.EditorInformationsData.CommonGameConfigurations.AdventureGameConfigurations.PointOfInterestVisualMovementConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PointOfInterestVisualMovementID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<PointOfInterestVisualMovementConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

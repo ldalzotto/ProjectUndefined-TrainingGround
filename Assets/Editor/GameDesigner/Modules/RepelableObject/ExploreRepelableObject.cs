@@ -23,7 +23,7 @@ namespace Editor_GameDesigner
             var foundObjectRepelType = GameObject.FindObjectsOfType<ObjectRepelModule>();
             if (foundObjectRepelType != null)
             {
-                this.RepelableObjectsInherentDatas = foundObjectRepelType.ToList().ConvertAll(r => this.commonGameConfigurations.PuzzleGameConfigurations.ObjectRepelConfiguration.ConfigurationInherentData[r.ObjectRepelID]);
+                this.RepelableObjectsInherentDatas = foundObjectRepelType.ToList().ConvertAll(r => this.commonGameConfigurations.GetConfiguration<ObjectRepelConfiguration>().ConfigurationInherentData[r.ObjectRepelID]);
             }
         }
     }

@@ -21,7 +21,7 @@ namespace Editor_AIObjectTypeDefinitionCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var AIObjectTypeDefinitionConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.AIObjectTypeDefinitionConfiguration;
+            var AIObjectTypeDefinitionConfiguration = editorInfomrationsData.CommonGameConfigurations.GetConfiguration<AIObjectTypeDefinitionConfiguration>();
             this.CreateAsset(InstancePath.GetConfigurationDataPath(AIObjectTypeDefinitionConfiguration), editorInfomrationsData.AIObjectTypeDefinitionID.ToString() + "_" + 
                 this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
             this.AddToGameConfiguration(editorInfomrationsData.AIObjectTypeDefinitionID, AIObjectTypeDefinitionConfiguration, editorProfile);

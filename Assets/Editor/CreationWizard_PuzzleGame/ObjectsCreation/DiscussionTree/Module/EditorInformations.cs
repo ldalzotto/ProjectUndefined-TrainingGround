@@ -6,6 +6,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using CreationWizard;
 using GameConfigurationID;
+using CoreGame;
 
 namespace Editor_DiscussionTreeCreationWizard
 {
@@ -40,7 +41,7 @@ namespace Editor_DiscussionTreeCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.DiscussionTreeId, this.EditorInformationsData.CommonGameConfigurations.CoreGameConfigurations.DiscussionTreeConfiguration)
+                ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.DiscussionTreeId, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<DiscussionTreeConfiguration>())
             }
             .Find(s => !string.IsNullOrEmpty(s));
         }

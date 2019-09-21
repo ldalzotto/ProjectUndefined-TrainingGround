@@ -21,7 +21,7 @@ namespace Editor_InteractiveObjectTypeDefinitionCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var InteractiveObjectTypeDefinitionConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.InteractiveObjectTypeDefinitionConfiguration;
+            var InteractiveObjectTypeDefinitionConfiguration = editorInfomrationsData.CommonGameConfigurations.GetConfiguration<InteractiveObjectTypeDefinitionConfiguration>();
             this.CreateAsset(InstancePath.GetConfigurationDataPath(InteractiveObjectTypeDefinitionConfiguration), editorInfomrationsData.InteractiveObjectTypeDefinitionID.ToString() + "_" +
                 this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
             this.AddToGameConfiguration(editorInfomrationsData.InteractiveObjectTypeDefinitionID, InteractiveObjectTypeDefinitionConfiguration, editorProfile);

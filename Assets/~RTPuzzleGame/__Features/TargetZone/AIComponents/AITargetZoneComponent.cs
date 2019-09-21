@@ -8,6 +8,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AITargetZoneComponent", menuName = "Configuration/PuzzleGame/AIComponentsConfiguration/AITargetZoneComponent", order = 1)]
     public class AITargetZoneComponent : AbstractAIComponent
     {
+        [WireCircle(B = 0, G = 1, R = 0)]
         public float TargetZoneEscapeDistance;
 
         public override InterfaceAIManager BuildManager()

@@ -36,14 +36,7 @@ namespace Editor_GameDesigner
 
         private void InitConfigurationModules()
         {
-            var configurationSerializationClasses =
-                typeof(IConfigurationSerialization)
-                        .Assembly.GetTypes()
-                        .Union(typeof(RTPuzzle.GameManager).Assembly.GetTypes())
-                        .Union(typeof(AdventureGame.GameManager).Assembly.GetTypes())
-                        .Where(t => typeof(IConfigurationSerialization).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface);
-
-            foreach (var configurationSerializationClass in configurationSerializationClasses)
+            foreach (var configurationSerializationClass in TypeHelper.GetAllGameConfigurationTypes())
             {
                 //ConfigurationModule
                 var configurationIDType = configurationSerializationClass.BaseType.GetGenericArguments()[0];

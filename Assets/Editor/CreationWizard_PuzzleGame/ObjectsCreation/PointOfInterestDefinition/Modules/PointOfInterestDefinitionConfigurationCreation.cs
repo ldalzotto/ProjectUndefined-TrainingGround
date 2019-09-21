@@ -22,7 +22,7 @@ namespace Editor_PointOfInterestDefinitionCreationWizard
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             this.CreateAsset(InstancePath.PointOfInterestDefinitionInherentDataPath, editorInfomrationsData.PointOfInterestDefinitionID.ToString() + NameConstants.PointOfInterestDefinitionInherentData, editorProfile);
-            this.AddToGameConfiguration(editorInfomrationsData.PointOfInterestDefinitionID, editorInfomrationsData.CommonGameConfigurations.AdventureGameConfigurations.PointOfInterestDefinitionConfiguration, editorProfile);
+            this.AddToGameConfiguration(editorInfomrationsData.PointOfInterestDefinitionID, editorInfomrationsData.CommonGameConfigurations.GetConfiguration<PointOfInterestDefinitionConfiguration>(), editorProfile);
         }
     }
 }

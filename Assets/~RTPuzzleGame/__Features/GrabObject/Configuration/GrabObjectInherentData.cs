@@ -18,6 +18,7 @@ namespace RTPuzzle
     [UnityEngine.CreateAssetMenu(fileName="GrabObjectInherentData", menuName="Configuration/PuzzleGame/GrabObjectConfiguration/GrabObjectInherentData", order=1)]
     public class GrabObjectInherentData : ScriptableObject
     {
+        [WireCircle(R = 1, G = 0, B = 1)]
         public float EffectRadius;
 
         [FormerlySerializedAs("PlayerActionToIncrement")]

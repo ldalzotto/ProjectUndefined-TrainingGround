@@ -218,7 +218,7 @@ namespace Editor_InteractiveObjectExplorer
         {
             if (this.GizmoDisplayArea.IsEnabled)
             {
-                Handles.BeginGUI();
+              //  Handles.BeginGUI();
                 foreach (var gizmoDisplay in this.GizmoDisplay)
                 {
                     gizmoDisplay.OnSceneGUI(sceneView);
@@ -231,7 +231,7 @@ namespace Editor_InteractiveObjectExplorer
                 {
                     gizmoDisplay.OnSceneGUI(sceneView);
                 }
-                Handles.EndGUI();
+              //  Handles.EndGUI();
             }
         }
     }

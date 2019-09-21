@@ -101,10 +101,8 @@
     <Compile Include="Assets\Editor\CreationWizard\Components\ModificationComponent.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Constants\ErrorMessages.cs" />
     <Compile Include="Assets\Editor\CreationWizard\Helpers\ErrorHelper.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\AdventureGameConfigurations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\EditorInformationsHelper.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\InstancePath.cs" />
-    <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleGameConfigurations.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Common\PuzzleInteractiveObjectModulePrefabs.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\Constants\NameConstants.cs" />
     <Compile Include="Assets\Editor\CreationWizard_PuzzleGame\GameCreationWizard.cs" />
@@ -414,6 +412,7 @@
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\FoldablePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ObjectPropertyDrawer\InlinePropertyDrawer.cs" />
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
+    <Compile Include="Assets\Editor\SceneHandle\SceneHandlerDrawer.cs" />
     <Compile Include="Assets\Editor\ShaderGUI\WaveNoiseV2ShaderGUI.cs" />
     <Compile Include="Assets\Editor\Test\RangeConfiguration\RangeTypeObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />

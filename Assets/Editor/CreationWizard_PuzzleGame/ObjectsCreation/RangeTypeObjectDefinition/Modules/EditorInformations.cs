@@ -57,7 +57,7 @@ namespace Editor_RangeTypeObjectDefinitionCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.RangeTypeObjectDefinitionID, this.EditorInformationsData.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.RangeTypeObjectDefinitionID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<RangeTypeObjectDefinitionConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

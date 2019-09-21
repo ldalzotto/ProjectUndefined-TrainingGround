@@ -17,6 +17,7 @@ namespace RTPuzzle
         public AIPatrolGraphID AIPatrolGraphID;
         public AIMovementSpeedDefinition AISpeed;
 
+        [WireCircle(R = 1, G = 0, B = 1)]
         public float MaxDistance;
 
         public override InterfaceAIManager BuildManager()

@@ -16,6 +16,7 @@ namespace RTPuzzle
     [ModuleMetadata("Interactive", "Object that trigger event on collision.")]
     public class LaunchProjectileModuleDefinition : AbstractInteractiveObjectDefinition
     {
+        [DrawConfiguration(ConfigurationType = typeof(LaunchProjectileConfiguration))]
         [CustomEnum(ConfigurationType = typeof(LaunchProjectileConfiguration))]
         public LaunchProjectileID LaunchProjectileID;
 

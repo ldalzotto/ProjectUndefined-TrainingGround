@@ -57,7 +57,7 @@ namespace Editor_PointOfInterestDefinitionCreationWizard
             this.InitProperties();
             return new List<string>()
             {
-              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PointOfInterestDefinitionID, this.EditorInformationsData.CommonGameConfigurations.AdventureGameConfigurations.PointOfInterestDefinitionConfiguration)
+              ErrorHelper.AlreadyPresentInConfigurationV2(this.EditorInformationsData.PointOfInterestDefinitionID, this.EditorInformationsData.CommonGameConfigurations.GetConfiguration<PointOfInterestDefinitionConfiguration>())
             }.Find(s => !string.IsNullOrEmpty(s));
         }
     }

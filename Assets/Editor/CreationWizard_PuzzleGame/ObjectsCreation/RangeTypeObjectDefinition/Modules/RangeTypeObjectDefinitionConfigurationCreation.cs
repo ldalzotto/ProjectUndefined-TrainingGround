@@ -22,7 +22,7 @@ namespace Editor_RangeTypeObjectDefinitionCreationWizard
         public override void OnGenerationClicked(AbstractCreationWizardEditorProfile editorProfile)
         {
             var editorInfomrationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
-            var RangeTypeObjectDefinitionConfiguration = editorInfomrationsData.CommonGameConfigurations.PuzzleGameConfigurations.RangeTypeObjectDefinitionConfiguration;
+            var RangeTypeObjectDefinitionConfiguration = editorInfomrationsData.CommonGameConfigurations.GetConfiguration<RangeTypeObjectDefinitionConfiguration>();
             this.CreateAsset(InstancePath.GetConfigurationDataPath(RangeTypeObjectDefinitionConfiguration), editorInfomrationsData.RangeTypeObjectDefinitionID.ToString() + "_" +
                 this.GetType().BaseType.GetGenericArguments()[0].Name, editorProfile);
             this.AddToGameConfiguration(editorInfomrationsData.RangeTypeObjectDefinitionID, RangeTypeObjectDefinitionConfiguration, editorProfile);

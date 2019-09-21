@@ -30,7 +30,6 @@ public interface IGameTypeCodeGenerationConfiguration
     CodeNamespace GetNamespace();
     string GetConfigurationAssetMenuAttributeName(string baseName, string className);
     Type GetConfigurationType();
-    Type GetEditorConfigurationsType();
 }
 
 public class PuzzleGameTypeCondeGenerationConfiguration : IGameTypeCodeGenerationConfiguration
@@ -69,11 +68,7 @@ public class PuzzleGameTypeCondeGenerationConfiguration : IGameTypeCodeGeneratio
     {
         return typeof(PuzzleGameConfiguration);
     }
-
-    public Type GetEditorConfigurationsType()
-    {
-        return typeof(PuzzleGameConfigurations);
-    }
+    
 }
 
 public class AdventureGameTypeCondeGenerationConfiguration : IGameTypeCodeGenerationConfiguration
@@ -111,10 +106,5 @@ public class AdventureGameTypeCondeGenerationConfiguration : IGameTypeCodeGenera
     public Type GetConfigurationType()
     {
         return typeof(AdventureGameConfiguration);
-    }
-
-    public Type GetEditorConfigurationsType()
-    {
-        return typeof(AdventureGameConfigurations);
     }
 }
