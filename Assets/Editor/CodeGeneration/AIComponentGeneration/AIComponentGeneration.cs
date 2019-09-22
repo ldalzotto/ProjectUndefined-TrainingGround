@@ -40,14 +40,12 @@ public class AIComponentGeneration : EditorWindow
             this.CreateComponentFolderIfNecessary();
             this.GenerateComponentWithAbstractManager();
             this.GenerateManager();
-            this.UpdateGenericPuzzleAIComponentsV2();
-            this.AddEditorWizardConstants();
         }
     }
 
     private void CreateComponentFolderIfNecessary()
     {
-        this.componentDirectory = new DirectoryInfo(PathConstants.AIComponentBasePath + "/" + this.AIComponentBaseName);
+        this.componentDirectory = new DirectoryInfo(PathConstants.RTPuzzleFeaturesPath + "/" + this.AIComponentBaseName + "/" + "AIComponents/");
         if (!componentDirectory.Exists)
         {
             componentDirectory.Create();
@@ -67,6 +65,18 @@ public class AIComponentGeneration : EditorWindow
         componentClass.CustomAttributes.Add(new CodeAttributeDeclaration("Serializable"));
 
         componentClass.CustomAttributes.Add(CodeGenerationHelper.GenerateCreateAssetMenuAttribute(componentClass.Name, "Configuration/PuzzleGame/AIComponentsConfiguration/" + componentClass.Name));
+        componentClass.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(ModuleMetadata)),
+                new CodeAttributeArgument(new CodePrimitiveExpression("")), new CodeAttributeArgument(new CodePrimitiveExpression(""))));
+
+        var BuildManagerMethod = new CodeMemberMethod();
+        BuildManagerMethod.Name = "BuildManager";
+        BuildManagerMethod.Attributes = MemberAttributes.Override | MemberAttributes.Public;
+        BuildManagerMethod.ReturnType = new CodeTypeReference(typeof(InterfaceAIManager));
+        BuildManagerMethod.Statements.Add(new CodeSnippetStatement(
+            "return new " + this.AIComponentBaseName + "Manager(this);"
+        ));
+
+        componentClass.Members.Add(BuildManagerMethod);
 
         this.abstractManagerClass = new CodeTypeDeclaration("Abstract" + this.AIComponentBaseName + "Manager");
         abstractManagerClass.IsClass = true;
@@ -80,6 +90,13 @@ public class AIComponentGeneration : EditorWindow
         defaultConstructor.Parameters.Add(new CodeParameterDeclarationExpression(this.AIComponentBaseName + "Component", this.AIComponentBaseName + "Component"));
         defaultConstructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(this.AIComponentBaseName + "Component"));
         abstractManagerClass.Members.Add(defaultConstructor);
+
+        var InitMethod = new CodeMemberMethod();
+        InitMethod.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
+        InitMethod.Name = "Init";
+        InitMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(AIBheaviorBuildInputData), typeof(AIBheaviorBuildInputData).Name));
+
+        abstractManagerClass.Members.Add(InitMethod);
 
         var BeforeManagersUpdateMethod = new CodeMemberMethod();
         BeforeManagersUpdateMethod.Attributes = MemberAttributes.Abstract | MemberAttributes.Public;
@@ -149,6 +166,13 @@ public class AIComponentGeneration : EditorWindow
         defaultConstructor.Parameters.Add(new CodeParameterDeclarationExpression(this.AIComponentBaseName + "Component", this.AIComponentBaseName + "Component"));
         defaultConstructor.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(this.AIComponentBaseName + "Component"));
         managerClass.Members.Add(defaultConstructor);
+        
+        var InitMethod = new CodeMemberMethod();
+        InitMethod.Attributes = MemberAttributes.Override | MemberAttributes.Public;
+        InitMethod.Name = "Init";
+        InitMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(AIBheaviorBuildInputData), typeof(AIBheaviorBuildInputData).Name));
+
+        managerClass.Members.Add(InitMethod);
 
         var BeforeManagersUpdateMethod = new CodeMemberMethod();
         BeforeManagersUpdateMethod.Attributes = MemberAttributes.Override | MemberAttributes.Public;
@@ -200,62 +224,5 @@ public class AIComponentGeneration : EditorWindow
                 compileUnity, sourceWriter, options);
         }
     }
-
-    private void UpdateGenericPuzzleAIComponentsV2()
-    {
-        var GenericPuzzleAIComponentsV2File = CodeGenerationHelper.ClassFileFromType(typeof(GenericPuzzleAIComponentsV2));
-        GenericPuzzleAIComponentsV2File.Content = GenericPuzzleAIComponentsV2File.Content.Insert(GenericPuzzleAIComponentsV2File.Content.IndexOf("//${addNewEntry}"), "typeof(" + this.AIComponentBaseName + "Component)\n");
-        File.WriteAllText(GenericPuzzleAIComponentsV2File.Path, GenericPuzzleAIComponentsV2File.Content);
-    }
-
-    private void AddEditorWizardConstants()
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(AIManagerModuleWizardConstants).Namespace);
-        samples.Imports.Add(new CodeNamespaceImport("System.Collections.Generic"));
-        samples.Imports.Add(new CodeNamespaceImport("RTPuzzle"));
-        samples.Imports.Add(new CodeNamespaceImport("System"));
-        var AIManagerModuleWizardConstantsClass = new CodeTypeDeclaration(typeof(AIManagerModuleWizardConstants).Name);
-        AIManagerModuleWizardConstantsClass.IsClass = true;
-        AIManagerModuleWizardConstantsClass.TypeAttributes = System.Reflection.TypeAttributes.Public;
-
-        var AIManagerDescriptionMessageFieldName = nameof(AIManagerModuleWizardConstants.AIManagerDescriptionMessage);
-        var AIManagerDescriptionMessageField = new CodeMemberField(typeof(AIManagerModuleWizardConstants).GetField(AIManagerDescriptionMessageFieldName).FieldType, AIManagerDescriptionMessageFieldName);
-        AIManagerDescriptionMessageField.Attributes = MemberAttributes.Static | MemberAttributes.Public;
-        var AIManagerDescriptionMessageDic = AIManagerModuleWizardConstants.AIManagerDescriptionMessage.ToList()
-                .ConvertAll(kv => new KeyValuePair<string, string>("typeof(" + kv.Key.Name + ")", "\"" + kv.Value + "\""))
-                 .Union(new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("typeof(" + this.managerClass.Name + ")", "\"\"") }) //Add the newly created comonent
-                 .GroupBy(kv => kv.Key)
-                .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        //Add new the new component
-        AIManagerDescriptionMessageField.InitExpression = new CodeSnippetExpression("new Dictionary<Type, string>()" + CodeGenerationHelper.FormatDictionaryToCodeSnippet(AIManagerDescriptionMessageDic));
-
-        AIManagerModuleWizardConstantsClass.Members.Add(AIManagerDescriptionMessageField);
-
-        var AIManagerAssociatedComponentFieldName = nameof(AIManagerModuleWizardConstants.AIManagerAssociatedComponent);
-        var AIManagerAssociatedComponentField = new CodeMemberField(typeof(AIManagerModuleWizardConstants).GetField(AIManagerAssociatedComponentFieldName).FieldType, AIManagerAssociatedComponentFieldName);
-        AIManagerAssociatedComponentField.Attributes = MemberAttributes.Static | MemberAttributes.Public;
-        var AIManagerAssociatedComponentFieldDic = AIManagerModuleWizardConstants.AIManagerAssociatedComponent.ToList()
-               .ConvertAll(kv => new KeyValuePair<string, string>("typeof(" + kv.Key.Name + ")", "\"" + kv.Value + "\""))
-               .Union(new List<KeyValuePair<string, string>>() { new KeyValuePair<string, string>("typeof(" + this.managerClass.Name + ")", "\"" + this.componentClass.Name + "\"") }) //Add the newly created comonent
-                 .GroupBy(kv => kv.Key)
-               .ToDictionary(kv => kv.Key, kv => kv.First().Value);
-        AIManagerAssociatedComponentField.InitExpression = new CodeSnippetExpression("new Dictionary<Type, string>()" + CodeGenerationHelper.FormatDictionaryToCodeSnippet(AIManagerAssociatedComponentFieldDic));
-
-        AIManagerModuleWizardConstantsClass.Members.Add(AIManagerAssociatedComponentField);
-
-        samples.Types.Add(AIManagerModuleWizardConstantsClass);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.AIModuleWizardConstant;
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
-        }
-    }
-
+    
 }

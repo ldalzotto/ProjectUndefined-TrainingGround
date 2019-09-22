@@ -47,15 +47,16 @@ public class InteractiveObjectModuleDefinitionCreation : EditorWindow
 
         CodeCompileUnit compileUnity = new CodeCompileUnit();
         CodeNamespace samples = new CodeNamespace(typeof(TargetZoneModuleDefinition).Namespace);
+        samples.Imports.Add(new CodeNamespaceImport("UnityEngine"));
 
         var moduleClass = new CodeTypeDeclaration(baseName + "ModuleDefinition");
         moduleClass.Name = baseName + "ModuleDefinition";
         moduleClass.IsClass = true;
         moduleClass.Attributes = MemberAttributes.Public;
-        moduleClass.BaseTypes.Add(typeof(SerializedScriptableObject));
+        moduleClass.BaseTypes.Add(typeof(AbstractInteractiveObjectDefinition));
 
         moduleClass.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(ModuleMetadata)),
-            new CodeAttributeArgument(new CodePrimitiveExpression("AI")), new CodeAttributeArgument("shortDescription", new CodePrimitiveExpression(""))));
+            new CodeAttributeArgument(new CodePrimitiveExpression("")), new CodeAttributeArgument(new CodePrimitiveExpression(""))));
 
 
         var createObjectMethod = new CodeMemberMethod();

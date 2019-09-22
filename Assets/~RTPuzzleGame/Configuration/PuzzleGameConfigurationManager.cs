@@ -109,6 +109,7 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.AIPatrolGraphConfiguration.ConfigurationInherentData;
         }
+
 //${addNewEntry}
     }
 
