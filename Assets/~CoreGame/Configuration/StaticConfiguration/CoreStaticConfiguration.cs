@@ -10,5 +10,6 @@ namespace CoreGame
         public CoreInputConfiguration CoreInputConfiguration;
         public CoreMaterialConfiguration CoreMaterialConfiguration;
         public CorePrefabConfiguration CorePrefabConfiguration;
+        public GlobalGameConfiguration GlobalGameConfiguration;
     }
 }

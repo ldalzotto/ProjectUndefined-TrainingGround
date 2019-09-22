@@ -5,4 +5,5 @@
     public const string TO_DESTROY_ON_START = "ToDestroyOnStart";
     public const string ADVENTURE_CANVAS = "AdventureCanvas";
     public const string PUZZLE_CANVAS = "PuzzleCanvas";
+    public const string START_MENU_CANVAS = "StartMenuCanvas";
 }

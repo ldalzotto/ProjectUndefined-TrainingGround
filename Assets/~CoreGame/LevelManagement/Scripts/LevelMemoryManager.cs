@@ -17,7 +17,7 @@ namespace CoreGame
             {
                 this.lastAdventureLevel = levelManager.LevelID;
             }
-            else
+            else if (currentLevelType == LevelType.PUZZLE)
             {
                 this.lastPuzzleLevel = levelManager.LevelID;
             }

@@ -5,6 +5,7 @@ namespace CoreGame
 {
     public abstract class AsbtractCoreGameManager : MonoBehaviour
     {
+        private LevelType levelType;
         private bool isInitializing;
 
         protected bool IsInitializing { get => isInitializing; }
@@ -14,32 +15,43 @@ namespace CoreGame
             new GameLogHandler();
 
             this.isInitializing = true;
+            this.levelType = levelType;
 
             CoreGameSingletonInstances.PersistanceManager.Init();
+            CoreGameSingletonInstances.StartLevelManager.Init();
             CoreGameSingletonInstances.GameInputManager.Init();
             CoreGameSingletonInstances.LevelAvailabilityManager.Init();
             CoreGameSingletonInstances.AGhostPOIManager.Init();
             CoreGameSingletonInstances.ATimelinesManager.Init();
-            CoreGameSingletonInstances.PlayerAdventurePositionManager.Init();
-            CoreGameSingletonInstances.APointOfInterestEventManager.Init();
             CoreGameSingletonInstances.LevelManager.Init(levelType);
-            CoreGameSingletonInstances.LevelMemoryManager.Init(levelType, CoreGameSingletonInstances.LevelManager);
-            CoreGameSingletonInstances.LevelChunkFXTransitionManager.Init();
 
-            CoreGameSingletonInstances.Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
+            if (this.levelType != LevelType.STARTMENU)
+            {
+                CoreGameSingletonInstances.PlayerAdventurePositionManager.Init();
+                CoreGameSingletonInstances.APointOfInterestEventManager.Init();
+                CoreGameSingletonInstances.LevelMemoryManager.Init(levelType, CoreGameSingletonInstances.LevelManager);
+                CoreGameSingletonInstances.LevelChunkFXTransitionManager.Init();
+                CoreGameSingletonInstances.Coroutiner.StartCoroutine(this.InitializeTimelinesAtEndOfFrame());
+            }
         }
 
 
         protected void OnStart()
         {
-            this.PointOfInterestInitialisation();
-            CoreGameSingletonInstances.Coroutiner.StartCoroutine(this.PointOfInterestInitialisationAtEndOfFrame());
+            if (this.levelType != LevelType.STARTMENU)
+            {
+                this.PointOfInterestInitialisation();
+                CoreGameSingletonInstances.Coroutiner.StartCoroutine(this.PointOfInterestInitialisationAtEndOfFrame());
+            }
         }
 
         protected void BeforeTick(float d)
         {
             CoreGameSingletonInstances.PersistanceManager.Tick(d);
-            CoreGameSingletonInstances.LevelChunkFXTransitionManager.Tick(d);
+            if (this.levelType != LevelType.STARTMENU)
+            {
+                CoreGameSingletonInstances.LevelChunkFXTransitionManager.Tick(d);
+            }
         }
 
         private IEnumerator InitializeTimelinesAtEndOfFrame()

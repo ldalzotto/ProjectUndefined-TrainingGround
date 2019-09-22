@@ -9,11 +9,17 @@ namespace CoreGame
         public List<AsyncOperation> CORE_EVT_OnAdventureToPuzzleLevel(LevelZonesID nextLevel)
         {
             CoreGameSingletonInstances.PlayerAdventurePositionManager.OnAdventureToPuzzleLevel();
+            CoreGameSingletonInstances.StartLevelManager.OnStartLevelChange(nextLevel);
             return CoreGameSingletonInstances.LevelManager.OnAdventureToPuzzleLevel(nextLevel);
         }
         public List<AsyncOperation> CORE_EVT_OnPuzzleToAdventureLevel(LevelZonesID nextLevel)
         {
+            CoreGameSingletonInstances.StartLevelManager.OnStartLevelChange(nextLevel);
             return CoreGameSingletonInstances.LevelManager.OnPuzzleToAdventureLevel(nextLevel);
+        }
+        public List<AsyncOperation> CORE_EVT_OnStartMenuToLevel(LevelZonesID nextLevel)
+        {
+            return CoreGameSingletonInstances.LevelManager.OnStartMenuToLevel(nextLevel);
         }
 
         public void CORE_EVT_OnLevelChunkLoaded(LevelZoneChunkID levelZoneChunkID)

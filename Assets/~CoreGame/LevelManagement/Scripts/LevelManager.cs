@@ -39,7 +39,11 @@ namespace CoreGame
         }
         internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
         {
-            return this.EnvironmentSceneLevelManager.OnPuzzleToAdventureLevel(nextPuzzleLevel);
+            return this.EnvironmentSceneLevelManager.LoadAllLevelsAsync(nextPuzzleLevel);
+        }
+        public List<AsyncOperation> OnStartMenuToLevel(LevelZonesID nextLevel)
+        {
+            return this.EnvironmentSceneLevelManager.LoadAllLevelsAsync(nextLevel);
         }
         public void OnChunkLevelEnter(LevelChunkType NextLevelChunk)
         {
@@ -121,7 +125,8 @@ namespace CoreGame
             }
             return sceneUnloadOperations;
         }
-        internal List<AsyncOperation> OnPuzzleToAdventureLevel(LevelZonesID nextPuzzleLevel)
+
+        public List<AsyncOperation> LoadAllLevelsAsync(LevelZonesID nextPuzzleLevel)
         {
             return this.LoadAllLevels(nextPuzzleLevel);
         }
@@ -136,7 +141,7 @@ namespace CoreGame
 
     public enum LevelType
     {
-        ADVENTURE, PUZZLE
+        ADVENTURE, PUZZLE, STARTMENU
     }
 
 }

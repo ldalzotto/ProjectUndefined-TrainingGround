@@ -29,6 +29,7 @@ namespace CoreGame
         private static FXContainerManager fXContainerManager;
         private static TutorialManager tutorialManager;
         private static CameraMovementManager cameraMovementManager;
+        private static StartLevelManager startLevelManager;
 
         public static PersistanceManager PersistanceManager { get => FindAndSetInstanceIfNull(persistanceManager, obj => persistanceManager = obj); }
         public static ATimelinesManager ATimelinesManager { get => FindAndSetInstanceIfNull(aTimelinesManager, obj => aTimelinesManager = obj); }
@@ -58,16 +59,30 @@ namespace CoreGame
                 {
                     return GameObject.FindGameObjectWithTag(TagConstants.ADVENTURE_CANVAS).GetComponent<Canvas>();
                 }
-                else
+                else if (CoreGameSingletonInstances.LevelManager.CurrentLevelType == LevelType.PUZZLE)
                 {
                     return GameObject.FindGameObjectWithTag(TagConstants.PUZZLE_CANVAS).GetComponent<Canvas>();
                 }
+                else if (CoreGameSingletonInstances.LevelManager.CurrentLevelType == LevelType.STARTMENU)
+                {
+                    return GameObject.FindGameObjectWithTag(TagConstants.START_MENU_CANVAS).GetComponent<Canvas>();
+                }
+
+                return null;
             }
         }
         public static DiscussionPositionsType DiscussionPositionsType { get => FindAndSetInstanceIfNull(discussionPositionsType, obj => discussionPositionsType = obj); }
         public static FXContainerManager FXContainerManager { get => FindAndSetInstanceIfNull(fXContainerManager, obj => fXContainerManager = obj); }
         public static TutorialManager TutorialManager { get => FindAndSetInstanceIfNull(tutorialManager, obj => tutorialManager = obj); }
         public static CameraMovementManager CameraMovementManager { get => FindAndSetInstanceIfNull(cameraMovementManager, obj => cameraMovementManager = obj); }
+        public static StartLevelManager StartLevelManager
+        {
+            get
+            {
+                if (startLevelManager == null) { startLevelManager = new StartLevelManager(); }
+                return startLevelManager;
+            }
+        }
 
         public static T FindAndSetInstanceIfNull<T>(T obj, Action<T> setter) where T : Behaviour
         {
@@ -79,7 +94,6 @@ namespace CoreGame
             }
             else { return obj; }
         }
-
     }
 
 }

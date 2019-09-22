@@ -19,9 +19,15 @@ namespace CoreGame
         {
             OnLevelChange(nextZone, LevelChangeType.PUZZLE_TO_ADVENTURE);
         }
+
         public void OnPuzzleToPuzzleLevel(LevelZonesID nextZone)
         {
             OnLevelChange(nextZone, LevelChangeType.PUZZLE_TO_PUZZLE);
+        }
+
+        public void OnStartMenuToLevel(LevelZonesID nextZone)
+        {
+            OnLevelChange(nextZone, LevelChangeType.FROM_STARTMENU);
         }
 
         private void OnLevelChange(LevelZonesID nextZone, LevelChangeType LevelChangeType)
@@ -33,9 +39,13 @@ namespace CoreGame
             {
                 chunkOperations = CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnAdventureToPuzzleLevel(nextZone);
             }
-            else
+            else if (LevelChangeType == LevelChangeType.PUZZLE_TO_ADVENTURE || LevelChangeType == LevelChangeType.PUZZLE_TO_PUZZLE)
             {
                 chunkOperations = CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnPuzzleToAdventureLevel(nextZone);
+            }
+            else if (LevelChangeType == LevelChangeType.FROM_STARTMENU)
+            {
+                chunkOperations = CoreGameSingletonInstances.LevelManagerEventManager.CORE_EVT_OnStartMenuToLevel(nextZone);
             }
 
             foreach (var chunkOperation in chunkOperations)
@@ -54,9 +64,8 @@ namespace CoreGame
                 chunkOperation.allowSceneActivation = true;
             }
             isNewZoneLoading = false;
-            SceneManager.UnloadSceneAsync(CoreGameSingletonInstances.CoreConfigurationManager.LevelZonesSceneConfiguration().GetSceneName(CoreGameSingletonInstances.LevelManager.GetCurrentLevel()));
             var nextZoneSceneName = CoreGameSingletonInstances.CoreConfigurationManager.LevelZonesSceneConfiguration().GetSceneName(nextZone);
-            SceneManager.LoadScene(nextZoneSceneName, LoadSceneMode.Additive);
+            SceneManager.LoadScene(nextZoneSceneName, LoadSceneMode.Single);
             yield return null;
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextZoneSceneName));
         }
@@ -70,7 +79,8 @@ namespace CoreGame
         {
             PUZZLE_TO_ADVENTURE,
             ADVENTURE_TO_PUZZLE,
-            PUZZLE_TO_PUZZLE
+            PUZZLE_TO_PUZZLE,
+            FROM_STARTMENU
         }
     }
 

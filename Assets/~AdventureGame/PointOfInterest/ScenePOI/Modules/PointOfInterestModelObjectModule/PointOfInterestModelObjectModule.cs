@@ -140,7 +140,7 @@ namespace AdventureGame
                 }
                 this.DisablePhysicsInteraction();
             }
-            else
+            else if(this.LevelManager.CurrentLevelType == LevelType.ADVENTURE)
             {
                 if (!pointOfInterestTypeRef.PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData.IsPersistantToPuzzle)
                 {
