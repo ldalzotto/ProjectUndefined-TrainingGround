@@ -53,6 +53,6 @@ namespace RTPuzzle
         public RTPuzzle.AILogicColliderModule BaseAILogicColliderModule;
         
         [ReadOnly()]
-        public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
+        public RTPuzzle.InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
     }
 }

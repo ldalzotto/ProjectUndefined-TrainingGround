@@ -36,7 +36,7 @@ public class PuzzleGameTypeCondeGenerationConfiguration : IGameTypeCodeGeneratio
 {
     public string GetSubConfigurationFolderPath(string baseName)
     {
-        return PathConstants.PuzzleSubConfigurationFolderPath + "/" + baseName + "Configuration";
+        return PathConstants.RTPuzzleFeaturesPath + "/" + baseName + "/Configuration";
     }
 
     public string GetConfigurationFolderPath()

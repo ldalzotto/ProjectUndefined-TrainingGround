@@ -424,6 +424,7 @@
     <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\AdventureGameConfigurationManagerMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\AIComponents\AI${baseType}Component.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerCreationModule\Create${baseName}.cs.txt" />
@@ -431,6 +432,8 @@
     <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\InteractiveObjectDefinitions\${baseName}ModuleDefinition.cs.txt" />
+    <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\InteractiveObjectModules\${baseName}Module.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\GameDesignerConfigurationModuleTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizard.cs.txt" />
     <Reference Include="UnityEditor.UI">

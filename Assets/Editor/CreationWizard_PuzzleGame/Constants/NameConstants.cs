@@ -10,35 +10,35 @@
 
 namespace Editor_MainGameCreationWizard
 {
-
-
+    
+    
     public class NameConstants
     {
-
+        
         public static string BaseLevelChunkPrefab = "_BaseLevelPrefab";
-
+        
         public static string LevelCompletionConditionConfigurationName = "_LevelCompletionCondition";
-
+        
         public static string LevelCompletionInherentData = "_LevelCompletionInherentData";
-
+        
         public static string PuzzleLevelDynamics = "_PuzzleLevelDynamics";
-
+        
         public static string AdventureLevelDynamics = "_AdventureLevelDynamics";
-
+        
         public static string LevelHierarchyConfigurationData = "_LevelHierarchyConfigurationData";
-
+        
         public static string LevelSceneConfigurationData = "_LevelZonesSceneConfigurationData";
-
+        
         public static string LevelChunkSceneConfigurationData = "_ChunkZonesSceneConfigurationData";
-
+        
         public static string AnimationConfigurationdata = "_AnimationData";
-
+        
         public static string DiscussionNodeEditorObject = "_NodeEditor";
-
+        
         public static string PuzzleCutsceneGraph = "_PuzzleCutsceneGraph";
-
+        
         public static string PointOfInterestDefinitionInherentData = "_PointOfInterestDefinition";
-
+        
         public static string PointOfInterestVisualMovementInherentData = "_PointOfInterestVisualMovement";
     }
 }

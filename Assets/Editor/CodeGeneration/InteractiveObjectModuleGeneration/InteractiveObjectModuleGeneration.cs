@@ -35,16 +35,18 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
+                    this.DoGenerateBaseDirectory();
                     this.DoGenerateModule();
+                    
                     if (this.isIdentified)
                     {
                         this.UpdateInteractiveObjectInitializationObject();
                     }
                     this.UpdatePuzzleInteractiveObjectModulePrefabs();
+
                     InteractiveObjectModuleDefinitionCreation.GenerateScripts(this.baseName);
-
+                    
                     this.UpdatePuzzlePrefabConfiguration();
-
                 }
             }
         }
@@ -68,9 +70,18 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         this.isIdentified = EditorGUILayout.Toggle("Is Identified : ", this.isIdentified);
     }
 
+    private void DoGenerateBaseDirectory()
+    {
+        DirectoryInfo baseDirectory = new DirectoryInfo(PathConstants.RTPuzzleFeaturesPath + "/" + this.baseName);
+        if (!baseDirectory.Exists)
+        {
+            baseDirectory.Create();
+        }
+    }
+
     private void DoGenerateModule()
     {
-        DirectoryInfo moduleDirectory = new DirectoryInfo(PathConstants.InteractiveObjectModulePath + "/" + this.baseName + "Module");
+        DirectoryInfo moduleDirectory = new DirectoryInfo(PathConstants.RTPuzzleFeaturesPath + "/" + this.baseName + "/InteractiveObjectModules");
         if (!moduleDirectory.Exists)
         {
             moduleDirectory.Create();
@@ -95,19 +106,16 @@ public class InteractiveObjectModuleGeneration : EditorWindow
             idMember.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(CustomEnum).Name));
             moduleClass.Members.Add(idMember);
 
-            var initMethod = new CodeMemberMethod();
-            initMethod.Name = "Init";
-            initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            initMethod.Parameters.Add(new CodeParameterDeclarationExpression(this.baseName + "InherentData", this.baseName + "InherentData"));
-            moduleClass.Members.Add(initMethod);
         }
-        else
-        {
-            var initMethod = new CodeMemberMethod();
-            initMethod.Name = "Init";
-            initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            moduleClass.Members.Add(initMethod);
-        }
+        
+        var initMethod = new CodeMemberMethod();
+        initMethod.Name = "Init";
+        initMethod.Attributes = MemberAttributes.Public | MemberAttributes.Override;
+        initMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(InteractiveObjectInitializationObject), typeof(InteractiveObjectInitializationObject).Name));
+        initMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IInteractiveObjectTypeDataRetrieval), typeof(IInteractiveObjectTypeDataRetrieval).Name));
+        initMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(IInteractiveObjectTypeEvents), typeof(IInteractiveObjectTypeEvents).Name));
+        moduleClass.Members.Add(initMethod);
+        
 
         var tickMethod = new CodeMemberMethod();
         tickMethod.Name = "Tick";
@@ -115,9 +123,7 @@ public class InteractiveObjectModuleGeneration : EditorWindow
         tickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "d"));
         tickMethod.Parameters.Add(new CodeParameterDeclarationExpression(typeof(float), "timeAttenuationFactor"));
         moduleClass.Members.Add(tickMethod);
-
-
-
+        
         samples.Types.Add(moduleClass);
         compileUnity.Namespaces.Add(samples);
 
@@ -207,12 +213,18 @@ public class InteractiveObjectModuleGeneration : EditorWindow
 
     private void DoGenerateBasePrefab()
     {
+        DirectoryInfo modulePrefabDirectory = new DirectoryInfo(PathConstants.RTPuzzleFeaturesPath + "/" + this.baseName + "/Prefabs");
+        if (!modulePrefabDirectory.Exists)
+        {
+            modulePrefabDirectory.Create();
+        }
+
         var tmpScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
         tmpScene.name = UnityEngine.Random.Range(0, 999999).ToString();
-
+        
         var basePrefabGenerated = new GameObject("Base" + this.baseName + "Module");
         basePrefabGenerated.AddComponent(TypeHelper.GetType("RTPuzzle." + this.baseName + "Module"));
-        var savedAssed = PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, PathConstants.InteractiveObjectModulePath + "/" + this.baseName + "Module/" + "Base" + this.baseName + "Module.prefab");
+        var savedAssed = PrefabUtility.SaveAsPrefabAsset(basePrefabGenerated, modulePrefabDirectory.FullName + "/Base" + this.baseName + "Module.prefab");
 
         EditorSceneManager.CloseScene(tmpScene, true);
 

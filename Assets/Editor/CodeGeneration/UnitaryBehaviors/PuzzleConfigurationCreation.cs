@@ -29,7 +29,7 @@ public class PuzzleConfigurationCreation : EditorWindow
             {
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
-                    CommonCodeGeneration.CreatePuzzleSubConfigurationFolderIfNecessary(this.baseName, this.GameTypeGeneration);
+                    CommonCodeGeneration.CreateModuleConfigurationFolderIfNecessary(this.baseName, this.GameTypeGeneration);
                     DoGenerateInherentData(this.baseName, this.GameTypeGeneration);
                     DoGenerateConfiguration(this.baseName, this.GameTypeGeneration);
                     UpdateGameConfiguration(this.baseName, this.GameTypeGeneration);
@@ -163,7 +163,7 @@ public class PuzzleConfigurationCreation : EditorWindow
     public static void DoCreateConfigurationAsset(string baseName, GameTypeGeneration GameTypeGeneration)
     {
         var configurationSO = ScriptableObject.CreateInstance(baseName + "Configuration");
-        AssetDatabase.CreateAsset(configurationSO, GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetSubConfigurationFolderPath(baseName) + baseName + "Configuration.asset");
+        AssetDatabase.CreateAsset(configurationSO, GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetSubConfigurationFolderPath(baseName) + "/" + baseName + "Configuration.asset");
         var PuzzleGameConfiguration = AssetFinder.SafeSingleAssetFind<UnityEngine.Object>("t:" + GameTypeCodeGenerationConfiguration.Get(GameTypeGeneration).GetConfigurationType());
         var configurationField = PuzzleGameConfiguration.GetType().GetField(baseName + "Configuration");
         configurationField.SetValue(PuzzleGameConfiguration, configurationSO);

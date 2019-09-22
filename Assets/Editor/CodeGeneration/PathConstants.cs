@@ -4,6 +4,9 @@ using System.CodeDom;
 
 public static class PathConstants
 {
+    public const string RTPuzzleFeaturesPath = "Assets/~RTPuzzleGame/__Features";
+    public const string AdventureFeaturesPath = "Assets/~AdventureGame/__Features";
+
     public const string AIComponentBasePath = "Assets/~RTPuzzleGame/AI/AIComponents/Scripts";
     public const string GenericPuzzleAIComponentsFilePath = "Assets/~RTPuzzleGame/AI/AIComponents/AIComponentContainer/Scripts/GenericPuzzleAIComponents.cs";
     public const string AIModuleWizardConstant = "Assets/Editor/GameDesigner/Modules/AI/AIModuleWizard/AIManagerModuleWizardConstants.cs";
@@ -20,7 +23,7 @@ public static class PathConstants
     public const string GameDesignerBasePath = "Assets/Editor/GameDesigner";
     public const string GameDesignerModulesPath = "Assets/Editor/GameDesigner/Modules";
     public const string CustomEditorPath = "Assets/Editor/GameCustomEditors";
-    public const string InteractiveObjectInitializationObjectPath = "Assets/~RTPuzzleGame/InteractiveObject/Script/InteractiveObjectInitializationObject.cs";
+    public const string InteractiveObjectInitializationObjectPath = "Assets/~RTPuzzleGame/__Features/InteractiveObject/InteractiveObjectInitializationObject.cs";
     public const string IDBasePath = "Assets/@GameConfigurationID/IDs";
     public const string PuzzleConfigurationFolderPath = "Assets/~RTPuzzleGame/Configuration";
     public const string AdventureConfigurationFolderPath = "Assets/~AdventureGame/Configuration";
