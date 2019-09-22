@@ -10,7 +10,8 @@ namespace Editor_GameDesigner
         {
             if (GUILayout.Button("CREATE IN EDITOR"))
             {
-                GameCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
+                GameCreationWizard.InitGenericCreator(typeof(CREATION_WIZARD));
+              //  GameCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
             }
         }
 

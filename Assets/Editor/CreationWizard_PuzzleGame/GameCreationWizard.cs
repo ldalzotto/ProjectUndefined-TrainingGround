@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using Editor_GenericConfigurationCreation;
+using System;
+using UnityEditor;
 
 namespace Editor_MainGameCreationWizard
 {
@@ -11,7 +13,7 @@ namespace Editor_MainGameCreationWizard
             window.Show();
         }
 
-        public static void InitWithSelected(string key)
+        public static GameCreationWizard InitWithSelected(string key)
         {
             var window = EditorWindow.GetWindow<GameCreationWizard>();
             window.Show();
@@ -24,10 +26,18 @@ namespace Editor_MainGameCreationWizard
                     window.playerActionCreationWizardEditorProfile.SetSelectedKey(key);
                 }
             }
+            return window;
+        }
+
+        public static void InitGenericCreator(Type configurationType)
+        {
+            var GameCreationWizard = InitWithSelected(typeof(GenericConfigurationCreationWizard).Name);
+            var GenericConfigurationCreationWizard = GameCreationWizard.playerActionCreationWizardEditorProfile.GetSelectedConf() as GenericConfigurationCreationWizard;
+            GenericConfigurationCreationWizard.SetSelectedConfiguration(configurationType);
         }
 
         private GameCreationWizardEditorProfile playerActionCreationWizardEditorProfile;
-        
+
         private void OnGUI()
         {
             this.playerActionCreationWizardEditorProfile = EditorGUILayout.ObjectField(this.playerActionCreationWizardEditorProfile, typeof(GameCreationWizardEditorProfile), false) as GameCreationWizardEditorProfile;

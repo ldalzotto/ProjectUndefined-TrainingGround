@@ -56,13 +56,15 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.AdventureGameManagersNonPersistant, "_AdventureGameManagersNonPersistant");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePointOfInterestTrackerModule, "BasePOITrackerModule");
             #endregion
-            
-            //TODO configuration initialization
-            foreach(var configurationType in TypeHelper.GetAllGameConfigurationTypes())
-            {
-                CommonGameConfigurations.Configurations.Add(configurationType, (IConfigurationSerialization)AssetFinder.SafeAssetFind("t:" + configurationType.Name)[0]);
-            }
 
+            //TODO configuration initialization
+            if (CommonGameConfigurations.Configurations.Count == 0)
+            {
+                foreach (var configurationType in TypeHelper.GetAllGameConfigurationTypes())
+                {
+                    CommonGameConfigurations.Configurations.Add(configurationType, (IConfigurationSerialization)AssetFinder.SafeAssetFind("t:" + configurationType.Name)[0]);
+                }
+            }
         }
 
         public static string ComputeErrorState(ref CommonGameConfigurations CommonGameConfigurations)
