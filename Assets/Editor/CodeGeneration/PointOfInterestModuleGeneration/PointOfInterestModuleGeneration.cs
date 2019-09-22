@@ -40,7 +40,6 @@ public class PointOfInterestModuleGeneration : EditorWindow
                     this.GenerateDefinitionClass(baseName);
                     this.UpdateDefinitionConfigurations(baseName);
                     this.AddDefinitionCondition(baseName);
-                    this.AddCustomEditorCondition(baseName);
                     this.UpdatePointOfInterestPrefabConfiguration(baseName);
                 }
             }
@@ -157,15 +156,6 @@ public class PointOfInterestModuleGeneration : EditorWindow
         var PointOfInterestDefinitionInherentDataFile = new FileInfo(CodeGenerationHelper.ClassFileFromType(typeof(PointOfInterestDefinitionInherentData)).Path);
         var PointOfInterestDefinitionConfigurationTemplate = new FileInfo(PathConstants.PointOfInterestObjectDefinitionConditionTemplatePath);
         CodeGenerationHelper.InsertToFile(PointOfInterestDefinitionInherentDataFile, PointOfInterestDefinitionConfigurationTemplate, "//${addNewEntry}",
-            new Dictionary<string, string>() { { "${baseName}", baseName } });
-    }
-
-    private void AddCustomEditorCondition(string baseName)
-
-    {
-        var PointOfInterestGizmosFile = new FileInfo(CodeGenerationHelper.ClassFileFromType(typeof(PointOfInterestGizmos)).Path);
-        var PointOfInterestCustomEditorDefinitionConfigurationTemplate = new FileInfo(PathConstants.PointOfInterestObjectDefinitionCustomEditorCondition);
-        CodeGenerationHelper.InsertToFile(PointOfInterestGizmosFile, PointOfInterestCustomEditorDefinitionConfigurationTemplate, "//${addNewEntry}",
             new Dictionary<string, string>() { { "${baseName}", baseName } });
     }
 

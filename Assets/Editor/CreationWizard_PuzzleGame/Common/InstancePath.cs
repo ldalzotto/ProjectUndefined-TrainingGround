@@ -24,12 +24,7 @@ namespace Editor_MainGameCreationWizard
         }
 
         [ReadOnly()]
-        public static string LevelCompletionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/CompletionConfiguration" +
-            "/Data";
-
-        [ReadOnly()]
-        public static string LevelCompletionConditionDataPath = "Assets/~RTPuzzleGame/Configuration/SubConfiguration/Level/CompletionCondition/Dat" +
-            "a";
+        public static string LevelCompletionConditionDataPath = "Assets/~RTPuzzleGame/__Features/LevelCompletion/Configuration/CompletionCondition/Data";
         #endregion
 
         [ReadOnly()]
@@ -39,16 +34,13 @@ namespace Editor_MainGameCreationWizard
         public static string PuzzleLevelDynamicsPath = "Assets/~CoreGame/LevelManagement/Prefab";
 
         [ReadOnly()]
-        public static string PuzzleLevelHierarchyDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelHierarchyConfiguration/Leve" +
-            "lHierarchyConfigurationData";
+        public static string PuzzleLevelHierarchyDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelHierarchyConfiguration/Data";
 
         [ReadOnly()]
-        public static string LevelZoneSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelZonesSceneConfiguration/Lev" +
-            "elZonesSceneConfigurationData";
+        public static string LevelZoneSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelZonesSceneConfiguration/Data";
 
         [ReadOnly()]
-        public static string LevelZoneChunkSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/ChunkZonesSceneConfiguration/Chu" +
-            "nkZonesSceneConfigurationData";
+        public static string LevelZoneChunkSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/ChunkZonesSceneConfiguration/Data";
 
         [ReadOnly()]
         public static string LevelChunkBaseLevelPrefabPath = "Assets/~CoreGame/LevelManagement/Prefab";

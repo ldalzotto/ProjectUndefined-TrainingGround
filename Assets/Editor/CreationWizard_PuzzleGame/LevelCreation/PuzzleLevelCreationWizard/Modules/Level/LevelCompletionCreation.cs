@@ -6,6 +6,7 @@ using CreationWizard;
 using Editor_MainGameCreationWizard;
 using System;
 using UnityEditor;
+using CoreGame;
 
 namespace Editor_PuzzleLevelCreationWizard
 {
@@ -26,7 +27,8 @@ namespace Editor_PuzzleLevelCreationWizard
             var editorInformationsData = editorProfile.GetModule<EditorInformations>().EditorInformationsData;
             if (LevelConfigurationCreation.IsNew)
             {
-                var createdCompletionInherentData = this.CreateAsset(InstancePath.LevelCompletionDataPath, editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionInherentData,
+                var createdCompletionInherentData = this.CreateAsset(InstancePath.GetConfigurationDataPath(editorInformationsData.CommonGameConfigurations.GetConfiguration<LevelHierarchyConfiguration>())
+                            , editorInformationsData.LevelZonesID.ToString() + NameConstants.LevelCompletionInherentData,
                     editorProfile);
                 LevelConfigurationCreation.CreatedObject.LevelCompletionInherentData = createdCompletionInherentData;
                      }
