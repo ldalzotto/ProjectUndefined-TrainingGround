@@ -30,15 +30,5 @@ namespace Editor_MainGameCreationWizard
         public static string LevelSceneConfigurationData = "_LevelZonesSceneConfigurationData";
         
         public static string LevelChunkSceneConfigurationData = "_ChunkZonesSceneConfigurationData";
-        
-        public static string AnimationConfigurationdata = "_AnimationData";
-        
-        public static string DiscussionNodeEditorObject = "_NodeEditor";
-        
-        public static string PuzzleCutsceneGraph = "_PuzzleCutsceneGraph";
-        
-        public static string PointOfInterestDefinitionInherentData = "_PointOfInterestDefinition";
-        
-        public static string PointOfInterestVisualMovementInherentData = "_PointOfInterestVisualMovement";
     }
 }

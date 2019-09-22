@@ -23,32 +23,6 @@ namespace Editor_MainGameCreationWizard
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.PuzzleLevelCommonPrefabs.BaseInteractiveObjectTypePrefab, "BaseInteractiveObjectPrefab");
             #endregion
 
-            #region Puzzle Interactive Object Modules Prefabs
-            foreach (var configurationFieldInfo in CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs.GetType().GetFields())
-            {
-                var configurationObject = (UnityEngine.Object)configurationFieldInfo.GetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs);
-                if (configurationObject == null)
-                {
-                    var foundAssets = AssetFinder.SafeAssetFind(configurationFieldInfo.FieldType.Name);
-                    if (foundAssets.Count == 0) { Debug.Log("Not found : " + configurationFieldInfo.FieldType.Name); }
-                    foreach (var foundAsset in foundAssets)
-                    {
-                        if (foundAsset.GetType() == typeof(GameObject))
-                        {
-                            var retrievedComp = ((GameObject)foundAsset).GetComponent(configurationFieldInfo.FieldType);
-                            if (retrievedComp != null)
-                            {
-                                if (typeof(InteractiveObjectModule).IsAssignableFrom(retrievedComp.GetType()))
-                                {
-                                    configurationFieldInfo.SetValue(CommonGameConfigurations.PuzzleInteractiveObjectModulePrefabs, retrievedComp);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            #endregion
-
             #region Adventure Common Prefabs
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BasePOIPrefab, "BasePOIPrefab");
             AssetFinder.SafeSingleAssetFind(ref CommonGameConfigurations.AdventureCommonPrefabs.BaseAdventureLevelDynamics, "BaseAdventureLevelDynamics");
@@ -95,8 +69,6 @@ namespace Editor_MainGameCreationWizard
 
         public PuzzleLevelCommonPrefabs PuzzleLevelCommonPrefabs;
 
-        public PuzzleInteractiveObjectModulePrefabs PuzzleInteractiveObjectModulePrefabs;
-
         public T GetConfiguration<T>() where T : IConfigurationSerialization
         {
             return (T)this.Configurations[typeof(T)];
@@ -111,7 +83,6 @@ namespace Editor_MainGameCreationWizard
         {
             this.PuzzleLevelCommonPrefabs = new PuzzleLevelCommonPrefabs();
             this.AdventureCommonPrefabs = new AdventureCommonPrefabs();
-            this.PuzzleInteractiveObjectModulePrefabs = new PuzzleInteractiveObjectModulePrefabs();
             this.Configurations = new Dictionary<Type, IConfigurationSerialization>();
         }
     }

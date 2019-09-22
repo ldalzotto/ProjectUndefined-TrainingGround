@@ -1,5 +1,4 @@
-﻿using ConfigurationEditor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,6 +30,7 @@ namespace Editor_GameDesigner
             if (this.configurations == null) { this.configurations = new Dictionary<string, Type>(); }
             else { this.configurations.Clear(); }
             this.InitConfigurationModules();
+            this.InitDefaultCreationModules();
             this.InitOtherGameDesignerModules();
         }
 
@@ -46,6 +46,21 @@ namespace Editor_GameDesigner
                 configurationModuleType = configurationModuleType.MakeGenericType(new Type[] { configurationSerializationClass, configurationIDType, inherentDataType });
 
                 this.configurations.Add("Configuration.//" + configurationSerializationClass.Name + "Module", configurationModuleType);
+            }
+        }
+
+        private void InitDefaultCreationModules()
+        {
+            foreach (var configurationSerializationClass in TypeHelper.GetAllGameConfigurationTypes())
+            {
+                //ConfigurationModule
+                var configurationIDType = configurationSerializationClass.BaseType.GetGenericArguments()[0];
+                var inherentDataType = configurationSerializationClass.BaseType.GetGenericArguments()[1];
+
+                var genericCreationModuleType = typeof(GenericCreateInEditorModule<>);
+                genericCreationModuleType = genericCreationModuleType.MakeGenericType(new Type[] { configurationSerializationClass });
+
+                this.configurations.Add("DefaultCreate.//Create" + configurationSerializationClass.Name, genericCreationModuleType);
             }
         }
 

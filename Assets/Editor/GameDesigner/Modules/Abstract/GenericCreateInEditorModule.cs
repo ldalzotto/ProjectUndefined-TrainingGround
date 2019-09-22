@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Editor_GameDesigner;
 using Editor_MainGameCreationWizard;
 
 namespace Editor_GameDesigner
 {
-    public class CreateInEditorModule<CREATION_WIZARD> : IGameDesignerModule
+    public class GenericCreateInEditorModule<CONFIGURATION> : IGameDesignerModule
     {
         public void GUITick(ref GameDesignerEditorProfile GameDesignerEditorProfile)
         {
             if (GUILayout.Button("CREATE IN EDITOR"))
             {
-               // GameCreationWizard.InitGenericCreator(typeof(CREATION_WIZARD));
-                GameCreationWizard.InitWithSelected(typeof(CREATION_WIZARD).Name);
+                 GameCreationWizard.InitGenericCreator(typeof(CONFIGURATION));
             }
         }
 
@@ -23,4 +23,5 @@ namespace Editor_GameDesigner
         {
         }
     }
+
 }

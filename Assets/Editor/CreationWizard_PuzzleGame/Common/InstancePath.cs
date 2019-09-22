@@ -32,8 +32,6 @@ namespace Editor_MainGameCreationWizard
             "a";
         #endregion
 
-
-
         [ReadOnly()]
         public static string LevelBasePath = "Assets/_Scenes";
 
@@ -54,51 +52,6 @@ namespace Editor_MainGameCreationWizard
 
         [ReadOnly()]
         public static string LevelChunkBaseLevelPrefabPath = "Assets/~CoreGame/LevelManagement/Prefab";
-
-
-
-
-
-        [ReadOnly()]
-        public static string POIInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestConfiguration" +
-            "/Data";
-
-
-        [ReadOnly()]
-        public static string AnimationConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/AnimationConfiguration/Animation" +
-            "ConfigurationData";
-
-
-        [ReadOnly()]
-        public static string DiscussionTreePath = "Assets/Editor/Configuration/AdventureGame/DiscussionConfiguration";
-
-        [ReadOnly()]
-        public static string CutsceneGraphPath = "Assets/~AdventureGame/Configuration/SubConfiguration/CutsceneConfiguration/Cutsce" +
-            "neConfigurationData";
-
-
-
-
-        [ReadOnly()]
-        public static string AdventureGenTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/AdventureGenTestConfiguratio" +
-            "n/Data";
-
-        [ReadOnly()]
-        public static string AdventureGenerationTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/AdventureGenerationTestConfi" +
-            "guration/Data";
-
-        [ReadOnly()]
-        public static string PointOfInterestDefinitionInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestDefinitionCon" +
-            "figuration/Data";
-
-        [ReadOnly()]
-        public static string PointOfInterestVisualMovementInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestVisualMovemen" +
-            "tConfiguration/Data";
-
-        [ReadOnly()]
-        public static string PointOfInterestModuleTestInherentDataPath = "Assets/~AdventureGame/Configuration/SubConfiguration/PointOfInterestModuleTestCon" +
-            "figuration/Data";
-
 
     }
 }

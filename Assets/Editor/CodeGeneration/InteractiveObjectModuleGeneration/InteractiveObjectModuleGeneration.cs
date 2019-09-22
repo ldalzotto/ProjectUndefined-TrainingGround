@@ -42,7 +42,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                     {
                         this.UpdateInteractiveObjectInitializationObject();
                     }
-                    this.UpdatePuzzleInteractiveObjectModulePrefabs();
 
                     InteractiveObjectModuleDefinitionCreation.GenerateScripts(this.baseName);
                     
@@ -162,45 +161,6 @@ public class InteractiveObjectModuleGeneration : EditorWindow
                 provider.GenerateCodeFromCompileUnit(
                     compileUnity, sourceWriter, options);
             }
-        }
-    }
-
-    private void UpdatePuzzleInteractiveObjectModulePrefabs()
-    {
-        CodeCompileUnit compileUnity = new CodeCompileUnit();
-        CodeNamespace samples = new CodeNamespace(typeof(InteractiveObjectType).Namespace);
-        var puzzleInteractiveObjectModulePrefab = CodeGenerationHelper.CopyClassAndFieldsFromExistingType(typeof(PuzzleInteractiveObjectModulePrefabs));
-
-
-        //Add the new path
-        bool add = true;
-        foreach (var field in typeof(PuzzleInteractiveObjectModulePrefabs).GetFields())
-        {
-            if (field.Name == "Base" + this.baseName + "Module")
-            {
-                add = false;
-            }
-        }
-        if (add)
-        {
-            var interactiveObjectPrefab = new CodeMemberField(this.baseName + "Module", "Base" + this.baseName + "Module");
-            interactiveObjectPrefab.Attributes = MemberAttributes.Public;
-            interactiveObjectPrefab.CustomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
-            puzzleInteractiveObjectModulePrefab.Members.Add(interactiveObjectPrefab);
-        }
-
-
-        samples.Types.Add(puzzleInteractiveObjectModulePrefab);
-        compileUnity.Namespaces.Add(samples);
-
-        string filename = PathConstants.PuzzleGameConfigurationsEditorConstantsPath + "/" + typeof(PuzzleInteractiveObjectModulePrefabs).Name + ".cs";
-        CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-        CodeGeneratorOptions options = new CodeGeneratorOptions();
-        options.BracingStyle = "C";
-        using (StreamWriter sourceWriter = new StreamWriter(filename))
-        {
-            provider.GenerateCodeFromCompileUnit(
-                compileUnity, sourceWriter, options);
         }
     }
 
