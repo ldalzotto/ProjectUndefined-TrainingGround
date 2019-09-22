@@ -19,7 +19,8 @@ namespace RTPuzzle
 
         public override void CreateObject(Transform parent)
         {
-            MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseModelObjectModule, parent);
+            var modelObjectModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseModelObjectModule, parent);
+            if (this.ModelPrefab != null) { GameObject.Instantiate(this.ModelPrefab, modelObjectModule.transform); }
         }
     }
 }
