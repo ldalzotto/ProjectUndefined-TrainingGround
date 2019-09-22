@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{A49DEB64-1BB8-7A03-3613-F94BABF7F69E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -415,26 +416,14 @@
     <Compile Include="Assets\Editor\ShaderGUI\WaveNoiseV2ShaderGUI.cs" />
     <Compile Include="Assets\Editor\Test\RangeConfiguration\RangeTypeObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizardProfile.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\NonIdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCustomEditorCondition.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetNonIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\AdventureGameConfigurationManagerMethodTemplate.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCondition.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleWizardConfiguration\InteractiveObjetIdentifiedModuleWizardConfigurationTemplate.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\AIComponents\AI${baseType}Component.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\${baseName}ConfigurationCreation.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModulesInitializationOperations\IdentifiedInteractiveObjectModulesInitializationOperationsMethodTemplate.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerCreationModule\Create${baseName}.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\InteractiveObjectModuleDefinition\DefinitionCustomEditorCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCondition.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\Modules\EditorInformations.cs.txt" />
     <None Include="Assets\Editor\Editor.asmdef" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\InteractiveObjectDefinitions\${baseName}ModuleDefinition.cs.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PuzzleFeatureTemplate\InteractiveObjectModules\${baseName}Module.cs.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\GameDesignerTemplates\GameDesignerConfigurationModuleTemplate.txt" />
-    <None Include="Assets\Editor\CodeGeneration\Templates\CreationWizardBasicConfigurationCreation\${baseName}CreationWizard.cs.txt" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
