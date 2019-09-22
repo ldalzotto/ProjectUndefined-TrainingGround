@@ -12,8 +12,9 @@ public class PointOfInterestDefinitionCustomEditor : ObjectDefinitionCustomEdito
         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(PointOfInterestDefinitionInherentData.PointOfInterestSharedDataTypeInherentData)));
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
+        base.OnEnable();
         this.RegisterListener(this);
     }
 }

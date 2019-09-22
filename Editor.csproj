@@ -10,7 +10,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{A49DEB64-1BB8-7A03-3613-F94BABF7F69E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -73,7 +74,6 @@
     <Compile Include="Assets\Editor\CodeGeneration\InteractiveObjectModuleGeneration\InteractiveObjectModuleGeneration.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\PathConstants.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\PointOfInterestModuleGeneration\PointOfInterestModuleGeneration.cs" />
-    <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\CreationWizardCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\InteractiveObjectModuleDefinitionCreation.cs" />
     <Compile Include="Assets\Editor\CodeGeneration\UnitaryBehaviors\PuzzleConfigurationCreation.cs" />
     <Compile Include="Assets\Editor\ConfigurationEditor\Configuration\ConfigurationInspector.cs" />

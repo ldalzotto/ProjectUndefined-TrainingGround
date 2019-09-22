@@ -38,7 +38,6 @@ public class IdentifiedObjectGeneration : EditorWindow
                     PuzzleConfigurationCreation.DoGenerateInherentData(this.baseName, this.GameTypeGeneration);
                     PuzzleConfigurationCreation.DoGenerateConfiguration(this.baseName, this.GameTypeGeneration);
                     PuzzleConfigurationCreation.UpdateGameConfiguration(this.baseName, this.GameTypeGeneration);
-                 //   CreationWizardCreation.DoGenerateCreationWizardScripts(this.baseName, this.GameTypeGeneration);
                 }
             }
         }
@@ -50,7 +49,6 @@ public class IdentifiedObjectGeneration : EditorWindow
                 if (!string.IsNullOrEmpty(this.baseName))
                 {
                     PuzzleConfigurationCreation.DoCreateConfigurationAsset(this.baseName, this.GameTypeGeneration);
-                  //  CreationWizardCreation.DoGenerateCreationWizardScriptsAssets(this.baseName);
                 }
             }
         }
