@@ -19,6 +19,7 @@ namespace CoreGame
         }
         public List<AsyncOperation> CORE_EVT_OnStartMenuToLevel(LevelZonesID nextLevel)
         {
+            CoreGameSingletonInstances.StartLevelManager.OnStartLevelChange(nextLevel);
             return CoreGameSingletonInstances.LevelManager.OnStartMenuToLevel(nextLevel);
         }
 

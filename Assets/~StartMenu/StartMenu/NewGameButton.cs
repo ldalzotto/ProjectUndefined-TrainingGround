@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,24 +7,20 @@ namespace StartMenu
 {
     public class NewGameButton : MonoBehaviour
     {
-        public bool SwitchLevel;
-
         private void Start()
         {
             this.GetComponent<Button>().onClick.AddListener(() =>
             {
-       
-            });
-        }
-
-        private void Update()
-        {
-            if (this.SwitchLevel)
-            {
-                this.SwitchLevel = false;
                 var startLevelManager = CoreGameSingletonInstances.StartLevelManager;
+
+                //Destroy all saved data
+                var persistanceDirectory = new DirectoryInfo(Application.persistentDataPath);
+                foreach (var directory in persistanceDirectory.GetDirectories())
+                {
+                    directory.Delete(true);
+                }
                 CoreGameSingletonInstances.LevelTransitionManager.OnStartMenuToLevel(startLevelManager.GetStartLevelID());
-            }
+            });
         }
     }
 }

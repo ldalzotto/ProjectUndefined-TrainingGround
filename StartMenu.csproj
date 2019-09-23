@@ -62,14 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\~StartMenu\_Game\Singleton\StartMenuSingletonInstances.cs" />
     <Compile Include="Assets\~StartMenu\_Game\StartMenuGameManager.cs" />
-    <Compile Include="Assets\~StartMenu\Configuration\StartMenuStaticConfiguration.cs" />
-    <Compile Include="Assets\~StartMenu\Configuration\StartMenuStaticConfigurationManager.cs" />
-    <Compile Include="Assets\~StartMenu\Configuration\StaticConfiguration\StartMenuPrefabConfiguration.cs" />
-    <Compile Include="Assets\~StartMenu\GameProgressionState\GameProgressionStateManager.cs" />
-    <Compile Include="Assets\~StartMenu\StartMenu\NewGameButton.cs" />
-    <Compile Include="Assets\~StartMenu\StartMenu\StartMenuManager.cs" />
+    <Compile Include="Assets\~StartMenu\NewGame\NewGameButton.cs" />
     <None Include="Assets\~StartMenu\StartMenu.asmdef" />
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
@@ -632,10 +626,6 @@
     <ProjectReference Include="GameConfigurationID.csproj">
       <Project>{E459BBE2-9160-77A5-DC93-1A3E692106CB}</Project>
       <Name>GameConfigurationID</Name>
-    </ProjectReference>
-    <ProjectReference Include="OdinSerializer.csproj">
-      <Project>{A681D4DB-01A1-7910-AB52-5F994409AF08}</Project>
-      <Name>OdinSerializer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

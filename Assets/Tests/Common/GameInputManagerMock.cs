@@ -17,7 +17,7 @@ namespace Tests
             gameInputManagerGO.AddComponent<GameTestMockedInputManager>();
         }
 
-        public override void Init()
+        public override void Init(LevelType LevelType)
         {
             this.currentInput = new GameTestMockedXInput();
         }

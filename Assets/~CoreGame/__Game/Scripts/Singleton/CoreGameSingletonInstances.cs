@@ -75,14 +75,7 @@ namespace CoreGame
         public static FXContainerManager FXContainerManager { get => FindAndSetInstanceIfNull(fXContainerManager, obj => fXContainerManager = obj); }
         public static TutorialManager TutorialManager { get => FindAndSetInstanceIfNull(tutorialManager, obj => tutorialManager = obj); }
         public static CameraMovementManager CameraMovementManager { get => FindAndSetInstanceIfNull(cameraMovementManager, obj => cameraMovementManager = obj); }
-        public static StartLevelManager StartLevelManager
-        {
-            get
-            {
-                if (startLevelManager == null) { startLevelManager = new StartLevelManager(); }
-                return startLevelManager;
-            }
-        }
+        public static StartLevelManager StartLevelManager { get => NewInstanceIfNull(startLevelManager, obj => startLevelManager = obj); }
 
         public static T FindAndSetInstanceIfNull<T>(T obj, Action<T> setter) where T : Behaviour
         {
@@ -91,6 +84,17 @@ namespace CoreGame
                 T foundObj = GameObject.FindObjectOfType<T>();
                 setter.Invoke(foundObj);
                 return foundObj;
+            }
+            else { return obj; }
+        }
+
+        public static T NewInstanceIfNull<T>(T obj, Action<T> setter)
+        {
+            if (obj == null)
+            {
+                var createdObject = Activator.CreateInstance<T>();
+                setter.Invoke(createdObject);
+                return createdObject;
             }
             else { return obj; }
         }

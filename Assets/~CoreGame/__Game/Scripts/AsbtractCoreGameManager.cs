@@ -19,7 +19,7 @@ namespace CoreGame
 
             CoreGameSingletonInstances.PersistanceManager.Init();
             CoreGameSingletonInstances.StartLevelManager.Init();
-            CoreGameSingletonInstances.GameInputManager.Init();
+            CoreGameSingletonInstances.GameInputManager.Init(levelType);
             CoreGameSingletonInstances.LevelAvailabilityManager.Init();
             CoreGameSingletonInstances.AGhostPOIManager.Init();
             CoreGameSingletonInstances.ATimelinesManager.Init();

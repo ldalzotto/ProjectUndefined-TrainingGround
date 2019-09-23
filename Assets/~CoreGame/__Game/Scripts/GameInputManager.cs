@@ -19,10 +19,18 @@ namespace CoreGame
 
         public XInput CurrentInput { get => currentInput; }
 
-        public virtual void Init()
+        public virtual void Init(LevelType LevelType)
         {
-            currentInput = new GameInput(new GameInputV2( CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.InputConfiguration), CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
-            Cursor.lockState = CursorLockMode.Locked;
+            currentInput = new GameInput(new GameInputV2(CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.InputConfiguration), CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
+
+            if (LevelType == LevelType.STARTMENU)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
 
         private class GameInput : XInput

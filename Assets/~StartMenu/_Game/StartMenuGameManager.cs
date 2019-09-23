@@ -9,6 +9,8 @@ namespace StartMenu
         {
             GameObject.FindObjectOfType<GameManagerPersistanceInstance>().Init();
             this.OnAwake(LevelType.STARTMENU);
+            StartMenuSingletonInstances.GameProgressionStateManager.Init();
+            StartMenuManager.Init();
         }
 
         private void Start()

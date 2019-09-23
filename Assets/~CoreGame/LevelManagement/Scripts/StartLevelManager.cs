@@ -9,13 +9,11 @@ namespace CoreGame
 
         public void Init()
         {
-            var GlobalGameConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.GlobalGameConfiguration;
-
             this.StartLevelPersistanceManager = new StartLevelPersistanceManager();
             this.StartLevel = this.StartLevelPersistanceManager.Load();
             if (this.StartLevel == null)
             {
-                this.StartLevel = new StartLevel(GlobalGameConfiguration.NewGameStartLevelID);
+                this.StartLevel = new StartLevel(LevelZonesID.NONE);
                 this.StartLevelPersistanceManager.SaveAsync(this.StartLevel);
             }
         }
