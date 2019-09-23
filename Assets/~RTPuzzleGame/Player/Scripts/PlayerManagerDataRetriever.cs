@@ -16,7 +16,7 @@ namespace RTPuzzle
         #region Data Retrieval
         public float GetPlayerSpeedMagnitude()
         {
-            return PlayerManager.GetPlayerSpeedMagnitude();
+            return PlayerManager.GetNormalizedSpeed();
         }
         public Transform GetPlayerTransform()
         {

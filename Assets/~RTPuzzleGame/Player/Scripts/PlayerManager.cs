@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace RTPuzzle
 {
-    public class PlayerManager : PlayerManagerType
+    public class PlayerManager : PlayerManagerType, IInteractiveObjectAnimationSpeedProvider
     {
 
         #region External Dependencies
@@ -15,6 +15,7 @@ namespace RTPuzzle
         #region Internal Components
         private Rigidbody playerRigidbody;
         private NavMeshAgent navMeshAgent;
+        private Animator associatedAnimator;
         private RootPuzzleLogicCollider rootPuzzleLogicCollider;
         private InteractiveObjectType associatedInteractiveObject;
         #endregion
@@ -34,11 +35,6 @@ namespace RTPuzzle
         private LevelResetManager LevelResetManager;
         #endregion
 
-        #region Animation Managers
-        private PlayerAnimationDataManager PlayerAnimationDataManager;
-        private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
-        #endregion
-
         public void Init(IGameInputManager gameInputManager)
         {
             #region External Dependencies
@@ -50,7 +46,7 @@ namespace RTPuzzle
             #endregion
 
             this.playerRigidbody = GetComponent<Rigidbody>();
-            var animator = GetComponentInChildren<Animator>();
+            this.associatedAnimator = GetComponentInChildren<Animator>();
             this.navMeshAgent = GetComponent<NavMeshAgent>();
             this.rootPuzzleLogicCollider = GetComponentInChildren<RootPuzzleLogicCollider>();
             this.associatedInteractiveObject = GetComponent<InteractiveObjectType>();
@@ -69,11 +65,11 @@ namespace RTPuzzle
             PlayerInputMoveManager = new PlayerInputMoveManager(TransformMoveManagerComponentV3, cameraPivotPoint.transform, gameInputManager, this.playerRigidbody);
             PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(this.playerRigidbody, this.rootPuzzleLogicCollider.GetRootCollider(), playerPhysicsMovementComponent);
             PlayerSelectionWheelManager = new PlayerSelectionWheelManager(gameInputManager, PuzzleEventsManager, PlayerActionManager);
-            PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV3, animator, this.playerRigidbody, coreConfigurationManager);
-            PlayerAnimationDataManager = new PlayerAnimationDataManager(animator);
             LevelResetManager = new LevelResetManager(gameInputManager, PuzzleEventsManager);
 
-            GenericAnimatorHelper.SetMovementLayer(animator, coreConfigurationManager.AnimationConfiguration(), LevelType.PUZZLE);
+            //IInteractiveObjectAnimationModuleEvents
+            this.associatedInteractiveObject.GetIInteractiveObjectAnimationModuleEvent().IfNotNull((IInteractiveObjectAnimationModuleEvent) => IInteractiveObjectAnimationModuleEvent.SetIInteractiveObjectAnimationSpeedProvider(this));
+            // GenericAnimatorHelper.SetMovementLayer(animator, coreConfigurationManager.AnimationConfiguration(), LevelType.PUZZLE);
         }
 
         public void Tick(float d)
@@ -100,20 +96,17 @@ namespace RTPuzzle
                 {
                     PlayerInputMoveManager.ResetSpeed();
                 }
-                PlayerAnimationDataManager.Tick(PlayerInputMoveManager.PlayerSpeedMagnitude);
             }
         }
 
         public void FixedTick(float d)
         {
-            PlayerProceduralAnimationsManager.FickedTick(d);
             PlayerInputMoveManager.FixedTick(d);
             PlayerBodyPhysicsEnvironment.FixedTick(d);
         }
 
         public void LateTick(float d)
         {
-            PlayerProceduralAnimationsManager.LateTick(d);
         }
 
         #region Logical Conditions
@@ -130,11 +123,11 @@ namespace RTPuzzle
         #region Data Retrieval
         public Animator GetPlayerAnimator()
         {
-            return PlayerAnimationDataManager.Animator;
+            return this.associatedAnimator;
         }
         #endregion
 
-        public float GetPlayerSpeedMagnitude()
+        public float GetNormalizedSpeed()
         {
             return PlayerInputMoveManager.PlayerSpeedMagnitude;
         }

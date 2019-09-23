@@ -192,6 +192,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\ModelObject\InteractiveObjectModuleDefinition\ModelObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\ModelObject\InteractiveObjectModules\ModelObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\SharedData\InteractiveObjectSharedDataType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\ExposedInterfaces\IInteractiveObjectAnimationModuleEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\InteractiveObjectDefinitions\InteractiveObjectAnimationModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectDefinitions\InteractiveObjectCutsceneControllerModuleDefinition.cs" />

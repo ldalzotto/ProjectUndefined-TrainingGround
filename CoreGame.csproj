@@ -227,10 +227,6 @@
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerBodyPhysicsEnvironment.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerInputMoveManager.cs" />
     <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerManagerType.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerHairStrandAnimationManager.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerHoodAnimationManager.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerJacketCordAnimationManager.cs" />
-    <Compile Include="Assets\~CoreGame\Player\Scripts\PlayerProceduralAnimations\PlayerProceduralAnimationsManager.cs" />
     <Compile Include="Assets\~CoreGame\PointOfInterest\AGhostPOIManager.cs" />
     <Compile Include="Assets\~CoreGame\PointOfInterest\APointOfInterestEventManager.cs" />
     <Compile Include="Assets\~CoreGame\PointOfInterest\APointOfInterestType.cs" />

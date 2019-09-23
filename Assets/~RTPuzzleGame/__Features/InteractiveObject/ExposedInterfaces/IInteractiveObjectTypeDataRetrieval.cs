@@ -74,6 +74,10 @@ namespace RTPuzzle
         {
             return this.GetModule<AttractiveObjectModule>();
         }
+        public IInteractiveObjectAnimationModuleEvent GetIInteractiveObjectAnimationModuleEvent()
+        {
+            return this.GetModule<InteractiveObjectAnimationModule>();
+        }
     }
 
 }

@@ -19,7 +19,6 @@ namespace AdventureGame
 
         #region Animation Managers
         private PlayerAnimationManager PlayerAnimationManager;
-        private PlayerProceduralAnimationsManager PlayerProceduralAnimationsManager;
         #endregion
 
         private PlayerBodyPhysicsEnvironment PlayerBodyPhysicsEnvironment;
@@ -84,7 +83,6 @@ namespace AdventureGame
             this.PlayerContextActionManager = new PlayerContextActionManager();
             this.PlayerInventoryTriggerManager = new PlayerInventoryTriggerManager(GameInputManager, inventoryEventManager);
             this.PlayerAnimationManager = GetComponent<PlayerAnimationManager>();
-            this.PlayerProceduralAnimationsManager = new PlayerProceduralAnimationsManager(this.PlayerCommonComponents, TransformMoveManagerComponentV3, playerAnimator, playerRigidBody, coreConfigurationManager);
             this.PlayerBodyPhysicsEnvironment = new PlayerBodyPhysicsEnvironment(playerRigidBody, playerCollider, PlayerPhysicsMovementComponent);
         }
 
@@ -122,21 +120,10 @@ namespace AdventureGame
             }
 
             PlayerAnimationManager.PlayerAnimationDataManager.Tick(playerSpeedMagnitude);
-
-            if (PlayerContextActionManager.IsActionExecuting || playerSpeedMagnitude > float.Epsilon || this.PointOfInterestType.IsDirectedByCutscene())
-            {
-                PlayerAnimationManager.OnIdleAnimationReset();
-            }
-            else
-            {
-                PlayerAnimationManager.PlayerIdleAnimationManager.Tick(d, playerSpeedMagnitude);
-            }
         }
 
         public void FixedTick(float d)
         {
-            this.PlayerProceduralAnimationsManager.FickedTick(d);
-
             if (!this.PointOfInterestType.IsDirectedByCutscene())
             {
                 this.PlayerInputMoveManager.FixedTick(d);
@@ -148,7 +135,6 @@ namespace AdventureGame
 
         public void LateTick(float d)
         {
-            this.PlayerProceduralAnimationsManager.LateTick(d);
         }
 
         public void OnGizmoTick()
@@ -170,7 +156,6 @@ namespace AdventureGame
         public bool IsVisualMovementAllowed()
         {
             return (!PlayerContextActionManager.IsActionExecuting || PlayerContextActionManager.IsTalkActionExecuting)
-                        && !PlayerAnimationManager.IsIdleAnimationRunnig()
                         && this.PointOfInterestType.IsVisualMovementAllowed();
         }
 
