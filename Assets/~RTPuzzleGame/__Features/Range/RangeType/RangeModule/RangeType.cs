@@ -57,12 +57,14 @@ namespace RTPuzzle
 
         private void OnTriggerEnter(Collider other)
         {
-            this.RangeTypeObjectRef.OnRangeTriggerEnter(other);
+            var collisionType = other.GetComponent<CollisionType>();
+            this.RangeTypeObjectRef.OnRangeTriggerEnter(collisionType);
         }
 
         private void OnTriggerExit(Collider other)
         {
-            this.RangeTypeObjectRef.OnRangeTriggerExit(other);
+            var collisionType = other.GetComponent<CollisionType>();
+            this.RangeTypeObjectRef.OnRangeTriggerExit(collisionType);
         }
 
         #region Logical conditions
@@ -73,6 +75,11 @@ namespace RTPuzzle
         public bool IsRangeConfigurationDefined()
         {
             return this.rangeTypeInherentConfigurationData != null;
+        }
+
+        public bool IsInsideAndNotOccluded(BoxCollider boxCollider,bool forceObstacleOcclusionIfNecessary)
+        {
+            return this.RangeTypeObjectRef.IsInsideAndNotOccluded(boxCollider, forceObstacleOcclusionIfNecessary);
         }
 
         #endregion

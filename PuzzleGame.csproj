@@ -284,26 +284,28 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\PuzzleCutscene\PlayerActions\CutsceneActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeObstacleListenerDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\BoxRangeShapeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\FrustumRangeShapeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\RoundedFrustumRangeShapeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeShapeConfigurations\SphereRangeShapeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeDefinitionStruct\RangeTypeDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\ExposedInterfaces\IRangeTypeObjectContainerEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\ExposedInterfaces\IRangeTypeObjectEventListener.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeObstacleListener\RangeObstacleListener.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeType\BoxRangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeType\Common\AbstractFrustumRangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeType\FrustumRangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeType\RangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeType\RoundedFrustumRangeType.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\Modules\RangeType\SphereRangeType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\RangeTypeObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Managers\RangeTypeObjectContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeColliderTracker\RangeModule\RangeColliderTrackerModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeColliderTracker\RangeModuleDefinition\RangeColliderTrackerModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeObjectListener\RangeModule\RangeObstacleListenerModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeObjectListener\RangeModuleDefinition\RangeObstacleListenerDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModule\BoxRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModule\Common\AbstractFrustumRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModule\FrustumRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModule\RangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModule\RoundedFrustumRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModule\SphereRangeType.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModuleDefinition\RangeDefinitionStruct\RangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModuleDefinition\RangeDefinitionStruct\RangeShapeConfigurations\BoxRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModuleDefinition\RangeDefinitionStruct\RangeShapeConfigurations\FrustumRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModuleDefinition\RangeDefinitionStruct\RangeShapeConfigurations\RoundedFrustumRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModuleDefinition\RangeDefinitionStruct\RangeShapeConfigurations\SphereRangeShapeConfiguration.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeType\RangeModuleDefinition\RangeDefinitionStruct\RangeTypeDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Sight\Events\SightAIEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Sight\InteractiveObjectDefinitions\ObjectSightModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Sight\InteractiveObjectModules\ObjectSightModule.cs" />
@@ -344,6 +346,9 @@
     <None Include="Assets\~RTPuzzleGame\__Features\Fov\Material\InteractionRingShader.shader" />
     <None Include="Assets\~RTPuzzleGame\PuzzleGame.asmdef" />
     <None Include="Assets\~RTPuzzleGame\__Features\LineVisualFeedback\Shader\DottedLineShader.shader" />
+    <Reference Include="Unity.Burst">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/Unity.Burst.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
@@ -541,6 +546,9 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>C:/Users/Loic/Documents/projects/SoulsLike/No Entry_0.0.71_Reset/Library/PackageCache/com.unity.burst@1.1.2/Unity.Burst.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.6f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

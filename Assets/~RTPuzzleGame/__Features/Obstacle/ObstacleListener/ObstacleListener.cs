@@ -63,13 +63,13 @@ namespace RTPuzzle
         {
             return this.nearSquareObstacles.Count > 0;
         }
-        public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint)
+        public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, worldPositionPoint);
+            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, worldPositionPoint, forceObstacleOcclusionIfNecessary);
         }
-        internal bool IsBoxOccludedByObstacles(BoxCollider boxCollider)
+        internal bool IsBoxOccludedByObstacles(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider);
+            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider, forceObstacleOcclusionIfNecessary);
         }
 
         #endregion
@@ -79,9 +79,8 @@ namespace RTPuzzle
             Gizmos.DrawWireSphere(this.transform.position, this.Radius);
         }
 
-        public void OnRangeTriggerEnter(Collider other)
+        public void OnRangeTriggerEnter(CollisionType collisionType)
         {
-            var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
             {
                 var squareObstacle = SquareObstacle.FromCollisionType(collisionType);
@@ -93,9 +92,8 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeTriggerExit(Collider other)
+        public void OnRangeTriggerExit(CollisionType collisionType)
         {
-            var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
             {
                 var squareObstacle = SquareObstacle.FromCollisionType(collisionType);

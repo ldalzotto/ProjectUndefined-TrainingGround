@@ -58,7 +58,7 @@ namespace Tests
         private bool IsInsideAndNotOccluded(RangeTypeObject RangeTypeObject, TestPositionID testPosition)
         {
             var position = PuzzleSceneTestHelper.FindTestPosition(testPosition).position;
-            return RangeTypeObject.IsInsideAndNotOccluded(position);
+            return RangeTypeObject.IsInsideAndNotOccluded(position, forceObstacleOcclusionIfNecessary: true);
         }
 
     }

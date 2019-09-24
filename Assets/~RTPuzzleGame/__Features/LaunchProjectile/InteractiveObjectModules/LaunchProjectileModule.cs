@@ -182,7 +182,8 @@ namespace RTPuzzle
             #region AI escape
             foreach (var npcAIManager in this.NPCAIManagerContainer.GetNPCAiManagers().Values)
             {
-                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(npcAIManager.GetInteractiveObjectTypeDataRetrieval().GetAILogicColliderModule().GetCollider(),
+                var boxCollider = npcAIManager.GetInteractiveObjectTypeDataRetrieval().GetAILogicColliderModule().GetCollider();
+                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider.center, boxCollider.size, boxCollider.transform.localToWorldMatrix,
                             launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     npcAIManager.GetAIBehavior().ReceiveEvent(new ProjectileTriggerEnterAIBehaviorEvent(launchProjectileRef));
@@ -193,7 +194,8 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.InteractiveObjectContainer.ObjectsRepelable)
             {
-                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(repelAbleObject.GetObjectRepelCollider() as BoxCollider, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
+                var boxCollider = repelAbleObject.GetObjectRepelCollider() as BoxCollider;
+                if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider.center, boxCollider.size, boxCollider.transform.localToWorldMatrix, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     //float travelDistance = 13;
                     float travelDistance = this.PuzzleGameConfigurationManager.RepelableObjectsConfiguration()[repelAbleObject.GetObjectRepelID()].GetRepelableObjectDistance(this.LaunchProjectileRef.LaunchProjectileID);

@@ -9,7 +9,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "RangeTypeObjectDefinitionInherentData", menuName = "Configuration/PuzzleGame/RangeTypeObjectDefinitionConfiguration/RangeTypeObjectDefinitionInherentData", order = 1)]
     public class RangeTypeObjectDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
-        public static List<Type> RangeModuleTypes = new List<Type>() { typeof(RangeTypeDefinition), typeof(RangeObstacleListenerDefinition) };
+        public static List<Type> RangeModuleTypes = new List<Type>() { typeof(RangeTypeDefinition), typeof(RangeObstacleListenerDefinition), typeof(RangeColliderTrackerModuleDefinition) };
 
         public override List<Type> ModuleTypes => RangeTypeObjectDefinitionInherentData.RangeModuleTypes;
 
@@ -55,6 +55,10 @@ namespace RTPuzzle
                         {
                             MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseRangeObstacleListener, rangeTypeObject.transform);
                         }
+                        else if (moduleConfiguration.GetType() == typeof(RangeColliderTrackerModuleDefinition))
+                        {
+                            MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseRangeColliderTrackerModule, rangeTypeObject.transform);
+                        }
                     }
                 }
             }
@@ -85,7 +89,7 @@ namespace RTPuzzle
                 }
             };
         }
-        
+
         public static RangeTypeObjectDefinitionInherentData BoxRangeNoObstacleListener(Vector3 center, Vector3 size, RangeTypeID rangeTypeID)
         {
             return new RangeTypeObjectDefinitionInherentData()

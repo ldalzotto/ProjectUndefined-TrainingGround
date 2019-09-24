@@ -14,12 +14,14 @@ namespace RTPuzzle
 
         #region Modules
         private RangeType rangeType;
-        private RangeObstacleListener rangeObstacleListener;
+        private RangeObstacleListenerModule rangeObstacleListener;
+        private RangeColliderTrackerModule rangeColliderTrackerModule;
         #endregion
 
         #region Data Retrieval
         public RangeType RangeType { get => rangeType; }
-        public RangeObstacleListener RangeObstacleListener { get => rangeObstacleListener; }
+        public RangeObstacleListenerModule RangeObstacleListener { get => rangeObstacleListener; }
+        public RangeColliderTrackerModule RangeColliderTrackerModule { get => rangeColliderTrackerModule; }
         #endregion
 
         #region External Dependencies 
@@ -40,14 +42,14 @@ namespace RTPuzzle
 
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
-        
+
         public void Init(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData,
             RangeTypeObjectInitializer RangeTypeObjectInitializer, List<RangeTypeObjectEventListener> eventListenersFromExterior = null)
         {
             rangeTypeObjectDefinitionConfigurationInherentData.DefineRangeTypeObject(this, PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration);
             this.CommonInit(RangeTypeObjectInitializer, eventListenersFromExterior);
         }
-        
+
         public void SetIsAttractiveObject()
         {
             this.rangeType.IfNotNull((RangeType rangeType) => rangeType.GetCollisionType().IsRTAttractiveObject = true);
@@ -63,7 +65,7 @@ namespace RTPuzzle
             this.PopulateModules();
 
             this.rangeType.IfNotNull((RangeType rangeType) => rangeType.Init(RangeTypeObjectInitializer, this));
-            this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.Init(this.rangeType));
+            this.rangeObstacleListener.IfNotNull((RangeObstacleListenerModule rangeObstacleListener) => rangeObstacleListener.Init(this.rangeType));
 
             this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Created(this);
         }
@@ -72,7 +74,8 @@ namespace RTPuzzle
         {
             #region Modules
             this.rangeType = GetComponentInChildren<RangeType>();
-            this.rangeObstacleListener = GetComponentInChildren<RangeObstacleListener>();
+            this.rangeObstacleListener = GetComponentInChildren<RangeObstacleListenerModule>();
+            this.rangeColliderTrackerModule = GetComponentInChildren<RangeColliderTrackerModule>();
             #endregion
         }
 
@@ -80,9 +83,9 @@ namespace RTPuzzle
         {
             this.rangeType.Tick(d);
         }
-        
+
         #region Internal Events
-        public void OnRangeTriggerEnter(Collider other)
+        public void OnRangeTriggerEnter(CollisionType other)
         {
             if (this.rangeObstacleListener != null)
             {
@@ -95,8 +98,10 @@ namespace RTPuzzle
                     listener.OnRangeTriggerEnter(other);
                 }
             }
+            this.rangeColliderTrackerModule.IfNotNull((RangeColliderTrackerModule RangeColliderTrackerModule) => RangeColliderTrackerModule.OnRangeTriggerEnter(other));
         }
-        public void OnRangeTriggerExit(Collider other)
+
+        public void OnRangeTriggerExit(CollisionType other)
         {
             if (this.rangeObstacleListener != null)
             {
@@ -109,13 +114,14 @@ namespace RTPuzzle
                     listener.OnRangeTriggerExit(other);
                 }
             }
+            this.rangeColliderTrackerModule.IfNotNull((RangeColliderTrackerModule RangeColliderTrackerModule) => RangeColliderTrackerModule.OnRangeTriggerExit(other));
         }
         #endregion
 
         #region External Events
         public void OnRangeDestroyed()
         {
-            this.rangeObstacleListener.IfNotNull((RangeObstacleListener rangeObstacleListener) => rangeObstacleListener.OnRangeObstacleListenerDestroyed(this.rangeType));
+            this.rangeObstacleListener.IfNotNull((RangeObstacleListenerModule rangeObstacleListener) => rangeObstacleListener.OnRangeObstacleListenerDestroyed(this.rangeType));
 
             this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Destroy(this);
             MonoBehaviour.Destroy(this.gameObject);
@@ -148,35 +154,35 @@ namespace RTPuzzle
         {
             return this.rangeType.IsRangeConfigurationDefined();
         }
-        public bool IsInsideAndNotOccluded(BoxCollider boxCollider)
+        public bool IsInsideAndNotOccluded(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
             Profiler.BeginSample("ObstacleIsInsideAndNotOccluded");
             bool isInsideRange = this.rangeType.IsInside(boxCollider);
             if (this.rangeObstacleListener != null && isInsideRange)
             {
-                isInsideRange = isInsideRange && !this.IsOccluded(boxCollider);
+                isInsideRange = isInsideRange && !this.IsOccluded(boxCollider, forceObstacleOcclusionIfNecessary);
             }
             Profiler.EndSample();
             return isInsideRange;
         }
 
-        public bool IsInsideAndNotOccluded(Vector3 worldPointComparison)
+        public bool IsInsideAndNotOccluded(Vector3 worldPointComparison, bool forceObstacleOcclusionIfNecessary)
         {
             bool isInsideRange = this.rangeType.IsInside(worldPointComparison);
             if (this.rangeObstacleListener != null && isInsideRange)
             {
-                isInsideRange = isInsideRange && !this.IsOccluded(worldPointComparison);
+                isInsideRange = isInsideRange && !this.IsOccluded(worldPointComparison, forceObstacleOcclusionIfNecessary);
             }
             return isInsideRange;
         }
 
-        public bool IsOccluded(BoxCollider boxCollider)
+        public bool IsOccluded(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.rangeObstacleListener != null && this.rangeObstacleListener.IsBoxOccludedByObstacles(boxCollider);
+            return this.rangeObstacleListener != null && this.rangeObstacleListener.IsBoxOccludedByObstacles(boxCollider, forceObstacleOcclusionIfNecessary);
         }
-        public bool IsOccluded(Vector3 worldPointComparison)
+        public bool IsOccluded(Vector3 worldPointComparison, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.rangeObstacleListener != null && this.rangeObstacleListener.IsPointOccludedByObstacles(worldPointComparison);
+            return this.rangeObstacleListener != null && this.rangeObstacleListener.IsPointOccludedByObstacles(worldPointComparison, forceObstacleOcclusionIfNecessary);
         }
         #endregion
 
@@ -196,7 +202,7 @@ namespace RTPuzzle
 
     public interface RangeTypeObjectEventListener
     {
-        void OnRangeTriggerEnter(Collider other);
-        void OnRangeTriggerExit(Collider other);
+        void OnRangeTriggerEnter(CollisionType other);
+        void OnRangeTriggerExit(CollisionType other);
     }
 }

@@ -60,7 +60,7 @@ namespace RTPuzzle
 
         public override bool IsInside(BoxCollider boxCollider)
         {
-            return Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider, this.GetCenterWorldPos(), this.GetRadiusRange());
+            return Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider.center, boxCollider.size, boxCollider.transform.localToWorldMatrix, this.GetCenterWorldPos(), this.GetRadiusRange());
         }
 
         public override bool IsInside(Vector3 worldPointComparison)

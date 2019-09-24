@@ -8,16 +8,18 @@ namespace CoreGame
     {
 
         #region BOX->SPHERE
-        public static bool BoxIntersectsOrEntirelyContainedInSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
+        public static bool BoxIntersectsOrEntirelyContainedInSphere(Vector3 boxLocalCenter, Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, Vector3 SphereWorldPosition, float SphereRadius)
         {
-            return BoxEntirelyContainedInSphere(boxCollider, SphereWorldPosition, SphereRadius) || BoxIntersectsSphere(boxCollider, SphereWorldPosition, SphereRadius);
+            return BoxEntirelyContainedInSphereV2(boxLocalCenter, boxColliderSize, boxLocalToWorld, SphereWorldPosition, SphereRadius) 
+                    || BoxIntersectsSphereV2(boxLocalCenter, boxColliderSize, boxLocalToWorld, SphereWorldPosition, SphereRadius);
         }
 
-        public static bool BoxIntersectsSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
+        private static bool BoxIntersectsSphereV2(Vector3 boxLocalCenter, Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, Vector3 SphereWorldPosition, float SphereRadius)
         {
             // -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
             // -> Also, order of faces can be sorted by distance check.
-            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            ExtractBoxColliderWorldPointsV2(boxLocalCenter, boxColliderSize, boxLocalToWorld,
+                out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
             //Face intersection
             return FaceIntersectSphere(BC6, BC7, BC5, BC8, SphereWorldPosition, SphereRadius)
@@ -27,11 +29,13 @@ namespace CoreGame
                 || FaceIntersectSphere(BC6, BC2, BC5, BC1, SphereWorldPosition, SphereRadius)
                 || FaceIntersectSphere(BC7, BC3, BC8, BC4, SphereWorldPosition, SphereRadius);
         }
-        public static bool BoxEntirelyContainedInSphere(BoxCollider boxCollider, Vector3 SphereWorldPosition, float SphereRadius)
+
+
+        private static bool BoxEntirelyContainedInSphereV2(Vector3 boxLocalCenter, Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, Vector3 SphereWorldPosition, float SphereRadius)
         {
             // -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
             // -> Also, order of faces can be sorted by distance check.
-            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            ExtractBoxColliderWorldPointsV2(boxLocalCenter, boxColliderSize, boxLocalToWorld, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
             //Face contains
             return FaceEntirelyContainedInSphere(BC6, BC7, BC5, BC8, SphereWorldPosition, SphereRadius)
                 || FaceEntirelyContainedInSphere(BC2, BC3, BC1, BC4, SphereWorldPosition, SphereRadius)
@@ -67,7 +71,7 @@ namespace CoreGame
             ;
         }
         
-        public static bool FaceIntersectSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
+        private static bool FaceIntersectSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
             bool planeIntersected = false;
             bool edgeIntersected = false;
@@ -108,7 +112,7 @@ namespace CoreGame
             return (planeIntersected || edgeIntersected);
         }
 
-        public static bool FaceEntirelyContainedInSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
+        private static bool FaceEntirelyContainedInSphere(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4, Vector3 SphereWorldPosition, float SphereRadius)
         {
             bool edgeContained = false;
 
@@ -122,7 +126,7 @@ namespace CoreGame
             return edgeContained;
         }
 
-        public static bool SegmentSphereIntersection(Vector3 segmentOrigin, Vector3 segmentDirection, float segmentDistance, Vector3 sphereCenterPoint, float sphereRadius)
+        private static bool SegmentSphereIntersection(Vector3 segmentOrigin, Vector3 segmentDirection, float segmentDistance, Vector3 sphereCenterPoint, float sphereRadius)
         {
             // Segment sphere intersection https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection
 
@@ -150,7 +154,7 @@ namespace CoreGame
             return intersect;
         }
 
-        public static bool SegmentEntirelyContainedInSphere(Vector3 segmentOrigin, Vector3 segmentDirection, float segmentDistance, Vector3 sphereCenterPoint, float sphereRadius)
+        private static bool SegmentEntirelyContainedInSphere(Vector3 segmentOrigin, Vector3 segmentDirection, float segmentDistance, Vector3 sphereCenterPoint, float sphereRadius)
         {
             return Vector3.Distance(segmentOrigin, sphereCenterPoint) <= sphereRadius && Vector3.Distance(segmentOrigin + (segmentDirection * segmentDistance), sphereCenterPoint) <= sphereRadius;
         }
@@ -309,6 +313,36 @@ namespace CoreGame
 
             diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
             C8 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+
+        }
+
+        public static void ExtractBoxColliderWorldPointsV2(Vector3 boxLocalCenter,Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
+        {
+            Vector3 diagDirection = Vector3.zero;
+            
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
+            C1 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
+            C2 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
+            C3 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
+            C4 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
+            C5 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
+            C6 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
+            C7 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
+
+            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
+            C8 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
 
         }
 

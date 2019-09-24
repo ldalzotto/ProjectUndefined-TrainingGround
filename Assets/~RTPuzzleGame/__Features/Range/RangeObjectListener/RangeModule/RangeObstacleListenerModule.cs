@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class RangeObstacleListener : MonoBehaviour
+    public class RangeObstacleListenerModule : MonoBehaviour
     {
         #region Internal Managers
         private ObstacleListener obstacleListener;
@@ -25,24 +25,24 @@ namespace RTPuzzle
         {
             return this.obstacleListener.IsListenerHaveObstaclesNearby();
         }
-        public bool IsBoxOccludedByObstacles(BoxCollider boxCollider)
+        public bool IsBoxOccludedByObstacles(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.obstacleListener.IsBoxOccludedByObstacles(boxCollider);
+            return this.obstacleListener.IsBoxOccludedByObstacles(boxCollider, forceObstacleOcclusionIfNecessary);
         }
-        public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint)
+        public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.obstacleListener.IsPointOccludedByObstacles(worldPositionPoint);
+            return this.obstacleListener.IsPointOccludedByObstacles(worldPositionPoint, forceObstacleOcclusionIfNecessary);
         }
         #endregion
 
         #region External Events
-        public void OnRangeTriggerEnter(Collider other)
+        public void OnRangeTriggerEnter(CollisionType collistionType)
         {
-            this.obstacleListener.OnRangeTriggerEnter(other);
+            this.obstacleListener.OnRangeTriggerEnter(collistionType);
         }
-        public void OnRangeTriggerExit(Collider other)
+        public void OnRangeTriggerExit(CollisionType collistionType)
         {
-            this.obstacleListener.OnRangeTriggerExit(other);
+            this.obstacleListener.OnRangeTriggerExit(collistionType);
         }
         public void OnRangeObstacleListenerDestroyed(RangeType rangeType)
         {

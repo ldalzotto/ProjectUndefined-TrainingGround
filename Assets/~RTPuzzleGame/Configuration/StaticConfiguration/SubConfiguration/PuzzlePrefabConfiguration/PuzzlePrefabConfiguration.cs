@@ -12,7 +12,8 @@ namespace RTPuzzle
         public FrustumRangeType BaseFrustumRangeType;
         public BoxRangeType BaseBoxRangeType;
         public SphereRangeType BaseSphereRangeType;
-        public RangeObstacleListener BaseRangeObstacleListener;
+        public RangeObstacleListenerModule BaseRangeObstacleListener;
+        public RangeColliderTrackerModule BaseRangeColliderTrackerModule;
 
         [Header("Interactive Object")]
         public InteractiveObjectType BaseInteractiveObjectType;

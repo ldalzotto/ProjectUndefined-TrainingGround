@@ -4,9 +4,9 @@
         "CoreGame",
         "Editor_Common",
         "OdinSerializer",
-        "GameConfigurationID"
+        "GameConfigurationID",
+        "Unity.Burst"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

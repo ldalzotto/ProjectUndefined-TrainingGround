@@ -63,13 +63,13 @@ namespace Tests
         private void AssertBox(Vector3 moveDirection, float directionDelta, ref BoxCollider box, Vector3 sphereWorldPosition, float sphereRadius) {
 
             box.transform.position = moveDirection;
-            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * (-1 * directionDelta));
-            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * directionDelta);
-            Assert.IsFalse(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsFalse(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Tests
             this.InitBox(ref box, Vector3.one, Quaternion.identity);
             box.transform.position = Vector3.zero;
 
-            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
         }
 
     }

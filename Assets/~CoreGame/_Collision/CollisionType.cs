@@ -18,4 +18,11 @@ public class CollisionType : MonoBehaviour
 
     [Header("RT_Puzzle object behaior")]
     public bool IsRepelable = false;
+
+    private Collider associatedCollider;
+    public Collider GetAssociatedCollider()
+    {
+        if (this.associatedCollider == null) { this.associatedCollider = this.GetComponent<Collider>(); }
+        return this.associatedCollider;
+    }
 }

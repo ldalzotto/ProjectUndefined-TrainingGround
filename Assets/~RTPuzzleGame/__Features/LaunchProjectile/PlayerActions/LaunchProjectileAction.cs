@@ -303,7 +303,7 @@ namespace RTPuzzle
                 currentCursorWorldPosition = hit.point;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
-                if (this.launchProjectileActionRef.ProjectileThrowRange.IsInsideAndNotOccluded(currentCursorWorldPosition))
+                if (this.launchProjectileActionRef.ProjectileThrowRange.IsInsideAndNotOccluded(currentCursorWorldPosition, forceObstacleOcclusionIfNecessary: true))
                 {
                     SetIsCursorInRange(true);
                 }

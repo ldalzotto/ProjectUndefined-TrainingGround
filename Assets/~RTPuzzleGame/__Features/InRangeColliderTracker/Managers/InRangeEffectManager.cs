@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Rendering;
-using System.Collections.Generic;
-using GameConfigurationID;
 
 namespace RTPuzzle
 {
@@ -14,7 +12,7 @@ namespace RTPuzzle
 
         private CommandBuffer commandBuffer;
 
-        private Dictionary<RangeTypeID, List<IInRangeColliderTrackerModuleDataRetriever>> activeInRangeTrackers = new Dictionary<RangeTypeID, List<IInRangeColliderTrackerModuleDataRetriever>>();
+        private Dictionary<RangeType, List<IInRangeColliderTrackerModuleDataRetriever>> activeInRangeTrackers = new Dictionary<RangeType, List<IInRangeColliderTrackerModuleDataRetriever>>();
 
         public void Init()
         {
@@ -30,18 +28,18 @@ namespace RTPuzzle
         {
             if (triggeredRangeType.IsInRangeEffectEnabled())
             {
-                if (!this.activeInRangeTrackers.ContainsKey(triggeredRangeType.RangeTypeID))
+                if (!this.activeInRangeTrackers.ContainsKey(triggeredRangeType))
                 {
-                    this.activeInRangeTrackers[triggeredRangeType.RangeTypeID] = new List<IInRangeColliderTrackerModuleDataRetriever>();
+                    this.activeInRangeTrackers[triggeredRangeType] = new List<IInRangeColliderTrackerModuleDataRetriever>();
                 }
-                this.activeInRangeTrackers[triggeredRangeType.RangeTypeID].Add(InRangeColliderTrackerModule);
+                this.activeInRangeTrackers[triggeredRangeType].Add(InRangeColliderTrackerModule);
             }
         }
         public void OnInRangeRemove(IInRangeColliderTrackerModuleDataRetriever InRangeColliderTrackerModule, RangeType triggeredRangeType)
         {
             if (triggeredRangeType.IsInRangeEffectEnabled())
             {
-                var trackedRanges = this.activeInRangeTrackers[triggeredRangeType.RangeTypeID];
+                var trackedRanges = this.activeInRangeTrackers[triggeredRangeType];
                 bool delete = false;
                 foreach (var trackedRange in trackedRanges)
                 {
@@ -62,9 +60,9 @@ namespace RTPuzzle
         {
             if (rangeType.IsInRangeEffectEnabled())
             {
-                if (this.activeInRangeTrackers.ContainsKey(rangeType.RangeTypeID))
+                if (this.activeInRangeTrackers.ContainsKey(rangeType))
                 {
-                    this.activeInRangeTrackers[rangeType.RangeTypeID].Clear();
+                    this.activeInRangeTrackers[rangeType].Clear();
                 }
             }
         }
@@ -78,19 +76,24 @@ namespace RTPuzzle
         private void OnCommandBufferUpdate()
         {
             this.commandBuffer.Clear();
-            
+
             foreach (var listActiveInRangeTrackersPerId in this.activeInRangeTrackers)
             {
-                var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[listActiveInRangeTrackersPerId.Key].InRangeEffectMaterial;
+                var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[listActiveInRangeTrackersPerId.Key.RangeTypeID].InRangeEffectMaterial;
                 foreach (var activeInRangeTracker in listActiveInRangeTrackersPerId.Value)
                 {
-                    foreach (var r in activeInRangeTracker.ModelObjectModule.GetAllRenderers())
+                    var activeInRangeTrackerAIColliderModule = activeInRangeTracker.GetAILogicColliderModule();
+                    if ((activeInRangeTrackerAIColliderModule != null && listActiveInRangeTrackersPerId.Key.IsInsideAndNotOccluded(activeInRangeTrackerAIColliderModule.GetCollider(), forceObstacleOcclusionIfNecessary: false))
+                       || (activeInRangeTrackerAIColliderModule == null)
+                   )
                     {
-                        this.commandBuffer.DrawRenderer(r, effectMaterial);
+                        foreach (var r in activeInRangeTracker.ModelObjectModule.GetAllRenderers())
+                        {
+                            this.commandBuffer.DrawRenderer(r, effectMaterial);
+                        }
                     }
                 }
             }
         }
-
     }
 }

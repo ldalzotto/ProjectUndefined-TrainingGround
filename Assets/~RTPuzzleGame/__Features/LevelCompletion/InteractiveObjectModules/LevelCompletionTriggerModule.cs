@@ -43,20 +43,19 @@ namespace RTPuzzle
             this.RangeTypeObject.OnRangeDestroyed();
         }
 
-        public void OnRangeTriggerEnter(Collider other)
+        public void OnRangeTriggerEnter(CollisionType other)
         {
             Debug.Log(MyLog.Format("LevelCompletionTriggerModule OnTriggerEnter"));
             AskForLevelCompletionCalculation(other);
         }
 
-        public void OnRangeTriggerExit(Collider other)
+        public void OnRangeTriggerExit(CollisionType other)
         {
             AskForLevelCompletionCalculation(other);
         }
 
-        private void AskForLevelCompletionCalculation(Collider other)
+        private void AskForLevelCompletionCalculation(CollisionType CollisionType)
         {
-            var CollisionType = other.GetComponent<CollisionType>();
             if (CollisionType != null && (CollisionType.IsAI || CollisionType.IsPlayer))
             {
                 this.ILevelCompletionManagerEvent.ConditionRecalculationEvaluate();

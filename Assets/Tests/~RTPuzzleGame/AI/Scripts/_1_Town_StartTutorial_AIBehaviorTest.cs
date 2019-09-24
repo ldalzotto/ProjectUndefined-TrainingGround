@@ -30,7 +30,7 @@ namespace Tests
                        {
                            Assert.IsTrue(aiBehavior.IsManagerEnabled<AbstractAIMoveTowardPlayerManager>());
                            Assert.IsFalse(aiBehavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
-                           Assert.AreEqual(aiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().GetCurrentTarget().collider, playerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier());
+                           Assert.AreEqual(aiBehavior.GetAIManager<AbstractAIMoveTowardPlayerManager>().GetCurrentTarget().GetAssociatedCollider(), playerManagerDataRetriever.GetPlayerPuzzleLogicRootCollier());
                            return null;
                        }
                    );

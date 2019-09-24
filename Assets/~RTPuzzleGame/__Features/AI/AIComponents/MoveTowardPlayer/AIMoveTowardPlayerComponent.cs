@@ -34,7 +34,7 @@ namespace RTPuzzle
 
 #if UNITY_EDITOR
         #region Test data retrieval
-        public abstract ColliderWithCollisionType GetCurrentTarget();
+        public abstract CollisionType GetCurrentTarget();
         #endregion
 #endif
     }

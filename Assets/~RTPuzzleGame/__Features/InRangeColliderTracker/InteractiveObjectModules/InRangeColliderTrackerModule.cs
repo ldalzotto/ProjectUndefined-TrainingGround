@@ -16,6 +16,7 @@ namespace RTPuzzle
     public interface IInRangeColliderTrackerModuleDataRetriever
     {
         IObjectRepelModuleDataRetrieval GetIObjectRepelModuleDataRetrieval();
+        AILogicColliderModule GetAILogicColliderModule();
         ModelObjectModule ModelObjectModule { get; }
     }
 
@@ -25,6 +26,7 @@ namespace RTPuzzle
         #region Module Dependencies
         public ModelObjectModule ModelObjectModule { get; private set; }
         private ObjectRepelModule ObjectRepelModule;
+        private AILogicColliderModule AILogicColliderModule;
         #endregion
 
         #region External Dependencies
@@ -33,6 +35,7 @@ namespace RTPuzzle
         
         #region IInRangeColliderTrackerModuleDataRetriever
         public IObjectRepelModuleDataRetrieval GetIObjectRepelModuleDataRetrieval() { return this.ObjectRepelModule; }
+        public AILogicColliderModule GetAILogicColliderModule() { return this.AILogicColliderModule; }
         #endregion
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
@@ -41,6 +44,7 @@ namespace RTPuzzle
             #region Module Dependencies
             this.ModelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
             this.ObjectRepelModule = IInteractiveObjectTypeDataRetrieval.GetObjectRepelModule();
+            this.AILogicColliderModule = IInteractiveObjectTypeDataRetrieval.GetAILogicColliderModule();
             #endregion
 
             IInteractiveObjectTypeDataRetrieval.GetAILogicColliderModule().AddListener(this);

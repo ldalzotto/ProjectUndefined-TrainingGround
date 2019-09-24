@@ -68,12 +68,15 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        public bool IsPointOccludedByObstacles(ObstacleListener ObstacleListener, Vector3 worldPositionPoint)
+        public bool IsPointOccludedByObstacles(ObstacleListener ObstacleListener, Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
             if (Vector3.Distance(ObstacleListener.transform.position, worldPositionPoint) <= ObstacleListener.Radius)
             {
-                ForceCalculationIfNecessary(ObstacleListener);
-
+                if (forceObstacleOcclusionIfNecessary)
+                {
+                    ForceCalculationIfNecessary(ObstacleListener);
+                }
+                
                 foreach (var obstacleResultEntry in this.calculationResults[ObstacleListener].Values)
                 {
                     foreach (var calculatedFrustumPosition in obstacleResultEntry.CalculatedFrustumPositions)
@@ -90,10 +93,13 @@ namespace RTPuzzle
         }
 
         //A boxcollider is considered occluded by obstacles if it's eight corner points are occluded by obstacle frustums
-        public bool IsPointOccludedByObstacles(ObstacleListener ObstacleListener, BoxCollider boxCollider)
+        public bool IsPointOccludedByObstacles(ObstacleListener ObstacleListener, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            this.ForceCalculationIfNecessary(ObstacleListener);
-
+            if (forceObstacleOcclusionIfNecessary)
+            {
+                this.ForceCalculationIfNecessary(ObstacleListener);
+            }
+            
             Intersection.ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
             var boxPointsOcclusionStatus = new List<BoxPointOccludedStatus>() {
                 new BoxPointOccludedStatus(BC1),new BoxPointOccludedStatus(BC2),new BoxPointOccludedStatus(BC3),new BoxPointOccludedStatus(BC4),new BoxPointOccludedStatus(BC5),new BoxPointOccludedStatus(BC6)
@@ -221,7 +227,7 @@ namespace RTPuzzle
             //If calculation is waiting, we trigger sync calculation
             if (this.calculationResults[ObstacleListener].Values.Count == 0 || this.calculationResults[ObstacleListener].Values.ToList().Select(result => result).Where(result => result.CalculationAsked()).Count() > 0)
             {
-                //Debug.Log(MyLog.Format("Forced obstacle listener calculation : " + ObstacleListener.name));
+                Debug.Log(MyLog.Format("Forced obstacle listener calculation : " + ObstacleListener.name));
                 this.UpdateSquareObstaclesOfListener(ObstacleListener, async: false);
             }
         }

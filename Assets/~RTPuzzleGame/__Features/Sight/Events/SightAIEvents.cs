@@ -4,26 +4,26 @@ namespace RTPuzzle
 {
     public class SightInRangeEnterAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
-        private ColliderWithCollisionType colliderWithCollisionType;
+        private CollisionType collisionType;
 
-        public SightInRangeEnterAIBehaviorEvent(ColliderWithCollisionType colliderWithCollisionType)
+        public SightInRangeEnterAIBehaviorEvent(CollisionType CollisionType)
         {
-            this.colliderWithCollisionType = colliderWithCollisionType;
+            this.collisionType = CollisionType;
         }
 
-        public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
+        public CollisionType CollisionType { get => collisionType; }
     }
 
     public class SightInRangeExitAIBehaviorEvent : PuzzleAIBehaviorExternalEvent
     {
-        private ColliderWithCollisionType colliderWithCollisionType;
+        private CollisionType collisionType;
 
-        public SightInRangeExitAIBehaviorEvent(ColliderWithCollisionType colliderWithCollisionType)
+        public SightInRangeExitAIBehaviorEvent(CollisionType CollisionType)
         {
-            this.colliderWithCollisionType = colliderWithCollisionType;
+            this.collisionType = CollisionType;
         }
 
-        public ColliderWithCollisionType ColliderWithCollisionType { get => colliderWithCollisionType; }
+        public CollisionType CollisionType { get => collisionType; }
     }
 
 

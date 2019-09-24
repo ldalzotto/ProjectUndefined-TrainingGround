@@ -8,7 +8,7 @@ namespace RTPuzzle
 
         #region State
         protected bool playerInSight;
-        protected ColliderWithCollisionType currentTarget;
+        protected CollisionType currentTarget;
         private Vector3? currentDestination;
         #endregion
 
@@ -36,10 +36,10 @@ namespace RTPuzzle
 
         public override bool OnSightInRangeEnter(SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
         {
-            if (sightInRangeEnterAIBehaviorEvent.ColliderWithCollisionType.collisionType.IsPlayer)
+            if (sightInRangeEnterAIBehaviorEvent.CollisionType.IsPlayer)
             {
                 this.playerInSight = true;
-                this.currentTarget = sightInRangeEnterAIBehaviorEvent.ColliderWithCollisionType;
+                this.currentTarget = sightInRangeEnterAIBehaviorEvent.CollisionType;
                 return true;
             }
             return false;
@@ -47,7 +47,7 @@ namespace RTPuzzle
 
         public override void OnSightInRangeExit(SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
         {
-            if (sightInRangeExitAIBehaviorEvent.ColliderWithCollisionType.collisionType.IsPlayer)
+            if (sightInRangeExitAIBehaviorEvent.CollisionType.IsPlayer)
             {
                 this.playerInSight = false;
                 this.currentTarget = null;
@@ -59,7 +59,7 @@ namespace RTPuzzle
             this.AIObjectTypeSpeedSetter.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);
             if (this.playerInSight && this.currentTarget != null)
             {
-                this.currentDestination = this.currentTarget.collider.transform.position;
+                this.currentDestination = this.currentTarget.GetAssociatedCollider().transform.position;
             }
             NPCAIDestinationContext.TargetPosition = this.currentDestination;
         }
@@ -75,7 +75,7 @@ namespace RTPuzzle
 
 #if UNITY_EDITOR
         #region Test data retrieval
-        public override ColliderWithCollisionType GetCurrentTarget() { return this.currentTarget; }
+        public override CollisionType GetCurrentTarget() { return this.currentTarget; }
         #endregion
 #endif
     }
