@@ -34,7 +34,7 @@ namespace AdventureGame
         public PointOfInterestType AssociatedPOI { get => associatedPOI; }
         public ItemID ItemInvolved { get => itemInvolved; }
 
-        public GrabAction(ItemID itemId, bool deletePOIOnGrab, List<SequencedAction> nextContextActions, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextContextActions, SelectionWheelNodeConfigurationId)
+        public GrabAction(ItemID itemId, bool deletePOIOnGrab, List<SequencedAction> nextContextActions) : base(nextContextActions)
         {
             this.itemInvolved = itemId;
             this.deletePOIOnGrab = deletePOIOnGrab;

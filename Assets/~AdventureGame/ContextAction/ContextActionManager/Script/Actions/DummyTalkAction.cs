@@ -1,6 +1,5 @@
 ﻿
 using CoreGame;
-using GameConfigurationID;
 using System.Collections.Generic;
 
 namespace AdventureGame
@@ -10,7 +9,7 @@ namespace AdventureGame
     public class DummyTalkAction : AContextAction
     {
 
-        public DummyTalkAction(List<SequencedAction> nextContextActions, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextContextActions, SelectionWheelNodeConfigurationId) { }
+        public DummyTalkAction(List<SequencedAction> nextContextActions) : base(nextContextActions) { }
 
         public override void AfterFinishedEventProcessed()
         {

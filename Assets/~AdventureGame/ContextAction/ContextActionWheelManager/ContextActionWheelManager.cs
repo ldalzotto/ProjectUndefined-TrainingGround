@@ -87,6 +87,7 @@ namespace AdventureGame
             return this.WheelActivityManager.IsEnabled;
         }
         #endregion
+
     }
 
 
@@ -174,7 +175,7 @@ namespace AdventureGame
         PLAYER, INVENTORY_MENU
     }
     #endregion
-
+    
     #region Wheel node Context Action data
     public class ContextActionSelectionWheelNodeData : SelectionWheelNodeData
     {
@@ -192,9 +193,9 @@ namespace AdventureGame
         public override int GetRemainingExecutionAmount => -2;
         public override bool CanNodeBeExecuted => true;
 
-        public override string NodeText => nodeContextAction.GetActionDescription();
+        public override Sprite NodeSprite => this.nodeContextAction.GetIconSprite();
 
-        public override Sprite NodeSprite => nodeContextAction.GetIconSprite();
+        public override string NodeText => this.nodeContextAction.GetActionDescription();
     }
     #endregion
 }

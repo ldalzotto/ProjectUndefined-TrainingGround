@@ -41,7 +41,7 @@ namespace Editor_GameDesigner
                 //ConfigurationModule
                 var configurationIDType = configurationSerializationClass.BaseType.GetGenericArguments()[0];
                 var inherentDataType = configurationSerializationClass.BaseType.GetGenericArguments()[1];
-                
+
                 var configurationModuleType = typeof(ConfigurationModule<,,>);
                 configurationModuleType = configurationModuleType.MakeGenericType(new Type[] { configurationSerializationClass, configurationIDType, inherentDataType });
 

@@ -16,8 +16,6 @@ namespace AdventureGame
         [CustomEnum()]
         [SerializeField]
         public DiscussionTreeId DiscussionTreeID;
-        [SerializeField]
-        private SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
 
         [NonSerialized]
         private bool discussionEnded = false;
@@ -39,7 +37,7 @@ namespace AdventureGame
         {
             this.discussionEnded = false;
             var cutsceneActionInput = (CutsceneActionInput)ContextActionInput;
-            cutsceneActionInput.ContextActionEventManager.OnContextActionAdd(new TalkAction(this.DiscussionTreeID, null, this.SelectionWheelNodeConfigurationId), this);
+            cutsceneActionInput.ContextActionEventManager.OnContextActionAdd(new TalkAction(this.DiscussionTreeID, null), this);
         }
 
         public void OnContextActionFinished(AContextAction contextAction)
@@ -56,7 +54,6 @@ namespace AdventureGame
         public override void ActionGUI()
         {
             this.DiscussionTreeID = (DiscussionTreeId)NodeEditorGUILayout.EnumField("Discussion : ", string.Empty, this.DiscussionTreeID);
-            this.SelectionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel node ID : ", string.Empty, this.SelectionWheelNodeConfigurationId);
         }
 #endif
     }

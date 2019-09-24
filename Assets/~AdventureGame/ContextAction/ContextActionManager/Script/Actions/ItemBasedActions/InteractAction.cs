@@ -16,7 +16,7 @@ namespace AdventureGame
         [NonSerialized]
         private bool InteractionResolved;
 
-        public ItemInteractAction(ItemID involvedItem, List<SequencedAction> nextActionInteractionAllowed, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextActionInteractionAllowed, SelectionWheelNodeConfigurationId)
+        public ItemInteractAction(ItemID involvedItem, List<SequencedAction> nextActionInteractionAllowed) : base(nextActionInteractionAllowed)
         {
             this.involvedItem = involvedItem;
         }

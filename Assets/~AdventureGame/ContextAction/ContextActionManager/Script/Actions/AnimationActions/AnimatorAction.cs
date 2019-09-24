@@ -16,7 +16,7 @@ namespace AdventureGame
         [NonSerialized]
         private bool animationEnded;
 
-        public AnimatorAction(AnimationID animationID, List<SequencedAction> nextContextAction, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextContextAction, SelectionWheelNodeConfigurationId)
+        public AnimatorAction(AnimationID animationID, List<SequencedAction> nextContextAction) : base(nextContextAction)
         {
             this.animationID = animationID;
         }

@@ -36,8 +36,7 @@ namespace AdventureGame
 
         public CutsceneId CutsceneId { get => cutsceneId; }
 
-        public CutsceneTimelineAction(SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId, 
-            CutsceneId cutsceneId, List<SequencedAction> nextContextActions, bool destroyPOIAtEnd = false) : base(nextContextActions, SelectionWheelNodeConfigurationId)
+        public CutsceneTimelineAction(CutsceneId cutsceneId, List<SequencedAction> nextContextActions, bool destroyPOIAtEnd = false) : base(nextContextActions)
         {
             this.cutsceneId = cutsceneId;
             this.DestroyPOIAtEnd = destroyPOIAtEnd;

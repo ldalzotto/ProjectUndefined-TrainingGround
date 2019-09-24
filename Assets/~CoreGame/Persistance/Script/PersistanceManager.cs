@@ -31,6 +31,11 @@ namespace CoreGame
                 CoreGameSingletonInstances.AutoSaveIcon.OnSaveEnd();
                 this.NoMorePersistanceEvent = false;
             }
+            if (this.PersistanceManagerThreadObject.IsInError)
+            {
+                Debug.LogError(this.PersistanceManagerThreadObject.ErrorOccured);
+            }
+
         }
 
         #region External Event
@@ -78,6 +83,12 @@ namespace CoreGame
         private Queue<Action> persistQueueActions;
 
         private Action OnNoMorePersistanceProcessingCallback;
+        
+        private bool isInError;
+        private Exception errorOccured;
+
+        public bool IsInError { get => isInError; }
+        public Exception ErrorOccured { get => errorOccured; }
 
         public PersistanceManagerThreadObject(Action OnNoMorePersistanceProcessingCallback)
         {
@@ -128,7 +139,16 @@ namespace CoreGame
             }
             else
             {
-                this.OnNoMorePersistanceProcessingCallback.Invoke();
+                try
+                {
+                    this.OnNoMorePersistanceProcessingCallback.Invoke();
+                }
+                catch (Exception e)
+                {
+                    this.isInError = true;
+                    this.errorOccured = e;
+                }
+                
                 this.executingActions = false;
             }
         }

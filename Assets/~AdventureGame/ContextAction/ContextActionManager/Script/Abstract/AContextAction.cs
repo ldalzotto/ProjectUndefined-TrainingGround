@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,15 +12,11 @@ namespace AdventureGame
     {
         [SerializeField]
         [CustomEnum(ConfigurationType = typeof(SelectionWheelNodeConfiguration))]
-        public SelectionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId;
+        public SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
 
-        private SelectionWheelNodeConfigurationData selectionWheelNodeConfigurationData;
-
-        public AContextAction(List<SequencedAction> nextActions, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextActions)
+        public AContextAction(List<SequencedAction> nextActions) : base(nextActions)
         {
             var selectionWheelNodeConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration;
-            this.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId;
-            this.selectionWheelNodeConfigurationData = selectionWheelNodeConfiguration.ConfigurationInherentData[this.ContextActionWheelNodeConfigurationId];
         }
 
         #region Logical Conditions
@@ -30,8 +27,8 @@ namespace AdventureGame
         #endregion
 
         #region Data Retrieval
-        public Sprite GetIconSprite() { return this.selectionWheelNodeConfigurationData.WheelNodeIcon; }
-        public string GetActionDescription() { return this.selectionWheelNodeConfigurationData.DescriptionText; }
+        public Sprite GetIconSprite() { return CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData[this.contextActionWheelNodeConfigurationId].WheelNodeIcon; }
+        public string GetActionDescription() { return CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData[this.contextActionWheelNodeConfigurationId].DescriptionText; }
         #endregion
     }
 
