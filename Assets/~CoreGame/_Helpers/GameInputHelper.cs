@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.InputSystem;
+﻿using UnityEngine.InputSystem;
 
 namespace CoreGame
 {
-    public static class GameInputHelper 
+    public static class GameInputHelper
     {
         public static InputImageTypeInstanceType GetInputImageType(InputConfigurationInherentData inputConfigurationInherentData)
         {
@@ -26,6 +24,14 @@ namespace CoreGame
                     else if (mouseAttributedButton == MouseButton.RIGHT_BUTTON)
                     {
                         InputImageTypeInstanceType = InputImageTypeInstanceType.RIGHT_MOUSE;
+                    }
+                }
+                else
+                {
+                    var scrollAttributedButton = inputConfigurationInherentData.GetAssociatedMouseScroll();
+                    if(scrollAttributedButton!= MouseScroll.NONE)
+                    {
+                        InputImageTypeInstanceType = InputImageTypeInstanceType.SCROLL;
                     }
                 }
             }

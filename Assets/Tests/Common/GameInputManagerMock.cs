@@ -39,7 +39,7 @@ namespace Tests
         public bool actionButtonD = false;
         public bool timeForwardButtonDH = false;
         public Vector3 locomotionAxis = Vector3.zero;
-        
+
         #region Interface implementation
         public bool ActionButtonD()
         {
@@ -94,6 +94,11 @@ namespace Tests
         public bool TimeForwardButtonDH()
         {
             return this.timeForwardButtonDH;
+        }
+
+        public float CameraZoom()
+        {
+            return 0f;
         }
         #endregion
     }

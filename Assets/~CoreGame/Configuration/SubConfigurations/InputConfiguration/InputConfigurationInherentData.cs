@@ -12,6 +12,7 @@ namespace CoreGame
         public List<Key> AttributedKeys;
         [ReorderableListAttribute]
         public List<MouseButton> AttributedMouseButtons;
+        public MouseScroll AttributedMouseScroll;
         public bool Down;
         public bool DownHold;
 
@@ -31,6 +32,11 @@ namespace CoreGame
                 return this.AttributedMouseButtons[0];
             }
             return MouseButton.NONE;
+        }
+
+        public MouseScroll GetAssociatedMouseScroll()
+        {
+            return this.AttributedMouseScroll;
         }
     }
 

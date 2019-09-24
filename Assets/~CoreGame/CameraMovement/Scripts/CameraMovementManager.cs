@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CoreGame
 {
@@ -9,6 +8,7 @@ namespace CoreGame
 
         private CameraFollowManager CameraFollowManager;
         private CameraOrientationManager CameraOrientationManager;
+        private CameraZoomManager CameraZoomManager;
 
         public void Init()
         {
@@ -17,12 +17,14 @@ namespace CoreGame
 
             this.CameraFollowManager = new CameraFollowManager(playerPosition, cameraPivotPoint, CameraFollowManagerComponent);
             this.CameraOrientationManager = new CameraOrientationManager(cameraPivotPoint, CoreGameSingletonInstances.GameInputManager, CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreInputConfiguration);
+            this.CameraZoomManager = new CameraZoomManager(Camera.main, CoreGameSingletonInstances.GameInputManager);
         }
 
         public void Tick(float d)
         {
             this.CameraFollowManager.Tick(d);
             this.CameraOrientationManager.Tick(d);
+            this.CameraZoomManager.Tick(d);
         }
 
         #region External Events
@@ -126,7 +128,7 @@ namespace CoreGame
                 float deltaAngle = Mathf.Lerp(initialY, this.targetAngle, 0.1f) - initialY;
                 rotationVector = new Vector3(0, Mathf.Abs(deltaAngle) * Mathf.Sign(this.targetAngle - initialY), 0);
             }
-            else if(this.inputEnabled)
+            else if (this.inputEnabled)
             {
                 rotationVector = new Vector3(0, (gameInputManager.CurrentInput.LeftRotationCameraDH() - gameInputManager.CurrentInput.RightRotationCameraDH()) * d, 0);
             }
@@ -161,6 +163,40 @@ namespace CoreGame
         public void EnableInput()
         {
             this.inputEnabled = true;
+        }
+    }
+
+    public class CameraZoomManager
+    {
+        private Camera camera;
+        private IGameInputManager IGameInputManager;
+
+        private float TargetSize;
+
+        private float MinCameraSize = 35f;
+        private float MaxCameraSize = 70f;
+
+        public CameraZoomManager(Camera camera, IGameInputManager gameInputManager)
+        {
+            this.camera = camera;
+            this.IGameInputManager = gameInputManager;
+            this.TargetSize = camera.orthographicSize;
+        }
+
+        public void Tick(float d)
+        {
+            var zoomDelta = -1 * this.IGameInputManager.CurrentInput.CameraZoom() * d;
+            if (zoomDelta != 0f)
+            {
+                this.TargetSize = Mathf.Clamp(this.TargetSize + zoomDelta, this.MinCameraSize, this.MaxCameraSize);
+            }
+            if (this.TargetSize != this.camera.orthographicSize)
+            {
+                this.camera.orthographicSize = Mathf.Lerp(this.camera.orthographicSize, this.TargetSize, d * 4f);
+            } else
+            {
+                this.camera.orthographicSize = this.TargetSize;
+            }
         }
     }
 }

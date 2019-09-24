@@ -81,6 +81,7 @@ namespace CoreGame
         NONE = 0,
         KEY = 1,
         LEFT_MOUSE = 2,
-        RIGHT_MOUSE = 3
+        RIGHT_MOUSE = 3,
+        SCROLL = 4
     }
 }

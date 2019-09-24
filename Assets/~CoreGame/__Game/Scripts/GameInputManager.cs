@@ -123,6 +123,11 @@ namespace CoreGame
             {
                 return this.gameInputV2.InputConditionsMet(InputID.SWITCH_SELECTION_DOWN);
             }
+
+            public float CameraZoom()
+            {
+                return this.gameInputV2.InputConditionsMetFloat(InputID.CAMERA_ZOOM);
+            }
         }
 
         #region Data Retrieval
@@ -142,6 +147,7 @@ namespace CoreGame
     {
         private Dictionary<Key, KeyControl> keyToKeyControlLookup;
         private Dictionary<MouseButton, ButtonControl> mouseButtonControlLookup;
+        private Dictionary<MouseScroll, Vector2Control> mouseScrollControlLookup;
 
         private InputConfiguration InputConfiguration;
 
@@ -149,6 +155,7 @@ namespace CoreGame
         {
             this.keyToKeyControlLookup = new Dictionary<Key, KeyControl>();
             this.mouseButtonControlLookup = new Dictionary<MouseButton, ButtonControl>();
+            this.mouseScrollControlLookup = new Dictionary<MouseScroll, Vector2Control>();
 
             foreach (var keyBoardKeyControl in Keyboard.current.allKeys)
             {
@@ -156,6 +163,7 @@ namespace CoreGame
             }
             this.mouseButtonControlLookup[MouseButton.LEFT_BUTTON] = Mouse.current.leftButton;
             this.mouseButtonControlLookup[MouseButton.RIGHT_BUTTON] = Mouse.current.rightButton;
+            this.mouseScrollControlLookup[MouseScroll.SCROLL] = Mouse.current.scroll;
 
             InputConfiguration = inputConfiguration;
         }
@@ -165,32 +173,46 @@ namespace CoreGame
 
         public bool InputConditionsMet(InputID inputID)
         {
-            bool inputConditionsMet = false;
+            return Convert.ToBoolean(InputConditionsMetFloat(inputID));
+        }
+
+        public float InputConditionsMetFloat(InputID inputID)
+        {
+            float inputConditionsMet = 0f;
             if (Application.isFocused)
             {
                 var inputConfigurationInherentData = this.InputConfiguration.ConfigurationInherentData[inputID];
+
+                if(inputConfigurationInherentData.AttributedMouseScroll != MouseScroll.NONE)
+                {
+                    inputConditionsMet = this.mouseScrollControlLookup[inputConfigurationInherentData.AttributedMouseScroll].y.ReadValue();
+                    if (inputConditionsMet != 0f) { return inputConditionsMet; }
+                }
+
                 foreach (var attibutedKey in inputConfigurationInherentData.AttributedKeys)
                 {
                     if (inputConfigurationInherentData.Down)
                     {
-                        inputConditionsMet = inputConditionsMet || this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame;
+                        inputConditionsMet = Convert.ToSingle(this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame);
                     }
                     else if (inputConfigurationInherentData.DownHold)
                     {
-                        inputConditionsMet = inputConditionsMet || this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame || this.keyToKeyControlLookup[attibutedKey].isPressed;
+                        inputConditionsMet = Convert.ToSingle(this.keyToKeyControlLookup[attibutedKey].wasPressedThisFrame || this.keyToKeyControlLookup[attibutedKey].isPressed);
                     }
+                    if (inputConditionsMet != 0f) { return inputConditionsMet; }
                 }
 
                 foreach (var attrubuteMouseButton in inputConfigurationInherentData.AttributedMouseButtons)
                 {
                     if (inputConfigurationInherentData.Down)
                     {
-                        inputConditionsMet = inputConditionsMet || this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame;
+                        inputConditionsMet = Convert.ToSingle(this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame);
                     }
                     else if (inputConfigurationInherentData.DownHold)
                     {
-                        inputConditionsMet = inputConditionsMet || this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame || this.mouseButtonControlLookup[attrubuteMouseButton].isPressed;
+                        inputConditionsMet = Convert.ToSingle(this.mouseButtonControlLookup[attrubuteMouseButton].wasPressedThisFrame || this.mouseButtonControlLookup[attrubuteMouseButton].isPressed);
                     }
+                    if (inputConditionsMet != 0f) { return inputConditionsMet; }
                 }
             }
             return inputConditionsMet;
@@ -210,6 +232,7 @@ namespace CoreGame
         bool TimeForwardButtonDH();
         bool PuzzleResetButton();
         bool SwitchSelectionButtonD();
+        float CameraZoom();
     }
 
     public enum MouseButton
@@ -217,5 +240,11 @@ namespace CoreGame
         NONE = 0,
         LEFT_BUTTON = 1,
         RIGHT_BUTTON = 2
+    }
+
+    public enum MouseScroll
+    {
+        NONE = 0,
+        SCROLL = 1
     }
 }
