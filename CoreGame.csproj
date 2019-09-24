@@ -128,7 +128,6 @@
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\CoreConfigurationManager.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\GameConfiguration.cs" />
-    <Compile Include="Assets\~CoreGame\Configuration\GlobalConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\CoreStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\StaticConfiguration\SubConfiguration\CoreMaterialConfiguration\CoreMaterialConfiguration.cs" />
@@ -148,6 +147,8 @@
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelHierarchyConfiguration\LevelHierarchyConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\LevelZonesSceneConfiguration\LevelZonesSceneConfigurationData.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
+    <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TimelineConfiguration\TimelineConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepConfiguration.cs" />
     <Compile Include="Assets\~CoreGame\Configuration\SubConfigurations\TutorialStepConfiguration\TutorialStepInherentData.cs" />

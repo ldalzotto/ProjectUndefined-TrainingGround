@@ -16,6 +16,7 @@ namespace CoreGame
         public InputConfiguration InputConfiguration;
         public DiscussionTextConfiguration DiscussionTextConfiguration;
         public TutorialStepConfiguration TutorialStepConfiguration;
+        public SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
     }
 }
 

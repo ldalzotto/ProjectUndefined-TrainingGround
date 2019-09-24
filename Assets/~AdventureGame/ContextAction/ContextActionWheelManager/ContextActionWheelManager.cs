@@ -72,7 +72,7 @@ namespace AdventureGame
         #region External Events
         public void OnAwakeWheel(List<AContextAction> contextActions, WheelTriggerSource wheelTriggerSource, PointOfInterestType currentTargetedPOI)
         {
-            ContextActionWheel.Init(contextActions.ConvertAll(contextAction => new ContextActionSelectionWheelNodeData(contextAction) as SelectionWheelNodeData), ResolveWheelNodeSpriteFromNodeData);
+            ContextActionWheel.Init(contextActions.ConvertAll(contextAction => new ContextActionSelectionWheelNodeData(contextAction) as SelectionWheelNodeData));
             WheelActivityManager.AwakeWheel(wheelTriggerSource);
         }
         public void SleepWheel()
@@ -87,11 +87,6 @@ namespace AdventureGame
             return this.WheelActivityManager.IsEnabled;
         }
         #endregion
-
-        private Sprite ResolveWheelNodeSpriteFromNodeData(SelectionWheelNodeData selectionWheelNodeData)
-        {
-            return SelectionWheelNodeConfiguration.selectionWheelNodeConfiguration[(selectionWheelNodeData.Data as AContextAction).ContextActionWheelNodeConfigurationId].ContextActionWheelIcon;
-        }
     }
 
 
@@ -179,7 +174,7 @@ namespace AdventureGame
         PLAYER, INVENTORY_MENU
     }
     #endregion
-    
+
     #region Wheel node Context Action data
     public class ContextActionSelectionWheelNodeData : SelectionWheelNodeData
     {
@@ -196,6 +191,10 @@ namespace AdventureGame
         public override float GetRemainingCooldownTime => 0f;
         public override int GetRemainingExecutionAmount => -2;
         public override bool CanNodeBeExecuted => true;
+
+        public override string NodeText => nodeContextAction.GetActionDescription();
+
+        public override Sprite NodeSprite => nodeContextAction.GetIconSprite();
     }
     #endregion
 }

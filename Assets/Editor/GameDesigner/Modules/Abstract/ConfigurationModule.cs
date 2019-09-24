@@ -26,6 +26,7 @@ namespace Editor_GameDesigner
 
         public void OnEnabled()
         {
+            Debug.Log("t:" + typeof(CONFIGURATION).Name);
             this.configurationEditor = new GenericConfigurationEditor<ID, VALUE>("t:" + typeof(CONFIGURATION).Name);
         }
 

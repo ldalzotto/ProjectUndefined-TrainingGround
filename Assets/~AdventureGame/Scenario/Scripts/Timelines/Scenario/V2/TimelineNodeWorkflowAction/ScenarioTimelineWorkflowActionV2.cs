@@ -22,6 +22,8 @@ namespace AdventureGame
         private AnimationID playerAnimation = AnimationID.ACTION_GRAB_DOWN;
         [SerializeField]
         private CutsceneId cutsceneId;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
 
         #region Editor related
         [SerializeField]
@@ -38,13 +40,13 @@ namespace AdventureGame
                 AContextAction action = null;
                 if (this.isAnimation)
                 {
-                    action = new AnimatorAction(this.playerAnimation, null);
+                    action = new AnimatorAction(this.playerAnimation, null, this.SelectionWheelNodeConfigurationId);
                 }
                 else if (this.isCutscene)
                 {
-                    action = new CutsceneTimelineAction(this.cutsceneId, null, false);
+                    action = new CutsceneTimelineAction(this.SelectionWheelNodeConfigurationId, this.cutsceneId, null, false);
                 }
-                action.SetNextContextAction(new List<SequencedAction>() { new GrabAction(this.itemInvolved, this.destroyPOIAtEnd, null) });
+                action.SetNextContextAction(new List<SequencedAction>() { new GrabAction(this.itemInvolved, this.destroyPOIAtEnd, null, this.SelectionWheelNodeConfigurationId) });
                 action.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GRAB_CONTEXT_ACTION_WHEEL_CONFIG;
                 foundedPoi.OnItemRelatedContextActionAdd(itemInvolved, action);
             }
@@ -53,6 +55,7 @@ namespace AdventureGame
 #if UNITY_EDITOR
         public override void ActionGUI()
         {
+            this.SelectionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel node ID : ", string.Empty, this.SelectionWheelNodeConfigurationId);
             this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("to POI : ", string.Empty, this.poiInvolved);
             this.itemInvolved = (ItemID)NodeEditorGUILayout.EnumField("add ITEM : ", string.Empty, this.itemInvolved);
             this.destroyPOIAtEnd = NodeEditorGUILayout.BoolField("destroy at end : ", string.Empty, this.destroyPOIAtEnd);
@@ -110,13 +113,15 @@ namespace AdventureGame
         private ItemID itemInvolved;
         [SerializeField]
         private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
 
         public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
             {
-                foundedPoi.OnContextActionAdd(new GiveAction(this.itemInvolved, null));
+                foundedPoi.OnContextActionAdd(new GiveAction(this.itemInvolved, null, this.SelectionWheelNodeConfigurationId));
             }
         }
 
@@ -125,6 +130,7 @@ namespace AdventureGame
         {
             this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("from POI : ", string.Empty, this.poiInvolved);
             this.itemInvolved = (ItemID)NodeEditorGUILayout.EnumField("given ITEM : ", string.Empty, this.itemInvolved);
+            this.SelectionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel node ID : ", string.Empty, this.SelectionWheelNodeConfigurationId);
         }
 #endif
     }
@@ -244,6 +250,9 @@ namespace AdventureGame
         private CutsceneId cutsceneId;
         [SerializeField]
         private bool destroyPOIAtEnd;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
+
 
         public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
         {
@@ -251,7 +260,7 @@ namespace AdventureGame
             if (foundedPoi != null)
             {
                 var action = new ItemInteractAction(this.itemInvolved,
-                  new List<SequencedAction>() { new CutsceneTimelineAction(this.cutsceneId, null, this.destroyPOIAtEnd) });
+                  new List<SequencedAction>() { new CutsceneTimelineAction(this.SelectionWheelNodeConfigurationId, this.cutsceneId, null, this.destroyPOIAtEnd) }, this.SelectionWheelNodeConfigurationId);
                 foundedPoi.OnContextActionAdd(action);
             }
         }
@@ -263,6 +272,7 @@ namespace AdventureGame
             this.itemInvolved = (ItemID)NodeEditorGUILayout.EnumField("with ITEM : ", string.Empty, this.itemInvolved);
             this.cutsceneId = (CutsceneId)NodeEditorGUILayout.EnumField("with CUTESCENE : ", string.Empty, this.cutsceneId);
             this.destroyPOIAtEnd = NodeEditorGUILayout.BoolField("destroy at end : ", string.Empty, this.destroyPOIAtEnd);
+            this.SelectionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel node ID : ", string.Empty, this.SelectionWheelNodeConfigurationId);
         }
 #endif
     }
@@ -274,13 +284,15 @@ namespace AdventureGame
         private LevelZonesID nextLevelZone;
         [SerializeField]
         private PointOfInterestId poiInvolved;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
 
         public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, ScenarioTimelineNodeID> timelineNodeRefence)
         {
             var foundedPoi = GhostsPOIManager.GetGhostPOI(poiInvolved);
             if (foundedPoi != null)
             {
-                foundedPoi.OnLevelZoneTransitionAdd(nextLevelZone, new LevelZoneTransitionAction(this.nextLevelZone));
+                foundedPoi.OnLevelZoneTransitionAdd(nextLevelZone, new LevelZoneTransitionAction(this.nextLevelZone, this.SelectionWheelNodeConfigurationId));
             }
         }
 
@@ -289,6 +301,7 @@ namespace AdventureGame
         {
             this.nextLevelZone = (LevelZonesID)NodeEditorGUILayout.EnumField("LEVEL : ", string.Empty, this.nextLevelZone);
             this.poiInvolved = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.poiInvolved);
+            this.SelectionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel node ID : ", string.Empty, this.SelectionWheelNodeConfigurationId);
         }
 #endif
     }

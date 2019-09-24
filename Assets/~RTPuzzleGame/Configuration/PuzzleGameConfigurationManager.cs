@@ -37,10 +37,6 @@ namespace RTPuzzle
         {
             return PuzzleGameConfiguration.LevelConfiguration.ConfigurationInherentData;
         }
-        public Dictionary<SelectionWheelNodeConfigurationId, SelectionWheelNodeConfigurationData> SelectionWheelNodeConfiguration()
-        {
-            return PuzzleGameConfiguration.SelectionWheelNodeConfiguration.ConfigurationInherentData;
-        }
 
         public Dictionary<RangeTypeID, RangeTypeInherentConfigurationData> RangeTypeConfiguration()
         {

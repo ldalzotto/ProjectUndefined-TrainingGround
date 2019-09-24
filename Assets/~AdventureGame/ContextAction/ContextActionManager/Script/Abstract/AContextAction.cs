@@ -1,6 +1,5 @@
 ﻿using CoreGame;
 using GameConfigurationID;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,19 +10,28 @@ namespace AdventureGame
     public abstract class AContextAction : SequencedAction
     {
         [SerializeField]
-        protected SelectionWheelNodeConfigurationId contextActionWheelNodeConfigurationId;
+        [CustomEnum(ConfigurationType = typeof(SelectionWheelNodeConfiguration))]
+        public SelectionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId;
 
-        public AContextAction(List<SequencedAction> nextActions) : base(nextActions)
+        private SelectionWheelNodeConfigurationData selectionWheelNodeConfigurationData;
+
+        public AContextAction(List<SequencedAction> nextActions, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextActions)
         {
+            var selectionWheelNodeConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration;
+            this.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId;
+            this.selectionWheelNodeConfigurationData = selectionWheelNodeConfiguration.ConfigurationInherentData[this.ContextActionWheelNodeConfigurationId];
         }
-
-        public SelectionWheelNodeConfigurationId ContextActionWheelNodeConfigurationId { get => contextActionWheelNodeConfigurationId; set => contextActionWheelNodeConfigurationId = value; }
 
         #region Logical Conditions
         public bool IsTalkAction()
         {
             return GetType() == typeof(TalkAction);
         }
+        #endregion
+
+        #region Data Retrieval
+        public Sprite GetIconSprite() { return this.selectionWheelNodeConfigurationData.WheelNodeIcon; }
+        public string GetActionDescription() { return this.selectionWheelNodeConfigurationData.DescriptionText; }
         #endregion
     }
 

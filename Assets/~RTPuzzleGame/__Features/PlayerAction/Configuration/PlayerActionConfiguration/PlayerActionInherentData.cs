@@ -1,4 +1,5 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -6,12 +7,13 @@ namespace RTPuzzle
     [System.Serializable]
     public abstract class PlayerActionInherentData : ScriptableObject
     {
-        [CustomEnum()]
+        [CustomEnum(ConfigurationType = typeof(SelectionWheelNodeConfiguration))]
         public SelectionWheelNodeConfigurationId ActionWheelNodeConfigurationId;
+
         public float CoolDownTime;
         [Tooltip("Number of times the action can be executed. -1 is infinite. -2 is not displayed")]
         public int ExecutionAmount = -1;
-
+        
         public PlayerActionInherentData() { }
         protected PlayerActionInherentData(SelectionWheelNodeConfigurationId actionWheelNodeConfigurationId, float coolDownTime)
         {

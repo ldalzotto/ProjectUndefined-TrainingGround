@@ -15,11 +15,13 @@ namespace AdventureGame
         private PointOfInterestId PointOfInterestId;
         [SerializeField]
         private DiscussionTreeId DiscussionTreeId;
+        [SerializeField]
+        private SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId;
 
         public override void Execute(GhostsPOIManager GhostsPOIManager, TimelineNodeV2<GhostsPOIManager, DiscussionTimelineNodeID> timelineNodeRefence)
         {
             var selectedPOI = GhostsPOIManager.GetGhostPOI(PointOfInterestId);
-            var talkAction = new TalkAction(this.DiscussionTreeId, null);
+            var talkAction = new TalkAction(this.DiscussionTreeId, null, this.SelectionWheelNodeConfigurationId);
             talkAction.ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.TALK_CONTEXT_ACTION_WHEEL_CONFIG;
             if (selectedPOI != null)
             {
@@ -32,6 +34,7 @@ namespace AdventureGame
         {
             this.PointOfInterestId = (PointOfInterestId)NodeEditorGUILayout.EnumField("POI : ", string.Empty, this.PointOfInterestId);
             this.DiscussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("discussion tree : ", string.Empty, this.DiscussionTreeId);
+            this.SelectionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel node ID : ", string.Empty, this.SelectionWheelNodeConfigurationId);
         }
 #endif
     }

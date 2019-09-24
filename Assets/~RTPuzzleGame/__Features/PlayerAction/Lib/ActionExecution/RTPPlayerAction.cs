@@ -1,3 +1,4 @@
+using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace RTPuzzle
         public abstract void GizmoTick();
 
         protected PlayerActionInherentData playerActionInherentData;
+        private SelectionWheelNodeConfigurationData SelectionWheelNodeConfigurationData;
 
         private float onCooldownTimeElapsed;
         //-1 is infinite
@@ -22,7 +24,11 @@ namespace RTPuzzle
 
         protected RTPPlayerAction(PlayerActionInherentData playerActionInherentData)
         {
+            var SelectionWheelNodeConfiguration = CoreGameSingletonInstances.CoreConfigurationManager.CoreConfiguration.SelectionWheelNodeConfiguration;
+            this.SelectionWheelNodeConfigurationData = SelectionWheelNodeConfiguration.ConfigurationInherentData[playerActionInherentData.ActionWheelNodeConfigurationId];
+
             this.playerActionInherentData = playerActionInherentData;
+
             //on init, it it available
             this.onCooldownTimeElapsed = this.playerActionInherentData.CoolDownTime * 2;
             this.remainingExecutionAmout = playerActionInherentData.ExecutionAmount;
@@ -42,7 +48,7 @@ namespace RTPuzzle
                 this.CooldownEventTrackerManager.Tick(this);
             }
         }
-        
+
         protected void PlayerActionConsumed()
         {
             onCooldownTimeElapsed = 0f;
@@ -52,7 +58,7 @@ namespace RTPuzzle
                 this.remainingExecutionAmout -= 1;
             }
         }
-        
+
         public void IncreaseActionRemainingExecutionAmount(int deltaIncrease)
         {
             this.remainingExecutionAmout += deltaIncrease;
@@ -79,6 +85,11 @@ namespace RTPuzzle
         {
             return this.playerActionInherentData.ActionWheelNodeConfigurationId;
         }
+        public string GetDescriptionText()
+        {
+            return this.SelectionWheelNodeConfigurationData.DescriptionText;
+        }
+        public Sprite GetNodeIcon() { return this.SelectionWheelNodeConfigurationData.WheelNodeIcon; }
 
         public int RemainingExecutionAmout { get => remainingExecutionAmout; }
         #endregion

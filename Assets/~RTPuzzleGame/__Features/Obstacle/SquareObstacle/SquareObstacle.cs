@@ -2,6 +2,7 @@
 using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace RTPuzzle
 {
@@ -104,6 +105,8 @@ namespace RTPuzzle
 
         public List<FrustumPointsPositions> ComputeOcclusionFrustums_FromDedicatedThread(SquareObstacleFrustumCalculationResult obstacleCalucation)
         {
+            Profiler.BeginThreadProfiling("ObstacleOcclusions", "ObstacleOcclusions");
+            Profiler.BeginSample("ObstacleOcclusions");
 
 #if UNITY_EDITOR
             if (this.DebugGizmo)
@@ -153,6 +156,8 @@ namespace RTPuzzle
 #endif
             }
 
+            Profiler.EndSample();
+            Profiler.EndThreadProfiling();
             return frustumPointsWorldPositions;
 
         }

@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using GameConfigurationID;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace AdventureGame
         [NonSerialized]
         private float elapsedTime;
 
-        public DummyContextAction(List<SequencedAction> nextContextActions) : base(nextContextActions) { }
+        public DummyContextAction(List<SequencedAction> nextContextActions) : base(nextContextActions, SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG) { }
 
         public override bool ComputeFinishedConditions()
         {

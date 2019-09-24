@@ -8,6 +8,7 @@ public class SelectionWheelNode : MonoBehaviour
     public const string COOLDWON_TIMER_PATTERN = "ss\\.ff";
     private const string COOLDOWN_OBJECT_NAME = "Cooldown";
     private const string REMAINING_EXECUTION_AMOUNT_OBJECT_NAME = "RemainingExecutionAmount";
+    private const string DESCRIPTIOn_TEXT_OBJECT_NAME = "DescriptionText";
 
     private SelectionWheelNodeCooldownDisplayManager selectionWheelNodeCooldownDisplayManager;
     private SelectionWheelNodeRemainngExecutionAmoutDisaplyManager selectionWheelNodeRemainngExecutionAmoutDisaplyManager;
@@ -16,6 +17,7 @@ public class SelectionWheelNode : MonoBehaviour
     private float targetWheelAngleDeg;
     private float currentAngleDeg;
     private Image imageComponent;
+    private Text descriptionText;
     #endregion
 
     #region Specific node data
@@ -28,13 +30,15 @@ public class SelectionWheelNode : MonoBehaviour
     public SelectionWheelNodeData WheelNodeData { get => wheelNodeData; set => wheelNodeData = value; }
     internal SelectionWheelNodeCooldownDisplayManager SelectionWheelNodeCooldownDisplayManager { get => selectionWheelNodeCooldownDisplayManager; set => selectionWheelNodeCooldownDisplayManager = value; }
 
-    public static SelectionWheelNode Instantiate(SelectionWheelNodeData wheelNodeData, WheelNodeSpriteResolver NodeSpriteResolver)
+    public static SelectionWheelNode Instantiate(SelectionWheelNodeData wheelNodeData)
     {
         var obj = Instantiate(CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration.ActionWheelNodePrefab);
         var wheelActionNode = obj.GetComponent<SelectionWheelNode>();
         wheelActionNode.imageComponent = obj.GetComponent<Image>();
+        wheelActionNode.descriptionText = obj.gameObject.FindChildObjectRecursively(DESCRIPTIOn_TEXT_OBJECT_NAME).GetComponent<Text>();
+        wheelActionNode.descriptionText.text = wheelNodeData.NodeText;
 
-        wheelActionNode.imageComponent.sprite = NodeSpriteResolver.Invoke(wheelNodeData);
+        wheelActionNode.imageComponent.sprite = wheelNodeData.NodeSprite;
         wheelActionNode.WheelNodeData = wheelNodeData;
 
         wheelActionNode.selectionWheelNodeCooldownDisplayManager = new SelectionWheelNodeCooldownDisplayManager(wheelActionNode.gameObject.FindChildObjectRecursively(COOLDOWN_OBJECT_NAME), wheelActionNode);
@@ -52,6 +56,11 @@ public class SelectionWheelNode : MonoBehaviour
     public void SetMaterial(Material material)
     {
         imageComponent.material = material;
+    }
+
+    public void SetActiveText(bool value)
+    {
+        this.descriptionText.gameObject.SetActive(value);
     }
 }
 
@@ -141,13 +150,13 @@ class SelectionWheelNodeRemainngExecutionAmoutDisaplyManager
     }
 }
 
-public delegate Sprite WheelNodeSpriteResolver(SelectionWheelNodeData SelectionWheelNodeData);
-
 public abstract class SelectionWheelNodeData
 {
     public abstract object Data { get; }
-
+    public abstract Sprite NodeSprite { get; }
     public abstract bool CanNodeBeExecuted { get; }
+
+    public abstract string NodeText { get; }
 
     #region Cooldown management
     public abstract bool IsOnCoolDown { get; }

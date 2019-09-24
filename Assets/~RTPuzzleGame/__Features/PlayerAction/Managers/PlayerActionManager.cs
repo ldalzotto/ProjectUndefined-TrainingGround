@@ -308,8 +308,7 @@ namespace RTPuzzle
         public void OnWheelAwake(List<RTPPlayerAction> availableActions)
         {
             SelectionWheel.Init(
-                availableActions.ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData),
-                ResolveWheelNodeSpriteFromNodeData
+                availableActions.ConvertAll(rtpPlayerAction => new PlayerSelectionWheelNodeData(rtpPlayerAction) as SelectionWheelNodeData)
             );
             wheelEnabled = true;
         }
@@ -317,11 +316,6 @@ namespace RTPuzzle
         {
             SelectionWheel.Exit(destroyImmediate);
             wheelEnabled = false;
-        }
-
-        private Sprite ResolveWheelNodeSpriteFromNodeData(SelectionWheelNodeData selectionWheelNodeData)
-        {
-            return PuzzleGameConfigurationManager.SelectionWheelNodeConfiguration()[(selectionWheelNodeData.Data as RTPPlayerAction).GetSelectionWheelConfigurationId()].WheelNodeIcon;
         }
     }
 
@@ -373,6 +367,10 @@ namespace RTPuzzle
         public override int GetRemainingExecutionAmount => playerAction.RemainingExecutionAmout;
 
         public override bool CanNodeBeExecuted => playerAction.CanBeExecuted();
+
+        public override string NodeText => playerAction.GetDescriptionText();
+
+        public override Sprite NodeSprite => playerAction.GetNodeIcon();
     }
     #endregion
 }

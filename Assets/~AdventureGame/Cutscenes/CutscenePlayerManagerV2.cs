@@ -67,7 +67,8 @@ namespace AdventureGame
         private IEnumerator ManualPlayCutscene(CutsceneId cutsceneId)
         {
             yield return this.PlayCutscene(cutsceneId);
-            this.ContextActionEventManager.OnContextActionFinished(new CutsceneTimelineAction(cutsceneId, null, false), new CutsceneTimelineActionInput(null));
+            this.ContextActionEventManager.OnContextActionFinished(new CutsceneTimelineAction(SelectionWheelNodeConfigurationId.ATTRACTIVE_OBJECT_LAY_WHEEL_CONFIG, 
+                cutsceneId, null, false), new CutsceneTimelineActionInput(null));
         }
 
         public IEnumerator PlayCutscene(CutsceneId cutsceneId)

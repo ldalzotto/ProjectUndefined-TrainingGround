@@ -66,7 +66,6 @@
     <Compile Include="Assets\~AdventureGame\_Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\AdventureGameConfigurationManager.cs" />
-    <Compile Include="Assets\~AdventureGame\Configuration\AdventureGlobalConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfiguration.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\AdventureStaticConfigurationContainer.cs" />
     <Compile Include="Assets\~AdventureGame\Configuration\StaticConfiguration\SubConfiguration\AdventureDiscussionStaticConfiguration.cs" />

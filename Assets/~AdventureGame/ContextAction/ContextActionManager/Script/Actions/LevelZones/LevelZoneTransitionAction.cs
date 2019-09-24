@@ -15,7 +15,7 @@ namespace AdventureGame
         [SerializeField]
         private LevelZonesID nextZone;
 
-        public LevelZoneTransitionAction(LevelZonesID nextZone) : base(null)
+        public LevelZoneTransitionAction(LevelZonesID nextZone, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(null, SelectionWheelNodeConfigurationId)
         {
             this.nextZone = nextZone;
         }

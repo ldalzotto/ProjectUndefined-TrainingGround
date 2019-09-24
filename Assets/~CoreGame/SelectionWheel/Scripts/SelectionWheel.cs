@@ -25,7 +25,7 @@ public class SelectionWheel : MonoBehaviour
         ActionWheelActiveNodeManager = new ActionWheelActiveNodeManager(NonSelectedMaterial, SelectedMaterial);
     }
 
-    public void Init(List<SelectionWheelNodeData> wheelNodeDatas, WheelNodeSpriteResolver NodeSpriteResolver)
+    public void Init(List<SelectionWheelNodeData> wheelNodeDatas)
     {
         #region External Dependencies
         GameInputManager GameInputManager = CoreGameSingletonInstances.GameInputManager;
@@ -36,7 +36,7 @@ public class SelectionWheel : MonoBehaviour
         var actionNodeContainerObject = transform.Find(ACTION_NODE_CONTAINER_OBJECT_NAME);
         for (var i = 0; i < wheelNodeDatas.Count; i++)
         {
-            var wheelNode = SelectionWheelNode.Instantiate(wheelNodeDatas[i], NodeSpriteResolver);
+            var wheelNode = SelectionWheelNode.Instantiate(wheelNodeDatas[i]);
             wheelNode.transform.SetParent(actionNodeContainerObject, false);
             wheelNodes[i] = wheelNode;
         }
@@ -222,6 +222,7 @@ class ActionWheelActiveNodeManager
         if (activeNode != null)
         {
             activeNode.SetMaterial(nonSelectedMaterial);
+            activeNode.SetActiveText(false);
         }
 
         for (var i = 0; i < wheelActionNodes.Length; i++)
@@ -230,6 +231,7 @@ class ActionWheelActiveNodeManager
             {
                 activeNode = wheelActionNodes[i];
                 activeNode.SetMaterial(selectedMaterial);
+                activeNode.SetActiveText(true);
                 return;
             }
         }

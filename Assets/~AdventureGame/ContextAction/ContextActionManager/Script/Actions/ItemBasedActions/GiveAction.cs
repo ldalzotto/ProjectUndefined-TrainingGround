@@ -44,10 +44,10 @@ namespace AdventureGame
         }
         #endregion
 
-        public GiveAction(ItemID itemGiven, List<SequencedAction> nextContextActions) : base(nextContextActions)
+        public GiveAction(ItemID itemGiven, List<SequencedAction> nextContextActions, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextContextActions, SelectionWheelNodeConfigurationId)
         {
             this.itemGiven = itemGiven;
-            contextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
+            ContextActionWheelNodeConfigurationId = SelectionWheelNodeConfigurationId.GIVE_CONTEXT_ACTION_WHEEL_CONFIG;
         }
 
         public override bool ComputeFinishedConditions()

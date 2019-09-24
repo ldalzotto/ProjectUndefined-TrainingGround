@@ -25,8 +25,6 @@ namespace RTPuzzle
         
         public RTPuzzle.LevelConfiguration LevelConfiguration;
         
-        public RTPuzzle.SelectionWheelNodeConfiguration SelectionWheelNodeConfiguration;
-        
         public RTPuzzle.PlayerActionConfiguration PlayerActionConfiguration;
         
         public RTPuzzle.RangeTypeConfiguration RangeTypeConfiguration;

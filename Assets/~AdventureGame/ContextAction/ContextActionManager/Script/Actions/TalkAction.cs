@@ -33,10 +33,11 @@ namespace AdventureGame
         public override void ActionGUI()
         {
             this.DiscussionTreeId = (DiscussionTreeId)NodeEditorGUILayout.EnumField("Discussion tree : ", string.Empty, this.DiscussionTreeId);
+            this.ContextActionWheelNodeConfigurationId = (SelectionWheelNodeConfigurationId)NodeEditorGUILayout.EnumField("Wheel ID : ", string.Empty, this.ContextActionWheelNodeConfigurationId);
         }
 #endif
 
-        public TalkAction(DiscussionTreeId DiscussionTreeId, List<SequencedAction> nextContextActions) : base(nextContextActions)
+        public TalkAction(DiscussionTreeId DiscussionTreeId, List<SequencedAction> nextContextActions, SelectionWheelNodeConfigurationId SelectionWheelNodeConfigurationId) : base(nextContextActions, SelectionWheelNodeConfigurationId)
         {
             this.DiscussionTreeId = DiscussionTreeId;
         }

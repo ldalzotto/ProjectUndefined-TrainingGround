@@ -255,8 +255,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\SelectionNodeConfiguration\SelectionWheelNodeConfiguration.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\SelectionNodeConfiguration\SelectionWheelNodeConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\ExposedInterfaces\IPlayerActionManagerEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\ExposedInterfaces\IPlayerActionManagerEventListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Lib\ActionExecution\RTPPlayerAction.cs" />
