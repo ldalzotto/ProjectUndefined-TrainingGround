@@ -84,7 +84,7 @@ namespace RTPuzzle
             var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
             if (ILineVisualFeedbackEvent != null)
             {
-                ILineVisualFeedbackEvent.CreateLine(DottedLineID.ATTRACTIVE_OBJECT, InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule());
+                ILineVisualFeedbackEvent.CreateLineFollowingModelObject(DottedLineID.ATTRACTIVE_OBJECT, InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule(), (MonoBehaviour) AIObjectDataRetriever);
             }
 
             var IContextMarkVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetIContextMarkVisualFeedbackEvent();
@@ -93,6 +93,7 @@ namespace RTPuzzle
                 IContextMarkVisualFeedbackEvent.CreateGenericMark(InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule());
             }
         }
+
         public void AI_AttractedObject_End(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
             InvolvedAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAIAttractedEnd(AIObjectDataRetriever);
@@ -101,7 +102,7 @@ namespace RTPuzzle
             var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
             if (ILineVisualFeedbackEvent != null)
             {
-                ILineVisualFeedbackEvent.DestroyLine();
+                ILineVisualFeedbackEvent.DestroyLine((MonoBehaviour)AIObjectDataRetriever);
             }
 
             var IContextMarkVisualFeedbackEvent = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval().GetIContextMarkVisualFeedbackEvent();

@@ -24,7 +24,6 @@ namespace RTPuzzle
         private FovInteractionRingRendererManager NpcInteractionRingRendererManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
-        private ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager;
         private ObstaclesListenerManager ObstaclesListenerManager;
         private SquareObstaclesManager SquareObstaclesManager;
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
@@ -74,7 +73,6 @@ namespace RTPuzzle
             NpcInteractionRingRendererManager = PuzzleGameSingletonInstances.NpcInteractionRingRendererManager;
             GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
             DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
-            ObjectRepelLineVisualFeedbackManager = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
             ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
             SquareObstaclesManager = PuzzleGameSingletonInstances.SquareObstaclesManager;
             ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
@@ -117,7 +115,6 @@ namespace RTPuzzle
             NpcInteractionRingRendererManager.Init();
             PuzzleGameSingletonInstances.AIPositionsManager.Init();
             PuzzleGameSingletonInstances.AIManagerContainer.Init();
-            ObjectRepelLineVisualFeedbackManager.Init();
             PuzzleGameSingletonInstances.LevelCompletionManager.Init();
             DottedLineRendererManager.Init();
             CircleFillBarRendererManager.Init();
@@ -181,7 +178,6 @@ namespace RTPuzzle
 
                     GroundEffectsManagerV2.Tick(d);
                     InRangeEffectManager.Tick(d);
-                    ObjectRepelLineVisualFeedbackManager.Tick(d);
                     NpcInteractionRingRendererManager.Tick(d);
                     DottedLineRendererManager.Tick();
                     InteractiveObjectSelectionManager.Tick(d);

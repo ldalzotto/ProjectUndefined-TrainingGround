@@ -20,9 +20,18 @@ namespace RTPuzzle
         [CustomEnum(ConfigurationType = typeof(ObjectRepelConfiguration))]
         public ObjectRepelID ObjectRepelID;
 
+        [WireBox(R = 1, G = 0, B = 0, CenterFieldName = nameof(ObjectRepelModuleDefinition.Center), SizeFieldName = nameof(ObjectRepelModuleDefinition.Size))]
+        public Vector3 Center;
+        public Vector3 Size;
+
         public override void CreateObject(Transform parent)
         {
             var objectRepelModule = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration().BaseObjectRepelModule, parent);
+
+            var boxCollider = objectRepelModule.GetComponent<BoxCollider>();
+            boxCollider.center = this.Center;
+            boxCollider.size = this.Size;
+
             objectRepelModule.ObjectRepelID = this.ObjectRepelID;
         }
     }

@@ -37,17 +37,13 @@ namespace RTPuzzle
             foreach (var inRangeVisualModule in this.InteractiveObjectContainer.InRangeVisualFeedbackModules)
             {
                 var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[inRangeVisualModule.GetAssociatedRangeTypeID()].InRangeEffectMaterial;
-                foreach (IAILogicColliderModuleDataRetriever inRangeAICollider in inRangeVisualModule.GetInRangeCollidersForVisual())
+                foreach (ModelObjectModule modelObjectModule in inRangeVisualModule.GetInRangeModelObjectsForVisual())
                 {
-                    if (inRangeAICollider != null)
+                    if (modelObjectModule != null)
                     {
-                        var modelObjectModule = inRangeAICollider.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
-                        if (modelObjectModule != null)
+                        foreach (var r in modelObjectModule.GetAllRenderers())
                         {
-                            foreach (var r in modelObjectModule.GetAllRenderers())
-                            {
-                                this.commandBuffer.DrawRenderer(r, effectMaterial);
-                            }
+                            this.commandBuffer.DrawRenderer(r, effectMaterial);
                         }
                     }
                 }

@@ -194,7 +194,7 @@ namespace RTPuzzle
             #region Repel objects
             foreach (var repelAbleObject in this.InteractiveObjectContainer.ObjectsRepelable)
             {
-                var boxCollider = repelAbleObject.GetObjectRepelCollider() as BoxCollider;
+                var boxCollider = repelAbleObject.GetObjectRepelCollider();
                 if (Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxCollider.center, boxCollider.size, boxCollider.transform.localToWorldMatrix, launchProjectileRef.transform.position, LaunchProjectileInherentData.ExplodingEffectRange))
                 {
                     //float travelDistance = 13;

@@ -15,7 +15,7 @@ namespace CoreGame
                 {
                     if (foundRenderer.GetType() == typeof(ParticleSystemRenderer))
                     {
-                        break;
+                        continue;
                     }
                 }
 

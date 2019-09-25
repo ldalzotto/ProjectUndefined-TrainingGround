@@ -1,5 +1,6 @@
 using CoreGame;
 using GameConfigurationID;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -12,46 +13,65 @@ namespace RTPuzzle
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         #endregion
 
-        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
+        #region Module Dependencies
+        private ModelObjectModule ModelObjectModule;
+        #endregion
+
+        public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
 
+            this.ModelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
+
             //position calculation
-            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
+            this.positionOffsetFromNPC = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(this.ModelObjectModule);
+
+            this.sourceTriggeringInstanceIds = new List<int>();
+            this.linePositionings = new List<ILinePositioning>();
+            this.lines = new List<DottedLine>();
         }
 
         private Vector3 positionOffsetFromNPC;
-        private Vector3 targetWorldPositionOffset;
-        private DottedLine AttractiveObjectDottedLine;
-        private ModelObjectModule AttractiveObjectModelObjectModule;
 
+        private List<int> sourceTriggeringInstanceIds;
+        private List<ILinePositioning> linePositionings;
+        private List<DottedLine> lines;
 
         public void TickAlways(float d)
         {
-            if (this.AttractiveObjectDottedLine != null)
+            for(var i = 0;i<this.lines.Count; i++)
             {
-                this.AttractiveObjectDottedLine.Tick(d, this.transform.position + this.positionOffsetFromNPC, AttractiveObjectModelObjectModule.transform.position + this.targetWorldPositionOffset);
+                var startPosition = this.transform.position + this.positionOffsetFromNPC;
+                this.lines[i].Tick(d, startPosition, this.linePositionings[i].GetEndPosition(startPosition));
             }
         }
 
         #region ILineVisualFeedbackEvent
-        public void CreateLine(DottedLineID DottedLineID, ModelObjectModule TargetModelObjectModule)
+        public void CreateLineFollowingModelObject(DottedLineID DottedLineID, ModelObjectModule TargetModelObjectModule, MonoBehaviour sourceTriggeringObject)
         {
-            if (this.AttractiveObjectDottedLine == null)
-            {
-                this.AttractiveObjectDottedLine = DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager);
-            }
-            this.AttractiveObjectModelObjectModule = TargetModelObjectModule;
-            this.targetWorldPositionOffset = IRenderBoundRetrievableStatic.GetLineRenderPointLocalOffset(TargetModelObjectModule);
+            this.sourceTriggeringInstanceIds.Add(sourceTriggeringObject.GetInstanceID());
+            this.lines.Add(DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager));
+            this.linePositionings.Add(new LineFollowModelObjectPositioning(TargetModelObjectModule));
         }
 
-        public void DestroyLine()
+        public void CreateLineDirectionPositioning(DottedLineID DottedLineID, MonoBehaviour sourceTriggeringObject)
         {
-            if (this.AttractiveObjectDottedLine != null)
+            this.sourceTriggeringInstanceIds.Add(sourceTriggeringObject.GetInstanceID());
+            this.lines.Add(DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager));
+            this.linePositionings.Add(new LineDirectionPositioning(this.ModelObjectModule, sourceTriggeringObject));
+        }
+
+        public void DestroyLine(MonoBehaviour sourceTriggeringObject)
+        {
+            var index = this.sourceTriggeringInstanceIds.IndexOf(sourceTriggeringObject.GetInstanceID());
+            if(index >= 0)
             {
-                this.AttractiveObjectDottedLine.DestroyInstance();
+                this.sourceTriggeringInstanceIds.RemoveAt(index);
+                this.linePositionings.RemoveAt(index);
+                this.lines[index].DestroyInstance();
+                this.lines.RemoveAt(index);
             }
         }
         #endregion

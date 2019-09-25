@@ -5,7 +5,7 @@ namespace RTPuzzle
 {
     public interface IInRangeVisualFeedbackModuleDataRetriever
     {
-        IAILogicColliderModuleDataRetriever[] GetInRangeCollidersForVisual();
+        ModelObjectModule[] GetInRangeModelObjectsForVisual();
         RangeTypeID GetAssociatedRangeTypeID();
     }
 

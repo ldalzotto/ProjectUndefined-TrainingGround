@@ -9,9 +9,11 @@ namespace RTPuzzle
     {
         ObjectRepelID GetObjectRepelID();
         Transform GetTransform();
-        Collider GetObjectRepelCollider();
+        BoxCollider GetObjectRepelCollider();
         IObjectRepelModuleEvent GetIObjectRepelModuleEvent();
         IRenderBoundRetrievable GetModelBounds();
+        IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval { get; }
+        ILineVisualFeedbackEvent ILineVisualFeedbackEvent { get; }
     }
 
     public class ObjectRepelModule : InteractiveObjectModule, IObjectRepelModuleEvent, IObjectRepelModuleDataRetrieval
@@ -21,11 +23,14 @@ namespace RTPuzzle
 
         #region Module Dependencies
         private ModelObjectModule ModelObjectModule;
+        public ILineVisualFeedbackEvent ILineVisualFeedbackEvent { get; private set; }
         #endregion
 
         #region Internal Dependencies
-        private Collider objectRepelCollider;
+        private BoxCollider objectRepelCollider;
         #endregion
+
+        public IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval { get; private set; }
 
         private ObjectRepelTypeAnimationComponent objectRepelTypeAnimationComponent = new ObjectRepelTypeAnimationComponent();
 
@@ -33,7 +38,10 @@ namespace RTPuzzle
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.ModelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
-            this.objectRepelCollider = GetComponent<Collider>();
+            this.ILineVisualFeedbackEvent = IInteractiveObjectTypeDataRetrieval.GetILineVisualFeedbackEvent();
+
+            this.objectRepelCollider = GetComponent<BoxCollider>();
+            this.IInteractiveObjectTypeDataRetrieval = IInteractiveObjectTypeDataRetrieval;
         }
 
         public static ObjectRepelModule FromCollisionType(CollisionType collisionType)
@@ -79,7 +87,7 @@ namespace RTPuzzle
             return this.ModelObjectModule;
         }
         public IObjectRepelModuleEvent GetIObjectRepelModuleEvent() { return this; }
-        public Collider GetObjectRepelCollider()
+        public BoxCollider GetObjectRepelCollider()
         {
             return this.objectRepelCollider;
         }

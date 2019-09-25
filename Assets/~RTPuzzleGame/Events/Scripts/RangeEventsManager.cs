@@ -7,14 +7,12 @@ namespace RTPuzzle
 
         #region External dependencies
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
-        private IObjectRepelLineVisualFeedbackManagerEvent IObjectRepelLineVisualFeedbackManagerEvent;
         private IRangeTypeObjectContainerEvent IRangeTypeObjectContainerEvent;
         #endregion
 
         public void Init()
         {
             this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
-            this.IObjectRepelLineVisualFeedbackManagerEvent = PuzzleGameSingletonInstances.ObjectRepelLineVisualFeedbackManager;
             this.IRangeTypeObjectContainerEvent = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
         }
 
@@ -29,7 +27,6 @@ namespace RTPuzzle
         {
             this.IRangeTypeObjectContainerEvent.RemoveRange(rangeTypeObject);
             this.GroundEffectsManagerV2.OnRangeDestroy(rangeTypeObject);
-            this.IObjectRepelLineVisualFeedbackManagerEvent.OnRangeDestroyed(rangeTypeObject.RangeType);
         }
         #endregion
 
