@@ -304,7 +304,7 @@ namespace RTPuzzle
                         MonoBehaviour.DestroyImmediate(this.projectileCursorInteractiveObject.gameObject);
                     }
 
-                    var projectileCursorInteractiveObjectInherentData = InRangeVisualFeedbackModuleInstancer.BuildInRangeVisualFeedbackFromRange(
+                    var projectileCursorInteractiveObjectInherentData = VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(
                         RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR, withRangeColliderTracker: true)
                     );
                     var projectileCursorInteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()

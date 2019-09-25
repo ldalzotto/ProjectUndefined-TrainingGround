@@ -13,7 +13,7 @@ namespace RTPuzzle
 
         private CommandBuffer commandBuffer;
 
-        private Dictionary<RangeType, List<IInRangeVisualFeedbackModuleDataRetriever>> activeInRangeTrackers = new Dictionary<RangeType, List<IInRangeVisualFeedbackModuleDataRetriever>>();
+        private Dictionary<RangeType, List<IVisualFeedbackEmitterModuleDataRetriever>> activeInRangeTrackers = new Dictionary<RangeType, List<IVisualFeedbackEmitterModuleDataRetriever>>();
 
         public void Init()
         {
@@ -34,10 +34,10 @@ namespace RTPuzzle
         {
             this.commandBuffer.Clear();
 
-            foreach (var inRangeVisualModule in this.InteractiveObjectContainer.InRangeVisualFeedbackModules)
+            foreach (var visualFeedbackEmitterModule in this.InteractiveObjectContainer.VisualFeedbackEmitterModules)
             {
-                var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[inRangeVisualModule.GetAssociatedRangeTypeID()].InRangeEffectMaterial;
-                foreach (ModelObjectModule modelObjectModule in inRangeVisualModule.GetInRangeModelObjectsForVisual())
+                var effectMaterial = this.PuzzleGameConfigurationManager.RangeTypeConfiguration()[visualFeedbackEmitterModule.GetAssociatedRangeTypeID()].InRangeEffectMaterial;
+                foreach (ModelObjectModule modelObjectModule in visualFeedbackEmitterModule.GetInRangeModelObjectsForVisual())
                 {
                     if (modelObjectModule != null)
                     {

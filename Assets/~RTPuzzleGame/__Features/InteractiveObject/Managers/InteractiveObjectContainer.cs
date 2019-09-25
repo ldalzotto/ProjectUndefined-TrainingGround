@@ -17,7 +17,7 @@ namespace RTPuzzle
         private Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> targetZones;
         private List<DisarmObjectModule> disarmObjectModules;
         private Dictionary<GrabObjectID, GrabObjectModule> grabObjectModules;
-        private List<IInRangeVisualFeedbackModuleDataRetriever> inRangeVisualFeedbackModules;
+        private List<IVisualFeedbackEmitterModuleDataRetriever> visualFeedbackEmitterModules;
         #endregion
 
         #region Data Retrieval
@@ -25,7 +25,7 @@ namespace RTPuzzle
         public Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> TargetZones { get => targetZones; }
         public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
         public Dictionary<GrabObjectID, GrabObjectModule> GrabObjectModules { get => grabObjectModules; }
-        public List<IInRangeVisualFeedbackModuleDataRetriever> InRangeVisualFeedbackModules { get => inRangeVisualFeedbackModules; }
+        public List<IVisualFeedbackEmitterModuleDataRetriever> VisualFeedbackEmitterModules { get => visualFeedbackEmitterModules; }
 
         public InteractiveObjectType GetInteractiveObjectFirst(InteractiveObjectID interactiveObjectID)
         {
@@ -45,7 +45,7 @@ namespace RTPuzzle
             this.targetZones = new Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever>();
             this.disarmObjectModules = new List<DisarmObjectModule>();
             this.grabObjectModules = new Dictionary<GrabObjectID, GrabObjectModule>();
-            this.inRangeVisualFeedbackModules = new List<IInRangeVisualFeedbackModuleDataRetriever>();
+            this.visualFeedbackEmitterModules = new List<IVisualFeedbackEmitterModuleDataRetriever>();
 
             var allStartInteractiveObjects = GameObject.FindObjectsOfType<InteractiveObjectType>();
             if (allStartInteractiveObjects != null)
@@ -145,9 +145,9 @@ namespace RTPuzzle
                 var GrabObjectModule = ((GrabObjectModule)enabledModule);
                 this.grabObjectModules.Add(GrabObjectModule.GrabObjectID, GrabObjectModule);
             }
-            else if (enabledModule.GetType() == typeof(InRangeVisualFeedbackModule))
+            else if (enabledModule.GetType() == typeof(VisualFeedbackEmitterModule))
             {
-                this.inRangeVisualFeedbackModules.Add((InRangeVisualFeedbackModule)enabledModule);
+                this.visualFeedbackEmitterModules.Add((VisualFeedbackEmitterModule)enabledModule);
             }
         }
 
@@ -178,9 +178,9 @@ namespace RTPuzzle
                 var GrabObjectModule = ((GrabObjectModule)enabledModule);
                 this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID);
             }
-            else if (enabledModule.GetType() == typeof(InRangeVisualFeedbackModule))
+            else if (enabledModule.GetType() == typeof(VisualFeedbackEmitterModule))
             {
-                this.inRangeVisualFeedbackModules.Remove((InRangeVisualFeedbackModule)enabledModule);
+                this.visualFeedbackEmitterModules.Remove((VisualFeedbackEmitterModule)enabledModule);
             }
         }
 
@@ -203,7 +203,7 @@ namespace RTPuzzle
             interactiveObject.GetModule<TargetZoneModule>().IfNotNull((TargetZoneModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
             interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => this.disarmObjectModules.Remove(DisarmObjectModule));
             interactiveObject.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) => this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID));
-            interactiveObject.GetModule<InRangeVisualFeedbackModule>().IfNotNull((InRangeVisualFeedbackModule InRangeVisualFeedbackModule) => this.inRangeVisualFeedbackModules.Remove(InRangeVisualFeedbackModule));
+            interactiveObject.GetModule<VisualFeedbackEmitterModule>().IfNotNull((VisualFeedbackEmitterModule InRangeVisualFeedbackModule) => this.visualFeedbackEmitterModules.Remove(InRangeVisualFeedbackModule));
         }
 
         public void OnGameOver()

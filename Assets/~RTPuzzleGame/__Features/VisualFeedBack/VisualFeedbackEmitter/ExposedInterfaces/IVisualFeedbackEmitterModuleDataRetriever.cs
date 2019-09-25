@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RTPuzzle
 {
-    public interface IInRangeVisualFeedbackModuleDataRetriever
+    public interface IVisualFeedbackEmitterModuleDataRetriever
     {
         ModelObjectModule[] GetInRangeModelObjectsForVisual();
         RangeTypeID GetAssociatedRangeTypeID();

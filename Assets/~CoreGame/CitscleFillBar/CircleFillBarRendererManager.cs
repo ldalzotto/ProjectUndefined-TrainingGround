@@ -8,15 +8,13 @@ namespace CoreGame
     {
         public Material CircleFillBarMaterial;
 
-        private List<CircleFillBarType> CircleFillBarTypeToRender;
+        private List<CircleFillBarType> CircleFillBarTypeToRender = new List<CircleFillBarType>();
 
         private CommandBuffer commandBuffer;
         private MaterialPropertyBlock materialProperty;
 
         public void Init()
         {
-            this.CircleFillBarTypeToRender = new List<CircleFillBarType>();
-
             this.commandBuffer = new CommandBuffer();
             this.commandBuffer.name = this.GetType().Name;
 
@@ -28,7 +26,7 @@ namespace CoreGame
         public void Tick(float d)
         {
             this.commandBuffer.Clear();
-            
+
             foreach (var circleFillBarType in this.CircleFillBarTypeToRender)
             {
                 if (circleFillBarType.CurrentProgression != 0f)

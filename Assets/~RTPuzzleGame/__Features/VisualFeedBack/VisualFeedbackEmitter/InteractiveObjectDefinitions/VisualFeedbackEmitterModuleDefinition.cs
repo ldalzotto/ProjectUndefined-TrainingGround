@@ -13,8 +13,8 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    [ModuleMetadata("Interactive", "Track all colliders elligible to in range visual effect.")]
-    public class InRangeVisualFeedbackModuleDefinition : AbstractInteractiveObjectDefinition
+    [ModuleMetadata("Visual Feedback", "Send Data To Visual Feedback Modules.")]
+    public class VisualFeedbackEmitterModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [DrawDefinition(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
         [ScriptableObjectSubstitution(substitutionName: nameof(RangeTypeObjectDefinitionInherentData),

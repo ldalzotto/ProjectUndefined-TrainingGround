@@ -17,7 +17,7 @@ using UnityEngine;
 namespace RTPuzzle
 {
 
-    public class InRangeVisualFeedbackModule : InteractiveObjectModule, IInRangeVisualFeedbackModuleDataRetriever, RangeTypeObjectEventListener
+    public class VisualFeedbackEmitterModule : InteractiveObjectModule, IVisualFeedbackEmitterModuleDataRetriever, RangeTypeObjectEventListener
     {
         public RangeTypeObject InRangeVisualFeedbackTrackerRange;
 

@@ -4,22 +4,22 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public static class InRangeVisualFeedbackModuleInstancer
+    public static class VisualFeedbackEmitterModuleInstancer
     {
-        public static InteractiveObjectTypeDefinitionInherentData BuildInRangeVisualFeedbackFromRange(RangeTypeObjectDefinitionInherentData RangeTypeObjectDefinitionInherentData)
+        public static InteractiveObjectTypeDefinitionInherentData BuildVisualFeedbackEmitterFromRange(RangeTypeObjectDefinitionInherentData RangeTypeObjectDefinitionInherentData)
         {
             var InteractiveObjectTypeDefinitionInherentData = new InteractiveObjectTypeDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>() {
-                    {typeof(InRangeVisualFeedbackModuleDefinition),
-                        new InRangeVisualFeedbackModuleDefinition(){
+                    {typeof(VisualFeedbackEmitterModuleDefinition),
+                        new VisualFeedbackEmitterModuleDefinition(){
                                RangeTypeObjectDefinitionIDPicker = false,
                                RangeTypeObjectDefinitionInherentData = RangeTypeObjectDefinitionInherentData
                         }
                     }
                 },
                 RangeDefinitionModulesActivation = new Dictionary<Type, bool>() {
-                    {typeof(InRangeVisualFeedbackModuleDefinition), true }
+                    {typeof(VisualFeedbackEmitterModuleDefinition), true }
                 }
             };
             return InteractiveObjectTypeDefinitionInherentData;
