@@ -173,7 +173,7 @@ namespace RTPuzzle
                     }
                 }
             }
-            
+
         }
 
         public void OnRangeDestroy(RangeTypeObject rangeTypeObject)
@@ -181,7 +181,11 @@ namespace RTPuzzle
             if (rangeTypeObject.IsRangeConfigurationDefined())
             {
                 this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID][rangeTypeObject.GetInstanceID()].OnRangeDestroyed();
-                this.rangeRenderDatas.Remove(rangeTypeObject.RangeType.RangeTypeID);
+                this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Remove(rangeTypeObject.GetInstanceID());
+                if (this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Count == 0)
+                {
+                    this.rangeRenderDatas.Remove(rangeTypeObject.RangeType.RangeTypeID);
+                }
             }
         }
 

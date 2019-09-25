@@ -12,7 +12,7 @@ namespace RTPuzzle
         #endregion
 
         #region Specific Containers
-        private Dictionary<AttractiveObjectId, AttractiveObjectModule> attractiveObjectContainer;
+        private MultiValueDictionary<AttractiveObjectId, AttractiveObjectModule> attractiveObjectContainer;
         private List<IObjectRepelModuleDataRetrieval> objectsRepelable;
         private Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> targetZones;
         private List<DisarmObjectModule> disarmObjectModules;
@@ -21,10 +21,6 @@ namespace RTPuzzle
         #endregion
 
         #region Data Retrieval
-        public AttractiveObjectModule GetAttractiveObjectType(AttractiveObjectId attractiveObjectId)
-        {
-            return this.attractiveObjectContainer[attractiveObjectId];
-        }
         public List<IObjectRepelModuleDataRetrieval> ObjectsRepelable { get => objectsRepelable; }
         public Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> TargetZones { get => targetZones; }
         public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
@@ -44,7 +40,7 @@ namespace RTPuzzle
         public void Init()
         {
             this.interactiveObjects = new MultiValueDictionary<InteractiveObjectID, InteractiveObjectType>();
-            this.attractiveObjectContainer = new Dictionary<AttractiveObjectId, AttractiveObjectModule>();
+            this.attractiveObjectContainer = new MultiValueDictionary<AttractiveObjectId, AttractiveObjectModule>();
             this.objectsRepelable = new List<IObjectRepelModuleDataRetrieval>();
             this.targetZones = new Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever>();
             this.disarmObjectModules = new List<DisarmObjectModule>();
@@ -127,7 +123,7 @@ namespace RTPuzzle
             if (enabledModule.GetType() == typeof(AttractiveObjectModule))
             {
                 var AttractiveObjectTypeModule = ((AttractiveObjectModule)enabledModule);
-                this.attractiveObjectContainer.Add(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule);
+                this.attractiveObjectContainer.MultiValueAdd(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule);
             }
             else if (enabledModule.GetType() == typeof(ObjectRepelModule))
             {
@@ -202,7 +198,7 @@ namespace RTPuzzle
             interactiveObject.OnInteractiveObjectDestroyed();
             #endregion
 
-            interactiveObject.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.Remove(AttractiveObjectTypeModule.AttractiveObjectId));
+            interactiveObject.GetModule<AttractiveObjectModule>().IfNotNull((AttractiveObjectModule AttractiveObjectTypeModule) => this.attractiveObjectContainer.MultiValueRemove(AttractiveObjectTypeModule.AttractiveObjectId, AttractiveObjectTypeModule));
             interactiveObject.GetModule<ObjectRepelModule>().IfNotNull((ObjectRepelModule ObjectRepelTypeModule) => this.objectsRepelable.Remove(ObjectRepelTypeModule));
             interactiveObject.GetModule<TargetZoneModule>().IfNotNull((TargetZoneModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
             interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => this.disarmObjectModules.Remove(DisarmObjectModule));
