@@ -61,7 +61,7 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeInsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
+        public void OnRangeInsideRangeTracker(InRangeVisualFeedbackModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             var objectRepelType = this.IsElligibleToRepelLineVisualEffect(InRangeColliderTrackerModule, rangeType);
             if (objectRepelType != null)
@@ -81,7 +81,7 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeOutsideRangeTracker(InRangeColliderTrackerModule InRangeColliderTrackerModule, RangeType rangeType)
+        public void OnRangeOutsideRangeTracker(InRangeVisualFeedbackModule InRangeColliderTrackerModule, RangeType rangeType)
         {
             var objectRepelType = this.IsElligibleToRepelLineVisualEffect(InRangeColliderTrackerModule, rangeType);
             if (objectRepelType != null)
@@ -107,12 +107,12 @@ namespace RTPuzzle
         #endregion
 
         #region Logical Conditions
-        private IObjectRepelModuleDataRetrieval IsElligibleToRepelLineVisualEffect(IInRangeColliderTrackerModuleDataRetriever IInRangeColliderTrackerModuleDataRetriever,
+        private IObjectRepelModuleDataRetrieval IsElligibleToRepelLineVisualEffect(IInRangeVisualFeedbackModuleDataRetriever IInRangeColliderTrackerModuleDataRetriever,
                     RangeType rangeType)
         {
             if (rangeType.RangeTypeID == RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
             {
-                return IInRangeColliderTrackerModuleDataRetriever.GetIObjectRepelModuleDataRetrieval();
+               // return IInRangeColliderTrackerModuleDataRetriever.GetIObjectRepelModuleDataRetrieval();
             }
             return null;
         }

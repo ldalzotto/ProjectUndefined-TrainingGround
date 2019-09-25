@@ -15,7 +15,7 @@ namespace RTPuzzle
         private static DottedLineRendererManager dottedLineRendererManager;
         private static GroundEffectsManagerV2 groundEffectsManagerV2;
         private static FovInteractionRingContainer npcInteractionRingContainer;
-        private static InRangeEffectManager inRangeEffectManager;
+        private static InRangeVisualFeedbackManager inRangeEffectManager;
         private static RangeEventsManager rangeEventsManager;
         private static ContextMarkVisualFeedbackContainer aIFeedbackContainer;
         private static ObjectRepelLineVisualFeedbackManager objectRepelLineVisualFeedbackManager;
@@ -50,7 +50,7 @@ namespace RTPuzzle
         public static DottedLineRendererManager DottedLineRendererManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineRendererManager, obj => dottedLineRendererManager = obj); }
         public static GroundEffectsManagerV2 GroundEffectsManagerV2 { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(groundEffectsManagerV2, obj => groundEffectsManagerV2 = obj); }
         public static FovInteractionRingContainer NpcInteractionRingContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(npcInteractionRingContainer, obj => npcInteractionRingContainer = obj); }
-        public static InRangeEffectManager InRangeEffectManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inRangeEffectManager, obj => inRangeEffectManager = obj); }
+        public static InRangeVisualFeedbackManager InRangeEffectManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inRangeEffectManager, obj => inRangeEffectManager = obj); }
         public static RangeEventsManager RangeEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeEventsManager, obj => rangeEventsManager = obj); }
         public static ContextMarkVisualFeedbackContainer ContextMarkVisualFeedbackContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIFeedbackContainer, obj => aIFeedbackContainer = obj); }
         public static ObjectRepelLineVisualFeedbackManager ObjectRepelLineVisualFeedbackManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(objectRepelLineVisualFeedbackManager, obj => objectRepelLineVisualFeedbackManager = obj); }

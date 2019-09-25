@@ -13,11 +13,13 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class AILogicColliderModule : RTPuzzle.InteractiveObjectModule
+    public class AILogicColliderModule : RTPuzzle.InteractiveObjectModule, IAILogicColliderModuleDataRetriever
     {
         #region Internal Dependencies
         private AIObjectDataRetriever AIObjectDataRetirever;
         #endregion
+
+        public IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval { get; private set; }
 
         #region State
         private List<IAILogicColliderModuleListener> PhysicsEventListeners;
@@ -36,6 +38,7 @@ namespace RTPuzzle
         {
             this.AIObjectDataRetirever = interactiveObjectInitializationObject.ParentAIObjectTypeReference;
             this.associatedCollider = GetComponent<BoxCollider>();
+            this.IInteractiveObjectTypeDataRetrieval = IInteractiveObjectTypeDataRetrieval;
         }
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -141,6 +144,12 @@ namespace RTPuzzle
             var AILogicColliderModule = collisionType.GetComponent<AILogicColliderModule>();
             if (AILogicColliderModule != null) { return AILogicColliderModule.GetComponentInParent<AIObjectType>(); }
             return null;
+        }
+
+        public static IAILogicColliderModuleDataRetriever AILogicColliderModuleFromCollisionType(CollisionType collisionType)
+        {
+            if (collisionType == null) { return null; }
+            return collisionType.GetComponent<AILogicColliderModule>();
         }
     }
 

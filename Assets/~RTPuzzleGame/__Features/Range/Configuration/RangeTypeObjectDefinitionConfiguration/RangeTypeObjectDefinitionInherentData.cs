@@ -67,9 +67,9 @@ namespace RTPuzzle
 
     public static class RangeTypeObjectDefinitionConfigurationInherentDataBuilder
     {
-        public static RangeTypeObjectDefinitionInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
+        public static RangeTypeObjectDefinitionInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID, bool withRangeColliderTracker)
         {
-            return new RangeTypeObjectDefinitionInherentData()
+            var RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                 {
@@ -88,6 +88,13 @@ namespace RTPuzzle
                     {typeof(RangeObstacleListenerDefinition), true }
                 }
             };
+
+            if (withRangeColliderTracker)
+            {
+                RangeTypeObjectDefinitionInherentData.RangeDefinitionModules[typeof(RangeColliderTrackerModuleDefinition)] = new RangeColliderTrackerModuleDefinition();
+                RangeTypeObjectDefinitionInherentData.RangeDefinitionModulesActivation[typeof(RangeColliderTrackerModuleDefinition)] = true;
+            }
+            return RangeTypeObjectDefinitionInherentData;
         }
 
         public static RangeTypeObjectDefinitionInherentData BoxRangeNoObstacleListener(Vector3 center, Vector3 size, RangeTypeID rangeTypeID)

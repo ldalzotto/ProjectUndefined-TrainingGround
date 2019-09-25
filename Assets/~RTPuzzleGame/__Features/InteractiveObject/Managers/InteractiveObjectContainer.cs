@@ -17,6 +17,7 @@ namespace RTPuzzle
         private Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> targetZones;
         private List<DisarmObjectModule> disarmObjectModules;
         private Dictionary<GrabObjectID, GrabObjectModule> grabObjectModules;
+        private List<IInRangeVisualFeedbackModuleDataRetriever> inRangeVisualFeedbackModules;
         #endregion
 
         #region Data Retrieval
@@ -28,6 +29,8 @@ namespace RTPuzzle
         public Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever> TargetZones { get => targetZones; }
         public List<DisarmObjectModule> DisarmObjectModules { get => disarmObjectModules; }
         public Dictionary<GrabObjectID, GrabObjectModule> GrabObjectModules { get => grabObjectModules; }
+        public List<IInRangeVisualFeedbackModuleDataRetriever> InRangeVisualFeedbackModules { get => inRangeVisualFeedbackModules; }
+
         public InteractiveObjectType GetInteractiveObjectFirst(InteractiveObjectID interactiveObjectID)
         {
             return this.GetIntractiveObjectsAll(interactiveObjectID)[0];
@@ -46,6 +49,7 @@ namespace RTPuzzle
             this.targetZones = new Dictionary<TargetZoneID, ITargetZoneModuleDataRetriever>();
             this.disarmObjectModules = new List<DisarmObjectModule>();
             this.grabObjectModules = new Dictionary<GrabObjectID, GrabObjectModule>();
+            this.inRangeVisualFeedbackModules = new List<IInRangeVisualFeedbackModuleDataRetriever>();
 
             var allStartInteractiveObjects = GameObject.FindObjectsOfType<InteractiveObjectType>();
             if (allStartInteractiveObjects != null)
@@ -145,6 +149,10 @@ namespace RTPuzzle
                 var GrabObjectModule = ((GrabObjectModule)enabledModule);
                 this.grabObjectModules.Add(GrabObjectModule.GrabObjectID, GrabObjectModule);
             }
+            else if (enabledModule.GetType() == typeof(InRangeVisualFeedbackModule))
+            {
+                this.inRangeVisualFeedbackModules.Add((InRangeVisualFeedbackModule)enabledModule);
+            }
         }
 
         public void OnModuleDisabled(InteractiveObjectModule enabledModule)
@@ -174,6 +182,10 @@ namespace RTPuzzle
                 var GrabObjectModule = ((GrabObjectModule)enabledModule);
                 this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID);
             }
+            else if (enabledModule.GetType() == typeof(InRangeVisualFeedbackModule))
+            {
+                this.inRangeVisualFeedbackModules.Remove((InRangeVisualFeedbackModule)enabledModule);
+            }
         }
 
         public void OnInteractiveObjectDestroyed(InteractiveObjectType interactiveObject)
@@ -195,6 +207,7 @@ namespace RTPuzzle
             interactiveObject.GetModule<TargetZoneModule>().IfNotNull((TargetZoneModule TargetZoneObjectModule) => this.targetZones.Remove(TargetZoneObjectModule.TargetZoneID));
             interactiveObject.GetModule<DisarmObjectModule>().IfNotNull((DisarmObjectModule DisarmObjectModule) => this.disarmObjectModules.Remove(DisarmObjectModule));
             interactiveObject.GetModule<GrabObjectModule>().IfNotNull((GrabObjectModule GrabObjectModule) => this.grabObjectModules.Remove(GrabObjectModule.GrabObjectID));
+            interactiveObject.GetModule<InRangeVisualFeedbackModule>().IfNotNull((InRangeVisualFeedbackModule InRangeVisualFeedbackModule) => this.inRangeVisualFeedbackModules.Remove(InRangeVisualFeedbackModule));
         }
 
         public void OnGameOver()

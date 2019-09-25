@@ -22,7 +22,7 @@ namespace RTPuzzle
         public float EffectRadius;
 
         [FormerlySerializedAs("PlayerActionToIncrement")]
-        [CustomEnum()]
+        [CustomEnum(ConfigurationType = typeof(PlayerActionConfiguration))]
         public PlayerActionId PlayerActionToIncrementOrAdd;
     }
 }

@@ -14,7 +14,7 @@ public class RTPObstacleInitializerTest : MonoBehaviour
         if (!hasInit)
         {
             GameObject.FindObjectOfType<RangeTypeObject>().Init(
-                RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT),
+                RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT ,withRangeColliderTracker: false),
                 new RangeTypeObjectInitializer());
             hasInit = true;
         }

@@ -51,7 +51,7 @@ namespace Tests
             //Because the LaunchProjectileID._1_Town_StartTutorial_Test_Speaker is set to transform to attractive -> projectile effect range is supposed to be the future attractive object range
             var attractiveObjectModule = interactiveProjectile.GetDisabledModule<AttractiveObjectModule>();
             Assert.IsTrue(attractiveObjectModule != null);
-            Assert.AreEqual(projectileEffectRange, launchProjetileAction.GetProjectileEffectCursorRange().RangeType.GetRadiusRange());
+            Assert.AreEqual(projectileEffectRange, launchProjetileAction.GetProjectileEffectCursorRange().GetModule<InRangeVisualFeedbackModule>().InRangeVisualFeedbackTrackerRange.RangeType.GetRadiusRange());
         }
 
         [UnityTest]

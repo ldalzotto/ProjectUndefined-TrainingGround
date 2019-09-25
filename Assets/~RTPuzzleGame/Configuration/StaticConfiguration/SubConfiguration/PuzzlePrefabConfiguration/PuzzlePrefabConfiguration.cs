@@ -30,7 +30,7 @@ namespace RTPuzzle
         public ObjectRepelModule BaseObjectRepelModule;
         public ObjectSightModule BaseObjectSightModule;
         public AILogicColliderModule BaseAILogicColliderModule;
-        public InRangeColliderTrackerModule BaseInRangeColliderTrackerModule;
+        public InRangeVisualFeedbackModule BaseInRangeColliderTrackerModule;
         public FovModule BaseFovModule;
         public ContextMarkVisualFeedbackModule BaseContextMarkVisualFeedbackModule;
         public LineVisualFeedbackModule BaseLineVisualFeedbackModule;

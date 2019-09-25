@@ -18,7 +18,7 @@ namespace RTPuzzle
         private PlayerActionManager PlayerActionManager;
         private TimeFlowManager TimeFlowManager;
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
-        private InRangeEffectManager InRangeEffectManager;
+        private InRangeVisualFeedbackManager InRangeEffectManager;
         private CooldownFeedManager CooldownFeedManager;
         private TimeFlowPlayPauseManager TimeFlowPlayPauseManager;
         private FovInteractionRingRendererManager NpcInteractionRingRendererManager;

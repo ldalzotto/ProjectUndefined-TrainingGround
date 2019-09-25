@@ -135,12 +135,12 @@ namespace RTPuzzle
         }
         #endregion
 
-        public static RangeTypeObject InstanciateSphereRange(RangeTypeID rangeTypeID, float sphereRange,
+        public static RangeTypeObject InstanciateSphereRange(RangeTypeID rangeTypeID, float sphereRange, bool withRangeColliderTracker,
                                  Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
         {
             var rangeTypeContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
             var sphereRangeTypeObject = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseRangeTypeObject, rangeTypeContainer.transform);
-            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID),
+            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID, withRangeColliderTracker),
                 new RangeTypeObjectInitializer(originPositionProvider, rangeColorProvider));
             return sphereRangeTypeObject;
         }

@@ -34,11 +34,12 @@ namespace RTPuzzle
         private bool isActionFinished = false;
 
         public RangeTypeObject ProjectileThrowRange { get => projectileThrowRange; }
-        public RangeTypeObject GetProjectileEffectCursorRange()
+      
+        public InteractiveObjectType GetProjectileEffectCursorRange()
         {
-            return this.LaunchProjectileRayPositionerManager.ProjectileCursorRange;
+            return this.LaunchProjectileRayPositionerManager.ProjectileCursorInteractiveObject;
         }
-
+        
         public override bool FinishedCondition()
         {
             return isActionFinished;
@@ -70,13 +71,13 @@ namespace RTPuzzle
             var launchProjectileInteractiveObjectDefinition = PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[LaunchProjectileActionInherentData.projectedObjectDefinitionID];
             this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileInteractiveObjectDefinition.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID];
 
-            this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, withRangeColliderTracker: false, PlayerManagerDataRetriever.GetPlayerWorldPosition);
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, launchProjectileInteractiveObjectDefinition,
                      interactiveObjectContainer, PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration);
 
             LaunchProjectileScreenPositionManager = new LaunchProjectileScreenPositionManager(playerTransformScreen, gameInputManager, canvas, CameraMovementManager);
             LaunchProjectileRayPositionerManager = new LaunchProjectileRayPositionerManager(camera, LaunchProjectileScreenPositionManager.CurrentCursorScreenPosition, this, PuzzleEventsManager, PuzzleStaticConfigurationContainer,
-                         this.projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject);
+                         this.projectileInherentData, PuzzleGameConfigurationManager, this.projectileObject, PuzzleGameConfigurationManager.PuzzleGameConfiguration, interactiveObjectContainer);
             LaunchProjectilePathAnimationManager = new LaunchProjectilePathAnimationManager(PlayerManagerDataRetriever, LaunchProjectileRayPositionerManager, PuzzleGameConfigurationManager);
             ThrowProjectileManager = new ThrowProjectileManager(this, gameInputManager, this.projectileObject, playerTransform);
             LauncheProjectileActionExitManager = new LauncheProjectileActionExitManager(gameInputManager, this, this.projectileObject, interactiveObjectContainer);
@@ -113,7 +114,7 @@ namespace RTPuzzle
         public override void LateTick(float d)
         {
         }
-        
+
         #region Internal Events
         public void OnExit()
         {
@@ -243,12 +244,14 @@ namespace RTPuzzle
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
         private PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer;
+        private PuzzleGameConfiguration PuzzleGameConfiguration;
+        private InteractiveObjectContainer InteractiveObjectContainer;
         #endregion
 
         private Camera camera;
         private LaunchProjectileInherentData projectileInherentData;
         private LaunchProjectileAction launchProjectileActionRef;
-        private RangeTypeObject projectileCursorRange;
+        private InteractiveObjectType projectileCursorInteractiveObject;
 
         private Vector3 currentCursorWorldPosition;
         private float effectiveEffectRange;
@@ -258,7 +261,7 @@ namespace RTPuzzle
 
         public bool IsCursorPositioned { get => isCursorPositioned; }
         public bool IsCursorInRange { get => isCursorInRange; }
-        public RangeTypeObject ProjectileCursorRange { get => projectileCursorRange; }
+        public InteractiveObjectType ProjectileCursorInteractiveObject { get => projectileCursorInteractiveObject; }
 
         public Vector3 GetCurrentCursorWorldPosition()
         {
@@ -267,13 +270,16 @@ namespace RTPuzzle
 
         public LaunchProjectileRayPositionerManager(Camera camera, Vector2 cursorScreenPositionAtInit, LaunchProjectileAction launchProjectileAction,
                 PuzzleEventsManager PuzzleEventsManager, PuzzleStaticConfigurationContainer PuzzleStaticConfigurationContainer, LaunchProjectileInherentData projectileInherentData,
-                PuzzleGameConfigurationManager puzzleGameConfigurationManager, InteractiveObjectType projectileInteractiveObject)
+                PuzzleGameConfigurationManager puzzleGameConfigurationManager, InteractiveObjectType projectileInteractiveObject, PuzzleGameConfiguration PuzzleGameConfiguration,
+                InteractiveObjectContainer InteractiveObjectContainer)
         {
             this.camera = camera;
             this.launchProjectileActionRef = launchProjectileAction;
             this.PuzzleEventsManager = PuzzleEventsManager;
             this.PuzzleStaticConfigurationContainer = PuzzleStaticConfigurationContainer;
+            this.PuzzleGameConfiguration = PuzzleGameConfiguration;
             this.projectileInherentData = projectileInherentData;
+            this.InteractiveObjectContainer = InteractiveObjectContainer;
 
             if (this.projectileInherentData.isExploding)
             {
@@ -293,14 +299,31 @@ namespace RTPuzzle
             {
                 if (!isCursorPositioned)
                 {
-                    if (this.projectileCursorRange != null)
+                    if (this.projectileCursorInteractiveObject != null)
                     {
-                        MonoBehaviour.DestroyImmediate(this.projectileCursorRange.gameObject);
+                        MonoBehaviour.DestroyImmediate(this.projectileCursorInteractiveObject.gameObject);
                     }
-                    this.projectileCursorRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE_CURSOR, this.effectiveEffectRange, this.GetCurrentCursorWorldPosition, this.GetLaunchProjectileRangeActiveColor);
+
+                    var projectileCursorInteractiveObjectInherentData = InRangeVisualFeedbackModuleInstancer.BuildInRangeVisualFeedbackFromRange(
+                        RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR, withRangeColliderTracker: true)
+                    );
+                    var projectileCursorInteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
+                    {
+                        InRangeVisualFeedbakcModuleInitializationData = new InRangeVisualFeedbakcModuleInitializationData()
+                        {
+                            RangeInitializer = new RangeTypeObjectInitializer()
+                            {
+                                RangeColorProvider = this.GetLaunchProjectileRangeActiveColor
+                            }
+                        }
+                    };
+                    this.projectileCursorInteractiveObject = InteractiveObjectType.Instantiate(projectileCursorInteractiveObjectInherentData, projectileCursorInteractiveObjectInitializationObject,
+                                 PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration(), this.PuzzleGameConfiguration);
+
                 }
                 isCursorPositioned = true;
                 currentCursorWorldPosition = hit.point;
+                this.projectileCursorInteractiveObject.transform.position = currentCursorWorldPosition;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
                 if (this.launchProjectileActionRef.ProjectileThrowRange.IsInsideAndNotOccluded(currentCursorWorldPosition, forceObstacleOcclusionIfNecessary: true))
@@ -317,7 +340,7 @@ namespace RTPuzzle
             {
                 if (isCursorPositioned)
                 {
-                    this.projectileCursorRange.OnRangeDestroyed();
+                    this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.projectileCursorInteractiveObject);
                 }
                 isCursorPositioned = false;
                 SetIsCursorInRange(false);
@@ -360,9 +383,9 @@ namespace RTPuzzle
 
         public void OnExit()
         {
-            if (this.projectileCursorRange != null)
+            if (this.projectileCursorInteractiveObject != null)
             {
-                this.projectileCursorRange.OnRangeDestroyed();
+                this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.projectileCursorInteractiveObject);
             }
         }
 

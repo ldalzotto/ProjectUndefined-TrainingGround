@@ -34,5 +34,7 @@ namespace RTPuzzle
         public UnityEngine.Rigidbody RigidBody;
         
         public RTPuzzle.AIObjectType ParentAIObjectTypeReference;
+
+        public RTPuzzle.InRangeVisualFeedbakcModuleInitializationData InRangeVisualFeedbakcModuleInitializationData;
     }
 }

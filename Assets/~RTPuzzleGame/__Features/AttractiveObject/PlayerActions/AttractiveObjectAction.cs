@@ -23,7 +23,7 @@ namespace RTPuzzle
 
         private bool isActionOver;
         private AttractiveObjectId attractiveObjectId;
-        private RangeTypeObject attractiveObjectRange;
+        private InteractiveObjectType attractiveObjectRangeInteractiveObject;
         private InteractiveObjectType attractiveObject;
 
         public AttractiveObjectAction(AttractiveObjectActionInherentData attractiveObjectActionInherentData) : base(attractiveObjectActionInherentData)
@@ -65,7 +65,11 @@ namespace RTPuzzle
             this.AttractiveObjectPlayerAnimationManager = new AttractiveObjectPlayerAnimationManager(playerDataRetriever, attractiveObjectInherentConfigurationData, this, this.attractiveObject, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration.PuzzleCutsceneConfiguration,
                  this.InteractiveObjectContainer);
 
-            this.attractiveObjectRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.ATTRACTIVE_OBJECT, attractiveObjectInherentConfigurationData.EffectRange, playerDataRetriever.GetPlayerWorldPosition);
+            var attractiveObjectRangeInteractiveObjectInherentData =
+                InRangeVisualFeedbackModuleInstancer.BuildInRangeVisualFeedbackFromRange(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(attractiveObjectInherentConfigurationData.EffectRange, RangeTypeID.ATTRACTIVE_OBJECT, withRangeColliderTracker: true));
+            this.attractiveObjectRangeInteractiveObject =
+                InteractiveObjectType.Instantiate(attractiveObjectRangeInteractiveObjectInherentData, new InteractiveObjectInitializationObject(), puzzleStaticConfiguration.PuzzlePrefabConfiguration, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration);
+            this.attractiveObjectRangeInteractiveObject.transform.position = playerDataRetriever.GetPlayerWorldPosition();
         }
 
         public override void GizmoTick()
@@ -118,7 +122,7 @@ namespace RTPuzzle
         private void OnEndAction()
         {
             this.AttractiveObjectPlayerAnimationManager.OnAttractiveObjectActionEnd();
-            this.attractiveObjectRange.OnRangeDestroyed();
+            this.InteractiveObjectContainer.OnInteractiveObjectDestroyed(this.attractiveObjectRangeInteractiveObject);
             this.isActionOver = true;
         }
         #endregion

@@ -100,6 +100,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIFear\AIComponents\AIFearStunManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIFear\Events\AIFearEvents.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIFear\ExposedInterfaces\IAIFearEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\AILogicCollider\ExposedInterfaces\IAILogicColliderModuleDataRetriever.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AILogicCollider\InteractiveObjectDefinitions\AILogicColliderModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AILogicCollider\InteractiveObjectModules\AILogicColliderModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrol\AIComponents\AIPatrolComponent.cs" />
@@ -175,11 +176,11 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\InteractiveObjectModules\GrabObjectModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\GrabObject\PlayerActions\GrabObjectAction.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeColliderTracker\ExposedInterfaces\IInRangeColliderTrackerModuleEventListener.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeColliderTracker\ExposedInterfaces\IInRangeEffectManagerEvent.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeColliderTracker\InteractiveObjectDefinitions\InRangeColliderTrackerModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeColliderTracker\InteractiveObjectModules\InRangeColliderTrackerModule.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeColliderTracker\Managers\InRangeEffectManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeVisualFeedback\ExposedInterfaces\IInRangeVisualFeedbackModuleDataRetriever.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeVisualFeedback\InteractiveObjectDefinitions\InRangeVisualFeedbackModuleDefinition.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeVisualFeedback\InteractiveObjectModules\InRangeVisualFeedbackModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeVisualFeedback\InteractiveObjectModules\InRangeVisualFeedbackModuleInstancer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\InRangeVisualFeedback\Managers\InRangeVisualFeedbackManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\Configuration\InteractiveObjectDefinition\Abstract\AbstractInteractiveObjectDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\Configuration\InteractiveObjectSharedDataTypeInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObject\Configuration\InteractiveObjectTypeDefinitionConfiguration.cs" />

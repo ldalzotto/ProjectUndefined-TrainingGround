@@ -68,10 +68,6 @@ namespace RTPuzzle
         }
 
         #region Logical conditions
-        public bool IsInRangeEffectEnabled()
-        {
-            return this.IsRangeConfigurationDefined() && this.rangeTypeInherentConfigurationData.InRangeEffectMaterial != null;
-        }
         public bool IsRangeConfigurationDefined()
         {
             return this.rangeTypeInherentConfigurationData != null;
