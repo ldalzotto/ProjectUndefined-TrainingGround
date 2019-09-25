@@ -16,7 +16,7 @@ namespace RTPuzzle
         void EnableModule(Type moduleType, InteractiveObjectInitializationObject InteractiveObjectInitializationObject);
         void DisableModule(Type moduleType);
     }
-
+    
     public partial class InteractiveObjectType : MonoBehaviour, IInteractiveObjectTypeEvents
     {
         [CustomEnum(ConfigurationType = typeof(InteractiveObjectTypeDefinitionConfiguration), OpenToConfiguration = true)]

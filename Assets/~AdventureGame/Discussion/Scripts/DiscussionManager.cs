@@ -1,4 +1,3 @@
-using System;
 using CoreGame;
 using GameConfigurationID;
 using UnityEngine;
@@ -31,7 +30,9 @@ namespace AdventureGame
         #region External Events
         public AbstractDiscussionWindowManager OnDiscussionTreeStart(DiscussionTreeId discussionTreeId)
         {
-            return this.DiscussionWindowsContainer.OnDiscussionTreeStart(discussionTreeId);
+            var adventureDiscussionWindowManager = new AdventureDiscussionWindowManager(discussionTreeId);
+            this.DiscussionWindowsContainer.AddDiscussionTree(adventureDiscussionWindowManager);
+            return adventureDiscussionWindowManager;
         }
 
         public void OnAdventureDiscussionTextOnlyStart(PointOfInterestType talkingPointOfInterestType)

@@ -16,10 +16,11 @@ namespace Editor_DiscussionTreeNodeEditor
         protected override Dictionary<string, Type> NodePickerConfiguration => new Dictionary<string, Type>()
         {
             {"DiscussionStartNode", typeof(DiscussionStartNodeProfile) },
-            {"TextOnlyNode", typeof(AdventureDiscussionTextOnlyNodeProfile)},
             {"FixedPositionTextOnlyNode", typeof(FixedScreenPositionDiscussionTextOnlyNodeProfile) },
-            {"DiscussionChoiceNode", typeof(AdventureDiscussionChoiceNodeProfile) },
-            {"DiscussionChoiceTextNode", typeof(DiscussionChoiceTextNodeProfile) }
+            {"DiscussionChoiceTextNode", typeof(DiscussionChoiceTextNodeProfile) },
+            {"Adventure.//TextOnlyNode", typeof(AdventureDiscussionTextOnlyNodeProfile)},
+            {"Adventure.//DiscussionChoiceNode", typeof(AdventureDiscussionChoiceNodeProfile) },
+            {"Puzzle.//TextOnlyNode", typeof(PuzzleDiscussionTextOnlyNodeProfile) }
         };
 
         protected override void OnEnable_Impl()
@@ -49,6 +50,13 @@ namespace Editor_DiscussionTreeNodeEditor
                             new AdventureDiscussionTextOnlyNode(discussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId, discussionTextOnlyNodeProfile.DiscussionNodeEdge.DisplayedText,
                                   discussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), discussionTextOnlyNodeProfile.DiscussionNodeEdge.Talker)
                             );
+                    }
+                    else if (editorNode.GetType() == typeof(PuzzleDiscussionTextOnlyNodeProfile))
+                    {
+                        var PuzzleDiscussionTextOnlyNodeProfile = (PuzzleDiscussionTextOnlyNodeProfile)editorNode;
+                        discussionTree.DiscussionNodes.Add(PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId,
+                          new PuzzleDiscussionTextOnlyNode(PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId, PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.DisplayedText,
+                            PuzzleDiscussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.Talker));
                     }
                     else if (editorNode.GetType() == typeof(FixedScreenPositionDiscussionTextOnlyNodeProfile))
                     {

@@ -1,4 +1,5 @@
 using CoreGame;
+using GameConfigurationID;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -17,6 +18,10 @@ namespace RTPuzzle
         public PuzzleCutsceneGraph Graph;
         public bool playCutsceneGraph;
         private SequencedActionPlayer cutsceneGraphPlayer;
+
+        [Header("Discussion Test")]
+        public DiscussionTreeId DiscussionTreeID;
+        public bool PlayerDiscussionTree;
 
         #region External Dependencies
         private PuzzleEventsManager PuzzleEventsManager;
@@ -56,6 +61,12 @@ namespace RTPuzzle
             if (this.cutsceneGraphPlayer != null)
             {
                 this.cutsceneGraphPlayer.Tick(Time.deltaTime);
+            }
+
+            if (PlayerDiscussionTree)
+            {
+                PlayerDiscussionTree = false;
+                PuzzleGameSingletonInstances.PuzzleDiscussionManager.PlayDiscussion(this.DiscussionTreeID);
             }
         }
 #endif

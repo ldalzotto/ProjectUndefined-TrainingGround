@@ -37,6 +37,8 @@ namespace RTPuzzle
         private static PuzzleDebugModule puzzleDebugModule;
         private static SelectionWheel puzzleSelectionWheel;
         private static DottedLineContainer dottedLineContainer;
+        private static PuzzleDiscussionWindowsContainer puzzleDiscussionWindowsContainer;
+        private static PuzzleDiscussionManager puzzleDiscussionManager;
 
         public static PlayerManager PlayerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerManager, obj => playerManager = obj); }
         public static PuzzleEventsManager PuzzleEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleEventsManager, obj => puzzleEventsManager = obj); }
@@ -71,5 +73,7 @@ namespace RTPuzzle
         public static PuzzleDebugModule PuzzleDebugModule { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDebugModule, obj => puzzleDebugModule = obj); }
         public static SelectionWheel PuzzleSelectionWheel { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleSelectionWheel, obj => puzzleSelectionWheel = obj); }
         public static DottedLineContainer DottedLineContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(dottedLineContainer, obj => dottedLineContainer = obj); }
+        public static PuzzleDiscussionWindowsContainer PuzzleDiscussionWindowsContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDiscussionWindowsContainer, obj => puzzleDiscussionWindowsContainer = obj); }
+        public static PuzzleDiscussionManager PuzzleDiscussionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(puzzleDiscussionManager, obj => puzzleDiscussionManager = obj); }
     }
 }

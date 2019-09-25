@@ -8,18 +8,17 @@ namespace CoreGame
 {
     public abstract class AbstractDiscussionWindowsContainer : MonoBehaviour
     {
-
-        protected Dictionary<DiscussionTreeId, AbstractDiscussionWindowManager> discussionWindowsManager;
+        private List<AbstractDiscussionWindowManager> discussionWindowsManagers;
 
         public virtual void Init()
         {
-            this.discussionWindowsManager = new Dictionary<DiscussionTreeId, AbstractDiscussionWindowManager>();
+            this.discussionWindowsManagers = new List<AbstractDiscussionWindowManager>();
         }
 
         public virtual void Tick(float d)
         {
             List<AbstractDiscussionWindowManager> discussionWindowManagersThatEnded = null;
-            foreach (var discussionWindowManager in this.discussionWindowsManager.Values)
+            foreach (var discussionWindowManager in this.discussionWindowsManagers)
             {
                 discussionWindowManager.Tick(d, out Nullable<DiscussionNodeId> discussionChoiceMade);
 
@@ -42,7 +41,7 @@ namespace CoreGame
             {
                 foreach (var discussionWindowManagerThatEnded in discussionWindowManagersThatEnded)
                 {
-                    this.RemoveDiscussionTree(discussionWindowManagerThatEnded.DiscussionTreeID);
+                    this.RemoveDiscussionTree(discussionWindowManagerThatEnded);
                 }
             }
         }
@@ -50,11 +49,15 @@ namespace CoreGame
         protected virtual void OnChoiceMade(DiscussionNodeId choice) { }
         protected virtual void OnDiscussionTreeEnd(DiscussionTreeId discussionTreeId) { }
         
-        private void RemoveDiscussionTree(DiscussionTreeId discussionTreeId)
+        public void AddDiscussionTree(AbstractDiscussionWindowManager discussionWindowManager)
         {
-            this.OnDiscussionTreeEnd(discussionTreeId);
-            this.discussionWindowsManager[discussionTreeId].OnDiscussionEnded();
-            this.discussionWindowsManager.Remove(discussionTreeId);
+            this.discussionWindowsManagers.Add(discussionWindowManager);
+        }
+
+        private void RemoveDiscussionTree(AbstractDiscussionWindowManager discussionWindowManager)
+        {
+            this.OnDiscussionTreeEnd(discussionWindowManager.DiscussionTreeID);
+            this.discussionWindowsManagers.Remove(discussionWindowManager);
         }
     }
 }

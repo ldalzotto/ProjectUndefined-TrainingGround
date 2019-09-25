@@ -147,6 +147,10 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\DisarmObject\ExposedInterfaces\IDisarmObjectModuleEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\DisarmObject\InteractiveObjectDefinitions\DisarmObjectModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\DisarmObject\InteractiveObjectModules\DisarmObjectModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\ExposedInterfaces\IPuzzleDiscussionManagerEvent.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Lib\PuzzleDiscussionWindowsContainer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Discussion\Managers\PuzzleDiscussionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Lib\GroundEffectIgnoredGroundObjectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Lib\GroundEffectType.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\EnvironmentRangeRender\Managers\GroundEffectsManager\AbstractGroundEffectManager.cs" />

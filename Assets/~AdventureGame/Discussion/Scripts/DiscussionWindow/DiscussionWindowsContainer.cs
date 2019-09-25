@@ -22,13 +22,5 @@ namespace AdventureGame
         {
             DiscussionEventHandler.OnDiscussionChoiceMade(choice);
         }
-
-        #region External Event
-        public AdventureDiscussionWindowManager OnDiscussionTreeStart(DiscussionTreeId discussionTreeId)
-        {
-            this.discussionWindowsManager[discussionTreeId] = new AdventureDiscussionWindowManager(discussionTreeId);
-            return (AdventureDiscussionWindowManager)this.discussionWindowsManager[discussionTreeId];
-        }
-        #endregion
     }
 }

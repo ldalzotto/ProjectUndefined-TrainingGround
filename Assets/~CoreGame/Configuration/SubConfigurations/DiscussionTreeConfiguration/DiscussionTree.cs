@@ -1,6 +1,5 @@
 ﻿using GameConfigurationID;
 using OdinSerializer;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,7 +58,21 @@ namespace CoreGame
             this.talker = talker;
         }
 
-        public PointOfInterestId Talker { get => talker;  }
+        public PointOfInterestId Talker { get => talker; }
+    }
+
+    [System.Serializable]
+    public class PuzzleDiscussionTextOnlyNode : AbstractDiscussionTextOnlyNode
+    {
+        [SerializeField]
+        private InteractiveObjectID talker;
+
+        public PuzzleDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DiscussionTextID displayedText, DiscussionNodeId nextNode, InteractiveObjectID talker) : base(DiscussionNodeId, displayedText, nextNode)
+        {
+            this.talker = talker;
+        }
+
+        public InteractiveObjectID Talker { get => talker; }
     }
 
     [System.Serializable]
@@ -149,5 +162,5 @@ namespace CoreGame
             return discussionTreeRef.DiscussionNodes[nextNode];
         }
     }
-    
+
 }

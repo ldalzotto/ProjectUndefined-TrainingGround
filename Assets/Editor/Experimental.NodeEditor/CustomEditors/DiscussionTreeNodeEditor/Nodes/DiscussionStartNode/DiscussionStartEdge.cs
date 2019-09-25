@@ -10,7 +10,8 @@ namespace Editor_DiscussionTreeNodeEditor
         public override List<Type> AllowedConnectedNodeEdges => new List<Type>()
         {
             typeof(AdventureDiscussionTextOnlyNodeEdge),
-            typeof(FixedScreenPositionTextOnlyNodeEdge)
+            typeof(FixedScreenPositionTextOnlyNodeEdge),
+            typeof(PuzzleDiscussionTextOnlyNodeEdge)
         };
 
         public AbstractTextOnlyNodeEdge GetLinkedEdge()

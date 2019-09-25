@@ -21,5 +21,7 @@ namespace GameConfigurationID {
     _1_Town_GardenWatchman_Forbidden = 4,
     
     _1_Town_Girl_ToParkInfiltration = 5,
+    
+    PUZZLE_TEST = 6,
   }
 }

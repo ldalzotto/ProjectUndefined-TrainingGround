@@ -32,7 +32,7 @@ namespace AdventureGame
                 if (abstractDiscussionTextOnlyNode.GetType() == typeof(AdventureDiscussionTextOnlyNode))
                 {
                     var TalkingPointOfInterestType = this.PointOfInterestManager.GetActivePointOfInterest(((AdventureDiscussionTextOnlyNode)abstractDiscussionTextOnlyNode).Talker);
-                    worldPosition = TalkingPointOfInterestType.GetLogicColliderWorldPosition();
+                    worldPosition = TalkingPointOfInterestType.transform.position + new Vector3(0, TalkingPointOfInterestType.GetAverageModelBoundLocalSpace().SideDistances.y, 0);
                     WindowPositionType = WindowPositionType.WORLD;
                     this.DiscussionEventHandler.OnAdventureDiscussionTextOnlyStart(TalkingPointOfInterestType);
                     return true;

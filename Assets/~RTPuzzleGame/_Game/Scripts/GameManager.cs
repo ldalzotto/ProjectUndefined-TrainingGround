@@ -35,6 +35,7 @@ namespace RTPuzzle
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private TutorialManager TutorialManager;
         private InteractiveObjectSelectionManager InteractiveObjectSelectionManager;
+        private PuzzleDiscussionManager PuzzleDiscussionManager;
 
 #if UNITY_EDITOR
         private EditorOnlyManagers EditorOnlyManagers;
@@ -82,6 +83,7 @@ namespace RTPuzzle
             BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             TutorialManager = CoreGameSingletonInstances.TutorialManager;
             InteractiveObjectSelectionManager = PuzzleGameSingletonInstances.InteractiveObjectSelectionManager;
+            PuzzleDiscussionManager = PuzzleGameSingletonInstances.PuzzleDiscussionManager;
 
             var gameInputManager = CoreGameSingletonInstances.GameInputManager;
             var puzzleConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -121,7 +123,7 @@ namespace RTPuzzle
             PuzzleTutorialEventSender.Init();
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
-
+            PuzzleDiscussionManager.Init();
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -176,6 +178,7 @@ namespace RTPuzzle
                         NPCAIManagerContainer.DisableAgents();
                     }
 
+                    PuzzleDiscussionManager.Tick(d);
                     GroundEffectsManagerV2.Tick(d);
                     InRangeEffectManager.Tick(d);
                     NpcInteractionRingRendererManager.Tick(d);

@@ -142,21 +142,26 @@ namespace CoreGame
 
                 if (!OpenedDiscussion.IsWriting())
                 {
-                    if (OpenedDiscussion.IsWaitingForCloseInput())
+                    WaitForSecondsDiscussionWindowManagerStrategy.ElapsedTime += d;
+                    if (WaitForSecondsDiscussionWindowManagerStrategy.IsTimeOver())
                     {
-                        if (this.DiscussionTreePlayer.OnDiscussionTextNodeEnd())
+                        WaitForSecondsDiscussionWindowManagerStrategy.ResetTimer();
+                        if (OpenedDiscussion.IsWaitingForCloseInput())
                         {
-                            this.OpenedDiscussion.PlayDiscussionCloseAnimation();
+                            if (this.DiscussionTreePlayer.OnDiscussionTextNodeEnd())
+                            {
+                                this.OpenedDiscussion.PlayDiscussionCloseAnimation();
+                            }
+                        }
+                        else if (OpenedDiscussion.IsWaitingForContinueInput())
+                        {
+
+                            WaitForSecondsDiscussionWindowManagerStrategy.ResetTimer();
                         }
                     }
-                    else if (OpenedDiscussion.IsWaitingForContinueInput())
-                    {
-                        OpenedDiscussion.ProcessDiscussionContinue();
-                    }
+
                 }
             }
-
-            WaitForSecondsDiscussionWindowManagerStrategy.ElapsedTime += d;
         }
 
         #region External Event
@@ -170,7 +175,7 @@ namespace CoreGame
         {
             OpenedDiscussion.gameObject.SetActive(true);
             OpenedDiscussion.transform.localScale = Vector3.zero;
-            OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished);
+            OpenedDiscussion.InitializeDependencies(this.OnDiscussionWindowAnimationExitFinished, displayWorkflowIcon: !this.IsWaitForSecondsStrategyEnabled());
             this.GetAbstractTextOnlyNodePosition(discussionNode, out Vector3 worldPosition, out WindowPositionType WindowPositionType);
             OpenedDiscussion.OnDiscussionWindowAwakeV2(CoreGameSingletonInstances.CoreConfigurationManager.DiscussionTextConfigurationData()[discussionNode.DisplayedText], worldPosition, WindowPositionType);
         }
@@ -211,16 +216,17 @@ namespace CoreGame
     public class WaitForInputDiscussionWindowManagerStrategy : DiscussionWindowManagerStrategy { }
     public class WaitForSecondsDiscussionWindowManagerStrategy : DiscussionWindowManagerStrategy
     {
-        public float SecondsToWait;
+        public float SecondsToWaitAfterTextIsDisplayed;
         public float ElapsedTime;
 
-        public WaitForSecondsDiscussionWindowManagerStrategy(float secondsToWait)
+        public WaitForSecondsDiscussionWindowManagerStrategy(float secondsToWaitAfterTextIsDisplayed)
         {
-            SecondsToWait = secondsToWait;
+            SecondsToWaitAfterTextIsDisplayed = secondsToWaitAfterTextIsDisplayed;
             ElapsedTime = 0f;
         }
 
-        public bool IsTimeOver() { return this.ElapsedTime >= this.SecondsToWait; }
+        public bool IsTimeOver() { return this.ElapsedTime >= this.SecondsToWaitAfterTextIsDisplayed; }
+        public void ResetTimer() { this.ElapsedTime = 0f; }
     }
 
     #region Discussion Input Handling
