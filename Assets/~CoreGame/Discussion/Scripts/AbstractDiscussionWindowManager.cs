@@ -12,6 +12,10 @@ namespace CoreGame
         private ChoicePopup OpenedChoicePopup;
         #endregion
 
+        #region Parameters
+        protected Dictionary<CutsceneParametersName, object> discussionGraphParameters;
+        #endregion
+
         private DiscussionTreeId discussionTreeID;
         private DicussionInputManager DicussionInputManager;
         private DiscussionWindow OpenedDiscussion;
@@ -40,9 +44,10 @@ namespace CoreGame
         public DiscussionTreeId DiscussionTreeID { get => discussionTreeID; }
         #endregion
 
-        protected void BaseInit(DiscussionTreeId DiscussionTreeId, DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy)
+        protected void BaseInit(DiscussionTreeId DiscussionTreeId, Dictionary<CutsceneParametersName, object> discussionGraphParameters, DiscussionWindowManagerStrategy DiscussionWindowManagerStrategy)
         {
             this.discussionTreeID = DiscussionTreeId;
+            this.discussionGraphParameters = discussionGraphParameters;
             this.DiscussionWindowManagerStrategy = DiscussionWindowManagerStrategy;
             DicussionInputManager = new DicussionInputManager(CoreGameSingletonInstances.GameInputManager);
 

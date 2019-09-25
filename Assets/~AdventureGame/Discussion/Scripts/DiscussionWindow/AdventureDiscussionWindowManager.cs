@@ -22,7 +22,7 @@ namespace AdventureGame
             this.PointOfInterestManager = AdventureGameSingletonInstances.PointOfInterestManager;
             this.DiscussionEventHandler = AdventureGameSingletonInstances.DiscussionEventHandler;
             this.DiscussionPOIAnimationManager = new DiscussionPOIAnimationManager();
-            this.BaseInit(DiscussionTreeId, DiscussionWindowManagerStrategy);
+            this.BaseInit(DiscussionTreeId, null, DiscussionWindowManagerStrategy);
         }
 
         protected override bool GetAbstractTextOnlyNodePosition(AbstractDiscussionTextOnlyNode abstractDiscussionTextOnlyNode, out Vector3 worldPosition, out WindowPositionType WindowPositionType)

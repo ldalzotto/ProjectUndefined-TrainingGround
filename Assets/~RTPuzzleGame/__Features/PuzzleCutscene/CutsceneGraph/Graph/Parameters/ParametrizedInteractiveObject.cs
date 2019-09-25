@@ -1,5 +1,6 @@
 ﻿using GameConfigurationID;
 using CoreGame;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,15 +18,15 @@ namespace RTPuzzle
         [CustomEnum()]
         public CutsceneParametersName InteractiveObjectParameterName;
 
-        public IInteractiveObjectTypeDataRetrieval Resolve(PuzzleCutsceneActionInput PuzzleCutsceneActionInput)
+        public IInteractiveObjectTypeDataRetrieval Resolve(Dictionary<CutsceneParametersName, object> graphParameters, InteractiveObjectContainer InteractiveObjectContainer)
         {
             if (this.InteractiveObjectParametrized)
             {
-                return ((InteractiveObjectType)PuzzleCutsceneActionInput.graphParameters[this.InteractiveObjectParameterName]);
+                return ((InteractiveObjectType)graphParameters[this.InteractiveObjectParameterName]);
             }
             else
             {
-                return PuzzleCutsceneActionInput.InteractiveObjectContainer.GetInteractiveObjectFirst(this.InteractiveObjectID);
+                return InteractiveObjectContainer.GetInteractiveObjectFirst(this.InteractiveObjectID);
             }
         }
 

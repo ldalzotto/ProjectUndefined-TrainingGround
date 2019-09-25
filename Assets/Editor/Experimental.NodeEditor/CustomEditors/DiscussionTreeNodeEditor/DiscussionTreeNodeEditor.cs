@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using Experimental.Editor_NodeEditor;
 using GameConfigurationID;
+using RTPuzzle;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace Editor_DiscussionTreeNodeEditor
                         var PuzzleDiscussionTextOnlyNodeProfile = (PuzzleDiscussionTextOnlyNodeProfile)editorNode;
                         discussionTree.DiscussionNodes.Add(PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId,
                           new PuzzleDiscussionTextOnlyNode(PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.DiscussionNodeId, PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.DisplayedText,
-                            PuzzleDiscussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.Talker));
+                            PuzzleDiscussionTextOnlyNodeProfile.ConnectionEdge.GetConnectedNodeEdgeDiscussionNodeID(), PuzzleDiscussionTextOnlyNodeProfile.DiscussionNodeEdge.ParametrizedInteractiveObject));
                     }
                     else if (editorNode.GetType() == typeof(FixedScreenPositionDiscussionTextOnlyNodeProfile))
                     {

@@ -60,21 +60,7 @@ namespace CoreGame
 
         public PointOfInterestId Talker { get => talker; }
     }
-
-    [System.Serializable]
-    public class PuzzleDiscussionTextOnlyNode : AbstractDiscussionTextOnlyNode
-    {
-        [SerializeField]
-        private InteractiveObjectID talker;
-
-        public PuzzleDiscussionTextOnlyNode(DiscussionNodeId DiscussionNodeId, DiscussionTextID displayedText, DiscussionNodeId nextNode, InteractiveObjectID talker) : base(DiscussionNodeId, displayedText, nextNode)
-        {
-            this.talker = talker;
-        }
-
-        public InteractiveObjectID Talker { get => talker; }
-    }
-
+    
     [System.Serializable]
     public class FixedScreenPositionDiscussionTextOnlyNode : AbstractDiscussionTextOnlyNode
     {

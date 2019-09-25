@@ -24,8 +24,9 @@ namespace RTPuzzle
 
         protected override RotateActionRequiredData GetRotateActionRequiredData(SequencedActionInput ContextActionInput)
         {
-            var rotatingObject = this.RotatingInteractiveObjectParameter.Resolve((PuzzleCutsceneActionInput)ContextActionInput);
-            var targetObject = this.TargetInteractiveObjectParameter.Resolve((PuzzleCutsceneActionInput)ContextActionInput);
+            var PuzzleCutsceneActionInput = (PuzzleCutsceneActionInput)ContextActionInput;
+            var rotatingObject = this.RotatingInteractiveObjectParameter.Resolve(PuzzleCutsceneActionInput.graphParameters, PuzzleCutsceneActionInput.InteractiveObjectContainer);
+            var targetObject = this.TargetInteractiveObjectParameter.Resolve(PuzzleCutsceneActionInput.graphParameters, PuzzleCutsceneActionInput.InteractiveObjectContainer);
             Quaternion targetQuaterion = Quaternion.LookRotation(targetObject.GetTransform().position - rotatingObject.GetTransform().position, rotatingObject.GetTransform().up);
             targetQuaterion.eulerAngles = targetQuaterion.eulerAngles.Mul(rotatingObject.GetTransform().up);
             return new RotateActionRequiredData(rotatingObject.GetInteractiveObjectCutsceneControllerModule().InteractiveObjectCutsceneController, targetQuaterion);

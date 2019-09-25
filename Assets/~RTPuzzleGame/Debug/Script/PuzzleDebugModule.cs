@@ -66,7 +66,8 @@ namespace RTPuzzle
             if (PlayerDiscussionTree)
             {
                 PlayerDiscussionTree = false;
-                PuzzleGameSingletonInstances.PuzzleDiscussionManager.PlayDiscussion(this.DiscussionTreeID);
+                var randomInteractiveObject = PuzzleGameSingletonInstances.InteractiveObjectContainer.GetInteractiveObjectFirst(InteractiveObjectID._Town1_Park_GrabbedProjectile);
+                PuzzleGameSingletonInstances.PuzzleDiscussionManager.PlayDiscussion(this.DiscussionTreeID, new System.Collections.Generic.Dictionary<CutsceneParametersName, object>() { { CutsceneParametersName.INTERACTIVE_OBJECT_0, randomInteractiveObject } });
             }
         }
 #endif

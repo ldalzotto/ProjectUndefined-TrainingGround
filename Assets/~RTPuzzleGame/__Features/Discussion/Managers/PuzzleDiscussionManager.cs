@@ -1,4 +1,6 @@
-﻿using GameConfigurationID;
+﻿using CoreGame;
+using GameConfigurationID;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -18,9 +20,9 @@ namespace RTPuzzle
             this.PuzzleDiscussionWindowsContainer.Tick(d);
         }
 
-        public void PlayDiscussion(DiscussionTreeId DiscussionTreeId)
+        public void PlayDiscussion(DiscussionTreeId DiscussionTreeId, Dictionary<CutsceneParametersName, object> discussionGraphParameters)
         {
-            this.PuzzleDiscussionWindowsContainer.AddDiscussionTree(new PuzzleDiscussionWindowManager(DiscussionTreeId));
+            this.PuzzleDiscussionWindowsContainer.AddDiscussionTree(new PuzzleDiscussionWindowManager(DiscussionTreeId, discussionGraphParameters));
         }
 
     }
