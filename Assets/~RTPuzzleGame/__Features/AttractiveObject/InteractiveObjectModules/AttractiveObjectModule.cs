@@ -1,4 +1,5 @@
 ﻿using GameConfigurationID;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace RTPuzzle
         IAttractiveObjectModuleEvent GetIAttractiveObjectModuleEvent();
     }
 
-    public partial class AttractiveObjectModule : InteractiveObjectModule, IAttractiveObjectModuleDataRetriever, RangeTypeObjectEventListener
+    public partial class AttractiveObjectModule : InteractiveObjectModule, IAttractiveObjectModuleDataRetriever
     {
 
         public static IAttractiveObjectModuleDataRetriever GetAttractiveObjectFromCollisionType(CollisionType collisionType)
@@ -30,7 +31,7 @@ namespace RTPuzzle
 
         #region Internal Dependencies
         private RangeTypeObject sphereRange;
-        private AttractiveObjectIntersectionManager AttractiveObjectIntersectionManager;
+        private AttractiveObjectIntersectionManagerV2 AttractiveObjectIntersectionManager;
         #endregion
 
         #region External Dependencies
@@ -39,27 +40,6 @@ namespace RTPuzzle
 
         #region Data Retrieval
         public RangeTypeObject SphereRange { get => sphereRange; }
-        #endregion
-
-        #region Range Events
-        public void OnRangeTriggerEnter(CollisionType other)
-        {
-            if (other != null && other.IsAI)
-            {
-                this.AttractiveObjectIntersectionManager.AddTrackedAI(other, AIObjectType.FromCollisionType(other));
-            }
-        }
-
-        public void OnRangeTriggerStay(CollisionType other)
-        { }
-
-        public void OnRangeTriggerExit(CollisionType other)
-        {
-            if (other != null && other.IsAI)
-            {
-                this.AttractiveObjectIntersectionManager.RemoveTrackedAI(other, AIObjectType.FromCollisionType(other));
-            }
-        }
         #endregion
 
         #region IAttractiveObjectModuleDataRetriever
@@ -87,11 +67,11 @@ namespace RTPuzzle
 
             this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
             this.sphereRange = GetComponentInChildren<RangeTypeObject>();
-            this.sphereRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this });
+            this.AttractiveObjectIntersectionManager = new AttractiveObjectIntersectionManagerV2(this);
+            this.sphereRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AttractiveObjectIntersectionManager });
             this.sphereRange.SetIsAttractiveObject();
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(AttractiveObjectInherentConfigurationData.EffectiveTime);
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
-            this.AttractiveObjectIntersectionManager = new AttractiveObjectIntersectionManager(this);
         }
 
         public void Tick(float d, float timeAttenuationFactor)
@@ -139,93 +119,77 @@ namespace RTPuzzle
 
     }
 
-    class AttractiveObjectIntersectionManager
+    class AttractiveObjectIntersectionManagerV2 : RangeIntersectionManager
     {
-        private List<RangeIntersectionCalculator> intersectionCalculators = new List<RangeIntersectionCalculator>();
         private Dictionary<CollisionType, AIObjectDataRetriever> AIDataRetireverLookup = new Dictionary<CollisionType, AIObjectDataRetriever>();
+        private AttractiveObjectModule AssociatedAttractiveObjectModule;
 
-        private AttractiveObjectModule associatedAttractiveObject;
-
-        public AttractiveObjectIntersectionManager(AttractiveObjectModule associatedAttractiveObject)
+        public AttractiveObjectIntersectionManagerV2(AttractiveObjectModule associatedAttractiveObjectModule)
         {
-            this.associatedAttractiveObject = associatedAttractiveObject;
+            AssociatedAttractiveObjectModule = associatedAttractiveObjectModule;
         }
 
-        public void AddTrackedAI(CollisionType AICollisionType, AIObjectDataRetriever AIObjectDataRetriever)
+        public override void OnRangeTriggerEnter(CollisionType other)
         {
-            this.AIDataRetireverLookup.Add(AICollisionType, AIObjectDataRetriever);
-            var intersectionCalculator = new RangeIntersectionCalculator(this.associatedAttractiveObject.SphereRange, AICollisionType);
-            this.intersectionCalculators.Add(intersectionCalculator);
-            this.SingleCalculation(intersectionCalculator);
-        }
-
-        public void RemoveTrackedAI(CollisionType AICollisionType, AIObjectDataRetriever AIObjectDataRetriever)
-        {
-            this.AIDataRetireverLookup.Remove(AICollisionType);
-            for (var i = this.intersectionCalculators.Count - 1; i >= 0; i--)
+            if (other != null && other.IsAI)
             {
-                if (this.intersectionCalculators[i].TrackedCollider == AICollisionType)
-                {
-                    if (this.intersectionCalculators[i].IsInside)
-                    {
-                        this.AttractiveObjectExit(AIObjectDataRetriever);
-                    }
-                    this.intersectionCalculators.RemoveAt(i);
-                }
+                this.AIDataRetireverLookup.Add(other, AIObjectType.FromCollisionType(other));
+                this.AddTrackedCollider(this.AssociatedAttractiveObjectModule.SphereRange, other);
             }
         }
 
-        public void Tick()
+        public override void OnRangeTriggerExit(CollisionType other)
         {
-            foreach (var intersectionCalculator in this.intersectionCalculators)
+            if (other != null && other.IsAI)
             {
-                this.SingleCalculation(intersectionCalculator);
+                this.AIDataRetireverLookup.Remove(other);
+                this.RemoveTrackedCollider(other);
             }
         }
 
-        private void SingleCalculation(RangeIntersectionCalculator intersectionCalculator)
+        public override void OnRangeTriggerStay(CollisionType other)
         {
-            var intersectionOperation = intersectionCalculator.Tick();
-            if (intersectionOperation == InterserctionOperationType.JustInteresected)
-            {
-                this.AttractiveObjectEnter(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
-            }
-            else if (intersectionOperation == InterserctionOperationType.JustNotInteresected)
-            {
-                this.AttractiveObjectExit(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
-            }
-            else if (intersectionOperation == InterserctionOperationType.IntersectedNothing)
-            {
-                this.AttractiveObjectStay(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
-            }
-            Debug.Log(MyLog.Format(intersectionOperation));
+        }
+
+        protected override void OnJustIntersected(RangeIntersectionCalculator intersectionCalculator)
+        {
+            this.AttractiveObjectEnter(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
+        }
+
+        protected override void OnJustNotIntersected(RangeIntersectionCalculator intersectionCalculator)
+        {
+            this.AttractiveObjectExit(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
+        }
+
+        protected override void OnInterestedNothing(RangeIntersectionCalculator intersectionCalculator)
+        {
+            this.AttractiveObjectStay(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
+        }
+
+        private void AttractiveObjectEnter(AIObjectDataRetriever attractedAI)
+        {
+            attractedAI.GetAIBehavior()
+                      .ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(this.AssociatedAttractiveObjectModule.transform.position, this.AssociatedAttractiveObjectModule));
+        }
+
+        private void AttractiveObjectStay(AIObjectDataRetriever attractedAI)
+        {
+            attractedAI.GetAIBehavior()
+                        .ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(this.AssociatedAttractiveObjectModule.transform.position, this.AssociatedAttractiveObjectModule));
+        }
+
+        private void AttractiveObjectExit(AIObjectDataRetriever attractedAI)
+        {
+            attractedAI.GetAIBehavior()
+                         .ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(this.AssociatedAttractiveObjectModule));
         }
 
         public void OnRangeDestroyed()
         {
             foreach (var involvedAI in this.AIDataRetireverLookup.Values)
             {
-                involvedAI.GetAIBehavior().ReceiveEvent(new AttractiveObjectDestroyedAIBehaviorEvent(this.associatedAttractiveObject));
+                involvedAI.GetAIBehavior().ReceiveEvent(new AttractiveObjectDestroyedAIBehaviorEvent(this.AssociatedAttractiveObjectModule));
             }
         }
-
-        private void AttractiveObjectEnter(AIObjectDataRetriever attractedAI)
-        {
-            attractedAI.GetAIBehavior()
-                      .ReceiveEvent(new AttractiveObjectTriggerEnterAIBehaviorEvent(this.associatedAttractiveObject.transform.position, this.associatedAttractiveObject));
-        }
-
-        private void AttractiveObjectStay(AIObjectDataRetriever attractedAI)
-        {
-            attractedAI.GetAIBehavior()
-                        .ReceiveEvent(new AttractiveObjectTriggerStayAIBehaviorEvent(this.associatedAttractiveObject.transform.position, this.associatedAttractiveObject));
-        }
-
-        private void AttractiveObjectExit(AIObjectDataRetriever attractedAI)
-        {
-            attractedAI.GetAIBehavior()
-                         .ReceiveEvent(new AttractiveObjectTriggerExitAIBehaviorEvent(this.associatedAttractiveObject));
-        }
-
     }
 }

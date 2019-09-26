@@ -12,11 +12,13 @@ namespace RTPuzzle
         private TransformChangeListenerManager sightModuleMovementChangeTracker;
         private TransformChangeListenerManager inRangeCollidersMovementChangeTracker;
         private bool isInside;
+        private bool forceObstacleOcclusionIfNecessary;
 
-        public RangeIntersectionCalculator(RangeTypeObject associatedRange, CollisionType trackedCollider)
+        public RangeIntersectionCalculator(RangeTypeObject associatedRange, CollisionType trackedCollider, bool forceObstacleOcclusionIfNecessary)
         {
             this.RangeTypeObjectRef = associatedRange;
             this.trackedCollider = trackedCollider;
+            this.forceObstacleOcclusionIfNecessary = forceObstacleOcclusionIfNecessary;
             this.sightModuleMovementChangeTracker = new TransformChangeListenerManager(associatedRange.transform, true, true);
             this.inRangeCollidersMovementChangeTracker = new TransformChangeListenerManager(trackedCollider.transform, true, true);
         }
@@ -33,7 +35,7 @@ namespace RTPuzzle
             if (this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
                 this.sightModuleMovementChangeTracker.TransformChangedThatFrame())
             {
-                var newInside = this.RangeTypeObjectRef.IsInsideAndNotOccluded((BoxCollider)trackedCollider.GetAssociatedCollider(), forceObstacleOcclusionIfNecessary: true); ;
+                var newInside = this.RangeTypeObjectRef.IsInsideAndNotOccluded((BoxCollider)trackedCollider.GetAssociatedCollider(), this.forceObstacleOcclusionIfNecessary);
                 if (this.isInside && !newInside)
                 {
                     returnOperation = InterserctionOperationType.JustNotInteresected;

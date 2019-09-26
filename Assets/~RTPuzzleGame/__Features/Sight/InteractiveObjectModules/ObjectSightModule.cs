@@ -3,10 +3,10 @@ using System.Linq;
 
 namespace RTPuzzle
 {
-    public class ObjectSightModule : InteractiveObjectModule, RangeTypeObjectEventListener
+    public class ObjectSightModule : InteractiveObjectModule
     {
         private RangeTypeObject sightVisionRange;
-        private AISightIntersectionManager AISightInteresectionManager;
+        private AISightIntersectionManagerV2 AISightInteresectionManager;
 
         public RangeTypeObject SightVisionRange { get => sightVisionRange; }
 
@@ -14,8 +14,8 @@ namespace RTPuzzle
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.ResolveInternalDependencies();
-            this.AISightInteresectionManager = new AISightIntersectionManager(interactiveObjectInitializationObject.ParentAIObjectTypeReference);
-            this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this });
+            this.AISightInteresectionManager = new AISightIntersectionManagerV2(this, interactiveObjectInitializationObject.ParentAIObjectTypeReference);
+            this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AISightInteresectionManager });
         }
 
         public void ResolveInternalDependencies()
@@ -26,37 +26,13 @@ namespace RTPuzzle
         public void TickBeforeAIUpdate(float d)
         {
             //Ranges are update in container
-            this.AISightInteresectionManager.Tick(d);
+            this.AISightInteresectionManager.Tick();
         }
-
-        #region Internal Events    
-        public void OnTargetTriggerExit(CollisionType CollisionType)
-        {
-            this.AISightInteresectionManager.OnTargetTriggerExit(CollisionType);
-        }
-        #endregion
-
+        
         #region Logical Conditions
         public bool IsPlayerInSight() { return this.AISightInteresectionManager.IsPlayerInSight(); }
         #endregion
-
-        public void OnRangeTriggerEnter(CollisionType collisionType)
-        {
-            if (collisionType != null && collisionType.IsPlayer)
-            {
-                this.AISightInteresectionManager.OnTargetTriggerEnter(sightVisionRange, collisionType);
-            }
-        }
-        public void OnRangeTriggerStay(CollisionType other) { }
-        public void OnRangeTriggerExit(CollisionType collisionType)
-        {
-            if (collisionType != null && collisionType.IsPlayer)
-            {
-                this.OnTargetTriggerExit(collisionType);
-            }
-
-        }
-
+        
 #if UNITY_EDITOR
         public void HandlesTick()
         {
@@ -68,65 +44,51 @@ namespace RTPuzzle
 #endif
 
     }
-    public class AISightIntersectionManager
-    {
-        private List<RangeIntersectionCalculator> intersectionCalculators = new List<RangeIntersectionCalculator>();
 
+    public class AISightIntersectionManagerV2 : RangeIntersectionManager
+    {
+        private ObjectSightModule associatedObjectSightModule;
         private AIObjectDataRetriever AssociatedAI;
 
-        public AISightIntersectionManager(AIObjectDataRetriever associatedAI)
+        public AISightIntersectionManagerV2(ObjectSightModule associatedObjectSightModule, AIObjectDataRetriever associatedAI)
         {
-            AssociatedAI = associatedAI;
+            this.associatedObjectSightModule = associatedObjectSightModule;
+            this.AssociatedAI = associatedAI;
         }
 
-        public void Tick(float d)
+        public override void OnRangeTriggerEnter(CollisionType other)
         {
-            foreach (var intersectionCalculator in intersectionCalculators)
+            if (other != null && other.IsPlayer)
             {
-                var intersectionOperation = intersectionCalculator.Tick();
-                if (intersectionOperation == InterserctionOperationType.JustInteresected)
-                {
-                    this.SightInRangeEnter(intersectionCalculator.TrackedCollider);
-                }
-                else if (intersectionOperation == InterserctionOperationType.JustNotInteresected)
-                {
-                    this.SightInRangeExit(intersectionCalculator.TrackedCollider);
-                }
+                this.AddTrackedCollider(associatedObjectSightModule.SightVisionRange, other);
             }
         }
 
-        #region External Event
-        public void OnTargetTriggerExit(CollisionType ColliderWithCollisionType)
+        public override void OnRangeTriggerExit(CollisionType other)
         {
-            for (var i = this.intersectionCalculators.Count - 1; i >= 0; i--)
+            if (other != null && other.IsPlayer)
             {
-                if (this.intersectionCalculators[i].TrackedCollider == ColliderWithCollisionType)
-                {
-                    if (this.intersectionCalculators[i].IsInside)
-                    {
-                        this.SightInRangeExit(ColliderWithCollisionType);
-                    }
-                    this.intersectionCalculators.RemoveAt(i);
-                }
+                this.RemoveTrackedCollider(other);
             }
         }
 
-        public void OnTargetTriggerEnter(RangeTypeObject sightVisionRange, CollisionType collisionType)
+        public override void OnRangeTriggerStay(CollisionType other)
         {
-            this.intersectionCalculators.Add(new RangeIntersectionCalculator(sightVisionRange, collisionType));
         }
-        #endregion
+        
+        protected override void OnJustIntersected(RangeIntersectionCalculator intersectionCalculator)
+        {
+            this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(intersectionCalculator.TrackedCollider));
+        }
 
-        #region Internal Event
-        private void SightInRangeEnter(CollisionType trackedCollider)
+        protected override void OnJustNotIntersected(RangeIntersectionCalculator intersectionCalculator)
         {
-            this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(trackedCollider));
+            this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(intersectionCalculator.TrackedCollider));
         }
-        private void SightInRangeExit(CollisionType trackedCollider)
+
+        protected override void OnInterestedNothing(RangeIntersectionCalculator intersectionCalculator)
         {
-            this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(trackedCollider));
         }
-        #endregion
 
         #region Logical Conditions
         public bool IsPlayerInSight()
@@ -142,6 +104,5 @@ namespace RTPuzzle
         }
         #endregion
     }
-
 
 }
