@@ -17,9 +17,11 @@ using UnityEngine;
 namespace RTPuzzle
 {
 
-    public class VisualFeedbackEmitterModule : InteractiveObjectModule, IVisualFeedbackEmitterModuleDataRetriever, RangeTypeObjectEventListener
+    public class VisualFeedbackEmitterModule : InteractiveObjectModule, IVisualFeedbackEmitterModuleDataRetriever
     {
         public RangeTypeObject InRangeVisualFeedbackTrackerRange;
+
+        private VisualFeedbackEmitterRangeIntersectionManager VisualFeedbackEmitterRangeIntersectionManager;
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
                 IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
@@ -32,28 +34,16 @@ namespace RTPuzzle
             {
                 InRangeVisualFeedbackTrackerRangeInitializationData = interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData.RangeInitializer;
             }
-            this.InRangeVisualFeedbackTrackerRange.Init(InRangeVisualFeedbackTrackerRangeInitializationData, new List<RangeTypeObjectEventListener>() { this });
+            this.VisualFeedbackEmitterRangeIntersectionManager = new VisualFeedbackEmitterRangeIntersectionManager(this.InRangeVisualFeedbackTrackerRange);
+            this.InRangeVisualFeedbackTrackerRange.Init(InRangeVisualFeedbackTrackerRangeInitializationData, new List<RangeTypeObjectEventListener>() { this.VisualFeedbackEmitterRangeIntersectionManager });
         }
-
-        private List<BoxCollider> inRangeCollidersForVisual = new List<BoxCollider>();
-        private List<ModelObjectModule> inRangeModelObjectForVisual = new List<ModelObjectModule>();
-
-        private List<Action> localListenersOnDestroy = new List<Action>();
-
+        
         #region IInRangeVisualFeedbackModuleDataRetriever
-        public ModelObjectModule[] GetInRangeModelObjectsForVisual()
+        public List<ModelObjectModule> GetInRangeModelObjectsForVisual()
         {
-            ModelObjectModule[] InRangeModelObjectsForVisual = new ModelObjectModule[this.inRangeCollidersForVisual.Count];
-
-            for (var i = 0; i < this.inRangeCollidersForVisual.Count; i++)
-            {
-                if (this.InRangeVisualFeedbackTrackerRange.RangeType.IsInsideAndNotOccluded(this.inRangeCollidersForVisual[i], forceObstacleOcclusionIfNecessary: false))
-                {
-                    InRangeModelObjectsForVisual[i] = this.inRangeModelObjectForVisual[i];
-                }
-            }
-            return InRangeModelObjectsForVisual;
+            return this.VisualFeedbackEmitterRangeIntersectionManager.InRangeModelObjectForVisual;
         }
+
         public RangeTypeID GetAssociatedRangeTypeID()
         {
             return this.InRangeVisualFeedbackTrackerRange.RangeType.RangeTypeID;
@@ -68,97 +58,152 @@ namespace RTPuzzle
         public override void OnInteractiveObjectDestroyed()
         {
             this.InRangeVisualFeedbackTrackerRange.OnRangeDestroyed();
-
-            for (var i = 0; i < this.inRangeCollidersForVisual.Count; i++)
-            {
-                if (this.localListenersOnDestroy[i] != null) { this.localListenersOnDestroy[i].Invoke(); }
-            }
+            this.VisualFeedbackEmitterRangeIntersectionManager.OnRangeDestroyed();
         }
 
-        public void Tick(float d, float timeAttenuationFactor)
+        public void TickAlways(float d)
         {
-        }
-
-        public void OnRangeTriggerEnter(CollisionType other)
-        {
-            if (other != null)
-            {
-                if (other.IsAI)
-                {
-                    var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(other);
-                    if (IAILogicColliderModuleDataRetriever != null)
-                    {
-                        this.inRangeCollidersForVisual.Add(IAILogicColliderModuleDataRetriever.GetCollider());
-                        this.inRangeModelObjectForVisual.Add(IAILogicColliderModuleDataRetriever.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
-                        this.localListenersOnDestroy.Add(null);
-                    }
-                }
-                else if (other.IsRepelable)
-                {
-                    var IObjectRepelModuleDataRetrieval = (IObjectRepelModuleDataRetrieval)ObjectRepelModule.FromCollisionType(other);
-                    if (IObjectRepelModuleDataRetrieval != null)
-                    {
-                        this.inRangeCollidersForVisual.Add(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
-                        this.inRangeModelObjectForVisual.Add(IObjectRepelModuleDataRetrieval.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
-                        Action destroyCallBack = null;
-
-                        var ILineVisualFeedbackEvent = IObjectRepelModuleDataRetrieval.ILineVisualFeedbackEvent;
-                        if (ILineVisualFeedbackEvent != null)
-                        {
-                            ILineVisualFeedbackEvent.CreateLineDirectionPositioning(DottedLineID.REPELABLE_OBJECT_FEEDBACK, this.InRangeVisualFeedbackTrackerRange);
-                            destroyCallBack = () => ILineVisualFeedbackEvent.DestroyLine(this.InRangeVisualFeedbackTrackerRange);
-                        }
-                        this.localListenersOnDestroy.Add(destroyCallBack);
-                    }
-                }
-
-            }
-        }
-        public void OnRangeTriggerStay(CollisionType other) { }
-        public void OnRangeTriggerExit(CollisionType other)
-        {
-            if (other != null)
-            {
-                if (other.IsAI)
-                {
-                    var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(other);
-                    if (IAILogicColliderModuleDataRetriever != null)
-                    {
-                        var index = this.inRangeCollidersForVisual.IndexOf(IAILogicColliderModuleDataRetriever.GetCollider());
-                        if (index >= 0)
-                        {
-                            this.inRangeCollidersForVisual.RemoveAt(index);
-                            this.inRangeModelObjectForVisual.RemoveAt(index);
-                            this.localListenersOnDestroy.RemoveAt(index);
-                        }
-                    }
-                }
-                else if (other.IsRepelable)
-                {
-                    var IObjectRepelModuleDataRetrieval = (IObjectRepelModuleDataRetrieval)ObjectRepelModule.FromCollisionType(other);
-                    if (IObjectRepelModuleDataRetrieval != null)
-                    {
-                        var index = this.inRangeCollidersForVisual.IndexOf(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
-                        if (index >= 0)
-                        {
-                            this.inRangeCollidersForVisual.RemoveAt(index);
-                            this.inRangeModelObjectForVisual.RemoveAt(index);
-                            this.localListenersOnDestroy.RemoveAt(index);
-                        }
-
-                        var ILineVisualFeedbackEvent = IObjectRepelModuleDataRetrieval.ILineVisualFeedbackEvent;
-                        if (ILineVisualFeedbackEvent != null)
-                        {
-                            ILineVisualFeedbackEvent.DestroyLine(this.InRangeVisualFeedbackTrackerRange);
-                        }
-                    }
-                }
-            }
+            this.VisualFeedbackEmitterRangeIntersectionManager.Tick();
         }
     }
 
     public class InRangeVisualFeedbakcModuleInitializationData
     {
         public RangeTypeObjectInitializer RangeInitializer;
+    }
+
+    class VisualFeedbackEmitterRangeIntersectionManager : RangeIntersectionManager
+    {
+        private RangeTypeObject VisualFeedbackEmitterRange;
+
+        public VisualFeedbackEmitterRangeIntersectionManager(RangeTypeObject visualFeedbackEmitterRange)
+        {
+            VisualFeedbackEmitterRange = visualFeedbackEmitterRange;
+        }
+
+        private List<BoxCollider> inRangeCollidersForVisual = new List<BoxCollider>();
+        private List<ModelObjectModule> inRangeModelObjectForVisual = new List<ModelObjectModule>();
+        private List<Action> localListenersOnDestroy = new List<Action>();
+
+        public List<ModelObjectModule> InRangeModelObjectForVisual { get => inRangeModelObjectForVisual; }
+
+        public override void OnRangeTriggerEnter(CollisionType other)
+        {
+            if (other != null)
+            {
+                if (other.IsAI)
+                {
+                    this.AddTrackedCollider(this.VisualFeedbackEmitterRange, other);
+                }
+                else if (other.IsRepelable)
+                {
+                    this.AddTrackedCollider(this.VisualFeedbackEmitterRange, other);
+                }
+
+            }
+        }
+
+        public override void OnRangeTriggerExit(CollisionType other)
+        {
+            if (other != null)
+            {
+                if (other.IsAI)
+                {
+                    this.RemoveTrackedCollider(other);
+                }
+                else if (other.IsRepelable)
+                {
+                    this.RemoveTrackedCollider(other);
+                }
+            }
+        }
+
+        public void OnRangeDestroyed()
+        {
+            for (var i = 0; i < this.inRangeCollidersForVisual.Count; i++)
+            {
+                if (this.localListenersOnDestroy[i] != null) { this.localListenersOnDestroy[i].Invoke(); }
+            }
+        }
+
+        public override void OnRangeTriggerStay(CollisionType other)
+        {
+        }
+
+        protected override void OnInterestedNothing(RangeIntersectionCalculator intersectionCalculator)
+        {
+        }
+
+        protected override void OnJustIntersected(RangeIntersectionCalculator intersectionCalculator)
+        {
+            if (intersectionCalculator.TrackedCollider.IsAI)
+            {
+                var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(intersectionCalculator.TrackedCollider);
+                if (IAILogicColliderModuleDataRetriever != null)
+                {
+                    this.inRangeCollidersForVisual.Add(IAILogicColliderModuleDataRetriever.GetCollider());
+                    this.inRangeModelObjectForVisual.Add(IAILogicColliderModuleDataRetriever.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
+                    this.localListenersOnDestroy.Add(null);
+                }
+
+            }
+            else if (intersectionCalculator.TrackedCollider.IsRepelable)
+            {
+                var IObjectRepelModuleDataRetrieval = (IObjectRepelModuleDataRetrieval)ObjectRepelModule.FromCollisionType(intersectionCalculator.TrackedCollider);
+                if (IObjectRepelModuleDataRetrieval != null)
+                {
+                    this.inRangeCollidersForVisual.Add(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
+                    this.inRangeModelObjectForVisual.Add(IObjectRepelModuleDataRetrieval.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
+                    Action destroyCallBack = null;
+
+                    var ILineVisualFeedbackEvent = IObjectRepelModuleDataRetrieval.ILineVisualFeedbackEvent;
+                    if (ILineVisualFeedbackEvent != null)
+                    {
+                        ILineVisualFeedbackEvent.CreateLineDirectionPositioning(DottedLineID.REPELABLE_OBJECT_FEEDBACK, this.VisualFeedbackEmitterRange);
+                        destroyCallBack = () => ILineVisualFeedbackEvent.DestroyLine(this.VisualFeedbackEmitterRange);
+                    }
+                    this.localListenersOnDestroy.Add(destroyCallBack);
+                }
+            }
+        }
+
+        protected override void OnJustNotIntersected(RangeIntersectionCalculator intersectionCalculator)
+        {
+            Debug.Log("VisualFeedbackEmitterRangeIntersectionManager : OnJustNotIntersected");
+            if (intersectionCalculator.TrackedCollider.IsAI)
+            {
+                var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(intersectionCalculator.TrackedCollider);
+                if (IAILogicColliderModuleDataRetriever != null)
+                {
+                    var index = this.inRangeCollidersForVisual.IndexOf(IAILogicColliderModuleDataRetriever.GetCollider());
+                    if (index >= 0)
+                    {
+                        this.inRangeCollidersForVisual.RemoveAt(index);
+                        this.inRangeModelObjectForVisual.RemoveAt(index);
+                        this.localListenersOnDestroy.RemoveAt(index);
+                    }
+                }
+            }
+            else if (intersectionCalculator.TrackedCollider.IsRepelable)
+            {
+                var IObjectRepelModuleDataRetrieval = (IObjectRepelModuleDataRetrieval)ObjectRepelModule.FromCollisionType(intersectionCalculator.TrackedCollider);
+                if (IObjectRepelModuleDataRetrieval != null)
+                {
+                    var index = this.inRangeCollidersForVisual.IndexOf(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
+                    if (index >= 0)
+                    {
+                        this.inRangeCollidersForVisual.RemoveAt(index);
+                        this.inRangeModelObjectForVisual.RemoveAt(index);
+                        this.localListenersOnDestroy.RemoveAt(index);
+                    }
+
+                    var ILineVisualFeedbackEvent = IObjectRepelModuleDataRetrieval.ILineVisualFeedbackEvent;
+                    if (ILineVisualFeedbackEvent != null)
+                    {
+                        ILineVisualFeedbackEvent.DestroyLine(this.VisualFeedbackEmitterRange);
+                    }
+                }
+            }
+        }
     }
 }

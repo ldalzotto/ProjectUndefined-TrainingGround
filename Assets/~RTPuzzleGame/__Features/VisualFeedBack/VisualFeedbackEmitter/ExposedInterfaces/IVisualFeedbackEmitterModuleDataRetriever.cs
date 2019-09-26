@@ -5,7 +5,7 @@ namespace RTPuzzle
 {
     public interface IVisualFeedbackEmitterModuleDataRetriever
     {
-        ModelObjectModule[] GetInRangeModelObjectsForVisual();
+        List<ModelObjectModule> GetInRangeModelObjectsForVisual();
         RangeTypeID GetAssociatedRangeTypeID();
     }
 
