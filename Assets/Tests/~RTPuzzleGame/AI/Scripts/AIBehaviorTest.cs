@@ -911,7 +911,7 @@ namespace Tests
             });
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             yield return null;
-            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 0.01f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
+            var attractiveObjectType = PuzzleSceneTestHelper.SpawnAttractiveObject(AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_1, 1f, 99f), TestPositionID.ATTRACTIVE_OBJECT_NOMINAL);
             yield return new WaitForFixedUpdate();
             Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>(), "The AI is too far from attractive object zone.");
             Assert.IsTrue(aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum() == 360f);

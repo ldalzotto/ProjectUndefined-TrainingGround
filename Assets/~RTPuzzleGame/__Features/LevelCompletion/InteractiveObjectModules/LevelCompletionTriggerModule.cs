@@ -48,7 +48,7 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("LevelCompletionTriggerModule OnTriggerEnter"));
             AskForLevelCompletionCalculation(other);
         }
-
+        public void OnRangeTriggerStay(CollisionType other) { }
         public void OnRangeTriggerExit(CollisionType other)
         {
             AskForLevelCompletionCalculation(other);

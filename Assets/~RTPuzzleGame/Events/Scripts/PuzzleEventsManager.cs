@@ -77,14 +77,12 @@ namespace RTPuzzle
         #region IAIAttractiveObjectEventListener
         public void AI_AttractedObject_Start(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
-            InvolvedAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAIAttractedStart(AIObjectDataRetriever);
-
             var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
 
             var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
             if (ILineVisualFeedbackEvent != null)
             {
-                ILineVisualFeedbackEvent.CreateLineFollowingModelObject(DottedLineID.ATTRACTIVE_OBJECT, InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule(), (MonoBehaviour) AIObjectDataRetriever);
+                ILineVisualFeedbackEvent.CreateLineFollowingModelObject(DottedLineID.ATTRACTIVE_OBJECT, InvolvedAttractiveObjectModuleDataRetriever.GetModelObjectModule(), (MonoBehaviour)AIObjectDataRetriever);
             }
 
             var IContextMarkVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetIContextMarkVisualFeedbackEvent();
@@ -96,8 +94,6 @@ namespace RTPuzzle
 
         public void AI_AttractedObject_End(IAttractiveObjectModuleDataRetriever InvolvedAttractiveObjectModuleDataRetriever, AIObjectDataRetriever AIObjectDataRetriever)
         {
-            InvolvedAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAIAttractedEnd(AIObjectDataRetriever);
-
             var involvedAIInteractiveObjectDataRetrieval = AIObjectDataRetriever.GetInteractiveObjectTypeDataRetrieval();
             var ILineVisualFeedbackEvent = involvedAIInteractiveObjectDataRetrieval.GetILineVisualFeedbackEvent();
             if (ILineVisualFeedbackEvent != null)
@@ -193,7 +189,7 @@ namespace RTPuzzle
         {
             this.IPlayerActionManagerEvent.OnSelectionWheelSleep(destroyImmediate);
         }
-        
+
         public void PZ_EVT_OnPlayerActionWheelNodeSelected()
         {
             var selectedAction = this.IPlayerActionManagerDataRetrieval.GetCurrentSelectedAction();
@@ -229,7 +225,7 @@ namespace RTPuzzle
             disarmedObjectModule.GetIDisarmObjectModuleEvent().IfNotNull(IDisarmObjectModuleEvent => IDisarmObjectModuleEvent.OnDisarmObjectEnd(AIObjectDataRetriever));
         }
         #endregion
-        
+
         #region IGameOverManagerEventListener
         public void PZ_EVT_GameOver()
         {
@@ -268,6 +264,6 @@ namespace RTPuzzle
             this.PuzzleLevelTransitionManager.OnPuzzleToPuzzleLevel(levelZonesID);
         }
         #endregion
-        
+
     }
 }

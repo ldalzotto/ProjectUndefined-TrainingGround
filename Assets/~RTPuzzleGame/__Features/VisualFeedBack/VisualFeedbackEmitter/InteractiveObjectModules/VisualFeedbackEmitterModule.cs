@@ -114,7 +114,7 @@ namespace RTPuzzle
 
             }
         }
-
+        public void OnRangeTriggerStay(CollisionType other) { }
         public void OnRangeTriggerExit(CollisionType other)
         {
             if (other != null)

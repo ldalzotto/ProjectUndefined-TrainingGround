@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -22,7 +21,6 @@ namespace RTPuzzle
         public IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval { get; private set; }
 
         #region State
-        private List<IAILogicColliderModuleListener> PhysicsEventListeners;
         private BoxCollider associatedCollider;
         #endregion
 
@@ -51,28 +49,12 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (collisionType.IsRTAttractiveObject)
-                {
-                    var IAttractiveObjectModuleDataRetriever = AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType);
-                    if (IAttractiveObjectModuleDataRetriever != null)
-                    {
-                        IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerEnter(this.AIObjectDataRetirever);
-                    }
-                }
                 if (collisionType.IsTargetZone)
                 {
                     TargetZoneModule.FromCollisionType(collisionType).GetITargetZoneModuleEvent()
                         .OnAITriggerEnter(this.AIObjectDataRetirever);
                 }
 
-            }
-            
-            if (this.PhysicsEventListeners != null)
-            {
-                foreach (var physicsEventListener in this.PhysicsEventListeners)
-                {
-                    physicsEventListener.OnAILogicColliderTriggerEnter(other);
-                }
             }
         }
 
@@ -81,63 +63,20 @@ namespace RTPuzzle
             var collisionType = other.GetComponent<CollisionType>();
             if (collisionType != null)
             {
-                if (collisionType.IsRTAttractiveObject)
-                {
-                    var IAttractiveObjectModuleDataRetriever = AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType);
-                    if (IAttractiveObjectModuleDataRetriever != null)
-                    {
-                        IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerStay(this.AIObjectDataRetirever);
-                    }
-                }
                 if (collisionType.IsTargetZone)
                 {
                     TargetZoneModule.FromCollisionType(collisionType).GetITargetZoneModuleEvent()
                            .OnAITriggerStay(this.AIObjectDataRetirever);
                 }
             }
-            
-            if (this.PhysicsEventListeners != null)
-            {
-                foreach (var physicsEventListener in this.PhysicsEventListeners)
-                {
-                    physicsEventListener.OnAILogicColliderTriggerStay(other);
-                }
-            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            var collisionType = other.GetComponent<CollisionType>();
-            if (collisionType != null)
-            {
-                if (collisionType.IsRTAttractiveObject)
-                {
-                    var IAttractiveObjectModuleDataRetriever = AttractiveObjectModule.GetAttractiveObjectFromCollisionType(collisionType);
-                    if (IAttractiveObjectModuleDataRetriever != null)
-                    {
-                        IAttractiveObjectModuleDataRetriever.GetIAttractiveObjectModuleEvent().OnAITriggerExit(this.AIObjectDataRetirever);
-                    }
-                }
-            }
-
-            if (this.PhysicsEventListeners != null)
-            {
-                foreach (var physicsEventListener in this.PhysicsEventListeners)
-                {
-                    physicsEventListener.OnAILogicColliderTriggerExit(other);
-                }
-            }
         }
         #endregion
 
-        #region External Events
-        public void AddListener(IAILogicColliderModuleListener IAILogicColliderModuleListener)
-        {
-            if (this.PhysicsEventListeners == null) { this.PhysicsEventListeners = new List<IAILogicColliderModuleListener>(); }
-            this.PhysicsEventListeners.Add(IAILogicColliderModuleListener);
-        }
-        #endregion
-        
+
         public static AIObjectDataRetriever FromCollisionType(CollisionType collisionType)
         {
             if (collisionType == null) { return null; }

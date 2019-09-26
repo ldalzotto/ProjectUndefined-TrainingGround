@@ -278,6 +278,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Configuration\RangeTypeObjectDefinitionConfiguration\RangeTypeObjectDefinitionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\ExposedInterfaces\IRangeTypeObjectContainerEvent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\ExposedInterfaces\IRangeTypeObjectEventListener.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\RangeIntersectionCalculator.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Lib\RangeTypeObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\Managers\RangeTypeObjectContainer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Range\RangeColliderTracker\RangeModule\RangeColliderTrackerModule.cs" />

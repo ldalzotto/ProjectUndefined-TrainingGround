@@ -1,5 +1,4 @@
-﻿using GameConfigurationID;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle
@@ -14,7 +13,7 @@ namespace RTPuzzle
         {
             if (this.AttractiveObjectStrategyType == AttractiveObjectStrategyType.LOOSE)
             {
-               return new AIAttractiveObjectLooseManager(this);
+                return new AIAttractiveObjectLooseManager(this);
             }
             else
             {
@@ -24,7 +23,7 @@ namespace RTPuzzle
 
         [CustomEnum()]
         public AttractiveObjectStrategyType AttractiveObjectStrategyType;
-        
+
     }
 
     public enum AttractiveObjectStrategyType
@@ -99,14 +98,9 @@ namespace RTPuzzle
 
         protected void SetAttractedObject(Vector3 attractivePosition, AttractiveObjectModule attractiveObjectType)
         {
-            //We only check if the center point is not occluded by obstacles. Range intersection is already done in the physics step (that leads to this event).
-            //This is not completely accurate accurate -> we check if a single point is not occluded.
-            if (!attractiveObjectType.SphereRange.IsOccluded(this.selfAgent.transform.position, forceObstacleOcclusionIfNecessary: true))
-            {
-                this.attractionPosition = attractivePosition;
-                this.involvedAttractiveObject = attractiveObjectType;
-                this.SetIsAttracted(true);
-            }
+            this.attractionPosition = attractivePosition;
+            this.involvedAttractiveObject = attractiveObjectType;
+            this.SetIsAttracted(true);
         }
 
         protected void SetIsAttracted(bool value)

@@ -203,6 +203,7 @@ namespace RTPuzzle
     public interface RangeTypeObjectEventListener
     {
         void OnRangeTriggerEnter(CollisionType other);
+        void OnRangeTriggerStay(CollisionType other);
         void OnRangeTriggerExit(CollisionType other);
     }
 }

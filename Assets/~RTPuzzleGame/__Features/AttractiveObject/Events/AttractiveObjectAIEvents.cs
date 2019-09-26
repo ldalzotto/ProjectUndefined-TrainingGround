@@ -23,7 +23,7 @@ namespace RTPuzzle
         {
             if (genericAiBehavior.IsManagerInstanciated<AbstractAIAttractiveObjectManager>() && genericAiBehavior.IsManagerAllowedToBeActive(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>()))
             {
-                //Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
+              //  Debug.Log(MyLog.Format("AI - OnAttractiveObjectTriggerStay"));
                 genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>().ComponentTriggerStay(PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerStayAIBehaviorEvent>().AttractivePosition,
                         PuzzleAIBehaviorExternalEvent.Cast<AttractiveObjectTriggerStayAIBehaviorEvent>().AttractiveObjectType);
                 genericAiBehavior.SetManagerState(genericAiBehavior.GetAIManager<AbstractAIAttractiveObjectManager>());

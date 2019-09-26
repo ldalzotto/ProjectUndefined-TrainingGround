@@ -35,7 +35,7 @@ namespace RTPuzzle
         [Header("Debug")]
         public bool DebugEabled;
 #endif
-        
+
         #region Internal Dependencies
         private NavMeshAgent agent;
         #endregion
@@ -76,7 +76,7 @@ namespace RTPuzzle
                     .DefineAIObject(this, puzzleStaticConfiguration.PuzzlePrefabConfiguration, puzzleCOnfigurationmanager.PuzzleGameConfiguration);
                 this.GetComponent<InteractiveObjectType>().IfNotNull(InteractiveObjectType => InteractiveObjectType.Init(new InteractiveObjectInitializationObject() { ParentAIObjectTypeReference = this }));
             }
-            
+
             var NPCAIManagerContainer = PuzzleGameSingletonInstances.AIManagerContainer;
             NPCAIManagerContainer.OnNPCAiManagerCreated(this);
             var interactiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
@@ -85,7 +85,7 @@ namespace RTPuzzle
             var coreStaticConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration;
             var aiPositionsManager = PuzzleGameSingletonInstances.AIPositionsManager;
             var animationConfiguration = coreConfigurationManager.AnimationConfiguration();
-            
+
             this.interactiveObjectSharedData = GetComponent<InteractiveObjectSharedDataType>();
             this.associatedInteractivObject = GetComponent<InteractiveObjectType>();
 
@@ -109,7 +109,7 @@ namespace RTPuzzle
                      interactiveObjectContainer, this.AiID, aiPositionsManager, interactiveObjectSharedData.InteractiveObjectSharedDataTypeInherentData.TransformMoveManagerComponent, this, this.associatedInteractivObject, this, FovModule);
 
             ((GenericPuzzleAIBehavior)this.puzzleAIBehavior).Init(this.aiManagers, aIBheaviorBuildInputData);
-            
+
             //Intiialize with 0 time
             this.TickWhenTimeFlows(0, 0);
         }
@@ -151,20 +151,20 @@ namespace RTPuzzle
         {
             AIDestinationMoveManager.DisableAgent();
         }
-        
+
         public void OnDestinationReached()
         {
             puzzleAIBehavior.OnDestinationReached();
             // empty tick to immediately choose the next position
             this.ForceTickAI();
         }
-        
+
         public void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
         {
             this.AIDestinationMoveManager.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
         #endregion
-        
+
         #region Data Retrieval
         public IPuzzleAIBehavior GetAIBehavior()
         {
@@ -181,8 +181,17 @@ namespace RTPuzzle
             if (this.agent == null) { this.agent = GetComponent<NavMeshAgent>(); }
             return this.agent;
         }
+
+        public static AIObjectDataRetriever FromCollisionType(CollisionType CollisionType)
+        {
+            if (CollisionType != null && CollisionType.IsAI)
+            {
+                return CollisionType.GetComponentInParent<AIObjectType>();
+            }
+            return null;
+        }
         #endregion
-        
+
         private void OnDrawGizmos()
         {
 #if UNITY_EDITOR
