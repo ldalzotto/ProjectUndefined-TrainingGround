@@ -177,17 +177,12 @@ namespace Tests
         #endregion
 
         #region TargetZone
-        public static IEnumerator TargetZoneYield(TargetZoneInherentData targetZoneInherentData, Vector3 targetZonePosition,
+        public static IEnumerator TargetZoneYield(InteractiveObjectTestID InteractiveObjectTestID, TargetZoneInherentData targetZoneInherentData, Vector3 targetZonePosition,
             Func<InteractiveObjectType, IEnumerator> OnTargetZoneSpawn, Func<IEnumerator> OnDistanceReached, Func<AIObjectType> OnDistanceReachedAIObjectType)
         {
             var puzzlePrefabConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>().PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             var puzzleGameConfiguration = GameObject.FindObjectOfType<PuzzleGameConfigurationManager>().PuzzleGameConfiguration;
-            var targetZone = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInteractiveObjectType, targetZonePosition, Quaternion.identity);
-            InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder.TargetZone(
-                    RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE)
-                  ).DefineInteractiveObject(targetZone, puzzlePrefabConfiguration, puzzleGameConfiguration);
-            targetZone.Init(new InteractiveObjectInitializationObject() { TargetZoneInherentData = targetZoneInherentData });
-
+            var targetZone = TargetZoneObjectDefinition.TargetZone(InteractiveObjectTestID, targetZoneInherentData).InstanciateAndInit(targetZonePosition);
             yield return new WaitForFixedUpdate();
             if (OnTargetZoneSpawn != null)
             {

@@ -128,7 +128,7 @@ namespace Tests
             yield return null;
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             Assert.IsTrue(aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum() == 360f);
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_2, new TargetZoneInherentData(1, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
                     Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIPatrolComponentManager>());
@@ -436,7 +436,7 @@ namespace Tests
                      Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                      Assert.IsTrue(aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum() < currentFOVSum);
                      currentFOVSum = aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum();
-                     return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 170), aiManager.transform.position,
+                     return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(0.1f, 170), aiManager.transform.position,
                          OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                          {
                              Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIProjectileEscapeManager>());
@@ -732,7 +732,7 @@ namespace Tests
                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
                    Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
                    Assert.IsTrue(aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum() == 360f);
-                   return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(0.1f, 170), aiManager.transform.position,
+                   return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(0.1f, 170), aiManager.transform.position,
                        OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                        {
                            Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAIAttractiveObjectManager>());
@@ -1150,7 +1150,7 @@ namespace Tests
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 170f);
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
@@ -1196,7 +1196,7 @@ namespace Tests
             yield return null;
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 170f);
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
@@ -1246,7 +1246,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             PuzzleSceneTestHelper.SetAIEscapeSemiAngle(InteractiveObjectTestID.TEST_1, aIObjectInitialization, 90f);
             aIObjectInitialization.AIObjectTypeDefinitionInherentData.GenericPuzzleAIComponents.GetDefinitionModule<AIFearStunComponent>().FOVSumThreshold = 0f; //prenvenitng
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
@@ -1300,7 +1300,7 @@ namespace Tests
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var playerManager = GameObject.FindObjectOfType<PlayerManager>();
 
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999, 170), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(9999, 170), aiManager.transform.position,
                OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                {
                    Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
@@ -1354,7 +1354,7 @@ namespace Tests
             yield return null;
             var mouseAIBheavior = (GenericPuzzleAIBehavior)aiManager.GetAIBehavior();
             var interactiveObjectContainer = GameObject.FindObjectOfType<InteractiveObjectContainer>();
-            yield return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(1, 170), aiManager.transform.position,
+            yield return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_3, new TargetZoneInherentData(1, 170), aiManager.transform.position,
                 OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                 {
                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
@@ -1602,7 +1602,7 @@ namespace Tests
                 {
                     Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
                     Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractAITargetZoneManager>());
-                    return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 170), aiManager.transform.position,
+                    return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_1, new TargetZoneInherentData(9999f, 170), aiManager.transform.position,
                         OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                         {
                             Assert.IsTrue(mouseAIBheavior.IsManagerEnabled<AbstractAIFearStunManager>());
@@ -1867,7 +1867,7 @@ namespace Tests
                       Assert.IsTrue(this.GetEscapeWhileIgnoringTargetZoneTracker(mouseAIBheavior).IsEscapingWhileIgnoringTargets);
                       Assert.IsTrue(aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum() < 360f);
                       currentFOVAngleSum = aiManager.GetComponent<InteractiveObjectType>().GetModule<FovModule>().FovManager.GetFOVAngleSum();
-                      return PuzzleSceneTestHelper.TargetZoneYield(new TargetZoneInherentData(9999f, 170), aiManager.transform.position,
+                      return PuzzleSceneTestHelper.TargetZoneYield(InteractiveObjectTestID.TEST_2, new TargetZoneInherentData(9999f, 170), aiManager.transform.position,
                           OnTargetZoneSpawn: (InteractiveObjectType targetZone) =>
                           {
                               Assert.IsFalse(mouseAIBheavior.IsManagerEnabled<AbstractPlayerEscapeManager>());
