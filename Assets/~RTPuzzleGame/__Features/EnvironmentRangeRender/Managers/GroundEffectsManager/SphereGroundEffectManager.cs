@@ -4,16 +4,20 @@ namespace RTPuzzle
 {
     public class SphereGroundEffectManager : AbstractGroundEffectManager<SphereRangeType>
     {
+        private SphereRangeObjectRenderingDataProvider SphereRangeObjectRenderingDataProvider;
 
-        public SphereGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData) : base(rangeTypeInherentConfigurationData)
-        { }
+        public SphereGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData,
+            SphereRangeObjectRenderingDataProvider SphereRangeObjectRenderingDataProvider) : base(rangeTypeInherentConfigurationData)
+        {
+            this.SphereRangeObjectRenderingDataProvider = SphereRangeObjectRenderingDataProvider;
+        }
 
         public CircleRangeBufferData ToSphereBuffer()
         {
             CircleRangeBufferData CircleRangeBufferData = new CircleRangeBufferData();
-            CircleRangeBufferData.CenterWorldPosition = this.GetAssociatedRangeObject().RangeType.GetCenterWorldPos();
+            CircleRangeBufferData.CenterWorldPosition = this.SphereRangeObjectRenderingDataProvider.GetWorldPositionCenter();
 
-            CircleRangeBufferData.Radius = this.GetAssociatedRangeObject().RangeType.GetRadiusRange();
+            CircleRangeBufferData.Radius = this.SphereRangeObjectRenderingDataProvider.GetRadius();
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
                 CircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
@@ -23,7 +27,7 @@ namespace RTPuzzle
                 CircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
 
-            if (this.GetAssociatedRangeObject().IsOccludedByFrustum())
+            if (this.rangeObjectRenderingDataProvider.IsTakingObstacleIntoConsideration())
             {
                 CircleRangeBufferData.OccludedByFrustums = 1;
             }
@@ -46,7 +50,7 @@ namespace RTPuzzle
 
         public static int GetByteSize()
         {
-            return ((3 + 1 + 4 ) * sizeof(float)) + ((1) * sizeof(int));
+            return ((3 + 1 + 4) * sizeof(float)) + ((1) * sizeof(int));
         }
     }
 }

@@ -299,6 +299,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeGameObjectV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitilizer\RangeObjectInitialization.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitilizer\RangeObjectInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectRenderingDataProvider\RangeObjectRenderingDataProvider.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectSystems\RangeObjectV2Systems.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectV2Manager.cs" />

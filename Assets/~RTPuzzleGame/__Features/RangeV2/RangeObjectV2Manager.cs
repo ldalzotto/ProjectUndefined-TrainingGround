@@ -35,6 +35,7 @@ public class RangeObjectV2Manager
     public void ReceiveEvent(RangeObjectV2ManagerAddRangeEvent RangeObjectV2ManagerAddRangeEvent)
     {
         this.RangeObjects.Add(RangeObjectV2ManagerAddRangeEvent.AddedRangeObject);
+        PuzzleGameSingletonInstances.GroundEffectsManagerV2.OnRangeAddedV2(RangeObjectV2ManagerAddRangeEvent.AddedRangeObject);
     }
 
     public void OnDestroy()

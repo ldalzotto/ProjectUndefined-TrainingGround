@@ -22,6 +22,10 @@ public class RangeObjectInitializer : MonoBehaviour
         {
             rangeObjectV2 = new FrustumRangeObjectV2(new RangeGameObjectV2(this.gameObject), (FrustumRangeObjectInitialization)this.RangeObjectInitialization);
         }
+        else if(RangeObjectInitialization.GetType() == typeof(RoundedFrustumRangeObjectInitialization))
+        {
+            rangeObjectV2 = new RoundedFrustumRangeObjectV2(new RangeGameObjectV2(this.gameObject), (RoundedFrustumRangeObjectInitialization)this.RangeObjectInitialization);
+        }
         RangeObjectV2Manager.Get().ReceiveEvent(new RangeObjectV2ManagerAddRangeEvent { AddedRangeObject = rangeObjectV2 });
         MonoBehaviour.Destroy(this);
         Profiler.EndSample();

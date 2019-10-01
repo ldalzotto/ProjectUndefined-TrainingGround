@@ -69,9 +69,9 @@ namespace CoreGame
             this.CalculateFrustumPointsWorldPosV2();
         }
 
-        public Quaternion GetRotation()
+        public float GetFrustumFaceRadius()
         {
-            return this.worldRotation * this.DeltaRotation;
+            return this.F2.FaceOffsetFromCenter.z / 2f;
         }
 
         private Vector3 LocalToWorld(Vector3 localPoint)

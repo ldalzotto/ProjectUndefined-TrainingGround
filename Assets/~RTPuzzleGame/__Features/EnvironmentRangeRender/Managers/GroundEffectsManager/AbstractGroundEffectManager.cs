@@ -6,25 +6,20 @@ namespace RTPuzzle
 {
     public interface IAbstractGroundEffectManager
     {
-        void OnRangeCreated(RangeTypeObject rangeTypeObject);
+        void OnRangeCreated(ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider);
         void Tick(float d, List<GroundEffectType> affectedGroundEffectsType);
-        RangeTypeObject GetAssociatedRangeObject();
         bool MeshMustBeRebuild();
         List<GroundEffectType> GroundEffectTypeToRender();
+        ObstacleListener GetObstacleListener();
     }
 
     public abstract class AbstractGroundEffectManager<T> : IAbstractGroundEffectManager
     {
-        private RangeTypeObject associatedRangeObject;
+        protected ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider;
         private List<GroundEffectType> groundEffectTypesToRender;
         protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
         private bool isGroundEffectTypeToRenderChanged;
-
-        public RangeTypeObject GetAssociatedRangeObject()
-        {
-            return associatedRangeObject;
-        }
-
+        
         public AbstractGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData)
         {
             this.rangeTypeInherentConfigurationData = rangeTypeInherentConfigurationData;
@@ -41,7 +36,7 @@ namespace RTPuzzle
                 foreach (var affectedGroundEffectType in affectedGroundEffectsType)
                 {
                     if (affectedGroundEffectType.MeshRenderer.isVisible
-                        && this.associatedRangeObject.RangeType.GetCollider().bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
+                        && this.rangeObjectRenderingDataProvider.BoundingCollider.bounds.Intersects(affectedGroundEffectType.MeshRenderer.bounds)) //render only intersected geometry
                     {
                         involvedGroundEffectsType.Add(affectedGroundEffectType);
                     }
@@ -74,15 +69,15 @@ namespace RTPuzzle
 
         }
 
-        public void OnRangeCreated(RangeTypeObject rangeTypeObject)
+        public void OnRangeCreated(ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider)
         {
-            this.associatedRangeObject = rangeTypeObject;
+            this.rangeObjectRenderingDataProvider = rangeObjectRenderingDataProvider;
             this.Tick(0, null);
         }
 
         public RangeTypeID GetRangeTypeID()
         {
-            return this.associatedRangeObject.RangeType.RangeTypeID;
+            return this.rangeObjectRenderingDataProvider.RangeTypeID;
         }
 
         public bool MeshMustBeRebuild()
@@ -93,6 +88,11 @@ namespace RTPuzzle
         public List<GroundEffectType> GroundEffectTypeToRender()
         {
             return this.groundEffectTypesToRender;
+        }
+
+        public ObstacleListener GetObstacleListener()
+        {
+            return this.rangeObjectRenderingDataProvider.ObstacleListener;
         }
     }
 

@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿using CoreGame;
+using GameConfigurationID;
+using UnityEngine;
 using UnityEngine.Profiling;
 
 public abstract class RangeObjectV2
 {
-    protected RangeGameObjectV2 RangeGameObjectV2;
+    public RangeGameObjectV2 RangeGameObjectV2 { get; private set; }
 
     public RangeObjectInitialization RangeObjectInitialization { get; private set; }
 
     private RangeTypeObjectMovementSystem RangeTypeObjectMovementSystem;
-
-    private RangeObstacleListenerSystem RangeObstacleListenerSystem;
+    public RangeObstacleListenerSystem RangeObstacleListenerSystem { get; private set; }
 
     public virtual void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
     {
@@ -22,6 +23,7 @@ public abstract class RangeObjectV2
         {
             this.RangeObstacleListenerSystem = new RangeObstacleListenerSystem(this, this.RangeGameObjectV2.RangeObjectV2PhysicsEventListener, this.RangeGameObjectV2.ObstacleListener);
         }
+        
     }
 
     public virtual void Tick(float d)
@@ -49,10 +51,13 @@ public abstract class RangeObjectV2
 public class SphereRangeObjectV2 : RangeObjectV2
 {
     private SphereRangeObjectInitialization SphereRangeObjectInitialization;
+    public SphereCollider SphereBoundingCollider { get; private set; }
+
     public SphereRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, SphereRangeObjectInitialization SphereRangeObjectInitialization)
     {
         this.SphereRangeObjectInitialization = SphereRangeObjectInitialization;
         this.Init(RangeGameObjectV2, SphereRangeObjectInitialization);
+        this.SphereBoundingCollider = (SphereCollider)RangeGameObjectV2.BoundingCollider;
     }
 
     public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
@@ -66,11 +71,13 @@ public class SphereRangeObjectV2 : RangeObjectV2
 public class BoxRangeObjectV2 : RangeObjectV2
 {
     private BoxRangeObjectInitialization BoxRangeObjectInitialization;
+    public BoxCollider BoxBoundingCollider { get; private set; }
 
     public BoxRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, BoxRangeObjectInitialization BoxRangeObjectInitialization)
     {
         this.BoxRangeObjectInitialization = BoxRangeObjectInitialization;
         this.Init(RangeGameObjectV2, BoxRangeObjectInitialization);
+        this.BoxBoundingCollider = (BoxCollider)RangeGameObjectV2.BoundingCollider;
     }
 
     public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
@@ -87,10 +94,12 @@ public class FrustumRangeObjectV2 : RangeObjectV2
     private RangeWorldPositionChangeSystem RangeWorldPositionChangeSystem;
     private FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem;
 
+    public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
+
     public FrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeObjectInitialization FrustumRangeObjectInitialization)
     {
         this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
-        this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, FrustumRangeObjectInitialization.FrustumRangeTypeDefinition);
+        this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2);
 
         this.FrustumRangeObjectInitialization = FrustumRangeObjectInitialization;
         this.Init(RangeGameObjectV2, FrustumRangeObjectInitialization);
@@ -110,19 +119,61 @@ public class FrustumRangeObjectV2 : RangeObjectV2
 
     public override void ReceiveEvent(RangeTransformChanged RangeTransformChanged)
     {
-        this.RangeGameObjectV2.ExtractData(out RangeObjectV2GetWorldTransformEventReturn RangeObjectV2GetWorldTransformEventReturn);
-        this.FrustumRangeWorldPositionCalulcationSystem.ReceiveEvent(new FrustumWorldPositionRecalculation {
-            WorldPosition = RangeObjectV2GetWorldTransformEventReturn.WorldPosition,
-            WorldRotation = RangeObjectV2GetWorldTransformEventReturn.WorldRotation,
-            LossyScale = RangeObjectV2GetWorldTransformEventReturn.LossyScale });
+        RangeObjectV2Commons.HandlingRangeTransformChangedForFrustums(this.RangeGameObjectV2, this.FrustumRangeWorldPositionCalulcationSystem);
     }
 }
 
 public class RoundedFrustumRangeObjectV2 : RangeObjectV2
 {
+    private RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization;
+
+    private RangeWorldPositionChangeSystem RangeWorldPositionChangeSystem;
+    private FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem;
+
+    public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
+
+    public RoundedFrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization)
+    {
+        this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
+        this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2);
+
+        this.RoundedFrustumRangeObjectInitialization = RoundedFrustumRangeObjectInitialization;
+        this.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
+    }
+
+    public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+    {
+        RangeGameObjectV2.Init(this.RoundedFrustumRangeObjectInitialization, this);
+        base.Init(RangeGameObjectV2, RangeObjectInitialization);
+    }
+
+    public override void Tick(float d)
+    {
+        base.Tick(d);
+        this.RangeWorldPositionChangeSystem.Tick(d);
+    }
+
+    public override void ReceiveEvent(RangeTransformChanged RangeTransformChanged)
+    {
+        RangeObjectV2Commons.HandlingRangeTransformChangedForFrustums(this.RangeGameObjectV2, this.FrustumRangeWorldPositionCalulcationSystem);
+    }
 }
 
 public struct SetWorldPositionEvent
 {
     public Vector3 WorldPosition;
+}
+
+public static class RangeObjectV2Commons
+{
+    public static void HandlingRangeTransformChangedForFrustums(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem)
+    {
+        RangeGameObjectV2.ExtractData(out RangeObjectV2GetWorldTransformEventReturn RangeObjectV2GetWorldTransformEventReturn);
+        FrustumRangeWorldPositionCalulcationSystem.ReceiveEvent(new FrustumWorldPositionRecalculation
+        {
+            WorldPosition = RangeObjectV2GetWorldTransformEventReturn.WorldPosition,
+            WorldRotation = RangeObjectV2GetWorldTransformEventReturn.WorldRotation,
+            LossyScale = RangeObjectV2GetWorldTransformEventReturn.LossyScale
+        });
+    }
 }

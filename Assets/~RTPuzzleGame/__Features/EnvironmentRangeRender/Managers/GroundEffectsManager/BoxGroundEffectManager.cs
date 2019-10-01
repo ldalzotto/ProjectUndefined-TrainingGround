@@ -5,14 +5,16 @@ namespace RTPuzzle
 {
     public class BoxGroundEffectManager : AbstractGroundEffectManager<BoxRangeType>
     {
-        public BoxGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData) : base(rangeTypeInherentConfigurationData)
+        private BoxRangeObjectRenderingDataProvider BoxRangeObjectRenderingDataProvider;
+
+        public BoxGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData, BoxRangeObjectRenderingDataProvider BoxRangeObjectRenderingDataProvider) : base(rangeTypeInherentConfigurationData)
         {
+            this.BoxRangeObjectRenderingDataProvider = BoxRangeObjectRenderingDataProvider;
         }
 
         public BoxRangeBufferData ToBoxBuffer()
         {
-            var BoxRangeType = (BoxRangeType)this.GetAssociatedRangeObject().RangeType;
-            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(BoxRangeType.BoxCollider);
+            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(this.BoxRangeObjectRenderingDataProvider.BoundingBoxCollider);
             var boxRangeBufferData = new BoxRangeBufferData();
 
             boxRangeBufferData.FC1 = boxFrustum.FC1;
@@ -28,8 +30,8 @@ namespace RTPuzzle
             boxRangeBufferData.normal5 = boxFrustum.normal5;
             boxRangeBufferData.normal6 = boxFrustum.normal6;
 
-            boxRangeBufferData.BoundingBoxMax = BoxRangeType.BoxCollider.bounds.max;
-            boxRangeBufferData.BoundingBoxMin = BoxRangeType.BoxCollider.bounds.min;
+            boxRangeBufferData.BoundingBoxMax = this.BoxRangeObjectRenderingDataProvider.BoundingBoxCollider.bounds.max;
+            boxRangeBufferData.BoundingBoxMin = this.BoxRangeObjectRenderingDataProvider.BoundingBoxCollider.bounds.min;
 
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {

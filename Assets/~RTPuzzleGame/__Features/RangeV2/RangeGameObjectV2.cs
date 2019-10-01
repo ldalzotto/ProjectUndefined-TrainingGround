@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using CoreGame;
+using RTPuzzle;
 using System;
 using UnityEngine;
 
@@ -16,8 +17,7 @@ public class RangeGameObjectV2
         this.attachedGameObject = attachedGameObject;
     }
 
-    private Collider boundingBoxCollider;
-
+    public Collider BoundingCollider { get; private set; }
 
     private void CommontInit(RangeObjectInitialization RangeObjectInitialization, RangeObjectV2 RangeObjectV2)
     {
@@ -46,8 +46,8 @@ public class RangeGameObjectV2
         this.CommontInit(SphereRangeObjectInitialization, RangeObjectV2);
         var sphereCollider = this.rangeGameObject.AddComponent<SphereCollider>();
         sphereCollider.radius = SphereRangeObjectInitialization.SphereRangeTypeDefinition.Radius;
-        this.boundingBoxCollider = sphereCollider;
-        this.boundingBoxCollider.isTrigger = true;
+        this.BoundingCollider = sphereCollider;
+        this.BoundingCollider.isTrigger = true;
     }
 
     public void Init(BoxRangeObjectInitialization BoxRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
@@ -56,19 +56,29 @@ public class RangeGameObjectV2
         var boxCollider = this.rangeGameObject.AddComponent<BoxCollider>();
         boxCollider.center = BoxRangeObjectInitialization.BoxRangeTypeDefinition.Center;
         boxCollider.size = BoxRangeObjectInitialization.BoxRangeTypeDefinition.Size;
-        this.boundingBoxCollider = boxCollider;
-        this.boundingBoxCollider.isTrigger = true;
+        this.BoundingCollider = boxCollider;
+        this.BoundingCollider.isTrigger = true;
     }
 
     public void Init(FrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
     {
         this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2);
+        this.InitializeFrustum(FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2);
+    }
+
+    public void Init(RoundedFrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
+    {
+        this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2);
+        this.InitializeFrustum(FrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2);
+    }
+
+    private void InitializeFrustum(FrustumV2 frustum)
+    {
         var boxCollider = this.rangeGameObject.AddComponent<BoxCollider>();
-        var frustum = FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2;
         boxCollider.center = new Vector3(0, 0, frustum.F2.FaceOffsetFromCenter.z / 4f);
         boxCollider.size = new Vector3(Mathf.Max(frustum.F1.Width, frustum.F2.Width), Math.Max(frustum.F1.Height, frustum.F2.Height), frustum.F2.FaceOffsetFromCenter.z / 2f);
-        this.boundingBoxCollider = boxCollider;
-        this.boundingBoxCollider.isTrigger = true;
+        this.BoundingCollider = boxCollider;
+        this.BoundingCollider.isTrigger = true;
     }
 
     public void Tick(float d)

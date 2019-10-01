@@ -4,14 +4,36 @@ namespace RTPuzzle
 {
     public class RoundedFrustumGroundEffectManager : AbstractGroundEffectManager<RoundedFrustumRangeType>
     {
-        public RoundedFrustumGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData) : base(rangeTypeInherentConfigurationData)
+        private RoundedFrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider;
+
+        public RoundedFrustumGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData, RoundedFrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider) : base(rangeTypeInherentConfigurationData)
         {
+            this.RoundedFrustumRangeObjectRenderingDataProvider = RoundedFrustumRangeObjectRenderingDataProvider;
         }
 
         public RoundedFrustumRangeBufferData ToFrustumBuffer()
         {
-            var RoundedFrustumRangeBufferData = ((RoundedFrustumRangeType)this.GetAssociatedRangeObject().RangeType).GetRoundedFrustumRangeBufferData();
 
+            var RoundedFrustumRangeBufferData = new RoundedFrustumRangeBufferData();
+            var frustumPointsWorldPositions = this.RoundedFrustumRangeObjectRenderingDataProvider.Frustum.FrustumPointsPositions;
+            RoundedFrustumRangeBufferData.FC1 = frustumPointsWorldPositions.FC1;
+            RoundedFrustumRangeBufferData.FC2 = frustumPointsWorldPositions.FC2;
+            RoundedFrustumRangeBufferData.FC3 = frustumPointsWorldPositions.FC3;
+            RoundedFrustumRangeBufferData.FC4 = frustumPointsWorldPositions.FC4;
+            RoundedFrustumRangeBufferData.FC5 = frustumPointsWorldPositions.FC5;
+            RoundedFrustumRangeBufferData.normal1 = frustumPointsWorldPositions.normal1;
+            RoundedFrustumRangeBufferData.normal2 = frustumPointsWorldPositions.normal2;
+            RoundedFrustumRangeBufferData.normal3 = frustumPointsWorldPositions.normal3;
+            RoundedFrustumRangeBufferData.normal4 = frustumPointsWorldPositions.normal4;
+            RoundedFrustumRangeBufferData.normal5 = frustumPointsWorldPositions.normal5;
+            RoundedFrustumRangeBufferData.normal6 = frustumPointsWorldPositions.normal6;
+
+            RoundedFrustumRangeBufferData.BoundingBoxMax = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.max;
+            RoundedFrustumRangeBufferData.BoundingBoxMin = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.min;
+
+            RoundedFrustumRangeBufferData.RangeRadius = this.RoundedFrustumRangeObjectRenderingDataProvider.Frustum.GetFrustumFaceRadius();
+            RoundedFrustumRangeBufferData.CenterWorldPosition = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.transform.position;
+            
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
                 RoundedFrustumRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();
@@ -21,7 +43,7 @@ namespace RTPuzzle
                 RoundedFrustumRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeBaseColor;
             }
             
-            if (this.GetAssociatedRangeObject().IsOccludedByFrustum())
+            if (this.RoundedFrustumRangeObjectRenderingDataProvider.IsTakingObstacleIntoConsideration())
             {
                 RoundedFrustumRangeBufferData.OccludedByFrustums = 1;
             }

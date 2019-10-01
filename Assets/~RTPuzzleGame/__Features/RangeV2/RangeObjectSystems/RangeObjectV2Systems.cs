@@ -57,7 +57,7 @@ public class RangeWorldPositionChangeSystem : ARangeObjectSystem
         this.RangeWorldPositionChangeListener = new RangeWorldPositionChangeListener();
         this.BlittableTransformChangeListenerManager = new BlittableTransformChangeListenerManager(true, true, this.RangeWorldPositionChangeListener);
     }
-    
+
     public override void Tick(float d)
     {
         this.RangeWorldPositionChangeListener.Clear();
@@ -111,6 +111,11 @@ public class FrustumRangeTypeDefinition : ARangeTypeDefinitionV2
 {
     public FrustumV2 FrustumV2;
 }
+[System.Serializable]
+public class RoundedFrustumRangeTypeDefinition : ARangeTypeDefinitionV2
+{
+    public FrustumV2 FrustumV2;
+}
 #endregion
 
 #region Range Obstacle Listener
@@ -148,11 +153,11 @@ public class RangeObstaclePhysicsEventListener : ARangeObjectV2PhysicsEventListe
 #region Frustum Specifics Systems
 public class FrustumRangeWorldPositionCalulcationSystem : ARangeObjectSystem
 {
-    private FrustumV2 FrustumV2;
+    public FrustumV2 FrustumV2 { get; private set; }
 
-    public FrustumRangeWorldPositionCalulcationSystem(RangeObjectV2 rangeObjectV2Ref, FrustumRangeTypeDefinition FrustumRangeTypeDefinition) : base(rangeObjectV2Ref)
+    public FrustumRangeWorldPositionCalulcationSystem(RangeObjectV2 rangeObjectV2Ref, FrustumV2 DefinitionFrustum) : base(rangeObjectV2Ref)
     {
-        this.FrustumV2 = FrustumRangeTypeDefinition.FrustumV2.Clone();
+        this.FrustumV2 = DefinitionFrustum.Clone();
     }
 
     public void ReceiveEvent(FrustumWorldPositionRecalculation FrustumWorldPositionRecalculation)

@@ -121,7 +121,6 @@ namespace RTPuzzle
 
 
         #region External events
-        /*
         public void OnRangeAddedV2(RangeObjectV2 RangeObjectV2)
         {
             var rangeTypeID = RangeObjectV2.RangeObjectInitialization.RangeTypeID;
@@ -132,15 +131,30 @@ namespace RTPuzzle
 
             if (RangeObjectV2.GetType() == typeof(SphereRangeObjectV2))
             {
-                var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID]);
-                addedRange.OnRangeCreated(rangeTypeObject);
-                this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new CircleRangeRenderData(addedRange));
- 
+                var SphereRangeObjectRenderingDataProvider = new SphereRangeObjectRenderingDataProvider((SphereRangeObjectV2)RangeObjectV2, rangeTypeID);
+                var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], SphereRangeObjectRenderingDataProvider);
+                addedRange.OnRangeCreated(SphereRangeObjectRenderingDataProvider);
+                this.rangeRenderDatas[rangeTypeID].Add(SphereRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new CircleRangeRenderData(addedRange));
+            }
+            else if (RangeObjectV2.GetType() == typeof(BoxRangeObjectV2))
+            {
+                var BoxRangeObjectRenderingDataProvider = new BoxRangeObjectRenderingDataProvider((BoxRangeObjectV2)RangeObjectV2, rangeTypeID);
+                var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], BoxRangeObjectRenderingDataProvider);
+                addedRange.OnRangeCreated(BoxRangeObjectRenderingDataProvider);
+                this.rangeRenderDatas[rangeTypeID].Add(BoxRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new BoxRangeRenderData(addedRange));
+            }
+            else if (RangeObjectV2.GetType() == typeof(RoundedFrustumRangeObjectV2))
+            {
+                var RoundedFrustumRangeObjectRenderingDataProvider = new RoundedFrustumRangeObjectRenderingDataProvider((RoundedFrustumRangeObjectV2)RangeObjectV2, rangeTypeID);
+                var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], RoundedFrustumRangeObjectRenderingDataProvider);
+                addedRange.OnRangeCreated(RoundedFrustumRangeObjectRenderingDataProvider);
+                this.rangeRenderDatas[rangeTypeID].Add(RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
             }
         }
-        */
+
         public void OnRangeAdded(RangeTypeObject rangeTypeObject)
         {
+            /*
             if (rangeTypeObject.RangeType.IsRangeConfigurationDefined())
             {
                 if (!this.rangeRenderDatas.ContainsKey(rangeTypeObject.RangeType.RangeTypeID))
@@ -160,7 +174,6 @@ namespace RTPuzzle
                     addedRange.OnRangeCreated(rangeTypeObject);
                     this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new BoxRangeRenderData(addedRange));
                 }
-                /*
                 else if (rangeTypeObject.RangeType.GetType() == typeof(FrustumRangeType))
                 {
                     var frustumRangeType = (FrustumRangeType)rangeTypeObject.RangeType;
@@ -168,7 +181,6 @@ namespace RTPuzzle
                     this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), addedRange);
                     addedRange.OnRangeCreated(rangeTypeObject);
                 }
-                */
                 else if (rangeTypeObject.RangeType.GetType() == typeof(RoundedFrustumRangeType))
                 {
                     var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
@@ -176,6 +188,7 @@ namespace RTPuzzle
                     this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
                 }
             }
+            */
         }
 
         public void OnLevelExit()
@@ -254,7 +267,7 @@ namespace RTPuzzle
 
         protected void ProcessObstacleFrustums(CommandBuffer commandBuffer, MaterialPropertyBlock matPro)
         {
-            var rangeObjectListener = this.GroundEffectManager.GetAssociatedRangeObject().RangeObstacleListener;
+            var rangeObjectListener = this.GroundEffectManager.GetObstacleListener();
             if (rangeObjectListener != null)
             {
                 var obstacleFrustums = rangeObjectListener.GetCalculatedFrustums();
