@@ -3,13 +3,11 @@ using UnityEngine;
 
 namespace CoreGame
 {
-    public class TransformChangeListenerManager
+    public class BlittableTransformChangeListenerManager
     {
         private bool positionListening;
         private bool rotationListening;
         private TransformChangeListener TransformChangeListener;
-
-        private Transform listeningTransform;
 
         private Nullable<Vector3> lastFramePosition;
         private Nullable<Quaternion> lastFrameRotation;
@@ -17,9 +15,8 @@ namespace CoreGame
         private bool positionChangedThatFrame;
         private bool rotationChangedThatFrame;
 
-        public TransformChangeListenerManager(Transform listeningTransform, bool positionListening, bool rotationListening, TransformChangeListener TransformChangeListener = null)
+        public BlittableTransformChangeListenerManager(bool positionListening, bool rotationListening, TransformChangeListener TransformChangeListener = null)
         {
-            this.listeningTransform = listeningTransform;
             this.positionListening = positionListening;
             this.rotationListening = rotationListening;
             this.TransformChangeListener = TransformChangeListener;
@@ -31,7 +28,7 @@ namespace CoreGame
         public bool TransformChangedThatFrame() { return this.positionChangedThatFrame || this.rotationChangedThatFrame; }
         #endregion
 
-        public void Tick()
+        public void Tick(Vector3 worldPosition, Quaternion worldRotation)
         {
             this.positionChangedThatFrame = false;
             this.rotationChangedThatFrame = false;
@@ -44,12 +41,12 @@ namespace CoreGame
                 }
                 else
                 {
-                    if (this.lastFramePosition.Value != listeningTransform.position)
+                    if (this.lastFramePosition.Value != worldPosition)
                     {
                         this.PositionChanged();
                     }
                 }
-                this.lastFramePosition = listeningTransform.position;
+                this.lastFramePosition = worldPosition;
             }
 
             if (this.rotationListening)
@@ -60,12 +57,12 @@ namespace CoreGame
                 }
                 else
                 {
-                    if (this.lastFrameRotation.Value != listeningTransform.rotation)
+                    if (this.lastFrameRotation.Value != worldRotation)
                     {
                         this.RotationChanged();
                     }
                 }
-                this.lastFrameRotation = listeningTransform.rotation;
+                this.lastFrameRotation = worldRotation;
             }
         }
 
@@ -87,5 +84,6 @@ namespace CoreGame
         void onPositionChange();
         void onRotationChange();
     }
+
 }
 

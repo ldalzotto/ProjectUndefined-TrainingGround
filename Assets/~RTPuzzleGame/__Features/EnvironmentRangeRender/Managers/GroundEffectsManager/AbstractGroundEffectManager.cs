@@ -9,7 +9,6 @@ namespace RTPuzzle
         void OnRangeCreated(RangeTypeObject rangeTypeObject);
         void Tick(float d, List<GroundEffectType> affectedGroundEffectsType);
         RangeTypeObject GetAssociatedRangeObject();
-        void OnRangeDestroyed();
         bool MeshMustBeRebuild();
         List<GroundEffectType> GroundEffectTypeToRender();
     }
@@ -19,8 +18,6 @@ namespace RTPuzzle
         private RangeTypeObject associatedRangeObject;
         private List<GroundEffectType> groundEffectTypesToRender;
         protected RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData;
-        protected FloatAnimation rangeAnimation;
-        protected bool isAttractiveObjectRangeEnabled;
         private bool isGroundEffectTypeToRenderChanged;
 
         public RangeTypeObject GetAssociatedRangeObject()
@@ -37,11 +34,6 @@ namespace RTPuzzle
 
         public void Tick(float d, List<GroundEffectType> affectedGroundEffectsType)
         {
-            if (isAttractiveObjectRangeEnabled)
-            {
-                this.rangeAnimation.Tick(d);
-            }
-
             List<GroundEffectType> involvedGroundEffectsType = new List<GroundEffectType>();
 
             if (affectedGroundEffectsType != null)
@@ -85,14 +77,7 @@ namespace RTPuzzle
         public void OnRangeCreated(RangeTypeObject rangeTypeObject)
         {
             this.associatedRangeObject = rangeTypeObject;
-            this.rangeAnimation = new FloatAnimation(this.associatedRangeObject.RangeType.GetRadiusRange(), rangeTypeInherentConfigurationData.RangeAnimationSpeed, 0f);
-            this.isAttractiveObjectRangeEnabled = true;
             this.Tick(0, null);
-        }
-
-        public void OnRangeDestroyed()
-        {
-            this.isAttractiveObjectRangeEnabled = false;
         }
 
         public RangeTypeID GetRangeTypeID()

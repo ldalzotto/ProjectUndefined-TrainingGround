@@ -164,7 +164,7 @@ public static class SceneHandlerDrawer
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
         frustum.SetCalculationDataForFaceBasedCalculation(transform.position, transform.rotation, transform.lossyScale);
-        var FrustumPointsPositions = frustum.CalculateFrustumPointsWorldPosV2();
+        var FrustumPointsPositions = frustum.FrustumPointsPositions;
 
         var oldGizmoColor = Handles.color;
         Handles.color = MyColors.HotPink;

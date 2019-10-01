@@ -51,7 +51,7 @@ namespace CoreGame
 #warning Trigger frustum points recalculation
         public static bool PointInsideFrustum(FrustumV2 frustum, Vector3 worldPositionPoint)
         {
-            return PointInsideFrustumComputationV2(worldPositionPoint, frustum.CalculateFrustumPointsWorldPosV2());
+            return PointInsideFrustumComputationV2(worldPositionPoint, frustum.FrustumPointsPositions);
         }
 
         public static bool PointInsideFrustum(FrustumPointsPositions FrustumPointsWorldPositions, Vector3 worldPositionPoint)

@@ -71,7 +71,7 @@ namespace RTPuzzle
             var launchProjectileInteractiveObjectDefinition = PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[LaunchProjectileActionInherentData.projectedObjectDefinitionID];
             this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileInteractiveObjectDefinition.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID];
 
-            this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, withRangeColliderTracker: false, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, launchProjectileInteractiveObjectDefinition,
                      interactiveObjectContainer, PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration);
 
@@ -305,7 +305,7 @@ namespace RTPuzzle
                     }
 
                     var projectileCursorInteractiveObjectInherentData = VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(
-                        RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR, withRangeColliderTracker: true)
+                        RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
                     );
                     var projectileCursorInteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
                     {

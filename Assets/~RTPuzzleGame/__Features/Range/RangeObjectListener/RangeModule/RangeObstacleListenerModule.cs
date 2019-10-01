@@ -21,10 +21,6 @@ namespace RTPuzzle
         }
 
         #region Logical Conditions
-        public bool IsListenerHaveObstaclesNearby()
-        {
-            return this.obstacleListener.IsListenerHaveObstaclesNearby();
-        }
         public bool IsBoxOccludedByObstacles(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
             return this.obstacleListener.IsBoxOccludedByObstacles(boxCollider, forceObstacleOcclusionIfNecessary);

@@ -11,16 +11,17 @@ namespace RTPuzzle
 
         protected BoxCollider frustumBoundingBox;
 
-        private TransformChangeListenerManager positionChangeListener;
-        protected Nullable<FrustumPointsPositions> frustumPointsWorldPositions;
+        private BlittableTransformChangeListenerManager positionChangeListener;
+        private bool calculateFrustumWorldPos;
 
         public FrustumPointsPositions GetFrustumPointsWorldPositions()
         {
-            if(this.frustumPointsWorldPositions == null || !this.frustumPointsWorldPositions.HasValue)
+            if(this.calculateFrustumWorldPos)
             {
                 this.DoFrustumCalculation();
+                this.calculateFrustumWorldPos = false;
             }
-            return this.frustumPointsWorldPositions.Value;
+            return this.frustum.FrustumPointsPositions;
         }
 
         public override void PopulateFromDefinition(RangeTypeDefinition RangeTypeDefinition)
@@ -42,7 +43,7 @@ namespace RTPuzzle
         public override void Init(RangeTypeObjectInitializer RangeTypeObjectInitializer, RangeTypeObject RangeTypeObjectRef)
         {
             base.Init(RangeTypeObjectInitializer, RangeTypeObjectRef);
-            this.positionChangeListener = new TransformChangeListenerManager(this.transform, true, true, this);
+            this.positionChangeListener = new BlittableTransformChangeListenerManager(true, true, this);
             this.frustumBoundingBox = GetComponent<BoxCollider>();
             this.frustumBoundingBox.center = new Vector3(0, 0, this.frustum.F2.FaceOffsetFromCenter.z / 4f);
             this.frustumBoundingBox.size = new Vector3(Mathf.Max(this.frustum.F1.Width, this.frustum.F2.Width), Math.Max(this.frustum.F1.Height, this.frustum.F2.Height), this.frustum.F2.FaceOffsetFromCenter.z / 2f);
@@ -50,12 +51,12 @@ namespace RTPuzzle
 
         public override void Tick(float d)
         {
-            this.positionChangeListener.Tick();
+            this.positionChangeListener.Tick(this.transform.position, this.transform.rotation);
         }
 
         private void ClearFrustumWorldPositions()
         {
-            this.frustumPointsWorldPositions = null;
+            this.calculateFrustumWorldPos = true;
         }
 
         public override Vector3 GetCenterWorldPos()
@@ -71,7 +72,6 @@ namespace RTPuzzle
         protected void DoFrustumCalculation()
         {
             this.frustum.SetCalculationDataForFaceBasedCalculation(this.transform.position, this.transform.rotation, this.transform.lossyScale);
-            this.frustumPointsWorldPositions = this.frustum.CalculateFrustumPointsWorldPosV2();
         }
 
         public void onPositionChange()

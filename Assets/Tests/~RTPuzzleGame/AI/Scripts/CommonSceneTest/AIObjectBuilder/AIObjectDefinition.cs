@@ -87,14 +87,12 @@ namespace Tests
                                             RangeTypeID = GameConfigurationID.RangeTypeID.SIGHT_VISION,
                                             RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = BaseSightFrustum }
                                         }},
-                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() },
-                                        {typeof(RangeColliderTrackerModuleDefinition), new RangeColliderTrackerModuleDefinition() }
+                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
                                     },
                 RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
                                     {
                                         {typeof(RangeTypeDefinition), true},
-                                        {typeof(RangeObstacleListenerDefinition), true},
-                                        {typeof(RangeColliderTrackerModuleDefinition), true }
+                                        {typeof(RangeObstacleListenerDefinition), true}
                                     }
             };
 
@@ -166,14 +164,12 @@ namespace Tests
                                             RangeTypeID = RangeTypeID.SIGHT_VISION,
                                             RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = RangeEffectManagerTestFrustum }
                                         }},
-                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() },
-                                        {typeof(RangeColliderTrackerModuleDefinition), new RangeColliderTrackerModuleDefinition() }
+                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
                                     },
                                     RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
                                     {
                                         {typeof(RangeTypeDefinition), true},
-                                        {typeof(RangeObstacleListenerDefinition), true},
-                                        {typeof(RangeColliderTrackerModuleDefinition), true }
+                                        {typeof(RangeObstacleListenerDefinition), true}
                                     }
                                 }
                     }

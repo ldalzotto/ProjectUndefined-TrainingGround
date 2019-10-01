@@ -13,7 +13,7 @@ namespace RTPuzzle
             CircleRangeBufferData CircleRangeBufferData = new CircleRangeBufferData();
             CircleRangeBufferData.CenterWorldPosition = this.GetAssociatedRangeObject().RangeType.GetCenterWorldPos();
 
-            CircleRangeBufferData.Radius = this.rangeAnimation.CurrentValue;
+            CircleRangeBufferData.Radius = this.GetAssociatedRangeObject().RangeType.GetRadiusRange();
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
                 CircleRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();

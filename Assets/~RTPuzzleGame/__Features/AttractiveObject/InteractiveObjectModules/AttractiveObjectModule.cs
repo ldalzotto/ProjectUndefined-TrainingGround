@@ -33,11 +33,7 @@ namespace RTPuzzle
         private RangeTypeObject sphereRange;
         private AttractiveObjectIntersectionManagerV2 AttractiveObjectIntersectionManager;
         #endregion
-
-        #region External Dependencies
-        private PuzzleEventsManager PuzzleEventsManager;
-        #endregion
-
+        
         #region Data Retrieval
         public RangeTypeObject SphereRange { get => sphereRange; }
         #endregion
@@ -71,7 +67,6 @@ namespace RTPuzzle
             this.sphereRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AttractiveObjectIntersectionManager });
             this.sphereRange.SetIsAttractiveObject();
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(AttractiveObjectInherentConfigurationData.EffectiveTime);
-            this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
         }
 
         public void Tick(float d, float timeAttenuationFactor)

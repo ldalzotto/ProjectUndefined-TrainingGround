@@ -124,6 +124,9 @@ namespace RTPuzzle
             TutorialManager.Init();
             InteractiveObjectSelectionManager.Init(CoreGameSingletonInstances.GameInputManager);
             PuzzleDiscussionManager.Init();
+
+            RangeObjectV2Manager.Get().Init();
+
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
             EditorOnlyManagers.Init();
@@ -150,6 +153,7 @@ namespace RTPuzzle
 
                     CameraMovementManager.Tick(d);
 
+                    RangeObjectV2Manager.Get().Tick(d);
                     RangeTypeContainer.Tick(d);
 
                     ObstaclesListenerManager.Tick(d);
@@ -222,6 +226,11 @@ namespace RTPuzzle
             }
 
             yield return this.EndOfFixedUpdate();
+        }
+
+        private void OnDestroy()
+        {
+            RangeObjectV2Manager.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()

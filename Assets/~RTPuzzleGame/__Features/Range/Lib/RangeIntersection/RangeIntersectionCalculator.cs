@@ -9,8 +9,8 @@ namespace RTPuzzle
         private RangeTypeObject RangeTypeObjectRef;
         private CollisionType trackedCollider;
 
-        private TransformChangeListenerManager sightModuleMovementChangeTracker;
-        private TransformChangeListenerManager inRangeCollidersMovementChangeTracker;
+        private BlittableTransformChangeListenerManager sightModuleMovementChangeTracker;
+        private BlittableTransformChangeListenerManager inRangeCollidersMovementChangeTracker;
         private bool isInside;
         private bool forceObstacleOcclusionIfNecessary;
 
@@ -19,8 +19,8 @@ namespace RTPuzzle
             this.RangeTypeObjectRef = associatedRange;
             this.trackedCollider = trackedCollider;
             this.forceObstacleOcclusionIfNecessary = forceObstacleOcclusionIfNecessary;
-            this.sightModuleMovementChangeTracker = new TransformChangeListenerManager(associatedRange.transform, true, true);
-            this.inRangeCollidersMovementChangeTracker = new TransformChangeListenerManager(trackedCollider.transform, true, true);
+            this.sightModuleMovementChangeTracker = new BlittableTransformChangeListenerManager(true, true);
+            this.inRangeCollidersMovementChangeTracker = new BlittableTransformChangeListenerManager(true, true);
         }
 
         public CollisionType TrackedCollider { get => trackedCollider; }
@@ -29,8 +29,8 @@ namespace RTPuzzle
         public InterserctionOperationType Tick()
         {
             InterserctionOperationType returnOperation = InterserctionOperationType.Nothing;
-            this.sightModuleMovementChangeTracker.Tick();
-            this.inRangeCollidersMovementChangeTracker.Tick();
+            this.sightModuleMovementChangeTracker.Tick(this.RangeTypeObjectRef.transform.position, this.RangeTypeObjectRef.transform.rotation);
+            this.inRangeCollidersMovementChangeTracker.Tick(this.TrackedCollider.transform.position, this.trackedCollider.transform.rotation);
 
             if (this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
                 this.sightModuleMovementChangeTracker.TransformChangedThatFrame())

@@ -63,6 +63,8 @@ namespace RTPuzzle
             this.CreateAndAddFrustum(Quaternion.Euler(0, -90, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(90, 0, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(-90, 0, 0), 1);
+
+            RangeObjectV2Manager.Get().IndexSquareObstacleByTheirCollider.Add(this.BoxCollider, this);
         }
 
         #region Logical Conditions
@@ -97,7 +99,6 @@ namespace RTPuzzle
             frustum.FaceDistance = 9999f;
             frustum.F1.Width = 1f;
             frustum.F1.Height = 1f;
-            frustum.WorldRotation = this.transform.rotation;
             frustum.DeltaRotation = deltaRotation;
             frustum.F1.FaceOffsetFromCenter.z = F1FaceZOffset;
             this.FaceFrustums.Add(frustum);
@@ -135,9 +136,7 @@ namespace RTPuzzle
             foreach (var faceFrustum in this.FaceFrustums)
             {
                 faceFrustum.SetCalculationDataForPointProjection(obstacleCalucation.WorldPositionStartAngleDefinition, obstacleCalucation.ObstaclePosition, obstacleCalucation.ObstacleRotation, obstacleCalucation.ObstacleLossyScale);
-
-                var FrustumPointsPositions = faceFrustum.CalculateFrustumPointsWorldPosV2();
-
+                var FrustumPointsPositions = faceFrustum.FrustumPointsPositions;
                 Vector3 frontFaceNormal = Vector3.Cross(FrustumPointsPositions.FC2 - FrustumPointsPositions.FC1, FrustumPointsPositions.FC4 - FrustumPointsPositions.FC1).normalized;
 
                 //We filter faceFrustums that are not facing the initial calculation point -> they are useless because always occluded by front faces

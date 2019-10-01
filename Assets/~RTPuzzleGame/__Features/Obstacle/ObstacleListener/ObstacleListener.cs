@@ -13,7 +13,7 @@ namespace RTPuzzle
         public List<SquareObstacle> NearSquareObstacles { get => nearSquareObstacles; }
 
         #region Internal Managers
-        private TransformChangeListenerManager ObstacleListenerChangePositionTracker;
+        private BlittableTransformChangeListenerManager ObstacleListenerChangePositionTracker;
         #endregion
 
         #region External Dependencies
@@ -31,7 +31,7 @@ namespace RTPuzzle
             this.nearSquareObstacles = new List<SquareObstacle>();
             this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
-            this.ObstacleListenerChangePositionTracker = new TransformChangeListenerManager(this.transform, true, false, null);
+            this.ObstacleListenerChangePositionTracker = new BlittableTransformChangeListenerManager(true, false, null);
         }
 
         public void OnObstacleListenerDestroyed()
@@ -43,7 +43,7 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            this.ObstacleListenerChangePositionTracker.Tick();
+            this.ObstacleListenerChangePositionTracker.Tick(this.transform.position, this.transform.rotation);
         }
 
         #region Data Retrieval
@@ -79,6 +79,7 @@ namespace RTPuzzle
             Gizmos.DrawWireSphere(this.transform.position, this.Radius);
         }
 
+        //////// TO REMOVE //////// 
         public void OnRangeTriggerEnter(CollisionType collisionType)
         {
             if (collisionType != null)
@@ -87,7 +88,6 @@ namespace RTPuzzle
                 if (squareObstacle != null)
                 {
                     this.AddNearSquareObstacle(squareObstacle);
-                    this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, squareObstacle);
                 }
             }
         }
@@ -100,21 +100,23 @@ namespace RTPuzzle
                 if (squareObstacle != null)
                 {
                     this.RemoveNearSquareObstacle(squareObstacle);
-                    this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, squareObstacle);
                 }
             }
         }
+        /////////////////////////
 
-        private void AddNearSquareObstacle(SquareObstacle squareObstacle)
+        public void AddNearSquareObstacle(SquareObstacle squareObstacle)
         {
             this.nearSquareObstacles.Add(squareObstacle);
             this.SortObstaclesByDistance();
+            this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, squareObstacle);
         }
 
-        private void RemoveNearSquareObstacle(SquareObstacle squareObstacle)
+        public void RemoveNearSquareObstacle(SquareObstacle squareObstacle)
         {
             this.nearSquareObstacles.Remove(squareObstacle);
             this.SortObstaclesByDistance();
+            this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, squareObstacle);
         }
 
         //Nearest obstacles are sorted by distance in order to do intersection calculation from the nearest to the farest frustum.

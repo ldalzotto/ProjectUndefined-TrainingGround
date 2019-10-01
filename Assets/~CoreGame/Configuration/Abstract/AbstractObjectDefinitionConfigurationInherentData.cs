@@ -7,10 +7,9 @@ using UnityEngine.Serialization;
 public abstract class AbstractObjectDefinitionConfigurationInherentData : SerializedScriptableObject
 {
     [SerializeField]
-    [FormerlySerializedAs("RangeDefinitionModulesActivation")]
     public Dictionary<Type, bool> RangeDefinitionModulesActivation;
+
     [SerializeField]
-    [FormerlySerializedAs("RangeDefinitionModules")]
     public Dictionary<Type, ScriptableObject> RangeDefinitionModules;
 
     public abstract List<Type> ModuleTypes { get; }

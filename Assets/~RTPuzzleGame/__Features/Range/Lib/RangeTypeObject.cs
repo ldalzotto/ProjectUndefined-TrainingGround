@@ -15,13 +15,11 @@ namespace RTPuzzle
         #region Modules
         private RangeType rangeType;
         private RangeObstacleListenerModule rangeObstacleListener;
-        private RangeColliderTrackerModule rangeColliderTrackerModule;
         #endregion
 
         #region Data Retrieval
         public RangeType RangeType { get => rangeType; }
         public RangeObstacleListenerModule RangeObstacleListener { get => rangeObstacleListener; }
-        public RangeColliderTrackerModule RangeColliderTrackerModule { get => rangeColliderTrackerModule; }
         #endregion
 
         #region External Dependencies 
@@ -75,7 +73,6 @@ namespace RTPuzzle
             #region Modules
             this.rangeType = GetComponentInChildren<RangeType>();
             this.rangeObstacleListener = GetComponentInChildren<RangeObstacleListenerModule>();
-            this.rangeColliderTrackerModule = GetComponentInChildren<RangeColliderTrackerModule>();
             #endregion
         }
 
@@ -98,7 +95,6 @@ namespace RTPuzzle
                     listener.OnRangeTriggerEnter(other);
                 }
             }
-            this.rangeColliderTrackerModule.IfNotNull((RangeColliderTrackerModule RangeColliderTrackerModule) => RangeColliderTrackerModule.OnRangeTriggerEnter(other));
         }
 
         public void OnRangeTriggerExit(CollisionType other)
@@ -114,7 +110,6 @@ namespace RTPuzzle
                     listener.OnRangeTriggerExit(other);
                 }
             }
-            this.rangeColliderTrackerModule.IfNotNull((RangeColliderTrackerModule RangeColliderTrackerModule) => RangeColliderTrackerModule.OnRangeTriggerExit(other));
         }
         #endregion
 
@@ -135,12 +130,12 @@ namespace RTPuzzle
         }
         #endregion
 
-        public static RangeTypeObject InstanciateSphereRange(RangeTypeID rangeTypeID, float sphereRange, bool withRangeColliderTracker,
+        public static RangeTypeObject InstanciateSphereRange(RangeTypeID rangeTypeID, float sphereRange,
                                  Func<Vector3> originPositionProvider = null, Func<Color> rangeColorProvider = null)
         {
             var rangeTypeContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
             var sphereRangeTypeObject = MonoBehaviour.Instantiate(PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseRangeTypeObject, rangeTypeContainer.transform);
-            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID, withRangeColliderTracker),
+            sphereRangeTypeObject.Init(RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(sphereRange, rangeTypeID),
                 new RangeTypeObjectInitializer(originPositionProvider, rangeColorProvider));
             return sphereRangeTypeObject;
         }
@@ -175,16 +170,16 @@ namespace RTPuzzle
             }
             return isInsideRange;
         }
+        #endregion
 
-        public bool IsOccluded(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
+        private bool IsOccluded(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
             return this.rangeObstacleListener != null && this.rangeObstacleListener.IsBoxOccludedByObstacles(boxCollider, forceObstacleOcclusionIfNecessary);
         }
-        public bool IsOccluded(Vector3 worldPointComparison, bool forceObstacleOcclusionIfNecessary)
+        private bool IsOccluded(Vector3 worldPointComparison, bool forceObstacleOcclusionIfNecessary)
         {
             return this.rangeObstacleListener != null && this.rangeObstacleListener.IsPointOccludedByObstacles(worldPointComparison, forceObstacleOcclusionIfNecessary);
         }
-        #endregion
 
     }
 

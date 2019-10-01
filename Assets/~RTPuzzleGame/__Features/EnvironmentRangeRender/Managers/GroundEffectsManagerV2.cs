@@ -121,6 +121,24 @@ namespace RTPuzzle
 
 
         #region External events
+        /*
+        public void OnRangeAddedV2(RangeObjectV2 RangeObjectV2)
+        {
+            var rangeTypeID = RangeObjectV2.RangeObjectInitialization.RangeTypeID;
+            if (!this.rangeRenderDatas.ContainsKey(rangeTypeID))
+            {
+                this.rangeRenderDatas[rangeTypeID] = new Dictionary<int, AbstractRangeRenderData>();
+            }
+
+            if (RangeObjectV2.GetType() == typeof(SphereRangeObjectV2))
+            {
+                var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID]);
+                addedRange.OnRangeCreated(rangeTypeObject);
+                this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new CircleRangeRenderData(addedRange));
+ 
+            }
+        }
+        */
         public void OnRangeAdded(RangeTypeObject rangeTypeObject)
         {
             if (rangeTypeObject.RangeType.IsRangeConfigurationDefined())
@@ -251,7 +269,6 @@ namespace RTPuzzle
 
         public void OnRangeDestroyed()
         {
-            this.GroundEffectManager.OnRangeDestroyed();
             this.Dispose();
         }
     }

@@ -72,12 +72,6 @@ namespace RTPuzzle
         {
             return this.rangeTypeInherentConfigurationData != null;
         }
-
-        public bool IsInsideAndNotOccluded(BoxCollider boxCollider,bool forceObstacleOcclusionIfNecessary)
-        {
-            return this.RangeTypeObjectRef.IsInsideAndNotOccluded(boxCollider, forceObstacleOcclusionIfNecessary);
-        }
-
         #endregion
     }
 

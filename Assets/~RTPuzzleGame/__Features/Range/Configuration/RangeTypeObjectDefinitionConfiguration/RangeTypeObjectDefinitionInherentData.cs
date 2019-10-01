@@ -9,7 +9,7 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "RangeTypeObjectDefinitionInherentData", menuName = "Configuration/PuzzleGame/RangeTypeObjectDefinitionConfiguration/RangeTypeObjectDefinitionInherentData", order = 1)]
     public class RangeTypeObjectDefinitionInherentData : AbstractObjectDefinitionConfigurationInherentData
     {
-        public static List<Type> RangeModuleTypes = new List<Type>() { typeof(RangeTypeDefinition), typeof(RangeObstacleListenerDefinition), typeof(RangeColliderTrackerModuleDefinition) };
+        public static List<Type> RangeModuleTypes = new List<Type>() { typeof(RangeTypeDefinition), typeof(RangeObstacleListenerDefinition) };
 
         public override List<Type> ModuleTypes => RangeTypeObjectDefinitionInherentData.RangeModuleTypes;
 
@@ -55,10 +55,6 @@ namespace RTPuzzle
                         {
                             MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseRangeObstacleListener, rangeTypeObject.transform);
                         }
-                        else if (moduleConfiguration.GetType() == typeof(RangeColliderTrackerModuleDefinition))
-                        {
-                            MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseRangeColliderTrackerModule, rangeTypeObject.transform);
-                        }
                     }
                 }
             }
@@ -67,7 +63,7 @@ namespace RTPuzzle
 
     public static class RangeTypeObjectDefinitionConfigurationInherentDataBuilder
     {
-        public static RangeTypeObjectDefinitionInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID, bool withRangeColliderTracker)
+        public static RangeTypeObjectDefinitionInherentData SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
         {
             var RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
             {
@@ -89,11 +85,6 @@ namespace RTPuzzle
                 }
             };
 
-            if (withRangeColliderTracker)
-            {
-                RangeTypeObjectDefinitionInherentData.RangeDefinitionModules[typeof(RangeColliderTrackerModuleDefinition)] = new RangeColliderTrackerModuleDefinition();
-                RangeTypeObjectDefinitionInherentData.RangeDefinitionModulesActivation[typeof(RangeColliderTrackerModuleDefinition)] = true;
-            }
             return RangeTypeObjectDefinitionInherentData;
         }
 

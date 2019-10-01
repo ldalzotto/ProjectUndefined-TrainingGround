@@ -144,7 +144,7 @@ namespace RTPuzzle
         }
         private bool HasSensedThePresenceOfAnAttractiveObject()
         {
-            return (this.involvedAttractiveObject != null && !this.involvedAttractiveObject.SphereRange.IsOccluded(this.selfAgent.transform.position, forceObstacleOcclusionIfNecessary: true));
+            return (this.involvedAttractiveObject != null);
         }
         #endregion
     }
