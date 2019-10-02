@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct RangeObjectPhysicsTriggerInfo
 {
-    public SquareObstacle OtherObstacle;
+    public CollisionType OtherCollisionType;
     public Collider Other;
 }
 
@@ -24,26 +24,35 @@ public class RangeObjectV2PhysicsEventListener : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
+        var collisionType = other.GetComponent<CollisionType>();
+        if (collisionType != null)
         {
-            RangeObjectV2Manager.Get().IndexSquareObstacleByTheirCollider.TryGetValue(other, out SquareObstacle otherObstacle);
-            this.PhysicsEventListeners[i].OnTriggerEnter(new RangeObjectPhysicsTriggerInfo { Other = other, OtherObstacle = otherObstacle });
+            for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
+            {
+                this.PhysicsEventListeners[i].OnTriggerEnter(new RangeObjectPhysicsTriggerInfo { Other = other, OtherCollisionType = collisionType });
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
+        var collisionType = other.GetComponent<CollisionType>();
+        if (collisionType != null)
         {
-            RangeObjectV2Manager.Get().IndexSquareObstacleByTheirCollider.TryGetValue(other, out SquareObstacle otherObstacle);
-            this.PhysicsEventListeners[i].OnTriggerExit(new RangeObjectPhysicsTriggerInfo { Other = other, OtherObstacle = otherObstacle });
+            for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
+            {
+                this.PhysicsEventListeners[i].OnTriggerExit(new RangeObjectPhysicsTriggerInfo { Other = other, OtherCollisionType = collisionType });
+            }
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
+        var collisionType = other.GetComponent<CollisionType>();
+        if (collisionType != null)
         {
-            RangeObjectV2Manager.Get().IndexSquareObstacleByTheirCollider.TryGetValue(other, out SquareObstacle otherObstacle);
-            this.PhysicsEventListeners[i].OnTriggerStay(new RangeObjectPhysicsTriggerInfo { Other = other, OtherObstacle = otherObstacle });
+            for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
+            {
+                this.PhysicsEventListeners[i].OnTriggerStay(new RangeObjectPhysicsTriggerInfo { Other = other, OtherCollisionType = collisionType });
+            }
         }
     }
 }

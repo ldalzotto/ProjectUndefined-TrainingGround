@@ -13,7 +13,9 @@ public class RangeObjectV2Manager
     }
 
     private List<RangeObjectV2> RangeObjects = new List<RangeObjectV2>();
-    public Dictionary<Collider, SquareObstacle> IndexSquareObstacleByTheirCollider { get; private set; } = new Dictionary<Collider, SquareObstacle>();
+
+    //TODO -> indexing all collision types by their collider
+  //  public Dictionary<Collider, SquareObstacle> IndexSquareObstacleByTheirCollider { get; private set; } = new Dictionary<Collider, SquareObstacle>();
 
     public void Init()
     {
@@ -35,7 +37,10 @@ public class RangeObjectV2Manager
     public void ReceiveEvent(RangeObjectV2ManagerAddRangeEvent RangeObjectV2ManagerAddRangeEvent)
     {
         this.RangeObjects.Add(RangeObjectV2ManagerAddRangeEvent.AddedRangeObject);
-        PuzzleGameSingletonInstances.GroundEffectsManagerV2.OnRangeAddedV2(RangeObjectV2ManagerAddRangeEvent.AddedRangeObject);
+    }
+    public void ReceiveEvent(RangeObjectV2ManagerRemoveRangeEvent RangeObjectV2ManagerRemoveRangeEvent)
+    {
+        this.RangeObjects.Remove(RangeObjectV2ManagerRemoveRangeEvent.RemovedRangeObject);
     }
 
     public void OnDestroy()
@@ -43,12 +48,14 @@ public class RangeObjectV2Manager
         RangeObjectV2ManagerInstance = null;
         this.RangeObjects.Clear();
         this.RangeObjects = null;
-        this.IndexSquareObstacleByTheirCollider.Clear();
-        this.IndexSquareObstacleByTheirCollider = null;
     }
 }
 
 public struct RangeObjectV2ManagerAddRangeEvent
 {
     public RangeObjectV2 AddedRangeObject;
+}
+public struct RangeObjectV2ManagerRemoveRangeEvent
+{
+    public RangeObjectV2 RemovedRangeObject;
 }

@@ -6,9 +6,9 @@ namespace RTPuzzle
     public class LineDirectionPositioning : ILinePositioning
     {
         private ModelObjectModule lineStartModelObject;
-        private MonoBehaviour sourceTriggeringObject;
+        private Component sourceTriggeringObject;
 
-        public LineDirectionPositioning(ModelObjectModule lineStartModelObject, MonoBehaviour sourceTriggeringObject)
+        public LineDirectionPositioning(ModelObjectModule lineStartModelObject, Component sourceTriggeringObject)
         {
             this.lineStartModelObject = lineStartModelObject;
             this.sourceTriggeringObject = sourceTriggeringObject;

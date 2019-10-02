@@ -19,51 +19,41 @@ namespace RTPuzzle
 
     public class VisualFeedbackEmitterModule : InteractiveObjectModule, IVisualFeedbackEmitterModuleDataRetriever
     {
-        public RangeTypeObject InRangeVisualFeedbackTrackerRange;
-
-        private VisualFeedbackEmitterRangeIntersectionManager VisualFeedbackEmitterRangeIntersectionManager;
+        public RangeObjectV2 InRangeVisualFeedbackTrackerRange;
+        private VisualFeedbackEmitterRangeIntersectionManagerV2 VisualFeedbackEmitterRangeIntersectionManagerV2;
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
                 IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            this.ResolveInternalDependencies();
-
             RangeTypeObjectInitializer InRangeVisualFeedbackTrackerRangeInitializationData = null;
             var InRangeVisualFeedbakcModuleInitializationData = interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData;
             if (interactiveObjectInitializationObject != null && interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData != null)
             {
                 InRangeVisualFeedbackTrackerRangeInitializationData = interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData.RangeInitializer;
             }
-            this.VisualFeedbackEmitterRangeIntersectionManager = new VisualFeedbackEmitterRangeIntersectionManager(this.InRangeVisualFeedbackTrackerRange);
-            this.InRangeVisualFeedbackTrackerRange.Init(InRangeVisualFeedbackTrackerRangeInitializationData, new List<RangeTypeObjectEventListener>() { this.VisualFeedbackEmitterRangeIntersectionManager });
+            this.VisualFeedbackEmitterRangeIntersectionManagerV2 = new VisualFeedbackEmitterRangeIntersectionManagerV2(this.InRangeVisualFeedbackTrackerRange);
+            this.InRangeVisualFeedbackTrackerRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent { ARangeIntersectionV2Listener = this.VisualFeedbackEmitterRangeIntersectionManagerV2 });
         }
-        
+
         #region IInRangeVisualFeedbackModuleDataRetriever
         public List<ModelObjectModule> GetInRangeModelObjectsForVisual()
         {
-            return this.VisualFeedbackEmitterRangeIntersectionManager.InRangeModelObjectForVisual;
+            return this.VisualFeedbackEmitterRangeIntersectionManagerV2.InRangeModelObjectForVisual;
         }
 
         public RangeTypeID GetAssociatedRangeTypeID()
         {
-            return this.InRangeVisualFeedbackTrackerRange.RangeType.RangeTypeID;
+            return this.InRangeVisualFeedbackTrackerRange.RangeObjectInitialization.RangeTypeID;
         }
         #endregion
 
-        public void ResolveInternalDependencies()
-        {
-            this.InRangeVisualFeedbackTrackerRange = GetComponentInChildren<RangeTypeObject>();
-        }
-
         public override void OnInteractiveObjectDestroyed()
         {
-            this.InRangeVisualFeedbackTrackerRange.OnRangeDestroyed();
-            this.VisualFeedbackEmitterRangeIntersectionManager.OnRangeDestroyed();
+            this.InRangeVisualFeedbackTrackerRange.OnDestroy();
         }
 
         public void TickAlways(float d)
         {
-            this.VisualFeedbackEmitterRangeIntersectionManager.Tick();
         }
     }
 
@@ -72,77 +62,30 @@ namespace RTPuzzle
         public RangeTypeObjectInitializer RangeInitializer;
     }
 
-    class VisualFeedbackEmitterRangeIntersectionManager : RangeIntersectionManager
+    class VisualFeedbackEmitterRangeIntersectionManagerV2 : ARangeIntersectionV2Listener
     {
-        private RangeTypeObject VisualFeedbackEmitterRange;
-
-        public VisualFeedbackEmitterRangeIntersectionManager(RangeTypeObject visualFeedbackEmitterRange)
+        public VisualFeedbackEmitterRangeIntersectionManagerV2(RangeObjectV2 associatedRangeObject) : base(associatedRangeObject)
         {
-            VisualFeedbackEmitterRange = visualFeedbackEmitterRange;
         }
 
-        private List<BoxCollider> inRangeCollidersForVisual = new List<BoxCollider>();
-        private List<ModelObjectModule> inRangeModelObjectForVisual = new List<ModelObjectModule>();
+        public List<BoxCollider> InRangeCollidersForVisual { get; private set; } = new List<BoxCollider>();
+        public List<ModelObjectModule> InRangeModelObjectForVisual { get; private set; } = new List<ModelObjectModule>();
         private List<Action> localListenersOnDestroy = new List<Action>();
 
-        public List<ModelObjectModule> InRangeModelObjectForVisual { get => inRangeModelObjectForVisual; }
-
-        public override void OnRangeTriggerEnter(CollisionType other)
+        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            if (other != null)
-            {
-                if (other.IsAI)
-                {
-                    this.AddTrackedCollider(this.VisualFeedbackEmitterRange, other);
-                }
-                else if (other.IsRepelable)
-                {
-                    this.AddTrackedCollider(this.VisualFeedbackEmitterRange, other);
-                }
-
-            }
+            return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsAI || RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsRepelable;
         }
 
-        public override void OnRangeTriggerExit(CollisionType other)
-        {
-            if (other != null)
-            {
-                if (other.IsAI)
-                {
-                    this.RemoveTrackedCollider(other);
-                }
-                else if (other.IsRepelable)
-                {
-                    this.RemoveTrackedCollider(other);
-                }
-            }
-        }
-
-        public void OnRangeDestroyed()
-        {
-            for (var i = 0; i < this.inRangeCollidersForVisual.Count; i++)
-            {
-                if (this.localListenersOnDestroy[i] != null) { this.localListenersOnDestroy[i].Invoke(); }
-            }
-        }
-
-        public override void OnRangeTriggerStay(CollisionType other)
-        {
-        }
-
-        protected override void OnInterestedNothing(RangeIntersectionCalculator intersectionCalculator)
-        {
-        }
-
-        protected override void OnJustIntersected(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
             if (intersectionCalculator.TrackedCollider.IsAI)
             {
                 var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(intersectionCalculator.TrackedCollider);
                 if (IAILogicColliderModuleDataRetriever != null)
                 {
-                    this.inRangeCollidersForVisual.Add(IAILogicColliderModuleDataRetriever.GetCollider());
-                    this.inRangeModelObjectForVisual.Add(IAILogicColliderModuleDataRetriever.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
+                    this.InRangeCollidersForVisual.Add(IAILogicColliderModuleDataRetriever.GetCollider());
+                    this.InRangeModelObjectForVisual.Add(IAILogicColliderModuleDataRetriever.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
                     this.localListenersOnDestroy.Add(null);
                 }
 
@@ -152,22 +95,22 @@ namespace RTPuzzle
                 var IObjectRepelModuleDataRetrieval = (IObjectRepelModuleDataRetrieval)ObjectRepelModule.FromCollisionType(intersectionCalculator.TrackedCollider);
                 if (IObjectRepelModuleDataRetrieval != null)
                 {
-                    this.inRangeCollidersForVisual.Add(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
-                    this.inRangeModelObjectForVisual.Add(IObjectRepelModuleDataRetrieval.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
+                    this.InRangeCollidersForVisual.Add(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
+                    this.InRangeModelObjectForVisual.Add(IObjectRepelModuleDataRetrieval.IInteractiveObjectTypeDataRetrieval.GetModelObjectModule());
                     Action destroyCallBack = null;
 
                     var ILineVisualFeedbackEvent = IObjectRepelModuleDataRetrieval.ILineVisualFeedbackEvent;
                     if (ILineVisualFeedbackEvent != null)
                     {
-                        ILineVisualFeedbackEvent.CreateLineDirectionPositioning(DottedLineID.REPELABLE_OBJECT_FEEDBACK, this.VisualFeedbackEmitterRange);
-                        destroyCallBack = () => ILineVisualFeedbackEvent.DestroyLine(this.VisualFeedbackEmitterRange);
+                        ILineVisualFeedbackEvent.CreateLineDirectionPositioning(DottedLineID.REPELABLE_OBJECT_FEEDBACK, this.associatedRangeObject.RangeGameObjectV2.BoundingCollider);
+                        destroyCallBack = () => ILineVisualFeedbackEvent.DestroyLine(this.associatedRangeObject.RangeGameObjectV2.BoundingCollider);
                     }
                     this.localListenersOnDestroy.Add(destroyCallBack);
                 }
             }
         }
 
-        protected override void OnJustNotIntersected(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
             Debug.Log("VisualFeedbackEmitterRangeIntersectionManager : OnJustNotIntersected");
             if (intersectionCalculator.TrackedCollider.IsAI)
@@ -175,11 +118,11 @@ namespace RTPuzzle
                 var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(intersectionCalculator.TrackedCollider);
                 if (IAILogicColliderModuleDataRetriever != null)
                 {
-                    var index = this.inRangeCollidersForVisual.IndexOf(IAILogicColliderModuleDataRetriever.GetCollider());
+                    var index = this.InRangeCollidersForVisual.IndexOf(IAILogicColliderModuleDataRetriever.GetCollider());
                     if (index >= 0)
                     {
-                        this.inRangeCollidersForVisual.RemoveAt(index);
-                        this.inRangeModelObjectForVisual.RemoveAt(index);
+                        this.InRangeCollidersForVisual.RemoveAt(index);
+                        this.InRangeModelObjectForVisual.RemoveAt(index);
                         this.localListenersOnDestroy.RemoveAt(index);
                     }
                 }
@@ -189,21 +132,30 @@ namespace RTPuzzle
                 var IObjectRepelModuleDataRetrieval = (IObjectRepelModuleDataRetrieval)ObjectRepelModule.FromCollisionType(intersectionCalculator.TrackedCollider);
                 if (IObjectRepelModuleDataRetrieval != null)
                 {
-                    var index = this.inRangeCollidersForVisual.IndexOf(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
+                    var index = this.InRangeCollidersForVisual.IndexOf(IObjectRepelModuleDataRetrieval.GetObjectRepelCollider());
                     if (index >= 0)
                     {
-                        this.inRangeCollidersForVisual.RemoveAt(index);
-                        this.inRangeModelObjectForVisual.RemoveAt(index);
+                        this.InRangeCollidersForVisual.RemoveAt(index);
+                        this.InRangeModelObjectForVisual.RemoveAt(index);
                         this.localListenersOnDestroy.RemoveAt(index);
                     }
 
                     var ILineVisualFeedbackEvent = IObjectRepelModuleDataRetrieval.ILineVisualFeedbackEvent;
                     if (ILineVisualFeedbackEvent != null)
                     {
-                        ILineVisualFeedbackEvent.DestroyLine(this.VisualFeedbackEmitterRange);
+                        ILineVisualFeedbackEvent.DestroyLine(this.associatedRangeObject.RangeGameObjectV2.BoundingCollider);
                     }
                 }
             }
         }
+
+        public override void OnDestroy()
+        {
+            for (var i = 0; i < this.InRangeCollidersForVisual.Count; i++)
+            {
+                if (this.localListenersOnDestroy[i] != null) { this.localListenersOnDestroy[i].Invoke(); }
+            }
+        }
+
     }
 }

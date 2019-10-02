@@ -63,8 +63,6 @@ namespace RTPuzzle
             this.CreateAndAddFrustum(Quaternion.Euler(0, -90, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(90, 0, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(-90, 0, 0), 1);
-
-            RangeObjectV2Manager.Get().IndexSquareObstacleByTheirCollider.Add(this.BoxCollider, this);
         }
 
         #region Logical Conditions

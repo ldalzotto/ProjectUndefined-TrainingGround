@@ -7,26 +7,24 @@ namespace RTPuzzle
 
         #region External dependencies
         private GroundEffectsManagerV2 GroundEffectsManagerV2;
-        private IRangeTypeObjectContainerEvent IRangeTypeObjectContainerEvent;
         #endregion
 
         public void Init()
         {
             this.GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
-            this.IRangeTypeObjectContainerEvent = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
         }
 
         #region IRangeTypeObjectEventListener
-        public void RANGE_EVT_Range_Created(RangeTypeObject rangeTypeObject)
+        public void RANGE_EVT_Range_Created(RangeObjectV2 RangeObjectV2)
         {
-            this.IRangeTypeObjectContainerEvent.AddRange(rangeTypeObject);
-            this.GroundEffectsManagerV2.OnRangeAdded(rangeTypeObject);
+            RangeObjectV2Manager.Get().ReceiveEvent(new RangeObjectV2ManagerAddRangeEvent { AddedRangeObject = RangeObjectV2 });
+            this.GroundEffectsManagerV2.OnRangeAddedV2(RangeObjectV2);
         }
 
-        public void RANGE_EVT_Range_Destroy(RangeTypeObject rangeTypeObject)
+        public void RANGE_EVT_Range_Destroy(RangeObjectV2 RangeObjectV2)
         {
-            this.IRangeTypeObjectContainerEvent.RemoveRange(rangeTypeObject);
-            this.GroundEffectsManagerV2.OnRangeDestroy(rangeTypeObject);
+            RangeObjectV2Manager.Get().ReceiveEvent(new RangeObjectV2ManagerRemoveRangeEvent { RemovedRangeObject = RangeObjectV2 });
+            this.GroundEffectsManagerV2.OnRangeDestroy(RangeObjectV2);
         }
         #endregion
 

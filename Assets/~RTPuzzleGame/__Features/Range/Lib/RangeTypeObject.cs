@@ -65,7 +65,7 @@ namespace RTPuzzle
             this.rangeType.IfNotNull((RangeType rangeType) => rangeType.Init(RangeTypeObjectInitializer, this));
             this.rangeObstacleListener.IfNotNull((RangeObstacleListenerModule rangeObstacleListener) => rangeObstacleListener.Init(this.rangeType));
 
-            this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Created(this);
+           // this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Created(this);
         }
 
         private void PopulateModules()
@@ -118,7 +118,7 @@ namespace RTPuzzle
         {
             this.rangeObstacleListener.IfNotNull((RangeObstacleListenerModule rangeObstacleListener) => rangeObstacleListener.OnRangeObstacleListenerDestroyed(this.rangeType));
 
-            this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Destroy(this);
+           // this.IRangeTypeObjectEventListener.RANGE_EVT_Range_Destroy(this);
             MonoBehaviour.Destroy(this.gameObject);
         }
         #endregion

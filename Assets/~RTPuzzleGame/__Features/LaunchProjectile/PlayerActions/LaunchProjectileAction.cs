@@ -305,7 +305,7 @@ namespace RTPuzzle
                     }
 
                     var projectileCursorInteractiveObjectInherentData = VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(
-                        RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
+                        RangeTypeObjectDefinitionConfigurationInherentDataBuilderV2.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
                     );
                     var projectileCursorInteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
                     {

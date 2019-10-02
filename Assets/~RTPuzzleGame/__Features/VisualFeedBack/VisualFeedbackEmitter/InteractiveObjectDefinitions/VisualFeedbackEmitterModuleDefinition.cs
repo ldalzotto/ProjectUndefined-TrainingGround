@@ -16,32 +16,14 @@ namespace RTPuzzle
     [ModuleMetadata("Visual Feedback", "Send Data To Visual Feedback Modules.")]
     public class VisualFeedbackEmitterModuleDefinition : AbstractInteractiveObjectDefinition
     {
-        [DrawDefinition(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
-        [ScriptableObjectSubstitution(substitutionName: nameof(RangeTypeObjectDefinitionInherentData),
-          sourcePickerName: nameof(RangeTypeObjectDefinitionIDPicker))]
-        [CustomEnum(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
-        public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
-
         [Inline()]
-        public RangeTypeObjectDefinitionInherentData RangeTypeObjectDefinitionInherentData;
-        public bool RangeTypeObjectDefinitionIDPicker;
+        public RangeObjectV2DefinitionInherentData RangeTypeObjectDefinitionInherentData;
 
         public override void CreateObject(Transform parent)
         {
             var puzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration();
             var inRangeVisualFeedbackModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInRangeColliderTrackerModule, parent);
-            var inRangeVisualFeedbackTrackerRange = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseRangeTypeObject, inRangeVisualFeedbackModule.transform);
-            inRangeVisualFeedbackModule.ResolveInternalDependencies();
-
-            if (this.RangeTypeObjectDefinitionIDPicker)
-            {
-                inRangeVisualFeedbackModule.InRangeVisualFeedbackTrackerRange.RangeTypeObjectDefinitionID = this.RangeTypeObjectDefinitionID;
-            }
-            else
-            {
-                inRangeVisualFeedbackModule.InRangeVisualFeedbackTrackerRange.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
-                this.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(inRangeVisualFeedbackModule.InRangeVisualFeedbackTrackerRange, puzzlePrefabConfiguration);
-            }
+            inRangeVisualFeedbackModule.InRangeVisualFeedbackTrackerRange = RangeObjectInitializer.FromRangeObjectInitialization(this.RangeTypeObjectDefinitionInherentData.RangeObjectInitialization, parent.gameObject);
         }
     }
 }

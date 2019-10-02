@@ -152,45 +152,6 @@ namespace RTPuzzle
             }
         }
 
-        public void OnRangeAdded(RangeTypeObject rangeTypeObject)
-        {
-            /*
-            if (rangeTypeObject.RangeType.IsRangeConfigurationDefined())
-            {
-                if (!this.rangeRenderDatas.ContainsKey(rangeTypeObject.RangeType.RangeTypeID))
-                {
-                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID] = new Dictionary<int, AbstractRangeRenderData>();
-                }
-
-                if (rangeTypeObject.RangeType.GetType() == typeof(SphereRangeType))
-                {
-                    var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
-                    addedRange.OnRangeCreated(rangeTypeObject);
-                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new CircleRangeRenderData(addedRange));
-                }
-                else if (rangeTypeObject.RangeType.GetType() == typeof(BoxRangeType))
-                {
-                    var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
-                    addedRange.OnRangeCreated(rangeTypeObject);
-                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new BoxRangeRenderData(addedRange));
-                }
-                else if (rangeTypeObject.RangeType.GetType() == typeof(FrustumRangeType))
-                {
-                    var frustumRangeType = (FrustumRangeType)rangeTypeObject.RangeType;
-                    var addedRange = (IAbstractGroundEffectManager)new FrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
-                    this.rangeEffectManagers[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), addedRange);
-                    addedRange.OnRangeCreated(rangeTypeObject);
-                }
-                else if (rangeTypeObject.RangeType.GetType() == typeof(RoundedFrustumRangeType))
-                {
-                    var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeObject.RangeType.RangeTypeID]);
-                    addedRange.OnRangeCreated(rangeTypeObject);
-                    this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Add(rangeTypeObject.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
-                }
-            }
-            */
-        }
-
         public void OnLevelExit()
         {
             //release buffers
@@ -207,16 +168,13 @@ namespace RTPuzzle
 
         }
 
-        public void OnRangeDestroy(RangeTypeObject rangeTypeObject)
+        public void OnRangeDestroy(RangeObjectV2 RangeObjectV2)
         {
-            if (rangeTypeObject.IsRangeConfigurationDefined())
+            this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID][RangeObjectV2.RangeGameObjectV2.BoundingCollider.GetInstanceID()].OnRangeDestroyed();
+            this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID].Remove(RangeObjectV2.RangeGameObjectV2.BoundingCollider.GetInstanceID());
+            if (this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID].Count == 0)
             {
-                this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID][rangeTypeObject.GetInstanceID()].OnRangeDestroyed();
-                this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Remove(rangeTypeObject.GetInstanceID());
-                if (this.rangeRenderDatas[rangeTypeObject.RangeType.RangeTypeID].Count == 0)
-                {
-                    this.rangeRenderDatas.Remove(rangeTypeObject.RangeType.RangeTypeID);
-                }
+                this.rangeRenderDatas.Remove(RangeObjectV2.RangeObjectInitialization.RangeTypeID);
             }
         }
 

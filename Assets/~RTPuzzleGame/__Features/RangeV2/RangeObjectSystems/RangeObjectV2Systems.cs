@@ -1,4 +1,5 @@
-﻿using CoreGame;
+﻿using System;
+using CoreGame;
 using RTPuzzle;
 using UnityEngine;
 
@@ -128,6 +129,11 @@ public class RangeObstacleListenerSystem : ARangeObjectSystem
         this.RangeObstaclePhysicsEventListener = new RangeObstaclePhysicsEventListener(obstacleListener);
         RangeObjectV2PhysicsEventListener.AddPhysicsEventListener(this.RangeObstaclePhysicsEventListener);
     }
+
+    public void OnDestroy()
+    {
+        this.RangeObstaclePhysicsEventListener.OnDestroy();
+    }
 }
 public class RangeObstaclePhysicsEventListener : ARangeObjectV2PhysicsEventListener
 {
@@ -140,12 +146,23 @@ public class RangeObstaclePhysicsEventListener : ARangeObjectV2PhysicsEventListe
 
     public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
     {
-        if (PhysicsTriggerInfo.OtherObstacle != null) { this.AssociatedObstacleListener.AddNearSquareObstacle(PhysicsTriggerInfo.OtherObstacle); }
+        if (PhysicsTriggerInfo.OtherCollisionType != null && PhysicsTriggerInfo.OtherCollisionType.IsObstacle)
+        {
+            this.AssociatedObstacleListener.AddNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
+        }
     }
 
     public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
     {
-        if (PhysicsTriggerInfo.OtherObstacle != null) { this.AssociatedObstacleListener.RemoveNearSquareObstacle(PhysicsTriggerInfo.OtherObstacle); }
+        if (PhysicsTriggerInfo.OtherCollisionType != null && PhysicsTriggerInfo.OtherCollisionType.IsObstacle)
+        {
+            this.AssociatedObstacleListener.RemoveNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
+        }
+    }
+
+    public void OnDestroy()
+    {
+        this.AssociatedObstacleListener.OnObstacleListenerDestroyed();
     }
 }
 #endregion

@@ -49,21 +49,21 @@ namespace RTPuzzle
         }
 
         #region ILineVisualFeedbackEvent
-        public void CreateLineFollowingModelObject(DottedLineID DottedLineID, ModelObjectModule TargetModelObjectModule, MonoBehaviour sourceTriggeringObject)
+        public void CreateLineFollowingModelObject(DottedLineID DottedLineID, ModelObjectModule TargetModelObjectModule, Component sourceTriggeringObject)
         {
             this.sourceTriggeringInstanceIds.Add(sourceTriggeringObject.GetInstanceID());
             this.lines.Add(DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager));
             this.linePositionings.Add(new LineFollowModelObjectPositioning(TargetModelObjectModule));
         }
 
-        public void CreateLineDirectionPositioning(DottedLineID DottedLineID, MonoBehaviour sourceTriggeringObject)
+        public void CreateLineDirectionPositioning(DottedLineID DottedLineID, Component sourceTriggeringObject)
         {
             this.sourceTriggeringInstanceIds.Add(sourceTriggeringObject.GetInstanceID());
             this.lines.Add(DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager));
             this.linePositionings.Add(new LineDirectionPositioning(this.ModelObjectModule, sourceTriggeringObject));
         }
 
-        public void DestroyLine(MonoBehaviour sourceTriggeringObject)
+        public void DestroyLine(Component sourceTriggeringObject)
         {
             var index = this.sourceTriggeringInstanceIds.IndexOf(sourceTriggeringObject.GetInstanceID());
             if(index >= 0)

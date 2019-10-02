@@ -1,12 +1,13 @@
-﻿using CoreGame;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using CoreGame;
 
 namespace RTPuzzle
 {
 
-    public class RangeIntersectionCalculator
+    public class RangeIntersectionCalculatorV2
     {
-        private RangeTypeObject RangeTypeObjectRef;
+        private RangeObjectV2 RangeObject;
         private CollisionType trackedCollider;
 
         private BlittableTransformChangeListenerManager sightModuleMovementChangeTracker;
@@ -14,9 +15,9 @@ namespace RTPuzzle
         private bool isInside;
         private bool forceObstacleOcclusionIfNecessary;
 
-        public RangeIntersectionCalculator(RangeTypeObject associatedRange, CollisionType trackedCollider, bool forceObstacleOcclusionIfNecessary)
+        public RangeIntersectionCalculatorV2(RangeObjectV2 RangeObject, CollisionType trackedCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            this.RangeTypeObjectRef = associatedRange;
+            this.RangeObject = RangeObject;
             this.trackedCollider = trackedCollider;
             this.forceObstacleOcclusionIfNecessary = forceObstacleOcclusionIfNecessary;
             this.sightModuleMovementChangeTracker = new BlittableTransformChangeListenerManager(true, true);
@@ -29,13 +30,14 @@ namespace RTPuzzle
         public InterserctionOperationType Tick()
         {
             InterserctionOperationType returnOperation = InterserctionOperationType.Nothing;
-            this.sightModuleMovementChangeTracker.Tick(this.RangeTypeObjectRef.transform.position, this.RangeTypeObjectRef.transform.rotation);
+            this.sightModuleMovementChangeTracker.Tick(this.RangeObject.RangeGameObjectV2.BoundingCollider.transform.position,
+                      this.RangeObject.RangeGameObjectV2.BoundingCollider.transform.rotation);
             this.inRangeCollidersMovementChangeTracker.Tick(this.TrackedCollider.transform.position, this.trackedCollider.transform.rotation);
 
             if (this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
                 this.sightModuleMovementChangeTracker.TransformChangedThatFrame())
             {
-                var newInside = this.RangeTypeObjectRef.IsInsideAndNotOccluded((BoxCollider)trackedCollider.GetAssociatedCollider(), this.forceObstacleOcclusionIfNecessary);
+                var newInside = RangeIntersectionOperations.IsInsideAndNotOccluded(this.RangeObject, (BoxCollider)trackedCollider.GetAssociatedCollider(), this.forceObstacleOcclusionIfNecessary);
                 if (this.isInside && !newInside)
                 {
                     returnOperation = InterserctionOperationType.JustNotInteresected;
@@ -61,5 +63,18 @@ namespace RTPuzzle
             return returnOperation;
         }
     }
-    
+
+    public enum InterserctionOperationType
+    {
+        JustInteresected = 0,
+        JustNotInteresected = 1,
+        IntersectedNothing = 2,
+        Nothing = 3
+    }
+
+    public interface IRangeIntersectionChangeEventListener
+    {
+        void HasJustIntersected(CollisionType CollisionType);
+        void HasJustNotInteresected(CollisionType CollisionType);
+    }
 }
