@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class FrustumGroundEffectManager : AbstractGroundEffectManager<FrustumRangeType>
+    public class FrustumGroundEffectManager : AbstractGroundEffectManager
     {
         private FrustumRangeObjectRenderingDataprovider FrustumRangeObjectRenderingDataprovider;
         public FrustumGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData, FrustumRangeObjectRenderingDataprovider FrustumRangeObjectRenderingDataprovider) : base(rangeTypeInherentConfigurationData)

@@ -1,26 +1,43 @@
 ﻿using GameConfigurationID;
 using OdinSerializer;
+using UnityEngine;
 
-
-public abstract class RangeObjectInitialization : SerializedScriptableObject
+namespace RTPuzzle
 {
-    [CustomEnum()]
-    public RangeTypeID RangeTypeID;
-    public bool IsTakingIntoAccountObstacles;
-}
-
-public static class RangeObjectInitializationDataBuilderV2
-{
-    public static RangeObjectInitialization SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
+    public abstract class RangeObjectInitialization : SerializedScriptableObject
     {
-        return new SphereRangeObjectInitialization
+        [CustomEnum()]
+        public RangeTypeID RangeTypeID;
+        public bool IsTakingIntoAccountObstacles;
+    }
+
+    public static class RangeObjectInitializationDataBuilderV2
+    {
+        public static SphereRangeObjectInitialization SphereRangeWithObstacleListener(float sphereRange, RangeTypeID rangeTypeID)
         {
-            RangeTypeID = rangeTypeID,
-            IsTakingIntoAccountObstacles = true,
-            SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+            return new SphereRangeObjectInitialization
             {
-                Radius = sphereRange
-            }
-        };
+                RangeTypeID = rangeTypeID,
+                IsTakingIntoAccountObstacles = true,
+                SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+                {
+                    Radius = sphereRange
+                }
+            };
+        }
+
+        public static BoxRangeObjectInitialization BoxRangeNoObstacleListener(Vector3 center, Vector3 size, RangeTypeID rangeTypeID)
+        {
+            return new BoxRangeObjectInitialization
+            {
+                RangeTypeID = rangeTypeID,
+                IsTakingIntoAccountObstacles = false,
+                BoxRangeTypeDefinition = new BoxRangeTypeDefinition
+                {
+                    Center = center,
+                    Size = size
+                }
+            };
+        }
     }
 }

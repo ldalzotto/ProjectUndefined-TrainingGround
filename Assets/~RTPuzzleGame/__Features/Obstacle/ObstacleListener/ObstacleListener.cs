@@ -5,24 +5,21 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class ObstacleListener : MonoBehaviour
+    public class ObstacleListener
     {
         public float Radius;
 
         private List<SquareObstacle> nearSquareObstacles;
         public List<SquareObstacle> NearSquareObstacles { get => nearSquareObstacles; }
 
-        #region Internal Managers
-        private BlittableTransformChangeListenerManager ObstacleListenerChangePositionTracker;
+        #region Internal Dependencies
+        public RangeObjectV2 AssociatedRangeObject { get; private set; }
         #endregion
 
-        #region External Dependencies
-        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
-        private ObstaclesListenerManager ObstaclesListenerManager;
-        #endregion
-
-        public void Init()
+        public ObstacleListener(RangeObjectV2 associatedRangeObject)
         {
+            AssociatedRangeObject = associatedRangeObject;
+
             #region External Dependencies
             this.ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
             this.ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
@@ -34,6 +31,15 @@ namespace RTPuzzle
             this.ObstacleListenerChangePositionTracker = new BlittableTransformChangeListenerManager(true, false, null);
         }
 
+        #region Internal Managers
+        private BlittableTransformChangeListenerManager ObstacleListenerChangePositionTracker;
+        #endregion
+
+        #region External Dependencies
+        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
+        private ObstaclesListenerManager ObstaclesListenerManager;
+        #endregion
+
         public void OnObstacleListenerDestroyed()
         {
             Debug.Log(MyLog.Format("OnObstacleListenerDestroyed"));
@@ -43,7 +49,8 @@ namespace RTPuzzle
 
         public void Tick(float d)
         {
-            this.ObstacleListenerChangePositionTracker.Tick(this.transform.position, this.transform.rotation);
+            var RangeObjectV2GetWorldTransformEventReturn = this.AssociatedRangeObject.GetTransform();
+            this.ObstacleListenerChangePositionTracker.Tick(RangeObjectV2GetWorldTransformEventReturn.WorldPosition, RangeObjectV2GetWorldTransformEventReturn.WorldRotation);
         }
 
         #region Data Retrieval
@@ -73,11 +80,6 @@ namespace RTPuzzle
         }
 
         #endregion
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(this.transform.position, this.Radius);
-        }
 
         //////// TO REMOVE //////// 
         public void OnRangeTriggerEnter(CollisionType collisionType)
@@ -123,7 +125,8 @@ namespace RTPuzzle
         //Nearest frustum has more chance to oclcude a wider space than a farest
         private void SortObstaclesByDistance()
         {
-            this.nearSquareObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.transform.position, this.transform.position).CompareTo(Vector3.Distance(o2.transform.position, this.transform.position)); });
+            var RangeObjectV2GetWorldTransformEventReturn = this.AssociatedRangeObject.GetTransform();
+            this.nearSquareObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.transform.position, RangeObjectV2GetWorldTransformEventReturn.WorldPosition).CompareTo(Vector3.Distance(o2.transform.position, RangeObjectV2GetWorldTransformEventReturn.WorldPosition)); });
         }
     }
 

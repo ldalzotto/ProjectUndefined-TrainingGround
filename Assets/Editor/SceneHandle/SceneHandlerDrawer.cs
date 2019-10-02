@@ -145,22 +145,6 @@ public static class SceneHandlerDrawer
         Handles.Label(objectTransform.position + Vector3.up * height, label, MyEditorStyles.SceneDrawDynamicLabelStyle);
     }
 
-    private static void DrawRangeDefinition(RangeTypeObjectDefinitionInherentData rangeTypeObjectDefinitionConfigurationInherentData, Transform transform, Color color, string label)
-    {
-        foreach (var rangeTypeDefinitionModule in rangeTypeObjectDefinitionConfigurationInherentData.RangeDefinitionModules)
-        {
-            if (rangeTypeDefinitionModule.Key == typeof(RangeTypeDefinition))
-            {
-                var rangeTypeDefinition = ((RangeTypeDefinition)rangeTypeDefinitionModule.Value);
-                if (rangeTypeDefinition.RangeShapeConfiguration.GetType() == typeof(BoxRangeShapeConfiguration))
-                {
-                    HandlesHelper.DrawBox(((BoxRangeShapeConfiguration)rangeTypeDefinition.RangeShapeConfiguration).Center,
-                        ((BoxRangeShapeConfiguration)rangeTypeDefinition.RangeShapeConfiguration).Size, transform, color, label, MyEditorStyles.SceneDrawDynamicLabelStyle);
-                }
-            }
-        }
-    }
-
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
         frustum.SetCalculationDataForFaceBasedCalculation(transform.position, transform.rotation, transform.lossyScale);

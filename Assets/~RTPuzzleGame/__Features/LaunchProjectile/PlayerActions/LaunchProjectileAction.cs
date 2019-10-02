@@ -319,6 +319,8 @@ namespace RTPuzzle
                     );
                     var projectileCursorInteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
                     {
+                        //TODO -> Color setter
+                        /*
                         InRangeVisualFeedbakcModuleInitializationData = new InRangeVisualFeedbakcModuleInitializationData()
                         {
                             RangeInitializer = new RangeTypeObjectInitializer()
@@ -326,6 +328,7 @@ namespace RTPuzzle
                                 RangeColorProvider = this.GetLaunchProjectileRangeActiveColor
                             }
                         }
+                        */
                     };
                     this.projectileCursorInteractiveObject = InteractiveObjectType.Instantiate(projectileCursorInteractiveObjectInherentData, projectileCursorInteractiveObjectInitializationObject,
                                  PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration(), this.PuzzleGameConfiguration);

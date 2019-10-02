@@ -39,22 +39,27 @@ namespace Tests
 
             Assert.IsTrue(GroundEffectsManagerV2.RangeRenderDatas.Values.SelectMany(s => s).ToList().Count == 2);
 
+            Assert.IsFalse(true);
+            //TODO
 
-            var attractiveObjectRangerenderData = (CircleRangeRenderData)this.GetAbstractRangeRenderData(GroundEffectsManagerV2.RangeRenderDatas, attractiveObject.GetModule<AttractiveObjectModule>().SphereRange);
+            //  var attractiveObjectRangerenderData = (CircleRangeRenderData)this.GetAbstractRangeRenderData(GroundEffectsManagerV2.RangeRenderDatas, attractiveObject.GetModule<AttractiveObjectModule>().SphereRange);
 
-            Assert.IsTrue(attractiveObjectRangerenderData != null);
+            //  Assert.IsTrue(attractiveObjectRangerenderData != null);
             //The attractive object is only occluded by one obstacle and only two faces are concerned -> 2 frustum
-            Assert.IsTrue(attractiveObjectRangerenderData.ObstacleFrustumBuffer.GetSize() == 2);
-            Assert.IsTrue(attractiveObjectRangerenderData.CircleRangeBuffer.GetSize() == 1);
+            //  Assert.IsTrue(attractiveObjectRangerenderData.ObstacleFrustumBuffer.GetSize() == 2);
+            //  Assert.IsTrue(attractiveObjectRangerenderData.CircleRangeBuffer.GetSize() == 1);
 
-            var aiObjectSightRangeRenderData = (RoundedFrustumRenderData)this.GetAbstractRangeRenderData(GroundEffectsManagerV2.RangeRenderDatas, aiObject.GetComponent<InteractiveObjectType>().GetModule<ObjectSightModule>().SightVisionRange);
+            Assert.IsFalse(true);
+            //TODO
+            //var aiObjectSightRangeRenderData = (RoundedFrustumRenderData)this.GetAbstractRangeRenderData(GroundEffectsManagerV2.RangeRenderDatas, aiObject.GetComponent<InteractiveObjectType>().GetModule<ObjectSightModule>().SightVisionRange);
 
-            Assert.IsTrue(aiObjectSightRangeRenderData != null);
-            Debug.Log(aiObjectSightRangeRenderData.ObstacleFrustumBuffer.GetSize());
-            Assert.IsTrue(aiObjectSightRangeRenderData.ObstacleFrustumBuffer.GetSize() == 4);
-            Assert.IsTrue(aiObjectSightRangeRenderData.RoundedFrustumRangeBuffer.GetSize() == 1);
+            //Assert.IsTrue(aiObjectSightRangeRenderData != null);
+            //Debug.Log(aiObjectSightRangeRenderData.ObstacleFrustumBuffer.GetSize());
+            //Assert.IsTrue(aiObjectSightRangeRenderData.ObstacleFrustumBuffer.GetSize() == 4);
+            //Assert.IsTrue(aiObjectSightRangeRenderData.RoundedFrustumRangeBuffer.GetSize() == 1);
         }
 
+        /*
         private AbstractRangeRenderData GetAbstractRangeRenderData(Dictionary<RangeTypeID, Dictionary<int, AbstractRangeRenderData>> rangeRenderDatas, RangeTypeObject rangeTypeObject)
         {
             rangeRenderDatas.TryGetValue(rangeTypeObject.RangeType.RangeTypeID, out Dictionary<int, AbstractRangeRenderData> rangeRenderDatasByInstance);
@@ -65,5 +70,6 @@ namespace Tests
             }
             return null;
         }
+        */
     }
 }

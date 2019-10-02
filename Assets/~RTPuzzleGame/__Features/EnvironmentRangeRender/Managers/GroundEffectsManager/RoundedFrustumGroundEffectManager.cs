@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class RoundedFrustumGroundEffectManager : AbstractGroundEffectManager<RoundedFrustumRangeType>
+    public class RoundedFrustumGroundEffectManager : AbstractGroundEffectManager
     {
         private RoundedFrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider;
 

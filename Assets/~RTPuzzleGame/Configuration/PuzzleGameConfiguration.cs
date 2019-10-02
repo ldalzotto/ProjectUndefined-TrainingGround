@@ -43,8 +43,6 @@ namespace RTPuzzle
         
         public RTPuzzle.NearPlayerGameOverTriggerConfiguration NearPlayerGameOverTriggerConfiguration;
         
-        public RTPuzzle.RangeTypeObjectDefinitionConfiguration RangeTypeObjectDefinitionConfiguration;
-        
         public RTPuzzle.InteractiveObjectTypeDefinitionConfiguration InteractiveObjectTypeDefinitionConfiguration;
         
         public RTPuzzle.AIObjectTypeDefinitionConfiguration AIObjectTypeDefinitionConfiguration;

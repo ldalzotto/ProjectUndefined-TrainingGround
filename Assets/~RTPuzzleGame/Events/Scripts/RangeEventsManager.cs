@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class RangeEventsManager : MonoBehaviour, IRangeTypeObjectEventListener
+    public class RangeEventsManager : MonoBehaviour
     {
 
         #region External dependencies

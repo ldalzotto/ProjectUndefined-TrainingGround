@@ -98,8 +98,6 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\InteractiveObjectBuilder\ProjectileInteractiveObjectDefinitions.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\InteractiveObjectBuilder\TargetZoneObjectDefinition.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\PuzzleSceneTestHelper.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\RangeObjectBuilder\RangeObjectDefinition.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\RangeObjectBuilder\RangeObjectInitialization.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestHelperMethods.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestIDTree\AIObjectTestID.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\AI\Scripts\CommonSceneTest\TestIDTree\InteractiveObjectTestID.cs" />
@@ -110,7 +108,6 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\Environment\Ground\GroundEffectManagerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\_1_Level_StartTutorial_InteractiveObjectTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\PuzzleInteractiveObjectSelectionTest.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleInitializerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PhysicsPlayerMovementTest.cs" />

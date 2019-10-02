@@ -327,7 +327,6 @@
     <Compile Include="Assets\Editor\PropertyDrawer\ReadOnlyPropertyDrawer\ReadOnlyPropertyDrawer.cs" />
     <Compile Include="Assets\Editor\SceneHandle\SceneHandlerDrawer.cs" />
     <Compile Include="Assets\Editor\ShaderGUI\WaveNoiseV2ShaderGUI.cs" />
-    <Compile Include="Assets\Editor\Test\RangeConfiguration\RangeTypeObjectDefinitionCustomEditor.cs" />
     <Compile Include="Assets\Editor\TexturePacker\TexturePacker.cs" />
     <None Include="Assets\Editor\CodeGeneration\Templates\PointOfInterestModuleDefinition\DefinitionCustomEditorCondition.txt" />
     <None Include="Assets\Editor\CodeGeneration\Templates\GameConfiguration\PuzzleGameConfigurationManagerMethodTemplate.txt" />

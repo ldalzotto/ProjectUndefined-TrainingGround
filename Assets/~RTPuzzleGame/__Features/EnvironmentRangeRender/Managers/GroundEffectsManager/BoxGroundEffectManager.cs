@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTPuzzle
 {
-    public class BoxGroundEffectManager : AbstractGroundEffectManager<BoxRangeType>
+    public class BoxGroundEffectManager : AbstractGroundEffectManager
     {
         private BoxRangeObjectRenderingDataProvider BoxRangeObjectRenderingDataProvider;
 

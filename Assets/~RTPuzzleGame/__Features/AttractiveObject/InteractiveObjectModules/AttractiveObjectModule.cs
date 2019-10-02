@@ -1,5 +1,4 @@
 ﻿using GameConfigurationID;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,27 +14,12 @@ namespace RTPuzzle
     public partial class AttractiveObjectModule : InteractiveObjectModule, IAttractiveObjectModuleDataRetriever
     {
 
-        public static IAttractiveObjectModuleDataRetriever GetAttractiveObjectFromCollisionType(CollisionType collisionType)
-        {
-            var sphereRange = RangeType.RetrieveFromCollisionType(collisionType);
-            if (sphereRange != null)
-            {
-                return sphereRange.GetComponentInParent<AttractiveObjectModule>();
-            }
-            return null;
-        }
-
         #region ModuleDependencies
         private ModelObjectModule modelObjectModule;
         #endregion
 
         #region Internal Dependencies
-        private RangeTypeObject sphereRange;
-        private AttractiveObjectIntersectionManagerV2 AttractiveObjectIntersectionManager;
-        #endregion
-        
-        #region Data Retrieval
-        public RangeTypeObject SphereRange { get => sphereRange; }
+        public RangeObjectV2 SphereRange { get; set; }
         #endregion
 
         #region IAttractiveObjectModuleDataRetriever
@@ -62,23 +46,19 @@ namespace RTPuzzle
             }
 
             this.modelObjectModule = IInteractiveObjectTypeDataRetrieval.GetModelObjectModule();
-            this.sphereRange = GetComponentInChildren<RangeTypeObject>();
-            this.AttractiveObjectIntersectionManager = new AttractiveObjectIntersectionManagerV2(this);
-            this.sphereRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AttractiveObjectIntersectionManager });
-            this.sphereRange.SetIsAttractiveObject();
+            RangeCollisionTypePropertySetter.SetIsAttractiveObject(this.SphereRange, true);
+            this.SphereRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent { ARangeIntersectionV2Listener = new AttractiveObjectIntersectionManagerV2(this, this.SphereRange) });
             this.AttractiveObjectLifetimeTimer = new AttractiveObjectLifetimeTimer(AttractiveObjectInherentConfigurationData.EffectiveTime);
         }
 
         public void Tick(float d, float timeAttenuationFactor)
         {
-            this.AttractiveObjectIntersectionManager.Tick();
             this.AttractiveObjectLifetimeTimer.Tick(d, timeAttenuationFactor);
         }
 
         public override void OnInteractiveObjectDestroyed()
         {
-            this.sphereRange.OnRangeDestroyed();
-            this.AttractiveObjectIntersectionManager.OnRangeDestroyed();
+            this.SphereRange.OnDestroy();
         }
 
         #region Logical Conditions
@@ -114,51 +94,44 @@ namespace RTPuzzle
 
     }
 
-    class AttractiveObjectIntersectionManagerV2 : RangeIntersectionManager
+    class AttractiveObjectIntersectionManagerV2 : ARangeIntersectionV2Listener
     {
-        private Dictionary<CollisionType, AIObjectDataRetriever> AIDataRetireverLookup = new Dictionary<CollisionType, AIObjectDataRetriever>();
+        private Dictionary<CollisionType, AIObjectDataRetriever> AIDataRetrieverLookup = new Dictionary<CollisionType, AIObjectDataRetriever>();
         private AttractiveObjectModule AssociatedAttractiveObjectModule;
 
-        public AttractiveObjectIntersectionManagerV2(AttractiveObjectModule associatedAttractiveObjectModule)
+        public AttractiveObjectIntersectionManagerV2(AttractiveObjectModule AssociatedAttractiveObjectModule, RangeObjectV2 associatedRangeObject) : base(associatedRangeObject)
         {
-            AssociatedAttractiveObjectModule = associatedAttractiveObjectModule;
+            this.AssociatedAttractiveObjectModule = AssociatedAttractiveObjectModule;
         }
 
-        public override void OnRangeTriggerEnter(CollisionType other)
+        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            if (other != null && other.IsAI)
-            {
-                this.AIDataRetireverLookup.Add(other, AIObjectType.FromCollisionType(other));
-                this.AddTrackedCollider(this.AssociatedAttractiveObjectModule.SphereRange, other);
-            }
+            return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsAI;
         }
 
-        public override void OnRangeTriggerExit(CollisionType other)
+        protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
-            if (other != null && other.IsAI)
-            {
-                this.AIDataRetireverLookup.Remove(other);
-                this.RemoveTrackedCollider(other);
-            }
+            this.AttractiveObjectEnter(this.AIDataRetrieverLookup[intersectionCalculator.TrackedCollider]);
         }
 
-        public override void OnRangeTriggerStay(CollisionType other)
+        protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
+            this.AttractiveObjectExit(this.AIDataRetrieverLookup[intersectionCalculator.TrackedCollider]);
         }
 
-        protected override void OnJustIntersected(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnInterestedNothing(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
-            this.AttractiveObjectEnter(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
+            this.AttractiveObjectStay(this.AIDataRetrieverLookup[intersectionCalculator.TrackedCollider]);
         }
 
-        protected override void OnJustNotIntersected(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnTriggerEnterSuccess(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            this.AttractiveObjectExit(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
+            this.AIDataRetrieverLookup[RangeObjectPhysicsTriggerInfo.OtherCollisionType] = AIObjectType.FromCollisionType(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
         }
 
-        protected override void OnInterestedNothing(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnTriggerExitSuccess(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            this.AttractiveObjectStay(this.AIDataRetireverLookup[intersectionCalculator.TrackedCollider]);
+            this.AIDataRetrieverLookup.Remove(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
         }
 
         private void AttractiveObjectEnter(AIObjectDataRetriever attractedAI)
@@ -181,7 +154,7 @@ namespace RTPuzzle
 
         public void OnRangeDestroyed()
         {
-            foreach (var involvedAI in this.AIDataRetireverLookup.Values)
+            foreach (var involvedAI in this.AIDataRetrieverLookup.Values)
             {
                 involvedAI.GetAIBehavior().ReceiveEvent(new AttractiveObjectDestroyedAIBehaviorEvent(this.AssociatedAttractiveObjectModule));
             }

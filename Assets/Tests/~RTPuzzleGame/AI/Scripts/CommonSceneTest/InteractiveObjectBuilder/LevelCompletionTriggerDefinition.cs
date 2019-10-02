@@ -21,21 +21,14 @@ namespace Tests
                       {
                           RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
                         {
-                            {typeof(LevelCompletionTriggerModuleDefinition), new LevelCompletionTriggerModuleDefinition(){
-                               RangeTypeObjectDefinitionIDPicker = false,
-                               RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData(){
-                                   RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
-                                   {
-                                       {typeof(RangeTypeDefinition), new RangeTypeDefinition() { RangeTypeID = RangeTypeID.TARGET_ZONE, RangeShapeConfiguration = new BoxRangeShapeConfiguration(){
-                                            Center = completionBoxLocalCenter,
-                                            Size = completionBoxLocalSize
-                                       } } }
-                                   },
-                                   RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
-                                   {
-                                       {typeof(RangeTypeDefinition), true }
-                                   }
-                               } }
+                            {typeof(LevelCompletionTriggerModuleDefinition), new BoxRangeObjectInitialization(){
+                                RangeTypeID = RangeTypeID.TARGET_ZONE,
+                                IsTakingIntoAccountObstacles = false,
+                                BoxRangeTypeDefinition = new BoxRangeTypeDefinition{
+                                    Center = completionBoxLocalCenter,
+                                    Size = completionBoxLocalSize
+                                }
+                              }
                             },
                             {typeof(TargetZoneModuleDefinition), new TargetZoneModuleDefinition(){ TargetZoneID = InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].TargetZoneID } }
                         },
@@ -53,6 +46,6 @@ namespace Tests
             InteractiveObjectInitialization.InitializeTestConfigurations(interactiveObjectTestID);
             return InteractiveObjectInitialization;
         }
-        
+
     }
 }

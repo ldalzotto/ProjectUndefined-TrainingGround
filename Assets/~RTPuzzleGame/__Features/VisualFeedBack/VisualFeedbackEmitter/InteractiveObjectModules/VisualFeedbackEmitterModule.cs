@@ -25,12 +25,6 @@ namespace RTPuzzle
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
                 IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            RangeTypeObjectInitializer InRangeVisualFeedbackTrackerRangeInitializationData = null;
-            var InRangeVisualFeedbakcModuleInitializationData = interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData;
-            if (interactiveObjectInitializationObject != null && interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData != null)
-            {
-                InRangeVisualFeedbackTrackerRangeInitializationData = interactiveObjectInitializationObject.InRangeVisualFeedbakcModuleInitializationData.RangeInitializer;
-            }
             this.VisualFeedbackEmitterRangeIntersectionManagerV2 = new VisualFeedbackEmitterRangeIntersectionManagerV2(this.InRangeVisualFeedbackTrackerRange);
             this.InRangeVisualFeedbackTrackerRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent { ARangeIntersectionV2Listener = this.VisualFeedbackEmitterRangeIntersectionManagerV2 });
         }
@@ -55,11 +49,6 @@ namespace RTPuzzle
         public void TickAlways(float d)
         {
         }
-    }
-
-    public class InRangeVisualFeedbakcModuleInitializationData
-    {
-        public RangeTypeObjectInitializer RangeInitializer;
     }
 
     class VisualFeedbackEmitterRangeIntersectionManagerV2 : ARangeIntersectionV2Listener

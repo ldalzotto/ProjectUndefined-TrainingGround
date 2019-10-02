@@ -24,12 +24,9 @@ namespace Tests
             //RangeEffectTestAI
             yield return this.Before();
             var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
-            
-            var instanciatedRange = MonoBehaviour.Instantiate(puzzleStaticConfiguration.PuzzleStaticConfiguration.PuzzlePrefabConfiguration.BaseRangeTypeObject);
-            instanciatedRange.transform.position = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position;
-            instanciatedRange.Init(
-                  RangeTypeObjectDefinitionConfigurationInherentDataBuilder.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT),
-                  new RangeTypeObjectInitializer());
+
+            var instanciatedRange = new SphereRangeObjectV2(new RangeGameObjectV2(null), RangeObjectInitializationDataBuilderV2.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT));
+            instanciatedRange.ReceiveEvent(new SetWorldPositionEvent { WorldPosition = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position });
 
             yield return new WaitForFixedUpdate();
 
@@ -55,10 +52,10 @@ namespace Tests
 
         }
 
-        private bool IsInsideAndNotOccluded(RangeTypeObject RangeTypeObject, TestPositionID testPosition)
+        private bool IsInsideAndNotOccluded(SphereRangeObjectV2 RangeTypeObject, TestPositionID testPosition)
         {
             var position = PuzzleSceneTestHelper.FindTestPosition(testPosition).position;
-            return RangeTypeObject.IsInsideAndNotOccluded(position, forceObstacleOcclusionIfNecessary: true);
+            return RangeIntersectionOperations.IsInsideAndNotOccluded(RangeTypeObject, position, forceObstacleOcclusionIfNecessary: true);
         }
 
     }

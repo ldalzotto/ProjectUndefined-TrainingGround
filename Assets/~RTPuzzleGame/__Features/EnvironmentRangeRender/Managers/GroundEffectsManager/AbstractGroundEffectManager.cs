@@ -13,7 +13,7 @@ namespace RTPuzzle
         ObstacleListener GetObstacleListener();
     }
 
-    public abstract class AbstractGroundEffectManager<T> : IAbstractGroundEffectManager
+    public abstract class AbstractGroundEffectManager : IAbstractGroundEffectManager
     {
         protected ARangeObjectRenderingDataProvider rangeObjectRenderingDataProvider;
         private List<GroundEffectType> groundEffectTypesToRender;

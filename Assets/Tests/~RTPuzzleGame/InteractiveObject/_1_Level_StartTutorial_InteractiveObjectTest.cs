@@ -129,7 +129,8 @@ namespace Tests
             Assert.AreEqual(4, interactiveProjectile.GetAllEnabledModules().Count);
             this.InteractiveObjectModulePresenceAssert(interactiveProjectile, enabledModulesToCheck: new List<Type>() { typeof(ModelObjectModule), typeof(AttractiveObjectModule), typeof(DisarmObjectModule), typeof(GrabObjectModule) });
 
-            Assert.AreEqual(projectileEffectRange, interactiveProjectile.GetModule<AttractiveObjectModule>().SphereRange.RangeType.GetRadiusRange());
+            Assert.IsTrue(false);
+          //TODO  Assert.AreEqual(projectileEffectRange, interactiveProjectile.GetModule<AttractiveObjectModule>().SphereRange.RangeType.GetRadiusRange());
         }
 
         [UnityTest]

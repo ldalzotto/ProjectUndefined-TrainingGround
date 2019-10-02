@@ -77,11 +77,6 @@ namespace RTPuzzle
             return PuzzleGameConfiguration.NearPlayerGameOverTriggerConfiguration.ConfigurationInherentData;
         }
 
-        public Dictionary<RangeTypeObjectDefinitionID, RangeTypeObjectDefinitionInherentData> RangeTypeObjectDefinitionConfiguration()
-        {
-            return PuzzleGameConfiguration.RangeTypeObjectDefinitionConfiguration.ConfigurationInherentData;
-        }
-
         public Dictionary<InteractiveObjectTypeDefinitionID, InteractiveObjectTypeDefinitionInherentData> InteractiveObjectTypeDefinitionConfiguration()
         {
             return PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData;

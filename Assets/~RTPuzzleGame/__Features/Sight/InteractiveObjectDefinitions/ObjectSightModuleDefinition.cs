@@ -19,32 +19,16 @@ namespace RTPuzzle
         public Vector3 LocalPosition;
         public Quaternion LocalRotation;
 
-        [DrawDefinition(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
-        [ScriptableObjectSubstitution(substitutionName: nameof(RangeTypeObjectDefinitionInherentData),
-                  sourcePickerName: nameof(RangeTypeObjectDefinitionIDPicker))]
-        [CustomEnum(ConfigurationType = typeof(RangeTypeObjectDefinitionConfiguration))]
-        public RangeTypeObjectDefinitionID RangeTypeObjectDefinitionID;
-
-        [Inline()]
-        public RangeTypeObjectDefinitionInherentData RangeTypeObjectDefinitionInherentData;
-        public bool RangeTypeObjectDefinitionIDPicker;
+        [Inline(CreateAtSameLevelIfAbsent = true)]
+        public RangeObjectInitialization RangeObjectInitialization;
 
         public override void CreateObject(Transform parent)
         {
             var puzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration();
             var objectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, parent);
-            objectSightModule.ResolveInternalDependencies();
             objectSightModule.transform.localPosition = this.LocalPosition;
             objectSightModule.transform.localRotation = this.LocalRotation;
-            if (this.RangeTypeObjectDefinitionIDPicker)
-            {
-                objectSightModule.SightVisionRange.RangeTypeObjectDefinitionID = this.RangeTypeObjectDefinitionID;
-            }
-            else
-            {
-                objectSightModule.SightVisionRange.RangeTypeObjectDefinitionID = RangeTypeObjectDefinitionID.NONE;
-                this.RangeTypeObjectDefinitionInherentData.DefineRangeTypeObject(objectSightModule.SightVisionRange, puzzlePrefabConfiguration);
-            }
+            objectSightModule.SightVisionRange = RangeObjectInitializer.FromRangeObjectInitialization(this.RangeObjectInitialization, parent.gameObject);
         }
     }
 }

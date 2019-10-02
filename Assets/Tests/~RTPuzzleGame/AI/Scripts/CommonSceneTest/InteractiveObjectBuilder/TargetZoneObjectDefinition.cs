@@ -19,8 +19,8 @@ namespace Tests
 
                    {typeof(LevelCompletionTriggerModuleDefinition),
                             new LevelCompletionTriggerModuleDefinition(){
-                               RangeTypeObjectDefinitionIDPicker = false,
-                               RangeTypeObjectDefinitionInherentData = RangeTypeObjectDefinitionConfigurationInherentDataBuilder.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE) }
+                                RangeObjectInitialization = RangeObjectInitializationDataBuilderV2.BoxRangeNoObstacleListener(Vector3.zero, Vector3.zero, RangeTypeID.TARGET_ZONE)
+                            }
                         },
                         {typeof(TargetZoneModuleDefinition), new TargetZoneModuleDefinition(){ TargetZoneID =InteractiveObjectTestIDTree.InteractiveObjectTestIDs[interactiveObjectTestID].TargetZoneID  } }
                     },
@@ -39,6 +39,6 @@ namespace Tests
             InteractiveObjectInitialization.InitializeTestConfigurations(interactiveObjectTestID);
             return InteractiveObjectInitialization;
         }
-        
+
     }
 }

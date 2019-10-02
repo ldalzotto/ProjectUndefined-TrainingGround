@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-[System.Serializable]
-[CreateAssetMenu(fileName = "SphereRangeObjectInitialization", menuName = "Test/SphereRangeObjectInitialization", order = 1)]
-public class SphereRangeObjectInitialization : RangeObjectInitialization
+namespace RTPuzzle
 {
-    public SphereRangeTypeDefinition SphereRangeTypeDefinition;
+    [System.Serializable]
+    [CreateAssetMenu(fileName = "SphereRangeObjectInitialization", menuName = "Test/SphereRangeObjectInitialization", order = 1)]
+    public class SphereRangeObjectInitialization : RangeObjectInitialization
+    {
+        public SphereRangeTypeDefinition SphereRangeTypeDefinition;
+    }
 }

@@ -1,26 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace RTPuzzle
 {
     public class ObjectSightModule : InteractiveObjectModule
     {
-        private RangeTypeObject sightVisionRange;
-        private AISightIntersectionManagerV2 AISightInteresectionManager;
+        public RangeObjectV2 SightVisionRange { get; set; }
 
-        public RangeTypeObject SightVisionRange { get => sightVisionRange; }
+        private AISightIntersectionManagerV2 AISightInteresectionManager;
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            this.ResolveInternalDependencies();
-            this.AISightInteresectionManager = new AISightIntersectionManagerV2(this, interactiveObjectInitializationObject.ParentAIObjectTypeReference);
-            this.sightVisionRange.Init(new RangeTypeObjectInitializer(), new List<RangeTypeObjectEventListener>() { this.AISightInteresectionManager });
-        }
-
-        public void ResolveInternalDependencies()
-        {
-            this.sightVisionRange = GetComponentInChildren<RangeTypeObject>();
+            this.AISightInteresectionManager = new AISightIntersectionManagerV2(this.SightVisionRange, interactiveObjectInitializationObject.ParentAIObjectTypeReference);
+            this.SightVisionRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent { ARangeIntersectionV2Listener = new AISightIntersectionManagerV2(this.SightVisionRange, interactiveObjectInitializationObject.ParentAIObjectTypeReference) });
         }
 
         public void TickBeforeAIUpdate(float d)
@@ -28,72 +20,52 @@ namespace RTPuzzle
             //Ranges are update in container
             this.AISightInteresectionManager.Tick();
         }
-        
+
+        public override void OnInteractiveObjectDestroyed()
+        {
+            this.SightVisionRange.OnDestroy();
+        }
+
         #region Logical Conditions
         public bool IsPlayerInSight() { return this.AISightInteresectionManager.IsPlayerInSight(); }
         #endregion
-        
+
 #if UNITY_EDITOR
         public void HandlesTick()
         {
-            foreach (var rangeType in GetComponentsInChildren<RangeType>().ToList())
-            {
-                rangeType.HandlesDraw();
-            }
         }
 #endif
 
     }
 
-    public class AISightIntersectionManagerV2 : RangeIntersectionManager
+    public class AISightIntersectionManagerV2 : ARangeIntersectionV2Listener
     {
-        private ObjectSightModule associatedObjectSightModule;
         private AIObjectDataRetriever AssociatedAI;
 
-        public AISightIntersectionManagerV2(ObjectSightModule associatedObjectSightModule, AIObjectDataRetriever associatedAI)
+        public AISightIntersectionManagerV2(RangeObjectV2 associatedRangeObject, AIObjectDataRetriever associatedAI) : base(associatedRangeObject)
         {
-            this.associatedObjectSightModule = associatedObjectSightModule;
             this.AssociatedAI = associatedAI;
         }
 
-        public override void OnRangeTriggerEnter(CollisionType other)
+        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            if (other != null && other.IsPlayer)
-            {
-                this.AddTrackedCollider(associatedObjectSightModule.SightVisionRange, other);
-            }
+            return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsPlayer;
         }
 
-        public override void OnRangeTriggerExit(CollisionType other)
-        {
-            if (other != null && other.IsPlayer)
-            {
-                this.RemoveTrackedCollider(other);
-            }
-        }
-
-        public override void OnRangeTriggerStay(CollisionType other)
-        {
-        }
-        
-        protected override void OnJustIntersected(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
             this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(intersectionCalculator.TrackedCollider));
         }
 
-        protected override void OnJustNotIntersected(RangeIntersectionCalculator intersectionCalculator)
+        protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
             this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(intersectionCalculator.TrackedCollider));
-        }
-
-        protected override void OnInterestedNothing(RangeIntersectionCalculator intersectionCalculator)
-        {
         }
 
         #region Logical Conditions
         public bool IsPlayerInSight()
         {
-            foreach (var intersectionCalculator in intersectionCalculators)
+            foreach (var intersectionCalculator in this.intersectionCalculators)
             {
                 if (intersectionCalculator.IsInside)
                 {

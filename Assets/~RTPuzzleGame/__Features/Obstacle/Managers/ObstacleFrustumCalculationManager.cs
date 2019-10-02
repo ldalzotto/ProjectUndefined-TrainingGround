@@ -70,7 +70,7 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool IsPointOccludedByObstacles(ObstacleListener ObstacleListener, Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
-            if (Vector3.Distance(ObstacleListener.transform.position, worldPositionPoint) <= ObstacleListener.Radius)
+            if (Vector3.Distance(ObstacleListener.AssociatedRangeObject.GetTransform().WorldPosition, worldPositionPoint) <= ObstacleListener.Radius)
             {
                 if (forceObstacleOcclusionIfNecessary)
                 {
@@ -227,7 +227,7 @@ namespace RTPuzzle
             //If calculation is waiting, we trigger sync calculation
             if (this.calculationResults[ObstacleListener].Values.Count == 0 || this.calculationResults[ObstacleListener].Values.ToList().Select(result => result).Where(result => result.CalculationAsked()).Count() > 0)
             {
-                Debug.Log(MyLog.Format("Forced obstacle listener calculation : " + ObstacleListener.name));
+                Debug.Log(MyLog.Format("Forced obstacle listener calculation"));
                 this.UpdateSquareObstaclesOfListener(ObstacleListener, async: false);
             }
         }
@@ -280,7 +280,7 @@ namespace RTPuzzle
         {
             // Debug.Log(MyLog.Format("ObstacleFrustumCalculation asked. Listener : " + this.obstacleListenerRef.name + " obstacle : " + this.squareObstacleRef.name));
             this.calculationAsked = true;
-            this.worldPositionStartAngleDefinition = this.obstacleListenerRef.transform.position;
+            this.worldPositionStartAngleDefinition = this.obstacleListenerRef.AssociatedRangeObject.GetTransform().WorldPosition;
             this.obstaclePosition = this.squareObstacleRef.GetPosition();
             this.obstacleRotation = this.squareObstacleRef.GetRotation();
             this.obstacleLossyScale = this.squareObstacleRef.GetLossyScale();

@@ -18,7 +18,6 @@ namespace RTPuzzle
         private static InRangeVisualFeedbackManager inRangeEffectManager;
         private static RangeEventsManager rangeEventsManager;
         private static ContextMarkVisualFeedbackContainer aIFeedbackContainer;
-        private static RangeTypeObjectContainer rangeTypeObjectContainer;
         private static PlayerActionManager playerActionManager;
         private static ObstaclesListenerManager obstaclesListenerManager;
         private static ObstacleFrustumCalculationManager obstacleFrustumCalculationManager;
@@ -54,7 +53,6 @@ namespace RTPuzzle
         public static InRangeVisualFeedbackManager InRangeEffectManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(inRangeEffectManager, obj => inRangeEffectManager = obj); }
         public static RangeEventsManager RangeEventsManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeEventsManager, obj => rangeEventsManager = obj); }
         public static ContextMarkVisualFeedbackContainer ContextMarkVisualFeedbackContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIFeedbackContainer, obj => aIFeedbackContainer = obj); }
-        public static RangeTypeObjectContainer RangeTypeObjectContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(rangeTypeObjectContainer, obj => rangeTypeObjectContainer = obj); }
         public static PlayerActionManager PlayerActionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionManager, obj => playerActionManager = obj); }
         public static ObstaclesListenerManager ObstaclesListenerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstaclesListenerManager, obj => obstaclesListenerManager = obj); }
         public static ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstacleFrustumCalculationManager, obj => obstacleFrustumCalculationManager = obj); }

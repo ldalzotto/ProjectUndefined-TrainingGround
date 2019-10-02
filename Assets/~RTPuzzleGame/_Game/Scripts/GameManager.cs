@@ -28,7 +28,6 @@ namespace RTPuzzle
         private SquareObstaclesManager SquareObstaclesManager;
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
-        private RangeTypeObjectContainer RangeTypeContainer;
         private CameraMovementManager CameraMovementManager;
         private CircleFillBarRendererManager CircleFillBarRendererManager;
         private PuzzleTutorialEventSender PuzzleTutorialEventSender;
@@ -67,7 +66,6 @@ namespace RTPuzzle
             TimeFlowManager = PuzzleGameSingletonInstances.TimeFlowManager;
             GroundEffectsManagerV2 = PuzzleGameSingletonInstances.GroundEffectsManagerV2;
             InRangeEffectManager = PuzzleGameSingletonInstances.InRangeEffectManager;
-            RangeTypeContainer = PuzzleGameSingletonInstances.RangeTypeObjectContainer;
             InteractiveObjectContainer = PuzzleGameSingletonInstances.InteractiveObjectContainer;
             CooldownFeedManager = PuzzleGameSingletonInstances.CooldownFeedManager;
             TimeFlowPlayPauseManager = PuzzleGameSingletonInstances.TimeFlowPlayPauseManager;
@@ -154,11 +152,10 @@ namespace RTPuzzle
                     CameraMovementManager.Tick(d);
 
                     RangeObjectV2Manager.Get().Tick(d);
-                    RangeTypeContainer.Tick(d);
 
-                    ObstaclesListenerManager.Tick(d);
-                    SquareObstaclesManager.Tick(d);
-                    ObstacleFrustumCalculationManager.Tick(d);
+                    ObstaclesListenerManager.Tick(d); //Position Change Check
+                    SquareObstaclesManager.Tick(d); //Position Change Check
+                    ObstacleFrustumCalculationManager.Tick(d); //Multi threaded calculation when needed
 
                     TimeFlowManager.Tick(d);
                     GameOverManager.Tick(d);

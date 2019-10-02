@@ -1,68 +1,68 @@
-﻿using GameConfigurationID;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RTPuzzle
 {
     public interface ILevelCompletionTriggerModuleDataRetriever
     {
         Collider GetTargetZoneTriggerCollider();
-        RangeTypeObject RangeTypeObject { get; }
+        RangeObjectV2 LevelCompletionRange { get; }
     }
 
-    public class LevelCompletionTriggerModule : InteractiveObjectModule, ILevelCompletionTriggerModuleDataRetriever, RangeTypeObjectEventListener
+    public class LevelCompletionTriggerModule : InteractiveObjectModule, ILevelCompletionTriggerModuleDataRetriever
     {
         #region External dependencies
-        private ILevelCompletionManagerEvent ILevelCompletionManagerEvent;
+        public ILevelCompletionManagerEvent ILevelCompletionManagerEvent { get; private set; }
         #endregion
 
-        public RangeTypeObject RangeTypeObject { get; private set; }
+        public RangeObjectV2 LevelCompletionRange { get; set; }
 
         public Collider GetTargetZoneTriggerCollider()
         {
-            return this.RangeTypeObject.RangeType.GetCollider();
+            return this.LevelCompletionRange.RangeGameObjectV2.BoundingCollider;
         }
 
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
             this.ResolveModuleDependencies();
-            this.RangeTypeObject.Init(null, eventListenersFromExterior: new List<RangeTypeObjectEventListener>() { this });
+            this.LevelCompletionRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new LevelCompletionTriggerModuleCompletionEventTrigger(this) });
         }
 
         public void ResolveModuleDependencies()
         {
             this.ILevelCompletionManagerEvent = PuzzleGameSingletonInstances.LevelCompletionManager;
-            if (this.RangeTypeObject == null)
-            {
-                this.RangeTypeObject = GetComponentInChildren<RangeTypeObject>();
-            }
         }
 
         public override void OnInteractiveObjectDestroyed()
         {
-            this.RangeTypeObject.OnRangeDestroyed();
+            this.LevelCompletionRange.OnDestroy();
+        }
+    }
+
+    public class LevelCompletionTriggerModuleCompletionEventTrigger : ARangeObjectV2PhysicsEventListener
+    {
+        private LevelCompletionTriggerModule LevelCompletionTriggerModuleRef;
+
+        public LevelCompletionTriggerModuleCompletionEventTrigger(LevelCompletionTriggerModule levelCompletionTriggerModuleRef)
+        {
+            LevelCompletionTriggerModuleRef = levelCompletionTriggerModuleRef;
         }
 
-        public void OnRangeTriggerEnter(CollisionType other)
+        public void OnRangeTriggerEnter(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            Debug.Log(MyLog.Format("LevelCompletionTriggerModule OnTriggerEnter"));
-            AskForLevelCompletionCalculation(other);
+            AskForLevelCompletionCalculation(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
         }
-        public void OnRangeTriggerStay(CollisionType other) { }
-        public void OnRangeTriggerExit(CollisionType other)
+        public void OnRangeTriggerExit(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            AskForLevelCompletionCalculation(other);
+            AskForLevelCompletionCalculation(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
         }
 
         private void AskForLevelCompletionCalculation(CollisionType CollisionType)
         {
             if (CollisionType != null && (CollisionType.IsAI || CollisionType.IsPlayer))
             {
-                this.ILevelCompletionManagerEvent.ConditionRecalculationEvaluate();
+                this.LevelCompletionTriggerModuleRef.ILevelCompletionManagerEvent.ConditionRecalculationEvaluate();
             }
         }
-        
 
     }
-
 }

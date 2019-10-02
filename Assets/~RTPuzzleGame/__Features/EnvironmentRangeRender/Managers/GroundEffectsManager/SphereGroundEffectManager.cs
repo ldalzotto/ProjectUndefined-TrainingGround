@@ -2,7 +2,7 @@
 
 namespace RTPuzzle
 {
-    public class SphereGroundEffectManager : AbstractGroundEffectManager<SphereRangeType>
+    public class SphereGroundEffectManager : AbstractGroundEffectManager
     {
         private SphereRangeObjectRenderingDataProvider SphereRangeObjectRenderingDataProvider;
 

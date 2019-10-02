@@ -58,7 +58,7 @@ namespace RTPuzzle
 
     public static class InteractiveObjectTypeDefinitionConfigurationInherentDataBuilder
     {
-        public static InteractiveObjectTypeDefinitionInherentData TargetZone(RangeTypeObjectDefinitionInherentData targetZoneRangeDefinition = null)
+        public static InteractiveObjectTypeDefinitionInherentData TargetZone(RangeObjectInitialization RangeObjectInitialization)
         {
             return new InteractiveObjectTypeDefinitionInherentData()
             {
@@ -66,8 +66,7 @@ namespace RTPuzzle
                 {
                     {typeof(TargetZoneModuleDefinition), new TargetZoneModuleDefinition() },
                     {typeof(LevelCompletionTriggerModuleDefinition), new LevelCompletionTriggerModuleDefinition() {
-                            RangeTypeObjectDefinitionIDPicker = (targetZoneRangeDefinition == null),
-                            RangeTypeObjectDefinitionInherentData = targetZoneRangeDefinition
+                            RangeObjectInitialization = RangeObjectInitialization
                         }
                     }
                 },

@@ -13,8 +13,6 @@ namespace RTPuzzle
 
         private CommandBuffer commandBuffer;
 
-        private Dictionary<RangeType, List<IVisualFeedbackEmitterModuleDataRetriever>> activeInRangeTrackers = new Dictionary<RangeType, List<IVisualFeedbackEmitterModuleDataRetriever>>();
-
         public void Init()
         {
             this.commandBuffer = new CommandBuffer();

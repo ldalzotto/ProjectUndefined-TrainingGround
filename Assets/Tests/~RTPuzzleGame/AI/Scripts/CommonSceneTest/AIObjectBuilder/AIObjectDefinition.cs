@@ -79,32 +79,32 @@ namespace Tests
 
         public static AIObjectInitialization TownAIV2(AIObjectTestID AIObjectTestID, InteractiveObjectTestID InteractiveObjectTestID, bool sphereSightInfinite = false)
         {
-            var RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
+            RTPuzzle.RangeObjectInitialization RangeObjectInitialization = null;
+            if (!sphereSightInfinite)
             {
-                RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
-                                    {
-                                        {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
-                                            RangeTypeID = GameConfigurationID.RangeTypeID.SIGHT_VISION,
-                                            RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = BaseSightFrustum }
-                                        }},
-                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
-                                    },
-                RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
-                                    {
-                                        {typeof(RangeTypeDefinition), true},
-                                        {typeof(RangeObstacleListenerDefinition), true}
-                                    }
-            };
-
-            if (sphereSightInfinite)
-            {
-                RangeTypeObjectDefinitionInherentData.RangeDefinitionModules[typeof(RangeTypeDefinition)] = new RangeTypeDefinition()
+                RangeObjectInitialization = new SphereRangeObjectInitialization
                 {
                     RangeTypeID = RangeTypeID.SIGHT_VISION,
-                    RangeShapeConfiguration = new SphereRangeShapeConfiguration() { Radius = 9999f }
+                    IsTakingIntoAccountObstacles = true,
+                    SphereRangeTypeDefinition = new SphereRangeTypeDefinition
+                    {
+                        Radius = 99999f
+                    }
                 };
             }
-
+            else
+            {
+                RangeObjectInitialization = new RoundedFrustumRangeObjectInitialization
+                {
+                    RangeTypeID = RangeTypeID.SIGHT_VISION,
+                    IsTakingIntoAccountObstacles = true,
+                    RoundedFrustumRangeTypeDefinition = new RoundedFrustumRangeTypeDefinition
+                    {
+                        FrustumV2 = BaseSightFrustum
+                    }
+                };
+            }
+            
             return GenericAIDefinition(AIObjectTestID, InteractiveObjectTestID,
                 new List<AbstractAIComponent>()
                 {
@@ -116,8 +116,7 @@ namespace Tests
                 new List<SerializedScriptableObject>()
                 {
                     new ObjectSightModuleDefinition(){
-                                RangeTypeObjectDefinitionIDPicker = false,
-                                RangeTypeObjectDefinitionInherentData = RangeTypeObjectDefinitionInherentData
+                        RangeObjectInitialization = RangeObjectInitialization
                     }
                 }
             ); ;
@@ -155,21 +154,12 @@ namespace Tests
                {
                     new ObjectSightModuleDefinition(){
                                 LocalPosition = new Vector3(0, 4.65f, 1.27f),
-                                RangeTypeObjectDefinitionIDPicker = false,
-                                RangeTypeObjectDefinitionInherentData = new RangeTypeObjectDefinitionInherentData()
-                                {
-                                    RangeDefinitionModules = new Dictionary<Type, ScriptableObject>()
+                                RangeObjectInitialization = new RoundedFrustumRangeObjectInitialization(){
+                                    RangeTypeID = RangeTypeID.SIGHT_VISION,
+                                    IsTakingIntoAccountObstacles = true,
+                                    RoundedFrustumRangeTypeDefinition = new RoundedFrustumRangeTypeDefinition()
                                     {
-                                        {typeof(RangeTypeDefinition), new RangeTypeDefinition(){
-                                            RangeTypeID = RangeTypeID.SIGHT_VISION,
-                                            RangeShapeConfiguration = new RoundedFrustumRangeShapeConfiguration() {frustum = RangeEffectManagerTestFrustum }
-                                        }},
-                                        {typeof(RangeObstacleListenerDefinition), new RangeObstacleListenerDefinition() }
-                                    },
-                                    RangeDefinitionModulesActivation = new Dictionary<Type, bool>()
-                                    {
-                                        {typeof(RangeTypeDefinition), true},
-                                        {typeof(RangeObstacleListenerDefinition), true}
+                                        FrustumV2 = RangeEffectManagerTestFrustum
                                     }
                                 }
                     }
