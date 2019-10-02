@@ -27,14 +27,6 @@ namespace RTPuzzle
             var puzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration;
             var attractiveObjectModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseAttractiveObjectModule, parent);
             attractiveObjectModule.AttractiveObjectId = this.AttractiveObjectId;
-            attractiveObjectModule.SphereRange = new SphereRangeObjectV2(new RangeGameObjectV2(parent.gameObject), new SphereRangeObjectInitialization {
-                RangeTypeID = RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
-                IsTakingIntoAccountObstacles = true,
-                SphereRangeTypeDefinition = new SphereRangeTypeDefinition
-                {
-                    Radius = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.AttractiveObjectsConfiguration()[attractiveObjectModule.AttractiveObjectId].EffectRange
-                }
-            });
         }
     }
 }

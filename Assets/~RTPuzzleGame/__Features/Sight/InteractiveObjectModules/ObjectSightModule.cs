@@ -1,9 +1,8 @@
-﻿using System.Linq;
-
-namespace RTPuzzle
+﻿namespace RTPuzzle
 {
     public class ObjectSightModule : InteractiveObjectModule
     {
+        public RangeObjectInitialization RangeObjectInitialization;
         public RangeObjectV2 SightVisionRange { get; set; }
 
         private AISightIntersectionManagerV2 AISightInteresectionManager;
@@ -11,6 +10,7 @@ namespace RTPuzzle
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
+            this.SightVisionRange = RangeObjectInitializer.FromRangeObjectInitialization(this.RangeObjectInitialization, this.transform.parent.gameObject);
             this.AISightInteresectionManager = new AISightIntersectionManagerV2(this.SightVisionRange, interactiveObjectInitializationObject.ParentAIObjectTypeReference);
             this.SightVisionRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent { ARangeIntersectionV2Listener = new AISightIntersectionManagerV2(this.SightVisionRange, interactiveObjectInitializationObject.ParentAIObjectTypeReference) });
         }

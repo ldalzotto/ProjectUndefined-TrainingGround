@@ -28,7 +28,7 @@ namespace RTPuzzle
             var objectSightModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseObjectSightModule, parent);
             objectSightModule.transform.localPosition = this.LocalPosition;
             objectSightModule.transform.localRotation = this.LocalRotation;
-            objectSightModule.SightVisionRange = RangeObjectInitializer.FromRangeObjectInitialization(this.RangeObjectInitialization, parent.gameObject);
+            objectSightModule.RangeObjectInitialization = this.RangeObjectInitialization;
         }
     }
 }
