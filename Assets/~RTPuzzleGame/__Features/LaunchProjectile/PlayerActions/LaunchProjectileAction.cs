@@ -29,17 +29,15 @@ namespace RTPuzzle
 
         private LaunchProjectileInherentData projectileInherentData;
         private InteractiveObjectType projectileObject;
-        private RangeTypeObject projectileThrowRange;
+        public RangeObjectV2 ProjectileThrowRange { get; private set; }
 
         private bool isActionFinished = false;
 
-        public RangeTypeObject ProjectileThrowRange { get => projectileThrowRange; }
-      
         public InteractiveObjectType GetProjectileEffectCursorRange()
         {
             return this.LaunchProjectileRayPositionerManager.ProjectileCursorInteractiveObject;
         }
-        
+
         public override bool FinishedCondition()
         {
             return isActionFinished;
@@ -71,7 +69,19 @@ namespace RTPuzzle
             var launchProjectileInteractiveObjectDefinition = PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[LaunchProjectileActionInherentData.projectedObjectDefinitionID];
             this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileInteractiveObjectDefinition.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID];
 
-            this.projectileThrowRange = RangeTypeObject.InstanciateSphereRange(RangeTypeID.LAUNCH_PROJECTILE, this.projectileInherentData.ProjectileThrowRange, PlayerManagerDataRetriever.GetPlayerWorldPosition);
+            this.ProjectileThrowRange = new SphereRangeObjectV2(new RangeGameObjectV2(null),
+                    new SphereRangeObjectInitialization
+                    {
+                        RangeTypeID = RangeTypeID.LAUNCH_PROJECTILE,
+                        IsTakingIntoAccountObstacles = true,
+                        SphereRangeTypeDefinition =
+                                new SphereRangeTypeDefinition
+                                {
+                                    Radius = this.projectileInherentData.ProjectileThrowRange
+                                }
+                    });
+            this.ProjectileThrowRange.ReceiveEvent(new SetWorldPositionEvent { WorldPosition = PlayerManagerDataRetriever.GetPlayerWorldPosition() });
+
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, launchProjectileInteractiveObjectDefinition,
                      interactiveObjectContainer, PuzzleStaticConfigurationContainer.PuzzleStaticConfiguration.PuzzlePrefabConfiguration, PuzzleGameConfigurationManager.PuzzleGameConfiguration);
 
@@ -118,7 +128,7 @@ namespace RTPuzzle
         #region Internal Events
         public void OnExit()
         {
-            this.projectileThrowRange.OnRangeDestroyed();
+            this.ProjectileThrowRange.OnDestroy();
             LaunchProjectileRayPositionerManager.OnExit();
             LaunchProjectileScreenPositionManager.OnExit();
             LaunchProjectilePlayerAnimationManager.OnExit();
@@ -305,7 +315,7 @@ namespace RTPuzzle
                     }
 
                     var projectileCursorInteractiveObjectInherentData = VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(
-                        RangeTypeObjectDefinitionConfigurationInherentDataBuilderV2.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
+                             RangeObjectInitializationDataBuilderV2.SphereRangeWithObstacleListener(this.effectiveEffectRange, RangeTypeID.LAUNCH_PROJECTILE_CURSOR)
                     );
                     var projectileCursorInteractiveObjectInitializationObject = new InteractiveObjectInitializationObject()
                     {
@@ -326,7 +336,7 @@ namespace RTPuzzle
                 this.projectileCursorInteractiveObject.transform.position = currentCursorWorldPosition;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
-                if (this.launchProjectileActionRef.ProjectileThrowRange.IsInsideAndNotOccluded(currentCursorWorldPosition, forceObstacleOcclusionIfNecessary: true))
+                if (RangeIntersectionOperations.IsInsideAndNotOccluded(this.launchProjectileActionRef.ProjectileThrowRange, currentCursorWorldPosition, forceObstacleOcclusionIfNecessary: true))
                 {
                     SetIsCursorInRange(true);
                 }

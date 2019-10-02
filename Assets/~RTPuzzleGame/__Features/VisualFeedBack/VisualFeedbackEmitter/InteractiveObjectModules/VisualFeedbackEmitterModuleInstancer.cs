@@ -6,14 +6,14 @@ namespace RTPuzzle
 {
     public static class VisualFeedbackEmitterModuleInstancer
     {
-        public static InteractiveObjectTypeDefinitionInherentData BuildVisualFeedbackEmitterFromRange(RangeObjectV2DefinitionInherentData RangeObjectV2DefinitionInherentData)
+        public static InteractiveObjectTypeDefinitionInherentData BuildVisualFeedbackEmitterFromRange(RangeObjectInitialization RangeObjectInitialization)
         {
             var InteractiveObjectTypeDefinitionInherentData = new InteractiveObjectTypeDefinitionInherentData()
             {
                 RangeDefinitionModules = new Dictionary<Type, ScriptableObject>() {
                     {typeof(VisualFeedbackEmitterModuleDefinition),
                         new VisualFeedbackEmitterModuleDefinition(){
-                               RangeTypeObjectDefinitionInherentData = RangeObjectV2DefinitionInherentData
+                            RangeObjectInitialization = RangeObjectInitialization
                         }
                     }
                 },

@@ -46,13 +46,14 @@ namespace Tests
             Assert.IsTrue(enabledModules[0].GetType() == typeof(ModelObjectModule));
 
             //We check that projectile throw range is equal to the configuration
-            Assert.AreEqual(projectileThrowRange, launchProjetileAction.ProjectileThrowRange.RangeType.GetRadiusRange());
+            Assert.IsTrue(false);
+            //TODO   Assert.AreEqual(projectileThrowRange, launchProjetileAction.ProjectileThrowRange.RangeType.GetRadiusRange());
 
             //Because the LaunchProjectileID._1_Town_StartTutorial_Test_Speaker is set to transform to attractive -> projectile effect range is supposed to be the future attractive object range
             var attractiveObjectModule = interactiveProjectile.GetDisabledModule<AttractiveObjectModule>();
             Assert.IsTrue(attractiveObjectModule != null);
             Assert.IsTrue(false);
-     //TODO       Assert.AreEqual(projectileEffectRange, launchProjetileAction.GetProjectileEffectCursorRange().GetModule<VisualFeedbackEmitterModule>().InRangeVisualFeedbackTrackerRange.RangeType.GetRadiusRange());
+            //TODO  Assert.AreEqual(projectileEffectRange, launchProjetileAction.GetProjectileEffectCursorRange().GetModule<VisualFeedbackEmitterModule>().InRangeVisualFeedbackTrackerRange.RangeType.GetRadiusRange());
         }
 
         [UnityTest]

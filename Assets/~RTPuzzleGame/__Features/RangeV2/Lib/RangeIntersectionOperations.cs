@@ -50,6 +50,11 @@ public static class RangeIntersectionOperations
         }
     }
 
+    public static bool IsInsideAndNotOccluded(RangeObjectV2 RangeObject, Vector3 WorldPosition, bool forceObstacleOcclusionIfNecessary)
+    {
+        return false;
+    }
+
     private static bool IsInsideAndNotOccluded(SphereRangeObjectV2 SphereRangeObjectV2, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
     {
         bool isInsideRange = RangeIntersectionOperations.IsInside(SphereRangeObjectV2, boxCollider);

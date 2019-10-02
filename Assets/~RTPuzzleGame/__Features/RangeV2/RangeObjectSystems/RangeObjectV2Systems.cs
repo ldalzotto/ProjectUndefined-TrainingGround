@@ -16,38 +16,6 @@ public abstract class ARangeObjectSystem
 }
 
 #region Range Type Object Movement
-public class RangeTypeObjectMovementSystem : ARangeObjectSystem
-{
-    private bool localPositionChanged;
-    private Vector3 localPosition;
-
-    public RangeTypeObjectMovementSystem(RangeObjectV2 rangeObjectV2Ref) : base(rangeObjectV2Ref)
-    {
-    }
-
-    public void ReceiveEvent(RangeTypeObjectSetLocalPositionEvent RangeTypeObjectSetLocalPositionEvent)
-    {
-        this.localPositionChanged = true;
-        this.localPosition = RangeTypeObjectSetLocalPositionEvent.LocalPosition;
-    }
-    public void ExtractData(out RangeTypeObjectMovementSystemExtractedData RangeTypeObjectMovementSystemExtractedData)
-    {
-        RangeTypeObjectMovementSystemExtractedData =
-            new RangeTypeObjectMovementSystemExtractedData
-            { LocalPosition = this.localPosition, LocalPositionChanged = this.localPositionChanged };
-    }
-}
-
-public struct RangeTypeObjectSetLocalPositionEvent
-{
-    public Vector3 LocalPosition;
-}
-public struct RangeTypeObjectMovementSystemExtractedData
-{
-    public bool LocalPositionChanged;
-    public Vector3 LocalPosition;
-}
-
 public class RangeWorldPositionChangeSystem : ARangeObjectSystem
 {
     private BlittableTransformChangeListenerManager BlittableTransformChangeListenerManager;

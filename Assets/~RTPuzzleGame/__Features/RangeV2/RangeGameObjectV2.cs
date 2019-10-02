@@ -23,7 +23,10 @@ public class RangeGameObjectV2
     {
         this.assocaitedRangeObject = RangeObjectV2;
         this.rangeGameObject = new GameObject();
-        this.rangeGameObject.transform.parent = this.attachedGameObject.transform;
+        if (this.attachedGameObject != null)
+        {
+            this.rangeGameObject.transform.parent = this.attachedGameObject.transform;
+        }
         this.rangeGameObject.transform.localPosition = Vector3.zero;
 
         var rigidbody = this.rangeGameObject.AddComponent<Rigidbody>();
@@ -81,19 +84,7 @@ public class RangeGameObjectV2
         this.BoundingCollider.isTrigger = true;
     }
 
-    public void Tick(float d)
-    {
-        this.assocaitedRangeObject.ExtractData(out RangeTypeObjectMovementSystemExtractedData RangeTypeObjectMovementSystemExtractedData);
-        if (RangeTypeObjectMovementSystemExtractedData.LocalPositionChanged)
-        {
-            this.attachedGameObject.transform.localPosition = RangeTypeObjectMovementSystemExtractedData.LocalPosition;
-        }
-    }
-
-    public void ReceiveEvent(out RangeObjectV2GetWorldToLocalMatrixEventReturn RangeObjectV2GetWorldToLocalMatrixEventReturn)
-    {
-        RangeObjectV2GetWorldToLocalMatrixEventReturn = new RangeObjectV2GetWorldToLocalMatrixEventReturn { WorldToLocalMatrix = this.attachedGameObject.transform.worldToLocalMatrix };
-    }
+    public void ReceiveEvent(SetWorldPositionEvent SetWorldPositionEvent) { this.rangeGameObject.transform.position = SetWorldPositionEvent.WorldPosition; }
     public void ExtractData(out RangeObjectV2GetWorldTransformEventReturn RangeObjectV2GetWorldTransformEventReturn)
     {
         RangeObjectV2GetWorldTransformEventReturn = new RangeObjectV2GetWorldTransformEventReturn

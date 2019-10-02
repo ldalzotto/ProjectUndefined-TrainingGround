@@ -17,13 +17,13 @@ namespace RTPuzzle
     public class VisualFeedbackEmitterModuleDefinition : AbstractInteractiveObjectDefinition
     {
         [Inline()]
-        public RangeObjectV2DefinitionInherentData RangeTypeObjectDefinitionInherentData;
+        public RangeObjectInitialization RangeObjectInitialization;
 
         public override void CreateObject(Transform parent)
         {
             var puzzlePrefabConfiguration = PuzzleGameSingletonInstances.PuzzleStaticConfigurationContainer.GetPuzzlePrefabConfiguration();
             var inRangeVisualFeedbackModule = MonoBehaviour.Instantiate(puzzlePrefabConfiguration.BaseInRangeColliderTrackerModule, parent);
-            inRangeVisualFeedbackModule.InRangeVisualFeedbackTrackerRange = RangeObjectInitializer.FromRangeObjectInitialization(this.RangeTypeObjectDefinitionInherentData.RangeObjectInitialization, parent.gameObject);
+            inRangeVisualFeedbackModule.InRangeVisualFeedbackTrackerRange = RangeObjectInitializer.FromRangeObjectInitialization(this.RangeObjectInitialization, parent.gameObject);
         }
     }
 }

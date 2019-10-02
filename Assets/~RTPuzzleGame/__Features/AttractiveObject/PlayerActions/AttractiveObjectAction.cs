@@ -66,7 +66,7 @@ namespace RTPuzzle
                  this.InteractiveObjectContainer);
 
             var attractiveObjectRangeInteractiveObjectInherentData =
-                VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(RangeTypeObjectDefinitionConfigurationInherentDataBuilderV2.SphereRangeWithObstacleListener(attractiveObjectInherentConfigurationData.EffectRange, RangeTypeID.ATTRACTIVE_OBJECT));
+                VisualFeedbackEmitterModuleInstancer.BuildVisualFeedbackEmitterFromRange(RangeObjectInitializationDataBuilderV2.SphereRangeWithObstacleListener(attractiveObjectInherentConfigurationData.EffectRange, RangeTypeID.ATTRACTIVE_OBJECT));
             this.attractiveObjectRangeInteractiveObject =
                 InteractiveObjectType.Instantiate(attractiveObjectRangeInteractiveObjectInherentData, new InteractiveObjectInitializationObject(), puzzleStaticConfiguration.PuzzlePrefabConfiguration, this.PuzzleGameConfigurationManager.PuzzleGameConfiguration);
             this.attractiveObjectRangeInteractiveObject.transform.position = playerDataRetriever.GetPlayerWorldPosition();

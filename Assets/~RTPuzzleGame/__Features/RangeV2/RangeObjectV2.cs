@@ -8,7 +8,6 @@ public abstract class RangeObjectV2
 
     public RangeObjectInitialization RangeObjectInitialization { get; private set; }
 
-    private RangeTypeObjectMovementSystem RangeTypeObjectMovementSystem;
     public RangeObstacleListenerSystem RangeObstacleListenerSystem { get; private set; }
     private RangeIntersectionV2System RangeIntersectionV2System;
 
@@ -17,7 +16,6 @@ public abstract class RangeObjectV2
         this.RangeGameObjectV2 = RangeGameObjectV2;
         this.RangeObjectInitialization = RangeObjectInitialization;
 
-        this.RangeTypeObjectMovementSystem = new RangeTypeObjectMovementSystem(this);
         this.RangeIntersectionV2System = new RangeIntersectionV2System(this);
         if (RangeObjectInitialization.IsTakingIntoAccountObstacles)
         {
@@ -31,7 +29,6 @@ public abstract class RangeObjectV2
     {
         Profiler.BeginSample("RangeObjectV2 : Tick");
         this.RangeIntersectionV2System.Tick(d);
-        this.RangeGameObjectV2.Tick(d);
         Profiler.EndSample();
     }
 
@@ -48,22 +45,16 @@ public abstract class RangeObjectV2
 
     public void ReceiveEvent(SetWorldPositionEvent SetWorldPositionEvent)
     {
-        this.RangeGameObjectV2.ReceiveEvent(out RangeObjectV2GetWorldToLocalMatrixEventReturn RangeObjectV2GetWorldToLocalMatrixEventReturn);
-        var localPosition = RangeObjectV2GetWorldToLocalMatrixEventReturn.WorldToLocalMatrix.MultiplyVector(SetWorldPositionEvent.WorldPosition);
-        this.RangeTypeObjectMovementSystem.ReceiveEvent(new RangeTypeObjectSetLocalPositionEvent { LocalPosition = localPosition });
+        this.RangeGameObjectV2.ReceiveEvent(SetWorldPositionEvent);
     }
     public virtual void ReceiveEvent(RangeTransformChanged RangeTransformChanged) { }
     public void ReceiveEvent(RangeIntersectionAddIntersectionListenerEvent RangeIntersectionAddIntersectionListenerEvent)
     {
         this.RangeIntersectionV2System.ReceiveEvent(RangeIntersectionAddIntersectionListenerEvent, this.RangeGameObjectV2.RangeObjectV2PhysicsEventListener);
-        
+
     }
 
     public void ExtractData(out RangeObjectV2GetWorldTransformEventReturn RangeObjectV2GetWorldTransformEventReturn) { this.RangeGameObjectV2.ExtractData(out RangeObjectV2GetWorldTransformEventReturn); }
-    public void ExtractData(out RangeTypeObjectMovementSystemExtractedData RangeTypeObjectMovementSystemExtractedData)
-    {
-        this.RangeTypeObjectMovementSystem.ExtractData(out RangeTypeObjectMovementSystemExtractedData);
-    }
 }
 
 public class SphereRangeObjectV2 : RangeObjectV2
