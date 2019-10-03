@@ -19,7 +19,7 @@ namespace InteractiveObjectTest
 
         public void Init()
         {
-            var InteractiveObjectInitializers = GameObject.FindObjectsOfType<InteractiveObjectInitializer>();
+            var InteractiveObjectInitializers = GameObject.FindObjectsOfType<AInteractiveObjectInitializer>();
             if (InteractiveObjectInitializers != null)
             {
                 for (var InteractiveObjectInitializerIndex = 0; InteractiveObjectInitializerIndex < InteractiveObjectInitializers.Length; InteractiveObjectInitializerIndex++)
@@ -29,11 +29,27 @@ namespace InteractiveObjectTest
             }
         }
 
+        public void TickAlways(float d)
+        {
+            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
+            {
+                this.InteractiveObjects[InteractiveObjectIndex].TickAlways(d);
+            }
+        }
+
         public void Tick(float d, float timeAttenuationFactor)
         {
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
             {
                 this.InteractiveObjects[InteractiveObjectIndex].Tick(d, timeAttenuationFactor);
+            }
+        }
+
+        public void TickWhenTimeIsStopped()
+        {
+            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
+            {
+                this.InteractiveObjects[InteractiveObjectIndex].TickWhenTimeIsStopped();
             }
         }
 

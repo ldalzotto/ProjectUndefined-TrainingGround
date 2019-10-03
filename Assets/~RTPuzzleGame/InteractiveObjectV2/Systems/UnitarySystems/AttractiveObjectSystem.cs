@@ -11,9 +11,9 @@ namespace InteractiveObjectTest
     }
 
     #region Callback Events
-    public delegate void OnAttractiveSystemJustIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    public delegate void OnAttractiveSystemJustNotIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
-    public delegate void OnAttractiveSystemInterestedNothingDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+    public delegate void OnAssociatedAttractiveSystemJustIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+    public delegate void OnAssociatedAttractiveSystemNoMoreIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+    public delegate void OnAssociatedAttractiveSystemInterestedNothingDelegate(CoreInteractiveObject IntersectedInteractiveObject);
     #endregion
 
     public class AttractiveObjectSystem : AInteractiveObjectSystem
@@ -27,8 +27,8 @@ namespace InteractiveObjectTest
         public bool IsAskingTobedestroyed { get; private set; }
 
         public AttractiveObjectSystem(CoreInteractiveObject InteractiveObject, InteractiveObjectTagStruct physicsInteractionSelectionGuard, AttractiveObjectSystemDefinition AttractiveObjectSystemDefinition,
-            OnAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
-            OnAttractiveSystemJustNotIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null)
+            OnAssociatedAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
+            OnAssociatedAttractiveSystemNoMoreIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAssociatedAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null)
         {
             this.SphereRange = new SphereRangeObjectV2(InteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
             {
@@ -66,14 +66,14 @@ namespace InteractiveObjectTest
         private CoreInteractiveObject SelfInteractiveObject;
         private InteractiveObjectTagStruct InteractiveObjectSelectionGuard;
 
-        private OnAttractiveSystemJustIntersectedDelegate OnAttractiveSystemJustIntersected;
-        private OnAttractiveSystemJustNotIntersectedDelegate OnAttractiveSystemJustNotIntersected;
-        private OnAttractiveSystemInterestedNothingDelegate OnAttractiveSystemInterestedNothing;
+        private OnAssociatedAttractiveSystemJustIntersectedDelegate OnAttractiveSystemJustIntersected;
+        private OnAssociatedAttractiveSystemNoMoreIntersectedDelegate OnAttractiveSystemJustNotIntersected;
+        private OnAssociatedAttractiveSystemInterestedNothingDelegate OnAttractiveSystemInterestedNothing;
 
         public AttractiveObjectV2IntersectionManagerV2(RangeObjectV2 associatedRangeObject,
             InteractiveObjectTagStruct InteractiveObjectSelectionGuard,
-            OnAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
-            OnAttractiveSystemJustNotIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null) : base(associatedRangeObject)
+            OnAssociatedAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
+            OnAssociatedAttractiveSystemNoMoreIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAssociatedAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null) : base(associatedRangeObject)
         {
             this.InteractiveObjectSelectionGuard = InteractiveObjectSelectionGuard;
             OnAttractiveSystemJustIntersected = onAttractiveSystemJustIntersected;

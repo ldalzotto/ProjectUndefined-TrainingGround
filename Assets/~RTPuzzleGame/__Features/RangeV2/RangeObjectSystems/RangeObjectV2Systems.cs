@@ -118,7 +118,7 @@ namespace RTPuzzle
         public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
             /*
-            if (PhysicsTriggerInfo.OtherCollisionType != null && PhysicsTriggerInfo.OtherCollisionType.IsObstacle)
+            if (PhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag.IsObstacle)
             {
                 this.AssociatedObstacleListener.AddNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
             }

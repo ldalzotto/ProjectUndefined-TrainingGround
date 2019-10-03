@@ -53,7 +53,7 @@ namespace RTPuzzle
         {
             this.sourceTriggeringInstanceIds.Add(sourceTriggeringObject.GetInstanceID());
             this.lines.Add(DottedLine.CreateInstance(DottedLineID, this.PuzzleGameConfigurationManager));
-            this.linePositionings.Add(new LineFollowModelObjectPositioning(TargetModelObjectModule));
+            this.linePositionings.Add(new LineFollowTransformPositioning(TargetModelObjectModule.transform, TargetModelObjectModule.GetAverageModelBoundLocalSpace()));
         }
 
         public void CreateLineDirectionPositioning(DottedLineID DottedLineID, Component sourceTriggeringObject)

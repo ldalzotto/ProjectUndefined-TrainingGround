@@ -120,5 +120,14 @@ namespace RTPuzzle
             this.meshFilter.mesh = new Mesh();
         }
 
+        private void OnDrawGizmos()
+        {
+            if (this.BeziersControlPoints != null)
+            {
+                Gizmos.DrawWireSphere(this.BeziersControlPoints.P0, 0.5f);
+                Gizmos.DrawWireSphere(this.BeziersControlPoints.P3, 0.5f);
+            }
+        }
+
     }
 }

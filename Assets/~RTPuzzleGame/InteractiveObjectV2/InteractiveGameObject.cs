@@ -1,6 +1,7 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace InteractiveObjectTest
 {
@@ -9,15 +10,16 @@ namespace InteractiveObjectTest
         public GameObject InteractiveGameObjectParent { get; private set; }
 
         #region Properties
-        public ExtendedBounds AverageModeBounds { get; private set; }
+        public ExtendedBounds AverageModelBounds { get; private set; }
         public Animator Animator { get; private set; }
         public List<Renderer> Renderers { get; private set; }
         public BoxCollider LogicCollider { get; private set; }
+        public NavMeshAgent Agent { get; private set; }
         #endregion
 
         public InteractiveGameObject(GameObject InteractiveGameObjectParent)
         {
-            this.AverageModeBounds = BoundsHelper.GetAverageRendererBounds(InteractiveGameObjectParent.GetComponentsInChildren<Renderer>());
+            this.AverageModelBounds = BoundsHelper.GetAverageRendererBounds(InteractiveGameObjectParent.GetComponentsInChildren<Renderer>());
             this.Animator = InteractiveGameObjectParent.GetComponent<Animator>();
             if (this.Animator == null)
             {
@@ -27,6 +29,7 @@ namespace InteractiveObjectTest
             this.InteractiveGameObjectParent = InteractiveGameObjectParent;
             this.Renderers = RendererRetrievableHelper.GetAllRederers(this.InteractiveGameObjectParent, particleRenderers: false);
             this.LogicCollider = InteractiveGameObjectParent.GetComponentInChildren<BoxCollider>();
+            this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
         }
 
         public InteractiveGameObjectTransform GetTransform()

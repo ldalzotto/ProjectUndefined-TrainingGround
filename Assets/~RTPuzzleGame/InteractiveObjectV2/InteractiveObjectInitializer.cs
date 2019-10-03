@@ -3,19 +3,9 @@
 namespace InteractiveObjectTest
 {
     [System.Serializable]
-    public class InteractiveObjectInitializerData
+    public abstract class AInteractiveObjectInitializer : MonoBehaviour
     {
-        public AttractiveObjectSystemDefinition AttractiveObjectSystemDefinition;
+        public abstract void Init();
     }
-
-    [System.Serializable]
-    public class InteractiveObjectInitializer : MonoBehaviour
-    {
-
-        public InteractiveObjectInitializerData InteractiveObjectInitializerData;
-        public void Init()
-        {
-            InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(new AttractiveInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData));
-        }
-    }
+    
 }

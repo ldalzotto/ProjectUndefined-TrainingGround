@@ -49,6 +49,8 @@ namespace RTPuzzle
     public abstract class ARangeIntersectionV2Listener : ARangeObjectV2PhysicsEventListener
     {
         protected List<RangeIntersectionCalculatorV2> intersectionCalculators = new List<RangeIntersectionCalculatorV2>();
+        private List<RangeIntersectionCalculatorV2> justTriggerExitedCalculators = new List<RangeIntersectionCalculatorV2>();
+
         private Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2> intersectionCalculatorsIndexedByInteractiveObject = new Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2>();
 
         protected virtual bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo) { return true; }
@@ -75,6 +77,12 @@ namespace RTPuzzle
             {
                 this.SingleCalculation(this.intersectionCalculators[intersectionCalculatorIndex]);
             }
+
+            for(var justTriggerExitedCalculatorIndex = this.justTriggerExitedCalculators.Count - 1; justTriggerExitedCalculatorIndex >= 0; justTriggerExitedCalculatorIndex--)
+            {
+                this.OnJustNotIntersected(this.justTriggerExitedCalculators[justTriggerExitedCalculatorIndex]);
+                this.justTriggerExitedCalculators.RemoveAt(justTriggerExitedCalculatorIndex);
+            }
         }
 
         public sealed override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
@@ -93,6 +101,12 @@ namespace RTPuzzle
             if (this.ColliderSelectionGuard(PhysicsTriggerInfo))
             {
                 var rangeIntersectionCalculator = this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject];
+
+                if (rangeIntersectionCalculator.IsInside)
+                {
+                    this.justTriggerExitedCalculators.Add(rangeIntersectionCalculator);
+                }
+
                 this.intersectionCalculators.Remove(rangeIntersectionCalculator);
                 this.intersectionCalculatorsIndexedByInteractiveObject.Remove(PhysicsTriggerInfo.OtherInteractiveObject);
                 this.OnTriggerExitSuccess(PhysicsTriggerInfo);

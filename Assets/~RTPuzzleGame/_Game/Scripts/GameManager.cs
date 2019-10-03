@@ -92,7 +92,7 @@ namespace RTPuzzle
 
             //Initialisations
             PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.Init();
-            
+
             CameraMovementManager.Init();
             ObstacleFrustumCalculationManager.Init();
             ObstaclesListenerManager.Init();
@@ -165,6 +165,7 @@ namespace RTPuzzle
                     TimeFlowPlayPauseManager.Tick(TimeFlowManager.IsAbleToFlowTime());
 
                     NPCAIManagerContainer.TickAlways(d, TimeFlowManager.GetTimeAttenuation());
+                    InteractiveObjectV2Manager.Get().TickAlways(d);
                     InteractiveObjectContainer.TickAlways(d);
 
                     if (TimeFlowManager.IsAbleToFlowTime() && !BlockingCutscenePlayer.Playing)
@@ -179,6 +180,7 @@ namespace RTPuzzle
                     }
                     else
                     {
+                        InteractiveObjectV2Manager.Get().TickWhenTimeIsStopped();
                         NPCAIManagerContainer.DisableAgents();
                     }
 

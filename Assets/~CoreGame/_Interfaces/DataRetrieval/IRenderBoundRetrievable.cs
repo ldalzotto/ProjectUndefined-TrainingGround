@@ -12,7 +12,12 @@ namespace CoreGame
     {
         public static Vector3 GetLineRenderPointLocalOffset(IRenderBoundRetrievable iRenderBoundRetrievable)
         {
-            return (Vector3.up * iRenderBoundRetrievable.GetAverageModelBoundLocalSpace().Bounds.max.y);
+            return GetLineRenderPointLocalOffset(iRenderBoundRetrievable.GetAverageModelBoundLocalSpace());
+        }
+
+        public static Vector3 GetLineRenderPointLocalOffset(ExtendedBounds ExtendedBounds)
+        {
+            return (Vector3.up * ExtendedBounds.Bounds.max.y);
         }
 
         public static Vector3 GetDisarmProgressBarLocalOffset(IRenderBoundRetrievable iRenderBoundRetrievable)

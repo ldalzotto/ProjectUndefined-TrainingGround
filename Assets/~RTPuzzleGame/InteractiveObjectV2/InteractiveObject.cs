@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace InteractiveObjectTest
 {
@@ -8,7 +7,7 @@ namespace InteractiveObjectTest
         public InteractiveGameObject InteractiveGameObject { get; protected set; }
 
         public InteractiveObjectTag InteractiveObjectTag { get; protected set; }
-        
+
         public bool IsAskingToBeDestroyed { get; protected set; }
 
         public CoreInteractiveObject(InteractiveGameObject interactiveGameObject)
@@ -17,32 +16,46 @@ namespace InteractiveObjectTest
             InteractiveGameObject = interactiveGameObject;
         }
 
-        public virtual void Tick(float d, float timeAttenuationFactor)
-        {
-        }
+        public virtual void Tick(float d, float timeAttenuationFactor) { }
+        public virtual void TickWhenTimeIsStopped() { }
+        public virtual void TickAlways(float d) { }
 
-        public virtual void TickAlways(float d)
-        {
-        }
-        
         public virtual void Destroy()
         {
             Object.Destroy(this.InteractiveGameObject.InteractiveGameObjectParent);
         }
+
+        #region Attractive Object Events
+        protected virtual void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
+        protected virtual void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
+        protected virtual void OnAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
+        public virtual void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject) { }
+        public virtual void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject) { }
+        #endregion
+
+        #region AI Events
+        public virtual void OnAIIsJustAttractedByAttractiveObject() { }
+        public virtual void OnAIIsNoMoreAttractedByAttractiveObject() { }
+        public virtual void SetAIDestination(AIDestination AIDestination) { }
+        #endregion
     }
-    
+
     public class InteractiveObjectTag
     {
         public bool IsAttractiveObject;
+        public bool IsAi;
+        public bool IsObstacle;
     }
 
     [System.Serializable]
     public struct InteractiveObjectTagStruct
     {
         public bool IsAttractiveObject;
-        public bool Equals(InteractiveObjectTag InteractiveObjectState)
+        public bool IsAi;
+        public bool Equals(InteractiveObjectTag InteractiveObjectTag)
         {
-            return this.IsAttractiveObject == InteractiveObjectState.IsAttractiveObject;
+            return this.IsAttractiveObject == InteractiveObjectTag.IsAttractiveObject
+                    && this.IsAi == InteractiveObjectTag.IsAi;
         }
     }
 }
