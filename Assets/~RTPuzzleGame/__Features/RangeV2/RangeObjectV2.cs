@@ -14,8 +14,8 @@ namespace RTPuzzle
         public RangeObstacleListenerSystem RangeObstacleListenerSystem { get; private set; }
         private RangeIntersectionV2System RangeIntersectionV2System;
         private RangeExternalPhysicsOnlyListenersSystem RangeExternalPhysicsOnlyListenersSystem;
-        
-        public virtual void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+
+        public void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
         {
             this.RangeGameObjectV2 = RangeGameObjectV2;
             this.RangeObjectInitialization = RangeObjectInitialization;
@@ -27,7 +27,7 @@ namespace RTPuzzle
                 this.RangeObstacleListenerSystem = new RangeObstacleListenerSystem(this, this.RangeGameObjectV2.RangeObjectV2PhysicsEventListener);
             }
 
-            RTPuzzle.PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Created(this);
+            PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Created(this);
         }
 
         public virtual void Tick(float d)
@@ -45,7 +45,7 @@ namespace RTPuzzle
             {
                 this.RangeObstacleListenerSystem.OnDestroy();
             }
-            RTPuzzle.PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Destroy(this);
+            PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Destroy(this);
         }
 
         public void ReceiveEvent(SetWorldPositionEvent SetWorldPositionEvent)
@@ -69,17 +69,12 @@ namespace RTPuzzle
         private SphereRangeObjectInitialization SphereRangeObjectInitialization;
         public SphereCollider SphereBoundingCollider { get; private set; }
 
-        public SphereRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public SphereRangeObjectV2(GameObject AssociatedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.SphereRangeObjectInitialization = SphereRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject);
             this.SphereBoundingCollider = (SphereCollider)RangeGameObjectV2.BoundingCollider;
-            this.Init(RangeGameObjectV2, SphereRangeObjectInitialization, AssociatedInteractiveObject);
-        }
-
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
-        {
-            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
+            base.Init(RangeGameObjectV2, SphereRangeObjectInitialization);
         }
 
     }
@@ -89,18 +84,12 @@ namespace RTPuzzle
         private BoxRangeObjectInitialization BoxRangeObjectInitialization;
         public BoxCollider BoxBoundingCollider { get; private set; }
 
-        public BoxRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public BoxRangeObjectV2(GameObject AssociatedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.BoxRangeObjectInitialization = BoxRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
             this.BoxBoundingCollider = (BoxCollider)RangeGameObjectV2.BoundingCollider;
-            this.Init(RangeGameObjectV2, BoxRangeObjectInitialization, AssociatedInteractiveObject);
-        }
-
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
-        {
-            RangeGameObjectV2.Init(this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
-            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
+            base.Init(RangeGameObjectV2, BoxRangeObjectInitialization);
         }
     }
 
@@ -113,19 +102,14 @@ namespace RTPuzzle
 
         public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
 
-        public FrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public FrustumRangeObjectV2(GameObject AssociatedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
             this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2);
 
             this.FrustumRangeObjectInitialization = FrustumRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
-            this.Init(RangeGameObjectV2, FrustumRangeObjectInitialization, AssociatedInteractiveObject);
-        }
-
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
-        {
-            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
+            base.Init(RangeGameObjectV2, FrustumRangeObjectInitialization);
         }
 
         public override void Tick(float d)
@@ -149,19 +133,14 @@ namespace RTPuzzle
 
         public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
 
-        public RoundedFrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public RoundedFrustumRangeObjectV2(GameObject AssociatedGameObject, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
             this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2);
 
             this.RoundedFrustumRangeObjectInitialization = RoundedFrustumRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
-            this.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization, AssociatedInteractiveObject);
-        }
-
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
-        {
-            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
+            base.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
         }
 
         public override void Tick(float d)

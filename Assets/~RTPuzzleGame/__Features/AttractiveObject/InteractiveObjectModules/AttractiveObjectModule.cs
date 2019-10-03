@@ -38,7 +38,7 @@ namespace RTPuzzle
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval,
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            this.SphereRange = new SphereRangeObjectV2(new RangeGameObjectV2(this.transform.parent.gameObject), new SphereRangeObjectInitialization
+            this.SphereRange = new SphereRangeObjectV2(this.transform.parent.gameObject, new SphereRangeObjectInitialization
             {
                 RangeTypeID = RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
                 IsTakingIntoAccountObstacles = true,

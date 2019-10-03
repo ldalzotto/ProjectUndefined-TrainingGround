@@ -30,7 +30,7 @@ namespace InteractiveObjectTest
             OnAttractiveSystemJustIntersectedDelegate onAttractiveSystemJustIntersected = null,
             OnAttractiveSystemJustNotIntersectedDelegate onAttractiveSystemJustNotIntersected = null, OnAttractiveSystemInterestedNothingDelegate onAttractiveSystemInterestedNothing = null)
         {
-            this.SphereRange = new SphereRangeObjectV2(new RangeGameObjectV2(InteractiveObject.InteractiveGameObject.InteractiveGameObjectParent), new SphereRangeObjectInitialization
+            this.SphereRange = new SphereRangeObjectV2(InteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
             {
                 RangeTypeID = RangeTypeID.ATTRACTIVE_OBJECT_ACTIVE,
                 IsTakingIntoAccountObstacles = true,

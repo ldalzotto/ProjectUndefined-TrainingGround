@@ -69,7 +69,7 @@ namespace RTPuzzle
             var launchProjectileInteractiveObjectDefinition = PuzzleGameConfigurationManager.PuzzleGameConfiguration.InteractiveObjectTypeDefinitionConfiguration.ConfigurationInherentData[LaunchProjectileActionInherentData.projectedObjectDefinitionID];
             this.projectileInherentData = PuzzleGameConfigurationManager.ProjectileConf()[launchProjectileInteractiveObjectDefinition.GetDefinitionModule<LaunchProjectileModuleDefinition>().LaunchProjectileID];
 
-            this.ProjectileThrowRange = new SphereRangeObjectV2(new RangeGameObjectV2(null),
+            this.ProjectileThrowRange = new SphereRangeObjectV2(null,
                     new SphereRangeObjectInitialization
                     {
                         RangeTypeID = RangeTypeID.LAUNCH_PROJECTILE,
