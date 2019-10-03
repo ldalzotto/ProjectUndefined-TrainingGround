@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using InteractiveObjectTest;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTPuzzle
 {
     public struct RangeObjectPhysicsTriggerInfo
     {
-        public CollisionType OtherCollisionType;
+        public CoreInteractiveObject OtherInteractiveObject;
         public Collider Other;
     }
 
@@ -21,38 +22,44 @@ namespace RTPuzzle
     {
         private List<ARangeObjectV2PhysicsEventListener> PhysicsEventListeners = new List<ARangeObjectV2PhysicsEventListener>();
 
+        private CoreInteractiveObject AssociatedInteractiveObject;
+        public void Init(CoreInteractiveObject AssociatedInteractiveObject)
+        {
+            this.AssociatedInteractiveObject = AssociatedInteractiveObject;
+        }
+
         public void AddPhysicsEventListener(ARangeObjectV2PhysicsEventListener ARangeObjectV2PhysicsEventListener) { this.PhysicsEventListeners.Add(ARangeObjectV2PhysicsEventListener); }
 
         private void OnTriggerEnter(Collider other)
         {
-            var collisionType = other.GetComponent<CollisionType>();
-            if (collisionType != null)
+            InteractiveObjectV2Manager.Get().InteractiveObjectsIndexedByCollider.TryGetValue(other, out CoreInteractiveObject OtherInteractiveObject);
+            if (OtherInteractiveObject != null && ((this.AssociatedInteractiveObject != null && OtherInteractiveObject != this.AssociatedInteractiveObject) || this.AssociatedInteractiveObject == null))
             {
                 for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
                 {
-                    this.PhysicsEventListeners[i].OnTriggerEnter(new RangeObjectPhysicsTriggerInfo { Other = other, OtherCollisionType = collisionType });
+                    this.PhysicsEventListeners[i].OnTriggerEnter(new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject });
                 }
             }
         }
         private void OnTriggerExit(Collider other)
         {
-            var collisionType = other.GetComponent<CollisionType>();
-            if (collisionType != null)
+            InteractiveObjectV2Manager.Get().InteractiveObjectsIndexedByCollider.TryGetValue(other, out CoreInteractiveObject OtherInteractiveObject);
+            if (OtherInteractiveObject != null && ((this.AssociatedInteractiveObject != null && OtherInteractiveObject != this.AssociatedInteractiveObject) || this.AssociatedInteractiveObject == null))
             {
                 for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
                 {
-                    this.PhysicsEventListeners[i].OnTriggerExit(new RangeObjectPhysicsTriggerInfo { Other = other, OtherCollisionType = collisionType });
+                    this.PhysicsEventListeners[i].OnTriggerExit(new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject });
                 }
             }
         }
         private void OnTriggerStay(Collider other)
         {
-            var collisionType = other.GetComponent<CollisionType>();
-            if (collisionType != null)
+            InteractiveObjectV2Manager.Get().InteractiveObjectsIndexedByCollider.TryGetValue(other, out CoreInteractiveObject OtherInteractiveObject);
+            if (OtherInteractiveObject != null && ((this.AssociatedInteractiveObject != null && OtherInteractiveObject != this.AssociatedInteractiveObject) || this.AssociatedInteractiveObject == null))
             {
                 for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
                 {
-                    this.PhysicsEventListeners[i].OnTriggerStay(new RangeObjectPhysicsTriggerInfo { Other = other, OtherCollisionType = collisionType });
+                    this.PhysicsEventListeners[i].OnTriggerStay(new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject });
                 }
             }
         }

@@ -25,7 +25,7 @@ namespace Tests
             yield return this.Before();
             var puzzleStaticConfiguration = GameObject.FindObjectOfType<PuzzleStaticConfigurationContainer>();
 
-            var instanciatedRange = new SphereRangeObjectV2(new RangeGameObjectV2(null), RangeObjectInitializationDataBuilderV2.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT));
+            var instanciatedRange = new SphereRangeObjectV2(new RangeGameObjectV2(null), RangeObjectInitializationDataBuilderV2.SphereRangeWithObstacleListener(99999f, RangeTypeID.ATTRACTIVE_OBJECT), null);
             instanciatedRange.ReceiveEvent(new SetWorldPositionEvent { WorldPosition = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position });
 
             yield return new WaitForFixedUpdate();

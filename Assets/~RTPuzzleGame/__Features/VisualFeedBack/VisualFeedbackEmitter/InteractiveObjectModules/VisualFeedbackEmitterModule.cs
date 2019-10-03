@@ -63,11 +63,13 @@ namespace RTPuzzle
 
         protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsAI || RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsRepelable;
+            //    return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsAI || RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsRepelable;
+            return false;
         }
 
         protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
+            /*
             if (intersectionCalculator.TrackedCollider.IsAI)
             {
                 var IAILogicColliderModuleDataRetriever = AILogicColliderModule.AILogicColliderModuleFromCollisionType(intersectionCalculator.TrackedCollider);
@@ -97,10 +99,12 @@ namespace RTPuzzle
                     this.localListenersOnDestroy.Add(destroyCallBack);
                 }
             }
+            */
         }
 
         protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
+            /*
             Debug.Log("VisualFeedbackEmitterRangeIntersectionManager : OnJustNotIntersected");
             if (intersectionCalculator.TrackedCollider.IsAI)
             {
@@ -136,6 +140,7 @@ namespace RTPuzzle
                     }
                 }
             }
+            */
         }
 
         public override void OnDestroy()

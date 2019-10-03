@@ -13,7 +13,6 @@ public class CollisionType : MonoBehaviour
     public bool IsTargetZone = false;
 
     [Header("RT_Puzzle_Range")]
-    public bool IsRange = false;
     public bool IsObstacle = false;
 
     [Header("RT_Puzzle object behaior")]

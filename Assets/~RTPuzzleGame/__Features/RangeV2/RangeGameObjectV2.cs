@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using InteractiveObjectTest;
 using System;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace RTPuzzle
         private RangeObjectV2 assocaitedRangeObject;
 
         public RangeObjectV2PhysicsEventListener RangeObjectV2PhysicsEventListener { get; private set; }
-        public CollisionType CollisionType { get; private set; }
 
         public RangeGameObjectV2(GameObject attachedGameObject)
         {
@@ -20,7 +20,7 @@ namespace RTPuzzle
 
         public Collider BoundingCollider { get; private set; }
 
-        private void CommontInit(RangeObjectInitialization RangeObjectInitialization, RangeObjectV2 RangeObjectV2)
+        private void CommontInit(RangeObjectInitialization RangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.assocaitedRangeObject = RangeObjectV2;
             this.rangeGameObject = new GameObject();
@@ -34,24 +34,22 @@ namespace RTPuzzle
             rigidbody.useGravity = false;
             rigidbody.isKinematic = false;
 
-            this.CollisionType = this.rangeGameObject.AddComponent<CollisionType>();
-            this.CollisionType.IsRange = true;
-
             this.RangeObjectV2PhysicsEventListener = this.rangeGameObject.AddComponent<RangeObjectV2PhysicsEventListener>();
+            this.RangeObjectV2PhysicsEventListener.Init(AssociatedInteractiveObject);
         }
 
-        public void Init(SphereRangeObjectInitialization SphereRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
+        public void Init(SphereRangeObjectInitialization SphereRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            this.CommontInit(SphereRangeObjectInitialization, RangeObjectV2);
+            this.CommontInit(SphereRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
             var sphereCollider = this.rangeGameObject.AddComponent<SphereCollider>();
             sphereCollider.radius = SphereRangeObjectInitialization.SphereRangeTypeDefinition.Radius;
             this.BoundingCollider = sphereCollider;
             this.BoundingCollider.isTrigger = true;
         }
 
-        public void Init(BoxRangeObjectInitialization BoxRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
+        public void Init(BoxRangeObjectInitialization BoxRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            this.CommontInit(BoxRangeObjectInitialization, RangeObjectV2);
+            this.CommontInit(BoxRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
             var boxCollider = this.rangeGameObject.AddComponent<BoxCollider>();
             boxCollider.center = BoxRangeObjectInitialization.BoxRangeTypeDefinition.Center;
             boxCollider.size = BoxRangeObjectInitialization.BoxRangeTypeDefinition.Size;
@@ -59,15 +57,15 @@ namespace RTPuzzle
             this.BoundingCollider.isTrigger = true;
         }
 
-        public void Init(FrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
+        public void Init(FrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2);
+            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
             this.InitializeFrustum(FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2);
         }
 
-        public void Init(RoundedFrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2)
+        public void Init(RoundedFrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2);
+            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
             this.InitializeFrustum(FrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2);
         }
 

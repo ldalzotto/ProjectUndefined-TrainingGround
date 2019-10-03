@@ -1,4 +1,5 @@
-﻿using RTPuzzle;
+﻿using InteractiveObjectTest;
+using RTPuzzle;
 using System;
 using System.Collections.Generic;
 
@@ -48,7 +49,7 @@ namespace RTPuzzle
     public abstract class ARangeIntersectionV2Listener : ARangeObjectV2PhysicsEventListener
     {
         protected List<RangeIntersectionCalculatorV2> intersectionCalculators = new List<RangeIntersectionCalculatorV2>();
-        private Dictionary<CollisionType, RangeIntersectionCalculatorV2> intersectionCalculatorsIndexedByCollisionType = new Dictionary<CollisionType, RangeIntersectionCalculatorV2>();
+        private Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2> intersectionCalculatorsIndexedByInteractiveObject = new Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2>();
 
         protected virtual bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo) { return true; }
 
@@ -80,9 +81,9 @@ namespace RTPuzzle
         {
             if (this.ColliderSelectionGuard(PhysicsTriggerInfo))
             {
-                var rangeIntersectionCalculator = new RangeIntersectionCalculatorV2(this.associatedRangeObject, PhysicsTriggerInfo.OtherCollisionType, forceObstacleOcclusionIfNecessary: true);
+                var rangeIntersectionCalculator = new RangeIntersectionCalculatorV2(this.associatedRangeObject, PhysicsTriggerInfo.OtherInteractiveObject, forceObstacleOcclusionIfNecessary: true);
                 this.intersectionCalculators.Add(rangeIntersectionCalculator);
-                this.intersectionCalculatorsIndexedByCollisionType[rangeIntersectionCalculator.TrackedCollider] = rangeIntersectionCalculator;
+                this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject] = rangeIntersectionCalculator;
                 this.OnTriggerEnterSuccess(PhysicsTriggerInfo);
             }
         }
@@ -91,9 +92,9 @@ namespace RTPuzzle
         {
             if (this.ColliderSelectionGuard(PhysicsTriggerInfo))
             {
-                var rangeIntersectionCalculator = this.intersectionCalculatorsIndexedByCollisionType[PhysicsTriggerInfo.OtherCollisionType];
+                var rangeIntersectionCalculator = this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject];
                 this.intersectionCalculators.Remove(rangeIntersectionCalculator);
-                this.intersectionCalculatorsIndexedByCollisionType.Remove(PhysicsTriggerInfo.OtherCollisionType);
+                this.intersectionCalculatorsIndexedByInteractiveObject.Remove(PhysicsTriggerInfo.OtherInteractiveObject);
                 this.OnTriggerExitSuccess(PhysicsTriggerInfo);
             }
         }

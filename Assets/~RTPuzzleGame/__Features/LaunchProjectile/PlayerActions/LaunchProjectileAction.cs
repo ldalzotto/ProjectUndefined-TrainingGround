@@ -79,7 +79,7 @@ namespace RTPuzzle
                                 {
                                     Radius = this.projectileInherentData.ProjectileThrowRange
                                 }
-                    });
+                    }, null);
             this.ProjectileThrowRange.ReceiveEvent(new SetWorldPositionEvent { WorldPosition = PlayerManagerDataRetriever.GetPlayerWorldPosition() });
 
             this.projectileObject = ProjectileActionInstanciationHelper.CreateProjectileAtStart(this.projectileInherentData, launchProjectileInteractiveObjectDefinition,

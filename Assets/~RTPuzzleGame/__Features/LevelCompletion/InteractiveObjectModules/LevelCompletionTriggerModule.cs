@@ -49,11 +49,11 @@ namespace RTPuzzle
 
         public void OnRangeTriggerEnter(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            AskForLevelCompletionCalculation(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
+           // AskForLevelCompletionCalculation(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
         }
         public void OnRangeTriggerExit(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            AskForLevelCompletionCalculation(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
+          //  AskForLevelCompletionCalculation(RangeObjectPhysicsTriggerInfo.OtherCollisionType);
         }
 
         private void AskForLevelCompletionCalculation(CollisionType CollisionType)

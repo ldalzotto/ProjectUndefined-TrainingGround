@@ -227,7 +227,7 @@ namespace RTPuzzle
             //If calculation is waiting, we trigger sync calculation
             if (this.calculationResults[ObstacleListener].Values.Count == 0 || this.calculationResults[ObstacleListener].Values.ToList().Select(result => result).Where(result => result.CalculationAsked()).Count() > 0)
             {
-                Debug.Log(MyLog.Format("Forced obstacle listener calculation"));
+              //  Debug.Log(MyLog.Format("Forced obstacle listener calculation"));
                 this.UpdateSquareObstaclesOfListener(ObstacleListener, async: false);
             }
         }

@@ -1,4 +1,5 @@
 using CoreGame;
+using InteractiveObjectTest;
 using System.Collections;
 using UnityEngine;
 
@@ -124,6 +125,7 @@ namespace RTPuzzle
             PuzzleDiscussionManager.Init();
 
             RangeObjectV2Manager.Get().Init();
+            InteractiveObjectV2Manager.Get().Init();
 
 #if UNITY_EDITOR
             EditorOnlyManagers = new EditorOnlyManagers();
@@ -170,6 +172,7 @@ namespace RTPuzzle
                         InteractiveObjectContainer.TickBeforeAIUpdate(d, TimeFlowManager.GetTimeAttenuation());
                         NPCAIManagerContainer.EnableAgents();
                         NPCAIManagerContainer.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
+                        InteractiveObjectV2Manager.Get().Tick(d, TimeFlowManager.GetTimeAttenuation());
                         InteractiveObjectContainer.Tick(d, TimeFlowManager.GetTimeAttenuation());
 
                         PlayerActionManager.TickWhenTimeFlows(d, TimeFlowManager.GetTimeAttenuation());
@@ -178,6 +181,8 @@ namespace RTPuzzle
                     {
                         NPCAIManagerContainer.DisableAgents();
                     }
+
+                    InteractiveObjectV2Manager.Get().AfterTicks();
 
                     PuzzleDiscussionManager.Tick(d);
                     GroundEffectsManagerV2.Tick(d);
@@ -228,6 +233,7 @@ namespace RTPuzzle
         private void OnDestroy()
         {
             RangeObjectV2Manager.Get().OnDestroy();
+            InteractiveObjectV2Manager.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()

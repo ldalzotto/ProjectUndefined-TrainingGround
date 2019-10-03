@@ -49,17 +49,18 @@
 
         protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsPlayer;
+            //  return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsPlayer;
+            return false;
         }
 
         protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
-            this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(intersectionCalculator.TrackedCollider));
+          //  this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeEnterAIBehaviorEvent(intersectionCalculator.TrackedCollider));
         }
 
         protected override void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)
         {
-            this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(intersectionCalculator.TrackedCollider));
+        //    this.AssociatedAI.GetAIBehavior().ReceiveEvent(new SightInRangeExitAIBehaviorEvent(intersectionCalculator.TrackedCollider));
         }
 
         #region Logical Conditions

@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using InteractiveObjectTest;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -13,8 +14,8 @@ namespace RTPuzzle
         public RangeObstacleListenerSystem RangeObstacleListenerSystem { get; private set; }
         private RangeIntersectionV2System RangeIntersectionV2System;
         private RangeExternalPhysicsOnlyListenersSystem RangeExternalPhysicsOnlyListenersSystem;
-
-        public virtual void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+        
+        public virtual void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeGameObjectV2 = RangeGameObjectV2;
             this.RangeObjectInitialization = RangeObjectInitialization;
@@ -68,17 +69,17 @@ namespace RTPuzzle
         private SphereRangeObjectInitialization SphereRangeObjectInitialization;
         public SphereCollider SphereBoundingCollider { get; private set; }
 
-        public SphereRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, SphereRangeObjectInitialization SphereRangeObjectInitialization)
+        public SphereRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.SphereRangeObjectInitialization = SphereRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.SphereRangeObjectInitialization, this);
+            RangeGameObjectV2.Init(this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject);
             this.SphereBoundingCollider = (SphereCollider)RangeGameObjectV2.BoundingCollider;
-            this.Init(RangeGameObjectV2, SphereRangeObjectInitialization);
+            this.Init(RangeGameObjectV2, SphereRangeObjectInitialization, AssociatedInteractiveObject);
         }
 
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            base.Init(RangeGameObjectV2, RangeObjectInitialization);
+            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
         }
 
     }
@@ -88,18 +89,18 @@ namespace RTPuzzle
         private BoxRangeObjectInitialization BoxRangeObjectInitialization;
         public BoxCollider BoxBoundingCollider { get; private set; }
 
-        public BoxRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, BoxRangeObjectInitialization BoxRangeObjectInitialization)
+        public BoxRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.BoxRangeObjectInitialization = BoxRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.BoxRangeObjectInitialization, this);
+            RangeGameObjectV2.Init(this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
             this.BoxBoundingCollider = (BoxCollider)RangeGameObjectV2.BoundingCollider;
-            this.Init(RangeGameObjectV2, BoxRangeObjectInitialization);
+            this.Init(RangeGameObjectV2, BoxRangeObjectInitialization, AssociatedInteractiveObject);
         }
 
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            RangeGameObjectV2.Init(this.BoxRangeObjectInitialization, this);
-            base.Init(RangeGameObjectV2, RangeObjectInitialization);
+            RangeGameObjectV2.Init(this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
+            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
         }
     }
 
@@ -112,19 +113,19 @@ namespace RTPuzzle
 
         public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
 
-        public FrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeObjectInitialization FrustumRangeObjectInitialization)
+        public FrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
             this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2);
 
             this.FrustumRangeObjectInitialization = FrustumRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.FrustumRangeObjectInitialization, this);
-            this.Init(RangeGameObjectV2, FrustumRangeObjectInitialization);
+            RangeGameObjectV2.Init(this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
+            this.Init(RangeGameObjectV2, FrustumRangeObjectInitialization, AssociatedInteractiveObject);
         }
 
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            base.Init(RangeGameObjectV2, RangeObjectInitialization);
+            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
         }
 
         public override void Tick(float d)
@@ -148,19 +149,19 @@ namespace RTPuzzle
 
         public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
 
-        public RoundedFrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization)
+        public RoundedFrustumRangeObjectV2(RangeGameObjectV2 RangeGameObjectV2, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
             this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2);
 
             this.RoundedFrustumRangeObjectInitialization = RoundedFrustumRangeObjectInitialization;
-            RangeGameObjectV2.Init(this.RoundedFrustumRangeObjectInitialization, this);
-            this.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
+            RangeGameObjectV2.Init(this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
+            this.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization, AssociatedInteractiveObject);
         }
 
-        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+        public override void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            base.Init(RangeGameObjectV2, RangeObjectInitialization);
+            base.Init(RangeGameObjectV2, RangeObjectInitialization, AssociatedInteractiveObject);
         }
 
         public override void Tick(float d)

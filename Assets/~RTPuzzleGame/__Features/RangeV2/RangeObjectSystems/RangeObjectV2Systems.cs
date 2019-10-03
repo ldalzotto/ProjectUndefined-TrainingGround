@@ -117,18 +117,22 @@ namespace RTPuzzle
 
         public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
+            /*
             if (PhysicsTriggerInfo.OtherCollisionType != null && PhysicsTriggerInfo.OtherCollisionType.IsObstacle)
             {
                 this.AssociatedObstacleListener.AddNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
             }
+            */
         }
 
         public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
+            /*
             if (PhysicsTriggerInfo.OtherCollisionType != null && PhysicsTriggerInfo.OtherCollisionType.IsObstacle)
             {
                 this.AssociatedObstacleListener.RemoveNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
             }
+            */
         }
 
         public void OnDestroy()
