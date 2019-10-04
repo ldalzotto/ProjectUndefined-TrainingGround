@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -13,10 +12,7 @@ namespace RTPuzzle
             return RangeObjectV2ManagerInstance;
         }
 
-        private List<RangeObjectV2> RangeObjects = new List<RangeObjectV2>();
-
-        //TODO -> indexing all collision types by their collider
-        //  public Dictionary<Collider, SquareObstacle> IndexSquareObstacleByTheirCollider { get; private set; } = new Dictionary<Collider, SquareObstacle>();
+        public List<RangeObjectV2> RangeObjects { get; private set; } = new List<RangeObjectV2>();
 
         public void Init()
         {

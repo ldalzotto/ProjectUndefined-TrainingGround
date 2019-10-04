@@ -278,6 +278,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionCalculatorV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionOperations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Managers\RangeObjectV2Manager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Managers\RangeObjectV2ManagerOperations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeGameObjectV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectBoundingColliderBuilder.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectInitializer\InitializerTypes\BoxRangeObjectInitialization.cs" />

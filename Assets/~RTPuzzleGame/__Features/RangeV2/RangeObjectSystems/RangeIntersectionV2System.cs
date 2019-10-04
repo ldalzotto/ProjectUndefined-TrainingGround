@@ -5,7 +5,7 @@ namespace RTPuzzle
 {
     public class RangeIntersectionV2System : ARangeObjectSystem
     {
-        private List<ARangeIntersectionV2Listener> RangeIntersectionListeners = null;
+        public List<ARangeIntersectionV2Listener> RangeIntersectionListeners { get; private set; } = null;
 
         public RangeIntersectionV2System(RangeObjectV2 rangeObjectV2Ref) : base(rangeObjectV2Ref) { }
 
@@ -47,9 +47,10 @@ namespace RTPuzzle
     public abstract class ARangeIntersectionV2Listener : ARangeObjectV2PhysicsEventListener
     {
         protected List<RangeIntersectionCalculatorV2> intersectionCalculators = new List<RangeIntersectionCalculatorV2>();
-        private List<RangeIntersectionCalculatorV2> justTriggerExitedCalculators = new List<RangeIntersectionCalculatorV2>();
-
         private Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2> intersectionCalculatorsIndexedByInteractiveObject = new Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2>();
+
+        private List<RangeIntersectionCalculatorV2> justTriggerExitedCalculators = new List<RangeIntersectionCalculatorV2>();
+        private Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2> justTriggerExitedCalculatorsIndexedByInteractiveObject = new Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2>();
 
         protected virtual void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator) { }
         protected virtual void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator) { }
@@ -78,6 +79,7 @@ namespace RTPuzzle
             {
                 this.OnJustNotIntersected(this.justTriggerExitedCalculators[justTriggerExitedCalculatorIndex]);
                 this.justTriggerExitedCalculators.RemoveAt(justTriggerExitedCalculatorIndex);
+                this.justTriggerExitedCalculatorsIndexedByInteractiveObject.Remove(this.justTriggerExitedCalculators[justTriggerExitedCalculatorIndex].TrackedInteractiveObject);
             }
         }
 
@@ -96,6 +98,7 @@ namespace RTPuzzle
             if (rangeIntersectionCalculator.IsInside)
             {
                 this.justTriggerExitedCalculators.Add(rangeIntersectionCalculator);
+                this.justTriggerExitedCalculatorsIndexedByInteractiveObject.Add(PhysicsTriggerInfo.OtherInteractiveObject, rangeIntersectionCalculator);
             }
 
             this.intersectionCalculators.Remove(rangeIntersectionCalculator);
@@ -119,6 +122,23 @@ namespace RTPuzzle
             else if (intersectionOperation == InterserctionOperationType.IntersectedNothing)
             {
                 this.OnInterestedNothing(intersectionCalculator);
+            }
+        }
+
+        public void RemoveReferencesToInteractiveObject(CoreInteractiveObject InteractiveObjectRefToRemove)
+        {
+            this.intersectionCalculatorsIndexedByInteractiveObject.TryGetValue(InteractiveObjectRefToRemove, out RangeIntersectionCalculatorV2 RangeIntersectionCalculatorV2ToRemove);
+            if (RangeIntersectionCalculatorV2ToRemove != null)
+            {
+                this.intersectionCalculators.Remove(RangeIntersectionCalculatorV2ToRemove);
+                this.intersectionCalculatorsIndexedByInteractiveObject.Remove(InteractiveObjectRefToRemove);
+            }
+
+            this.justTriggerExitedCalculatorsIndexedByInteractiveObject.TryGetValue(InteractiveObjectRefToRemove, out RangeIntersectionCalculatorV2 JustTriggeredExitRangeIntersectionCalculatorV2);
+            if (JustTriggeredExitRangeIntersectionCalculatorV2 != null)
+            {
+                this.justTriggerExitedCalculators.Remove(JustTriggeredExitRangeIntersectionCalculatorV2);
+                this.justTriggerExitedCalculatorsIndexedByInteractiveObject.Remove(InteractiveObjectRefToRemove);
             }
         }
     }

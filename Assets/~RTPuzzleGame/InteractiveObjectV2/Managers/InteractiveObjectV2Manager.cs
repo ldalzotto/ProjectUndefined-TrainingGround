@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using RTPuzzle;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace InteractiveObjectTest
@@ -88,6 +89,7 @@ namespace InteractiveObjectTest
         {
             this.InteractiveObjects.Remove(InteractiveObject);
             this.InteractiveObjectsIndexedByCollider.Remove(InteractiveObject.InteractiveGameObject.LogicCollider);
+            RangeObjectV2ManagerOperations.ClearAllReferencesOfInteractiveObject(InteractiveObject);
         }
 
         public void OnDestroy()

@@ -12,7 +12,7 @@ namespace RTPuzzle
         public RangeObjectInitialization RangeObjectInitialization { get; private set; }
 
         public RangeObstacleListenerSystem RangeObstacleListenerSystem { get; private set; }
-        private RangeIntersectionV2System RangeIntersectionV2System;
+        public RangeIntersectionV2System RangeIntersectionV2System { get; private set; }
         private RangeExternalPhysicsOnlyListenersSystem RangeExternalPhysicsOnlyListenersSystem;
 
         protected void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
