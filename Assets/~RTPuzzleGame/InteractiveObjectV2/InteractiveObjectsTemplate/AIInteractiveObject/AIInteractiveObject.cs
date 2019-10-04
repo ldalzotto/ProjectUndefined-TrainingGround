@@ -1,4 +1,5 @@
 ﻿using GameConfigurationID;
+using UnityEngine;
 
 namespace InteractiveObjectTest
 {
@@ -11,6 +12,7 @@ namespace InteractiveObjectTest
 
         private AnimationObjectSystem AnimationObjectSystem;
         private AIMoveToDestinationSystem AIMoveToDestinationSystem;
+        private SightObjectSystem SightObjectSystem;
         private LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
         public AIInteractiveObject(InteractiveGameObject interactiveGameObject, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData) : base(interactiveGameObject)
@@ -21,6 +23,11 @@ namespace InteractiveObjectTest
 
             this.AnimationObjectSystem = new AnimationObjectSystem(this);
             this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData);
+            if (AIInteractiveObjectInitializerData.HasSight)
+            {
+                this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsAttractiveObject = 1 },
+                    this.OnSightObjectSystemJustIntersected, this.OnSightObjectSystemIntersectedNothing, this.OnSightObjectSystemNoMoreIntersected);
+            }
             this.LineVisualFeedbackSystem = new LineVisualFeedbackSystem(this.InteractiveGameObject);
         }
 
@@ -97,6 +104,16 @@ namespace InteractiveObjectTest
             this.AIMoveToDestinationSystem.ClearPath();
             this.AIDisarmObjectState.IsDisarming = true;
             success = this.AIDisarmObjectState.IsDisarming;
+        }
+
+        protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+        }
+
+        protected override void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            this.OnSightObjectSystemJustIntersected(IntersectedInteractiveObject);
         }
     }
 }

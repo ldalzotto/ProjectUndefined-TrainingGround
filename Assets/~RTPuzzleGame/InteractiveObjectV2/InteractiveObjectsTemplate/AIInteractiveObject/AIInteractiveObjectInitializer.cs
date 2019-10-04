@@ -9,6 +9,9 @@ namespace InteractiveObjectTest
         public float SpeedMultiplicationFactor;
         public float RotationSpeed;
         public float MinAngleThatAllowThePositionUpdate;
+
+        public bool HasSight;
+        public SightObjectSystemDefinition SightObjectSystemDefinition;
     }
 
     [System.Serializable]

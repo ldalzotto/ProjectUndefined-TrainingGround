@@ -43,6 +43,12 @@ namespace InteractiveObjectTest
         public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject, out bool success) { success = false; }
         #endregion
 
+        #region Sight Object Events
+        protected virtual void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
+        protected virtual void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
+        protected virtual void OnSightObjectSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
+        #endregion
+
         #region AI Events
         public virtual void OnAIIsJustAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject) { }
         public virtual void OnAIIsNoMoreAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject) { }

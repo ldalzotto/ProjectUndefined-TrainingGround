@@ -352,6 +352,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIMoveToDestinationSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SightObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />
