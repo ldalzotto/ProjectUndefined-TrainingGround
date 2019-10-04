@@ -9,6 +9,7 @@ namespace InteractiveObjectTest
         private AIDisarmObjectState AIDisarmObjectState;
         #endregion
 
+        private AnimationObjectSystem AnimationObjectSystem;
         private AIMoveToDestinationSystem AIMoveToDestinationSystem;
         private LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
@@ -17,7 +18,9 @@ namespace InteractiveObjectTest
             this.AIAttractiveObjectState = new AIAttractiveObjectState(this.OnAIIsJustAttractedByAttractiveObject, this.OnAIIsNoMoreAttractedByAttractiveObject);
             this.AIDisarmObjectState = new AIDisarmObjectState(this.OnAIIsJustDisarmingObject, this.OnAIIsNoMoreJustDisarmingObject);
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAi = true };
-            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(interactiveGameObject, AIInteractiveObjectInitializerData);
+
+            this.AnimationObjectSystem = new AnimationObjectSystem(this);
+            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData);
             this.LineVisualFeedbackSystem = new LineVisualFeedbackSystem(this.InteractiveGameObject);
         }
 
@@ -28,6 +31,7 @@ namespace InteractiveObjectTest
 
         public override void TickAlways(float d)
         {
+            this.AnimationObjectSystem.TickAlways(d);
             this.LineVisualFeedbackSystem.TickAlways(d);
         }
 
@@ -36,10 +40,20 @@ namespace InteractiveObjectTest
             this.AIMoveToDestinationSystem.TickWhenTimeIsStopped();
         }
 
+        public override void AfterTicks()
+        {
+            this.AIMoveToDestinationSystem.AfterTicks();
+        }
+
         public override void Destroy()
         {
             this.LineVisualFeedbackSystem.OnDestroy();
             base.Destroy();
+        }
+
+        public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)
+        {
+            this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
         }
 
         public override void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject)

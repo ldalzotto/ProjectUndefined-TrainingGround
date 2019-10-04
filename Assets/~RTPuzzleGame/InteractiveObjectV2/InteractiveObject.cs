@@ -16,14 +16,19 @@ namespace InteractiveObjectTest
             InteractiveGameObject = interactiveGameObject;
         }
 
+        public virtual void TickAlways(float d) { }
         public virtual void Tick(float d, float timeAttenuationFactor) { }
         public virtual void TickWhenTimeIsStopped() { }
-        public virtual void TickAlways(float d) { }
+        public virtual void AfterTicks() { }
 
         public virtual void Destroy()
         {
             UnityEngine.Object.Destroy(this.InteractiveGameObject.InteractiveGameObjectParent);
         }
+
+        #region Animation Object Events
+        public virtual void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent) { }
+        #endregion
 
         #region Attractive Object Events
         protected virtual void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }

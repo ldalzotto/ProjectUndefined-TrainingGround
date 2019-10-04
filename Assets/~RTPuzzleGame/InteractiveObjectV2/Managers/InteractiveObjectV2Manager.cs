@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace InteractiveObjectTest
@@ -55,6 +54,11 @@ namespace InteractiveObjectTest
 
         public void AfterTicks()
         {
+            for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
+            {
+                this.InteractiveObjects[InteractiveObjectIndex].AfterTicks();
+            }
+
             List<CoreInteractiveObject> InteractiveObjectsToDelete = null;
             for (var InteractiveObjectIndex = 0; InteractiveObjectIndex < this.InteractiveObjects.Count; InteractiveObjectIndex++)
             {

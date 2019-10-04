@@ -6,11 +6,13 @@ namespace InteractiveObjectTest
 {
     public class AIMoveToDestinationSystem : AInteractiveObjectSystem
     {
+        private AISpeedEventDispatcher AISpeedEventDispatcher;
         private AIDestinationMoveManager AIDestinationMoveManager;
 
-        public AIMoveToDestinationSystem(InteractiveGameObject InteractiveGameObject, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData)
+        public AIMoveToDestinationSystem(CoreInteractiveObject CoreInteractiveObject, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData)
         {
-            this.AIDestinationMoveManager = new AIDestinationMoveManager(InteractiveGameObject.Agent, AIInteractiveObjectInitializerData);
+            this.AIDestinationMoveManager = new AIDestinationMoveManager(CoreInteractiveObject.InteractiveGameObject.Agent, AIInteractiveObjectInitializerData);
+            this.AISpeedEventDispatcher = new AISpeedEventDispatcher(CoreInteractiveObject, AIInteractiveObjectInitializerData);
         }
 
         public override void Tick(float d, float timeAttenuationFactor)
@@ -22,6 +24,11 @@ namespace InteractiveObjectTest
         public override void TickWhenTimeIsStopped()
         {
             this.AIDestinationMoveManager.DisableAgent();
+        }
+
+        public override void AfterTicks()
+        {
+            this.AISpeedEventDispatcher.AfterTicks();
         }
 
         public void SetDestination(AIDestination AIDestination) { this.AIDestinationMoveManager.SetDestination(AIDestination); }
@@ -181,6 +188,24 @@ namespace InteractiveObjectTest
             }
         }
 
+    }
+
+    class AISpeedEventDispatcher
+    {
+        private CoreInteractiveObject AssociatedInteractiveObject;
+        private AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData;
+
+        public AISpeedEventDispatcher(CoreInteractiveObject associatedInteractiveObject, AIInteractiveObjectInitializerData aIInteractiveObjectInitializerData)
+        {
+            AssociatedInteractiveObject = associatedInteractiveObject;
+            AIInteractiveObjectInitializerData = aIInteractiveObjectInitializerData;
+        }
+
+        public void AfterTicks()
+        {
+            var currentSpeed = this.AssociatedInteractiveObject.InteractiveGameObject.Agent.velocity.magnitude / this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
+            this.AssociatedInteractiveObject.OnAnimationObjectSetUnscaledSpeedMagnitude(new AnimationObjectSetUnscaledSpeedMagnitudeEvent { UnscaledSpeedMagnitude = currentSpeed });
+        }
     }
 
     public struct AIDestination
