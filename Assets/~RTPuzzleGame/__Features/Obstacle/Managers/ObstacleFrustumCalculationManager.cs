@@ -14,8 +14,8 @@ namespace RTPuzzle
         private SquareObstaclesManager SquareObstaclesManager;
         #endregion
 
-        private Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>> calculationResults;
-        public Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>> CalculationResults { get => calculationResults; }
+        private Dictionary<ObstacleListener, Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>> calculationResults;
+        public Dictionary<ObstacleListener, Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>> CalculationResults { get => calculationResults; }
 
         private ObstacleFrustumCalculationThread ObstacleFrustumCalculationThreadObject;
 
@@ -25,7 +25,7 @@ namespace RTPuzzle
 
             this.SquareObstaclesManager = PuzzleGameSingletonInstances.SquareObstaclesManager;
 
-            this.calculationResults = new Dictionary<ObstacleListener, Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>>();
+            this.calculationResults = new Dictionary<ObstacleListener, Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>>();
         }
 
         private void OnDestroy()
@@ -34,7 +34,7 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
-        public SquareObstacleFrustumCalculationResult GetResult(ObstacleListener ObstacleListener, SquareObstacle SquareObstacle)
+        public SquareObstacleFrustumCalculationResult GetResult(ObstacleListener ObstacleListener, SquareObstacleSystem SquareObstacle)
         {
             return this.calculationResults[ObstacleListener][SquareObstacle];
         }
@@ -47,9 +47,9 @@ namespace RTPuzzle
         #region External Events
         public void OnObstacleListenerCreation(ObstacleListener obstacleListener)
         {
-            this.calculationResults[obstacleListener] = new Dictionary<SquareObstacle, SquareObstacleFrustumCalculationResult>();
+            this.calculationResults[obstacleListener] = new Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>();
         }
-        public void OnObstacleAddedToListener(ObstacleListener obstacleListener, SquareObstacle squareObstacle)
+        public void OnObstacleAddedToListener(ObstacleListener obstacleListener, SquareObstacleSystem squareObstacle)
         {
             var calculation = new SquareObstacleFrustumCalculationResult(obstacleListener, squareObstacle);
             calculation.AskCalculation();
@@ -61,7 +61,7 @@ namespace RTPuzzle
             this.calculationResults.Remove(obstacleListener);
         }
 
-        public void OnObstacleRemovedToListener(ObstacleListener obstacleListener, SquareObstacle squareObstacle)
+        public void OnObstacleRemovedToListener(ObstacleListener obstacleListener, SquareObstacleSystem squareObstacle)
         {
             this.calculationResults[obstacleListener].Remove(squareObstacle);
         }
@@ -240,7 +240,7 @@ namespace RTPuzzle
 
         #region References
         private ObstacleListener obstacleListenerRef;
-        private SquareObstacle squareObstacleRef;
+        private SquareObstacleSystem squareObstacleRef;
         #endregion
 
         #region Calculation Input
@@ -257,7 +257,7 @@ namespace RTPuzzle
         }
         #endregion
 
-        public SquareObstacleFrustumCalculationResult(ObstacleListener obstacleListenerRef, SquareObstacle squareObstacleRef)
+        public SquareObstacleFrustumCalculationResult(ObstacleListener obstacleListenerRef, SquareObstacleSystem squareObstacleRef)
         {
             this.obstacleListenerRef = obstacleListenerRef;
             this.squareObstacleRef = squareObstacleRef;
@@ -296,14 +296,14 @@ namespace RTPuzzle
             var result = obj as SquareObstacleFrustumCalculationResult;
             return result != null &&
                    EqualityComparer<ObstacleListener>.Default.Equals(obstacleListenerRef, result.obstacleListenerRef) &&
-                   EqualityComparer<SquareObstacle>.Default.Equals(squareObstacleRef, result.squareObstacleRef);
+                   EqualityComparer<SquareObstacleSystem>.Default.Equals(squareObstacleRef, result.squareObstacleRef);
         }
 
         public override int GetHashCode()
         {
             var hashCode = -92224167;
             hashCode = hashCode * -1521134295 + EqualityComparer<ObstacleListener>.Default.GetHashCode(obstacleListenerRef);
-            hashCode = hashCode * -1521134295 + EqualityComparer<SquareObstacle>.Default.GetHashCode(squareObstacleRef);
+            hashCode = hashCode * -1521134295 + EqualityComparer<SquareObstacleSystem>.Default.GetHashCode(squareObstacleRef);
             return hashCode;
         }
     }
@@ -312,7 +312,7 @@ namespace RTPuzzle
     public class ObstacleFrustumCalculationThread
     {
 
-        public const int MaxCalculationBatch = 50;
+        public const int MaxCalculationBatch = 25;
 
         public ObstacleFrustumCalculationThread()
         {

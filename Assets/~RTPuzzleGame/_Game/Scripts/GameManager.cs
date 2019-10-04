@@ -96,7 +96,6 @@ namespace RTPuzzle
             CameraMovementManager.Init();
             ObstacleFrustumCalculationManager.Init();
             ObstaclesListenerManager.Init();
-            SquareObstaclesManager.Init();
             GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
             PuzzleGameSingletonInstances.RangeEventsManager.Init();
             InteractiveObjectContainer.Init();

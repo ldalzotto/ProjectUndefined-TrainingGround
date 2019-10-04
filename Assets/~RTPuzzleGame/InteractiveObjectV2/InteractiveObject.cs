@@ -70,17 +70,20 @@ namespace InteractiveObjectTest
     {
         public int IsAttractiveObject;
         public int IsAi;
+        public int IsObstacle;
 
-        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1)
+        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1, int isObstacle = -1)
         {
             IsAttractiveObject = isAttractiveObject;
             IsAi = isAi;
+            IsObstacle = isObstacle;
         }
 
         public bool Compare(InteractiveObjectTag InteractiveObjectTag)
         {
             return (this.IsAttractiveObject == -1 || this.IsAttractiveObject == Convert.ToInt32(InteractiveObjectTag.IsAttractiveObject))
-                && (this.IsAi == -1 || this.IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi));
+                && (this.IsAi == -1 || this.IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi))
+                && (this.IsObstacle == -1 || this.IsObstacle == Convert.ToInt32(InteractiveObjectTag.IsObstacle));
         }
     }
 }

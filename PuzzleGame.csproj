@@ -242,8 +242,8 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleFrustumCalculationManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacle.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstaclesManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionInherentData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\ExposedInterfaces\IPlayerActionManagerEvent.cs" />
@@ -340,7 +340,8 @@
     <Compile Include="Assets\~RTPuzzleGame\Debug\Script\PuzzleDebugModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\PuzzleEventsManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Events\Scripts\RangeEventsManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObjectLogicColliderTag.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
@@ -348,6 +349,8 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectState.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AttractiveInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AttractiveInteractiveObject\AttractiveInteractiveObjectInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObject.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\ObstacleInteractiveObject\ObstacleInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\InteractiveObjectV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Abstract\AInteractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIMoveToDestinationSystem.cs" />

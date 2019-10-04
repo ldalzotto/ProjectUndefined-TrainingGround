@@ -1,4 +1,5 @@
 ﻿using CoreGame;
+using InteractiveObjectTest;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -108,31 +109,28 @@ namespace RTPuzzle
     }
     public class RangeObstaclePhysicsEventListener : ARangeObjectV2PhysicsEventListener
     {
+        private InteractiveObjectTagStruct SelectionGuard;
         private ObstacleListener AssociatedObstacleListener;
 
         public RangeObstaclePhysicsEventListener(ObstacleListener associatedObstacleListener)
         {
             AssociatedObstacleListener = associatedObstacleListener;
+            this.SelectionGuard = new InteractiveObjectTagStruct(isObstacle: 1);
+        }
+
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        {
+            return this.SelectionGuard.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
         }
 
         public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            /*
-            if (PhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag.IsObstacle)
-            {
-                this.AssociatedObstacleListener.AddNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
-            }
-            */
+            this.AssociatedObstacleListener.AddNearSquareObstacle((ObstacleInteractiveObject)PhysicsTriggerInfo.OtherInteractiveObject);
         }
 
         public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            /*
-            if (PhysicsTriggerInfo.OtherCollisionType != null && PhysicsTriggerInfo.OtherCollisionType.IsObstacle)
-            {
-                this.AssociatedObstacleListener.RemoveNearSquareObstacle(SquareObstacle.FromCollisionType(PhysicsTriggerInfo.OtherCollisionType));
-            }
-            */
+            this.AssociatedObstacleListener.RemoveNearSquareObstacle((ObstacleInteractiveObject)PhysicsTriggerInfo.OtherInteractiveObject);
         }
 
         public void OnDestroy()

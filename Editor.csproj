@@ -281,7 +281,6 @@
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreateChunk.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\CreatePuzzleLevel.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\Level\EditPuzzleLevel.cs" />
-    <Compile Include="Assets\Editor\GameDesigner\Modules\Obstacles\AddNewObstacle.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\CreatePlayerActions.cs" />
     <Compile Include="Assets\Editor\GameDesigner\Modules\PlayerActions\ExplorePlayerActions.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />

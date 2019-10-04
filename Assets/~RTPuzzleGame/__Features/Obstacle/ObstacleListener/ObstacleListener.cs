@@ -1,4 +1,5 @@
 using CoreGame;
+using InteractiveObjectTest;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,8 +10,8 @@ namespace RTPuzzle
     {
         public float Radius;
 
-        private List<SquareObstacle> nearSquareObstacles;
-        public List<SquareObstacle> NearSquareObstacles { get => nearSquareObstacles; }
+        private List<SquareObstacleSystem> nearSquareObstacles;
+        public List<SquareObstacleSystem> NearSquareObstacles { get => nearSquareObstacles; }
 
         #region Internal Dependencies
         public RangeObjectV2 AssociatedRangeObject { get; private set; }
@@ -25,7 +26,7 @@ namespace RTPuzzle
             this.ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
             #endregion
 
-            this.nearSquareObstacles = new List<SquareObstacle>();
+            this.nearSquareObstacles = new List<SquareObstacleSystem>();
             this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
             this.ObstacleListenerChangePositionTracker = new BlittableTransformChangeListenerManager(true, false, null);
@@ -78,47 +79,20 @@ namespace RTPuzzle
         {
             return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider, forceObstacleOcclusionIfNecessary);
         }
-
         #endregion
 
-        //////// TO REMOVE //////// 
-        public void OnRangeTriggerEnter(CollisionType collisionType)
+        public void AddNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
-            if (collisionType != null)
-            {
-                var squareObstacle = SquareObstacle.FromCollisionType(collisionType);
-                if (squareObstacle != null)
-                {
-                    this.AddNearSquareObstacle(squareObstacle);
-                }
-            }
-        }
-
-        public void OnRangeTriggerExit(CollisionType collisionType)
-        {
-            if (collisionType != null)
-            {
-                var squareObstacle = SquareObstacle.FromCollisionType(collisionType);
-                if (squareObstacle != null)
-                {
-                    this.RemoveNearSquareObstacle(squareObstacle);
-                }
-            }
-        }
-        /////////////////////////
-
-        public void AddNearSquareObstacle(SquareObstacle squareObstacle)
-        {
-            this.nearSquareObstacles.Add(squareObstacle);
+            this.nearSquareObstacles.Add(ObstacleInteractiveObject.SquareObstacleSystem);
             this.SortObstaclesByDistance();
-            this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, squareObstacle);
+            this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, ObstacleInteractiveObject.SquareObstacleSystem);
         }
 
-        public void RemoveNearSquareObstacle(SquareObstacle squareObstacle)
+        public void RemoveNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
-            this.nearSquareObstacles.Remove(squareObstacle);
+            this.nearSquareObstacles.Remove(ObstacleInteractiveObject.SquareObstacleSystem);
             this.SortObstaclesByDistance();
-            this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, squareObstacle);
+            this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, ObstacleInteractiveObject.SquareObstacleSystem);
         }
 
         //Nearest obstacles are sorted by distance in order to do intersection calculation from the nearest to the farest frustum.
@@ -126,7 +100,7 @@ namespace RTPuzzle
         private void SortObstaclesByDistance()
         {
             var RangeObjectV2GetWorldTransformEventReturn = this.AssociatedRangeObject.GetTransform();
-            this.nearSquareObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.transform.position, RangeObjectV2GetWorldTransformEventReturn.WorldPosition).CompareTo(Vector3.Distance(o2.transform.position, RangeObjectV2GetWorldTransformEventReturn.WorldPosition)); });
+            this.nearSquareObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.GetPosition(), RangeObjectV2GetWorldTransformEventReturn.WorldPosition).CompareTo(Vector3.Distance(o2.GetPosition(), RangeObjectV2GetWorldTransformEventReturn.WorldPosition)); });
         }
     }
 

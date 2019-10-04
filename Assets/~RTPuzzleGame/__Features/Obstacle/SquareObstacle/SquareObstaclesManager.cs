@@ -7,34 +7,28 @@ namespace RTPuzzle
     public class SquareObstaclesManager : MonoBehaviour
     {
 
-        private List<SquareObstacle> squareObstacles;
-        private List<SquareObstacle> lastFrameChangedObstacles;
-        
-        public void Init()
-        {
-            this.squareObstacles = GameObject.FindObjectsOfType<SquareObstacle>().ToList();
-            this.lastFrameChangedObstacles = new List<SquareObstacle>();
-
-            foreach (var squareObstacle in this.squareObstacles)
-            {
-                squareObstacle.Init();
-            }
-        }
+        private List<SquareObstacleSystem> squareObstacleSystems = new List<SquareObstacleSystem>();
+        private List<SquareObstacleSystem> lastFrameChangedObstacles = new List<SquareObstacleSystem>();
 
         public void Tick(float d)
         {
-            foreach (var squareObstacle in this.squareObstacles)
+            foreach (var squareObstacleSystem in this.squareObstacleSystems)
             {
-                if (squareObstacle.Tick(d))
+                if (squareObstacleSystem.Tick(d))
                 {
-                    this.lastFrameChangedObstacles.Add(squareObstacle);
+                    this.lastFrameChangedObstacles.Add(squareObstacleSystem);
                 }
             }
         }
 
-        public List<SquareObstacle> ConsumeLastFrameChangedObstacles()
+        public void AddSquareObstacleSystem(SquareObstacleSystem SquareObstacleSystem)
         {
-            var returnList = new List<SquareObstacle>(this.lastFrameChangedObstacles);
+            this.squareObstacleSystems.Add(SquareObstacleSystem);
+        }
+
+        public List<SquareObstacleSystem> ConsumeLastFrameChangedObstacles()
+        {
+            var returnList = new List<SquareObstacleSystem>(this.lastFrameChangedObstacles);
             this.lastFrameChangedObstacles.Clear();
             return returnList;
         }

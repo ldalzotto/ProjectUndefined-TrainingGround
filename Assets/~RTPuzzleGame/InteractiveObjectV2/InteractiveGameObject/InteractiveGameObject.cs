@@ -19,7 +19,12 @@ namespace InteractiveObjectTest
 
         public InteractiveGameObject(GameObject InteractiveGameObjectParent)
         {
-            this.AverageModelBounds = BoundsHelper.GetAverageRendererBounds(InteractiveGameObjectParent.GetComponentsInChildren<Renderer>());
+            var childRenderers = InteractiveGameObjectParent.GetComponentsInChildren<Renderer>();
+            if (childRenderers != null)
+            {
+                this.AverageModelBounds = BoundsHelper.GetAverageRendererBounds(childRenderers);
+            }
+
             this.Animator = InteractiveGameObjectParent.GetComponent<Animator>();
             if (this.Animator == null)
             {
@@ -28,7 +33,12 @@ namespace InteractiveObjectTest
 
             this.InteractiveGameObjectParent = InteractiveGameObjectParent;
             this.Renderers = RendererRetrievableHelper.GetAllRederers(this.InteractiveGameObjectParent, particleRenderers: false);
-            this.LogicCollider = InteractiveGameObjectParent.GetComponentInChildren<BoxCollider>();
+            var InteractiveGameObjectLogicColliderTag = InteractiveGameObjectParent.GetComponentInChildren<InteractiveGameObjectLogicColliderTag>();
+            if (InteractiveGameObjectLogicColliderTag != null)
+            {
+                this.LogicCollider = InteractiveGameObjectLogicColliderTag.GetComponent<BoxCollider>();
+                MonoBehaviour.Destroy(InteractiveGameObjectLogicColliderTag);
+            }
             this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
         }
 
