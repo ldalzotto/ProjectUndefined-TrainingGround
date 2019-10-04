@@ -113,7 +113,7 @@ namespace RTPuzzle
             this.AssociatedAttractiveObjectModule = AssociatedAttractiveObjectModule;
         }
 
-        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
             // return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsAI;
             return false;

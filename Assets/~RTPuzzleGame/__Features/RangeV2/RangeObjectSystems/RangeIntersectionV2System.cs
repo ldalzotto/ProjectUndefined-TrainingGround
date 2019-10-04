@@ -1,6 +1,4 @@
 ﻿using InteractiveObjectTest;
-using RTPuzzle;
-using System;
 using System.Collections.Generic;
 
 namespace RTPuzzle
@@ -53,8 +51,6 @@ namespace RTPuzzle
 
         private Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2> intersectionCalculatorsIndexedByInteractiveObject = new Dictionary<CoreInteractiveObject, RangeIntersectionCalculatorV2>();
 
-        protected virtual bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo) { return true; }
-
         protected virtual void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator) { }
         protected virtual void OnJustNotIntersected(RangeIntersectionCalculatorV2 intersectionCalculator) { }
         protected virtual void OnInterestedNothing(RangeIntersectionCalculatorV2 intersectionCalculator) { }
@@ -78,7 +74,7 @@ namespace RTPuzzle
                 this.SingleCalculation(this.intersectionCalculators[intersectionCalculatorIndex]);
             }
 
-            for(var justTriggerExitedCalculatorIndex = this.justTriggerExitedCalculators.Count - 1; justTriggerExitedCalculatorIndex >= 0; justTriggerExitedCalculatorIndex--)
+            for (var justTriggerExitedCalculatorIndex = this.justTriggerExitedCalculators.Count - 1; justTriggerExitedCalculatorIndex >= 0; justTriggerExitedCalculatorIndex--)
             {
                 this.OnJustNotIntersected(this.justTriggerExitedCalculators[justTriggerExitedCalculatorIndex]);
                 this.justTriggerExitedCalculators.RemoveAt(justTriggerExitedCalculatorIndex);
@@ -87,30 +83,24 @@ namespace RTPuzzle
 
         public sealed override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            if (this.ColliderSelectionGuard(PhysicsTriggerInfo))
-            {
-                var rangeIntersectionCalculator = new RangeIntersectionCalculatorV2(this.associatedRangeObject, PhysicsTriggerInfo.OtherInteractiveObject, forceObstacleOcclusionIfNecessary: true);
-                this.intersectionCalculators.Add(rangeIntersectionCalculator);
-                this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject] = rangeIntersectionCalculator;
-                this.OnTriggerEnterSuccess(PhysicsTriggerInfo);
-            }
+            var rangeIntersectionCalculator = new RangeIntersectionCalculatorV2(this.associatedRangeObject, PhysicsTriggerInfo.OtherInteractiveObject, forceObstacleOcclusionIfNecessary: true);
+            this.intersectionCalculators.Add(rangeIntersectionCalculator);
+            this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject] = rangeIntersectionCalculator;
+            this.OnTriggerEnterSuccess(PhysicsTriggerInfo);
         }
 
         public sealed override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            if (this.ColliderSelectionGuard(PhysicsTriggerInfo))
+            var rangeIntersectionCalculator = this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject];
+
+            if (rangeIntersectionCalculator.IsInside)
             {
-                var rangeIntersectionCalculator = this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject];
-
-                if (rangeIntersectionCalculator.IsInside)
-                {
-                    this.justTriggerExitedCalculators.Add(rangeIntersectionCalculator);
-                }
-
-                this.intersectionCalculators.Remove(rangeIntersectionCalculator);
-                this.intersectionCalculatorsIndexedByInteractiveObject.Remove(PhysicsTriggerInfo.OtherInteractiveObject);
-                this.OnTriggerExitSuccess(PhysicsTriggerInfo);
+                this.justTriggerExitedCalculators.Add(rangeIntersectionCalculator);
             }
+
+            this.intersectionCalculators.Remove(rangeIntersectionCalculator);
+            this.intersectionCalculatorsIndexedByInteractiveObject.Remove(PhysicsTriggerInfo.OtherInteractiveObject);
+            this.OnTriggerExitSuccess(PhysicsTriggerInfo);
         }
 
         public sealed override void OnTriggerStay(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo) { }

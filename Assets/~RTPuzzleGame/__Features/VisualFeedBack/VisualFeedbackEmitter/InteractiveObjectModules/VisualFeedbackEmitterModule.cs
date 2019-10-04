@@ -61,7 +61,7 @@ namespace RTPuzzle
         public List<ModelObjectModule> InRangeModelObjectForVisual { get; private set; } = new List<ModelObjectModule>();
         private List<Action> localListenersOnDestroy = new List<Action>();
 
-        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
             //    return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsAI || RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsRepelable;
             return false;

@@ -17,5 +17,7 @@ namespace CoreGame
         public InputImageType InputBaseImage;
         public InputImageType LeftMouseBaseImage;
         public InputImageType RightMouseBaseImage;
+
+        public Mesh ForwardQuadMesh;
     }
 }

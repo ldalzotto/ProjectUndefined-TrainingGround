@@ -5,17 +5,14 @@ namespace CoreGame
     public class CircleFillBarType : MonoBehaviour
     {
         private Camera cam;
-        private MeshFilter meshFilter;
         private float currentProgression;
-
-        public MeshFilter MeshFilter { get => meshFilter; }
-        public float CurrentProgression { get => currentProgression; }
         
+        public float CurrentProgression { get => currentProgression; }
+
         public void Init(Camera camera)
         {
             this.cam = camera;
-            this.meshFilter = GetComponent<MeshFilter>();
-           CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
+            CoreGameSingletonInstances.CircleFillBarRendererManager.OnCircleFillBarTypeCreated(this);
         }
 
         public void Tick(float progression)

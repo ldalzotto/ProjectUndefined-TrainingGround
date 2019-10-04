@@ -15,7 +15,7 @@ namespace RTPuzzle
         private RangeIntersectionV2System RangeIntersectionV2System;
         private RangeExternalPhysicsOnlyListenersSystem RangeExternalPhysicsOnlyListenersSystem;
 
-        public void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
+        protected void Init(RangeGameObjectV2 RangeGameObjectV2, RangeObjectInitialization RangeObjectInitialization)
         {
             this.RangeGameObjectV2 = RangeGameObjectV2;
             this.RangeObjectInitialization = RangeObjectInitialization;

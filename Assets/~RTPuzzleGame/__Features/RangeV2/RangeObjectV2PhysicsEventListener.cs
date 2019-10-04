@@ -16,6 +16,8 @@ namespace RTPuzzle
         public virtual void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo) { }
         public virtual void OnTriggerStay(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo) { }
         public virtual void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo) { }
+
+        public virtual bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo) { return true; }
     }
 
     public class RangeObjectV2PhysicsEventListener : MonoBehaviour
@@ -35,9 +37,13 @@ namespace RTPuzzle
             InteractiveObjectV2Manager.Get().InteractiveObjectsIndexedByCollider.TryGetValue(other, out CoreInteractiveObject OtherInteractiveObject);
             if (OtherInteractiveObject != null && ((this.AssociatedInteractiveObject != null && OtherInteractiveObject != this.AssociatedInteractiveObject) || this.AssociatedInteractiveObject == null))
             {
+                var RangeObjectPhysicsTriggerInfo = new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject };
                 for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
                 {
-                    this.PhysicsEventListeners[i].OnTriggerEnter(new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject });
+                    if (this.PhysicsEventListeners[i].ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo))
+                    {
+                        this.PhysicsEventListeners[i].OnTriggerEnter(RangeObjectPhysicsTriggerInfo);
+                    }
                 }
             }
         }
@@ -46,9 +52,13 @@ namespace RTPuzzle
             InteractiveObjectV2Manager.Get().InteractiveObjectsIndexedByCollider.TryGetValue(other, out CoreInteractiveObject OtherInteractiveObject);
             if (OtherInteractiveObject != null && ((this.AssociatedInteractiveObject != null && OtherInteractiveObject != this.AssociatedInteractiveObject) || this.AssociatedInteractiveObject == null))
             {
+                var RangeObjectPhysicsTriggerInfo = new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject };
                 for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
                 {
-                    this.PhysicsEventListeners[i].OnTriggerExit(new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject });
+                    if (this.PhysicsEventListeners[i].ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo))
+                    {
+                        this.PhysicsEventListeners[i].OnTriggerExit(RangeObjectPhysicsTriggerInfo);
+                    }
                 }
             }
         }
@@ -57,9 +67,13 @@ namespace RTPuzzle
             InteractiveObjectV2Manager.Get().InteractiveObjectsIndexedByCollider.TryGetValue(other, out CoreInteractiveObject OtherInteractiveObject);
             if (OtherInteractiveObject != null && ((this.AssociatedInteractiveObject != null && OtherInteractiveObject != this.AssociatedInteractiveObject) || this.AssociatedInteractiveObject == null))
             {
+                var RangeObjectPhysicsTriggerInfo = new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject };
                 for (var i = 0; i < this.PhysicsEventListeners.Count; i++)
                 {
-                    this.PhysicsEventListeners[i].OnTriggerStay(new RangeObjectPhysicsTriggerInfo { Other = other, OtherInteractiveObject = OtherInteractiveObject });
+                    if (this.PhysicsEventListeners[i].ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo))
+                    {
+                        this.PhysicsEventListeners[i].OnTriggerStay(RangeObjectPhysicsTriggerInfo);
+                    }
                 }
             }
         }

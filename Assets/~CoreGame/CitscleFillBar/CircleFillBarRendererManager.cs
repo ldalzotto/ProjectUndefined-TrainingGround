@@ -8,6 +8,7 @@ namespace CoreGame
     {
         public Material CircleFillBarMaterial;
 
+        private CorePrefabConfiguration CorePrefabConfiguration;
         private List<CircleFillBarType> CircleFillBarTypeToRender = new List<CircleFillBarType>();
 
         private CommandBuffer commandBuffer;
@@ -20,6 +21,8 @@ namespace CoreGame
 
             Camera.main.AddCommandBuffer(CameraEvent.AfterEverything, this.commandBuffer);
             this.materialProperty = new MaterialPropertyBlock();
+
+            this.CorePrefabConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CorePrefabConfiguration;
         }
 
 
@@ -32,7 +35,7 @@ namespace CoreGame
                 if (circleFillBarType.CurrentProgression != 0f)
                 {
                     this.materialProperty.SetFloat(Shader.PropertyToID("_Progression"), circleFillBarType.CurrentProgression);
-                    this.commandBuffer.DrawMesh(circleFillBarType.MeshFilter.mesh, circleFillBarType.transform.localToWorldMatrix, this.CircleFillBarMaterial, 0, 0, materialProperty);
+                    this.commandBuffer.DrawMesh(this.CorePrefabConfiguration.ForwardQuadMesh, circleFillBarType.transform.localToWorldMatrix, this.CircleFillBarMaterial, 0, 0, materialProperty);
                 }
             }
         }

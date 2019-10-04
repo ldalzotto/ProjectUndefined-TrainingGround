@@ -124,32 +124,36 @@ namespace RTPuzzle
         public void OnRangeAddedV2(RangeObjectV2 RangeObjectV2)
         {
             var rangeTypeID = RangeObjectV2.RangeObjectInitialization.RangeTypeID;
-            if (!this.rangeRenderDatas.ContainsKey(rangeTypeID))
+            if (rangeTypeID != RangeTypeID.NOT_DISPLAYED)
             {
-                this.rangeRenderDatas[rangeTypeID] = new Dictionary<int, AbstractRangeRenderData>();
+                if (!this.rangeRenderDatas.ContainsKey(rangeTypeID))
+                {
+                    this.rangeRenderDatas[rangeTypeID] = new Dictionary<int, AbstractRangeRenderData>();
+                }
+
+                if (RangeObjectV2.GetType() == typeof(SphereRangeObjectV2))
+                {
+                    var SphereRangeObjectRenderingDataProvider = new SphereRangeObjectRenderingDataProvider((SphereRangeObjectV2)RangeObjectV2, rangeTypeID);
+                    var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], SphereRangeObjectRenderingDataProvider);
+                    addedRange.OnRangeCreated(SphereRangeObjectRenderingDataProvider);
+                    this.rangeRenderDatas[rangeTypeID].Add(SphereRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new CircleRangeRenderData(addedRange));
+                }
+                else if (RangeObjectV2.GetType() == typeof(BoxRangeObjectV2))
+                {
+                    var BoxRangeObjectRenderingDataProvider = new BoxRangeObjectRenderingDataProvider((BoxRangeObjectV2)RangeObjectV2, rangeTypeID);
+                    var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], BoxRangeObjectRenderingDataProvider);
+                    addedRange.OnRangeCreated(BoxRangeObjectRenderingDataProvider);
+                    this.rangeRenderDatas[rangeTypeID].Add(BoxRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new BoxRangeRenderData(addedRange));
+                }
+                else if (RangeObjectV2.GetType() == typeof(RoundedFrustumRangeObjectV2))
+                {
+                    var RoundedFrustumRangeObjectRenderingDataProvider = new RoundedFrustumRangeObjectRenderingDataProvider((RoundedFrustumRangeObjectV2)RangeObjectV2, rangeTypeID);
+                    var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], RoundedFrustumRangeObjectRenderingDataProvider);
+                    addedRange.OnRangeCreated(RoundedFrustumRangeObjectRenderingDataProvider);
+                    this.rangeRenderDatas[rangeTypeID].Add(RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
+                }
             }
 
-            if (RangeObjectV2.GetType() == typeof(SphereRangeObjectV2))
-            {
-                var SphereRangeObjectRenderingDataProvider = new SphereRangeObjectRenderingDataProvider((SphereRangeObjectV2)RangeObjectV2, rangeTypeID);
-                var addedRange = new SphereGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], SphereRangeObjectRenderingDataProvider);
-                addedRange.OnRangeCreated(SphereRangeObjectRenderingDataProvider);
-                this.rangeRenderDatas[rangeTypeID].Add(SphereRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new CircleRangeRenderData(addedRange));
-            }
-            else if (RangeObjectV2.GetType() == typeof(BoxRangeObjectV2))
-            {
-                var BoxRangeObjectRenderingDataProvider = new BoxRangeObjectRenderingDataProvider((BoxRangeObjectV2)RangeObjectV2, rangeTypeID);
-                var addedRange = new BoxGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], BoxRangeObjectRenderingDataProvider);
-                addedRange.OnRangeCreated(BoxRangeObjectRenderingDataProvider);
-                this.rangeRenderDatas[rangeTypeID].Add(BoxRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new BoxRangeRenderData(addedRange));
-            }
-            else if (RangeObjectV2.GetType() == typeof(RoundedFrustumRangeObjectV2))
-            {
-                var RoundedFrustumRangeObjectRenderingDataProvider = new RoundedFrustumRangeObjectRenderingDataProvider((RoundedFrustumRangeObjectV2)RangeObjectV2, rangeTypeID);
-                var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], RoundedFrustumRangeObjectRenderingDataProvider);
-                addedRange.OnRangeCreated(RoundedFrustumRangeObjectRenderingDataProvider);
-                this.rangeRenderDatas[rangeTypeID].Add(RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new RoundedFrustumRenderData(addedRange));
-            }
         }
 
         public void OnLevelExit()
@@ -170,11 +174,14 @@ namespace RTPuzzle
 
         public void OnRangeDestroy(RangeObjectV2 RangeObjectV2)
         {
-            this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID][RangeObjectV2.RangeGameObjectV2.BoundingCollider.GetInstanceID()].OnRangeDestroyed();
-            this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID].Remove(RangeObjectV2.RangeGameObjectV2.BoundingCollider.GetInstanceID());
-            if (this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID].Count == 0)
+            if (RangeObjectV2.RangeObjectInitialization.RangeTypeID != RangeTypeID.NOT_DISPLAYED)
             {
-                this.rangeRenderDatas.Remove(RangeObjectV2.RangeObjectInitialization.RangeTypeID);
+                this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID][RangeObjectV2.RangeGameObjectV2.BoundingCollider.GetInstanceID()].OnRangeDestroyed();
+                this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID].Remove(RangeObjectV2.RangeGameObjectV2.BoundingCollider.GetInstanceID());
+                if (this.rangeRenderDatas[RangeObjectV2.RangeObjectInitialization.RangeTypeID].Count == 0)
+                {
+                    this.rangeRenderDatas.Remove(RangeObjectV2.RangeObjectInitialization.RangeTypeID);
+                }
             }
         }
 

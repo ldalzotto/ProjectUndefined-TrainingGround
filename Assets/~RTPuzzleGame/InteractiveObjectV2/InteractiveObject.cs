@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System;
 
 namespace InteractiveObjectTest
 {
@@ -22,7 +22,7 @@ namespace InteractiveObjectTest
 
         public virtual void Destroy()
         {
-            Object.Destroy(this.InteractiveGameObject.InteractiveGameObjectParent);
+            UnityEngine.Object.Destroy(this.InteractiveGameObject.InteractiveGameObjectParent);
         }
 
         #region Attractive Object Events
@@ -33,9 +33,16 @@ namespace InteractiveObjectTest
         public virtual void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject) { }
         #endregion
 
+        #region Disarm Object Events
+        protected virtual void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject IntersectedInteractiveObject) { }
+        public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject, out bool success) { success = false; }
+        #endregion
+
         #region AI Events
-        public virtual void OnAIIsJustAttractedByAttractiveObject() { }
-        public virtual void OnAIIsNoMoreAttractedByAttractiveObject() { }
+        public virtual void OnAIIsJustAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject) { }
+        public virtual void OnAIIsNoMoreAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject) { }
+        public virtual void OnAIIsJustDisarmingObject() { }
+        public virtual void OnAIIsNoMoreJustDisarmingObject() { }
         public virtual void SetAIDestination(AIDestination AIDestination) { }
         #endregion
     }
@@ -50,12 +57,19 @@ namespace InteractiveObjectTest
     [System.Serializable]
     public struct InteractiveObjectTagStruct
     {
-        public bool IsAttractiveObject;
-        public bool IsAi;
-        public bool Equals(InteractiveObjectTag InteractiveObjectTag)
+        public int IsAttractiveObject;
+        public int IsAi;
+
+        public InteractiveObjectTagStruct(int isAttractiveObject = -1, int isAi = -1)
         {
-            return this.IsAttractiveObject == InteractiveObjectTag.IsAttractiveObject
-                    && this.IsAi == InteractiveObjectTag.IsAi;
+            IsAttractiveObject = isAttractiveObject;
+            IsAi = isAi;
+        }
+
+        public bool Compare(InteractiveObjectTag InteractiveObjectTag)
+        {
+            return (this.IsAttractiveObject == -1 || this.IsAttractiveObject == Convert.ToInt32(InteractiveObjectTag.IsAttractiveObject))
+                && (this.IsAi == -1 || this.IsAi == Convert.ToInt32(InteractiveObjectTag.IsAi));
         }
     }
 }

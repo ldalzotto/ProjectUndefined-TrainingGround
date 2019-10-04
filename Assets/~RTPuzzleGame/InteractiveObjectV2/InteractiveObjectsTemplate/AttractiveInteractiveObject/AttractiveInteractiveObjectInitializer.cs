@@ -4,7 +4,10 @@
     public class AttractiveObjectInitializerData
     {
         public AttractiveObjectSystemDefinition AttractiveObjectSystemDefinition;
+        public bool IsDisarmable;
+        public DisarmSystemDefinition DisarmSystemDefinition;
     }
+
     [System.Serializable]
     public class AttractiveInteractiveObjectInitializer : AInteractiveObjectInitializer
     {

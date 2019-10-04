@@ -47,7 +47,7 @@
             this.AssociatedAI = associatedAI;
         }
 
-        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
             //  return RangeObjectPhysicsTriggerInfo.OtherCollisionType.IsPlayer;
             return false;

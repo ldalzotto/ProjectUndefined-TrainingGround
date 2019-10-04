@@ -1,5 +1,4 @@
-﻿using CoreGame;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CoreGame
 {
@@ -22,7 +21,12 @@ namespace CoreGame
 
         public static Vector3 GetDisarmProgressBarLocalOffset(IRenderBoundRetrievable iRenderBoundRetrievable)
         {
-            return (Vector3.up * (iRenderBoundRetrievable.GetAverageModelBoundLocalSpace().Bounds.max.y + 1));
+            return GetDisarmProgressBarLocalOffset(iRenderBoundRetrievable.GetAverageModelBoundLocalSpace());
+        }
+
+        public static Vector3 GetDisarmProgressBarLocalOffset(ExtendedBounds ExtendedBounds)
+        {
+            return (Vector3.up * (ExtendedBounds.Bounds.max.y + 1));
         }
 
         public static Vector3 GetRepelLineRenderPointLocalOffset(IRenderBoundRetrievable iRenderBoundRetrievable)

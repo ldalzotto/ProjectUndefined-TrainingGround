@@ -81,9 +81,9 @@ namespace InteractiveObjectTest
             OnAttractiveSystemInterestedNothing = onAttractiveSystemInterestedNothing;
         }
 
-        protected override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
+        public override bool ColliderSelectionGuard(RangeObjectPhysicsTriggerInfo RangeObjectPhysicsTriggerInfo)
         {
-            return this.InteractiveObjectSelectionGuard.Equals(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
+            return this.InteractiveObjectSelectionGuard.Compare(RangeObjectPhysicsTriggerInfo.OtherInteractiveObject.InteractiveObjectTag);
         }
 
         protected override void OnJustIntersected(RangeIntersectionCalculatorV2 intersectionCalculator)

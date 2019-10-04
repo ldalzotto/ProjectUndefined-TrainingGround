@@ -25,5 +25,7 @@ namespace GameConfigurationID {
     TARGET_ZONE = 4,
     
     SIGHT_VISION = 5,
+
+    NOT_DISPLAYED = 6
   }
 }
