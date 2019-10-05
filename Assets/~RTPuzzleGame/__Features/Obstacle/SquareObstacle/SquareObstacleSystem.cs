@@ -16,28 +16,27 @@ namespace RTPuzzle
 
     public class SquareObstacleSystem
     {
-        private SquareObstacleSystemInitializationData SquareObstacleSystemInitializationData;
-        private List<FrustumV2> FaceFrustums;
-
-        #region Internal Managers
-        private SquareObstacleChangeTracker SquareObstacleChangeTracker;
-        #endregion
+        public SquareObstacleSystemInitializationData SquareObstacleSystemInitializationData { get; private set; }
+        public List<FrustumV2> FaceFrustums { get; private set; }
 
         #region Internal Dependencies
         private ObstacleInteractiveObject AssociatedInteractiveObject;
         #endregion
 
-        #region Data Retrieval
-        public Vector3 GetPosition()
-        {
-            return this.AssociatedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition +
-                          this.AssociatedInteractiveObject.ObstacleCollider.center;
-        }
+        #region Obstacle Calculation Data
+        public TransformStruct LastFrameTransform;
+        #endregion
 
-        public Quaternion GetRotation() { return this.AssociatedInteractiveObject.InteractiveGameObject.GetTransform().WorldRotation; }
-        public Vector3 GetLossyScale()
+        #region Data Retrieval
+        public TransformStruct GetTransform()
         {
-            return (this.AssociatedInteractiveObject.ObstacleCollider != null ? this.AssociatedInteractiveObject.ObstacleCollider.size : Vector3.one).Mul(this.AssociatedInteractiveObject.InteractiveGameObject.GetTransform().LossyScale);
+            return new TransformStruct
+            {
+                WorldPosition = this.AssociatedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition +
+                          this.AssociatedInteractiveObject.ObstacleCollider.center,
+                WorldRotation = this.AssociatedInteractiveObject.InteractiveGameObject.GetTransform().WorldRotation,
+                LossyScale = (this.AssociatedInteractiveObject.ObstacleCollider != null ? this.AssociatedInteractiveObject.ObstacleCollider.size : Vector3.one).Mul(this.AssociatedInteractiveObject.InteractiveGameObject.GetTransform().LossyScale)
+            };
         }
         #endregion
 
@@ -47,7 +46,6 @@ namespace RTPuzzle
             this.SquareObstacleSystemInitializationData = SquareObstacleSystemInitializationData;
 
             this.FaceFrustums = new List<FrustumV2>();
-            this.SquareObstacleChangeTracker = new SquareObstacleChangeTracker(this);
 
             //Create frustum for all sides -> occlusions are only calculated for facing frustums.
             this.CreateAndAddFrustum(Quaternion.Euler(0, 0, 0), 1);
@@ -56,34 +54,6 @@ namespace RTPuzzle
             this.CreateAndAddFrustum(Quaternion.Euler(0, -90, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(90, 0, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(-90, 0, 0), 1);
-
-            PuzzleGameSingletonInstances.SquareObstaclesManager.AddSquareObstacleSystem(this);
-        }
-
-        #region Logical Conditions
-
-        public bool IsWorldPositionPointContainedInOcclusionFrustum(Vector3 comparisonWorldPoint)
-        {
-#warning PointInsideFrustum trigger frustum points recalculation
-            bool isIsideOcclusionFrustum = false;
-            foreach (var faceFrustum in this.FaceFrustums)
-            {
-                isIsideOcclusionFrustum = isIsideOcclusionFrustum || Intersection.PointInsideFrustum(faceFrustum, comparisonWorldPoint);
-            }
-            return isIsideOcclusionFrustum;
-        }
-        #endregion
-
-        public bool Tick(float d)
-        {
-            if (this.SquareObstacleSystemInitializationData.IsStatic)
-            {
-                return false;
-            }
-            else
-            {
-                return this.SquareObstacleChangeTracker.Tick(d);
-            }
         }
 
         private void CreateAndAddFrustum(Quaternion deltaRotation, float F1FaceZOffset)
@@ -127,35 +97,6 @@ namespace RTPuzzle
 
         }
 
-    }
-
-    class SquareObstacleChangeTracker
-    {
-        private SquareObstacleSystem SquareObstacleRef;
-
-        public SquareObstacleChangeTracker(SquareObstacleSystem squareObstacleRef)
-        {
-            SquareObstacleRef = squareObstacleRef;
-        }
-
-        private Vector3 lastFramePosition;
-        private Quaternion lastFrameRotation;
-        private Vector3 lastFrameScale;
-
-        public bool Tick(float d)
-        {
-            bool hasChanged = false;
-            if (this.lastFramePosition != this.SquareObstacleRef.GetPosition() ||
-                this.lastFrameRotation != this.SquareObstacleRef.GetRotation() ||
-                this.lastFrameScale != this.SquareObstacleRef.GetLossyScale())
-            {
-                hasChanged = true;
-            }
-            this.lastFramePosition = this.SquareObstacleRef.GetPosition();
-            this.lastFrameRotation = this.SquareObstacleRef.GetRotation();
-            this.lastFrameScale = this.SquareObstacleRef.GetLossyScale();
-            return hasChanged;
-        }
     }
 
 }

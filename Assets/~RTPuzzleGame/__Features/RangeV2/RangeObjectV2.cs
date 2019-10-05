@@ -61,7 +61,7 @@ namespace RTPuzzle
         public void ReceiveEvent(RangeExternalPhysicsOnlyAddListener RangeExternalPhysicsOnlyAddListener) { this.RangeExternalPhysicsOnlyListenersSystem.ReceiveEvent(RangeExternalPhysicsOnlyAddListener); }
 
         public ObstacleListener GetObstacleListener() { return this.RangeObstacleListenerSystem != null ? this.RangeObstacleListenerSystem.ObstacleListener : null; }
-        public RangeObjectV2GetWorldTransformEventReturn GetTransform() { return this.RangeGameObjectV2.GetTransform(); }
+        public TransformStruct GetTransform() { return this.RangeGameObjectV2.GetTransform(); }
     }
 
     public class SphereRangeObjectV2 : RangeObjectV2
@@ -164,12 +164,12 @@ namespace RTPuzzle
     {
         public static void HandlingRangeTransformChangedForFrustums(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem)
         {
-            var RangeObjectV2GetWorldTransformEventReturn = RangeGameObjectV2.GetTransform();
+            var RangeObjectTransformStruct = RangeGameObjectV2.GetTransform();
             FrustumRangeWorldPositionCalulcationSystem.ReceiveEvent(new FrustumWorldPositionRecalculation
             {
-                WorldPosition = RangeObjectV2GetWorldTransformEventReturn.WorldPosition,
-                WorldRotation = RangeObjectV2GetWorldTransformEventReturn.WorldRotation,
-                LossyScale = RangeObjectV2GetWorldTransformEventReturn.LossyScale
+                WorldPosition = RangeObjectTransformStruct.WorldPosition,
+                WorldRotation = RangeObjectTransformStruct.WorldRotation,
+                LossyScale = RangeObjectTransformStruct.LossyScale
             });
         }
     }

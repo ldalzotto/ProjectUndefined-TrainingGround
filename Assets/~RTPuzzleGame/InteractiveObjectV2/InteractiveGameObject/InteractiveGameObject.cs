@@ -42,14 +42,9 @@ namespace InteractiveObjectTest
             this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
         }
 
-        public InteractiveGameObjectTransform GetTransform()
+        public TransformStruct GetTransform()
         {
-            return new InteractiveGameObjectTransform()
-            {
-                WorldPosition = this.InteractiveGameObjectParent.transform.position,
-                WorldRotation = this.InteractiveGameObjectParent.transform.rotation,
-                LossyScale = this.InteractiveGameObjectParent.transform.lossyScale
-            };
+            return new TransformStruct(this.InteractiveGameObjectParent.transform);
         }
 
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)
@@ -66,12 +61,5 @@ namespace InteractiveObjectTest
             var allMeshRenderes = InteractiveGameObjectParent.transform.GetComponentsInCurrentAndChild<MeshRenderer>();
             if (allMeshRenderes != null) { foreach (var meshRenderer in allMeshRenderes) { meshRenderer.materials = new Material[1] { CoreMaterialConfiguration.UnlitVertexColor }; } }
         }
-    }
-
-    public struct InteractiveGameObjectTransform
-    {
-        public Vector3 WorldPosition;
-        public Quaternion WorldRotation;
-        public Vector3 LossyScale;
     }
 }

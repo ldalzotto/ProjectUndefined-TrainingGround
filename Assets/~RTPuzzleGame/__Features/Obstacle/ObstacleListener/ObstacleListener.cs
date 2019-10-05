@@ -29,16 +29,15 @@ namespace RTPuzzle
             this.nearSquareObstacles = new List<SquareObstacleSystem>();
             this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
-            this.ObstacleListenerChangePositionTracker = new BlittableTransformChangeListenerManager(true, false, null);
         }
-
-        #region Internal Managers
-        private BlittableTransformChangeListenerManager ObstacleListenerChangePositionTracker;
-        #endregion
 
         #region External Dependencies
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         private ObstaclesListenerManager ObstaclesListenerManager;
+        #endregion
+
+        #region Data For Multithreaded Calculation
+        public TransformStruct LastFrameTransform;
         #endregion
 
         public void OnObstacleListenerDestroyed()
@@ -46,12 +45,6 @@ namespace RTPuzzle
             Debug.Log(MyLog.Format("OnObstacleListenerDestroyed"));
             this.ObstaclesListenerManager.OnObstacleListenerDestroyed(this);
             this.ObstacleFrustumCalculationManager.OnObstacleListenerDestroyed(this);
-        }
-
-        public void Tick(float d)
-        {
-            var RangeObjectV2GetWorldTransformEventReturn = this.AssociatedRangeObject.GetTransform();
-            this.ObstacleListenerChangePositionTracker.Tick(RangeObjectV2GetWorldTransformEventReturn.WorldPosition, RangeObjectV2GetWorldTransformEventReturn.WorldRotation);
         }
 
         #region Data Retrieval
@@ -65,11 +58,8 @@ namespace RTPuzzle
         #region Logical Conditions
         public bool HasPositionChanged()
         {
-            return this.ObstacleListenerChangePositionTracker.TransformChangedThatFrame();
-        }
-        public bool IsListenerHaveObstaclesNearby()
-        {
-            return this.nearSquareObstacles.Count > 0;
+            return false;
+            //return this.ObstacleListenerChangePositionTracker.TransformChangedThatFrame();
         }
         public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
@@ -84,24 +74,15 @@ namespace RTPuzzle
         public void AddNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Add(ObstacleInteractiveObject.SquareObstacleSystem);
-            this.SortObstaclesByDistance();
             this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, ObstacleInteractiveObject.SquareObstacleSystem);
         }
 
         public void RemoveNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Remove(ObstacleInteractiveObject.SquareObstacleSystem);
-            this.SortObstaclesByDistance();
             this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, ObstacleInteractiveObject.SquareObstacleSystem);
         }
-
-        //Nearest obstacles are sorted by distance in order to do intersection calculation from the nearest to the farest frustum.
-        //Nearest frustum has more chance to oclcude a wider space than a farest
-        private void SortObstaclesByDistance()
-        {
-            var RangeObjectV2GetWorldTransformEventReturn = this.AssociatedRangeObject.GetTransform();
-            this.nearSquareObstacles.Sort((o1, o2) => { return Vector3.Distance(o1.GetPosition(), RangeObjectV2GetWorldTransformEventReturn.WorldPosition).CompareTo(Vector3.Distance(o2.GetPosition(), RangeObjectV2GetWorldTransformEventReturn.WorldPosition)); });
-        }
+        
     }
 
 }

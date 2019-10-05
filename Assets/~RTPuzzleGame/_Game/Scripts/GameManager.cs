@@ -25,8 +25,8 @@ namespace RTPuzzle
         private FovInteractionRingRendererManager NpcInteractionRingRendererManager;
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
+        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
         private ObstaclesListenerManager ObstaclesListenerManager;
-        private SquareObstaclesManager SquareObstaclesManager;
         private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
         private CameraMovementManager CameraMovementManager;
@@ -74,7 +74,6 @@ namespace RTPuzzle
             GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
             DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
             ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
-            SquareObstaclesManager = PuzzleGameSingletonInstances.SquareObstaclesManager;
             ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             CircleFillBarRendererManager = CoreGameSingletonInstances.CircleFillBarRendererManager;
@@ -154,9 +153,10 @@ namespace RTPuzzle
 
                     RangeObjectV2Manager.Get().Tick(d);
 
-                    ObstaclesListenerManager.Tick(d); //Position Change Check
-                    SquareObstaclesManager.Tick(d); //Position Change Check
-                    ObstacleFrustumCalculationManager.Tick(d); //Multi threaded calculation when needed
+                    ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
+                  //  ObstaclesListenerManager.Tick(d); //Position Change Check
+                  //  SquareObstaclesManager.Tick(d); //Position Change Check
+                  //  ObstacleFrustumCalculationManager.Tick(d); //Multi threaded calculation when needed
 
                     TimeFlowManager.Tick(d);
                     GameOverManager.Tick(d);
@@ -235,6 +235,7 @@ namespace RTPuzzle
         {
             RangeObjectV2Manager.Get().OnDestroy();
             InteractiveObjectV2Manager.Get().OnDestroy();
+            ObstacleOcclusionCalculationManagerV2.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()

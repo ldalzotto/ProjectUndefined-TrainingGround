@@ -105,6 +105,7 @@
     <Compile Include="Assets\~CoreGame\_Helpers\RendererRetrievableHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\SceneLoadingHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\SerializationHelper.cs" />
+    <Compile Include="Assets\~CoreGame\_Helpers\StructHelper.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\TransformChangeListener.cs" />
     <Compile Include="Assets\~CoreGame\_Helpers\TransformExtensions.cs" />
     <Compile Include="Assets\~CoreGame\_Interfaces\DataRetrieval\IMeshRendererRetrievable.cs" />

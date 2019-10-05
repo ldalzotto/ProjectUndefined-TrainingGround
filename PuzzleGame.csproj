@@ -240,9 +240,10 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleFrustumCalculationManager.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ParallelTask\ObstacleOcclusionTask.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstaclesManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\PlayerAction\Configuration\PlayerActionConfiguration\PlayerActionInherentData.cs" />

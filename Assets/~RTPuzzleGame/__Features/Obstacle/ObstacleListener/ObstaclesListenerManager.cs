@@ -29,14 +29,6 @@ namespace RTPuzzle
             return this.obstacleListeners;
         }
         #endregion
-
-        public void Tick(float d)
-        {
-            foreach (var obstacleListener in this.obstacleListeners)
-            {
-                obstacleListener.Tick(d);
-            }
-        }
     }
 
 }

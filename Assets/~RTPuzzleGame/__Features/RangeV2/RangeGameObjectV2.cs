@@ -61,26 +61,14 @@ namespace RTPuzzle
         }
 
         public void ReceiveEvent(SetWorldPositionEvent SetWorldPositionEvent) { this.RangeGameObject.transform.position = SetWorldPositionEvent.WorldPosition; }
-        public RangeObjectV2GetWorldTransformEventReturn GetTransform()
+        public TransformStruct GetTransform()
         {
-            return new RangeObjectV2GetWorldTransformEventReturn
-            {
-                WorldPosition = this.RangeGameObject.transform.position,
-                WorldRotation = this.RangeGameObject.transform.rotation,
-                LossyScale = this.RangeGameObject.transform.lossyScale
-            };
+            return new TransformStruct(this.RangeGameObject.transform);
         }
     }
 
     public struct RangeObjectV2GetWorldToLocalMatrixEventReturn
     {
         public Matrix4x4 WorldToLocalMatrix;
-    }
-
-    public struct RangeObjectV2GetWorldTransformEventReturn
-    {
-        public Vector3 WorldPosition;
-        public Quaternion WorldRotation;
-        public Vector3 LossyScale;
     }
 }

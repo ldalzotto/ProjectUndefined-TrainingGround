@@ -10,9 +10,6 @@ namespace RTPuzzle
 {
     public class ObstacleFrustumCalculationManager : MonoBehaviour
     {
-        #region External Dependencies
-        private SquareObstaclesManager SquareObstaclesManager;
-        #endregion
 
         private Dictionary<ObstacleListener, Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>> calculationResults;
         public Dictionary<ObstacleListener, Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>> CalculationResults { get => calculationResults; }
@@ -23,8 +20,6 @@ namespace RTPuzzle
         {
             this.ObstacleFrustumCalculationThreadObject = new ObstacleFrustumCalculationThread();
 
-            this.SquareObstaclesManager = PuzzleGameSingletonInstances.SquareObstaclesManager;
-
             this.calculationResults = new Dictionary<ObstacleListener, Dictionary<SquareObstacleSystem, SquareObstacleFrustumCalculationResult>>();
         }
 
@@ -34,10 +29,6 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
-        public SquareObstacleFrustumCalculationResult GetResult(ObstacleListener ObstacleListener, SquareObstacleSystem SquareObstacle)
-        {
-            return this.calculationResults[ObstacleListener][SquareObstacle];
-        }
         public List<SquareObstacleFrustumCalculationResult> GetResults(ObstacleListener ObstacleListener)
         {
             return this.calculationResults[ObstacleListener].Values.ToList();
@@ -151,28 +142,6 @@ namespace RTPuzzle
         public void Tick(float d)
         {
             Profiler.BeginSample("ObstacleFrustumCalculationManagerTick");
-            #region Change Detection
-            var calculationResultsKeys = this.calculationResults.Keys.ToList();
-            foreach (var obstacleListener in calculationResultsKeys)
-            {
-                if (obstacleListener.HasPositionChanged())
-                {
-                    this.UpdateSquareObstaclesOfListener(obstacleListener);
-                }
-            }
-
-            foreach (var changedObstacles in this.SquareObstaclesManager.ConsumeLastFrameChangedObstacles())
-            {
-                foreach (var obstacleListener in calculationResultsKeys)
-                {
-                    if (this.calculationResults[obstacleListener].ContainsKey(changedObstacles))
-                    {
-                        this.calculationResults[obstacleListener][changedObstacles].AskCalculation();
-                    }
-                }
-            }
-
-            #endregion
 
             List<SquareObstacleFrustumCalculationResult> batchedSquareObstacleFrustumCalculationResult = null;
             foreach (var obstacleListener in this.calculationResults.Keys)
@@ -191,7 +160,6 @@ namespace RTPuzzle
                             this.ObstacleFrustumCalculationThreadObject.CalculationRequestedBatched(batchedSquareObstacleFrustumCalculationResult.ToArray());
                             batchedSquareObstacleFrustumCalculationResult.Clear();
                         }
-
                     }
                 }
             }
@@ -257,6 +225,8 @@ namespace RTPuzzle
         }
         #endregion
 
+        public SquareObstacleFrustumCalculationResult(List<FrustumPointsPositions> calculatedFrustumPositions) { this.calculatedFrustumPositions = calculatedFrustumPositions; }
+
         public SquareObstacleFrustumCalculationResult(ObstacleListener obstacleListenerRef, SquareObstacleSystem squareObstacleRef)
         {
             this.obstacleListenerRef = obstacleListenerRef;
@@ -281,9 +251,6 @@ namespace RTPuzzle
             // Debug.Log(MyLog.Format("ObstacleFrustumCalculation asked. Listener : " + this.obstacleListenerRef.name + " obstacle : " + this.squareObstacleRef.name));
             this.calculationAsked = true;
             this.worldPositionStartAngleDefinition = this.obstacleListenerRef.AssociatedRangeObject.GetTransform().WorldPosition;
-            this.obstaclePosition = this.squareObstacleRef.GetPosition();
-            this.obstacleRotation = this.squareObstacleRef.GetRotation();
-            this.obstacleLossyScale = this.squareObstacleRef.GetLossyScale();
         }
 
         public void DoCalculationFromDedicateThread()

@@ -21,7 +21,6 @@ namespace RTPuzzle
         private static PlayerActionManager playerActionManager;
         private static ObstaclesListenerManager obstaclesListenerManager;
         private static ObstacleFrustumCalculationManager obstacleFrustumCalculationManager;
-        private static SquareObstaclesManager squareObstaclesManager;
         private static AIManagerContainer aIManagerContainer;
         private static CooldownFeedManager cooldownFeedManager;
         private static TimeFlowPlayPauseManager timeFlowPlayPauseManager;
@@ -56,7 +55,6 @@ namespace RTPuzzle
         public static PlayerActionManager PlayerActionManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(playerActionManager, obj => playerActionManager = obj); }
         public static ObstaclesListenerManager ObstaclesListenerManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstaclesListenerManager, obj => obstaclesListenerManager = obj); }
         public static ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(obstacleFrustumCalculationManager, obj => obstacleFrustumCalculationManager = obj); }
-        public static SquareObstaclesManager SquareObstaclesManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(squareObstaclesManager, obj => squareObstaclesManager = obj); }
         public static AIManagerContainer AIManagerContainer { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(aIManagerContainer, obj => aIManagerContainer = obj); }
         public static CooldownFeedManager CooldownFeedManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(cooldownFeedManager, obj => cooldownFeedManager = obj); }
         public static TimeFlowPlayPauseManager TimeFlowPlayPauseManager { get => CoreGameSingletonInstances.FindAndSetInstanceIfNull(timeFlowPlayPauseManager, obj => timeFlowPlayPauseManager = obj); }

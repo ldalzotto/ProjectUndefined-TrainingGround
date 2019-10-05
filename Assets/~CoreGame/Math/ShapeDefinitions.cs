@@ -132,4 +132,80 @@ namespace CoreGame
     {
         FACE, PROJECTION
     }
+
+    public struct FrustumV2Struct
+    {
+        public Vector3 Center;
+        public Quaternion DeltaRotation;
+        public FrustumFaceV2Struct F1;
+        public FrustumFaceV2Struct F2;
+        public float FaceDistance;
+
+        public TransformStruct FrustumWorldTransform;
+        public Vector3 WorldStartAngleProjection;
+        public FrustumCalculationType FrustumCalculationType;
+
+        private Vector3 LocalToWorld(Vector3 localPoint)
+        {
+            return (this.FrustumWorldTransform.WorldPosition + this.FrustumWorldTransform.WorldRotation * ((this.DeltaRotation * localPoint) + this.Center).Mul(this.FrustumWorldTransform.LossyScale)).Round(3);
+        }
+
+        public void CalculateFrustumPointsWorldPosByProjection(out FrustumPointsPositions FrustumPointsPositions, out bool IsFacing)
+        {
+            Vector3 C1 = this.LocalToWorld((new Vector3(-this.F1.Width, this.F1.Height, 0) + this.F1.FaceOffsetFromCenter).Mul(0.5f));
+            Vector3 C2 = this.LocalToWorld((new Vector3(this.F1.Width, this.F1.Height, 0) + this.F1.FaceOffsetFromCenter).Mul(0.5f));
+            Vector3 C3 = this.LocalToWorld((new Vector3(this.F1.Width, -this.F1.Height, 0) + this.F1.FaceOffsetFromCenter).Mul(0.5f));
+            Vector3 C4 = this.LocalToWorld((new Vector3(-this.F1.Width, -this.F1.Height, 0) + this.F1.FaceOffsetFromCenter).Mul(0.5f));
+
+            Vector3 frontFaceNormal = Vector3.Cross(C2 - C1, C4 - C1).normalized;
+            IsFacing = Vector3.Dot(frontFaceNormal, C1 - WorldStartAngleProjection) >= 0;
+
+            //We abort calculation if not facing
+            if (IsFacing)
+            {
+                Vector3 C5 = this.LocalToWorld((new Vector3(-this.F2.Width, this.F2.Height, 0) + this.F2.FaceOffsetFromCenter).Mul(0.5f));
+                Vector3 C6 = this.LocalToWorld((new Vector3(this.F2.Width, this.F2.Height, 0) + this.F2.FaceOffsetFromCenter).Mul(0.5f));
+                Vector3 C7 = this.LocalToWorld((new Vector3(this.F2.Width, -this.F2.Height, 0) + this.F2.FaceOffsetFromCenter).Mul(0.5f));
+                Vector3 C8 = this.LocalToWorld((new Vector3(-this.F2.Width, -this.F2.Height, 0) + this.F2.FaceOffsetFromCenter).Mul(0.5f));
+
+                FrustumPointsPositions = new FrustumPointsPositions(C1, C2, C3, C4, C5, C6, C7, C8);
+            }
+            else
+            {
+                FrustumPointsPositions = default;
+            }
+        }
+
+        public static FrustumV2Struct FromFrustumV2PointProjection(TransformStruct FrustumWorldTransform, Vector3 WorldStartAngleProjection, FrustumV2 FrustumV2)
+        {
+            return new FrustumV2Struct
+            {
+                Center = FrustumV2.Center,
+                DeltaRotation = FrustumV2.DeltaRotation,
+                FaceDistance = FrustumV2.FaceDistance,
+                F1 = FrustumFaceV2Struct.FromFrustumFaveV2(FrustumV2.F1),
+                F2 = FrustumFaceV2Struct.FromFrustumFaveV2(FrustumV2.F2),
+                FrustumWorldTransform = FrustumWorldTransform,
+                FrustumCalculationType = FrustumCalculationType.PROJECTION,
+                WorldStartAngleProjection = WorldStartAngleProjection
+            };
+        }
+    }
+
+    public struct FrustumFaceV2Struct
+    {
+        public Vector3 FaceOffsetFromCenter;
+        public float Height;
+        public float Width;
+
+        public static FrustumFaceV2Struct FromFrustumFaveV2(FrustumFaceV2 FrustumFaceV2)
+        {
+            return new FrustumFaceV2Struct
+            {
+                FaceOffsetFromCenter = FrustumFaceV2.FaceOffsetFromCenter,
+                Height = FrustumFaceV2.Height,
+                Width = FrustumFaceV2.Width
+            };
+        }
+    }
 }
