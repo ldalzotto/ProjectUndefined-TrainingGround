@@ -73,13 +73,11 @@ namespace RTPuzzle
         public void AddNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Add(ObstacleInteractiveObject.SquareObstacleSystem);
-            ObstaclesListenerManager.Get().OnAddedNearObstacleToObstacleListener(this, ObstacleInteractiveObject);
         }
 
         public void RemoveNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Remove(ObstacleInteractiveObject.SquareObstacleSystem);
-            ObstaclesListenerManager.Get().OnRemovedNearObstacleToObstacleListener(this, ObstacleInteractiveObject);
         }
 
     }

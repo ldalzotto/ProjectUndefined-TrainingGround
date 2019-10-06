@@ -12,33 +12,20 @@ namespace RTPuzzle
             return Instance;
         }
 
-        private int ObstacleListenerCounter = 0;
-        public int TotalNearObstaclesCounter { get; private set; } = 0;
+        private int ObstacleListenerAddedCounter = 0;
 
         private List<ObstacleListener> obstacleListeners = new List<ObstacleListener>();
 
         public int OnObstacleListenerCreation(ObstacleListener obstacleListener)
         {
             this.obstacleListeners.Add(obstacleListener);
-            this.ObstacleListenerCounter += 1;
-            return this.ObstacleListenerCounter;
+            this.ObstacleListenerAddedCounter += 1;
+            return this.ObstacleListenerAddedCounter;
         }
 
         public void OnObstacleListenerDestroyed(ObstacleListener obstacleListener)
         {
             this.obstacleListeners.Remove(obstacleListener);
-            this.ObstacleListenerCounter -= 1;
-            this.TotalNearObstaclesCounter -= obstacleListener.NearSquareObstacles.Count;
-        }
-
-        public void OnAddedNearObstacleToObstacleListener(ObstacleListener obstacleListener, ObstacleInteractiveObject obstacleInteractiveObject)
-        {
-            this.TotalNearObstaclesCounter += 1;
-        }
-
-        public void OnRemovedNearObstacleToObstacleListener(ObstacleListener obstacleListener, ObstacleInteractiveObject obstacleInteractiveObject)
-        {
-            this.TotalNearObstaclesCounter -= 1;
         }
 
         #region Data Retrieval

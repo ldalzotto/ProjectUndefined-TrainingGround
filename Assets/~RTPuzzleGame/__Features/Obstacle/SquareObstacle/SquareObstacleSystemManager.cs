@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace RTPuzzle
 {
@@ -12,20 +13,19 @@ namespace RTPuzzle
             return Instance;
         }
 
-        public int SquareObstacleSystemCounter { get; private set; } = 0;
-        public int TotalFrustumCounter { get; private set; } = 0;
+        public List<SquareObstacleSystem> AllSquareObstacleSystems { get; private set; } = new List<SquareObstacleSystem>();
+        public int SquareObstacleSystemAddedCounter { get; private set; } = 0;
 
         public int OnSquareObstacleSystemCreated(SquareObstacleSystem SquareObstacleSystem)
         {
-            this.SquareObstacleSystemCounter += 1;
-            this.TotalFrustumCounter += SquareObstacleSystem.FaceFrustums.Count;
-            return this.SquareObstacleSystemCounter;
+            this.AllSquareObstacleSystems.Add(SquareObstacleSystem);
+            this.SquareObstacleSystemAddedCounter += 1;
+            return this.SquareObstacleSystemAddedCounter;
         }
 
         public void OnSquareObstacleSystemDestroyed(SquareObstacleSystem SquareObstacleSystem)
         {
-            this.TotalFrustumCounter -= SquareObstacleSystem.FaceFrustums.Count;
-            this.SquareObstacleSystemCounter -= 1;
+            this.AllSquareObstacleSystems.Remove(SquareObstacleSystem);
         }
 
         public void OnDestroy()

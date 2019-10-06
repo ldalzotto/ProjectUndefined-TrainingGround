@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
+using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace RTPuzzle
@@ -24,8 +25,10 @@ namespace RTPuzzle
         #endregion
 
         private Dictionary<ObstacleListener, TransformStruct> ObstacleListenerLastFramePositions = new Dictionary<ObstacleListener, TransformStruct>();
+        private Dictionary<SquareObstacleSystem, TransformStruct> SquareObstacleLastFramePositions = new Dictionary<SquareObstacleSystem, TransformStruct>();
 
         private List<ObstacleListener> obstacleListenersThatHasChangedThisFrame = new List<ObstacleListener>();
+        private Dictionary<ObstacleListener, List<SquareObstacleSystem>> singleObstacleSystemsThatHasChangedThisFrame = new Dictionary<ObstacleListener, List<SquareObstacleSystem>>();
 
         //ObstacleListener -> SquareObstacleSystem -> FrustumPositions
         private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedFrustums = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
@@ -37,7 +40,7 @@ namespace RTPuzzle
 
             var allObstaclesListeners = this.ObstaclesListenerManager.GetAllObstacleListeners();
 
-            int nearObstaclesCounter = 0;
+            int occlusionCalculationCounter = 0;
             int totalFrustumCounter = 0;
 
             //Position change detection
@@ -45,80 +48,81 @@ namespace RTPuzzle
             {
                 this.ObstacleListenerLastFramePositions.TryGetValue(obstacleListener, out TransformStruct lastFramePosition);
                 bool hasChanged = !obstacleListener.AssociatedRangeObject.GetTransform().IsEqualTo(lastFramePosition);
+
+                //The obstacle listener has changed -> all associated near square obstacles are updated
                 if (hasChanged)
                 {
                     this.obstacleListenersThatHasChangedThisFrame.Add(obstacleListener);
-                    nearObstaclesCounter += obstacleListener.NearSquareObstacles.Count;
-
-
-                    this.CalculatedFrustums.TryGetValue(obstacleListener.ObstacleListenerUniqueID, out Dictionary<int, List<FrustumPointsPositions>> obstalceFrustumPointsPositions);
-                    if (obstalceFrustumPointsPositions == null)
-                    {
-                        this.CalculatedFrustums.Add(obstacleListener.ObstacleListenerUniqueID, new Dictionary<int, List<FrustumPointsPositions>>());
-                        obstalceFrustumPointsPositions = this.CalculatedFrustums[obstacleListener.ObstacleListenerUniqueID];
-                    }
 
                     foreach (var squareObstacle in obstacleListener.NearSquareObstacles)
                     {
+                        occlusionCalculationCounter += 1;
                         totalFrustumCounter += squareObstacle.FaceFrustums.Count;
+                        this.ClearAndCreateCalculatedFrustums(obstacleListener, squareObstacle);
+                    }
+                }
 
-                        obstalceFrustumPointsPositions.TryGetValue(squareObstacle.SquareObstacleSystemUniqueID, out List<FrustumPointsPositions> squareObstacleFrustumPositions);
-                        if (squareObstacleFrustumPositions == null)
+                //The obstacle listener hasn't changed -> we compate near square obstacles positions for update
+                else
+                {
+                    this.singleObstacleSystemsThatHasChangedThisFrame.TryGetValue(obstacleListener, out List<SquareObstacleSystem> squareObstacleSystemsThatChanged);
+                    if (squareObstacleSystemsThatChanged == null)
+                    {
+                        this.singleObstacleSystemsThatHasChangedThisFrame.Add(obstacleListener, new List<SquareObstacleSystem>());
+                        squareObstacleSystemsThatChanged = this.singleObstacleSystemsThatHasChangedThisFrame[obstacleListener];
+                    }
+
+
+                    foreach (var squareObstacle in obstacleListener.NearSquareObstacles)
+                    {
+                        this.SquareObstacleLastFramePositions.TryGetValue(squareObstacle, out TransformStruct lastFrameSquareObstacleTrasform);
+                        if (!squareObstacle.GetTransform().IsEqualTo(lastFrameSquareObstacleTrasform))
                         {
-                            obstalceFrustumPointsPositions.Add(squareObstacle.SquareObstacleSystemUniqueID, new List<FrustumPointsPositions>());
-                            squareObstacleFrustumPositions = obstalceFrustumPointsPositions[squareObstacle.SquareObstacleSystemUniqueID];
-                        }
-                        else
-                        {
-                            squareObstacleFrustumPositions.Clear();
+                            //We add this single couple (listener <-> obstacle) to calculation
+                            squareObstacleSystemsThatChanged.Add(squareObstacle);
+                            occlusionCalculationCounter += 1;
+                            totalFrustumCounter += squareObstacle.FaceFrustums.Count;
+                            this.ClearAndCreateCalculatedFrustums(obstacleListener, squareObstacle);
                         }
                     }
                 }
-                else
-                {
-                    this.obstacleListenersThatHasChangedThisFrame.Remove(obstacleListener);
-                }
+
+                //Update Obstacle Listener Positions
                 this.ObstacleListenerLastFramePositions[obstacleListener] = obstacleListener.AssociatedRangeObject.GetTransform();
             }
 
-            if (nearObstaclesCounter > 0)
+            //Update Square Obstacle Positions
+            foreach (var squareObstacleSystem in this.SquareObstacleSystemManager.AllSquareObstacleSystems)
+            {
+                this.SquareObstacleLastFramePositions[squareObstacleSystem] = squareObstacleSystem.GetTransform();
+            }
+
+            if (occlusionCalculationCounter > 0)
             {
 
-                NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas = new NativeArray<FrustumOcclusionCalculationData>(nearObstaclesCounter, Allocator.TempJob);
+                NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas = new NativeArray<FrustumOcclusionCalculationData>(occlusionCalculationCounter, Allocator.TempJob);
                 NativeArray<FrustumV2Indexed> AssociatedFrustums = new NativeArray<FrustumV2Indexed>(totalFrustumCounter, Allocator.TempJob);
                 NativeArray<FrustumPointsWithInitializedFlag> Results = new NativeArray<FrustumPointsWithInitializedFlag>(totalFrustumCounter, Allocator.TempJob);
 
-                int currentNearObstacleCounter = 0;
+                int currentOcclusionCalculationCounter = 0;
                 int currentFrustumCounter = 0;
 
-
-                foreach (var obstacleListenerThatChanged in obstacleListenersThatHasChangedThisFrame)
+                foreach (var obstacleListenerThatChanged in this.obstacleListenersThatHasChangedThisFrame)
                 {
                     foreach (var nearSquareObstacle in obstacleListenerThatChanged.NearSquareObstacles)
                     {
-                        int beginFrustumIndex = currentFrustumCounter;
-                        foreach (var nearSquaureObstacleFrustum in nearSquareObstacle.FaceFrustums)
+                        AddToArrays(ref FrustumOcclusionCalculationDatas, AssociatedFrustums, ref currentOcclusionCalculationCounter, ref currentFrustumCounter, obstacleListenerThatChanged, nearSquareObstacle);
+                    }
+                }
+
+                foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
+                {
+                    if (singleObstacleSystemThatChanged.Value.Count > 0)
+                    {
+                        foreach (var nearSquareObstacle in singleObstacleSystemThatChanged.Value)
                         {
-                            AssociatedFrustums[currentFrustumCounter] = new FrustumV2Indexed
-                            {
-                                FrustumV2 = nearSquaureObstacleFrustum,
-                                CalculationDataIndex = currentNearObstacleCounter
-                            };
-                            currentFrustumCounter += 1;
+                            AddToArrays(ref FrustumOcclusionCalculationDatas, AssociatedFrustums, ref currentOcclusionCalculationCounter, ref currentFrustumCounter, singleObstacleSystemThatChanged.Key, nearSquareObstacle);
                         }
-
-                        FrustumOcclusionCalculationDatas[currentNearObstacleCounter] = new FrustumOcclusionCalculationData
-                        {
-                            FrustumCalculationDataID = new FrustumCalculationDataID
-                            {
-                                ObstacleListenerUniqueID = obstacleListenerThatChanged.ObstacleListenerUniqueID,
-                                SquareObstacleSystemUniqueID = nearSquareObstacle.SquareObstacleSystemUniqueID,
-                            },
-                            ObstacleListenerTransform = obstacleListenerThatChanged.AssociatedRangeObject.GetTransform(),
-                            SquareObstacleTransform = nearSquareObstacle.GetTransform()
-                        };
-
-                        currentNearObstacleCounter += 1;
                     }
                 }
 
@@ -127,7 +131,7 @@ namespace RTPuzzle
                     AssociatedFrustums = AssociatedFrustums,
                     FrustumOcclusionCalculationDatas = FrustumOcclusionCalculationDatas,
                     Results = Results
-                }.Schedule(SquareObstacleSystemManager.TotalFrustumCounter, 36).Complete();
+                }.Schedule(totalFrustumCounter, 36).Complete();
 
                 //Store results
                 foreach (var result in Results)
@@ -136,6 +140,13 @@ namespace RTPuzzle
                     {
                         this.CalculatedFrustums[result.FrustumCalculationDataID.ObstacleListenerUniqueID][result.FrustumCalculationDataID.SquareObstacleSystemUniqueID].Add(result.FrustumPointsPositions);
                     }
+                }
+
+                //Clear data that changed
+                this.obstacleListenersThatHasChangedThisFrame.Clear();
+                foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
+                {
+                    singleObstacleSystemThatChanged.Value.Clear();
                 }
 
                 FrustumOcclusionCalculationDatas.Dispose();
@@ -147,9 +158,56 @@ namespace RTPuzzle
             Profiler.EndSample();
         }
 
+        private static void AddToArrays(ref NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas, NativeArray<FrustumV2Indexed> AssociatedFrustums,
+            ref int currentOcclusionCalculationCounter, ref int currentFrustumCounter, ObstacleListener obstacleListenerThatChanged, SquareObstacleSystem nearSquareObstacle)
+        {
+            Debug.Log(obstacleListenerThatChanged.ObstacleListenerUniqueID + " " + nearSquareObstacle.SquareObstacleSystemUniqueID);
+            foreach (var nearSquaureObstacleFrustum in nearSquareObstacle.FaceFrustums)
+            {
+                AssociatedFrustums[currentFrustumCounter] = new FrustumV2Indexed
+                {
+                    FrustumV2 = nearSquaureObstacleFrustum,
+                    CalculationDataIndex = currentOcclusionCalculationCounter
+                };
+                currentFrustumCounter += 1;
+            }
+
+            FrustumOcclusionCalculationDatas[currentOcclusionCalculationCounter] = new FrustumOcclusionCalculationData
+            {
+                FrustumCalculationDataID = new FrustumCalculationDataID
+                {
+                    ObstacleListenerUniqueID = obstacleListenerThatChanged.ObstacleListenerUniqueID,
+                    SquareObstacleSystemUniqueID = nearSquareObstacle.SquareObstacleSystemUniqueID,
+                },
+                ObstacleListenerTransform = obstacleListenerThatChanged.AssociatedRangeObject.GetTransform(),
+                SquareObstacleTransform = nearSquareObstacle.GetTransform()
+            };
+
+            currentOcclusionCalculationCounter += 1;
+        }
+
         public void OnDestroy()
         {
             Instance = null;
+        }
+
+        private void ClearAndCreateCalculatedFrustums(ObstacleListener obstacleListener, SquareObstacleSystem SquareObstacleSystem)
+        {
+            this.CalculatedFrustums.TryGetValue(obstacleListener.ObstacleListenerUniqueID, out Dictionary<int, List<FrustumPointsPositions>> obstalceFrustumPointsPositions);
+            if (obstalceFrustumPointsPositions == null)
+            {
+                this.CalculatedFrustums.Add(obstacleListener.ObstacleListenerUniqueID, new Dictionary<int, List<FrustumPointsPositions>>());
+                obstalceFrustumPointsPositions = this.CalculatedFrustums[obstacleListener.ObstacleListenerUniqueID];
+            }
+            obstalceFrustumPointsPositions.TryGetValue(SquareObstacleSystem.SquareObstacleSystemUniqueID, out List<FrustumPointsPositions> squareObstacleFrustumPositions);
+            if (squareObstacleFrustumPositions == null)
+            {
+                obstalceFrustumPointsPositions.Add(SquareObstacleSystem.SquareObstacleSystemUniqueID, new List<FrustumPointsPositions>());
+            }
+            else
+            {
+                squareObstacleFrustumPositions.Clear();
+            }
         }
 
     }
@@ -191,26 +249,6 @@ namespace RTPuzzle
     {
         public int ObstacleListenerUniqueID;
         public int SquareObstacleSystemUniqueID;
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is FrustumCalculationDataID))
-            {
-                return false;
-            }
-
-            var iD = (FrustumCalculationDataID)obj;
-            return ObstacleListenerUniqueID == iD.ObstacleListenerUniqueID &&
-                   SquareObstacleSystemUniqueID == iD.SquareObstacleSystemUniqueID;
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = 880951818;
-            hashCode = hashCode * -1521134295 + ObstacleListenerUniqueID.GetHashCode();
-            hashCode = hashCode * -1521134295 + SquareObstacleSystemUniqueID.GetHashCode();
-            return hashCode;
-        }
     }
 
     public struct FrustumOcclusionCalculationData
