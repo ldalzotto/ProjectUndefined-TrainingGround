@@ -16,8 +16,7 @@ namespace RTPuzzle
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
         private CoreMaterialConfiguration CoreMaterialConfiguration;
 
-        private ObstaclesListenerManager ObstaclesListenerManager;
-        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
+        private ObstaclesListenerManager ObstaclesListenerManager = ObstaclesListenerManager.Get();
         #endregion
 
         #region Command Buffers
@@ -50,8 +49,6 @@ namespace RTPuzzle
 
             #region External Dependencies
             PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
-            ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager; ;
-            ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
             this.CoreMaterialConfiguration = CoreGameSingletonInstances.CoreStaticConfigurationContainer.CoreStaticConfiguration.CoreMaterialConfiguration;
             #endregion
 

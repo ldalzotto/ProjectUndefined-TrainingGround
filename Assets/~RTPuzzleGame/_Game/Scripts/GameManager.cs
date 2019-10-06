@@ -26,8 +26,6 @@ namespace RTPuzzle
         private GameOverManager GameOverManager;
         private DottedLineRendererManager DottedLineRendererManager;
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2;
-        private ObstaclesListenerManager ObstaclesListenerManager;
-        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         private InteractiveObjectContainer InteractiveObjectContainer;
         private CameraMovementManager CameraMovementManager;
         private CircleFillBarRendererManager CircleFillBarRendererManager;
@@ -73,8 +71,6 @@ namespace RTPuzzle
             NpcInteractionRingRendererManager = PuzzleGameSingletonInstances.NpcInteractionRingRendererManager;
             GameOverManager = PuzzleGameSingletonInstances.GameOverManager;
             DottedLineRendererManager = PuzzleGameSingletonInstances.DottedLineRendererManager;
-            ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
-            ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
             CameraMovementManager = CoreGameSingletonInstances.CameraMovementManager;
             CircleFillBarRendererManager = CoreGameSingletonInstances.CircleFillBarRendererManager;
             PuzzleTutorialEventSender = PuzzleGameSingletonInstances.PuzzleTutorialEventSender;
@@ -93,8 +89,6 @@ namespace RTPuzzle
             PuzzleGameSingletonInstances.PuzzleGameConfigurationManager.Init();
 
             CameraMovementManager.Init();
-            ObstacleFrustumCalculationManager.Init();
-            ObstaclesListenerManager.Init();
             GroundEffectsManagerV2.Init(LevelManager.GetCurrentLevel());
             PuzzleGameSingletonInstances.RangeEventsManager.Init();
             InteractiveObjectContainer.Init();
@@ -236,6 +230,8 @@ namespace RTPuzzle
             RangeObjectV2Manager.Get().OnDestroy();
             InteractiveObjectV2Manager.Get().OnDestroy();
             ObstacleOcclusionCalculationManagerV2.Get().OnDestroy();
+            SquareObstacleSystemManager.Get().OnDestroy();
+            ObstaclesListenerManager.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()

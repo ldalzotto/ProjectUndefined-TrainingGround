@@ -13,4 +13,9 @@ public struct TransformStruct
         this.WorldRotation = transform.rotation;
         this.LossyScale = transform.lossyScale;
     }
+
+    public bool IsEqualTo(TransformStruct other)
+    {
+        return (this.WorldPosition == other.WorldPosition) && (this.WorldRotation == other.WorldRotation) && (this.LossyScale == other.LossyScale);
+    }
 }

@@ -15,21 +15,27 @@ namespace RTPuzzle
 
         public static bool IsInside(FrustumRangeObjectV2 FrustumRangeObjectV2, BoxCollider InsideCollider)
         {
-            var FrustumWorldPositions = FrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
-            return Intersection.FrustumBoxIntersection(FrustumWorldPositions, InsideCollider) || Intersection.BoxEntirelyContainedInFrustum(FrustumWorldPositions, InsideCollider);
+            //TODO
+            return false;
+           // var FrustumWorldPositions = FrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
+           // return Intersection.FrustumBoxIntersection(FrustumWorldPositions, InsideCollider) || Intersection.BoxEntirelyContainedInFrustum(FrustumWorldPositions, InsideCollider);
         }
 
         public static bool IsInside(RoundedFrustumRangeObjectV2 RoundedFrustumRangeObjectV2, BoxCollider InsideCollder)
         {
-            var FrustumWorldPositions = RoundedFrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
-            return Intersection.BoxIntersectsOrEntirelyContainedInSphere(InsideCollder.center, InsideCollder.size, InsideCollder.transform.localToWorldMatrix, RoundedFrustumRangeObjectV2.RangeGameObjectV2.BoundingCollider.transform.position, RoundedFrustumRangeObjectV2.GetFrustum().GetFrustumFaceRadius())
-                && (Intersection.FrustumBoxIntersection(FrustumWorldPositions, InsideCollder) || Intersection.BoxEntirelyContainedInFrustum(FrustumWorldPositions, InsideCollder));
+            //TODO
+            return true;
+       //     var FrustumWorldPositions = RoundedFrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
+         //   return Intersection.BoxIntersectsOrEntirelyContainedInSphere(InsideCollder.center, InsideCollder.size, InsideCollder.transform.localToWorldMatrix, RoundedFrustumRangeObjectV2.RangeGameObjectV2.BoundingCollider.transform.position, RoundedFrustumRangeObjectV2.GetFrustum().GetFrustumFaceRadius())
+          //      && (Intersection.FrustumBoxIntersection(FrustumWorldPositions, InsideCollder) || Intersection.BoxEntirelyContainedInFrustum(FrustumWorldPositions, InsideCollder));
         }
 
         public static bool Isinside(FrustumRangeObjectV2 FrustumRangeObjectV2, BoxCollider InsideCollider)
         {
-            var FrustumWorldPositions = FrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
-            return Intersection.FrustumBoxIntersection(FrustumWorldPositions, InsideCollider) || Intersection.BoxEntirelyContainedInFrustum(FrustumWorldPositions, InsideCollider);
+            //TODO
+            return true;
+          //  var FrustumWorldPositions = FrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
+         //  return Intersection.FrustumBoxIntersection(FrustumWorldPositions, InsideCollider) || Intersection.BoxEntirelyContainedInFrustum(FrustumWorldPositions, InsideCollider);
         }
 
         public static bool IsInside(SphereRangeObjectV2 SphereRangeObjectV2, Vector3 worldPointComparison)
@@ -45,8 +51,10 @@ namespace RTPuzzle
 
         public static bool IsInside(FrustumRangeObjectV2 FrustumRangeObjectV2, Vector3 worldPointComparison)
         {
-            var FrustumWorldPositions = FrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
-            return Intersection.PointInsideFrustum(FrustumWorldPositions, worldPointComparison);
+            //TODO
+            return true;
+          //  var FrustumWorldPositions = FrustumRangeObjectV2.GetFrustum().FrustumPointsPositions;
+         //   return Intersection.PointInsideFrustum(FrustumWorldPositions, worldPointComparison);
         }
 
         public static bool IsOccluded(RangeObjectV2 RangeObjectV2, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)

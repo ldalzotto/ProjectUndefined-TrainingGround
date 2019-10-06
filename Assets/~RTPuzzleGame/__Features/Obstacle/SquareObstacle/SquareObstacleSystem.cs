@@ -3,7 +3,6 @@ using CoreGame;
 using InteractiveObjectTest;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace RTPuzzle
 {
@@ -16,15 +15,13 @@ namespace RTPuzzle
 
     public class SquareObstacleSystem
     {
+        public int SquareObstacleSystemUniqueID { get; private set; }
+
         public SquareObstacleSystemInitializationData SquareObstacleSystemInitializationData { get; private set; }
         public List<FrustumV2> FaceFrustums { get; private set; }
 
         #region Internal Dependencies
         private ObstacleInteractiveObject AssociatedInteractiveObject;
-        #endregion
-
-        #region Obstacle Calculation Data
-        public TransformStruct LastFrameTransform;
         #endregion
 
         #region Data Retrieval
@@ -54,6 +51,13 @@ namespace RTPuzzle
             this.CreateAndAddFrustum(Quaternion.Euler(0, -90, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(90, 0, 0), 1);
             this.CreateAndAddFrustum(Quaternion.Euler(-90, 0, 0), 1);
+
+            this.SquareObstacleSystemUniqueID = SquareObstacleSystemManager.Get().OnSquareObstacleSystemCreated(this);
+        }
+
+        public void Destroy()
+        {
+            SquareObstacleSystemManager.Get().OnSquareObstacleSystemDestroyed(this);
         }
 
         private void CreateAndAddFrustum(Quaternion deltaRotation, float F1FaceZOffset)
@@ -66,37 +70,6 @@ namespace RTPuzzle
             frustum.F1.FaceOffsetFromCenter.z = F1FaceZOffset;
             this.FaceFrustums.Add(frustum);
         }
-
-        public List<FrustumPointsPositions> ComputeOcclusionFrustums_FromDedicatedThread(SquareObstacleFrustumCalculationResult obstacleCalucation)
-        {
-            Profiler.BeginThreadProfiling("ObstacleOcclusions", "ObstacleOcclusions");
-            Profiler.BeginSample("ObstacleOcclusions");
-
-            List<FrustumPointsPositions> frustumPointsWorldPositions = new List<FrustumPointsPositions>();
-
-
-            foreach (var faceFrustum in this.FaceFrustums)
-            {
-                faceFrustum.SetCalculationDataForPointProjection(obstacleCalucation.WorldPositionStartAngleDefinition, obstacleCalucation.ObstaclePosition, obstacleCalucation.ObstacleRotation, obstacleCalucation.ObstacleLossyScale);
-                var FrustumPointsPositions = faceFrustum.FrustumPointsPositions;
-                Vector3 frontFaceNormal = Vector3.Cross(FrustumPointsPositions.FC2 - FrustumPointsPositions.FC1, FrustumPointsPositions.FC4 - FrustumPointsPositions.FC1).normalized;
-
-                //We filter faceFrustums that are not facing the initial calculation point -> they are useless because always occluded by front faces
-                if (Vector3.Dot(frontFaceNormal, FrustumPointsPositions.FC1 - obstacleCalucation.WorldPositionStartAngleDefinition) < 0)
-                {
-                    continue;
-                }
-
-                frustumPointsWorldPositions.Add(FrustumPointsPositions);
-
-            }
-
-            Profiler.EndSample();
-            Profiler.EndThreadProfiling();
-            return frustumPointsWorldPositions;
-
-        }
-
     }
 
 }

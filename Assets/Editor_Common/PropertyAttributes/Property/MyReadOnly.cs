@@ -2,6 +2,6 @@
 using UnityEditor;
 
 [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = false)]
-public class ReadOnly : PropertyAttribute
+public class MyReadOnly : PropertyAttribute
 {
 }

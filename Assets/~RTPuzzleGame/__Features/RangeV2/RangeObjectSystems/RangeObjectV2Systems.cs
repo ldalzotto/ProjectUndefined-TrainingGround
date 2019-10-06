@@ -33,10 +33,6 @@ namespace RTPuzzle
             this.RangeWorldPositionChangeListener.Clear();
             var RangeObjectV2GetWorldTransformEventReturn = this.RangeObjectV2Ref.GetTransform();
             this.BlittableTransformChangeListenerManager.Tick(RangeObjectV2GetWorldTransformEventReturn.WorldPosition, RangeObjectV2GetWorldTransformEventReturn.WorldRotation);
-            if (this.RangeWorldPositionChangeListener.hasChanged)
-            {
-                this.RangeObjectV2Ref.ReceiveEvent(new RangeTransformChanged { });
-            }
         }
     }
 
@@ -147,12 +143,12 @@ namespace RTPuzzle
 
         public FrustumRangeWorldPositionCalulcationSystem(RangeObjectV2 rangeObjectV2Ref, FrustumV2 DefinitionFrustum) : base(rangeObjectV2Ref)
         {
-            this.FrustumV2 = DefinitionFrustum.Clone();
+            this.FrustumV2 = DefinitionFrustum;
         }
 
         public void ReceiveEvent(FrustumWorldPositionRecalculation FrustumWorldPositionRecalculation)
         {
-            this.FrustumV2.SetCalculationDataForFaceBasedCalculation(FrustumWorldPositionRecalculation.WorldPosition, FrustumWorldPositionRecalculation.WorldRotation, FrustumWorldPositionRecalculation.LossyScale);
+         //   this.FrustumV2.SetCalculationDataForFaceBasedCalculation(FrustumWorldPositionRecalculation.WorldPosition, FrustumWorldPositionRecalculation.WorldRotation, FrustumWorldPositionRecalculation.LossyScale);
         }
     }
 

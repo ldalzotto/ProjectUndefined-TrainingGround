@@ -117,11 +117,7 @@ namespace RTPuzzle
             base.Tick(d);
             this.RangeWorldPositionChangeSystem.Tick(d);
         }
-
-        public override void ReceiveEvent(RangeTransformChanged RangeTransformChanged)
-        {
-            RangeObjectV2Commons.HandlingRangeTransformChangedForFrustums(this.RangeGameObjectV2, this.FrustumRangeWorldPositionCalulcationSystem);
-        }
+        
     }
 
     public class RoundedFrustumRangeObjectV2 : RangeObjectV2
@@ -148,29 +144,10 @@ namespace RTPuzzle
             base.Tick(d);
             this.RangeWorldPositionChangeSystem.Tick(d);
         }
-
-        public override void ReceiveEvent(RangeTransformChanged RangeTransformChanged)
-        {
-            RangeObjectV2Commons.HandlingRangeTransformChangedForFrustums(this.RangeGameObjectV2, this.FrustumRangeWorldPositionCalulcationSystem);
-        }
     }
 
     public struct SetWorldPositionEvent
     {
         public Vector3 WorldPosition;
-    }
-
-    public static class RangeObjectV2Commons
-    {
-        public static void HandlingRangeTransformChangedForFrustums(RangeGameObjectV2 RangeGameObjectV2, FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem)
-        {
-            var RangeObjectTransformStruct = RangeGameObjectV2.GetTransform();
-            FrustumRangeWorldPositionCalulcationSystem.ReceiveEvent(new FrustumWorldPositionRecalculation
-            {
-                WorldPosition = RangeObjectTransformStruct.WorldPosition,
-                WorldRotation = RangeObjectTransformStruct.WorldRotation,
-                LossyScale = RangeObjectTransformStruct.LossyScale
-            });
-        }
     }
 }

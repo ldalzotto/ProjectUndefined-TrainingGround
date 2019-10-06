@@ -147,6 +147,8 @@ public static class SceneHandlerDrawer
 
     private static void DrawFrustum(FrustumV2 frustum, Transform transform, bool isRounded)
     {
+        //TODO
+        /*
         frustum.SetCalculationDataForFaceBasedCalculation(transform.position, transform.rotation, transform.lossyScale);
         var FrustumPointsPositions = frustum.FrustumPointsPositions;
 
@@ -165,6 +167,7 @@ public static class SceneHandlerDrawer
         }
 
         Handles.color = oldGizmoColor;
+        */
     }
 
     private static void DrawFace(Vector3 C1, Vector3 C2, Vector3 C3, Vector3 C4)

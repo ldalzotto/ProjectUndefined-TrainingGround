@@ -67,9 +67,9 @@ public static class CodeGenerationHelper
         {
             cutomAttributes.Add(new CodeAttributeDeclaration("System.Serializable"));
         }
-        else if (sourceCustomAttribute.GetType() == typeof(ReadOnly))
+        else if (sourceCustomAttribute.GetType() == typeof(MyReadOnly))
         {
-            cutomAttributes.Add(new CodeAttributeDeclaration(typeof(ReadOnly).Name));
+            cutomAttributes.Add(new CodeAttributeDeclaration(typeof(MyReadOnly).Name));
         }
         else if (sourceCustomAttribute.GetType() == typeof(CreateAssetMenuAttribute))
         {

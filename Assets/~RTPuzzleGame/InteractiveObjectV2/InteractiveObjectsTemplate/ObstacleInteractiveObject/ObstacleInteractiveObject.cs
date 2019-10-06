@@ -15,5 +15,11 @@ namespace InteractiveObjectTest
             this.InteractiveObjectTag = new InteractiveObjectTag { IsObstacle = true };
             this.SquareObstacleSystem = new SquareObstacleSystem(this, ObstacleInteractiveObjectInitializerData.SquareObstacleSystemInitializationData);
         }
+
+        public override void Destroy()
+        {
+            this.SquareObstacleSystem.Destroy();
+            base.Destroy();
+        }
     }
 }

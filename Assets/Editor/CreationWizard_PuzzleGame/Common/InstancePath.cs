@@ -23,26 +23,26 @@ namespace Editor_MainGameCreationWizard
             return AssetHelper.GetAssetPath(configurationAsset, false) + "/Data";
         }
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string LevelCompletionConditionDataPath = "Assets/~RTPuzzleGame/__Features/LevelCompletion/Configuration/CompletionCondition/Data";
         #endregion
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string LevelBasePath = "Assets/_Scenes";
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string PuzzleLevelDynamicsPath = "Assets/~CoreGame/LevelManagement/Prefab";
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string PuzzleLevelHierarchyDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelHierarchyConfiguration/Data";
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string LevelZoneSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/LevelZonesSceneConfiguration/Data";
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string LevelZoneChunkSceneConfigurationDataPath = "Assets/~CoreGame/Configuration/SubConfigurations/ChunkZonesSceneConfiguration/Data";
 
-        [ReadOnly()]
+        [MyReadOnly()]
         public static string LevelChunkBaseLevelPrefabPath = "Assets/~CoreGame/LevelManagement/Prefab";
 
     }

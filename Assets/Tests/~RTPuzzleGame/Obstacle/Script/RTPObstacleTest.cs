@@ -29,18 +29,7 @@ namespace Tests
             instanciatedRange.ReceiveEvent(new SetWorldPositionEvent { WorldPosition = PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position });
 
             yield return new WaitForFixedUpdate();
-
-            var ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
-            //wait for frustum calculation;
-            yield return new WaitUntil(() =>
-            {
-                var emptyCalculation =
-                ObstacleFrustumCalculationManager.CalculationResults.Values.ToList().SelectMany(r => r.Values).Select(r => r)
-                    .Where(r => r.CalculatedFrustumPositions.Count == 0)
-                    .ToList();
-
-                return emptyCalculation.Count > 0;
-            });
+            
 
             //Point Intersection
             Assert.IsFalse(this.IsInsideAndNotOccluded(instanciatedRange, TestPositionID.OBSTACLE_LISTENER_POSITION_1));

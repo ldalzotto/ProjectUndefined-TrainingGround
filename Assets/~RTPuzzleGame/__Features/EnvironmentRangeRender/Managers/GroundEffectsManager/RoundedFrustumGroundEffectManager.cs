@@ -15,6 +15,7 @@ namespace RTPuzzle
         {
 
             var RoundedFrustumRangeBufferData = new RoundedFrustumRangeBufferData();
+            /*
             var frustumPointsWorldPositions = this.RoundedFrustumRangeObjectRenderingDataProvider.Frustum.FrustumPointsPositions;
             RoundedFrustumRangeBufferData.FC1 = frustumPointsWorldPositions.FC1;
             RoundedFrustumRangeBufferData.FC2 = frustumPointsWorldPositions.FC2;
@@ -27,6 +28,7 @@ namespace RTPuzzle
             RoundedFrustumRangeBufferData.normal4 = frustumPointsWorldPositions.normal4;
             RoundedFrustumRangeBufferData.normal5 = frustumPointsWorldPositions.normal5;
             RoundedFrustumRangeBufferData.normal6 = frustumPointsWorldPositions.normal6;
+            */
 
             RoundedFrustumRangeBufferData.BoundingBoxMax = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.max;
             RoundedFrustumRangeBufferData.BoundingBoxMin = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.min;

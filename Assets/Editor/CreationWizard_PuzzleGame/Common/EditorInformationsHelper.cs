@@ -91,32 +91,32 @@ namespace Editor_MainGameCreationWizard
     [System.Serializable]
     public class PuzzleLevelCommonPrefabs
     {
-        [ReadOnly]
+        [MyReadOnly]
         public GameManagerPersistanceInstance GameManagerPersistanceInstance;
-        [ReadOnly]
+        [MyReadOnly]
         public GameObject CorePuzzleSceneElements;
-        [ReadOnly]
+        [MyReadOnly]
         public PuzzleDebugModule PuzzleDebugModule;
-        [ReadOnly]
+        [MyReadOnly]
         public LevelManager BasePuzzleLevelDynamics;
-        [ReadOnly]
+        [MyReadOnly]
         public LevelChunkType BaseLevelChunkPrefab;
-        [ReadOnly]
+        [MyReadOnly]
         public InteractiveObjectType BaseInteractiveObjectTypePrefab;
     }
 
     [System.Serializable]
     public class AdventureCommonPrefabs
     {
-        [ReadOnly]
+        [MyReadOnly]
         public GameObject BasePOIPrefab;
-        [ReadOnly]
+        [MyReadOnly]
         public LevelManager BaseAdventureLevelDynamics;
-        [ReadOnly]
+        [MyReadOnly]
         public GameObject CommonAdventureObjects;
-        [ReadOnly]
+        [MyReadOnly]
         public GameObject AdventureGameManagersNonPersistant;
-        [ReadOnly]
+        [MyReadOnly]
         public PointOfInterestTrackerModule BasePointOfInterestTrackerModule;
     }
 }

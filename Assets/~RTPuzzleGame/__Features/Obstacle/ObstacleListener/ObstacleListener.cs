@@ -1,13 +1,13 @@
 using CoreGame;
 using InteractiveObjectTest;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace RTPuzzle
 {
     public class ObstacleListener
     {
+        public int ObstacleListenerUniqueID { get; private set; }
         public float Radius;
 
         private List<SquareObstacleSystem> nearSquareObstacles;
@@ -22,36 +22,31 @@ namespace RTPuzzle
             AssociatedRangeObject = associatedRangeObject;
 
             #region External Dependencies
-            this.ObstacleFrustumCalculationManager = PuzzleGameSingletonInstances.ObstacleFrustumCalculationManager;
-            this.ObstaclesListenerManager = PuzzleGameSingletonInstances.ObstaclesListenerManager;
+            this.ObstaclesListenerManager = ObstaclesListenerManager.Get();
             #endregion
 
             this.nearSquareObstacles = new List<SquareObstacleSystem>();
-            this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
-            this.ObstacleFrustumCalculationManager.OnObstacleListenerCreation(this);
+            this.ObstacleListenerUniqueID = this.ObstaclesListenerManager.OnObstacleListenerCreation(this);
         }
 
         #region External Dependencies
-        private ObstacleFrustumCalculationManager ObstacleFrustumCalculationManager;
         private ObstaclesListenerManager ObstaclesListenerManager;
-        #endregion
-
-        #region Data For Multithreaded Calculation
-        public TransformStruct LastFrameTransform;
         #endregion
 
         public void OnObstacleListenerDestroyed()
         {
             Debug.Log(MyLog.Format("OnObstacleListenerDestroyed"));
             this.ObstaclesListenerManager.OnObstacleListenerDestroyed(this);
-            this.ObstacleFrustumCalculationManager.OnObstacleListenerDestroyed(this);
+            this.nearSquareObstacles.Clear();
         }
 
         #region Data Retrieval
         public List<FrustumPointsPositions> GetCalculatedFrustums()
         {
-            return this.ObstacleFrustumCalculationManager.GetResults(this).ConvertAll(obstacleFrustumCalculation => obstacleFrustumCalculation.CalculatedFrustumPositions)
-                    .SelectMany(r => r).ToList();
+            //TODO
+            return new List<FrustumPointsPositions>();
+            //      return this.ObstacleFrustumCalculationManager.GetResults(this).ConvertAll(obstacleFrustumCalculation => obstacleFrustumCalculation.CalculatedFrustumPositions)
+            //      .SelectMany(r => r).ToList();
         }
         #endregion
 
@@ -63,26 +58,30 @@ namespace RTPuzzle
         }
         public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, worldPositionPoint, forceObstacleOcclusionIfNecessary);
+            return false;
+            //TODO
+            //  return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, worldPositionPoint, forceObstacleOcclusionIfNecessary);
         }
         internal bool IsBoxOccludedByObstacles(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider, forceObstacleOcclusionIfNecessary);
+            //TODO
+            return false;
+            //  return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider, forceObstacleOcclusionIfNecessary);
         }
         #endregion
 
         public void AddNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Add(ObstacleInteractiveObject.SquareObstacleSystem);
-            this.ObstacleFrustumCalculationManager.OnObstacleAddedToListener(this, ObstacleInteractiveObject.SquareObstacleSystem);
+            ObstaclesListenerManager.Get().OnAddedNearObstacleToObstacleListener(this, ObstacleInteractiveObject);
         }
 
         public void RemoveNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Remove(ObstacleInteractiveObject.SquareObstacleSystem);
-            this.ObstacleFrustumCalculationManager.OnObstacleRemovedToListener(this, ObstacleInteractiveObject.SquareObstacleSystem);
+            ObstaclesListenerManager.Get().OnRemovedNearObstacleToObstacleListener(this, ObstacleInteractiveObject);
         }
-        
+
     }
 
 }

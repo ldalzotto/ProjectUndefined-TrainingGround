@@ -12,9 +12,10 @@ namespace RTPuzzle
 
         public FrustumRangeBufferData ToFrustumBuffer()
         {
+            var FrustumRangeBufferData = new FrustumRangeBufferData();
+            /*
             var frustumPointsLocalPositions =  this.FrustumRangeObjectRenderingDataprovider.Frustum.FrustumPointsPositions;
 
-            var FrustumRangeBufferData = new FrustumRangeBufferData();
             FrustumRangeBufferData.FC1 = this.FrustumRangeObjectRenderingDataprovider.BoundingCollider.transform.TransformPoint(frustumPointsLocalPositions.FC1);
             FrustumRangeBufferData.FC2 = this.FrustumRangeObjectRenderingDataprovider.BoundingCollider.transform.TransformPoint(frustumPointsLocalPositions.FC2);
             FrustumRangeBufferData.FC3 = this.FrustumRangeObjectRenderingDataprovider.BoundingCollider.transform.TransformPoint(frustumPointsLocalPositions.FC3);
@@ -23,7 +24,7 @@ namespace RTPuzzle
             FrustumRangeBufferData.FC6 = this.FrustumRangeObjectRenderingDataprovider.BoundingCollider.transform.TransformPoint(frustumPointsLocalPositions.FC6);
             FrustumRangeBufferData.FC7 = this.FrustumRangeObjectRenderingDataprovider.BoundingCollider.transform.TransformPoint(frustumPointsLocalPositions.FC7);
             FrustumRangeBufferData.FC8 = this.FrustumRangeObjectRenderingDataprovider.BoundingCollider.transform.TransformPoint(frustumPointsLocalPositions.FC8);
-            
+            */
             if (this.rangeTypeInherentConfigurationData.RangeColorProvider != null)
             {
                 FrustumRangeBufferData.AuraColor = this.rangeTypeInherentConfigurationData.RangeColorProvider.Invoke();

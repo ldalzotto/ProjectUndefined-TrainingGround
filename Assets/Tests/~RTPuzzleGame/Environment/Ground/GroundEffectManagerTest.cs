@@ -22,17 +22,7 @@ namespace Tests
                 attractiveObject = AttractiveObjectDefinition.AttractiveObjectOnly(InteractiveObjectTestID.TEST_2, 20.99f, 999999f).Instanciate(PuzzleSceneTestHelper.FindTestPosition(TestPositionID.ATTRACTIVE_OBJECT_NOMINAL).position);
             });
 
-            var ObstacleFrustumCalculationManager = GameObject.FindObjectOfType<ObstacleFrustumCalculationManager>();
-            //wait for frustum calculation;
-            yield return new WaitUntil(() =>
-            {
-                var emptyCalculation =
-                ObstacleFrustumCalculationManager.CalculationResults.Values.ToList().SelectMany(r => r.Values).Select(r => r)
-                    .Where(r => r.CalculatedFrustumPositions.Count == 0)
-                    .ToList();
-
-                return emptyCalculation.Count > 0;
-            });
+        
 
             yield return new WaitForEndOfFrame();
             var GroundEffectsManagerV2 = GameObject.FindObjectOfType<GroundEffectsManagerV2>();
