@@ -232,8 +232,13 @@ namespace RTPuzzle
             var rangeObjectListener = this.GroundEffectManager.GetObstacleListener();
             if (rangeObjectListener != null)
             {
-                var obstacleFrustums = rangeObjectListener.GetCalculatedFrustums();
-                this.obstacleFrustumBuffer.Tick((bufferData) => bufferData.AddRange(obstacleFrustums));
+                this.obstacleFrustumBuffer.Tick((bufferData) =>
+                {
+                    rangeObjectListener.ForEachCalculatedFrustum((calculatedFrustums) =>
+                    {
+                        bufferData.Add(calculatedFrustums);
+                    });
+                });
             }
         }
 

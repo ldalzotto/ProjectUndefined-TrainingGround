@@ -1,5 +1,6 @@
 using CoreGame;
 using InteractiveObjectTest;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,15 +46,15 @@ namespace RTPuzzle
         }
 
         #region Data Retrieval
-        public List<FrustumPointsPositions> GetCalculatedFrustums()
+        public void ForEachCalculatedFrustum(Action<FrustumPointsPositions> action)
         {
-            var returnList = new List<FrustumPointsPositions>();
-            foreach(var nearSquareObstacle in this.nearSquareObstacles)
+            foreach (var nearSquareObstacle in this.nearSquareObstacles)
             {
-                returnList.AddRange(
-                   this.ObstacleOcclusionCalculationManagerV2.CalculatedOcclusionFrustums[this.ObstacleListenerUniqueID][nearSquareObstacle.SquareObstacleSystemUniqueID]);
+                foreach(var obstacleFrustumPositions in this.ObstacleOcclusionCalculationManagerV2.CalculatedOcclusionFrustums[this.ObstacleListenerUniqueID][nearSquareObstacle.SquareObstacleSystemUniqueID])
+                {
+                    action(obstacleFrustumPositions);
+                }
             }
-            return returnList;
         }
         #endregion
 
