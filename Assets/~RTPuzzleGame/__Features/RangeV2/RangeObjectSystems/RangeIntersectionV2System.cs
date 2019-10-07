@@ -1,5 +1,6 @@
 ﻿using InteractiveObjectTest;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RTPuzzle
 {
@@ -79,10 +80,12 @@ namespace RTPuzzle
 
             for (var justTriggerExitedCalculatorIndex = this.justTriggerExitedCalculators.Count - 1; justTriggerExitedCalculatorIndex >= 0; justTriggerExitedCalculatorIndex--)
             {
+                Debug.Log("JustTriggeredExit : " + justTriggerExitedCalculatorIndex + " " + this.justTriggerExitedCalculators.Count);
                 this.OnJustNotIntersected(this.justTriggerExitedCalculators[justTriggerExitedCalculatorIndex]);
-                this.justTriggerExitedCalculators.RemoveAt(justTriggerExitedCalculatorIndex);
                 this.justTriggerExitedCalculatorsIndexedByInteractiveObject.Remove(this.justTriggerExitedCalculators[justTriggerExitedCalculatorIndex].TrackedInteractiveObject);
+                this.justTriggerExitedCalculators.RemoveAt(justTriggerExitedCalculatorIndex);
             }
+
         }
 
         public sealed override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)

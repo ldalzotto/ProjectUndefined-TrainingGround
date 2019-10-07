@@ -91,7 +91,7 @@ namespace RTPuzzle
 
                 this.JobHandle.Complete();
 
-                Debug.Log(this.IsOccludedByObstacleJobResult[0]);
+              //  Debug.Log(this.IsOccludedByObstacleJobResult[0]);
 
                 this.IsOccludedByObstacleJobData.Dispose();
                 this.AssociatedObstacleFrustumPointsPositions.Dispose();
