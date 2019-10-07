@@ -4,9 +4,9 @@ namespace RTPuzzle
 {
     public class RoundedFrustumGroundEffectManager : AbstractGroundEffectManager
     {
-        private RoundedFrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider;
+        private FrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider;
 
-        public RoundedFrustumGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData, RoundedFrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider) : base(rangeTypeInherentConfigurationData)
+        public RoundedFrustumGroundEffectManager(RangeTypeInherentConfigurationData rangeTypeInherentConfigurationData, FrustumRangeObjectRenderingDataProvider RoundedFrustumRangeObjectRenderingDataProvider) : base(rangeTypeInherentConfigurationData)
         {
             this.RoundedFrustumRangeObjectRenderingDataProvider = RoundedFrustumRangeObjectRenderingDataProvider;
         }
@@ -15,8 +15,8 @@ namespace RTPuzzle
         {
 
             var RoundedFrustumRangeBufferData = new RoundedFrustumRangeBufferData();
-            /*
-            var frustumPointsWorldPositions = this.RoundedFrustumRangeObjectRenderingDataProvider.Frustum.FrustumPointsPositions;
+
+            var frustumPointsWorldPositions = this.RoundedFrustumRangeObjectRenderingDataProvider.GetFrustumWorldPosition();
             RoundedFrustumRangeBufferData.FC1 = frustumPointsWorldPositions.FC1;
             RoundedFrustumRangeBufferData.FC2 = frustumPointsWorldPositions.FC2;
             RoundedFrustumRangeBufferData.FC3 = frustumPointsWorldPositions.FC3;
@@ -28,7 +28,7 @@ namespace RTPuzzle
             RoundedFrustumRangeBufferData.normal4 = frustumPointsWorldPositions.normal4;
             RoundedFrustumRangeBufferData.normal5 = frustumPointsWorldPositions.normal5;
             RoundedFrustumRangeBufferData.normal6 = frustumPointsWorldPositions.normal6;
-            */
+       
 
             RoundedFrustumRangeBufferData.BoundingBoxMax = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.max;
             RoundedFrustumRangeBufferData.BoundingBoxMin = this.RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.bounds.min;

@@ -1,13 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using CoreGame;
 using GameConfigurationID;
-using CoreGame;
+using UnityEngine;
 
 namespace RTPuzzle
 {
     public abstract class ARangeObjectRenderingDataProvider
     {
-        private RangeObjectV2 RangeObjectV2Ref;
+        protected RangeObjectV2 RangeObjectV2Ref;
         public RangeTypeID RangeTypeID { get; private set; }
         public Collider BoundingCollider { get; private set; }
         public ObstacleListener ObstacleListener { get; private set; }
@@ -48,25 +47,44 @@ namespace RTPuzzle
         public float GetRadius() { return this.BoundingSphereCollider.radius; }
         public Vector3 GetWorldPositionCenter() { return this.BoundingSphereCollider.transform.position; }
     }
-
-    public class FrustumRangeObjectRenderingDataprovider : ARangeObjectRenderingDataProvider
+    
+    public class FrustumRangeObjectRenderingDataProvider : ARangeObjectRenderingDataProvider
     {
+        private RangeFrustumWorldPositioning RangeFrustumWorldPositioning;
         public FrustumV2 Frustum { get; private set; }
 
-        public FrustumRangeObjectRenderingDataprovider(FrustumRangeObjectV2 FrustumRangeObjectV2, RangeTypeID RangeTypeID) : base(FrustumRangeObjectV2, RangeTypeID)
+        public FrustumPointsPositions GetFrustumWorldPosition()
         {
-            this.Frustum = FrustumRangeObjectV2.GetFrustum();
+            return this.RangeFrustumWorldPositioning.GetWorldFrustumPositions(this.RangeObjectV2Ref.RangeGameObjectV2.GetLocalToWorldMatrix());
+        }
+
+        public FrustumRangeObjectRenderingDataProvider(RoundedFrustumRangeObjectV2 RoundedFrustumRangeObjectV2, RangeTypeID RangeTypeID) : base(RoundedFrustumRangeObjectV2, RangeTypeID)
+        {
+            RoundedFrustumRangeObjectV2.GetFrustum().CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct { WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one });
+            this.RangeFrustumWorldPositioning = new RangeFrustumWorldPositioning
+            {
+                LocalFrustumPositions = LocalFrustumPointPositions
+            };
+            this.Frustum = RoundedFrustumRangeObjectV2.GetFrustum();
         }
     }
 
-    public class RoundedFrustumRangeObjectRenderingDataProvider : ARangeObjectRenderingDataProvider
+    public struct RangeFrustumWorldPositioning
     {
+        public FrustumPointsPositions LocalFrustumPositions;
 
-        public FrustumV2 Frustum { get; private set; }
-
-        public RoundedFrustumRangeObjectRenderingDataProvider(RoundedFrustumRangeObjectV2 RoundedFrustumRangeObjectV2, RangeTypeID RangeTypeID) : base(RoundedFrustumRangeObjectV2, RangeTypeID)
+        public FrustumPointsPositions GetWorldFrustumPositions(Matrix4x4 LocalToWorld)
         {
-            this.Frustum = RoundedFrustumRangeObjectV2.GetFrustum();
+            return new FrustumPointsPositions(
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC1),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC2),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC3),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC4),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC5),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC6),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC7),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC8)
+               );
         }
     }
 }

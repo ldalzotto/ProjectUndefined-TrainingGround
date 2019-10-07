@@ -1,7 +1,5 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
-//using CoreGame;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -31,7 +29,7 @@ namespace RTPuzzle
         private Dictionary<ObstacleListener, List<SquareObstacleSystem>> singleObstacleSystemsThatHasChangedThisFrame = new Dictionary<ObstacleListener, List<SquareObstacleSystem>>();
 
         //ObstacleListener -> SquareObstacleSystem -> FrustumPositions
-        private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedFrustums = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
+        public Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedOcclusionFrustums { get; private set; } = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
 
         public void Tick(float d)
         {
@@ -138,7 +136,7 @@ namespace RTPuzzle
                 {
                     if (result.Isinitialized)
                     {
-                        this.CalculatedFrustums[result.FrustumCalculationDataID.ObstacleListenerUniqueID][result.FrustumCalculationDataID.SquareObstacleSystemUniqueID].Add(result.FrustumPointsPositions);
+                        this.CalculatedOcclusionFrustums[result.FrustumCalculationDataID.ObstacleListenerUniqueID][result.FrustumCalculationDataID.SquareObstacleSystemUniqueID].Add(result.FrustumPointsPositions);
                     }
                 }
 
@@ -193,11 +191,11 @@ namespace RTPuzzle
 
         private void ClearAndCreateCalculatedFrustums(ObstacleListener obstacleListener, SquareObstacleSystem SquareObstacleSystem)
         {
-            this.CalculatedFrustums.TryGetValue(obstacleListener.ObstacleListenerUniqueID, out Dictionary<int, List<FrustumPointsPositions>> obstalceFrustumPointsPositions);
+            this.CalculatedOcclusionFrustums.TryGetValue(obstacleListener.ObstacleListenerUniqueID, out Dictionary<int, List<FrustumPointsPositions>> obstalceFrustumPointsPositions);
             if (obstalceFrustumPointsPositions == null)
             {
-                this.CalculatedFrustums.Add(obstacleListener.ObstacleListenerUniqueID, new Dictionary<int, List<FrustumPointsPositions>>());
-                obstalceFrustumPointsPositions = this.CalculatedFrustums[obstacleListener.ObstacleListenerUniqueID];
+                this.CalculatedOcclusionFrustums.Add(obstacleListener.ObstacleListenerUniqueID, new Dictionary<int, List<FrustumPointsPositions>>());
+                obstalceFrustumPointsPositions = this.CalculatedOcclusionFrustums[obstacleListener.ObstacleListenerUniqueID];
             }
             obstalceFrustumPointsPositions.TryGetValue(SquareObstacleSystem.SquareObstacleSystemUniqueID, out List<FrustumPointsPositions> squareObstacleFrustumPositions);
             if (squareObstacleFrustumPositions == null)
@@ -212,7 +210,7 @@ namespace RTPuzzle
 
     }
 
-    [BurstCompile]
+    // [BurstCompile]
     public struct FrustumOcclusionCalculationJob : IJobParallelFor
     {
         [ReadOnly]
@@ -239,6 +237,8 @@ namespace RTPuzzle
         }
     }
 
+    #region Type Definition
+
     public struct FrustumV2Indexed
     {
         public FrustumV2 FrustumV2;
@@ -264,6 +264,8 @@ namespace RTPuzzle
         public FrustumCalculationDataID FrustumCalculationDataID;
         public FrustumPointsPositions FrustumPointsPositions;
     }
+
+    #endregion
 
 
 }

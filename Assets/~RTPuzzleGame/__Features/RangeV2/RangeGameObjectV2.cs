@@ -65,6 +65,10 @@ namespace RTPuzzle
         {
             return new TransformStruct(this.RangeGameObject.transform);
         }
+        public Matrix4x4 GetLocalToWorldMatrix()
+        {
+            return this.RangeGameObject.transform.localToWorldMatrix;
+        }
     }
 
     public struct RangeObjectV2GetWorldToLocalMatrixEventReturn

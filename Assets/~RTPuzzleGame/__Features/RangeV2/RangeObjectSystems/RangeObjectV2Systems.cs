@@ -136,30 +136,6 @@ namespace RTPuzzle
     }
     #endregion
 
-    #region Frustum Specifics Systems
-    public class FrustumRangeWorldPositionCalulcationSystem : ARangeObjectSystem
-    {
-        public FrustumV2 FrustumV2 { get; private set; }
-
-        public FrustumRangeWorldPositionCalulcationSystem(RangeObjectV2 rangeObjectV2Ref, FrustumV2 DefinitionFrustum) : base(rangeObjectV2Ref)
-        {
-            this.FrustumV2 = DefinitionFrustum;
-        }
-
-        public void ReceiveEvent(FrustumWorldPositionRecalculation FrustumWorldPositionRecalculation)
-        {
-         //   this.FrustumV2.SetCalculationDataForFaceBasedCalculation(FrustumWorldPositionRecalculation.WorldPosition, FrustumWorldPositionRecalculation.WorldRotation, FrustumWorldPositionRecalculation.LossyScale);
-        }
-    }
-
-    public struct FrustumWorldPositionRecalculation
-    {
-        public Vector3 WorldPosition;
-        public Quaternion WorldRotation;
-        public Vector3 LossyScale;
-    }
-    #endregion
-
     #region External Physics Only Listeners
     public class RangeExternalPhysicsOnlyListenersSystem : ARangeObjectSystem
     {

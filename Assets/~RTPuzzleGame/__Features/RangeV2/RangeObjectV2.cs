@@ -98,14 +98,12 @@ namespace RTPuzzle
         private FrustumRangeObjectInitialization FrustumRangeObjectInitialization;
 
         private RangeWorldPositionChangeSystem RangeWorldPositionChangeSystem;
-        private FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem;
 
-        public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
+        public FrustumV2 GetFrustum() { return this.FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2; }
 
         public FrustumRangeObjectV2(GameObject AssociatedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
-            this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2);
 
             this.FrustumRangeObjectInitialization = FrustumRangeObjectInitialization;
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
@@ -117,7 +115,7 @@ namespace RTPuzzle
             base.Tick(d);
             this.RangeWorldPositionChangeSystem.Tick(d);
         }
-        
+
     }
 
     public class RoundedFrustumRangeObjectV2 : RangeObjectV2
@@ -125,16 +123,15 @@ namespace RTPuzzle
         private RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization;
 
         private RangeWorldPositionChangeSystem RangeWorldPositionChangeSystem;
-        private FrustumRangeWorldPositionCalulcationSystem FrustumRangeWorldPositionCalulcationSystem;
-
-        public FrustumV2 GetFrustum() { return this.FrustumRangeWorldPositionCalulcationSystem.FrustumV2; }
+        
+        public FrustumV2 GetFrustum() { return this.RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2; }
 
         public RoundedFrustumRangeObjectV2(GameObject AssociatedGameObject, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
             this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
-            this.FrustumRangeWorldPositionCalulcationSystem = new FrustumRangeWorldPositionCalulcationSystem(this, RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2);
 
             this.RoundedFrustumRangeObjectInitialization = RoundedFrustumRangeObjectInitialization;
+            
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
             base.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
         }
@@ -145,6 +142,8 @@ namespace RTPuzzle
             this.RangeWorldPositionChangeSystem.Tick(d);
         }
     }
+
+ 
 
     public struct SetWorldPositionEvent
     {

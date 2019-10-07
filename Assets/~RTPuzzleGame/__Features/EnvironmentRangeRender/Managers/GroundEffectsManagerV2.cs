@@ -144,7 +144,7 @@ namespace RTPuzzle
                 }
                 else if (RangeObjectV2.GetType() == typeof(RoundedFrustumRangeObjectV2))
                 {
-                    var RoundedFrustumRangeObjectRenderingDataProvider = new RoundedFrustumRangeObjectRenderingDataProvider((RoundedFrustumRangeObjectV2)RangeObjectV2, rangeTypeID);
+                    var RoundedFrustumRangeObjectRenderingDataProvider = new FrustumRangeObjectRenderingDataProvider((RoundedFrustumRangeObjectV2)RangeObjectV2, rangeTypeID);
                     var addedRange = new RoundedFrustumGroundEffectManager(PuzzleGameConfigurationManager.RangeTypeConfiguration()[rangeTypeID], RoundedFrustumRangeObjectRenderingDataProvider);
                     addedRange.OnRangeCreated(RoundedFrustumRangeObjectRenderingDataProvider);
                     this.rangeRenderDatas[rangeTypeID].Add(RoundedFrustumRangeObjectRenderingDataProvider.BoundingCollider.GetInstanceID(), new RoundedFrustumRenderData(addedRange));

@@ -17,6 +17,10 @@ namespace RTPuzzle
         public RangeObjectV2 AssociatedRangeObject { get; private set; }
         #endregion
 
+        #region External Dependencies
+        private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
+        #endregion
+
         public ObstacleListener(RangeObjectV2 associatedRangeObject)
         {
             AssociatedRangeObject = associatedRangeObject;
@@ -43,19 +47,17 @@ namespace RTPuzzle
         #region Data Retrieval
         public List<FrustumPointsPositions> GetCalculatedFrustums()
         {
-            //TODO
-            return new List<FrustumPointsPositions>();
-            //      return this.ObstacleFrustumCalculationManager.GetResults(this).ConvertAll(obstacleFrustumCalculation => obstacleFrustumCalculation.CalculatedFrustumPositions)
-            //      .SelectMany(r => r).ToList();
+            var returnList = new List<FrustumPointsPositions>();
+            foreach(var nearSquareObstacle in this.nearSquareObstacles)
+            {
+                returnList.AddRange(
+                   this.ObstacleOcclusionCalculationManagerV2.CalculatedOcclusionFrustums[this.ObstacleListenerUniqueID][nearSquareObstacle.SquareObstacleSystemUniqueID]);
+            }
+            return returnList;
         }
         #endregion
 
         #region Logical Conditions
-        public bool HasPositionChanged()
-        {
-            return false;
-            //return this.ObstacleListenerChangePositionTracker.TransformChangedThatFrame();
-        }
         public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
         {
             return false;
