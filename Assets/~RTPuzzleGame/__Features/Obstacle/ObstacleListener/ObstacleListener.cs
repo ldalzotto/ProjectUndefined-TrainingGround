@@ -50,7 +50,7 @@ namespace RTPuzzle
         {
             foreach (var nearSquareObstacle in this.nearSquareObstacles)
             {
-                foreach(var obstacleFrustumPositions in this.ObstacleOcclusionCalculationManagerV2.CalculatedOcclusionFrustums[this.ObstacleListenerUniqueID][nearSquareObstacle.SquareObstacleSystemUniqueID])
+                foreach(var obstacleFrustumPositions in this.ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustums()[this.ObstacleListenerUniqueID][nearSquareObstacle.SquareObstacleSystemUniqueID])
                 {
                     action(obstacleFrustumPositions);
                 }

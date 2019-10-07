@@ -23,6 +23,17 @@ namespace RTPuzzle
         private SquareObstacleSystemManager SquareObstacleSystemManager = SquareObstacleSystemManager.Get();
         #endregion
 
+        #region Native Arrays
+        private NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas;
+        private NativeArray<FrustumV2Indexed> AssociatedFrustums;
+        private NativeArray<FrustumPointsWithInitializedFlag> Results;
+        #endregion
+
+        #region Job State   
+        private bool JobEnded;
+        private JobHandle JobHandle;
+        #endregion
+
         private Dictionary<ObstacleListener, TransformStruct> ObstacleListenerLastFramePositions = new Dictionary<ObstacleListener, TransformStruct>();
         private Dictionary<SquareObstacleSystem, TransformStruct> SquareObstacleLastFramePositions = new Dictionary<SquareObstacleSystem, TransformStruct>();
 
@@ -30,13 +41,24 @@ namespace RTPuzzle
         private Dictionary<ObstacleListener, List<SquareObstacleSystem>> singleObstacleSystemsThatHasChangedThisFrame = new Dictionary<ObstacleListener, List<SquareObstacleSystem>>();
 
         //ObstacleListener -> SquareObstacleSystem -> FrustumPositions
-        public Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedOcclusionFrustums { get; private set; } = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
+        private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedOcclusionFrustums = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
+
+
+        public Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> GetCalculatedOcclusionFrustums()
+        {
+            if (!JobEnded)
+            {
+                this.JobEnded = true;
+                this.JobHandle.Complete();
+                this.OnJobEnded();
+            }
+
+            return this.CalculatedOcclusionFrustums;
+        }
 
         public void Tick(float d)
         {
             Profiler.BeginSample("ObstacleOcclusionCalculationManagerV2");
-
-
             var allObstaclesListeners = this.ObstaclesListenerManager.GetAllObstacleListeners();
 
             int occlusionCalculationCounter = 0;
@@ -99,9 +121,9 @@ namespace RTPuzzle
             if (occlusionCalculationCounter > 0)
             {
 
-                NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas = new NativeArray<FrustumOcclusionCalculationData>(occlusionCalculationCounter, Allocator.TempJob);
-                NativeArray<FrustumV2Indexed> AssociatedFrustums = new NativeArray<FrustumV2Indexed>(totalFrustumCounter, Allocator.TempJob);
-                NativeArray<FrustumPointsWithInitializedFlag> Results = new NativeArray<FrustumPointsWithInitializedFlag>(totalFrustumCounter, Allocator.TempJob);
+                this.FrustumOcclusionCalculationDatas = new NativeArray<FrustumOcclusionCalculationData>(occlusionCalculationCounter, Allocator.TempJob);
+                this.AssociatedFrustums = new NativeArray<FrustumV2Indexed>(totalFrustumCounter, Allocator.TempJob);
+                this.Results = new NativeArray<FrustumPointsWithInitializedFlag>(totalFrustumCounter, Allocator.TempJob);
 
                 int currentOcclusionCalculationCounter = 0;
                 int currentFrustumCounter = 0;
@@ -125,42 +147,44 @@ namespace RTPuzzle
                     }
                 }
 
-                new FrustumOcclusionCalculationJob()
+                this.JobEnded = false;
+                this.JobHandle = new FrustumOcclusionCalculationJob()
                 {
                     AssociatedFrustums = AssociatedFrustums,
                     FrustumOcclusionCalculationDatas = FrustumOcclusionCalculationDatas,
                     Results = Results
-                }.Schedule(totalFrustumCounter, 36).Complete();
-
-                //Store results
-                foreach (var result in Results)
-                {
-                    if (result.Isinitialized)
-                    {
-                        this.CalculatedOcclusionFrustums[result.FrustumCalculationDataID.ObstacleListenerUniqueID][result.FrustumCalculationDataID.SquareObstacleSystemUniqueID].Add(result.FrustumPointsPositions);
-                    }
-                }
-
-                //Clear data that changed
-                this.obstacleListenersThatHasChangedThisFrame.Clear();
-                foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
-                {
-                    singleObstacleSystemThatChanged.Value.Clear();
-                }
-
-                FrustumOcclusionCalculationDatas.Dispose();
-                AssociatedFrustums.Dispose();
-                Results.Dispose();
-
+                }.Schedule(totalFrustumCounter, 36);
             }
 
             Profiler.EndSample();
         }
 
+        private void OnJobEnded()
+        {
+            //Store results
+            foreach (var result in Results)
+            {
+                if (result.Isinitialized)
+                {
+                    this.CalculatedOcclusionFrustums[result.FrustumCalculationDataID.ObstacleListenerUniqueID][result.FrustumCalculationDataID.SquareObstacleSystemUniqueID].Add(result.FrustumPointsPositions);
+                }
+            }
+
+            //Clear data that changed
+            this.obstacleListenersThatHasChangedThisFrame.Clear();
+            foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
+            {
+                singleObstacleSystemThatChanged.Value.Clear();
+            }
+
+            FrustumOcclusionCalculationDatas.Dispose();
+            AssociatedFrustums.Dispose();
+            Results.Dispose();
+        }
+
         private static void AddToArrays(ref NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas, NativeArray<FrustumV2Indexed> AssociatedFrustums,
             ref int currentOcclusionCalculationCounter, ref int currentFrustumCounter, ObstacleListener obstacleListenerThatChanged, SquareObstacleSystem nearSquareObstacle)
         {
-            Debug.Log(obstacleListenerThatChanged.ObstacleListenerUniqueID + " " + nearSquareObstacle.SquareObstacleSystemUniqueID);
             foreach (var nearSquaureObstacleFrustum in nearSquareObstacle.FaceFrustums)
             {
                 AssociatedFrustums[currentFrustumCounter] = new FrustumV2Indexed
