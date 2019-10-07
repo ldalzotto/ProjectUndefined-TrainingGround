@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using System.Collections.Generic;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -210,7 +211,7 @@ namespace RTPuzzle
 
     }
 
-    // [BurstCompile]
+    [BurstCompile]
     public struct FrustumOcclusionCalculationJob : IJobParallelFor
     {
         [ReadOnly]
