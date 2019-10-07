@@ -5,9 +5,11 @@ namespace RTPuzzle
 {
     public class RangeIntersectionV2System : ARangeObjectSystem
     {
+        public int RangeInteresectionSystemUniqueID { get; private set; }
         public List<ARangeIntersectionV2Listener> RangeIntersectionListeners { get; private set; } = null;
 
-        public RangeIntersectionV2System(RangeObjectV2 rangeObjectV2Ref) : base(rangeObjectV2Ref) { }
+        public RangeIntersectionV2System(RangeObjectV2 rangeObjectV2Ref) : base(rangeObjectV2Ref)
+        { }
 
         public override void Tick(float d)
         {
@@ -131,6 +133,7 @@ namespace RTPuzzle
             if (RangeIntersectionCalculatorV2ToRemove != null)
             {
                 this.intersectionCalculators.Remove(RangeIntersectionCalculatorV2ToRemove);
+                RangeIntersectionCalculatorV2ToRemove.Destroy();
                 this.intersectionCalculatorsIndexedByInteractiveObject.Remove(InteractiveObjectRefToRemove);
             }
 

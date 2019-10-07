@@ -240,6 +240,7 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\RangeIntersectionCalculationManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystem.cs" />
@@ -276,7 +277,9 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Configuration\RangeConfiguration\RangeTypeConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Configuration\RangeConfiguration\RangeTypeInherentConfigurationData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionCalculatorV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionCalculatorV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionOperations.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Lib\RangeIntersectionSinglePointBlittable.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Managers\RangeObjectV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\Managers\RangeObjectV2ManagerOperations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeGameObjectV2.cs" />

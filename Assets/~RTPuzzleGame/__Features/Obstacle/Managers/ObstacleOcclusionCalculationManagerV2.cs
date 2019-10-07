@@ -44,16 +44,29 @@ namespace RTPuzzle
         private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> CalculatedOcclusionFrustums = new Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>>();
 
 
-        public Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> GetCalculatedOcclusionFrustums()
+        private Dictionary<int, Dictionary<int, List<FrustumPointsPositions>>> GetCalculatedOcclusionFrustums()
         {
             if (!JobEnded)
             {
                 this.JobEnded = true;
                 this.JobHandle.Complete();
+                while (!this.JobHandle.IsCompleted)
+                {
+
+                }
                 this.OnJobEnded();
             }
 
             return this.CalculatedOcclusionFrustums;
+        }
+
+        public List<FrustumPointsPositions> GetCalculatedOcclusionFrustums(ObstacleListener ObstacleListener, SquareObstacleSystem SquareObstacleSystem)
+        {
+            return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID][SquareObstacleSystem.SquareObstacleSystemUniqueID];
+        }
+        public Dictionary<int, List<FrustumPointsPositions>> GetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListener ObstacleListener)
+        {
+            return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID];
         }
 
         public void Tick(float d)
@@ -117,7 +130,7 @@ namespace RTPuzzle
             {
                 this.SquareObstacleLastFramePositions[squareObstacleSystem] = squareObstacleSystem.GetTransform();
             }
-
+            
             if (occlusionCalculationCounter > 0)
             {
 
@@ -155,6 +168,10 @@ namespace RTPuzzle
                     Results = Results
                 }.Schedule(totalFrustumCounter, 36);
             }
+            else
+            {
+                this.ClearFrameDependantData();
+            }
 
             Profiler.EndSample();
         }
@@ -170,16 +187,21 @@ namespace RTPuzzle
                 }
             }
 
+            ClearFrameDependantData();
+
+            FrustumOcclusionCalculationDatas.Dispose();
+            AssociatedFrustums.Dispose();
+            Results.Dispose();
+        }
+
+        private void ClearFrameDependantData()
+        {
             //Clear data that changed
             this.obstacleListenersThatHasChangedThisFrame.Clear();
             foreach (var singleObstacleSystemThatChanged in this.singleObstacleSystemsThatHasChangedThisFrame)
             {
                 singleObstacleSystemThatChanged.Value.Clear();
             }
-
-            FrustumOcclusionCalculationDatas.Dispose();
-            AssociatedFrustums.Dispose();
-            Results.Dispose();
         }
 
         private static void AddToArrays(ref NativeArray<FrustumOcclusionCalculationData> FrustumOcclusionCalculationDatas, NativeArray<FrustumV2Indexed> AssociatedFrustums,
@@ -207,6 +229,12 @@ namespace RTPuzzle
             };
 
             currentOcclusionCalculationCounter += 1;
+        }
+
+        public void LateTick()
+        {
+            //We trigger the end of calculations
+            GetCalculatedOcclusionFrustums();
         }
 
         public void OnDestroy()

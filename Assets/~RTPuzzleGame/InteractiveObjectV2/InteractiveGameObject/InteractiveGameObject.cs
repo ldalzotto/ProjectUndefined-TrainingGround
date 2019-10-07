@@ -47,6 +47,8 @@ namespace InteractiveObjectTest
             return new TransformStruct(this.InteractiveGameObjectParent.transform);
         }
 
+        public Matrix4x4 GetLocalToWorld() { return this.InteractiveGameObjectParent.transform.localToWorldMatrix; }
+
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)
         {
             this.InteractiveGameObjectParent.transform.localScale = Vector3.one;

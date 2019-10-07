@@ -148,6 +148,7 @@ namespace RTPuzzle
                     RangeObjectV2Manager.Get().Tick(d);
 
                     ObstacleOcclusionCalculationManagerV2.Get().Tick(d);
+                    RangeIntersectionCalculationManagerV2.Get().Tick(d);
                   //  ObstaclesListenerManager.Tick(d); //Position Change Check
                   //  SquareObstaclesManager.Tick(d); //Position Change Check
                   //  ObstacleFrustumCalculationManager.Tick(d); //Multi threaded calculation when needed
@@ -191,6 +192,8 @@ namespace RTPuzzle
 #if UNITY_EDITOR
                 EditorOnlyManagers.Tick(d);
 #endif
+
+
             }
         }
 
@@ -202,6 +205,8 @@ namespace RTPuzzle
                 PlayerManager.LateTick(d);
                 PlayerActionManager.LateTick(d);
             }
+            
+            ObstacleOcclusionCalculationManagerV2.Get().LateTick();
         }
 
         private void FixedUpdate()
@@ -232,6 +237,7 @@ namespace RTPuzzle
             ObstacleOcclusionCalculationManagerV2.Get().OnDestroy();
             SquareObstacleSystemManager.Get().OnDestroy();
             ObstaclesListenerManager.Get().OnDestroy();
+            RangeIntersectionCalculationManagerV2.Get().OnDestroy();
         }
 
         private void OnDrawGizmos()
