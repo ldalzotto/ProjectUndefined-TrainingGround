@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Unity.Collections;
-using Unity.Jobs;
 using UnityEngine.Profiling;
 
 namespace RTPuzzle
@@ -17,11 +16,19 @@ namespace RTPuzzle
             return Instance;
         }
 
+        public RangeIntersectionCalculationManagerV2()
+        {
+            this.RangeIntersectionmanagers = new IIntersectionManager[] {
+                new SphereIntersectionManager(),
+                new RoundedFrustumIntersectionManager()
+            };
+        }
+
         #region External Dependencies
         private ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
         private RangeIntersectionCalculatorV2Manager RangeIntersectionCalculatorV2Manager = RangeIntersectionCalculatorV2Manager.Get();
         #endregion
-        
+
         private NativeArray<IsOccludedByObstacleJobData> IsOccludedByObstacleJobData;
 
         #region Job State   
@@ -30,8 +37,7 @@ namespace RTPuzzle
 
         private RangeObstacleOcclusionIntersection RangeObstacleOcclusionIntersection;
 
-        private SphereIntersectionManager SphereIntersectionManager;
-        private RoundedFrustumIntersectionManager RoundedFrustumIntersectionManager;
+        private IIntersectionManager[] RangeIntersectionmanagers;
 
         //RangeIntersectionCalculatorV2 -> intersection value
         private Dictionary<int, bool> RangeIntersectionResults = new Dictionary<int, bool>();
@@ -41,10 +47,14 @@ namespace RTPuzzle
             if (!this.JobEnded)
             {
                 this.JobEnded = true;
-                this.RoundedFrustumIntersectionManager.Complete();
-                this.SphereIntersectionManager.Complete();
-                this.RoundedFrustumIntersectionManager.WaitForResults();
-                this.SphereIntersectionManager.WaitForResults();
+                foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                {
+                    RangeIntersectionmanager.Complete();
+                }
+                foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                {
+                    RangeIntersectionmanager.WaitForResults();
+                }
                 this.OnJobEnded();
             }
             return this.RangeIntersectionResults;
@@ -53,6 +63,10 @@ namespace RTPuzzle
         public bool GetRangeIntersectionResult(RangeIntersectionCalculatorV2 RangeIntersectionCalculatorV2)
         {
             return this.GetRangeIntersectionResult()[RangeIntersectionCalculatorV2.RangeIntersectionCalculatorV2UniqueID];
+        }
+        public void TryGetRangeintersectionResult(RangeIntersectionCalculatorV2 RangeIntersectionCalculatorV2, out bool result)
+        {
+            this.GetRangeIntersectionResult().TryGetValue(RangeIntersectionCalculatorV2.RangeIntersectionCalculatorV2UniqueID, out result);
         }
 
         public void Tick(float d)
@@ -73,8 +87,11 @@ namespace RTPuzzle
                 int totalObstacleFrustumPointsCounter = 0;
                 foreach (var rangeIntersectionCalculatorV2 in InvolvedRangeIntersectionCalculatorV2)
                 {
-                    this.RoundedFrustumIntersectionManager.CountingForRangeIntersectionCalculator(rangeIntersectionCalculatorV2);
-                    this.SphereIntersectionManager.CountingForRangeIntersectionCalculator(rangeIntersectionCalculatorV2);
+
+                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    {
+                        RangeIntersectionmanager.CountingForRangeIntersectionCalculator(rangeIntersectionCalculatorV2);
+                    }
 
                     var associatedObstacleListener = rangeIntersectionCalculatorV2.GetAssociatedObstacleListener();
                     foreach (var calculatedObstacleFrustum in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
@@ -84,8 +101,10 @@ namespace RTPuzzle
                 }
                 #endregion
 
-                this.RoundedFrustumIntersectionManager.CreateNativeArrays();
-                this.SphereIntersectionManager.CreateNativeArrays();
+                foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                {
+                    RangeIntersectionmanager.CreateNativeArrays();
+                }
 
                 this.IsOccludedByObstacleJobData = new NativeArray<IsOccludedByObstacleJobData>(AllRangeIntersectionCalculatorV2Count, Allocator.TempJob);
 
@@ -102,25 +121,32 @@ namespace RTPuzzle
                         currentObstacleIntersectionCalculatorCounter += 1;
                     }
 
-                    this.RoundedFrustumIntersectionManager.CalculationDataSetupForRangeIntersectionCalculator(RangeIntersectionCalculatorV2,
+                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    {
+                        RangeIntersectionmanager.CalculationDataSetupForRangeIntersectionCalculator(RangeIntersectionCalculatorV2,
                              IsOccludedByObstacleJobData, currentObstacleIntersectionCalculatorCounter);
-                    this.SphereIntersectionManager.CalculationDataSetupForRangeIntersectionCalculator(RangeIntersectionCalculatorV2,
-                             IsOccludedByObstacleJobData, currentObstacleIntersectionCalculatorCounter);
+                    }
                 }
 
-                this.RoundedFrustumIntersectionManager.BuildJobHandle(this.IsOccludedByObstacleJobData, this.RangeObstacleOcclusionIntersection);
-                this.SphereIntersectionManager.BuildJobHandle(this.IsOccludedByObstacleJobData, this.RangeObstacleOcclusionIntersection);
-               
+                foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                {
+                    RangeIntersectionmanager.BuildJobHandle(this.IsOccludedByObstacleJobData, this.RangeObstacleOcclusionIntersection);
+                }
+
                 if (!forceCalculation)
                 {
                     this.JobEnded = false;
                 }
                 else
                 {
-                    this.RoundedFrustumIntersectionManager.Complete();
-                    this.SphereIntersectionManager.Complete();
-                    this.RoundedFrustumIntersectionManager.WaitForResults();
-                    this.SphereIntersectionManager.WaitForResults();
+                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    {
+                        RangeIntersectionmanager.Complete();
+                    }
+                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    {
+                        RangeIntersectionmanager.WaitForResults();
+                    }
                     this.OnJobEnded();
                 }
             }
@@ -134,21 +160,15 @@ namespace RTPuzzle
 
         private void OnJobEnded()
         {
-            foreach (var IntersectionJobResult in this.RoundedFrustumIntersectionManager.RoundedFrustumIntersectionJobResult)
+            foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
             {
-                this.RangeIntersectionResults[IntersectionJobResult.RangeIntersectionCalculatorV2UniqueID] = IntersectionJobResult.IsInsideRange;
+                foreach (var IntersectionJobResult in RangeIntersectionmanager.GetIntersectionResults())
+                {
+                    this.RangeIntersectionResults[IntersectionJobResult.RangeIntersectionCalculatorV2UniqueID] = IntersectionJobResult.IsInsideRange;
+                }
+                RangeIntersectionmanager.Dispose();
+                RangeIntersectionmanager.ClearState();
             }
-
-            foreach (var sphereJobResult in this.SphereIntersectionManager.SphereIntersectionJobResult)
-            {
-                this.RangeIntersectionResults[sphereJobResult.RangeIntersectionCalculatorV2UniqueID] = sphereJobResult.IsInsideRange;
-            }
-
-            this.RoundedFrustumIntersectionManager.Dispose();
-            this.RoundedFrustumIntersectionManager.ClearState();
-
-            this.SphereIntersectionManager.Dispose();
-            this.SphereIntersectionManager.ClearState();
 
             if (this.IsOccludedByObstacleJobData.IsCreated) { this.IsOccludedByObstacleJobData.Dispose(); }
 

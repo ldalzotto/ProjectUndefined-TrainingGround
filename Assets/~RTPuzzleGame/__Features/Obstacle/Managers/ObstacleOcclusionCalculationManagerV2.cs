@@ -294,7 +294,7 @@ namespace RTPuzzle
 
     }
 
-    [BurstCompile(CompileSynchronously = true)]
+    [BurstCompile]
     public struct FrustumOcclusionCalculationJob : IJobParallelFor
     {
         [ReadOnly]

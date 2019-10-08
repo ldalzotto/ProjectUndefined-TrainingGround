@@ -1,7 +1,4 @@
-﻿using GameConfigurationID;
-using UnityEngine;
-
-namespace InteractiveObjectTest
+﻿namespace InteractiveObjectTest
 {
     public class AIInteractiveObject : CoreInteractiveObject
     {
@@ -65,30 +62,36 @@ namespace InteractiveObjectTest
 
         public override void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
+            /*
             if (!this.AIDisarmObjectState.IsDisarming)
             {
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
                 this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
                 this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
             }
+            */
         }
 
         public override void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
+            /*
             if (this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
             {
                 this.AIMoveToDestinationSystem.ClearPath();
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
             }
             this.LineVisualFeedbackSystem.DestroyLine(OtherInteractiveObject);
+            */
         }
 
         protected override void OnAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
+            /*
             if (!this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
             {
                 this.OnOtherAttractiveObjectNoMoreIntersected(IntersectedInteractiveObject);
             }
+            */
         }
 
         public override void OnAIIsNoMoreAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject)
@@ -108,7 +111,14 @@ namespace InteractiveObjectTest
 
         protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+            if (!this.AIDisarmObjectState.IsDisarming)
+            {
+                if (IntersectedInteractiveObject.InteractiveObjectTag.IsAttractiveObject)
+                {
+                    this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, IntersectedInteractiveObject);
+                }
+                this.SetAIDestination(new AIDestination { WorldPosition = IntersectedInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+            }
         }
 
         protected override void OnSightObjectSystemIntersectedNothing(CoreInteractiveObject IntersectedInteractiveObject)

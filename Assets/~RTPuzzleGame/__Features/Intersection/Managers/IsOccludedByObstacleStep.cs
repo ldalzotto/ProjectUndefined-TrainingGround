@@ -76,17 +76,14 @@ public struct IsOccludedByObstacleJobData
 
     private bool IsPointFullyOccludedByObstacle(Vector3 PointWorldPosition, NativeArray<FrustumPointsPositions> AssociatedObstacleFrustumPointsPositions)
     {
-        bool isOccluded = true;
 
         for (var FrustumPointsPositionsIndex = this.ObstacleFrustumPointsPositionsBeginIndex; FrustumPointsPositionsIndex < this.ObstacleFrustumPointsPositionsEndIndex; FrustumPointsPositionsIndex++)
         {
-            isOccluded = isOccluded && Intersection.PointInsideFrustum(AssociatedObstacleFrustumPointsPositions[FrustumPointsPositionsIndex], PointWorldPosition);
-            if (!isOccluded)
+            if (Intersection.PointInsideFrustum(AssociatedObstacleFrustumPointsPositions[FrustumPointsPositionsIndex], PointWorldPosition))
             {
-                break;
+                return true;
             }
         }
-
-        return isOccluded;
+        return false;
     }
 }

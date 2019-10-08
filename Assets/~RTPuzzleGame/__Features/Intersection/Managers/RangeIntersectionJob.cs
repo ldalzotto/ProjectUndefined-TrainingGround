@@ -15,6 +15,7 @@ public interface IIntersectionManager
     void WaitForResults();
     void CreateNativeArrays();
     void Dispose();
+    NativeArray<RangeIntersectionResult> GetIntersectionResults();
 }
 
 public struct RoundedFrustumIntersectionManager : IIntersectionManager
@@ -94,9 +95,14 @@ public struct RoundedFrustumIntersectionManager : IIntersectionManager
         if (this.RoundedFrustumIntersectionJobData.IsCreated) { this.RoundedFrustumIntersectionJobData.Dispose(); }
         if (this.RoundedFrustumIntersectionJobResult.IsCreated) { this.RoundedFrustumIntersectionJobResult.Dispose(); }
     }
+
+    public NativeArray<RangeIntersectionResult> GetIntersectionResults()
+    {
+        return this.RoundedFrustumIntersectionJobResult;
+    }
 }
 
-[BurstCompile(CompileSynchronously = true)]
+[BurstCompile]
 public struct RoundedFrustumIntersectionJob : IJobParallelFor
 {
     public NativeArray<RoundedFrustumIntersectionJobData> RoundedFrustumIntersectionJobData;
@@ -225,10 +231,15 @@ public struct SphereIntersectionManager : IIntersectionManager
     {
         while (!this.JobHandle.IsCompleted) { }
     }
+
+    public NativeArray<RangeIntersectionResult> GetIntersectionResults()
+    {
+        return this.SphereIntersectionJobResult;
+    }
 }
 
 
-[BurstCompile(CompileSynchronously = true)]
+[BurstCompile]
 public struct SphereIntersectionJob : IJobParallelFor
 {
     public NativeArray<SphereIntersectionJobData> SphereIntersectionJobDatas;

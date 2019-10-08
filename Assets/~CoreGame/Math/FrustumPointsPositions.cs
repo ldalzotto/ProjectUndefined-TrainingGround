@@ -62,9 +62,9 @@ namespace CoreGame
 
 
 
-#if UNITY_EDITOR
         public void DrawInScene(Color color)
         {
+#if UNITY_EDITOR
             var oldColor = Handles.color;
             Handles.color = color;
 
@@ -84,8 +84,8 @@ namespace CoreGame
             Handles.DrawLine(this.FC5, this.FC5);
 
             Handles.color = oldColor;
-        }
 #endif
+        }
     }
 
 

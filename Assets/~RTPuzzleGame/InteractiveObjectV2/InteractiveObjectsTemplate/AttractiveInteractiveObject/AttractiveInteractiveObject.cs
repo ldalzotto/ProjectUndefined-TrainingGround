@@ -1,4 +1,6 @@
-﻿namespace InteractiveObjectTest
+﻿using UnityEngine;
+
+namespace InteractiveObjectTest
 {
     public class AttractiveInteractiveObject : CoreInteractiveObject
     {
@@ -11,8 +13,8 @@
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
 
             var physicsInteractionSelectionGuard = new InteractiveObjectTagStruct(isAi: 1);
-            this.AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
-                this.OnAssociatedAttractiveSystemJustIntersected, this.OnAssociatedAttractiveSystemNoMoreIntersected, this.OnAttractiveSystemInterestedNothing);
+      //      this.AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
+         //       this.OnAssociatedAttractiveSystemJustIntersected, this.OnAssociatedAttractiveSystemNoMoreIntersected, this.OnAttractiveSystemInterestedNothing);
             if (InteractiveObjectInitializerData.IsDisarmable)
             {
                 this.DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct { IsAi = 1 }, this.OnAssociatedDisarmObjectTriggerEnter);
@@ -28,29 +30,37 @@
         {
             base.Tick(d, timeAttenuationFactor);
 
-            this.AttractiveObjectSystem.Tick(d, timeAttenuationFactor);
+            if (this.AttractiveObjectSystem != null)
+            {
+                this.AttractiveObjectSystem.Tick(d, timeAttenuationFactor);
+            }
             if (this.DisarmObjectSystem != null)
             {
                 this.DisarmObjectSystem.Tick(d, timeAttenuationFactor);
             }
 
-            this.IsAskingToBeDestroyed = this.AttractiveObjectSystem.IsAskingTobedestroyed || (this.DisarmObjectSystem != null && this.DisarmObjectSystem.IsTimeElasped());
+            this.IsAskingToBeDestroyed = (this.AttractiveObjectSystem != null && this.AttractiveObjectSystem.IsAskingTobedestroyed) || (this.DisarmObjectSystem != null && this.DisarmObjectSystem.IsTimeElasped());
         }
 
         public override void Destroy()
         {
-            this.AttractiveObjectSystem.OnDestroy();
+            if (this.AttractiveObjectSystem != null)
+            {
+                this.AttractiveObjectSystem.OnDestroy();
+            }
             base.Destroy();
         }
 
         #region Attractive Object Events
         protected override void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
+            Debug.Log("OnAssociatedAttractiveSystemJustIntersected");
             var AIInteractiveObject = (AIInteractiveObject)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
         }
         protected override void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
+            Debug.Log("OnAssociatedAttractiveSystemNoMoreIntersected");
             IntersectedInteractiveObject.OnOtherAttractiveObjectNoMoreIntersected(this);
         }
         #endregion

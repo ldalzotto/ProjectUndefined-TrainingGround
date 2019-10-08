@@ -254,6 +254,7 @@ namespace RTPuzzle
             }
 
             ObstaclesListenerManager.Get().GizmoTick();
+            RangeIntersectionCalculatorV2Manager.Get().GizmoTick();
         }
 
         private void OnGUI()
