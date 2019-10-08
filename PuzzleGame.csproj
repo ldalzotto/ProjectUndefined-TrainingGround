@@ -10,8 +10,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{3459C503-4B39-D73B-AC6F-FA3A76FB1078}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -200,6 +199,9 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectAnimation\InteractiveObjectModules\InteractiveObjectAnimationModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectDefinitions\InteractiveObjectCutsceneControllerModuleDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\InteractiveObjectCutsceneController\InteractiveObjectModules\InteractiveObjectCutsceneControllerModule.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\IsOccludedByObstacleStep.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionCalculationManagerV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\Intersection\Managers\RangeIntersectionJob.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\LaunchProjectile\AIComponents\AIProjectileEscapeComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\LaunchProjectile\AIComponents\AIProjectileWithCollisionEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\LaunchProjectile\Configuration\LaunchProjectileConfiguration.cs" />
@@ -241,7 +243,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\ExposedInterfaces\ISelectableModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\ObjectSelection\Managers\InteractiveObjectSelectionManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\ObstacleOcclusionCalculationManagerV2.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\Managers\RangeIntersectionCalculationManagerV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstacleListener.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\ObstacleListener\ObstaclesListenerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\Obstacle\SquareObstacle\SquareObstacleSystem.cs" />

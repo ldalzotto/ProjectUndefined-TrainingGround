@@ -35,7 +35,6 @@ namespace RTPuzzle
             ObstacleOcclusionCalculationManagerV2 ObstacleOcclusionCalculationManagerV2 = ObstacleOcclusionCalculationManagerV2.Get();
             foreach (var obstacleListener in this.obstacleListeners)
             {
-                Debug.Log(obstacleListener.ObstacleListenerUniqueID);
                 ObstacleOcclusionCalculationManagerV2.TryGetCalculatedOcclusionFrustumsForObstacleListener(obstacleListener, out Dictionary<int, List<FrustumPointsPositions>> allCalculatedFrustumPositions);
                 if (allCalculatedFrustumPositions != null)
                 {
