@@ -119,7 +119,9 @@ namespace RTPuzzle
                         foreach (var squareObstacle in obstacleListener.NearSquareObstacles)
                         {
                             this.SquareObstacleLastFramePositions.TryGetValue(squareObstacle, out TransformStruct lastFrameSquareObstacleTrasform);
-                            if (!squareObstacle.GetTransform().IsEqualTo(lastFrameSquareObstacleTrasform))
+                            //Static obstacles are not detecting changes
+                            if (!squareObstacle.SquareObstacleSystemInitializationData.IsStatic 
+                                && !squareObstacle.GetTransform().IsEqualTo(lastFrameSquareObstacleTrasform))
                             {
                                 //We add this single couple (listener <-> obstacle) to calculation
                                 squareObstacleSystemsThatChanged.Add(squareObstacle);
