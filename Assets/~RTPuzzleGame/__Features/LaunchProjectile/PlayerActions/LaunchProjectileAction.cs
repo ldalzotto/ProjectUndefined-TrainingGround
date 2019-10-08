@@ -339,6 +339,8 @@ namespace RTPuzzle
                 this.projectileCursorInteractiveObject.transform.position = currentCursorWorldPosition;
                 Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
 
+                //TODO -> instead of a point, we can spawn a RangeInteractiveObjectV2 with very small radius and not taking into account obstacles
+                /*
                 if (RangeIntersectionOperations.IsInsideAndNotOccluded(this.launchProjectileActionRef.ProjectileThrowRange, currentCursorWorldPosition, forceObstacleOcclusionIfNecessary: true))
                 {
                     SetIsCursorInRange(true);
@@ -347,6 +349,7 @@ namespace RTPuzzle
                 {
                     SetIsCursorInRange(false);
                 }
+                */
 
             }
             else

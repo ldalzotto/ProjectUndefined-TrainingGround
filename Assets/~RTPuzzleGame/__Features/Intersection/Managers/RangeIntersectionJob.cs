@@ -238,7 +238,6 @@ public struct SphereIntersectionManager : IIntersectionManager
     }
 }
 
-
 [BurstCompile]
 public struct SphereIntersectionJob : IJobParallelFor
 {
@@ -266,7 +265,6 @@ public struct SphereIntersectionJob : IJobParallelFor
           };
     }
 }
-
 
 public struct SphereIntersectionJobData
 {

@@ -108,7 +108,6 @@
     <Compile Include="Assets\Tests\~RTPuzzleGame\Environment\Ground\GroundEffectManagerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\_1_Level_StartTutorial_InteractiveObjectTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\InteractiveObject\PuzzleInteractiveObjectSelectionTest.cs" />
-    <Compile Include="Assets\Tests\~RTPuzzleGame\Obstacle\Script\RTPObstacleTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\AbstractPlayerTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PhysicsPlayerMovementTest.cs" />
     <Compile Include="Assets\Tests\~RTPuzzleGame\Player\Movement\PlayerMovementTestPosition.cs" />

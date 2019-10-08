@@ -99,9 +99,12 @@ namespace RTPuzzle
                         }
 
                         var associatedObstacleListener = rangeIntersectionCalculatorV2.GetAssociatedObstacleListener();
-                        foreach (var calculatedObstacleFrustum in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
+                        if (associatedObstacleListener != null) //The range can ignore obstacles
                         {
-                            totalObstacleFrustumPointsCounter += calculatedObstacleFrustum.Count;
+                            foreach (var calculatedObstacleFrustum in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
+                            {
+                                totalObstacleFrustumPointsCounter += calculatedObstacleFrustum.Count;
+                            }
                         }
                     }
                 }
