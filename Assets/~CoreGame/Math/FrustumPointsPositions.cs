@@ -1,8 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace CoreGame
 {
+    /*
+ *     C5----C6
+ *    / |    /|
+ *   C1----C2 |
+ *   |  C8  | C7   
+ *   | /    |/     C3->C7  Forward
+ *   C4----C3     
+ */
+
     [System.Serializable]
     public struct FrustumPointsPositions
     {
@@ -42,11 +54,39 @@ namespace CoreGame
             this.normal5 = crossSign * Vector3.Cross(FC8 - FC4, FC1 - FC4);
             this.normal6 = crossSign * Vector3.Cross(FC8 - FC5, FC6 - FC5);
         }
-        
+
         public static int GetByteSize()
         {
-            return ( ((8 * 3) + (6 * 3)) * sizeof(float));
+            return (((8 * 3) + (6 * 3)) * sizeof(float));
         }
+
+
+
+#if UNITY_EDITOR
+        public void DrawInScene(Color color)
+        {
+            var oldColor = Handles.color;
+            Handles.color = color;
+
+            Handles.DrawLine(this.FC1, this.FC2);
+            Handles.DrawLine(this.FC2, this.FC3);
+            Handles.DrawLine(this.FC3, this.FC4);
+            Handles.DrawLine(this.FC4, this.FC1);
+
+            Handles.DrawLine(this.FC1, this.FC5);
+            Handles.DrawLine(this.FC2, this.FC6);
+            Handles.DrawLine(this.FC3, this.FC7);
+            Handles.DrawLine(this.FC4, this.FC8);
+
+            Handles.DrawLine(this.FC5, this.FC6);
+            Handles.DrawLine(this.FC6, this.FC7);
+            Handles.DrawLine(this.FC7, this.FC8);
+            Handles.DrawLine(this.FC5, this.FC5);
+
+            Handles.color = oldColor;
+        }
+#endif
     }
+
 
 }

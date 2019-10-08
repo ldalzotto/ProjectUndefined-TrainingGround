@@ -58,21 +58,6 @@ namespace RTPuzzle
         }
         #endregion
 
-        #region Logical Conditions
-        public bool IsPointOccludedByObstacles(Vector3 worldPositionPoint, bool forceObstacleOcclusionIfNecessary)
-        {
-            return false;
-            //TODO
-            //  return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, worldPositionPoint, forceObstacleOcclusionIfNecessary);
-        }
-        internal bool IsBoxOccludedByObstacles(BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
-        {
-            //TODO
-            return false;
-            //  return this.ObstacleFrustumCalculationManager.IsPointOccludedByObstacles(this, boxCollider, forceObstacleOcclusionIfNecessary);
-        }
-        #endregion
-
         public void AddNearSquareObstacle(ObstacleInteractiveObject ObstacleInteractiveObject)
         {
             this.nearSquareObstacles.Add(ObstacleInteractiveObject.SquareObstacleSystem);

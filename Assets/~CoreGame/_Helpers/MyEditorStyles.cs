@@ -45,6 +45,12 @@ public class MyColors
     public static Color MayaBlue;
     public static Color MintGreen;
 
+    private static Color[] RandomColorsList;
+    public static Color GetColorOnIndex(int index)
+    {
+        return MyColors.RandomColorsList[Mathf.FloorToInt(Mathf.Repeat(index, MyColors.RandomColorsList.Length))];
+    }
+
     static MyColors()
     {
         MyColors.TransparentBlack = new Color(0, 0, 0, 0);
@@ -53,5 +59,6 @@ public class MyColors
         MyColors.HotPink = new Color(1f, 105f / 255f, 180f / 255f);
         MyColors.MayaBlue = new Color(115f / 255f, 194f / 255f, 251f / 255f);
         MyColors.MintGreen = new Color(62f / 255f, 180f / 255f, 137f / 255f);
+        MyColors.RandomColorsList = new Color[] { MyColors.PaleBlue, MyColors.Coral, MyColors.HotPink, MyColors.MayaBlue, MyColors.MintGreen };
     }
 }

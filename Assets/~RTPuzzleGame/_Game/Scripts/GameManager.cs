@@ -252,6 +252,8 @@ namespace RTPuzzle
             {
                 PlayerActionManager.GizmoTick();
             }
+
+            ObstaclesListenerManager.Get().GizmoTick();
         }
 
         private void OnGUI()
