@@ -2,7 +2,7 @@
 
 namespace InteractiveObjectTest
 {
-    
+
     public class AIInteractiveObject : CoreInteractiveObject
     {
         #region State
@@ -100,7 +100,10 @@ namespace InteractiveObjectTest
         }
         #endregion
 
-        public override void SetAIDestination(AIDestination AIDestination) { this.AIMoveToDestinationSystem.SetDestination(AIDestination); }
+        public override void SetAIDestination(AIDestination AIDestination)
+        {
+            this.AIMoveToDestinationSystem.SetDestination(AIDestination);
+        }
 
         public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
         {

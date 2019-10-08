@@ -31,7 +31,10 @@ namespace InteractiveObjectTest
             this.AISpeedEventDispatcher.AfterTicks();
         }
 
-        public void SetDestination(AIDestination AIDestination) { this.AIDestinationMoveManager.SetDestination(AIDestination); }
+        public void SetDestination(AIDestination AIDestination)
+        {
+            this.AIDestinationMoveManager.SetDestination(AIDestination);
+        }
         public void ClearPath() { this.AIDestinationMoveManager.ClearPath(); }
     }
 
@@ -91,10 +94,10 @@ namespace InteractiveObjectTest
 
                 //If direction change is occuring when current destination has been reached
                 //We manually calculate next position to avoid a frame where AI is standing still
-                if (objectAgent.transform.position == objectAgent.nextPosition)
-                {
-                    this.ManuallyUpdateAgent();
-                }
+                //if (objectAgent.transform.position == objectAgent.nextPosition)
+                //{
+                 //   this.ManuallyUpdateAgent();
+                //}
                 this.lastSuccessfulWorldDestination = AIDestination.WorldPosition;
             }
         }
@@ -133,19 +136,7 @@ namespace InteractiveObjectTest
         }
 
         #endregion
-
-        private void ManuallyUpdateAgent()
-        {
-         //   Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
-            NavMeshHit pathHit;
-            objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
-            if (this.CurrentTimeAttenuated > 0)
-            {
-                objectAgent.velocity = (pathHit.position - objectAgent.transform.position) / this.CurrentTimeAttenuated;
-            }
-            objectAgent.nextPosition = pathHit.position;
-        }
-
+        
         private void UpdateAgentTransform(float d, float timeAttenuationFactor)
         {
             objectAgent.speed = this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor * AIMovementSpeedAttenuationFactorLookup[this.currentSpeedAttenuationFactor];

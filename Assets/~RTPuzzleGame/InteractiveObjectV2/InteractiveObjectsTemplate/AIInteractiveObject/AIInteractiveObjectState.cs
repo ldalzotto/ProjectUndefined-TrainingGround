@@ -1,6 +1,6 @@
 ﻿namespace InteractiveObjectTest
 {
-    public class AIAttractiveObjectState
+    public struct AIAttractiveObjectState
     {
         public delegate void OnAIIsJustAttractedByAttractiveObjectDelegate(CoreInteractiveObject AttractedInteractiveObject);
         public delegate void OnAIisNoMoreAttractedByAttractiveObjectDelegate(CoreInteractiveObject AttractedInteractiveObject);
@@ -14,6 +14,8 @@
         {
             OnAIIsJustAttractedByAttractiveObject = onAIIsJustAttractedByAttractiveObject;
             OnAIisNoMoreAttractedByAttractiveObject = onAIisNoMoreAttractedByAttractiveObject;
+            this.IsAttractedByAttractiveObject = false;
+            this.AttractedInteractiveObject = null;
         }
 
         public bool IsAttractedByAttractiveObject { get; private set; }
@@ -40,7 +42,7 @@
         }
     }
 
-    public class AIDisarmObjectState
+    public struct AIDisarmObjectState
     {
         public delegate void OnAIIsJustDisarmingObjectDelegate();
         public delegate void OnAIIsNoMoreJustDisarmingObjectDelegate();
@@ -50,8 +52,9 @@
 
         public AIDisarmObjectState(OnAIIsJustDisarmingObjectDelegate onAIIsJustDisarmingObject, OnAIIsNoMoreJustDisarmingObjectDelegate onAIIsNoMoreJustDisarmingObject)
         {
-            OnAIIsJustDisarmingObject = onAIIsJustDisarmingObject;
-            OnAIIsNoMoreJustDisarmingObject = onAIIsNoMoreJustDisarmingObject;
+            this.OnAIIsJustDisarmingObject = onAIIsJustDisarmingObject;
+            this.OnAIIsNoMoreJustDisarmingObject = onAIIsNoMoreJustDisarmingObject;
+            this.isDisarming = false;
         }
 
         private bool isDisarming;
