@@ -32,40 +32,34 @@ namespace RTPuzzle
             RangeIntersectionCalculationManagerV2.ManualCalculation(new List<RangeIntersectionCalculatorV2>() { this }, forceCalculation: true);
         }
 
+        //Updated from RangeIntersection Manager
+        public bool TickChangedPositions()
+        {
+            var TrackedInteractiveGameObjectTransform = this.TrackedInteractiveObject.InteractiveGameObject.GetTransform();
+            this.sightModuleMovementChangeTracker.Tick(this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.position,
+                      this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.rotation);
+            this.inRangeCollidersMovementChangeTracker.Tick(TrackedInteractiveGameObjectTransform.WorldPosition, TrackedInteractiveGameObjectTransform.WorldRotation);
+            return this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
+                this.sightModuleMovementChangeTracker.TransformChangedThatFrame();
+        }
+
         public InterserctionOperationType Tick()
         {
             InterserctionOperationType returnOperation = InterserctionOperationType.Nothing;
-            this.sightModuleMovementChangeTracker.Tick(this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.position,
-                      this.AssociatedRangeObject.RangeGameObjectV2.BoundingCollider.transform.rotation);
-            var TrackedInteractiveGameObjectTransform = this.TrackedInteractiveObject.InteractiveGameObject.GetTransform();
-            this.inRangeCollidersMovementChangeTracker.Tick(TrackedInteractiveGameObjectTransform.WorldPosition, TrackedInteractiveGameObjectTransform.WorldRotation);
-
-            if (this.inRangeCollidersMovementChangeTracker.TransformChangedThatFrame() ||
-                this.sightModuleMovementChangeTracker.TransformChangedThatFrame())
+            var newInside = this.RangeIntersectionCalculationManagerV2.GetRangeIntersectionResult(this);
+            if (this.IsInside && !newInside)
             {
-                var newInside = this.RangeIntersectionCalculationManagerV2.GetRangeIntersectionResult(this);
-               // var newInside = RangeIntersectionOperations.IsInsideAndNotOccluded(this.AssociatedRangeObject, this.TrackedInteractiveObject.InteractiveGameObject.GetLogicColliderBoxDefinition(), this.forceObstacleOcclusionIfNecessary);
-                if (this.IsInside && !newInside)
-                {
-                    returnOperation = InterserctionOperationType.JustNotInteresected;
-                }
-                else if (!this.IsInside && newInside)
-                {
-                    returnOperation = InterserctionOperationType.JustInteresected;
-                }
-                else if (this.IsInside && newInside)
-                {
-                    returnOperation = InterserctionOperationType.IntersectedNothing;
-                }
-                this.IsInside = newInside;
+                returnOperation = InterserctionOperationType.JustNotInteresected;
             }
-            else
+            else if (!this.IsInside && newInside)
             {
-                if (this.IsInside)
-                {
-                    returnOperation = InterserctionOperationType.IntersectedNothing;
-                }
+                returnOperation = InterserctionOperationType.JustInteresected;
             }
+            else if (this.IsInside && newInside)
+            {
+                returnOperation = InterserctionOperationType.IntersectedNothing;
+            }
+            this.IsInside = newInside;
 
             return returnOperation;
         }

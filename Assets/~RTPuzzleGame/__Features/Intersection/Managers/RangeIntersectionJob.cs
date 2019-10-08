@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using RTPuzzle;
+using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -153,7 +154,6 @@ public struct RoundedFrustumIntersectionJobData
     public IsOccludedByObstacleJobData IsOccludedByObstacleJobData;
     public int ObstacleCalculationDataIndex;
 }
-
 
 public struct SphereIntersectionManager : IIntersectionManager
 {

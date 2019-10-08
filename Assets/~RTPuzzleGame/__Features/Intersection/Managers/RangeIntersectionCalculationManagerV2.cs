@@ -35,6 +35,8 @@ namespace RTPuzzle
         private bool JobEnded;
         #endregion
 
+        private List<RangeIntersectionCalculatorV2> RangeIntersectionCalculatorThatChangedThatFrame = new List<RangeIntersectionCalculatorV2>();
+
         private RangeObstacleOcclusionIntersection RangeObstacleOcclusionIntersection;
 
         private IIntersectionManager[] RangeIntersectionmanagers;
@@ -88,66 +90,72 @@ namespace RTPuzzle
                 foreach (var rangeIntersectionCalculatorV2 in InvolvedRangeIntersectionCalculatorV2)
                 {
 
-                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    if (forceCalculation || (!forceCalculation && rangeIntersectionCalculatorV2.TickChangedPositions()))
                     {
-                        RangeIntersectionmanager.CountingForRangeIntersectionCalculator(rangeIntersectionCalculatorV2);
-                    }
+                        this.RangeIntersectionCalculatorThatChangedThatFrame.Add(rangeIntersectionCalculatorV2);
+                        foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                        {
+                            RangeIntersectionmanager.CountingForRangeIntersectionCalculator(rangeIntersectionCalculatorV2);
+                        }
 
-                    var associatedObstacleListener = rangeIntersectionCalculatorV2.GetAssociatedObstacleListener();
-                    foreach (var calculatedObstacleFrustum in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
-                    {
-                        totalObstacleFrustumPointsCounter += calculatedObstacleFrustum.Count;
+                        var associatedObstacleListener = rangeIntersectionCalculatorV2.GetAssociatedObstacleListener();
+                        foreach (var calculatedObstacleFrustum in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
+                        {
+                            totalObstacleFrustumPointsCounter += calculatedObstacleFrustum.Count;
+                        }
                     }
                 }
                 #endregion
 
-                foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                if (this.RangeIntersectionCalculatorThatChangedThatFrame.Count > 0)
                 {
-                    RangeIntersectionmanager.CreateNativeArrays();
-                }
-
-                this.IsOccludedByObstacleJobData = new NativeArray<IsOccludedByObstacleJobData>(AllRangeIntersectionCalculatorV2Count, Allocator.TempJob);
-
-                this.RangeObstacleOcclusionIntersection.Prepare(totalObstacleFrustumPointsCounter, this.RangeIntersectionCalculatorV2Manager);
-
-
-                int currentObstacleIntersectionCalculatorCounter = 0;
-                foreach (var RangeIntersectionCalculatorV2 in InvolvedRangeIntersectionCalculatorV2)
-                {
-
-                    if (this.RangeObstacleOcclusionIntersection.ForRangeInteresectionCalculator(RangeIntersectionCalculatorV2, this.ObstacleOcclusionCalculationManagerV2, out IsOccludedByObstacleJobData IsOccludedByObstacleJobData))
+                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
                     {
-                        this.IsOccludedByObstacleJobData[currentObstacleIntersectionCalculatorCounter] = IsOccludedByObstacleJobData;
-                        currentObstacleIntersectionCalculatorCounter += 1;
+                        RangeIntersectionmanager.CreateNativeArrays();
+                    }
+
+                    this.IsOccludedByObstacleJobData = new NativeArray<IsOccludedByObstacleJobData>(AllRangeIntersectionCalculatorV2Count, Allocator.TempJob);
+
+                    this.RangeObstacleOcclusionIntersection.Prepare(totalObstacleFrustumPointsCounter, this.RangeIntersectionCalculatorV2Manager);
+
+                    int currentObstacleIntersectionCalculatorCounter = 0;
+                    foreach (var RangeIntersectionCalculatorV2 in this.RangeIntersectionCalculatorThatChangedThatFrame)
+                    {
+
+                        if (this.RangeObstacleOcclusionIntersection.ForRangeInteresectionCalculator(RangeIntersectionCalculatorV2, this.ObstacleOcclusionCalculationManagerV2, out IsOccludedByObstacleJobData IsOccludedByObstacleJobData))
+                        {
+                            this.IsOccludedByObstacleJobData[currentObstacleIntersectionCalculatorCounter] = IsOccludedByObstacleJobData;
+                            currentObstacleIntersectionCalculatorCounter += 1;
+                        }
+
+                        foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                        {
+                            RangeIntersectionmanager.CalculationDataSetupForRangeIntersectionCalculator(RangeIntersectionCalculatorV2,
+                                 IsOccludedByObstacleJobData, currentObstacleIntersectionCalculatorCounter);
+                        }
                     }
 
                     foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
                     {
-                        RangeIntersectionmanager.CalculationDataSetupForRangeIntersectionCalculator(RangeIntersectionCalculatorV2,
-                             IsOccludedByObstacleJobData, currentObstacleIntersectionCalculatorCounter);
+                        RangeIntersectionmanager.BuildJobHandle(this.IsOccludedByObstacleJobData, this.RangeObstacleOcclusionIntersection);
                     }
-                }
 
-                foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
-                {
-                    RangeIntersectionmanager.BuildJobHandle(this.IsOccludedByObstacleJobData, this.RangeObstacleOcclusionIntersection);
-                }
-
-                if (!forceCalculation)
-                {
-                    this.JobEnded = false;
-                }
-                else
-                {
-                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    if (!forceCalculation)
                     {
-                        RangeIntersectionmanager.Complete();
+                        this.JobEnded = false;
                     }
-                    foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                    else
                     {
-                        RangeIntersectionmanager.WaitForResults();
+                        foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                        {
+                            RangeIntersectionmanager.Complete();
+                        }
+                        foreach (var RangeIntersectionmanager in RangeIntersectionmanagers)
+                        {
+                            RangeIntersectionmanager.WaitForResults();
+                        }
+                        this.OnJobEnded();
                     }
-                    this.OnJobEnded();
                 }
             }
         }
@@ -168,6 +176,7 @@ namespace RTPuzzle
                 }
                 RangeIntersectionmanager.Dispose();
                 RangeIntersectionmanager.ClearState();
+                this.RangeIntersectionCalculatorThatChangedThatFrame.Clear();
             }
 
             if (this.IsOccludedByObstacleJobData.IsCreated) { this.IsOccludedByObstacleJobData.Dispose(); }
