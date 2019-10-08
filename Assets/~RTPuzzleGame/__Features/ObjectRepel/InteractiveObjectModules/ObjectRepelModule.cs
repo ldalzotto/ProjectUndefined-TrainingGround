@@ -9,7 +9,7 @@ namespace RTPuzzle
     {
         ObjectRepelID GetObjectRepelID();
         Transform GetTransform();
-        BoxCollider GetObjectRepelCollider();
+        BoxDefinition GetObjectRepelColliderDefinition();
         IObjectRepelModuleEvent GetIObjectRepelModuleEvent();
         IRenderBoundRetrievable GetModelBounds();
         IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval { get; }
@@ -87,9 +87,9 @@ namespace RTPuzzle
             return this.ModelObjectModule;
         }
         public IObjectRepelModuleEvent GetIObjectRepelModuleEvent() { return this; }
-        public BoxCollider GetObjectRepelCollider()
+        public BoxDefinition GetObjectRepelColliderDefinition()
         {
-            return this.objectRepelCollider;
+            return new BoxDefinition(this.objectRepelCollider);
         }
         public ObjectRepelID GetObjectRepelID() { return this.ObjectRepelID; }
         public Transform GetTransform() { return this.transform; }

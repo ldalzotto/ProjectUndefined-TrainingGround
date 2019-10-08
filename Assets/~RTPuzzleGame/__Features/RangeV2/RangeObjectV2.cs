@@ -7,6 +7,7 @@ namespace RTPuzzle
 {
     public abstract class RangeObjectV2
     {
+        public RangeType RangeType { get; protected set; }
         public RangeGameObjectV2 RangeGameObjectV2 { get; private set; }
 
         public RangeObjectInitialization RangeObjectInitialization { get; private set; }
@@ -52,7 +53,6 @@ namespace RTPuzzle
         {
             this.RangeGameObjectV2.ReceiveEvent(SetWorldPositionEvent);
         }
-        public virtual void ReceiveEvent(RangeTransformChanged RangeTransformChanged) { }
         public void ReceiveEvent(RangeIntersectionAddIntersectionListenerEvent RangeIntersectionAddIntersectionListenerEvent)
         {
             this.RangeIntersectionV2System.ReceiveEvent(RangeIntersectionAddIntersectionListenerEvent, this.RangeGameObjectV2.RangeObjectV2PhysicsEventListener);
@@ -71,6 +71,7 @@ namespace RTPuzzle
 
         public SphereRangeObjectV2(GameObject AssociatedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
+            this.RangeType = RangeType.SPHERE;
             this.SphereRangeObjectInitialization = SphereRangeObjectInitialization;
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject);
             this.SphereBoundingCollider = (SphereCollider)RangeGameObjectV2.BoundingCollider;
@@ -82,13 +83,18 @@ namespace RTPuzzle
     public class BoxRangeObjectV2 : RangeObjectV2
     {
         private BoxRangeObjectInitialization BoxRangeObjectInitialization;
-        public BoxCollider BoxBoundingCollider { get; private set; }
+
+        public BoxDefinition GetBoxBoundingColliderDefinition()
+        {
+            var BoxCollider = (BoxCollider)RangeGameObjectV2.BoundingCollider;
+            return new BoxDefinition(BoxCollider);
+        }
 
         public BoxRangeObjectV2(GameObject AssociatedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
+            this.RangeType = RangeType.BOX;
             this.BoxRangeObjectInitialization = BoxRangeObjectInitialization;
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
-            this.BoxBoundingCollider = (BoxCollider)RangeGameObjectV2.BoundingCollider;
             base.Init(RangeGameObjectV2, BoxRangeObjectInitialization);
         }
     }
@@ -97,56 +103,50 @@ namespace RTPuzzle
     {
         private FrustumRangeObjectInitialization FrustumRangeObjectInitialization;
 
-        private RangeWorldPositionChangeSystem RangeWorldPositionChangeSystem;
+        private FrustumRangeObjectPositioningSystem FrustumRangeObjectPositioningSystem;
 
         public FrustumV2 GetFrustum() { return this.FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2; }
+        public FrustumPointsPositions GetFrustumWorldPositions() { return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition(); }
 
         public FrustumRangeObjectV2(GameObject AssociatedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
+            this.RangeType = RangeType.FRUSTUM;
 
             this.FrustumRangeObjectInitialization = FrustumRangeObjectInitialization;
+            this.FrustumRangeObjectPositioningSystem = new FrustumRangeObjectPositioningSystem(this.GetFrustum(), this);
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
             base.Init(RangeGameObjectV2, FrustumRangeObjectInitialization);
         }
-
-        public override void Tick(float d)
-        {
-            base.Tick(d);
-            this.RangeWorldPositionChangeSystem.Tick(d);
-        }
-
     }
 
     public class RoundedFrustumRangeObjectV2 : RangeObjectV2
     {
         private RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization;
 
-        private RangeWorldPositionChangeSystem RangeWorldPositionChangeSystem;
-        
+        public FrustumRangeObjectPositioningSystem FrustumRangeObjectPositioningSystem { get; private set; }
+
         public FrustumV2 GetFrustum() { return this.RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2; }
+        public FrustumPointsPositions GetFrustumWorldPositions() { return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition(); }
 
         public RoundedFrustumRangeObjectV2(GameObject AssociatedGameObject, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
         {
-            this.RangeWorldPositionChangeSystem = new RangeWorldPositionChangeSystem(this);
+            this.RangeType = RangeType.ROUNDED_FRUSTUM;
 
             this.RoundedFrustumRangeObjectInitialization = RoundedFrustumRangeObjectInitialization;
-            
+            this.FrustumRangeObjectPositioningSystem = new FrustumRangeObjectPositioningSystem(this.GetFrustum(), this);
+
             var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
             base.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
         }
-
-        public override void Tick(float d)
-        {
-            base.Tick(d);
-            this.RangeWorldPositionChangeSystem.Tick(d);
-        }
     }
-
- 
 
     public struct SetWorldPositionEvent
     {
         public Vector3 WorldPosition;
+    }
+
+    public enum RangeType
+    {
+        SPHERE, BOX, FRUSTUM, ROUNDED_FRUSTUM
     }
 }

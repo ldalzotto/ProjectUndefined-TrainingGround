@@ -6,7 +6,6 @@ namespace RTPuzzle
 {
     public class RangeIntersectionV2System : ARangeObjectSystem
     {
-        public int RangeInteresectionSystemUniqueID { get; private set; }
         public List<ARangeIntersectionV2Listener> RangeIntersectionListeners { get; private set; } = null;
 
         public RangeIntersectionV2System(RangeObjectV2 rangeObjectV2Ref) : base(rangeObjectV2Ref)
@@ -90,7 +89,7 @@ namespace RTPuzzle
 
         public sealed override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
-            var rangeIntersectionCalculator = new RangeIntersectionCalculatorV2(this.associatedRangeObject, PhysicsTriggerInfo.OtherInteractiveObject, forceObstacleOcclusionIfNecessary: true);
+            var rangeIntersectionCalculator = new RangeIntersectionCalculatorV2(this.associatedRangeObject, PhysicsTriggerInfo.OtherInteractiveObject);
             this.intersectionCalculators.Add(rangeIntersectionCalculator);
             this.intersectionCalculatorsIndexedByInteractiveObject[PhysicsTriggerInfo.OtherInteractiveObject] = rangeIntersectionCalculator;
             this.OnTriggerEnterSuccess(PhysicsTriggerInfo);

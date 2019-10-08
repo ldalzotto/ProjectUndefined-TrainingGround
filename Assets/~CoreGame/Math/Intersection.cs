@@ -8,17 +8,17 @@ namespace CoreGame
     {
 
         #region BOX->SPHERE
-        public static bool BoxIntersectsOrEntirelyContainedInSphere(Vector3 boxLocalCenter, Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, Vector3 SphereWorldPosition, float SphereRadius)
+        public static bool BoxIntersectsOrEntirelyContainedInSphere(BoxDefinition BoxDefinition, Vector3 SphereWorldPosition, float SphereRadius)
         {
-            return BoxEntirelyContainedInSphereV2(boxLocalCenter, boxColliderSize, boxLocalToWorld, SphereWorldPosition, SphereRadius) 
-                    || BoxIntersectsSphereV2(boxLocalCenter, boxColliderSize, boxLocalToWorld, SphereWorldPosition, SphereRadius);
+            return BoxEntirelyContainedInSphereV2(BoxDefinition, SphereWorldPosition, SphereRadius) 
+                    || BoxIntersectsSphereV2(BoxDefinition, SphereWorldPosition, SphereRadius);
         }
 
-        private static bool BoxIntersectsSphereV2(Vector3 boxLocalCenter, Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, Vector3 SphereWorldPosition, float SphereRadius)
+        private static bool BoxIntersectsSphereV2(BoxDefinition BoxDefinition, Vector3 SphereWorldPosition, float SphereRadius)
         {
             // -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
             // -> Also, order of faces can be sorted by distance check.
-            ExtractBoxColliderWorldPointsV2(boxLocalCenter, boxColliderSize, boxLocalToWorld,
+            ExtractBoxColliderWorldPointsV2(BoxDefinition,
                 out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
             //Face intersection
@@ -31,11 +31,11 @@ namespace CoreGame
         }
 
 
-        private static bool BoxEntirelyContainedInSphereV2(Vector3 boxLocalCenter, Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, Vector3 SphereWorldPosition, float SphereRadius)
+        private static bool BoxEntirelyContainedInSphereV2(BoxDefinition BoxDefinition, Vector3 SphereWorldPosition, float SphereRadius)
         {
             // -> Optimisations can be made in order to not trigger the full calcuation if objects are too far.
             // -> Also, order of faces can be sorted by distance check.
-            ExtractBoxColliderWorldPointsV2(boxLocalCenter, boxColliderSize, boxLocalToWorld, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            ExtractBoxColliderWorldPointsV2(BoxDefinition, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
             //Face contains
             return FaceEntirelyContainedInSphere(BC6, BC7, BC5, BC8, SphereWorldPosition, SphereRadius)
                 || FaceEntirelyContainedInSphere(BC2, BC3, BC1, BC4, SphereWorldPosition, SphereRadius)
@@ -164,9 +164,9 @@ namespace CoreGame
 
 
         #region FRUSTUM<->BOX
-        public static bool BoxEntirelyContainedInFrustum(FrustumPointsPositions frustumPoints, BoxCollider boxCollider)
+        public static bool BoxEntirelyContainedInFrustum(FrustumPointsPositions frustumPoints, BoxDefinition BoxDefinition)
         {
-            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            ExtractBoxColliderWorldPointsV2(BoxDefinition, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
             return (PointInsideFrustumComputationV2(BC1, frustumPoints)
                 && PointInsideFrustumComputationV2(BC2, frustumPoints)
                 && PointInsideFrustumComputationV2(BC3, frustumPoints)
@@ -177,9 +177,9 @@ namespace CoreGame
                 && PointInsideFrustumComputationV2(BC8, frustumPoints));
         }
 
-        public static bool FrustumBoxIntersection(FrustumPointsPositions frustumPoints, BoxCollider boxCollider)
+        public static bool FrustumBoxIntersection(FrustumPointsPositions frustumPoints, BoxDefinition BoxDefinition)
         {
-            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
+            ExtractBoxColliderWorldPointsV2(BoxDefinition, out Vector3 BC1, out Vector3 BC2, out Vector3 BC3, out Vector3 BC4, out Vector3 BC5, out Vector3 BC6, out Vector3 BC7, out Vector3 BC8);
 
             if (!LineFrustumIntersection(BC1, BC2, frustumPoints) && !LineFrustumIntersection(BC2, BC4, frustumPoints) && !LineFrustumIntersection(BC4, BC3, frustumPoints) && !LineFrustumIntersection(BC3, BC1, frustumPoints)
                 && !LineFrustumIntersection(BC1, BC5, frustumPoints) && !LineFrustumIntersection(BC2, BC6, frustumPoints) && !LineFrustumIntersection(BC3, BC7, frustumPoints) && !LineFrustumIntersection(BC4, BC8, frustumPoints)
@@ -285,71 +285,44 @@ namespace CoreGame
    *   | /    |/     C3->C7  Forward
    *   C4----C3     
    */
-
-        public static void ExtractBoxColliderWorldPoints(BoxCollider boxCollider, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
+   
+        public static void ExtractBoxColliderWorldPointsV2(BoxDefinition BoxDefinition, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
         {
             Vector3 diagDirection = Vector3.zero;
-            Vector3 boxColliderSize = boxCollider.size;
+
+            var boxColliderSize = BoxDefinition.LocalSize;
+            var boxLocalToWorld = BoxDefinition.LocalToWorld;
+            var boxLocalCenter = BoxDefinition.LocalCenter;
 
             diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-            C1 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C1 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-            C2 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C2 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-            C3 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C3 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-            C4 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C4 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            C5 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C5 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            C6 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C6 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            C7 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C7 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
             diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            C8 = boxCollider.transform.TransformPoint(boxCollider.center + diagDirection / 2f).Round(3);
+            C8 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f);
 
         }
 
-        public static void ExtractBoxColliderWorldPointsV2(Vector3 boxLocalCenter,Vector3 boxColliderSize, Matrix4x4 boxLocalToWorld, out Vector3 C1, out Vector3 C2, out Vector3 C3, out Vector3 C4, out Vector3 C5, out Vector3 C6, out Vector3 C7, out Vector3 C8)
+        public static FrustumPointsPositions ConvertBoxColliderToFrustumPoints(BoxDefinition BoxDefinition)
         {
-            Vector3 diagDirection = Vector3.zero;
-            
-            diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-            C1 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, -boxColliderSize.z);
-            C2 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-            C3 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, -boxColliderSize.z);
-            C4 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(-boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            C5 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(boxColliderSize.x, boxColliderSize.y, boxColliderSize.z);
-            C6 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            C7 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-            diagDirection = diagDirection.SetVector(-boxColliderSize.x, -boxColliderSize.y, boxColliderSize.z);
-            C8 = boxLocalToWorld.MultiplyPoint(boxLocalCenter + diagDirection / 2f).Round(3);
-
-        }
-
-        public static FrustumPointsPositions ConvertBoxColliderToFrustumPoints(BoxCollider boxCollider)
-        {
-            ExtractBoxColliderWorldPoints(boxCollider, out Vector3 FC1, out Vector3 FC2, out Vector3 FC3, out Vector3 FC4, out Vector3 FC5, out Vector3 FC6, out Vector3 FC7, out Vector3 FC8);
+            ExtractBoxColliderWorldPointsV2(BoxDefinition, out Vector3 FC1, out Vector3 FC2, out Vector3 FC3, out Vector3 FC4, out Vector3 FC5, out Vector3 FC6, out Vector3 FC7, out Vector3 FC8);
             return new FrustumPointsPositions(FC1, FC2, FC3, FC4, FC5, FC6, FC7, FC8);
         }
 

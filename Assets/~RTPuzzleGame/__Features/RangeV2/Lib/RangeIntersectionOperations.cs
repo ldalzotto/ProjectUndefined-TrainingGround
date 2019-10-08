@@ -8,9 +8,10 @@ namespace RTPuzzle
     {
         public static bool IsInside(SphereRangeObjectV2 SphereRangeObjectV2, BoxCollider InsideCollider)
         {
-            return Intersection.BoxIntersectsOrEntirelyContainedInSphere(InsideCollider.center, InsideCollider.size, InsideCollider.transform.localToWorldMatrix,
-              SphereRangeObjectV2.SphereBoundingCollider.transform.position,
-              SphereRangeObjectV2.SphereBoundingCollider.radius);
+            //   return Intersection.BoxIntersectsOrEntirelyContainedInSphere(InsideCollider.center, InsideCollider.size, InsideCollider.transform.localToWorldMatrix,
+            //  SphereRangeObjectV2.SphereBoundingCollider.transform.position,
+            //   SphereRangeObjectV2.SphereBoundingCollider.radius);
+            return false;
         }
 
         public static bool IsInside(FrustumRangeObjectV2 FrustumRangeObjectV2, BoxCollider InsideCollider)
@@ -92,24 +93,27 @@ namespace RTPuzzle
             return isInside;
         }
 
-        public static bool IsInsideAndNotOccluded(RangeObjectV2 RangeObject, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
+        public static bool IsInsideAndNotOccluded(RangeObjectV2 RangeObject, BoxDefinition BoxDefinition, bool forceObstacleOcclusionIfNecessary)
         {
+            /*
             Profiler.BeginSample("ObstacleIsInsideAndNotOccludedBox");
             bool isInside = false;
             if (RangeObject.GetType() == typeof(SphereRangeObjectV2))
             {
-                isInside = IsInsideAndNotOccluded((SphereRangeObjectV2)RangeObject, boxCollider, forceObstacleOcclusionIfNecessary);
+                isInside = IsInsideAndNotOccluded((SphereRangeObjectV2)RangeObject, BoxDefinition, forceObstacleOcclusionIfNecessary);
             }
             else if (RangeObject.GetType() == typeof(FrustumRangeObjectV2))
             {
-                isInside = IsInsideAndNotOccluded((FrustumRangeObjectV2)RangeObject, boxCollider, forceObstacleOcclusionIfNecessary);
+                isInside = IsInsideAndNotOccluded((FrustumRangeObjectV2)RangeObject, BoxDefinition, forceObstacleOcclusionIfNecessary);
             }
             else if (RangeObject.GetType() == typeof(RoundedFrustumRangeObjectV2))
             {
-                isInside = IsInsideAndNotOccluded((RoundedFrustumRangeObjectV2)RangeObject, boxCollider, forceObstacleOcclusionIfNecessary);
+                isInside = IsInsideAndNotOccluded((RoundedFrustumRangeObjectV2)RangeObject, BoxDefinition, forceObstacleOcclusionIfNecessary);
             }
             Profiler.EndSample();
-            return isInside;
+            */
+            return false;
+           // return isInside;
         }
 
         public static bool IsInsideAndNotOccluded(RoundedFrustumRangeObjectV2 RoundedFrustumRangeObjectV2, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
@@ -120,8 +124,9 @@ namespace RTPuzzle
 
         private static bool IsInsideAndNotOccluded(SphereRangeObjectV2 SphereRangeObjectV2, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)
         {
-            bool isInsideRange = RangeIntersectionOperations.IsInside(SphereRangeObjectV2, boxCollider);
-            return IsInsideAndNotOccluded(SphereRangeObjectV2.GetObstacleListener(), isInsideRange, boxCollider, forceObstacleOcclusionIfNecessary);
+            // bool isInsideRange = RangeIntersectionOperations.IsInside(SphereRangeObjectV2, boxCollider);
+            // return IsInsideAndNotOccluded(SphereRangeObjectV2.GetObstacleListener(), isInsideRange, boxCollider, forceObstacleOcclusionIfNecessary);
+            return false;
         }
 
         private static bool IsInsideAndNotOccluded(FrustumRangeObjectV2 FrustumRangeObjectV2, BoxCollider boxCollider, bool forceObstacleOcclusionIfNecessary)

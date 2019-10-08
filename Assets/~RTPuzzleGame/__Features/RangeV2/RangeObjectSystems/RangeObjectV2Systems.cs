@@ -16,49 +16,6 @@ namespace RTPuzzle
         public virtual void Tick(float d) { }
     }
 
-    #region Range Type Object Movement
-    public class RangeWorldPositionChangeSystem : ARangeObjectSystem
-    {
-        private BlittableTransformChangeListenerManager BlittableTransformChangeListenerManager;
-        private RangeWorldPositionChangeListener RangeWorldPositionChangeListener;
-
-        public RangeWorldPositionChangeSystem(RangeObjectV2 rangeObjectV2Ref) : base(rangeObjectV2Ref)
-        {
-            this.RangeWorldPositionChangeListener = new RangeWorldPositionChangeListener();
-            this.BlittableTransformChangeListenerManager = new BlittableTransformChangeListenerManager(true, true, this.RangeWorldPositionChangeListener);
-        }
-
-        public override void Tick(float d)
-        {
-            this.RangeWorldPositionChangeListener.Clear();
-            var RangeObjectV2GetWorldTransformEventReturn = this.RangeObjectV2Ref.GetTransform();
-            this.BlittableTransformChangeListenerManager.Tick(RangeObjectV2GetWorldTransformEventReturn.WorldPosition, RangeObjectV2GetWorldTransformEventReturn.WorldRotation);
-        }
-    }
-
-    public class RangeWorldPositionChangeListener : TransformChangeListener
-    {
-        public bool hasChanged { get; private set; }
-        public RangeWorldPositionChangeListener()
-        {
-        }
-
-        public void Clear() { this.hasChanged = false; }
-
-        public void onPositionChange()
-        {
-            this.hasChanged = true;
-        }
-
-        public void onRotationChange()
-        {
-            this.hasChanged = true;
-        }
-    }
-
-    public struct RangeTransformChanged { }
-    #endregion
-
     #region Range Type
     public abstract class ARangeTypeDefinitionV2 { }
     [System.Serializable]
@@ -154,6 +111,46 @@ namespace RTPuzzle
     public struct RangeExternalPhysicsOnlyAddListener
     {
         public ARangeObjectV2PhysicsEventListener ARangeObjectV2PhysicsEventListener;
+    }
+    #endregion
+
+    #region Range Frustum Positioning
+    public class FrustumRangeObjectPositioningSystem : ARangeObjectSystem
+    {
+        private RangeFrustumWorldPositioning RangeFrustumWorldPositioning;
+
+        public FrustumPointsPositions GetFrustumWorldPosition()
+        {
+            return this.RangeFrustumWorldPositioning.GetWorldFrustumPositions(this.RangeObjectV2Ref.RangeGameObjectV2.GetLocalToWorldMatrix());
+        }
+
+        public FrustumRangeObjectPositioningSystem(FrustumV2 Frustum, RangeObjectV2 RoundedFrustumRangeObjectV2) : base(RoundedFrustumRangeObjectV2)
+        {
+            Frustum.CalculateFrustumWorldPositionyFace(out FrustumPointsPositions LocalFrustumPointPositions, new TransformStruct { WorldPosition = Vector3.zero, WorldRotation = Quaternion.identity, LossyScale = Vector3.one });
+            this.RangeFrustumWorldPositioning = new RangeFrustumWorldPositioning
+            {
+                LocalFrustumPositions = LocalFrustumPointPositions
+            };
+        }
+    }
+
+    public struct RangeFrustumWorldPositioning
+    {
+        public FrustumPointsPositions LocalFrustumPositions;
+
+        public FrustumPointsPositions GetWorldFrustumPositions(Matrix4x4 LocalToWorld)
+        {
+            return new FrustumPointsPositions(
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC1),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC2),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC3),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC4),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC5),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC6),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC7),
+                LocalToWorld.MultiplyPoint(this.LocalFrustumPositions.FC8)
+               );
+        }
     }
     #endregion
 }

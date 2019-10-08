@@ -48,6 +48,10 @@ namespace InteractiveObjectTest
         }
 
         public Matrix4x4 GetLocalToWorld() { return this.InteractiveGameObjectParent.transform.localToWorldMatrix; }
+        public BoxDefinition GetLogicColliderBoxDefinition()
+        {
+            return new BoxDefinition(this.LogicCollider);
+        }
 
         public void CleanObjectForFeedbackIcon(CoreMaterialConfiguration CoreMaterialConfiguration)
         {

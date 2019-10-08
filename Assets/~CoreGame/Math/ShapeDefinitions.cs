@@ -83,5 +83,18 @@ namespace CoreGame
     {
         FACE, PROJECTION
     }
+    
+    public struct BoxDefinition
+    {
+        public Vector3 LocalCenter;
+        public Vector3 LocalSize;
+        public Matrix4x4 LocalToWorld;
 
+        public BoxDefinition(BoxCollider BoxCollider)
+        {
+            this.LocalCenter = BoxCollider.center;
+            this.LocalSize = BoxCollider.size;
+            this.LocalToWorld = BoxCollider.transform.localToWorldMatrix;
+        }
+    }
 }

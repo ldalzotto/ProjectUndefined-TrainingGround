@@ -1,4 +1,5 @@
-﻿using InteractiveObjectTest;
+﻿using CoreGame;
+using InteractiveObjectTest;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -50,6 +51,7 @@ namespace RTPuzzle
             {
                 this.RangeGameObject.transform.parent = this.attachedGameObject.transform;
             }
+            this.RangeGameObject.transform.localRotation = Quaternion.identity;
             this.RangeGameObject.transform.localPosition = Vector3.zero;
 
             var rigidbody = this.RangeGameObject.AddComponent<Rigidbody>();

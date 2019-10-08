@@ -14,7 +14,7 @@ namespace RTPuzzle
 
         public BoxRangeBufferData ToBoxBuffer()
         {
-            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(this.BoxRangeObjectRenderingDataProvider.BoundingBoxCollider);
+            var boxFrustum = Intersection.ConvertBoxColliderToFrustumPoints(this.BoxRangeObjectRenderingDataProvider.GetBoundingBoxDefinition());
             var boxRangeBufferData = new BoxRangeBufferData();
 
             boxRangeBufferData.FC1 = boxFrustum.FC1;

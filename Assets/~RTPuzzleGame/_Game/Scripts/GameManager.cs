@@ -207,6 +207,7 @@ namespace RTPuzzle
             }
             
             ObstacleOcclusionCalculationManagerV2.Get().LateTick();
+            RangeIntersectionCalculationManagerV2.Get().LateTick();
         }
 
         private void FixedUpdate()

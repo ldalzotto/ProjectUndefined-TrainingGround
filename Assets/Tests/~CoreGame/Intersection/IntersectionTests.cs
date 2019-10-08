@@ -34,13 +34,14 @@ namespace Tests
 
             BoxCollider box = this.CreateBoxCollider();
             this.InitBox(ref box, Vector3.one, Quaternion.identity);
-            
-            this.AssertBox(Vector3.forward, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.back, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.up, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.down, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.left, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.right, 0.1f, ref box, sphereWorldPosition, sphereRadius);
+
+            var boxDefinition = new BoxDefinition(box);
+            this.AssertBox(Vector3.forward, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.back, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.up, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.down, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.left, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.right, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
         }
 
         [Test]
@@ -51,25 +52,26 @@ namespace Tests
 
             BoxCollider box = this.CreateBoxCollider();
             this.InitBox(ref box, Vector3.one, Quaternion.Euler(90f,90f,90f));
-            
-            this.AssertBox(Vector3.forward, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.back, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.up, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.down, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.left, 0.1f, ref box, sphereWorldPosition, sphereRadius);
-            this.AssertBox(Vector3.right, 0.1f, ref box, sphereWorldPosition, sphereRadius);
+
+            var boxDefinition = new BoxDefinition(box);
+            this.AssertBox(Vector3.forward, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.back, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.up, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.down, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.left, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
+            this.AssertBox(Vector3.right, 0.1f, ref box, boxDefinition, sphereWorldPosition, sphereRadius);
         }
 
-        private void AssertBox(Vector3 moveDirection, float directionDelta, ref BoxCollider box, Vector3 sphereWorldPosition, float sphereRadius) {
+        private void AssertBox(Vector3 moveDirection, float directionDelta, ref BoxCollider box, BoxDefinition boxDefinition, Vector3 sphereWorldPosition, float sphereRadius) {
 
             box.transform.position = moveDirection;
-            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxDefinition, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * (-1 * directionDelta));
-            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxDefinition, sphereWorldPosition, sphereRadius));
 
             box.transform.position = moveDirection + (moveDirection * directionDelta);
-            Assert.IsFalse(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
+            Assert.IsFalse(Intersection.BoxIntersectsOrEntirelyContainedInSphere(boxDefinition, sphereWorldPosition, sphereRadius));
         }
 
         [Test]
@@ -82,7 +84,7 @@ namespace Tests
             this.InitBox(ref box, Vector3.one, Quaternion.identity);
             box.transform.position = Vector3.zero;
 
-            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(box.center, box.size, box.transform.localToWorldMatrix, sphereWorldPosition, sphereRadius));
+            Assert.IsTrue(Intersection.BoxIntersectsOrEntirelyContainedInSphere(new BoxDefinition(box), sphereWorldPosition, sphereRadius));
         }
 
     }

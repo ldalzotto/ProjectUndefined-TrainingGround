@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using CoreGame;
 using UnityEngine;
 
 namespace RTPuzzle
@@ -28,6 +29,10 @@ namespace RTPuzzle
         public BoxCollider GetCollider()
         {
             return this.associatedCollider;
+        }
+        public BoxDefinition GetBoxColliderDefinition()
+        {
+            return new BoxDefinition(this.associatedCollider);
         }
         #endregion
 
