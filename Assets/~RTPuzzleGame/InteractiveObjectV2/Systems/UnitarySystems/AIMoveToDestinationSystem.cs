@@ -123,6 +123,7 @@ namespace InteractiveObjectTest
         public void ClearPath()
         {
             this.currentDestination = null;
+            this.lastSuccessfulWorldDestination = new Vector3(9999999, -9999999, 999999);
             objectAgent.ResetPath();
         }
 

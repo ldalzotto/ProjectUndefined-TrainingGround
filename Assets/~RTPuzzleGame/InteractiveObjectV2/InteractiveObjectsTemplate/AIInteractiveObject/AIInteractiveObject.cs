@@ -1,5 +1,8 @@
-﻿namespace InteractiveObjectTest
+﻿using GameConfigurationID;
+
+namespace InteractiveObjectTest
 {
+    
     public class AIInteractiveObject : CoreInteractiveObject
     {
         #region State
@@ -60,53 +63,55 @@
             this.AnimationObjectSystem.SetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent);
         }
 
+        #region Attractive Object
         public override void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
-            /*
             if (!this.AIDisarmObjectState.IsDisarming)
             {
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
                 this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
                 this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
             }
-            */
+        }
+
+        public override void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject)
+        {
+            if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+            {
+                this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
+                this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
+                this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
+            }
         }
 
         public override void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject)
         {
-            /*
             if (this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
             {
                 this.AIMoveToDestinationSystem.ClearPath();
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
             }
             this.LineVisualFeedbackSystem.DestroyLine(OtherInteractiveObject);
-            */
-        }
-
-        protected override void OnAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
-        {
-            /*
-            if (!this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
-            {
-                this.OnOtherAttractiveObjectNoMoreIntersected(IntersectedInteractiveObject);
-            }
-            */
         }
 
         public override void OnAIIsNoMoreAttractedByAttractiveObject(CoreInteractiveObject AttractedInteractiveObject)
         {
             this.LineVisualFeedbackSystem.DestroyLine(AttractedInteractiveObject);
         }
+        #endregion
 
         public override void SetAIDestination(AIDestination AIDestination) { this.AIMoveToDestinationSystem.SetDestination(AIDestination); }
 
-        public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject, out bool success)
+        public override void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
         {
             this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(false, OtherInteractiveObject);
             this.AIMoveToDestinationSystem.ClearPath();
             this.AIDisarmObjectState.IsDisarming = true;
-            success = this.AIDisarmObjectState.IsDisarming;
+        }
+
+        public override void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
+        {
+            this.AIDisarmObjectState.IsDisarming = false;
         }
 
         protected override void OnSightObjectSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)

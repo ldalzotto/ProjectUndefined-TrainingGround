@@ -33,14 +33,17 @@ namespace InteractiveObjectTest
         #region Attractive Object Events
         protected virtual void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
         protected virtual void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject) { }
-        protected virtual void OnAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
+        protected virtual void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject) { }
         public virtual void OnOtherAttractiveObjectJustIntersected(CoreInteractiveObject OtherInteractiveObject) { }
+        public virtual void OnOtherAttractiveObjectIntersectedNothing(CoreInteractiveObject OtherInteractiveObject) { }
         public virtual void OnOtherAttractiveObjectNoMoreIntersected(CoreInteractiveObject OtherInteractiveObject) { }
         #endregion
 
         #region Disarm Object Events
-        protected virtual void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject IntersectedInteractiveObject) { }
-        public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject, out bool success) { success = false; }
+        protected virtual void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject) { }
+        protected virtual void OnAssciatedDisarmObjectTriggerExit(CoreInteractiveObject OtherInteractiveObject) { }
+        public virtual void OnOtherDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject) { }
+        public virtual void OnOtherDisarmobjectTriggerExit(CoreInteractiveObject OtherInteractiveObject) { }
         #endregion
 
         #region Sight Object Events

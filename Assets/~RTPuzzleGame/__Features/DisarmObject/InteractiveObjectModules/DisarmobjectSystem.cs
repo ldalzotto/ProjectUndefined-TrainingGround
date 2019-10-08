@@ -15,6 +15,7 @@ namespace InteractiveObjectTest
 
     #region Callback Events
     public delegate void OnAssociatedDisarmObjectTriggerEnterDelegate(CoreInteractiveObject IntersectedInteractiveObject);
+    public delegate void OnAssociatedDisarmObjectTriggerExitDelegate(CoreInteractiveObject IntersectedInteractiveObject);
     #endregion
 
     public class DisarmObjectSystem : AInteractiveObjectSystem
@@ -50,7 +51,8 @@ namespace InteractiveObjectTest
         private RangeObjectV2 SphereRange;
 
         public DisarmObjectSystem(CoreInteractiveObject AssociatedInteractiveObject, DisarmSystemDefinition DisarmObjectInitializationData,
-            InteractiveObjectTagStruct PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter)
+            InteractiveObjectTagStruct PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter,
+            OnAssociatedDisarmObjectTriggerExitDelegate OnAssociatedDisarmObjectTriggerExit)
         {
             this.DisarmSystemDefinition = DisarmObjectInitializationData;
             this.SphereRange = new SphereRangeObjectV2(AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent, new SphereRangeObjectInitialization
@@ -62,7 +64,7 @@ namespace InteractiveObjectTest
                     Radius = DisarmObjectInitializationData.DisarmRange
                 }
             }, AssociatedInteractiveObject);
-            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new DisarmObjectPhysicsEventListener(PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnter) });
+            this.SphereRange.ReceiveEvent(new RangeExternalPhysicsOnlyAddListener { ARangeObjectV2PhysicsEventListener = new DisarmObjectPhysicsEventListener(PhysicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnter, OnAssociatedDisarmObjectTriggerExit) });
 
             this.ProgressBarGameObject = new GameObject("ProgressBar");
             this.ProgressBarGameObject.transform.parent = AssociatedInteractiveObject.InteractiveGameObject.InteractiveGameObjectParent.transform;
@@ -115,10 +117,13 @@ namespace InteractiveObjectTest
     {
         private InteractiveObjectTagStruct PhysicsEventListenerGuard;
         private OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter;
+        private OnAssociatedDisarmObjectTriggerExitDelegate OnAssociatedDisarmObjectTriggerExit;
 
-        public DisarmObjectPhysicsEventListener(InteractiveObjectTagStruct physicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter)
+        public DisarmObjectPhysicsEventListener(InteractiveObjectTagStruct physicsEventListenerGuard, OnAssociatedDisarmObjectTriggerEnterDelegate OnAssociatedDisarmObjectTriggerEnter,
+            OnAssociatedDisarmObjectTriggerExitDelegate OnAssociatedDisarmObjectTriggerExit)
         {
             this.OnAssociatedDisarmObjectTriggerEnter = OnAssociatedDisarmObjectTriggerEnter;
+            this.OnAssociatedDisarmObjectTriggerExit = OnAssociatedDisarmObjectTriggerExit;
             PhysicsEventListenerGuard = physicsEventListenerGuard;
         }
 
@@ -130,6 +135,11 @@ namespace InteractiveObjectTest
         public override void OnTriggerEnter(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
         {
             this.OnAssociatedDisarmObjectTriggerEnter.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
+        }
+
+        public override void OnTriggerExit(RangeObjectPhysicsTriggerInfo PhysicsTriggerInfo)
+        {
+            this.OnAssociatedDisarmObjectTriggerExit.Invoke(PhysicsTriggerInfo.OtherInteractiveObject);
         }
     }
 }

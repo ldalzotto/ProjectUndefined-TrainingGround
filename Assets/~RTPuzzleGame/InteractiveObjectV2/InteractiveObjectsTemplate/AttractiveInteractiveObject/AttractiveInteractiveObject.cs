@@ -13,11 +13,11 @@ namespace InteractiveObjectTest
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAttractiveObject = true };
 
             var physicsInteractionSelectionGuard = new InteractiveObjectTagStruct(isAi: 1);
-      //      this.AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
-         //       this.OnAssociatedAttractiveSystemJustIntersected, this.OnAssociatedAttractiveSystemNoMoreIntersected, this.OnAttractiveSystemInterestedNothing);
+            this.AttractiveObjectSystem = new AttractiveObjectSystem(this, physicsInteractionSelectionGuard, InteractiveObjectInitializerData.AttractiveObjectSystemDefinition,
+                this.OnAssociatedAttractiveSystemJustIntersected, this.OnAssociatedAttractiveSystemNoMoreIntersected, this.OnAssociatedAttractiveSystemInterestedNothing);
             if (InteractiveObjectInitializerData.IsDisarmable)
             {
-                this.DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct { IsAi = 1 }, this.OnAssociatedDisarmObjectTriggerEnter);
+                this.DisarmObjectSystem = new DisarmObjectSystem(this, InteractiveObjectInitializerData.DisarmSystemDefinition, new InteractiveObjectTagStruct { IsAi = 1 }, this.OnAssociatedDisarmObjectTriggerEnter, this.OnAssciatedDisarmObjectTriggerExit);
             }
         }
 
@@ -58,6 +58,12 @@ namespace InteractiveObjectTest
             var AIInteractiveObject = (AIInteractiveObject)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
         }
+        protected override void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
+        {
+            Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
+            var AIInteractiveObject = (AIInteractiveObject)IntersectedInteractiveObject;
+            AIInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
+        }
         protected override void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemNoMoreIntersected");
@@ -68,12 +74,16 @@ namespace InteractiveObjectTest
         #region Disarm Object Events
         protected override void OnAssociatedDisarmObjectTriggerEnter(CoreInteractiveObject OtherInteractiveObject)
         {
-            OtherInteractiveObject.OnOtherDisarmObjectTriggerEnter(this, out bool success);
-            if (success)
-            {
-                this.DisarmObjectSystem.AddInteractiveObjectDisarmingThisObject(OtherInteractiveObject);
-            }
+            OtherInteractiveObject.OnOtherDisarmObjectTriggerEnter(this);
+            this.DisarmObjectSystem.AddInteractiveObjectDisarmingThisObject(OtherInteractiveObject);
         }
+
+        protected override void OnAssciatedDisarmObjectTriggerExit(CoreInteractiveObject OtherInteractiveObject)
+        {
+            OtherInteractiveObject.OnOtherDisarmobjectTriggerExit(this);
+            this.DisarmObjectSystem.RemoveInteractiveObjectDisarmingThisObject(OtherInteractiveObject);
+        }
+
         #endregion
     }
 
