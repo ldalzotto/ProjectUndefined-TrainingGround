@@ -6,12 +6,14 @@ namespace InteractiveObjectTest
     public class AIInteractiveObject : CoreInteractiveObject
     {
         #region State
+        private AIPatrollingState AIPatrollingState;
         private AIAttractiveObjectState AIAttractiveObjectState;
         private AIDisarmObjectState AIDisarmObjectState;
         #endregion
 
         private AnimationObjectSystem AnimationObjectSystem;
         private AIMoveToDestinationSystem AIMoveToDestinationSystem;
+        private AIPatrolSystem AIPatrolSystem;
         private SightObjectSystem SightObjectSystem;
         private LineVisualFeedbackSystem LineVisualFeedbackSystem;
 
@@ -22,7 +24,14 @@ namespace InteractiveObjectTest
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAi = true };
 
             this.AnimationObjectSystem = new AnimationObjectSystem(this);
-            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData);
+            this.AIMoveToDestinationSystem = new AIMoveToDestinationSystem(this, AIInteractiveObjectInitializerData, this.OnAIDestinationReached);
+
+            if (AIInteractiveObjectInitializerData.IsPatrolling)
+            {
+                this.AIPatrollingState.isPatrolling = true;
+                this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
+            }
+
             if (AIInteractiveObjectInitializerData.HasSight)
             {
                 this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsAttractiveObject = 1 },
@@ -33,6 +42,11 @@ namespace InteractiveObjectTest
 
         public override void Tick(float d, float timeAttenuationFactor)
         {
+            if (this.AIPatrollingState.isPatrolling)
+            {
+                this.AIPatrolSystem.Tick(d, timeAttenuationFactor);
+            }
+
             this.AIMoveToDestinationSystem.Tick(d, timeAttenuationFactor);
         }
 
@@ -56,6 +70,11 @@ namespace InteractiveObjectTest
         {
             this.LineVisualFeedbackSystem.OnDestroy();
             base.Destroy();
+        }
+
+        public override void OnAIDestinationReached()
+        {
+            this.AIPatrolSystem.OnAIDestinationReached();
         }
 
         public override void OnAnimationObjectSetUnscaledSpeedMagnitude(AnimationObjectSetUnscaledSpeedMagnitudeEvent AnimationObjectSetUnscaledSpeedMagnitudeEvent)

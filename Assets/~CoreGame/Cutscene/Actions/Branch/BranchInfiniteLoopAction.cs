@@ -11,9 +11,9 @@ namespace CoreGame
         [NonSerialized]
         private SequencedActionPlayer loopActionPlayer;
 
-        public BranchInfiniteLoopAction(List<SequencedAction> nextActions) : base(new List<SequencedAction>())
+        public BranchInfiniteLoopAction(List<SequencedAction> loopActions) : base(null)
         {
-            this.loopActions = nextActions;
+            this.loopActions = loopActions;
         }
 
         public override void SetNextContextAction(List<SequencedAction> nextActions)

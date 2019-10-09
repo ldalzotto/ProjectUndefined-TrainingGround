@@ -83,4 +83,9 @@
     }
 
 
+    public struct AIPatrollingState
+    {
+        public bool isPatrolling;
+    }
+
 }

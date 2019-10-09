@@ -116,6 +116,11 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrol\AIPatrolGraph\Graph\Nodes\AIWarpNode.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrol\Configuration\AIPatrolGraphConfiguration.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrol\Configuration\AIPatrolGraphInherentData.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIMoveToActionV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\AIWarpActionV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolActionsV2\Interfaces\IActionAbortedOnDestinationReached.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\AIPatrolGraphV2.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\__Features\AIPatrolV2\Templates\AIPatrolGraphTest.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\AIComponents\AIAttractiveObjectComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\AIComponents\AIAttractiveObjectLooseManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\AttractiveObject\AIComponents\AIAttractiveObjectPersistantManager.cs" />
@@ -357,6 +362,7 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\InteractiveObjectV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Abstract\AInteractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIMoveToDestinationSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrolSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SightObjectSystem.cs" />

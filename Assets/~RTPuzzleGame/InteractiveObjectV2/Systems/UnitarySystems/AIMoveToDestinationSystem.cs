@@ -4,14 +4,19 @@ using static AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
+    #region Callback Events
+    public delegate void OnAIInteractiveObjectDestinationReachedDelegate();
+    #endregion
+
     public class AIMoveToDestinationSystem : AInteractiveObjectSystem
     {
         private AISpeedEventDispatcher AISpeedEventDispatcher;
         private AIDestinationMoveManager AIDestinationMoveManager;
 
-        public AIMoveToDestinationSystem(CoreInteractiveObject CoreInteractiveObject, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData)
+        public AIMoveToDestinationSystem(CoreInteractiveObject CoreInteractiveObject, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData,
+            OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached)
         {
-            this.AIDestinationMoveManager = new AIDestinationMoveManager(CoreInteractiveObject.InteractiveGameObject.Agent, AIInteractiveObjectInitializerData);
+            this.AIDestinationMoveManager = new AIDestinationMoveManager(CoreInteractiveObject.InteractiveGameObject.Agent, AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReached);
             this.AISpeedEventDispatcher = new AISpeedEventDispatcher(CoreInteractiveObject, AIInteractiveObjectInitializerData);
         }
 
@@ -40,12 +45,15 @@ namespace InteractiveObjectTest
 
     class AIDestinationMoveManager
     {
+        private OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached;
         private NavMeshAgent objectAgent;
 
-        public AIDestinationMoveManager(NavMeshAgent objectAgent, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData)
+        public AIDestinationMoveManager(NavMeshAgent objectAgent, AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReachedDelegate OnAIInteractiveObjectDestinationReached)
         {
             this.objectAgent = objectAgent;
+            this.lastSuccessfulWorldDestination = new Vector3(9999999, 99999999, 9999999);
             this.AIInteractiveObjectInitializerData = AIInteractiveObjectInitializerData;
+            this.OnAIInteractiveObjectDestinationReached = OnAIInteractiveObjectDestinationReached;
             this.currentSpeedAttenuationFactor = AIMovementSpeedDefinition.RUN;
         }
 
@@ -71,7 +79,8 @@ namespace InteractiveObjectTest
                 if ((!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f)))
                 {
                     this.currentDestination = null;
-                    Debug.Log(Time.frameCount + " : Destination reached !");
+                    Debug.Log(MyLog.Format("Destination reached !"));
+                    this.OnAIInteractiveObjectDestinationReached.Invoke();
                 }
             }
         }
@@ -94,10 +103,10 @@ namespace InteractiveObjectTest
 
                 //If direction change is occuring when current destination has been reached
                 //We manually calculate next position to avoid a frame where AI is standing still
-                //if (objectAgent.transform.position == objectAgent.nextPosition)
-                //{
-                 //   this.ManuallyUpdateAgent();
-                //}
+                if (objectAgent.transform.position == objectAgent.nextPosition)
+                {
+                    this.ManuallyUpdateAgent();
+                }
                 this.lastSuccessfulWorldDestination = AIDestination.WorldPosition;
             }
         }
@@ -136,7 +145,7 @@ namespace InteractiveObjectTest
         }
 
         #endregion
-        
+
         private void UpdateAgentTransform(float d, float timeAttenuationFactor)
         {
             objectAgent.speed = this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor * AIMovementSpeedAttenuationFactorLookup[this.currentSpeedAttenuationFactor];
@@ -179,6 +188,19 @@ namespace InteractiveObjectTest
                 objectAgent.nextPosition = objectAgent.transform.position;
             }
         }
+
+        private void ManuallyUpdateAgent()
+        {
+            //   Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
+            NavMeshHit pathHit;
+            objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
+            if (this.CurrentTimeAttenuated > 0)
+            {
+                objectAgent.velocity = (pathHit.position - objectAgent.transform.position) / this.CurrentTimeAttenuated;
+            }
+            objectAgent.nextPosition = pathHit.position;
+        }
+
 
     }
 

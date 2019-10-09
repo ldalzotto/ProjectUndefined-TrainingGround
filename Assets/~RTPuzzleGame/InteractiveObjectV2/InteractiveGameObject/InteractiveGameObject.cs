@@ -40,6 +40,11 @@ namespace InteractiveObjectTest
                 MonoBehaviour.Destroy(InteractiveGameObjectLogicColliderTag);
             }
             this.Agent = InteractiveGameObjectParent.GetComponent<NavMeshAgent>();
+            if (this.Agent != null)
+            {
+                this.Agent.updatePosition = false;
+                this.Agent.updateRotation = false;
+            }
         }
 
         public TransformStruct GetTransform()

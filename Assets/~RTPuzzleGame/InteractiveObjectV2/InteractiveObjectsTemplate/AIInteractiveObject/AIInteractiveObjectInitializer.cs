@@ -10,6 +10,9 @@ namespace InteractiveObjectTest
         public float RotationSpeed;
         public float MinAngleThatAllowThePositionUpdate;
 
+        public bool IsPatrolling;
+        public AIPatrolSystemDefinition AIPatrolSystemDefinition;
+
         public bool HasSight;
         public SightObjectSystemDefinition SightObjectSystemDefinition;
     }

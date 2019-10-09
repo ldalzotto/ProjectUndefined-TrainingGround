@@ -58,6 +58,7 @@ namespace InteractiveObjectTest
         public virtual void OnAIIsJustDisarmingObject() { }
         public virtual void OnAIIsNoMoreJustDisarmingObject() { }
         public virtual void SetAIDestination(AIDestination AIDestination) { }
+        public virtual void OnAIDestinationReached() { }
         #endregion
     }
 
