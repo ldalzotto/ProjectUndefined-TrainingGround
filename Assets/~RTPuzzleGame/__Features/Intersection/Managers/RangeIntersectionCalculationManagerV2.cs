@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CoreGame;
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine.Profiling;
 
@@ -101,10 +102,16 @@ namespace RTPuzzle
                         var associatedObstacleListener = rangeIntersectionCalculatorV2.GetAssociatedObstacleListener();
                         if (associatedObstacleListener != null) //The range can ignore obstacles
                         {
-                            foreach (var calculatedObstacleFrustum in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
+                            //Obstacle listener could have never triggered a calculation
+                            ObstacleOcclusionCalculationManagerV2.TryGetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions);
+                            if (calculatedFrustumPositions != null)
                             {
-                                totalObstacleFrustumPointsCounter += calculatedObstacleFrustum.Count;
+                                foreach (var calculatedObstacleFrustum in calculatedFrustumPositions.Values)
+                                {
+                                    totalObstacleFrustumPointsCounter += calculatedObstacleFrustum.Count;
+                                }
                             }
+                            
                         }
                     }
                 }

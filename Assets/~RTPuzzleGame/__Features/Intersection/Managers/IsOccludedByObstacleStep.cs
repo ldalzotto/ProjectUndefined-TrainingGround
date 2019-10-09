@@ -1,5 +1,6 @@
 ﻿using CoreGame;
 using RTPuzzle;
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -24,14 +25,20 @@ public struct RangeObstacleOcclusionIntersection
 
         if (associatedObstacleListener != null)
         {
-            foreach (var calculatedObstacleFrustumList in ObstacleOcclusionCalculationManagerV2.GetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener).Values)
+            //obstacle listener may never have triggered calculation
+            ObstacleOcclusionCalculationManagerV2.TryGetCalculatedOcclusionFrustumsForObstacleListener(associatedObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions);
+            if(calculatedFrustumPositions != null)
             {
-                foreach (var calculatedObstacleFrustum in calculatedObstacleFrustumList)
+                foreach (var calculatedObstacleFrustumList in calculatedFrustumPositions.Values)
                 {
-                    this.AssociatedObstacleFrustumPointsPositions[currentObstacleFrustumPointsCounter] = calculatedObstacleFrustum;
-                    currentObstacleFrustumPointsCounter += 1;
+                    foreach (var calculatedObstacleFrustum in calculatedObstacleFrustumList)
+                    {
+                        this.AssociatedObstacleFrustumPointsPositions[currentObstacleFrustumPointsCounter] = calculatedObstacleFrustum;
+                        currentObstacleFrustumPointsCounter += 1;
+                    }
                 }
             }
+           
             IsOccludedByObstacleJobData = new IsOccludedByObstacleJobData
             {
                 TestedBoxCollider = new BoxDefinition(rangeIntersectionCalculatorV2.TrackedInteractiveObject.InteractiveGameObject.LogicCollider),

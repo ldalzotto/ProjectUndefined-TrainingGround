@@ -20,7 +20,6 @@ namespace InteractiveObjectTest
             this.AIDisarmObjectState = new AIDisarmObjectState(this.OnAIIsJustDisarmingObject, this.OnAIIsNoMoreJustDisarmingObject);
             this.InteractiveObjectTag = new InteractiveObjectTag { IsAi = true };
 
-            this.AIPatrollingState.isPatrolling = true;
             this.AIPatrolSystem = new AIPatrolSystem(this, AIInteractiveObjectInitializerData.AIPatrolSystemDefinition);
 
             this.SightObjectSystem = new SightObjectSystem(this, AIInteractiveObjectInitializerData.SightObjectSystemDefinition, new InteractiveObjectTagStruct { IsAttractiveObject = 1 },
@@ -29,6 +28,11 @@ namespace InteractiveObjectTest
 
         public override void Tick(float d, float timeAttenuationFactor)
         {
+            if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
+            {
+                this.AIPatrollingState.isPatrolling = true;
+            }
+
             if (this.AIPatrollingState.isPatrolling)
             {
                 this.AIPatrolSystem.Tick(d, timeAttenuationFactor);
@@ -73,6 +77,7 @@ namespace InteractiveObjectTest
             if (!this.AIDisarmObjectState.IsDisarming)
             {
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
+                this.AIPatrollingState.isPatrolling = false;
                 this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
                 this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
             }
@@ -83,6 +88,7 @@ namespace InteractiveObjectTest
             if (!this.AIDisarmObjectState.IsDisarming && !this.AIAttractiveObjectState.IsAttractedByAttractiveObject)
             {
                 this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, OtherInteractiveObject);
+                this.AIPatrollingState.isPatrolling = false;
                 this.SetAIDestination(new AIDestination { WorldPosition = OtherInteractiveObject.InteractiveGameObject.GetTransform().WorldPosition });
                 this.LineVisualFeedbackSystem.CreateLineFollowing(DottedLineID.ATTRACTIVE_OBJECT, OtherInteractiveObject);
             }
@@ -125,6 +131,7 @@ namespace InteractiveObjectTest
         {
             if (!this.AIDisarmObjectState.IsDisarming)
             {
+                this.AIPatrollingState.isPatrolling = false;
                 if (IntersectedInteractiveObject.InteractiveObjectTag.IsAttractiveObject)
                 {
                     this.AIAttractiveObjectState.SetIsAttractedByAttractiveObject(true, IntersectedInteractiveObject);

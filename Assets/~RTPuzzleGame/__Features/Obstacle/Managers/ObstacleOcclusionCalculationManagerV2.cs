@@ -63,10 +63,6 @@ namespace RTPuzzle
         {
             return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID][SquareObstacleSystem.SquareObstacleSystemUniqueID];
         }
-        public Dictionary<int, List<FrustumPointsPositions>> GetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListener ObstacleListener)
-        {
-            return this.GetCalculatedOcclusionFrustums()[ObstacleListener.ObstacleListenerUniqueID];
-        }
         public void TryGetCalculatedOcclusionFrustumsForObstacleListener(ObstacleListener ObstacleListener, out Dictionary<int, List<FrustumPointsPositions>> calculatedFrustumPositions)
         {
             this.GetCalculatedOcclusionFrustums().TryGetValue(ObstacleListener.ObstacleListenerUniqueID, out calculatedFrustumPositions);
