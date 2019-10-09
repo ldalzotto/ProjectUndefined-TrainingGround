@@ -3,11 +3,6 @@ using RTPuzzle;
 
 namespace InteractiveObjectTest
 {
-    [System.Serializable]
-    public class AIPatrolSystemDefinition
-    {
-        public AIPatrolGraphTest AIPatrolGraph;
-    }
 
     public class AIPatrolSystem : AInteractiveObjectSystem
     {

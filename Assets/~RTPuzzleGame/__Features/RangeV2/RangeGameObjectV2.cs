@@ -12,41 +12,41 @@ namespace RTPuzzle
 
         public RangeObjectV2PhysicsEventListener RangeObjectV2PhysicsEventListener { get; private set; }
         
-        public RangeGameObjectV2(GameObject attachedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
+        public RangeGameObjectV2(GameObject attachedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject, string objectName)
         {
             this.attachedGameObject = attachedGameObject;
-            this.CommontInit(SphereRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
+            this.CommontInit(SphereRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject, objectName);
             this.BoundingCollider = RangeObjectBoundingColliderBuilder.BuildBoundingCollider(SphereRangeObjectInitialization, this);
         }
 
-        public RangeGameObjectV2(GameObject attachedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
+        public RangeGameObjectV2(GameObject attachedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject, string objectName)
         {
             this.attachedGameObject = attachedGameObject;
-            this.CommontInit(BoxRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
+            this.CommontInit(BoxRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject, objectName);
             this.BoundingCollider = RangeObjectBoundingColliderBuilder.BuildBoundingCollider(BoxRangeObjectInitialization, this);
         }
 
-        public RangeGameObjectV2(GameObject attachedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
+        public RangeGameObjectV2(GameObject attachedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject, string objectName)
         {
             this.attachedGameObject = attachedGameObject;
-            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
+            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject, objectName);
             this.BoundingCollider = RangeObjectBoundingColliderBuilder.BuildBoundingCollider(FrustumRangeObjectInitialization, this);
         }
 
-        public RangeGameObjectV2(GameObject attachedGameObject, RoundedFrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
+        public RangeGameObjectV2(GameObject attachedGameObject, RoundedFrustumRangeObjectInitialization FrustumRangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject, string objectName)
         {
             this.attachedGameObject = attachedGameObject;
-            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject);
+            this.CommontInit(FrustumRangeObjectInitialization, RangeObjectV2, AssociatedInteractiveObject, objectName);
             this.BoundingCollider = RangeObjectBoundingColliderBuilder.BuildBoundingCollider(FrustumRangeObjectInitialization, this);
         }
 
 
         public Collider BoundingCollider { get; private set; }
 
-        private void CommontInit(RangeObjectInitialization RangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject)
+        private void CommontInit(RangeObjectInitialization RangeObjectInitialization, RangeObjectV2 RangeObjectV2, CoreInteractiveObject AssociatedInteractiveObject, string objectName)
         {
             this.assocaitedRangeObject = RangeObjectV2;
-            this.RangeGameObject = new GameObject();
+            this.RangeGameObject = new GameObject(objectName);
             if (this.attachedGameObject != null)
             {
                 this.RangeGameObject.transform.parent = this.attachedGameObject.transform;

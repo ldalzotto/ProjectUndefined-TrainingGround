@@ -1,14 +1,10 @@
 ﻿using CoreGame;
 using GameConfigurationID;
+using OdinSerializer;
 using RTPuzzle;
 
 namespace InteractiveObjectTest
 {
-    [System.Serializable]
-    public class SightObjectSystemDefinition
-    {
-        public FrustumV2 Frustum;
-    }
 
     #region Callback Events
     public delegate void OnSightObjectSystemJustIntersectedDelegate(CoreInteractiveObject IntersectedInteractiveObject);
@@ -33,7 +29,7 @@ namespace InteractiveObjectTest
                 {
                     FrustumV2 = SightObjectSystemDefinition.Frustum
                 }
-            }, AssocaitedInteractiveObject);
+            }, AssocaitedInteractiveObject, "SightObject");
             this.SightRange.ReceiveEvent(new RangeIntersectionAddIntersectionListenerEvent { ARangeIntersectionV2Listener = new SightObjectRangeListener(this.SightRange, PhysicsTagEventGuard, 
                 OnSightObjectSystemJustIntersected, OnSightObjectSystemIntersectedNothing, OnSightObjectSystemNoMoreIntersected) });
         }

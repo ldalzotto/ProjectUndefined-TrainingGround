@@ -1,31 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using OdinSerializer;
 
 namespace InteractiveObjectTest
 {
     [System.Serializable]
-    public class AIInteractiveObjectInitializerData
+    public abstract class A_AIInteractiveObjectInitializerData : SerializedScriptableObject
     {
         public float SpeedMultiplicationFactor;
         public float RotationSpeed;
         public float MinAngleThatAllowThePositionUpdate;
-
-        public bool IsPatrolling;
-        public AIPatrolSystemDefinition AIPatrolSystemDefinition;
-
-        public bool HasSight;
-        public SightObjectSystemDefinition SightObjectSystemDefinition;
     }
 
-    [System.Serializable]
-    public class AIInteractiveObjectInitializer : AInteractiveObjectInitializer
-    {
-        public AIInteractiveObjectInitializerData AIInteractiveObjectInitializerData;
-
-        public override void Init()
-        {
-            InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(new AIInteractiveObject(new InteractiveGameObject(this.gameObject), AIInteractiveObjectInitializerData));
-        }
-    }
 
 }

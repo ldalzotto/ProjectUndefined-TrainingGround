@@ -9,15 +9,9 @@ namespace RTPuzzle
     [CreateAssetMenu(fileName = "AIPatrolGraphTest", menuName = "Test/AIPatrolGraphTest", order = 1)]
     public class AIPatrolGraphTest : AIPatrolGraphV2
     {
-        private CoreInteractiveObject CoreInteractiveObject;
         public TransformStruct P1;
         public TransformStruct P2;
-
-        public void Init(CoreInteractiveObject CoreInteractiveObject)
-        {
-            this.CoreInteractiveObject = CoreInteractiveObject;
-        }
-
+        
         public override List<SequencedAction> AIPatrolGraphActions()
         {
             return new List<SequencedAction>()

@@ -19,7 +19,7 @@ namespace InteractiveObjectTest
 
         public void Init()
         {
-            var InteractiveObjectInitializers = GameObject.FindObjectsOfType<AInteractiveObjectInitializer>();
+            var InteractiveObjectInitializers = GameObject.FindObjectsOfType<A_InteractiveObjectInitializer>();
             if (InteractiveObjectInitializers != null)
             {
                 for (var InteractiveObjectInitializerIndex = 0; InteractiveObjectInitializerIndex < InteractiveObjectInitializers.Length; InteractiveObjectInitializerIndex++)

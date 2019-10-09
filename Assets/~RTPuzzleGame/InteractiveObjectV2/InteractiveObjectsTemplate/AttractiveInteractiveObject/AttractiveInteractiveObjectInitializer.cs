@@ -9,12 +9,13 @@
     }
 
     [System.Serializable]
-    public class AttractiveInteractiveObjectInitializer : AInteractiveObjectInitializer
+    public class AttractiveInteractiveObjectInitializer : A_InteractiveObjectInitializer
     {
         public AttractiveObjectInitializerData InteractiveObjectInitializerData;
-        public override void Init()
+
+        protected override CoreInteractiveObject GetInteractiveObject()
         {
-            InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(new AttractiveInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData));
+            return new AttractiveInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData);
         }
     }
 

@@ -3,9 +3,14 @@
 namespace InteractiveObjectTest
 {
     [System.Serializable]
-    public abstract class AInteractiveObjectInitializer : MonoBehaviour
+    public abstract class A_InteractiveObjectInitializer : MonoBehaviour
     {
-        public abstract void Init();
+        protected abstract CoreInteractiveObject GetInteractiveObject();
+
+        public void Init()
+        {
+            InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(this.GetInteractiveObject());
+        }
     }
-    
+
 }

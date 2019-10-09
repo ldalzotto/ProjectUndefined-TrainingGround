@@ -69,11 +69,11 @@ namespace RTPuzzle
         private SphereRangeObjectInitialization SphereRangeObjectInitialization;
         public SphereCollider SphereBoundingCollider { get; private set; }
 
-        public SphereRangeObjectV2(GameObject AssociatedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public SphereRangeObjectV2(GameObject AssociatedGameObject, SphereRangeObjectInitialization SphereRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
             this.RangeType = RangeType.SPHERE;
             this.SphereRangeObjectInitialization = SphereRangeObjectInitialization;
-            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.SphereRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             this.SphereBoundingCollider = (SphereCollider)RangeGameObjectV2.BoundingCollider;
             base.Init(RangeGameObjectV2, SphereRangeObjectInitialization);
         }
@@ -90,11 +90,11 @@ namespace RTPuzzle
             return new BoxDefinition(BoxCollider);
         }
 
-        public BoxRangeObjectV2(GameObject AssociatedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public BoxRangeObjectV2(GameObject AssociatedGameObject, BoxRangeObjectInitialization BoxRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
             this.RangeType = RangeType.BOX;
             this.BoxRangeObjectInitialization = BoxRangeObjectInitialization;
-            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.BoxRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             base.Init(RangeGameObjectV2, BoxRangeObjectInitialization);
         }
     }
@@ -108,13 +108,13 @@ namespace RTPuzzle
         public FrustumV2 GetFrustum() { return this.FrustumRangeObjectInitialization.FrustumRangeTypeDefinition.FrustumV2; }
         public FrustumPointsPositions GetFrustumWorldPositions() { return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition(); }
 
-        public FrustumRangeObjectV2(GameObject AssociatedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public FrustumRangeObjectV2(GameObject AssociatedGameObject, FrustumRangeObjectInitialization FrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
             this.RangeType = RangeType.FRUSTUM;
 
             this.FrustumRangeObjectInitialization = FrustumRangeObjectInitialization;
             this.FrustumRangeObjectPositioningSystem = new FrustumRangeObjectPositioningSystem(this.GetFrustum(), this);
-            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.FrustumRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             base.Init(RangeGameObjectV2, FrustumRangeObjectInitialization);
         }
     }
@@ -128,14 +128,14 @@ namespace RTPuzzle
         public FrustumV2 GetFrustum() { return this.RoundedFrustumRangeObjectInitialization.RoundedFrustumRangeTypeDefinition.FrustumV2; }
         public FrustumPointsPositions GetFrustumWorldPositions() { return this.FrustumRangeObjectPositioningSystem.GetFrustumWorldPosition(); }
 
-        public RoundedFrustumRangeObjectV2(GameObject AssociatedGameObject, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject)
+        public RoundedFrustumRangeObjectV2(GameObject AssociatedGameObject, RoundedFrustumRangeObjectInitialization RoundedFrustumRangeObjectInitialization, CoreInteractiveObject AssociatedInteractiveObject, string objectName = "")
         {
             this.RangeType = RangeType.ROUNDED_FRUSTUM;
 
             this.RoundedFrustumRangeObjectInitialization = RoundedFrustumRangeObjectInitialization;
             this.FrustumRangeObjectPositioningSystem = new FrustumRangeObjectPositioningSystem(this.GetFrustum(), this);
 
-            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject);
+            var RangeGameObjectV2 = new RangeGameObjectV2(AssociatedGameObject, this.RoundedFrustumRangeObjectInitialization, this, AssociatedInteractiveObject, objectName);
             base.Init(RangeGameObjectV2, RoundedFrustumRangeObjectInitialization);
         }
     }

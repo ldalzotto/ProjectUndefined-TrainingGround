@@ -55,13 +55,13 @@ namespace InteractiveObjectTest
         protected override void OnAssociatedAttractiveSystemJustIntersected(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemJustIntersected");
-            var AIInteractiveObject = (AIInteractiveObject)IntersectedInteractiveObject;
+            var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectJustIntersected(this);
         }
         protected override void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
             Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
-            var AIInteractiveObject = (AIInteractiveObject)IntersectedInteractiveObject;
+            var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
         }
         protected override void OnAssociatedAttractiveSystemNoMoreIntersected(CoreInteractiveObject IntersectedInteractiveObject)

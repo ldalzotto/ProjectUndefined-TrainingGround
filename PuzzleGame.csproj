@@ -352,6 +352,9 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveGameObject\InteractiveGameObjectLogicColliderTag.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTest.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializer.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsAsset\Test\AIInteractiveObjectTestInitializerData.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObject.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectInitializer.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\InteractiveObjectsTemplate\AIInteractiveObject\AIInteractiveObjectState.cs" />
@@ -362,10 +365,12 @@
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Managers\InteractiveObjectV2Manager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\Abstract\AInteractiveObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIMoveToDestinationSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrolSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AIPatrol\AIPatrolSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AnimationObjectSystem.cs" />
     <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\AttractiveObjectSystem.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\SightObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystem.cs" />
+    <Compile Include="Assets\~RTPuzzleGame\InteractiveObjectV2\Systems\UnitarySystems\Sight\SightObjectSystemDefinition.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Math\FOVLocalToWorldTransformations.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\Player\Scripts\PlayerManagerDataRetriever.cs" />

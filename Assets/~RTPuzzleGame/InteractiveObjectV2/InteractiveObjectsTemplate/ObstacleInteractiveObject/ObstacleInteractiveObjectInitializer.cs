@@ -11,12 +11,13 @@ namespace InteractiveObjectTest
     }
 
     [System.Serializable]
-    public class ObstacleInteractiveObjectInitializer : AInteractiveObjectInitializer
+    public class ObstacleInteractiveObjectInitializer : A_InteractiveObjectInitializer
     {
         public ObstacleInteractiveObjectInitializerData InteractiveObjectInitializerData;
-        public override void Init()
+
+        protected override CoreInteractiveObject GetInteractiveObject()
         {
-            InteractiveObjectV2Manager.Get().OnInteractiveObjectCreated(new ObstacleInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData));
+            return new ObstacleInteractiveObject(new InteractiveGameObject(this.gameObject), InteractiveObjectInitializerData);
         }
     }
 }
