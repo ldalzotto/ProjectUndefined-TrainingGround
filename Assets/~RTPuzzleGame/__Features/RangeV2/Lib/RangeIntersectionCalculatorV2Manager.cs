@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using CoreGame;
+using InteractiveObjectTest;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,6 +23,7 @@ namespace RTPuzzle
         }
 
         private int CurrentRangeIntersectionCalculatorV2ManagerCounter = 0;
+
         public List<RangeIntersectionCalculatorV2> AllRangeIntersectionCalculatorV2 = new List<RangeIntersectionCalculatorV2>();
 
         public int OnRangeIntersectionCalculatorV2ManagerCreation(RangeIntersectionCalculatorV2 RangeIntersectionCalculatorV2)

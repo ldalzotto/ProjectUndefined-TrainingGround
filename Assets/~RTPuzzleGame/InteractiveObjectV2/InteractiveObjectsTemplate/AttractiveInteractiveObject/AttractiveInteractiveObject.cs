@@ -48,6 +48,7 @@ namespace InteractiveObjectTest
             {
                 this.AttractiveObjectSystem.OnDestroy();
             }
+            this.DisarmObjectSystem.OnDestroy();
             base.Destroy();
         }
 
@@ -60,7 +61,7 @@ namespace InteractiveObjectTest
         }
         protected override void OnAssociatedAttractiveSystemInterestedNothing(CoreInteractiveObject IntersectedInteractiveObject)
         {
-            Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
+          //  Debug.Log("OnAssociatedAttractiveSystemInterestedNothing");
             var AIInteractiveObject = (AIInteractiveObjectTest)IntersectedInteractiveObject;
             AIInteractiveObject.OnOtherAttractiveObjectIntersectedNothing(this);
         }

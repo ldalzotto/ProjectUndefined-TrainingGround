@@ -15,7 +15,7 @@ namespace InteractiveObjectTest
 
         public List<CoreInteractiveObject> InteractiveObjects { get; private set; } = new List<CoreInteractiveObject>();
 
-        public Dictionary<Collider, CoreInteractiveObject> InteractiveObjectsIndexedByCollider { get; private set; } = new Dictionary<Collider, CoreInteractiveObject>();
+        public Dictionary<Collider, CoreInteractiveObject> InteractiveObjectsIndexedByLogicCollider { get; private set; } = new Dictionary<Collider, CoreInteractiveObject>();
 
         public void Init()
         {
@@ -82,13 +82,13 @@ namespace InteractiveObjectTest
         public void OnInteractiveObjectCreated(CoreInteractiveObject InteractiveObject)
         {
             this.InteractiveObjects.Add(InteractiveObject);
-            this.InteractiveObjectsIndexedByCollider.Add(InteractiveObject.InteractiveGameObject.LogicCollider, InteractiveObject);
+            this.InteractiveObjectsIndexedByLogicCollider.Add(InteractiveObject.InteractiveGameObject.LogicCollider, InteractiveObject);
         }
 
         public void OnInteractiveObjectDestroyed(CoreInteractiveObject InteractiveObject)
         {
             this.InteractiveObjects.Remove(InteractiveObject);
-            this.InteractiveObjectsIndexedByCollider.Remove(InteractiveObject.InteractiveGameObject.LogicCollider);
+            this.InteractiveObjectsIndexedByLogicCollider.Remove(InteractiveObject.InteractiveGameObject.LogicCollider);
             RangeObjectV2ManagerOperations.ClearAllReferencesOfInteractiveObject(InteractiveObject);
         }
 
@@ -96,8 +96,8 @@ namespace InteractiveObjectTest
         {
             this.InteractiveObjects.Clear();
             this.InteractiveObjects = null;
-            this.InteractiveObjectsIndexedByCollider.Clear();
-            this.InteractiveObjectsIndexedByCollider = null;
+            this.InteractiveObjectsIndexedByLogicCollider.Clear();
+            this.InteractiveObjectsIndexedByLogicCollider = null;
             Instance = null;
         }
     }

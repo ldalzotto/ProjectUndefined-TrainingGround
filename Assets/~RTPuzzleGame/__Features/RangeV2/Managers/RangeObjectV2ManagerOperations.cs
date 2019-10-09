@@ -1,4 +1,5 @@
 ﻿using InteractiveObjectTest;
+using System.Collections.Generic;
 
 namespace RTPuzzle
 {
@@ -6,18 +7,16 @@ namespace RTPuzzle
     {
         public static void ClearAllReferencesOfInteractiveObject(CoreInteractiveObject InteractiveObject)
         {
-            var allRangeObjects = RangeObjectV2Manager.Get().RangeObjects;
-            for (var rangeObjectIndex = 0; rangeObjectIndex < allRangeObjects.Count; rangeObjectIndex++)
+            foreach (var rangeObject in RangeObjectV2Manager.Get().RangeObjects)
             {
-                var rangeObject = allRangeObjects[rangeObjectIndex];
                 if (rangeObject.RangeIntersectionV2System != null)
                 {
                     var RangeIntersectionListeners = rangeObject.RangeIntersectionV2System.RangeIntersectionListeners;
                     if (RangeIntersectionListeners != null)
                     {
-                        for(var RangeIntersectionListenerIndex = 0; RangeIntersectionListenerIndex < RangeIntersectionListeners.Count; RangeIntersectionListenerIndex++)
+                        foreach (var RangeIntersectionListener in RangeIntersectionListeners)
                         {
-                            RangeIntersectionListeners[RangeIntersectionListenerIndex].RemoveReferencesToInteractiveObject(InteractiveObject);
+                            RangeIntersectionListener.RemoveReferencesToInteractiveObject(InteractiveObject);
                         }
                     }
                 }

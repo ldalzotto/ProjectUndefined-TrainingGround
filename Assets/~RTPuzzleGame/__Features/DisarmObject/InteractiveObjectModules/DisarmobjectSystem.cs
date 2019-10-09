@@ -101,6 +101,11 @@ namespace InteractiveObjectTest
             }
         }
 
+        public override void OnDestroy()
+        {
+            this.SphereRange.OnDestroy();
+        }
+
         private void IncreaseTimeElapsedBy(float increasedTime)
         {
             this.elapsedTime += increasedTime;

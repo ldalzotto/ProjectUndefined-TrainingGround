@@ -106,6 +106,11 @@ namespace RTPuzzle
         {
             this.RangeObjectV2PhysicsEventListener.AddPhysicsEventListener(RangeExternalPhysicsOnlyAddListener.ARangeObjectV2PhysicsEventListener);
         }
+
+        public void OnDestroy()
+        {
+            this.RangeObjectV2PhysicsEventListener.Destroy();
+        }
     }
 
     public struct RangeExternalPhysicsOnlyAddListener

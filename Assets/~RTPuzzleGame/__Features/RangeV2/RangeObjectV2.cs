@@ -46,6 +46,10 @@ namespace RTPuzzle
             {
                 this.RangeObstacleListenerSystem.OnDestroy();
             }
+
+            this.RangeExternalPhysicsOnlyListenersSystem.OnDestroy();
+            //To trigger itnersection events
+            this.RangeIntersectionV2System.Tick(0f);
             PuzzleGameSingletonInstances.RangeEventsManager.RANGE_EVT_Range_Destroy(this);
         }
 

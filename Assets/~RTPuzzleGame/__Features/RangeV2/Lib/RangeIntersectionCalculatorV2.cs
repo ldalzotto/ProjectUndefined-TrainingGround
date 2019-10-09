@@ -22,6 +22,8 @@ namespace RTPuzzle
         private BlittableTransformChangeListenerManager sightModuleMovementChangeTracker;
         private BlittableTransformChangeListenerManager inRangeCollidersMovementChangeTracker;
 
+        public InterserctionOperationType LastInterserctionOperationType { get; private set; }
+
         public RangeIntersectionCalculatorV2(RangeObjectV2 RangeObject, CoreInteractiveObject TrackedInteractiveObject)
         {
             this.AssociatedRangeObject = RangeObject;
@@ -61,14 +63,15 @@ namespace RTPuzzle
             }
             this.IsInside = newInside;
 
-            return returnOperation;
+            this.LastInterserctionOperationType = returnOperation;
+            return this.LastInterserctionOperationType;
         }
 
         public ObstacleListener GetAssociatedObstacleListener() { return this.AssociatedRangeObject.GetObstacleListener(); }
         public RangeObjectV2 GetAssociatedRangeObject() { return this.AssociatedRangeObject; }
         public RangeType GetAssociatedRangeObjectType() { return this.AssociatedRangeObject.RangeType; }
 
-        public void Destroy()
+        public void OnDestroy()
         {
             this.RangeIntersectionCalculatorV2Manager.OnRangeIntersectionCalculatorV2ManagerDestroyed(this);
         }
