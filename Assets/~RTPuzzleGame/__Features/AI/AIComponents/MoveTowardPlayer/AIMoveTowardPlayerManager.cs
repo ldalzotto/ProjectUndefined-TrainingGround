@@ -33,27 +33,7 @@ namespace RTPuzzle
         }
 
         #endregion
-
-        public override bool OnSightInRangeEnter(SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent)
-        {
-            if (sightInRangeEnterAIBehaviorEvent.CollisionType.IsPlayer)
-            {
-                this.playerInSight = true;
-                this.currentTarget = sightInRangeEnterAIBehaviorEvent.CollisionType;
-                return true;
-            }
-            return false;
-        }
-
-        public override void OnSightInRangeExit(SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent)
-        {
-            if (sightInRangeExitAIBehaviorEvent.CollisionType.IsPlayer)
-            {
-                this.playerInSight = false;
-                this.currentTarget = null;
-            }
-        }
-
+        
         public override void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext)
         {
             this.AIObjectTypeSpeedSetter.SetSpeedAttenuationFactor(this.AssociatedAIComponent.AISpeed);

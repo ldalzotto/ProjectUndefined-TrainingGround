@@ -29,8 +29,6 @@ namespace RTPuzzle
         public abstract void OnDestinationReached();
         public abstract void OnManagerTick(float d, float timeAttenuationFactor, ref NPCAIDestinationContext NPCAIDestinationContext);
         public abstract void OnStateReset();
-        public abstract bool OnSightInRangeEnter(SightInRangeEnterAIBehaviorEvent sightInRangeEnterAIBehaviorEvent);
-        public abstract void OnSightInRangeExit(SightInRangeExitAIBehaviorEvent sightInRangeExitAIBehaviorEvent);
 
 #if UNITY_EDITOR
         #region Test data retrieval

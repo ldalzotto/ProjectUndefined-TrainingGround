@@ -300,9 +300,6 @@
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectSystems\RangeObjectV2Systems.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectV2.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\RangeV2\RangeObjectV2PhysicsEventListener.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Sight\Events\SightAIEvents.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Sight\InteractiveObjectDefinitions\ObjectSightModuleDefinition.cs" />
-    <Compile Include="Assets\~RTPuzzleGame\__Features\Sight\InteractiveObjectModules\ObjectSightModule.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\TargetZone\AIComponents\AITargetZoneComponent.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\TargetZone\AIComponents\AITargetZoneEscapeManager.cs" />
     <Compile Include="Assets\~RTPuzzleGame\__Features\TargetZone\Configuration\TargetZoneConfiguration.cs" />

@@ -16,7 +16,6 @@ namespace RTPuzzle
         //TODO use interfaces when feature is enabled
         ObjectRepelModule GetObjectRepelModule();
         AILogicColliderModule GetAILogicColliderModule();
-        ObjectSightModule GetObjectSightModule();
         LevelCompletionTriggerModule GetLevelCompletionTriggerModule();
         InteractiveObjectCutsceneControllerModule GetInteractiveObjectCutsceneControllerModule();
     }
@@ -50,10 +49,6 @@ namespace RTPuzzle
         public AILogicColliderModule GetAILogicColliderModule()
         {
             return this.GetModule<AILogicColliderModule>();
-        }
-        public ObjectSightModule GetObjectSightModule()
-        {
-            return this.GetModule<ObjectSightModule>();
         }
         public LevelCompletionTriggerModule GetLevelCompletionTriggerModule()
         {

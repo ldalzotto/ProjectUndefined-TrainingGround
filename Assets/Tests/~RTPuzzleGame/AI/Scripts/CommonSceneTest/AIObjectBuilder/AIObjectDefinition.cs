@@ -115,9 +115,6 @@ namespace Tests
                 },
                 new List<SerializedScriptableObject>()
                 {
-                    new ObjectSightModuleDefinition(){
-                        RangeObjectInitialization = RangeObjectInitialization
-                    }
                 }
             ); ;
         }
@@ -152,17 +149,6 @@ namespace Tests
                },
                new List<SerializedScriptableObject>()
                {
-                    new ObjectSightModuleDefinition(){
-                                LocalPosition = new Vector3(0, 4.65f, 1.27f),
-                                RangeObjectInitialization = new RoundedFrustumRangeObjectInitialization(){
-                                    RangeTypeID = RangeTypeID.SIGHT_VISION,
-                                    IsTakingIntoAccountObstacles = true,
-                                    RoundedFrustumRangeTypeDefinition = new RoundedFrustumRangeTypeDefinition()
-                                    {
-                                        FrustumV2 = RangeEffectManagerTestFrustum
-                                    }
-                                }
-                    }
                }
            );
         }

@@ -171,7 +171,6 @@ namespace RTPuzzle
 
         public void TickBeforeAIUpdate(float d, float timeAttenuationFactor)
         {
-            this.GetModule<ObjectSightModule>().IfNotNull((ObjectSightModule ObjectSightModule) => ObjectSightModule.TickBeforeAIUpdate(d));
         }
 
         public void Tick(float d, float timeAttenuationFactor)

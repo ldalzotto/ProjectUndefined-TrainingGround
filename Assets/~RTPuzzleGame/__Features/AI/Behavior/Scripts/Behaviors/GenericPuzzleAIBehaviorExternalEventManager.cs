@@ -20,8 +20,6 @@ namespace RTPuzzle
             {typeof(AttractiveObjectDestroyedAIBehaviorEvent).Name, 10 },
             {typeof(AttractiveObjectTriggerStayAIBehaviorEvent).Name, 11 },
             {typeof(AttractiveObjectTriggerEnterAIBehaviorEvent).Name, 12 },
-            {typeof(SightInRangeEnterAIBehaviorEvent).Name, 13 },
-            {typeof(SightInRangeExitAIBehaviorEvent).Name, 14 }
         };
 
         private BehaviorStateTrackerContainer trackerContainer = new BehaviorStateTrackerContainer(new Dictionary<Type, BehaviorStateTracker>()
@@ -49,8 +47,6 @@ namespace RTPuzzle
                 {typeof(TargetZoneTriggerEnterAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerEnter },
                 {typeof(TargetZoneTriggerStayAIBehaviorEvent), TargetZoneAIEvents.TargetZone_TriggerStay },
                 {typeof(PlayerEscapeStartAIBehaviorEvent), AgentEscapeAIEvents.PlayerEscape_Start },
-                {typeof(SightInRangeEnterAIBehaviorEvent), SightAIEvents.SightInRange_Enter },
-                {typeof(SightInRangeExitAIBehaviorEvent), SightAIEvents.SightInRange_Exit },
                 {typeof(DisarmingObjectEnterAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Enter },
                 {typeof(DisarmingObjectExitAIbehaviorEvent), DisarmObjectAIEvents.DisarmingObject_Exit },
         };

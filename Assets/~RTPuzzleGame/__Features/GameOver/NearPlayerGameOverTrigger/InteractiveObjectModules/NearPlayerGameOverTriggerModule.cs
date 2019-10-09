@@ -20,7 +20,6 @@ namespace RTPuzzle
         public NearPlayerGameOverTriggerID NearPlayerGameOverTriggerID;
 
         #region External Dependencies
-        private ObjectSightModule AISightVision;
         private BlockingCutscenePlayerManager BlockingCutscenePlayer;
         private PuzzleEventsManager PuzzleEventsManager;
         private PuzzleGameConfigurationManager PuzzleGameConfigurationManager;
@@ -32,7 +31,6 @@ namespace RTPuzzle
         public override void Init(InteractiveObjectInitializationObject interactiveObjectInitializationObject, IInteractiveObjectTypeDataRetrieval IInteractiveObjectTypeDataRetrieval, 
             IInteractiveObjectTypeEvents IInteractiveObjectTypeEvents)
         {
-            this.AISightVision = IInteractiveObjectTypeDataRetrieval.GetObjectSightModule();
             this.BlockingCutscenePlayer = PuzzleGameSingletonInstances.BlockingCutscenePlayer;
             this.PuzzleEventsManager = PuzzleGameSingletonInstances.PuzzleEventsManager;
             this.PuzzleGameConfigurationManager = PuzzleGameSingletonInstances.PuzzleGameConfigurationManager;
@@ -43,25 +41,7 @@ namespace RTPuzzle
 
             this.InteractiveObjectTypeRef = (InteractiveObjectType)IInteractiveObjectTypeDataRetrieval;
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            var collisionType = other.GetComponent<CollisionType>();
-            if ((collisionType != null && collisionType.IsPlayer) &&
-                ((this.AISightVision == null) || (this.AISightVision != null && this.AISightVision.IsPlayerInSight())))
-            {
-                if (this.NearPlayerGameOverTriggerInherentData.AnimationCutsceneGraphID != PuzzleCutsceneID.NONE)
-                {
-                    this.BlockingCutscenePlayer.Play(new PuzzleCutsceneActionInput(PuzzleGameSingletonInstances.InteractiveObjectContainer, new Dictionary<CutsceneParametersName, object>() {
-                    {CutsceneParametersName.INTERACTIVE_OBJECT_0, this.InteractiveObjectTypeRef }
-                        }), this.PuzzleGameConfigurationManager.PuzzleCutsceneConfiguration()[this.NearPlayerGameOverTriggerInherentData.AnimationCutsceneGraphID].PuzzleCutsceneGraph, this.OnCutsceneEnd);
-                }
-                else
-                {
-                    this.OnCutsceneEnd();
-                }
-            }
-        }
+        
 
         private void OnCutsceneEnd()
         {
