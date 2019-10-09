@@ -1,4 +1,5 @@
 ﻿using System;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
@@ -58,6 +59,7 @@ namespace InteractiveObjectTest
         public virtual void OnAIIsJustDisarmingObject() { }
         public virtual void OnAIIsNoMoreJustDisarmingObject() { }
         public virtual void SetAIDestination(AIDestination AIDestination) { }
+        public virtual void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition) { }
         public virtual void OnAIDestinationReached() { }
         #endregion
     }

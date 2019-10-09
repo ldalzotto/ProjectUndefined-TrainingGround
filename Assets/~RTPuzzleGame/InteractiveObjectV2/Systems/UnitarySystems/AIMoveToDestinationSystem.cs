@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
-using static AIMovementDefinitions;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
@@ -18,6 +19,11 @@ namespace InteractiveObjectTest
         {
             this.AIDestinationMoveManager = new AIDestinationMoveManager(CoreInteractiveObject.InteractiveGameObject.Agent, AIInteractiveObjectInitializerData, OnAIInteractiveObjectDestinationReached);
             this.AISpeedEventDispatcher = new AISpeedEventDispatcher(CoreInteractiveObject, AIInteractiveObjectInitializerData);
+        }
+
+        public override void TickAlways(float d)
+        {
+            this.AIDestinationMoveManager.TickDestinationReached();
         }
 
         public override void Tick(float d, float timeAttenuationFactor)
@@ -40,6 +46,9 @@ namespace InteractiveObjectTest
         {
             this.AIDestinationMoveManager.SetDestination(AIDestination);
         }
+
+        public void SetSpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition) { this.AIDestinationMoveManager.SetSpeedAttenuationFactor(AIMovementSpeedDefinition); }
+
         public void ClearPath() { this.AIDestinationMoveManager.ClearPath(); }
     }
 
@@ -68,21 +77,29 @@ namespace InteractiveObjectTest
         private AIMovementSpeedDefinition currentSpeedAttenuationFactor;
         #endregion
 
-        public void Tick(float d, float timeAttenuationFactor)
-        {
-            this.CurrentTimeAttenuated = d * timeAttenuationFactor;
-            this.UpdateAgentTransform(d, timeAttenuationFactor);
+        #region destination reached manual update
+        private int FrameWereOccuredTheLastDestinationReached = -1;
+        #endregion
 
+        public void TickDestinationReached()
+        {
             //is destination reached
             if (this.currentDestination.HasValue)
             {
                 if ((!objectAgent.pathPending && objectAgent.remainingDistance <= objectAgent.stoppingDistance && (!objectAgent.hasPath || objectAgent.velocity.sqrMagnitude == 0f)))
                 {
                     this.currentDestination = null;
+                    this.FrameWereOccuredTheLastDestinationReached = Time.frameCount;
                     Debug.Log(MyLog.Format("Destination reached !"));
                     this.OnAIInteractiveObjectDestinationReached.Invoke();
                 }
             }
+        }
+        
+        public void Tick(float d, float timeAttenuationFactor)
+        {
+            this.CurrentTimeAttenuated = d * timeAttenuationFactor;
+            this.UpdateAgentTransform(d, timeAttenuationFactor);
         }
 
         private Vector3 lastSuccessfulWorldDestination;
@@ -103,7 +120,7 @@ namespace InteractiveObjectTest
 
                 //If direction change is occuring when current destination has been reached
                 //We manually calculate next position to avoid a frame where AI is standing still
-                if (objectAgent.transform.position == objectAgent.nextPosition)
+                if (this.FrameWereOccuredTheLastDestinationReached == Time.frameCount)
                 {
                     this.ManuallyUpdateAgent();
                 }
@@ -130,6 +147,7 @@ namespace InteractiveObjectTest
             // Debug.Log(MyLog.Format("Agent disabled"));
             objectAgent.isStopped = true;
             objectAgent.nextPosition = objectAgent.transform.position;
+            objectAgent.speed = 0f;
         }
 
         public void ClearPath()
@@ -192,6 +210,7 @@ namespace InteractiveObjectTest
         private void ManuallyUpdateAgent()
         {
             //   Debug.Log(MyLog.Format("ManuallyUpdateAgent"));
+            Vector3 velocitySetted = default;
             NavMeshHit pathHit;
             objectAgent.SamplePathPosition(NavMesh.AllAreas, objectAgent.speed * this.CurrentTimeAttenuated, out pathHit);
             if (this.CurrentTimeAttenuated > 0)
@@ -217,7 +236,7 @@ namespace InteractiveObjectTest
 
         public void AfterTicks()
         {
-            var currentSpeed = this.AssociatedInteractiveObject.InteractiveGameObject.Agent.velocity.magnitude / this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
+            var currentSpeed = this.AssociatedInteractiveObject.InteractiveGameObject.Agent.speed / this.AIInteractiveObjectInitializerData.SpeedMultiplicationFactor;
             this.AssociatedInteractiveObject.OnAnimationObjectSetUnscaledSpeedMagnitude(new AnimationObjectSetUnscaledSpeedMagnitudeEvent { UnscaledSpeedMagnitude = currentSpeed });
         }
     }
@@ -226,5 +245,23 @@ namespace InteractiveObjectTest
     {
         public Vector3 WorldPosition;
         public Quaternion? Rotation;
+    }
+
+
+    public static class AIMovementDefinitions
+    {
+        public enum AIMovementSpeedDefinition
+        {
+            RUN = 0,
+            WALK = 1,
+            ZERO = 2
+        }
+
+        public static Dictionary<AIMovementSpeedDefinition, float> AIMovementSpeedAttenuationFactorLookup = new Dictionary<AIMovementSpeedDefinition, float>()
+    {
+        { AIMovementSpeedDefinition.ZERO, 0f },
+        { AIMovementSpeedDefinition.WALK, 0.5f },
+        { AIMovementSpeedDefinition.RUN, 1f }
+    };
     }
 }

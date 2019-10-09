@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using static AIMovementDefinitions;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace RTPuzzle
 {

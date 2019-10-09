@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using CoreGame;
 using GameConfigurationID;
-using static AIMovementDefinitions;
 using System.Collections.Generic;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 #if UNITY_EDITOR
 using UnityEditor;

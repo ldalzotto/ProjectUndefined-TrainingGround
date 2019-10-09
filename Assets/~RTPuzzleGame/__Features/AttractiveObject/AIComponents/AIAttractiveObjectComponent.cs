@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using InteractiveObjectTest;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace RTPuzzle

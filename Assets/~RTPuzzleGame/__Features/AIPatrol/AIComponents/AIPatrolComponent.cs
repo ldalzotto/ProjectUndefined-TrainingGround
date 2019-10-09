@@ -1,7 +1,7 @@
 ﻿using GameConfigurationID;
 using UnityEngine;
 using UnityEngine.AI;
-using static AIMovementDefinitions;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace RTPuzzle
 {

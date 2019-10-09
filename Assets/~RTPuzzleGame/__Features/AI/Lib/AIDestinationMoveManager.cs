@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static AIMovementDefinitions;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace RTPuzzle
 {
@@ -175,21 +175,4 @@ namespace RTPuzzle
             this.TargetRotation = null;
         }
     }
-}
-
-public static class AIMovementDefinitions
-{
-    public enum AIMovementSpeedDefinition
-    {
-        RUN = 0,
-        WALK = 1,
-        ZERO = 2
-    }
-
-    public static Dictionary<AIMovementSpeedDefinition, float> AIMovementSpeedAttenuationFactorLookup = new Dictionary<AIMovementSpeedDefinition, float>()
-    {
-        { AIMovementSpeedDefinition.ZERO, 0f },
-        { AIMovementSpeedDefinition.WALK, 0.5f },
-        { AIMovementSpeedDefinition.RUN, 1f }
-    };
 }

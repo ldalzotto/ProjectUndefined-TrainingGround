@@ -21,7 +21,7 @@ namespace RTPuzzle
         {
             return new TransformStruct
             {
-                WorldPosition = this.RootWorldPosition = AIPatrolGraphPosition.WorldPosition,
+                WorldPosition = this.RootWorldPosition + AIPatrolGraphPosition.WorldPosition,
                 LossyScale = AIPatrolGraphPosition.LossyScale,
                 WorldRotation = AIPatrolGraphPosition.WorldRotation
             };

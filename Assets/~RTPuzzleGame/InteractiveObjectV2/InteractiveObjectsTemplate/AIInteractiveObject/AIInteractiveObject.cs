@@ -1,4 +1,5 @@
 ﻿using GameConfigurationID;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace InteractiveObjectTest
 {
@@ -17,6 +18,7 @@ namespace InteractiveObjectTest
 
         public override void TickAlways(float d)
         {
+            this.AIMoveToDestinationSystem.TickAlways(d);
             this.AnimationObjectSystem.TickAlways(d);
             this.LineVisualFeedbackSystem.TickAlways(d);
         }
@@ -35,6 +37,11 @@ namespace InteractiveObjectTest
         {
             this.LineVisualFeedbackSystem.OnDestroy();
             base.Destroy();
+        }
+
+        public override void SetAISpeedAttenuationFactor(AIMovementSpeedDefinition AIMovementSpeedDefinition)
+        {
+            this.AIMoveToDestinationSystem.SetSpeedAttenuationFactor(AIMovementSpeedDefinition);
         }
     }
 

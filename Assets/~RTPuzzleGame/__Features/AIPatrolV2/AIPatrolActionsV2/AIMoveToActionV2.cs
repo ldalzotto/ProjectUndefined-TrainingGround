@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using CoreGame;
+﻿using CoreGame;
 using InteractiveObjectTest;
+using System.Collections.Generic;
+using static InteractiveObjectTest.AIMovementDefinitions;
 
 namespace RTPuzzle
 {
@@ -11,11 +10,13 @@ namespace RTPuzzle
         private bool destinationReached;
         private CoreInteractiveObject InteractiveObject;
         private TransformStruct WorldPoint;
-        
-        public AIMoveToActionV2(CoreInteractiveObject InteractiveObject, TransformStruct WorldPoint, List<SequencedAction> nextActions) : base(nextActions)
+        private AIMovementSpeedDefinition AIMovementSpeed;
+
+        public AIMoveToActionV2(CoreInteractiveObject InteractiveObject, TransformStruct WorldPoint, AIMovementSpeedDefinition AIMovementSpeed, List<SequencedAction> nextActions) : base(nextActions)
         {
             this.InteractiveObject = InteractiveObject;
             this.WorldPoint = WorldPoint;
+            this.AIMovementSpeed = AIMovementSpeed;
         }
 
         public override void AfterFinishedEventProcessed() { }
@@ -32,11 +33,15 @@ namespace RTPuzzle
 
         public override void Tick(float d)
         {
-            this.InteractiveObject.SetAIDestination(new AIDestination
+            if (!this.destinationReached)
             {
-                WorldPosition = this.WorldPoint.WorldPosition,
-                Rotation = this.WorldPoint.WorldRotation
-            });
+                this.InteractiveObject.SetAIDestination(new AIDestination
+                {
+                    WorldPosition = this.WorldPoint.WorldPosition,
+                    Rotation = this.WorldPoint.WorldRotation
+                });
+                this.InteractiveObject.SetAISpeedAttenuationFactor(this.AIMovementSpeed);
+            }
         }
 
         public void OnDestinationReached()
